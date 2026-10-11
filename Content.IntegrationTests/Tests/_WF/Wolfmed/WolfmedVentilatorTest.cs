@@ -154,6 +154,54 @@ public sealed class WolfmedVentilatorTest : WolfmedGameTest
         });
     }
 
+    /// <summary>A second stand takes the patient over from the first, and its own detach then ends the ventilation.</summary>
+    [Test]
+    public async Task SecondStandTakesOverTest()
+    {
+        var map = await CreateTestMap();
+        var s = new WolfmedScenario(SEntMan);
+        var ventilators = SEntMan.System<WolfmedVentilatorSystem>();
+        var slots = SEntMan.System<ItemSlotsSystem>();
+        EntityUid body = default;
+        WolfmedVentilatorComponent first = default!, second = default!;
+        EntityUid firstUid = default, secondUid = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            s.KeepGrid(map.Grid);
+            body = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            firstUid = SEntMan.SpawnEntity("WFWolfmedVentilator", map.GridCoords);
+            secondUid = SEntMan.SpawnEntity("WFWolfmedVentilator", map.GridCoords);
+            first = SEntMan.GetComponent<WolfmedVentilatorComponent>(firstUid);
+            second = SEntMan.GetComponent<WolfmedVentilatorComponent>(secondUid);
+            foreach (var stand in new[] { firstUid, secondUid })
+            {
+                var tank = SEntMan.SpawnEntity("OxygenTankFilled", map.GridCoords);
+                Assert.That(slots.TryInsert(stand, WolfmedVentilatorComponent.TankSlotId, tank, null), Is.True);
+            }
+
+            ventilators.Attach((firstUid, first), body);
+        });
+
+        Assert.That(await SecondsUntil(6, () => s.Breathing.IsVentilated(body)), Is.True);
+        await Server.WaitAssertion(() =>
+        {
+            ventilators.Attach((secondUid, second), body);
+            Assert.Multiple(() =>
+            {
+                Assert.That(first.Patient, Is.Null, "two stands hold one patient.");
+                Assert.That(second.Patient, Is.EqualTo(body));
+            });
+        });
+
+        Assert.That(await SecondsUntil(6, () => s.Breathing.IsVentilated(body)), Is.True);
+        await Server.WaitAssertion(() =>
+        {
+            ventilators.Detach((secondUid, second));
+            Assert.That(s.Breathing.IsVentilated(body), Is.False);
+        });
+    }
+
     [Test]
     public async Task SealedAutodocVentilatesTest()
     {

@@ -213,6 +213,14 @@ public sealed partial class WolfmedVentilatorSystem : EntitySystem
         if (ent.Comp.Patient is { } previous && previous != patient)
             Detach(ent);
 
+        // One mask to a face: this stand takes over from any other, so no stand's detach cuts off another's patient.
+        var others = EntityQueryEnumerator<WolfmedVentilatorComponent>();
+        while (others.MoveNext(out var uid, out var other))
+        {
+            if (uid != ent.Owner && other.Patient == patient)
+                Detach((uid, other));
+        }
+
         ent.Comp.Patient = patient;
         ent.Comp.DryBreaths = 0;
         // The first breath lands at once: a patient who needs the stand has no cycle to spare.

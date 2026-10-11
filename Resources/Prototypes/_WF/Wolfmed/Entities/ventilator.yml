@@ -20,6 +20,7 @@
     sprite: _WF/Wolfmed/Medical/ventilator.rsi
     state: icon
   - type: Appearance
+  # The states keep Nova's names: mask_on is the mask on the stand, mask_off is the mask off it and on a patient.
   - type: GenericVisualizer
     visuals:
       enum.WolfmedVentilatorVisuals.Tank:
