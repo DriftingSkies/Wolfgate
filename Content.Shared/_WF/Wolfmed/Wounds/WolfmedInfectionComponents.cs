@@ -104,8 +104,8 @@ public enum WolfmedNecrosisSource : byte
 
 /// <summary>
 /// Tissue in this part is dying, or has died. Accumulates from whatever source got there first; once
-/// <see cref="Necrotic"/> is set the part is finished and only amputation clears it, because the component
-/// dies with the part.
+/// <see cref="Necrotic"/> is set the part is finished: a limb comes off, a torso or a head has the dead tissue cut
+/// out in surgery.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class WolfmedNecrosisComponent : Component
@@ -125,7 +125,7 @@ public sealed partial class WolfmedNecrosisComponent : Component
     [DataField, AutoNetworkedField]
     public bool Warned;
 
-    /// <summary>The part is dead. Permanent: nothing in this system ever clears it.</summary>
+    /// <summary>The part is dead. Only <c>WolfmedNecrosisSystem.RemoveNecrosis</c> and a full heal clear it.</summary>
     [DataField, AutoNetworkedField]
     public bool Necrotic;
 

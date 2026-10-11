@@ -47,6 +47,10 @@ public sealed partial class ProjectileAnomalySystem : EntitySystem
         var xform = xformQuery.GetComponent(uid);
 
         var inRange = _lookup.GetEntitiesInRange(uid, component.ProjectileRange * severity, LookupFlags.Dynamic).ToList();
+        // WOLFGATE: with nothing in range Pick threw, so a supercritical never ended and retried every tick
+        if (inRange.Count == 0)
+            return;
+
         _random.Shuffle(inRange);
         var priority = new List<EntityUid>();
         foreach (var entity in inRange)

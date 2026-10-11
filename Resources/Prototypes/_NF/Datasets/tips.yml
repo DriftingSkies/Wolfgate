@@ -2,4 +2,7 @@
   id: NFTips
   values:
     prefix: nf-tips-dataset-
-    count: 120
+    # WOLFGATE(ColdWar) START: three cold war tips
+    #count: 120
+    count: 123
+    # WOLFGATE END

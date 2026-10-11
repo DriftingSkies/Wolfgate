@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Server._Mono.FireControl;
 using Content.Server._Mono.NPC.HTN;
 using Content.Server._WF.NpcCrew.Components;
+using Content.Server._WF.Cockpit;
 using Content.Server._WF.NpcCrew.HTN;
 using Content.Server.NPC.HTN;
 using Content.Server.Power.EntitySystems;
@@ -110,7 +111,8 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
             || Transform(console).GridUid != grid || !Transform(console).Anchored || !_power.IsPowered(console))
             return false;
         // Only an authorized operator at the screen takes the console from the gunner.
-        foreach (var actor in _ui.GetActors(console, FireControlConsoleUiKey.Key))
+        foreach (var actor in _ui.GetActors(console, FireControlConsoleUiKey.Key)
+                     .Concat(EntityManager.System<WFCockpitGunnerySystem>().GetActors(console)))
         {
             if (actor != mob && (_crew.SameCrew(mob, actor) || _security.IsAuthorized(mob, actor)))
                 return false;

@@ -23,15 +23,11 @@ public sealed class WolfgateMarkingIcon : Control
         Direction.South, Direction.East, Direction.West, Direction.North,
     };
 
-    // Populating a body part builds hundreds of these, each probing several sprites and directions,
-    // so the two managers are resolved once rather than per probe.
-    private static SpriteSystem? _spriteSystem;
-    private static IClickMapManager? _clickMaps;
+    // Resolved per call, never kept in a static: each client has its own managers, and pooled test clients
+    // share one process, so a static would hand one client's managers to another client's thread.
+    private static SpriteSystem Sprites => IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<SpriteSystem>();
 
-    private static SpriteSystem Sprites =>
-        _spriteSystem ??= IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<SpriteSystem>();
-
-    private static IClickMapManager ClickMaps => _clickMaps ??= IoCManager.Resolve<IClickMapManager>();
+    private static IClickMapManager ClickMaps => IoCManager.Resolve<IClickMapManager>();
 
     private readonly IReadOnlyList<SpriteSpecifier> _sprites;
     private readonly List<TextureRect> _layers = new();

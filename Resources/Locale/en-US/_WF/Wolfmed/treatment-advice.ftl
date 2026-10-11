@@ -301,11 +301,12 @@ wolfmed-treatment-step-wolfmed-internal-burn-wound-3 = Check the heart on the or
 
 # W5 time ---------------------------------------------------------------------
 
-wolfmed-treatment-short-wolfmed-necrosis-wound = Dead tissue. It is permanent, the limb works badly, and it keeps infecting the body toward the chest while it is attached.
-wolfmed-treatment-step-wolfmed-necrosis-wound-1 = Nothing treats it. No reagent, no topical and no surgery brings dead tissue back.
-wolfmed-treatment-step-wolfmed-necrosis-wound-2 = Amputate the part and fit a replacement.
-wolfmed-treatment-step-wolfmed-necrosis-wound-3 = Give spaceacillin for the infection it spreads. Sepsis follows once that reaches the chest or the head.
-wolfmed-treatment-avoid-wolfmed-necrosis-wound-1 = Leaving it attached keeps the infection running. It is the source.
+wolfmed-treatment-short-wolfmed-necrosis-wound = Dead tissue. It does not heal, the part works badly, and it keeps infecting the body toward the chest while it is there.
+wolfmed-treatment-step-wolfmed-necrosis-wound-1 = No reagent and no topical brings dead tissue back. It has to be cut out.
+wolfmed-treatment-step-wolfmed-necrosis-wound-2 = A limb: amputate it and fit a replacement.
+wolfmed-treatment-step-wolfmed-necrosis-wound-3 = The chest or head: open it and do the Remove Necrotic Flesh surgery. It takes a skin graft.
+wolfmed-treatment-step-wolfmed-necrosis-wound-4 = Give spaceacillin for the infection it spreads. Sepsis follows once that reaches the chest or the head.
+wolfmed-treatment-avoid-wolfmed-necrosis-wound-1 = Leaving it in keeps the infection running. It is the source.
 
 # W6 mechanical ---------------------------------------------------------------
 
@@ -404,10 +405,11 @@ wolfmed-treatment-step-cond-infection-septic-2 = Find the source. Sepsis keeps g
 wolfmed-treatment-step-cond-infection-septic-3 = A necrotic limb has to come off. Nothing else stops it feeding the sepsis.
 wolfmed-treatment-avoid-cond-infection-septic-1 = More than about 25 units of spaceacillin is poisonous in its own right. Treat and stop.
 
-wolfmed-treatment-short-cond-necrosis = The tissue here is dead. It is permanent and it keeps infecting the body toward the chest.
-wolfmed-treatment-step-cond-necrosis-1 = Amputate the part and fit a replacement.
-wolfmed-treatment-step-cond-necrosis-2 = Give spaceacillin for the infection it spreads, and for the sepsis once that reaches the chest.
-wolfmed-treatment-avoid-cond-necrosis-1 = No reagent, topical or surgery brings dead tissue back.
+wolfmed-treatment-short-cond-necrosis = The tissue here is dead. It does not heal and it keeps infecting the body toward the chest.
+wolfmed-treatment-step-cond-necrosis-1 = A limb: amputate it and fit a replacement.
+wolfmed-treatment-step-cond-necrosis-2 = The chest or head: open it and do the Remove Necrotic Flesh surgery. It takes a skin graft.
+wolfmed-treatment-step-cond-necrosis-3 = Give spaceacillin for the infection it spreads, and for the sepsis once that reaches the chest.
+wolfmed-treatment-avoid-cond-necrosis-1 = No reagent or topical brings dead tissue back.
 
 wolfmed-treatment-short-cond-necrosis-risk = Circulation here is failing. The part dies if nothing changes.
 wolfmed-treatment-step-cond-necrosis-risk-1 = A tourniquet is a ten-minute clock. Suture what is under it, or use the Loosen tourniquet verb and accept the bleeding.

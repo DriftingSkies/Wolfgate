@@ -186,6 +186,12 @@ public sealed class WolfmedVitalsReport
     /// <summary>M4 (OD16): a species built with no heart. Its arrest reads as circulatory collapse.</summary>
     public bool Heartless;
 
+    /// <summary>A body that needs lungs and has none in it. An arrest's own breathing source hides this.</summary>
+    public bool Lungless;
+
+    /// <summary>A ventilator or a sealed autodoc is breathing for the patient, stopped heart or not.</summary>
+    public bool Ventilated;
+
     /// <summary>M4 (plan §3.11): a machine's core and chassis temperatures in kelvin; -1 when not shown.</summary>
     public float CoreTemperature = -1f;
 
@@ -378,6 +384,9 @@ public static class WolfmedVitalsText
                 ("percent", Whole(report.Sedation * 100f))),
             WolfmedBreathing.Gasping => Loc.GetString("wolfmed-vitals-breathing-gasping"),
             WolfmedBreathing.Laboured => Loc.GetString("wolfmed-vitals-breathing-laboured"), // M3
+            // A machine is doing the breathing; the source is why the chest cannot.
+            WolfmedBreathing.Ventilated => Loc.GetString(
+                $"wolfmed-vitals-breathing-ventilated-{report.BreathingSource.ToString().ToLowerInvariant()}"),
             // An arrest (or M4's circulatory collapse) is on the state line already: plain "Not breathing".
             WolfmedBreathing.None => Loc.GetString(
                 $"wolfmed-vitals-breathing-none-{report.BreathingSource.ToString().ToLowerInvariant()}"),
@@ -425,16 +434,43 @@ public static class WolfmedVitalsText
             var aid = circulation && refill
                 ? Loc.GetString(report.Mechanical ? "wolfmed-vitals-aid-refill" : "wolfmed-vitals-aid-transfuse",
                     ("units", Units(report.UnitsToLine)))
-                : Aid(route, report.Mechanical, report.SepticShock);
+                : LunglessAid(route, report) ?? Aid(route, report.Mechanical, report.SepticShock);
 
             if (!aids.Contains(aid))
                 aids.Add(aid);
+        }
+
+        // No lungs is not a running route under a machine or a stopped heart, and the medic still has to hear it.
+        if (report.Lungless)
+        {
+            var lungs = LunglessAid(WolfmedRoutes.Lungs, report) ??
+                        Loc.GetString("wolfmed-vitals-aid-nolungs-ventilated");
+            if (!aids.Contains(lungs))
+                aids.Add(lungs);
         }
 
         if (aids.Count == 0)
             return report.State == WolfmedVitalsState.Up ? null : Loc.GetString("wolfmed-vitals-do-first-none");
 
         return Loc.GetString("wolfmed-vitals-do-first", ("aids", string.Join("; ", aids)));
+    }
+
+    /// <summary>
+    /// No lungs changes the order: a restarted heart stops again within a minute unless something breathes for the
+    /// patient first. Null leaves the route its usual aid.
+    /// </summary>
+    private static string? LunglessAid(WolfmedRoutes route, WolfmedVitalsReport report)
+    {
+        if (!report.Lungless || report.Ventilated)
+            return null;
+
+        var arrest = (report.Routes & WolfmedRoutes.Arrest) != 0;
+        return route switch
+        {
+            WolfmedRoutes.Arrest => Loc.GetString("wolfmed-vitals-aid-nolungs-arrest"),
+            WolfmedRoutes.Lungs => Loc.GetString(arrest ? "wolfmed-vitals-aid-nolungs-after" : "wolfmed-vitals-aid-nolungs"),
+            _ => null,
+        };
     }
 
     /// <summary>

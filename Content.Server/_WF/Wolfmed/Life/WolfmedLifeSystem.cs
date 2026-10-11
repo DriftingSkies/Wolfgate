@@ -446,8 +446,9 @@ public sealed class WolfmedLifeSystem : EntitySystem
         if (arrest)
             worst = MathF.Max(worst, Per(_cfg.GetCVar(WolfmedCVars.BrainArrestSeconds)));
 
-        // CPR is rescue breaths as well as compressions, so it answers for the airway while it lasts.
-        if (!cpr)
+        // CPR is rescue breaths as well as compressions, so it answers for the airway while it lasts. So does a
+        // ventilator or a sealed autodoc.
+        if (!cpr && !_breathing.IsVentilated(body))
         {
             // A stopped heart is the arrest clock's, which already has nothing breathing: no air is not counted again
             // on its own faster clock, or every arrest would run short.
@@ -907,7 +908,7 @@ public sealed class WolfmedLifeSystem : EntitySystem
         if (InArrest(body))
             routes |= WolfmedRoutes.Arrest;
 
-        if (!InCpr(body))
+        if (!InCpr(body) && !_breathing.IsVentilated(body))
         {
             var suffocation = BreathingLevel(body);
             if (suffocation > 0f)

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.CombatConsole;
 using Content.Shared._WF.ShipShields;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
@@ -9,7 +10,7 @@ using Robust.Shared.Timing;
 namespace Content.Client._WF.ShipShields;
 
 /// <summary>Controls live shield allocation bearings at the ship's helm.</summary>
-public sealed class WFShipShieldShuntScreen : BoxContainer
+public sealed partial class WFShipShieldShuntScreen : BoxContainer
 {
     private readonly FloatSpinBox _direction;
     private readonly FloatSpinBox _arc;
@@ -63,7 +64,12 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         {
             if (_state?.Stats is not { } stats)
                 return;
-            _statsWindow ??= new WFShipShieldStatsWindow();
+            if (_wfCockpitShowStats != null)
+            {
+                _wfCockpitShowStats(stats);
+                return;
+            }
+            _statsWindow ??= new WFShipShieldStatsWindow(_dial!.GlassFace);
             _statsWindow.UpdateStats(stats);
             _statsWindow.OpenCentered();
         };
@@ -94,7 +100,7 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         preview.AddChild(_dial = new ShieldDial());
         preview.AddChild(new Label { Text = Loc.GetString("wf-shield-helm-aft"), HorizontalAlignment = HAlignment.Center });
         preview.AddChild(new RichTextLabel { Text = Loc.GetString("wf-shield-helm-click-bearing") });
-        _settings = Column(12);
+        _settings = new ShieldSettings { SeparationOverride = 12 };
         AddChild(new ShieldColumns(Card(preview), _settings));
         _direction = new FloatSpinBox(1f, 1)
         {
@@ -317,16 +323,24 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
     private void UpdateHealthAppearance()
     {
         var tint = WFShipShieldEffects.HealthColor(_health.Value);
+        if (_dial.GlassFace)
+        {
+            var skin = WFInstrumentTheme.Skin;
+            tint = _health.Value < 0.5f ? Color.InterpolateBetween(skin.Danger, skin.Caution, _health.Value * 2) :
+                Color.InterpolateBetween(skin.Caution, skin.Good, (_health.Value - 0.5f) * 2);
+        }
         if (_state is { Available: true } && _health.Value < 0.1f)
         {
             var pulse = 0.5f + 0.5f * MathF.Cos(_warningTime * MathF.Tau);
-            tint = Color.InterpolateBetween(new Color(0.4f, 0.02f, 0.03f), new Color(1f, 0.05f, 0.08f), pulse);
+            tint = _dial.GlassFace
+                ? Color.InterpolateBetween(WFInstrumentTheme.Skin.Ink, WFInstrumentTheme.Red, 0.3f + 0.7f * pulse)
+                : Color.InterpolateBetween(new Color(0.4f, 0.02f, 0.03f), new Color(1f, 0.05f, 0.08f), pulse);
         }
         if (_health.ForegroundStyleBoxOverride is StyleBoxFlat fill)
             fill.BackgroundColor = tint;
         if (_health.BackgroundStyleBoxOverride is StyleBoxFlat background)
             background.BackgroundColor = _state is { Available: true } && _health.Value < 0.1f
-                ? tint.WithAlpha(0.35f) : Color.FromHex("#1B303C");
+                ? tint.WithAlpha(0.35f) : _dial.GlassFace ? WFInstrumentTheme.Skin.GlassLight : Color.FromHex("#1B303C");
         _dial.HealthTint = tint;
     }
 
@@ -372,7 +386,7 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         var arc = _arc.Value * MathF.PI / 180f;
         _dial.TargetDirection = WFShipShieldHelmAngles.GridDirection(_direction.Value, 0f);
         _dial.TargetArc = arc;
-        _amount.Text = Loc.GetString("wf-shield-helm-concentration", ("amount", _concentration.Value));
+        _amount.Text = Loc.GetString(_wfCockpitCompact ? "wf-cockpit-shield-power" : "wf-shield-helm-concentration", ("amount", _concentration.Value));
         var boost = WFShipShieldShuntMath.StrengthMultiplier(new Vector2(MathF.Cos(_dial.Direction), MathF.Sin(_dial.Direction)),
             Vector2.Zero, _dial.Direction, _dial.Concentration, _dial.Arc);
         _strength.SetMessage(Loc.GetString("wf-shield-helm-strength", ("strength", MathF.Round(boost * 100f))), Color.FromHex("#83DCEB"));
@@ -389,6 +403,147 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         _previewStatus.Modulate = adjusting ? Color.Orange : Color.FromHex("#83DCEB");
     }
 
+    /// <summary>Stacks the allocation panels, or splits the last one into a second column when given enough width.</summary>
+    private sealed class ShieldSettings : BoxContainer
+    {
+        private const float Gap = 12f;
+        /// <summary>Two columns of about 300 units plus the gap.</summary>
+        private const float SplitWidth = 612f;
+
+        public ShieldSettings()
+        {
+            Orientation = LayoutOrientation.Vertical;
+            HorizontalExpand = true;
+        }
+
+        private float _flankWidth;
+
+        /// <summary>When above zero, the first panels stack at the left and the last takes the right edge, each this wide, leaving the middle free.</summary>
+        public float FlankWidth
+        {
+            get => _flankWidth;
+            set
+            {
+                if (MathF.Abs(_flankWidth - value) < 0.5f)
+                    return;
+                _flankWidth = value;
+                InvalidateMeasure();
+            }
+        }
+
+        private bool Split(float width) => width >= SplitWidth && float.IsFinite(width) && VisibleCount() > 1;
+
+        private int VisibleCount()
+        {
+            var count = 0;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    count++;
+            }
+            return count;
+        }
+
+        protected override Vector2 MeasureOverride(Vector2 availableSize)
+        {
+            if (_flankWidth > 0f)
+            {
+                var (left, right) = Columns(_flankWidth, availableSize.Y);
+                return new Vector2(float.IsFinite(availableSize.X) ? availableSize.X : _flankWidth * 2f, MathF.Max(left, right));
+            }
+            if (!Split(availableSize.X))
+                return base.MeasureOverride(availableSize);
+            var column = MathF.Max(0f, (availableSize.X - Gap) / 2f);
+            var (first, second) = Columns(column, availableSize.Y);
+            return new Vector2(column * 2f + Gap, MathF.Max(first, second));
+        }
+
+        protected override Vector2 ArrangeOverride(Vector2 finalSize)
+        {
+            if (_flankWidth > 0f)
+                return ArrangeFlank(finalSize);
+            if (!Split(finalSize.X))
+                return base.ArrangeOverride(finalSize);
+            var column = MathF.Max(0f, (finalSize.X - Gap) / 2f);
+            Columns(column, finalSize.Y);
+            var separation = SeparationOverride ?? 0;
+            var y = 0f;
+            Control? last = null;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    last = child;
+            }
+            foreach (var child in Children)
+            {
+                if (!child.Visible)
+                    continue;
+                if (child == last)
+                {
+                    child.Arrange(UIBox2.FromDimensions(new Vector2(column + Gap, 0f), new Vector2(column, child.DesiredSize.Y)));
+                    continue;
+                }
+                child.Arrange(UIBox2.FromDimensions(new Vector2(0f, y), new Vector2(column, child.DesiredSize.Y)));
+                y += child.DesiredSize.Y + separation;
+            }
+            return finalSize;
+        }
+
+        /// <summary>Stacks the first panels at the left edge and the last at the right edge, each centred vertically.</summary>
+        private Vector2 ArrangeFlank(Vector2 finalSize)
+        {
+            var (left, right) = Columns(_flankWidth, finalSize.Y);
+            var separation = SeparationOverride ?? 0;
+            Control? last = null;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    last = child;
+            }
+            var y = MathF.Max(0f, (finalSize.Y - left) / 2f);
+            foreach (var child in Children)
+            {
+                if (!child.Visible)
+                    continue;
+                if (child == last)
+                {
+                    var top = MathF.Max(0f, (finalSize.Y - right) / 2f);
+                    child.Arrange(UIBox2.FromDimensions(new Vector2(MathF.Max(0f, finalSize.X - _flankWidth), top),
+                        new Vector2(_flankWidth, child.DesiredSize.Y)));
+                    continue;
+                }
+                child.Arrange(UIBox2.FromDimensions(new Vector2(0f, y), new Vector2(_flankWidth, child.DesiredSize.Y)));
+                y += child.DesiredSize.Y + separation;
+            }
+            return finalSize;
+        }
+
+        /// <summary>Measures every visible panel at the column width and returns the height of each column.</summary>
+        private (float First, float Second) Columns(float column, float height)
+        {
+            var separation = SeparationOverride ?? 0;
+            Control? last = null;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    last = child;
+            }
+            var first = 0f;
+            var second = 0f;
+            foreach (var child in Children)
+            {
+                if (!child.Visible)
+                    continue;
+                child.Measure(new Vector2(column, height));
+                if (child == last)
+                    second = child.DesiredSize.Y;
+                else
+                    first += child.DesiredSize.Y + (first > 0f ? separation : 0f);
+            }
+            return (first, second);
+        }
+    }
+
     /// <summary>Reserves both column widths before measuring text and keeps overflow inside each column.</summary>
     private sealed class ShieldColumns : Container
     {
@@ -396,21 +551,51 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         private readonly ScrollContainer _preview;
         private readonly ScrollContainer _settings;
 
-        public ShieldColumns(Control preview, Control settings)
+        /// <summary>Gives the settings two columns on wide screens, otherwise one narrower column.</summary>
+        private static float SettingsWidth(float total) => total >= 1100f
+            ? MathF.Min(780f, MathF.Max(0f, total - Gap) * 0.62f)
+            : MathF.Min(380f, MathF.Max(0f, total - Gap) * 0.46f);
+
+        /// <summary>Width of each side column when the preview sits in the middle of the page.</summary>
+        private static float SideWidth(float total) => MathF.Min(360f, MathF.Max(256f, total * 0.28f));
+
+        private static float MiddleWidth(float total, float side) => MathF.Max(0f, total - side * 2f - Gap * 2f);
+
+        /// <summary>Puts the preview in the middle with the settings flanking it, when the settings support flanking.</summary>
+        private readonly ShieldSettings? _flank;
+
+        public ShieldColumns(Control preview, Control settings, bool centred = false)
         {
             HorizontalExpand = true;
             VerticalExpand = true;
-            _preview = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = true };
-            _settings = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = true };
+            // A centred preview must sit exactly mid-page, so neither side reserves room for a scroll bar.
+            _preview = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = !centred };
+            _settings = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = !centred };
             _preview.AddChild(preview);
             _settings.AddChild(settings);
+            _flank = centred ? settings as ShieldSettings : null;
+            if (_flank != null)
+            {
+                // The preview is added last so it sits above the settings' empty middle.
+                AddChild(_settings);
+                AddChild(_preview);
+                return;
+            }
             AddChild(_preview);
             AddChild(_settings);
         }
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            var right = MathF.Min(380f, MathF.Max(0f, availableSize.X - Gap) * 0.46f);
+            if (_flank != null)
+            {
+                var side = SideWidth(availableSize.X);
+                _flank.FlankWidth = side;
+                _settings.Measure(availableSize);
+                _preview.Measure(new Vector2(MiddleWidth(availableSize.X, side), availableSize.Y));
+                return Vector2.Zero;
+            }
+            var right = SettingsWidth(availableSize.X);
             _preview.Measure(new Vector2(MathF.Max(0f, availableSize.X - right - Gap), availableSize.Y));
             _settings.Measure(new Vector2(right, availableSize.Y));
             // The expandable body takes the space left after the fixed header and status row.
@@ -419,7 +604,15 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            var right = MathF.Min(380f, MathF.Max(0f, finalSize.X - Gap) * 0.46f);
+            if (_flank != null)
+            {
+                var side = SideWidth(finalSize.X);
+                _flank.FlankWidth = side;
+                _settings.Arrange(UIBox2.FromDimensions(Vector2.Zero, finalSize));
+                _preview.Arrange(UIBox2.FromDimensions(new Vector2(side + Gap, 0f), new Vector2(MiddleWidth(finalSize.X, side), finalSize.Y)));
+                return finalSize;
+            }
+            var right = SettingsWidth(finalSize.X);
             var left = MathF.Max(0f, finalSize.X - right - Gap);
             _preview.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(left, finalSize.Y)));
             _settings.Arrange(UIBox2.FromDimensions(new Vector2(left + Gap, 0f), new Vector2(right, finalSize.Y)));
@@ -437,8 +630,11 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         public float Concentration;
         public float Arc = MathF.PI / 2f;
         public bool Available;
+        /// <summary>Gives helm instruments a lens while retaining the generator panel layout.</summary>
+        public bool GlassFace;
         public Color HealthTint;
         private bool _dragging;
+        private DrawVertexUV2DColor[] _digitalVertices = Array.Empty<DrawVertexUV2DColor>();
         private readonly Vector2[] _band = new Vector2[6];
 
         public ShieldDial()
@@ -453,8 +649,24 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
         {
             base.Draw(handle);
             var center = (Vector2) PixelSize / 2f;
-            var radius = MathF.Min(PixelSize.X, PixelSize.Y) * 0.40f;
-            var grid = Color.FromHex("#29404F");
+            var diameter = MathF.Min(PixelSize.X, PixelSize.Y);
+            var radius = MathF.Max(1f, MathF.Min(diameter * 0.40f, diameter / 2f - 28f * UIScale));
+            if (GlassFace && WFInstrumentTheme.Digital)
+            {
+                var skin = WFInstrumentTheme.Skin;
+                handle.DrawCircle(center, radius + 27f * UIScale, skin.Glass);
+                WFConsoleDigital.Arc(handle, center, radius + 27f * UIScale, UIScale, 0, MathF.Tau, skin.AccentDim, ref _digitalVertices);
+                WFConsoleDigital.Arc(handle, center, radius * 0.72f, UIScale, 0, MathF.Tau, skin.Edge, ref _digitalVertices);
+            }
+            else if (GlassFace)
+            {
+                var rim = radius + 27f * UIScale;
+                handle.DrawCircle(center, rim, WFInstrumentTheme.Skin.EdgeLight);
+                handle.DrawCircle(center, rim - 2f * UIScale, WFInstrumentTheme.Skin.EdgeSoft);
+                handle.DrawCircle(center, rim - 4f * UIScale, WFInstrumentTheme.Skin.Edge);
+                handle.DrawCircle(center, rim - 5f * UIScale, WFInstrumentTheme.Skin.Glass);
+            }
+            var grid = GlassFace ? WFInstrumentTheme.Skin.EdgeLight : Color.FromHex("#29404F");
             var tint = Available ? HealthTint : Color.FromHex("#52616B");
             handle.DrawCircle(center, radius * 0.55f, grid, false);
             handle.DrawCircle(center, radius + 14f * UIScale, grid, false);
@@ -518,6 +730,8 @@ public sealed class WFShipShieldShuntScreen : BoxContainer
             handle.DrawLine(port, aft, Color.White);
             handle.DrawLine(aft, starboard, Color.White);
             handle.DrawLine(starboard, bow, Color.White);
+            if (GlassFace && !WFInstrumentTheme.Digital)
+                WFInstrumentGlass.Round(handle, center, radius + 22f * UIScale, UIScale);
             return;
             Vector2 Point(float angle, float distance) => center + new Vector2(MathF.Cos(angle), -MathF.Sin(angle)) * distance;
         }

@@ -67,11 +67,14 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         SubscribeLocalEvent<WFCrewHullHitEvent>(OnHullHit, after: [typeof(WFCrewAlertSystem)]);
         SubscribeLocalEvent<WFShipShieldAttackedEvent>(OnShieldHit, after: [typeof(WFCrewAlertSystem)]);
         SubscribeLocalEvent<WFEncounterResolvedEvent>(OnResolved);
+        SubscribeLocalEvent<WFCrewFriendlyFireQueryEvent>(OnFriendlyFireQuery);
     }
 
     private void OnHullHit(ref WFCrewHullHitEvent args)
     {
+        // Judged before it is counted, as the crews judged it, so the same hit is never weighed twice.
         RecordHit(args.Grid, args.AttackerGrid);
+        Track(args.Grid, args.AttackerGrid);
     }
 
     private void OnShieldHit(ref WFShipShieldAttackedEvent args)
@@ -81,6 +84,59 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
             return;
 
         RecordHit(args.Grid, args.AttackerGrid);
+        Track(args.Grid, args.AttackerGrid);
+    }
+
+    /// <summary>How long a vessel's hits count toward whom it is fighting.</summary>
+    private static readonly TimeSpan FireWindow = TimeSpan.FromSeconds(30);
+
+    /// <summary>How many times over its hits on a side a vessel must have hit that side's enemies to be its friend.</summary>
+    private const int FriendlyFireRatio = 2;
+
+    /// <summary>Counts a ship weapon hit on an encounter ship by any vessel outside the encounter, excused or not.</summary>
+    private void Track(EntityUid victim, EntityUid attacker)
+    {
+        if (!TryComp<WFEncounterGridComponent>(victim, out var marker) || HasComp<WFEncounterGridComponent>(attacker)
+            || !TryComp<WFEncounterComponent>(marker.Encounter, out var encounter)
+            || !encounter.Ships.TryGetValue(marker.Key, out var ship))
+            return;
+
+        var now = _timing.CurTime;
+        var key = (attacker, ship.Side);
+        if (!encounter.Fire.TryGetValue(key, out var fire))
+            encounter.Fire[key] = fire = new List<TimeSpan>();
+        fire.RemoveAll(hit => now - hit > FireWindow);
+        fire.Add(now);
+    }
+
+    /// <summary>
+    /// Vouches for a vessel to a ship's crew: it is their friend while, over the last half minute, it has hit their
+    /// side's enemies at least twice as often as it has hit them, this hit included. In a melee the odd round goes
+    /// astray; a vessel plainly fighting their fight is not an enemy for it. Conduct alone decides, an alliance
+    /// notwithstanding: an ally that turns its guns on the side loses the excuse, and with it the alliance.
+    /// </summary>
+    private void OnFriendlyFireQuery(ref WFCrewFriendlyFireQueryEvent args)
+    {
+        if (args.Friendly || !TryComp<WFEncounterGridComponent>(args.Grid, out var marker)
+            || !TryComp<WFEncounterComponent>(marker.Encounter, out var encounter)
+            || !encounter.Ships.TryGetValue(marker.Key, out var ship))
+            return;
+
+        var now = _timing.CurTime;
+        var onUs = 0;
+        var onEnemies = 0;
+        foreach (var ((attacker, side), fire) in encounter.Fire)
+        {
+            if (attacker != args.Attacker)
+                continue;
+            var recent = fire.Count(hit => now - hit <= FireWindow);
+            if (side == ship.Side)
+                onUs += recent;
+            else
+                onEnemies += recent;
+        }
+
+        args.Friendly = onEnemies >= FriendlyFireRatio * (onUs + 1);
     }
 
     /// <summary>Counts a ship weapon hit by a player-crewed ship on an encounter ship as help for the other sides.</summary>
@@ -120,11 +176,11 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         if (hits != MinimumHits)
             return;
 
-        // Having fought this side and no other, the ship is on the others' side: they hold their fire for it.
+        // Having fought this side and hardly the others, the ship is on their side: they hold their fire for it.
         foreach (var other in encounter.Ships.Values)
         {
             if (other.Side == ship.Side || TerminatingOrDeleted(other.Grid)
-                || encounter.ShipHits.GetValueOrDefault((attacker, other.Side)) > 0)
+                || encounter.ShipHits.GetValueOrDefault((attacker, other.Side)) * FriendlyFireRatio > hits)
                 continue;
 
             _escorts.AddAlly(other.Grid, attacker);

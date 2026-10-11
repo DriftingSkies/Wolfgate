@@ -611,16 +611,26 @@ public sealed partial class WFEncounterTest : InteractionTest
         await RunTicks(10);
     }
 
-/// <summary>A faction patrol's zone only answers to ships of a company it is at war with.</summary>
+/// <summary>
+    /// A faction patrol's zone only answers to ships of a company it is at war with, and holds its fire on the other
+    /// navy until war has been declared.
+    /// </summary>
     [Test]
     public async Task PatrolZoneOnlyMindsCompaniesAtWar()
     {
-        EntityUid encounter = default, patrol = default, intruder = default;
+        EntityUid encounter = default, patrol = default, intruder = default, host = default;
         await Server.WaitAssertion(() =>
         {
+            // The war level lives on the sector service entity, which a station's host component brings up.
+            host = SEntMan.SpawnEntity(null, MapCoordinates.Nullspace);
+            SEntMan.AddComponent<Content.Server._NF.SectorServices.StationSectorServiceHostComponent>(host);
+
             var zones = Server.System<WFEncounterZoneSystem>();
-            Assert.That(zones.AtWar("TSF", "PDV"), Is.True);
-            Assert.That(zones.AtWar("PDV", "TSF"), Is.True, "War is mutual.");
+            Assert.That(zones.AtWar("TSF", "RedSailCorsairs"), Is.True);
+            Assert.That(zones.AtWar("RedSailCorsairs", "TSF"), Is.True, "War is mutual.");
+            Assert.That(zones.AtWar("TSF", "PDV"), Is.False, "The ceasefire holds until war is declared.");
+            Assert.That(zones.UnderCeasefire("PDV", "TSF"), Is.True);
+            Assert.That(zones.UnderCeasefire("TSF", "USSP"), Is.False);
             Assert.That(zones.AtWar("TSF", "USSP"), Is.False);
             Assert.That(zones.AtWar("TSF", string.Empty), Is.False, "The unaffiliated are nobody's enemy.");
 
@@ -647,11 +657,20 @@ public sealed partial class WFEncounterTest : InteractionTest
         await Server.WaitAssertion(() =>
         {
             var state = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["patrol"];
-            Assert.That(state.Engaged.Contains(intruder), Is.True, "A PDV ship inside the ring is an enemy.");
+            Assert.That(state.Engaged, Is.Empty, "Under the ceasefire a PDV ship inside the ring is not fired on.");
+            Server.System<Content.Server._Mono.AlertLevel.WarLevelSystem>().SetLevel(true);
+            Assert.That(Server.System<WFEncounterZoneSystem>().AtWar("PDV", "TSF"), Is.True, "A declared war is mutual.");
+        });
+        await RunTicks(150);
+        await Server.WaitAssertion(() =>
+        {
+            var state = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["patrol"];
+            Assert.That(state.Engaged.Contains(intruder), Is.True, "Once war is declared a PDV ship inside the ring is an enemy.");
             Assert.That(Server.System<WFCrewAlertSystem>().GetHostileShips(patrol, state.Group), Does.Contain(intruder));
             Server.System<SharedTransformSystem>().SetCoordinates(SEntMan.GetEntity(Player), new EntityCoordinates(MapData.MapUid, Vector2.Zero));
             Server.System<WFEncounterSystem>().End(encounter);
             SEntMan.DeleteEntity(intruder);
+            SEntMan.DeleteEntity(host);
         });
         await RunTicks(10);
     }

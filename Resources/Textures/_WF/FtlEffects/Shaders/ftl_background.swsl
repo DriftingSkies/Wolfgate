@@ -1,4 +1,5 @@
 light_mode unshaded;
+blend_mode none;
 
 uniform sampler2D background;
 

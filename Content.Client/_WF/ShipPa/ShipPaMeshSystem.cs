@@ -1,3 +1,4 @@
+using Content.Client._WF.Shuttles.Systems;
 using System.Numerics;
 using Content.Shared._WF.ShipPa;
 using Robust.Client.Audio;
@@ -26,6 +27,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
 {
     [Dependency] private IReplayPlaybackManager _replay = default!;
     [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private ShuttleCameraListenerSystem _listener = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IResourceCache _resources = default!;
@@ -161,7 +163,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
             || !xform.Anchored || xform.GridUid != candidate.Grid || TerminatingOrDeleted(candidate.Speaker))
             return false;
 
-        var listener = _audio.GetListenerCoordinates();
+        var listener = _listener.GetListener();
         return xform.MapID == listener.MapId
                && (_xform.GetWorldPosition(candidate.Speaker) - listener.Position).Length() < speaker.Range;
     }
@@ -170,7 +172,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
     {
         Candidate? best = null;
         Candidate? current = null;
-        var listener = _audio.GetListenerCoordinates();
+        var listener = _listener.GetListener();
         var query = EntityQueryEnumerator<ShipPaSpeakerComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var speaker, out var xform))
         {
@@ -220,7 +222,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
         EntityUid? grid = null;
         if (TryComp(_players.LocalEntity, out TransformComponent? playerTransform))
             grid = playerTransform.GridUid;
-        else if (_maps.TryFindGridAt(_audio.GetListenerCoordinates(), out var eyeGrid, out _))
+        else if (_maps.TryFindGridAt(_listener.GetListener(), out var eyeGrid, out _))
             grid = eyeGrid;
 
         if (_subtitleGrid != grid)
@@ -338,7 +340,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
             return;
         }
 
-        var listener = _audio.GetListenerCoordinates();
+        var listener = _listener.GetListener();
         var delta = _xform.GetWorldPosition(voice.Speaker) - listener.Position;
         var distance = delta.Length();
         if (xform.MapID != listener.MapId || distance >= speaker.Range || !speaker.Enabled)

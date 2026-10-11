@@ -5043,3 +5043,13 @@ As there, nitrous oxide still puts a thaven to sleep.
 `WolfmedAirlossRecoveryTest` stands every species a player can pick in station air for a minute: none takes
 suffocation damage, and each sheds what it was given. Before these changes it names the thaven, the shadekin and the
 Proto shadekin.
+
+## Necrotic torso and head (2026-10-10)
+
+Dead tissue had one exit, amputation, and a torso or a head cannot come off: a necrotic chest kept the patient septic
+for good. `WFSurgeryRemoveNecroticFlesh` (open incision, scalpel, skin graft, cautery) lists on a necrotic torso or
+head only; a dead limb is still an amputation. The scalpel only marks the part (`WolfmedNecrosisExcisedComponent`);
+the graft step calls `WolfmedNecrosisSystem.RemoveNecrosis`, so closing up after the cut alone cures nothing: the
+necrosis wound goes, the part is alive again, and a risk still on the part (charring, a deep freeze) restarts its clock. The part's own
+infection is left at the top and recovers by itself or with spaceacillin. The pod does it from the base program,
+before organ repair. `WolfmedNecrosisSurgeryTest`.

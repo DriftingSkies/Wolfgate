@@ -12,3 +12,8 @@
   id: WFFtlBackground
   kind: source
   path: "/Textures/_WF/FtlEffects/Shaders/ftl_background.swsl"
+
+- type: shader
+  id: WFFtlCopy
+  kind: source
+  path: "/Textures/_WF/FtlEffects/Shaders/ftl_copy.swsl"

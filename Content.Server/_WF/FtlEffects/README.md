@@ -15,6 +15,8 @@ Outside observers see a 0.24-second accelerating launch and a rapid braking arri
 reprojects the already-rendered hull over the space saved by `FtlMotionBackgroundOverlay`; it never changes
 entity transforms or collision bodies. Its mask covers occupied tiles and their wall sprites, preserving gaps between wings.
 This only reproduces hull pixels present in the viewport; it cannot invent an offscreen portion of the ship.
+The saved space is an exact, unlit copy (`WFFtlCopy`): lighting is live while the layers below the world draw,
+so a default-shader copy comes out dimmed by the light map and shows as a dark patch where the hull was.
 Crew aboard keep a steady camera and see the cone. The shader bends scene pixels throughout the cone.
 
 Grids are not predicted, so the client times every effect on the server state it is showing
@@ -73,6 +75,7 @@ are needed. `FtlConeGeometryTest`, `FtlDepartureTimingTest` and `FtlDepartureTes
 ### Textures
 
 - [`Resources/Textures/_WF/FtlEffects/Shaders/ftl_background.swsl`](../../../Resources/Textures/_WF/FtlEffects/Shaders/ftl_background.swsl)
+- [`Resources/Textures/_WF/FtlEffects/Shaders/ftl_copy.swsl`](../../../Resources/Textures/_WF/FtlEffects/Shaders/ftl_copy.swsl)
 - [`Resources/Textures/_WF/FtlEffects/Shaders/ftl_departure.swsl`](../../../Resources/Textures/_WF/FtlEffects/Shaders/ftl_departure.swsl)
 - [`Resources/Textures/_WF/FtlEffects/Shaders/ftl_motion.swsl`](../../../Resources/Textures/_WF/FtlEffects/Shaders/ftl_motion.swsl)
 

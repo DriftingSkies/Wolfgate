@@ -662,6 +662,7 @@
   cost: 3
   weight: 2
   minPlayers: 3
+  requiresWar: true
   cooldown: 2700
   duration: 2700
   startRadius: 2000
@@ -1437,6 +1438,7 @@
   cost: 2
   weight: 0.75
   minPlayers: 3
+  requiresWar: true
   startRadius: 1800
   cooldown: 3000
   duration: 1800
@@ -1839,6 +1841,7 @@
   cost: 3
   weight: 0.35
   minPlayers: 6
+  requiresWar: true
   startRadius: 1800
   cooldown: 3600
   duration: 1800
@@ -2366,6 +2369,7 @@
   cost: 4
   weight: 0.8
   minPlayers: 6
+  requiresWar: true
   cooldown: 3600
   duration: 3000
   startRadius: 2500
@@ -3223,6 +3227,7 @@
   cost: 6
   weight: 0.4
   minPlayers: 9
+  requiresWar: true
   cooldown: 5400
   duration: 3600
   startRadius: 2500

@@ -117,7 +117,11 @@
     modifiers:
       coefficients:
         Heat: 0.90
-        Radiation: 0.1
+        Radiation: 0.05 # WOLFGATE: radiation suit blocks more radiation (was 0.1)
+  # WOLFGATE START: vend price for the EngiVend, instead of its scrap value
+  - type: StaticPrice
+    vendPrice: 500
+  # WOLFGATE END
   - type: Clothing
     sprite: Clothing/OuterClothing/Suits/rad.rsi
   - type: GroupExamine

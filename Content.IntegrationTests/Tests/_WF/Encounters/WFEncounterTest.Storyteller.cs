@@ -557,13 +557,20 @@ public sealed partial class WFEncounterTest
         await RunTicks(10);
     }
 
-    /// <summary>An encounter ship inside another's zone, of a company that zone minds, makes enemies of the two.</summary>
+    /// <summary>
+    /// An encounter ship inside another's zone, of a company that zone minds, makes enemies of the two. The two navies
+    /// leave each other alone until war has been declared.
+    /// </summary>
     [Test]
     public async Task EncounterShipsInEachOthersZonesTurnHostile()
     {
-        EntityUid first = default, second = default;
+        EntityUid first = default, second = default, host = default;
         await Server.WaitAssertion(() =>
         {
+            // The war level lives on the sector service entity, which a station's host component brings up.
+            host = SEntMan.SpawnEntity(null, MapCoordinates.Nullspace);
+            SEntMan.AddComponent<Content.Server._NF.SectorServices.StationSectorServiceHostComponent>(host);
+
             var system = Server.System<WFEncounterSystem>();
             var prototypes = Server.ResolveDependency<IPrototypeManager>();
             Assert.That(system.TrySpawn(prototypes.Index<WFEncounterPrototype>("WFTestStoryIff"), new MapCoordinates(new Vector2(37000, 37000), MapData.MapId), out first), Is.True);
@@ -575,10 +582,21 @@ public sealed partial class WFEncounterTest
             var alerts = Server.System<WFCrewAlertSystem>();
             var patrol = SEntMan.GetComponent<WFEncounterComponent>(first).Ships["patrol"];
             var rival = SEntMan.GetComponent<WFEncounterComponent>(second).Ships["rival"];
-            Assert.That(alerts.GetHostileShips(patrol.Grid, patrol.Group), Does.Contain(rival.Grid), "The patrol takes the enemy ship in its zone for a threat.");
+            Assert.That(alerts.GetHostileShips(patrol.Grid, patrol.Group), Is.Empty, "Under the ceasefire the patrol lets the other navy's ship be.");
+            Assert.That(alerts.GetHostileShips(rival.Grid, rival.Group), Is.Empty, "And is let be in turn.");
+            Server.System<Content.Server._Mono.AlertLevel.WarLevelSystem>().SetLevel(true);
+        });
+        await RunTicks(150);
+        await Server.WaitAssertion(() =>
+        {
+            var alerts = Server.System<WFCrewAlertSystem>();
+            var patrol = SEntMan.GetComponent<WFEncounterComponent>(first).Ships["patrol"];
+            var rival = SEntMan.GetComponent<WFEncounterComponent>(second).Ships["rival"];
+            Assert.That(alerts.GetHostileShips(patrol.Grid, patrol.Group), Does.Contain(rival.Grid), "Once war is declared the patrol takes the enemy ship in its zone for a threat.");
             Assert.That(alerts.GetHostileShips(rival.Grid, rival.Group), Does.Contain(patrol.Grid), "And is one to it in turn.");
             Server.System<WFEncounterSystem>().End(first);
             Server.System<WFEncounterSystem>().End(second);
+            SEntMan.DeleteEntity(host);
         });
         await RunTicks(10);
     }

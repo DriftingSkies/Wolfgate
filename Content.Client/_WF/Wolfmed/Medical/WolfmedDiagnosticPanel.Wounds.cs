@@ -823,7 +823,7 @@ public sealed partial class WolfmedDiagnosticPanel
                 mech));
         }
 
-        // W5: dead tissue outranks everything else on the part; nothing but amputation clears it.
+        // W5: dead tissue outranks everything else on the part; only amputation or surgery clears it.
         if (diagnostic.Necrotic)
         {
             chips.Add(CreateChip(part, "necrosis", WolfmedWoundStyle.Necrosis, null,

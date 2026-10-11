@@ -90,6 +90,7 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
 - [`Content.IntegrationTests/Tests/_WF/Genitals/ArousalTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ArousalTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/ConsentMindReentryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ConsentMindReentryTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalAnchorLayerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalAnchorLayerTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalAutosurgeonTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalAutosurgeonTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalCloningPolymorphTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalCloningPolymorphTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalConsentGateTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalConsentGateTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalCoverageTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalCoverageTest.cs)
@@ -317,6 +318,7 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
 - [`Content.Shared/_Common/Consent/SharedConsentSystem.cs`](../../../Content.Shared/_Common/Consent/SharedConsentSystem.cs): consent system, ported from HardLight
 - [`Content.Shared/_Shitmed/Humanoid/Events/ProfileLoadFinishedEvent.cs`](../../../Content.Shared/_Shitmed/Humanoid/Events/ProfileLoadFinishedEvent.cs): lets anatomy read the loaded profile
 - [`Content.Shared/_Shitmed/Surgery/SharedSurgerySystem.cs`](../../../Content.Shared/_Shitmed/Surgery/SharedSurgerySystem.cs): let a surgery refuse a particular surgeon (adult content and patient consent)
+- [`Content.Shared/Body/Systems/SharedBodySystem.Organs.cs`](../../../Content.Shared/Body/Systems/SharedBodySystem.Organs.cs): an organ only attaches in its own slot, so an empty genital slot must not take it
 - [`Content.Shared/Humanoid/HumanoidVisualLayers.cs`](../../../Content.Shared/Humanoid/HumanoidVisualLayers.cs)
   - underwear and genital layers, ported from HardLight
   - split tail layers, ported from HardLight/Floof

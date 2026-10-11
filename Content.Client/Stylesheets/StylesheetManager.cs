@@ -29,13 +29,15 @@ namespace Content.Client.Stylesheets
             var currentTheme = WFLegacyPrototypeIds.Resolve(WFLegacyPrototypeIds.HudThemes, savedTheme);
             if (currentTheme != savedTheme)
                 _cfg.SetCVar(CVars.InterfaceTheme, currentTheme);
-            _cfg.OnValueChanged(WolfgateCVars.UiStyle, _ => ApplySkin(syncHudTheme: true));
-            ApplySkin(syncHudTheme: false);
+            // A player who never picked a HUD theme gets the one that pairs with their skin
+            _cfg.OverrideDefault(CVars.InterfaceTheme, WolfgateSkins.Get(_cfg.GetCVar(WolfgateCVars.UiStyle)).HudTheme);
+            _cfg.OnValueChanged(WolfgateCVars.UiStyle, _ => ApplySkin());
+            ApplySkin();
             // WOLFGATE END
         }
 
         // WOLFGATE(Stylesheets) START: rebuilds both sheets over the stock ones with the chosen skin and pushes them to every root
-        private void ApplySkin(bool syncHudTheme)
+        private void ApplySkin()
         {
             var skin = WolfgateSkins.Get(_cfg.GetCVar(WolfgateCVars.UiStyle));
             var wolfgate = new StyleWolfgate(_resourceCache, skin);
@@ -44,8 +46,6 @@ namespace Content.Client.Stylesheets
             _userInterfaceManager.Stylesheet = SheetNano;
 
             // Follow with the matching HUD theme unless the player picked a theme that is not one of ours
-            if (!syncHudTheme)
-                return;
             var theme = _cfg.GetCVar(CVars.InterfaceTheme);
             if (theme != skin.HudTheme && (theme == string.Empty || WolfgateSkins.All.Any(s => s.HudTheme == theme)))
                 _cfg.SetCVar(CVars.InterfaceTheme, skin.HudTheme);

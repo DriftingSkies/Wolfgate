@@ -1,5 +1,4 @@
 using System;
-using Content.Server._WF.Audio.InternetSound;
 using Content.Server.Administration.Logs;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
@@ -29,7 +28,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private ShipPaSystem _pa = default!;
-    [Dependency] private InternetSoundSystem _internetSound = default!;
+    [Dependency] private ShipPaPlaylistSystem _playlist = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
 
     /// <summary>Alarm loop key for the general quarters klaxon.</summary>
@@ -41,8 +40,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
 
         SubscribeLocalEvent<ShipAlertComponent, ComponentStartup>(OnAlertStartup);
 
-        // ShuttleConsoleSystem owns the open/close subscriptions for these consoles; only new message
-        // types may be added here.
+        // This is the sole helm-open subscription; other modules share its notification below.
         Subs.BuiEvents<ShuttleConsoleComponent>(ShuttleConsoleUiKey.Key, subs =>
         {
             subs.Event<BoundUIOpenedEvent>(OnConsoleOpened);
@@ -51,6 +49,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
             subs.Event<ShipPaAnnounceRequestMessage>(OnAnnounceRequest);
             subs.Event<ShipPaInternetSoundRequestMessage>(OnInternetSoundRequest);
             subs.Event<ShipPaInternetSoundStopMessage>(OnInternetSoundStop);
+            subs.Event<ShipPaPlaylistRequestMessage>(OnPlaylistRequest);
         });
     }
 
@@ -68,6 +67,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
     /// </summary>
     private void OnConsoleOpened(Entity<ShuttleConsoleComponent> ent, ref BoundUIOpenedEvent args)
     {
+        EntityManager.System<Content.Server.Shuttles.Systems.ShuttleConsoleSystem>().WfCockpitConsoleOpened(ent, args.Actor);
         if (GetConsoleGrid(ent) is not { } grid)
             return;
 
@@ -129,7 +129,8 @@ public sealed partial class ShipAlertSystem : EntitySystem
 
     /// <summary>
     /// Pilot pasted a link to play over the ship's own speakers. Everything about the link itself is the
-    /// sound system's problem; this only decides whether this ship is allowed to ask right now.
+    /// sound system's problem; this only decides whether this ship is allowed to ask right now. The link plays
+    /// at once if the ship is quiet and waits in the ship's queue otherwise.
     /// </summary>
     private void OnInternetSoundRequest(Entity<ShuttleConsoleComponent> ent, ref ShipPaInternetSoundRequestMessage args)
     {
@@ -148,7 +149,8 @@ public sealed partial class ShipAlertSystem : EntitySystem
         if (url.Length == 0 || url.Length > alert.MaxUrlLength)
             return;
 
-        if (_timing.CurTime < alert.NextInternetSound)
+        // The cooldown paces starting a track. Adding to a running queue is free of it; the queue has its own cap.
+        if (_playlist.IsIdle(grid) && _timing.CurTime < alert.NextInternetSound)
         {
             var seconds = (int) Math.Ceiling((alert.NextInternetSound - _timing.CurTime).TotalSeconds);
             _popup.PopupEntity(Loc.GetString("ship-pa-sound-cooldown", ("seconds", seconds)), ent, args.Actor);
@@ -158,32 +160,89 @@ public sealed partial class ShipAlertSystem : EntitySystem
         var requester = Name(args.Actor);
 
         _players.TryGetSessionByEntity(args.Actor, out var recipient);
-        if (!_internetSound.PlayOverPa(null, requester, url, grid, out var error, recipient))
+        if (!_playlist.TryAdd(grid, url, requester, recipient, out var position, out var error))
         {
             _popup.PopupEntity(error ?? Loc.GetString("ship-pa-sound-refused"), ent, args.Actor);
             return;
         }
 
-        alert.NextInternetSound = _timing.CurTime + TimeSpan.FromSeconds(_cfg.GetCVar(InternetSoundCVars.RequestCooldown));
-        _popup.PopupEntity(Loc.GetString("ship-pa-sound-queued"), ent, args.Actor);
+        if (position == 0)
+            alert.NextInternetSound = _timing.CurTime + TimeSpan.FromSeconds(_cfg.GetCVar(InternetSoundCVars.RequestCooldown));
+        _popup.PopupEntity(position == 0
+            ? Loc.GetString("ship-pa-sound-queued")
+            : Loc.GetString("ship-pa-playlist-added", ("position", position)), ent, args.Actor);
 
         // Players can put arbitrary audio on a ship, so this wants to be findable after the fact.
         var origin = GetSafeOrigin(url);
-        _adminLogger.Add(LogType.Action, LogImpact.High,
-            $"{ToPrettyString(args.Actor):player} queued internet sound {origin} on the PA of {ToPrettyString(grid):grid}");
+        if (position == 0)
+        {
+            _adminLogger.Add(LogType.Action, LogImpact.High,
+                $"{ToPrettyString(args.Actor):player} queued internet sound {origin} on the PA of {ToPrettyString(grid):grid}");
+        }
+        else
+        {
+            _adminLogger.Add(LogType.Action, LogImpact.High,
+                $"{ToPrettyString(args.Actor):player} added internet sound {origin} to place {position} of the PA playlist of {ToPrettyString(grid):grid}");
+        }
     }
 
     private void OnInternetSoundStop(Entity<ShuttleConsoleComponent> ent, ref ShipPaInternetSoundStopMessage args)
     {
-        if (GetConsoleGrid(ent) is not { } grid || !_internetSound.StopForGrid(grid))
+        if (GetConsoleGrid(ent) is not { } grid || !_playlist.Stop(grid))
             return;
 
-        // Cutting a track also releases its request slot, so the pilot can queue a replacement.
+        // Stopping also releases the request slot, so the pilot can queue a replacement.
         if (TryComp<ShipAlertComponent>(grid, out var alert))
             alert.NextInternetSound = TimeSpan.Zero;
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium,
-            $"{ToPrettyString(args.Actor):player} stopped the internet sound on the PA of {ToPrettyString(grid):grid}");
+            $"{ToPrettyString(args.Actor):player} stopped the internet sound and emptied the playlist on the PA of {ToPrettyString(grid):grid}");
+    }
+
+    /// <summary>
+    /// Skips the playing track, removes one waiting link or empties the queue. The ship's controls are the
+    /// pilot's to use, but the client only names things; what exists and what is allowed is decided here.
+    /// </summary>
+    private void OnPlaylistRequest(Entity<ShuttleConsoleComponent> ent, ref ShipPaPlaylistRequestMessage args)
+    {
+        if (GetConsoleGrid(ent) is not { } grid)
+            return;
+
+        switch (args.Action)
+        {
+            case ShipPaPlaylistAction.Skip:
+                switch (_playlist.Skip(grid, out var wait))
+                {
+                    case ShipPaSkipResult.TooSoon:
+                        var seconds = (int) Math.Ceiling(wait.TotalSeconds);
+                        _popup.PopupEntity(Loc.GetString("ship-pa-sound-cooldown", ("seconds", seconds)), ent, args.Actor);
+                        break;
+                    case ShipPaSkipResult.Skipped:
+                        _adminLogger.Add(LogType.Action, LogImpact.Low,
+                            $"{ToPrettyString(args.Actor):player} skipped the track on the PA of {ToPrettyString(grid):grid}");
+                        break;
+                }
+
+                break;
+
+            case ShipPaPlaylistAction.Remove:
+                if (_playlist.Remove(grid, args.Id))
+                {
+                    _adminLogger.Add(LogType.Action, LogImpact.Low,
+                        $"{ToPrettyString(args.Actor):player} removed a queued track from the PA playlist of {ToPrettyString(grid):grid}");
+                }
+
+                break;
+
+            case ShipPaPlaylistAction.Clear:
+                if (_playlist.ClearQueued(grid) > 0)
+                {
+                    _adminLogger.Add(LogType.Action, LogImpact.Low,
+                        $"{ToPrettyString(args.Actor):player} cleared the PA playlist of {ToPrettyString(grid):grid}");
+                }
+
+                break;
+        }
     }
 
     /// <summary>

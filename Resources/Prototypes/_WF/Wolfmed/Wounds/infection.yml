@@ -65,8 +65,8 @@
   necrosisSeverity: 60
 
 # Dead tissue. Like charring it carries no damage types, so nothing in a medkit and no amount of damage
-# removal reaches it - but unlike charring nothing takes it off either. The limb is finished: it works
-# badly, it keeps the patient septic, and the only exit is amputation and a replacement part.
+# removal reaches it. A dead limb is finished: it works badly, it keeps the patient septic, and the only exit is
+# amputation and a replacement part. A torso or head has it cut out instead (WFSurgeryRemoveNecroticFlesh).
 - type: wound
   id: WFWolfmedNecrosisWound
   name: wolfmed-wound-name-necrosis

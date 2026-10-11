@@ -166,6 +166,9 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
         {
             _ftlAngle -= Angle.FromDegrees(15f) * args.Delta.Y; // Mono Edit: Subtract instead of add to preserve clockwise rotation when scrolling up. (positive angles are actually counter-clockwise)
             _ftlAngle = _ftlAngle.Reduced();
+            // WOLFGATE(Cockpit): rotating an FTL destination must not also scroll its MFD page.
+            if (WfCockpitControls)
+                args.Handle();
             return;
         }
 
@@ -285,6 +288,7 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
 
         DrawStarSystem(handle, matty);
         DrawSectorTerritory(handle, matty); // WOLFGATE(SectorControl): faction territory fills, borders and legend on the sector map.
+        DrawDroneRings(handle, matty, viewedMapUid); // WOLFGATE(DroneRings): draw rings where drones start to spawn.
 
         // Draw our FTL range + no FTL zones
         // Do it up here because we want this layered below most things.

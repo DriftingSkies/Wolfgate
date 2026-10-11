@@ -2,14 +2,18 @@ using System.Numerics;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
 using Robust.Shared.Graphics;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client._WF.FtlEffects;
 
 /// <summary>Preserves the space behind a rushing hull before the world is drawn.</summary>
 public sealed partial class FtlMotionBackgroundOverlay : Overlay
 {
+    private static readonly ProtoId<ShaderPrototype> CopyShader = "WFFtlCopy";
     [Dependency] private IClyde _clyde = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     private readonly FtlDepartureSystem _system;
+    private readonly ShaderInstance _copy;
     private IRenderTexture? _background;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowWorld;
@@ -25,6 +29,7 @@ public sealed partial class FtlMotionBackgroundOverlay : Overlay
     {
         IoCManager.InjectDependencies(this);
         _system = system;
+        _copy = _prototypes.Index(CopyShader).Instance();
         ZIndex = int.MaxValue;
     }
 
@@ -38,7 +43,8 @@ public sealed partial class FtlMotionBackgroundOverlay : Overlay
     {
         if (ScreenTexture == null)
             return;
-        var size = Vector2i.ComponentMax(args.Viewport.Size, _background?.Size ?? Vector2i.Zero);
+        // Kept at the viewport's exact size so the copy is pixel for pixel.
+        var size = args.Viewport.Size;
         if (_background == null || _background.Size != size)
         {
             _background?.Dispose();
@@ -51,7 +57,7 @@ public sealed partial class FtlMotionBackgroundOverlay : Overlay
         handle.RenderInRenderTarget(target, () =>
         {
             handle.SetTransform(Matrix3x2.Identity);
-            handle.UseShader(null);
+            handle.UseShader(_copy);
             handle.DrawTextureRect(texture, UIBox2.FromDimensions(Vector2.Zero, size));
         }, Color.Transparent);
         ViewportId = args.Viewport.Id;

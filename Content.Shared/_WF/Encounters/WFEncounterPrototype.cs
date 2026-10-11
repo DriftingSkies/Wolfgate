@@ -118,6 +118,10 @@ public sealed partial class WFEncounterPrototype : IPrototype
     [DataField]
     public int MinPlayers;
 
+    /// <summary>Only scheduled once war has been declared: a clash between the navies has no place under the ceasefire.</summary>
+    [DataField]
+    public bool RequiresWar;
+
     /// <summary>Seconds before the scheduler may pick the same encounter again.</summary>
     [DataField]
     public float Cooldown = 1800f;

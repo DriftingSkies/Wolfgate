@@ -1385,3 +1385,134 @@ Entries:
   id: 100106
   time: '2026-10-10T00:57:39.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/204
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: You can now fix necrotic chests and heads with surgery.
+  id: 100107
+  time: '2026-10-10T21:53:18.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/208
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        TSF and PDV now start each round under a ceasefire. Check your PDA for
+        the war level!
+    - type: Add
+      message: >-
+        War declarators can call a war off as well as start one. Both sides have
+        to agree either way.
+    - type: Add
+      message: >-
+        Conflict Rule 5 (declaring war) and a PDV standing orders page in the
+        guidebook.
+    - type: Tweak
+      message: >-
+        Faction vs faction needs an RP reason and escalation while the war level
+        is COLD.
+    - type: Tweak
+      message: >-
+        TSF and PDV NPC patrols warn the other faction's ships during the
+        ceasefire and only fire if fired on.
+    - type: Tweak
+      message: The default round is now called Standoff.
+    - type: Tweak
+      message: >-
+        Event POIs and Monolithic Fragments are conflict zones during the
+        ceasefire. TSF and PDV can fight there, but can't chase each other once
+        they leave.
+    - type: Tweak
+      message: >-
+        Event POIs and Monolithic Fragments are conflict zones during the
+        ceasefire. TSF and PDV can fight there, but can't chase each other once
+        they leave.
+  id: 100108
+  time: '2026-10-10T23:06:11.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/205
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Radsuits are now in engivends.
+    - type: Tweak
+      message: Radsuits now protect 97.5% of rads.
+  id: 100109
+  time: '2026-10-11T00:25:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/210
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Drone zones are now visibly marked on the mass scanner.
+  id: 100110
+  time: '2026-10-11T06:14:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/213
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: NPC's no longer show on the crew monitor
+    - type: Tweak
+      message: NPC friendly fire is more lenient
+    - type: Tweak
+      message: NPC Combat zones are now merged
+  id: 100111
+  time: '2026-10-11T08:16:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/209
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Autosurgeons no longer replace your balls.
+    - type: Add
+      message: >-
+        Ventilators! A stand with a gas tank that breathes for a patient whose
+        lungs are gone or failing. Sold as a flatpack wherever IV drips are.
+    - type: Tweak
+      message: A sealed autodoc now breathes for its patient.
+    - type: Tweak
+      message: >-
+        The health analyzer tells you what to do first for a patient with no
+        lungs.
+  id: 100112
+  time: '2026-10-11T08:57:21.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/212
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Chat now has filterable chats and a popout feature.
+  id: 100113
+  time: '2026-10-11T09:28:23.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/216
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: You can finally bind middle click to things.
+  id: 100114
+  time: '2026-10-11T09:37:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/217
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Cockpit view and refactored gunnery and pilot controls.
+    - type: Add
+      message: Auto flare dispense system.
+    - type: Add
+      message: Gun grouping system.
+    - type: Add
+      message: Hull and fuel gauges for ships.
+    - type: Add
+      message: Ship PA playlist, queue up songs!
+    - type: Add
+      message: The FTL page now warns you when the ship has no FTL drive.
+    - type: Tweak
+      message: >-
+        Flare launchers are fired with DISPENSE or AUTO instead of being aimed
+        from the weapon list.
+    - type: Tweak
+      message: Flares can now pull a missile lock off your ship.
+    - type: Tweak
+      message: The external pilot view pans with right mouse.
+    - type: Tweak
+      message: Retro is now the default UI style.
+    - type: Tweak
+      message: The autopilot warning is quieter.
+  id: 100115
+  time: '2026-10-11T10:10:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/202

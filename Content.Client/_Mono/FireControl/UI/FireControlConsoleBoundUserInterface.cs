@@ -24,6 +24,7 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
         _window = this.CreateWindow<FireControlWindow>();
 
         _window.OnServerRefresh += OnRefreshServer;
+        _window.CombatMessage += SendMessage; // WOLFGATE(CombatConsole): send group and flare commands through the console UI.
 
         _window.Radar.OnRadarClick += (coords) =>
         {

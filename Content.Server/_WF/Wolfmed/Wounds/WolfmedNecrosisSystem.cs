@@ -17,8 +17,9 @@ namespace Content.Server._WF.Wolfmed.Wounds;
 
 /// <summary>Tissue death from a forgotten tourniquet, a deep burn or freeze, or a limb reattached late.</summary>
 // All three accumulate on WolfmedNecrosisComponent on the part and end the same way: a WFWolfmedNecrosisWound that
-// nothing treats, a limb that no longer works properly and a standing source of infection (INFECTION: the part is
+// no item treats, a limb that no longer works properly and a standing source of infection (INFECTION: the part is
 // pinned at the top and infects the part it hangs off, towards the torso), until the part is amputated and replaced.
+// A torso or a head cannot come off, so there the dead tissue is cut out in surgery (RemoveNecrosis).
 /// <remarks>
 /// The patient gets one warning popup before it happens, and the analyzer flags the part from the moment
 /// the clock starts. <see cref="Update"/> advances by whatever time has accumulated so a test can hand it
@@ -284,6 +285,36 @@ public sealed class WolfmedNecrosisSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString("wolfmed-necrosis-dead"), body, body, PopupType.LargeCaution);
 
         return wound;
+    }
+
+    /// <summary>
+    /// Cuts the dead tissue out: the necrosis wound goes and the part is alive again. Whatever was killing it and is
+    /// still there restarts the clock, and the infection it seeded is left to antibiotics.
+    /// </summary>
+    public bool RemoveNecrosis(EntityUid part)
+    {
+        if (TerminatingOrDeleted(part) || !TryComp(part, out WolfmedNecrosisComponent? necrosis) || !necrosis.Necrotic)
+            return false;
+
+        necrosis.Necrotic = false;
+        necrosis.Progress = 0f;
+        necrosis.Onset = TimeSpan.Zero;
+        necrosis.Warned = false;
+        Dirty(part, necrosis);
+
+        // Each removal re-reads the part's wounds (OnWoundLifecycle), which is what restarts a clock still owed.
+        var dead = _infection.Profile.NecrosisWound;
+        foreach (var wound in _wounds.GetWounds(part).ToArray())
+        {
+            if (wound.Comp.Prototype == dead)
+                _wounds.RemoveWound(wound.Owner);
+        }
+
+        if (TryComp(part, out necrosis) && necrosis.Onset <= TimeSpan.Zero && necrosis.DetachedAt == null)
+            RemComp<WolfmedNecrosisComponent>(part);
+
+        _degradation.Refresh(CompOrNull<BodyPartComponent>(part)?.Body ?? part);
+        return true;
     }
 
     /// <summary>
