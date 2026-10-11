@@ -19,8 +19,9 @@ traders stop calling there.
 The sector map shows only the sector: held and contested cells, the stations by name (hidden ones never sent), the
 encounter ships as their radar glyphs and the player's own ship, from 1.5 km to 60 km either side of centre. The wheel
 zooms about the cursor, left-drag pans, a double-click centres on your ship, and hovering names the cell and who holds
-it. Players open it from "Sector map" in the game menu, the `wf_sectormap` command or the SECTOR mode of a shuttle
-console (`WFSectorMapControl`, `WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
+it. Everyone, ghosts included, opens it from the top-bar button beside the guidebook or its key (N, rebindable), "Sector map"
+in the game menu, the `wf_sectormap` command or the SECTOR mode of a shuttle console (`WFSectorMapControl`,
+`WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
 
 Drivers use `WFSectorTerritorySystem` (`CellOf`, `Centre`, `Owner`, `TryClaim`, `Contest`, `Release`, `Free`,
 `Held`, `Frontier`, `Sources`, `StationsIn`, `CanClaim`), `WFSectorActivitySystem` (`LastActivity`, `IsQuiet`,
@@ -90,13 +91,19 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 
 - [`Resources/Locale/en-US/_WF/SectorControl/sectorcontrol.ftl`](../../../Resources/Locale/en-US/_WF/SectorControl/sectorcontrol.ftl)
 
+### Textures
+
+- [`Resources/Textures/_WF/SectorControl/menu.rsi/`](../../../Resources/Textures/_WF/SectorControl/menu.rsi/)
+
 ### Docs
 
 - [`Docs/_WF/SectorControl/design.md`](../../../Docs/_WF/SectorControl/design.md)
 
 ## Non-modular edits
 
+- [`Content.Client/Input/ContentContexts.cs`](../../../Content.Client/Input/ContentContexts.cs): sector map
 - [`Content.Client/Options/UI/EscapeMenu.xaml`](../../../Content.Client/Options/UI/EscapeMenu.xaml): sector map entry under the roadmap
+- [`Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs): sector map
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml)
   - xmlns:sector for the sector map mode
   - sector map mode button
@@ -110,6 +117,10 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 - [`Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs): faction territory fills, borders and legend on the sector map.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): faction territory borders beneath radar contacts.
 - [`Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs`](../../../Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs): sector map entry in the game menu
+- [`Content.Client/UserInterface/Systems/MenuBar/GameTopMenuBarUIController.cs`](../../../Content.Client/UserInterface/Systems/MenuBar/GameTopMenuBarUIController.cs): sector map button
+- [`Content.Client/UserInterface/Systems/MenuBar/Widgets/GameTopMenuBar.xaml`](../../../Content.Client/UserInterface/Systems/MenuBar/Widgets/GameTopMenuBar.xaml): sector map button beside the guidebook; its icon is set in code from menu.rsi
+- [`Content.Shared/Input/ContentKeyFunctions.cs`](../../../Content.Shared/Input/ContentKeyFunctions.cs): sector map
 - [`Resources/clientCommandPerms.yml`](../../../Resources/clientCommandPerms.yml): client-only command that opens the sector map window
+- [`Resources/keybinds.yml`](../../../Resources/keybinds.yml): sector map key
 
 <!-- WOLFGATE-GENERATED END -->

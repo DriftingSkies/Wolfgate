@@ -2,6 +2,7 @@ using System.Numerics;
 using Content.Client._WF.Encounters;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.SectorControl;
+using Content.Shared.Ghost;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
@@ -136,7 +137,7 @@ public sealed class WFSectorMapControl : Control
             _fitted = MapId.Nullspace;
     }
 
-    /// <summary>Centres the view on the player's own grid, or on the player when they are not aboard one; false if neither is on the map shown.</summary>
+    /// <summary>Centres the view on the player's own grid, or on the player when they are not aboard one (a ghost always); false if neither is on the map shown.</summary>
     public bool CentreOnPlayer()
     {
         if (!TryGetView(out var view))
@@ -192,12 +193,13 @@ public sealed class WFSectorMapControl : Control
         return Loc.GetString("wf-sector-map-hover-open", ("callsign", callsign));
     }
 
-    /// <summary>Where the player's own grid is on a map and which way it faces, when the player is aboard one there.</summary>
+    /// <summary>Where the player's own grid is on a map and which way it faces, when the player is aboard one there; a ghost is never aboard, even over a grid.</summary>
     public bool TryGetOwnShip(MapId map, out Vector2 position, out Angle heading)
     {
         position = default;
         heading = default;
         if (_player.LocalEntity is not { } player
+            || _entManager.HasComponent<GhostComponent>(player)
             || !_entManager.TryGetComponent(player, out TransformComponent? xform)
             || xform.GridUid is not { } grid
             || !_entManager.TryGetComponent(grid, out TransformComponent? gridXform)
@@ -486,7 +488,10 @@ public sealed class WFSectorMapControl : Control
     private void DrawOwnShip(DrawingHandleScreen handle, MapId map, in Matrix3x2 worldToView)
     {
         if (!TryGetOwnShip(map, out var position, out var heading))
+        {
+            DrawGhost(handle, map, worldToView);
             return;
+        }
 
         var point = Vector2.Transform(position, worldToView);
         var forward = heading.RotateVec(new Vector2(0f, 1f));
@@ -501,6 +506,22 @@ public sealed class WFSectorMapControl : Control
         handle.DrawLine(_triangle[0], _triangle[1], outline);
         handle.DrawLine(_triangle[1], _triangle[2], outline);
         handle.DrawLine(_triangle[2], _triangle[0], outline);
+    }
+
+    /// <summary>A small white ring where the player's ghost is on a map.</summary>
+    private void DrawGhost(DrawingHandleScreen handle, MapId map, in Matrix3x2 worldToView)
+    {
+        if (_player.LocalEntity is not { } player
+            || !_entManager.HasComponent<GhostComponent>(player)
+            || !_entManager.TryGetComponent(player, out TransformComponent? xform)
+            || xform.MapID != map)
+        {
+            return;
+        }
+
+        var point = Vector2.Transform(_entManager.System<SharedTransformSystem>().GetWorldPosition(xform), worldToView);
+        handle.DrawCircle(point, 5f * UIScale, Color.Black.WithAlpha(0.8f), false);
+        handle.DrawCircle(point, 4f * UIScale, Color.White, false);
     }
 
     /// <summary>The cell under the cursor, its callsign and who holds it, beside the cursor.</summary>

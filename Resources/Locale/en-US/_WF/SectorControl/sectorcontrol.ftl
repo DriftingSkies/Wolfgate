@@ -3,8 +3,10 @@ sector-control-notice-sender = Sector Watch
 sector-control-notice-entered = WARNING: entering {$faction} controlled space ({$callsign}).
 sector-control-notice-left = Leaving {$faction} controlled space. Now in open space at {$callsign}.
 
-# Sector map: the game menu entry, its window and the shuttle console mode
+# Sector map: the top-bar button and key, the game menu entry, its window and the shuttle console mode
 wf-sector-map-button = Sector map
+wf-sector-map-button-tooltip = Open the sector map.
+ui-options-function-open-sector-map = Open sector map
 wf-sector-map-window-title = Sector map
 wf-sector-map-mode = SECTOR
 wf-sector-map-centre-on-me = Centre on me

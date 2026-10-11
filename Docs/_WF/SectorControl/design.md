@@ -79,10 +79,11 @@ centre) * scale` with Y flipped about the midpoint), the stations as dots with n
 already printed is left out), every encounter ship as its radar glyph and colour (strongholds fly the flag), the
 player's grid as a white triangle along its heading, and at the cursor the cell's callsign and owner ("open space", or
 "contested by X, m:ss"). With no view of the map it shows only "No territory data". `WFSectorMapPanel` puts it over a
-bar with "Centre on me", "Whole sector" and the scale. It opens three ways: `WFSectorMapWindow` (resizable, 900x700)
-from "Sector map" in the game menu or the client command `wf_sectormap`, both through `WFSectorMapUIController`, which
-follow the player's map (or any map the client has); and the SECTOR mode of the shuttle console, which follows the
-console's map.
+bar with "Centre on me", "Whole sector" and the scale. It opens several ways: `WFSectorMapWindow` (resizable, 900x700)
+from the top-bar button beside the guidebook or its key (`OpenSectorMap`, N by default, rebindable), "Sector map" in the game
+menu or the client command `wf_sectormap`, all through `WFSectorMapUIController`, for every player, ghosts included
+(a ghost is never "aboard" a ship, so "Centre on me" centres on the ghost and a white ring marks it); the window follows
+the player's map (or any map the client has). The SECTOR mode of the shuttle console follows the console's map.
 
 **Admin.** `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest <faction> <q> <r> <minutes> | clear
 [faction] | callsign <x> <y>` (`LocalizedEntityCommands`, `AdminFlags.Admin`).
@@ -116,13 +117,15 @@ after being switched off or resized, so drivers can claim what they still hold a
 - Tests: `Content.Tests/_WF/SectorControl/WFSectorHexTest.cs`; `Content.IntegrationTests/Tests/_WF/SectorControl/`
   (claims and sources, protection veto, activity with the station and moved rules, contest deadline, sync event,
   notices in chat with and without a PA speaker, a leave told inside the cooldown, landmarks on the client, the map
-  window's layout, fit and zoom, the console's sector mode).
+  window's layout, fit and zoom, the console's sector mode, the top-bar button and key, a ghost's sync and centring).
 
 Upstream edits, each one marked line: `Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs` after
 `DrawStarSystem(handle, matty);` and `Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs` after the `DrawWfTerrain`
 line. The sector map adds marked hooks in `ShuttleConsoleWindow.xaml` (the SECTOR button, the panel and its xmlns) and
 `ShuttleConsoleWindow.xaml.cs` (the mode enum value, its init, show, hide and state calls), the game menu entry in
-`EscapeMenu.xaml` and `EscapeUIController.cs`, and `wf_sectormap` in `Resources/clientCommandPerms.yml` so every
+`EscapeMenu.xaml` and `EscapeUIController.cs`, the top-bar button and key (`GameTopMenuBar.xaml`,
+`GameTopMenuBarUIController.cs`, `ContentKeyFunctions.cs`, `ContentContexts.cs`, `KeyRebindTab.xaml.cs`, `keybinds.yml`;
+icon `Resources/Textures/_WF/SectorControl/menu.rsi`, set in code), and `wf_sectormap` in `Resources/clientCommandPerms.yml` so every
 player may run it. Edits inside `_WF/Encounters` (same fork, no markers): `WFEncounterStationsEvent` raised in the scheduler's
 `Stations()` so blockaded stations drop out of freight circuits.
 

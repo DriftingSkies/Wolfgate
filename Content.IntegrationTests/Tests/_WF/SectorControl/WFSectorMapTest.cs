@@ -5,9 +5,19 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Content.Client._WF.SectorControl;
 using Content.Client.Shuttles.UI;
+using Content.Client.UserInterface.Controls;
+using Content.Client.UserInterface.Systems.MenuBar.Widgets;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Shared._WF.SectorControl;
+using Content.Shared.Ghost;
+using Content.Shared.Input;
+using Content.Shared.Mind;
+using Content.Shared.Players;
+using Robust.Client.Input;
 using Robust.Client.UserInterface;
+using Robust.Shared.GameObjects;
+using Robust.Shared.Input;
+using Robust.Shared.Map;
 using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WF.SectorControl;
@@ -139,5 +149,128 @@ public sealed class WFSectorMapTest : WFSectorTestBase
             console.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Nav);
             Assert.That(panel.Visible, Is.False);
         });
+    }
+
+    /// <summary>The top bar has a sector map button with an icon, a tooltip and the key; clicking it, the key and the command all open and close the window, and the button stays pressed while the window is open.</summary>
+    [Test]
+    public async Task TopBarButtonAndKeyToggleTheWindow()
+    {
+        var controller = UiMan.GetUIController<WFSectorMapUIController>();
+        var bar = GetWidget<GameTopMenuBar>();
+        var button = GetControlFromField<MenuButton>("SectorMapButton", bar);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(button.Visible, Is.True);
+            Assert.That(button.Icon, Is.Not.Null, "The icon comes from menu.rsi.");
+            Assert.That(button.ToolTip, Is.EqualTo("Open the sector map."));
+            Assert.That(button.BoundKey, Is.EqualTo(ContentKeyFunctions.OpenSectorMap));
+            Assert.That(button.Pressed, Is.False);
+            Assert.That(controller.Window, Is.Null);
+
+            // Every context a player can be in, ghosts included, has the key; N is bound by default.
+            foreach (var context in new[] { "common", "human", "ghost", "aghost" })
+            {
+                Assert.That(InputManager.Contexts.GetContext(context).FunctionExistsHierarchy(ContentKeyFunctions.OpenSectorMap), Is.True, context);
+            }
+
+            Assert.That(InputManager.AllBindings.Any(binding => binding.Function == ContentKeyFunctions.OpenSectorMap && binding.BaseKey == Keyboard.Key.N),
+                Is.True, "N opens the sector map by default.");
+        });
+
+        await ClickControl(button);
+        Assert.That(controller.Window, Is.Not.Null, "Clicking the button opens the window.");
+        Assert.That(button.Pressed, Is.True);
+
+        await ClickControl(button);
+        Assert.That(controller.Window, Is.Null, "Clicking it again closes the window.");
+        Assert.That(button.Pressed, Is.False);
+
+        await PressClientKey(ContentKeyFunctions.OpenSectorMap);
+        Assert.That(controller.Window, Is.Not.Null, "The key opens the window.");
+        Assert.That(button.Pressed, Is.True, "The button follows the window.");
+
+        await PressClientKey(ContentKeyFunctions.OpenSectorMap);
+        Assert.That(controller.Window, Is.Null, "The key closes it.");
+        Assert.That(button.Pressed, Is.False);
+
+        await Client.WaitPost(() => controller.OpenWindow());
+        Assert.That(button.Pressed, Is.True, "A window opened another way presses the button.");
+        await Client.WaitPost(() => controller.Window!.Close());
+        Assert.That(controller.Window, Is.Null);
+        Assert.That(button.Pressed, Is.False, "Closing the window lets the button up.");
+    }
+
+    /// <summary>A ghost is sent the sector map when it attaches, with no claim and no earlier broadcast, and the window centres on the ghost, over open space or over a grid.</summary>
+    [Test]
+    public async Task GhostGetsTheSectorMapAndCentresOnItself()
+    {
+        await StartRound();
+        var station = EntityUid.Invalid;
+        await Server.WaitAssertion(() =>
+        {
+            station = SpawnStation(Outpost, "Test Outpost");
+            SpawnStation(Depot, "Test Depot");
+        });
+
+        await RunTicks(30);
+        await Client.WaitAssertion(() =>
+            Assert.That(Client.System<WFSectorClientSystem>().TryGetMap(MapData.MapId, out _), Is.False, "Nothing has been sent yet."));
+
+        var open = new Vector2(6000f, 2500f);
+        var ghost = EntityUid.Invalid;
+        var netGhost = NetEntity.Invalid;
+        await Server.WaitPost(() =>
+        {
+            var minds = SEntMan.System<SharedMindSystem>();
+            minds.WipeMind(ServerSession.ContentData()?.Mind);
+            ghost = SEntMan.SpawnEntity("MobObserver", new EntityCoordinates(MapData.MapUid, open));
+            netGhost = SEntMan.GetNetEntity(ghost);
+            minds.TransferTo(minds.CreateMind(ServerSession.UserId).Owner, ghost);
+        });
+
+        await RunTicks(30);
+        Assert.That(ServerSession.AttachedEntity, Is.EqualTo(ghost), "The player is the ghost.");
+        var controller = UiMan.GetUIController<WFSectorMapUIController>();
+        await Client.WaitPost(() => controller.OpenWindow());
+        await RunTicks(10);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(CEntMan.HasComponent<GhostComponent>(CEntMan.GetEntity(netGhost)), Is.True);
+            var map = controller.Window!.Panel.MapControl;
+            Assert.That(map.TryGetView(out var view), Is.True, "The ghost is sent the territory when it attaches.");
+            Assert.That(view.Map, Is.EqualTo(MapData.MapId));
+            Assert.That(view.Landmarks.Select(landmark => landmark.Name), Is.EquivalentTo(new[] { "Test Outpost", "Test Depot" }));
+
+            Assert.That(map.TryGetOwnShip(MapData.MapId, out _, out _), Is.False, "A ghost is aboard nothing.");
+            Assert.That(map.CentreOnPlayer(), Is.True);
+            Assert.That((map.Centre - open).Length(), Is.LessThan(1f), "Centre on me centres on the ghost.");
+        });
+
+        // Over a grid the ghost is parented to it, but still centres on itself and not on the grid.
+        var above = new Vector2(3f, 2f);
+        await Server.WaitPost(() => Server.System<SharedTransformSystem>().SetCoordinates(ghost, new EntityCoordinates(station, above)));
+        await RunTicks(10);
+        await Client.WaitAssertion(() =>
+        {
+            var map = controller.Window!.Panel.MapControl;
+            Assert.That(CEntMan.GetComponent<TransformComponent>(CEntMan.GetEntity(netGhost)).GridUid, Is.Not.Null, "The ghost is over the station's grid.");
+            Assert.That(map.TryGetOwnShip(MapData.MapId, out _, out _), Is.False);
+            map.ShowWholeSector();
+            Assert.That(map.CentreOnPlayer(), Is.True);
+            Assert.That((map.Centre - (Outpost + above)).Length(), Is.LessThan(1f));
+        });
+
+        await Client.WaitPost(() => controller.Window!.Close());
+    }
+
+    /// <summary>Presses and releases a key function in the client's own input, as a keypress outside the game world.</summary>
+    private async Task PressClientKey(BoundKeyFunction function)
+    {
+        await Client.WaitPost(() =>
+        {
+            InputManager.ViewportKeyEvent(null, new BoundKeyEventArgs(function, BoundKeyState.Down, default, false));
+            InputManager.ViewportKeyEvent(null, new BoundKeyEventArgs(function, BoundKeyState.Up, default, false));
+        });
+        await RunTicks(2);
     }
 }
