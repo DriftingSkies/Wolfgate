@@ -3,6 +3,7 @@ using Content.Client._WF.UserInterface.WindowPopout;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Input;
+using Robust.Shared.Timing;
 
 namespace Content.Client._WF.ChatTabs;
 
@@ -15,8 +16,12 @@ public sealed class ChatTabBar : BoxContainer
 
     private readonly ChatTabsUIController _tabs;
     private readonly BoxContainer _buttons;
+    private readonly ScrollContainer _scroll;
     private readonly Button _addButton;
     private readonly ChatTabPopup _settings = new();
+
+    private int _shownSelected = -1;
+    private bool _scrollToSelected;
 
     /// <summary>
     /// Pops the chat log out into its own window, or docks it back.
@@ -38,14 +43,15 @@ public sealed class ChatTabBar : BoxContainer
         };
 
         // Scrolls sideways when the tabs don't fit; the add button gives the row its height.
-        AddChild(new ScrollContainer
+        _scroll = new ScrollContainer
         {
             HorizontalExpand = true,
             HScrollEnabled = true,
             VScrollEnabled = false,
             HScrollBarHidden = true,
             Children = { _buttons },
-        });
+        };
+        AddChild(_scroll);
 
         _addButton = new Button
         {
@@ -113,6 +119,7 @@ public sealed class ChatTabBar : BoxContainer
         }
 
         _addButton.Disabled = _tabs.Tabs.Count >= ChatTab.MaxTabs;
+        _scrollToSelected = true;
         Refresh();
     }
 
@@ -124,6 +131,34 @@ public sealed class ChatTabBar : BoxContainer
             button.Text = _tabs.Label(_tabs.Tabs[i]);
             button.Pressed = i == _tabs.Selected;
         }
+
+        if (_shownSelected == _tabs.Selected)
+            return;
+
+        _shownSelected = _tabs.Selected;
+        _scrollToSelected = true;
+    }
+
+    protected override void FrameUpdate(FrameEventArgs args)
+    {
+        base.FrameUpdate(args);
+
+        if (!_scrollToSelected || _tabs.Selected >= _buttons.ChildCount)
+            return;
+
+        // A new button has no size until the next layout.
+        var button = _buttons.GetChild(_tabs.Selected);
+        if (button.Size.X <= 0)
+            return;
+
+        _scrollToSelected = false;
+
+        var left = button.Position.X;
+        var right = left + button.Size.X;
+        if (left < _scroll.HScrollTarget)
+            _scroll.HScrollTarget = left;
+        else if (right > _scroll.HScrollTarget + _scroll.Size.X)
+            _scroll.HScrollTarget = right - _scroll.Size.X;
     }
 
     private void AddTab()

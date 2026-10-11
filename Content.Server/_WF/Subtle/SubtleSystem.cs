@@ -35,6 +35,9 @@ public sealed partial class SubtleSystem : EntitySystem
     /// <summary>How far a subtle emote carries: the eight tiles around the sender.</summary>
     public const float Range = 1.5f;
 
+    /// <summary>The longest subtle emote a player may send, in characters.</summary>
+    public const int MaxLength = 5000;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -74,7 +77,7 @@ public sealed partial class SubtleSystem : EntitySystem
         {
             if (player.AttachedEntity != source
                 || _chatManager.HandleRateLimit(player) != RateLimitStatus.Allowed
-                || _chatManager.MessageCharacterLimit(player, message))
+                || IsOverLength(player, message))
                 return false;
         }
 
@@ -109,6 +112,16 @@ public sealed partial class SubtleSystem : EntitySystem
 
         var heard = names.Count == 0 ? "nobody" : string.Join(", ", names);
         _adminLog.Add(LogType.Chat, LogImpact.Low, $"Subtle emote from {ToPrettyString(source):user}, seen by {heard}: {message}");
+        return true;
+    }
+
+    private bool IsOverLength(ICommonSession player, string message)
+    {
+        if (message.Length <= MaxLength)
+            return false;
+
+        _chatManager.DispatchServerMessage(player,
+            Loc.GetString("chat-manager-max-message-length-exceeded-message", ("limit", MaxLength)));
         return true;
     }
 

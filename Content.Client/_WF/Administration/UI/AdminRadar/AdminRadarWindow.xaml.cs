@@ -41,6 +41,9 @@ public sealed partial class AdminRadarWindow : FancyWindow
 
         _radar = _entManager.System<AdminRadarSystem>();
 
+        IffToggle.Pressed = RadarScreen.ShowIFF;
+        IffDetailedToggle.Pressed = RadarScreen.ShowIFFDetailed;
+        RadarScreen.WfPinDocks();
         IffToggle.OnToggled += args => RadarScreen.ShowIFF = args.Pressed;
         IffDetailedToggle.OnToggled += args => RadarScreen.ShowIFFDetailed = args.Pressed;
         MaximizeToggle.OnToggled += OnMaximizeToggled;

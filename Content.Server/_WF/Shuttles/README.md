@@ -41,8 +41,14 @@ The windowed helm's Navigation page shows the same fuel gauge and lamp.
 Fuel shares the existing one-second ship-status sweep, including the lightweight cockpit snapshot; the one-off
 hull survey taken when a grid gets its first pilot leaves it out.
 
+Every radar screen (helm, cockpit, mass scanner, gunnery console, admin radar) opens with the display choices the
+player last made on any of them: contact labels (IFF), their detail lines (D.IFF), dock markers and the bearing
+marks' mode, kept in the client cvars `wf.radar_show_iff`, `wf.radar_show_iff_detailed`, `wf.radar_show_docks` and
+`wf.radar_azimuth` by `ShuttleNavControl.Settings.cs`. A screen with no docks toggle always shows docks. The
+rotation and anchor modes still start from each console's own defaults.
+
 Autopilot arrival, cancellation and manual takeover use the supplied disengagement cue credited to gandalf.
-The mono import supports positional audio and plays at -12 dB; other console and navigation cues retain their sounds.
+The mono import supports positional audio and plays at -7 dB; other console and navigation cues retain their sounds.
 
 Entry points: the server `ShipStatusSystem`, `CollisionWarningSystem`, `ShuttleCameraSystem` and
 `ShuttleNavMapSystem`; the client `ShipScreen`, `ShipViewControl`, `CollisionWarningBanner` and `ShuttleCameraBar`,
@@ -123,6 +129,7 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.Client/_WF/Shuttles/UI/ShuttleFlightHudOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleFlightHudOverlay.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttleHullRoofOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleHullRoofOverlay.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttleLowLightOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleLowLightOverlay.cs)
+- [`Content.Client/_WF/Shuttles/UI/ShuttleNavControl.Settings.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleNavControl.Settings.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttlePoiPointerOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttlePoiPointerOverlay.cs)
 - [`Content.Client/_WF/Shuttles/UI/WFFtlDriveNotice.cs`](../../../Content.Client/_WF/Shuttles/UI/WFFtlDriveNotice.cs)
 
@@ -131,6 +138,7 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/CollisionWarningTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/CollisionWarningTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/DockedShipIffTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/DockedShipIffTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/FTLToDockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/FTLToDockTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Shuttles/RadarDisplaySettingsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/RadarDisplaySettingsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShipFuelTelemetryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShipFuelTelemetryTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShipHullConstructionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShipHullConstructionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShipStatusTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShipStatusTest.cs)
@@ -173,6 +181,7 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.Client/Shuttles/UI/MapScreen.xaml.cs`](../../../Content.Client/Shuttles/UI/MapScreen.xaml.cs)
   - the drive status decides whether the FTL button can be used
   - without a powered drive the FTL button stays off and its preview is released
+- [`Content.Client/Shuttles/UI/RadarConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/RadarConsoleWindow.xaml.cs): the toggles show the player's saved radar display choices.
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml)
   - xmlns:wf for _WF shuttle controls
   - collision warning, across every mode
@@ -181,6 +190,9 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs)
   - ship mode
   - ship screen and collision state
+- [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs)
+  - start with the player's saved radar display choices.
+  - keep a changed radar display choice for the next radar.
 - [`Content.Server/_Mono/Detection/ApplyIFFFlagsToDockedShipsSystem.cs`](../../_Mono/Detection/ApplyIFFFlagsToDockedShipsSystem.cs)
   - the host can be grid B, since docking orders the pair by entity id.
   - the host can be grid B, since grid A is the side that undocked, usually the ship.

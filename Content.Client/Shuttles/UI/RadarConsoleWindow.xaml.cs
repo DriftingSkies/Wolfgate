@@ -19,6 +19,11 @@ public sealed partial class RadarConsoleWindow : FancyWindow,
     // Mono
         IFFToggle.OnToggled += OnIFFTogglePressed;
         IFFDetailedToggle.OnToggled += OnIFFDetailedTogglePressed;
+        // WOLFGATE(Shuttles) START: the toggles show the player's saved radar display choices.
+        IFFToggle.Pressed = RadarScreen.ShowIFF;
+        IFFDetailedToggle.Pressed = RadarScreen.ShowIFFDetailed;
+        RadarScreen.WfPinDocks();
+        // WOLFGATE END
     }
 
     public void UpdateState(NavInterfaceState scc)

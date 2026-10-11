@@ -45,6 +45,8 @@ Caution flashes slowly; warning flashes quickly while caution keeps its slow rhy
 when clear, and FAULT lights when TCAS is off or telemetry is unavailable. The bank remains visible while
 using guns, with impact countdown, bearing, closing speed and full threat details on hover.
 The speed limiter lives on SYS; flight controls retain dampeners and orbit controls.
+The radar's IFF, detailed IFF and docks toggles sit on the NAV scope's glass in its bottom row (`WFCockpitRadarKeys`),
+or in a row above the mode buttons when the scope is too narrow for both.
 The MFD holds navigation, hull overlays, strategic travel, docking, access, shield details and auxiliary
 systems. Its header has three toggles. Swap trades places between the world view and the MFD: the MFD
 takes the large centre area and the world view the full-height column beside it, and nothing else moves.
@@ -163,6 +165,7 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 - [`Content.Client/_WF/Cockpit/WFCockpitLease.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitLease.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitRadarKeys.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitRadarKeys.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitShipLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitShipLayout.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitSpeechClip.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitSpeechClip.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitStatusLights.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitStatusLights.cs)
@@ -198,6 +201,7 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 - [`Content.Tests/_WF/Cockpit/WFCockpitCoordinatesTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitCoordinatesTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitInstrumentSizingTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitInstrumentSizingTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitPanelLayoutTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitPanelLayoutTest.cs)
+- [`Content.Tests/_WF/Cockpit/WFCockpitRadarKeysTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitRadarKeysTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitTcasReadingTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitTcasReadingTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitVelocityTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitVelocityTest.cs)
 

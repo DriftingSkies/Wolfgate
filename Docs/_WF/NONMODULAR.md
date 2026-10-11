@@ -109,6 +109,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - erotic roleplay rule removed, PR #27
   - erotic roleplay rule entry removed, PR #27
 - [`Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml`](../../Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml): the ER PDAs, was MedicalDoctorPDA and ContractorSeniorPhysicianPDA, whose ID resets to medical doctor access
+- [`Resources/Prototypes/_Mono/Roles/Jobs/Medical/medic.yml`](../../Resources/Prototypes/_Mono/Roles/Jobs/Medical/medic.yml): responders start with advanced jaws of life
 - [`Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml): was WeaponSubMachineGunTypewriter, class-3 contraband since Monolith#4816
 - [`Resources/Prototypes/_NF/Entities/Structures/Machines/Computers/computers_tabletop.yml`](../../Resources/Prototypes/_NF/Entities/Structures/Machines/Computers/computers_tabletop.yml): Medical Dispatch staff are Colonial since Monolith#4807

@@ -115,6 +115,11 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         return false;
     }
 
+    /// <summary>Whether a vessel has fired ship weapons on this ship within the attack window, not merely been reported.</summary>
+    public bool FiredShipGuns(EntityUid grid, string group, EntityUid ship) =>
+        _alerts.TryGetValue((grid, group), out var alert) && alert.Fired.TryGetValue(ship, out var until)
+        && _timing.CurTime < until;
+
     /// <summary>Ship weapons are fire-controlled or mounted on a grid; carried guns are personal.</summary>
     public bool IsShipWeapon(EntityUid? weapon)
     {
@@ -130,7 +135,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     {
         if (Excuse(args.Grid, args.AttackerGrid))
             return;
-        ReportAttack(args.Grid, args.AttackerGrid);
+        ReportAttack(args.Grid, args.AttackerGrid, gunfire: true);
     }
 
     /// <summary>How many stray hits a ship lets a friendly vessel land inside the window before it is an attack.</summary>
@@ -219,10 +224,10 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
             return;
         if (Excuse(args.Grid, args.AttackerGrid))
             return;
-        ReportAttack(args.Grid, args.AttackerGrid);
+        ReportAttack(args.Grid, args.AttackerGrid, gunfire: true);
     }
 
-    private void ReportAttack(EntityUid grid, EntityUid attacker, string? group = null)
+    private void ReportAttack(EntityUid grid, EntityUid attacker, string? group = null, bool gunfire = false)
     {
         if (grid == attacker || !HasComp<MapGridComponent>(grid) || !HasComp<MapGridComponent>(attacker)
             || Transform(grid).MapID != Transform(attacker).MapID)
@@ -245,7 +250,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         }
         // Snapshot every recipient before captains change their flight orders in response.
         foreach (var recipient in recipients)
-            AlertShip(recipient.Grid, recipient.Group, attacker);
+            AlertShip(recipient.Grid, recipient.Group, attacker, gunfire: gunfire);
     }
 
     /// <summary>Reports an explicit vessel threat to a crew and every ship in its escort formation.</summary>
@@ -260,7 +265,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         if (Excuse(grid, attacker))
             return false;
 
-        ReportAttack(grid, attacker, group);
+        ReportAttack(grid, attacker, group, gunfire: true);
         return true;
     }
 
@@ -346,7 +351,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     /// <summary>Raises a local docking alert without treating a changeable security policy as incoming fire.</summary>
     public void ReportDockingThreat(EntityUid grid, string group, EntityUid visitor) => AlertShip(grid, group, visitor, false);
 
-    private void AlertShip(EntityUid grid, string group, EntityUid attacker, bool retaliation = true)
+    private void AlertShip(EntityUid grid, string group, EntityUid attacker, bool retaliation = true, bool gunfire = false)
     {
         if (grid == attacker || !HasComp<MapGridComponent>(grid) || !HasComp<MapGridComponent>(attacker)
             || Transform(grid).MapID != Transform(attacker).MapID)
@@ -363,6 +368,8 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
             // A vessel known only from a zone report is news again once it really attacks.
             var known = live && (_zoneReport || !alert.Zone.Contains(attacker));
             alert.Vessels[attacker] = now + Decay;
+            if (gunfire)
+                alert.Fired[attacker] = now + Decay;
             if (!_zoneReport)
                 alert.Zone.Remove(attacker);
             else if (!live)
@@ -413,6 +420,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
             {
                 alert.Vessels.Remove(ship);
                 alert.Zone.Remove(ship);
+                alert.Fired.Remove(ship);
             }
             alert.DockingVessels.RemoveWhere(ship => TerminatingOrDeleted(ship));
 
@@ -594,6 +602,8 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         public readonly Dictionary<EntityUid, TimeSpan> Vessels = new();
         /// <summary>The attacking vessels known only from a patrol zone report, not from a hit.</summary>
         public readonly HashSet<EntityUid> Zone = new();
+        /// <summary>The vessels that fired ship weapons on the ship, and when that fire's window closes.</summary>
+        public readonly Dictionary<EntityUid, TimeSpan> Fired = new();
         public readonly HashSet<EntityUid> DockingVessels = new();
         public readonly HashSet<EntityUid> Hostiles = new();
         public readonly Dictionary<EntityUid, Awareness> Members = new();

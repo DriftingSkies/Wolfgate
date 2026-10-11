@@ -220,6 +220,47 @@ public sealed class ChatTabsTest : InteractionTest
         await Client.WaitPost(() => Settings().Close());
     }
 
+    /// <summary>A row with more tabs than fit scrolls to keep the selected tab in view.</summary>
+    [Test]
+    public async Task TabRowScrollsToTheSelectedTab()
+    {
+        await Prepare();
+        await Client.WaitPost(() =>
+        {
+            while (_tabs.Add() != null)
+            {
+            }
+        });
+        await RunTicks(5);
+
+        var scroll = Descendants(_box.WfTabBar).OfType<ScrollContainer>().Single();
+        var buttons = scroll.Children.OfType<BoxContainer>().Single();
+
+        void AssertSelectedInView()
+        {
+            var button = buttons.GetChild(_tabs.Selected);
+            Assert.That(button.Position.X, Is.GreaterThanOrEqualTo(scroll.HScrollTarget - 0.5f));
+            Assert.That(button.Position.X + button.Size.X,
+                Is.LessThanOrEqualTo(scroll.HScrollTarget + scroll.Size.X + 0.5f));
+        }
+
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(buttons.Size.X, Is.GreaterThan(scroll.Size.X), "the tabs don't fit");
+            Assert.That(_tabs.Selected, Is.EqualTo(ChatTab.MaxTabs - 1));
+            Assert.That(scroll.HScrollTarget, Is.GreaterThan(0));
+            AssertSelectedInView();
+        });
+
+        await Client.WaitPost(() => _tabs.Select(All));
+        await RunTicks(5);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(scroll.HScrollTarget, Is.Zero);
+            AssertSelectedInView();
+        });
+    }
+
     /// <summary>A tab switch refills the log with the newest lines only, so a long round doesn't stall it.</summary>
     [Test]
     public async Task TabSwitchRefillsTheNewestLines()
