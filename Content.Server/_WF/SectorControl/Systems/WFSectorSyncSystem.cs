@@ -12,6 +12,8 @@ namespace Content.Server._WF.SectorControl.Systems;
 public sealed partial class WFSectorSyncSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private WFSectorTerritorySystem _territory = default!;
 
     private static readonly TimeSpan SendInterval = TimeSpan.FromSeconds(1);
@@ -117,21 +119,39 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
 
     private void OnPlayerAttached(PlayerAttachedEvent args)
     {
+        SendTo(args.Player);
+    }
+
+    /// <summary>Sends one player the sector map, with its stations even before the first claim, any other held map and the legend.</summary>
+    public void SendTo(ICommonSession player)
+    {
+        var sector = _territory.SectorMap;
+        if (_territory.Enabled && sector != MapId.Nullspace && _map.MapExists(sector))
+            RaiseNetworkEvent(Build(sector), player);
+        else
+            sector = MapId.Nullspace;
+
         var query = EntityQueryEnumerator<WFSectorTerritoryComponent, TransformComponent>();
         while (query.MoveNext(out _, out var territory, out var xform))
         {
-            if (territory.Claims.Count > 0 || territory.Contests.Count > 0)
-                RaiseNetworkEvent(Build(xform.MapID), args.Player);
+            if (xform.MapID != sector && (territory.Claims.Count > 0 || territory.Contests.Count > 0))
+                RaiseNetworkEvent(Build(xform.MapID), player);
         }
 
         if (_status.Count > 0)
-            RaiseNetworkEvent(BuildStatus(), args.Player);
+            RaiseNetworkEvent(BuildStatus(), player);
     }
 
     /// <summary>The territory event for a map as it stands.</summary>
     public WFSectorTerritoryEvent Build(MapId map)
     {
         var ev = new WFSectorTerritoryEvent { Map = map, CellSize = _territory.CellSize };
+        // Blockaded stations stay on the map; the storyteller's hidden ones never reach it.
+        foreach (var station in _territory.Stations(map))
+        {
+            ev.Landmarks.Add(new WFSectorLandmarkEntry(Name(station), _lookup.GetWorldAABB(station).Center));
+        }
+
         if (_territory.Territory(map) is not { } territory)
             return ev;
 

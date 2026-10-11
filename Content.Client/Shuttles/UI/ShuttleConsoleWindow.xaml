@@ -1,12 +1,14 @@
 <!-- WOLFGATE(Shuttles): xmlns:wf for _WF shuttle controls -->
 <!-- WOLFGATE(TractorBeam): xmlns:tractor for the capture banner -->
 <!-- WOLFGATE(ShipAccess): xmlns:access for the access tab -->
+<!-- WOLFGATE(SectorControl): xmlns:sector for the sector map mode -->
 <controls:FancyWindow xmlns="https://spacestation14.io"
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:ui="clr-namespace:Content.Client.Shuttles.UI"
                       xmlns:wf="clr-namespace:Content.Client._WF.Shuttles.UI"
                       xmlns:tractor="clr-namespace:Content.Client._WF.TractorBeam.UI"
                       xmlns:access="clr-namespace:Content.Client._WF.ShipAccess"
+                      xmlns:sector="clr-namespace:Content.Client._WF.SectorControl"
                       xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
                       Title="{Loc 'shuttle-console-window-title'}"
                       SetSize="1000 1000"
@@ -63,6 +65,14 @@
                     VerticalExpand="True"
                     Text="MAP"
                     StyleClasses="ButtonSquare"/>
+            <!-- WOLFGATE(SectorControl) START: sector map mode button -->
+            <Button Name="SectorModeButton"
+                    ToggleMode="True"
+                    HorizontalExpand="True"
+                    VerticalExpand="True"
+                    Text="{Loc 'wf-sector-map-mode'}"
+                    StyleClasses="ButtonSquare"/>
+            <!-- WOLFGATE END -->
             <Button Name="DockModeButton"
                     ToggleMode="True"
                     HorizontalExpand="True"
@@ -81,6 +91,7 @@
             <wf:ShipScreen Name="ShipContainer" Visible="False"/> <!-- WOLFGATE(Shuttles) -->
             <access:ShipAccessScreen Name="AccessContainer" Visible="False"/> <!-- WOLFGATE(ShipAccess) -->
             <ui:MapScreen Name="MapContainer" Visible="False"/>
+            <sector:WFSectorMapPanel Name="SectorContainer" Visible="False"/> <!-- WOLFGATE(SectorControl): the sector map panel the mode shows -->
             <ui:DockingScreen Name="DockContainer" Visible="False"/>
         </BoxContainer>
         </BoxContainer>

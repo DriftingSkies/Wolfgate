@@ -9,6 +9,8 @@
         <changelog:ChangelogButton Access="Public" Name="ChangelogButton"/>
         <!-- WOLFGATE(Roadmap): roadmap entry under the changelog -->
         <Button Access="Public" Name="RoadmapButton" Text="{Loc 'wf-roadmap-button'}" />
+        <!-- WOLFGATE(SectorControl): sector map entry under the roadmap -->
+        <Button Access="Public" Name="SectorMapButton" Text="{Loc 'wf-sector-map-button'}" />
         <ui:VoteCallMenuButton />
         <Button Access="Public" Name="OptionsButton" Text="{Loc 'ui-escape-options'}" />
         <Button Access="Public" Name="RulesButton" Text="{Loc 'ui-escape-rules'}" />

@@ -7,12 +7,20 @@ Reaver campaign. Every cell has a callsign (`WFSectorHex.Callsign`, such as `N-1
 announcements and the map.
 
 Players see held cells, borders and contested cells with their countdown on the map, and a legend line per faction
-that the driver writes. A crewed player ship that has been inside a faction's space, or back outside it, for a minute
-is told so over its PA, or in chat to those aboard with no working speaker, at most once every five minutes. Flying a
+that the driver writes. A crewed player ship that has been inside a faction's space for ten seconds is told "WARNING:
+entering ... controlled space" (at most once every two minutes), and one back outside for thirty seconds that it has
+left, in chat to everyone aboard and over its PA when it has a speaker; a faction may set its own lines
+(`enteredNotice`, `leftNotice`). Flying a
 cell is what keeps it: every minute each crewed player ship that moved 100 m counts as activity in its cell (parked,
 docked and idle ships count for nothing; stations never do), and a contest is only claimed if the cell stayed quiet.
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
+
+The sector map shows only the sector: held and contested cells, the stations by name (hidden ones never sent), the
+encounter ships as their radar glyphs and the player's own ship, from 1.5 km to 60 km either side of centre. The wheel
+zooms about the cursor, left-drag pans, a double-click centres on your ship, and hovering names the cell and who holds
+it. Players open it from "Sector map" in the game menu, the `wf_sectormap` command or the SECTOR mode of a shuttle
+console (`WFSectorMapControl`, `WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
 
 Drivers use `WFSectorTerritorySystem` (`CellOf`, `Centre`, `Owner`, `TryClaim`, `Contest`, `Release`, `Free`,
 `Held`, `Frontier`, `Sources`, `StationsIn`, `CanClaim`), `WFSectorActivitySystem` (`LastActivity`, `IsQuiet`,
@@ -53,15 +61,22 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 
 ### Client
 
+- [`Content.Client/_WF/SectorControl/ShuttleConsoleWindow.SectorControl.cs`](../../../Content.Client/_WF/SectorControl/ShuttleConsoleWindow.SectorControl.cs)
 - [`Content.Client/_WF/SectorControl/ShuttleMapControl.SectorControl.cs`](../../../Content.Client/_WF/SectorControl/ShuttleMapControl.SectorControl.cs)
 - [`Content.Client/_WF/SectorControl/ShuttleNavControl.SectorControl.cs`](../../../Content.Client/_WF/SectorControl/ShuttleNavControl.SectorControl.cs)
 - [`Content.Client/_WF/SectorControl/WFSectorClientSystem.cs`](../../../Content.Client/_WF/SectorControl/WFSectorClientSystem.cs)
+- [`Content.Client/_WF/SectorControl/WFSectorMapCommand.cs`](../../../Content.Client/_WF/SectorControl/WFSectorMapCommand.cs)
+- [`Content.Client/_WF/SectorControl/WFSectorMapControl.cs`](../../../Content.Client/_WF/SectorControl/WFSectorMapControl.cs)
+- [`Content.Client/_WF/SectorControl/WFSectorMapPanel.cs`](../../../Content.Client/_WF/SectorControl/WFSectorMapPanel.cs)
+- [`Content.Client/_WF/SectorControl/WFSectorMapUIController.cs`](../../../Content.Client/_WF/SectorControl/WFSectorMapUIController.cs)
+- [`Content.Client/_WF/SectorControl/WFSectorMapWindow.cs`](../../../Content.Client/_WF/SectorControl/WFSectorMapWindow.cs)
 - [`Content.Client/_WF/SectorControl/WFSectorOverlay.cs`](../../../Content.Client/_WF/SectorControl/WFSectorOverlay.cs)
 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorMapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorMapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorNoticeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorSyncTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorSyncTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorTestBase.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorTestBase.cs)
@@ -81,7 +96,20 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 
 ## Non-modular edits
 
+- [`Content.Client/Options/UI/EscapeMenu.xaml`](../../../Content.Client/Options/UI/EscapeMenu.xaml): sector map entry under the roadmap
+- [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml)
+  - xmlns:sector for the sector map mode
+  - sector map mode button
+  - the sector map panel the mode shows
+- [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs)
+  - wire up the sector map mode button.
+  - hide the sector map in other modes
+  - show the sector map in its mode
+  - the sector map mode.
+  - the sector map follows the console's map.
 - [`Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs): faction territory fills, borders and legend on the sector map.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): faction territory borders beneath radar contacts.
+- [`Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs`](../../../Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs): sector map entry in the game menu
+- [`Resources/clientCommandPerms.yml`](../../../Resources/clientCommandPerms.yml): client-only command that opens the sector map window
 
 <!-- WOLFGATE-GENERATED END -->

@@ -3,7 +3,7 @@ using Robust.Client.Graphics;
 
 namespace Content.Client._WF.SectorControl;
 
-/// <summary>Draws a <see cref="WFSectorMapView"/> into a shuttle control, which passes the matrix from map space to its pixels.</summary>
+/// <summary>Draws a <see cref="WFSectorMapView"/> into a shuttle control or the sector map, which pass the matrix from map space to their pixels.</summary>
 public sealed class WFSectorOverlay
 {
     private const float FillAlpha = 0.10f;
@@ -62,13 +62,18 @@ public sealed class WFSectorOverlay
             Draw(handle, DrawPrimitiveTopology.TriangleList, contest.Fill, worldToView, contest.Color.WithAlpha(0.06f + 0.14f * pulse));
             Draw(handle, DrawPrimitiveTopology.LineList, contest.Outline, worldToView, contest.Color.WithAlpha(0.5f + 0.5f * pulse));
 
-            var remaining = contest.Deadline - now;
-            if (remaining < TimeSpan.Zero)
-                remaining = TimeSpan.Zero;
-
-            var text = remaining.TotalHours >= 1 ? remaining.ToString(@"h\:mm\:ss") : remaining.ToString(@"m\:ss");
+            var text = FormatRemaining(contest.Deadline - now);
             DrawCentred(handle, font, scale, Vector2.Transform(contest.Centre, worldToView), text, contest.Color, bounds);
         }
+    }
+
+    /// <summary>A contest countdown as m:ss, or h:mm:ss from an hour up, never below zero.</summary>
+    public static string FormatRemaining(TimeSpan remaining)
+    {
+        if (remaining < TimeSpan.Zero)
+            remaining = TimeSpan.Zero;
+
+        return remaining.TotalHours >= 1 ? remaining.ToString(@"h\:mm\:ss") : remaining.ToString(@"m\:ss");
     }
 
     /// <summary>Prints the callsign of each held cell once a cell is wide enough on screen to hold one.</summary>

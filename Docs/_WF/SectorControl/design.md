@@ -14,8 +14,9 @@ callsign for announcements and the map (`WFSectorHex.Callsign(cell)`: a letter r
 `K-7`), and a world position for its centre and corners.
 
 **Faction.** A `wfSectorFaction` prototype: name (LocId), colour, the company it fights as (for standing and for who
-is "theirs"), and `blockades` (whether a station in a cell it holds is cut off from NPC freight; the Encounters
-scheduler asks through `WFEncounterStationsEvent`).
+is "theirs"), `blockades` (whether a station in a cell it holds is cut off from NPC freight; the Encounters
+scheduler asks through `WFEncounterStationsEvent`), and optional `enteredNotice` and `leftNotice` (LocIds that replace
+the default border notices for its space, with the same arguments).
 
 **Claim.** `{ map, cell, faction, sources }`. A source is an entity (a stronghold encounter, later a station or a
 flagship) that supports the claim; a cell stays held while any of its sources lives. `TryClaim(map, cell, faction,
@@ -41,14 +42,23 @@ shown as contested on the map with a countdown, `WFSectorCellContestedEvent` fir
 deadline the territory system claims it for the faction if the cell has been quiet since the contest began, or drops
 the contest. For a station cell this is the blockade warning: traffic can hold the lane by flying it.
 
-**Notices.** `WFSectorNoticeSystem` tells those aboard a player ship when it has been inside held space for 60 s and
-when it has been outside for 60 s, through the ship's PA (`ShipPaSystem.Announce`), or in chat to those aboard where
-the ship has no working speaker, with a 5 min per-ship cooldown. Sector control is the only framework code that
-touches ShipPa.
+**Notices.** `WFSectorNoticeSystem` tells those aboard a crewed player ship when it has been inside a faction's space
+for 10 s ("WARNING: entering {faction} controlled space (K-7).") and when it has been back outside for 30 s ("Leaving
+{faction} controlled space. Now in open space at K-7."), with a 2 min per-ship cooldown between entered notices (a
+leave is always told once its dwell is up); the dwell is the hysteresis that keeps a ship skimming a border from being
+told every few seconds. Every notice goes both ways: over the ship's PA
+(`ShipPaSystem.Announce`) when it has a working speaker, and in chat, in the faction's colour, to everyone aboard the
+PA did not reach (the PA puts its own line in the chat of those in a speaker's range), so each player aboard gets it
+once. Entering plays the announcement sound in chat; leaving does not. A faction's `enteredNotice` and `leftNotice`
+replace the default lines. `Tell(grid, message, sender, colour, sound)` is the same delivery for a driver's own
+warnings. Sector control is the only framework code that touches ShipPa.
 
 **Sync.** `WFSectorSyncSystem` sends `WFSectorTerritoryEvent` to everyone when territory changes and to a player when
 they attach: the map, the cell size, the faction ids, the claims as `(q, r, faction index)`, the contested cells with
-their deadlines. One empty update after the last claim goes, then silence. Drivers send `WFSectorStatusEvent`: per
+their deadlines, and the landmarks: each station's name and the centre of its bounds, from the territory system's
+`Stations(map)` (the storyteller's list with blockaded stations kept and hidden ones left out). The sector map is sent
+on attach even with nothing held, so the map has its stations before the first claim. One update without claims after
+the last claim goes, then silence; the client drops a map only when an event has no claims, contests or landmarks. Drivers send `WFSectorStatusEvent`: per
 faction, a legend line already localised on the server (a driver's tier and stronghold count are its own business;
 the framework only shows the line).
 
@@ -60,6 +70,19 @@ outlined with their countdown, the cell callsign in held cells when zoomed in, a
 once when an event arrives. `ShuttleNavControl.SectorControl.cs` draws the border edges within the scope beneath grids
 and contacts, so a pilot sees the line they are about to cross. Both hooks are one marked line in the upstream
 control, like the Planets and Encounters hooks.
+
+**Sector map.** `WFSectorMapControl` is a map of the sector alone, not the mass scanner: a dark backing, zoom from 1.5
+to 60 km half-width (fitted at first to the stations and territory plus 3 km), the wheel zooming about the cursor,
+left-drag panning and a double-click centring on the player's own grid. It draws faint rings every 5 km about the
+origin with their distance, the territory through `WFSectorOverlay` (one `worldToView` matrix a frame, `view = (world -
+centre) * scale` with Y flipped about the midpoint), the stations as dots with names (a name that would overlap one
+already printed is left out), every encounter ship as its radar glyph and colour (strongholds fly the flag), the
+player's grid as a white triangle along its heading, and at the cursor the cell's callsign and owner ("open space", or
+"contested by X, m:ss"). With no view of the map it shows only "No territory data". `WFSectorMapPanel` puts it over a
+bar with "Centre on me", "Whole sector" and the scale. It opens three ways: `WFSectorMapWindow` (resizable, 900x700)
+from "Sector map" in the game menu or the client command `wf_sectormap`, both through `WFSectorMapUIController`, which
+follow the player's map (or any map the client has); and the SECTOR mode of the shuttle console, which follows the
+console's map.
 
 **Admin.** `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest <faction> <q> <r> <minutes> | clear
 [faction] | callsign <x> <y>` (`LocalizedEntityCommands`, `AdminFlags.Admin`).
@@ -84,17 +107,23 @@ after being switched off or resized, so drivers can claim what they still hold a
 - `Content.Server/_WF/SectorControl`: `README.md`, `WFSectorEvents.cs`, `Components/WFSectorTerritoryComponent.cs`,
   `Systems/WFSectorTerritorySystem.cs`, `Systems/WFSectorActivitySystem.cs`, `Systems/WFSectorProtectionSystem.cs`,
   `Systems/WFSectorSyncSystem.cs`, `Systems/WFSectorNoticeSystem.cs`, `Commands/WFSectorCommand.cs`.
-- `Content.Client/_WF/SectorControl`: `WFSectorClientSystem.cs`, `ShuttleMapControl.SectorControl.cs`,
-  `ShuttleNavControl.SectorControl.cs`.
+- `Content.Client/_WF/SectorControl`: `WFSectorClientSystem.cs`, `WFSectorOverlay.cs`, `ShuttleMapControl.SectorControl.cs`,
+  `ShuttleNavControl.SectorControl.cs`, `WFSectorMapControl.cs`, `WFSectorMapPanel.cs`, `WFSectorMapWindow.cs`,
+  `WFSectorMapUIController.cs`, `WFSectorMapCommand.cs`, `ShuttleConsoleWindow.SectorControl.cs`.
 - `Resources/Locale/en-US/_WF/SectorControl/sectorcontrol.ftl`. The module ships no faction; each driver defines its
   own `wfSectorFaction` (the Reavers' is in `Resources/Prototypes/_WF/ReaverCampaign/factions.yml`), and the tests
   declare theirs.
 - Tests: `Content.Tests/_WF/SectorControl/WFSectorHexTest.cs`; `Content.IntegrationTests/Tests/_WF/SectorControl/`
-  (claims and sources, protection veto, activity with the station and moved rules, contest deadline, sync event).
+  (claims and sources, protection veto, activity with the station and moved rules, contest deadline, sync event,
+  notices in chat with and without a PA speaker, a leave told inside the cooldown, landmarks on the client, the map
+  window's layout, fit and zoom, the console's sector mode).
 
 Upstream edits, each one marked line: `Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs` after
 `DrawStarSystem(handle, matty);` and `Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs` after the `DrawWfTerrain`
-line. Edits inside `_WF/Encounters` (same fork, no markers): `WFEncounterStationsEvent` raised in the scheduler's
+line. The sector map adds marked hooks in `ShuttleConsoleWindow.xaml` (the SECTOR button, the panel and its xmlns) and
+`ShuttleConsoleWindow.xaml.cs` (the mode enum value, its init, show, hide and state calls), the game menu entry in
+`EscapeMenu.xaml` and `EscapeUIController.cs`, and `wf_sectormap` in `Resources/clientCommandPerms.yml` so every
+player may run it. Edits inside `_WF/Encounters` (same fork, no markers): `WFEncounterStationsEvent` raised in the scheduler's
 `Stations()` so blockaded stations drop out of freight circuits.
 
 ## Decisions

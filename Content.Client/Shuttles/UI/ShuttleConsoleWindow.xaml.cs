@@ -92,6 +92,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         WfInitialize(); // WOLFGATE(Shuttles)
         WfAccessInitialize(); // WOLFGATE(ShipAccess)
         WfShieldInitialize(); // WOLFGATE(ShipShields): add the shield allocation tab.
+        WfSectorInitialize(); // WOLFGATE(SectorControl): wire up the sector map mode button.
     }
 
     private void ClearModes(ShuttleConsoleMode mode)
@@ -116,6 +117,13 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         if (mode != ShuttleConsoleMode.Access)
         {
             WfSetAccessMode(false);
+        }
+        // WOLFGATE END
+
+        // WOLFGATE(SectorControl) START: hide the sector map in other modes
+        if (mode != ShuttleConsoleMode.Sector)
+        {
+            WfSetSectorMode(false);
         }
         // WOLFGATE END
 
@@ -182,6 +190,11 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
                 WfSetAccessMode(true);
                 break;
             // WOLFGATE END
+            // WOLFGATE(SectorControl) START: show the sector map in its mode
+            case ShuttleConsoleMode.Sector:
+                WfSetSectorMode(true);
+                break;
+            // WOLFGATE END
             case ShuttleConsoleMode.Map:
                 MapContainer.Visible = true;
                 MapContainer.Startup();
@@ -212,6 +225,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         Map,
         Dock,
         Shields, // WOLFGATE(ShipShields): shield allocation mode.
+        Sector, // WOLFGATE(SectorControl): the sector map mode.
     }
 
     public void UpdateState(EntityUid owner, ShuttleBoundUserInterfaceState cState)
@@ -229,6 +243,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         WfUpdateTractorCapture(cState.TractorSources); // WOLFGATE(TractorBeam)
         WfAccessUpdateState(coordinates?.EntityId, owner); // WOLFGATE(ShipAccess)
         WfShieldUpdateState(cState.ShieldShunt, cState.NavState.Angle); // WOLFGATE(ShipShields): share authoritative allocation across helms.
+        WfSectorUpdateState(owner); // WOLFGATE(SectorControl): the sector map follows the console's map.
 
         NavContainer.UpdateState(cState.NavState);
         MapContainer.UpdateState(cState.MapState);
