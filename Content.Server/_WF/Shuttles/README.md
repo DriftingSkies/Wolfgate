@@ -66,8 +66,8 @@ powered or unpowered, and a helm that opens never shows an older snapshot. Witho
 notice in the skin's danger colour (`WFFtlDriveNotice`, using the existing "No FTL drive detected" and "FTL drive
 detected but not powered" wording): above the plot and outside the scrolling details in the cockpit, at the top of
 the drive panel in the windowed helm. The FTL button is off and gives the reason as its tooltip, a running FTL preview
-is released, the readout says Offline, and the destination scan and list are off. Autopilot targeting does not need a
-drive and is left alone. The cockpit's FTL lamp lights red instead of green. `WFFtlDriveTest`, `WFFtlDriveWindowTest`
+is released, and the readout says Offline. Scan, the destination list and autopilot targeting do not need a drive
+and are left alone. The cockpit's FTL lamp lights red instead of green. `WFFtlDriveTest`, `WFFtlDriveWindowTest`
 and `WFCockpitFtlDriveTest` cover it.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -173,7 +173,6 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.Client/Shuttles/UI/MapScreen.xaml.cs`](../../../Content.Client/Shuttles/UI/MapScreen.xaml.cs)
   - the drive status decides whether the FTL button can be used
   - without a powered drive the FTL button stays off and its preview is released
-  - a ship without a powered drive can't scan for or pick a destination
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml)
   - xmlns:wf for _WF shuttle controls
   - collision warning, across every mode

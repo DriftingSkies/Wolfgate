@@ -66,10 +66,11 @@ public sealed class WFFtlDriveWindowTest
                     Assert.That(radar.FtlMode, Is.True, context);
 
                     // Losing the drive with the button on releases it, and the page says why.
+                    var scanWithDrive = scan.Disabled;
                     Update(FTLState.Available, WFFtlDriveStatus.Missing);
                     WFFtlDriveTestPages.AssertDrive(map, WFFtlDriveStatus.Missing, $"{context}, drive lost");
                     Assert.That(map.FindControl<Label>("MapFTLState").Text, Is.EqualTo(Loc.GetString("wf-ftl-state-offline")), context);
-                    Assert.That(scan.Disabled, Is.True, $"{context}: there are no destinations to scan for without a drive.");
+                    Assert.That(scan.Disabled, Is.EqualTo(scanWithDrive), $"{context}: Scan feeds autopilot too, so a missing drive must leave it alone.");
                     WFFtlDriveTestPages.AssertFits(helm, contents, map.WfDriveNotice, context);
 
                     // The disabled button can't be pressed, so no preview or jump request can follow.

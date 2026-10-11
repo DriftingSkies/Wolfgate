@@ -489,9 +489,6 @@ public sealed partial class MapScreen : BoxContainer
     /// </summary>
     private bool IsFTLBlocked()
     {
-        if (WfFtlDriveBlocked) // WOLFGATE(Shuttles): a ship without a powered drive can't scan for or pick a destination
-            return true;
-
         switch (_state)
         {
             case FTLState.Available:
