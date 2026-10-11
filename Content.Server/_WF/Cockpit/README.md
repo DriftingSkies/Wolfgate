@@ -58,9 +58,10 @@ replay viewers cannot enter it.
 
 A seated pilot can also link to an accessible, powered gunnery console within normal interaction reach
 on the same ship. The nearest eligible console is chosen and retained while usable. FLIGHT/GUNS
-switches the left column between flight instruments and the shared paginated weapon bank, including
-selection, saved groups and compact countermeasures. Weapon rows retain readable text and slim supply
-bars; page changes preserve the full selection for firing and group saves. Left-click or hold over the world viewport or NAV plot fires the
+switches the left column between flight instruments and the shared weapon list (one scrolling list,
+two columns, sorted by name), including selection, saved groups and compact countermeasures. Weapon
+entries retain readable text and slim supply bars; scrolling never changes the selection used for
+firing and group saves. Left-click or hold over the world viewport or NAV plot fires the
 selected weapons on either tab; moving the pointer updates guided-missile aim, and right mouse still pans. While aiming, the NAV plot draws the
 gunnery console's preview line from each selected weapon with a clear line of fire to the aim point. A native aiming reticle
 replaces the pointer over valid world and NAV targets while offensive weapons are selected, independently

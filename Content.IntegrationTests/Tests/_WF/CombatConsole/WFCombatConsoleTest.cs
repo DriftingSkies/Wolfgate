@@ -383,11 +383,14 @@ public sealed class WFCombatConsoleTest
                 gunnery.SetSize = size;
                 gunnery.Measure(size);
                 gunnery.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
-                Assert.That(meter.Width, Is.GreaterThan(100), "Weapon names and supply must retain a readable full-width row.");
+                Assert.That(meter.Width, Is.GreaterThan(100), "Weapon names and supply must retain a readable row.");
                 Assert.That(meter.GlobalPosition.X + meter.Width, Is.LessThanOrEqualTo(gunnery.GlobalPosition.X + size.X));
                 var battery = Descendants(gunnery).Single(control => control.Name == "WfWeaponBattery");
-                Assert.That(Descendants(battery).OfType<ScrollContainer>(), Is.Empty);
-                Assert.That(gunnery.WeaponsList[gun].Height, Is.InRange(48, 56), "Sparse batteries retain the same readable row height.");
+                var (list, listGrid) = WFWeaponListChecks.OneList(battery, "console battery");
+                WFWeaponListChecks.NoPaging(battery, "console battery");
+                WFWeaponListChecks.Compact(listGrid, new[] { gunnery.WeaponsList[gun] }, "console battery");
+                Assert.That(gunnery.WeaponsList[gun].Height, Is.EqualTo(listGrid.EntryHeight).Within(1), "A sparse battery keeps the compact entry height.");
+                Assert.That(list.Height, Is.EqualTo(listGrid.ContentHeight).Within(1), "A sparse battery takes only the height its weapons need.");
                 var dispense = Descendants(gunnery).OfType<Button>().Single(button => button.HasStyleClass("WfDispense"));
                 AssertWithin(dispense, countermeasures);
                 AssertWithin(countermeasures, gunnery);
@@ -437,8 +440,8 @@ public sealed class WFCombatConsoleTest
                         "A style switch must retain the same controls and ammunition binding.");
                     Assert.That(meter.Reading.Value, Is.EqualTo(240));
                     Assert.That(gunnery.WeaponsList[gun].Pressed, Is.True);
-                    Assert.That(gunnery.WeaponsList[gun].Height, Is.InRange(48, 56),
-                        "The row must remain readable without expanding into a large ammunition gauge.");
+                    Assert.That(gunnery.WeaponsList[gun].Height, Is.InRange(28, 40),
+                        "The entry must stay compact without expanding into a large ammunition gauge.");
                     foreach (var console in new Control[] { gunnery, helm })
                     {
                         var size = new Vector2(960, 600);
@@ -795,6 +798,7 @@ public sealed class WFCombatConsoleTest
             window.OpenCentered();
             window.SetSize = new Vector2(960, 600);
             var grid = Descendants(window).OfType<WFWeaponGrid>().Single();
+            var scroll = (ScrollContainer) grid.Parent!;
             var frame = ui.GetType().GetMethod("FrameUpdate")!;
             void PumpLayout() => frame.Invoke(ui, new object[] { new FrameEventArgs(0) });
             try
@@ -815,23 +819,26 @@ public sealed class WFCombatConsoleTest
                         selected.Pressed = true;
                         for (var pass = 0; pass < 3; pass++)
                             PumpLayout();
-                        Assert.That(grid.PageCount, Is.GreaterThan(1));
-                        grid.SetPage(grid.PageCount - 1);
+                        scroll.VScroll = grid.ContentHeight;
                         for (var pass = 0; pass < 3; pass++)
                             PumpLayout();
-                        var lastPage = grid.PageIndex;
-                        var visible = grid.Children.OfType<Button>().Where(item => item.VisibleInTree).ToArray();
-                        Assert.That(visible, Does.Contain(selected), $"{skin}, {count} weapons: the final row must be reachable.");
-                        var geometry = visible.Select(item => (item.Position, item.Size)).ToArray();
+                        var offset = scroll.VScroll;
+                        var listed = grid.Entries();
+                        var last = listed[^1];
+                        Assert.That(listed, Has.Count.EqualTo(count), $"{skin}, {count} weapons: every weapon is in the one list.");
+                        Assert.That(listed, Does.Contain(selected), $"{skin}, {count} weapons: the selected row stays listed.");
+                        Assert.That(last.GlobalPosition.Y + last.Height, Is.LessThanOrEqualTo(scroll.GlobalPosition.Y + scroll.Height + 1),
+                            $"{skin}, {count} weapons: the final row must be reachable.");
+                        var geometry = listed.Select(item => (item.Position, item.Size)).ToArray();
                         for (var frameIndex = 0; frameIndex < 3; frameIndex++)
                         {
                             PumpLayout();
                             var context = $"{skin}, {count} weapons, settled frame {frameIndex}";
-                            Assert.That(grid.IsMeasureValid && grid.IsArrangeValid, Is.True,
+                            Assert.That(grid.IsMeasureValid && grid.IsArrangeValid && scroll.IsMeasureValid && scroll.IsArrangeValid, Is.True,
                                 $"{context}: an unchanged battery must not continually invalidate its layout.");
-                            Assert.That(grid.PageIndex, Is.EqualTo(lastPage), context);
-                            Assert.That(grid.Children.OfType<Button>().Where(item => item.VisibleInTree), Is.EqualTo(visible), context);
-                            Assert.That(visible.Select(item => (item.Position, item.Size)), Is.EqualTo(geometry), context);
+                            Assert.That(scroll.VScroll, Is.EqualTo(offset), context);
+                            Assert.That(grid.Entries(), Is.EqualTo(listed), context);
+                            Assert.That(listed.Select(item => (item.Position, item.Size)), Is.EqualTo(geometry), context);
                             Assert.That(selected.Pressed, Is.True, context);
                         }
                     }
@@ -842,6 +849,100 @@ public sealed class WFCombatConsoleTest
             {
                 window.Close();
                 status.Parent?.RemoveChild(status);
+                settings.SetCVar(WolfgateCVars.UiStyle, originalSkin);
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task WeaponBankFollowsItsListThroughTheLayoutQueue()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var settings = pair.Client.ResolveDependency<IConfigurationManager>();
+            var originalSkin = settings.GetCVar(WolfgateCVars.UiStyle);
+            using var window = new FireControlWindow();
+            window.OpenCentered();
+            window.SetSize = new Vector2(960, 600);
+            var grid = Descendants(window).OfType<WFWeaponGrid>().Single();
+            var scroll = (ScrollContainer) grid.Parent!;
+            var bank = (WFWeaponBank) scroll.Parent!;
+            var head = bank.Children.First();
+            var tail = bank.Children.Last();
+            var frame = ui.GetType().GetMethod("FrameUpdate")!;
+            // Only the engine's own queue runs: nothing here invalidates a control by hand.
+            void Settle()
+            {
+                for (var pass = 0; pass < 3; pass++)
+                    frame.Invoke(ui, new object[] { new FrameEventArgs(0) });
+            }
+            void Show(int count)
+            {
+                var entries = Enumerable.Range(1, count).Select(index => new FireControllableEntry(new NetEntity(1300 + index),
+                    default, $"Queue weapon {index}", 6, true)).ToArray();
+                window.UpdateStatus(new FireControlConsoleBoundInterfaceState(true, entries,
+                    new Content.Shared.Shuttles.BUIStates.NavInterfaceState(250, null, null, new(), default)));
+                Settle();
+            }
+            void Check(string context, int count)
+            {
+                Assert.That(grid.Entries(), Has.Count.EqualTo(count), context);
+                Assert.That(head.Height, Is.GreaterThan(0), context);
+                Assert.That(tail.Height, Is.GreaterThan(0), context);
+                var room = Math.Max(0, bank.Height - head.Height - tail.Height - 2 * WFWeaponBank.Gap);
+                Assert.That(grid.ContentHeight, count == 0 ? Is.Zero : Is.GreaterThan(0), context);
+                Assert.That(scroll.Height, Is.EqualTo(Math.Min(grid.ContentHeight, room)).Within(1),
+                    $"{context}: the list's window takes the height its content needs, up to the room there is.");
+                if (count > 0)
+                    Assert.That(scroll.Height, Is.GreaterThan(0), $"{context}: a populated list is shown.");
+                Assert.That(scroll.Position.Y, Is.EqualTo(count == 0 ? head.Height : head.Height + WFWeaponBank.Gap).Within(1), context);
+                Assert.That(tail.Position.Y, Is.EqualTo(scroll.Position.Y + scroll.Height + WFWeaponBank.Gap).Within(1),
+                    $"{context}: what follows the list sits right under it.");
+                var overflows = grid.ContentHeight > room + 0.5f;
+                if (overflows)
+                    Assert.That(tail.Position.Y + tail.Height, Is.EqualTo(bank.Height).Within(1),
+                        $"{context}: a list longer than the room fills it.");
+                Assert.That(scroll.Children.OfType<VScrollBar>().Single().Visible, Is.EqualTo(overflows), context);
+                if (count == 0)
+                    return;
+                scroll.VScroll = grid.ContentHeight;
+                Settle();
+                var last = grid.Entries()[^1];
+                Assert.That(last.GlobalPosition.Y + last.Height, Is.LessThanOrEqualTo(scroll.GlobalPosition.Y + scroll.Height + 1),
+                    $"{context}: the last weapon is reachable.");
+                Assert.That(last.GlobalPosition.Y, Is.GreaterThanOrEqualTo(scroll.GlobalPosition.Y - 1), $"{context}: the last weapon is inside the window.");
+                scroll.VScroll = 0;
+                Settle();
+            }
+            try
+            {
+                foreach (var skin in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+                {
+                    settings.SetCVar(WolfgateCVars.UiStyle, skin);
+                    Show(0);
+                    foreach (var count in new[] { 0, 40, 3, 0, 5, 32, 40, 26, 40, 1 })
+                    {
+                        Show(count);
+                        Check($"{skin}, {count} weapons", count);
+                    }
+                }
+                // A skin change alone re-fonts the rows, which can change their height under a populated list.
+                foreach (var skin in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id, WolfgateSkins.Retro.Id })
+                {
+                    Show(40);
+                    settings.SetCVar(WolfgateCVars.UiStyle, skin);
+                    Settle();
+                    Check($"switched to {skin}, 40 weapons", 40);
+                    Show(3);
+                    Check($"switched to {skin}, 3 weapons", 3);
+                }
+            }
+            finally
+            {
+                window.Close();
                 settings.SetCVar(WolfgateCVars.UiStyle, originalSkin);
             }
         });

@@ -33,9 +33,12 @@ second, with native open/action updates remaining immediate. Unchanged snapshots
 are suppressed. Linked viewers share each snapshot and docking discovery is shared within each server
 tick; cursor guidance does not rebuild radar or ammunition state.
 
-The console and cockpit share a paginated weapon bank with readable names, exact supply values and
-thin ammunition bars. Rows keep a stable height; page arrows appear for larger batteries without
-scrolling or shrinking labels. Selections, firing and saved groups include weapons on every page.
+The console and cockpit share one weapon list with readable names, exact supply values and thin
+ammunition bars. Weapons sit two to a line, filled left to right then down, sorted by name without
+regard to case and then by entity id so the order never shifts between updates. Each entry is two
+text lines with almost no padding. The list takes only the height it needs, so the threat and flare
+readouts follow it up the panel, and scrolls when the battery is longer than the panel. There are no
+pages. Selections, firing and saved groups cover the whole list; flare launchers are never in it.
 A single STORE mode exposes group assignment, and TYPE expands the secondary selection shortcuts.
 The standalone console gives most of its width to the tactical plot. Missile alerts stay visible;
 installed countermeasures use a compact supply/rearm readout with AUTO and DISPENSE controls.
@@ -130,6 +133,7 @@ the Wolfgate maintainer. No specific video/channel URL or license text was suppl
 - [`Content.Client/_WF/CombatConsole/WFInstrumentText.cs`](../../../Content.Client/_WF/CombatConsole/WFInstrumentText.cs)
 - [`Content.Client/_WF/CombatConsole/WFInstrumentTheme.cs`](../../../Content.Client/_WF/CombatConsole/WFInstrumentTheme.cs)
 - [`Content.Client/_WF/CombatConsole/WFShipAccessLayout.cs`](../../../Content.Client/_WF/CombatConsole/WFShipAccessLayout.cs)
+- [`Content.Client/_WF/CombatConsole/WFWeaponBank.cs`](../../../Content.Client/_WF/CombatConsole/WFWeaponBank.cs)
 - [`Content.Client/_WF/CombatConsole/WFWeaponGrid.cs`](../../../Content.Client/_WF/CombatConsole/WFWeaponGrid.cs)
 - [`Content.Client/_WF/CombatConsole/WFWeaponRow.cs`](../../../Content.Client/_WF/CombatConsole/WFWeaponRow.cs)
 
@@ -140,6 +144,7 @@ the Wolfgate maintainer. No specific video/channel URL or license text was suppl
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFGunnerySupplyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFGunnerySupplyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFMapViewportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFMapViewportTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFRadarOverlayTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFRadarOverlayTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFWeaponListChecks.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFWeaponListChecks.cs)
 
 ### Unit tests
 

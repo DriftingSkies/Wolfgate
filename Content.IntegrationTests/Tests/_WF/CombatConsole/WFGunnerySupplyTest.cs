@@ -16,6 +16,7 @@ using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Ranged.Events;
 using Robust.Shared.Map;
 using Content.Shared._Mono.FireControl;
+using Content.Shared._Mono.ShipGuns;
 using Content.Shared._WF.CCVar;
 using Content.Shared._WF.CombatConsole;
 using Content.Shared.Shuttles.BUIStates;
@@ -26,11 +27,12 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WF.CombatConsole;
 
-/// <summary>Checks actual ammunition providers and the non-scrolling gunnery battery at compact sizes.</summary>
+/// <summary>Checks actual ammunition providers and the single scrolling gunnery battery at compact sizes.</summary>
 [TestFixture]
 public sealed class WFGunnerySupplyTest
 {
@@ -99,7 +101,8 @@ public sealed class WFGunnerySupplyTest
             var originalTheme = settings.GetCVar(WolfgateCVars.UiStyle);
             using var window = new FireControlWindow();
             window.OpenCentered();
-            var entries = Enumerable.Range(1, 24).Select(index => new FireControllableEntry(new NetEntity(810 + index),
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var entries = Enumerable.Range(1, 40).Select(index => new FireControllableEntry(new NetEntity(810 + index),
                 default, $"Battery {index}", 0, true)).ToArray();
             var state = new FireControlConsoleBoundInterfaceState(true, entries,
                 new NavInterfaceState(250, null, null, new(), default));
@@ -119,9 +122,9 @@ public sealed class WFGunnerySupplyTest
             var commands = new List<BoundUserInterfaceMessage>();
             window.CombatMessage += commands.Add;
             window.WeaponsList[entries[0].NetEntity].Pressed = true;
-            window.WeaponsList[entries[23].NetEntity].Pressed = true;
+            window.WeaponsList[entries[^1].NetEntity].Pressed = true;
             window.OnWeaponSelectionChanged?.Invoke();
-            var selection = new[] { entries[0].NetEntity, entries[23].NetEntity };
+            var selection = new[] { entries[0].NetEntity, entries[^1].NetEntity };
             Button Named(string name) => Descendants(window).OfType<Button>().Single(button => button.Name == name);
             void Layout(Vector2 size)
             {
@@ -137,55 +140,34 @@ public sealed class WFGunnerySupplyTest
                 foreach (var size in new[] { new Vector2(960, 600), new Vector2(1180, 780) })
                 {
                     settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                    window.UpdateStatus(state);
                     Layout(size);
-                    var battery = Descendants(window).OfType<WFWeaponGrid>().Single();
-                    for (var parent = battery.Parent; parent != null; parent = parent.Parent)
-                        Assert.That(parent, Is.Not.InstanceOf<ScrollContainer>(), "The weapon battery must never become a scrolling list.");
-                    Assert.That(battery.PageCount, Is.GreaterThan(1), "A dense battery pages instead of shrinking its weapon rows.");
-                    var lastPage = battery.PageCount - 1;
-                    battery.SetPage(lastPage);
-                    Layout(size);
-                    Assert.That(battery.PageIndex, Is.EqualTo(lastPage), "Parent measurement must leave the last weapon page reachable.");
-                    battery.SetPage(0);
-                    var seen = new HashSet<Button>();
-                    for (var page = 0; page < battery.PageCount; page++)
+                    var context = $"{theme}/{size}";
+                    var (scroll, battery) = WFWeaponListChecks.OneList(window, context);
+                    WFWeaponListChecks.NoPaging(window, context);
+                    var listed = WFWeaponListChecks.Expected(entries, window.WeaponsList);
+                    Assert.That(WFWeaponListChecks.Overflows(scroll, battery), Is.True, $"{context}: a dense battery scrolls instead of paging.");
+                    WFWeaponListChecks.Layout(battery, listed, context);
+                    WFWeaponListChecks.Compact(battery, listed, context);
+                    foreach (var button in listed)
                     {
-                        Layout(size);
-                        var visible = window.WeaponsList.Values.Where(button => button.VisibleInTree).ToArray();
-                        Assert.That(visible.Length, Is.InRange(1, 23));
-                        Assert.That(visible.Select(button => button.Position.X).Distinct().Count(), Is.EqualTo(1));
-                        foreach (var button in visible)
-                        {
-                            Assert.That(seen.Add(button), Is.True);
-                            Assert.That(button.Height, Is.InRange(48, 56));
-                            Assert.That(button.Width, Is.GreaterThanOrEqualTo(250));
-                            var row = button.Children.OfType<WFWeaponRow>().Single();
-                            Assert.That(row.NameLabel.Align, Is.EqualTo(Label.AlignMode.Left), "Long names must preserve their identifying prefix.");
-                            foreach (var label in new[] { row.NameLabel, row.SupplyLabel })
-                            {
-                                var font = label.FontOverride ?? (label.TryGetStyleProperty<Font>(Label.StylePropertyFont, out var styled)
-                                    ? styled : pair.Client.ResolveDependency<IUserInterfaceManager>().ThemeDefaults.LabelFont);
-                                var width = 0f;
-                                foreach (var rune in label.Text!.EnumerateRunes())
-                                    width += font.GetCharMetrics(rune, label.UIScale)?.Advance ?? 0;
-                                Assert.That(label.PixelWidth + 1, Is.GreaterThanOrEqualTo(width), $"Battery identifiers and supply must fit: {label.Text}");
-                                Assert.That(label.PixelHeight + 1, Is.GreaterThanOrEqualTo(font.GetHeight(label.UIScale)));
-                            }
-                            Assert.That(button.GlobalPosition.X, Is.GreaterThanOrEqualTo(battery.GlobalPosition.X));
-                            Assert.That(button.GlobalPosition.Y, Is.GreaterThanOrEqualTo(battery.GlobalPosition.Y));
-                            Assert.That(button.GlobalPosition.X + button.Width, Is.LessThanOrEqualTo(battery.GlobalPosition.X + battery.Width + 1));
-                            Assert.That(button.GlobalPosition.Y + button.Height, Is.LessThanOrEqualTo(battery.GlobalPosition.Y + battery.Height + 1));
-                        }
-                        Assert.That(window.WeaponsList.Where(weapon => weapon.Value.Pressed).Select(weapon => weapon.Key), Is.EquivalentTo(selection),
-                            "Page navigation and theme changes must retain every selected weapon.");
-                        window.UpdateStatus(state);
-                        Layout(size);
-                        Assert.That(battery.PageIndex, Is.EqualTo(page), "Supply updates must leave the current weapon page in place.");
-                        if (page < battery.PageCount - 1)
-                            WFButtonTestInput.Click(Named("WfWeaponNext"));
+                        WFWeaponListChecks.Readable(button, ui, context);
+                        Assert.That(button.Children.OfType<WFWeaponRow>().Single().NameLabel.Align, Is.EqualTo(Label.AlignMode.Left),
+                            "Long names must preserve their identifying prefix.");
                     }
-                    Assert.That(seen, Is.EquivalentTo(window.WeaponsList.Values));
-                    Assert.That(commands, Is.Empty, "Paging, snapshots and restyling must not send gunnery commands.");
+                    WFWeaponListChecks.Reachable(scroll, listed, () => Layout(size), context);
+                    Assert.That(window.WeaponsList.Where(weapon => weapon.Value.Pressed).Select(weapon => weapon.Key), Is.EquivalentTo(selection),
+                        "Scrolling and theme changes must retain every selected weapon.");
+                    scroll.VScroll = battery.ContentHeight;
+                    Layout(size);
+                    var offset = scroll.VScroll;
+                    Assert.That(offset, Is.GreaterThan(0), context);
+                    window.UpdateStatus(state);
+                    Layout(size);
+                    Assert.That(scroll.VScroll, Is.EqualTo(offset), "Supply updates must leave the scroll position in place.");
+                    scroll.VScroll = 0;
+                    Layout(size);
+                    Assert.That(commands, Is.Empty, "Scrolling, snapshots and restyling must not send gunnery commands.");
                     var batteryPanel = Descendants(window).Single(control => control.Name == "WfWeaponBattery");
                     Assert.That(batteryPanel.GlobalPosition.X - window.GlobalPosition.X, Is.LessThan(40), "The battery must not sit in an unused centered allocation.");
                     Assert.That(batteryPanel.Width, Is.LessThan(size.X * 0.4f), "Weapon controls must remain a sidebar.");
@@ -198,10 +180,192 @@ public sealed class WFGunnerySupplyTest
                 Layout(new Vector2(1180, 780));
                 WFButtonTestInput.Click(Named("CockpitGroupSave2"));
                 var saved = commands.OfType<WFSaveWeaponGroupMessage>().Single();
-                Assert.That(saved.Weapons, Is.EquivalentTo(selection), "A standalone group save includes off-page selections.");
+                Assert.That(saved.Weapons, Is.EquivalentTo(selection), "A standalone group save includes selections anywhere in the list.");
                 state.Connected = false;
                 window.UpdateStatus(state);
                 Assert.That(Row(0).Reading.Value, Is.Null, "Disconnected infinite weapons must not retain live supply telemetry.");
+            }
+            finally
+            {
+                settings.SetCVar(WolfgateCVars.UiStyle, originalTheme);
+                window.Close();
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task WeaponBankIsOneSortedTwoColumnScrollingList()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var settings = pair.Client.ResolveDependency<IConfigurationManager>();
+            var originalTheme = settings.GetCVar(WolfgateCVars.UiStyle);
+            using var window = new FireControlWindow();
+            window.OpenCentered();
+            // Mixed case, a numbered run and four weapons whose names differ only in case, handed over in no particular order.
+            var names = new List<(int Id, string Name)>
+            {
+                (1041, "Hawk"), (1005, "Hawk"), (1020, "hawk"), (1002, "HAWK"),
+                (1033, "alpha"), (1011, "Zulu"), (1050, "bravo"), (1008, "Charlie"), (1060, "echo"),
+            };
+            names.AddRange(Enumerable.Range(1, 30).Select(index => (1100 + index * 7 % 31, $"Battery {index}")));
+            names.Add((1200, "Flare"));
+            var entries = names.OrderByDescending(item => item.Id % 13).ThenBy(item => item.Id)
+                .Select(item => new FireControllableEntry(new NetEntity(item.Id), default, item.Name, 5, true)).ToArray();
+            Assert.That(entries, Has.Length.EqualTo(40));
+            var flare = new NetEntity(1200);
+            var excluded = new HashSet<NetEntity> { flare };
+            var navigation = new NavInterfaceState(250, null, null, new(), default);
+            var state = new FireControlConsoleBoundInterfaceState(true, entries, navigation);
+            state.Combat.FlareLaunchers.Add(flare);
+            window.UpdateStatus(state);
+            var commands = new List<BoundUserInterfaceMessage>();
+            window.CombatMessage += commands.Add;
+            Button Named(string name) => Descendants(window).OfType<Button>().Single(button => button.Name == name);
+            NetEntity IdOf(Button button) => window.WeaponsList.Single(weapon => weapon.Value == button).Key;
+            void Layout(Vector2 size)
+            {
+                window.SetSize = size;
+                foreach (var control in Descendants(window))
+                    control.InvalidateMeasure();
+                window.Measure(size);
+                window.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+            }
+            try
+            {
+                foreach (var theme in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+                foreach (var size in new[] { new Vector2(960, 600), new Vector2(1180, 780) })
+                {
+                    var context = $"{theme}/{size}";
+                    settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                    window.UpdateStatus(state);
+                    Layout(size);
+                    WFWeaponListChecks.NoPaging(window, context);
+                    var (scroll, grid) = WFWeaponListChecks.OneList(window, context);
+                    var listed = WFWeaponListChecks.Expected(entries, window.WeaponsList, excluded);
+                    Assert.That(listed, Has.Count.EqualTo(entries.Length - 1), "Flare launchers stay out of the list.");
+                    Assert.That(window.WeaponsList[flare].Visible, Is.False, context);
+                    Assert.That(listed.Select(button => button.Text).Take(4), Is.EqualTo(new[] { "alpha", "Battery 1", "Battery 10", "Battery 11" }),
+                        $"{context}: case does not split the alphabet.");
+                    var hawks = listed.Where(button => string.Equals(button.Text, "hawk", StringComparison.OrdinalIgnoreCase)).ToArray();
+                    Assert.That(hawks.Select(button => IdOf(button).Id), Is.EqualTo(new[] { 1002, 1005, 1020, 1041 }),
+                        $"{context}: identical names are ordered by entity id.");
+                    WFWeaponListChecks.Layout(grid, listed, context);
+                    Assert.That(WFWeaponListChecks.Overflows(scroll, grid), Is.True, $"{context}: a long battery scrolls.");
+                    Assert.That(scroll.Children.OfType<VScrollBar>().Single().Visible, Is.True, context);
+                    WFWeaponListChecks.Reachable(scroll, listed, () => Layout(size), context);
+
+                    var before = listed.Select(button => (button.Position, button.Size)).ToArray();
+                    scroll.VScroll = grid.ContentHeight;
+                    Layout(size);
+                    var offset = scroll.VScroll;
+                    Assert.That(offset, Is.GreaterThan(0), context);
+                    var reversed = new FireControlConsoleBoundInterfaceState(true, Enumerable.Reverse(entries).ToArray(), navigation) { Combat = state.Combat };
+                    window.UpdateStatus(reversed);
+                    Layout(size);
+                    Assert.That(grid.Entries(), Is.EqualTo(listed), $"{context}: a snapshot in another order must not reorder the list.");
+                    Assert.That(listed.Select(button => (button.Position, button.Size)), Is.EqualTo(before), context);
+                    Assert.That(scroll.VScroll, Is.EqualTo(offset), $"{context}: a snapshot must not move the list.");
+                    scroll.VScroll = 0;
+                    Layout(size);
+                }
+
+                settings.SetCVar(WolfgateCVars.UiStyle, WolfgateSkins.Retro.Id);
+                var wide = new Vector2(1180, 780);
+                Layout(wide);
+                var (listScroll, listGrid) = WFWeaponListChecks.OneList(window, "groups");
+                var ordered = WFWeaponListChecks.Expected(entries, window.WeaponsList, excluded);
+                var first = ordered[0];
+                var middle = ordered[ordered.Count / 2];
+                var last = ordered[^1];
+                var group = new[] { IdOf(first), IdOf(middle), IdOf(last) };
+                state.Combat.Groups[1].AddRange(group);
+                window.UpdateStatus(state);
+                Layout(wide);
+                WFButtonTestInput.Click(Named("CockpitGroupRecall1"));
+                Assert.That(window.WeaponsList.Where(weapon => weapon.Value.Pressed).Select(weapon => weapon.Key), Is.EquivalentTo(group),
+                    "Recalling a group selects its weapons anywhere in the list.");
+                Assert.That(Named("CockpitGroupRecall1").Pressed, Is.True);
+                listScroll.VScroll = listGrid.ContentHeight;
+                Layout(wide);
+                Assert.That(last.GlobalPosition.Y + last.Height, Is.LessThanOrEqualTo(listScroll.GlobalPosition.Y + listScroll.Height + 1));
+                WFButtonTestInput.Click(last);
+                Assert.That(last.Pressed, Is.False, "A weapon at the end of the list deselects like any other.");
+                Assert.That(Named("CockpitGroupRecall1").Pressed, Is.False, "The group no longer matches the selection.");
+                WFButtonTestInput.Click(last);
+                Assert.That(Named("CockpitGroupRecall1").Pressed, Is.True);
+                WFButtonTestInput.Toggle(Named("CockpitGroupStore"), true);
+                Layout(wide);
+                WFButtonTestInput.Click(Named("CockpitGroupSave0"));
+                Assert.That(commands.OfType<WFSaveWeaponGroupMessage>().Single().Weapons, Is.EquivalentTo(group), "Saving covers the whole list.");
+                window.UpdateStatus(state);
+                Assert.That(window.WeaponsList.Where(weapon => weapon.Value.Pressed).Select(weapon => weapon.Key), Is.EquivalentTo(group),
+                    "A snapshot keeps the selection.");
+
+                var few = entries.Where(entry => entry.NetEntity != flare).Take(3).ToArray();
+                window.UpdateStatus(new FireControlConsoleBoundInterfaceState(true, few, navigation) { Combat = state.Combat });
+                Layout(wide);
+                Assert.That(listGrid.ContentHeight, Is.GreaterThan(0));
+                Assert.That(listScroll.Height, Is.EqualTo(listGrid.ContentHeight).Within(1), "A short list takes only the height it needs.");
+                Assert.That(listScroll.Children.OfType<VScrollBar>().Single().Visible, Is.False);
+                var alert = Descendants(window).Single(control => control.Name == "WfMissileAlert");
+                Assert.That(alert.GlobalPosition.Y - (listScroll.GlobalPosition.Y + listScroll.Height), Is.LessThan(16),
+                    "Whatever follows the list moves up under it.");
+                WFWeaponListChecks.Layout(listGrid, WFWeaponListChecks.Expected(few, window.WeaponsList), "few");
+                window.UpdateStatus(new FireControlConsoleBoundInterfaceState(true, Array.Empty<FireControllableEntry>(), navigation));
+                Layout(wide);
+                Assert.That(listGrid.ContentHeight, Is.Zero);
+                Assert.That(window.WeaponsList, Is.Empty);
+            }
+            finally
+            {
+                settings.SetCVar(WolfgateCVars.UiStyle, originalTheme);
+                window.Close();
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task RealWeaponNamesStayDistinguishableInBothSkins()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var settings = pair.Client.ResolveDependency<IConfigurationManager>();
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var prototypes = pair.Client.ResolveDependency<IPrototypeManager>();
+            var factory = pair.Client.ResolveDependency<IComponentFactory>();
+            var gun = factory.GetComponentName<ShipGunTypeComponent>();
+            var names = prototypes.EnumeratePrototypes<EntityPrototype>()
+                .Where(proto => !proto.Abstract && proto.Components.ContainsKey(gun))
+                .Select(proto => proto.Name).Distinct().Order(StringComparer.OrdinalIgnoreCase).ToArray();
+            Assert.That(names, Has.Length.GreaterThan(30), "The check needs the real ship weapons.");
+            var originalTheme = settings.GetCVar(WolfgateCVars.UiStyle);
+            using var window = new FireControlWindow();
+            window.OpenCentered();
+            var entries = names.Select((name, index) => new FireControllableEntry(new NetEntity(2000 + index), default, name, 0, true)).ToArray();
+            var state = new FireControlConsoleBoundInterfaceState(true, entries,
+                new NavInterfaceState(250, null, null, new(), default));
+            try
+            {
+                foreach (var theme in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+                foreach (var size in new[] { new Vector2(960, 600), new Vector2(1180, 780) })
+                {
+                    settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                    window.UpdateStatus(state);
+                    window.SetSize = size;
+                    foreach (var control in Descendants(window))
+                        control.InvalidateMeasure();
+                    window.Measure(size);
+                    window.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+                    var shown = entries.Select(entry => (entry.Name, Shown: WFWeaponListChecks.VisiblePrefix(window.WeaponsList[entry.NetEntity], ui))).ToArray();
+                    var clashes = shown.GroupBy(item => item.Shown).Where(group => group.Select(item => item.Name).Distinct().Count() > 1)
+                        .Select(group => $"'{group.Key}' for {string.Join(" | ", group.Select(item => item.Name))}").ToArray();
+                    Assert.That(clashes, Is.Empty, $"{theme}/{size}: weapons with different names must not be clipped to the same text (shortest shown: {shown.Min(item => item.Shown.Length)} characters).");
+                }
             }
             finally
             {

@@ -35,7 +35,7 @@ Fuel shares the existing one-second ship-status sweep, including the lightweight
 hull survey taken when a grid gets its first pilot leaves it out.
 
 Autopilot arrival, cancellation and manual takeover use the supplied disengagement cue credited to gandalf.
-The mono import supports positional audio and plays at -4 dB; other console and navigation cues retain their sounds.
+The mono import supports positional audio and plays at -12 dB; other console and navigation cues retain their sounds.
 
 Entry points: the server `ShipStatusSystem`, `CollisionWarningSystem`, `ShuttleCameraSystem` and
 `ShuttleNavMapSystem`; the client `ShipScreen`, `ShipViewControl`, `CollisionWarningBanner` and `ShuttleCameraBar`,

@@ -367,6 +367,13 @@ public sealed class WFCockpitTest : InteractionTest
                 Assert.That(Named<Control>(hud, "CockpitMfd").VisibleInTree, Is.True);
                 Assert.That(chat.VisibleInTree, Is.True);
                 AssertPanelsFitScreen(hud, viewport, size, $"{theme}, {size}, GUNS");
+                WFWeaponListChecks.NoPaging(guns, $"{theme}, {size}, GUNS");
+                var (gunList, gunGrid) = WFWeaponListChecks.OneList(guns, $"{theme}, {size}, GUNS");
+                var gunEntry = gunGrid.Children.OfType<Button>().Single();
+                Assert.That(gunGrid.Entries(), Is.EqualTo(new[] { gunEntry }), $"{theme}, {size}: the one weapon is listed.");
+                Assert.That(gunEntry.GlobalPosition.Y + gunEntry.Height, Is.LessThanOrEqualTo(gunList.GlobalPosition.Y + gunList.Height + 1), $"{theme}, {size}");
+                Assert.That(gunList.Height, Is.EqualTo(gunGrid.ContentHeight).Within(1), $"{theme}, {size}: the list takes only the room it needs.");
+                Assert.That(Bottom(gunList), Is.LessThanOrEqualTo(Bottom(guns)), $"{theme}, {size}: the list stays inside the GUNS deck.");
                 foreach (var arrangement in new[] { Arrangement.Swapped, Arrangement.Maximised })
                 {
                     SetArrangement(hud, arrangement);

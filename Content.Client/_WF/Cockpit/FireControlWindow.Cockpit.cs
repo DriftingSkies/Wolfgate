@@ -6,7 +6,7 @@ namespace Content.Client._Mono.FireControl.UI;
 
 public sealed partial class FireControlWindow
 {
-    /// <summary>Borrows the shared battery bank without duplicating command handlers or paging state.</summary>
+    /// <summary>Borrows the shared battery bank without duplicating command handlers or list state.</summary>
     internal Control WfBuildCockpitGunnery(WFCockpitLease lease)
     {
         var battery = lease.Take(_wfBatteryControls);

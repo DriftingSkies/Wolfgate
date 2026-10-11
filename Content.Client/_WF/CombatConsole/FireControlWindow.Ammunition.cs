@@ -37,7 +37,7 @@ public sealed partial class FireControlWindow
             : reading;
     }
 
-    /// <summary>Excludes flare launchers without treating off-page weapons as unavailable.</summary>
+    /// <summary>Whether this weapon is offensive; flare launchers are not.</summary>
     internal bool WfAvailableWeapon(NetEntity uid) => _wfCombat?.FlareLaunchers.Contains(uid) != true;
 
     /// <summary>Styles the existing selection button once, preserving every upstream handler.</summary>
@@ -49,7 +49,7 @@ public sealed partial class FireControlWindow
         button.AddStyleClass("WfWeapon");
         button.Margin = new Thickness(0);
         button.MinWidth = 0;
-        button.MinHeight = 52;
+        button.MinHeight = 0;
         button.RectClipContent = true;
         button.ClipText = true;
         button.Label.Visible = false;

@@ -24,7 +24,7 @@ using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WF.Cockpit;
 
-/// <summary>Exercises the embedded battery's existing command handlers, supply telemetry and compact layout.</summary>
+/// <summary>Exercises the embedded battery's existing command handlers, supply telemetry and its single scrolling list.</summary>
 [TestFixture]
 public sealed class WFCockpitGunneryPanelTest
 {
@@ -55,8 +55,9 @@ public sealed class WFCockpitGunneryPanelTest
             combat.WeaponSupplies[entries[2].NetEntity] = new WFWeaponSupply(WFWeaponSupplyKind.Recharging, 0, 10);
             combat.WeaponTypes[entries[0].NetEntity] = ShipGunType.Ballistic;
             panel.UpdateState(state);
-            var grid = Tree(panel).OfType<WFWeaponGrid>().Single();
+            var (scroll, grid) = WFWeaponListChecks.OneList(panel, "embedded");
             var buttons = grid.Children.OfType<Button>().ToArray();
+            var flares = new HashSet<NetEntity> { entries[24].NetEntity };
             Button Named(string name) => Tree(panel).OfType<Button>().Single(button => button.Name == name);
             Label NamedLabel(string name) => Tree(panel).OfType<Label>().Single(label => label.Name == name);
             Assert.That(Tree(ui.RootControl).OfType<BaseWindow>(), Is.EqualTo(windows), "The cockpit battery must not open a gunnery window.");
@@ -68,22 +69,25 @@ public sealed class WFCockpitGunneryPanelTest
                 panel.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
             }
             WFWeaponRow Row(Button button) => button.Children.OfType<WFWeaponRow>().Single();
-            void CheckFinalPage(Vector2 size)
+            List<Button> Listed(IEnumerable<FireControllableEntry> present)
             {
-                var lastPage = grid.PageCount - 1;
-                grid.SetPage(lastPage);
-                Layout(size);
-                Assert.That(grid.PageIndex, Is.EqualTo(lastPage), "Parent measurement must not prevent reaching the last weapon page.");
-                var visible = buttons.Where(button => button.Visible).ToArray();
-                grid.Measure(new Vector2(grid.Width, grid.Height + 160));
-                Assert.That(grid.PageIndex, Is.EqualTo(lastPage), "A provisional larger measurement must not change the operator's page.");
-                Assert.That(buttons.Where(button => button.Visible), Is.EqualTo(visible), "Measuring a candidate layout must not hide the active page's weapons.");
-                Layout(size);
-                Assert.That(grid.PageIndex, Is.EqualTo(lastPage), "The final parent arrangement must retain the last page.");
+                var weapons = present.ToArray();
+                var byName = grid.Children.OfType<Button>().ToDictionary(button => button.Text!);
+                return WFWeaponListChecks.Expected(weapons, weapons.ToDictionary(weapon => weapon.NetEntity, weapon => byName[weapon.Name]), flares);
+            }
+            void CheckList(Vector2 size, string context)
+            {
+                var listed = Listed(entries);
+                WFWeaponListChecks.NoPaging(panel, context);
+                WFWeaponListChecks.Layout(grid, listed, context);
+                WFWeaponListChecks.Compact(grid, listed, context);
+                foreach (var button in listed)
+                    WFWeaponListChecks.Readable(button, ui, context);
+                WFWeaponListChecks.Reachable(scroll, listed, () => Layout(size), context);
             }
             Layout(new Vector2(296, 450));
-            Assert.That(grid.PageCount, Is.GreaterThan(1), "A large battery must page rather than shrink every row.");
-            Assert.That(buttons.Count(button => button.Visible), Is.InRange(1, 23));
+            Assert.That(WFWeaponListChecks.Overflows(scroll, grid), Is.True, "A large battery scrolls rather than paging or shrinking every row.");
+            Assert.That(buttons.Count(button => button.Visible), Is.EqualTo(24), "Every offensive weapon is in the one list.");
             Assert.That(buttons[24].Visible, Is.False, "Flares are excluded from offensive selection.");
             Assert.That(Row(buttons[0]).Reading.Text, Does.Contain(Loc.GetString("wf-gauge-unlimited")));
             Assert.That(buttons[0].ModulateSelfOverride, Is.Null);
@@ -91,23 +95,24 @@ public sealed class WFCockpitGunneryPanelTest
             Assert.That(Row(buttons[2]).Reading.Text, Does.Contain(Loc.GetString("wf-gauge-recharging")));
             Assert.That(Row(buttons[3]).Reading.Value, Is.EqualTo(6), "Finite supply must remain an exact count.");
             Press(Named("CockpitGroupRecall0"));
-            Assert.That(panel.SelectedWeapons, Is.EquivalentTo(combat.Groups[0]), "A group includes weapons on other pages.");
+            Assert.That(panel.SelectedWeapons, Is.EquivalentTo(combat.Groups[0]), "A group includes weapons that are scrolled out of view.");
             Assert.That(panel.HasSelectedWeapons, Is.True, "The armed check must see a recalled group.");
-            var firstPage = buttons.Where(button => button.Visible).ToArray();
-            Press(Named("WfWeaponNext"));
+            var farWeapon = Listed(entries)[^1];
+            Assert.That(farWeapon.Pressed, Is.False);
+            scroll.VScroll = farWeapon.Position.Y;
             Layout(new Vector2(296, 450));
-            Assert.That(grid.PageIndex, Is.EqualTo(1));
-            Assert.That(buttons.Where(button => button.Visible).Intersect(firstPage), Is.Empty);
-            Assert.That(panel.SelectedWeapons, Is.EquivalentTo(combat.Groups[0]), "Paging must not drop off-page firing selections.");
-            var secondPageWeapon = buttons.First(button => button.Visible && !button.Pressed);
-            Toggle(secondPageWeapon, true);
-            var expectedSelection = combat.Groups[0].Append(entries[Array.IndexOf(buttons, secondPageWeapon)].NetEntity).ToArray();
+            Assert.That(scroll.VScroll, Is.GreaterThan(0), "The end of the list is below the first screenful.");
+            Assert.That(farWeapon.GlobalPosition.Y + farWeapon.Height, Is.LessThanOrEqualTo(scroll.GlobalPosition.Y + scroll.Height + 1));
+            Assert.That(panel.SelectedWeapons, Is.EquivalentTo(combat.Groups[0]), "Scrolling must not drop off-screen firing selections.");
+            Toggle(farWeapon, true);
+            var expectedSelection = combat.Groups[0].Append(entries[Array.IndexOf(buttons, farWeapon)].NetEntity).ToArray();
             Assert.That(panel.SelectedWeapons, Is.EquivalentTo(expectedSelection));
+            var offset = scroll.VScroll;
             panel.UpdateStatus(state);
             Layout(new Vector2(296, 450));
-            Assert.That(grid.PageIndex, Is.EqualTo(1), "Authoritative supply snapshots must not send the operator back to page one.");
+            Assert.That(scroll.VScroll, Is.EqualTo(offset), "Authoritative supply snapshots must not send the operator back to the top of the list.");
             Assert.That(panel.SelectedWeapons, Is.EquivalentTo(expectedSelection));
-            Assert.That(commands, Is.Empty, "Page navigation and received state must not send control commands.");
+            Assert.That(commands, Is.Empty, "Scrolling and received state must not send control commands.");
             var store = Named("CockpitGroupStore");
             Toggle(store, true);
             Layout(new Vector2(296, 450));
@@ -115,7 +120,7 @@ public sealed class WFCockpitGunneryPanelTest
             Press(Named("CockpitGroupSave2"));
             var saved = commands.OfType<WFSaveWeaponGroupMessage>().Single();
             Assert.That(saved.Slot, Is.EqualTo(2));
-            Assert.That(saved.Weapons, Is.EquivalentTo(expectedSelection), "Saving a group includes selected weapons on all pages.");
+            Assert.That(saved.Weapons, Is.EquivalentTo(expectedSelection), "Saving a group includes selected weapons anywhere in the list.");
             Assert.That(store.Pressed, Is.False);
             Assert.That(Named("CockpitGroupSave2").Visible, Is.False);
             Toggle(Named("CockpitAutomaticFlares"), true);
@@ -165,86 +170,56 @@ public sealed class WFCockpitGunneryPanelTest
                 foreach (var size in new[] { new Vector2(296, 450), new Vector2(400, 700) })
                 {
                     settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                    panel.UpdateStatus(state);
                     Layout(size);
                     Toggle(Named("WfWeaponTypeSelect"), true);
                     Layout(size);
-                    CheckFinalPage(size);
+                    CheckList(size, $"{theme}/{size}/types");
                     Toggle(Named("WfWeaponTypeSelect"), false);
                     Layout(size);
-                    CheckFinalPage(size);
-                    Assert.That(Tree(panel).OfType<ScrollContainer>(), Is.Empty);
-                    Assert.That(panel.SelectedWeapons, Is.EquivalentTo(expectedSelection), "Theme changes retain off-page selections.");
+                    CheckList(size, $"{theme}/{size}");
+                    Assert.That(panel.SelectedWeapons, Is.EquivalentTo(expectedSelection), "Theme changes retain off-screen selections.");
                     Assert.That(commands.Count, Is.EqualTo(commandsBeforeTheme), "Restyling must not send commands.");
-                    var seen = new HashSet<Button>();
-                    grid.SetPage(0);
-                    for (var page = 0; page < grid.PageCount; page++)
+                    foreach (var button in Tree(panel).OfType<Button>().Where(button => button.VisibleInTree && button.Parent != grid))
                     {
-                        Layout(size);
-                        var visible = buttons.Where(button => button.Visible).ToArray();
-                        Assert.That(visible, Is.Not.Empty);
-                        Assert.That(visible.Select(button => button.Position.X).Distinct().Count(), Is.EqualTo(1),
-                            "The weapon battery keeps one readable column.");
-                        foreach (var button in visible)
-                        {
-                            Assert.That(seen.Add(button), Is.True, "Every available weapon appears on exactly one page.");
-                            Assert.That(button.Height, Is.InRange(48, 56));
-                            Assert.That(button.Width, Is.GreaterThanOrEqualTo(250));
-                            var row = Row(button);
-                            foreach (var label in new[] { row.NameLabel, row.SupplyLabel })
-                            {
-                                var font = label.FontOverride ?? (label.TryGetStyleProperty<Font>(Label.StylePropertyFont, out var styled)
-                                    ? styled : ui.ThemeDefaults.LabelFont);
-                                Assert.That(label.PixelHeight + 1, Is.GreaterThanOrEqualTo(font.GetHeight(label.UIScale)),
-                                    $"{theme}/{size}: {label.Text} must fit vertically");
-                                var width = 0f;
-                                foreach (var rune in label.Text!.EnumerateRunes())
-                                    width += font.GetCharMetrics(rune, label.UIScale)?.Advance ?? 0;
-                                Assert.That(label.PixelWidth + 1, Is.GreaterThanOrEqualTo(width), $"{theme}/{size}: {label.Text}");
-                            }
-                        }
-                        foreach (var button in Tree(panel).OfType<Button>().Where(button => button.VisibleInTree))
-                        {
-                            Assert.That(button.Height, Is.GreaterThanOrEqualTo(28), $"{theme}: {button.Name}");
-                            Assert.That(button.GlobalPosition.X, Is.GreaterThanOrEqualTo(panel.GlobalPosition.X));
-                            Assert.That(button.GlobalPosition.Y, Is.GreaterThanOrEqualTo(panel.GlobalPosition.Y));
-                            Assert.That(button.GlobalPosition.X + button.Width, Is.LessThanOrEqualTo(panel.GlobalPosition.X + panel.Width + 1));
-                            Assert.That(button.GlobalPosition.Y + button.Height, Is.LessThanOrEqualTo(panel.GlobalPosition.Y + panel.Height + 1));
-                        }
-                        if (page < grid.PageCount - 1)
-                            Press(Named("WfWeaponNext"));
+                        Assert.That(button.Height, Is.GreaterThanOrEqualTo(28), $"{theme}: {button.Name}");
+                        Assert.That(button.GlobalPosition.X, Is.GreaterThanOrEqualTo(panel.GlobalPosition.X));
+                        Assert.That(button.GlobalPosition.Y, Is.GreaterThanOrEqualTo(panel.GlobalPosition.Y));
+                        Assert.That(button.GlobalPosition.X + button.Width, Is.LessThanOrEqualTo(panel.GlobalPosition.X + panel.Width + 1));
+                        Assert.That(button.GlobalPosition.Y + button.Height, Is.LessThanOrEqualTo(panel.GlobalPosition.Y + panel.Height + 1));
                     }
-                    Assert.That(seen, Is.EquivalentTo(buttons.Take(24)), "All offensive weapons remain accessible through paging.");
-                    Assert.That(Named("WfWeaponNext").Disabled, Is.True);
-                    Assert.That(panel.SelectedWeapons, Is.EquivalentTo(expectedSelection));
-                    Assert.That(commands.Count, Is.EqualTo(commandsBeforeTheme));
-                    Press(Named("WfWeaponPrevious"));
-                    Layout(size);
-                    Assert.That(grid.PageIndex, Is.EqualTo(grid.PageCount - 2));
+                    Assert.That(scroll.GlobalPosition.X, Is.GreaterThanOrEqualTo(panel.GlobalPosition.X), theme);
+                    Assert.That(scroll.GlobalPosition.Y, Is.GreaterThanOrEqualTo(panel.GlobalPosition.Y), theme);
+                    Assert.That(scroll.GlobalPosition.X + scroll.Width, Is.LessThanOrEqualTo(panel.GlobalPosition.X + panel.Width + 1), theme);
+                    Assert.That(scroll.GlobalPosition.Y + scroll.Height, Is.LessThanOrEqualTo(panel.GlobalPosition.Y + panel.Height + 1), theme);
                 }
                 var compactSize = new Vector2(296, 450);
-                Layout(compactSize);
-                var fullBatteryPages = grid.PageCount;
-                grid.SetPage(fullBatteryPages - 1);
-                Layout(compactSize);
-                panel.UpdateStatus(new FireControlConsoleBoundInterfaceState(true, entries.Take(4).ToArray(), state.NavState));
-                Layout(compactSize);
-                Assert.That(grid.PageCount, Is.LessThan(fullBatteryPages), "Removing weapons must reduce the page count at the same panel size.");
-                Assert.That(grid.PageIndex, Is.LessThan(grid.PageCount), "Removing the active final page must select a remaining page.");
-                Assert.That(grid.Children.OfType<Button>().Count(), Is.EqualTo(4));
                 panel.UpdateStatus(state);
                 Layout(compactSize);
-                Assert.That(grid.PageCount, Is.EqualTo(fullBatteryPages), "Adding weapons back must restore their pages without resizing the panel.");
-                grid.SetPage(grid.PageCount - 1);
+                var fullHeight = grid.ContentHeight;
+                scroll.VScroll = fullHeight;
                 Layout(compactSize);
-                Assert.That(grid.Children.OfType<Button>().Any(button => button.Visible && button.Text == entries[23].Name), Is.True,
+                Assert.That(scroll.VScroll, Is.GreaterThan(0));
+                panel.UpdateStatus(new FireControlConsoleBoundInterfaceState(true, entries.Take(4).ToArray(), state.NavState));
+                Layout(compactSize);
+                Assert.That(grid.ContentHeight, Is.LessThan(fullHeight), "Removing weapons shortens the list.");
+                Assert.That(scroll.Height, Is.EqualTo(grid.ContentHeight).Within(1), "A short list takes only the height it needs.");
+                Assert.That(scroll.VScroll, Is.Zero, "A list that fits again starts from its top.");
+                Assert.That(grid.Children.OfType<Button>().Count(), Is.EqualTo(4));
+                WFWeaponListChecks.Layout(grid, Listed(entries.Take(4)), "four weapons");
+                panel.UpdateStatus(state);
+                Layout(compactSize);
+                Assert.That(grid.ContentHeight, Is.EqualTo(fullHeight).Within(0.5f), "Adding weapons back restores the whole list without resizing the panel.");
+                var restored = Listed(entries);
+                Assert.That(restored.Any(button => button.Text == entries[23].Name), Is.True);
+                WFWeaponListChecks.Reachable(scroll, restored, () => Layout(compactSize),
                     "The newly added final offensive weapon must be reachable after an in-place refresh.");
                 panel.ClearSelection();
                 Assert.That(panel.SelectedWeapons, Is.Empty);
                 Assert.That(panel.HasSelectedWeapons, Is.False);
                 panel.UpdateState(null);
                 Layout(new Vector2(296, 450));
-                Assert.That(grid.PageIndex, Is.Zero);
-                Assert.That(grid.PageCount, Is.EqualTo(1));
+                Assert.That(grid.ContentHeight, Is.Zero);
                 Assert.That(grid.Children.OfType<Button>(), Is.Empty);
                 Assert.That(flarePanel.Visible, Is.False);
                 Assert.That(Named("CockpitAutomaticFlares").Disabled, Is.True);

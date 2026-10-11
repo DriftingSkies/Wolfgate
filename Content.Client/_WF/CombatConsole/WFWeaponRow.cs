@@ -12,9 +12,14 @@ namespace Content.Client._WF.CombatConsole;
 /// <summary>Displays a weapon name and exact supply above a quiet ammunition strip.</summary>
 public sealed class WFWeaponRow : Control
 {
+    private const float BarHeight = 2;
+    private const int NameSize = 10;
+    private const int SupplySize = 8;
     private readonly Button _button;
     private readonly Func<WFGaugeReading> _read;
     private WolfgateSkin? _skin;
+    private Font? _nameFont;
+    private Font? _supplyFont;
     private WFGaugeReading _reading;
     private float _sampleElapsed;
 
@@ -31,16 +36,8 @@ public sealed class WFWeaponRow : Control
         _read = read;
         HorizontalExpand = VerticalExpand = true;
         MouseFilter = MouseFilterMode.Ignore;
-        NameLabel = new Label
-        {
-            Name = "WfWeaponName", ClipText = true, VerticalAlignment = VAlignment.Top,
-            SetHeight = 24, MouseFilter = MouseFilterMode.Ignore,
-        };
-        SupplyLabel = new Label
-        {
-            Name = "WfWeaponSupply", ClipText = true, VerticalAlignment = VAlignment.Top,
-            Margin = new Thickness(0, 24, 0, 0), SetHeight = 20, MouseFilter = MouseFilterMode.Ignore,
-        };
+        NameLabel = new Label { Name = "WfWeaponName", ClipText = true, MouseFilter = MouseFilterMode.Ignore };
+        SupplyLabel = new Label { Name = "WfWeaponSupply", ClipText = true, MouseFilter = MouseFilterMode.Ignore };
         AddChild(NameLabel);
         AddChild(SupplyLabel);
         Refresh();
@@ -57,8 +54,8 @@ public sealed class WFWeaponRow : Control
         if (_skin != skin)
         {
             var cache = IoCManager.Resolve<IResourceCache>();
-            NameLabel.FontOverride = cache.GetFont(skin.MenuFonts, 12);
-            SupplyLabel.FontOverride = cache.GetFont(skin.MonoFonts, 10);
+            NameLabel.FontOverride = _nameFont = cache.GetFont(skin.MenuFonts, NameSize);
+            SupplyLabel.FontOverride = _supplyFont = cache.GetFont(skin.MonoFonts, SupplySize);
             _skin = skin;
         }
         if (NameLabel.Text != _button.Text)
@@ -68,6 +65,26 @@ public sealed class WFWeaponRow : Control
         NameLabel.FontColorOverride = _button.Disabled ? skin.TextMuted : skin.Text;
         SupplyLabel.FontColorOverride = reading.Tint == skin.Danger ? skin.Danger : skin.TextMuted;
     }
+
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
+    {
+        var line = new Vector2(availableSize.X, float.PositiveInfinity);
+        NameLabel.Measure(line);
+        SupplyLabel.Measure(line);
+        return new Vector2(0, LineHeight(NameLabel, _nameFont) + LineHeight(SupplyLabel, _supplyFont) + BarHeight);
+    }
+
+    protected override Vector2 ArrangeOverride(Vector2 finalSize)
+    {
+        var name = LineHeight(NameLabel, _nameFont);
+        NameLabel.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(finalSize.X, name)));
+        SupplyLabel.Arrange(UIBox2.FromDimensions(new Vector2(0, name), new Vector2(finalSize.X, LineHeight(SupplyLabel, _supplyFont))));
+        return finalSize;
+    }
+
+    /// <summary>A label's height, never less than one line of its font so an empty name keeps its row.</summary>
+    private float LineHeight(Label label, Font? font) =>
+        Math.Max(label.DesiredSize.Y, font == null ? 0 : font.GetHeight(UIScale) / UIScale);
 
     protected override void FrameUpdate(FrameEventArgs args)
     {
@@ -83,7 +100,7 @@ public sealed class WFWeaponRow : Control
     {
         base.Draw(handle);
         var skin = WFInstrumentTheme.Skin;
-        var bar = new UIBox2(0, Math.Max(0, PixelHeight - 3 * UIScale), PixelWidth, PixelHeight);
+        var bar = new UIBox2(0, Math.Max(0, PixelHeight - BarHeight * UIScale), PixelWidth, PixelHeight);
         handle.DrawRect(bar, skin.Ink);
         var reading = _reading;
         if (WFGaugeScale.Fraction(reading.Value, reading.Minimum, reading.Maximum) is not { } fraction)
@@ -102,8 +119,8 @@ public sealed class WFWeaponRowStyleBox : StyleBox
     public WFWeaponRowStyleBox(Button button)
     {
         _button = button;
-        SetContentMarginOverride(Margin.Horizontal, 10);
-        SetContentMarginOverride(Margin.Vertical, 2);
+        SetContentMarginOverride(Margin.Horizontal, 5);
+        SetContentMarginOverride(Margin.Vertical, 0);
     }
 
     protected override void DoDraw(DrawingHandleScreen handle, UIBox2 box, float uiScale)
@@ -116,6 +133,6 @@ public sealed class WFWeaponRowStyleBox : StyleBox
         handle.DrawLine(new Vector2(box.Left, box.Bottom - uiScale), box.BottomRight - Vector2.UnitY * uiScale,
             selected ? skin.Accent.WithAlpha(0.45f) : skin.EdgeSoft);
         if (selected)
-            handle.DrawRect(new UIBox2(box.Left, box.Top + 3 * uiScale, box.Left + 3 * uiScale, box.Bottom - 3 * uiScale), skin.Accent);
+            handle.DrawRect(new UIBox2(box.Left, box.Top + 2 * uiScale, box.Left + 2 * uiScale, box.Bottom - 2 * uiScale), skin.Accent);
     }
 }

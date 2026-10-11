@@ -139,10 +139,11 @@ public sealed partial class FireControlWindow
         countermeasures.Visible = false;
         _wfCountermeasures = countermeasures;
 
-        ControllablesBox.MinimumRowHeight = 52;
-        var controls = Column(groups, selection, _wfTypeChoices, _wfSelection, ControllablesBox, _wfThreats, countermeasures);
-        controls.SeparationOverride = 5;
-        controls.HorizontalExpand = controls.VerticalExpand = true;
+        var head = Column(groups, selection, _wfTypeChoices, _wfSelection);
+        head.SeparationOverride = 5;
+        var tail = Column(_wfThreats, countermeasures);
+        tail.SeparationOverride = 5;
+        var controls = new WFWeaponBank(head, ControllablesBox, tail);
         _wfBatteryControls = controls;
         var battery = Panel("wf-gunnery-battery", controls, true);
         battery.Name = "WfWeaponBattery";
@@ -230,7 +231,7 @@ public sealed partial class FireControlWindow
         {
             WfStyleWeapon(button, uid);
             var available = !combat.FlareLaunchers.Contains(uid);
-            ControllablesBox.SetAvailable(button, available);
+            ControllablesBox.SetWeapon(button, uid, available);
             if (!available)
                 button.Pressed = false;
         }

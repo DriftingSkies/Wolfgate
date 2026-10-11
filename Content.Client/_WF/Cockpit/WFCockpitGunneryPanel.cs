@@ -18,7 +18,7 @@ public sealed class WFCockpitGunneryPanel : Control
     /// <summary>Forwards the existing fire-control commands through the active helm session.</summary>
     public event Action<BoundUserInterfaceMessage>? Command;
 
-    /// <summary>Returns the offensive selection across every page, excluding countermeasure launchers.</summary>
+    /// <summary>Returns the offensive selection across the whole list, excluding countermeasure launchers.</summary>
     public List<NetEntity> SelectedWeapons => _window.WeaponsList
         .Where(pair => pair.Value.Pressed && _window.WfAvailableWeapon(pair.Key)).Select(pair => pair.Key).ToList();
 
@@ -36,7 +36,7 @@ public sealed class WFCockpitGunneryPanel : Control
         }
     }
 
-    /// <summary>Whether this offensive weapon is selected, on any page.</summary>
+    /// <summary>Whether this offensive weapon is selected, wherever it sits in the list.</summary>
     public bool IsSelected(NetEntity weapon) =>
         _window.WeaponsList.TryGetValue(weapon, out var button) && button.Pressed && _window.WfAvailableWeapon(weapon);
 
