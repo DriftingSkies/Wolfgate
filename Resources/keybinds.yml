@@ -164,6 +164,7 @@ binds:
 - function: EditorRotateObject
   type: State
   key: MouseMiddle
+  priority: -1 # WOLFGATE(Input): it swallows the click, so anything else bound to middle mouse goes first
 - function: EditorFlipObject
   type: State
   key: MouseMiddle
@@ -527,6 +528,7 @@ binds:
   type: State
   key: MouseMiddle
   mod1: Shift
+  allowSubCombs: true # WOLFGATE(Input): holding Shift to walk doesn't cancel the plain middle mouse binds
 - function: ArcadeUp
   type: State
   key: Up
