@@ -284,6 +284,7 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
         _viewportExclusions.Clear();
 
         DrawStarSystem(handle, matty);
+        DrawDroneRings(handle, matty, viewedMapUid); // WOLFGATE(DroneRings): draw rings where drones start to spawn.
 
         // Draw our FTL range + no FTL zones
         // Do it up here because we want this layered below most things.
