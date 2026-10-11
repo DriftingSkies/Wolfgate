@@ -593,6 +593,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
             Passengers = ship.Passengers.Count > 0,
         };
         encounter.Comp.Ships.Add(ship.Key, state);
+        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only.
+        if (ship.Hunt)
+            EnsureComp<WFHoldFireComponent>(grid);
 
         // Cargo goes aboard first, so the crew are posted around it and not on it.
         if (manifest != null && manifest.Crates.Count > 0)

@@ -218,6 +218,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSpawnPointComponent.cs`](Components/WFCrewSpawnPointComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewWeaponComponent.cs`](Components/WFCrewWeaponComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFGunnerDutyComponent.cs`](Components/WFGunnerDutyComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFHoldFireComponent.cs`](Components/WFHoldFireComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFPilotDutyComponent.cs`](Components/WFPilotDutyComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFRadioOperatorComponent.cs`](Components/WFRadioOperatorComponent.cs)
 - [`Content.Server/_WF/NpcCrew/HTN/WFCrewLoadedGunPrecondition.cs`](HTN/WFCrewLoadedGunPrecondition.cs)

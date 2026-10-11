@@ -375,6 +375,9 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
     {
         if (ship == grid || TerminatingOrDeleted(ship))
             return null;
+        // A boarding party's ship only answers ship guns with its own.
+        if (HasComp<WFHoldFireComponent>(grid) && !_alerts.FiredShipGuns(grid, crew.Group, ship))
+            return null;
         // An assigned target starts out of range, so only its state releases the gunner, as for the pilot.
         var assigned = _objectives.IsAttackTarget(grid, crew.Group, ship);
         if (_status.ShouldDisengage(grid, ship, range: !assigned))
