@@ -9,9 +9,9 @@ messages it holds that the selected tab hides. Tabs are the same in every chat b
 
 The pop-out button at the end of the tab row moves the tabs and the log into their own OS window, for another monitor.
 The input line stays in the game window, because the engine only delivers typed text to the OS window that has focus.
-The floating chat box shrinks to that line; docked chat boxes (separated layout, lobby) show a notice with a Dock
-button instead. Closing the window docks the log. The window survives a change of screen, so it stays put between the
-lobby and the round. `wf.ui_window_popout` hides the button, as it does for other windows.
+The floating chat box shrinks to that line; docked chat boxes (separated layout, lobby, the cockpit) show a notice
+with a Dock button instead. Closing the window docks the log. The window survives a change of screen, so it stays put
+between the lobby and the round. `wf.ui_window_popout` hides the button, as it does for other windows.
 
 Entry points: `ChatTabsUIController` (the tab list, selection, unread counts, saving), `ChatTabBar` and `ChatTabPopup`
 (the row and a tab's settings), `ChatLogPopoutUIController` and `ChatLogWindow` (the pop-out). `ChatBox.Tabs.cs`,

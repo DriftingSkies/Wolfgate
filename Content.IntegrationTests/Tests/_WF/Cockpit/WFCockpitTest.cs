@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
 using System.Text;
+using Content.Client._WF.ChatTabs;
 using Content.Client._WF.Cockpit;
 using Content.Client._WF.ShipAccess;
 using Content.IntegrationTests.Tests._WF.ShipAccess;
@@ -846,6 +847,84 @@ public sealed class WFCockpitTest : InteractionTest
             window.Dispose();
             settings.SetCVar(CCVars.UILayout, originalLayout);
         });
+    }
+
+    [Test]
+    public async Task APoppedOutChatLogFollowsTheChatIntoTheCockpitAndBack()
+    {
+        var (console, chair) = await SpawnHelm();
+        await MakePilot(console);
+        await Buckle(chair);
+        await RunTicks(10);
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        var originalLayout = settings.GetCVar(CCVars.UILayout);
+        await Client.WaitAssertion(() => settings.SetCVar(CCVars.UILayout, "Default"));
+        await RunTicks(3);
+        var ui = Client.ResolveDependency<IUserInterfaceManager>();
+        var popout = ui.GetUIController<ChatLogPopoutUIController>();
+        var controller = ui.GetUIController<WFCockpitUIController>();
+        ChatBox chat = default!;
+        ShuttleConsoleWindow window = default!;
+        Vector2 minSize = default;
+        float marginBottom = 0, shrunkBottom = 0;
+        float Bottom() => chat.GetValue<float>(LayoutContainer.MarginBottomProperty);
+        bool NoticeShown() => chat.ChatInput.Parent!.Children
+            .Any(child => child != chat.ChatInput && child != chat.WfTabBar && child is not OutputPanel);
+        try
+        {
+            await Client.WaitAssertion(() =>
+            {
+                chat = ((InGameScreen) ui.ActiveScreen!).ChatBox;
+                Assert.That(chat, Is.InstanceOf<ResizableChatBox>());
+                minSize = chat.MinSize;
+                marginBottom = Bottom();
+                popout.PopOut(chat);
+                Assert.That(chat.WfLogPoppedOut, Is.True);
+                shrunkBottom = Bottom();
+                Assert.That(shrunkBottom, Is.LessThan(marginBottom), "The floating chat box shrinks to its input line.");
+                window = OpenHelm(console);
+                Assert.That(controller.Enter(window), Is.True);
+            });
+            await RunTicks(5);
+            await Client.WaitAssertion(() =>
+            {
+                Assert.That(controller.Active, Is.True);
+                Assert.That(chat.WfLogPoppedOut, Is.True, "The log window must pick the chat up again in the cockpit.");
+                Assert.That(popout.Window, Is.Not.Null);
+                Assert.That(NoticeShown(), Is.True, "The cockpit's chat panel must say where the log went, not sit empty.");
+                Assert.That(chat.VisibleInTree, Is.True);
+                controller.Exit();
+                Assert.That(chat.WfLogPoppedOut, Is.False, "The log docks while the chat moves back.");
+                Assert.That(NoticeShown(), Is.False);
+                Assert.That(chat.MinSize, Is.EqualTo(minSize));
+                Assert.That(Bottom(), Is.EqualTo(marginBottom));
+            });
+            await RunTicks(8);
+            await Client.WaitAssertion(() =>
+            {
+                Assert.That(chat.WfLogPoppedOut, Is.True, "Back on the normal HUD the log pops out again.");
+                Assert.That(NoticeShown(), Is.False);
+                Assert.That(Bottom(), Is.EqualTo(shrunkBottom).Within(1f),
+                    "The re-clamp on leaving the cockpit must not stretch the shrunken chat box back to full height.");
+                popout.Toggle(chat);
+                Assert.That(chat.WfLogPoppedOut, Is.False);
+                Assert.That(popout.Window, Is.Null);
+                Assert.That(chat.MinSize, Is.EqualTo(minSize));
+                Assert.That(Bottom(), Is.EqualTo(marginBottom), "Docking the log must give the chat box its size back.");
+            });
+        }
+        finally
+        {
+            await Client.WaitPost(() =>
+            {
+                if (controller.Active)
+                    controller.Exit();
+                if (chat is { WfLogPoppedOut: true })
+                    popout.Toggle(chat);
+                window?.Dispose();
+                settings.SetCVar(CCVars.UILayout, originalLayout);
+            });
+        }
     }
 
     [Test]
