@@ -64,9 +64,16 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
         var map = _territory.SectorMap;
         var ships = _activity.CrewedShips(map);
         var gone = new List<EntityUid>();
-        foreach (var grid in _ships.Keys)
+        foreach (var (grid, tracked) in _ships)
         {
-            if (!ships.Contains(grid))
+            if (ships.Contains(grid))
+            {
+                tracked.LastSeen = now;
+                continue;
+            }
+
+            // Kept through a short absence of the crew, so the cooldown holds.
+            if (TerminatingOrDeleted(grid) || now - tracked.LastSeen > Cooldown)
                 gone.Add(grid);
         }
 
@@ -81,7 +88,7 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
             var owner = _territory.Owner(map, cell);
             if (!_ships.TryGetValue(grid, out var state))
             {
-                state = new NoticeState { Since = now };
+                state = new NoticeState { Since = now, LastSeen = now };
                 _ships[grid] = state;
             }
 
@@ -145,5 +152,6 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
         public ProtoId<WFSectorFactionPrototype>? Announced;
         public TimeSpan Since;
         public TimeSpan NextAllowed;
+        public TimeSpan LastSeen;
     }
 }

@@ -75,6 +75,46 @@ public sealed class WFSectorNoticeTest : WFSectorTestBase
         Assert.That(lines.Count(IsLeft), Is.EqualTo(1), "Told that it left, though the cooldown has not run out.");
     }
 
+    /// <summary>Crew stepping off and back aboard inside the cooldown does not bring the entered notice again.</summary>
+    [Test]
+    public async Task ShortAbsenceDoesNotRepeatTheNotice()
+    {
+        await StartRound();
+        var since = ChatCount();
+        EntityUid ship = default;
+        TimeSpan entered = default;
+        await Server.WaitAssertion(() =>
+        {
+            ship = SpawnGrid(CentreOf(Cell), "Test Hauler");
+            Board(ship);
+            Assert.That(Server.System<WFSectorTerritorySystem>().TryClaim(MapData.MapId, Cell, Holder, null), Is.True);
+            Server.System<WFSectorNoticeSystem>().Check();
+            entered = STiming.CurTime;
+        });
+
+        await WaitUntilServer(() => STiming.CurTime - entered > WFSectorNoticeSystem.EnteredDwell + TimeSpan.FromSeconds(0.5), 1200);
+        TimeSpan back = default;
+        await Server.WaitAssertion(() =>
+        {
+            var notices = Server.System<WFSectorNoticeSystem>();
+            notices.Check();
+            Disembark();
+            notices.Check();
+            Board(ship);
+            notices.Check();
+            back = STiming.CurTime;
+        });
+
+        await WaitUntilServer(() => STiming.CurTime - back > WFSectorNoticeSystem.EnteredDwell + TimeSpan.FromSeconds(0.5), 1200);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(STiming.CurTime - entered, Is.LessThan(WFSectorNoticeSystem.Cooldown), "Still inside the cooldown.");
+            Server.System<WFSectorNoticeSystem>().Check();
+        });
+        await RunTicks(60);
+        Assert.That(ChatSince(since).Count(IsEntered), Is.EqualTo(1), "Told once, not again on return.");
+    }
+
     [Test]
     public async Task ShipInsideHeldSpaceIsToldInChatAfterTheDwell()
     {

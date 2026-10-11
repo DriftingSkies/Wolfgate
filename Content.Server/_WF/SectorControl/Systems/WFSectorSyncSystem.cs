@@ -1,5 +1,6 @@
 using Content.Server._WF.SectorControl.Components;
 using Content.Shared._WF.SectorControl;
+using Robust.Shared.Configuration;
 using Content.Shared.GameTicking;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
@@ -12,6 +13,7 @@ namespace Content.Server._WF.SectorControl.Systems;
 public sealed partial class WFSectorSyncSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private WFSectorTerritorySystem _territory = default!;
 
@@ -19,6 +21,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
 
     private readonly HashSet<MapId> _dirty = new();
     private readonly HashSet<MapId> _sent = new();
+    private readonly HashSet<MapId> _forced = new();
     private readonly SortedDictionary<string, string> _status = new();
     private bool _statusDirty;
     private bool _statusSent;
@@ -32,6 +35,25 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         SubscribeLocalEvent<WFSectorContestResolvedEvent>(OnContestResolved);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
+        SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
+        Subs.CVar(_config, SectorControlCVars.Enabled, _ => ForceSector());
+        Subs.CVar(_config, SectorControlCVars.CellSize, _ => ForceSector());
+    }
+
+    private void OnSectorReset(ref WFSectorResetEvent args)
+    {
+        ForceSector();
+    }
+
+    /// <summary>Sends the sector map with the next update even when empty, so clients pick up a new cell size or the switch.</summary>
+    private void ForceSector()
+    {
+        var map = _territory.SectorMap;
+        if (map == MapId.Nullspace)
+            return;
+
+        _forced.Add(map);
+        _dirty.Add(map);
     }
 
     private void OnCellChanged(ref WFSectorCellChangedEvent args)
@@ -54,6 +76,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
     {
         _dirty.Clear();
         _sent.Clear();
+        _forced.Clear();
         _status.Clear();
         _statusDirty = false;
         _statusSent = false;
@@ -95,7 +118,8 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         {
             var ev = Build(map);
             var empty = ev.Claims.Count == 0 && ev.Contests.Count == 0;
-            if (empty && !_sent.Remove(map))
+            var forced = _forced.Remove(map);
+            if (empty && !_sent.Remove(map) && !forced)
                 continue;
 
             if (!empty)

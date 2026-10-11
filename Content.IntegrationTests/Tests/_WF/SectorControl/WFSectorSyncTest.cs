@@ -6,6 +6,7 @@ using System.Linq;
 using Content.Client._WF.SectorControl;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Shared._WF.SectorControl;
+using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 
@@ -67,6 +68,42 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
             sync.SetStatus(Holder, string.Empty);
             Assert.That(sync.BuildStatus().Lines, Is.Empty, "An empty line takes the legend entry down.");
         });
+    }
+
+    /// <summary>With nothing held, a new cell size and the switch going off still reach the client.</summary>
+    [Test]
+    public async Task ClientHearsCellSizeAndSwitchWithNothingHeld()
+    {
+        await StartRound();
+        await RunTicks(30);
+        var config = Server.ResolveDependency<IConfigurationManager>();
+        try
+        {
+            await Server.WaitPost(() => config.SetCVar(SectorControlCVars.CellSize, 2000f));
+            await RunTicks(90);
+            await Client.WaitAssertion(() =>
+            {
+                Assert.That(Client.System<WFSectorClientSystem>().TryGetMap(MapData.MapId, out var view), Is.True);
+                Assert.That(view.CellSize, Is.EqualTo(2000f), "The client draws the new cell size.");
+            });
+
+            await Server.WaitPost(() => config.SetCVar(SectorControlCVars.Enabled, false));
+            await RunTicks(90);
+            await Client.WaitAssertion(() =>
+            {
+                var held = Client.System<WFSectorClientSystem>().TryGetMap(MapData.MapId, out var view);
+                Assert.That(held && view.Sector, Is.False, "The client stops drawing the sector grid.");
+            });
+        }
+        finally
+        {
+            await Server.WaitPost(() =>
+            {
+                config.SetCVar(SectorControlCVars.Enabled, SectorControlCVars.Enabled.DefaultValue);
+                config.SetCVar(SectorControlCVars.CellSize, SectorControlCVars.CellSize.DefaultValue);
+            });
+            await RunTicks(90);
+        }
     }
 
     /// <summary>A change reaches the client as drawable cells; the last claim going sends one empty update that clears them, and the sector map stays with its grid.</summary>

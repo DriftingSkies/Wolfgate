@@ -217,6 +217,13 @@ public abstract class WFReaverTestBase : WFSectorTestBase
     roles: [ WFCrewPilot, WFCrewGunner ]
 ";
 
+    /// <summary>Gives the storyteller its scheduling back, so a pooled pair does not keep it held.</summary>
+    [TearDown]
+    public async Task ResumeScheduler()
+    {
+        await Server.WaitPost(() => Server.System<WFEncounterSchedulerSystem>().Paused = false);
+    }
+
     /// <summary>Starts a round with the test campaign in force and the storyteller's own scheduling held.</summary>
     protected async Task StartCampaign()
     {
