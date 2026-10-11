@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Content.IntegrationTests.Tests._WF.SectorControl;
 using Content.Server._NF.Bank;
@@ -241,6 +242,25 @@ public abstract class WFReaverTestBase : WFSectorTestBase
         SEntMan.EnsureComponent<BankAccountComponent>(player);
         Assert.That(Server.System<BankSystem>().TryGetBalance(player, out var balance), Is.True, "The player has a bank balance.");
         return balance;
+    }
+
+    /// <summary>How far from its stronghold's lead ship a campaign ship may spawn: the 1000 m ring plus a ship's own offsets.</summary>
+    protected const float SpawnReach = 1300f;
+
+    /// <summary>Asserts every ship grid of an encounter that has just spawned is within reach of the lead ship of the stronghold it was launched from.</summary>
+    protected void AssertSpawnedBeside(EntityUid encounter, EntityUid stronghold)
+    {
+        var transform = Server.System<SharedTransformSystem>();
+        var strongholdComp = SEntMan.GetComponent<WFReaverStrongholdComponent>(stronghold);
+        var lead = SEntMan.GetComponent<WFEncounterComponent>(stronghold).Ships[strongholdComp.Lead].Grid;
+        var at = transform.GetWorldPosition(lead);
+        var ships = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships;
+        Assert.That(ships, Is.Not.Empty);
+        foreach (var (key, ship) in ships)
+        {
+            Assert.That(Vector2.Distance(transform.GetWorldPosition(ship.Grid), at), Is.LessThanOrEqualTo(SpawnReach),
+                $"{key} spawns beside the stronghold it was launched from.");
+        }
     }
 
     protected WFReaverCampaignComponent State()

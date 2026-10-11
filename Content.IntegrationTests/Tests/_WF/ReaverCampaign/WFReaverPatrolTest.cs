@@ -46,6 +46,7 @@ public sealed class WFReaverPatrolTest : WFReaverTestBase
             Assert.That(campaign.TryLaunchPatrol(stronghold), Is.True);
             var (patrol, comp, encounter) = campaign.Patrols().Single();
             Assert.That(comp.Stronghold, Is.EqualTo(stronghold));
+            AssertSpawnedBeside(patrol, stronghold);
             Assert.That(encounter.Lifetime, Is.EqualTo(WFEncounterLifetime.Transient));
             Assert.That(encounter.OffBudget, Is.True, "A campaign patrol takes no slot from the storyteller.");
             Assert.That(Server.System<WFEncounterSystem>().ActiveCount(), Is.Zero);
@@ -86,6 +87,7 @@ public sealed class WFReaverPatrolTest : WFReaverTestBase
             stronghold = FoundAt(Home);
             Assert.That(campaign.TryLaunchPatrol(stronghold), Is.True);
             var patrol = campaign.Patrols().Single().Owner;
+            AssertSpawnedBeside(patrol, stronghold);
             var encounter = SEntMan.GetComponent<WFEncounterComponent>(patrol);
 
             // It dies one cell over from the stronghold's.
@@ -103,6 +105,7 @@ public sealed class WFReaverPatrolTest : WFReaverTestBase
             // Another dies at the stronghold's own door: the cell stays, and nobody shot it.
             Assert.That(campaign.TryLaunchPatrol(stronghold), Is.True);
             before = Balance();
+            AssertSpawnedBeside(campaign.Patrols().Single().Owner, stronghold);
             Server.System<WFEncounterSystem>().Resolve(campaign.Patrols().Single().Owner, WFEncounterResolution.Destroyed);
             Assert.That(territory.Owner(MapData.MapId, Home)?.Id, Is.EqualTo(Reavers), "A stronghold's cell is not freed by a patrol dying in it.");
             Assert.That(campaign.State()!.PatrolsDestroyed, Is.EqualTo(2));

@@ -47,9 +47,6 @@ public sealed class WFSectorMapControl : Control
     /// <summary>How narrow a cell may get on screen, in pixels, before the grid is no longer outlined.</summary>
     private const float GridPixels = 6f;
 
-    /// <summary>How wide a cell must be on screen, in UI pixels, before every blip is named; below it only the hovered one is.</summary>
-    private const float NamePixels = 90f;
-
     /// <summary>How far from a blip, in UI pixels, the cursor still points at it.</summary>
     private const float BlipReach = 8f;
 
@@ -109,9 +106,6 @@ public sealed class WFSectorMapControl : Control
 
     /// <summary>The blip under the cursor, while it is over the map and not panning.</summary>
     public WFSectorBlip? HoveredBlip => _hover is { } hover && !_panning ? BlipAt(hover) : null;
-
-    /// <summary>Whether a cell is wide enough on screen for every blip to be named.</summary>
-    public bool NamesShown => TryGetView(out var view) && NamesFit(view);
 
     public WFSectorMapControl()
     {
@@ -286,10 +280,10 @@ public sealed class WFSectorMapControl : Control
         return Nearest(pixel, WorldToView(), new UIBox2(Vector2.Zero, PixelSize));
     }
 
-    /// <summary>Whether a blip's name is printed: every blip's once a cell is wide enough on screen, else only the hovered one's.</summary>
+    /// <summary>Whether a blip's name is printed: only the hovered blip's, at any zoom.</summary>
     public bool LabelShown(WFSectorBlip blip)
     {
-        return NamesShown || WFSectorBlip.Same(HoveredBlip, blip);
+        return WFSectorBlip.Same(HoveredBlip, blip);
     }
 
     /// <summary>Where the player's own grid is on a map and which way it faces, when the player is aboard one there; a ghost is never aboard, even over a grid.</summary>
@@ -402,11 +396,6 @@ public sealed class WFSectorMapControl : Control
         }
 
         return best;
-    }
-
-    private bool NamesFit(WFSectorMapView view)
-    {
-        return view.CellSize * MathF.Sqrt(3f) * PixelsPerMetre > NamePixels * UIScale;
     }
 
     /// <summary>The Fluent key for what a blip is: station, ship or the encounter's category.</summary>
@@ -648,23 +637,6 @@ public sealed class WFSectorMapControl : Control
         _placedLabels.Clear();
         if (hovered is { } shown)
             DrawBlipLabel(handle, shown, worldToView, bounds);
-
-        if (!NamesFit(view))
-            return;
-
-        foreach (var landmark in _landmarks)
-        {
-            var blip = WFSectorBlip.Of(landmark);
-            if (!WFSectorBlip.Same(blip, hovered))
-                DrawBlipLabel(handle, blip, worldToView, bounds);
-        }
-
-        foreach (var encounter in _encounters)
-        {
-            var blip = WFSectorBlip.Of(encounter);
-            if (!WFSectorBlip.Same(blip, hovered))
-                DrawBlipLabel(handle, blip, worldToView, bounds);
-        }
     }
 
     /// <summary>A grid's blip in its IFF colour: a ring round a dot for a station, a filled diamond for a ship.</summary>

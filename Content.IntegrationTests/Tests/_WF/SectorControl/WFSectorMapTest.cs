@@ -625,17 +625,18 @@ public sealed class WFSectorMapTest : WFSectorTestBase
 
             // Zoomed out, only the hovered blip is named.
             map.ZoomAt((Vector2) map.PixelSize / 2f, 1000f);
-            Assert.That(map.NamesShown, Is.False);
             var pixel = Vector2.Transform(outpost.Position, map.WorldToView());
             Invoke(map, "MouseMove", Move(map, pixel));
             Assert.That(map.HoveredBlip, Is.EqualTo(WFSectorBlip.Of(outpost)));
             Assert.That(map.LabelShown(WFSectorBlip.Of(outpost)), Is.True, "The hovered blip is named.");
             Assert.That(map.LabelShown(WFSectorBlip.Of(hauler)), Is.False, "The rest are not.");
 
-            // Zoomed in, every blip is.
+            // Zoomed in, still only the hovered one.
             map.ZoomAt(pixel, 0.0001f);
-            Assert.That(map.NamesShown, Is.True);
-            Assert.That(map.LabelShown(WFSectorBlip.Of(hauler)), Is.True);
+            pixel = Vector2.Transform(outpost.Position, map.WorldToView());
+            Invoke(map, "MouseMove", Move(map, pixel));
+            Assert.That(map.LabelShown(WFSectorBlip.Of(outpost)), Is.True);
+            Assert.That(map.LabelShown(WFSectorBlip.Of(hauler)), Is.False, "Zoom never names the rest.");
             Invoke(map, "MouseExited");
             Assert.That(map.HoveredBlip, Is.Null);
         });

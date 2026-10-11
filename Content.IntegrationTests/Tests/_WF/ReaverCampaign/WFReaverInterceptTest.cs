@@ -60,6 +60,7 @@ public sealed class WFReaverInterceptTest : WFReaverTestBase
             campaign.SetTier(1);
             Assert.That(campaign.TryLaunchPatrol(stronghold), Is.True);
             var patrol = campaign.Patrols().Single().Owner;
+            AssertSpawnedBeside(patrol, stronghold);
             var route = SEntMan.GetComponent<WFReaverPatrolComponent>(patrol).Route.ToList();
             var ship = SpawnGrid(CentreOf(Home.Neighbour(1)), "Test Hauler");
             Board(ship);
@@ -114,6 +115,7 @@ public sealed class WFReaverInterceptTest : WFReaverTestBase
             campaign.CheckIntercepts();
             var patrol = campaign.Patrols().Single();
             Assert.That(patrol.Comp1.Stronghold, Is.EqualTo(stronghold));
+            AssertSpawnedBeside(patrol.Owner, stronghold);
             AssertIntercepting(patrol.Owner, ship);
             Assert.That(patrol.Comp1.Resume, Is.EqualTo(patrol.Comp1.Route), "A fresh patrol flies its whole route afterwards.");
         });

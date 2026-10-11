@@ -81,9 +81,9 @@ each shared edge once and none once a cell is under 6 px across; the territory o
 cell once a cell spans 60 px, held cells in their faction's colour and open ones in dim grey (a contested cell shows its
 countdown instead); the grids the MAP tab names without a scan, by its own rule on the client's grids
 (`WFSectorClientSystem.CollectLandmarks`): none on a beacon map, none with IFF `Hide` or `HideLabelAlways`, none with
-`HideLabel` (the map has no console to detect them with), never the player's own ship, each as a dot and its name (a
-name that would overlap one already printed is left out); one marker per visible encounter at its first ship, as the
-MAP tab lists them, in its category's glyph and colour with the encounter's name; the player's grid as a white
+`HideLabel` (the map has no console to detect them with), never the player's own ship, each as a dot, named only
+while the cursor is on it; one marker per visible encounter at its first ship, as the
+MAP tab lists them, in its category's glyph and colour, named only while hovered; the player's grid as a white
 triangle along its heading; and, once the cursor has rested half a second on one cell (not while panning), the cell's callsign, its distance from
 the origin and its owner ("K-7 (12.4 km): open space", or "contested by X, m:ss"). With no view of the map it shows only "No territory data".
 `WFSectorMapPanel` puts it over a bar with "Centre on me", "Whole sector" and the scale. It opens several ways:

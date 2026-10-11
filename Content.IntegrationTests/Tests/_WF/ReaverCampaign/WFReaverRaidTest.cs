@@ -61,6 +61,7 @@ public sealed class WFReaverRaidTest : WFReaverTestBase
             Assert.That(comp.Target, Is.EqualTo(target));
             Assert.That(comp.Station, Is.False);
             Assert.That(comp.Stronghold, Is.EqualTo(stronghold));
+            AssertSpawnedBeside(raid, stronghold);
             Assert.That(encounter.OffBudget, Is.True);
             Assert.That(Server.System<WFEncounterSystem>().ActiveCount(), Is.Zero, "A raid takes no slot from the storyteller.");
             Assert.That(campaign.State()!.Raids, Is.EqualTo(1));
@@ -102,7 +103,7 @@ public sealed class WFReaverRaidTest : WFReaverTestBase
         {
             var campaign = Server.System<WFReaverCampaignSystem>();
             var transform = Server.System<SharedTransformSystem>();
-            FoundAt(Home);
+            var stronghold = FoundAt(Home);
             farStation = SpawnStation(CentreOf(far), "Outpost Theta");
             coreStation = SpawnStation(CentreOf(core), "Core Depot");
             var state = campaign.State()!;
@@ -114,6 +115,8 @@ public sealed class WFReaverRaidTest : WFReaverTestBase
             var raid = Raids().Single();
             var comp = SEntMan.GetComponent<WFReaverRaidComponent>(raid);
             Assert.That(comp.Station, Is.True);
+            Assert.That(comp.Stronghold, Is.EqualTo(stronghold));
+            AssertSpawnedBeside(raid, stronghold);
             Assert.That(comp.Target, Is.EqualTo(farStation), "The core is protected below the fourth tier.");
             Assert.That(state.Raided.ContainsKey(farStation), Is.True);
             Assert.That(state.Raids, Is.EqualTo(3));
@@ -136,6 +139,7 @@ public sealed class WFReaverRaidTest : WFReaverTestBase
 
             campaign.SetTier(4);
             Assert.That(campaign.TryLaunchRaid(), Is.True);
+            AssertSpawnedBeside(Raids().Single(), stronghold);
             Assert.That(SEntMan.GetComponent<WFReaverRaidComponent>(Raids().Single()).Target, Is.EqualTo(coreStation),
                 "From the fourth tier a core station is the target.");
         });
