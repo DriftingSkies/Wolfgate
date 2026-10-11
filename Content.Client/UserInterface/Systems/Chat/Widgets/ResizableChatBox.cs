@@ -95,6 +95,10 @@ public sealed partial class ResizableChatBox : ChatBox
 
         private DragMode GetDragModeFor(Vector2 relativeMousePos)
         {
+            // WOLFGATE(ChatTabs): the input line left behind by a popped-out log can't be resized
+            if (WfLogPoppedOut)
+                return DragMode.None;
+
             var mode = DragMode.None;
 
             if (relativeMousePos.Y > Size.Y - DragMarginSize)

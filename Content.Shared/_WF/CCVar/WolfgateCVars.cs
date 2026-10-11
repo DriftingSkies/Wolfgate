@@ -34,6 +34,13 @@ public sealed class WolfgateCVars
         CVarDef.Create("wf.ui_window_popout", true, CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
+    /// The player's chat tabs: <c>name=channel,channel</c> entries separated by <c>|</c>, with <c>*</c> for every
+    /// channel. Empty means the default tabs.
+    /// </summary>
+    public static readonly CVarDef<string> ChatTabs =
+        CVarDef.Create("wf.chat_tabs", string.Empty, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
     /// Comma separated entity prototype ids starred in the spawn menu's Favourites folder.
     /// </summary>
     public static readonly CVarDef<string> SpawnFavourites =
