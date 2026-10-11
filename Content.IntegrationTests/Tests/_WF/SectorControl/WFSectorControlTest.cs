@@ -297,6 +297,37 @@ public sealed class WFSectorControlTest : WFSectorTestBase
         });
     }
 
+    /// <summary>A faction may contest a cell it holds, which stays held; another faction may not, and the deadline can be moved.</summary>
+    [Test]
+    public async Task FactionMayContestItsOwnCell()
+    {
+        await StartRound();
+        await Server.WaitAssertion(() =>
+        {
+            var territory = Server.System<WFSectorTerritorySystem>();
+            var recorder = Server.System<WFSectorTestSystem>();
+            var map = MapData.MapId;
+            recorder.Reset();
+            var deadline = STiming.CurTime + TimeSpan.FromMinutes(5);
+            var later = deadline + TimeSpan.FromMinutes(2);
+
+            Assert.That(territory.TryClaim(map, Far, Holder, null), Is.True);
+            Assert.That(territory.Contest(map, Far, Rival, deadline), Is.False, "Not another faction's cell.");
+            Assert.That(territory.Contest(map, Far, Holder, deadline), Is.True);
+            Assert.That(territory.Owner(map, Far)?.Id, Is.EqualTo(Holder), "Contested, it is still held.");
+
+            Assert.That(territory.SetContestDeadline(map, Far, later), Is.True);
+            Assert.That(territory.ContestOf(map, Far)!.Deadline, Is.EqualTo(later));
+            Assert.That(recorder.Contested.Select(entry => entry.Deadline), Is.EqualTo(new[] { deadline, later }), "The move is sent like a contest.");
+            Assert.That(territory.SetContestDeadline(map, Next, later), Is.False, "No contest there to move.");
+
+            Assert.That(territory.DropContest(map, Far), Is.True);
+            Assert.That(territory.Owner(map, Far)?.Id, Is.EqualTo(Holder), "Dropping the contest leaves the hold.");
+            territory.Clear(map);
+            recorder.Reset();
+        });
+    }
+
     /// <summary>The admin command claims, frees, contests and clears cells, and refuses what the framework refuses.</summary>
     [Test]
     public async Task CommandDrivesTheTerritory()
@@ -340,6 +371,25 @@ public sealed class WFSectorControlTest : WFSectorTestBase
             console.ExecuteCommand("wf_sector callsign x y");
             console.ExecuteCommand("wf_sector clear");
             Assert.That(territory.Held(map, Holder), Is.Empty);
+        });
+    }
+
+    /// <summary>The free command clears a held cell and the contest on it in one go.</summary>
+    [Test]
+    public async Task FreeClearsAHeldCellAndItsContest()
+    {
+        await StartRound();
+        await Server.WaitAssertion(() =>
+        {
+            var console = Server.ConsoleHost;
+            var territory = Server.System<WFSectorTerritorySystem>();
+            var map = MapData.MapId;
+            Assert.That(territory.TryClaim(map, Far, Holder, null), Is.True);
+            Assert.That(territory.Contest(map, Far, Holder, STiming.CurTime + TimeSpan.FromMinutes(5)), Is.True, "A faction may contest its own cell.");
+
+            console.ExecuteCommand("wf_sector free 4 -2");
+            Assert.That(territory.Owner(map, Far), Is.Null);
+            Assert.That(territory.ContestOf(map, Far), Is.Null, "The contest goes with the claim.");
         });
     }
 }

@@ -54,6 +54,13 @@ wf-reaver-patrol-destroyed-held = Reaver patrol destroyed at {$callsign}. { $pai
     }
 wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. They take the cell in {$minutes} minutes unless traffic keeps the lane.
 
+# A stronghold flying out from a standing one to found itself; $station, $bearing and $range are as above
+wf-reaver-convoy-launched = A Reaver convoy is under way to {$callsign}, {$range} km bearing {$bearing} from {$station}. Stop it before it digs in.
+wf-reaver-convoy-destroyed = The Reaver convoy bound for {$callsign} is destroyed. { $paid ->
+        [0] No bounty was claimed.
+       *[other] Bounty {$bounty} spesos paid.
+    }
+
 wf-reaver-raid-warning-pa = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-warning-radio = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-station-warning = Reaver raiders are heading for {$station}, bearing {$bearing}, {$range} km.
@@ -81,14 +88,18 @@ wf-reaver-round-end = Reavers held up to { $peak ->
     } broken, { $patrols ->
         [one] {$patrols} patrol was
        *[other] {$patrols} patrols were
-    } destroyed and { $raids ->
+    } destroyed, { $convoys ->
+        [one] {$convoys} convoy was
+       *[other] {$convoys} convoys were
+    } stopped and { $raids ->
         [one] {$raids} raid was
        *[other] {$raids} raids were
     } sent.
 
 # wf_reavers command
 cmd-wf_reavers-desc = Shows and drives the Ashfall Reaver campaign.
-cmd-wf_reavers-help = Usage: {$command} status | found [x y] | tier <n> | spread | patrol | raid | intercept <grid uid> | pause | resume | clear
+cmd-wf_reavers-help = Usage: {$command} status | found [x y] | convoy | tier <n> | spread | patrol | raid | intercept <grid uid> | pause | resume | clear
+    found places a stronghold at once, an admin shortcut; convoy sends one out from a standing stronghold, as the campaign does.
 cmd-wf_reavers-hint-sub = Subcommand
 cmd-wf_reavers-hint-x = Map x in metres
 cmd-wf_reavers-hint-y = Map y in metres
@@ -127,8 +138,12 @@ cmd-wf_reavers-status-founding-untimed = No stronghold stands and the founding c
 cmd-wf_reavers-status-stronghold = Stronghold {$uid} at {$callsign}: {$prototype}, {$hits} hits, {$patrols} patrols.
 cmd-wf_reavers-status-intercept = Patrol {$patrol} intercepting {$ship} ({$uid}) for {$seconds} s.
 cmd-wf_reavers-status-mark = {$ship} ({$uid}) is marked for {$seconds} s more.
+cmd-wf_reavers-status-convoy-out = A convoy is under way; the next founding waits until it arrives or is stopped.
+cmd-wf_reavers-status-convoy = Convoy {$uid} bound for {$callsign}: {$range} km to go, under way {$seconds} s.
 cmd-wf_reavers-founded = Founded stronghold {$uid} at {$callsign}.
 cmd-wf_reavers-found-failed = No stronghold could be founded there.
+cmd-wf_reavers-convoy = Convoy {$uid} sent to found a stronghold at {$callsign}.
+cmd-wf_reavers-convoy-failed = No convoy could be sent: one is already under way, or no held cell qualifies, or no stronghold has clear space beside it.
 cmd-wf_reavers-bad-position = Not a position: {$x} {$y}
 cmd-wf_reavers-bad-tier = Not a tier from 0 to {$max}: {$arg}
 cmd-wf_reavers-tier-set = Tier set to {$tier}.

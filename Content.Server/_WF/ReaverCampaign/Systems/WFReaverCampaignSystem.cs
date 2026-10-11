@@ -199,6 +199,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
 
         var ships = _activity.CrewedShips(_territory.SectorMap);
         TendStrongholds(state, ships, elapsed);
+        TendConvoys(state, running && !Paused);
         TendPatrols();
         TendIntercepts(state);
         TendMarks();
@@ -373,6 +374,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             StrongholdResolved((args.Encounter, stronghold), args.Resolution);
         else if (TryComp<WFReaverPatrolComponent>(args.Encounter, out var patrol))
             PatrolResolved((args.Encounter, patrol), args.Resolution);
+        else if (TryComp<WFReaverConvoyComponent>(args.Encounter, out var convoy))
+            ConvoyResolved((args.Encounter, convoy), args.Resolution);
     }
 
     /// <summary>Scales the storyteller's own Reaver encounters by the tier, within the campaign's cap.</summary>
@@ -395,6 +398,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             ("founded", state.Founded),
             ("broken", state.Broken),
             ("patrols", state.PatrolsDestroyed),
+            ("convoys", state.ConvoysDestroyed),
             ("raids", state.Raids)));
     }
 
@@ -405,7 +409,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         var query = EntityQueryEnumerator<WFEncounterComponent>();
         while (query.MoveNext(out var uid, out var encounter))
         {
-            if (encounter.Resolution == null && (HasComp<WFReaverStrongholdComponent>(uid)
+            if (encounter.Resolution == null && (HasComp<WFReaverStrongholdComponent>(uid) || HasComp<WFReaverConvoyComponent>(uid)
                     || HasComp<WFReaverPatrolComponent>(uid) || HasComp<WFReaverRaidComponent>(uid)))
                 ended.Add(uid);
         }

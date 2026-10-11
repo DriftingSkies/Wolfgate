@@ -41,7 +41,10 @@ public sealed partial class WFSectorCommand : LocalizedEntityCommands
             case "free" when args.Length == 3:
                 if (TryCell(shell, args[1], args[2], out var freed))
                 {
-                    shell.WriteLine(Loc.GetString(_territory.Free(map, freed) || _territory.DropContest(map, freed)
+                    // Both run: a held cell can be contested too.
+                    var released = _territory.Free(map, freed);
+                    released |= _territory.DropContest(map, freed);
+                    shell.WriteLine(Loc.GetString(released
                         ? "cmd-wf_sector-freed"
                         : "cmd-wf_sector-not-held", ("callsign", WFSectorHex.Callsign(freed))));
                 }

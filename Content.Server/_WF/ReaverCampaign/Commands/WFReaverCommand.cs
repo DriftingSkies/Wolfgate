@@ -15,7 +15,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WF.ReaverCampaign.Commands;
 
-/// <summary>The Reaver campaign from the console: show it, found a stronghold, set the tier, step it, send an intercept, pause it or clear it.</summary>
+/// <summary>The Reaver campaign from the console: show it, found a stronghold or send a convoy, set the tier, step it, send an intercept, pause it or clear it.</summary>
 [AdminCommand(AdminFlags.Admin)]
 public sealed partial class WFReaverCommand : LocalizedEntityCommands
 {
@@ -23,7 +23,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
     [Dependency] private WFReaverCampaignSystem _campaign = default!;
     [Dependency] private WFSectorTerritorySystem _territory = default!;
 
-    private static readonly string[] Subcommands = { "status", "found", "tier", "spread", "patrol", "raid", "intercept", "pause", "resume", "clear" };
+    private static readonly string[] Subcommands = { "status", "found", "convoy", "tier", "spread", "patrol", "raid", "intercept", "pause", "resume", "clear" };
 
     public override string Command => "wf_reavers";
 
@@ -36,6 +36,9 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 break;
             case "found" when args.Length is 1 or 3:
                 Found(shell, args);
+                break;
+            case "convoy" when args.Length == 1:
+                Convoy(shell);
                 break;
             case "tier" when args.Length == 2:
                 if (!int.TryParse(args[1], out var tier) || tier < 0 || tier > WFReaverCampaignSystem.MaxTier)
@@ -143,6 +146,19 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 ("patrols", patrols.Count(patrol => patrol.Comp1.Stronghold == uid))));
         }
 
+        var transform = EntityManager.System<SharedTransformSystem>();
+        foreach (var (uid, convoy, encounter) in _campaign.Convoys())
+        {
+            var at = encounter.Ships.TryGetValue(convoy.Lead, out var lead) && EntityManager.EntityExists(lead.Grid)
+                ? transform.GetWorldPosition(lead.Grid)
+                : encounter.Origin.Position;
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-convoy",
+                ("uid", EntityManager.GetNetEntity(uid).ToString()),
+                ("callsign", WFSectorHex.Callsign(convoy.Target)),
+                ("range", WFReaverCampaignSystem.Kilometres(at, convoy.TargetPosition)),
+                ("seconds", Math.Max(0, (int) (now - convoy.Launched).TotalSeconds))));
+        }
+
         foreach (var (uid, patrol, _) in patrols)
         {
             if (patrol.Intercepting is not { } target)
@@ -165,7 +181,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
         }
     }
 
-    /// <summary>Why none stands and when one will: the switch that is off, the pause, or the minutes to the founding; always the way to place one now.</summary>
+    /// <summary>Why none stands and when one will: the switch that is off, the pause, a convoy out, or the minutes to the founding; always the way to place one now.</summary>
     private string WhyNoStronghold(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent? state, TimeSpan now)
     {
         switch (_campaign.Idle())
@@ -182,6 +198,9 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
 
         if (_campaign.Paused)
             return Loc.GetString("cmd-wf_reavers-status-paused");
+
+        if (_campaign.Convoys().Count > 0)
+            return Loc.GetString("cmd-wf_reavers-status-convoy-out");
 
         if (_campaign.FoundingDue(campaign, state) is not { } due)
             return Loc.GetString("cmd-wf_reavers-status-founding-untimed");
@@ -253,6 +272,21 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
         shell.WriteLine(Loc.GetString("cmd-wf_reavers-founded",
             ("uid", EntityManager.GetNetEntity(stronghold).ToString()),
             ("callsign", WFSectorHex.Callsign(cell))));
+    }
+
+    /// <summary>wf_reavers convoy: sends a stronghold out to the next cell, as the campaign does.</summary>
+    private void Convoy(IConsoleShell shell)
+    {
+        if (!_campaign.TryLaunchConvoy(out var convoy)
+            || !EntityManager.TryGetComponent<WFReaverConvoyComponent>(convoy, out var comp))
+        {
+            Failed(shell, "cmd-wf_reavers-convoy-failed");
+            return;
+        }
+
+        shell.WriteLine(Loc.GetString("cmd-wf_reavers-convoy",
+            ("uid", EntityManager.GetNetEntity(convoy).ToString()),
+            ("callsign", WFSectorHex.Callsign(comp.Target))));
     }
 
     /// <summary>wf_reavers patrol: from the stronghold with the fewest patrols out.</summary>

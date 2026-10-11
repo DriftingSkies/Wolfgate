@@ -32,29 +32,31 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>How long after its founding a stronghold may send its first patrol.</summary>
     private static readonly TimeSpan FirstPatrolDelay = TimeSpan.FromMinutes(2);
 
-    /// <summary>Founds the first stronghold, a regrouped one or a later one, as the round calls for.</summary>
+    /// <summary>Founds the first stronghold or a regrouped one far out, or sends a convoy from a standing one to found a later one; one founding at a time.</summary>
     private void TickFounding(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state)
     {
         var now = _timing.CurTime;
         var standing = Strongholds();
+        var convoys = Convoys().Count;
         if (standing.Count == 0)
         {
             if (state.Founded > 0)
                 state.NoStrongholdSince ??= now;
 
-            if (FoundingDue(campaign, state) is { } due && now >= due && now >= _nextFoundTry && !TryFound(out _))
+            if (convoys == 0 && FoundingDue(campaign, state) is { } due && now >= due && now >= _nextFoundTry && !TryFound(out _))
                 _nextFoundTry = now + FoundRetry;
             return;
         }
 
         state.NoStrongholdSince = null;
-        if (standing.Count >= campaign.MaxStrongholds
+        if (convoys > 0
+            || standing.Count + convoys >= campaign.MaxStrongholds
             || _territory.Held(_territory.SectorMap, campaign.Faction).Count < campaign.CellsPerStronghold * standing.Count
             || state.LastFounded is { } last && now < last + campaign.FoundInterval
             || now < _nextFoundTry)
             return;
 
-        if (!TryFound(out _))
+        if (!TryLaunchConvoy(out _))
             _nextFoundTry = now + FoundRetry;
     }
 
@@ -67,7 +69,7 @@ public sealed partial class WFReaverCampaignSystem
         return state.NoStrongholdSince is { } since ? since + campaign.RegroupDelay : null;
     }
 
-    /// <summary>Founds a stronghold where the rules put it: a quiet cell far out with none standing, otherwise a held frontier cell.</summary>
+    /// <summary>Founds a stronghold at once where the rules put it: a quiet cell far out with none standing, otherwise a held frontier cell. The campaign sends a convoy for the latter.</summary>
     public bool TryFound(out EntityUid stronghold)
     {
         stronghold = default;
@@ -81,7 +83,7 @@ public sealed partial class WFReaverCampaignSystem
                 && TryFoundAt(_territory.Centre(_territory.SectorMap, first), out stronghold, campaign.StrongholdLight);
         }
 
-        return TryLaterCell(campaign, standing, out var later)
+        return TryLaterCell(campaign, Occupied(standing), out var later)
             && TryFoundAt(_territory.Centre(_territory.SectorMap, later), out stronghold, PickStronghold(campaign, state.Tier));
     }
 
@@ -98,12 +100,20 @@ public sealed partial class WFReaverCampaignSystem
         if (!_encounters.TrySpawn(encounterPrototype, at, out var uid))
             return false;
 
+        Establish(campaign, state, uid, encounterPrototype.Ships[0].Key, _territory.CellOf(at), at, regroup);
+        stronghold = uid;
+        return true;
+    }
+
+    /// <summary>Makes an encounter a stronghold in a cell: claims the cell and ring, counts the founding and announces it at a point.</summary>
+    private void Establish(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state, EntityUid uid, string lead,
+        WFSectorCell cell, MapCoordinates at, bool regroup)
+    {
         var now = _timing.CurTime;
-        var cell = _territory.CellOf(at);
-        var comp = AddComp<WFReaverStrongholdComponent>(uid);
+        var comp = EnsureComp<WFReaverStrongholdComponent>(uid);
         comp.Cell = cell;
         comp.Tier = state.Tier;
-        comp.Lead = encounterPrototype.Ships[0].Key;
+        comp.Lead = lead;
         comp.NextPatrol = now + FirstPatrolDelay;
 
         ClaimCells(campaign, at.MapId, cell, uid);
@@ -114,8 +124,6 @@ public sealed partial class WFReaverCampaignSystem
         AnnouncePlace(campaign, regroup ? "wf-reaver-regrouped" : "wf-reaver-founded", true, at.MapId, at.Position,
             ("callsign", WFSectorHex.Callsign(cell)),
             ("bounty", ByTier(campaign.StrongholdBounty, state.Tier, 0)));
-        stronghold = uid;
-        return true;
     }
 
     /// <summary>Claims a stronghold's cell and ring for it; a station cell in the ring is contested instead.</summary>
@@ -132,7 +140,7 @@ public sealed partial class WFReaverCampaignSystem
         }
     }
 
-    /// <summary>Claims each standing stronghold's cells again after sector control was switched back on or resized.</summary>
+    /// <summary>Claims each standing stronghold's cells again after sector control was switched back on or resized, and re-aims the convoys.</summary>
     private void OnSectorReset(ref WFSectorResetEvent args)
     {
         if (Campaign is not { } campaign)
@@ -143,6 +151,12 @@ public sealed partial class WFReaverCampaignSystem
         {
             comp.Cell = _territory.CellOf(new MapCoordinates(Position(encounter, comp.Lead), map));
             ClaimCells(campaign, map, comp.Cell, uid);
+        }
+
+        // A convoy's cell is found again from its point; the next tick contests it.
+        foreach (var (_, comp, _) in Convoys())
+        {
+            comp.Target = _territory.CellOf(new MapCoordinates(comp.TargetPosition, map));
         }
     }
 
@@ -193,9 +207,16 @@ public sealed partial class WFReaverCampaignSystem
         return false;
     }
 
-    /// <summary>A held cell on the edge of held space, two cells from every stronghold, with a clear centre; nearest the core first.</summary>
-    private bool TryLaterCell(WFReaverCampaignPrototype campaign, List<Entity<WFReaverStrongholdComponent, WFEncounterComponent>> standing,
-        out WFSectorCell cell)
+    /// <summary>The cells of the standing strongholds and of the convoys' targets, which later strongholds keep two cells from.</summary>
+    private List<WFSectorCell> Occupied(List<Entity<WFReaverStrongholdComponent, WFEncounterComponent>> standing)
+    {
+        var cells = standing.Select(stronghold => stronghold.Comp1.Cell).ToList();
+        cells.AddRange(Convoys().Select(convoy => convoy.Comp1.Target));
+        return cells;
+    }
+
+    /// <summary>A held cell on the edge of held space, two cells from every occupied one, with a clear centre; nearest the core first.</summary>
+    private bool TryLaterCell(WFReaverCampaignPrototype campaign, List<WFSectorCell> occupied, out WFSectorCell cell)
     {
         cell = default;
         var map = _territory.SectorMap;
@@ -210,7 +231,7 @@ public sealed partial class WFReaverCampaignSystem
                     edge = true;
             }
 
-            if (edge && standing.All(other => WFSectorHex.Distance(other.Comp1.Cell, candidate) >= 2))
+            if (edge && occupied.All(other => WFSectorHex.Distance(other, candidate) >= 2))
                 candidates.Add(candidate);
         }
 

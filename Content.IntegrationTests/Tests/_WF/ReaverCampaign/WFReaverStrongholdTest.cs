@@ -136,6 +136,7 @@ public sealed class WFReaverStrongholdTest : WFReaverTestBase
         {
             var campaign = Server.System<WFReaverCampaignSystem>();
             first = campaign.Strongholds().Single().Owner;
+            Assert.That(campaign.Convoys(), Is.Empty, "The first appears at once; nothing stands to send it from.");
             state = campaign.State()!;
             Assert.That(state.Founded, Is.EqualTo(1));
             Assert.That(state.NoStrongholdSince, Is.Null);
@@ -156,6 +157,9 @@ public sealed class WFReaverStrongholdTest : WFReaverTestBase
             var campaign = Server.System<WFReaverCampaignSystem>();
             var fresh = campaign.Strongholds().Single().Owner;
             Assert.That(fresh, Is.Not.EqualTo(first));
+            Assert.That(campaign.Convoys(), Is.Empty, "A regroup appears at once too.");
+            Assert.That(WFSectorHex.Centre(SEntMan.GetComponent<WFReaverStrongholdComponent>(fresh).Cell, 3000f).Length(),
+                Is.InRange(14000f, 24000f), "Far out, as the first was.");
             Assert.That(state.Founded, Is.EqualTo(2), "Regrouped after the lull.");
             Assert.That(state.NoStrongholdSince, Is.Null);
             Assert.That(SEntMan.GetComponent<WFEncounterComponent>(fresh).Prototype.Id, Is.EqualTo(Stronghold), "A light one, as the first was.");

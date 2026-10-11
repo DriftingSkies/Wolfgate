@@ -250,18 +250,28 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         return true;
     }
 
-    /// <summary>Shows a cell as contested until the deadline, then claims it if it stayed quiet; fails on a held or contested cell, or a veto.</summary>
+    /// <summary>
+    /// Shows a cell as contested until the deadline, then claims it if it stayed quiet; fails on another faction's or
+    /// a contested cell, or a veto. A faction may contest a cell it holds, to show a move on it.
+    /// </summary>
     public bool Contest(MapId map, WFSectorCell cell, ProtoId<WFSectorFactionPrototype> faction, TimeSpan deadline, EntityUid? source = null)
     {
         if (!Enabled || !_prototypes.HasIndex(faction) || source is { } live && TerminatingOrDeleted(live)
-            || Territory(map, true) is not { } territory
-            || territory.Claims.ContainsKey(cell) || territory.Contests.ContainsKey(cell))
+            || Territory(map, true) is not { } territory || territory.Contests.ContainsKey(cell))
             return false;
 
-        var attempt = new WFSectorClaimAttemptEvent(map, cell, faction, source);
-        RaiseLocalEvent(ref attempt);
-        if (attempt.Cancelled)
-            return false;
+        if (territory.Claims.TryGetValue(cell, out var held))
+        {
+            if (held.Faction != faction)
+                return false;
+        }
+        else
+        {
+            var attempt = new WFSectorClaimAttemptEvent(map, cell, faction, source);
+            RaiseLocalEvent(ref attempt);
+            if (attempt.Cancelled)
+                return false;
+        }
 
         territory.Contests[cell] = new WFSectorContest
         {
@@ -271,6 +281,18 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             Deadline = deadline,
         };
         var ev = new WFSectorCellContestedEvent(map, cell, faction, deadline);
+        RaiseLocalEvent(ref ev);
+        return true;
+    }
+
+    /// <summary>Moves a contest's deadline, raising the contested event again. Returns whether there was one.</summary>
+    public bool SetContestDeadline(MapId map, WFSectorCell cell, TimeSpan deadline)
+    {
+        if (Territory(map) is not { } territory || !territory.Contests.TryGetValue(cell, out var contest))
+            return false;
+
+        contest.Deadline = deadline;
+        var ev = new WFSectorCellContestedEvent(map, cell, contest.Faction, deadline);
         RaiseLocalEvent(ref ev);
         return true;
     }

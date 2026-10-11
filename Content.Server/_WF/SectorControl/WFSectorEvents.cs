@@ -19,7 +19,7 @@ public readonly record struct WFSectorCellChangedEvent(
     ProtoId<WFSectorFactionPrototype>? Previous,
     ProtoId<WFSectorFactionPrototype>? Owner);
 
-/// <summary>Raised, by ref and broadcast, when a faction contests a cell. Drivers announce it.</summary>
+/// <summary>Raised, by ref and broadcast, when a faction contests a cell or the contest's deadline moves. Drivers announce it.</summary>
 [ByRefEvent]
 public readonly record struct WFSectorCellContestedEvent(
     MapId Map,

@@ -80,6 +80,9 @@ public abstract class WFReaverTestBase : WFSectorTestBase
   strongholdBounty: [ 5000, 6000, 7000, 8000, 9000, 10000 ]
   patrolBounty: 2000
   strongholdLight: WFTestReaverStronghold
+  strongholdMid: WFTestReaverStrongholdWide
+  midTier: 5
+  midPlayers: 1
   patrol: WFTestReaverPatrol
   raidPack: WFTestReaverPack
   raidBoarders: WFTestReaverBoarders
@@ -114,6 +117,36 @@ public abstract class WFReaverTestBase : WFSectorTestBase
     - kind: Circle
       target: lead
       range: 700
+
+- type: wfEncounter
+  id: WFTestReaverStrongholdWide
+  name: wf-reaver-name-stronghold
+  start: Manual
+  lifetime: Persistent
+  icon: Flag
+  leash: 2000
+  ships:
+  - key: lead
+    vessel: WFDredger
+    side: reavers
+    distress: false
+    deckhands: 0
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    objectives:
+    - kind: Hold
+  - key: guard
+    vessel: WFDredger
+    side: reavers
+    distress: false
+    deckhands: 0
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    offset: 350, 0
+    objectives:
+    - kind: Circle
+      target: lead
+      range: 1200
 
 - type: wfEncounter
   id: WFTestReaverPatrol

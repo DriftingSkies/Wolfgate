@@ -37,11 +37,50 @@ and pays nothing.
 **First stronghold.** `firstStrongholdDelay` after `StationsGeneratedEvent`, once the round is in progress, in a
 quiet cell 14–24 km from the origin with a clear centre (`WFEncounterSchedulerSystem.IsClearSpace` with 600 m grid
 clearance and 6 km station clearance, which also keeps off hidden stations and gravity wells), at least 8 km from any
-living player. **Later strongholds.** When held cells ≥ `cellsPerStronghold` × strongholds, `foundInterval` has
-passed since the last founding and the count is under `maxStrongholds`: in a held frontier cell at least two cells
-from every stronghold, nearer the core preferred, with a clear centre. **Regroup.** With no stronghold standing for
-`regroupDelay`, found a fresh light one as the first was, and announce the regrouping, so breaking the only stronghold
-buys a real lull instead of ending the arc.
+living player. **Later strongholds** fly out as convoys (below). **Regroup.** With no stronghold standing for
+`regroupDelay` and no convoy out, found a fresh light one as the first was, and announce the regrouping, so breaking
+the only stronghold buys a real lull instead of ending the arc. The first and a regroup appear at once: nothing stands
+to launch them from.
+
+## Founding convoys
+
+A later stronghold is not placed: it sets out from one that stands. When held cells ≥ `cellsPerStronghold` ×
+strongholds, `foundInterval` has passed since the last completed founding, strongholds plus convoys out are under
+`maxStrongholds` and no convoy is out (one founding at a time), the campaign picks the target as before (a held cell on
+the edge of held space at least two cells from every stronghold and convoy target, nearer the core preferred, with a
+clear centre) and `TryLaunchConvoy` spawns the stronghold prototype for the tier and population at a clear point
+600–1000 m from the lead of the standing stronghold nearest the target (off budget, not pinned), with
+`WFReaverConvoyComponent` (target cell and point, source stronghold, lead key, launch time, and an overdue time of twice
+the reckoned trip plus the slack). Orders by `SetOrders`: the
+lead `GoTo` the target centre (range 300, nudged clear as patrol route points are), each guard `Escort` the lead. The
+encounter's leash is off while it flies. The target cell is contested for the faction with the convoy as the source
+and a deadline of the reckoned arrival (distance / 30 m/s) plus 3 min, moved with `SetContestDeadline` as the convoy
+goes, so the framework never takes it first. The sector watch says so without a chime: "A Reaver convoy is under way to
+K-7, 4.2 km bearing 045 from Outpost Lambda. Stop it before it digs in." If no stronghold has a clear point beside it,
+the founding is tried again after a minute.
+
+**Arrival.** Each tick a convoy whose lead is within 400 m of the target point, or is in the target cell and has flown
+its orders or is overdue, is completed by `CompleteFounding`: the convoy component goes,
+`WFReaverStrongholdComponent` is added as a founding sets it, the contest is withdrawn, the cell and ring are claimed,
+the lead holds and each guard `Circle`s it at the range its own prototype gives (a guard with no circle keeps
+escorting), the leash comes back around the point it stopped at (the target point, or where a lead that stopped short
+in the cell stands), the founding is counted (`LastFounded` from now) and announced as any founding. Hits the convoy
+took on the way are carried over (`Hits`, `AttackerHits`, `Recalled` set, `LastHit` out of the support window) and the
+ships that landed them are marked once, so they do not read as a fresh attack that recalls a patrol.
+
+**Stuck.** A lead whose crew gave up the flight (`Flown`) short of its cell is given its `GoTo` again. A convoy still
+short of its cell once overdue, such as a lead with its thrusters shot out that can still fire, is ended: it founds
+nothing, pays nothing, and the one-at-a-time gate opens for the next founding. A new cell size re-aims every convoy at
+the cell its target point is in, and the next tick contests that one.
+Once strongholds have map assets, `CompleteFounding` is where the station grid is placed and the convoy becomes just
+the ship that brings it.
+
+**Stopped.** A convoy whose lead is out of the fight is resolved `Destroyed` by the campaign, as a stronghold is. On
+`WFEncounterResolvedEvent` the contest is withdrawn; `Destroyed` pays half the current tier's stronghold bounty (and
+half each navy's stronghold credits) to those who hit it, marks them, counts it for the round summary and announces
+"The Reaver convoy bound for K-7 is destroyed." with the paid line as other bounties. `Ended` pays nothing.
+`wf_reavers status` with no stronghold standing and a convoy out says the next founding waits for it. A convoy is
+neither a stronghold nor a patrol: it sends no patrols, does not score, supports no cells and is no raid source.
 
 ## Spread
 
@@ -168,21 +207,24 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
 - Navies: the Halcyon's cell is never taken, but a front at the doorstep is theirs, and each navy's faction credits
   (TSF and PDV alike) flow through the bounty.
 - Ghosts: strongholds, patrols and raids on the Encounters tab of the orbit menu as any encounter.
-- Admins: `wf_reavers status | found [x y] | tier <n> | spread | patrol | raid | intercept <grid uid> | pause |
-  resume | clear` (status lists intercepts and marks), and every campaign encounter in the Encounters admin window.
-- Round end: a summary line (peak cells held, strongholds founded and broken, patrols destroyed) through
-  `RoundEndTextAppendEvent`.
+- Admins: `wf_reavers status | found [x y] | convoy | tier <n> | spread | patrol | raid | intercept <grid uid> |
+  pause | resume | clear` (`found` founds at once as an admin shortcut, `convoy` sends one out as the campaign does;
+  status lists convoys with their target and distance left, intercepts and marks), and every campaign encounter in
+  the Encounters admin window.
+- Round end: a summary line (peak cells held, strongholds founded and broken, patrols destroyed, convoys stopped)
+  through `RoundEndTextAppendEvent`.
 
 ## Module layout (`ReaverCampaign`)
 
 - `Content.Shared/_WF/ReaverCampaign`: `WFReaverCampaignPrototype.cs` (`wfReaverCampaign`: `preset`, every number
   above, the prototype ids, bounties, sounds and colours), `ReaverCampaignCVars.cs` (`wf.reavers.enabled`).
 - `Content.Server/_WF/ReaverCampaign`: `README.md`, `Components/WFReaverStrongholdComponent.cs` (cell, tier at
-  founding, hits seen, supporters), `Components/WFReaverPatrolComponent.cs` (stronghold, route),
+  founding, hits seen, supporters), `Components/WFReaverConvoyComponent.cs` (target, source, lead, launch time),
+  `Components/WFReaverPatrolComponent.cs` (stronghold, route),
   `Components/WFReaverRaidComponent.cs` (target), `Components/WFReaverMarkComponent.cs` (until when a ship is
   marked), `Components/WFReaverCampaignComponent.cs` (campaign state on the sector map entity: tier, score, clocks,
   intercept clocks, counters for the round summary), `Systems/WFReaverCampaignSystem.cs` with partials
-  `.Strongholds.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
+  `.Strongholds.cs`, `.Convoys.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
   `.Rewards.cs`, `Commands/WFReaverCommand.cs`.
 - `Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`, `encounters.yml`; `Resources/Locale/en-US/_WF/ReaverCampaign/reavers.ftl`;
   `Resources/ServerInfo/_WF/ReaverCampaign/Reavers.xml` guidebook page if the guidebook takes module pages without
@@ -191,7 +233,8 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
   patrol kill frees a cell, spread respects quiet and veto, contest claims at deadline, tier rises and falls with
   hysteresis, regroup, every votable preset has exactly one campaign, intercept past the dwell and not outside held
   space, route restored and cooldown held, marks from a patrol kill and a stronghold hit steering a raid, the Reaver
-  border notice). Every step is a one-shot method the test can call (`TryFound`, `TrySpreadOnce`, `TryLaunchPatrol`,
+  border notice, convoys launched, arriving and stopped). Every step is a one-shot method the test can call
+  (`TryFound`, `TryLaunchConvoy`, `CheckConvoys`, `CompleteFounding`, `TrySpreadOnce`, `TryLaunchPatrol`,
   `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`), with time from `IGameTiming`.
 
 Edits inside `_WF/Encounters` (same fork, no markers; the README overview gains a paragraph): `TrySpawn(...,
@@ -204,7 +247,8 @@ stationClearance)` and `Stations(map)` on the scheduler.
 
 - Strongholds are encounters, not stations: crews, zones, markers, the admin window, the ghost menu and cleanup
   come for free, and no map file is needed.
-- Lead down is broken. The judge waits for the guards; the campaign does not.
+- Lead down is broken. The judge waits for the guards; the campaign does not. The same goes for a convoy.
+- Later strongholds fly out from a standing one: the expansion is seen coming and can be stopped on the way.
 - Killing a patrol frees its cell at once. Slow decay would hide the feedback.
 - One raid clock for the campaign, capped by population. Per-stronghold clocks reached 36 raids an hour.
 - Light garrisons first. A pirate frigate at minute 20 on a ten-player round is not a fight, it is a wall.

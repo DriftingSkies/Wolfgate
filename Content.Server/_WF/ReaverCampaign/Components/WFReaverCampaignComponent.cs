@@ -24,7 +24,7 @@ public sealed partial class WFReaverCampaignComponent : Component
     [ViewVariables]
     public TimeSpan? TierAnnounced;
 
-    /// <summary>When the last stronghold was founded.</summary>
+    /// <summary>When the last stronghold was founded; a convoy counts when it arrives.</summary>
     [ViewVariables]
     public TimeSpan? LastFounded;
 
@@ -69,4 +69,7 @@ public sealed partial class WFReaverCampaignComponent : Component
 
     [ViewVariables]
     public int PatrolsDestroyed;
+
+    [ViewVariables]
+    public int ConvoysDestroyed;
 }

@@ -27,7 +27,7 @@ it), or on empty space the cell, its distance from the centre and who holds it. 
 guidebook or its key (N, rebindable), "Sector map" in the game menu or the `wf_sectormap` command (`WFSectorMapControl`,
 `WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
 
-Drivers use `WFSectorTerritorySystem` (`CellOf`, `Centre`, `Owner`, `TryClaim`, `Contest`, `Release`, `Free`,
+Drivers use `WFSectorTerritorySystem` (`CellOf`, `Centre`, `Owner`, `TryClaim`, `Contest`, `SetContestDeadline`, `DropContest`, `Release`, `Free`,
 `Held`, `Frontier`, `Sources`, `StationsIn`, `CanClaim`), `WFSectorActivitySystem` (`LastActivity`, `IsQuiet`,
 `ActiveShips`) and `WFSectorSyncSystem.SetStatus` for their legend line, and listen for the events in
 `WFSectorEvents.cs`. A claim lasts while any of its sources exists. `WFSectorProtectionSystem` vetoes claims on the

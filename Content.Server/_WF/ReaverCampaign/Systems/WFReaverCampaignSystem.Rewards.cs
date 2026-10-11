@@ -59,6 +59,15 @@ public sealed partial class WFReaverCampaignSystem
         return (campaign.PatrolBounty, paid);
     }
 
+    /// <summary>Pays half the current tier's stronghold bounty, credits included, to those who hit a destroyed convoy; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayConvoyBounty(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state, EntityUid convoy)
+    {
+        var bounty = ByTier(campaign.StrongholdBounty, state.Tier, 0) / 2;
+        var (reward, extra) = Rewards(campaign, bounty, grant => grant.Stronghold / 2);
+        var paid = _rewards.PayBounty(convoy, reward, "destroying the Reaver convoy", null, extra);
+        return (bounty, paid);
+    }
+
     /// <summary>A bounty as an encounter reward with the first navy's credits, and the other navies' credits as rewards of no spesos.</summary>
     private static (WFEncounterReward Reward, List<WFEncounterReward> Extra) Rewards(WFReaverCampaignPrototype campaign, int spesos,
         Func<WFReaverCreditGrant, int> amount)

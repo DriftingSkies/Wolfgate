@@ -7,6 +7,12 @@ its ring, spread one quiet frontier cell at a time toward the origin, send patro
 the origin) sets a tier from None to Overrun; a rise is announced at once, a fall only after ten minutes under the
 threshold. The sector map shows held cells and a legend line with the tier, strongholds, cells and current bounty.
 
+The first stronghold, and a regrouped one after the last falls, appear far out at once. Every later one flies out as a
+convoy: the stronghold's ships spawn beside the standing stronghold nearest the chosen cell and fly there escorted,
+the cell shown contested meanwhile and the sector warned of it. Arrived, it founds the stronghold; its lead out of the
+fight on the way stops it, founds nothing and pays half a stronghold's bounty. One convoy is out at a time.
+`CompleteFounding` is the seam where a station grid will be placed once strongholds have map assets.
+
 Players fight it by breaking strongholds (the lead ship out of the fight breaks it: its cells are freed and its bounty
 paid to everyone who hit it, with a fifth for the ships that stood by the assault), killing patrols (the cell the lead
 died in is freed and a smaller bounty paid; each navy's members also get its own faction credits, from the campaign's
@@ -25,18 +31,20 @@ How many intercepts run at once is set by tier (`intercepts`). A ship that hits 
 marked for half an hour: raids weigh it three times as heavy and hunt it anywhere on the map.
 
 `WFReaverCampaignSystem` is the driver, in partials by concern: `.Strongholds` (founding, regroup, breaking),
+`.Convoys` (later foundings flown out from a standing stronghold),
 `.Spread`, `.Patrols` (routes and recall), `.Intercepts` (intercepts and marks), `.Raids`, `.Threat` (score, tier,
 legend), `.Announce` (sector watch announcements, PA, chat and radio warnings) and `.Rewards` (bounties and the support
-pool). Each step is a one-shot public method for tests and the command: `TryFound`, `TryFoundAt`, `TrySpreadOnce`,
-`TryLaunchPatrol`, `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`, `Recompute`, `ClearCampaign`. State
+pool). Each step is a one-shot public method for tests and the command: `TryFound`, `TryFoundAt`, `TryLaunchConvoy`,
+`CheckConvoys`, `CompleteFounding`, `TrySpreadOnce`, `TryLaunchPatrol`, `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`, `Recompute`, `ClearCampaign`. State
 lives on `WFReaverCampaignComponent` on the sector map entity, with `WFReaverStrongholdComponent`,
-`WFReaverPatrolComponent` and `WFReaverRaidComponent` on the encounter entities and `WFReaverMarkComponent` on marked
+`WFReaverConvoyComponent`, `WFReaverPatrolComponent` and `WFReaverRaidComponent` on the encounter entities and `WFReaverMarkComponent` on marked
 player ships.
 
-Admins use `wf_reavers status | found [x y] | tier <n> | spread | patrol | raid | intercept <grid uid> | pause |
-resume | clear` (status lists intercepts and marks; a pause ends with the round), and see every
-campaign encounter in the Encounters window. The round-end summary lists peak cells held, strongholds founded and
-broken, patrols destroyed and raids launched.
+Admins use `wf_reavers status | found [x y] | convoy | tier <n> | spread | patrol | raid | intercept <grid uid> |
+pause | resume | clear` (`found` places a stronghold at once, `convoy` sends one out as the campaign does; status lists
+convoys, intercepts and marks; a pause ends with the round), and see every campaign encounter in the Encounters
+window. The round-end summary lists peak cells held, strongholds founded and broken, patrols destroyed, convoys
+stopped and raids launched.
 
 `Docs/_WF/ReaverCampaign/design.md` is the design.
 
@@ -49,11 +57,13 @@ broken, patrols destroyed and raids launched.
 
 - [`Content.Server/_WF/ReaverCampaign/Commands/WFReaverCommand.cs`](Commands/WFReaverCommand.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverCampaignComponent.cs`](Components/WFReaverCampaignComponent.cs)
+- [`Content.Server/_WF/ReaverCampaign/Components/WFReaverConvoyComponent.cs`](Components/WFReaverConvoyComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverMarkComponent.cs`](Components/WFReaverMarkComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverPatrolComponent.cs`](Components/WFReaverPatrolComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverRaidComponent.cs`](Components/WFReaverRaidComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverStrongholdComponent.cs`](Components/WFReaverStrongholdComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Announce.cs`](Systems/WFReaverCampaignSystem.Announce.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Convoys.cs`](Systems/WFReaverCampaignSystem.Convoys.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.cs`](Systems/WFReaverCampaignSystem.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Intercepts.cs`](Systems/WFReaverCampaignSystem.Intercepts.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Patrols.cs`](Systems/WFReaverCampaignSystem.Patrols.cs)
@@ -71,6 +81,7 @@ broken, patrols destroyed and raids launched.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverConvoyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverConvoyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs)

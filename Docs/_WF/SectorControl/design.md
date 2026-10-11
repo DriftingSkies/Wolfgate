@@ -40,7 +40,9 @@ answers when a cell was last active; `IsQuiet(map, cell, since)` is the driver's
 **Contested cells.** A driver may `Contest(map, cell, faction, deadline)` instead of claiming at once. The cell is
 shown as contested on the map with a countdown, `WFSectorCellContestedEvent` fires (drivers announce it), and at the
 deadline the territory system claims it for the faction if the cell has been quiet since the contest began, or drops
-the contest. For a station cell this is the blockade warning: traffic can hold the lane by flying it.
+the contest. For a station cell this is the blockade warning: traffic can hold the lane by flying it. A faction may
+also contest a cell it already holds, to show a move on it (a Reaver founding convoy); the cell stays held.
+`SetContestDeadline` moves a deadline and raises the contested event again; `DropContest` withdraws one.
 
 **Notices.** `WFSectorNoticeSystem` tells those aboard a crewed player ship when it has been inside a faction's space
 for 10 s ("WARNING: entering {faction} controlled space (K-7).") and when it has been back outside for 30 s ("Leaving
@@ -103,7 +105,7 @@ and the round is in progress.
 ## Public API
 
 `WFSectorTerritorySystem`: `CellOf(MapCoordinates)`, `Centre(map, cell)`, `Owner(map, cell)`, `TryClaim`, `Release`,
-`Free`, `Contest`, `Held(faction)`, `Frontier(faction)` (unowned cells adjacent to held ones), `Sources(map, cell)`,
+`Free`, `Contest`, `SetContestDeadline`, `DropContest`, `Held(faction)`, `Frontier(faction)` (unowned cells adjacent to held ones), `Sources(map, cell)`,
 `StationsIn(map, cell)`. `WFSectorActivitySystem`: `LastActivity`, `IsQuiet`, `ActiveShips(map, cell)`. Local events
 in `WFSectorEvents.cs`: `WFSectorClaimAttemptEvent` (cancellable, by ref), `WFSectorCellChangedEvent`,
 `WFSectorCellContestedEvent`, `WFSectorContestResolvedEvent`, and `WFSectorResetEvent`, raised when territory comes back on
