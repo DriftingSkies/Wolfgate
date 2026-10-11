@@ -43,6 +43,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - tells an instant do-after from a running one
   - an instant do-after has already ended, so nothing would ever delete the effect
 - [`Content.Server/_NF/PublicTransit/PublicTransitSystem.cs`](../../Content.Server/_NF/PublicTransit/PublicTransitSystem.cs): announce the departure, as FTLToDock now flies and OnShuttleArrival announces the stop
+- [`Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs`](../../Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs): with nothing in range Pick threw, so a supercritical never ended and retried every tick
 - [`Content.Server/Body/Systems/RespiratorSystem.cs`](../../Content.Server/Body/Systems/RespiratorSystem.cs): entities without a respirator cannot metabolize inhaled gases; absence is valid.
 - [`Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs`](../../Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs)
   - sums the bounty hand-in value
