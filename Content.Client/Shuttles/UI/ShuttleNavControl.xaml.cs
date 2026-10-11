@@ -133,6 +133,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         OnMouseEntered += HandleMouseEntered;
         OnMouseExited += HandleMouseExited;
+        WfLoadDisplaySettings(); // WOLFGATE(Shuttles): start with the player's saved radar display choices.
     }
 
     private void HandleMouseEntered(GUIMouseHoverEventArgs args)
@@ -502,6 +503,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
+        WfSaveDisplaySettings(); // WOLFGATE(Shuttles): keep a changed radar display choice for the next radar.
 
         _updateAccumulator += args.DeltaSeconds;
 

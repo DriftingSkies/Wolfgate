@@ -41,6 +41,30 @@ public sealed class WolfgateCVars
         CVarDef.Create("wf.ui_window_popout", true, CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
+    /// Whether radar screens label their contacts. Set by the IFF toggle on any radar and shared by all of them.
+    /// </summary>
+    public static readonly CVarDef<bool> RadarShowIff =
+        CVarDef.Create("wf.radar_show_iff", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Whether radar labels carry their detail lines. Set by the detailed IFF toggle on any radar.
+    /// </summary>
+    public static readonly CVarDef<bool> RadarShowIffDetailed =
+        CVarDef.Create("wf.radar_show_iff_detailed", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Whether radar screens with a docks toggle mark docking ports.
+    /// </summary>
+    public static readonly CVarDef<bool> RadarShowDocks =
+        CVarDef.Create("wf.radar_show_docks", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// The radar's bearing marks: 0 at the edge, 1 as a ring, 2 off.
+    /// </summary>
+    public static readonly CVarDef<int> RadarAzimuth =
+        CVarDef.Create("wf.radar_azimuth", 0, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
     /// The player's chat tabs: <c>name=channel,channel</c> entries separated by <c>|</c>, with <c>*</c> for every
     /// channel. Empty means the default tabs.
     /// </summary>
