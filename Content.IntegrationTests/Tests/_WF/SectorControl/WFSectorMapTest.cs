@@ -6,10 +6,12 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Threading.Tasks;
+using Content.Client._WF.Encounters;
 using Content.Client._WF.SectorControl;
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.MenuBar.Widgets;
 using Content.Server._WF.SectorControl.Systems;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.SectorControl;
 using Content.Shared.Ghost;
@@ -27,7 +29,7 @@ using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WF.SectorControl;
 
-/// <summary>The sector map: the client keeps the sector map with nothing held, outlines and names every cell, names the grids a MAP scan would, and the window lays out and fits them.</summary>
+/// <summary>The sector map: the client keeps the sector map with nothing held, outlines and names every cell, marks the grids a MAP scan would as blips with hover cards, and the window lays out and fits them.</summary>
 [TestOf(typeof(WFSectorMapControl))]
 public sealed class WFSectorMapTest : WFSectorTestBase
 {
@@ -224,9 +226,9 @@ public sealed class WFSectorMapTest : WFSectorTestBase
             {
                 Marker(raiders, "Raiders", WFEncounterCategory.Threat, MapData.MapId, new Vector2(100f, 0f)),
                 Marker(raiders, "Raiders", WFEncounterCategory.Threat, MapData.MapId, new Vector2(200f, 0f)),
-                Marker(convoy, "Convoy", WFEncounterCategory.Traffic, MapData.MapId, new Vector2(-500f, 0f)),
+                Marker(convoy, "Convoy", WFEncounterCategory.Traffic, MapData.MapId, new Vector2(-500f, 0f), Color.Orange),
                 Marker(raiders, "Raiders", WFEncounterCategory.Threat, MapData.MapId, new Vector2(300f, 0f)),
-                Marker(convoy, "Convoy", WFEncounterCategory.Traffic, MapData.MapId, new Vector2(-600f, 0f)),
+                Marker(convoy, "Convoy", WFEncounterCategory.Traffic, MapData.MapId, new Vector2(-600f, 0f), Color.Orange),
                 Marker(elsewhere, "Elsewhere", WFEncounterCategory.Patrol, MapId.Nullspace, new Vector2(0f, 0f)),
             };
 
@@ -234,12 +236,14 @@ public sealed class WFSectorMapTest : WFSectorTestBase
             var encounters = new List<WFSectorEncounterView>();
             map.CollectEncounters(MapData.MapId, markers, encounters);
             Assert.That(encounters, Has.Count.EqualTo(2), "Two encounters on this map, five ships between them.");
-            Assert.That(encounters[0], Is.EqualTo(new WFSectorEncounterView("Raiders", WFEncounterCategory.Threat, new Vector2(100f, 0f))));
-            Assert.That(encounters[1], Is.EqualTo(new WFSectorEncounterView("Convoy", WFEncounterCategory.Traffic, new Vector2(-500f, 0f))));
+            Assert.That(encounters[0], Is.EqualTo(new WFSectorEncounterView(raiders, "Raiders", WFEncounterCategory.Threat,
+                WFEncounterColors.Category(WFEncounterCategory.Threat), new Vector2(100f, 0f))), "With no side colour, the category's.");
+            Assert.That(encounters[1], Is.EqualTo(new WFSectorEncounterView(convoy, "Convoy", WFEncounterCategory.Traffic, Color.Orange, new Vector2(-500f, 0f))),
+                "In its first ship's side colour.");
         });
     }
 
-    private static WFEncounterMarker Marker(NetEntity encounter, string name, WFEncounterCategory category, MapId map, Vector2 position)
+    private static WFEncounterMarker Marker(NetEntity encounter, string name, WFEncounterCategory category, MapId map, Vector2 position, Color? color = null)
     {
         return new WFEncounterMarker
         {
@@ -248,6 +252,7 @@ public sealed class WFSectorMapTest : WFSectorTestBase
             Category = category,
             Map = map,
             Position = position,
+            Color = color,
         };
     }
 
@@ -512,6 +517,136 @@ public sealed class WFSectorMapTest : WFSectorTestBase
         });
 
         await Client.WaitPost(() => controller.Window!.Close());
+    }
+
+    /// <summary>
+    /// Grids come through as blips in their IFF colour, a station member as a station unless a deed makes it a bought ship;
+    /// resting on a blip shows its card, resting away from one the cell's line, and only the hovered blip is named zoomed out.
+    /// </summary>
+    [Test]
+    public async Task BlipsShowCardsAndNamesWhenHovered()
+    {
+        await StartRound();
+        var outpostColor = Color.FromHex("#3fd2ff");
+        var outpostAt = CentreOf(Held) + new Vector2(400f, 300f);
+        var haulerAt = CentreOf(Open) + new Vector2(-300f, 200f);
+        await Server.WaitAssertion(() =>
+        {
+            var outpost = SpawnStation(outpostAt, "Test Outpost");
+            Server.System<SharedShuttleSystem>().SetIFFColor(outpost, outpostColor);
+            SpawnGrid(haulerAt, "Test Hauler");
+            var charter = SpawnStation(Depot, "Test Charter");
+            SEntMan.EnsureComponent<ShuttleDeedComponent>(charter);
+            var territory = Server.System<WFSectorTerritorySystem>();
+            Assert.That(territory.TryClaim(MapData.MapId, Held, Holder, null), Is.True);
+            Assert.That(territory.Contest(MapData.MapId, Open, Rival, STiming.CurTime + TimeSpan.FromMinutes(10)), Is.True);
+        });
+
+        await RunTicks(90);
+        var controller = UiMan.GetUIController<WFSectorMapUIController>();
+        await Client.WaitPost(() => controller.OpenWindow());
+        await RunTicks(10);
+
+        var rest = WFSectorMapControl.ReadoutDelay + TimeSpan.FromMilliseconds(100);
+        var map = controller.Window!.Panel.MapControl;
+        WFSectorMapView view = default!;
+        var outpost = default(WFSectorLandmarkView);
+        var hauler = default(WFSectorLandmarkView);
+        var from = Vector2.Zero;
+        var away = Vector2.Zero;
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.TryGetView(out view), Is.True);
+            var landmarks = new List<WFSectorLandmarkView>();
+            map.CollectLandmarks(view.Map, landmarks);
+            outpost = landmarks.Single(landmark => landmark.Name == "Test Outpost");
+            hauler = landmarks.Single(landmark => landmark.Name == "Test Hauler");
+            var charter = landmarks.Single(landmark => landmark.Name == "Test Charter");
+            Assert.That(outpost.Kind, Is.EqualTo(WFSectorBlipKind.Station), "A station member is a station.");
+            Assert.That(outpost.Color, Is.EqualTo(outpostColor), "In its own IFF colour.");
+            Assert.That(hauler.Kind, Is.EqualTo(WFSectorBlipKind.Ship), "A plain grid is a ship.");
+            Assert.That(hauler.Color, Is.EqualTo(IFFComponent.IFFColor), "With no IFF, in the radar's default colour.");
+            Assert.That(charter.Kind, Is.EqualTo(WFSectorBlipKind.Ship), "A station member with a deed is a bought ship.");
+
+            Assert.That(WFSectorMapControl.Bearing(Vector2.Zero, new Vector2(0f, 5f)), Is.EqualTo("000"));
+            Assert.That(WFSectorMapControl.Bearing(Vector2.Zero, new Vector2(5f, 0f)), Is.EqualTo("090"));
+            Assert.That(WFSectorMapControl.Bearing(Vector2.Zero, new Vector2(0f, -5f)), Is.EqualTo("180"));
+            Assert.That(WFSectorMapControl.Bearing(Vector2.Zero, new Vector2(-5f, 0f)), Is.EqualTo("270"));
+
+            Assert.That(map.TryGetOwnShip(view.Map, out from, out _), Is.True, "Ranges are from the player's own ship.");
+            var pixel = Vector2.Transform(outpost.Position, map.WorldToView());
+            Assert.That(map.BlipAt(pixel + new Vector2(3f, -3f)), Is.EqualTo(WFSectorBlip.Of(outpost)), "A few pixels off still points at it.");
+            away = pixel + Vector2.Normalize((Vector2) map.PixelSize / 2f - pixel) * 40f;
+            Assert.That(map.BlipAt(away), Is.Null, "Away from any blip.");
+
+            Invoke(map, "MouseMove", Move(map, pixel));
+            Assert.That(map.ShownReadout(), Is.Empty, "Not as soon as the cursor arrives.");
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            var card = map.ShownReadout().ToList();
+            Assert.That(card.Select(line => line.Text), Is.EqualTo(new[]
+            {
+                "Test Outpost",
+                "Station",
+                $"{Kilometres(from, outpost.Position)} km, bearing {WFSectorMapControl.Bearing(from, outpost.Position)}",
+                $"{WFSectorHex.Callsign(Held)}: held by Faction id",
+            }));
+            Assert.That(card[1].Swatch, Is.EqualTo(outpostColor), "The kind comes with a swatch of its IFF colour.");
+            Invoke(map, "MouseMove", Move(map, Vector2.Transform(hauler.Position, map.WorldToView())));
+            Assert.That(map.ShownReadout(), Is.Empty, "Another blip starts the wait again.");
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            var card = map.ShownReadout().ToList();
+            Assert.That(card.Select(line => line.Text).Take(4), Is.EqualTo(new[]
+            {
+                "Test Hauler",
+                "Ship",
+                $"{Kilometres(from, hauler.Position)} km, bearing {WFSectorMapControl.Bearing(from, hauler.Position)}",
+                $"{WFSectorHex.Callsign(Open)}: open space",
+            }));
+            Assert.That(card[1].Swatch, Is.EqualTo(IFFComponent.IFFColor));
+            Assert.That(card, Has.Count.EqualTo(5));
+            Assert.That(card[4].Text, Does.StartWith("Contested by Subcommand, "), "A contested cell's countdown.");
+            Invoke(map, "MouseMove", Move(map, away));
+            Assert.That(map.ShownReadout(), Is.Empty);
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.ShownReadout().Select(line => line.Text), Is.EqualTo(new[] { map.Readout(view, map.ViewToWorld(away)) }),
+                "Away from any blip, the cell's line as before.");
+
+            // Zoomed out, only the hovered blip is named.
+            map.ZoomAt((Vector2) map.PixelSize / 2f, 1000f);
+            Assert.That(map.NamesShown, Is.False);
+            var pixel = Vector2.Transform(outpost.Position, map.WorldToView());
+            Invoke(map, "MouseMove", Move(map, pixel));
+            Assert.That(map.HoveredBlip, Is.EqualTo(WFSectorBlip.Of(outpost)));
+            Assert.That(map.LabelShown(WFSectorBlip.Of(outpost)), Is.True, "The hovered blip is named.");
+            Assert.That(map.LabelShown(WFSectorBlip.Of(hauler)), Is.False, "The rest are not.");
+
+            // Zoomed in, every blip is.
+            map.ZoomAt(pixel, 0.0001f);
+            Assert.That(map.NamesShown, Is.True);
+            Assert.That(map.LabelShown(WFSectorBlip.Of(hauler)), Is.True);
+            Invoke(map, "MouseExited");
+            Assert.That(map.HoveredBlip, Is.Null);
+        });
+
+        await Client.WaitPost(() => controller.Window!.Close());
+    }
+
+    /// <summary>The distance between two points as the card prints it.</summary>
+    private static string Kilometres(Vector2 from, Vector2 to)
+    {
+        return (Vector2.Distance(from, to) / 1000f).ToString("0.0", CultureInfo.InvariantCulture);
     }
 
     private static GUIBoundKeyEventArgs Key(WFSectorMapControl map, BoundKeyFunction function, BoundKeyState state, Vector2 pixel)

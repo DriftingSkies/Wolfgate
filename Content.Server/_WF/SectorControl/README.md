@@ -18,10 +18,12 @@ traders stop calling there.
 
 The sector map window shows the sector and nothing a shuttle console's MAP scan would not: the whole hex grid out to
 30 km with every cell's callsign, held and contested cells, the grids the MAP tab names (none hidden by IFF, and no
-label-hidden ones, since the map has no console to detect them), one marker per encounter and the player's own ship,
-from 1.5 km to 60 km either side of centre. The server sends only territory; the client names the grids it knows. The
-wheel zooms about the cursor, left-drag pans, a double-click centres on your ship, and hovering names the cell, its
-distance from the centre and who holds it. Everyone, ghosts included, opens it from the top-bar button beside the
+label-hidden ones, since the map has no console to detect them) as blips in their IFF colour (a ringed dot for a station,
+a diamond for a ship), one glyph per encounter and the player's own ship, from 1.5 km to 60 km either side of centre.
+Names show once a cell is about 90 px wide, and always for the blip under the cursor. The server sends only territory;
+the client names the grids it knows. The wheel zooms about the cursor, right-drag pans, a double-click centres on your
+ship, and resting the cursor on a blip shows its card (name, kind, range and bearing from you, its cell and who holds
+it), or on empty space the cell, its distance from the centre and who holds it. Everyone, ghosts included, opens it from the top-bar button beside the
 guidebook or its key (N, rebindable), "Sector map" in the game menu or the `wf_sectormap` command (`WFSectorMapControl`,
 `WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
 

@@ -16,6 +16,19 @@ wf-sector-map-hover-held = {$callsign} ({$distance} km): {$faction}
 wf-sector-map-hover-open = {$callsign} ({$distance} km): open space
 wf-sector-map-hover-contested = {$callsign} ({$distance} km): contested by {$faction}, {$time}
 
+# Sector map hover card for a blip; distance and bearing are from the player, or from the origin when they are not on the map
+wf-sector-map-kind-station = Station
+wf-sector-map-kind-ship = Ship
+wf-sector-map-category-traffic = Traffic
+wf-sector-map-category-patrol = Patrol
+wf-sector-map-category-threat = Threat
+wf-sector-map-category-distress = Distress
+wf-sector-map-card-range = {$distance} km, bearing {$bearing}
+wf-sector-map-card-range-core = {$distance} km from the sector core, bearing {$bearing}
+wf-sector-map-card-held = {$callsign}: held by {$faction}
+wf-sector-map-card-open = {$callsign}: open space
+wf-sector-map-card-contested = Contested by {$faction}, {$time}
+
 # wf_sectormap command
 cmd-wf_sectormap-desc = Opens or closes the sector map.
 cmd-wf_sectormap-help = Usage: {$command}

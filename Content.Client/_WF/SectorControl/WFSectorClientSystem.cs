@@ -1,8 +1,10 @@
 using System.Numerics;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.SectorControl;
 using Content.Shared.GameTicking;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
+using Content.Shared.Station.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
@@ -32,6 +34,8 @@ public sealed class WFSectorClientSystem : EntitySystem
 
     private EntityQuery<IFFComponent> _iffQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
+    private EntityQuery<StationMemberComponent> _memberQuery;
+    private EntityQuery<ShuttleDeedComponent> _deedQuery;
 
     /// <summary>The legend, one coloured line per faction the server sent text for.</summary>
     public List<WFSectorLegendView> Legend { get; private set; } = new();
@@ -47,6 +51,8 @@ public sealed class WFSectorClientSystem : EntitySystem
         base.Initialize();
         _iffQuery = GetEntityQuery<IFFComponent>();
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
+        _memberQuery = GetEntityQuery<StationMemberComponent>();
+        _deedQuery = GetEntityQuery<ShuttleDeedComponent>();
         SubscribeNetworkEvent<WFSectorTerritoryEvent>(OnTerritory);
         SubscribeNetworkEvent<WFSectorStatusEvent>(OnStatus);
         SubscribeNetworkEvent<RoundRestartCleanupEvent>(OnRoundRestart);
@@ -80,6 +86,7 @@ public sealed class WFSectorClientSystem : EntitySystem
     /// <summary>
     /// Fills a list with the grids on a map that the shuttle console's MAP tab names without needing a detection, nearest
     /// the origin first: none on a beacon map, none whose IFF hides it or its label, never the map itself or <paramref name="exclude"/>.
+    /// A station member is a station unless it has a deed, which makes it a bought ship; each comes in its IFF colour.
     /// </summary>
     public void CollectLandmarks(MapId map, EntityUid? exclude, List<WFSectorLandmarkView> into)
     {
@@ -93,11 +100,13 @@ public sealed class WFSectorClientSystem : EntitySystem
             if (xform.MapID != map || uid == mapUid || uid == exclude || meta.EntityLifeStage >= EntityLifeStage.Terminating)
                 continue;
 
-            if (_iffQuery.TryComp(uid, out var iff) && (iff.Flags & HiddenFlags) != 0)
+            var iff = _iffQuery.CompOrNull(uid);
+            if (iff != null && (iff.Flags & HiddenFlags) != 0)
                 continue;
 
             var position = _mapSystem.GetGridPosition((uid, _physicsQuery.CompOrNull(uid), xform));
-            into.Add(new WFSectorLandmarkView(uid, meta.EntityName, position));
+            var kind = _memberQuery.HasComp(uid) && !_deedQuery.HasComp(uid) ? WFSectorBlipKind.Station : WFSectorBlipKind.Ship;
+            into.Add(new WFSectorLandmarkView(uid, meta.EntityName, position, kind, iff?.Color ?? IFFComponent.IFFColor));
         }
 
         into.Sort((a, b) => a.Position.LengthSquared().CompareTo(b.Position.LengthSquared()));
@@ -344,5 +353,5 @@ public readonly record struct WFSectorContestView(WFSectorCell Cell, Vector2 Cen
 /// <summary>One line of the map legend.</summary>
 public readonly record struct WFSectorLegendView(Color Color, string Text);
 
-/// <summary>A grid the sector map names: its name and its centre of mass in map space.</summary>
-public readonly record struct WFSectorLandmarkView(EntityUid Grid, string Name, Vector2 Position);
+/// <summary>A grid the sector map names: its name, its centre of mass in map space, whether it is a station or a ship, and its IFF colour.</summary>
+public readonly record struct WFSectorLandmarkView(EntityUid Grid, string Name, Vector2 Position, WFSectorBlipKind Kind, Color Color);

@@ -19,7 +19,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Client._WF.SectorControl;
 
-/// <summary>The sector from above, zoomable out to 60 km either side of centre: the cell grid, territory, the grids and encounters a shuttle console's MAP tab lists, and the player's own ship.</summary>
+/// <summary>The sector from above, zoomable out to 60 km either side of centre: the cell grid, territory, the grids and encounters a shuttle console's MAP tab lists as blips, and the player's own ship.</summary>
 public sealed class WFSectorMapControl : Control
 {
     [Dependency] private IEntityManager _entManager = default!;
@@ -36,7 +36,7 @@ public sealed class WFSectorMapControl : Control
     /// <summary>The space left around the grids and territory when the view is fitted to them.</summary>
     public const float FitMargin = 3000f;
 
-    /// <summary>How long the cursor must rest over one cell before the hover readout shows.</summary>
+    /// <summary>How long the cursor must rest over one cell or blip before the hover readout shows.</summary>
     public static readonly TimeSpan ReadoutDelay = TimeSpan.FromSeconds(0.5);
 
     private const float ZoomStep = 1.25f;
@@ -47,13 +47,23 @@ public sealed class WFSectorMapControl : Control
     /// <summary>How narrow a cell may get on screen, in pixels, before the grid is no longer outlined.</summary>
     private const float GridPixels = 6f;
 
+    /// <summary>How wide a cell must be on screen, in UI pixels, before every blip is named; below it only the hovered one is.</summary>
+    private const float NamePixels = 90f;
+
+    /// <summary>How far from a blip, in UI pixels, the cursor still points at it.</summary>
+    private const float BlipReach = 8f;
+
+    /// <summary>The radius of a grid's blip, in UI pixels.</summary>
+    private const float BlipRadius = 4f;
+
     /// <summary>How far from the origin the centre can be dragged.</summary>
     private const float CentreLimit = MaxRange * 1.5f;
 
     private static readonly Color BackingColor = Color.FromHex("#0b0e12");
     private static readonly Color GridColor = Color.White.WithAlpha(0.08f);
-    private static readonly Color LandmarkColor = Color.FromHex("#c8d4e0");
+    private static readonly Color CardColor = Color.FromHex("#c8d4e0");
     private static readonly Color DimColor = Color.FromHex("#8a96a3");
+    private static readonly Color ShadowColor = Color.Black.WithAlpha(0.8f);
     private static readonly ResPath MarkerGlyphs = new("/Textures/_WF/Encounters/markers.rsi");
 
     private readonly WFSectorOverlay _overlay = new();
@@ -62,8 +72,10 @@ public sealed class WFSectorMapControl : Control
     private readonly Dictionary<WFEncounterIcon, Texture> _glyphs = new();
     private readonly List<WFSectorLandmarkView> _landmarks = new();
     private readonly List<WFSectorEncounterView> _encounters = new();
+    private readonly List<WFSectorReadoutLine> _readout = new();
     private readonly HashSet<NetEntity> _listed = new();
     private readonly Vector2[] _triangle = new Vector2[3];
+    private readonly Vector2[] _diamond = new Vector2[4];
 
     private Vector2 _centre;
     private float _range = 20000f;
@@ -77,9 +89,10 @@ public sealed class WFSectorMapControl : Control
     private TimeSpan? _lastClick;
     private Vector2 _lastClickPosition;
 
-    /// <summary>Where, over which cell and since when the cursor has been resting.</summary>
+    /// <summary>Where, over which cell and blip and since when the cursor has been resting.</summary>
     private Vector2 _restPoint;
     private WFSectorCell? _restCell;
+    private WFSectorBlip? _restBlip;
     private TimeSpan _restSince;
 
     /// <summary>The world point at the middle of the control.</summary>
@@ -91,8 +104,14 @@ public sealed class WFSectorMapControl : Control
     /// <summary>Pixels per metre at the current zoom.</summary>
     public float PixelsPerMetre => PixelSize.X > 0 ? PixelSize.X / 2f / _range : 0f;
 
-    /// <summary>Whether the cursor has rested over one cell for <see cref="ReadoutDelay"/> and the view is not being panned.</summary>
+    /// <summary>Whether the cursor has rested over one cell and blip for <see cref="ReadoutDelay"/> and the view is not being panned.</summary>
     public bool ReadoutShown => _hover != null && !_panning && _timing.RealTime - _restSince >= ReadoutDelay;
+
+    /// <summary>The blip under the cursor, while it is over the map and not panning.</summary>
+    public WFSectorBlip? HoveredBlip => _hover is { } hover && !_panning ? BlipAt(hover) : null;
+
+    /// <summary>Whether a cell is wide enough on screen for every blip to be named.</summary>
+    public bool NamesShown => TryGetView(out var view) && NamesFit(view);
 
     public WFSectorMapControl()
     {
@@ -149,23 +168,10 @@ public sealed class WFSectorMapControl : Control
     /// <summary>Centres the view on the player's own grid, or on the player when they are not aboard one (a ghost always); false if neither is on the map shown.</summary>
     public bool CentreOnPlayer()
     {
-        if (!TryGetView(out var view))
+        if (!TryGetView(out var view) || !TryGetOwnPosition(view.Map, out var position))
             return false;
 
-        if (TryGetOwnShip(view.Map, out var position, out _))
-        {
-            SetCentre(position);
-            return true;
-        }
-
-        if (_player.LocalEntity is not { } player
-            || !_entManager.TryGetComponent(player, out TransformComponent? xform)
-            || xform.MapID != view.Map)
-        {
-            return false;
-        }
-
-        SetCentre(_entManager.System<SharedTransformSystem>().GetWorldPosition(xform));
+        SetCentre(position);
         return true;
     }
 
@@ -206,6 +212,86 @@ public sealed class WFSectorMapControl : Control
         return Loc.GetString("wf-sector-map-hover-open", ("callsign", callsign), ("distance", distance));
     }
 
+    /// <summary>
+    /// Fills a blip's card, one line each: its name, what it is beside a swatch of its colour, its range and bearing from
+    /// the player (or the sector core), and for a grid the cell it is in, who holds it and any contest's countdown.
+    /// </summary>
+    public void Card(WFSectorMapView view, WFSectorBlip blip, List<WFSectorReadoutLine> into)
+    {
+        into.Clear();
+        into.Add(new WFSectorReadoutLine(blip.Name, Color.White, null));
+        into.Add(new WFSectorReadoutLine(Loc.GetString(KindKey(blip)), CardColor, blip.Color));
+
+        var located = TryGetOwnPosition(view.Map, out var from);
+        var distance = (Vector2.Distance(from, blip.Position) / 1000f).ToString("0.0", CultureInfo.InvariantCulture);
+        into.Add(new WFSectorReadoutLine(Loc.GetString(located ? "wf-sector-map-card-range" : "wf-sector-map-card-range-core",
+            ("distance", distance), ("bearing", Bearing(from, blip.Position))), CardColor, null));
+
+        if (blip.Kind == WFSectorBlipKind.Encounter)
+            return;
+
+        var cell = WFSectorHex.CellOf(blip.Position, view.CellSize);
+        var callsign = WFSectorHex.Callsign(cell);
+        into.Add(view.Owners.TryGetValue(cell, out var owner)
+            ? new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-held", ("callsign", callsign), ("faction", view.Names[owner])), CardColor, null)
+            : new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-open", ("callsign", callsign)), CardColor, null));
+
+        foreach (var contest in view.Contests)
+        {
+            if (contest.Cell != cell)
+                continue;
+
+            var remaining = WFSectorOverlay.FormatRemaining(contest.Deadline - _timing.CurTime);
+            into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-contested",
+                ("faction", view.Names[contest.Faction]), ("time", remaining)), CardColor, null));
+            break;
+        }
+    }
+
+    /// <summary>The lines the readout shows now: the card of the blip under the cursor, else the cell's line; none until the cursor has rested.</summary>
+    public IReadOnlyList<WFSectorReadoutLine> ShownReadout()
+    {
+        _readout.Clear();
+        if (!ReadoutShown
+            || _hover is not { } hover
+            || !new UIBox2(Vector2.Zero, PixelSize).Contains(hover)
+            || !TryGetView(out var view))
+        {
+            return _readout;
+        }
+
+        if (BlipAt(hover) is { } blip)
+            Card(view, blip, _readout);
+        else
+            _readout.Add(new WFSectorReadoutLine(Readout(view, ViewToWorld(hover)), Color.White, null));
+
+        return _readout;
+    }
+
+    /// <summary>The compass bearing from one point to another as three digits, north 000, clockwise.</summary>
+    public static string Bearing(Vector2 from, Vector2 to)
+    {
+        var delta = to - from;
+        var degrees = (int) MathF.Round(MathF.Atan2(delta.X, delta.Y) * 180f / MathF.PI);
+        return ((degrees % 360 + 360) % 360).ToString("000", CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>The blip on screen nearest a pixel of the control and within reach of it, a named grid or an encounter; none over empty space.</summary>
+    public WFSectorBlip? BlipAt(Vector2 pixel)
+    {
+        if (PixelSize.X <= 0 || !TryGetView(out var view))
+            return null;
+
+        CollectBlips(view.Map);
+        return Nearest(pixel, WorldToView(), new UIBox2(Vector2.Zero, PixelSize));
+    }
+
+    /// <summary>Whether a blip's name is printed: every blip's once a cell is wide enough on screen, else only the hovered one's.</summary>
+    public bool LabelShown(WFSectorBlip blip)
+    {
+        return NamesShown || WFSectorBlip.Same(HoveredBlip, blip);
+    }
+
     /// <summary>Where the player's own grid is on a map and which way it faces, when the player is aboard one there; a ghost is never aboard, even over a grid.</summary>
     public bool TryGetOwnShip(MapId map, out Vector2 position, out Angle heading)
     {
@@ -223,13 +309,31 @@ public sealed class WFSectorMapControl : Control
         return true;
     }
 
+    /// <summary>Where the player is on a map: their own grid when aboard one, else where they stand or float; the origin and false when they are not on it.</summary>
+    public bool TryGetOwnPosition(MapId map, out Vector2 position)
+    {
+        if (TryGetOwnShip(map, out position, out _))
+            return true;
+
+        if (_player.LocalEntity is { } player
+            && _entManager.TryGetComponent(player, out TransformComponent? xform)
+            && xform.MapID == map)
+        {
+            position = _entManager.System<SharedTransformSystem>().GetWorldPosition(xform);
+            return true;
+        }
+
+        position = Vector2.Zero;
+        return false;
+    }
+
     /// <summary>Fills a list with the grids on a map that the sector map names, as the MAP tab lists them without a scan, leaving out the player's own ship.</summary>
     public void CollectLandmarks(MapId map, List<WFSectorLandmarkView> into)
     {
         _entManager.System<WFSectorClientSystem>().CollectLandmarks(map, OwnGrid(map), into);
     }
 
-    /// <summary>Fills a list with one marker per encounter on a map, at its first ship, as the MAP tab lists them.</summary>
+    /// <summary>Fills a list with one marker per encounter on a map, at its first ship and in that ship's side colour, as the MAP tab lists them.</summary>
     public void CollectEncounters(MapId map, IReadOnlyList<WFEncounterMarker> markers, List<WFSectorEncounterView> into)
     {
         into.Clear();
@@ -240,7 +344,8 @@ public sealed class WFSectorMapControl : Control
             if (marker.Map != map || !_listed.Add(marker.Encounter))
                 continue;
 
-            into.Add(new WFSectorEncounterView(marker.Name, marker.Category, system.GetPosition(marker)));
+            var color = marker.Color ?? WFEncounterColors.Category(marker.Category);
+            into.Add(new WFSectorEncounterView(marker.Encounter, marker.Name, marker.Category, color, system.GetPosition(marker)));
         }
     }
 
@@ -261,14 +366,74 @@ public sealed class WFSectorMapControl : Control
         return grid;
     }
 
+    /// <summary>Gathers the landmarks and encounters of a map into the lists the blips are drawn and found from.</summary>
+    private void CollectBlips(MapId map)
+    {
+        CollectLandmarks(map, _landmarks);
+        CollectEncounters(map, _entManager.System<WFEncounterMarkerClientSystem>().Markers, _encounters);
+    }
+
+    /// <summary>The blip in the gathered lists nearest a pixel, on the control and within reach.</summary>
+    private WFSectorBlip? Nearest(Vector2 pixel, in Matrix3x2 worldToView, UIBox2 bounds)
+    {
+        WFSectorBlip? best = null;
+        var reach = BlipReach * UIScale;
+        var bestDistance = reach * reach;
+        foreach (var landmark in _landmarks)
+        {
+            var point = Vector2.Transform(landmark.Position, worldToView);
+            var distance = (point - pixel).LengthSquared();
+            if (distance > bestDistance || !bounds.Contains(point))
+                continue;
+
+            bestDistance = distance;
+            best = WFSectorBlip.Of(landmark);
+        }
+
+        foreach (var encounter in _encounters)
+        {
+            var point = Vector2.Transform(encounter.Position, worldToView);
+            var distance = (point - pixel).LengthSquared();
+            if (distance > bestDistance || !bounds.Contains(point))
+                continue;
+
+            bestDistance = distance;
+            best = WFSectorBlip.Of(encounter);
+        }
+
+        return best;
+    }
+
+    private bool NamesFit(WFSectorMapView view)
+    {
+        return view.CellSize * MathF.Sqrt(3f) * PixelsPerMetre > NamePixels * UIScale;
+    }
+
+    /// <summary>The Fluent key for what a blip is: station, ship or the encounter's category.</summary>
+    private static string KindKey(WFSectorBlip blip)
+    {
+        return blip.Kind switch
+        {
+            WFSectorBlipKind.Station => "wf-sector-map-kind-station",
+            WFSectorBlipKind.Ship => "wf-sector-map-kind-ship",
+            _ => blip.Category switch
+            {
+                WFEncounterCategory.Patrol => "wf-sector-map-category-patrol",
+                WFEncounterCategory.Threat => "wf-sector-map-category-threat",
+                WFEncounterCategory.Distress => "wf-sector-map-category-distress",
+                _ => "wf-sector-map-category-traffic",
+            },
+        };
+    }
+
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
         if (TryGetView(out var view))
             EnsureFitted(view);
 
-        // The map can move under a still cursor, by a recentre or a refit.
-        if (_hover is { } hover && !_panning && CellAt(hover) != _restCell)
+        // The map, or a blip, can move under a still cursor.
+        if (_hover is { } hover && !_panning && (CellAt(hover) != _restCell || !WFSectorBlip.Same(BlipAt(hover), _restBlip)))
             RestartRest(hover);
     }
 
@@ -283,6 +448,7 @@ public sealed class WFSectorMapControl : Control
     {
         _restPoint = pixel;
         _restCell = CellAt(pixel);
+        _restBlip = BlipAt(pixel);
         _restSince = _timing.RealTime;
     }
 
@@ -378,8 +544,14 @@ public sealed class WFSectorMapControl : Control
         _hover = position;
         if (!_panning)
         {
-            if (entered || CellAt(position) != _restCell || (position - _restPoint).Length() > RestDrift * UIScale)
+            if (entered
+                || CellAt(position) != _restCell
+                || (position - _restPoint).Length() > RestDrift * UIScale
+                || !WFSectorBlip.Same(BlipAt(position), _restBlip))
+            {
                 RestartRest(position);
+            }
+
             return;
         }
 
@@ -434,13 +606,11 @@ public sealed class WFSectorMapControl : Control
         _overlay.DrawBorders(handle, view, worldToView);
         _overlay.DrawContests(handle, system, view, worldToView, _font, UIScale, bounds);
         _overlay.DrawCallsigns(handle, view.CellLabels, view.CellSize, worldToView, _font, UIScale, scale, bounds);
-        _placedLabels.Clear();
-        DrawLandmarks(handle, view.Map, worldToView, bounds);
-        DrawEncounters(handle, view.Map, worldToView, bounds);
+        DrawBlips(handle, view, worldToView, bounds);
         DrawOwnShip(handle, view.Map, worldToView);
         // The legend goes over the grids, so a label never runs across it.
         _overlay.DrawLegend(handle, system, _font, UIScale);
-        DrawReadout(handle, view, bounds);
+        DrawReadout(handle, bounds);
     }
 
     /// <summary>Faintly outlines every cell of the sector, unless a cell would be too narrow on screen to see.</summary>
@@ -452,36 +622,87 @@ public sealed class WFSectorMapControl : Control
         _overlay.Draw(handle, DrawPrimitiveTopology.LineList, view.Grid, worldToView, GridColor);
     }
 
-    /// <summary>A dot and the name of each grid the MAP tab would list; a name that would overlap one already printed is left out.</summary>
-    private void DrawLandmarks(DrawingHandleScreen handle, MapId map, in Matrix3x2 worldToView, UIBox2 bounds)
+    /// <summary>
+    /// A blip for each grid the MAP tab would list, then each encounter's glyph, then their names: all of them when zoomed
+    /// in, else only the hovered one's, which is placed first; a name that would overlap one already printed is left out.
+    /// </summary>
+    private void DrawBlips(DrawingHandleScreen handle, WFSectorMapView view, in Matrix3x2 worldToView, UIBox2 bounds)
     {
-        CollectLandmarks(map, _landmarks);
+        CollectBlips(view.Map);
+        var hovered = _hover is { } hover && !_panning ? Nearest(hover, worldToView, bounds) : null;
         foreach (var landmark in _landmarks)
         {
             var point = Vector2.Transform(landmark.Position, worldToView);
-            if (!bounds.Contains(point))
-                continue;
-
-            handle.DrawCircle(point, 2.5f * UIScale, LandmarkColor);
-            DrawLabel(handle, point, 5f * UIScale, landmark.Name, LandmarkColor, bounds);
+            if (bounds.Contains(point))
+                DrawLandmarkBlip(handle, point, landmark.Kind, landmark.Color);
         }
-    }
 
-    /// <summary>Each encounter as its category's glyph at its first ship, with its name beside it where there is room.</summary>
-    private void DrawEncounters(DrawingHandleScreen handle, MapId map, in Matrix3x2 worldToView, UIBox2 bounds)
-    {
-        CollectEncounters(map, _entManager.System<WFEncounterMarkerClientSystem>().Markers, _encounters);
-        var size = new Vector2(14f * UIScale);
+        var glyph = new Vector2(14f * UIScale);
         foreach (var encounter in _encounters)
         {
             var point = Vector2.Transform(encounter.Position, worldToView);
-            if (!bounds.Contains(point))
-                continue;
-
-            var color = WFEncounterColors.Category(encounter.Category);
-            handle.DrawTextureRect(Glyph(GlyphFor(encounter.Category)), UIBox2.FromDimensions(point - size / 2f, size), color);
-            DrawLabel(handle, point, size.X / 2f + 3f * UIScale, encounter.Name, color, bounds);
+            if (bounds.Contains(point))
+                handle.DrawTextureRect(Glyph(GlyphFor(encounter.Category)), UIBox2.FromDimensions(point - glyph / 2f, glyph), WFEncounterColors.Category(encounter.Category));
         }
+
+        _placedLabels.Clear();
+        if (hovered is { } shown)
+            DrawBlipLabel(handle, shown, worldToView, bounds);
+
+        if (!NamesFit(view))
+            return;
+
+        foreach (var landmark in _landmarks)
+        {
+            var blip = WFSectorBlip.Of(landmark);
+            if (!WFSectorBlip.Same(blip, hovered))
+                DrawBlipLabel(handle, blip, worldToView, bounds);
+        }
+
+        foreach (var encounter in _encounters)
+        {
+            var blip = WFSectorBlip.Of(encounter);
+            if (!WFSectorBlip.Same(blip, hovered))
+                DrawBlipLabel(handle, blip, worldToView, bounds);
+        }
+    }
+
+    /// <summary>A grid's blip in its IFF colour: a ring round a dot for a station, a filled diamond for a ship.</summary>
+    private void DrawLandmarkBlip(DrawingHandleScreen handle, Vector2 point, WFSectorBlipKind kind, Color color)
+    {
+        var radius = BlipRadius * UIScale;
+        if (kind == WFSectorBlipKind.Station)
+        {
+            handle.DrawCircle(point, radius + 1.5f * UIScale, ShadowColor.WithAlpha(0.6f));
+            handle.DrawCircle(point, radius, color, false);
+            handle.DrawCircle(point, radius - UIScale, color, false);
+            handle.DrawCircle(point, 1.5f * UIScale, color);
+            return;
+        }
+
+        var tip = radius * 1.25f;
+        _diamond[0] = point + new Vector2(0f, -tip);
+        _diamond[1] = point + new Vector2(tip, 0f);
+        _diamond[2] = point + new Vector2(0f, tip);
+        _diamond[3] = point + new Vector2(-tip, 0f);
+        handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, _diamond, color);
+        for (var i = 0; i < 4; i++)
+        {
+            handle.DrawLine(_diamond[i], _diamond[(i + 1) % 4], ShadowColor);
+        }
+    }
+
+    /// <summary>Prints a blip's name beside it: a grid's in its IFF colour, an encounter's in its category's.</summary>
+    private void DrawBlipLabel(DrawingHandleScreen handle, WFSectorBlip blip, in Matrix3x2 worldToView, UIBox2 bounds)
+    {
+        var point = Vector2.Transform(blip.Position, worldToView);
+        if (!bounds.Contains(point))
+            return;
+
+        if (blip.Kind == WFSectorBlipKind.Encounter)
+            DrawLabel(handle, point, 10f * UIScale, blip.Name, WFEncounterColors.Category(blip.Category), bounds);
+        else
+            DrawLabel(handle, point, (BlipRadius + 3f) * UIScale, blip.Name, blip.Color, bounds);
     }
 
     /// <summary>Prints a name to the right of a point, or the left if there is no room, unless it would overlap a name already printed.</summary>
@@ -503,7 +724,7 @@ public sealed class WFSectorMapControl : Control
             return;
 
         _placedLabels.Add(box);
-        handle.DrawString(_font, box.TopLeft + new Vector2(1f, 1f), text, labelScale, Color.Black.WithAlpha(0.8f));
+        handle.DrawString(_font, box.TopLeft + new Vector2(1f, 1f), text, labelScale, ShadowColor);
         handle.DrawString(_font, box.TopLeft, text, labelScale, color);
     }
 
@@ -563,10 +784,9 @@ public sealed class WFSectorMapControl : Control
         _triangle[1] = point - direction * size * 0.6f + side * size * 0.6f;
         _triangle[2] = point - direction * size * 0.6f - side * size * 0.6f;
         handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, _triangle, Color.White);
-        var outline = Color.Black.WithAlpha(0.8f);
-        handle.DrawLine(_triangle[0], _triangle[1], outline);
-        handle.DrawLine(_triangle[1], _triangle[2], outline);
-        handle.DrawLine(_triangle[2], _triangle[0], outline);
+        handle.DrawLine(_triangle[0], _triangle[1], ShadowColor);
+        handle.DrawLine(_triangle[1], _triangle[2], ShadowColor);
+        handle.DrawLine(_triangle[2], _triangle[0], ShadowColor);
     }
 
     /// <summary>A small white ring where the player's ghost is on a map.</summary>
@@ -581,31 +801,96 @@ public sealed class WFSectorMapControl : Control
         }
 
         var point = Vector2.Transform(_entManager.System<SharedTransformSystem>().GetWorldPosition(xform), worldToView);
-        handle.DrawCircle(point, 5f * UIScale, Color.Black.WithAlpha(0.8f), false);
+        handle.DrawCircle(point, 5f * UIScale, ShadowColor, false);
         handle.DrawCircle(point, 4f * UIScale, Color.White, false);
     }
 
-    /// <summary>The cell under the cursor, its callsign, distance out and who holds it, beside the cursor once it has rested there.</summary>
-    private void DrawReadout(DrawingHandleScreen handle, WFSectorMapView view, UIBox2 bounds)
+    /// <summary>
+    /// The readout in a box beside the cursor once it has rested: a blip's card, or the cell's line. It goes below and right
+    /// of the cursor, flips to the other side where it would run off the control, and is kept inside it.
+    /// </summary>
+    private void DrawReadout(DrawingHandleScreen handle, UIBox2 bounds)
     {
-        if (!ReadoutShown || _hover is not { } hover || !bounds.Contains(hover))
+        var lines = ShownReadout();
+        if (lines.Count == 0 || _hover is not { } hover)
             return;
 
-        var text = Readout(view, ViewToWorld(hover));
-        var dimensions = handle.GetDimensions(_font, text, UIScale);
-        var pad = new Vector2(4f * UIScale);
+        var lineHeight = (float) _font.GetLineHeight(UIScale);
+        var swatch = lineHeight * 0.6f;
+        var gap = 4f * UIScale;
+        var width = 0f;
+        foreach (var line in lines)
+        {
+            var lineWidth = handle.GetDimensions(_font, line.Text, UIScale).X;
+            if (line.Swatch != null)
+                lineWidth += swatch + gap;
+
+            width = MathF.Max(width, lineWidth);
+        }
+
+        var pad = 4f * UIScale;
+        var size = new Vector2(width + pad * 2f, lineHeight * lines.Count + pad * 2f);
         var offset = 16f * UIScale;
         var at = hover + new Vector2(offset);
-        if (at.X + dimensions.X + pad.X * 2f > bounds.Right)
-            at.X = hover.X - offset - dimensions.X - pad.X * 2f;
+        if (at.X + size.X > bounds.Right)
+            at.X = hover.X - offset - size.X;
 
-        if (at.Y + dimensions.Y + pad.Y * 2f > bounds.Bottom)
-            at.Y = hover.Y - offset - dimensions.Y - pad.Y * 2f;
+        if (at.Y + size.Y > bounds.Bottom)
+            at.Y = hover.Y - offset - size.Y;
 
-        handle.DrawRect(UIBox2.FromDimensions(at, dimensions + pad * 2f), Color.Black.WithAlpha(0.75f));
-        handle.DrawString(_font, at + pad, text, UIScale, Color.White);
+        at = Vector2.Clamp(at, bounds.TopLeft, Vector2.Max(bounds.TopLeft, bounds.BottomRight - size));
+        handle.DrawRect(UIBox2.FromDimensions(at, size), Color.Black.WithAlpha(0.75f));
+        var y = at.Y + pad;
+        foreach (var line in lines)
+        {
+            var x = at.X + pad;
+            if (line.Swatch is { } color)
+            {
+                handle.DrawRect(UIBox2.FromDimensions(new Vector2(x, y + (lineHeight - swatch) / 2f), new Vector2(swatch)), color);
+                x += swatch + gap;
+            }
+
+            handle.DrawString(_font, new Vector2(x, y), line.Text, UIScale, line.Color);
+            y += lineHeight;
+        }
     }
 }
 
-/// <summary>An encounter on the sector map: its name, its category and where its first ship is in map space.</summary>
-public readonly record struct WFSectorEncounterView(string Name, WFEncounterCategory Category, Vector2 Position);
+/// <summary>What a blip on the sector map stands for.</summary>
+public enum WFSectorBlipKind : byte
+{
+    Ship,
+    Station,
+    Encounter,
+}
+
+/// <summary>An encounter on the sector map: its name, its category, its first ship's side colour and where that ship is in map space.</summary>
+public readonly record struct WFSectorEncounterView(NetEntity Encounter, string Name, WFEncounterCategory Category, Color Color, Vector2 Position);
+
+/// <summary>A blip on the sector map, a named grid or an encounter, with what its card shows.</summary>
+public readonly record struct WFSectorBlip(WFSectorBlipKind Kind, string Name, Vector2 Position, Color Color, EntityUid Grid, NetEntity Encounter, WFEncounterCategory Category)
+{
+    /// <summary>The blip of a named grid.</summary>
+    public static WFSectorBlip Of(WFSectorLandmarkView landmark)
+    {
+        return new WFSectorBlip(landmark.Kind, landmark.Name, landmark.Position, landmark.Color, landmark.Grid, NetEntity.Invalid, default);
+    }
+
+    /// <summary>The blip of an encounter's marker.</summary>
+    public static WFSectorBlip Of(WFSectorEncounterView encounter)
+    {
+        return new WFSectorBlip(WFSectorBlipKind.Encounter, encounter.Name, encounter.Position, encounter.Color, EntityUid.Invalid, encounter.Encounter, encounter.Category);
+    }
+
+    /// <summary>Whether two blips are the same grid or encounter, wherever each has moved since; two nones are the same.</summary>
+    public static bool Same(WFSectorBlip? a, WFSectorBlip? b)
+    {
+        if (a is not { } first || b is not { } second)
+            return a.HasValue == b.HasValue;
+
+        return first.Kind == second.Kind && first.Grid == second.Grid && first.Encounter == second.Encounter;
+    }
+}
+
+/// <summary>One line of the hover readout, with a swatch of a colour before it when there is one.</summary>
+public readonly record struct WFSectorReadoutLine(string Text, Color Color, Color? Swatch);
