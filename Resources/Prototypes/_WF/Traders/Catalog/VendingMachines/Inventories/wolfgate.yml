@@ -49,6 +49,7 @@
     BoneGel: 2
     WFMedkitSyntheticFilled: 3
     WFWolfmedIvDripFlatpack: 3
+    WFWolfmedVentilatorFlatpack: 3
     # The autodoc as a flatpack, for a ship without a medical lathe (its board is printed there), and its consumables.
     WFMachineAutodocFlatpack: 2
     WFAutodocProgramDiskTransplant: 2

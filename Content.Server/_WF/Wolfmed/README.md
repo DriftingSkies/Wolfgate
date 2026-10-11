@@ -11,6 +11,8 @@ all read those wounds instead of the flat damage total.
 What players use: the health analyzer's wound readout, vitals card and treatment advice; the field medicine in
 the Wolfgate vendor (splints, antiseptic, skin grafts, analgesic, stimulant and opiate pens, hydraulic fluid for a
 chassis); the IV drip (`WolfmedIvDripSystem`: blood packs or a beaker fed in, or blood drawn out, at a set flow);
+the ventilator (`WolfmedVentilatorSystem`: a tank-fed stand that breathes for a patient whose lungs are gone or
+failing, as a sealed autodoc does);
 Shitmed's surgeries with Wolfmed's steps (tend wounds, weld chassis, rewire); the autodoc pod (queued
 and AUTO-triaged procedures, a voice, a sealed atmosphere, welder repair, a blood reservoir); the synthetic HUD and health bars for
 IPCs; the crawl, call-for-help and dying actions of a downed body. Admins have the `damage` command's body-part
@@ -107,6 +109,8 @@ Skipped ("dirty-disposed").
 - [`Content.Server/_WF/Wolfmed/Medical/WolfmedIvDripSystem.cs`](Medical/WolfmedIvDripSystem.cs)
 - [`Content.Server/_WF/Wolfmed/Medical/WolfmedOralAbsorptionSystem.cs`](Medical/WolfmedOralAbsorptionSystem.cs)
 - [`Content.Server/_WF/Wolfmed/Medical/WolfmedReagentDamageSystem.cs`](Medical/WolfmedReagentDamageSystem.cs)
+- [`Content.Server/_WF/Wolfmed/Medical/WolfmedVentilatedComponent.cs`](Medical/WolfmedVentilatedComponent.cs)
+- [`Content.Server/_WF/Wolfmed/Medical/WolfmedVentilatorSystem.cs`](Medical/WolfmedVentilatorSystem.cs)
 - [`Content.Server/_WF/Wolfmed/Medical/WoundHealingSystem.Wolfmed.cs`](Medical/WoundHealingSystem.Wolfmed.cs)
 - [`Content.Server/_WF/Wolfmed/Range/WolfmedRangeCommand.cs`](Range/WolfmedRangeCommand.cs)
 - [`Content.Server/_WF/Wolfmed/Sounds/WolfmedBleedDripComponent.cs`](Sounds/WolfmedBleedDripComponent.cs)
@@ -223,8 +227,10 @@ Skipped ("dirty-disposed").
 - [`Content.Shared/_WF/Wolfmed/Life/WolfmedVitalSigns.cs`](../../../Content.Shared/_WF/Wolfmed/Life/WolfmedVitalSigns.cs)
 - [`Content.Shared/_WF/Wolfmed/Life/WolfmedVitalsReport.cs`](../../../Content.Shared/_WF/Wolfmed/Life/WolfmedVitalsReport.cs)
 - [`Content.Shared/_WF/Wolfmed/Medical/SharedWolfmedIvDripSystem.cs`](../../../Content.Shared/_WF/Wolfmed/Medical/SharedWolfmedIvDripSystem.cs)
+- [`Content.Shared/_WF/Wolfmed/Medical/SharedWolfmedVentilatorSystem.cs`](../../../Content.Shared/_WF/Wolfmed/Medical/SharedWolfmedVentilatorSystem.cs)
 - [`Content.Shared/_WF/Wolfmed/Medical/WolfmedAntisepticSprayComponent.cs`](../../../Content.Shared/_WF/Wolfmed/Medical/WolfmedAntisepticSprayComponent.cs)
 - [`Content.Shared/_WF/Wolfmed/Medical/WolfmedIvDripComponent.cs`](../../../Content.Shared/_WF/Wolfmed/Medical/WolfmedIvDripComponent.cs)
+- [`Content.Shared/_WF/Wolfmed/Medical/WolfmedVentilatorComponent.cs`](../../../Content.Shared/_WF/Wolfmed/Medical/WolfmedVentilatorComponent.cs)
 - [`Content.Shared/_WF/Wolfmed/Reagents/WolfmedFluidPackComponent.cs`](../../../Content.Shared/_WF/Wolfmed/Reagents/WolfmedFluidPackComponent.cs)
 - [`Content.Shared/_WF/Wolfmed/Reagents/WolfmedPainRelief.cs`](../../../Content.Shared/_WF/Wolfmed/Reagents/WolfmedPainRelief.cs)
 - [`Content.Shared/_WF/Wolfmed/Reagents/WolfmedPainReliefComponent.cs`](../../../Content.Shared/_WF/Wolfmed/Reagents/WolfmedPainReliefComponent.cs)
@@ -443,6 +449,7 @@ Skipped ("dirty-disposed").
 - [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedTreatmentMatrixTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedTreatmentMatrixTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedTreatmentProcedureTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedTreatmentProcedureTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedTreatmentRestrictionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedTreatmentRestrictionTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVentilatorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVentilatorTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVisualInspectionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVisualInspectionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVisualsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVisualsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVitalLimitsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Wolfmed/WolfmedVitalLimitsTest.cs)
@@ -496,6 +503,7 @@ Skipped ("dirty-disposed").
 - [`Resources/Prototypes/_WF/Wolfmed/Entities/sutures.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Entities/sutures.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Entities/synthetic_kit.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Entities/synthetic_kit.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Entities/tourniquet.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Entities/tourniquet.yml)
+- [`Resources/Prototypes/_WF/Wolfmed/Entities/ventilator.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Entities/ventilator.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Guidebook/medical.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Guidebook/medical.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/health_icons.yml`](../../../Resources/Prototypes/_WF/Wolfmed/health_icons.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Hud/synthetic_hud.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Hud/synthetic_hud.yml)
@@ -565,6 +573,7 @@ Skipped ("dirty-disposed").
 - [`Resources/Locale/en-US/_WF/Wolfmed/surgery-popup.ftl`](../../../Resources/Locale/en-US/_WF/Wolfmed/surgery-popup.ftl)
 - [`Resources/Locale/en-US/_WF/Wolfmed/synthetic-hud.ftl`](../../../Resources/Locale/en-US/_WF/Wolfmed/synthetic-hud.ftl)
 - [`Resources/Locale/en-US/_WF/Wolfmed/treatment-advice.ftl`](../../../Resources/Locale/en-US/_WF/Wolfmed/treatment-advice.ftl)
+- [`Resources/Locale/en-US/_WF/Wolfmed/ventilator.ftl`](../../../Resources/Locale/en-US/_WF/Wolfmed/ventilator.ftl)
 - [`Resources/Locale/en-US/_WF/Wolfmed/wounds.ftl`](../../../Resources/Locale/en-US/_WF/Wolfmed/wounds.ftl)
 
 ### Textures
@@ -584,6 +593,7 @@ Skipped ("dirty-disposed").
 - [`Resources/Textures/_WF/Wolfmed/Medical/iv_drip.rsi/`](../../../Resources/Textures/_WF/Wolfmed/Medical/iv_drip.rsi/)
 - [`Resources/Textures/_WF/Wolfmed/Medical/makeshift_tourniquet.rsi/`](../../../Resources/Textures/_WF/Wolfmed/Medical/makeshift_tourniquet.rsi/)
 - [`Resources/Textures/_WF/Wolfmed/Medical/sutures.rsi/`](../../../Resources/Textures/_WF/Wolfmed/Medical/sutures.rsi/)
+- [`Resources/Textures/_WF/Wolfmed/Medical/ventilator.rsi/`](../../../Resources/Textures/_WF/Wolfmed/Medical/ventilator.rsi/)
 - [`Resources/Textures/_WF/Wolfmed/Mobs/treatment_overlays.rsi/`](../../../Resources/Textures/_WF/Wolfmed/Mobs/treatment_overlays.rsi/)
 - [`Resources/Textures/_WF/Wolfmed/Objects/Medical/splint.rsi/`](../../../Resources/Textures/_WF/Wolfmed/Objects/Medical/splint.rsi/)
 - [`Resources/Textures/_WF/Wolfmed/Shaders/dying.swsl`](../../../Resources/Textures/_WF/Wolfmed/Shaders/dying.swsl)
@@ -1702,6 +1712,7 @@ Skipped ("dirty-disposed").
   - ITEMS: Infinite
   - playtest 5: Infinite, the plain suture.
   - ITEMS: Infinite, the surgical basics a wound procedure names.
+  - Infinite, the ventilator.
   - ITEMS: Infinite, a first aid kit for synthetic crew.
 - [`Resources/Prototypes/_NF/Entities/Clothing/Eyes/glasses_punks.yml`](../../../Resources/Prototypes/_NF/Entities/Clothing/Eyes/glasses_punks.yml): the IPC's container, so its bar shows
 - [`Resources/Prototypes/_NF/Entities/Clothing/Head/hardsuit-helmets.yml`](../../../Resources/Prototypes/_NF/Entities/Clothing/Head/hardsuit-helmets.yml): P6, P3-D6: locational armour coverage
@@ -1876,6 +1887,7 @@ Skipped ("dirty-disposed").
   - ITEMS: the surgical basics a wound procedure names.
   - ITEMS
   - ITEMS: the IV drip had no source at all.
+  - the ventilator, for a patient whose lungs are gone.
   - ITEMS: a first aid kit for synthetic crew.
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/robotics.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/robotics.yml): ITEMS: a first aid kit for synthetic crew, beside the robotics tools.
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/wallmed.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/wallmed.yml)
