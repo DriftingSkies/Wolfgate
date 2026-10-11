@@ -187,12 +187,18 @@ public sealed class WFSectorMapControl : Control
         var cell = WFSectorHex.CellOf(world, view.CellSize);
         var callsign = WFSectorHex.Callsign(cell);
         var distance = (world.Length() / 1000f).ToString("0.0", CultureInfo.InvariantCulture);
+        if (view.Disputes.TryGetValue(cell, out var disputing))
+        {
+            return Loc.GetString("wf-sector-map-hover-disputed",
+                ("callsign", callsign), ("distance", distance), ("faction", view.Names[disputing]));
+        }
+
         foreach (var contest in view.Contests)
         {
             if (contest.Cell != cell)
                 continue;
 
-            var remaining = WFSectorOverlay.FormatRemaining(contest.Deadline - _timing.CurTime);
+            var remaining = WFSectorOverlay.FormatRemaining(contest.Remaining(_timing.CurTime));
             return Loc.GetString("wf-sector-map-hover-contested",
                 ("callsign", callsign), ("distance", distance), ("faction", view.Names[contest.Faction]), ("time", remaining));
         }
@@ -235,10 +241,16 @@ public sealed class WFSectorMapControl : Control
             if (contest.Cell != cell)
                 continue;
 
-            var remaining = WFSectorOverlay.FormatRemaining(contest.Deadline - _timing.CurTime);
+            var remaining = WFSectorOverlay.FormatRemaining(contest.Remaining(_timing.CurTime));
             into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-contested",
                 ("faction", view.Names[contest.Faction]), ("time", remaining)), CardColor, null));
             break;
+        }
+
+        if (view.Disputes.TryGetValue(cell, out var disputing))
+        {
+            into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-disputed",
+                ("faction", view.Names[disputing])), CardColor, null));
         }
     }
 
@@ -594,6 +606,7 @@ public sealed class WFSectorMapControl : Control
         _overlay.DrawFills(handle, view, worldToView);
         _overlay.DrawBorders(handle, view, worldToView);
         _overlay.DrawContests(handle, system, view, worldToView, _font, UIScale, bounds);
+        _overlay.DrawDisputes(handle, system, view, worldToView);
         _overlay.DrawCallsigns(handle, view.CellLabels, view.CellSize, worldToView, _font, UIScale, scale, bounds);
         DrawBlips(handle, view, worldToView, bounds);
         DrawOwnShip(handle, view.Map, worldToView);

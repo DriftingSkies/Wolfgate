@@ -44,6 +44,17 @@ the contest. For a station cell this is the blockade warning: traffic can hold t
 also contest a cell it already holds, to show a move on it (a Reaver founding convoy); the cell stays held.
 `SetContestDeadline` moves a deadline and raises the contested event again; `DropContest` withdraws one.
 
+**Disputed cells.** A driver reports where its faction's ships are every tick with
+`WFSectorTerritorySystem.SetPresence(faction, map, cells)`; a report counts for five seconds. Once a second the
+territory system marks a cell **disputed** when a faction has presence in it and a crewed player ship is in it
+(`WFSectorActivitySystem.CellsWithCrewedShips`, by position with no moved rule), raises `WFSectorCellDisputedEvent(map,
+cell, faction, disputed)` on each change and answers `IsDisputed(map, cell)`. While a cell is disputed its contest
+is not decided and its deadline is pushed forward by the time since the last check, so the countdown holds, and its
+activity stamp is refreshed, so a contest that ends after a dispute finds the cell flown and is dropped. The territory
+event carries a `Disputed` list of `(cell, faction index)` for held or contested cells; the client hatches the cell in
+the faction's colour at alpha 0.35, pulses its border, freezes its countdown, adds "disputed" to the hover card and a
+legend line. The nav radar is unchanged.
+
 **Notices.** `WFSectorNoticeSystem` tells those aboard a crewed player ship when it has been inside a faction's space
 for 10 s ("WARNING: entering {faction} controlled space (K-7).") and when it has been back outside for 30 s ("Leaving
 {faction} controlled space. Now in open space at K-7."), with a 2 min per-ship cooldown between entered notices (a
@@ -89,7 +100,7 @@ MAP tab lists them, in its category's glyph and colour, named only while hovered
 triangle along its heading; and, once the cursor has rested half a second on one cell (not while panning), the cell's callsign, its distance from
 the origin and its owner ("K-7 (12.4 km): open space", or "contested by X, m:ss"). With no view of the map it shows only "No territory data".
 `WFSectorMapPanel` puts it over a bar with "Centre on me", "Whole sector" and the scale. It opens several ways:
-`WFSectorMapWindow` (resizable, 900x700) from the top-bar button beside the guidebook or its key (`OpenSectorMap`, N by
+`WFSectorMapWindow` (resizable, 900x700) from the top-bar button beside the guidebook or its key (`OpenSectorMap`, Shift+N by
 default, rebindable), "Sector map" in the game menu or the client command `wf_sectormap`, all through
 `WFSectorMapUIController`, for every player, ghosts included (a ghost is never "aboard" a ship, so "Centre on me" centres
 on the ghost and a white ring marks it); the window follows the player's map (or any map the client has, the sector map

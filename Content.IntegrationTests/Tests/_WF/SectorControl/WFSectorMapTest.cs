@@ -272,14 +272,14 @@ public sealed class WFSectorMapTest : WFSectorTestBase
             Assert.That(button.Pressed, Is.False);
             Assert.That(controller.Window, Is.Null);
 
-            // Every context a player can be in, ghosts included, has the key; N is bound by default.
+            // Every context a player can be in, ghosts included, has the key; Shift+N is bound by default.
             foreach (var context in new[] { "common", "human", "ghost", "aghost" })
             {
                 Assert.That(InputManager.Contexts.GetContext(context).FunctionExistsHierarchy(ContentKeyFunctions.OpenSectorMap), Is.True, context);
             }
 
-            Assert.That(InputManager.AllBindings.Any(binding => binding.Function == ContentKeyFunctions.OpenSectorMap && binding.BaseKey == Keyboard.Key.N),
-                Is.True, "N opens the sector map by default.");
+            Assert.That(InputManager.AllBindings.Any(binding => binding.Function == ContentKeyFunctions.OpenSectorMap && binding.BaseKey == Keyboard.Key.N && binding.Mod1 == Keyboard.Key.Shift),
+                Is.True, "Shift+N opens the sector map by default.");
         });
 
         await ClickControl(button);

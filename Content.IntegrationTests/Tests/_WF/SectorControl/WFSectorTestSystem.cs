@@ -15,6 +15,7 @@ public sealed class WFSectorTestSystem : EntitySystem
     public readonly List<WFSectorCellContestedEvent> Contested = new();
     public readonly List<WFSectorContestResolvedEvent> Resolved = new();
     public readonly List<WFSectorClaimAttemptEvent> Attempts = new();
+    public readonly List<WFSectorCellDisputedEvent> Disputed = new();
 
     /// <summary>Cells every claim and contest on is vetoed for.</summary>
     public readonly HashSet<WFSectorCell> Vetoed = new();
@@ -26,6 +27,7 @@ public sealed class WFSectorTestSystem : EntitySystem
         SubscribeLocalEvent<WFSectorCellChangedEvent>(OnChanged);
         SubscribeLocalEvent<WFSectorCellContestedEvent>(OnContested);
         SubscribeLocalEvent<WFSectorContestResolvedEvent>(OnResolved);
+        SubscribeLocalEvent<WFSectorCellDisputedEvent>(OnDisputed);
     }
 
     /// <summary>Forgets what was recorded and lifts every veto.</summary>
@@ -35,6 +37,7 @@ public sealed class WFSectorTestSystem : EntitySystem
         Contested.Clear();
         Resolved.Clear();
         Attempts.Clear();
+        Disputed.Clear();
         Vetoed.Clear();
     }
 
@@ -53,6 +56,11 @@ public sealed class WFSectorTestSystem : EntitySystem
     private void OnContested(ref WFSectorCellContestedEvent args)
     {
         Contested.Add(args);
+    }
+
+    private void OnDisputed(ref WFSectorCellDisputedEvent args)
+    {
+        Disputed.Add(args);
     }
 
     private void OnResolved(ref WFSectorContestResolvedEvent args)

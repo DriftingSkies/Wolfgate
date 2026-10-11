@@ -15,6 +15,8 @@ wf-sector-map-no-data = No territory data
 wf-sector-map-hover-held = {$callsign} ({$distance} km): {$faction}
 wf-sector-map-hover-open = {$callsign} ({$distance} km): open space
 wf-sector-map-hover-contested = {$callsign} ({$distance} km): contested by {$faction}, {$time}
+wf-sector-map-hover-disputed = {$callsign} ({$distance} km): disputed, {$faction} ships and a player ship are both there
+wf-sector-map-legend-disputed = Disputed: timers paused
 
 # Sector map hover card for a blip; distance and bearing are from the player, or from the origin when they are not on the map
 wf-sector-map-kind-station = Station
@@ -28,6 +30,7 @@ wf-sector-map-card-range-core = {$distance} km from the sector core, bearing {$b
 wf-sector-map-card-held = {$callsign}: held by {$faction}
 wf-sector-map-card-open = {$callsign}: open space
 wf-sector-map-card-contested = Contested by {$faction}, {$time}
+wf-sector-map-card-disputed = Disputed with {$faction}: timers paused
 
 # wf_sectormap command
 cmd-wf_sectormap-desc = Opens or closes the sector map.

@@ -16,6 +16,28 @@ public sealed partial class WFSectorTerritoryComponent : Component
     /// <summary>When a moving player ship was last counted in each cell.</summary>
     [ViewVariables]
     public Dictionary<WFSectorCell, TimeSpan> Activity = new();
+
+    /// <summary>The cells each faction's ships were last reported in.</summary>
+    [ViewVariables]
+    public Dictionary<ProtoId<WFSectorFactionPrototype>, WFSectorPresence> Presence = new();
+
+    /// <summary>The cells where a faction's ship and a crewed player ship are together, with that faction.</summary>
+    [ViewVariables]
+    public Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>> Disputed = new();
+
+    /// <summary>When disputes were last worked out, so contest deadlines can be held by the time since.</summary>
+    [ViewVariables]
+    public TimeSpan DisputeChecked;
+}
+
+/// <summary>The cells a faction's ships were in when its driver last reported, and when.</summary>
+public sealed class WFSectorPresence
+{
+    [ViewVariables]
+    public HashSet<WFSectorCell> Cells = new();
+
+    [ViewVariables]
+    public TimeSpan Reported;
 }
 
 /// <summary>A held cell. It stays held while any source exists; a claim made with no source stays until freed.</summary>

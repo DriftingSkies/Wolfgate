@@ -19,6 +19,9 @@ public sealed class WFSectorTerritoryEvent : EntityEventArgs
 
     public List<WFSectorContestEntry> Contests = new();
 
+    /// <summary>The held or contested cells with a faction ship and a crewed player ship in them; their timers are paused.</summary>
+    public List<WFSectorDisputedEntry> Disputed = new();
+
     /// <summary>Whether this is the sector map, which the client keeps with nothing held so the sector map can draw its grid.</summary>
     public bool Sector;
 }
@@ -30,6 +33,10 @@ public readonly record struct WFSectorClaimEntry(WFSectorCell Cell, int Faction)
 /// <summary>A contested cell, the index of the faction contesting it and when the contest is decided, in server time.</summary>
 [Serializable, NetSerializable]
 public readonly record struct WFSectorContestEntry(WFSectorCell Cell, int Faction, TimeSpan Deadline);
+
+/// <summary>A disputed cell and the index of the faction whose ship is in it with a player's.</summary>
+[Serializable, NetSerializable]
+public readonly record struct WFSectorDisputedEntry(WFSectorCell Cell, int Faction);
 
 /// <summary>The map legend's lines, one per faction, already localised by the driver that set them.</summary>
 [Serializable, NetSerializable]

@@ -202,6 +202,10 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         }
 
         var ships = _activity.CrewedShips(_territory.SectorMap);
+        if (CampaignFor(state) is { } reporting)
+            ReportPresence(reporting);
+
+        HoldDisputed(TimeSpan.FromSeconds(elapsed));
         TendStrongholds(state, ships, elapsed);
         TendConvoys(state, running && !Paused);
         TendReinforcements();

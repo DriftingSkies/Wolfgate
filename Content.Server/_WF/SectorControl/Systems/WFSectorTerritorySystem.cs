@@ -22,8 +22,12 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private GameTicker _ticker = default!;
     [Dependency] private WFEncounterSchedulerSystem _scheduler = default!;
+    [Dependency] private WFSectorActivitySystem _activity = default!;
 
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(1);
+
+    /// <summary>How long a driver's presence report counts; a driver that stops reporting stops disputing.</summary>
+    private static readonly TimeSpan PresenceTimeout = TimeSpan.FromSeconds(5);
 
     private TimeSpan _nextCheck;
 
@@ -100,6 +104,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         foreach (var (map, territory) in territories)
         {
             CheckSources(map, territory);
+            CheckDisputes(map, territory);
             CheckContests(map, territory);
         }
     }
@@ -127,7 +132,8 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         var due = new List<(WFSectorCell Cell, WFSectorContest Contest)>();
         foreach (var (cell, contest) in territory.Contests)
         {
-            if (contest.Source is { } source && TerminatingOrDeleted(source) || _timing.CurTime >= contest.Deadline)
+            if (contest.Source is { } source && TerminatingOrDeleted(source)
+                || _timing.CurTime >= contest.Deadline && !territory.Disputed.ContainsKey(cell))
                 due.Add((cell, contest));
         }
 
@@ -138,6 +144,100 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
                 && Quiet(territory, cell, contest.Started)
                 && TryClaim(map, cell, contest.Faction, contest.Source);
             var ev = new WFSectorContestResolvedEvent(map, cell, contest.Faction, claimed);
+            RaiseLocalEvent(ref ev);
+        }
+    }
+
+    /// <summary>Reports the cells a faction's ships are in now. Drivers call it every tick; a report counts for a few seconds.</summary>
+    public void SetPresence(ProtoId<WFSectorFactionPrototype> faction, MapId map, IReadOnlyCollection<WFSectorCell> cells)
+    {
+        if (Territory(map, true) is not { } territory)
+            return;
+
+        if (!territory.Presence.TryGetValue(faction, out var presence))
+            territory.Presence[faction] = presence = new WFSectorPresence();
+
+        presence.Cells.Clear();
+        presence.Cells.UnionWith(cells);
+        presence.Reported = _timing.CurTime;
+    }
+
+    /// <summary>Whether a faction's ship and a crewed player ship are in a cell together.</summary>
+    public bool IsDisputed(MapId map, WFSectorCell cell)
+    {
+        return Territory(map)?.Disputed.ContainsKey(cell) == true;
+    }
+
+    /// <summary>The disputed cells of a map with the faction in each.</summary>
+    public IReadOnlyDictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>> DisputedCells(MapId map)
+    {
+        return Territory(map)?.Disputed ?? new Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>>();
+    }
+
+    /// <summary>Works out a map's disputes now, as the second timer does.</summary>
+    public void CheckDisputes(MapId map)
+    {
+        if (Territory(map) is { } territory)
+            CheckDisputes(map, territory);
+    }
+
+    /// <summary>Marks the cells where reported faction ships and crewed player ships meet, holds those contests' deadlines by the time since the last check, and raises the changes.</summary>
+    private void CheckDisputes(MapId map, WFSectorTerritoryComponent territory)
+    {
+        var now = _timing.CurTime;
+        var elapsed = territory.DisputeChecked == TimeSpan.Zero
+            ? TimeSpan.Zero
+            : TimeSpan.FromSeconds(Math.Clamp((now - territory.DisputeChecked).TotalSeconds, 0d, 5d));
+        territory.DisputeChecked = now;
+        if (territory.Presence.Count == 0 && territory.Disputed.Count == 0)
+            return;
+
+        var next = new Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>>();
+        var ships = _activity.CellsWithCrewedShips(map);
+        foreach (var (faction, presence) in territory.Presence)
+        {
+            if (now - presence.Reported > PresenceTimeout)
+                continue;
+
+            foreach (var cell in presence.Cells)
+            {
+                if (ships.ContainsKey(cell))
+                    next.TryAdd(cell, faction);
+            }
+        }
+
+        var ended = new List<(WFSectorCell Cell, ProtoId<WFSectorFactionPrototype> Faction)>();
+        foreach (var (cell, faction) in territory.Disputed)
+        {
+            if (!next.ContainsKey(cell))
+                ended.Add((cell, faction));
+        }
+
+        var started = new List<(WFSectorCell Cell, ProtoId<WFSectorFactionPrototype> Faction)>();
+        foreach (var (cell, faction) in next)
+        {
+            if (!territory.Disputed.ContainsKey(cell))
+                started.Add((cell, faction));
+        }
+
+        territory.Disputed = next;
+        foreach (var cell in next.Keys)
+        {
+            if (territory.Contests.TryGetValue(cell, out var contest))
+                contest.Deadline += elapsed;
+
+            _activity.Stamp(map, cell);
+        }
+
+        foreach (var (cell, faction) in ended)
+        {
+            var ev = new WFSectorCellDisputedEvent(map, cell, faction, false);
+            RaiseLocalEvent(ref ev);
+        }
+
+        foreach (var (cell, faction) in started)
+        {
+            var ev = new WFSectorCellDisputedEvent(map, cell, faction, true);
             RaiseLocalEvent(ref ev);
         }
     }
@@ -417,6 +517,8 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         {
             Clear(map);
             territory.Activity.Clear();
+            territory.Presence.Clear();
+            territory.Disputed.Clear();
         }
     }
 

@@ -33,6 +33,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         SubscribeLocalEvent<WFSectorCellChangedEvent>(OnCellChanged);
         SubscribeLocalEvent<WFSectorCellContestedEvent>(OnCellContested);
         SubscribeLocalEvent<WFSectorContestResolvedEvent>(OnContestResolved);
+        SubscribeLocalEvent<WFSectorCellDisputedEvent>(OnCellDisputed);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
         SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
@@ -67,6 +68,11 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
     }
 
     private void OnContestResolved(ref WFSectorContestResolvedEvent args)
+    {
+        MarkDirty(args.Map);
+    }
+
+    private void OnCellDisputed(ref WFSectorCellDisputedEvent args)
     {
         MarkDirty(args.Map);
     }
@@ -188,6 +194,13 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         foreach (var (cell, contest) in territory.Contests)
         {
             ev.Contests.Add(new WFSectorContestEntry(cell, Index(ev, indices, contest.Faction), contest.Deadline));
+        }
+
+        // A cell with neither owner nor contest has nothing on the map to mark.
+        foreach (var (cell, faction) in territory.Disputed)
+        {
+            if (territory.Claims.ContainsKey(cell) || territory.Contests.ContainsKey(cell))
+                ev.Disputed.Add(new WFSectorDisputedEntry(cell, Index(ev, indices, faction)));
         }
 
         return ev;

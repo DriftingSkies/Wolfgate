@@ -13,6 +13,8 @@ left, in chat to everyone aboard and over its PA when it has a speaker; a factio
 (`enteredNotice`, `leftNotice`). Flying a
 cell is what keeps it: every minute each crewed player ship that moved 100 m counts as activity in its cell (parked,
 docked and idle ships count for nothing; stations never do), and a contest is only claimed if the cell stayed quiet.
+A cell with a faction ship and a crewed player ship in it is disputed (`SetPresence`, `IsDisputed`,
+`WFSectorCellDisputedEvent`): the map hatches it and its contest deadline holds until one side leaves or dies.
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
 
@@ -24,7 +26,7 @@ A blip's name shows only while the cursor is on it, at any zoom. The server send
 the client names the grids it knows. The wheel zooms about the cursor, right-drag pans, a double-click centres on your
 ship, and resting the cursor on a blip shows its card (name, kind, range and bearing from you, its cell and who holds
 it), or on empty space the cell, its distance from the centre and who holds it. Everyone, ghosts included, opens it from the top-bar button beside the
-guidebook or its key (N, rebindable), "Sector map" in the game menu or the `wf_sectormap` command (`WFSectorMapControl`,
+guidebook or its key (Shift+N, rebindable), "Sector map" in the game menu or the `wf_sectormap` command (`WFSectorMapControl`,
 `WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
 
 Drivers use `WFSectorTerritorySystem` (`CellOf`, `Centre`, `Owner`, `TryClaim`, `Contest`, `SetContestDeadline`, `DropContest`, `Release`, `Free`,
@@ -80,6 +82,7 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorDisputeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorMapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorMapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorNoticeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorSyncTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorSyncTest.cs)

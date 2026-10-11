@@ -42,7 +42,7 @@ public sealed partial class WFReaverCampaignSystem
         var candidates = new List<((WFSectorCell Cell, EntityUid Source) Pick, float Weight)>();
         foreach (var cell in _territory.Frontier(map, campaign.Faction))
         {
-            if (_territory.Owner(map, cell) != null || _territory.ContestOf(map, cell) != null)
+            if (_territory.Owner(map, cell) != null || _territory.ContestOf(map, cell) != null || _territory.IsDisputed(map, cell))
                 continue;
 
             EntityUid? source = null;

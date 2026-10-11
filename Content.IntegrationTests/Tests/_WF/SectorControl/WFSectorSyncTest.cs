@@ -39,7 +39,7 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
 
             // Grids are not on the wire: the client names the ones its own MAP scan would.
             Assert.That(typeof(WFSectorTerritoryEvent).GetFields().Select(field => field.Name),
-                Is.EquivalentTo(new[] { "Map", "CellSize", "Factions", "Claims", "Contests", "Sector" }));
+                Is.EquivalentTo(new[] { "Map", "CellSize", "Factions", "Claims", "Contests", "Disputed", "Sector" }));
             Assert.That(territory.TryClaim(map, A, Holder, null), Is.True);
             Assert.That(territory.TryClaim(map, B, Holder, null), Is.True);
             Assert.That(territory.TryClaim(map, C, Rival, null), Is.True);

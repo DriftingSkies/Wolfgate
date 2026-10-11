@@ -176,6 +176,9 @@ public sealed partial class WFReaverCampaignSystem
     {
         var (uid, comp, _) = convoy;
         var map = Transform(uid).MapID;
+        if (_territory.IsDisputed(map, comp.Target))
+            return;
+
         var deadline = _timing.CurTime + ConvoyEta(at, comp.TargetPosition);
         if (_territory.ContestOf(map, comp.Target) is not { } contest)
             _territory.Contest(map, comp.Target, campaign.Faction, deadline, uid);

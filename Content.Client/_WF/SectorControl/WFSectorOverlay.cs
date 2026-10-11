@@ -62,8 +62,19 @@ public sealed class WFSectorOverlay
             Draw(handle, DrawPrimitiveTopology.TriangleList, contest.Fill, worldToView, contest.Color.WithAlpha(0.06f + 0.14f * pulse));
             Draw(handle, DrawPrimitiveTopology.LineList, contest.Outline, worldToView, contest.Color.WithAlpha(0.5f + 0.5f * pulse));
 
-            var text = FormatRemaining(contest.Deadline - now);
+            var text = FormatRemaining(contest.Remaining(now));
             DrawCentred(handle, font, scale, Vector2.Transform(contest.Centre, worldToView), text, contest.Color, bounds);
+        }
+    }
+
+    /// <summary>Hatches disputed cells with diagonal lines in their faction's colour and pulses their borders.</summary>
+    public void DrawDisputes(DrawingHandleScreen handle, WFSectorClientSystem system, WFSectorMapView view, in Matrix3x2 worldToView)
+    {
+        var pulse = system.Pulse;
+        foreach (var dispute in view.Disputed)
+        {
+            Draw(handle, DrawPrimitiveTopology.LineList, dispute.Hatch, worldToView, dispute.Color.WithAlpha(0.35f));
+            Draw(handle, DrawPrimitiveTopology.LineList, dispute.Outline, worldToView, dispute.Color.WithAlpha(0.4f + 0.6f * pulse));
         }
     }
 
@@ -99,7 +110,10 @@ public sealed class WFSectorOverlay
     /// <summary>Lists the legend lines, each after a swatch of its faction's colour, from a corner.</summary>
     public void DrawLegend(DrawingHandleScreen handle, WFSectorClientSystem system, Font font, float scale)
     {
-        var legend = system.Legend;
+        var legend = new List<WFSectorLegendView>(system.Legend);
+        if (system.TryGetAnyMap(out var map) && map.Disputed.Count > 0)
+            legend.Add(new WFSectorLegendView(Color.White, Loc.GetString("wf-sector-map-legend-disputed")));
+
         if (legend.Count == 0)
             return;
 

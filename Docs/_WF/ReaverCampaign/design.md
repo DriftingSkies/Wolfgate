@@ -157,6 +157,13 @@ it is **contested** with a 10 min deadline and announced as a blockade warning n
 claims it at the deadline only if the cell stayed quiet. A Reaver-held station is cut off from NPC freight
 (`blockades: true` on the faction) and is a raid target.
 
+**Disputed cells.** The campaign reports the cell of every campaign ship (hubs, reinforcements, patrols, raids,
+convoys) to sector control each tick. A cell that also holds a crewed player ship is disputed, and the campaign holds
+its clocks there: a stronghold's `NextReinforcement` (and, once hit, its return countdown), a reinforcement's or
+convoy's overdue deadline and a convoy's contest deadline are pushed forward by the time elapsed. Spread never picks
+a disputed cell. When the dispute ends the clocks run on; if the Reaver side died (a patrol destroyed) the existing
+rules free the cell as usual.
+
 ## Patrols
 
 Each stronghold keeps up to `patrols[tier]` packs out, under a campaign cap of `clamp(players / 5, 1, 6)` packs.

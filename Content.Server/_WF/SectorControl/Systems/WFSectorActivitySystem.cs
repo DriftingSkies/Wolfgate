@@ -179,6 +179,22 @@ public sealed partial class WFSectorActivitySystem : EntitySystem
         return ships;
     }
 
+    /// <summary>The crewed player ships in each cell on a map right now, by position with no moved rule.</summary>
+    public Dictionary<WFSectorCell, List<EntityUid>> CellsWithCrewedShips(MapId map)
+    {
+        var cells = new Dictionary<WFSectorCell, List<EntityUid>>();
+        foreach (var grid in CrewedShips(map))
+        {
+            var cell = WFSectorHex.CellOf(_transform.GetWorldPosition(grid), _territory.CellSize);
+            if (!cells.TryGetValue(cell, out var ships))
+                cells[cell] = ships = new List<EntityUid>();
+
+            ships.Add(grid);
+        }
+
+        return cells;
+    }
+
     /// <summary>Where a ship was at the last scan, and when it was last counted.</summary>
     private sealed class ShipTrack
     {

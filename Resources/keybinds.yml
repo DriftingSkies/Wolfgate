@@ -256,6 +256,7 @@ binds:
 - function: OpenSectorMap
   type: State
   key: N
+  mod1: Shift
 - function: OpenAHelp
   type: State
   key: F1

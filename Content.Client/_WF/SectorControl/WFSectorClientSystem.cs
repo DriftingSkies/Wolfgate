@@ -199,6 +199,13 @@ public sealed class WFSectorClientSystem : EntitySystem
             labels.Add(new WFSectorLabelView(centre, WFSectorHex.Callsign(cell), colors[faction]));
         }
 
+        var disputes = new Dictionary<WFSectorCell, int>();
+        foreach (var entry in ev.Disputed)
+        {
+            if (entry.Faction >= 0 && entry.Faction < colors.Length)
+                disputes[entry.Cell] = entry.Faction;
+        }
+
         var contests = new List<WFSectorContestView>();
         var contested = new HashSet<WFSectorCell>();
         foreach (var contest in ev.Contests)
@@ -219,7 +226,24 @@ public sealed class WFSectorClientSystem : EntitySystem
                 outline[i * 2 + 1] = corners[(i + 1) % 6];
             }
 
-            contests.Add(new WFSectorContestView(contest.Cell, centre, fill.ToArray(), outline, colors[contest.Faction], contest.Faction, contest.Deadline));
+            contests.Add(new WFSectorContestView(contest.Cell, centre, fill.ToArray(), outline, colors[contest.Faction], contest.Faction,
+                contest.Deadline, disputes.ContainsKey(contest.Cell), contest.Deadline - _timing.CurTime));
+        }
+
+        var disputed = new List<WFSectorDisputedView>();
+        foreach (var (cell, faction) in disputes)
+        {
+            WFSectorHex.Corners(cell, size, corners);
+            var centre = WFSectorHex.Centre(cell, size);
+            extent = Grow(extent, centre);
+            var outline = new Vector2[12];
+            for (var i = 0; i < 6; i++)
+            {
+                outline[i * 2] = corners[i];
+                outline[i * 2 + 1] = corners[(i + 1) % 6];
+            }
+
+            disputed.Add(new WFSectorDisputedView(cell, centre, Hatch(centre, corners, size), outline, colors[faction], faction));
         }
 
         // Every cell inside the sector radius, each shared edge once: edges 0 to 2 are a cell's own, 3 to 5 its neighbour's.
@@ -254,7 +278,56 @@ public sealed class WFSectorClientSystem : EntitySystem
         }
 
         return new WFSectorMapView(ev.Map, ev.Sector, size, colors, names, ToArrays(fills), ToArrays(edges), labels, contests,
-            owners, grid.ToArray(), cellLabels, extent);
+            owners, grid.ToArray(), cellLabels, extent, disputes, disputed);
+    }
+
+    /// <summary>Diagonal line pairs across a hexagon, a fifth of its radius apart.</summary>
+    private static Vector2[] Hatch(Vector2 centre, Vector2[] corners, float size)
+    {
+        var root = MathF.Sqrt(2f);
+        var along = new Vector2(1f, 1f) / root;
+        var across = new Vector2(1f, -1f) / root;
+        var step = size / 5f;
+        var lines = new List<Vector2>();
+        for (var line = -5; line <= 5; line++)
+        {
+            var offset = line * step;
+            Vector2? first = null;
+            Vector2? last = null;
+            var low = float.MaxValue;
+            var high = float.MinValue;
+            for (var i = 0; i < 6; i++)
+            {
+                var a = corners[i];
+                var b = corners[(i + 1) % 6];
+                var ta = Vector2.Dot(across, a - centre);
+                var tb = Vector2.Dot(across, b - centre);
+                if (MathF.Abs(tb - ta) < 0.0001f || (ta - offset) * (tb - offset) > 0f)
+                    continue;
+
+                var point = a + (b - a) * ((offset - ta) / (tb - ta));
+                var s = Vector2.Dot(along, point - centre);
+                if (s < low)
+                {
+                    low = s;
+                    first = point;
+                }
+
+                if (s > high)
+                {
+                    high = s;
+                    last = point;
+                }
+            }
+
+            if (first is { } from && last is { } to && high - low > 1f)
+            {
+                lines.Add(from);
+                lines.Add(to);
+            }
+        }
+
+        return lines.ToArray();
     }
 
     private static Box2 Grow(Box2? box, Vector2 point)
@@ -324,10 +397,19 @@ public sealed class WFSectorMapView
     /// <summary>The box around every held or contested cell centre; null when there are none.</summary>
     public readonly Box2? Extent;
 
+    /// <summary>The faction index in each disputed cell: a faction ship and a player ship are there, so its timers are paused.</summary>
+    public readonly Dictionary<WFSectorCell, int> Disputes;
+
+    /// <summary>The hatch and outline of every disputed cell.</summary>
+    public readonly List<WFSectorDisputedView> Disputed;
+
     public WFSectorMapView(MapId map, bool sector, float cellSize, Color[] colors, string[] names, Vector2[][] fills, Vector2[][] edges,
         List<WFSectorLabelView> labels, List<WFSectorContestView> contests, Dictionary<WFSectorCell, int> owners,
-        Vector2[] grid, List<WFSectorLabelView> cellLabels, Box2? extent)
+        Vector2[] grid, List<WFSectorLabelView> cellLabels, Box2? extent, Dictionary<WFSectorCell, int> disputes,
+        List<WFSectorDisputedView> disputed)
     {
+        Disputes = disputes;
+        Disputed = disputed;
         Map = map;
         Sector = sector;
         CellSize = cellSize;
@@ -347,8 +429,22 @@ public sealed class WFSectorMapView
 /// <summary>A cell's callsign and where to print it.</summary>
 public readonly record struct WFSectorLabelView(Vector2 Centre, string Text, Color Color);
 
-/// <summary>A contested cell: its fill triangles, its outline lines, the faction index contesting it and when it is decided, in server time.</summary>
-public readonly record struct WFSectorContestView(WFSectorCell Cell, Vector2 Centre, Vector2[] Fill, Vector2[] Outline, Color Color, int Faction, TimeSpan Deadline);
+/// <summary>
+/// A contested cell: its fill triangles, its outline lines, the faction index contesting it and when it is decided, in server time.
+/// While it is disputed the server holds the deadline, so the countdown shows the time left when the update came.
+/// </summary>
+public readonly record struct WFSectorContestView(WFSectorCell Cell, Vector2 Centre, Vector2[] Fill, Vector2[] Outline, Color Color, int Faction,
+    TimeSpan Deadline, bool Disputed = false, TimeSpan Frozen = default)
+{
+    /// <summary>The time left at a game time; held while the cell is disputed.</summary>
+    public TimeSpan Remaining(TimeSpan now)
+    {
+        return Disputed ? Frozen : Deadline - now;
+    }
+}
+
+/// <summary>A disputed cell: its hatch lines, its outline lines and the faction index whose ship is in it.</summary>
+public readonly record struct WFSectorDisputedView(WFSectorCell Cell, Vector2 Centre, Vector2[] Hatch, Vector2[] Outline, Color Color, int Faction);
 
 /// <summary>One line of the map legend.</summary>
 public readonly record struct WFSectorLegendView(Color Color, string Text);
