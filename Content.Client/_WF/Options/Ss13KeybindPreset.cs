@@ -53,6 +53,7 @@ public static class Ss13KeybindPreset
         (ContentKeyFunctions.OpenLanguageMenu, Key.J, Key.Unknown),
         (ContentKeyFunctions.OpenEmotesMenu, Key.N, Key.Unknown),
         (EngineKeyFunctions.ShowDebugMonitors, Key.F3, Key.Shift),
+        (ContentKeyFunctions.RotateObjectClockwise, Key.R, Key.Control),
         (EngineKeyFunctions.CameraRotateLeft, Key.NumpadNum7, Key.Control),
         (EngineKeyFunctions.CameraRotateRight, Key.NumpadNum9, Key.Control),
         (EngineKeyFunctions.CameraReset, Key.NumpadNum8, Key.Control),
@@ -67,8 +68,15 @@ public static class Ss13KeybindPreset
         EngineKeyFunctions.EscapeMenu,
     };
 
+    /// <summary>Functions bound as a toggle rather than a hold.</summary>
+    private static readonly BoundKeyFunction[] Toggles =
+    {
+        EngineKeyFunctions.HideUI,
+        EngineKeyFunctions.ShowDebugMonitors,
+    };
+
     /// <summary>Resets every binding to stock, then applies the preset. Doesn't save.</summary>
-    public static void Apply(IInputManager input, Func<BoundKeyFunction, KeyBindingType> typeFor)
+    public static void Apply(IInputManager input, bool toggleWalk)
     {
         input.ResetAllBindings();
 
@@ -82,12 +90,13 @@ public static class Ss13KeybindPreset
 
         foreach (var (function, key, mod) in Binds)
         {
+            var toggle = Toggles.Contains(function) || toggleWalk && function == EngineKeyFunctions.Walk;
             input.RegisterBinding(new KeyBindingRegistration
             {
                 Function = function,
                 BaseKey = key,
                 Mod1 = mod,
-                Type = typeFor(function),
+                Type = toggle ? KeyBindingType.Toggle : KeyBindingType.State,
             });
         }
     }

@@ -129,8 +129,7 @@ namespace Content.Client.Options.UI.Tabs
             {
                 _deferCommands.Add(() =>
                 {
-                    Ss13KeybindPreset.Apply(_inputManager,
-                        f => ToggleFunctions.Contains(f) ? KeyBindingType.Toggle : KeyBindingType.State);
+                    Ss13KeybindPreset.Apply(_inputManager, _cfg.GetCVar(CCVars.ToggleWalk));
                     _inputManager.SaveToUserData();
                 });
             };
