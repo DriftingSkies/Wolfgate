@@ -72,8 +72,9 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
     private void OnHullHit(ref WFCrewHullHitEvent args)
     {
-        Track(args.Grid, args.AttackerGrid);
+        // Judged before it is counted, as the crews judged it, so the same hit is never weighed twice.
         RecordHit(args.Grid, args.AttackerGrid);
+        Track(args.Grid, args.AttackerGrid);
     }
 
     private void OnShieldHit(ref WFShipShieldAttackedEvent args)
@@ -82,8 +83,8 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         if (!_alerts.IsShipWeapon(args.Weapon))
             return;
 
-        Track(args.Grid, args.AttackerGrid);
         RecordHit(args.Grid, args.AttackerGrid);
+        Track(args.Grid, args.AttackerGrid);
     }
 
     /// <summary>How long a vessel's hits count toward whom it is fighting.</summary>
@@ -102,9 +103,10 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
         var now = _timing.CurTime;
         var key = (attacker, ship.Side);
-        if (!encounter.Fire.TryGetValue(key, out var fire) || now - fire.First > FireWindow)
-            fire = (now, 0);
-        encounter.Fire[key] = (fire.First, fire.Count + 1);
+        if (!encounter.Fire.TryGetValue(key, out var fire))
+            encounter.Fire[key] = fire = new List<TimeSpan>();
+        fire.RemoveAll(hit => now - hit > FireWindow);
+        fire.Add(now);
     }
 
     /// <summary>
@@ -125,12 +127,13 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         var onEnemies = 0;
         foreach (var ((attacker, side), fire) in encounter.Fire)
         {
-            if (attacker != args.Attacker || now - fire.First > FireWindow)
+            if (attacker != args.Attacker)
                 continue;
+            var recent = fire.Count(hit => now - hit <= FireWindow);
             if (side == ship.Side)
-                onUs += fire.Count;
+                onUs += recent;
             else
-                onEnemies += fire.Count;
+                onEnemies += recent;
         }
 
         args.Friendly = onEnemies >= FriendlyFireRatio * (onUs + 1);

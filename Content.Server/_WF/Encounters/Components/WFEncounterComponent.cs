@@ -106,14 +106,14 @@ public sealed partial class WFEncounterComponent : Component
     /// <summary>Player ships a side has taken as allies for the encounter.</summary>
     public List<(EntityUid Ship, EntityUid Ally)> Allies = new();
 
-    /// <summary>Ship weapon hits on each side by each other vessel over the last half minute, excused or not: whom it is really fighting.</summary>
-    public Dictionary<(EntityUid Attacker, string Side), (TimeSpan First, int Count)> Fire = new();
+    /// <summary>When each other vessel's ship weapon hits landed on each side over the last half minute, excused or not: whom it is really fighting.</summary>
+    public Dictionary<(EntityUid Attacker, string Side), List<TimeSpan>> Fire = new();
 
     /// <summary>The vessels each side has hailed, and when it may hail each again: one voice for a side, however many ships.</summary>
     public Dictionary<(string Side, EntityUid Intruder), TimeSpan> Hailed = new();
 
-    /// <summary>The vessels each side has called its guns onto, so the call is made once for the side.</summary>
-    public HashSet<(string Side, EntityUid Intruder)> Called = new();
+    /// <summary>The vessels each side has called its guns onto, and when it may call each again.</summary>
+    public Dictionary<(string Side, EntityUid Intruder), TimeSpan> Called = new();
 
     /// <summary>When its ships jump out, whoever is near.</summary>
     [DataField]
