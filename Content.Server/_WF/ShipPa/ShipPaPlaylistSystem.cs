@@ -84,6 +84,10 @@ public sealed class ShipPaPlaylistSystem : EntitySystem
         _grids.Clear();
     }
 
+    /// <summary>Whether a new link would start playing at once rather than join a queue.</summary>
+    public bool IsIdle(EntityUid grid) =>
+        !_internetSound.IsPlayingOn(grid) && CompOrNull<ShipPaPlaylistComponent>(grid) is not { Links.Count: > 0 };
+
     /// <summary>
     /// Plays the link at once on a quiet ship, otherwise queues it. Position is 0 if it started, else its place in
     /// the queue; error is a loc string for the requester when this returns false.
@@ -94,7 +98,7 @@ public sealed class ShipPaPlaylistSystem : EntitySystem
         error = null;
 
         var playlist = CompOrNull<ShipPaPlaylistComponent>(grid);
-        var idle = !_internetSound.IsPlayingOn(grid) && playlist is not { Links.Count: > 0 };
+        var idle = IsIdle(grid);
 
         var link = new ShipPaQueuedLink
         {

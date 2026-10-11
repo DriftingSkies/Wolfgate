@@ -149,7 +149,8 @@ public sealed partial class ShipAlertSystem : EntitySystem
         if (url.Length == 0 || url.Length > alert.MaxUrlLength)
             return;
 
-        if (_timing.CurTime < alert.NextInternetSound)
+        // The cooldown paces starting a track. Adding to a running queue is free of it; the queue has its own cap.
+        if (_playlist.IsIdle(grid) && _timing.CurTime < alert.NextInternetSound)
         {
             var seconds = (int) Math.Ceiling((alert.NextInternetSound - _timing.CurTime).TotalSeconds);
             _popup.PopupEntity(Loc.GetString("ship-pa-sound-cooldown", ("seconds", seconds)), ent, args.Actor);
@@ -165,7 +166,8 @@ public sealed partial class ShipAlertSystem : EntitySystem
             return;
         }
 
-        alert.NextInternetSound = _timing.CurTime + TimeSpan.FromSeconds(_cfg.GetCVar(InternetSoundCVars.RequestCooldown));
+        if (position == 0)
+            alert.NextInternetSound = _timing.CurTime + TimeSpan.FromSeconds(_cfg.GetCVar(InternetSoundCVars.RequestCooldown));
         _popup.PopupEntity(position == 0
             ? Loc.GetString("ship-pa-sound-queued")
             : Loc.GetString("ship-pa-playlist-added", ("position", position)), ent, args.Actor);

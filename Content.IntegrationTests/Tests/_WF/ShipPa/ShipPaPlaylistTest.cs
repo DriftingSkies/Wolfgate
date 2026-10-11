@@ -242,7 +242,7 @@ public sealed class ShipPaPlaylistTest : InteractionTest
     }
 
     [Test]
-    public async Task EveryLinkIsHeldToTheRequestCooldown()
+    public async Task TheRequestCooldownPacesNewTracksButNotTheQueue()
     {
         var (console, grid, _) = await OpenConsole();
 
@@ -250,15 +250,24 @@ public sealed class ShipPaPlaylistTest : InteractionTest
         {
             using var downloader = Override(InternetSoundCVars.YtDlpPath, MissingDownloader);
 
+            var alert = SEntMan.GetComponent<ShipAlertComponent>(grid);
+            var timing = Server.ResolveDependency<Robust.Shared.Timing.IGameTiming>();
             Add(console, First);
+            Assert.That(alert.NextInternetSound, Is.GreaterThan(timing.CurTime), "Starting a track starts the cooldown.");
+            var held = alert.NextInternetSound;
             Add(console, Second);
-            Assert.That(Playlist(grid).Links, Is.Empty, "A second link inside the cooldown must be refused, not queued.");
-
-            SEntMan.GetComponent<ShipAlertComponent>(grid).NextInternetSound = TimeSpan.Zero;
-            Add(console, Second);
-            Assert.That(Playlist(grid).Links.Select(link => link.Url), Is.EqualTo(new[] { Second }));
+            Add(console, Third);
+            Assert.That(Playlist(grid).Links.Select(link => link.Url), Is.EqualTo(new[] { Second, Third }),
+                "Links added while a track plays join the queue inside the cooldown.");
+            Assert.That(alert.NextInternetSound, Is.EqualTo(held), "Queueing must not extend the cooldown.");
 
             Stop(console);
+            alert.NextInternetSound = timing.CurTime + TimeSpan.FromSeconds(60);
+            Add(console, First);
+            Assert.That(SEntMan.System<InternetSoundSystem>().IsPlayingOn(grid), Is.False,
+                "On a quiet ship a new track is still held to the cooldown.");
+            Assert.That(SEntMan.HasComponent<ShipPaPlaylistComponent>(grid) && Playlist(grid).Links.Count > 0, Is.False);
+            alert.NextInternetSound = TimeSpan.Zero;
         });
     }
 

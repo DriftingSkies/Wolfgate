@@ -5,9 +5,14 @@ power), a collision warning (TCAS) that sweeps a piloted ship's path and warns b
 pilot can look through with a low-light feed, and nav map data for ships that were never registered as a station. The
 cameras' EXTERNAL view shows the ship from outside with every hull plated over: a right-mouse drag pans it, the scroll
 wheel zooms it, and a right click without dragging opens the entity menu on release. The client
-`ShuttleExternalCameraSystem` and `ShuttleHullRoofOverlay` run it. It is refused on a planet's surface, and sound and
-speech bubbles are taken from the point it looks at rather than from the helm. It draws no mobs, jetpack trails or
+`ShuttleExternalCameraSystem` and `ShuttleHullRoofOverlay` run it. It is refused on a planet's surface, and speech
+bubbles are taken from the point it looks at rather than from the helm. It draws no mobs, jetpack trails or
 do-after bars, so it can't be used to spot people outside a hull.
+
+In every camera view, hull cameras and EXTERNAL alike, positional sound is still heard from the pilot's own body:
+the client `ShuttleCameraListenerSystem` takes over the engine's per-sound pass while a view is up, judges range and
+occlusion from the body, and places each sound so the eye-bound engine listener hears it from there. The ship PA
+picks its nearest speaker from the same point.
 
 The cockpit HULL gauge averages the condition of surveyed hull locations, including missing floors and destroyed
 walls, windows (diagonal ones included) and airtight doors; curtains, gates, machinery and furniture do not
@@ -101,6 +106,7 @@ and `WFCockpitFtlDriveTest` cover it.
 
 - [`Content.Client/_WF/Shuttles/BUI/ShuttleConsoleBoundUserInterface.Wolfgate.cs`](../../../Content.Client/_WF/Shuttles/BUI/ShuttleConsoleBoundUserInterface.Wolfgate.cs)
 - [`Content.Client/_WF/Shuttles/ScalingViewport.ShuttleCamera.cs`](../../../Content.Client/_WF/Shuttles/ScalingViewport.ShuttleCamera.cs)
+- [`Content.Client/_WF/Shuttles/Systems/ShuttleCameraListenerSystem.cs`](../../../Content.Client/_WF/Shuttles/Systems/ShuttleCameraListenerSystem.cs)
 - [`Content.Client/_WF/Shuttles/Systems/ShuttleCameraSystem.cs`](../../../Content.Client/_WF/Shuttles/Systems/ShuttleCameraSystem.cs)
 - [`Content.Client/_WF/Shuttles/Systems/ShuttleCameraZoomPredictionSystem.cs`](../../../Content.Client/_WF/Shuttles/Systems/ShuttleCameraZoomPredictionSystem.cs)
 - [`Content.Client/_WF/Shuttles/Systems/ShuttleExternalCameraSystem.cs`](../../../Content.Client/_WF/Shuttles/Systems/ShuttleExternalCameraSystem.cs)
@@ -133,6 +139,10 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleNavMapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleNavMapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/WFFtlDriveTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/WFFtlDriveTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/WFFtlDriveWindowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/WFFtlDriveWindowTest.cs)
+
+### Unit tests
+
+- [`Content.Tests/_WF/Shuttles/ShuttleCameraListenerTest.cs`](../../../Content.Tests/_WF/Shuttles/ShuttleCameraListenerTest.cs)
 
 ### Prototypes
 

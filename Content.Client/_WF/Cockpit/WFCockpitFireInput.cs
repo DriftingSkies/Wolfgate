@@ -3,6 +3,7 @@ using Content.Client.UserInterface.Controls;
 using Content.Client.Viewport;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
+using Robust.Client.Player;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
@@ -21,6 +22,7 @@ public sealed class WFCockpitFireInput : Control
     [Dependency] private IInputManager _input = default!;
     [Dependency] private IClyde _clyde = default!;
     [Dependency] private IEntityManager _entities = default!;
+    [Dependency] private IPlayerManager _player = default!;
 
     private const float UpdateInterval = 0.1f;
 
@@ -208,6 +210,16 @@ public sealed class WFCockpitFireInput : Control
         _aim(target, fire);
     }
 
+    /// <summary>Expresses a world aim point relative to the pilot's ship, so it stays under the pointer while the ship moves.</summary>
+    public static EntityCoordinates ShipRelative(IEntityManager entities, EntityUid? pilot, MapCoordinates point)
+    {
+        var transforms = entities.System<SharedTransformSystem>();
+        if (pilot is { } uid && entities.TryGetComponent(uid, out TransformComponent? xform) && xform.GridUid is { } ship &&
+            xform.MapID == point.MapId)
+            return transforms.ToCoordinates(ship, point);
+        return transforms.ToCoordinates(point);
+    }
+
     private bool TryGetTarget(Control surface, ScreenCoordinates pointer, out EntityCoordinates target)
     {
         target = default;
@@ -218,7 +230,7 @@ public sealed class WFCockpitFireInput : Control
             var map = _world.PixelToMap(pointer.Position);
             if (map.MapId == MapId.Nullspace)
                 return false;
-            target = _entities.System<SharedTransformSystem>().ToCoordinates(map);
+            target = ShipRelative(_entities, _player.LocalEntity, map);
         }
         return target.IsValid(_entities) && float.IsFinite(target.X) && float.IsFinite(target.Y);
     }

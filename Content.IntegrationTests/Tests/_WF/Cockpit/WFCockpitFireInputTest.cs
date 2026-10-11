@@ -223,6 +223,39 @@ public sealed class WFCockpitFireInputTest
     }
 
     [Test]
+    public async Task WorldAimRidesThePilotsShip()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var entities = pair.Client.EntMan;
+            var maps = pair.Client.ResolveDependency<IMapManager>();
+            var transforms = entities.System<SharedTransformSystem>();
+            var map = maps.CreateMap();
+            var ship = maps.CreateGridEntity(map);
+            entities.System<SharedMapSystem>().SetTile(ship.Owner, ship.Comp, new Vector2i(1, 1), new Tile(1));
+            transforms.SetWorldPosition(ship.Owner, new Vector2(100, 40));
+            var pilot = entities.SpawnEntity(null, new EntityCoordinates(ship.Owner, new Vector2(1.5f, 1.5f)));
+            Assert.That(entities.GetComponent<TransformComponent>(pilot).GridUid, Is.EqualTo(ship.Owner));
+            var point = new MapCoordinates(new Vector2(130, 55), map);
+            var aim = WFCockpitFireInput.ShipRelative(entities, pilot, point);
+            Assert.That(aim.EntityId, Is.EqualTo(ship.Owner), "The aim point must be expressed on the pilot's ship.");
+            Assert.That((transforms.ToMapCoordinates(aim).Position - point.Position).Length(), Is.LessThan(0.001f));
+            transforms.SetWorldPosition(ship.Owner, new Vector2(160, 40));
+            Assert.That((transforms.ToMapCoordinates(aim).Position - new Vector2(190, 55)).Length(), Is.LessThan(0.001f),
+                "When the ship moves the aim point moves with it, as the pointer does on the ship cam.");
+            var adrift = entities.SpawnEntity(null, new MapCoordinates(new Vector2(5, 5), map));
+            Assert.That(WFCockpitFireInput.ShipRelative(entities, adrift, point).EntityId, Is.Not.EqualTo(ship.Owner),
+                "Without a ship the point stays on the map.");
+            Assert.That(WFCockpitFireInput.ShipRelative(entities, null, point).IsValid(entities));
+            entities.DeleteEntity(pilot);
+            entities.DeleteEntity(adrift);
+            maps.DeleteMap(map);
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task ReticleTracksArmedHoverAndRestoresBorrowedCursors()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
