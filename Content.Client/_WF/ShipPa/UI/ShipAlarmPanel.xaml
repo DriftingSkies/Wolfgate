@@ -64,11 +64,49 @@
                   HorizontalExpand="True"/>
         <Button Name="SoundButton"
                 Text="{Loc 'shuttle-console-ship-sound'}"
+                ToolTip="{Loc 'shuttle-console-ship-sound-tooltip'}"
                 StyleClasses="ButtonSquare"
                 Margin="4 0 0 0"/>
         <Button Name="SoundStopButton"
                 Text="{Loc 'shuttle-console-ship-sound-stop'}"
+                ToolTip="{Loc 'shuttle-console-ship-sound-stop-tooltip'}"
                 StyleClasses="ButtonSquare"
                 Margin="4 0 0 0"/>
+    </BoxContainer>
+    <!-- What the PA is playing and what waits behind it; shown only while the ship has either. -->
+    <BoxContainer Name="PlaylistBox"
+                  Orientation="Vertical"
+                  HorizontalExpand="True"
+                  Margin="4 0 4 4"
+                  Visible="False">
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+            <Label Name="NowPlayingLabel"
+                   HorizontalExpand="True"
+                   ClipText="True"
+                   FontColorOverride="#00ff2a"/>
+            <Button Name="SkipButton"
+                    Text="{Loc 'shuttle-console-ship-playlist-skip'}"
+                    ToolTip="{Loc 'shuttle-console-ship-playlist-skip-tooltip'}"
+                    StyleClasses="ButtonSquare"
+                    Margin="4 0 0 0"/>
+        </BoxContainer>
+        <BoxContainer Name="QueueHeader" Orientation="Horizontal" HorizontalExpand="True" Margin="0 4 0 0">
+            <Label Name="QueueLabel"
+                   HorizontalExpand="True"
+                   ClipText="True"
+                   FontColorOverride="#00ff2a"/>
+            <Button Name="ClearQueueButton"
+                    Text="{Loc 'shuttle-console-ship-playlist-clear'}"
+                    ToolTip="{Loc 'shuttle-console-ship-playlist-clear-tooltip'}"
+                    StyleClasses="ButtonSquare"
+                    Margin="4 0 0 0"/>
+        </BoxContainer>
+        <ScrollContainer Name="QueueScroll"
+                         HScrollEnabled="False"
+                         ReturnMeasure="True"
+                         MaxHeight="120"
+                         HorizontalExpand="True">
+            <BoxContainer Name="QueueList" Orientation="Vertical" HorizontalExpand="True"/>
+        </ScrollContainer>
     </BoxContainer>
 </BoxContainer>

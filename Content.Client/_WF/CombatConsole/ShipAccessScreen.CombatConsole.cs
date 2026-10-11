@@ -117,7 +117,7 @@ public sealed partial class ShipAccessScreen
         control.Margin = new Thickness(0);
         if (control is Label label)
         {
-            if (label.HorizontalExpand)
+            if (label.HorizontalExpand && label is not WFWrappedLabel)
                 label.ClipText = true;
             label.ToolTip ??= label.Text;
         }

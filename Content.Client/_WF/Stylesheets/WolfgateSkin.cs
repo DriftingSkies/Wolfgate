@@ -175,11 +175,15 @@ public static class WolfgateSkins
         Selection = Color.FromHex("#5A4320"),
     };
 
-    public static readonly WolfgateSkin[] All = { Futurist, Retro };
+    /// <summary>The skin of a player who never picked one. Its id is the default of the <c>wf.ui_style</c> CVar.</summary>
+    public static readonly WolfgateSkin Default = Retro;
 
-    /// <summary>The skin with the given id, or the futurist default for anything unknown.</summary>
+    /// <summary>Every skin, the default first, in the order the options menu lists them.</summary>
+    public static readonly WolfgateSkin[] All = { Retro, Futurist };
+
+    /// <summary>The skin with the given id, or the default skin for anything unknown.</summary>
     public static WolfgateSkin Get(string id)
     {
-        return All.FirstOrDefault(skin => skin.Id == id) ?? Futurist;
+        return All.FirstOrDefault(skin => skin.Id == id) ?? Default;
     }
 }

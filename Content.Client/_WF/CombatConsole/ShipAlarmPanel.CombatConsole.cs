@@ -54,7 +54,7 @@ public sealed partial class ShipAlarmPanel
         AnnounceButton.HorizontalExpand = SoundButton.HorizontalExpand = SoundStopButton.HorizontalExpand = false;
         AnnounceButton.SetWidth = 84;
         SoundButton.SetWidth = 56;
-        SoundStopButton.SetWidth = 48;
+        SoundStopButton.SetWidth = 56;
         foreach (var edit in new[] { AnnounceEdit, SoundEdit })
         {
             edit.Margin = new Thickness(0);
@@ -65,7 +65,8 @@ public sealed partial class ShipAlarmPanel
         var announce = Row(AnnounceEdit, AnnounceButton);
         var sound = Row(SoundEdit, SoundButton, SoundStopButton);
         announce.SeparationOverride = sound.SeparationOverride = 4;
-        var body = Column(readouts, CodeContainer, GeneralQuartersButton, CollisionAlertButton, announce, sound);
+        WfRefitPlaylist();
+        var body = Column(readouts, CodeContainer, GeneralQuartersButton, CollisionAlertButton, announce, sound, PlaylistBox);
         body.SeparationOverride = 6;
         DisposeAllChildren();
         Margin = new Thickness(0);
@@ -73,6 +74,43 @@ public sealed partial class ShipAlarmPanel
         VerticalExpand = false;
         AddChild(body);
         ApplyCodeColours();
+    }
+
+    /// <summary>Compacts the now-playing line and queue; the section stays hidden until the ship has something to list.</summary>
+    private void WfRefitPlaylist()
+    {
+        foreach (var label in new[] { NowPlayingLabel, QueueLabel })
+        {
+            label.Margin = new Thickness(0);
+            label.MinHeight = 24;
+            label.ClipText = true;
+            label.VerticalAlignment = VAlignment.Center;
+        }
+        WfCompactAlarmButton(SkipButton);
+        WfCompactAlarmButton(ClearQueueButton);
+        SkipButton.HorizontalExpand = ClearQueueButton.HorizontalExpand = false;
+        SkipButton.SetWidth = 56;
+        ClearQueueButton.SetWidth = 64;
+        ((BoxContainer) NowPlayingLabel.Parent!).SeparationOverride = 4;
+        QueueHeader.SeparationOverride = 4;
+        QueueHeader.Margin = new Thickness(0);
+        QueueList.SeparationOverride = 2;
+        // Three rows show at once; the rest scroll.
+        QueueScroll.MaxHeight = 3 * 32 + 2 * 2;
+        PlaylistBox.Margin = new Thickness(0);
+        PlaylistBox.SeparationOverride = 4;
+    }
+
+    /// <summary>Styles a queue row built after the refit, which the console theme has already passed over.</summary>
+    private static void WfStyleQueueRow(BoxContainer row, Button remove)
+    {
+        row.SeparationOverride = 4;
+        remove.AddStyleClass("WfCompact");
+        Apply(row);
+        remove.Margin = new Thickness(0);
+        remove.HorizontalExpand = false;
+        remove.MinHeight = remove.SetHeight = 32;
+        remove.SetWidth = 32;
     }
 
     private static void WfCompactAlarmButton(Button button)

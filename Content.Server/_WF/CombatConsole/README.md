@@ -5,7 +5,13 @@ option selects Retro's HighFleet-style mechanical housings and amber glass, or F
 arcs, segmented linear readouts, touch selectors and clean glass panels. Both use `WolfgateSkins` for
 their palette and fonts, and restyle open windows without resetting selections or sending commands.
 The helm retains navigation,
-FTL/autopilot, docking, hull cameras, ship systems, access and shields. Gunnery adds four numbered
+FTL/autopilot, docking, hull cameras, ship systems, access and shields. Its title bar carries the flight deck
+caption and the Enter Cockpit key beside the pop-out and close controls, so the page tabs start the window body.
+The helm opens at 1240 by 960 and each page is laid out to fit that size without scrolling; smaller windows fall
+back to scroll bars. On z-level maps the Navigation telemetry column adds altitude and climb, side by side in
+shallow strips, and the travel readout, and still fits. Navigation shows the ship's position in its own glass box
+between the longitudinal and lateral gauges. On wide windows the shield page puts coverage in its own
+column. Gunnery adds four numbered
 weapon groups: select weapons, enable STORE and choose a slot, then recall it with one click. Groups belong to
 the console and survive closing its window; saving an empty selection clears a slot.
 

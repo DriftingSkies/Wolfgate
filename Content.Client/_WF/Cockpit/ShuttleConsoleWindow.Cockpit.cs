@@ -27,11 +27,13 @@ public sealed partial class ShuttleConsoleWindow
     /// <summary>The console is currently presented around the world view.</summary>
     public bool WfCockpitActive { get; private set; }
 
+    /// <summary>Builds the entry switch as a title bar key, disabled until the pilot can enter.</summary>
     private Button WfCreateCockpitButton()
     {
-        _wfCockpitButton = WFInstrumentTheme.Button("wf-cockpit-enter");
-        _wfCockpitButton.HorizontalExpand = false;
-        _wfCockpitButton.SetWidth = 170;
+        _wfCockpitButton = new Button { Text = Loc.GetString("wf-cockpit-enter"), MinWidth = 136, VerticalAlignment = VAlignment.Center };
+        _wfCockpitButton.AddStyleClass("WfHeader");
+        _wfCockpitButton.Margin = new Thickness(0, 0, 6, 0);
+        WFInstrumentTheme.Switch(_wfCockpitButton);
         _wfCockpitButton.Disabled = true;
         _wfCockpitButton.ToolTip = Loc.GetString("wf-cockpit-seat-required");
         _wfCockpitButton.OnPressed += _ => UserInterfaceManager.GetUIController<WFCockpitUIController>().Enter(this);

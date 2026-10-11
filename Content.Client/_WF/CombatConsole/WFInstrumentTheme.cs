@@ -90,6 +90,7 @@ public static class WFInstrumentTheme
                 Robust.Client.UserInterface.Controls.Label.AlignMode.Center;
             label.VAlign = Robust.Client.UserInterface.Controls.Label.VAlignMode.Center;
         }
+        var header = button.HasStyleClass("WfHeader");
         var compactSize = button.HasStyleClass("WfWeaponDense") ? 8 : 10;
         var font = compact ? IoCManager.Resolve<IResourceCache>().GetFont(Skin.MenuFonts, compactSize) : Mono;
         var danger = button.HasStyleClass("WfDispense");
@@ -101,6 +102,8 @@ public static class WFInstrumentTheme
             var box = new WFConsoleStyleBox(face, toggle, pressed, disabled, disabled ? button : null, compact);
             if (button.HasStyleClass("WfWeaponTight"))
                 box.SetContentMarginOverride(StyleBox.Margin.Vertical, 0);
+            if (header)
+                box.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
             return box;
         }
         button.Stylesheet = new Stylesheet(new StyleRule[]
@@ -120,7 +123,8 @@ public static class WFInstrumentTheme
                 .Prop(ContainerButton.StylePropertyStyleBox, SwitchFace(normal, false, true)),
         });
         label.FontColorOverride = null;
-        button.MinHeight = compact ? 32 : Math.Max(button.MinHeight, toggle ? 38 : 32);
+        // A window-header key shares the title bar's height instead of growing it.
+        button.MinHeight = header ? 26 : compact ? 32 : Math.Max(button.MinHeight, toggle ? 38 : 32);
         button.MinWidth = Math.Max(button.MinWidth, 32);
     }
 
@@ -164,13 +168,14 @@ public static class WFInstrumentTheme
         return box;
     }
 
-    /// <summary>Wraps a titled instrument in its own bolted housing.</summary>
-    public static WFInstrumentPanel Panel(string key, Control content, bool expand = false)
+    /// <summary>Wraps a titled instrument in its own bolted housing; a smaller padding or title gap frees height in tall columns.</summary>
+    public static WFInstrumentPanel Panel(string key, Control content, bool expand = false, int padding = 12, int gap = 6)
     {
         var body = Column(Label(key, Accent), content);
+        body.SeparationOverride = gap;
         body.HorizontalExpand = true;
         body.VerticalExpand = expand;
-        var panel = new WFInstrumentPanel { HorizontalExpand = true, VerticalExpand = expand };
+        var panel = new WFInstrumentPanel(padding) { HorizontalExpand = true, VerticalExpand = expand };
         panel.AddChild(body);
         return panel;
     }
@@ -282,9 +287,14 @@ public static class WFInstrumentTheme
 /// <summary>Draws the worn instrument housing with recessed edges and corner fasteners.</summary>
 public sealed class WFInstrumentPanel : PanelContainer
 {
-    public WFInstrumentPanel()
+    public WFInstrumentPanel() : this(12)
     {
-        PanelOverride = new WFConsoleFrameStyleBox(12, housing: true);
+    }
+
+    /// <summary>Creates a housing whose content sits the given distance inside its fasteners.</summary>
+    public WFInstrumentPanel(int padding)
+    {
+        PanelOverride = new WFConsoleFrameStyleBox(padding, housing: true);
     }
 
     protected override void Draw(DrawingHandleScreen handle)

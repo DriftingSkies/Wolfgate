@@ -25,10 +25,9 @@ public sealed class WFHeadingInstrument : Control
         MinHeight = 170;
         HorizontalExpand = true;
         MouseFilter = MouseFilterMode.Ignore;
-        var font = IoCManager.Resolve<IResourceCache>()
-            .GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf");
-        _font = new VectorFont(font, 12);
-        _scaleFont = new VectorFont(font, 9);
+        var cache = IoCManager.Resolve<IResourceCache>();
+        _font = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Bold.ttf"), 22);
+        _scaleFont = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf"), 9);
         for (var i = 0; i < _scaleLabels.Length; i++)
             _scaleLabels[i] = (i * 30).ToString();
         _headingValue = ReadHeading();
@@ -63,10 +62,10 @@ public sealed class WFHeadingInstrument : Control
             return;
         }
         var skin = WFInstrumentTheme.Skin;
-        var side = MathF.Max(1, MathF.Min(PixelWidth, PixelHeight - 24 * UIScale));
+        var (bounds, textBox) = WFGaugeScale.HeadingPanel(PixelWidth, PixelHeight, UIScale);
+        var side = bounds.Width;
         var scale = side / 176;
-        var origin = new Vector2((PixelWidth - side) / 2, 0);
-        var bounds = UIBox2.FromDimensions(origin, new Vector2(side));
+        var origin = bounds.TopLeft;
         WFConsoleMetal.MetalPanel(handle, bounds, UIScale, skin.EdgeSoft);
         foreach (var point in ScrewPoints)
             WFConsoleMetal.Screw(handle, origin + point * scale, 3.4f * scale, skin.TextMuted);
@@ -120,13 +119,7 @@ public sealed class WFHeadingInstrument : Control
         WFConsoleDigital.Dot(handle, center, 5 * scale, skin.EdgeLight, ref _digitalVertices);
         WFConsoleDigital.Dot(handle, center, 3 * scale, heading == null ? skin.TextMuted : skin.Accent, ref _digitalVertices);
         WFInstrumentGlass.Round(handle, center, face, scale);
-        var textScale = WFInstrumentText.FitScale(handle, _font, _headingText, UIScale, PixelWidth - 8 * UIScale, 20 * UIScale);
-        if (textScale > 0)
-        {
-            var width = handle.GetDimensions(_font, _headingText, textScale).X;
-            handle.DrawString(_font, new Vector2((PixelWidth - width) / 2, PixelHeight - 4 * UIScale - _font.GetAscent(textScale)),
-                _headingText, textScale, WFInstrumentTheme.Accent);
-        }
+        WFInstrumentText.DrawFitted(handle, _font, _headingText, textBox, UIScale, heading == null ? skin.TextMuted : skin.Accent);
     }
     private void DrawDigital(DrawingHandleScreen handle)
     {
@@ -150,13 +143,9 @@ public sealed class WFHeadingInstrument : Control
             var tip = center + new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * (radius - 5 * UIScale);
             WFConsoleDigital.Dot(handle, tip, 3 * UIScale, skin.Accent, ref _digitalVertices);
         }
-        var textScale = WFInstrumentText.FitScale(handle, _font, _headingText, UIScale,
-            MathF.Max(1, (radius - 12 * UIScale) * 2), 24 * UIScale);
-        if (textScale > 0)
-        {
-            var size = handle.GetDimensions(_font, _headingText, textScale);
-            handle.DrawString(_font, center - size / 2, _headingText, textScale, heading == null ? skin.TextMuted : skin.Accent);
-        }
+        var readout = new Vector2(MathF.Max(1, (radius - 16 * UIScale) * 2), 28 * UIScale);
+        WFInstrumentText.DrawFitted(handle, _font, _headingText, UIBox2.FromDimensions(center - readout / 2, readout), UIScale,
+            heading == null ? skin.TextMuted : skin.Accent);
         handle.DrawLine(center + new Vector2(-18, 17) * UIScale, center + new Vector2(18, 17) * UIScale, skin.AccentDim);
     }
 

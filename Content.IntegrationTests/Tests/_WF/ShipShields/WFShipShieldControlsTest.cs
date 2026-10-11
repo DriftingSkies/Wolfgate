@@ -236,6 +236,42 @@ public sealed class WFShipShieldControlsTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Wide screens give the coverage panel a second column; narrow ones keep a single stack.</summary>
+    [Test]
+    public async Task SettingsSplitIntoTwoColumnsOnlyWhenWide()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            using var screen = new WFShipShieldShuntScreen();
+            screen.UpdateState(State(), 0f);
+            var settings = Tree(screen).Single(control => control.GetType().Name == "ShieldSettings");
+            foreach (var (size, wide) in new[] { (new Vector2(760f, 900f), false), (new Vector2(1400f, 900f), true) })
+            {
+                foreach (var control in Tree(screen))
+                    control.InvalidateMeasure();
+                screen.Measure(size);
+                screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+                var panels = settings.Children.Where(child => child.Visible).ToArray();
+                Assert.That(panels, Has.Length.EqualTo(3));
+                Assert.That(panels[1].GlobalPosition.X, Is.EqualTo(panels[0].GlobalPosition.X).Within(1f));
+                if (wide)
+                {
+                    Assert.That(panels[2].GlobalPosition.X, Is.GreaterThanOrEqualTo(panels[0].GlobalPosition.X + panels[0].Width),
+                        "The coverage panel takes its own column at wide sizes.");
+                    Assert.That(panels[2].GlobalPosition.Y, Is.EqualTo(panels[0].GlobalPosition.Y).Within(1f));
+                }
+                else
+                {
+                    Assert.That(panels[2].GlobalPosition.X, Is.EqualTo(panels[0].GlobalPosition.X).Within(1f),
+                        "Narrow screens keep one column.");
+                    Assert.That(panels[2].GlobalPosition.Y, Is.GreaterThan(panels[1].GlobalPosition.Y));
+                }
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
     private static void Tick(WFShipShieldShuntScreen screen, float seconds) =>
         typeof(WFShipShieldShuntScreen).GetMethod("FrameUpdate", BindingFlags.Instance | BindingFlags.NonPublic)!
             .Invoke(screen, new object[] { new FrameEventArgs(seconds) });

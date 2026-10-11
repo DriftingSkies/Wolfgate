@@ -7,10 +7,14 @@ namespace Content.Client.Shuttles.UI;
 
 public sealed partial class ShuttleConsoleWindow
 {
+    /// <summary>The size the helm opens at, tall enough for every page to fit without scrolling.</summary>
+    public static readonly Vector2 WfDefaultSize = new(1240, 960);
+
     private void WfInitializeInstruments()
     {
         MinSize = new Vector2(960, 600);
-        FitWindow(this, new Vector2(1240, 820));
+        FitWindow(this, WfDefaultSize);
+        WfInstallHeader();
         NavModeButton.Text = Loc.GetString("wf-console-nav");
         MapModeButton.Text = Loc.GetString("wf-console-map");
         DockModeButton.Text = Loc.GetString("wf-console-dock");
@@ -33,12 +37,22 @@ public sealed partial class ShuttleConsoleWindow
         Contents.RectClipContent = true;
         ModeButtons.MinHeight = 36;
         ModeButtons.SeparationOverride = 5;
-        var body = Column(Row(Label("wf-console-helm-title", Accent), WfCreateCockpitButton()), CollisionBanner, CaptureBanner,
-            ModeButtons, CameraBar, Contents);
+        var body = Column(CollisionBanner, CaptureBanner, ModeButtons, CameraBar, Contents);
         body.Margin = new Thickness(10);
         body.HorizontalExpand = body.VerticalExpand = true;
         ContentsContainer.DisposeAllChildren();
         ContentsContainer.AddChild(body);
         Install(this);
+    }
+
+    /// <summary>Puts the flight deck caption in the title bar and the cockpit key beside the close and pop-out controls.</summary>
+    private void WfInstallHeader()
+    {
+        Title = Loc.GetString("wf-console-helm-title");
+        WindowTitle.FontColorOverride = Accent;
+        var header = CloseButton.Parent!;
+        var cockpit = WfCreateCockpitButton();
+        header.AddChild(cockpit);
+        cockpit.SetPositionInParent(CloseButton.GetPositionInParent());
     }
 }

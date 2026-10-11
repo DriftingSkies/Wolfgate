@@ -9,7 +9,7 @@ public sealed class WFConsoleThemeSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _configuration = default!;
 
-    public WolfgateSkin Skin { get; private set; } = WolfgateSkins.Futurist;
+    public WolfgateSkin Skin { get; private set; } = WolfgateSkins.Default;
 
     public override void Initialize()
     {

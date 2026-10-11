@@ -96,7 +96,7 @@ public sealed class ShipPaAudienceTest : InteractionTest
         await Client.WaitAssertion(() =>
         {
             Client.System<Content.Client._WF.Audio.InternetSound.InternetSoundSystem>().FrameUpdate(0.3f);
-            Assert.That(Resources().Has(id), Is.False, "Cut must release the cached asset.");
+            Assert.That(Resources().Has(id), Is.False, "Stop must release the cached asset.");
         });
     }
 

@@ -8,8 +8,17 @@ namespace Content.Client._WF.CombatConsole;
 /// <summary>Keeps the door diagram dominant beside access controls or above compact details.</summary>
 public sealed class WFShipAccessLayout : Control
 {
+    /// <summary>The page lays out in columns from this size; below it the details scroll.</summary>
+    public const float WideMinWidth = 900;
+    public const float WideMinHeight = 400;
     private const float Gap = 8;
     private const float ControlColumnWidth = 248;
+
+    /// <summary>The height a stacked diagram needs to leave a usable plot inside its frame.</summary>
+    private const float PlotWanted = 206;
+
+    /// <summary>The least a stacked page leaves for its details, which scroll.</summary>
+    private const float DetailsMin = 30;
     private readonly BoxContainer _plot;
     private readonly Control _settings;
     private readonly Control _people;
@@ -41,14 +50,14 @@ public sealed class WFShipAccessLayout : Control
 
     protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
-        Reflow(availableSize.X >= 900 && availableSize.Y >= 400);
+        Reflow(availableSize.X >= WideMinWidth && availableSize.Y >= WideMinHeight);
         Layout(availableSize, false);
         return Vector2.Zero;
     }
 
     protected override Vector2 ArrangeOverride(Vector2 finalSize)
     {
-        Reflow(finalSize.X >= 900 && finalSize.Y >= 400);
+        Reflow(finalSize.X >= WideMinWidth && finalSize.Y >= WideMinHeight);
         Layout(finalSize, true);
         return finalSize;
     }
@@ -107,7 +116,9 @@ public sealed class WFShipAccessLayout : Control
             Place(_details, UIBox2.FromDimensions(new Vector2(plotWidth + Gap, 0), new Vector2(Math.Max(0, size.X - plotWidth - Gap), size.Y)));
             return;
         }
-        var plotHeight = Math.Max(0, size.Y - Gap) * 0.60f;
+        // The diagram takes 60% of the page, or the room a usable plot needs when that is more; the details scroll in the rest.
+        var room = Math.Max(0, size.Y - Gap);
+        var plotHeight = Math.Clamp(Math.Max(room * 0.60f, Math.Min(PlotWanted, room - DetailsMin)), 0, room);
         Place(_plot, UIBox2.FromDimensions(Vector2.Zero, new Vector2(size.X, plotHeight)));
         Place(_details, UIBox2.FromDimensions(new Vector2(0, plotHeight + Gap), new Vector2(size.X, Math.Max(0, size.Y - plotHeight - Gap))));
     }
@@ -116,6 +127,7 @@ public sealed class WFShipAccessLayout : Control
 /// <summary>Scrolls lists only in their wide region, never inside another active scroller.</summary>
 public sealed class WFAccessListRegion : Control
 {
+    private const float ListMinHeight = 48;
     private readonly Control _content;
     private readonly ScrollContainer _scroll;
     private bool _scrolling;
@@ -139,6 +151,13 @@ public sealed class WFAccessListRegion : Control
         if (scrolling) _scroll.AddChild(_content);
         else AddChild(_content);
         VerticalExpand = scrolling;
-        MinHeight = scrolling ? 48 : 0;
+        InvalidateMeasure();
+    }
+
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
+    {
+        var size = base.MeasureOverride(availableSize);
+        // A scrolling list with no rows drops its minimum height; the notice that stands in for it needs only its own.
+        return _scrolling ? new Vector2(size.X, _content.ChildCount > 0 ? Math.Max(size.Y, ListMinHeight) : 0) : size;
     }
 }

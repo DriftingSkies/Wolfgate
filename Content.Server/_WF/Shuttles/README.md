@@ -27,8 +27,10 @@ reactor on the flown grid, including stopped machinery. Solid and chemical sourc
 antimatter uses its installed jar. Fission uses the sum of remaining fuel-rod activity divided by fresh activity,
 weighted by each rod's fresh capacity. Neutron-active fuel has a factor of 1.5 because it converts into half as
 much ordinary active fuel before becoming spent. Empty sources contribute zero; loose fuel and unanchored machines
-are excluded. This is average reserves, not a runtime estimate or a sum of incompatible fuel units. The LOW lamp
-lights at 20% or less only when every installed source is measurable; absent or unsupported sources show no signal.
+are excluded. This is average reserves, not a runtime estimate or a sum of incompatible fuel units. The FUEL LOW lamp
+is red: steady at 20% or less and flashing once a second below 10% (`ShipFuelSummary.LowThreshold` and
+`CriticalThreshold`, timed from real time so it keeps flashing while the game is paused). It lights only when every
+installed source is measurable; absent or unsupported sources leave it dark and the gauge at no signal.
 Fuel shares the existing one-second ship-status sweep, including the lightweight cockpit snapshot; the one-off
 hull survey taken when a grid gets its first pilot leaves it out.
 

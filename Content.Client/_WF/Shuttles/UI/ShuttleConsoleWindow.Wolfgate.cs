@@ -1,3 +1,4 @@
+using Content.Shared._WF.ShipPa;
 using Content.Shared._WF.Shuttles;
 
 namespace Content.Client.Shuttles.UI;
@@ -36,6 +37,11 @@ public sealed partial class ShuttleConsoleWindow
     public event Action? ShipSoundStopRequested;
 
     /// <summary>
+    /// The pilot skipped, removed or cleared PA playlist entries.
+    /// </summary>
+    public event Action<ShipPaPlaylistAction, int>? ShipPlaylistRequested;
+
+    /// <summary>
     /// The pilot switched the collision warning on or off.
     /// </summary>
     public event Action<bool>? ShipCollisionAlertRequested;
@@ -52,6 +58,7 @@ public sealed partial class ShuttleConsoleWindow
         ShipContainer.AnnounceRequested += text => ShipAnnounceRequested?.Invoke(text);
         ShipContainer.SoundRequested += url => ShipSoundRequested?.Invoke(url);
         ShipContainer.SoundStopRequested += () => ShipSoundStopRequested?.Invoke();
+        ShipContainer.PlaylistRequested += (action, id) => ShipPlaylistRequested?.Invoke(action, id);
         ShipContainer.CollisionAlertRequested += enabled => ShipCollisionAlertRequested?.Invoke(enabled);
         CameraBar.CameraRequested += (view, zoom, lowLight) => ShipCameraRequested?.Invoke(view, zoom, lowLight);
 

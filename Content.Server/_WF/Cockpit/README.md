@@ -12,16 +12,20 @@ Live pressure, internals and buckle alerts, votes, and speech bubbles remain ava
 view. Character hotkeys, inventory controls and the menu bar remain hidden; Escape closes other windows
 first and then leaves the cockpit, as the EXIT button does; the helm stays open.
 
-The header centers the existing Wolfgate wordmark between the title and exit control.
-Flight instruments, compact camera controls and propulsion occupy the left column, with motion gauges
-above the central world viewport and communications and shield controls below it. The velocity dial shows
+There is no header row: the Wolfgate wordmark and Exit Cockpit share one slim row at the top of the left column,
+which stays put in every arrangement, so the other columns start at the screen margin. Only a tractor capture
+warning adds a full-width row above everything, and only while it shows.
+Flight instruments, compact camera controls and propulsion occupy the left column. A row above the central world viewport holds the longitudinal strip, a coordinates box
+(the ship's centre-of-mass position, X and Y at a fixed width) and the lateral strip; communications and shield controls sit below it. The shield panel is only as
+wide as its controls need (found from the controls, not a ratio) and communications take the rest of the row,
+so the chat is the larger panel on any window wide enough for both. The velocity dial shows
 actual drift relative to the bow, with forward at the top and starboard on the right, alongside total speed.
 Its direction pointer uses a fixed square-root response against a 100 m/s full scale, making low-speed drift
 more visible without scale jumps, and disappears when nearly stationary.
 A horizontal fuel gauge below HULL shares its row with a FUEL LOW lamp and stays fixed outside the dial scroller.
 The instrument housing uses compact padding and gaps while preserving dial sizes. HULL remains the final
-scrolling strip above fuel on short screens. The velocity dial retains the speed readout. The MFD fills the right column. Its maps use
-right-mouse panning and compact department labels, with scrolling details kept separate from the larger plots. Numbered approach markers link to readable port actions below the plot.
+scrolling strip above fuel on short screens. The velocity dial keeps its exact speed in a readout bar under the dial. The MFD fills the right column unless swapped or maximised. Its maps use
+right-mouse panning and compact department labels, with scrolling details kept separate from the larger plots. Numbered approach markers link to readable port actions below the plot. Clicking one of the ship's own ports on the docking plot, or its numbered marker, views that port exactly as picking it from the port list does; the windowed helm's docking page does the same.
 Shield arc width stays in the permanent shield control panel. Digital and mechanical instruments share the same large dial footprint, and the
 lower flight bank aligns with communications and shields. Its six status lamps show live autopilot, FTL,
 dampener, parking, docking and shield state; autopilot activity is replicated independently of MFD selection.
@@ -32,14 +36,23 @@ when clear, and FAULT lights when TCAS is off or telemetry is unavailable. The b
 using guns, with impact countdown, bearing, closing speed and full threat details on hover.
 The speed limiter lives on SYS; flight controls retain dampeners and orbit controls.
 The MFD holds navigation, hull overlays, strategic travel, docking, access, shield details and auxiliary
-systems. A wide SHP display gives half its width to the hull plot, with two columns of gauges beside it.
+systems. Its header has two toggles. Swap Panel trades places between the world view and the MFD: the MFD
+takes the large centre area and the world view the full-height column beside it, and nothing else moves.
+Maximise MFD stops drawing the world view and gives the MFD both areas; the motion gauges stay above it
+and the lower row below it, widened to match, the crew alert bank docks as a strip along its right edge, vote
+popups dock in a row above it, and speech bubbles are not shown (chat still carries the speech). Fire input
+ignores the hidden world view, while NAV aiming keeps working. Pressing the button again (Restore MFD)
+brings back the earlier arrangement, swapped or not. On the smallest window a swapped or maximised MFD is short, so
+its plots take most of the height and the details scroll beneath them. The state lasts one cockpit session and every exit
+restores the world view and the normal HUD, whatever the arrangement. A wide SHP display gives half its width to the hull plot, with two columns of gauges beside it.
 Damage, fire, pressure and power overlays share one row, with department labels and hull fitting below.
 Compact MFDs retain the vertical layout with independently scrolling details. ACCESS keeps its framed door map
 as the largest panel, beside the controls when there is room and above them in compact layouts. Its
 details use one scroller without nested scrolling lists, and the bezel matches the selected
 Wolfgate theme. Exit restores the same controls and chat draft without reopening
-interfaces or changing the player's display settings. Expand is unavailable when the window is too narrow to
-widen the MFD, and the dials switch to compact faces on short windows (under about 1000 px of height). The
+interfaces or changing the player's display settings. The dials switch to compact faces on short windows
+(under about 1000 px of height); at 1920x1080 with UI scale 1 nothing in the instrument column, flight controls or
+shield panel scrolls, and neither do the SYS and SHD pages of the normal arrangement. The
 docking page has a Recenter plot button. The planet timepiece panel is hidden while the cockpit is open, and
 replay viewers cannot enter it.
 
@@ -69,6 +82,7 @@ rule that blocks a player from holding the helm and gunnery windows together, so
 fire a crewed ship from the cockpit.
 
 Entry points: `WFCockpitUIController`, `WFCockpitView`, `WFCockpitLease` and the console partials.
+`WFCockpitPanelLayout` computes where the big panels sit for each arrangement and is unit tested.
 `WFCockpitGunnerySystem` owns authorized gun links; `WFCockpitGunneryPanel` and `WFCockpitFireInput`
 provide the embedded controls and aiming. `WFCockpitSeatComponent` is inherited by seats; `SharedWFCockpitSystem` checks replicated eligibility.
 
@@ -119,6 +133,7 @@ provide the embedded controls and aiming. `WFCockpitSeatComponent` is inherited 
 - [`Content.Client/_WF/Cockpit/ShuttleExternalCameraSystem.Cockpit.cs`](../../../Content.Client/_WF/Cockpit/ShuttleExternalCameraSystem.Cockpit.cs)
 - [`Content.Client/_WF/Cockpit/ShuttleNavControl.Cockpit.cs`](../../../Content.Client/_WF/Cockpit/ShuttleNavControl.Cockpit.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitAimLines.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitAimLines.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitCoordinates.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitCoordinates.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitFireInput.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitFireInput.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitFuelBank.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitFuelBank.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitFuelLamp.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitFuelLamp.cs)
@@ -126,6 +141,7 @@ provide the embedded controls and aiming. `WFCockpitSeatComponent` is inherited 
 - [`Content.Client/_WF/Cockpit/WFCockpitInstrumentSizing.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitInstrumentSizing.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitLease.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitLease.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitShipLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitShipLayout.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitSpeechClip.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitSpeechClip.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitStatusLights.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitStatusLights.cs)
@@ -138,6 +154,7 @@ provide the embedded controls and aiming. `WFCockpitSeatComponent` is inherited 
 - [`Content.Client/_WF/Cockpit/WFCockpitView.Gunnery.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitView.Gunnery.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitView.Header.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitView.Header.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitView.Hud.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitView.Hud.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitView.Panels.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitView.Panels.cs)
 - [`Content.Client/_WF/Cockpit/WFDockMarkerLayout.cs`](../../../Content.Client/_WF/Cockpit/WFDockMarkerLayout.cs)
 - [`Content.Client/_WF/Cockpit/WFVelocityVectorInstrument.cs`](../../../Content.Client/_WF/Cockpit/WFVelocityVectorInstrument.cs)
 
@@ -156,7 +173,9 @@ provide the embedded controls and aiming. `WFCockpitSeatComponent` is inherited 
 
 ### Unit tests
 
+- [`Content.Tests/_WF/Cockpit/WFCockpitCoordinatesTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitCoordinatesTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitInstrumentSizingTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitInstrumentSizingTest.cs)
+- [`Content.Tests/_WF/Cockpit/WFCockpitPanelLayoutTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitPanelLayoutTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitTcasReadingTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitTcasReadingTest.cs)
 - [`Content.Tests/_WF/Cockpit/WFCockpitVelocityTest.cs`](../../../Content.Tests/_WF/Cockpit/WFCockpitVelocityTest.cs)
 

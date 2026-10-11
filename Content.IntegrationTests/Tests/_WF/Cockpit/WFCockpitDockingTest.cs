@@ -13,17 +13,19 @@ using Content.Client.Shuttles.UI;
 using Content.Shared._WF.CCVar;
 using Content.Shared.Shuttles.BUIStates;
 using Robust.Client.Graphics;
+using Robust.Client.Input;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Input;
 using Robust.Shared.Localization;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WF.Cockpit;
 
-/// <summary>Checks crowded dock callouts and the live port actions moved out of the approach plot.</summary>
+/// <summary>Checks crowded dock callouts, the live port actions moved out of the approach plot, and clicking ports on the plot.</summary>
 public sealed class WFCockpitDockingTest
 {
     [TestCase(0f, 0f)]
@@ -173,6 +175,141 @@ public sealed class WFCockpitDockingTest
     }
 
     [Test]
+    public void PortPickPrefersACalloutThenTheNearestPortInReach()
+    {
+        var targets = new[]
+        {
+            new WFDockTarget(new Vector2(100, 100), 20, null),
+            new WFDockTarget(new Vector2(200, 100), 20, UIBox2.FromDimensions(new Vector2(92, 92), new Vector2(24, 20))),
+        };
+        Assert.That(WFDockMarkerLayout.Pick(new Vector2(82, 100), targets), Is.EqualTo(0), "A port body is clickable around its centre.");
+        Assert.That(WFDockMarkerLayout.Pick(new Vector2(190, 100), targets), Is.EqualTo(1));
+        Assert.That(WFDockMarkerLayout.Pick(new Vector2(100, 100), targets), Is.EqualTo(1),
+            "A callout drawn over another port takes the click, as it is the topmost thing on the plot.");
+        Assert.That(WFDockMarkerLayout.Pick(new Vector2(150, 100), targets), Is.EqualTo(-1), "Empty plot selects nothing.");
+        Assert.That(WFDockMarkerLayout.Pick(Vector2.Zero, Array.Empty<WFDockTarget>()), Is.EqualTo(-1));
+        var crowded = new[] { new WFDockTarget(new Vector2(100, 100), 20, null), new WFDockTarget(new Vector2(110, 100), 20, null) };
+        Assert.That(WFDockMarkerLayout.Pick(new Vector2(106, 100), crowded), Is.EqualTo(1), "Overlapping ports go to the nearest centre.");
+    }
+
+    [TestCase(false)]
+    [TestCase(true)]
+    public async Task ClickingAPortOnThePlotViewsItLikeThePortList(bool cockpit)
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var entities = pair.Client.ResolveDependency<IEntityManager>();
+            var settings = pair.Client.ResolveDependency<IConfigurationManager>();
+            var originalTheme = settings.GetCVar(WolfgateCVars.UiStyle);
+            var owner = entities.SpawnEntity(null, MapCoordinates.Nullspace);
+            var grid = entities.GetNetEntity(owner);
+            var visitorGrid = new NetEntity(901);
+            var alpha = Port(new NetEntity(720), grid, "Alpha", Vector2.Zero);
+            var bravo = Port(new NetEntity(721), grid, "Bravo", new Vector2(4, 0));
+            var charlie = Port(new NetEntity(722), grid, "Charlie", new Vector2(-3, 4));
+            var visitor = Port(new NetEntity(723), visitorGrid, "Visitor", new Vector2(0, -4));
+            foreach (var theme in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+            {
+                settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                var lease = new WFCockpitLease();
+                using var screen = new DockingScreen();
+                if (cockpit)
+                    screen.WfCockpitDock(lease);
+                else
+                    screen.WfRefitInstruments();
+                screen.Visible = true;
+                ui.WindowRoot.AddChild(screen);
+                screen.UpdateState(owner, new DockingInterfaceState(new Dictionary<NetEntity, List<DockingPortState>>
+                {
+                    [grid] = new() { charlie, alpha, bravo },
+                    [visitorGrid] = new() { visitor },
+                }));
+                var size = cockpit ? new Vector2(640, 700) : new Vector2(1000, 600);
+                screen.Measure(size);
+                screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+                var plot = screen.FindControl<ShuttleDockControl>("DockingControl");
+                var label = $"{theme}, {(cockpit ? "cockpit" : "windowed")}";
+                Assert.That(plot.PixelWidth, Is.GreaterThan(200), label);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: the first port by name starts out viewed.");
+                Assert.That(ListedPort(screen), Is.EqualTo("Alpha"), label);
+                var viewed = new List<NetEntity>();
+                plot.OnViewDock += viewed.Add;
+
+                Click(ui, plot, Plotted(plot, alpha, bravo, cockpit));
+                Assert.That(plot.ViewedDock, Is.EqualTo(bravo.Entity), $"{label}: a click on a port's plotted position views it.");
+                Assert.That(viewed, Is.EqualTo(new[] { bravo.Entity }), $"{label}: the plot raises the event the port list raises.");
+                Assert.That(ListedPort(screen), Is.EqualTo("Bravo"), $"{label}: the port list follows the click.");
+
+                // A panned and zoomed plot is clicked where it is drawn, not where it started.
+                plot.WorldRange = 12;
+                if (cockpit)
+                    plot.Offset = new Vector2(2, -1);
+                Click(ui, plot, Plotted(plot, bravo, charlie, cockpit));
+                Assert.That(plot.ViewedDock, Is.EqualTo(charlie.Entity), $"{label}: panning and zooming move the click targets with the ports.");
+                Assert.That(ListedPort(screen), Is.EqualTo("Charlie"), label);
+                if (cockpit)
+                    Assert.That(plot.Offset, Is.EqualTo(Vector2.Zero), "Viewing a port recentres the panned plot, as the port list does.");
+
+                plot.WorldRange = 6;
+                Click(ui, plot, Plotted(plot, charlie, alpha, cockpit));
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), label);
+                Assert.That(viewed, Is.EqualTo(new[] { bravo.Entity, charlie.Entity, alpha.Entity }), label);
+
+                var bravoSpot = Plotted(plot, alpha, bravo, cockpit);
+                var empty = new Vector2(plot.PixelWidth - 24, plot.PixelHeight - 24);
+                Click(ui, plot, bravoSpot, function: EngineKeyFunctions.UseSecondary);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: the right button pans and never selects.");
+                Click(ui, plot, Plotted(plot, alpha, visitor, cockpit));
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: another ship's port is not one of ours to view.");
+                Click(ui, plot, empty);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: empty plot selects nothing.");
+                Click(ui, plot, bravoSpot, empty);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: releasing away from the pressed port cancels the click.");
+                Click(ui, plot, empty, bravoSpot);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: a press that began on empty plot cannot select.");
+                Assert.That(viewed, Has.Count.EqualTo(3), label);
+
+                // A press waiting for its release is forgotten when the plot is hidden, as no release comes to a hidden control.
+                Click(ui, plot, bravoSpot, release: false);
+                plot.Visible = false;
+                plot.Visible = true;
+                Click(ui, plot, bravoSpot, press: false);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: a press cannot outlive the plot it began on.");
+
+                // Another ship's callout drawn over one of our ports is what the pilot sees on top, so it takes the click.
+                var callouts = (Dictionary<NetEntity, UIBox2>) typeof(ShuttleDockControl)
+                    .GetField("_wfCockpitDockCallouts", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(plot)!;
+                callouts[visitor.Entity] = UIBox2.FromDimensions(bravoSpot - new Vector2(10), new Vector2(20));
+                Click(ui, plot, bravoSpot);
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), $"{label}: a callout over a port is not a click on the port beneath it.");
+                MoveMouse(ui, plot, bravoSpot);
+                Assert.That(plot.HighlightedDock, Is.Null, $"{label}: nor does it highlight the port beneath it.");
+                callouts.Clear();
+                Click(ui, plot, bravoSpot);
+                Assert.That(plot.ViewedDock, Is.EqualTo(bravo.Entity), $"{label}: with the callout gone the port is clickable again.");
+                Click(ui, plot, Plotted(plot, bravo, alpha, cockpit));
+                Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity), label);
+                Assert.That(viewed, Is.EqualTo(new[] { bravo.Entity, charlie.Entity, alpha.Entity, bravo.Entity, alpha.Entity }), label);
+
+                MoveMouse(ui, plot, bravoSpot);
+                Assert.That(plot.HighlightedDock, Is.EqualTo(bravo.Entity), $"{label}: hovering a port highlights it, as hovering its list entry does.");
+                MoveMouse(ui, plot, empty);
+                Assert.That(plot.HighlightedDock, Is.Null, label);
+
+                plot.OnViewDock -= viewed.Add;
+                ui.SetHovered(null);
+                lease.Restore();
+                screen.Orphan();
+            }
+            settings.SetCVar(WolfgateCVars.UiStyle, originalTheme);
+            entities.DeleteEntity(owner);
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task VelocityDialHelpReachesTheMouse()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
@@ -199,6 +336,52 @@ public sealed class WFCockpitDockingTest
         Coordinates = new NetCoordinates(grid, Vector2.Zero),
         Name = "external airlock with a deliberately long operational name",
     };
+
+    private static DockingPortState Port(NetEntity entity, NetEntity grid, string name, Vector2 position) => new()
+    {
+        Entity = entity,
+        Coordinates = new NetCoordinates(grid, position),
+        Name = name,
+    };
+
+    /// <summary>The name on the port list's selected entry.</summary>
+    private static string? ListedPort(DockingScreen screen) => Tree(screen.FindControl<BoxContainer>("DockPorts")).OfType<Button>()
+        .Where(button => button.Pressed)
+        .SelectMany(button => Tree(button).OfType<Label>())
+        .Select(label => label.Text)
+        .FirstOrDefault(text => !string.IsNullOrEmpty(text));
+
+    /// <summary>Where a port should be drawn: its offset from the viewed port at the plot's scale, north up, less any pan.</summary>
+    private static Vector2 Plotted(ShuttleDockControl plot, DockingPortState viewed, DockingPortState port, bool panned)
+    {
+        // The plot fits its shorter side with a 4 px margin; the clicks below are placed from this, not from the control's own maths.
+        var radius = Math.Max(1, Math.Min(plot.PixelWidth, plot.PixelHeight) / 2 - (int) (4 * plot.UIScale));
+        var scale = radius / plot.WorldRange;
+        var offset = port.Coordinates.Position - viewed.Coordinates.Position - (panned ? plot.Offset : Vector2.Zero);
+        return new Vector2(plot.PixelWidth, plot.PixelHeight) / 2f + new Vector2(offset.X, -offset.Y) * scale;
+    }
+
+    private static ScreenCoordinates Pointer(Control surface, Vector2 pixel) => new(surface.GlobalPixelPosition + pixel, surface.Window!.Id);
+
+    /// <summary>Presses and releases through the UI manager's own dispatch: hit test, bubbling and release routing.</summary>
+    private static void Click(IUserInterfaceManager ui, Control surface, Vector2 down, Vector2? up = null, BoundKeyFunction? function = null,
+        bool press = true, bool release = true)
+    {
+        ui.ControlFocused = null;
+        ui.ReleaseKeyboardFocus();
+        Assert.That(ui.MouseGetControl(Pointer(surface, down)), Is.SameAs(surface), "The press must land on the plot itself.");
+        foreach (var (state, pixel) in new[] { (BoundKeyState.Down, down), (BoundKeyState.Up, up ?? down) })
+        {
+            if (state == BoundKeyState.Down ? !press : !release)
+                continue;
+
+            var args = new BoundKeyEventArgs(function ?? EngineKeyFunctions.UIClick, state, Pointer(surface, pixel), true);
+            ui.GetType().GetMethod(state == BoundKeyState.Down ? "KeyBindDown" : "KeyBindUp")!.Invoke(ui, new object[] { args });
+        }
+    }
+
+    private static void MoveMouse(IUserInterfaceManager ui, Control surface, Vector2 pixel) =>
+        ui.GetType().GetMethod("MouseMove")!.Invoke(ui, new object[] { new MouseMoveEventArgs(Vector2.Zero, Pointer(surface, pixel)) });
 
     private static void Press(BaseButton button) => WFButtonTestInput.Click(button);
 

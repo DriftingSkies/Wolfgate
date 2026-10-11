@@ -150,6 +150,26 @@ public sealed class WFCockpitFireInputTest
             Assert.That(aims[^1].Fire, Is.False, "Changing MFD pages releases the trigger.");
             ReleaseNav();
 
+            PressNav();
+            world.Visible = false;
+            Assert.That(ui.MouseGetControl(worldCursor), Is.Not.SameAs(world.Viewport), "A hidden world view cannot be hovered.");
+            beforeLoss = aims.Count;
+            Tick(fire, 0.11f, cursor, true);
+            Assert.That(aims[^1].Fire, Is.False, "Hiding the world view while a trigger is held releases it.");
+            ReleaseNav();
+            beforeLoss = aims.Count;
+            Tick(fire, 0.5f, worldCursor, true);
+            Assert.That(aims, Has.Count.EqualTo(beforeLoss), "A hidden world view is not an aim surface.");
+            Assert.That(Key(world.Viewport, EngineKeyFunctions.UIClick, BoundKeyState.Down, worldCursor).Handled, Is.False,
+                "A hidden world view must not capture clicks.");
+            Key(world.Viewport, EngineKeyFunctions.UIClick, BoundKeyState.Up, worldCursor);
+            Assert.That(aims, Has.Count.EqualTo(beforeLoss));
+            PressNav();
+            ReleaseNav();
+            Assert.That(aims, Has.Count.EqualTo(beforeLoss + 1), "Aiming through the NAV plot keeps working with the world view hidden.");
+            world.Visible = true;
+            Assert.That(ui.MouseGetControl(worldCursor), Is.SameAs(world.Viewport), "The world view is hoverable again once shown.");
+
             using var chat = new LineEdit();
             host.AddChild(chat);
             chat.GrabKeyboardFocus();

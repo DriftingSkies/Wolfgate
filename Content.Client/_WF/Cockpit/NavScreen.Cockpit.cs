@@ -32,6 +32,7 @@ public sealed partial class NavScreen
             { Name = "CockpitForward", SetHeight = 44, CompactStrip = true };
         var lateral = new WFGlassGauge("wf-gauge-lateral", () => WfMotionReading(0), true)
             { Name = "CockpitLateral", SetHeight = 44, CompactStrip = true };
+        var coordinates = new WFCockpitCoordinates(WfCockpitPosition) { Name = "CockpitCoordinates" };
         var altitude = new WFGlassGauge("wf-gauge-altitude", () =>
         {
             double? value = GridAltitude.Visible && _shuttleEntity is { } shuttle ? _zLevels.GetAbsoluteAltitude(shuttle) : null;
@@ -58,7 +59,17 @@ public sealed partial class NavScreen
         motion.SeparationOverride = 12;
         var instruments = Column(heading, motion);
         instruments.SeparationOverride = 3;
-        return (instruments, Column(Row(forward, lateral), vertical));
+        return (instruments, Column(Row(forward, coordinates, lateral), vertical));
+    }
+
+    /// <summary>The ship's centre of mass in world coordinates, which is the position the helm lists.</summary>
+    private Vector2? WfCockpitPosition()
+    {
+        if (!_entManager.TryGetComponent(_shuttleEntity, out TransformComponent? transform))
+            return null;
+        return _entManager.TryGetComponent(_shuttleEntity, out PhysicsComponent? body)
+            ? Vector2.Transform(body.LocalCenter, _xformSystem.GetWorldMatrix(transform))
+            : _xformSystem.GetWorldPosition(transform);
     }
 
     /// <summary>Refreshes contextual flight data when the original navigation panel is hidden.</summary>
@@ -67,9 +78,7 @@ public sealed partial class NavScreen
         if (_entManager.TryGetComponent(_shuttleEntity, out TransformComponent? transform))
         {
             UpdateAltitude(transform);
-            var position = _entManager.TryGetComponent(_shuttleEntity, out PhysicsComponent? body)
-                ? Vector2.Transform(body.LocalCenter, _xformSystem.GetWorldMatrix(transform))
-                : _xformSystem.GetWorldPosition(transform);
+            var position = WfCockpitPosition() ?? Vector2.Zero;
             GridPosition.Text = Loc.GetString("shuttle-console-position-value", ("X", $"{position.X:0.0}"), ("Y", $"{position.Y:0.0}"));
         }
         else

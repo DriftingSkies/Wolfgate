@@ -100,7 +100,7 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
         preview.AddChild(_dial = new ShieldDial());
         preview.AddChild(new Label { Text = Loc.GetString("wf-shield-helm-aft"), HorizontalAlignment = HAlignment.Center });
         preview.AddChild(new RichTextLabel { Text = Loc.GetString("wf-shield-helm-click-bearing") });
-        _settings = Column(12);
+        _settings = new ShieldSettings { SeparationOverride = 12 };
         AddChild(new ShieldColumns(Card(preview), _settings));
         _direction = new FloatSpinBox(1f, 1)
         {
@@ -403,12 +403,107 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
         _previewStatus.Modulate = adjusting ? Color.Orange : Color.FromHex("#83DCEB");
     }
 
+    /// <summary>Stacks the allocation panels, or splits the last one into a second column when given enough width.</summary>
+    private sealed class ShieldSettings : BoxContainer
+    {
+        private const float Gap = 12f;
+        /// <summary>Two columns of about 300 units plus the gap.</summary>
+        private const float SplitWidth = 612f;
+
+        public ShieldSettings()
+        {
+            Orientation = LayoutOrientation.Vertical;
+            HorizontalExpand = true;
+        }
+
+        private bool Split(float width) => width >= SplitWidth && float.IsFinite(width) && VisibleCount() > 1;
+
+        private int VisibleCount()
+        {
+            var count = 0;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    count++;
+            }
+            return count;
+        }
+
+        protected override Vector2 MeasureOverride(Vector2 availableSize)
+        {
+            if (!Split(availableSize.X))
+                return base.MeasureOverride(availableSize);
+            var column = MathF.Max(0f, (availableSize.X - Gap) / 2f);
+            var (first, second) = Columns(column, availableSize.Y);
+            return new Vector2(column * 2f + Gap, MathF.Max(first, second));
+        }
+
+        protected override Vector2 ArrangeOverride(Vector2 finalSize)
+        {
+            if (!Split(finalSize.X))
+                return base.ArrangeOverride(finalSize);
+            var column = MathF.Max(0f, (finalSize.X - Gap) / 2f);
+            Columns(column, finalSize.Y);
+            var separation = SeparationOverride ?? 0;
+            var y = 0f;
+            Control? last = null;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    last = child;
+            }
+            foreach (var child in Children)
+            {
+                if (!child.Visible)
+                    continue;
+                if (child == last)
+                {
+                    child.Arrange(UIBox2.FromDimensions(new Vector2(column + Gap, 0f), new Vector2(column, child.DesiredSize.Y)));
+                    continue;
+                }
+                child.Arrange(UIBox2.FromDimensions(new Vector2(0f, y), new Vector2(column, child.DesiredSize.Y)));
+                y += child.DesiredSize.Y + separation;
+            }
+            return finalSize;
+        }
+
+        /// <summary>Measures every visible panel at the column width and returns the height of each column.</summary>
+        private (float First, float Second) Columns(float column, float height)
+        {
+            var separation = SeparationOverride ?? 0;
+            Control? last = null;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    last = child;
+            }
+            var first = 0f;
+            var second = 0f;
+            foreach (var child in Children)
+            {
+                if (!child.Visible)
+                    continue;
+                child.Measure(new Vector2(column, height));
+                if (child == last)
+                    second = child.DesiredSize.Y;
+                else
+                    first += child.DesiredSize.Y + (first > 0f ? separation : 0f);
+            }
+            return (first, second);
+        }
+    }
+
     /// <summary>Reserves both column widths before measuring text and keeps overflow inside each column.</summary>
     private sealed class ShieldColumns : Container
     {
         private const float Gap = 12f;
         private readonly ScrollContainer _preview;
         private readonly ScrollContainer _settings;
+
+        /// <summary>Gives the settings two columns on wide screens, otherwise one narrower column.</summary>
+        private static float SettingsWidth(float total) => total >= 1100f
+            ? MathF.Min(780f, MathF.Max(0f, total - Gap) * 0.62f)
+            : MathF.Min(380f, MathF.Max(0f, total - Gap) * 0.46f);
 
         public ShieldColumns(Control preview, Control settings)
         {
@@ -424,7 +519,7 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            var right = MathF.Min(380f, MathF.Max(0f, availableSize.X - Gap) * 0.46f);
+            var right = SettingsWidth(availableSize.X);
             _preview.Measure(new Vector2(MathF.Max(0f, availableSize.X - right - Gap), availableSize.Y));
             _settings.Measure(new Vector2(right, availableSize.Y));
             // The expandable body takes the space left after the fixed header and status row.
@@ -433,7 +528,7 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            var right = MathF.Min(380f, MathF.Max(0f, finalSize.X - Gap) * 0.46f);
+            var right = SettingsWidth(finalSize.X);
             var left = MathF.Max(0f, finalSize.X - right - Gap);
             _preview.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(left, finalSize.Y)));
             _settings.Arrange(UIBox2.FromDimensions(new Vector2(left + Gap, 0f), new Vector2(right, finalSize.Y)));

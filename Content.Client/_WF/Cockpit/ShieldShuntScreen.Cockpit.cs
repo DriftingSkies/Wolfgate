@@ -37,6 +37,8 @@ public sealed partial class WFShipShieldShuntScreen
             InstrumentTheme.Row(InstrumentTheme.Label("wf-cockpit-shield-arc"), arc),
             allocation, lease.Take(_concentration), lease.Take(_health));
         controls.HorizontalExpand = true;
+        // The thin shield panel is sized from this column, so it fixes the narrowest usable power slider.
+        controls.MinWidth = 150;
         _health.MinHeight = 12;
         AddChild(InstrumentTheme.Row(dial, controls));
         return this;

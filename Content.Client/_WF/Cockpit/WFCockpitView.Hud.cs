@@ -67,15 +67,30 @@ public sealed partial class WFCockpitView
         }
     }
 
-    private void MeasureHud(Vector2 world, Vector2 full)
+    private void MeasureHud(WFCockpitPanelLayout.Frame frame, Vector2 full)
     {
         _speechClip.Measure(full);
-        _crewAlerts.Measure(new Vector2(144, Math.Max(1, world.Y - 12)));
+        // A maximised MFD measured its docked alerts and votes before it could be sized.
+        if (!frame.WorldShown)
+            return;
+        var world = frame.World.Size;
+        _crewAlerts.Measure(new Vector2(AlertBankWidth, Math.Max(1, world.Y - 12)));
         _votes.Measure(new Vector2(Math.Max(140, Math.Min(340, world.X - 164)), world.Y));
     }
 
-    private void ArrangeHud(UIBox2 world)
+    private void ArrangeHud(WFCockpitPanelLayout.Frame frame)
     {
+        if (!frame.WorldShown)
+        {
+            // Bubbles have no world view to speak over, so the clip keeps them off screen; chat still carries the speech.
+            _speechClip.Arrange(UIBox2.FromDimensions(frame.Mfd.TopLeft, Vector2.Zero));
+            var stripHeight = Math.Min(_crewAlerts.DesiredSize.Y, frame.Alerts.Height);
+            _crewAlerts.Arrange(UIBox2.FromDimensions(frame.Alerts.TopLeft, new Vector2(frame.Alerts.Width, stripHeight)));
+            _votes.Arrange(UIBox2.FromDimensions(frame.Votes.TopLeft,
+                new Vector2(Math.Min(VoteWidth, frame.Votes.Width), frame.Votes.Height)));
+            return;
+        }
+        var world = frame.World;
         // Speech bubbles use screen coordinates; the clip keeps them inside the world view without moving the origin.
         _speechClip.Arrange(world);
         var alertHeight = Math.Min(_crewAlerts.DesiredSize.Y, Math.Max(1, world.Height - 12));

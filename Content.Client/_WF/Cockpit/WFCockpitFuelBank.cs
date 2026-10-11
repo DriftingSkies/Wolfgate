@@ -37,7 +37,7 @@ public sealed class WFCockpitFuelBank : BoxContainer
             SetHeight = 44,
             MouseFilter = MouseFilterMode.Pass,
         };
-        _lamp = new WFCockpitFuelLamp(() => Reading is { Available: true } fuel ? fuel.Low : null);
+        _lamp = new WFCockpitFuelLamp(() => Reading);
         AddChild(_gauge);
         AddChild(_lamp);
         RefreshTooltip();
@@ -78,7 +78,8 @@ public sealed class WFCockpitFuelBank : BoxContainer
             { } fuel => Loc.GetString("wf-cockpit-fuel-sources", ("sources", fuel.Sources)),
         };
         ToolTip = status + "\n" + Loc.GetString("wf-cockpit-fuel-help") + "\n" +
-            Loc.GetString("wf-cockpit-fuel-low-help", ("threshold", MathF.Round(ShipFuelSummary.LowThreshold * 100)));
+            Loc.GetString("wf-cockpit-fuel-low-help", ("low", MathF.Round(ShipFuelSummary.LowThreshold * 100)),
+                ("critical", MathF.Round(ShipFuelSummary.CriticalThreshold * 100)));
         _gauge.ToolTip = ToolTip;
         _lamp.ToolTip = ToolTip;
     }

@@ -50,7 +50,8 @@ public sealed class WFCockpitShipLayout : Control
                 UIBox2.FromDimensions(new Vector2(plotWidth + Gap, 0), new Vector2(width - plotWidth, size.Y)));
         }
         var height = Math.Max(0, size.Y - Gap);
-        var plotHeight = height * 0.7f;
+        // A short MFD keeps the plot usable and lets the details scroll beneath it.
+        var plotHeight = height * WFCockpitMfdSplit.PlotShare(0.7f, size.Y);
         return (UIBox2.FromDimensions(Vector2.Zero, new Vector2(size.X, plotHeight)),
             UIBox2.FromDimensions(new Vector2(0, plotHeight + Gap), new Vector2(size.X, height - plotHeight)));
     }

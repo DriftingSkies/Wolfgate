@@ -1,5 +1,7 @@
 #nullable enable
 using System.Numerics;
+using Content.Client._WF.Cockpit;
+using Content.Client._WF.Stylesheets;
 using Content.Server.Ame.Components;
 using Content.Server.Materials;
 using Content.Server.Power.Generator;
@@ -17,6 +19,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.IntegrationTests.Tests._WF.Shuttles;
 
@@ -44,6 +47,7 @@ public sealed class ShipFuelTelemetryTest
             Assert.That(Read().Sources, Is.Zero);
             Assert.That(Read().Available, Is.False);
             Assert.That(Read().Low, Is.False, "No fuel plant is not an empty fuel plant.");
+            Assert.That(Read().Critical, Is.False, "No fuel plant must not flash FUEL LOW.");
 
             var solid = em.SpawnEntity("PortableGeneratorPacman", At(1));
             var adapter = em.GetComponent<SolidFuelGeneratorAdapterComponent>(solid);
@@ -79,6 +83,7 @@ public sealed class ShipFuelTelemetryTest
             Assert.That(combined.Fraction, Is.EqualTo(1.25f / 3f).Within(0.0001f));
             Assert.That(combined.Available, Is.True);
             Assert.That(combined.Low, Is.False);
+            Assert.That(combined.Critical, Is.False);
             var lightweight = status.GetStatus(console, hullOnly: true)!;
             Assert.That(lightweight.Summary.Fuel.Fraction, Is.EqualTo(combined.Fraction));
             Assert.That(lightweight.Tiles, Is.Empty);
@@ -93,15 +98,18 @@ public sealed class ShipFuelTelemetryTest
             fuel.FuelAmount = 0;
             Assert.That(Read().Fraction, Is.Zero);
             Assert.That(Read().Low, Is.True);
+            Assert.That(Read().Critical, Is.True, "Empty installed sources are critical.");
             em.RemoveComponent<MaterialStorageComponent>(solid);
             Assert.That(Read().Sources, Is.EqualTo(3));
             Assert.That(Read().UnknownSources, Is.EqualTo(1));
             Assert.That(Read().Available, Is.False);
             Assert.That(Read().Low, Is.False, "An unmeasurable source must not cause a false LOW alert.");
+            Assert.That(Read().Critical, Is.False, "An unmeasurable source must not cause a false flashing alert.");
             transform.Unanchor(solid);
             Assert.That(Read().Sources, Is.EqualTo(2));
             Assert.That(Read().Available, Is.True);
             Assert.That(Read().Low, Is.True);
+            Assert.That(Read().Critical, Is.True);
 
             ShipFuelSummary Read() => status.GetStatus(console)!.Summary.Fuel;
             EntityCoordinates At(int x) => new(map.Grid.Owner, new Vector2(x + 0.5f, 0.5f));
@@ -131,6 +139,7 @@ public sealed class ShipFuelTelemetryTest
             Assert.That(Read().Available, Is.True);
             Assert.That(Read().Fraction, Is.Zero, "An installed reactor with no rods is empty.");
             Assert.That(Read().Low, Is.True);
+            Assert.That(Read().Critical, Is.True);
 
             var uraniumEntity = em.SpawnEntity("UraniumReactorFuelRod", map.GridCoords);
             var cerenkiteEntity = em.SpawnEntity("CerenkiteReactorFuelRod", map.GridCoords);
@@ -183,6 +192,7 @@ public sealed class ShipFuelTelemetryTest
             cerenkite.Properties.Radioactivity = cerenkiteFresh.Radioactivity * 0.2f;
             Assert.That(Read().Fraction, Is.EqualTo(ShipFuelSummary.LowThreshold).Within(0.0001f));
             Assert.That(Read().Low, Is.True);
+            Assert.That(Read().Critical, Is.False, "The steady band runs from the low threshold down to the critical one.");
             cerenkite.Melted = true;
             Assert.That(Read().Fraction, Is.Zero, "Melted rods cannot count as usable reserves.");
             cerenkite.Melted = false;
@@ -198,6 +208,126 @@ public sealed class ShipFuelTelemetryTest
             Assert.That(Read().Fraction, Is.EqualTo(0.5f), "A full reactor and empty generator each contribute one normalized source.");
 
             ShipFuelSummary Read() => status.GetStatus(console, hullOnly: true)!.Summary.Fuel;
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public void LowStartsAtTwentyPercentAndCriticalBelowTen()
+    {
+        Assert.That(ShipFuelSummary.CriticalThreshold, Is.LessThan(ShipFuelSummary.LowThreshold));
+        foreach (var (fraction, low, critical) in new (float, bool, bool)[]
+        {
+            (1f, false, false),
+            (0.21f, false, false),
+            (ShipFuelSummary.LowThreshold, true, false),
+            (0.15f, true, false),
+            (ShipFuelSummary.CriticalThreshold, true, false),
+            (0.09f, true, true),
+            (0f, true, true),
+        })
+        {
+            var fuel = new ShipFuelSummary { Sources = 2, Fraction = fraction };
+            Assert.That(fuel.Low, Is.EqualTo(low), $"Low at {fraction}");
+            Assert.That(fuel.Critical, Is.EqualTo(critical), $"Critical at {fraction}");
+        }
+
+        foreach (var fuel in new ShipFuelSummary[]
+        {
+            default,
+            new() { Sources = 0, Fraction = 0 },
+            new() { Sources = 2, UnknownSources = 1, Fraction = 0 },
+        })
+        {
+            Assert.That(fuel.Low, Is.False, "An incomplete reading never reports low.");
+            Assert.That(fuel.Critical, Is.False, "An incomplete reading never reports critical.");
+        }
+    }
+
+    [Test]
+    public void LampIsDarkAboveTwentySteadyDownToTenAndFlashingBelow()
+    {
+        var critical = new ShipFuelSummary { Sources = 2, Fraction = 0.05f };
+        Assert.That(WFCockpitFuelLamp.IsLit(critical, At(0)), Is.True);
+        Assert.That(WFCockpitFuelLamp.IsLit(critical, At(500)), Is.False);
+        Assert.That(WFCockpitFuelLamp.IsLit(critical, At(1000)), Is.True, "One flash per second.");
+
+        var lit = 0;
+        for (var ms = 0; ms < 2000; ms += 50)
+        {
+            if (WFCockpitFuelLamp.IsLit(critical, At(ms)))
+                lit++;
+        }
+        Assert.That(lit, Is.EqualTo(20), "The lamp is on for half of each flash cycle.");
+
+        for (var ms = 0; ms <= 3000; ms += 50)
+        {
+            var time = At(ms);
+            foreach (var fraction in new[] { 1f, 0.21f })
+                Assert.That(WFCockpitFuelLamp.IsLit(Reserve(fraction), time), Is.False, $"Dark at {fraction}, {ms} ms");
+            foreach (var fraction in new[] { ShipFuelSummary.LowThreshold, 0.15f, ShipFuelSummary.CriticalThreshold })
+                Assert.That(WFCockpitFuelLamp.IsLit(Reserve(fraction), time), Is.True, $"Steady at {fraction}, {ms} ms");
+            foreach (var fraction in new[] { 0.09f, 0f })
+                Assert.That(WFCockpitFuelLamp.IsLit(Reserve(fraction), time), Is.EqualTo(ms % 1000 < 500),
+                    $"Flashing at {fraction}, {ms} ms");
+            foreach (var fuel in new ShipFuelSummary?[]
+            {
+                null,
+                default(ShipFuelSummary),
+                new ShipFuelSummary { Sources = 0, Fraction = 0 },
+                new ShipFuelSummary { Sources = 2, UnknownSources = 1, Fraction = 0 },
+            })
+            {
+                Assert.That(WFCockpitFuelLamp.IsLit(fuel, time), Is.False, $"No telemetry stays dark, {ms} ms");
+            }
+        }
+
+        foreach (var skin in WolfgateSkins.All)
+        {
+            Assert.That(WFCockpitFuelLamp.Lens(skin), Is.EqualTo(skin.Danger), $"{skin.Id}: the lit lens is red.");
+            Assert.That(WFCockpitFuelLamp.Lens(skin), Is.Not.EqualTo(skin.Caution), $"{skin.Id}: the lit lens is not amber.");
+        }
+
+        static TimeSpan At(int ms) => new(ms * TimeSpan.TicksPerMillisecond);
+        static ShipFuelSummary Reserve(float fraction) => new() { Sources = 2, Fraction = fraction };
+    }
+
+    [Test]
+    public async Task LampControlFollowsItsReading()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        await pair.Client.WaitAssertion(() =>
+        {
+            var timing = pair.Client.ResolveDependency<IGameTiming>();
+            ShipFuelSummary? reading = null;
+            var lamp = new WFCockpitFuelLamp(() => reading);
+            foreach (var (summary, low, critical) in new (ShipFuelSummary?, bool?, bool?)[]
+            {
+                (null, null, null),
+                (default(ShipFuelSummary), null, null),
+                (new ShipFuelSummary { Sources = 2, UnknownSources = 1, Fraction = 0 }, null, null),
+                (new ShipFuelSummary { Sources = 2, Fraction = 0.5f }, false, false),
+                (new ShipFuelSummary { Sources = 2, Fraction = ShipFuelSummary.LowThreshold }, true, false),
+                (new ShipFuelSummary { Sources = 2, Fraction = ShipFuelSummary.CriticalThreshold }, true, false),
+                (new ShipFuelSummary { Sources = 2, Fraction = 0.05f }, true, true),
+            })
+            {
+                reading = summary;
+                Assert.That(lamp.LowFuel, Is.EqualTo(low));
+                Assert.That(lamp.CriticalFuel, Is.EqualTo(critical));
+                var before = timing.RealTime;
+                var lit = lamp.Lit;
+                var after = timing.RealTime;
+                if (critical == true)
+                {
+                    Assert.That(lit, Is.EqualTo(WFCockpitFuelLamp.IsLit(summary, before))
+                        .Or.EqualTo(WFCockpitFuelLamp.IsLit(summary, after)));
+                }
+                else
+                {
+                    Assert.That(lit, Is.EqualTo(low == true), "Only a low, uncritical reading is steadily lit.");
+                }
+            }
         });
         await pair.CleanReturnAsync();
     }

@@ -1,6 +1,8 @@
 using System;
+using System.Globalization;
 using System.Numerics;
 using Content.Client._WF.Cockpit;
+using Content.Client._WF.CombatConsole;
 using NUnit.Framework;
 using Robust.Shared.Maths;
 
@@ -10,6 +12,10 @@ namespace Content.Tests._WF.Cockpit;
 [TestFixture]
 public sealed class WFCockpitVelocityTest
 {
+    /// <summary>Reads and writes numbers the same way on every machine.</summary>
+    [SetUp]
+    public void UseInvariantCulture() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestCase(0, 10, 0, 0, -1, 0)]
     [TestCase(0, -10, 0, 0, 1, 180)]
     [TestCase(10, 0, 0, 1, 0, 90)]
@@ -76,6 +82,14 @@ public sealed class WFCockpitVelocityTest
                     "Crossing an instrument range boundary must not suddenly resize the direction arrow.");
             previous = reading.SpeedFraction;
         }
+    }
+
+    [Test]
+    public void SpeedReadoutKeepsItsWidthAcrossTheVectorScale()
+    {
+        foreach (var speed in new[] { 0d, 0.04, 5, 12.34, 99.94, WFCockpitVelocityReading.FullScaleSpeed, 123.4 })
+            Assert.That(WFGaugeScale.Digits(speed, 0, WFCockpitVelocityReading.FullScaleSpeed, 1), Has.Length.EqualTo(5),
+                "The speed digits must not change width as the ship accelerates.");
     }
 
     [Test]

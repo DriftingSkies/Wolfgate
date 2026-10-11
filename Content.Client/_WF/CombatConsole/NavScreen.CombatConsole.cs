@@ -8,11 +8,17 @@ namespace Content.Client.Shuttles.UI;
 
 public sealed partial class NavScreen
 {
+    /// <summary>Housing padding for the side banks, tight enough that each column fits the page without scrolling.</summary>
+    private const int WfPanelPadding = 8;
+
+    /// <summary>Space between a bank's title and its controls, and between the controls, in the side banks.</summary>
+    private const int WfPanelGap = 4;
+
     /// <summary>Arranges flight telemetry, radar and navigation switches in separate instrument banks.</summary>
     public void WfRefitInstruments()
     {
         ReadonlyDisplay.Margin = new Thickness(0);
-        NavDisplayLabel.MinHeight = 24;
+        NavDisplayLabel.MinHeight = 0;
         NavDisplayLabel.VerticalExpand = false;
         NavDisplayLabel.HorizontalExpand = true;
         NavDisplayLabel.HorizontalAlignment = HAlignment.Stretch;
@@ -20,38 +26,59 @@ public sealed partial class NavScreen
         ReadonlyDisplay.Visible = false;
         var speed = new WFGlassGauge("wf-gauge-speed", () => WfMotionReading(-1));
         var yaw = new WFGlassGauge("wf-gauge-yaw", () => WfMotionReading(2));
-        var lateral = new WFGlassGauge("wf-gauge-lateral", () => WfMotionReading(0), true);
-        var forward = new WFGlassGauge("wf-gauge-forward", () => WfMotionReading(1), true);
+        var lateral = new WFGlassGauge("wf-gauge-lateral", () => WfMotionReading(0), true) { SetHeight = 44, CompactStrip = true };
+        var forward = new WFGlassGauge("wf-gauge-forward", () => WfMotionReading(1), true) { SetHeight = 44, CompactStrip = true };
         var altitude = new WFGlassGauge("wf-gauge-altitude", () =>
         {
             double? value = GridAltitude.Visible && _entManager.TryGetComponent(_shuttleEntity, out TransformComponent? _) && _shuttleEntity is { } shuttle ? _zLevels.GetAbsoluteAltitude(shuttle) : null;
             var limit = WFGaugeScale.Ceiling(Math.Abs(value ?? 0), 10);
             return WFGaugeReading.Number(value, -limit, limit, "wf-gauge-unit-altitude", 2);
-        }, true);
+        }, true) { SetHeight = 44, CompactStrip = true };
         var climb = new WFGlassGauge("wf-gauge-climb", () =>
         {
             double? value = GridVerticalVelocity.Visible && _entManager.TryGetComponent(_shuttleEntity, out CEZPhysicsComponent? physics)
                 ? physics.Velocity : null;
             var limit = WFGaugeScale.Ceiling(Math.Abs(value ?? 0), 10);
             return WFGaugeReading.Number(value, -limit, limit, "wf-gauge-unit-climb", 2);
-        }, true);
+        }, true) { SetHeight = 44, CompactStrip = true };
         altitude.Name = "WfAltitudeGauge";
         climb.Name = "WfClimbGauge";
         altitude.Visible = GridAltitude.Visible;
         climb.Visible = GridVerticalVelocity.Visible;
-        GridAltitude.OnVisibilityChanged += control => altitude.Visible = control.Visible;
-        GridVerticalVelocity.OnVisibilityChanged += control => climb.Visible = control.Visible;
+        var vertical = Row(altitude, climb);
+        vertical.Visible = altitude.Visible || climb.Visible;
+        GridAltitude.OnVisibilityChanged += control =>
+        {
+            altitude.Visible = control.Visible;
+            vertical.Visible = altitude.Visible || climb.Visible;
+        };
+        GridVerticalVelocity.OnVisibilityChanged += control =>
+        {
+            climb.Visible = control.Visible;
+            vertical.Visible = altitude.Visible || climb.Visible;
+        };
         var travel = new WFGlassReadout(GridTravelState) { Visible = GridTravelState.Visible };
         GridTravelState.OnVisibilityChanged += control => travel.Visible = control.Visible;
         ShuttleDesignation.ClipText = GridPosition.ClipText = GridTravelState.ClipText = true;
-        var telemetry = Panel("wf-console-telemetry", Column(new WFGlassReadout(NavDisplayLabel), Row(speed, yaw), forward, lateral,
-            new WFGlassReadout(Column(ShuttleDesignation, GridPosition)), altitude, climb,
-            travel, ReadonlyDisplay));
-        var motion = Panel("wf-console-motion", Column(DampenerModeButtons, MaximumShuttleSpeedBox));
+        var identity = Column(NavDisplayLabel, ShuttleDesignation);
+        identity.SeparationOverride = 2;
+        var position = Label("wf-console-coordinates", Muted);
+        position.Margin = new Thickness(0);
+        var coordinateBody = Column(position, GridPosition);
+        coordinateBody.SeparationOverride = 0;
+        var coordinates = new WFGlassReadout(coordinateBody) { Name = "WfCoordinates" };
+        var instruments = Column(new WFGlassReadout(identity), Row(speed, yaw), forward, coordinates, lateral,
+            vertical, travel, ReadonlyDisplay);
+        instruments.SeparationOverride = WfPanelGap;
+        var telemetry = Panel("wf-console-telemetry", instruments, padding: WfPanelPadding, gap: 2);
+        MaximumShuttleSpeedBox.Margin = IffSearchBox.Margin = MaximumIFFDistanceBox.Margin = new Thickness(0);
+        var motionControls = Column(DampenerModeButtons, MaximumShuttleSpeedBox, WfOrbitButton);
+        motionControls.SeparationOverride = WfPanelGap;
+        var motion = Panel("wf-console-motion", motionControls, padding: WfPanelPadding, gap: 2);
         var gyro = Panel("wf-console-bearing", new WFHeadingInstrument(() =>
             _entManager.TryGetComponent(_shuttleEntity, out TransformComponent? transform)
                 ? (-_xformSystem.GetWorldRotation(transform)).Reduced().FlipPositive().Degrees
-                : null));
+                : null) { MinHeight = 160 }, padding: WfPanelPadding, gap: 2);
         var left = Column(gyro, telemetry);
         left.MinWidth = left.MaxWidth = 280;
 
@@ -63,8 +90,9 @@ public sealed partial class NavScreen
         var rangeInput = MaximumIFFDistanceValue.GetChild(0).GetChild(1);
         rangeInput.MinWidth = 72;
         rangeInput.HorizontalExpand = false;
-        var sensors = Panel("wf-console-sensors", Column(IFFToggle, IFFDetailedToggle, DockToggle,
-            IffSearchBox, MaximumIFFDistanceBox));
+        var sensorControls = Column(IFFToggle, IFFDetailedToggle, DockToggle, IffSearchBox, MaximumIFFDistanceBox);
+        sensorControls.SeparationOverride = WfPanelGap;
+        var sensors = Panel("wf-console-sensors", sensorControls, padding: WfPanelPadding, gap: 2);
         NetworkPortsBox.Columns = 2;
         NetworkPortsBox.Rows = 4;
         NetworkPortsBox.HorizontalAlignment = HAlignment.Stretch;
@@ -74,8 +102,8 @@ public sealed partial class NavScreen
             control.SetWidth = 110;
             control.HorizontalExpand = true;
         }
-        var right = Column(motion, sensors, Panel("wf-console-orbit", WfOrbitButton),
-            Panel("wf-console-auxiliary", NetworkPortsBox));
+        var right = Column(motion, sensors, Panel("wf-console-auxiliary", NetworkPortsBox, padding: WfPanelPadding, gap: 2));
+        right.SeparationOverride = WfPanelGap;
         right.MinWidth = right.MaxWidth = 260;
         var radar = Scope("wf-console-navigation-scope", NavRadar);
         var leftScroll = Scroll(left);

@@ -8,13 +8,17 @@ using System.Text;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Robust.Shared.Localization;
 using Content.Client._WF.CombatConsole;
+using Content.Client._WF.Planets;
 using Content.Client._WF.Stylesheets;
 using Content.Client._WF.ShipPa.UI;
 using Content.Client._WF.ShipAccess;
+using Content.Client._WF.ShipShields;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._WF.ShipAccess;
 using Content.Shared._WF.ShipPa;
+using Content.Shared._WF.ShipShields;
 using Content.Shared._WF.CCVar;
+using Content.Shared._WF.Planets;
 using Robust.Shared.Configuration;
 using Content.Shared._WF.Shuttles;
 using Content.Client._Mono.FireControl.UI;
@@ -212,7 +216,7 @@ public sealed class WFCombatConsoleTest
                     var alarmPanel = Descendants(shipScreen).OfType<ShipAlarmPanel>().Single();
                     var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
                     Assert.That(camera.Visible, Is.False);
-                    Assert.That(Descendants(shipScreen).OfType<ScrollContainer>(), Is.Empty,
+                    Assert.That(Descendants(shipScreen).OfType<ScrollContainer>().Where(scroll => scroll.Name != "QueueScroll"), Is.Empty,
                         "Ship status, overlays and PA controls must use the available width instead of a scrolling sidebar.");
                     Assert.That(plot.Width, Is.LessThan(shipScreen.Width * 0.5f), "The hull plot must leave most of the width for ship instruments and controls.");
                     Assert.That(status.GlobalPosition.X, Is.GreaterThanOrEqualTo(plot.GlobalPosition.X + plot.Width),
@@ -638,6 +642,134 @@ public sealed class WFCombatConsoleTest
         return false;
     }
 
+    /// <summary>The flight deck caption and the cockpit key share the title bar, and each helm page fits its window without a scroll bar.</summary>
+    [Test]
+    public async Task HelmHeaderHoldsTheCockpitKeyAndPagesFitWithoutScrolling()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var settings = pair.Client.ResolveDependency<IConfigurationManager>();
+            var originalSkin = settings.GetCVar(WolfgateCVars.UiStyle);
+            using var helm = new ShuttleConsoleWindow();
+            var title = Loc.GetString("wf-console-helm-title");
+            Assert.That(helm.Title, Is.EqualTo(title));
+            var captions = Descendants(helm).OfType<Label>().Where(label => label.Text == title).ToArray();
+            Assert.That(captions, Has.Length.EqualTo(1), "The flight deck caption is the window title; the body has no title row of its own.");
+            var header = captions[0].Parent!;
+            var close = Descendants(helm).OfType<TextureButton>().Single(button =>
+                button.HasStyleClass(Robust.Client.UserInterface.CustomControls.DefaultWindow.StyleClassWindowCloseButton));
+            var cockpit = Descendants(helm).OfType<Button>().Single(button => button.Text == Loc.GetString("wf-cockpit-enter"));
+            Assert.That(close.Parent, Is.SameAs(header));
+            Assert.That(cockpit.Parent, Is.SameAs(header), "Enter Cockpit belongs in the title bar beside the window controls.");
+            Assert.That(cockpit.GetPositionInParent(), Is.LessThan(close.GetPositionInParent()));
+            Assert.That(cockpit.Disabled, Is.True, "Without a seat on the ship the key stays disabled.");
+            Assert.That(cockpit.ToolTip, Is.EqualTo(Loc.GetString("wf-cockpit-seat-required")));
+            var pressed = (Action<BaseButton.ButtonEventArgs>?) typeof(BaseButton)
+                .GetField("OnPressed", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(cockpit);
+            Assert.That(pressed?.GetInvocationList().Any(handler => ReferenceEquals(handler.Target, helm)), Is.True,
+                "Enter Cockpit must still reach the cockpit controller for this window.");
+            var modes = helm.FindControl<BoxContainer>("ModeButtons");
+            Assert.That(modes.Parent!.Children.TakeWhile(child => child != modes)
+                .All(child => child.Name is "CollisionBanner" or "CaptureBanner"), Is.True,
+                "Only the hidden warning banners may sit above the page tabs.");
+
+            helm.UpdateShieldShuntSnapshot(new WFShipShieldShuntState(true, true, 0.6f, 0.8f, 0.2f, MathF.PI / 2f));
+            var navigation = helm.FindControl<NavScreen>("NavContainer");
+            var position = navigation.FindControl<Label>("GridPosition");
+            position.Text = "-12345.6, -12345.6";
+            var contents = helm.FindControl<Control>("Contents");
+
+            // The fullest Navigation page: a z-level map's altitude, climb and travel readouts, and a ship in planet orbit.
+            var entities = pair.Client.EntMan;
+            var orbitConsole = entities.SpawnEntity(null, MapCoordinates.Nullspace);
+            var orbit = entities.AddComponent<WFConsoleOrbitTargetComponent>(orbitConsole);
+            var orbitButton = navigation.FindControl<WFOrbitButton>("WfOrbitButton");
+            orbitButton.SetConsole(orbitConsole);
+            var orbitUpdate = typeof(WFOrbitButton).GetMethod("FrameUpdate", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            void SetFlight(bool flying)
+            {
+                foreach (var name in new[] { "GridAltitude", "GridVerticalVelocity", "GridTravelState" })
+                    navigation.FindControl<Label>(name).Visible = flying;
+                navigation.FindControl<Label>("GridTravelState").Text = flying ? "Atmospheric flight" : string.Empty;
+                orbit.InOrbit = flying;
+                orbit.PlanetName = flying ? "Layout test planet" : string.Empty;
+                orbit.Planet = flying ? new NetEntity(900) : null;
+                orbit.LiftRatio = 0.8f;
+                orbitUpdate.Invoke(orbitButton, new object[] { new FrameEventArgs(0) });
+            }
+
+            helm.OpenCentered();
+            try
+            {
+                foreach (var skin in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+                foreach (var size in new[] { ShuttleConsoleWindow.WfDefaultSize, new Vector2(1896, 1056) })
+                foreach (var (mode, flying) in new[]
+                {
+                    (ShuttleConsoleWindow.ShuttleConsoleMode.Nav, false), (ShuttleConsoleWindow.ShuttleConsoleMode.Nav, true),
+                    (ShuttleConsoleWindow.ShuttleConsoleMode.Ship, false), (ShuttleConsoleWindow.ShuttleConsoleMode.Map, false),
+                    (ShuttleConsoleWindow.ShuttleConsoleMode.Shields, false),
+                })
+                {
+                    settings.SetCVar(WolfgateCVars.UiStyle, skin);
+                    SetFlight(flying);
+                    helm.SwitchMode(mode);
+                    helm.SetSize = size;
+                    Layout(helm, size);
+                    var context = $"{skin}, {size}, {mode}{(flying ? ", z-level map and planet orbit" : string.Empty)}";
+                    AssertWithin(cockpit, helm);
+                    AssertCaptionFits(cockpit.Label, ui);
+                    var scrolling = Descendants(helm).OfType<ScrollContainer>()
+                        .Where(control => control.VisibleInTree && NeedsScroll(control))
+                        .Select(scroll => $"{scroll.Name ?? scroll.GetType().Name} at x={scroll.GlobalPosition.X} holds " +
+                            $"{scroll.Children.First(child => child is not ScrollBar).DesiredSize.Y} in {scroll.Height}: " +
+                            HeightDump(scroll.Children.First(child => child is not ScrollBar), 4));
+                    Assert.That(scrolling, Is.Empty, $"{context}: a page must fit the window without a scroll bar.");
+                    AssertNothingClipped(contents, context);
+                    if (mode == ShuttleConsoleWindow.ShuttleConsoleMode.Nav)
+                    {
+                        var coordinates = Descendants(navigation).Single(control => control.Name == "WfCoordinates");
+                        var column = coordinates.Parent!.Children.ToList();
+                        var index = column.IndexOf(coordinates);
+                        var before = (WFGlassGauge) column[index - 1];
+                        var after = (WFGlassGauge) column[index + 1];
+                        Assert.That(before.Strip && after.Strip, Is.True, context);
+                        Assert.That(before.GlobalPosition.Y + before.Height, Is.LessThanOrEqualTo(coordinates.GlobalPosition.Y + 1), context);
+                        Assert.That(coordinates.GlobalPosition.Y + coordinates.Height, Is.LessThanOrEqualTo(after.GlobalPosition.Y + 1),
+                            $"{context}: the coordinates box sits between the longitudinal and lateral gauges.");
+                        Assert.That(IsUnder(position, coordinates), Is.True, context);
+                        AssertWithin(coordinates, navigation);
+                        AssertCaptionFits(position, ui);
+                        foreach (var toggle in new[] { "IFFToggle", "IFFDetailedToggle", "DockToggle" })
+                            AssertCaptionFits(navigation.FindControl<Button>(toggle).Label, ui);
+                    }
+                    if (mode == ShuttleConsoleWindow.ShuttleConsoleMode.Shields)
+                    {
+                        var screen = Descendants(helm).OfType<WFShipShieldShuntScreen>().Single();
+                        var panels = Descendants(screen).Single(control => control.GetType().Name == "ShieldSettings")
+                            .Children.Where(child => child.Visible).ToArray();
+                        Assert.That(panels, Has.Length.EqualTo(3), context);
+                        Assert.That(panels[1].GlobalPosition.X, Is.EqualTo(panels[0].GlobalPosition.X).Within(1), context);
+                        Assert.That(panels[2].GlobalPosition.X, Is.GreaterThanOrEqualTo(panels[0].GlobalPosition.X + panels[0].Width),
+                            $"{context}: a wide window gives coverage its own column.");
+                        foreach (var panel in panels)
+                            AssertWithin(panel, screen);
+                    }
+                }
+            }
+            finally
+            {
+                helm.Close();
+                settings.SetCVar(WolfgateCVars.UiStyle, originalSkin);
+                SetFlight(false);
+                orbitButton.SetConsole(null);
+                entities.DeleteEntity(orbitConsole);
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task ThemeChangesPreserveStatusColorsAndWeaponLayoutsSettle()
     {
@@ -745,6 +877,47 @@ public sealed class WFCombatConsoleTest
         {
             screen.FindControl<LineEdit>(prefix + "Edit").Text = "1234";
             screen.FindControl<Label>(prefix + "Label").Text = Loc.GetString("ship-access-code-none");
+        }
+    }
+
+    private static void Layout(Control root, Vector2 size)
+    {
+        foreach (var control in Descendants(root))
+            control.InvalidateMeasure();
+        root.Measure(size);
+        root.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+    }
+
+    /// <summary>A scroll container needs its bar when it shows a bar or its content is taller than it is.</summary>
+    private static bool NeedsScroll(ScrollContainer scroll)
+    {
+        var content = scroll.Children.First(child => child is not ScrollBar);
+        return scroll.Children.OfType<VScrollBar>().Any(bar => bar.Visible) || content.DesiredSize.Y > scroll.Height + 1;
+    }
+
+    /// <summary>The desired heights down a control tree, for a failure message that says where the room went.</summary>
+    private static string HeightDump(Control control, int depth)
+    {
+        var text = $"{control.Name ?? control.GetType().Name} {control.DesiredSize.Y:0.#}";
+        if (depth == 0 || control.ChildCount == 0)
+            return text;
+        return $"{text} [{string.Join(", ", control.Children.Where(child => child.Visible).Select(child => HeightDump(child, depth - 1)))}]";
+    }
+
+    /// <summary>Nothing on a page hangs past its container, where its clip would hide it without any scroll bar to show it.</summary>
+    private static void AssertNothingClipped(Control page, string context)
+    {
+        var bottom = page.GlobalPosition.Y + page.Height + 1;
+        var right = page.GlobalPosition.X + page.Width + 1;
+        foreach (var control in Descendants(page).Skip(1).Where(control => control.VisibleInTree && control.Width > 0 && control.Height > 0))
+        {
+            var chain = new StringBuilder();
+            for (var parent = control; parent != null && parent != page; parent = parent.Parent)
+                chain.Append(parent.Name ?? parent.GetType().Name).Append(" < ");
+            Assert.That(control.GlobalPosition.Y + control.Height, Is.LessThanOrEqualTo(bottom),
+                $"{context}: {chain}is cut off at the bottom of the page.");
+            Assert.That(control.GlobalPosition.X + control.Width, Is.LessThanOrEqualTo(right),
+                $"{context}: {chain}is cut off at the right of the page.");
         }
     }
 
