@@ -11,7 +11,7 @@ public static class WFCockpitPanelLayout
     /// <summary>Distance between neighbouring panels in the centre column.</summary>
     public const float Gap = 6;
 
-    /// <summary>The screen and the fixed panels around the two big areas; Side is the width of the full-height column, Strip and Votes only matter when maximised.</summary>
+    /// <summary>The screen and the fixed panels around the two big areas; Side is the width of the full-height column (see <see cref="SideWidth"/>), Strip and Votes only matter when maximised.</summary>
     public readonly record struct Metrics(Vector2 Size, float Top, float Left, float Side, float Bottom, float Motion,
         float Strip = 0, float Votes = 0);
 
@@ -19,8 +19,32 @@ public static class WFCockpitPanelLayout
     public readonly record struct Frame(UIBox2 Motion, UIBox2 World, UIBox2 Mfd, UIBox2 Votes, UIBox2 Alerts, UIBox2 Row,
         bool WorldShown);
 
+    /// <summary>Room taken by the margins and the gaps around the left, centre and side columns.</summary>
+    private const float ColumnSpacing = 32;
+
+    /// <summary>The narrowest the centre column is allowed to get when the side column grows.</summary>
+    private const float MinCenter = 500;
+
     /// <summary>The width of the centre column, between the left column and the side column.</summary>
-    public static float Center(Vector2 size, float left, float side) => Math.Max(160, size.X - left - side - 32);
+    public static float Center(Vector2 size, float left, float side) => Math.Max(160, size.X - left - side - ColumnSpacing);
+
+    /// <summary>
+    /// The width of the full-height side column: its normal share of the screen or, when <paramref name="expanded"/>, half
+    /// of the room it shares with the centre column, so the two big areas are equal, while the centre keeps its minimum.
+    /// </summary>
+    public static float SideWidth(Vector2 size, float left, bool expanded)
+    {
+        var limit = Math.Max(300, size.X - left - MinCenter - ColumnSpacing);
+        var normal = Math.Min(Math.Clamp(size.X * 0.29f, 340, 520), limit);
+        if (!expanded)
+            return normal;
+        var half = (size.X - left - ColumnSpacing) / 2;
+        return Math.Max(normal, Math.Min(half, limit));
+    }
+
+    /// <summary>Whether expanding would make the side column any wider at this window size.</summary>
+    public static bool CanExpand(Vector2 size, float left) =>
+        SideWidth(size, left, true) - SideWidth(size, left, false) >= 1;
 
     /// <summary>The height of the centre and side columns from <paramref name="top"/> to the bottom margin.</summary>
     public static float Height(Vector2 size, float top) => Math.Max(320, size.Y - top - Margin);

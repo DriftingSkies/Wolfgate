@@ -1,7 +1,9 @@
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Physics.Components;
 using Content.Shared._CE.ZLevels.Core.Components;
+using Content.Client._WF.Cockpit;
 using Content.Client._WF.CombatConsole;
+using Content.Shared._WF.Shuttles;
 using static Content.Client._WF.CombatConsole.WFInstrumentTheme;
 
 namespace Content.Client.Shuttles.UI;
@@ -14,8 +16,11 @@ public sealed partial class NavScreen
     /// <summary>Space between a bank's title and its controls, and between the controls, in the side banks.</summary>
     private const int WfPanelGap = 4;
 
-    /// <summary>Arranges flight telemetry, radar and navigation switches in separate instrument banks.</summary>
-    public void WfRefitInstruments()
+    /// <summary>The ship's latest fuel reserves, or null while the helm has no telemetry; the console window keeps it current.</summary>
+    public ShipFuelSummary? WfFuel { get; set; }
+
+    /// <summary>Arranges flight telemetry, radar and navigation switches in separate instrument banks; the cockpit key ends the left stack.</summary>
+    public void WfRefitInstruments(Button? cockpit = null)
     {
         ReadonlyDisplay.Margin = new Thickness(0);
         NavDisplayLabel.MinHeight = 0;
@@ -67,8 +72,9 @@ public sealed partial class NavScreen
         var coordinateBody = Column(position, GridPosition);
         coordinateBody.SeparationOverride = 0;
         var coordinates = new WFGlassReadout(coordinateBody) { Name = "WfCoordinates" };
+        var fuel = new WFCockpitFuelBank(() => WfFuel, "Nav");
         var instruments = Column(new WFGlassReadout(identity), Row(speed, yaw), forward, coordinates, lateral,
-            vertical, travel, ReadonlyDisplay);
+            vertical, travel, fuel, ReadonlyDisplay);
         instruments.SeparationOverride = WfPanelGap;
         var telemetry = Panel("wf-console-telemetry", instruments, padding: WfPanelPadding, gap: 2);
         MaximumShuttleSpeedBox.Margin = IffSearchBox.Margin = MaximumIFFDistanceBox.Margin = new Thickness(0);
@@ -78,8 +84,10 @@ public sealed partial class NavScreen
         var gyro = Panel("wf-console-bearing", new WFHeadingInstrument(() =>
             _entManager.TryGetComponent(_shuttleEntity, out TransformComponent? transform)
                 ? (-_xformSystem.GetWorldRotation(transform)).Reduced().FlipPositive().Degrees
-                : null) { MinHeight = 160 }, padding: WfPanelPadding, gap: 2);
-        var left = Column(gyro, telemetry);
+                : null) { MinHeight = 148 }, padding: WfPanelPadding, gap: 2);
+        var left = cockpit == null ? Column(gyro, telemetry) : Column(gyro, telemetry, cockpit);
+        left.Name = "WfNavLeftStack";
+        left.SeparationOverride = WfPanelGap;
         left.MinWidth = left.MaxWidth = 280;
 
         foreach (var control in ReadonlyDisplay.Children)

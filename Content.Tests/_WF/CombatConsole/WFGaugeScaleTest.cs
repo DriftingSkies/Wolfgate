@@ -112,62 +112,46 @@ public sealed class WFGaugeScaleTest
         Assert.That(WFGaugeScale.Digits(1234.5, 0, 100, 1), Is.EqualTo("1234.5"), "A reading past the scale is never cut short.");
     }
 
-    [TestCase(88, 100, 1, true)]
-    [TestCase(88, 100, 1, false)]
-    [TestCase(96, 160, 1, true)]
-    [TestCase(96, 160, 1, false)]
-    [TestCase(120, 142, 1, true)]
-    [TestCase(120, 142, 2, true)]
-    [TestCase(200, 600, 1.5f, true)]
-    [TestCase(200, 600, 1.5f, false)]
-    public void RoundDialKeepsTheCaptionAndReadoutAgainstTheDial(float width, float height, float scale, bool readoutBelow)
+    [TestCase(88, 100, 1)]
+    [TestCase(96, 160, 1)]
+    [TestCase(120, 142, 1)]
+    [TestCase(120, 142, 2)]
+    [TestCase(200, 600, 1.5f)]
+    public void RoundDialKeepsTheCaptionClearBeneathTheDial(float width, float height, float scale)
     {
-        var layout = WFGaugeScale.RoundDial(width, height, scale, readoutBelow);
+        var layout = WFGaugeScale.RoundDial(width, height, scale);
         var bottom = layout.Center.Y + layout.Radius;
         Assert.That(layout.Radius, Is.GreaterThan(0));
         Assert.That(layout.Center.X - layout.Radius, Is.GreaterThanOrEqualTo(0));
         Assert.That(layout.Center.X + layout.Radius, Is.LessThanOrEqualTo(width));
         Assert.That(layout.Center.Y - layout.Radius, Is.GreaterThanOrEqualTo(0));
-        if (readoutBelow)
-        {
-            var roomy = height >= WFGaugeScale.RoomyDialHeight * scale;
-            Assert.That(layout.Readout.Top - bottom, Is.EqualTo((roomy ? 2 : 1) * scale).Within(0.001f), "The readout bar sits against the dial.");
-            Assert.That(layout.CaptionBaseline - layout.Readout.Bottom, Is.EqualTo((roomy ? 10 : 8) * scale).Within(0.001f),
-                "The caption sits against the readout bar.");
-            Assert.That(layout.Readout.Left, Is.GreaterThanOrEqualTo(0));
-            Assert.That(layout.Readout.Right, Is.LessThanOrEqualTo(width));
-            Assert.That(layout.Readout.Width, Is.GreaterThanOrEqualTo(2 * layout.Radius - 0.001f));
-        }
-        else
-            Assert.That(layout.CaptionBaseline - bottom, Is.EqualTo(11 * scale).Within(0.001f), "The caption sits against the dial.");
-        var below = height - (layout.CaptionBaseline + 3 * scale);
+        Assert.That(layout.CaptionBaseline - bottom, Is.EqualTo(WFGaugeScale.CaptionDrop * scale).Within(0.001f),
+            "The caption sits beneath the dial with a clear gap, scaled with the UI.");
+        Assert.That(WFGaugeScale.CaptionDrop, Is.GreaterThanOrEqualTo(15), "The gap leaves room above the letters, past the dial's shadow.");
+        var below = height - (layout.CaptionBaseline + WFGaugeScale.CaptionMargin * scale);
         Assert.That(below, Is.GreaterThanOrEqualTo(-0.001f), "The caption must stay inside the control.");
-        Assert.That(layout.Center.Y - layout.Radius - 2 * scale, Is.EqualTo(below).Within(0.001f),
+        Assert.That(layout.Center.Y - layout.Radius - WFGaugeScale.DialTop * scale, Is.EqualTo(below).Within(0.001f),
             "The dial and caption form one block, centred in the control.");
     }
 
-    [TestCase(88, 100, 35)]
-    [TestCase(96, 110, 40)]
-    [TestCase(120, 142, 53.5f)]
+    [TestCase(88, 100, 38.5f)]
+    [TestCase(96, 110, 43.5f)]
+    [TestCase(120, 142, 57)]
     public void ShortDialsKeepMostOfTheirFace(float width, float height, float radius)
     {
-        var layout = WFGaugeScale.RoundDial(width, height, 1, true);
-        Assert.That(layout.Radius, Is.EqualTo(radius).Within(0.001f));
-        Assert.That(layout.Readout.Height, Is.GreaterThanOrEqualTo(16), "The readout bar stays tall enough for its figures.");
+        var layout = WFGaugeScale.RoundDial(width, height, 1);
+        Assert.That(layout.Radius, Is.EqualTo(radius).Within(0.001f), "The readout sits inside the dial, so nothing but the caption takes height.");
     }
 
     [Test]
     public void StretchingADialTallerThanItsFaceMovesTheCaptionWithTheDial()
     {
-        foreach (var bar in new[] { false, true })
-        {
-            var snug = WFGaugeScale.RoundDial(96, 140, 1, bar);
-            var tall = WFGaugeScale.RoundDial(96, 400, 1, bar);
-            Assert.That(tall.Radius, Is.EqualTo(snug.Radius));
-            Assert.That(tall.CaptionBaseline - tall.Center.Y, Is.EqualTo(snug.CaptionBaseline - snug.Center.Y).Within(0.001f),
-                "The caption must stay the same distance from the dial however tall the control is.");
-            Assert.That(tall.Center.Y, Is.GreaterThan(snug.Center.Y));
-        }
+        var snug = WFGaugeScale.RoundDial(96, 140, 1);
+        var tall = WFGaugeScale.RoundDial(96, 400, 1);
+        Assert.That(tall.Radius, Is.EqualTo(snug.Radius));
+        Assert.That(tall.CaptionBaseline - tall.Center.Y, Is.EqualTo(snug.CaptionBaseline - snug.Center.Y).Within(0.001f),
+            "The caption must stay the same distance from the dial however tall the control is.");
+        Assert.That(tall.Center.Y, Is.GreaterThan(snug.Center.Y));
     }
 
     [TestCase(30, 1)]

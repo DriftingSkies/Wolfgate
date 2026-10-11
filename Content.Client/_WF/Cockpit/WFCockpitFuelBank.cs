@@ -22,22 +22,22 @@ public sealed class WFCockpitFuelBank : BoxContainer
     /// <summary>Preserves missing and incomplete telemetry rather than displaying a false empty tank.</summary>
     public ShipFuelSummary? Reading => _read();
 
-    /// <summary>Uses the cockpit's permanent hull snapshot, including while another MFD page is selected.</summary>
-    public WFCockpitFuelBank(Func<ShipFuelSummary?> read)
+    /// <summary>Reads a ship's fuel summary; the prefix names the bank and its parts, so two banks in one window stay distinguishable.</summary>
+    public WFCockpitFuelBank(Func<ShipFuelSummary?> read, string prefix = "Cockpit")
     {
         _read = read;
-        Name = "CockpitFuelBank";
+        Name = prefix + "FuelBank";
         HorizontalExpand = true;
         SeparationOverride = 6;
         SetHeight = 44;
         _gauge = new WFGlassGauge("wf-cockpit-fuel", GaugeReading, true)
         {
-            Name = "CockpitFuel",
+            Name = prefix + "Fuel",
             CompactStrip = true,
             SetHeight = 44,
             MouseFilter = MouseFilterMode.Pass,
         };
-        _lamp = new WFCockpitFuelLamp(() => Reading);
+        _lamp = new WFCockpitFuelLamp(() => Reading) { Name = prefix + "FuelLow" };
         AddChild(_gauge);
         AddChild(_lamp);
         RefreshTooltip();

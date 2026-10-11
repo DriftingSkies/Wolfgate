@@ -6,14 +6,18 @@ arcs, segmented linear readouts, touch selectors and clean glass panels. Both us
 their palette and fonts, and restyle open windows without resetting selections or sending commands.
 The helm retains navigation,
 FTL/autopilot, docking, hull cameras, ship systems, access and shields. Its title bar carries the flight deck
-caption and the Enter Cockpit key beside the pop-out and close controls, so the page tabs start the window body.
+caption beside the pop-out and close controls, so the page tabs start the window body. The Navigation page's left
+column ends with the Enter Cockpit key, full width and half as tall again as a normal key, below the last panel.
+That column's telemetry panel also ends with the cockpit's fuel reserve gauge and FUEL LOW lamp, with the same reading
+and tooltip. While Navigation is on screen the helm asks the server for the summary-only ship status (hull integrity
+and fuel, no tile overlays), and stops when the page is left; the Ship page and the cockpit keep their own requests.
 The FTL page's drive panel opens with a notice in the skin's danger colour, and keeps the FTL button off, while the
 ship has no powered FTL drive (see Shuttles).
 The helm opens at 1240 by 960 and each page is laid out to fit that size without scrolling; smaller windows fall
 back to scroll bars. On z-level maps the Navigation telemetry column adds altitude and climb, side by side in
 shallow strips, and the travel readout, and still fits. Navigation shows the ship's position in its own glass box
-between the longitudinal and lateral gauges. On wide windows the shield page puts coverage in its own
-column. Gunnery adds four numbered
+between the longitudinal and lateral gauges. The shield page puts the bearing dial in the middle of the page, with
+the sector and power banks on its left and the coverage readout on its right. Gunnery adds four numbered
 weapon groups: select weapons, enable STORE and choose a slot, then recall it with one click. Groups belong to
 the console and survive closing its window; saving an empty selection clears a slot.
 
@@ -57,8 +61,9 @@ housings, display bezels, buttons, toggles and a compass dial. These are drawn a
 scale without imported HighFleet textures. Live heading and supply readings reflect authoritative
 telemetry. Control presses play mechanical cues and a new incoming
 lock plays one short warning, throttled across windows. Replicated state changes make no click sounds. The OGG cues respect Interface volume.
-The ship tab uses a narrower hull plot beside a six-gauge status bank and compact announcement panel.
-Overlay controls run across the top, keeping the entire page accessible without a scrolling sidebar.
+The ship tab gives the hull plot its widest column, beside a six-gauge status bank (three rows of two) and the
+announcement panel. The overlay toggles (damage, fire, pressure, power, show departments) and Fit to hull sit in their
+own numbered panel below the announcements, keeping the entire page accessible without a scrolling sidebar.
 The access tab gives its framed door map nearly half the page, making it the largest panel beside smaller
 ship settings, crew lists and selected-door controls. Its wide legend uses two columns to preserve map
 height. Smaller displays keep the map dominant beside or above one details scroller; lists scroll
@@ -78,7 +83,7 @@ labelled absolute scales rather than invented magazine capacities; signed motion
 zero. Motion components, FTL, ammunition and requested shield power use horizontal linear scales.
 Missing or disconnected readings blank their needles, and an unlimited flare feed reads AUTO.
 Altitude, climb and travel state appear only on z-level maps or during vertical transit, following the
-existing altimeter rules. Camera controls appear only on Navigation; the Ship sidebar holds department
+existing altimeter rules. Camera controls appear only on Navigation; the Ship page's overlay panel holds department
 and damage overlays, leaving the hull plot free of a separate display-control header.
 Shield controls distinguish requested allocation from actual coverage and retain integrity warning colors.
 
@@ -146,6 +151,7 @@ the Wolfgate maintainer. No specific video/channel URL or license text was suppl
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFGunnerySupplyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFGunnerySupplyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFMapViewportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFMapViewportTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFRadarOverlayTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFRadarOverlayTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFShipPageLayoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFShipPageLayoutTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/CombatConsole/WFWeaponListChecks.cs`](../../../Content.IntegrationTests/Tests/_WF/CombatConsole/WFWeaponListChecks.cs)
 
 ### Unit tests
@@ -160,6 +166,7 @@ the Wolfgate maintainer. No specific video/channel URL or license text was suppl
 - [`Resources/Locale/en-US/_WF/CombatConsole/access-layout.ftl`](../../../Resources/Locale/en-US/_WF/CombatConsole/access-layout.ftl)
 - [`Resources/Locale/en-US/_WF/CombatConsole/console.ftl`](../../../Resources/Locale/en-US/_WF/CombatConsole/console.ftl)
 - [`Resources/Locale/en-US/_WF/CombatConsole/gunnery-layout.ftl`](../../../Resources/Locale/en-US/_WF/CombatConsole/gunnery-layout.ftl)
+- [`Resources/Locale/en-US/_WF/CombatConsole/ship-layout.ftl`](../../../Resources/Locale/en-US/_WF/CombatConsole/ship-layout.ftl)
 - [`Resources/Locale/en-US/_WF/CombatConsole/weapon-battery.ftl`](../../../Resources/Locale/en-US/_WF/CombatConsole/weapon-battery.ftl)
 
 ### Audio

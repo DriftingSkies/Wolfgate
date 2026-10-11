@@ -18,7 +18,8 @@ Removing the last floor or lattice at a location with the RCD, or by cutting the
 to damage or explosions stays a loss until it is laid again.
 The separate minimum-integrity readout still describes the
 weakest surviving structure. The survey is kept for the current server lifetime and cannot infer sections already
-missing before the first survey. Outside the SHP page, cockpit requests collect hull condition and fuel reserves only;
+missing before the first survey. Outside the SHP page, cockpit requests collect hull condition and fuel reserves only,
+and the windowed Navigation page asks for the same summary-only status while it is showing;
 pressure, power and damage overlays are gathered when a detailed ship view is open. The structure survey reads only
 the flown grid's own anchored structures; fuel and power are still read with component queries filtered to the grid.
 
@@ -31,6 +32,7 @@ are excluded. This is average reserves, not a runtime estimate or a sum of incom
 is red: steady at 20% or less and flashing once a second below 10% (`ShipFuelSummary.LowThreshold` and
 `CriticalThreshold`, timed from real time so it keeps flashing while the game is paused). It lights only when every
 installed source is measurable; absent or unsupported sources leave it dark and the gauge at no signal.
+The windowed helm's Navigation page shows the same fuel gauge and lamp.
 Fuel shares the existing one-second ship-status sweep, including the lightweight cockpit snapshot; the one-off
 hull survey taken when a grid gets its first pilot leaves it out.
 

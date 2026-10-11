@@ -416,6 +416,21 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
             HorizontalExpand = true;
         }
 
+        private float _flankWidth;
+
+        /// <summary>When above zero, the first panels stack at the left and the last takes the right edge, each this wide, leaving the middle free.</summary>
+        public float FlankWidth
+        {
+            get => _flankWidth;
+            set
+            {
+                if (MathF.Abs(_flankWidth - value) < 0.5f)
+                    return;
+                _flankWidth = value;
+                InvalidateMeasure();
+            }
+        }
+
         private bool Split(float width) => width >= SplitWidth && float.IsFinite(width) && VisibleCount() > 1;
 
         private int VisibleCount()
@@ -431,6 +446,11 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (_flankWidth > 0f)
+            {
+                var (left, right) = Columns(_flankWidth, availableSize.Y);
+                return new Vector2(float.IsFinite(availableSize.X) ? availableSize.X : _flankWidth * 2f, MathF.Max(left, right));
+            }
             if (!Split(availableSize.X))
                 return base.MeasureOverride(availableSize);
             var column = MathF.Max(0f, (availableSize.X - Gap) / 2f);
@@ -440,6 +460,8 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
+            if (_flankWidth > 0f)
+                return ArrangeFlank(finalSize);
             if (!Split(finalSize.X))
                 return base.ArrangeOverride(finalSize);
             var column = MathF.Max(0f, (finalSize.X - Gap) / 2f);
@@ -462,6 +484,35 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
                     continue;
                 }
                 child.Arrange(UIBox2.FromDimensions(new Vector2(0f, y), new Vector2(column, child.DesiredSize.Y)));
+                y += child.DesiredSize.Y + separation;
+            }
+            return finalSize;
+        }
+
+        /// <summary>Stacks the first panels at the left edge and the last at the right edge, each centred vertically.</summary>
+        private Vector2 ArrangeFlank(Vector2 finalSize)
+        {
+            var (left, right) = Columns(_flankWidth, finalSize.Y);
+            var separation = SeparationOverride ?? 0;
+            Control? last = null;
+            foreach (var child in Children)
+            {
+                if (child.Visible)
+                    last = child;
+            }
+            var y = MathF.Max(0f, (finalSize.Y - left) / 2f);
+            foreach (var child in Children)
+            {
+                if (!child.Visible)
+                    continue;
+                if (child == last)
+                {
+                    var top = MathF.Max(0f, (finalSize.Y - right) / 2f);
+                    child.Arrange(UIBox2.FromDimensions(new Vector2(MathF.Max(0f, finalSize.X - _flankWidth), top),
+                        new Vector2(_flankWidth, child.DesiredSize.Y)));
+                    continue;
+                }
+                child.Arrange(UIBox2.FromDimensions(new Vector2(0f, y), new Vector2(_flankWidth, child.DesiredSize.Y)));
                 y += child.DesiredSize.Y + separation;
             }
             return finalSize;
@@ -505,20 +556,45 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
             ? MathF.Min(780f, MathF.Max(0f, total - Gap) * 0.62f)
             : MathF.Min(380f, MathF.Max(0f, total - Gap) * 0.46f);
 
-        public ShieldColumns(Control preview, Control settings)
+        /// <summary>Width of each side column when the preview sits in the middle of the page.</summary>
+        private static float SideWidth(float total) => MathF.Min(360f, MathF.Max(256f, total * 0.28f));
+
+        private static float MiddleWidth(float total, float side) => MathF.Max(0f, total - side * 2f - Gap * 2f);
+
+        /// <summary>Puts the preview in the middle with the settings flanking it, when the settings support flanking.</summary>
+        private readonly ShieldSettings? _flank;
+
+        public ShieldColumns(Control preview, Control settings, bool centred = false)
         {
             HorizontalExpand = true;
             VerticalExpand = true;
-            _preview = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = true };
-            _settings = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = true };
+            // A centred preview must sit exactly mid-page, so neither side reserves room for a scroll bar.
+            _preview = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = !centred };
+            _settings = new ScrollContainer { HScrollEnabled = false, ReserveScrollbarSpace = !centred };
             _preview.AddChild(preview);
             _settings.AddChild(settings);
+            _flank = centred ? settings as ShieldSettings : null;
+            if (_flank != null)
+            {
+                // The preview is added last so it sits above the settings' empty middle.
+                AddChild(_settings);
+                AddChild(_preview);
+                return;
+            }
             AddChild(_preview);
             AddChild(_settings);
         }
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (_flank != null)
+            {
+                var side = SideWidth(availableSize.X);
+                _flank.FlankWidth = side;
+                _settings.Measure(availableSize);
+                _preview.Measure(new Vector2(MiddleWidth(availableSize.X, side), availableSize.Y));
+                return Vector2.Zero;
+            }
             var right = SettingsWidth(availableSize.X);
             _preview.Measure(new Vector2(MathF.Max(0f, availableSize.X - right - Gap), availableSize.Y));
             _settings.Measure(new Vector2(right, availableSize.Y));
@@ -528,6 +604,14 @@ public sealed partial class WFShipShieldShuntScreen : BoxContainer
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
+            if (_flank != null)
+            {
+                var side = SideWidth(finalSize.X);
+                _flank.FlankWidth = side;
+                _settings.Arrange(UIBox2.FromDimensions(Vector2.Zero, finalSize));
+                _preview.Arrange(UIBox2.FromDimensions(new Vector2(side + Gap, 0f), new Vector2(MiddleWidth(finalSize.X, side), finalSize.Y)));
+                return finalSize;
+            }
             var right = SettingsWidth(finalSize.X);
             var left = MathF.Max(0f, finalSize.X - right - Gap);
             _preview.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(left, finalSize.Y)));

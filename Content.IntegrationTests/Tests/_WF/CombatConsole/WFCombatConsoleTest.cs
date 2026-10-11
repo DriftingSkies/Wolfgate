@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Robust.Shared.Localization;
+using Content.Client._WF.Cockpit;
 using Content.Client._WF.CombatConsole;
 using Content.Client._WF.Planets;
 using Content.Client._WF.Stylesheets;
@@ -223,6 +224,8 @@ public sealed class WFCombatConsoleTest
                         "Hull telemetry must sit beside the plot.");
                     Assert.That(announcements.GlobalPosition.X, Is.GreaterThanOrEqualTo(status.GlobalPosition.X + status.Width),
                         "Announcements must use a separate column beside telemetry.");
+                    Assert.That(controls.GlobalPosition.Y, Is.GreaterThanOrEqualTo(announcements.GlobalPosition.Y + announcements.Height - 1),
+                        "The overlay panel must sit below the announcements panel.");
                     foreach (var panel in new[] { plot, status, controls, announcements })
                         AssertWithin(panel, shipScreen);
                     var departments = Descendants(shipScreen).OfType<CheckBox>().Single(toggle => toggle.Name == "DepartmentToggle");
@@ -645,9 +648,9 @@ public sealed class WFCombatConsoleTest
         return false;
     }
 
-    /// <summary>The flight deck caption and the cockpit key share the title bar, and each helm page fits its window without a scroll bar.</summary>
+    /// <summary>The title bar holds only the flight deck caption, Navigation ends its left stack with the cockpit key below the fuel gauge, and each helm page fits its window without a scroll bar.</summary>
     [Test]
-    public async Task HelmHeaderHoldsTheCockpitKeyAndPagesFitWithoutScrolling()
+    public async Task HelmNavigationHoldsTheCockpitKeyAndFuelGaugeAndPagesFitWithoutScrolling()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
         await pair.Client.WaitAssertion(() =>
@@ -665,8 +668,8 @@ public sealed class WFCombatConsoleTest
                 button.HasStyleClass(Robust.Client.UserInterface.CustomControls.DefaultWindow.StyleClassWindowCloseButton));
             var cockpit = Descendants(helm).OfType<Button>().Single(button => button.Text == Loc.GetString("wf-cockpit-enter"));
             Assert.That(close.Parent, Is.SameAs(header));
-            Assert.That(cockpit.Parent, Is.SameAs(header), "Enter Cockpit belongs in the title bar beside the window controls.");
-            Assert.That(cockpit.GetPositionInParent(), Is.LessThan(close.GetPositionInParent()));
+            Assert.That(IsUnder(cockpit, header), Is.False, "Enter Cockpit has left the title bar.");
+            Assert.That(cockpit.HasStyleClass("WfHeader"), Is.False, "The key is a page control now, not a title bar key.");
             Assert.That(cockpit.Disabled, Is.True, "Without a seat on the ship the key stays disabled.");
             Assert.That(cockpit.ToolTip, Is.EqualTo(Loc.GetString("wf-cockpit-seat-required")));
             var pressed = (Action<BaseButton.ButtonEventArgs>?) typeof(BaseButton)
@@ -680,6 +683,9 @@ public sealed class WFCombatConsoleTest
 
             helm.UpdateShieldShuntSnapshot(new WFShipShieldShuntState(true, true, 0.6f, 0.8f, 0.2f, MathF.PI / 2f));
             var navigation = helm.FindControl<NavScreen>("NavContainer");
+            var stack = Descendants(navigation).Single(control => control.Name == "WfNavLeftStack");
+            Assert.That(stack.Children.Last(), Is.SameAs(cockpit), "Enter Cockpit is the last item of the Navigation left stack.");
+            Assert.That(IsUnder(cockpit, navigation), Is.True);
             var position = navigation.FindControl<Label>("GridPosition");
             position.Text = "-12345.6, -12345.6";
             var contents = helm.FindControl<Control>("Contents");
@@ -721,8 +727,8 @@ public sealed class WFCombatConsoleTest
                     helm.SetSize = size;
                     Layout(helm, size);
                     var context = $"{skin}, {size}, {mode}{(flying ? ", z-level map and planet orbit" : string.Empty)}";
-                    AssertWithin(cockpit, helm);
-                    AssertCaptionFits(cockpit.Label, ui);
+                    Assert.That(cockpit.VisibleInTree, Is.EqualTo(mode == ShuttleConsoleWindow.ShuttleConsoleMode.Nav),
+                        $"{context}: the cockpit key belongs to the Navigation page alone.");
                     var scrolling = Descendants(helm).OfType<ScrollContainer>()
                         .Where(control => control.VisibleInTree && NeedsScroll(control))
                         .Select(scroll => $"{scroll.Name ?? scroll.GetType().Name} at x={scroll.GlobalPosition.X} holds " +
@@ -746,6 +752,35 @@ public sealed class WFCombatConsoleTest
                         AssertCaptionFits(position, ui);
                         foreach (var toggle in new[] { "IFFToggle", "IFFDetailedToggle", "DockToggle" })
                             AssertCaptionFits(navigation.FindControl<Button>(toggle).Label, ui);
+
+                        // The left stack: panels, then the fuel gauge inside the last of them, then the cockpit key across its width.
+                        var scroll = (ScrollContainer) stack.Parent!;
+                        var panels = stack.Children.Where(child => child != cockpit).ToArray();
+                        var normalKey = navigation.FindControl<Button>("IFFToggle");
+                        AssertWithin(cockpit, helm);
+                        AssertWithin(cockpit, scroll);
+                        AssertCaptionFits(cockpit.Label, ui);
+                        Assert.That(cockpit.Width, Is.EqualTo(stack.Width).Within(1), $"{context}: the cockpit key spans the stack.");
+                        foreach (var panel in panels)
+                            Assert.That(cockpit.Width, Is.EqualTo(panel.Width).Within(1), $"{context}: the key is as wide as the panels above it.");
+                        Assert.That(cockpit.Height, Is.GreaterThanOrEqualTo(ShuttleConsoleWindow.WfCockpitButtonHeight - 1), context);
+                        Assert.That(cockpit.Height, Is.GreaterThan(normalKey.Height), $"{context}: the cockpit key is taller than a normal key.");
+                        Assert.That(cockpit.Label.Align, Is.EqualTo(Label.AlignMode.Center), $"{context}: the label is centred.");
+                        Assert.That(cockpit.GlobalPosition.Y, Is.GreaterThanOrEqualTo(panels.Max(panel => panel.GlobalPosition.Y + panel.Height) - 1),
+                            $"{context}: the cockpit key sits below the last panel.");
+                        Assert.That(NeedsScroll(scroll), Is.False, $"{context}: the left stack must fit without scrolling.");
+                        var fuel = Descendants(navigation).OfType<WFCockpitFuelBank>().Single();
+                        var fuelGauge = Descendants(fuel).OfType<WFGlassGauge>().Single();
+                        var fuelLamp = Descendants(fuel).OfType<WFCockpitFuelLamp>().Single();
+                        Assert.That(IsUnder(fuel, stack), Is.True, context);
+                        AssertWithin(fuel, stack);
+                        Assert.That(fuel.Height, Is.EqualTo(44).Within(1), context);
+                        Assert.That(fuel.GlobalPosition.Y + fuel.Height, Is.LessThanOrEqualTo(cockpit.GlobalPosition.Y + 1),
+                            $"{context}: the fuel gauge sits above the cockpit key.");
+                        Assert.That(fuelGauge.Width, Is.GreaterThanOrEqualTo(104), context);
+                        Assert.That(fuelLamp.GlobalPosition.X, Is.GreaterThanOrEqualTo(fuelGauge.GlobalPosition.X + fuelGauge.Width - 1),
+                            $"{context}: the FUEL LOW lamp sits beside the gauge.");
+                        Assert.That(fuelLamp.Height, Is.EqualTo(fuelGauge.Height).Within(1), context);
                     }
                     if (mode == ShuttleConsoleWindow.ShuttleConsoleMode.Shields)
                     {
@@ -768,6 +803,105 @@ public sealed class WFCombatConsoleTest
                 SetFlight(false);
                 orbitButton.SetConsole(null);
                 entities.DeleteEntity(orbitConsole);
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Navigation's fuel gauge reads the ship status summary, and the helm asks the server for it only while a page needs it.</summary>
+    [Test]
+    public async Task NavigationFuelGaugeFollowsShipStatusAndItsRequestFollowsThePage()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            using var helm = new ShuttleConsoleWindow();
+            var navigation = helm.FindControl<NavScreen>("NavContainer");
+            var bank = Descendants(navigation).OfType<WFCockpitFuelBank>().Single();
+            var gauge = Descendants(bank).OfType<WFGlassGauge>().Single();
+            var lamp = Descendants(bank).OfType<WFCockpitFuelLamp>().Single();
+            var refresh = typeof(WFCockpitFuelBank).GetMethod("FrameUpdate", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            var requests = new List<string>();
+            ShipStatusMessage Status(ShipFuelSummary fuel) =>
+                new(null, new List<ShipTileStatus>(), new ShipStatusSummary { Fuel = fuel });
+            void Expect(string context, params string[] expected)
+            {
+                Assert.That(requests, Is.EqualTo(expected), context);
+                requests.Clear();
+            }
+            void AssertNoSignal(string context)
+            {
+                Assert.That(bank.Reading, Is.Null, context);
+                Assert.That(gauge.Reading.Value, Is.Null, context);
+                Assert.That(lamp.LowFuel, Is.Null, context);
+                Assert.That(lamp.CriticalFuel, Is.Null, context);
+            }
+
+            helm.OpenCentered();
+            try
+            {
+                helm.ShipStatusActiveChanged += (active, _) => requests.Add(!active ? "off" : helm.WfHullOnly ? "summary" : "full");
+                helm.WfRequestShipStatus(force: true);
+                Expect("A helm opens on Navigation, which asks for the summary alone.", "summary");
+                AssertNoSignal("Before any status arrives the gauge shows no signal.");
+                Assert.That(bank.ToolTip, Does.StartWith(Loc.GetString("wf-cockpit-fuel-no-signal")));
+
+                foreach (var (summary, expected, low, critical) in new (ShipFuelSummary, double?, bool?, bool?)[]
+                {
+                    (default, null, null, null),
+                    (new() { Sources = 2, Fraction = 0 }, 0, true, true),
+                    (new() { Sources = 2, Fraction = 0.2f }, 20, true, false),
+                    (new() { Sources = 2, Fraction = 0.21f }, 21, false, false),
+                    (new() { Sources = 2, Fraction = 1 }, 100, false, false),
+                    (new() { Sources = 2, UnknownSources = 1, Fraction = 0 }, null, null, null),
+                })
+                {
+                    helm.UpdateShipStatus(Status(summary));
+                    if (expected is { } value)
+                        Assert.That(gauge.Reading.Value, Is.EqualTo(value).Within(0.0001));
+                    else
+                        Assert.That(gauge.Reading.Value, Is.Null, "Absent or partly measured fuel sources show no signal.");
+                    Assert.That(lamp.LowFuel, Is.EqualTo(low));
+                    Assert.That(lamp.CriticalFuel, Is.EqualTo(critical));
+                }
+                Assert.That(requests, Is.Empty, "Status replies never provoke requests.");
+
+                helm.UpdateShipStatus(Status(default));
+                refresh.Invoke(bank, new object[] { new FrameEventArgs(0.2f) });
+                Assert.That(bank.ToolTip, Does.StartWith(Loc.GetString("wf-cockpit-fuel-no-sources")));
+                helm.UpdateShipStatus(Status(new ShipFuelSummary { Sources = 2, Fraction = 0.5f }));
+                refresh.Invoke(bank, new object[] { new FrameEventArgs(0.2f) });
+                Assert.That(bank.ToolTip, Does.StartWith(Loc.GetString("wf-cockpit-fuel-sources", ("sources", 2))));
+                Assert.That(gauge.Reading.Value, Is.EqualTo(50).Within(0.0001));
+
+                helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Ship);
+                Expect("The Ship page asks for the full status, once.", "full");
+                Assert.That(gauge.Reading.Value, Is.EqualTo(50).Within(0.0001), "Telemetry is still flowing, so the reading is kept.");
+                helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Nav);
+                Expect("Back on Navigation the request drops to the summary, once.", "summary");
+
+                helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Map);
+                Expect("A page that reads no telemetry stops the request.", "off");
+                AssertNoSignal("A gauge that is off screen forgets its reading.");
+                helm.UpdateShipStatus(Status(new ShipFuelSummary { Sources = 2, Fraction = 0.5f }));
+                helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Dock);
+                Expect("Moving between pages that read nothing sends nothing.");
+                helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Nav);
+                Expect("Navigation asks again when it returns.", "summary");
+                AssertNoSignal("A reply that arrived after the page had gone is dropped.");
+
+                helm.WfSetCockpitActive(true);
+                Expect("Entering the cockpit asks for a fresh summary.", "summary");
+                helm.WfCockpitShipVisible(true);
+                Expect("The cockpit's ship page asks for the full status.", "full");
+                helm.WfCockpitShipVisible(false);
+                Expect("Leaving the cockpit's ship page drops back to the summary.", "summary");
+                helm.WfSetCockpitActive(false);
+                Expect("Leaving the cockpit leaves Navigation's request running.", "summary");
+            }
+            finally
+            {
+                helm.Close();
             }
         });
         await pair.CleanReturnAsync();

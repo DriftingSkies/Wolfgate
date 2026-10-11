@@ -39,7 +39,7 @@ public sealed class WFCockpitCoordinates : Control
         ToolTip = Loc.GetString("wf-cockpit-coordinates-help");
         var cache = IoCManager.Resolve<IResourceCache>();
         _small = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf"), 9);
-        _digits = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Bold.ttf"), 22);
+        _digits = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Bold.ttf"), WFInstrumentText.StripDigitSize);
         Sample();
     }
 
@@ -89,18 +89,20 @@ public sealed class WFCockpitCoordinates : Control
 
         var top = y + 15 * UIScale;
         var height = 27 * UIScale;
+        var edge = 4 * UIScale;
         if (_position == null)
             WFInstrumentText.DrawFitted(handle, _digits, _offline,
-                UIBox2.FromDimensions(new Vector2(inset, top), new Vector2(width, height)), UIScale, skin.TextMuted);
+                UIBox2.FromDimensions(new Vector2(inset + edge, top), new Vector2(MathF.Max(0, width - 2 * edge), height)),
+                UIScale, skin.TextMuted);
         else
         {
-            var half = width / 2;
+            var half = MathF.Max(0, (width - 2 * edge) / 2);
             var color = skin.Accent;
             WFInstrumentText.DrawReading(handle, _digits, _xText, _x,
-                UIBox2.FromDimensions(new Vector2(inset, top), new Vector2(half - UIScale, height)),
+                UIBox2.FromDimensions(new Vector2(inset + edge, top), new Vector2(half - UIScale, height)),
                 UIScale, color, skin.TextMuted, true);
             WFInstrumentText.DrawReading(handle, _digits, _yText, _y,
-                UIBox2.FromDimensions(new Vector2(inset + half + UIScale, top), new Vector2(half - UIScale, height)),
+                UIBox2.FromDimensions(new Vector2(PixelWidth / 2f + UIScale, top), new Vector2(half - UIScale, height)),
                 UIScale, color, skin.TextMuted, true);
             handle.DrawLine(new Vector2(PixelWidth / 2f, top + 3 * UIScale),
                 new Vector2(PixelWidth / 2f, top + height - 3 * UIScale), skin.EdgeSoft);

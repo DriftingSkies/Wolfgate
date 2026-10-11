@@ -17,6 +17,12 @@ public sealed class WolfgateCVars
         CVarDef.Create("wf.ui_style", "WolfgateRetro", CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
+    /// Enters the cockpit by itself when the shuttle console is opened while buckled into a seat.
+    /// </summary>
+    public static readonly CVarDef<bool> CockpitAutoEnter =
+        CVarDef.Create("wf.cockpit_auto_enter", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
     /// Kill switch for the anatomy system. When false every anatomy gate fails and every anatomy UI is hidden.
     /// </summary>
     public static readonly CVarDef<bool> AnatomyEnabled =

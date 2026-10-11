@@ -34,33 +34,30 @@ public static class WFGaugeScale
     public static string Digits(double value, double minimum, double maximum, int decimals) =>
         Fixed(value, decimals).PadLeft(Math.Max(Fixed(minimum, decimals).Length, Fixed(maximum, decimals).Length));
 
-    /// <summary>Where a round dial, its readout bar and its caption sit inside a control.</summary>
-    public readonly record struct DialLayout(float Radius, Vector2 Center, UIBox2 Readout, float CaptionBaseline);
+    /// <summary>Where a round dial and its caption sit inside a control.</summary>
+    public readonly record struct DialLayout(float Radius, Vector2 Center, float CaptionBaseline);
 
-    /// <summary>A dial control shorter than this, in UI units, packs its readout and caption closer to keep its face large.</summary>
-    public const float RoomyDialHeight = 120;
+    /// <summary>Distance, in UI units, from a dial's lower edge to its caption's baseline; leaves a clear gap above the letters.</summary>
+    public const float CaptionDrop = 16;
+
+    /// <summary>Space, in UI units, kept clear beneath a dial caption's baseline for descenders and the control's edge.</summary>
+    public const float CaptionMargin = 5;
+
+    /// <summary>Gap, in UI units, kept above a dial.</summary>
+    public const float DialTop = 2;
 
     /// <summary>
     /// Lays out a dial with its caption directly beneath it, so a control stretched taller than the dial
-    /// keeps them together. With <paramref name="readoutBelow"/> a readout bar sits between dial and caption.
+    /// keeps them together.
     /// </summary>
-    public static DialLayout RoundDial(float width, float height, float scale, bool readoutBelow)
+    public static DialLayout RoundDial(float width, float height, float scale)
     {
-        var roomy = height >= RoomyDialHeight * scale;
-        var gap = (roomy ? 2 : 1) * scale;
-        var barHeight = (roomy ? 18 : 16) * scale;
-        var captionGap = (roomy ? 10 : 8) * scale;
-        var top = 2 * scale;
-        var below = readoutBelow ? gap + barHeight + captionGap + 3 * scale : 14 * scale;
+        var top = DialTop * scale;
+        var below = (CaptionDrop + CaptionMargin) * scale;
         var radius = MathF.Max(1, MathF.Min(width / 2 - 3 * scale, (height - top - below) / 2));
         var offset = MathF.Max(0, (height - top - 2 * radius - below) / 2);
         var center = new Vector2(width / 2, offset + top + radius);
-        var bottom = center.Y + radius;
-        if (!readoutBelow)
-            return new DialLayout(radius, center, default, bottom + 11 * scale);
-        var barWidth = MathF.Max(2 * radius, MathF.Min(width - 6 * scale, 2.6f * radius));
-        var bar = UIBox2.FromDimensions(new Vector2(center.X - barWidth / 2, bottom + gap), new Vector2(barWidth, barHeight));
-        return new DialLayout(radius, center, bar, bar.Bottom + captionGap);
+        return new DialLayout(radius, center, center.Y + radius + CaptionDrop * scale);
     }
 
     /// <summary>The figure and unit areas inside a ring dial, clear of the ring itself.</summary>

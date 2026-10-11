@@ -18,7 +18,7 @@ public sealed partial class ShuttleConsoleWindow
         NavModeButton.Text = Loc.GetString("wf-console-nav");
         MapModeButton.Text = Loc.GetString("wf-console-map");
         DockModeButton.Text = Loc.GetString("wf-console-dock");
-        NavContainer.WfRefitInstruments();
+        NavContainer.WfRefitInstruments(WfCreateCockpitButton());
         ShipContainer.WfRefitInstruments();
         _shieldScreen.WfRefitInstruments();
         MapContainer.WfRefitInstruments();
@@ -45,14 +45,10 @@ public sealed partial class ShuttleConsoleWindow
         Install(this);
     }
 
-    /// <summary>Puts the flight deck caption in the title bar and the cockpit key beside the close and pop-out controls.</summary>
+    /// <summary>Puts the flight deck caption in the title bar.</summary>
     private void WfInstallHeader()
     {
         Title = Loc.GetString("wf-console-helm-title");
         WindowTitle.FontColorOverride = Accent;
-        var header = CloseButton.Parent!;
-        var cockpit = WfCreateCockpitButton();
-        header.AddChild(cockpit);
-        cockpit.SetPositionInParent(CloseButton.GetPositionInParent());
     }
 }

@@ -13,6 +13,7 @@ using Content.Server._WF.Shuttles.Systems;
 using Content.Server.Power.Components;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
+using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Cockpit;
 using Content.Shared._WF.Shuttles;
 using Content.Shared.Access.Components;
@@ -136,6 +137,7 @@ public sealed class WFCockpitCameraTest
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
         var map = await pair.CreateTestMap();
+        await pair.Client.WaitPost(() => pair.Client.CfgMan.SetCVar(WolfgateCVars.CockpitAutoEnter, false));
         var em = pair.Server.EntMan;
         EntityUid actor = default, helm = default, seat = default;
         ShuttleConsoleWindow? window = null;

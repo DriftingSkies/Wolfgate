@@ -14,6 +14,7 @@ public sealed partial class ShuttleConsoleBoundUserInterface
         WfCockpitGunneryOpen(); // WOLFGATE(Cockpit): route the optional weapon bank through the helm.
         _window.ShipStatusActiveChanged += (active, overlays) =>
             SendMessage(new ShipStatusRequestMessage(active, overlays, _window.WfHullOnly));
+        _window.WfRequestShipStatus(force: true); // The window opens on the navigation page, whose fuel gauge needs the summary.
 
         _window.ShipCodeRequested += code => SendMessage(new ShipAlertCodeRequestMessage(code));
         _window.ShipGeneralQuartersRequested += active => SendMessage(new ShipGeneralQuartersRequestMessage(active));

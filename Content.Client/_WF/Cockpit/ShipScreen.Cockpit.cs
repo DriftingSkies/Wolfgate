@@ -25,6 +25,12 @@ public sealed partial class ShipScreen
         var gauges = WFCockpitLease.Descendants(this).OfType<WFGlassGauge>().ToArray();
         lease.Take(this);
         lease.Clear(this);
+        // The helm centres these captions on its keys; the MFD keeps them left-aligned.
+        foreach (var toggle in new[] { DamageToggle, FireToggle, PressureToggle, PowerToggle, departments })
+        {
+            toggle.TextAlign = Robust.Client.UserInterface.Controls.Label.AlignMode.Left;
+            lease.Remember(() => toggle.TextAlign = Robust.Client.UserInterface.Controls.Label.AlignMode.Center);
+        }
         var telemetry = new GridContainer { Name = "CockpitShipTelemetry", Columns = 2, HorizontalExpand = true };
         foreach (var gauge in gauges)
         {

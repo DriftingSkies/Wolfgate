@@ -127,6 +127,8 @@ public sealed class ShipStatusTest
             DamageWall(1);
         });
         await pair.RunTicksSync(5);
+        // The window only reads detailed status while its Ship page is showing, as a detailed viewer's client would.
+        await pair.Client.WaitPost(() => ShipWindow().SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Ship));
         await pair.Server.WaitAssertion(() =>
         {
             var ui = em.System<SharedUserInterfaceSystem>();
@@ -169,11 +171,12 @@ public sealed class ShipStatusTest
             em.System<DamageableSystem>().TryChangeDamage(wall, new DamageSpecifier(prototype, FixedPoint2.New(100)), ignoreResistances: true);
         }
 
+        ShuttleConsoleWindow ShipWindow() =>
+            pair.Client.ResolveDependency<IUserInterfaceManager>().WindowRoot.Children.OfType<ShuttleConsoleWindow>().Single();
+
         void AssertDamagedTiles(string expected, string message)
         {
-            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
-            var window = ui.WindowRoot.Children.OfType<ShuttleConsoleWindow>().Single();
-            var ship = window.FindControl<ShipScreen>("ShipContainer");
+            var ship = ShipWindow().FindControl<ShipScreen>("ShipContainer");
             Assert.That(ship.FindControl<Label>("DamagedLabel").Text, Is.EqualTo(expected), message);
         }
     }

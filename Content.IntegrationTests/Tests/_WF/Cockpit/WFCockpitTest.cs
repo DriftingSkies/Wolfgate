@@ -296,6 +296,7 @@ public sealed class WFCockpitTest : InteractionTest
                             AssertPanelsFitScreen(hud, viewport, size, context);
                             AssertLabelFits(swap, ui, context);
                             AssertLabelFits(maximise, ui, context);
+                            AssertMfdHeaderFits(hud, ui, context);
                             if (page == "wf-cockpit-access")
                                 AssertAccessPage(hud, ui, context);
                             if (page == "wf-cockpit-ship")
@@ -462,6 +463,7 @@ public sealed class WFCockpitTest : InteractionTest
             Assert.That(chat, Is.InstanceOf<ResizableChatBox>());
             var chatClamp = typeof(ResizableChatBox).GetField("_clampIn", BindingFlags.Instance | BindingFlags.NonPublic)!;
             chatClamp.SetValue(chat, (byte) 0);
+            hud.SetExpanded(true);
             SetArrangement(hud, Arrangement.MaximisedFromSwapped);
             Layout(hud, new Vector2(1130, 636));
             Assert.That(viewport.VisibleInTree, Is.False, "Every exit below must work with the world view gone.");
@@ -504,7 +506,7 @@ public sealed class WFCockpitTest : InteractionTest
             var reentered = screen.Children.OfType<WFCockpitView>().Single();
             Assert.That(reentered, Is.Not.SameAs(hud));
             Assert.That(AimOverlayPresent(), Is.True, "Entering again must draw the aim lines again.");
-            Assert.That((reentered.PanelsSwapped, reentered.MfdMaximised), Is.EqualTo((false, false)),
+            Assert.That((reentered.PanelsSwapped, reentered.MfdExpanded, reentered.MfdMaximised), Is.EqualTo((false, false, false)),
                 "Panel arrangements last one cockpit session.");
             reentered.SetMaximised(true);
             Assert.That(viewport.Visible, Is.False);
@@ -847,6 +849,337 @@ public sealed class WFCockpitTest : InteractionTest
     }
 
     [Test]
+    public async Task ExpandSharesTheWidthInEitherArrangementAndPutsItBack()
+    {
+        await InCockpit(cockpit =>
+        {
+            var (ui, _, viewport, chat, window, _, hud) = cockpit;
+            var settings = Client.ResolveDependency<IConfigurationManager>();
+            window.UpdateShieldShuntSnapshot(new WFShipShieldShuntState(true, true, 0.76f, MathF.PI / 2f, 0.65f, MathF.PI / 2f));
+            var pages = new[] { "wf-cockpit-nav", "wf-cockpit-ship", "wf-cockpit-map", "wf-cockpit-dock", "wf-cockpit-access", "wf-cockpit-shield-page", "wf-cockpit-systems", "wf-cockpit-alarms" };
+            var expand = Named<Button>(hud, "CockpitMfdExpand");
+            foreach (var theme in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+            {
+                settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                foreach (var size in new[] { new Vector2(1130, 636), new Vector2(1600, 900), new Vector2(1920, 1080) })
+                foreach (var swapped in new[] { false, true })
+                {
+                    SetArrangement(hud, swapped ? Arrangement.Swapped : Arrangement.Normal);
+                    hud.SelectPage("wf-cockpit-nav");
+                    Layout(hud, size);
+                    var context = $"{theme}, {size}, {(swapped ? "swapped" : "normal")}";
+                    var before = Snapshot(hud, viewport);
+                    Assert.That(expand.Disabled, Is.False, $"{context}: Expand is on offer in a window this wide.");
+                    Assert.That(expand.Pressed, Is.False, context);
+                    Toggle(expand, true);
+                    Layout(hud, size);
+                    Assert.That(hud.MfdExpanded, Is.True, context);
+                    Assert.That(expand.Text, Is.EqualTo(Loc.GetString("wf-cockpit-collapse")), context);
+                    AssertExpanded(hud, viewport, size, swapped, before, context);
+                    if (size.X < 1920)
+                    {
+                        foreach (var page in pages)
+                        {
+                            hud.SelectPage(page);
+                            Layout(hud, size);
+                            var pageContext = $"{context}, expanded, {page}";
+                            AssertCockpitLayout(hud, viewport, chat, ui, size, theme, page);
+                            AssertPanelsFitScreen(hud, viewport, size, pageContext);
+                            AssertMfdHeaderFits(hud, ui, pageContext);
+                            if (page == "wf-cockpit-access")
+                                AssertAccessPage(hud, ui, pageContext);
+                            if (page == "wf-cockpit-ship")
+                                AssertShipPage(hud, ui, pageContext);
+                        }
+                        hud.SelectPage("wf-cockpit-nav");
+                        Layout(hud, size);
+                    }
+                    Toggle(expand, false);
+                    Layout(hud, size);
+                    Assert.That(expand.Text, Is.EqualTo(Loc.GetString("wf-cockpit-expand")), context);
+                    AssertSameBoxes(Snapshot(hud, viewport), before, $"{context}: collapsing must restore the normal widths");
+                    AssertMfdHeaderFits(hud, ui, $"{context}, collapsed");
+                }
+            }
+        });
+    }
+
+    [Test]
+    public async Task ExpandIsOffWhenMaximisedOrTooNarrowKeepsItsStateWhenSwappedAndStartsOffInANewSession()
+    {
+        await InCockpit(cockpit =>
+        {
+            var (_, screen, viewport, _, window, controller, hud) = cockpit;
+            var expand = Named<Button>(hud, "CockpitMfdExpand");
+            var swap = Named<Button>(hud, "CockpitMfdSwap");
+            var maximise = Named<Button>(hud, "CockpitMfdMaximise");
+            var wide = new Vector2(1130, 636);
+            var narrow = new Vector2(1090, 636);
+            Layout(hud, wide);
+            Assert.That(expand.Disabled, Is.False, "Expand is on offer once the window is wide enough to change something.");
+
+            Toggle(maximise, true);
+            Layout(hud, wide);
+            Assert.That(expand.Disabled, Is.True, "A maximised MFD already has all the room, so Expand must not be offered.");
+            var maximised = Snapshot(hud, viewport);
+            Toggle(maximise, false);
+            Layout(hud, wide);
+            Assert.That(expand.Disabled, Is.False, "Expand returns when Maximise is released.");
+
+            Toggle(expand, true);
+            Layout(hud, wide);
+            var expanded = Snapshot(hud, viewport);
+            Toggle(maximise, true);
+            Layout(hud, wide);
+            Assert.That(expand.Disabled, Is.True);
+            Assert.That(expand.Pressed && hud.MfdExpanded, Is.True, "Maximise must not forget that Expand was on.");
+            AssertSameBoxes(Snapshot(hud, viewport), maximised, "An expanded MFD maximises exactly as a normal one does");
+            Toggle(maximise, false);
+            Layout(hud, wide);
+            Assert.That(expand.Disabled, Is.False);
+            AssertSameBoxes(Snapshot(hud, viewport), expanded, "Releasing Maximise must bring the expanded arrangement back");
+
+            Toggle(expand, false);
+            Layout(hud, narrow);
+            Assert.That(expand.Disabled, Is.True, "Expand cannot widen anything in a window this narrow, so it must not be offered.");
+            var narrowNormal = Snapshot(hud, viewport);
+            Layout(hud, wide);
+            Assert.That(expand.Disabled, Is.False, "Expand returns once it can widen the MFD.");
+            Toggle(expand, true);
+            Layout(hud, narrow);
+            Assert.That(expand.Disabled, Is.False, "A pressed Expand stays on offer in a narrow window so it can be released.");
+            AssertSameBoxes(Snapshot(hud, viewport), narrowNormal, "Expand changes nothing in a window this narrow");
+            Toggle(expand, false);
+            Layout(hud, narrow);
+            Assert.That(expand.Disabled, Is.True);
+
+            var size = new Vector2(1600, 900);
+            Layout(hud, size);
+            var normalSplit = Snapshot(hud, viewport);
+            Toggle(expand, true);
+            Layout(hud, size);
+            var expandedSplit = Snapshot(hud, viewport);
+
+            Toggle(swap, true);
+            Layout(hud, size);
+            Assert.That(expand.Pressed && hud.MfdExpanded, Is.True, "Swapping the panels must not release Expand.");
+            Assert.That(expand.Disabled, Is.False);
+            var swappedBoxes = Snapshot(hud, viewport);
+            AssertBox(swappedBoxes["world"], expandedSplit["CockpitMfd"], "The world view takes the side column the MFD had");
+            AssertBox(swappedBoxes["CockpitMfd"], expandedSplit["world"], "The MFD takes the centre the world view had");
+
+            Toggle(swap, false);
+            Layout(hud, size);
+            Assert.That(hud.MfdExpanded, Is.True);
+            AssertSameBoxes(Snapshot(hud, viewport), expandedSplit, "Swapping back must keep the expanded split");
+            Toggle(expand, false);
+            Layout(hud, size);
+            AssertSameBoxes(Snapshot(hud, viewport), normalSplit, "Collapsing must return to the normal split");
+
+            Toggle(expand, true);
+            Toggle(swap, true);
+            controller.Exit();
+            Assert.That(controller.Enter(window), Is.True);
+            var fresh = screen.Children.OfType<WFCockpitView>().Single();
+            Assert.That(fresh, Is.Not.SameAs(hud));
+            Assert.That((fresh.PanelsSwapped, fresh.MfdExpanded, fresh.MfdMaximised), Is.EqualTo((false, false, false)),
+                "Panel arrangements last one cockpit session.");
+        });
+    }
+
+    [Test]
+    public async Task AutoEnterEntersOnceForABuckledPilotAndNeverWhenOffOrWhenBusy()
+    {
+        var (console, chair) = await SpawnHelm();
+        var (otherConsole, _) = await SpawnHelm();
+        await MakePilot(console);
+        await Buckle(chair);
+        await RunTicks(10);
+        await WithAutoEnter(true, () => Client.WaitAssertion(() =>
+        {
+            var ui = Client.ResolveDependency<IUserInterfaceManager>();
+            var settings = Client.ResolveDependency<IConfigurationManager>();
+            var controller = ui.GetUIController<WFCockpitUIController>();
+            var screen = (InGameScreen) ui.ActiveScreen!;
+            var window = OpenHelm(console);
+            try
+            {
+                controller.AutoEnterOnOpen(window);
+                Assert.That(controller.Active, Is.False, "Entering waits for the next UI frame.");
+                controller.FrameUpdate(new FrameEventArgs(0.05f));
+                Assert.That(controller.Active, Is.True, "A helm opened while buckled and piloting enters the cockpit.");
+                Assert.That(screen.Children.OfType<WFCockpitView>().Count(), Is.EqualTo(1));
+
+                var hud = screen.Children.OfType<WFCockpitView>().Single();
+                Layout(hud, new Vector2(1130, 636));
+                Press(Named<Button>(hud, "CockpitExit"));
+                Assert.That(controller.Active, Is.False);
+                AssertStaysOut("the Exit button");
+
+                Assert.That(controller.Enter(window), Is.True, "The pilot can still enter by hand.");
+                Assert.That(controller.ExitOnEscape(), Is.True);
+                AssertStaysOut("Escape");
+
+                Assert.That(controller.Enter(window), Is.True);
+                controller.Exit();
+                AssertStaysOut("a controller exit");
+
+                window.Close();
+                window.OpenCentered();
+                controller.AutoEnterOnOpen(window);
+                controller.FrameUpdate(new FrameEventArgs(0.05f));
+                Assert.That(controller.Active, Is.True, "Opening the helm again is a new opening and enters again.");
+
+                // Another session is active, so a second opening neither replaces it nor opens a second cockpit.
+                var other = OpenHelm(otherConsole);
+                try
+                {
+                    controller.AutoEnterOnOpen(other);
+                    controller.FrameUpdate(new FrameEventArgs(0.05f));
+                    Assert.That(screen.Children.OfType<WFCockpitView>().Count(), Is.EqualTo(1));
+                    Assert.That((window.WfCockpitActive, other.WfCockpitActive), Is.EqualTo((true, false)));
+                    controller.Exit();
+
+                    // The pilot is not flying this helm, so it never enters, however long it waits.
+                    controller.AutoEnterOnOpen(other);
+                    for (var i = 0; i < 4; i++)
+                        controller.FrameUpdate(new FrameEventArgs(0.3f));
+                    Assert.That(controller.Active, Is.False, "A helm the pilot cannot use never opens the cockpit.");
+                }
+                finally
+                {
+                    other.Dispose();
+                }
+
+                settings.SetCVar(WolfgateCVars.CockpitAutoEnter, false);
+                window.Close();
+                window.OpenCentered();
+                controller.AutoEnterOnOpen(window);
+                for (var i = 0; i < 4; i++)
+                    controller.FrameUpdate(new FrameEventArgs(0.1f));
+                Assert.That(controller.CanEnter(window.WfCockpitConsole), Is.True);
+                Assert.That(controller.Active, Is.False, "With the option off, the helm opens as a window as it always did.");
+            }
+            finally
+            {
+                controller.Exit();
+                window.Dispose();
+            }
+
+            void AssertStaysOut(string how)
+            {
+                for (var i = 0; i < 6; i++)
+                    controller.FrameUpdate(new FrameEventArgs(0.3f));
+                Assert.That(controller.Active, Is.False, $"After leaving with {how} the same window must not put the pilot back in.");
+                Assert.That(window.IsOpen, Is.True);
+            }
+        }));
+    }
+
+    [Test]
+    public async Task AutoEnterWaitsBrieflyForThePilotStateGivesUpAndIgnoresLateBuckling()
+    {
+        var (console, chair) = await SpawnHelm();
+        await Buckle(chair);
+        await RunTicks(10);
+        await WithAutoEnter(true, async () =>
+        {
+            var ui = Client.ResolveDependency<IUserInterfaceManager>();
+            var controller = ui.GetUIController<WFCockpitUIController>();
+            ShuttleConsoleWindow window = default!;
+            await Client.WaitAssertion(() =>
+            {
+                window = OpenHelm(console);
+                controller.AutoEnterOnOpen(window);
+                controller.FrameUpdate(new FrameEventArgs(0.2f));
+                Assert.That(controller.Active, Is.False, "Without the piloting state there is nothing to enter yet.");
+            });
+            await MakePilot(console);
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+            {
+                controller.FrameUpdate(new FrameEventArgs(0.05f));
+                Assert.That(controller.Active, Is.True, "The pilot state arrived within the wait, so the cockpit opens.");
+                controller.Exit();
+                window.Dispose();
+            });
+
+            // A second helm never gets its pilot state in time, so it stops waiting.
+            await Server.WaitAssertion(() => SEntMan.System<ShuttleConsoleSystem>().RemovePilot(SPlayer));
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+            {
+                window = OpenHelm(console);
+                controller.AutoEnterOnOpen(window);
+                controller.FrameUpdate(new FrameEventArgs(0.6f));
+                controller.FrameUpdate(new FrameEventArgs(0.6f));
+                Assert.That(controller.Active, Is.False);
+            });
+            await MakePilot(console);
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+            {
+                controller.FrameUpdate(new FrameEventArgs(0.05f));
+                Assert.That(controller.CanEnter(window.WfCockpitConsole), Is.True, "The pilot state has arrived by now.");
+                Assert.That(controller.Active, Is.False, "Roughly a second after opening, the helm no longer tries to enter by itself.");
+                window.Dispose();
+            });
+
+            // The pilot must be seated when the helm opens; buckling later does not count.
+            await Server.WaitAssertion(() =>
+                Assert.That(SEntMan.System<SharedBuckleSystem>().TryUnbuckle(SPlayer, SPlayer), Is.True));
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+            {
+                window = OpenHelm(console);
+                controller.AutoEnterOnOpen(window);
+                controller.FrameUpdate(new FrameEventArgs(0.1f));
+                Assert.That(controller.Active, Is.False, "A standing pilot has no seat to enter from.");
+            });
+            await Buckle(chair);
+            await MakePilot(console);
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+            {
+                controller.FrameUpdate(new FrameEventArgs(0.05f));
+                Assert.That(controller.CanEnter(window.WfCockpitConsole), Is.True, "The pilot is seated now, so entering by hand would work.");
+                Assert.That(controller.Active, Is.False, "Buckling after the helm opened must not enter the cockpit.");
+                window.Dispose();
+            });
+        });
+    }
+
+    [Test]
+    public async Task OpeningTheHelmBuckledThroughItsInterfaceEntersTheCockpit()
+    {
+        var (console, chair) = await SpawnHelm();
+        await MakePilot(console);
+        await Buckle(chair);
+        await RunTicks(10);
+        await WithAutoEnter(true, async () =>
+        {
+            var ui = Client.ResolveDependency<IUserInterfaceManager>();
+            var controller = ui.GetUIController<WFCockpitUIController>();
+            await Server.WaitAssertion(() =>
+                SEntMan.System<SharedUserInterfaceSystem>().OpenUi(console, ShuttleConsoleUiKey.Key, SPlayer));
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+            {
+                Assert.That(Descendants(ui.WindowRoot).OfType<ShuttleConsoleWindow>().Count(), Is.EqualTo(1),
+                    "The server opened the helm through its interface.");
+                Assert.That(controller.Active, Is.True, "A helm opened through its interface while buckled enters the cockpit by itself.");
+                controller.Exit();
+            });
+            await RunTicks(10);
+            await Client.WaitAssertion(() =>
+                Assert.That(controller.Active, Is.False, "Leaving the cockpit must not put the pilot back in while the helm stays open."));
+            await Server.WaitAssertion(() =>
+                SEntMan.System<SharedUserInterfaceSystem>().CloseUi(console, ShuttleConsoleUiKey.Key, SPlayer));
+            await RunTicks(10);
+        });
+    }
+
+    [Test]
     public async Task AimLinesFollowSelectionAndPointerOnTheNavPlotAndTheShipCam()
     {
         EntityUid console = default;
@@ -1063,6 +1396,144 @@ public sealed class WFCockpitTest : InteractionTest
     }
 
     private bool AimOverlayPresent() => Client.ResolveDependency<IOverlayManager>().HasOverlay<WFCockpitAimOverlay>();
+
+    private sealed record CockpitSession(IUserInterfaceManager Ui, InGameScreen Screen, MainViewport Viewport, ChatBox Chat,
+        ShuttleConsoleWindow Window, WFCockpitUIController Controller, WFCockpitView Hud);
+
+    /// <summary>Spawns an unpowered helm and a seat; piloting and buckling are separate steps so they can come in any order.</summary>
+    private async Task<(EntityUid Console, EntityUid Chair)> SpawnHelm()
+    {
+        EntityUid console = default;
+        EntityUid chair = default;
+        await Server.WaitAssertion(() =>
+        {
+            console = SEntMan.SpawnEntity("ComputerShuttle", MapData.GridCoords);
+            chair = SEntMan.SpawnEntity("Chair", MapData.GridCoords);
+            SEntMan.RemoveComponent<Content.Server.Power.Components.ApcPowerReceiverComponent>(console);
+            SEntMan.RemoveComponent<Content.Shared.Access.Components.AccessReaderComponent>(console);
+        });
+        return (console, chair);
+    }
+
+    private async Task MakePilot(EntityUid console) => await Server.WaitAssertion(() =>
+    {
+        SEntMan.EnsureComponent<PilotComponent>(SPlayer);
+        SEntMan.System<ShuttleConsoleSystem>().AddPilot(console, SPlayer, SEntMan.GetComponent<ShuttleConsoleComponent>(console));
+    });
+
+    private async Task Buckle(EntityUid chair) => await Server.WaitAssertion(() =>
+        Assert.That(SEntMan.System<SharedBuckleSystem>().TryBuckle(SPlayer, SPlayer, chair), Is.True));
+
+    /// <summary>Opens a helm window bound to the console, without going through the bound interface.</summary>
+    private ShuttleConsoleWindow OpenHelm(EntityUid console)
+    {
+        var window = new ShuttleConsoleWindow();
+        window.WfSetCockpitConsole(ToClient(SEntMan.GetNetEntity(console)));
+        window.OpenCentered();
+        return window;
+    }
+
+    /// <summary>Runs the body with the auto-enter option set, then puts back the player's own setting and HUD layout.</summary>
+    private async Task WithAutoEnter(bool enabled, Func<Task> body)
+    {
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        var originalOption = settings.GetCVar(WolfgateCVars.CockpitAutoEnter);
+        var originalLayout = settings.GetCVar(CCVars.UILayout);
+        await Client.WaitAssertion(() =>
+        {
+            settings.SetCVar(WolfgateCVars.CockpitAutoEnter, enabled);
+            settings.SetCVar(CCVars.UILayout, "Default");
+        });
+        await RunTicks(3);
+        try
+        {
+            await body();
+        }
+        finally
+        {
+            await Client.WaitAssertion(() =>
+            {
+                settings.SetCVar(WolfgateCVars.CockpitAutoEnter, originalOption);
+                settings.SetCVar(CCVars.UILayout, originalLayout);
+            });
+        }
+    }
+
+    /// <summary>Seats the player at a helm, enters the cockpit and runs the body, then restores the HUD and the settings it changed.</summary>
+    private async Task InCockpit(Action<CockpitSession> body)
+    {
+        var (console, chair) = await SpawnHelm();
+        await MakePilot(console);
+        await Buckle(chair);
+        await RunTicks(10);
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        var originalLayout = settings.GetCVar(CCVars.UILayout);
+        var originalTheme = settings.GetCVar(WolfgateCVars.UiStyle);
+        await Client.WaitAssertion(() => settings.SetCVar(CCVars.UILayout, "Default"));
+        await RunTicks(3);
+        await Client.WaitAssertion(() =>
+        {
+            var ui = Client.ResolveDependency<IUserInterfaceManager>();
+            var screen = (InGameScreen) ui.ActiveScreen!;
+            var controller = ui.GetUIController<WFCockpitUIController>();
+            var viewport = screen.GetWidget<MainViewport>()!;
+            var chat = screen.ChatBox;
+            var window = OpenHelm(console);
+            try
+            {
+                Assert.That(controller.Enter(window), Is.True);
+                body(new CockpitSession(ui, screen, viewport, chat, window, controller, screen.Children.OfType<WFCockpitView>().Single()));
+            }
+            finally
+            {
+                controller.Exit();
+                window.Dispose();
+                settings.SetCVar(WolfgateCVars.UiStyle, originalTheme);
+                settings.SetCVar(CCVars.UILayout, originalLayout);
+            }
+        });
+    }
+
+    /// <summary>The panel in the side column grew, the one in the centre gave way to it, and nothing else moved.</summary>
+    private static void AssertExpanded(WFCockpitView hud, MainViewport viewport, Vector2 size, bool swapped,
+        Dictionary<string, UIBox2> before, string context)
+    {
+        var now = Snapshot(hud, viewport);
+        var sideName = swapped ? "world" : "CockpitMfd";
+        var centreName = swapped ? "CockpitMfd" : "world";
+        var side = now[sideName];
+        var centre = now[centreName];
+        Assert.That(side.Width, Is.GreaterThan(before[sideName].Width + 1), $"{context}: the panel in the side column must grow");
+        Assert.That(centre.Width, Is.LessThan(before[centreName].Width - 1), $"{context}: the panel in the centre must give way");
+        Assert.That(centre.Width, Is.GreaterThanOrEqualTo(499), $"{context}: the centre keeps its room");
+        Assert.That(side.Right, Is.EqualTo(size.X - 8).Within(1), $"{context}: the side column stays at the screen margin");
+        if (size.X >= 1600)
+            Assert.That(side.Width, Is.EqualTo(centre.Width).Within(1.5f), $"{context}: a wide window shares the width half and half");
+        foreach (var name in new[] { "CockpitBrand", "CockpitInstruments", "CockpitTcas", "CockpitCamera", "CockpitFlight" })
+            AssertBox(now[name], before[name], $"{context}: {name} must not move");
+        Assert.That(now["CockpitTranslation"].Width, Is.EqualTo(centre.Width).Within(1), $"{context}: the motion gauges follow the centre column");
+        AssertPanelsFitScreen(hud, viewport, size, context);
+    }
+
+    /// <summary>The caption and the three header toggles sit side by side inside the MFD header, each showing its whole label.</summary>
+    private static void AssertMfdHeaderFits(WFCockpitView hud, IUserInterfaceManager ui, string context)
+    {
+        var swap = Named<Button>(hud, "CockpitMfdSwap");
+        var expand = Named<Button>(hud, "CockpitMfdExpand");
+        var maximise = Named<Button>(hud, "CockpitMfdMaximise");
+        var row = swap.Parent!;
+        var caption = row.Children.OfType<Label>().Single();
+        foreach (var button in new[] { swap, expand, maximise })
+        {
+            Assert.That(button.VisibleInTree, Is.True, $"{context}: {button.Name}");
+            AssertLabelFits(button, ui, $"{context}, {button.Name}");
+        }
+        Assert.That(caption.GlobalPosition.X + caption.DesiredSize.X, Is.LessThanOrEqualTo(swap.GlobalPosition.X + 1),
+            $"{context}: the caption must not run under the first toggle");
+        Assert.That(Right(swap), Is.LessThanOrEqualTo(expand.GlobalPosition.X + 1), $"{context}: Swap and Expand must not overlap");
+        Assert.That(Right(expand), Is.LessThanOrEqualTo(maximise.GlobalPosition.X + 1), $"{context}: Expand and Maximise must not overlap");
+        Assert.That(Right(maximise), Is.LessThanOrEqualTo(Right(row) + 1), $"{context}: the toggles must stay inside the MFD header");
+    }
 
     private static void AssertFuelVisible(WFCockpitView hud)
     {
@@ -1505,6 +1976,8 @@ public sealed class WFCockpitTest : InteractionTest
         Assert.That(hud.MfdMaximised, Is.EqualTo(maximised), context);
         Assert.That(swap.Pressed, Is.EqualTo(swapped), context);
         Assert.That(swap.Disabled, Is.EqualTo(maximised), $"{context}: Swap Panel does nothing while the MFD is maximised.");
+        Assert.That(Named<Button>(hud, "CockpitMfdExpand").Disabled, Is.EqualTo(maximised),
+            $"{context}: Expand does nothing while the MFD is maximised, and is on offer otherwise in a window this wide.");
         Assert.That(maximise.Pressed, Is.EqualTo(maximised), context);
         Assert.That(maximise.Text, Is.EqualTo(Loc.GetString(maximised ? "wf-cockpit-restore" : "wf-cockpit-maximise")), context);
         Assert.That(swap.ToolTip, Is.Not.Null.And.Not.Empty, context);

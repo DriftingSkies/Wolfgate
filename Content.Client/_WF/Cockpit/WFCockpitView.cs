@@ -36,6 +36,7 @@ public sealed partial class WFCockpitView : Control
     private readonly Control _tcas;
     private readonly Control _shields;
     private readonly Button _swap;
+    private readonly Button _expand;
     private readonly Button _maximise;
     private readonly (string Key, Control Content)[] _pages;
     private readonly (Control Dial, float Full)[] _dials;
@@ -133,13 +134,16 @@ public sealed partial class WFCockpitView : Control
             _pageHosts.Add(key, content);
             display.AddChild(content);
         }
-        _swap = PanelButton("wf-cockpit-swap", "wf-cockpit-swap-help", "CockpitMfdSwap", 92);
+        // Short captions, with the full names in the tooltips, so the caption and the three toggles fit the narrowest MFD header.
+        _swap = PanelButton("wf-cockpit-swap", "wf-cockpit-swap-help", "CockpitMfdSwap", 60);
         _swap.OnToggled += args => SetSwapped(args.Pressed);
-        _maximise = PanelButton("wf-cockpit-maximise", "wf-cockpit-maximise-help", "CockpitMfdMaximise", 104);
+        _expand = PanelButton("wf-cockpit-expand", "wf-cockpit-expand-help", "CockpitMfdExpand", 80);
+        _expand.OnToggled += args => SetExpanded(args.Pressed);
+        _maximise = PanelButton("wf-cockpit-maximise", "wf-cockpit-maximise-help", "CockpitMfdMaximise", 84);
         _maximise.OnToggled += args => SetMaximised(args.Pressed);
         var caption = Label("wf-cockpit-mfd", Accent);
         caption.HorizontalExpand = true;
-        var mfd = Column(Row(caption, _swap, _maximise), selectors, display);
+        var mfd = Column(Row(caption, _swap, _expand, _maximise), selectors, display);
         mfd.VerticalExpand = true;
         _right = new WFInstrumentPanel { HorizontalExpand = true, VerticalExpand = true };
         _right.AddChild(mfd);
@@ -208,6 +212,7 @@ public sealed partial class WFCockpitView : Control
         var margin = WFCockpitPanelLayout.Margin;
         _banner.Measure(new Vector2(availableSize.X - 2 * margin, availableSize.Y));
         var (top, left, side, bottom) = Edges(availableSize);
+        UpdateExpand(availableSize, left);
         var height = WFCockpitPanelLayout.Height(availableSize, top);
         PreMeasureDocked(availableSize, left, side, height, bottom);
         var frame = CurrentFrame(availableSize);
@@ -271,7 +276,7 @@ public sealed partial class WFCockpitView : Control
     {
         var top = WFCockpitPanelLayout.Margin + (_banner.Visible ? _banner.DesiredSize.Y + 6 : 0);
         var left = _showGunnery ? Math.Clamp(size.X * 0.27f, 320, 420) : Math.Clamp(size.X * 0.21f, 220, 320);
-        var side = Math.Min(Math.Clamp(size.X * 0.29f, 340, 520), Math.Max(300, size.X - left - 532));
+        var side = WFCockpitPanelLayout.SideWidth(size, left, _expanded && !_maximised);
         var bottom = Math.Clamp(size.Y * 0.27f, 218, 250);
         return (top, left, side, bottom);
     }

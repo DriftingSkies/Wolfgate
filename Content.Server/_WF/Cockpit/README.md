@@ -12,6 +12,16 @@ Live pressure, internals and buckle alerts, votes, and speech bubbles remain ava
 view. Character hotkeys, inventory controls and the menu bar remain hidden; Escape closes other windows
 first and then leaves the cockpit, as the EXIT button does; the helm stays open.
 
+The cockpit can open by itself. The Misc options tab has a checkbox for it, on by default (client CVar
+`wf.cockpit_auto_enter`). When the helm window opens while the player is already buckled, the bound interface calls
+`WFCockpitUIController.AutoEnterOnOpen`, which queues one entry. The piloting state arrives from the server just after
+the window opens, so the controller waits up to about a second of UI frame time for the usual entry check to pass, then
+enters; if it never does, nothing happens. The request ends when it enters, times out or the window closes, so leaving
+the cockpit by the Exit button, Escape or any other way never puts the pilot back in while the same window stays open;
+opening the helm again is a new request. Buckling after the window is already open does not trigger it. It goes through the
+same entry check as the button, so a helm the pilot cannot use, another active cockpit and replays are all excluded, and
+with the option off the helm opens as a window as before.
+
 There is no header row: the Wolfgate wordmark and Exit Cockpit share one slim row at the top of the left column,
 which stays put in every arrangement, so the other columns start at the screen margin. Only a tractor capture
 warning adds a full-width row above everything, and only while it shows.
@@ -36,13 +46,19 @@ when clear, and FAULT lights when TCAS is off or telemetry is unavailable. The b
 using guns, with impact countdown, bearing, closing speed and full threat details on hover.
 The speed limiter lives on SYS; flight controls retain dampeners and orbit controls.
 The MFD holds navigation, hull overlays, strategic travel, docking, access, shield details and auxiliary
-systems. Its header has two toggles. Swap Panel trades places between the world view and the MFD: the MFD
+systems. Its header has three toggles. Swap trades places between the world view and the MFD: the MFD
 takes the large centre area and the world view the full-height column beside it, and nothing else moves.
-Maximise MFD stops drawing the world view and gives the MFD both areas; the motion gauges stay above it
+Expand shares the width of the two big areas half and half; whichever of them is in the full-height side column
+(the MFD, or the world view when swapped) grows and the other gives way, and the motion gauges and lower row follow
+the centre column. The centre never drops below 500 px, so a small window gains little and the smallest gains nothing:
+Expand is then off, except that a pressed one stays on so it can be released. It is also off while the MFD is
+maximised and applies again when Maximise is released, and it keeps its state when the panels are swapped.
+Maximise stops drawing the world view and gives the MFD both areas; the motion gauges stay above it
 and the lower row below it, widened to match, the crew alert bank docks as a strip along its right edge, vote
 popups dock in a row above it, and speech bubbles are not shown (chat still carries the speech). Fire input
-ignores the hidden world view, while NAV aiming keeps working. Pressing the button again (Restore MFD)
-brings back the earlier arrangement, swapped or not. On the smallest window a swapped or maximised MFD is short, so
+ignores the hidden world view, while NAV aiming keeps working. Pressing the button again (Restore)
+brings back the earlier arrangement, swapped or not. The toggles use short captions with the full names in their
+tooltips so the three of them and the caption fit the narrowest MFD header. On the smallest window a swapped or maximised MFD is short, so
 its plots take most of the height and the details scroll beneath them. The state lasts one cockpit session and every exit
 restores the world view and the normal HUD, whatever the arrangement. A wide SHP display gives half its width to the hull plot, with two columns of gauges beside it.
 Damage, fire, pressure and power overlays share one row, with department labels and hull fitting below.
@@ -84,7 +100,7 @@ rule that blocks a player from holding the helm and gunnery windows together, so
 fire a crewed ship from the cockpit.
 
 Entry points: `WFCockpitUIController`, `WFCockpitView`, `WFCockpitLease` and the console partials.
-`WFCockpitPanelLayout` computes where the big panels sit for each arrangement and is unit tested.
+`WFCockpitPanelLayout` computes where the big panels sit for each arrangement and how wide the side column is, normal or expanded, and is unit tested.
 `WFCockpitGunnerySystem` owns authorized gun links; `WFCockpitGunneryPanel` and `WFCockpitFireInput`
 provide the embedded controls and aiming. `WFCockpitAimPreview` works out the aim lines in world space for both the
 NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added while the cockpit is open and removed through the lease). `WFCockpitSeatComponent` is inherited by seats; `SharedWFCockpitSystem` checks replicated eligibility.
@@ -204,9 +220,12 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 
 - [`Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs`](../../../Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs): let the cockpit controls own their reticle and ordinary HUD cursors.
 - [`Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs`](../../../Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs): character combat indicators must not cover the ship's aiming reticle.
+- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): open the cockpit view automatically
+- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): option to open the cockpit view automatically
 - [`Content.Client/Pinpointer/UI/NavMapControl.cs`](../../../Content.Client/Pinpointer/UI/NavMapControl.cs)
   - department labels stay compact instead of growing with map zoom.
   - update shared right-mouse map panning.
+- [`Content.Client/Shuttles/BUI/ShuttleConsoleBoundUserInterface.cs`](../../../Content.Client/Shuttles/BUI/ShuttleConsoleBoundUserInterface.cs): enter the cockpit by itself when the helm opens while buckled.
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs): consume authoritative autopilot status on every page.
 - [`Content.Client/Shuttles/UI/ShuttleDockControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleDockControl.xaml.cs)
   - selecting an approach target recentres its panned plot.

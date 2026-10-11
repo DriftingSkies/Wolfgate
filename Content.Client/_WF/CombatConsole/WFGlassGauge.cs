@@ -32,6 +32,8 @@ public sealed class WFGlassGauge : Control
     private DrawVertexUV2DColor[] _digitalVertices = Array.Empty<DrawVertexUV2DColor>();
     private readonly Font _small;
     private readonly Font _digits;
+    private readonly Font _dialDigits;
+    private readonly Font _stripDigits;
     private WFGaugeReading _reading;
     private float? _needle;
     private float? _target;
@@ -64,8 +66,12 @@ public sealed class WFGlassGauge : Control
         HorizontalExpand = true;
         MouseFilter = MouseFilterMode.Ignore;
         var cache = IoCManager.Resolve<IResourceCache>();
-        _small = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf"), 9);
-        _digits = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Bold.ttf"), 22);
+        var regular = cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf");
+        var bold = cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Bold.ttf");
+        _small = new VectorFont(regular, 9);
+        _digits = new VectorFont(bold, 22);
+        _dialDigits = new VectorFont(regular, 12);
+        _stripDigits = new VectorFont(bold, WFInstrumentText.StripDigitSize);
         Sample();
     }
 
@@ -112,7 +118,7 @@ public sealed class WFGlassGauge : Control
             DrawDigital(handle, color);
             return;
         }
-        var layout = WFGaugeScale.RoundDial(PixelWidth, PixelHeight, UIScale, true);
+        var layout = WFGaugeScale.RoundDial(PixelWidth, PixelHeight, UIScale);
         var radius = layout.Radius;
         var center = layout.Center;
         handle.DrawCircle(center + new Vector2(0, 2 * UIScale), radius, Color.Black.WithAlpha(0.8f));
@@ -146,25 +152,26 @@ public sealed class WFGlassGauge : Control
         handle.DrawCircle(center, 2 * UIScale, WFInstrumentTheme.Skin.Edge);
         var minimum = WFGaugeScale.RoundLabelBounds(face, false).Translated(center);
         var maximum = WFGaugeScale.RoundLabelBounds(face, true).Translated(center);
+        var readoutHeight = MathF.Min(18 * UIScale, face * 0.34f);
+        var readoutTop = MathF.Min(center.Y + face * 0.17f, minimum.Top - 3 * UIScale - readoutHeight);
+        var readout = UIBox2.FromDimensions(new Vector2(center.X - face * 0.73f, readoutTop), new Vector2(face * 1.46f, readoutHeight));
+        handle.DrawRect(readout, WFInstrumentTheme.Skin.Ink);
+        WFInstrumentText.DrawFitted(handle, _dialDigits, _reading.Text,
+            new UIBox2(readout.TopLeft + new Vector2(UIScale), readout.BottomRight - new Vector2(UIScale)), UIScale, color);
         TextInBox(handle, _small, _minimumText, minimum, WFInstrumentTheme.Muted);
         TextInBox(handle, _small, _maximumText, maximum, WFInstrumentTheme.Muted);
         WFInstrumentGlass.Round(handle, center, face + 2 * UIScale, UIScale);
-        var skin = WFInstrumentTheme.Skin;
-        handle.DrawRect(layout.Readout, skin.Ink);
-        handle.DrawRect(layout.Readout, skin.EdgeSoft, false);
-        Readout(handle, new UIBox2(layout.Readout.TopLeft + new Vector2(2 * UIScale, UIScale),
-            layout.Readout.BottomRight - new Vector2(2 * UIScale, UIScale)), color);
         Text(handle, _small, _caption, new Vector2(center.X, layout.CaptionBaseline), PixelWidth - 2 * CaptionInset * UIScale, WFInstrumentTheme.Cream);
     }
 
-    /// <summary>Draws the reading as a large figure with a smaller unit, or its whole text when it is not a measurement.</summary>
+    /// <summary>Draws the reading as a figure with a smaller unit, or its whole text when it is not a measurement.</summary>
     private void Readout(DrawingHandleScreen handle, UIBox2 box, Color color)
     {
         if (_reading.Digits.Length > 0)
-            WFInstrumentText.DrawReading(handle, _digits, _reading.Digits, _reading.Unit, box, UIScale, color,
+            WFInstrumentText.DrawReading(handle, _stripDigits, _reading.Digits, _reading.Unit, box, UIScale, color,
                 WFInstrumentTheme.Skin.TextMuted);
         else
-            WFInstrumentText.DrawFitted(handle, _digits, _reading.Text, box, UIScale, color);
+            WFInstrumentText.DrawFitted(handle, _stripDigits, _reading.Text, box, UIScale, color);
     }
 
     /// <summary>Draws a linear scale with its caption and exact reading above it, in both skins and both heights.</summary>
@@ -187,7 +194,9 @@ public sealed class WFGlassGauge : Control
         var captionWidth = MathF.Min(header.Width * 0.4f, handle.GetDimensions(_small, _caption, UIScale).X + 8 * UIScale);
         TextInBox(handle, _small, _caption, UIBox2.FromDimensions(header.TopLeft, new Vector2(captionWidth, header.Height)),
             digital ? skin.TextMuted : skin.Text);
-        Readout(handle, new UIBox2(header.Left + captionWidth + 2 * UIScale, header.Top, header.Right, header.Bottom), color);
+        // Keeps the figures clear of the strip's right edge and of the caption.
+        Readout(handle, new UIBox2(header.Left + captionWidth + 4 * UIScale, header.Top + 2 * UIScale,
+            header.Right - 3 * UIScale, header.Bottom - 2 * UIScale), color);
 
         var left = 10 * UIScale;
         var width = MathF.Max(0, PixelWidth - 2 * left);
@@ -233,7 +242,7 @@ public sealed class WFGlassGauge : Control
         }
 
         var labelsTop = top + tall + 2 * UIScale;
-        var labelsBottom = y + content - 2 * UIScale;
+        var labelsBottom = y + content - 3 * UIScale;
         TextInBox(handle, _small, _minimumText, new UIBox2(inset, labelsTop, PixelWidth * 0.32f, labelsBottom), skin.TextMuted, true);
         TextInBox(handle, _small, _middleText, new UIBox2(PixelWidth * 0.34f, labelsTop, PixelWidth * 0.66f, labelsBottom),
             digital ? skin.TextMuted : skin.Text, true);
@@ -247,7 +256,7 @@ public sealed class WFGlassGauge : Control
     {
         var skin = WFInstrumentTheme.Skin;
         WFConsoleDigital.Panel(handle, PixelSizeBox, UIScale, skin.Glass, skin.EdgeSoft);
-        var layout = WFGaugeScale.RoundDial(PixelWidth, PixelHeight, UIScale, false);
+        var layout = WFGaugeScale.RoundDial(PixelWidth, PixelHeight, UIScale);
         var radius = layout.Radius;
         var center = layout.Center;
         var start = MathF.PI * 0.75f;

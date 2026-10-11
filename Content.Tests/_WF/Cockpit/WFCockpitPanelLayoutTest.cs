@@ -108,14 +108,148 @@ public sealed class WFCockpitPanelLayoutTest
         });
     }
 
-    [Test]
-    public void NoArrangementOverlapsAPanelOrLeavesTheScreen([Values(1090, 1130, 1600, 1920, 2560)] float width,
-        [Values(617, 636, 900, 1080, 1440)] float height, [Values] bool swapped, [Values] bool maximised)
+    private static float LeftColumn(float width) => Math.Clamp(width * 0.21f, 220, 320);
+
+    /// <summary>The screen as the view measures it, with the side column at its normal or its expanded width.</summary>
+    private static WFCockpitPanelLayout.Metrics Fitted(float width, float height, bool expanded, float strip = 0, float votes = 0)
     {
         var size = new Vector2(width, height);
-        var metrics = new WFCockpitPanelLayout.Metrics(size, 8, Math.Clamp(width * 0.21f, 220, 320),
-            Math.Min(Math.Clamp(width * 0.29f, 340, 520), Math.Max(300, width - Math.Clamp(width * 0.21f, 220, 320) - 532)),
-            Math.Clamp(height * 0.27f, 218, 250), 44, maximised ? 128 : 0, maximised ? 90 : 0);
+        var left = LeftColumn(width);
+        return new WFCockpitPanelLayout.Metrics(size, 8, left, WFCockpitPanelLayout.SideWidth(size, left, expanded),
+            Math.Clamp(height * 0.27f, 218, 250), 44, strip, votes);
+    }
+
+    [Test]
+    public void ExpandingGivesTheWorldViewAndTheMfdHalfTheWidthEach([Values(1600, 1920, 2560)] float width)
+    {
+        var normal = WFCockpitPanelLayout.Compute(Fitted(width, 1080, false), false, false);
+        var expanded = WFCockpitPanelLayout.Compute(Fitted(width, 1080, true), false, false);
+        Assert.Multiple(() =>
+        {
+            Assert.That(expanded.WorldShown, Is.True);
+            Assert.That(expanded.Mfd.Width, Is.EqualTo(expanded.World.Width).Within(0.01f));
+            Assert.That(expanded.Mfd.Width, Is.GreaterThan(normal.Mfd.Width));
+            Assert.That(expanded.World.Width, Is.LessThan(normal.World.Width));
+            Assert.That(expanded.World.Left, Is.EqualTo(normal.World.Left));
+            Assert.That(expanded.Mfd.Right, Is.EqualTo(width - WFCockpitPanelLayout.Margin).Within(0.01f));
+            Assert.That(expanded.Motion.Width, Is.EqualTo(expanded.World.Width).Within(0.01f));
+            Assert.That(expanded.Row.Width, Is.EqualTo(expanded.World.Width).Within(0.01f));
+            Assert.That(Overlap(expanded.World, expanded.Mfd), Is.False);
+        });
+    }
+
+    [Test]
+    public void ExpandingGrowsWhicheverPanelIsInTheSideColumnWhenSwapped([Values(1600, 1920, 2560)] float width)
+    {
+        var normal = WFCockpitPanelLayout.Compute(Fitted(width, 1080, false), true, false);
+        var expanded = WFCockpitPanelLayout.Compute(Fitted(width, 1080, true), true, false);
+        Assert.Multiple(() =>
+        {
+            Assert.That(expanded.WorldShown, Is.True);
+            Assert.That(expanded.World.Right, Is.EqualTo(width - WFCockpitPanelLayout.Margin).Within(0.01f), "The world view stays in the side column.");
+            Assert.That(expanded.World.Width, Is.EqualTo(expanded.Mfd.Width).Within(0.01f));
+            Assert.That(expanded.World.Width, Is.GreaterThan(normal.World.Width));
+            Assert.That(expanded.Mfd.Width, Is.LessThan(normal.Mfd.Width));
+            Assert.That(expanded.Mfd.Left, Is.EqualTo(normal.Mfd.Left));
+            Assert.That(expanded.Mfd.Left, Is.EqualTo(expanded.Motion.Left));
+            Assert.That(Overlap(expanded.World, expanded.Mfd), Is.False);
+        });
+    }
+
+    [Test]
+    public void ExpandingIsTheSameSplitWhicheverWayRound([Values(1130, 1600, 1920)] float width)
+    {
+        var expanded = Fitted(width, 1080, true);
+        var plain = WFCockpitPanelLayout.Compute(expanded, false, false);
+        var swapped = WFCockpitPanelLayout.Compute(expanded, true, false);
+        Assert.Multiple(() =>
+        {
+            AssertBox(swapped.Mfd, plain.World);
+            AssertBox(swapped.World, plain.Mfd);
+            AssertBox(swapped.Motion, plain.Motion);
+            AssertBox(swapped.Row, plain.Row);
+        });
+    }
+
+    [Test]
+    public void ExpandingOnASmallWindowStillLeavesTheCentreColumnItsRoom()
+    {
+        const float width = 1130;
+        var size = new Vector2(width, 636);
+        Assert.That(WFCockpitPanelLayout.CanExpand(size, LeftColumn(width)), Is.True);
+        var normal = WFCockpitPanelLayout.Compute(Fitted(width, 636, false), false, false);
+        var expanded = WFCockpitPanelLayout.Compute(Fitted(width, 636, true), false, false);
+        var swapped = WFCockpitPanelLayout.Compute(Fitted(width, 636, true), true, false);
+        Assert.Multiple(() =>
+        {
+            Assert.That(expanded.Mfd.Width, Is.GreaterThan(normal.Mfd.Width + 1));
+            Assert.That(expanded.World.Width, Is.GreaterThanOrEqualTo(500 - 0.01f));
+            Assert.That(swapped.Mfd.Width, Is.GreaterThanOrEqualTo(500 - 0.01f));
+            Assert.That(expanded.Mfd.Right, Is.LessThanOrEqualTo(width - WFCockpitPanelLayout.Margin + 0.01f));
+        });
+    }
+
+    [Test]
+    public void ExpandingChangesNothingOnAWindowTooNarrowForIt([Values(1000, 1090, 1097)] float width)
+    {
+        var size = new Vector2(width, 636);
+        var left = LeftColumn(width);
+        Assert.Multiple(() =>
+        {
+            Assert.That(WFCockpitPanelLayout.CanExpand(size, left), Is.False);
+            Assert.That(WFCockpitPanelLayout.SideWidth(size, left, true), Is.EqualTo(WFCockpitPanelLayout.SideWidth(size, left, false)));
+        });
+        foreach (var swapped in new[] { false, true })
+        {
+            var normal = WFCockpitPanelLayout.Compute(Fitted(width, 636, false), swapped, false);
+            var expanded = WFCockpitPanelLayout.Compute(Fitted(width, 636, true), swapped, false);
+            AssertBox(expanded.Mfd, normal.Mfd);
+            AssertBox(expanded.World, normal.World);
+        }
+    }
+
+    [Test]
+    public void ExpandingNeverNarrowsTheSideColumn([Values(800, 1000, 1130, 1280, 1600, 1920, 2560, 3840)] float width,
+        [Values] bool gunnery)
+    {
+        var size = new Vector2(width, 900);
+        // The gunnery bank widens the left column.
+        var left = gunnery ? Math.Clamp(width * 0.27f, 320, 420) : LeftColumn(width);
+        var normal = WFCockpitPanelLayout.SideWidth(size, left, false);
+        var expanded = WFCockpitPanelLayout.SideWidth(size, left, true);
+        var centre = WFCockpitPanelLayout.Center(size, left, normal);
+        Assert.Multiple(() =>
+        {
+            Assert.That(expanded, Is.GreaterThanOrEqualTo(normal));
+            Assert.That(WFCockpitPanelLayout.CanExpand(size, left), Is.EqualTo(expanded - normal >= 1));
+            Assert.That(WFCockpitPanelLayout.Center(size, left, expanded), Is.GreaterThanOrEqualTo(Math.Min(centre, 500) - 0.01f),
+                "Growing the side column never takes the centre below its minimum room.");
+        });
+    }
+
+    [Test]
+    public void MaximisingIgnoresWhetherTheMfdWasExpanded()
+    {
+        var plain = WFCockpitPanelLayout.Compute(Fitted(1920, 1080, false, 128, 90), false, true);
+        var expanded = WFCockpitPanelLayout.Compute(Fitted(1920, 1080, true, 128, 90), false, true);
+        var swapped = WFCockpitPanelLayout.Compute(Fitted(1920, 1080, true, 128, 90), true, true);
+        Assert.Multiple(() =>
+        {
+            Assert.That(expanded.WorldShown, Is.False);
+            AssertBox(expanded.Mfd, plain.Mfd);
+            AssertBox(expanded.Alerts, plain.Alerts);
+            AssertBox(expanded.Votes, plain.Votes);
+            AssertBox(expanded.Motion, plain.Motion);
+            AssertBox(expanded.Row, plain.Row);
+            AssertBox(swapped.Mfd, plain.Mfd);
+        });
+    }
+
+    [Test]
+    public void NoArrangementOverlapsAPanelOrLeavesTheScreen([Values(1090, 1130, 1600, 1920, 2560)] float width,
+        [Values(617, 636, 900, 1080, 1440)] float height, [Values] bool swapped, [Values] bool maximised, [Values] bool expanded)
+    {
+        var metrics = Fitted(width, height, expanded && !maximised, maximised ? 128 : 0, maximised ? 90 : 0);
         var frame = WFCockpitPanelLayout.Compute(metrics, swapped, maximised);
         var panels = new List<(string Name, UIBox2 Box)> { ("motion", frame.Motion), ("mfd", frame.Mfd), ("row", frame.Row) };
         if (frame.WorldShown)

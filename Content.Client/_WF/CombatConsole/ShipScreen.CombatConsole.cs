@@ -1,4 +1,5 @@
 using System.Numerics;
+using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Content.Client._WF.CombatConsole;
 using Content.Shared._WF.Shuttles;
@@ -8,9 +9,14 @@ namespace Content.Client._WF.Shuttles.UI;
 
 public sealed partial class ShipScreen
 {
+    /// <summary>Shares of the page width taken by the hull plot, the telemetry bank and the announcement column.</summary>
+    private const float WfPlotShare = 0.43f;
+    private const float WfStatusShare = 0.27f;
+    private const float WfSideShare = 0.3f;
+
     private ShipStatusSummary? _wfHull;
     private int? _wfTileCount;
-    /// <summary>Spreads hull telemetry and ship controls beside a narrower, independently interactive plot.</summary>
+    /// <summary>Gives the hull plot the widest column, with telemetry beside it and the announcements and overlay toggles stacked at the right.</summary>
     public void WfRefitInstruments()
     {
         var mapControls = ShipView.WfDetachInstrumentToolbar();
@@ -21,20 +27,22 @@ public sealed partial class ShipScreen
             button.Margin = new Thickness(0);
             button.AddStyleClass("WfCompact");
             button.HorizontalExpand = true;
+            button.TextAlign = Robust.Client.UserInterface.Controls.Label.AlignMode.Center;
         }
-        departments.HorizontalExpand = false;
-        departments.SetWidth = 170;
         FitButton.AddStyleClass("WfCompact");
         FitButton.Margin = new Thickness(0);
-        FitButton.HorizontalExpand = false;
-        FitButton.SetWidth = 100;
+        FitButton.HorizontalExpand = true;
         FitButton.MinHeight = 32;
-        var controls = new WFInstrumentPanel { Name = "WfHullControls", HorizontalExpand = true };
-        controls.AddChild(Row(DamageToggle, FireToggle, PressureToggle, PowerToggle, departments, FitButton));
+        var toggles = Column(WfToggleRow(DamageToggle, FireToggle), WfToggleRow(PressureToggle, PowerToggle),
+            WfToggleRow(departments, FitButton));
+        toggles.SeparationOverride = 4;
+        toggles.HorizontalExpand = true;
+        var overlays = Panel("wf-console-hull-overlays", toggles, false, 8, 4);
+        overlays.Name = "WfHullControls";
         var plot = Column(Scope("wf-console-hull-scope", ShipView, new Vector2(208, 150)), mapControls, NoDataLabel);
         plot.Name = "WfHullPlot";
         plot.HorizontalExpand = plot.VerticalExpand = true;
-        plot.SizeFlagsStretchRatio = 0.3f;
+        plot.SizeFlagsStretchRatio = WfPlotShare;
         NoDataLabel.HorizontalAlignment = HAlignment.Center;
         NoDataLabel.VerticalExpand = false;
         var telemetry = ShipNameLabel.Parent!;
@@ -45,7 +53,7 @@ public sealed partial class ShipScreen
                 value.ClipText = true;
         }
         telemetry.Visible = false;
-        var gauges = new GridContainer { Columns = 3, HorizontalExpand = true, VerticalExpand = true };
+        var gauges = new GridContainer { Columns = 2, HorizontalExpand = true, VerticalExpand = true };
         foreach (var gauge in new[]
         {
             new WFGlassGauge("wf-gauge-hull", () => WFGaugeReading.Number(_wfHull?.WorstIntegrity * 100, 0, 100,
@@ -67,20 +75,30 @@ public sealed partial class ShipScreen
         hull.VerticalExpand = true;
         var status = Panel("wf-console-hull-status", hull, true);
         status.Name = "WfHullStatus";
-        status.SizeFlagsStretchRatio = 0.36f;
+        status.SizeFlagsStretchRatio = WfStatusShare;
         AlarmPanel.WfRefitInstruments();
-        var announcements = Panel("wf-console-hull-announcements", AlarmPanel, true);
+        var announcements = Panel("wf-console-hull-announcements", AlarmPanel, true, 8, 4);
         announcements.Name = "WfHullAnnouncements";
-        announcements.SizeFlagsStretchRatio = 0.34f;
-        var workspace = Row(plot, status, announcements);
+        var side = Column(announcements, overlays);
+        side.Name = "WfHullSide";
+        side.HorizontalExpand = side.VerticalExpand = true;
+        side.SizeFlagsStretchRatio = WfSideShare;
+        var workspace = Row(plot, status, side);
         workspace.VerticalExpand = true;
         workspace.SeparationOverride = 8;
         DisposeAllChildren();
         Orientation = LayoutOrientation.Vertical;
         VerticalExpand = true;
         SeparationOverride = 8;
-        AddChild(controls);
         AddChild(workspace);
+    }
+
+    /// <summary>Pairs two controls on one row of the overlay panel.</summary>
+    private static BoxContainer WfToggleRow(Control left, Control right)
+    {
+        var row = Row(left, right);
+        row.SeparationOverride = 4;
+        return row;
     }
 
     private WFGlassGauge WfHullCount(string caption, Func<int?> read) => new(caption, () =>

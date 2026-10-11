@@ -20,11 +20,11 @@ public sealed class WFVelocityVectorInstrument : Control
     private readonly string _starboard = Loc.GetString("wf-cockpit-velocity-starboard");
     private DrawVertexUV2DColor[] _vertices = Array.Empty<DrawVertexUV2DColor>();
     private WFCockpitVelocityReading? _reading;
-    private WFGaugeReading _speed;
+    private string _speedText = string.Empty;
     private float _sampleElapsed;
 
-    /// <summary>The longest the arrow gets, as a fraction of the dial face, leaving the compass labels clear.</summary>
-    private const float ArrowReach = 0.5f;
+    /// <summary>The longest the arrow gets, as a fraction of the dial face, keeping full aft travel above the speed readout.</summary>
+    private const float ArrowReach = 0.44f;
 
     /// <summary>Exposes the live physical sample independently of drawing.</summary>
     public WFCockpitVelocityReading? Reading => _read();
@@ -37,9 +37,9 @@ public sealed class WFVelocityVectorInstrument : Control
         HorizontalExpand = true;
         MouseFilter = MouseFilterMode.Pass;
         ToolTip = Loc.GetString("wf-cockpit-velocity-help");
-        var cache = IoCManager.Resolve<IResourceCache>();
-        _labels = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf"), 9);
-        _digits = new VectorFont(cache.GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Bold.ttf"), 22);
+        var font = IoCManager.Resolve<IResourceCache>().GetResource<FontResource>("/Fonts/RobotoMono/RobotoMono-Regular.ttf");
+        _labels = new VectorFont(font, 9);
+        _digits = new VectorFont(font, 12);
         _reading = _read();
         Sample();
     }
@@ -57,7 +57,7 @@ public sealed class WFVelocityVectorInstrument : Control
 
     private void Sample()
     {
-        _speed = WFGaugeReading.Number(_reading?.Speed, 0, WFCockpitVelocityReading.FullScaleSpeed, "wf-gauge-unit-speed", 1);
+        _speedText = WFGaugeReading.Number(_reading?.Speed, 0, WFCockpitVelocityReading.FullScaleSpeed, "wf-gauge-unit-speed", 1).Text;
     }
 
     protected override void Draw(DrawingHandleScreen handle)
@@ -67,7 +67,7 @@ public sealed class WFVelocityVectorInstrument : Control
         var skin = WFInstrumentTheme.Skin;
         var digital = WFInstrumentTheme.Digital;
         var tint = reading == null ? skin.TextMuted : skin.Accent;
-        var layout = WFGaugeScale.RoundDial(PixelWidth, PixelHeight, UIScale, true);
+        var layout = WFGaugeScale.RoundDial(PixelWidth, PixelHeight, UIScale);
         var radius = layout.Radius;
         var center = layout.Center;
         var face = MathF.Max(1, radius - 7 * UIScale);
@@ -98,8 +98,8 @@ public sealed class WFVelocityVectorInstrument : Control
         Text(handle, _labels, _aft, center + new Vector2(0, extent), face * 0.9f, skin.TextMuted);
         Text(handle, _labels, _port, center + new Vector2(-extent, 0), face * 0.35f, skin.TextMuted);
         Text(handle, _labels, _starboard, center + new Vector2(extent, 0), face * 0.35f, skin.TextMuted);
-        // The speed has its own bar beneath the dial, so the arrow starts at the dial's centre.
-        var origin = center;
+        // Keep full aft travel above the speed inset while giving slow drift more visible space.
+        var origin = center - new Vector2(0, face * 0.26f);
         var bow = new[] { origin + new Vector2(0, -6 * UIScale), origin + new Vector2(-3, 4) * UIScale,
             origin + new Vector2(3, 4) * UIScale };
         handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, bow, skin.TextMuted.WithAlpha(0.65f));
@@ -116,23 +116,13 @@ public sealed class WFVelocityVectorInstrument : Control
         }
         else if (reading != null)
             WFConsoleDigital.Dot(handle, origin, 2 * UIScale, tint, ref _vertices);
+        var readout = UIBox2.FromDimensions(center + new Vector2(-face * 0.725f, face * 0.21f),
+            new Vector2(face * 1.45f, MathF.Min(18 * UIScale, face * 0.32f)));
+        handle.DrawRect(readout, skin.Ink);
+        WFInstrumentText.DrawFitted(handle, _digits, _speedText,
+            new UIBox2(readout.TopLeft + new Vector2(UIScale), readout.BottomRight - new Vector2(UIScale)), UIScale, tint);
         if (!digital)
             WFInstrumentGlass.Round(handle, center, face + 2 * UIScale, UIScale);
-
-        var bar = layout.Readout;
-        if (digital)
-            WFConsoleDigital.Panel(handle, bar, UIScale, skin.Ink, skin.EdgeSoft, false, 4);
-        else
-        {
-            handle.DrawRect(bar, skin.Ink);
-            handle.DrawRect(bar, skin.EdgeSoft, false);
-        }
-        var inner = new UIBox2(bar.TopLeft + new Vector2(2 * UIScale, UIScale), bar.BottomRight - new Vector2(2 * UIScale, UIScale));
-        if (_speed.Digits.Length > 0)
-            WFInstrumentText.DrawReading(handle, _digits, _speed.Digits, _speed.Unit, inner, UIScale, tint, skin.TextMuted);
-        else
-            WFInstrumentText.DrawFitted(handle, _digits, _speed.Text, inner, UIScale, tint);
-
         var captionScale = WFInstrumentText.FitScale(handle, _labels, _caption, UIScale, PixelWidth - 16 * UIScale, 18 * UIScale);
         if (captionScale > 0)
         {

@@ -12,6 +12,9 @@ public static class WFInstrumentText
     /// <summary>Size of a unit or tag beside a figure, relative to the figure.</summary>
     public const float TagScale = 0.7f;
 
+    /// <summary>Point size of the figures in linear gauges and the coordinates box, small enough to sit clear of their edges.</summary>
+    public const int StripDigitSize = 15;
+
     /// <summary>Returns a bounded scale fitting the text's width and optional full height, or zero if too small.</summary>
     public static float FitScale(DrawingHandleScreen handle, Font font, string text, float maximum, float width,
         float height = float.PositiveInfinity)

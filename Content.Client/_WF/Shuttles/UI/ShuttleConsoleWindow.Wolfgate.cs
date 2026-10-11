@@ -51,6 +51,12 @@ public sealed partial class ShuttleConsoleWindow
     /// </summary>
     public event Action<ShuttleCameraView, float, bool>? ShipCameraRequested;
 
+    /// <summary>The last hull telemetry request sent, so an unchanged one is not repeated.</summary>
+    private (bool Active, ShipOverlays Overlays, bool HullOnly)? _wfStatusRequest;
+
+    /// <summary>Whether any page on screen reads hull telemetry: the ship page, the navigation fuel gauge or the cockpit.</summary>
+    private bool WfStatusWanted => WfCockpitActive || _mode is ShuttleConsoleMode.Ship or ShuttleConsoleMode.Nav;
+
     private void WfInitialize()
     {
         ShipContainer.CodeRequested += code => ShipCodeRequested?.Invoke(code);
@@ -66,8 +72,11 @@ public sealed partial class ShuttleConsoleWindow
         ShipContainer.OverlaysChanged += () =>
         {
             if (ShipContainer.Visible || WfCockpitActive)
-                ShipStatusActiveChanged?.Invoke(true, ShipContainer.Overlays);
+                WfRequestShipStatus();
         };
+
+        // The navigation page's fuel gauge reads the summary, so its request follows that page on and off screen.
+        NavContainer.OnVisibilityChanged += _ => WfRequestShipStatus();
     }
 
     private void WfSetShipMode(bool active)
@@ -80,12 +89,34 @@ public sealed partial class ShuttleConsoleWindow
         if (!active && !WfCockpitActive)
             ShipContainer.ClearStatus();
 
-        ShipStatusActiveChanged?.Invoke(active || WfCockpitActive, ShipContainer.Overlays);
+        WfRequestShipStatus();
     }
 
-    /// <summary>Feeds fresh hull telemetry to the ship screen.</summary>
+    /// <summary>
+    /// Tells the server whether this window wants hull telemetry and how much of it: everything for the ship page,
+    /// the summary alone for the navigation fuel gauge. Nothing is sent when the request has not changed, unless forced.
+    /// </summary>
+    public void WfRequestShipStatus(bool force = false)
+    {
+        var wanted = WfStatusWanted;
+        if (!wanted)
+            NavContainer.WfFuel = null;
+        if (ShipStatusActiveChanged is not { } changed)
+            return;
+        (bool Active, ShipOverlays Overlays, bool HullOnly) request = (wanted, ShipContainer.Overlays, wanted && WfHullOnly);
+        if (!force && _wfStatusRequest is { } last && last == request)
+            return;
+        _wfStatusRequest = request;
+        changed(wanted, ShipContainer.Overlays);
+    }
+
+    /// <summary>Feeds fresh hull telemetry to the pages showing it; a reply arriving after they have gone is dropped.</summary>
     public void UpdateShipStatus(ShipStatusMessage message)
     {
-        ShipContainer.UpdateStatus(message);
+        if (!WfStatusWanted)
+            return;
+        NavContainer.WfFuel = message.Summary.Fuel;
+        if (WfCockpitActive || _mode == ShuttleConsoleMode.Ship)
+            ShipContainer.UpdateStatus(message);
     }
 }

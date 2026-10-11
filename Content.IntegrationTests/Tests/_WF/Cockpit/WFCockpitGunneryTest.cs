@@ -20,6 +20,7 @@ using Content.Shared._Mono.FireControl;
 using Content.Shared._NF.Shuttles.Events;
 using Content.Shared._Mono.ShipGuns;
 using Content.Shared._Mono.Ships.Components;
+using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Cockpit;
 using Content.Shared._WF.CombatConsole;
 using Content.Shared.Access;
@@ -51,6 +52,7 @@ public sealed class WFCockpitGunneryTest
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
         var map = await pair.CreateTestMap();
+        await pair.Client.WaitPost(() => pair.Client.CfgMan.SetCVar(WolfgateCVars.CockpitAutoEnter, false));
         var em = pair.Server.EntMan;
         EntityUid actor = default, seat = default, helm = default, gun = default, server = default, groupedWeapon = default;
         NetEntity gunNet = default, weaponNet = default;
@@ -209,6 +211,7 @@ public sealed class WFCockpitGunneryTest
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
         var map = await pair.CreateTestMap();
+        await pair.Client.WaitPost(() => pair.Client.CfgMan.SetCVar(WolfgateCVars.CockpitAutoEnter, false));
         var em = pair.Server.EntMan;
         var dummy = await pair.Server.AddDummySession();
         // The ticker joins the dummy once its database lookups land, in real time. Joining it by hand first
