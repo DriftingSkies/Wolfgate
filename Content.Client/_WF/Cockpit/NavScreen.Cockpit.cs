@@ -91,13 +91,40 @@ public sealed partial class NavScreen
         return Column(lease.Take(DampenerModeButtons, restoreVisibility: false), lease.Take(WfOrbitButton));
     }
 
-    /// <summary>Moves the live radar into the navigation MFD.</summary>
+    /// <summary>Moves the live radar into the navigation MFD, with its contact toggles on the glass.</summary>
     public Control WfCockpitRadar(WFCockpitLease lease)
     {
         var radar = lease.Take(NavRadar);
         radar.WfCockpitInteraction(lease);
         radar.VerticalExpand = true;
-        return ScopeLayers(radar, Vector2.Zero);
+        var layers = ScopeLayers(radar, Vector2.Zero);
+        var keys = new WFCockpitRadarKeys(Key(IFFToggle, "shuttle-console-iff-toggle-short"),
+            Key(IFFDetailedToggle, "shuttle-console-iff-detailed-short"), Key(DockToggle, "shuttle-console-dock-toggle-short"));
+        layers.AddChild(keys);
+        LayoutContainer.SetAnchorAndMarginPreset(keys, LayoutContainer.LayoutPreset.Wide);
+        return layers;
+
+        Button Key(Button button, string caption)
+        {
+            lease.Take(button);
+            var text = button.Text;
+            var tooltip = button.ToolTip;
+            var compact = button.HasStyleClass("WfCompact");
+            lease.Remember(() =>
+            {
+                button.Text = text;
+                button.ToolTip = tooltip;
+                if (!compact)
+                    button.RemoveStyleClass("WfCompact");
+                Switch(button);
+            });
+            button.Text = Loc.GetString(caption);
+            button.ToolTip = tooltip ?? text;
+            button.AddStyleClass("WfCompact");
+            button.HorizontalExpand = false;
+            button.MinSize = button.MaxSize = WFCockpitRadarKeys.Key;
+            return button;
+        }
     }
 
     /// <summary>Keeps sensor configuration and wired auxiliary controls available without another window.</summary>
@@ -119,7 +146,6 @@ public sealed partial class NavScreen
         });
         NetworkPortsBox.Columns = 2;
         return Column(new WFGlassReadout(Column(lease.Take(ShuttleDesignation), lease.Take(GridPosition))),
-            lease.Take(MaximumShuttleSpeedBox), lease.Take(IFFToggle), lease.Take(IFFDetailedToggle), lease.Take(DockToggle), lease.Take(IffSearchBox),
-            lease.Take(MaximumIFFDistanceBox), lease.Take(NetworkPortsBox));
+            lease.Take(MaximumShuttleSpeedBox), lease.Take(IffSearchBox), lease.Take(MaximumIFFDistanceBox), lease.Take(NetworkPortsBox));
     }
 }

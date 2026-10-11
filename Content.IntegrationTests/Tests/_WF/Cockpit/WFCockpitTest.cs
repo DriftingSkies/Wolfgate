@@ -171,6 +171,10 @@ public sealed class WFCockpitTest : InteractionTest
             var originalPlotControls = plots.Select(plot => plot.WfCockpitControls).ToArray();
             var networkPorts = Named<GridContainer>(window, "NetworkPortsBox");
             var originalNetworkLayout = (networkPorts.LimitedDimension, networkPorts.Rows, networkPorts.Columns);
+            var helmKeys = new[] { "IFFToggle", "IFFDetailedToggle", "DockToggle" }.Select(name => Named<Button>(window, name)).ToArray();
+            var helmKeyCaptions = helmKeys.Select(key => key.Text).ToArray();
+            var helmKeyParent = helmKeys[0].Parent;
+            var helmKeyOrder = helmKeys.Select(key => key.GetPositionInParent()).ToArray();
             Assert.That(AimOverlayPresent(), Is.False, "Without a cockpit the ship cam has no aim lines.");
             Assert.That(controller.Enter(window), Is.True);
             Assert.That(AimOverlayPresent(), Is.True, "An open cockpit draws its aim lines on the ship cam.");
@@ -183,6 +187,23 @@ public sealed class WFCockpitTest : InteractionTest
             Assert.That(normalHud.Where(control => control != chat && control != viewport && control is not AlertsUI)
                 .All(control => !control.VisibleInTree), Is.True, "Character HUD controls must stay hidden.");
             var hud = screen.Children.OfType<WFCockpitView>().Single();
+            var radar = window.FindControl<NavScreen>("NavContainer").FindControl<ShuttleNavControl>("NavRadar");
+            var sensorKeys = helmKeys;
+            Layout(hud, new Vector2(1130, 636));
+            Assert.That(sensorKeys.Select(key => Ancestors(key, hud).Contains(radar.Parent)), Is.All.True,
+                "The contact toggles must ride on the cockpit's radar scope.");
+            foreach (var (key, shown) in new (Button, Func<bool>)[]
+                     {
+                         (sensorKeys[0], () => radar.ShowIFF), (sensorKeys[1], () => radar.ShowIFFDetailed),
+                         (sensorKeys[2], () => radar.ShowDocks),
+                     })
+            {
+                var before = shown();
+                Toggle(key, !before);
+                Assert.That(shown(), Is.EqualTo(!before), $"{key.Name} on the scope must still drive the radar.");
+                Toggle(key, before);
+                Assert.That(shown(), Is.EqualTo(before));
+            }
             Assert.That(alerts.VisibleInTree, Is.True, "Crew status alerts must remain available in cockpit.");
             Assert.That(votes.VisibleInTree, Is.True, "Live votes must not be hidden with character hotkeys.");
             Assert.That(speech.VisibleInTree, Is.True, "Speech bubbles must continue updating in cockpit.");
@@ -489,6 +510,12 @@ public sealed class WFCockpitTest : InteractionTest
             Assert.That(viewport.Parent, Is.SameAs(viewportParent));
             Assert.That(viewport.Visible, Is.True, "Leaving with the MFD maximised must bring the world view back.");
             Assert.That(chat.Parent, Is.SameAs(chatParent));
+            Assert.That(helmKeys.Select(key => key.Text), Is.EqualTo(helmKeyCaptions),
+                "Leaving must give the helm's contact toggles their full captions back.");
+            Assert.That(helmKeys.Select(key => key.Parent), Is.All.SameAs(helmKeyParent));
+            Assert.That(helmKeys.Select(key => key.GetPositionInParent()), Is.EqualTo(helmKeyOrder),
+                "Leaving must put the contact toggles back in order above the IFF search.");
+            Assert.That(helmKeys.Select(key => key.HasStyleClass("WfCompact")), Is.All.False);
             Assert.That(alerts.Parent, Is.SameAs(alertsParent));
             Assert.That(votes.Parent, Is.SameAs(votesParent));
             Assert.That(speech.Parent, Is.SameAs(speechParent));
@@ -1706,6 +1733,7 @@ public sealed class WFCockpitTest : InteractionTest
         Assert.That(Bottom(tcas), Is.LessThanOrEqualTo(camera.GlobalPosition.Y));
         Assert.That(Ancestors(tcas, hud).OfType<ScrollContainer>(), Is.Empty,
             "TCAS lamps must never scroll with the instrument bank.");
+        AssertRadarKeys(hud, ui, $"{theme}, {size}, {page}", page);
         var speedLimit = Named<Control>(hud, "MaximumShuttleSpeedBox");
         Assert.That(Ancestors(speedLimit, hud), Does.Not.Contain(flight));
         Assert.That(Ancestors(speedLimit, hud), Does.Contain(mfd), "The speed limiter belongs on SYS.");
@@ -2223,6 +2251,37 @@ public sealed class WFCockpitTest : InteractionTest
                 else
                     AssertLabelFits((Button) control, ui, context);
             }
+        }
+    }
+
+    /// <summary>The IFF, detailed IFF and docks toggles sit on the NAV scope's glass, clear of its mode buttons, and nowhere else.</summary>
+    private static void AssertRadarKeys(WFCockpitView hud, IUserInterfaceManager ui, string context, string page)
+    {
+        var keys = new[] { "IFFToggle", "IFFDetailedToggle", "DockToggle" }.Select(name => Named<Button>(hud, name)).ToArray();
+        foreach (var key in keys)
+            Assert.That(key.VisibleInTree, Is.EqualTo(page == "wf-cockpit-nav"), $"{context}: {key.Name} belongs with the radar on NAV.");
+        if (page != "wf-cockpit-nav")
+            return;
+        Assert.That(keys.Select(key => key.Text), Is.EqualTo(new[]
+        {
+            Loc.GetString("shuttle-console-iff-toggle-short"), Loc.GetString("shuttle-console-iff-detailed-short"),
+            Loc.GetString("shuttle-console-dock-toggle-short"),
+        }), context);
+        var radar = Named<ShuttleNavControl>(hud, "NavRadar");
+        var modes = Named<Control>(hud, "WfRadarModes");
+        Assert.That(modes.VisibleInTree, Is.True, context);
+        for (var index = 0; index < keys.Length; index++)
+        {
+            var key = keys[index];
+            Assert.That(key.GlobalPosition.X, Is.GreaterThanOrEqualTo(radar.GlobalPosition.X), $"{context}: {key.Name}");
+            Assert.That(Right(key), Is.LessThanOrEqualTo(Right(radar) + 1), $"{context}: {key.Name}");
+            Assert.That(key.GlobalPosition.Y, Is.GreaterThanOrEqualTo(radar.GlobalPosition.Y), $"{context}: {key.Name}");
+            Assert.That(Bottom(key), Is.LessThanOrEqualTo(Bottom(radar) + 1), $"{context}: {key.Name}");
+            Assert.That(key.GlobalPosition.X >= Right(modes) || Bottom(key) <= modes.GlobalPosition.Y, Is.True,
+                $"{context}: {key.Name} must not cover the radar's mode buttons.");
+            if (index > 0)
+                Assert.That(key.GlobalPosition.X, Is.GreaterThanOrEqualTo(Right(keys[index - 1])), $"{context}: {key.Name}");
+            AssertLabelFits(key, ui, context);
         }
     }
 
