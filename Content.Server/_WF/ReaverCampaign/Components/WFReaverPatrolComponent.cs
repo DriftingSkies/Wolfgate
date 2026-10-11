@@ -27,4 +27,24 @@ public sealed partial class WFReaverPatrolComponent : Component
     /// <summary>Whether it was called back to defend its stronghold.</summary>
     [ViewVariables]
     public bool Recalled;
+
+    /// <summary>The player ship it was sent to intercept, if any.</summary>
+    [ViewVariables]
+    public EntityUid? Intercepting;
+
+    /// <summary>When it was sent to intercept.</summary>
+    [ViewVariables]
+    public TimeSpan InterceptSince;
+
+    /// <summary>The route points it had still to call at when it was sent, flown after the intercept.</summary>
+    [ViewVariables]
+    public List<Vector2> Resume = new();
+
+    /// <summary>Since when the intercepted ship has been out of held space.</summary>
+    [ViewVariables]
+    public TimeSpan? TargetOutsideSince;
+
+    /// <summary>Since when the intercepted ship has been more than three cells off.</summary>
+    [ViewVariables]
+    public TimeSpan? TargetFarSince;
 }

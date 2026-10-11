@@ -1,7 +1,24 @@
-# Notices to a ship crossing a border
+# Notices to a ship crossing a border; a faction may replace them with its own lines taking the same arguments
 sector-control-notice-sender = Sector Watch
-sector-control-notice-entered = {$ship} has entered {$faction} space at {$callsign}.
-sector-control-notice-left = {$ship} has left {$faction} space. Now at {$callsign}.
+sector-control-notice-entered = WARNING: entering {$faction} controlled space ({$callsign}).
+sector-control-notice-left = Leaving {$faction} controlled space. Now in open space at {$callsign}.
+
+# Sector map: the game menu entry, its window and the shuttle console mode
+wf-sector-map-button = Sector map
+wf-sector-map-window-title = Sector map
+wf-sector-map-mode = SECTOR
+wf-sector-map-centre-on-me = Centre on me
+wf-sector-map-whole-sector = Whole sector
+wf-sector-map-scale = {$width} km across
+wf-sector-map-ring = {$km} km
+wf-sector-map-no-data = No territory data
+wf-sector-map-hover-held = {$callsign}: {$faction}
+wf-sector-map-hover-open = {$callsign}: open space
+wf-sector-map-hover-contested = {$callsign}: contested by {$faction}, {$time}
+
+# wf_sectormap command
+cmd-wf_sectormap-desc = Opens or closes the sector map.
+cmd-wf_sectormap-help = Usage: {$command}
 
 # wf_sector command
 cmd-wf_sector-desc = Shows and edits faction territory on the sector map.

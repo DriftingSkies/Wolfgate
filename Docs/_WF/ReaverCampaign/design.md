@@ -65,20 +65,46 @@ route flown, it resolves `Completed`, jumps out and is swept; the stronghold sen
 **Patrol killed.** When a patrol resolves `Destroyed`, the cell its lead died in is freed unless a stronghold stands
 in it, the patrol bounty is paid, and the sector watch says so without a chime ("Reaver patrol destroyed at K-7, the
 cell is clear, bounty paid"). **Stronghold under attack.** Once a stronghold has taken hits from player ships, the
-nearest patrol within one cell is recalled to it (`SetOrders`: `GoTo` the stronghold at 600 m).
+nearest patrol within one cell is recalled to it (`SetOrders`: `GoTo` the stronghold at 600 m); a recalled patrol drops any intercept it was on.
 
 ## Raids
 
 One campaign-wide raid clock from tier 3, interval `raidInterval[tier]` divided by nothing (not per stronghold),
 concurrency capped at `clamp(players / 8, 1, 4)`, skipped when nothing qualifies. Targets come from activity data: a
-crewed player ship in or beside held space, not docked, not raided in the last 45 min, weighted by crew count; every
+crewed player ship in or beside held space (a marked ship anywhere on the map, below), not docked, not raided in the
+last 45 min, weighted by crew count (three times that for a marked ship); every
 third raid targets instead the nearest non-protected station to held space (a core station from tier 4), where the
 navies' persistent patrols meet it. Three prototypes: `WFReaverRaidPack` (raider + wing, orders `GoTo` the target at
 600 m then `Attack` it), `WFReaverRaidBoarders` (`hunt: true`, as the storyteller's boarders) and
 `WFReaverRaidStation` (raider + wing, `GoTo` the station standoff, `wander: 4` there). Launched from the stronghold
-nearest the target; the target ship's PA and the common channel get a warning with bearing and distance. The
+nearest the target; the target ship gets a warning with bearing and distance over its PA and in chat to those aboard
+(`WFSectorNoticeSystem.Tell`), and the common channel hears it too. The
 storyteller's own raiders keep spawning everywhere: the campaign answers `WFEncounterWeightEvent` and scales the
 weight of `WFEncounterPirateRaiders` and `WFEncounterPirateBoarders` by `threatScale[tier]`, capped at 1.5.
+
+## Intercepts and marks
+
+Staying in Reaver space gets a ship hunted. The campaign tick times every crewed player ship (the activity system's
+`CrewedShips`) in a cell the faction holds; leaving held space resets its clock. Once a ship has been inside for
+`interceptDwell` and is off its cooldown, a patrol is turned on it, within a campaign-wide cap of simultaneous
+intercepts by tier (`intercepts`): the nearest patrol that is out, not already intercepting and not recalled, within
+three cells of the ship; failing that, a fresh patrol from the nearest stronghold if the patrol caps allow. Its orders
+(`SetOrders`): `GoTo` where the ship is (range 600 m), `Attack` the ship, then the route points it had still to call
+at and home, so a patrol whose target is disabled flies on instead of going idle. The ship gets "Reaver patrol turning
+to intercept Hauler, bearing 045, 3.2 km." over its PA and in chat to those aboard, and the common channel hears it,
+with bearing and range from the ship to the patrol. A ship no patrol could be sent after is tried again in 30 s.
+
+An intercept ends when its target is disabled (`WFCrewShipStatusSystem.IsDisabled`, the test the `Attack` task ends
+on), deleted or off the sector map, has been out of held space for 60 s, or has been more than three cells from the
+patrol for 60 s. The patrol gets the rest of its route and home again, and the target goes on `interceptCooldown`. A
+patrol recalled to its stronghold, or one that resolves, drops its intercept the same way. The state is
+`InsideSince` and `InterceptCooldowns` on `WFReaverCampaignComponent`, and `Intercepting`, `InterceptSince`, `Resume`
+and the two give-up clocks on `WFReaverPatrolComponent`.
+
+**Marks.** Every player ship that lands a hit on a stronghold, or hit a patrol that is destroyed (the encounter's
+`ShipHits`), gets `WFReaverMarkComponent` for 30 min, refreshed by each new hit or kill. Raids weigh a marked ship
+three times as heavy and take it as a target anywhere on the sector map, not only in or beside held space; its warning
+reads "Reaver raiders are hunting Hauler, bearing 045, 3.2 km." Marks run out in the tick.
 
 ## Threat
 
@@ -123,6 +149,9 @@ preset with no campaign runs none (logged once).
 | supportRange | 2 | 2 | 3 |
 | patrols by tier (0–5) | 0,1,1,1,1,2 | 0,1,1,2,2,2 | 0,1,2,2,3,3 |
 | patrolInterval | 15 min | 10 min | 7 min |
+| interceptDwell | 60 s | 60 s | 60 s |
+| interceptCooldown | 10 min | 10 min | 10 min |
+| intercepts by tier (0–5) | 0,1,1,1,1,2 | 0,1,1,2,2,2 | 0,1,2,2,3,3 |
 | raidInterval by tier (3–5) | 60, 50, 40 min | 40, 32, 26 min | 30, 24, 18 min |
 | threatScale by tier | 1,1,1,1.1,1.2,1.3 | 1,1,1.1,1.2,1.35,1.5 | 1,1.1,1.2,1.3,1.4,1.5 |
 | tierThresholds | 10,22,40,60,80 | 12,30,55,80,105 | 15,35,60,90,120 |
@@ -132,14 +161,15 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
 
 ## Everyone can take part
 
-- Guns: hunt patrols (frees a cell at once, paid), break strongholds (collapses a region, paid, loot aboard).
-- No guns: fly a lane to keep it quiet (a blockade counts moving ships only, so docking or loitering does not stop it);
+- Guns: hunt patrols (frees a cell at once, paid), break strongholds (collapses a region, paid, loot aboard). Either
+  marks the ship for raids for half an hour.
+- No guns: cross held space quickly (a minute inside brings a patrol); fly a lane to keep it quiet (a blockade counts moving ships only, so docking or loitering does not stop it);
   stand by an assault for the support pool; haul and salvage.
 - Navies: the Halcyon's cell is never taken, but a front at the doorstep is theirs, and each navy's faction credits
   (TSF and PDV alike) flow through the bounty.
 - Ghosts: strongholds, patrols and raids on the Encounters tab of the orbit menu as any encounter.
-- Admins: `wf_reavers status | found [x y] | tier <n> | spread | patrol | raid | pause | resume | clear`, and every
-  campaign encounter in the Encounters admin window.
+- Admins: `wf_reavers status | found [x y] | tier <n> | spread | patrol | raid | intercept <grid uid> | pause |
+  resume | clear` (status lists intercepts and marks), and every campaign encounter in the Encounters admin window.
 - Round end: a summary line (peak cells held, strongholds founded and broken, patrols destroyed) through
   `RoundEndTextAppendEvent`.
 
@@ -149,17 +179,20 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
   above, the prototype ids, bounties, sounds and colours), `ReaverCampaignCVars.cs` (`wf.reavers.enabled`).
 - `Content.Server/_WF/ReaverCampaign`: `README.md`, `Components/WFReaverStrongholdComponent.cs` (cell, tier at
   founding, hits seen, supporters), `Components/WFReaverPatrolComponent.cs` (stronghold, route),
-  `Components/WFReaverRaidComponent.cs` (target), `Components/WFReaverCampaignComponent.cs` (campaign state on the
-  sector map entity: tier, score, clocks, counters for the round summary), `Systems/WFReaverCampaignSystem.cs` with
-  partials `.Strongholds.cs`, `.Spread.cs`, `.Patrols.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`, `.Rewards.cs`,
-  `Commands/WFReaverCommand.cs`.
+  `Components/WFReaverRaidComponent.cs` (target), `Components/WFReaverMarkComponent.cs` (until when a ship is
+  marked), `Components/WFReaverCampaignComponent.cs` (campaign state on the sector map entity: tier, score, clocks,
+  intercept clocks, counters for the round summary), `Systems/WFReaverCampaignSystem.cs` with partials
+  `.Strongholds.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
+  `.Rewards.cs`, `Commands/WFReaverCommand.cs`.
 - `Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`, `encounters.yml`; `Resources/Locale/en-US/_WF/ReaverCampaign/reavers.ftl`;
   `Resources/ServerInfo/_WF/ReaverCampaign/Reavers.xml` guidebook page if the guidebook takes module pages without
   an upstream edit (follow an existing `_WF` guidebook page; otherwise leave it out and say so).
 - Tests: `Content.IntegrationTests/Tests/_WF/ReaverCampaign/` (founding claims ring, lead down breaks and pays,
   patrol kill frees a cell, spread respects quiet and veto, contest claims at deadline, tier rises and falls with
-  hysteresis, regroup, every votable preset has exactly one campaign). Every step is a one-shot method the test can
-  call (`TryFound`, `TrySpreadOnce`, `TryLaunchPatrol`, `TryLaunchRaid`, `SetTier`), with time from `IGameTiming`.
+  hysteresis, regroup, every votable preset has exactly one campaign, intercept past the dwell and not outside held
+  space, route restored and cooldown held, marks from a patrol kill and a stronghold hit steering a raid, the Reaver
+  border notice). Every step is a one-shot method the test can call (`TryFound`, `TrySpreadOnce`, `TryLaunchPatrol`,
+  `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`), with time from `IGameTiming`.
 
 Edits inside `_WF/Encounters` (same fork, no markers; the README overview gains a paragraph): `TrySpawn(...,
 bool offBudget = false)`; public `SetOrders(encounter, key, queue)` that sets `HasOrders`/`Flown`; public
@@ -176,6 +209,8 @@ stationClearance)` and `Stations(map)` on the scheduler.
 - One raid clock for the campaign, capped by population. Per-stronghold clocks reached 36 raids an hour.
 - Light garrisons first. A pirate frigate at minute 20 on a ten-player round is not a fight, it is a wall.
 - Only tiers, strongholds and patrol kills are announced. Cell churn shows on the map.
+- Staying in held space, not crossing it, is what brings a patrol, and intercepts use the patrols already out first,
+  so the downside of Reaver space is a fight, not a toll.
 
 ## Later
 

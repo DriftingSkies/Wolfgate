@@ -22,6 +22,10 @@ public sealed partial class WFReaverStrongholdComponent : Component
     [ViewVariables]
     public int Hits;
 
+    /// <summary>Hits each player ship has landed on it, so a fresh hit marks the ship that made it.</summary>
+    [ViewVariables]
+    public Dictionary<EntityUid, int> AttackerHits = new();
+
     /// <summary>When its ships last took a hit from a player ship.</summary>
     [ViewVariables]
     public TimeSpan LastHit;

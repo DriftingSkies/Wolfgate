@@ -69,6 +69,9 @@ public abstract class WFReaverTestBase : WFSectorTestBase
   supportRange: 2
   patrols: [ 0, 1, 1, 2, 2, 2 ]
   patrolInterval: 5s
+  interceptDwell: 60s
+  interceptCooldown: 10m
+  intercepts: [ 0, 1, 1, 2, 2, 2 ]
   raidTier: 3
   raidInterval: [ 30m ]
   threatScale: [ 1, 1, 1.1, 1.2, 1.35, 1.5 ]

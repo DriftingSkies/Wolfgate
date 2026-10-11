@@ -1,6 +1,10 @@
 # Faction name
 wf-sector-faction-reavers = Ashfall Reavers
 
+# Border notices for Reaver space, in place of the sector control defaults
+wf-reaver-notice-entered = WARNING: entering Ashfall Reaver controlled space ({$callsign}). Their patrols attack on sight and will come looking for you.
+wf-reaver-notice-left = Leaving Ashfall Reaver controlled space ({$callsign}).
+
 # Sender of the announcements and name of the radio entity
 wf-reaver-watch = Sector Watch
 
@@ -53,6 +57,8 @@ wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. T
 wf-reaver-raid-warning-pa = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-warning-radio = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-station-warning = Reaver raiders are heading for {$station}, bearing {$bearing}, {$range} km.
+wf-reaver-raid-hunting = Reaver raiders are hunting {$ship}, bearing {$bearing}, {$range} km.
+wf-reaver-intercept-warning = Reaver patrol turning to intercept {$ship}, bearing {$bearing}, {$range} km.
 
 # Map legend line
 wf-reaver-legend = {$faction}: {$tier}, { $strongholds ->
@@ -82,11 +88,12 @@ wf-reaver-round-end = Reavers held up to { $peak ->
 
 # wf_reavers command
 cmd-wf_reavers-desc = Shows and drives the Ashfall Reaver campaign.
-cmd-wf_reavers-help = Usage: {$command} status | found [x y] | tier <n> | spread | patrol | raid | pause | resume | clear
+cmd-wf_reavers-help = Usage: {$command} status | found [x y] | tier <n> | spread | patrol | raid | intercept <grid uid> | pause | resume | clear
 cmd-wf_reavers-hint-sub = Subcommand
 cmd-wf_reavers-hint-x = Map x in metres
 cmd-wf_reavers-hint-y = Map y in metres
 cmd-wf_reavers-hint-tier = Threat tier
+cmd-wf_reavers-hint-grid = Grid uid of the ship to intercept
 cmd-wf_reavers-no-campaign = No Reaver campaign runs under the current preset.
 cmd-wf_reavers-status-header = Campaign {$campaign}: running {$running}, paused {$paused}, tier {$tier}, score {$score}.
 cmd-wf_reavers-status-counts = { $strongholds ->
@@ -104,6 +111,8 @@ cmd-wf_reavers-status-counts = { $strongholds ->
     }.
 cmd-wf_reavers-status-clocks = Seconds to next spread: {$spread}. Seconds to next raid: {$raid}.
 cmd-wf_reavers-status-stronghold = Stronghold {$uid} at {$callsign}: {$prototype}, {$hits} hits, {$patrols} patrols.
+cmd-wf_reavers-status-intercept = Patrol {$patrol} intercepting {$ship} ({$uid}) for {$seconds} s.
+cmd-wf_reavers-status-mark = {$ship} ({$uid}) is marked for {$seconds} s more.
 cmd-wf_reavers-founded = Founded stronghold {$uid} at {$callsign}.
 cmd-wf_reavers-found-failed = No stronghold could be founded there.
 cmd-wf_reavers-bad-position = Not a position: {$x} {$y}
@@ -115,6 +124,9 @@ cmd-wf_reavers-patrol = Patrol sent from the stronghold at {$callsign}.
 cmd-wf_reavers-patrol-failed = No patrol could be launched.
 cmd-wf_reavers-raid = Raid launched.
 cmd-wf_reavers-raid-failed = No raid could be launched.
+cmd-wf_reavers-bad-grid = Not a grid: {$arg}
+cmd-wf_reavers-intercept = A patrol is turning to intercept {$ship}.
+cmd-wf_reavers-intercept-failed = No patrol could be sent to intercept {$ship}.
 cmd-wf_reavers-paused = Campaign paused.
 cmd-wf_reavers-resumed = Campaign resumed.
 cmd-wf_reavers-cleared = Cleared the campaign: {$count} encounters ended.

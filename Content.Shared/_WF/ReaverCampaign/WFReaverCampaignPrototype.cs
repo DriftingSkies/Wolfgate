@@ -59,6 +59,18 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public TimeSpan PatrolInterval = TimeSpan.FromMinutes(10);
 
+    /// <summary>How long a crewed player ship stays in held space before a patrol is sent to intercept it.</summary>
+    [DataField]
+    public TimeSpan InterceptDwell = TimeSpan.FromSeconds(60);
+
+    /// <summary>How long after an intercept ends before the same ship may be intercepted again.</summary>
+    [DataField]
+    public TimeSpan InterceptCooldown = TimeSpan.FromMinutes(10);
+
+    /// <summary>Intercepts out at once, campaign-wide, by tier.</summary>
+    [DataField]
+    public List<int> Intercepts = new() { 0, 1, 1, 2, 2, 2 };
+
     /// <summary>The first tier with raids.</summary>
     [DataField]
     public int RaidTier = 3;

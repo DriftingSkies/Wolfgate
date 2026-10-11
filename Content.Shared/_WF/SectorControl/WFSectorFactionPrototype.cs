@@ -25,4 +25,12 @@ public sealed partial class WFSectorFactionPrototype : IPrototype
     /// <summary>Whether a station in a cell it holds is cut off from NPC freight and traders.</summary>
     [DataField]
     public bool Blockades;
+
+    /// <summary>The notice a ship gets on entering its space, in place of the default; takes $faction, $callsign and $ship.</summary>
+    [DataField]
+    public LocId? EnteredNotice;
+
+    /// <summary>The notice a ship gets on leaving its space, in place of the default; takes the same arguments.</summary>
+    [DataField]
+    public LocId? LeftNotice;
 }

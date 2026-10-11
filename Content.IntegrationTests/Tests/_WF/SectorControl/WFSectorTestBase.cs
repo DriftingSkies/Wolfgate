@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Linq;
 using System.Reflection;
+using Content.Client.UserInterface.Systems.Chat;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Server.GameTicking;
 using Content.Shared._Mono.CCVar;
 using Content.Shared._WF.SectorControl;
 using Content.Shared.Station.Components;
+using Robust.Client.UserInterface;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -115,6 +118,19 @@ public abstract class WFSectorTestBase : InteractionTest
     protected void Disembark()
     {
         Server.System<SharedTransformSystem>().SetCoordinates(SEntMan.GetEntity(Player), new EntityCoordinates(MapData.MapUid, Vector2.Zero));
+    }
+
+    /// <summary>How many chat lines the client has had; a pooled client can keep the lines of earlier tests.</summary>
+    protected int ChatCount()
+    {
+        return Client.ResolveDependency<IUserInterfaceManager>().GetUIController<ChatUIController>().History.Count;
+    }
+
+    /// <summary>The chat lines the client has had after the first <paramref name="skip"/>.</summary>
+    protected List<string> ChatSince(int skip)
+    {
+        var chat = Client.ResolveDependency<IUserInterfaceManager>().GetUIController<ChatUIController>();
+        return chat.History.Skip(skip).Select(entry => entry.Msg.Message).ToList();
     }
 
     protected async Task WaitUntilServer(Func<bool> condition, int maxTicks)

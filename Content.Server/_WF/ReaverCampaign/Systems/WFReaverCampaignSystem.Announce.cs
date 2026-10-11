@@ -67,15 +67,15 @@ public sealed partial class WFReaverCampaignSystem
         return (Vector2.Distance(from, to) / 1000f).ToString("0.0", CultureInfo.InvariantCulture);
     }
 
-    /// <summary>Warns a raided ship over its PA and the sector on the common channel, with the raiders' bearing and range.</summary>
-    private void WarnShip(WFReaverCampaignPrototype campaign, MapId map, EntityUid ship, Vector2 raiders)
+    /// <summary>Warns a ship over its PA and in chat to those aboard, and the sector on the common channel, with the bearing and range from it to the Reavers.</summary>
+    private void WarnShip(WFReaverCampaignPrototype campaign, MapId map, EntityUid ship, Vector2 reavers, string shipKey, string radioKey)
     {
         var at = _transform.GetWorldPosition(ship);
-        var bearing = Bearing(at, raiders);
-        var range = Kilometres(at, raiders);
-        _shipPa.Announce(ship, Loc.GetString("wf-reaver-raid-warning-pa", ("ship", Name(ship)), ("bearing", bearing), ("range", range)),
-            sender: Loc.GetString("wf-reaver-watch"), color: campaign.RisingColor);
-        Radio(map, Loc.GetString("wf-reaver-raid-warning-radio", ("ship", Name(ship)), ("bearing", bearing), ("range", range)));
+        var bearing = Bearing(at, reavers);
+        var range = Kilometres(at, reavers);
+        _notices.Tell(ship, Loc.GetString(shipKey, ("ship", Name(ship)), ("bearing", bearing), ("range", range)),
+            Loc.GetString("wf-reaver-watch"), campaign.RisingColor, true);
+        Radio(map, Loc.GetString(radioKey, ("ship", Name(ship)), ("bearing", bearing), ("range", range)));
     }
 
     /// <summary>Warns a raided station over its PA, if it has one, and the sector on the common channel.</summary>

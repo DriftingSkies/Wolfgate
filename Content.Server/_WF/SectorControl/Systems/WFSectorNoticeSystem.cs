@@ -9,7 +9,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WF.SectorControl.Systems;
 
-/// <summary>Tells those aboard a ship over its PA, or in chat, when it has been in or out of a faction's space for a minute.</summary>
+/// <summary>Tells those aboard a ship, in chat and over its PA, when it has entered or left a faction's space.</summary>
 public sealed partial class WFSectorNoticeSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -23,11 +23,14 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
 
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(5);
 
-    /// <summary>How long a ship stays inside or outside before it is told.</summary>
-    private static readonly TimeSpan Dwell = TimeSpan.FromSeconds(60);
+    /// <summary>How long a ship stays inside a faction's space before it is told.</summary>
+    public static readonly TimeSpan EnteredDwell = TimeSpan.FromSeconds(10);
 
-    /// <summary>The least time between two notices to one ship.</summary>
-    private static readonly TimeSpan Cooldown = TimeSpan.FromMinutes(5);
+    /// <summary>How long a ship stays outside before it is told it has left.</summary>
+    public static readonly TimeSpan LeftDwell = TimeSpan.FromSeconds(30);
+
+    /// <summary>The least time between two entered notices to one ship; a left notice is never held back by it.</summary>
+    public static readonly TimeSpan Cooldown = TimeSpan.FromMinutes(2);
 
     private readonly Dictionary<EntityUid, NoticeState> _ships = new();
     private TimeSpan _nextCheck;
@@ -88,12 +91,15 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
                 state.Since = now;
             }
 
-            if (state.Current == state.Announced || now - state.Since < Dwell || now < state.NextAllowed)
+            var entering = state.Current != null;
+            var dwell = entering ? EnteredDwell : LeftDwell;
+            if (state.Current == state.Announced || now - state.Since < dwell || (entering && now < state.NextAllowed))
                 continue;
 
             Notify(grid, state.Announced, state.Current, cell);
             state.Announced = state.Current;
-            state.NextAllowed = now + Cooldown;
+            if (entering)
+                state.NextAllowed = now + Cooldown;
         }
     }
 
@@ -103,14 +109,19 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
         if (shown == null || !_prototypes.TryIndex(shown.Value, out var faction))
             return;
 
-        var message = Loc.GetString(entered != null ? "sector-control-notice-entered" : "sector-control-notice-left",
+        var key = entered != null
+            ? faction.EnteredNotice ?? "sector-control-notice-entered"
+            : faction.LeftNotice ?? "sector-control-notice-left";
+        var message = Loc.GetString(key,
             ("ship", Name(grid)),
             ("faction", Loc.GetString(faction.Name)),
             ("callsign", WFSectorHex.Callsign(cell)));
-        var sender = Loc.GetString("sector-control-notice-sender");
-        if (_shipPa.Announce(grid, message, sender: sender, color: faction.Color))
-            return;
+        Tell(grid, message, Loc.GetString("sector-control-notice-sender"), faction.Color, entered != null);
+    }
 
+    /// <summary>Says something over a ship's PA, if it has a working speaker, and in chat to everyone aboard the PA did not reach.</summary>
+    public void Tell(EntityUid grid, string message, string sender, Color color, bool playSound)
+    {
         var aboard = Filter.Empty();
         var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
         while (players.MoveNext(out _, out var actor, out var xform))
@@ -119,7 +130,12 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
                 aboard.AddPlayer(actor.PlayerSession);
         }
 
-        _chat.DispatchFilteredAnnouncement(aboard, message, grid, sender, playSound: false, colorOverride: faction.Color);
+        // The PA puts its own line in the chat of those in a speaker's range; the rest aboard get it here, once.
+        if (_shipPa.Announce(grid, message, sender: sender, color: color))
+            aboard.RemovePlayers(_shipPa.GetListeners(grid).Recipients);
+
+        if (aboard.Count > 0)
+            _chat.DispatchFilteredAnnouncement(aboard, message, grid, sender, playSound: playSound, colorOverride: color);
     }
 
     /// <summary>Whose space a ship is in, since when, and what it was last told.</summary>

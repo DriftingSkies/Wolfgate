@@ -66,6 +66,13 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>Sends a patrol from a stronghold now, whatever the caps, through held cells and home.</summary>
     public bool TryLaunchPatrol(EntityUid stronghold)
     {
+        return TryLaunchPatrol(stronghold, out _);
+    }
+
+    /// <summary>Sends a patrol from a stronghold now, whatever the caps, through held cells and home; gives its encounter.</summary>
+    private bool TryLaunchPatrol(EntityUid stronghold, out EntityUid uid)
+    {
+        uid = default;
         if (Campaign is not { } campaign
             || !TryComp<WFReaverStrongholdComponent>(stronghold, out var comp)
             || !TryComp<WFEncounterComponent>(stronghold, out var encounter) || encounter.Resolution != null
@@ -80,7 +87,7 @@ public sealed partial class WFReaverCampaignSystem
         if (route.Count == 0)
             return false;
 
-        if (!_encounters.TrySpawn(prototype, new MapCoordinates(home, map), out var uid, offBudget: true))
+        if (!_encounters.TrySpawn(prototype, new MapCoordinates(home, map), out uid, offBudget: true))
             return false;
 
         var lead = prototype.Ships[0].Key;
@@ -202,8 +209,17 @@ public sealed partial class WFReaverCampaignSystem
             return false;
 
         called.Comp1.Recalled = true;
+        DropIntercept(called.Comp1);
         Log.Info($"Reaver patrol {ToPrettyString(called.Owner)} recalled to stronghold {ToPrettyString(uid)}.");
         return true;
+    }
+
+    /// <summary>Whether a stronghold may send another patrol under its tier's count and the campaign-wide cap.</summary>
+    private bool PatrolRoom(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state, EntityUid stronghold,
+        List<Entity<WFReaverPatrolComponent, WFEncounterComponent>> patrols)
+    {
+        return patrols.Count < Math.Clamp(Players() / PlayersPerPatrol, 1, MaxPatrols)
+            && patrols.Count(patrol => patrol.Comp1.Stronghold == stronghold) < ByTier(campaign.Patrols, state.Tier, 0);
     }
 
     /// <summary>Lets its stronghold send another; destroyed, it frees the cell its lead died in and pays its bounty.</summary>
@@ -216,9 +232,12 @@ public sealed partial class WFReaverCampaignSystem
         if (campaign != null && TryComp<WFReaverStrongholdComponent>(comp.Stronghold, out var home))
             home.NextPatrol = home.NextPatrol > now + campaign.PatrolInterval ? home.NextPatrol : now + campaign.PatrolInterval;
 
+        DropIntercept(comp);
         if (resolution != WFEncounterResolution.Destroyed || campaign == null || state == null
             || !TryComp<WFEncounterComponent>(uid, out var encounter))
             return;
+
+        Mark(encounter.ShipHits.Keys.Select(key => key.Attacker));
 
         var map = Transform(uid).MapID;
         var position = encounter.Ships.TryGetValue(comp.Lead, out var lead) && !TerminatingOrDeleted(lead.Grid)

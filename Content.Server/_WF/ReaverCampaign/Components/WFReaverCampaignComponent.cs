@@ -46,6 +46,14 @@ public sealed partial class WFReaverCampaignComponent : Component
     [ViewVariables]
     public Dictionary<EntityUid, TimeSpan> Raided = new();
 
+    /// <summary>Since when each crewed player ship has been in held space.</summary>
+    [ViewVariables]
+    public Dictionary<EntityUid, TimeSpan> InsideSince = new();
+
+    /// <summary>When each player ship may next be intercepted.</summary>
+    [ViewVariables]
+    public Dictionary<EntityUid, TimeSpan> InterceptCooldowns = new();
+
     /// <summary>The entity the sector watch speaks on the radio from.</summary>
     [ViewVariables]
     public EntityUid? Watch;

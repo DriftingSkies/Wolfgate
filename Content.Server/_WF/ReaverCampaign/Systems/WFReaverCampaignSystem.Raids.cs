@@ -96,11 +96,13 @@ public sealed partial class WFReaverCampaignSystem
         var candidates = new List<(EntityUid Ship, float Weight)>();
         foreach (var (ship, crew) in crews)
         {
+            // A marked ship is hunted wherever it is on the map.
+            var marked = IsMarked(ship);
             if (docked.Contains(ship) || state.Raided.TryGetValue(ship, out var last) && now - last < RaidCooldown
-                || !InOrBeside(held, _territory.GridCell(ship)))
+                || !marked && !InOrBeside(held, _territory.GridCell(ship)))
                 continue;
 
-            candidates.Add((ship, crew));
+            candidates.Add((ship, marked ? crew * MarkWeight : crew));
         }
 
         if (PickWeighted(candidates) is not { } target)
@@ -143,7 +145,10 @@ public sealed partial class WFReaverCampaignSystem
         }
 
         Raided(state, uid.Owner, target, from.Owner, false);
-        WarnShip(campaign, map, target, _transform.GetWorldPosition(uid.Comp.Ships[prototype.Ships[0].Key].Grid));
+        var hunted = IsMarked(target);
+        WarnShip(campaign, map, target, _transform.GetWorldPosition(uid.Comp.Ships[prototype.Ships[0].Key].Grid),
+            hunted ? "wf-reaver-raid-hunting" : "wf-reaver-raid-warning-pa",
+            hunted ? "wf-reaver-raid-hunting" : "wf-reaver-raid-warning-radio");
         return true;
     }
 

@@ -3,6 +3,7 @@ using Content.Server._NF.GameTicking.Events;
 using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.Encounters.Systems;
+using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.SectorControl;
 using Content.Server._WF.SectorControl.Systems;
@@ -49,6 +50,9 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
     [Dependency] private WFSectorActivitySystem _activity = default!;
     [Dependency] private WFSectorProtectionSystem _protection = default!;
     [Dependency] private WFSectorSyncSystem _sync = default!;
+    [Dependency] private WFSectorNoticeSystem _notices = default!;
+    [Dependency] private WFCrewObjectiveSystem _objectives = default!;
+    [Dependency] private WFCrewShipStatusSystem _status = default!;
 
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
 
@@ -171,6 +175,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         var ships = _activity.CrewedShips(_territory.SectorMap);
         TendStrongholds(state, ships, elapsed);
         TendPatrols();
+        TendIntercepts(state);
+        TendMarks();
         if (!running || Campaign is not { } campaign)
         {
             ClearLegend();
@@ -182,6 +188,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             TickFounding(campaign, state);
             TickSpread(campaign, state);
             TickPatrols(campaign, state);
+            TickIntercepts(campaign, state, ships);
             TickRaids(campaign, state);
         }
 

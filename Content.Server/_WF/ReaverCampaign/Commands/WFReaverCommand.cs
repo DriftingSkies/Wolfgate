@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq;
+using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Server.Administration;
@@ -7,11 +8,12 @@ using Content.Shared._WF.SectorControl;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.ReaverCampaign.Commands;
 
-/// <summary>The Reaver campaign from the console: show it, found a stronghold, set the tier, step it, pause it or clear it.</summary>
+/// <summary>The Reaver campaign from the console: show it, found a stronghold, set the tier, step it, send an intercept, pause it or clear it.</summary>
 [AdminCommand(AdminFlags.Admin)]
 public sealed partial class WFReaverCommand : LocalizedEntityCommands
 {
@@ -19,7 +21,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
     [Dependency] private WFReaverCampaignSystem _campaign = default!;
     [Dependency] private WFSectorTerritorySystem _territory = default!;
 
-    private static readonly string[] Subcommands = { "status", "found", "tier", "spread", "patrol", "raid", "pause", "resume", "clear" };
+    private static readonly string[] Subcommands = { "status", "found", "tier", "spread", "patrol", "raid", "intercept", "pause", "resume", "clear" };
 
     public override string Command => "wf_reavers";
 
@@ -58,6 +60,9 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
             case "raid" when args.Length == 1:
                 shell.WriteLine(Loc.GetString(_campaign.TryLaunchRaid() ? "cmd-wf_reavers-raid" : "cmd-wf_reavers-raid-failed"));
                 break;
+            case "intercept" when args.Length == 2:
+                Intercept(shell, args[1]);
+                break;
             case "pause" when args.Length == 1:
                 _campaign.Paused = true;
                 shell.WriteLine(Loc.GetString("cmd-wf_reavers-paused"));
@@ -82,6 +87,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
             1 => CompletionResult.FromHintOptions(Subcommands, Loc.GetString("cmd-wf_reavers-hint-sub")),
             2 when args[0] == "found" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-x")),
             3 when args[0] == "found" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-y")),
+            2 when args[0] == "intercept" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-grid")),
             2 when args[0] == "tier" => CompletionResult.FromHintOptions(
                 Enumerable.Range(0, WFReaverCampaignSystem.MaxTier + 1).Select(tier => tier.ToString()),
                 Loc.GetString("cmd-wf_reavers-hint-tier")),
@@ -125,6 +131,48 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 ("hits", stronghold.Hits),
                 ("patrols", patrols.Count(patrol => patrol.Comp1.Stronghold == uid))));
         }
+
+        foreach (var (uid, patrol, _) in patrols)
+        {
+            if (patrol.Intercepting is not { } target)
+                continue;
+
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-intercept",
+                ("patrol", EntityManager.GetNetEntity(uid).ToString()),
+                ("ship", EntityManager.TryGetComponent<MetaDataComponent>(target, out var meta) ? meta.EntityName : target.ToString()),
+                ("uid", EntityManager.GetNetEntity(target).ToString()),
+                ("seconds", Math.Max(0, (int) (now - patrol.InterceptSince).TotalSeconds))));
+        }
+
+        var marks = EntityManager.EntityQueryEnumerator<WFReaverMarkComponent, MetaDataComponent>();
+        while (marks.MoveNext(out var marked, out var mark, out var markedMeta))
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-mark",
+                ("ship", markedMeta.EntityName),
+                ("uid", EntityManager.GetNetEntity(marked).ToString()),
+                ("seconds", Seconds(mark.Until, now))));
+        }
+    }
+
+    /// <summary>wf_reavers intercept &lt;grid uid&gt;: sends a patrol after a ship now.</summary>
+    private void Intercept(IConsoleShell shell, string arg)
+    {
+        if (!NetEntity.TryParse(arg, out var net) || !EntityManager.TryGetEntity(net, out var grid)
+            || !EntityManager.HasComponent<MapGridComponent>(grid))
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-bad-grid", ("arg", arg)));
+            return;
+        }
+
+        if (_campaign.Campaign == null)
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-no-campaign"));
+            return;
+        }
+
+        var name = EntityManager.GetComponent<MetaDataComponent>(grid.Value).EntityName;
+        shell.WriteLine(Loc.GetString(_campaign.TryIntercept(grid.Value) ? "cmd-wf_reavers-intercept" : "cmd-wf_reavers-intercept-failed",
+            ("ship", name)));
     }
 
     /// <summary>Seconds until a time, or a dash when there is none.</summary>

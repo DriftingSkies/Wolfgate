@@ -235,7 +235,7 @@ public sealed partial class WFReaverCampaignSystem
         return positions;
     }
 
-    /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, times support and recalls a patrol once one is attacked.</summary>
+    /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, marks the ships that land them, times support and recalls a patrol once one is attacked.</summary>
     private void TendStrongholds(WFReaverCampaignComponent state, HashSet<EntityUid> ships, float elapsed)
     {
         foreach (var stronghold in Strongholds())
@@ -249,7 +249,10 @@ public sealed partial class WFReaverCampaignSystem
 
             var hits = encounter.ShipHits.Values.Sum();
             if (hits > comp.Hits)
+            {
                 comp.LastHit = _timing.CurTime;
+                MarkAttackers(comp, encounter);
+            }
 
             comp.Hits = hits;
             if (comp.Hits == 0)

@@ -17,14 +17,24 @@ bounties and encounter prototypes; a preset with none runs no campaign. It runs 
 `wf.sector.enabled` and `wf.reavers.enabled` are on and the round is in progress, and its own Reaver encounters on
 the storyteller's side are weighted up by tier through `WFEncounterWeightEvent`.
 
-`WFReaverCampaignSystem` is the driver, in partials by concern: `.Strongholds` (founding, regroup, breaking),
-`.Spread`, `.Patrols` (routes and recall), `.Raids`, `.Threat` (score, tier, legend), `.Announce` (sector watch
-announcements, PA and radio warnings) and `.Rewards` (bounties and the support pool). Each step is a one-shot public
-method for tests and the command: `TryFound`, `TryFoundAt`, `TrySpreadOnce`, `TryLaunchPatrol`, `TryLaunchRaid`,
-`SetTier`, `Recompute`, `ClearCampaign`. State lives on `WFReaverCampaignComponent` on the sector map entity, with
-`WFReaverStrongholdComponent`, `WFReaverPatrolComponent` and `WFReaverRaidComponent` on the encounter entities.
+Reaver space has a cost. A crewed ship that stays a minute in held space (`interceptDwell`) has the nearest patrol
+within three cells, or a fresh one from the nearest stronghold, turned on it to close and attack, and is warned with
+the patrol's bearing and range; the patrol gives up when the ship is disabled or gone, or has been out of held space
+or out of reach for a minute, then flies the rest of its route, and the ship is left alone for `interceptCooldown`.
+How many intercepts run at once is set by tier (`intercepts`). A ship that hits a stronghold or helps kill a patrol is
+marked for half an hour: raids weigh it three times as heavy and hunt it anywhere on the map.
 
-Admins use `wf_reavers status | found [x y] | tier <n> | spread | patrol | raid | pause | resume | clear` (a pause ends with the round), and see every
+`WFReaverCampaignSystem` is the driver, in partials by concern: `.Strongholds` (founding, regroup, breaking),
+`.Spread`, `.Patrols` (routes and recall), `.Intercepts` (intercepts and marks), `.Raids`, `.Threat` (score, tier,
+legend), `.Announce` (sector watch announcements, PA, chat and radio warnings) and `.Rewards` (bounties and the support
+pool). Each step is a one-shot public method for tests and the command: `TryFound`, `TryFoundAt`, `TrySpreadOnce`,
+`TryLaunchPatrol`, `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`, `Recompute`, `ClearCampaign`. State
+lives on `WFReaverCampaignComponent` on the sector map entity, with `WFReaverStrongholdComponent`,
+`WFReaverPatrolComponent` and `WFReaverRaidComponent` on the encounter entities and `WFReaverMarkComponent` on marked
+player ships.
+
+Admins use `wf_reavers status | found [x y] | tier <n> | spread | patrol | raid | intercept <grid uid> | pause |
+resume | clear` (status lists intercepts and marks; a pause ends with the round), and see every
 campaign encounter in the Encounters window. The round-end summary lists peak cells held, strongholds founded and
 broken, patrols destroyed and raids launched.
 
@@ -39,11 +49,13 @@ broken, patrols destroyed and raids launched.
 
 - [`Content.Server/_WF/ReaverCampaign/Commands/WFReaverCommand.cs`](Commands/WFReaverCommand.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverCampaignComponent.cs`](Components/WFReaverCampaignComponent.cs)
+- [`Content.Server/_WF/ReaverCampaign/Components/WFReaverMarkComponent.cs`](Components/WFReaverMarkComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverPatrolComponent.cs`](Components/WFReaverPatrolComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverRaidComponent.cs`](Components/WFReaverRaidComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverStrongholdComponent.cs`](Components/WFReaverStrongholdComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Announce.cs`](Systems/WFReaverCampaignSystem.Announce.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.cs`](Systems/WFReaverCampaignSystem.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Intercepts.cs`](Systems/WFReaverCampaignSystem.Intercepts.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Patrols.cs`](Systems/WFReaverCampaignSystem.Patrols.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Raids.cs`](Systems/WFReaverCampaignSystem.Raids.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Rewards.cs`](Systems/WFReaverCampaignSystem.Rewards.cs)
@@ -60,6 +72,8 @@ broken, patrols destroyed and raids launched.
 
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStrongholdTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStrongholdTest.cs)
