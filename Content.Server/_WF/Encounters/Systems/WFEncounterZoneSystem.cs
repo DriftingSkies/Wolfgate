@@ -150,10 +150,10 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                     continue;
                 }
 
-                // No warning between crews: each takes the other for an enemy.
+                // No warning between crews: each takes the other for an enemy, and the side says so once.
                 _alerts.ReportZoneThreat(ship.Grid, ship.Group, rival.Grid);
                 _alerts.ReportZoneThreat(rival.Grid, rival.Group, ship.Grid);
-                if (_rivals.Add(key))
+                if (_rivals.Add(key) && Call(Comp<WFEncounterComponent>(uid), ship.Side, rival.Grid))
                     _encounters.TrySay(ship, Channel, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", Name(rival.Grid))));
             }
         }
@@ -313,7 +313,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             // An unknown vessel berthed somewhere is in port, not trespassing: the patrol came to it, and lets it be.
             if (masked && IsDocked(intruder))
             {
-                ship.Engaged.Remove(intruder);
+                Release(encounter, ship, intruder);
                 _alerts.EndZoneWarning(ship.Grid, intruder);
                 continue;
             }
@@ -334,9 +334,10 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                 _alerts.EndZoneWarning(ship.Grid, intruder);
                 if (ship.Engaged.Add(intruder))
                 {
-                    // The ship turns to fight what is inside its attack zone.
+                    // The ship turns to fight what is inside its attack zone; its side says so once.
                     _alerts.ReportZoneEngagement(ship.Grid, ship.Group, intruder);
-                    _encounters.TrySay(ship, Channel, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", name)));
+                    if (Call(encounter, ship.Side, intruder))
+                        _encounters.TrySay(ship, Channel, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", name)));
                 }
                 else
                     _alerts.ReportZoneThreat(ship.Grid, ship.Group, intruder);
@@ -356,15 +357,17 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                     continue;
 
                 ship.Warned[intruder] = now + WarnCooldown;
-                _encounters.TrySay(ship, Channel, challenged
-                    ? Loc.GetString("wf-encounter-zone-identify", ("distance", (int) distance))
-                    : Loc.GetString($"{ship.ZoneLines}-warn-{_random.Next(1, WarnLines + 1)}",
-                        ("intruder", name), ("distance", (int) distance)));
+                // One hail for the side: a dozen ships warning in chorus is noise, not a warning.
+                if (Hail(encounter, ship.Side, intruder, now))
+                    _encounters.TrySay(ship, Channel, challenged
+                        ? Loc.GetString("wf-encounter-zone-identify", ("distance", (int) distance))
+                        : Loc.GetString($"{ship.ZoneLines}-warn-{_random.Next(1, WarnLines + 1)}",
+                            ("intruder", name), ("distance", (int) distance)));
             }
             else if (distance > ship.WarnRange)
             {
                 // Out and back in is a fresh trespass.
-                ship.Engaged.Remove(intruder);
+                Release(encounter, ship, intruder);
                 _alerts.EndZoneWarning(ship.Grid, intruder);
             }
         }
@@ -415,12 +418,44 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             if (!_alerts.ReportIncomingFire(ship.Grid, ship.Group, shot.Shooter))
                 continue;
 
-            if (fresh)
+            if (fresh && Call(encounter, ship.Side, shot.Shooter))
             {
                 var name = IffMasked(shot.Shooter) ? Loc.GetString("wf-encounter-zone-unknown") : Name(shot.Shooter);
                 _encounters.TrySay(ship, Channel, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", name)));
             }
         }
+    }
+
+    /// <summary>Whether a side may hail a vessel now: once per cooldown for the side, whichever of its ships speaks.</summary>
+    private static bool Hail(WFEncounterComponent encounter, string side, EntityUid intruder, TimeSpan now)
+    {
+        var key = (side, intruder);
+        if (encounter.Hailed.TryGetValue(key, out var until) && now < until)
+            return false;
+
+        encounter.Hailed[key] = now + WarnCooldown;
+        return true;
+    }
+
+    /// <summary>Whether a side has yet to call its guns onto a vessel; the call is then marked made.</summary>
+    private static bool Call(WFEncounterComponent encounter, string side, EntityUid intruder)
+    {
+        return encounter.Called.Add((side, intruder));
+    }
+
+    /// <summary>A ship lets a vessel out of its attack zone; once no ship of its side holds it, the side may call it again.</summary>
+    private static void Release(WFEncounterComponent encounter, WFEncounterShipState ship, EntityUid intruder)
+    {
+        if (!ship.Engaged.Remove(intruder))
+            return;
+
+        foreach (var other in encounter.Ships.Values)
+        {
+            if (other.Side == ship.Side && other.Engaged.Contains(intruder))
+                return;
+        }
+
+        encounter.Called.Remove((ship.Side, intruder));
     }
 
     /// <summary>Whether a grid is another ship of the same encounter on the same side.</summary>

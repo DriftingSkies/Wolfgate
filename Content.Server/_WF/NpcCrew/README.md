@@ -84,7 +84,10 @@ their console when taking the helm. Spawned crew register ordinary, revocable ID
 ships that do not yet have ship access management.
 Crew-operated cannon rounds also protect allies and allied hulls, retaining their firing origin after a gunner dies
 or a player takes over. Explicit Attack orders, incoming fire and hostile docking permit retaliation against
-the targeted ship, including a normally friendly company; escorts in the same formation remain protected.
+the targeted ship, including a normally friendly company; escorts in the same formation remain protected. Before a
+hit from a vessel of another faction counts as an attack, the crew ask (`WFCrewFriendlyFireQueryEvent`) whether anyone
+vouches for it as a friend of the ship; the encounter it is fighting in does, by alliance or by whom it has been
+shooting, and a friend's fire is let pass outright.
 
 Repair orders assign deckhands physical work through HTN navigation. Deckhands have a built-in unlimited SRD and
 repair tool, disabled permanently on death; no unlimited item drops. The ship's existing SRD snapshot is preserved,

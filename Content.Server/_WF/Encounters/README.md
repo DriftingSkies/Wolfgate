@@ -10,7 +10,12 @@ completed, one side left, nothing left) and removes its ships once no player is 
 round-start encounters once the stations exist, then starts weighted encounters that fit, in open space, beside a
 station or on a circuit of several. It is off until `wf.encounters.enabled` is set. `WFEncounterVoteSystem` has the
 lobby vote for the preset. `WFEncounterZoneSystem` warns player ships of another company off a ship's warning zone
-and has its crew fire on them inside its attack zone. `WFEncounterMarkerSystem` sends every ship of every visible
+and has its crew fire on them inside its attack zone; the hail and the call to arms are made once for a side, by
+whichever of its ships speaks first, however many hold the zone, and the radar draws one pair of rings round a side
+(its widest ranges plus the spread of its ships) rather than a ring per hull. Whose side a vessel is on is judged by
+conduct as well as colours: `WFEncounterRewardSystem` answers the crews' friendly-fire query, vouching for a vessel
+that the side took as an ally or that has hit the side's enemies at least twice as often as the side itself over the
+last half minute, so a stray round in a melee is not an attack. `WFEncounterMarkerSystem` sends every ship of every visible
 encounter to all players, each with its side and colour; the radar draws them, with their zones, sector-wide, and
 ghosts find them on the Encounters tab of the orbit menu.
 
@@ -101,6 +106,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs)
