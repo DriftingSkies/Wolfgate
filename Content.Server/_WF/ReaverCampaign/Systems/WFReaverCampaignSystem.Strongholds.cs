@@ -42,10 +42,7 @@ public sealed partial class WFReaverCampaignSystem
             if (state.Founded > 0)
                 state.NoStrongholdSince ??= now;
 
-            var due = state.Founded == 0
-                ? _stationsAt is { } at && now >= at + campaign.FirstStrongholdDelay
-                : state.NoStrongholdSince is { } since && now >= since + campaign.RegroupDelay;
-            if (due && now >= _nextFoundTry && !TryFound(out _))
+            if (FoundingDue(campaign, state) is { } due && now >= due && now >= _nextFoundTry && !TryFound(out _))
                 _nextFoundTry = now + FoundRetry;
             return;
         }
@@ -59,6 +56,15 @@ public sealed partial class WFReaverCampaignSystem
 
         if (!TryFound(out _))
             _nextFoundTry = now + FoundRetry;
+    }
+
+    /// <summary>When a founding is due with none standing: the first after the stations generate, a regroup after the last stronghold fell; null if that clock has not started.</summary>
+    public TimeSpan? FoundingDue(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent? state)
+    {
+        if (state == null || state.Founded == 0)
+            return _stationsAt is { } at ? at + campaign.FirstStrongholdDelay : null;
+
+        return state.NoStrongholdSince is { } since ? since + campaign.RegroupDelay : null;
     }
 
     /// <summary>Founds a stronghold where the rules put it: a quiet cell far out with none standing, otherwise a held frontier cell.</summary>

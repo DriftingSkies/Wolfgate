@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Threading.Tasks;
 using Content.Client._WF.SectorControl;
 using Content.Client.UserInterface.Controls;
@@ -363,6 +364,177 @@ public sealed class WFSectorMapTest : WFSectorTestBase
         });
 
         await Client.WaitPost(() => controller.Window!.Close());
+    }
+
+    /// <summary>
+    /// The right button pans the map and the left one does not, a left double-click still centres on the player, and the hover
+    /// readout shows only once the cursor has rested on one cell for half a second, never while panning.
+    /// </summary>
+    [Test]
+    public async Task RightButtonPansAndTheReadoutWaitsForTheCursor()
+    {
+        await StartRound();
+        await Server.WaitAssertion(() =>
+        {
+            SpawnStations();
+            Assert.That(Server.System<WFSectorTerritorySystem>().TryClaim(MapData.MapId, Held, Holder, null), Is.True);
+        });
+
+        await RunTicks(90);
+        var controller = UiMan.GetUIController<WFSectorMapUIController>();
+        await Client.WaitPost(() => controller.OpenWindow());
+        await RunTicks(10);
+
+        var rest = WFSectorMapControl.ReadoutDelay + TimeSpan.FromMilliseconds(100);
+        var map = controller.Window!.Panel.MapControl;
+        var here = Vector2.Zero;
+        var elsewhere = Vector2.Zero;
+        var centre = Vector2.Zero;
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.TryGetView(out var view), Is.True);
+            here = Vector2.Transform(CentreOf(Held), map.WorldToView());
+            Assert.That(WFSectorHex.CellOf(map.ViewToWorld(here), view.CellSize), Is.EqualTo(Held));
+            Assert.That(WFSectorHex.CellOf(map.ViewToWorld(here + new Vector2(2f, 0f)), view.CellSize), Is.EqualTo(Held));
+
+            // A pixel on the map over some other cell.
+            for (var step = 20f; step < 400f && elsewhere == Vector2.Zero; step += 20f)
+            {
+                foreach (var sign in new[] { 1f, -1f })
+                {
+                    var pixel = here + new Vector2(step * sign, 0f);
+                    if (pixel.X > 0f && pixel.X < map.PixelSize.X
+                        && WFSectorHex.CellOf(map.ViewToWorld(pixel), view.CellSize) != Held)
+                    {
+                        elsewhere = pixel;
+                        break;
+                    }
+                }
+            }
+
+            Assert.That(elsewhere, Is.Not.EqualTo(Vector2.Zero), "Another cell is in view.");
+            centre = map.Centre;
+
+            // The left button does nothing to the view, held or dragged.
+            var down = Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Down, here);
+            Invoke(map, "KeyBindDown", down);
+            Assert.That(down.Handled, Is.True);
+            Invoke(map, "MouseMove", Move(map, here + new Vector2(60f, -40f)));
+            Invoke(map, "KeyBindUp", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Up, here + new Vector2(60f, -40f)));
+            Assert.That(map.Centre, Is.EqualTo(centre), "A left drag leaves the view where it is.");
+            Invoke(map, "MouseExited");
+            Assert.That(map.ReadoutShown, Is.False);
+        });
+
+        // Not at once: the cursor has to rest first.
+        await Client.WaitAssertion(() =>
+        {
+            Invoke(map, "MouseMove", Move(map, here));
+            Assert.That(map.ReadoutShown, Is.False, "Not as soon as the cursor arrives.");
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.ReadoutShown, Is.True, "Half a second on one cell shows it.");
+            Invoke(map, "MouseMove", Move(map, here + new Vector2(2f, 0f)));
+            Assert.That(map.ReadoutShown, Is.True, "A few pixels' drift within the cell keeps it.");
+            Invoke(map, "MouseMove", Move(map, elsewhere));
+            Assert.That(map.ReadoutShown, Is.False, "Another cell hides it at once.");
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.ReadoutShown, Is.True, "It shows again after resting on the new cell.");
+            Invoke(map, "MouseExited");
+            Assert.That(map.ReadoutShown, Is.False, "Leaving the control hides it.");
+            Invoke(map, "MouseMove", Move(map, elsewhere));
+            Assert.That(map.ReadoutShown, Is.False, "Coming back starts the wait again.");
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.ReadoutShown, Is.True);
+            Invoke(map, "KeyBindDown", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Down, elsewhere));
+            Assert.That(map.ReadoutShown, Is.False, "A click hides it.");
+            Invoke(map, "KeyBindUp", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Up, elsewhere));
+
+            // The right button pans, a step at a time as the cursor moves.
+            var pan = new Vector2(60f, -40f);
+            var down = Key(map, EngineKeyFunctions.UIRightClick, BoundKeyState.Down, elsewhere);
+            Invoke(map, "KeyBindDown", down);
+            Assert.That(down.Handled, Is.True);
+            Invoke(map, "MouseMove", Move(map, elsewhere + pan));
+            var expected = centre - new Vector2(pan.X, -pan.Y) / map.PixelsPerMetre;
+            Assert.That((map.Centre - expected).Length(), Is.LessThan(1f), "The map follows the cursor.");
+            Invoke(map, "MouseMove", Move(map, elsewhere + pan * 2f));
+            Assert.That((map.Centre - (expected - new Vector2(pan.X, -pan.Y) / map.PixelsPerMetre)).Length(), Is.LessThan(1f));
+            Assert.That(map.ReadoutShown, Is.False);
+        });
+
+        // Held down it stays hidden, however long the cursor stays where it is.
+        await Task.Delay(rest);
+        var panned = Vector2.Zero;
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.ReadoutShown, Is.False, "Never while a pan is in progress.");
+            panned = map.Centre;
+            var end = elsewhere + new Vector2(120f, -80f);
+            var up = Key(map, EngineKeyFunctions.UIRightClick, BoundKeyState.Up, end);
+            Invoke(map, "KeyBindUp", up);
+            Assert.That(up.Handled, Is.True);
+            Assert.That(map.ReadoutShown, Is.False, "Releasing starts the wait again.");
+            Invoke(map, "MouseMove", Move(map, end + new Vector2(30f, 0f)));
+            Assert.That(map.Centre, Is.EqualTo(panned), "Released, the button no longer pans.");
+        });
+
+        await Task.Delay(rest);
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.ReadoutShown, Is.True, "Rested again, it shows.");
+            Invoke(map, "MouseWheel", Wheel(map, new Vector2(0f, 1f), elsewhere));
+            Assert.That(map.ReadoutShown, Is.False, "Zooming hides it.");
+        });
+
+        // The left button double-clicked still centres on the player's grid.
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(map.TryGetOwnShip(MapData.MapId, out var ship, out _), Is.True);
+            Assert.That((map.Centre - ship).Length(), Is.GreaterThan(100f), "The view is off the ship after panning.");
+            Invoke(map, "KeyBindDown", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Down, here));
+            Invoke(map, "KeyBindUp", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Up, here));
+            Assert.That((map.Centre - ship).Length(), Is.GreaterThan(100f), "One click does not.");
+            Invoke(map, "KeyBindDown", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Down, here));
+            Invoke(map, "KeyBindUp", Key(map, EngineKeyFunctions.UIClick, BoundKeyState.Up, here));
+            Assert.That((map.Centre - ship).Length(), Is.LessThan(1f), "A double-click does.");
+        });
+
+        await Client.WaitPost(() => controller.Window!.Close());
+    }
+
+    private static GUIBoundKeyEventArgs Key(WFSectorMapControl map, BoundKeyFunction function, BoundKeyState state, Vector2 pixel)
+    {
+        return new GUIBoundKeyEventArgs(function, state, default, default, pixel / map.UIScale, pixel);
+    }
+
+    private static GUIMouseMoveEventArgs Move(WFSectorMapControl map, Vector2 pixel)
+    {
+        return new GUIMouseMoveEventArgs(Vector2.Zero, map, pixel / map.UIScale, default, pixel / map.UIScale, pixel);
+    }
+
+    private static GUIMouseWheelEventArgs Wheel(WFSectorMapControl map, Vector2 delta, Vector2 pixel)
+    {
+        return new GUIMouseWheelEventArgs(delta, map, pixel / map.UIScale, default, pixel / map.UIScale, pixel);
+    }
+
+    /// <summary>Calls one of a control's input handlers, which the engine keeps out of reach of content.</summary>
+    private static void Invoke(Control control, string method, params object[] args)
+    {
+        var types = args.Select(arg => arg.GetType()).ToArray();
+        typeof(Control).GetMethod(method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, types, null)!
+            .Invoke(control, args);
     }
 
     /// <summary>Presses and releases a key function in the client's own input, as a keypress outside the game world.</summary>

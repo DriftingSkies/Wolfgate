@@ -73,8 +73,8 @@ control, like the Planets and Encounters hooks.
 
 **Sector map.** `WFSectorMapControl` is a map of the sector alone, not the mass scanner, and it gives no intel the
 console's MAP tab would not: a dark backing, zoom from 1.5 to 60 km half-width (fitted at first to the named grids
-within 60 km, the player's ship and the territory, plus 3 km), the wheel zooming about the cursor, left-drag panning
-and a double-click centring on the player's own grid. It draws a faint outline (white at alpha 0.08, one LineList) of
+within 60 km, the player's ship and the territory, plus 3 km), the wheel zooming about the cursor, right-drag panning
+and a left double-click centring on the player's own grid. It draws a faint outline (white at alpha 0.08, one LineList) of
 every cell whose centre lies within 30 km of the origin (`WFSectorClientSystem.SectorRadius`; `WFSectorHex.CellsWithin`),
 each shared edge once and none once a cell is under 6 px across; the territory over it through `WFSectorOverlay` (one
 `worldToView` matrix a frame, `view = (world - centre) * scale` with Y flipped about the midpoint); the callsign of every
@@ -84,8 +84,8 @@ countdown instead); the grids the MAP tab names without a scan, by its own rule 
 `HideLabel` (the map has no console to detect them with), never the player's own ship, each as a dot and its name (a
 name that would overlap one already printed is left out); one marker per visible encounter at its first ship, as the
 MAP tab lists them, in its category's glyph and colour with the encounter's name; the player's grid as a white
-triangle along its heading; and at the cursor the cell's callsign, its distance from the origin and its owner ("K-7
-(12.4 km): open space", or "contested by X, m:ss"). With no view of the map it shows only "No territory data".
+triangle along its heading; and, once the cursor has rested half a second on one cell (not while panning), the cell's callsign, its distance from
+the origin and its owner ("K-7 (12.4 km): open space", or "contested by X, m:ss"). With no view of the map it shows only "No territory data".
 `WFSectorMapPanel` puts it over a bar with "Centre on me", "Whole sector" and the scale. It opens several ways:
 `WFSectorMapWindow` (resizable, 900x700) from the top-bar button beside the guidebook or its key (`OpenSectorMap`, N by
 default, rebindable), "Sector map" in the game menu or the client command `wf_sectormap`, all through

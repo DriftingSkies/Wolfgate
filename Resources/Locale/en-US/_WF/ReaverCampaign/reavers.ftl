@@ -110,6 +110,20 @@ cmd-wf_reavers-status-counts = { $strongholds ->
        *[other] {$raids} raids
     }.
 cmd-wf_reavers-status-clocks = Seconds to next spread: {$spread}. Seconds to next raid: {$raid}.
+cmd-wf_reavers-no-stronghold = No stronghold stands. Run wf_reavers found to place one now.
+cmd-wf_reavers-status-switch-off = No stronghold stands and none will be founded: {$cvar} is off. Run wf_reavers found to place one anyway.
+cmd-wf_reavers-status-not-in-round = No stronghold stands and none will be founded: no round is in progress.
+cmd-wf_reavers-status-paused = No stronghold stands and none will be founded: the campaign is paused. Run wf_reavers resume.
+cmd-wf_reavers-status-first-due = No stronghold stands. The first is due in { $minutes ->
+        [one] {$minutes} minute
+       *[other] {$minutes} minutes
+    }. Run wf_reavers found to place one now.
+cmd-wf_reavers-status-regroup-due = No stronghold stands. The Reavers regroup in { $minutes ->
+        [one] {$minutes} minute
+       *[other] {$minutes} minutes
+    }. Run wf_reavers found to place one now.
+cmd-wf_reavers-status-founding-overdue = No stronghold stands. A founding is due now and retries every minute until a cell qualifies. Run wf_reavers found to place one now.
+cmd-wf_reavers-status-founding-untimed = No stronghold stands and the founding clock has not started. Run wf_reavers found to place one now.
 cmd-wf_reavers-status-stronghold = Stronghold {$uid} at {$callsign}: {$prototype}, {$hits} hits, {$patrols} patrols.
 cmd-wf_reavers-status-intercept = Patrol {$patrol} intercepting {$ship} ({$uid}) for {$seconds} s.
 cmd-wf_reavers-status-mark = {$ship} ({$uid}) is marked for {$seconds} s more.

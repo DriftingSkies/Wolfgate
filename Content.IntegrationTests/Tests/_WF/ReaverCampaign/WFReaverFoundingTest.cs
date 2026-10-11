@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Content.IntegrationTests.Tests._WF.SectorControl;
 using Content.Server._WF.Encounters;
@@ -10,12 +11,16 @@ using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Server._WF.SectorControl.Systems;
+using Content.Server.Administration.Managers;
 using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.ReaverCampaign;
 using Content.Shared._WF.SectorControl;
+using Content.Shared.Administration;
+using Robust.Client.Console;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Localization;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 
@@ -397,5 +402,118 @@ public sealed class WFReaverFoundingTest : WFReaverTestBase
             Assert.That(territory.Held(map, Reavers), Is.Empty);
             console.ExecuteCommand("wf_reavers status");
         });
+    }
+
+    /// <summary>With no stronghold standing, spread, patrol and raid say so and point at found, and status says when the first is due or why none will be.</summary>
+    [Test]
+    public async Task CommandPointsAtFoundWhenNoStrongholdStands()
+    {
+        await StartCampaign();
+        var admins = Server.ResolveDependency<IAdminManager>();
+        await Server.WaitPost(() => admins.PromoteHost(ServerSession));
+        for (var i = 0; i < 60 && !admins.HasAdminFlag(ServerSession, AdminFlags.Admin); i++)
+        {
+            await RunTicks(1);
+        }
+
+        Assert.That(admins.HasAdminFlag(ServerSession, AdminFlags.Admin), "The player never became an admin.");
+
+        var console = Client.ResolveDependency<IClientConsoleHost>();
+        var output = new List<string>();
+        EventHandler<AddStringArgs> capture = (_, args) =>
+        {
+            // Local lines are the client's own echo; the server's replies arrive as acks.
+            if (!args.Local)
+                output.Add(args.Text.ToString());
+        };
+
+        await Client.WaitPost(() => console.AddString += capture);
+        var loc = Server.ResolveDependency<ILocalizationManager>();
+        var config = Server.ResolveDependency<IConfigurationManager>();
+        var campaign = Server.System<WFReaverCampaignSystem>();
+        var noStronghold = loc.GetString("cmd-wf_reavers-no-stronghold");
+        try
+        {
+            foreach (var step in new[] { "spread", "patrol", "raid" })
+            {
+                var lines = await Run(output, $"wf_reavers {step}");
+                Assert.That(lines, Is.EqualTo(new[] { noStronghold }), step);
+            }
+
+            Assert.That(noStronghold, Does.Contain("wf_reavers found"), "It names the way to place one.");
+
+            // Status ends with when the first is due, from the stations generating.
+            var status = await Run(output, "wf_reavers status");
+            Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-founding-untimed")));
+
+            // No retry, so a founding that is due stays unfounded while it is read.
+            SetPrivate(campaign, "_nextFoundTry", STiming.CurTime + TimeSpan.FromHours(1));
+            SetPrivate(campaign, "_stationsAt", STiming.CurTime + TimeSpan.FromMinutes(7) - TimeSpan.FromSeconds(3));
+            status = await Run(output, "wf_reavers status");
+            Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-first-due", ("minutes", 7))));
+            Assert.That(status.Last(), Does.Contain("7 minutes").And.Contain("wf_reavers found"));
+
+            SetPrivate(campaign, "_stationsAt", STiming.CurTime - TimeSpan.FromMinutes(1));
+            status = await Run(output, "wf_reavers status");
+            Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-founding-overdue")));
+
+            // After a stronghold has fallen it is the regroup that is timed.
+            await Server.WaitPost(() =>
+            {
+                var state = campaign.State(true)!;
+                state.Founded = 1;
+                state.NoStrongholdSince = STiming.CurTime + TimeSpan.FromMinutes(5) - TimeSpan.FromSeconds(3);
+            });
+            status = await Run(output, "wf_reavers status");
+            Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-regroup-due", ("minutes", 5))));
+
+            // Paused or switched off, it says so and why.
+            await Server.WaitPost(() => campaign.Paused = true);
+            status = await Run(output, "wf_reavers status");
+            Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-paused")));
+            await Server.WaitPost(() => campaign.Paused = false);
+
+            foreach (var cvar in new[] { ReaverCampaignCVars.Enabled, EncountersCVars.Enabled, SectorControlCVars.Enabled })
+            {
+                await Server.WaitPost(() => config.SetCVar(cvar, false));
+                status = await Run(output, "wf_reavers status");
+                Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", cvar.Name))));
+                Assert.That(status.Last(), Does.Contain(cvar.Name).And.Contain("wf_reavers found"));
+                await Server.WaitPost(() => config.SetCVar(cvar, true));
+            }
+
+            // A preset with no campaign has nothing to found.
+            await Server.WaitPost(() => config.SetCVar(EncountersCVars.Preset, BarePreset));
+            var noCampaign = loc.GetString("cmd-wf_reavers-no-campaign");
+            Assert.That(await Run(output, "wf_reavers spread"), Is.EqualTo(new[] { noCampaign }));
+            Assert.That(await Run(output, "wf_reavers status"), Is.EqualTo(new[] { noCampaign }));
+            await Server.WaitPost(() => config.SetCVar(EncountersCVars.Preset, TestPreset));
+
+            // With a stronghold standing a failure is the step's own.
+            await Server.WaitAssertion(() => FoundAt(Home));
+            Assert.That(await Run(output, "wf_reavers raid"), Is.EqualTo(new[] { loc.GetString("cmd-wf_reavers-raid-failed") }));
+            status = await Run(output, "wf_reavers status");
+            Assert.That(status, Has.None.Contain("No stronghold stands"));
+        }
+        finally
+        {
+            await Client.WaitPost(() => console.AddString -= capture);
+        }
+    }
+
+    /// <summary>Runs a command as the test player, an admin, and returns the lines the server wrote back.</summary>
+    private async Task<List<string>> Run(List<string> output, string command)
+    {
+        await Client.WaitPost(output.Clear);
+        await Server.WaitPost(() => Server.ConsoleHost.ExecuteCommand(ServerSession, command));
+        await RunTicks(5);
+        var lines = new List<string>();
+        await Client.WaitPost(() => lines.AddRange(output));
+        return lines;
+    }
+
+    private static void SetPrivate(WFReaverCampaignSystem campaign, string field, object value)
+    {
+        typeof(WFReaverCampaignSystem).GetField(field, BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(campaign, value);
     }
 }

@@ -36,7 +36,13 @@ public sealed class WFSectorMapControl : Control
     /// <summary>The space left around the grids and territory when the view is fitted to them.</summary>
     public const float FitMargin = 3000f;
 
+    /// <summary>How long the cursor must rest over one cell before the hover readout shows.</summary>
+    public static readonly TimeSpan ReadoutDelay = TimeSpan.FromSeconds(0.5);
+
     private const float ZoomStep = 1.25f;
+
+    /// <summary>How far the cursor may drift, in UI pixels, and still count as resting.</summary>
+    private const float RestDrift = 4f;
 
     /// <summary>How narrow a cell may get on screen, in pixels, before the grid is no longer outlined.</summary>
     private const float GridPixels = 6f;
@@ -65,11 +71,16 @@ public sealed class WFSectorMapControl : Control
     /// <summary>The map the view was last fitted to; a new map, or Nullspace, fits it again.</summary>
     private MapId _fitted = MapId.Nullspace;
 
-    private bool _dragging;
+    private bool _panning;
     private Vector2 _lastPointer;
     private Vector2? _hover;
     private TimeSpan? _lastClick;
     private Vector2 _lastClickPosition;
+
+    /// <summary>Where, over which cell and since when the cursor has been resting.</summary>
+    private Vector2 _restPoint;
+    private WFSectorCell? _restCell;
+    private TimeSpan _restSince;
 
     /// <summary>The world point at the middle of the control.</summary>
     public Vector2 Centre => _centre;
@@ -79,6 +90,9 @@ public sealed class WFSectorMapControl : Control
 
     /// <summary>Pixels per metre at the current zoom.</summary>
     public float PixelsPerMetre => PixelSize.X > 0 ? PixelSize.X / 2f / _range : 0f;
+
+    /// <summary>Whether the cursor has rested over one cell for <see cref="ReadoutDelay"/> and the view is not being panned.</summary>
+    public bool ReadoutShown => _hover != null && !_panning && _timing.RealTime - _restSince >= ReadoutDelay;
 
     public WFSectorMapControl()
     {
@@ -252,6 +266,24 @@ public sealed class WFSectorMapControl : Control
         base.FrameUpdate(args);
         if (TryGetView(out var view))
             EnsureFitted(view);
+
+        // The map can move under a still cursor, by a recentre or a refit.
+        if (_hover is { } hover && !_panning && CellAt(hover) != _restCell)
+            RestartRest(hover);
+    }
+
+    /// <summary>The cell under a pixel of the control, or none with no view of the map.</summary>
+    private WFSectorCell? CellAt(Vector2 pixel)
+    {
+        return TryGetView(out var view) ? WFSectorHex.CellOf(ViewToWorld(pixel), view.CellSize) : null;
+    }
+
+    /// <summary>Starts the readout's delay again from a pixel, hiding the readout.</summary>
+    private void RestartRest(Vector2 pixel)
+    {
+        _restPoint = pixel;
+        _restCell = CellAt(pixel);
+        _restSince = _timing.RealTime;
     }
 
     private void EnsureFitted(WFSectorMapView view)
@@ -294,39 +326,47 @@ public sealed class WFSectorMapControl : Control
         _centre = Vector2.Clamp(centre, new Vector2(-CentreLimit), new Vector2(CentreLimit));
     }
 
+    /// <summary>The right button pans and the left button, double-clicked, centres on the player; a click of either hides the readout.</summary>
     protected override void KeyBindDown(GUIBoundKeyEventArgs args)
     {
         base.KeyBindDown(args);
-        if (args.Function != EngineKeyFunctions.UIClick)
+        if (args.Function != EngineKeyFunctions.UIClick && args.Function != EngineKeyFunctions.UIRightClick)
             return;
 
-        var now = _timing.RealTime;
         var position = args.RelativePixelPosition;
+        _hover = position;
+        RestartRest(position);
+        args.Handle();
+        if (args.Function == EngineKeyFunctions.UIRightClick)
+        {
+            _lastPointer = position;
+            _panning = true;
+            return;
+        }
+
+        var now = _timing.RealTime;
         if (_lastClick is { } last
             && now - last <= TimeSpan.FromMilliseconds(_cfg.GetCVar(CVars.DoubleClickDelay))
             && (position - _lastClickPosition).Length() < _cfg.GetCVar(CVars.DoubleClickRange))
         {
             _lastClick = null;
-            _dragging = false;
             CentreOnPlayer();
-            args.Handle();
             return;
         }
 
         _lastClick = now;
         _lastClickPosition = position;
-        _lastPointer = position;
-        _dragging = true;
-        args.Handle();
     }
 
     protected override void KeyBindUp(GUIBoundKeyEventArgs args)
     {
         base.KeyBindUp(args);
-        if (args.Function != EngineKeyFunctions.UIClick)
+        if (args.Function != EngineKeyFunctions.UIRightClick)
             return;
 
-        _dragging = false;
+        _panning = false;
+        _hover = args.RelativePixelPosition;
+        RestartRest(args.RelativePixelPosition);
         args.Handle();
     }
 
@@ -334,9 +374,14 @@ public sealed class WFSectorMapControl : Control
     {
         base.MouseMove(args);
         var position = args.RelativePixelPosition;
+        var entered = _hover == null;
         _hover = position;
-        if (!_dragging)
+        if (!_panning)
+        {
+            if (entered || CellAt(position) != _restCell || (position - _restPoint).Length() > RestDrift * UIScale)
+                RestartRest(position);
             return;
+        }
 
         var delta = position - _lastPointer;
         _lastPointer = position;
@@ -358,6 +403,8 @@ public sealed class WFSectorMapControl : Control
             return;
 
         ZoomAt(args.RelativePixelPosition, MathF.Pow(ZoomStep, -args.Delta.Y));
+        _hover = args.RelativePixelPosition;
+        RestartRest(args.RelativePixelPosition);
         args.Handle();
     }
 
@@ -538,10 +585,10 @@ public sealed class WFSectorMapControl : Control
         handle.DrawCircle(point, 4f * UIScale, Color.White, false);
     }
 
-    /// <summary>The cell under the cursor, its callsign, distance out and who holds it, beside the cursor.</summary>
+    /// <summary>The cell under the cursor, its callsign, distance out and who holds it, beside the cursor once it has rested there.</summary>
     private void DrawReadout(DrawingHandleScreen handle, WFSectorMapView view, UIBox2 bounds)
     {
-        if (_hover is not { } hover || !bounds.Contains(hover))
+        if (!ReadoutShown || _hover is not { } hover || !bounds.Contains(hover))
             return;
 
         var text = Readout(view, ViewToWorld(hover));

@@ -4,6 +4,8 @@ using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Server.Administration;
+using Content.Shared._WF.CCVar;
+using Content.Shared._WF.ReaverCampaign;
 using Content.Shared._WF.SectorControl;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
@@ -52,13 +54,19 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 shell.WriteLine(Loc.GetString("cmd-wf_reavers-tier-set", ("tier", _campaign.TierName(tier))));
                 break;
             case "spread" when args.Length == 1:
-                shell.WriteLine(Loc.GetString(_campaign.TrySpreadOnce() ? "cmd-wf_reavers-spread" : "cmd-wf_reavers-spread-failed"));
+                if (_campaign.TrySpreadOnce())
+                    shell.WriteLine(Loc.GetString("cmd-wf_reavers-spread"));
+                else
+                    Failed(shell, "cmd-wf_reavers-spread-failed");
                 break;
             case "patrol" when args.Length == 1:
                 Patrol(shell);
                 break;
             case "raid" when args.Length == 1:
-                shell.WriteLine(Loc.GetString(_campaign.TryLaunchRaid() ? "cmd-wf_reavers-raid" : "cmd-wf_reavers-raid-failed"));
+                if (_campaign.TryLaunchRaid())
+                    shell.WriteLine(Loc.GetString("cmd-wf_reavers-raid"));
+                else
+                    Failed(shell, "cmd-wf_reavers-raid-failed");
                 break;
             case "intercept" when args.Length == 2:
                 Intercept(shell, args[1]);
@@ -122,6 +130,9 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
             ("spread", Seconds(state?.NextSpread, now)),
             ("raid", Seconds(state?.NextRaid, now))));
 
+        if (strongholds.Count == 0)
+            shell.WriteLine(WhyNoStronghold(campaign, state, now));
+
         foreach (var (uid, stronghold, encounter) in strongholds)
         {
             shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-stronghold",
@@ -152,6 +163,35 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 ("uid", EntityManager.GetNetEntity(marked).ToString()),
                 ("seconds", Seconds(mark.Until, now))));
         }
+    }
+
+    /// <summary>Why none stands and when one will: the switch that is off, the pause, or the minutes to the founding; always the way to place one now.</summary>
+    private string WhyNoStronghold(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent? state, TimeSpan now)
+    {
+        switch (_campaign.Idle())
+        {
+            case WFReaverIdle.CampaignOff:
+                return Loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", ReaverCampaignCVars.Enabled.Name));
+            case WFReaverIdle.EncountersOff:
+                return Loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", EncountersCVars.Enabled.Name));
+            case WFReaverIdle.SectorControlOff:
+                return Loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", SectorControlCVars.Enabled.Name));
+            case WFReaverIdle.NotInRound:
+                return Loc.GetString("cmd-wf_reavers-status-not-in-round");
+        }
+
+        if (_campaign.Paused)
+            return Loc.GetString("cmd-wf_reavers-status-paused");
+
+        if (_campaign.FoundingDue(campaign, state) is not { } due)
+            return Loc.GetString("cmd-wf_reavers-status-founding-untimed");
+
+        if (due <= now)
+            return Loc.GetString("cmd-wf_reavers-status-founding-overdue");
+
+        var minutes = (int) Math.Ceiling((due - now).TotalMinutes);
+        return Loc.GetString(state is { Founded: > 0 } ? "cmd-wf_reavers-status-regroup-due" : "cmd-wf_reavers-status-first-due",
+            ("minutes", minutes));
     }
 
     /// <summary>wf_reavers intercept &lt;grid uid&gt;: sends a patrol after a ship now.</summary>
@@ -228,6 +268,17 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
             return;
         }
 
-        shell.WriteLine(Loc.GetString("cmd-wf_reavers-patrol-failed"));
+        Failed(shell, "cmd-wf_reavers-patrol-failed");
+    }
+
+    /// <summary>Prints why a step failed: no campaign, or no stronghold standing and the way to place one, else the step's own line.</summary>
+    private void Failed(IConsoleShell shell, string key)
+    {
+        if (_campaign.Campaign == null)
+            key = "cmd-wf_reavers-no-campaign";
+        else if (_campaign.Strongholds().Count == 0)
+            key = "cmd-wf_reavers-no-stronghold";
+
+        shell.WriteLine(Loc.GetString(key));
     }
 }

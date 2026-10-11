@@ -27,6 +27,17 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WF.ReaverCampaign.Systems;
 
+/// <summary>What keeps the Reaver campaign from acting, in the order it is checked.</summary>
+public enum WFReaverIdle : byte
+{
+    None,
+    CampaignOff,
+    EncountersOff,
+    SectorControlOff,
+    NotInRound,
+    NoCampaign,
+}
+
 /// <summary>The Ashfall Reaver campaign: strongholds that hold sector cells, spread, patrol and raid, and raise a threat tier.</summary>
 public sealed partial class WFReaverCampaignSystem : EntitySystem
 {
@@ -111,8 +122,22 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
     }
 
     /// <summary>Whether the campaign acts: every switch on, the round in progress and a campaign for the preset.</summary>
-    public bool Running => _enabled && _encountersEnabled && _territory.Enabled
-        && _ticker.RunLevel == GameRunLevel.InRound && Campaign != null;
+    public bool Running => Idle() == WFReaverIdle.None;
+
+    /// <summary>The first thing that keeps the campaign from acting, or none while it runs.</summary>
+    public WFReaverIdle Idle()
+    {
+        if (!_enabled)
+            return WFReaverIdle.CampaignOff;
+        if (!_encountersEnabled)
+            return WFReaverIdle.EncountersOff;
+        if (!_territory.Enabled)
+            return WFReaverIdle.SectorControlOff;
+        if (_ticker.RunLevel != GameRunLevel.InRound)
+            return WFReaverIdle.NotInRound;
+
+        return Campaign == null ? WFReaverIdle.NoCampaign : WFReaverIdle.None;
+    }
 
     public override void Initialize()
     {
