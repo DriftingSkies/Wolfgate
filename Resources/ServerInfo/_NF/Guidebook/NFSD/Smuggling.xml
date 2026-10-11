@@ -14,7 +14,7 @@
 
   As TSFMC marines, part of your job is to prevent smuggling, and to prosecute anyone supporting the Phaethon Dynasty.
 
-  Do not allow the TSF's control of Colossus to waver, doing a poor job counter-smuggling will fund the Phaethon Dynasty Vanguard's insurgency.
+  <!-- WOLFGATE(ColdWar): was "will fund the Phaethon Dynasty Vanguard's insurgency" -->Do not allow the TSF's control of Colossus to waver, doing a poor job counter-smuggling will fund the Phaethon Dynasty Vanguard.
 
   <Box>
     <GuideEntityEmbed Entity="CrateTradeContrabandSecure1" Caption="contraband crate"/>
@@ -41,6 +41,6 @@
     <GuideEntityEmbed Entity="FederationMilitaryCredit"/>
   </Box>
 
-  [bold]Remember to use any DNA you find to track down and prosecute the smugglers.[/bold] Those supporting the bloody massacre carried out by the Phaethon Dynasty must be brought to justice. 
+  <!-- WOLFGATE(ColdWar): was "Those supporting the bloody massacre carried out by the Phaethon Dynasty" -->[bold]Remember to use any DNA you find to track down and prosecute the smugglers.[/bold] Those supporting the Phaethon Dynasty must be brought to justice. 
 
 </Document>

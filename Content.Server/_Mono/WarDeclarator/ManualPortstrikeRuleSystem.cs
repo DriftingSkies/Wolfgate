@@ -35,6 +35,11 @@ public sealed partial class ManualPortstrikeRuleSystem : GameRuleSystem<ManualPo
             return;
         }
 
+        // WOLFGATE(ColdWar) START: each use flips the faction's stance, so a declaration or a war can be called off
+        if (WfUseDeclarator(ent, args.User))
+            return;
+        // WOLFGATE END
+
         var query = EntityQueryEnumerator<ManualPortstrikeRuleComponent>();
         while (query.MoveNext(out var uid, out var comp))
         {

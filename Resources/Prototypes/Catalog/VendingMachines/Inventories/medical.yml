@@ -31,6 +31,7 @@
     Bonesetter: 1 # WOLFGATE(Wolfmed): ITEMS
     BoneGel: 1 # WOLFGATE(Wolfmed): ITEMS
     WFWolfmedIvDripFlatpack: 2 # WOLFGATE(Wolfmed): ITEMS: the IV drip had no source at all.
+    WFWolfmedVentilatorFlatpack: 2 # WOLFGATE(Wolfmed): the ventilator, for a patient whose lungs are gone.
     WFMedkitSyntheticFilled: 2 # WOLFGATE(Wolfmed): ITEMS: a first aid kit for synthetic crew.
     PillCanisterTricordrazine: 3 # Mono
     Syringe: 5

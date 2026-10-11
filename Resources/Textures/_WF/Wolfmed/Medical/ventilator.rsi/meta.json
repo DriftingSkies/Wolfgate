@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from NovaSector modular_nova/modules/medical/icons/obj/machinery.dmi (the anesthetic tank stand) at 7499f47bfc6b768a72c922be46971ebfccf794a1, https://github.com/NovaSector/NovaSector; icon composed from its states",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "ventilator"
+    },
+    {
+      "name": "tank"
+    },
+    {
+      "name": "mask_off"
+    },
+    {
+      "name": "mask_on"
+    }
+  ]
+}

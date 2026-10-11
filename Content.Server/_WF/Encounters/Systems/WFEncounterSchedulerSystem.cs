@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._Mono.AlertLevel;
 using Content.Server._NF.GameTicking.Events;
 using Content.Server.GameTicking;
 using Content.Shared._NF.Shipyard.Components;
@@ -37,6 +38,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
     [Dependency] private WFEncounterSystem _encounters = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private WarLevelSystem _warLevel = default!;
 
     /// <summary>Space that has to be free of other grids around an open-space origin.</summary>
     private const float Clearance = 600f;
@@ -257,6 +259,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         var players = _playerManager.PlayerCount;
         var preset = Preset;
         var room = Budget() - _encounters.ActiveCost();
+        var atWar = _warLevel.GetWarLevel(EntityUid.Invalid);
         var candidates = new List<(WFEncounterPrototype Prototype, float Weight)>();
         var total = 0f;
         foreach (var prototype in _prototypes.EnumeratePrototypes<WFEncounterPrototype>())
@@ -273,6 +276,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
                 : prototype.Cost;
             // One of a kind at a time: an encounter that is still running is not picked again.
             if (!fits || weight <= 0f || players < prototype.MinPlayers || cost > Math.Max(0, room) || skip.Contains(prototype.ID)
+                || prototype.RequiresWar && !atWar
                 || _encounters.IsRunning(prototype.ID)
                 || _lastStarted.TryGetValue(prototype.ID, out var last)
                     && _timing.CurTime - last < TimeSpan.FromSeconds(prototype.Cooldown))

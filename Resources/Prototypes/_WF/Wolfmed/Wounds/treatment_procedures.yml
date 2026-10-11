@@ -632,6 +632,10 @@
     surgery: true
     done: [ SubjectGone ]
   - text: wolfmed-treatment-step-wolfmed-necrosis-wound-3
+    tool: WFWolfmedSkinGraft
+    surgery: true
+    done: [ SubjectGone ]
+  - text: wolfmed-treatment-step-wolfmed-necrosis-wound-4
     reagent: Spaceacillin
     done: [ SepsisCleared ]
   avoid:
@@ -880,6 +884,10 @@
     surgery: true
     done: [ SubjectGone ]
   - text: wolfmed-treatment-step-cond-necrosis-2
+    tool: WFWolfmedSkinGraft
+    surgery: true
+    done: [ SubjectGone ]
+  - text: wolfmed-treatment-step-cond-necrosis-3
     reagent: Spaceacillin
     done: [ SepsisCleared ]
   avoid:

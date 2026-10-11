@@ -433,6 +433,9 @@
     tags:
     - Wall
     - WallT3
+  # WOLFGATE(ShipArmor): plastitanium counts as full hull armor
+  - type: ArmorThickness
+    thickness: 10
 
 - type: entity
   parent: [ WallPlastitaniumDiagonalIndestructible, BaseWallTierTwo ] # Mono
@@ -452,6 +455,9 @@
   - type: Construction # Mono
     graph: Girder
     node: wallPlastitaniumDiagonal
+  # WOLFGATE(ShipArmor): plastitanium counts as full hull armor
+  - type: ArmorThickness
+    thickness: 10
 
 - type: entity
   id: WallPlastitaniumDiagonalIndestructible

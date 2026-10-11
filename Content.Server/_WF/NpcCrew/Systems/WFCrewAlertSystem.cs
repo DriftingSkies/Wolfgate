@@ -143,13 +143,18 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     private readonly Dictionary<(EntityUid Grid, EntityUid Attacker), (TimeSpan First, TimeSpan Last, int Count)> _strays = new();
 
     /// <summary>
-    /// Counts a ship weapon hit from a vessel of the struck ship's own faction and says whether it is let pass as an
-    /// accident. A few stray shots in a fight are; more than <see cref="StrayHits"/> inside the window are not, and
-    /// once a vessel is taken for an attacker nothing more of its fire is excused.
+    /// Says whether a ship weapon hit is let pass. Fire from a vessel fighting on the ship's side, by alliance or by
+    /// whom it has been shooting, is forgiven outright, whatever its colours: in a melee nobody's aim is clean. A
+    /// vessel of the ship's own faction is allowed a few stray shots, and more than <see cref="StrayHits"/> inside the
+    /// window are not an accident. Once a vessel is taken for an attacker nothing more of its fire is excused.
     /// </summary>
     private bool Excuse(EntityUid grid, EntityUid attacker)
     {
-        if (!SameFaction(grid, attacker) || KnownAttacker(grid, attacker))
+        if (KnownAttacker(grid, attacker))
+            return false;
+        if (Friend(grid, attacker))
+            return true;
+        if (!SameFaction(grid, attacker))
             return false;
 
         var now = _timing.CurTime;
@@ -163,12 +168,25 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         return strays.Count <= StrayHits;
     }
 
-    /// <summary>Whether a vessel's recent fire on a ship is still being let pass as stray shots from its own side.</summary>
+    /// <summary>Whether a vessel's recent fire on a ship is being let pass: a friend's, or a few strays from its own side.</summary>
     public bool IsExcused(EntityUid grid, EntityUid attacker)
     {
-        return SameFaction(grid, attacker) && !KnownAttacker(grid, attacker)
+        if (KnownAttacker(grid, attacker))
+            return false;
+        if (Friend(grid, attacker))
+            return true;
+
+        return SameFaction(grid, attacker)
                && (!_strays.TryGetValue((grid, attacker), out var strays) || _timing.CurTime - strays.First > StrayWindow
                    || strays.Count <= StrayHits);
+    }
+
+    /// <summary>Whether whoever knows the vessel, the encounter it is fighting in, vouches for it as the ship's friend.</summary>
+    private bool Friend(EntityUid grid, EntityUid attacker)
+    {
+        var ev = new WFCrewFriendlyFireQueryEvent(grid, attacker);
+        RaiseLocalEvent(ref ev);
+        return ev.Friendly;
     }
 
     /// <summary>Whether two ships fly for the same faction: the same company, or two of one faction's companies.</summary>

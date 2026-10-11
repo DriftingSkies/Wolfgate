@@ -19,6 +19,9 @@ public enum WolfmedBreathing : byte
 
     /// <summary>M3: breathing, but damaged lungs cannot keep up (plan §3.3). "Short of breath".</summary>
     Laboured = 4,
+
+    /// <summary>A ventilator or a sealed autodoc is breathing for a chest that cannot; the source says why it cannot.</summary>
+    Ventilated = 5,
 }
 
 /// <summary>Why breathing is not <see cref="WolfmedBreathing.Normal"/>.</summary>

@@ -194,7 +194,7 @@ A limb frozen through or burned to charring is already dying, and the clock runs
 
 A [bold]severed limb[/bold] keeps for five minutes. Put it back after that and it goes back on dead.
 
-Dead tissue is permanent. It does not heal, no reagent or topical reaches it, the limb works badly, and it keeps the patient septic for as long as it is attached. The only treatment is amputation and a replacement part.
+Dead tissue does not heal. No reagent or topical reaches it, the limb works badly, and it keeps the patient septic for as long as it is there. A dead limb is amputated and replaced. A dead chest or head cannot come off: open it and do the [bold]Remove Necrotic Flesh[/bold] surgery: a scalpel, a skin graft and then a cautery. Give spaceacillin after either.
   <Box>
     <GuideEntityEmbed Entity="Tourniquet"/>
     <GuideEntityEmbed Entity="Saw"/>

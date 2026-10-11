@@ -26,6 +26,7 @@ public sealed class WolfmedWoundSurgerySystem : EntitySystem
     [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedDislocationSystem _dislocation = default!;
     [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedEmbeddedObjectSystem _embedded = default!;
     [Dependency] private Wounds.WolfmedEmbeddedRemovalSystem _removal = default!;
+    [Dependency] private Wounds.WolfmedNecrosisSystem _necrosis = default!;
     [Dependency] private WoundBleedingSystem _bleeding = default!;
     [Dependency] private WoundFractureSystem _fractures = default!;
     [Dependency] private WoundScarSystem _scars = default!;
@@ -45,6 +46,12 @@ public sealed class WolfmedWoundSurgerySystem : EntitySystem
         SubscribeLocalEvent<WolfmedSurgeryIncisionTreatmentEffectComponent, SurgeryStepEvent>(OnTreatIncision);
         SubscribeLocalEvent<WolfmedSurgeryExtractEmbeddedEffectComponent, SurgeryStepEvent>(OnExtractEmbedded);
         SubscribeLocalEvent<WolfmedSurgeryRelocateJointEffectComponent, SurgeryStepEvent>(OnRelocateJoint);
+        SubscribeLocalEvent<WolfmedSurgeryRemoveNecrosisEffectComponent, SurgeryStepEvent>(OnRemoveNecrosis);
+    }
+
+    private void OnRemoveNecrosis(Entity<WolfmedSurgeryRemoveNecrosisEffectComponent> ent, ref SurgeryStepEvent args)
+    {
+        _necrosis.RemoveNecrosis(args.Part);
     }
 
     /// <summary>

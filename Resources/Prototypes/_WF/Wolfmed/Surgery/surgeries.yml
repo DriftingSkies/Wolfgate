@@ -254,6 +254,25 @@
   - type: WolfmedSurgeryWoundCondition
     woundPrototype: WFWolfmedCharringWound
 
+# Necrosis (W5) ---------------------------------------------------------------
+# A torso or a head cannot be amputated, so dead tissue there is cut out and grafted over. A dead limb still has to
+# come off.
+
+- type: entity
+  parent: SurgeryBase
+  id: WFSurgeryRemoveNecroticFlesh
+  name: Remove Necrotic Flesh
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    requirement: SurgeryOpenIncision
+    steps:
+    - WFSurgeryStepRemoveNecroticFlesh
+    - WFSurgeryStepGraftNecroticFlesh
+    - SurgeryStepSealTendWound
+  - type: WolfmedSurgeryNecrosisCondition
+    parts: [ Torso, Head ]
+
 # Mechanical (W6) -------------------------------------------------------------
 # The mechanical repair procedure. Servo damage carries no damage type, so neither the welder nor the cable
 # coil's own healing block reaches it; the run behind the panel has to be replaced by hand.

@@ -15,6 +15,7 @@
   - WFSurgeryTendWoundsBruteDeep
   - WFSurgeryTendWoundsBurnDeep
   - WFSurgeryGraftSkin
+  - WFSurgeryRemoveNecroticFlesh
   # Bleeding.
   - WFSurgeryStopBleeding
   - WFSurgeryStopInternalBleeding

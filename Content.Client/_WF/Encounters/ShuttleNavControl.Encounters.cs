@@ -13,7 +13,10 @@ public partial class ShuttleNavControl
     private readonly List<Box2> _encounterLabels = new();
 
     /// <summary>The ships of one side of one encounter, gathered for a frame.</summary>
-    private readonly Dictionary<(NetEntity Encounter, string Side), (Vector2 Sum, int Count, bool Named, bool OnScope, Color Color, WFEncounterIcon Icon, WFEncounterCategory Category)> _encounterGroups = new();
+    private readonly Dictionary<(NetEntity Encounter, string Side), (Vector2 Sum, int Count, bool Named, bool OnScope, Color Color, WFEncounterIcon Icon, WFEncounterCategory Category, float Warn, float Attack)> _encounterGroups = new();
+
+    /// <summary>Where each side's ships were drawn this frame, for the spread of its zone envelope.</summary>
+    private readonly Dictionary<(NetEntity Encounter, string Side), List<Vector2>> _encounterPoints = new();
 
     private static readonly ResPath MarkerGlyphs = new("/Textures/_WF/Encounters/markers.rsi");
     private readonly Dictionary<WFEncounterIcon, Texture> _encounterGlyphs = new();
@@ -31,9 +34,10 @@ public partial class ShuttleNavControl
     }
 
     /// <summary>
-    /// Marks the visible encounters in the sector. A ship on the scope gets a diamond and its zones; the ships of one
-    /// side share a single name and a single pair of zone captions. A side with no ship on the scope gets one bare
-    /// arrow at the rim, however many ships it has, so far contacts don't crowd the scope.
+    /// Marks the visible encounters in the sector. A ship on the scope gets a diamond; the ships of one side share a
+    /// single name and a single pair of zone rings, drawn round the side as a whole: its widest ranges plus the spread
+    /// of its ships, so a dozen hulls in a battle make one envelope and not a dozen overlapping circles. A side with
+    /// no ship on the scope gets one bare arrow at the rim, however many ships it has, so far contacts don't crowd it.
     /// </summary>
     private void DrawEncounterMarkers(DrawingHandleScreen handle, TransformComponent consoleXform, Matrix3x2 worldToView)
     {
@@ -46,6 +50,7 @@ public partial class ShuttleNavControl
         var size = 6f * UIScale;
         _encounterLabels.Clear();
         _encounterGroups.Clear();
+        _encounterPoints.Clear();
         foreach (var marker in system.Markers)
         {
             if (marker.Map != consoleXform.MapID)
@@ -54,13 +59,13 @@ public partial class ShuttleNavControl
             var key = (marker.Encounter, marker.Side);
             var color = marker.Color ?? WFEncounterColors.Category(marker.Category);
             if (!_encounterGroups.TryGetValue(key, out var group))
-                group = (Vector2.Zero, 0, false, false, color, WFEncounterIcon.Category, marker.Category);
+                group = (Vector2.Zero, 0, false, false, color, WFEncounterIcon.Category, marker.Category, 0f, 0f);
 
             var point = Vector2.Transform(system.GetPosition(marker), worldToView);
             var onScope = (point - centre).Length() <= rim;
-            // The zones are each ship's own, but one caption does for the side.
-            DrawEncounterZone(handle, point, marker.WarnRange, Color.FromHex("#ffd23f"), group.Named ? string.Empty : system.WarnLabel);
-            DrawEncounterZone(handle, point, marker.AttackRange, Color.FromHex("#ff4b4b"), group.Named ? string.Empty : system.AttackLabel);
+            if (!_encounterPoints.TryGetValue(key, out var points))
+                _encounterPoints[key] = points = new List<Vector2>();
+            points.Add(point);
             if (onScope)
             {
                 handle.DrawLine(point + new Vector2(0f, -size), point + new Vector2(size, 0f), color);
@@ -77,7 +82,22 @@ public partial class ShuttleNavControl
 
             // Any ship of the side with a glyph of its own names the side's; the category's glyph is only a fallback at drawing.
             var icon = group.Icon != WFEncounterIcon.Category ? group.Icon : marker.Icon;
-            _encounterGroups[key] = (group.Sum + point, group.Count + 1, group.Named || onScope, group.OnScope || onScope, color, icon, group.Category);
+            _encounterGroups[key] = (group.Sum + point, group.Count + 1, group.Named || onScope, group.OnScope || onScope, color, icon, group.Category,
+                MathF.Max(group.Warn, marker.WarnRange), MathF.Max(group.Attack, marker.AttackRange));
+        }
+
+        foreach (var (key, group) in _encounterGroups)
+        {
+            // The side's zones as one envelope: its widest ranges out from the middle of its ships, plus their spread.
+            var middle = group.Sum / group.Count;
+            var spread = 0f;
+            foreach (var point in _encounterPoints[key])
+            {
+                spread = MathF.Max(spread, (point - middle).Length());
+            }
+
+            DrawEncounterZone(handle, middle, group.Warn, spread, Color.FromHex("#ffd23f"), system.WarnLabel);
+            DrawEncounterZone(handle, middle, group.Attack, spread, Color.FromHex("#ff4b4b"), system.AttackLabel);
         }
 
         foreach (var group in _encounterGroups.Values)
@@ -142,13 +162,16 @@ public partial class ShuttleNavControl
         return position;
     }
 
-    /// <summary>A ring at a zone's radius around the ship, named at its top, when any of it is on the scope.</summary>
-    private void DrawEncounterZone(DrawingHandleScreen handle, Vector2 centre, float range, Color color, string label)
+    /// <summary>
+    /// A ring round a side at a zone's range, widened by the spread of its ships so it wraps every one of their zones,
+    /// named at its top when any of it is on the scope.
+    /// </summary>
+    private void DrawEncounterZone(DrawingHandleScreen handle, Vector2 centre, float range, float spread, Color color, string label)
     {
         if (range <= 0f)
             return;
 
-        var radius = range * MinimapScale;
+        var radius = range * MinimapScale + spread;
         if (centre.X + radius < 0f || centre.Y + radius < 0f || centre.X - radius > PixelSize.X || centre.Y - radius > PixelSize.Y)
             return;
 

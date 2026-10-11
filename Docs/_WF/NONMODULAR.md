@@ -43,6 +43,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - tells an instant do-after from a running one
   - an instant do-after has already ended, so nothing would ever delete the effect
 - [`Content.Server/_NF/PublicTransit/PublicTransitSystem.cs`](../../Content.Server/_NF/PublicTransit/PublicTransitSystem.cs): announce the departure, as FTLToDock now flies and OnShuttleArrival announces the stop
+- [`Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs`](../../Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs): with nothing in range Pick threw, so a supercritical never ended and retried every tick
 - [`Content.Server/Body/Systems/RespiratorSystem.cs`](../../Content.Server/Body/Systems/RespiratorSystem.cs): entities without a respirator cannot metabolize inhaled gases; absence is valid.
 - [`Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs`](../../Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs)
   - sums the bounty hand-in value
@@ -108,6 +109,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - erotic roleplay rule removed, PR #27
   - erotic roleplay rule entry removed, PR #27
 - [`Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml`](../../Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml): the ER PDAs, was MedicalDoctorPDA and ContractorSeniorPhysicianPDA, whose ID resets to medical doctor access
+- [`Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml): was WeaponSubMachineGunTypewriter, class-3 contraband since Monolith#4816
 - [`Resources/Prototypes/_NF/Entities/Structures/Machines/Computers/computers_tabletop.yml`](../../Resources/Prototypes/_NF/Entities/Structures/Machines/Computers/computers_tabletop.yml): Medical Dispatch staff are Colonial since Monolith#4807
 - [`Resources/Prototypes/_NF/Events/events.yml`](../../Resources/Prototypes/_NF/Events/events.yml)
@@ -115,6 +117,11 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - vent clog event disabled
 - [`Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml`](../../Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml): the Medical department has no roles since Monolith#4807, so count medic time instead
 - [`Resources/Prototypes/_Obelisk/Species/hydrakin.yml`](../../Resources/Prototypes/_Obelisk/Species/hydrakin.yml): hydrakin is not selectable in character creation
+- [`Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
+- [`Resources/Prototypes/Entities/Clothing/Head/hoods.yml`](../../Resources/Prototypes/Entities/Clothing/Head/hoods.yml): radiation hood blocks more radiation (was 0.65)
+- [`Resources/Prototypes/Entities/Clothing/OuterClothing/suits.yml`](../../Resources/Prototypes/Entities/Clothing/OuterClothing/suits.yml)
+  - radiation suit blocks more radiation (was 0.1)
+  - vend price for the EngiVend, instead of its scrap value
 - [`Resources/Prototypes/Entities/Objects/Misc/identification_cards.yml`](../../Resources/Prototypes/Entities/Objects/Misc/identification_cards.yml): the universal card opens the Underground Black Market too
 - [`Resources/Prototypes/Entities/Objects/Tools/access_configurator.yml`](../../Resources/Prototypes/Entities/Objects/Tools/access_configurator.yml): Monolith#4816 added the level without a way to hand it out
 - [`Resources/Prototypes/Entities/Objects/Weapons/Guns/Turrets/turrets_ballistic.yml`](../../Resources/Prototypes/Entities/Objects/Weapons/Guns/Turrets/turrets_ballistic.yml)

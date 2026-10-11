@@ -16,11 +16,9 @@ public static class WolfgateMarkingNames
 {
     private static readonly string[] SplitSuffixes = { "_FRONT", "_BEHIND" };
 
-    // Populating a body part asks for hundreds of these, so the manager is resolved once rather than per lookup.
-    private static ILocalizationManager? _localization;
-
-    private static ILocalizationManager Localization =>
-        _localization ??= IoCManager.Resolve<ILocalizationManager>();
+    // Resolved per call, never kept in a static: each client has its own manager, and pooled test clients
+    // share one process.
+    private static ILocalizationManager Localization => IoCManager.Resolve<ILocalizationManager>();
 
     /// <summary>Translated layer name, the split half's original name, or the state read as words.</summary>
     public static string LayerName(string markingId, string state)
