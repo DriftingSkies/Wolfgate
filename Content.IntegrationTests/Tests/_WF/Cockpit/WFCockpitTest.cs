@@ -77,6 +77,21 @@ public sealed class WFCockpitTest : InteractionTest
   - type: Inventory
   - type: InventorySlots
   - type: ContainerContainer
+- type: entity
+  id: WFCockpitTestWall
+  components:
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+            bounds: ""-0.5,-0.5,0.5,0.5""
+        mask:
+        - WallLayer
+        layer:
+        - WallLayer
 ";
     protected override string PlayerPrototype => "WFCockpitTestMob";
 
@@ -155,7 +170,9 @@ public sealed class WFCockpitTest : InteractionTest
             var originalPlotControls = plots.Select(plot => plot.WfCockpitControls).ToArray();
             var networkPorts = Named<GridContainer>(window, "NetworkPortsBox");
             var originalNetworkLayout = (networkPorts.LimitedDimension, networkPorts.Rows, networkPorts.Columns);
+            Assert.That(AimOverlayPresent(), Is.False, "Without a cockpit the ship cam has no aim lines.");
             Assert.That(controller.Enter(window), Is.True);
+            Assert.That(AimOverlayPresent(), Is.True, "An open cockpit draws its aim lines on the ship cam.");
             Assert.That(cameraRequests.Single(), Is.EqualTo((ShuttleCameraView.External, 1.5f, false)),
                 "Cockpit entry must request the external camera through the normal helm binding.");
             Assert.That(window.Visible, Is.False);
@@ -452,6 +469,7 @@ public sealed class WFCockpitTest : InteractionTest
             typeof(EscapeContextUIController).GetMethod("CloseWindowOrOpenGameMenu", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .Invoke(ui.GetUIController<EscapeContextUIController>(), null);
             Assert.That(controller.Active, Is.False, "Escape with no other window open must leave the cockpit.");
+            Assert.That(AimOverlayPresent(), Is.False, "Leaving with Escape must take the aim lines off the ship cam.");
             Assert.That(window.IsOpen, Is.True, "Leaving the cockpit with Escape keeps the helm open.");
             Assert.That((byte) chatClamp.GetValue(chat)!, Is.GreaterThan((byte) 0),
                 "A chat box resized or rescaled while docked must be re-clamped when it leaves the cockpit.");
@@ -485,12 +503,14 @@ public sealed class WFCockpitTest : InteractionTest
             Assert.That(controller.Enter(window), Is.True, "Repeated entry must not leak or duplicate UI widgets.");
             var reentered = screen.Children.OfType<WFCockpitView>().Single();
             Assert.That(reentered, Is.Not.SameAs(hud));
+            Assert.That(AimOverlayPresent(), Is.True, "Entering again must draw the aim lines again.");
             Assert.That((reentered.PanelsSwapped, reentered.MfdMaximised), Is.EqualTo((false, false)),
                 "Panel arrangements last one cockpit session.");
             reentered.SetMaximised(true);
             Assert.That(viewport.Visible, Is.False);
             window.Close();
             Assert.That(controller.Active, Is.False, "Closing the helm must return the character HUD.");
+            Assert.That(AimOverlayPresent(), Is.False, "Closing the helm must take the aim lines off the ship cam.");
             Assert.That(viewport.Visible, Is.True, "Closing the helm with the MFD maximised must bring the world view back.");
             Assert.That(viewport.Parent, Is.SameAs(viewportParent));
             window.OpenCentered();
@@ -500,6 +520,7 @@ public sealed class WFCockpitTest : InteractionTest
             layoutHud.SetMaximised(true);
             settings.SetCVar(CCVars.UILayout, "Separated");
             Assert.That(controller.Active, Is.False, "Changing HUD layout must first restore the old screen.");
+            Assert.That(AimOverlayPresent(), Is.False, "Changing HUD layout must take the aim lines off the ship cam.");
             Assert.That(viewport.Visible, Is.True, "Changing HUD layout with the MFD maximised must bring the world view back first.");
         });
         await RunTicks(3);
@@ -529,6 +550,7 @@ public sealed class WFCockpitTest : InteractionTest
             var controller = Client.ResolveDependency<IUserInterfaceManager>().GetUIController<WFCockpitUIController>();
             controller.FrameUpdate(new FrameEventArgs(0.1f));
             Assert.That(controller.Active, Is.False, "Replicated unbuckling must restore the character HUD.");
+            Assert.That(AimOverlayPresent(), Is.False, "Losing the seat must take the aim lines off the ship cam.");
             Assert.That(screen.GetWidget<MainViewport>()!.Visible, Is.True, "Losing the seat with the MFD maximised must bring the world view back.");
             Assert.That(screen.Children.ToArray(), Is.EqualTo(normalHud));
             Assert.That(controller.Enter(window), Is.False);
@@ -559,6 +581,7 @@ public sealed class WFCockpitTest : InteractionTest
             var controller = Client.ResolveDependency<IUserInterfaceManager>().GetUIController<WFCockpitUIController>();
             controller.FrameUpdate(new FrameEventArgs(0.1f));
             Assert.That(controller.Active, Is.False, "Changing bodies must end the old cockpit session.");
+            Assert.That(AimOverlayPresent(), Is.False, "Changing bodies must take the aim lines off the ship cam.");
             Assert.That(screen.GetWidget<MainViewport>()!.Visible, Is.True, "A body change with the MFD maximised must bring the world view back.");
             Assert.That(screen.GetWidget<GhostGui>(), Is.SameAs(ghostHud));
             Assert.That(ghostHud.VisibleInTree, Is.True,
@@ -743,6 +766,7 @@ public sealed class WFCockpitTest : InteractionTest
             hud.SetMaximised(true);
 
             controller.Exit();
+            Assert.That(AimOverlayPresent(), Is.False, "Exiting while armed must take the aim lines off the ship cam.");
             Assert.That(world.Visible, Is.True, "Leaving with the MFD maximised must bring the world view back.");
             Assert.That(world.Parent, Is.SameAs(worldParent));
             Assert.That(Sessions().Select(message => (message.Active, message.Controlling)).TakeLast(2),
@@ -787,6 +811,7 @@ public sealed class WFCockpitTest : InteractionTest
             {
                 var context = $"{arrangement}, leaving by {exit}";
                 Assert.That(controller.Enter(window), Is.True, context);
+                Assert.That(AimOverlayPresent(), Is.True, $"{context}: the cockpit must draw its aim lines on the ship cam");
                 var hud = screen.Children.OfType<WFCockpitView>().Single();
                 Layout(hud, size);
                 SetArrangement(hud, arrangement);
@@ -808,6 +833,7 @@ public sealed class WFCockpitTest : InteractionTest
                         break;
                 }
                 Assert.That(controller.Active, Is.False, context);
+                Assert.That(AimOverlayPresent(), Is.False, $"{context}: the aim lines must leave the ship cam");
                 Assert.That(world.Visible, Is.True, $"{context}: the world view must be drawn again");
                 Assert.That(world.VisibleInTree, Is.True, context);
                 Assert.That(world.Parent, Is.SameAs(worldParent), $"{context}: the world view must return to its screen slot");
@@ -819,6 +845,224 @@ public sealed class WFCockpitTest : InteractionTest
             settings.SetCVar(CCVars.UILayout, originalLayout);
         });
     }
+
+    [Test]
+    public async Task AimLinesFollowSelectionAndPointerOnTheNavPlotAndTheShipCam()
+    {
+        EntityUid console = default;
+        await Server.WaitAssertion(() =>
+        {
+            console = SEntMan.SpawnEntity("ComputerShuttle", MapData.GridCoords);
+            var chair = SEntMan.SpawnEntity("Chair", MapData.GridCoords);
+            SEntMan.EnsureComponent<PilotComponent>(SPlayer);
+            SEntMan.System<ShuttleConsoleSystem>().AddPilot(console, SPlayer, SEntMan.GetComponent<ShuttleConsoleComponent>(console));
+            Assert.That(SEntMan.System<SharedBuckleSystem>().TryBuckle(SPlayer, SPlayer, chair), Is.True);
+        });
+        await RunTicks(10);
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        var originalLayout = settings.GetCVar(CCVars.UILayout);
+        await Client.WaitAssertion(() => settings.SetCVar(CCVars.UILayout, "Default"));
+        await RunTicks(3);
+        await Client.WaitAssertion(() =>
+        {
+            var ui = Client.ResolveDependency<IUserInterfaceManager>();
+            var screen = (InGameScreen) ui.ActiveScreen!;
+            var world = screen.GetWidget<MainViewport>()!;
+            var controller = ui.GetUIController<WFCockpitUIController>();
+            var window = new ShuttleConsoleWindow();
+            window.WfSetCockpitConsole(ToClient(SEntMan.GetNetEntity(console)));
+            window.OpenCentered();
+            Assert.That(controller.Enter(window), Is.True);
+            ui.ReleaseKeyboardFocus();
+            var hud = screen.Children.OfType<WFCockpitView>().Single();
+            var size = new Vector2(1130, 636);
+            var nav = window.FindControl<NavScreen>("NavContainer").FindControl<ShuttleNavControl>("NavRadar");
+            var map = ToClient(MapData.MapUid);
+            nav.SetMatrix(new EntityCoordinates(map, Vector2.Zero), Angle.Zero);
+            var input = Descendants(hud).OfType<WFCockpitFireInput>().Single();
+            var plotLines = Descendants(hud).OfType<WFCockpitAimLines>().Single();
+            var overlay = Client.ResolveDependency<IOverlayManager>().GetOverlay<WFCockpitAimOverlay>();
+            var transforms = CEntMan.System<SharedTransformSystem>();
+            var mount = new Vector2(4, 1);
+            var weapon = new FireControllableEntry(WFCockpitFireInputTest.UnknownWeapon(31),
+                CEntMan.GetNetCoordinates(new EntityCoordinates(map, mount)), "Battery", 10, true, ignoresLos: true);
+            var linked = new NetEntity(911);
+
+            FireControlConsoleBoundInterfaceState Bank(params FireControllableEntry[] weapons) =>
+                new(true, weapons, new NavInterfaceState(250, null, null, new(), default));
+            void Tick() => WFCockpitFireInputTest.Tick(input, 0, WFCockpitFireInputTest.Pointer(nav, nav.Size / 2), false);
+            void Select(bool guns)
+            {
+                hud.SelectGunnery(guns);
+                Layout(hud, size);
+            }
+            void SelectWeapon()
+            {
+                var panel = Descendants(hud).OfType<WFCockpitGunneryPanel>().Single();
+                Toggle(Descendants(panel).OfType<WFWeaponGrid>().Single().Children.OfType<Button>().Single(), true);
+                Assert.That(panel.SelectedWeapons, Is.EquivalentTo(new[] { weapon.NetEntity }));
+            }
+            void Arm()
+            {
+                window.WfReceiveCockpitGunnery(new WFCockpitGunneryStateMessage(linked, Bank(weapon)));
+                Layout(hud, size);
+                Select(true);
+                SelectWeapon();
+            }
+
+            Layout(hud, size);
+            Assert.That(ui.MouseGetControl(WFCockpitFireInputTest.Pointer(nav, nav.Size / 2)), Is.SameAs(nav));
+            var eye = world.Viewport.Eye;
+            Assert.That(eye, Is.Not.Null, "The world view must have the pilot's eye for the ship cam lines.");
+            window.WfReceiveCockpitGunnery(new WFCockpitGunneryStateMessage(linked, Bank(weapon)));
+            Layout(hud, size);
+            Tick();
+            Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out _), Is.False, "Nothing is selected, so there is nothing to draw.");
+            Assert.That(plotLines.Lines(), Is.Empty);
+
+            Arm();
+            Select(false);
+            Tick();
+            Assert.That(input.AimTarget, Is.Not.Null, "Selected weapons on FLIGHT aim at the pointer.");
+            foreach (var guns in new[] { false, true })
+            {
+                Select(guns);
+                Tick();
+                var tab = guns ? "GUNS" : "FLIGHT";
+                // Each tab lays the plot out differently, so the pointer reaches a different point on each.
+                Assert.That(nav.WfCockpitTryGetWorldToView(out var worldToView, out _), Is.True, tab);
+                Assert.That(input.AimTarget, Is.Not.Null, tab);
+                var aimAt = transforms.ToMapCoordinates(input.AimTarget!.Value).Position;
+                Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out var cam), Is.True, $"{tab}: the ship cam draws the line.");
+                Assert.That(cam, Has.Count.EqualTo(1), tab);
+                Assert.That(Vector2.Distance(cam[0].From, mount), Is.LessThan(0.01f), $"{tab}: the line starts at the weapon.");
+                Assert.That(Vector2.Distance(cam[0].To, aimAt), Is.LessThan(0.01f), $"{tab}: the line ends at the pointer.");
+                var plot = plotLines.Lines();
+                Assert.That(plot, Has.Count.EqualTo(1), $"{tab}: the NAV plot draws the same line.");
+                Assert.That(Vector2.Distance(plot[0].From, Vector2.Transform(mount, worldToView)), Is.LessThan(0.5f), tab);
+                Assert.That(Vector2.Distance(plot[0].To, Vector2.Transform(aimAt, worldToView)), Is.LessThan(0.5f), tab);
+            }
+
+            Select(false);
+            hud.SetMaximised(true);
+            Layout(hud, size);
+            Tick();
+            Assert.That(world.VisibleInTree, Is.False);
+            Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out _), Is.False, "A maximised MFD hides the world view and its lines.");
+            Assert.That(plotLines.Lines(), Has.Count.EqualTo(1), "The NAV plot keeps its line with the world view hidden.");
+            hud.SetMaximised(false);
+            Layout(hud, size);
+            Tick();
+            Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out _), Is.True);
+
+            window.WfReceiveCockpitGunnery(new WFCockpitGunneryStateMessage(linked, Bank()));
+            Tick();
+            Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out _), Is.False, "Without a selection gun control is released and nothing draws.");
+            Assert.That(plotLines.Lines(), Is.Empty);
+
+            Arm();
+            Select(false);
+            Tick();
+            Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out _), Is.True);
+            window.WfReceiveCockpitGunnery(new WFCockpitGunneryStateMessage(null, null));
+            Tick();
+            Assert.That(overlay.TryGetSegments(eye, MapData.MapId, out _), Is.False, "A lost link releases gun control and clears the lines.");
+
+            controller.Exit();
+            Assert.That(AimOverlayPresent(), Is.False);
+            window.Dispose();
+            settings.SetCVar(CCVars.UILayout, originalLayout);
+        });
+    }
+
+    [Test]
+    public async Task AimLinesStopAtTheWeaponsOwnGridButIgnoreOtherGrids()
+    {
+        var weaponAt = new Vector2(0.5f, 0.5f);
+        EntityUid mount = default;
+        EntityUid ownWall = default;
+        EntityUid foreignGrid = default;
+        EntityUid foreignWall = default;
+        await Server.WaitAssertion(() =>
+        {
+            for (var x = 0; x < 8; x++)
+                MapSystem.SetTile(MapData.Grid, new Vector2i(x, 0), MapData.Tile.Tile);
+            mount = SEntMan.SpawnEntity(null, new EntityCoordinates(MapData.Grid.Owner, weaponAt));
+            ownWall = SEntMan.SpawnEntity("WFCockpitTestWall", new EntityCoordinates(MapData.Grid.Owner, new Vector2(3.5f, 0.5f)));
+            var foreign = MapMan.CreateGridEntity(MapId);
+            Transform.SetLocalPosition(foreign.Owner, new Vector2(0, 5));
+            MapSystem.SetTile(foreign.Owner, foreign.Comp, Vector2i.Zero, MapData.Tile.Tile);
+            foreignGrid = foreign.Owner;
+            foreignWall = SEntMan.SpawnEntity("WFCockpitTestWall", new EntityCoordinates(foreign.Owner, new Vector2(0.5f, 0.5f)));
+        });
+        await RunTicks(10);
+        await Client.WaitAssertion(() =>
+        {
+            var map = ToClient(MapData.MapUid);
+            var physics = CEntMan.System<SharedPhysicsSystem>();
+            Assert.That(CEntMan.EntityExists(ToClient(ownWall)) && CEntMan.EntityExists(ToClient(foreignWall)), Is.True,
+                "The client must see both walls.");
+            const int impassable = (int) Content.Shared.Physics.CollisionGroup.Impassable;
+            Assert.That(physics.IntersectRay(MapId, new CollisionRay(weaponAt, Vector2.UnitX, impassable), 10f).Any(), Is.True,
+                "The client's physics must see the weapon's own wall.");
+            Assert.That(physics.IntersectRay(MapId, new CollisionRay(weaponAt, Vector2.UnitY, impassable), 10f).Any(), Is.True,
+                "The client's physics must see the other grid's wall.");
+
+            var stale = CEntMan.GetNetCoordinates(new EntityCoordinates(map, new Vector2(40, 40)));
+            var onOwnGrid = CEntMan.GetNetCoordinates(new EntityCoordinates(ToClient(MapData.Grid.Owner), weaponAt));
+            var known = new FireControllableEntry(SEntMan.GetNetEntity(mount), stale, "Known", ignoresLos: false);
+            var lost = new FireControllableEntry(WFCockpitFireInputTest.UnknownWeapon(41), onOwnGrid, "Lost", ignoresLos: false);
+            var blind = new FireControllableEntry(WFCockpitFireInputTest.UnknownWeapon(42), onOwnGrid, "Blind", ignoresLos: true);
+            var idle = new FireControllableEntry(WFCockpitFireInputTest.UnknownWeapon(43), onOwnGrid, "Idle", ignoresLos: true);
+            var selection = new HashSet<NetEntity> { known.NetEntity, lost.NetEntity, blind.NetEntity };
+            EntityCoordinates? aim = null;
+            var preview = new WFCockpitAimPreview(() => aim, selection.Contains);
+            preview.UpdateWeapons(new[] { known, lost, blind, idle });
+
+            // The server's fire check ignores everything off the weapon's grid, so only the weapon's own hull blocks a shot.
+            var eastAim = new Vector2(6.5f, 0.5f);
+            var northAim = new Vector2(0.5f, 9.5f);
+            aim = new EntityCoordinates(map, eastAim);
+            var east = preview.Refresh();
+            Assert.That(east, Has.Count.EqualTo(1),
+                "A wall on the weapon's own grid blocks every selected weapon that cannot fire through cover.");
+            Assert.That(Vector2.Distance(east[0].From, weaponAt), Is.LessThan(0.01f));
+            Assert.That(Vector2.Distance(east[0].To, eastAim), Is.LessThan(0.01f));
+            selection.Remove(blind.NetEntity);
+            Assert.That(preview.Refresh(), Is.Empty, "Without the weapon that ignores line of sight, nothing draws through the wall.");
+            selection.Add(blind.NetEntity);
+
+            aim = new EntityCoordinates(map, northAim);
+            var north = preview.Refresh();
+            Assert.That(north, Has.Count.EqualTo(3),
+                "Another grid in the way never blocks a line; an unselected weapon never draws one.");
+            foreach (var line in north)
+            {
+                Assert.That(Vector2.Distance(line.From, weaponAt), Is.LessThan(0.01f),
+                    "A weapon the client knows is drawn from its live position, not the state's stale coordinates.");
+                Assert.That(Vector2.Distance(line.To, northAim), Is.LessThan(0.01f));
+            }
+            Assert.That(north[0].Color, Is.EqualTo(WFInstrumentTheme.Accent));
+            selection.Add(idle.NetEntity);
+            Assert.That(preview.Refresh(), Has.Count.EqualTo(4), "Selecting the idle weapon adds its line.");
+
+            // Which entity the radar tracks (the map, the weapon's grid or another grid) must not change a line.
+            using var nav = new ShuttleNavControl { WfFitInstrument = true, SetSize = new Vector2(float.NaN), WorldRange = 40 };
+            using var plot = new WFCockpitAimLines(nav, preview);
+            nav.Measure(new Vector2(400));
+            nav.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(400)));
+            foreach (var tracking in new[] { map, ToClient(MapData.Grid.Owner), ToClient(foreignGrid) })
+            {
+                nav.SetMatrix(new EntityCoordinates(tracking, Vector2.Zero), Angle.Zero);
+                aim = new EntityCoordinates(map, northAim);
+                Assert.That(plot.Lines(), Has.Count.EqualTo(4), "A plot tracking another entity draws every weapon with a clear line.");
+                aim = new EntityCoordinates(map, eastAim);
+                Assert.That(plot.Lines(), Has.Count.EqualTo(2), "The weapon's own wall blocks the same weapons whatever the plot tracks.");
+            }
+        });
+    }
+
+    private bool AimOverlayPresent() => Client.ResolveDependency<IOverlayManager>().HasOverlay<WFCockpitAimOverlay>();
 
     private static void AssertFuelVisible(WFCockpitView hud)
     {

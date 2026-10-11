@@ -5,6 +5,7 @@ using Content.Client.Shuttles.UI;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._Mono.FireControl;
 using Content.Shared._WF.Cockpit;
+using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Map;
@@ -21,6 +22,7 @@ public sealed partial class WFCockpitView
     private Button _gunsMode = default!;
     private WFCockpitGunneryPanel? _gunneryPanel;
     private WFCockpitFireInput _gunneryInput = default!;
+    private WFCockpitAimPreview _aimPreview = default!;
     private WFCockpitAimLines _aimLines = default!;
     private NetEntity? _gunneryConsole;
     private bool _showGunnery;
@@ -53,14 +55,24 @@ public sealed partial class WFCockpitView
         _gunneryInput = new WFCockpitFireInput(viewport, navigation, () => _gunneryControlling && !_restored,
             () => _gunneryPanel?.HasSelectedWeapons == true, AimGunnery, _lease);
         AddChild(_gunneryInput);
-        _aimLines = new WFCockpitAimLines(navigation, () => _gunneryControlling ? _gunneryInput.AimTarget : null,
-            weapon => _gunneryPanel?.IsSelected(weapon) == true) { Name = "CockpitAimLines" };
+        _aimPreview = new WFCockpitAimPreview(() => _gunneryControlling ? _gunneryInput.AimTarget : null,
+            weapon => _gunneryPanel?.IsSelected(weapon) == true);
+        _aimLines = new WFCockpitAimLines(navigation, _aimPreview) { Name = "CockpitAimLines" };
         navigation.AddChild(_aimLines);
         LayoutContainer.SetAnchorPreset(_aimLines, LayoutContainer.LayoutPreset.Wide);
         _lease.Remember(() =>
         {
             _aimLines.Orphan();
             _aimLines.Dispose();
+        });
+        var overlays = IoCManager.Resolve<IOverlayManager>();
+        var aimOverlay = new WFCockpitAimOverlay(_aimPreview, viewport.Viewport);
+        overlays.RemoveOverlay<WFCockpitAimOverlay>();
+        overlays.AddOverlay(aimOverlay);
+        _lease.Remember(() =>
+        {
+            if (overlays.TryGetOverlay<WFCockpitAimOverlay>(out var current) && current == aimOverlay)
+                overlays.RemoveOverlay(aimOverlay);
         });
         _console.WfCockpitGunneryUpdated += UpdateGunnery;
         _lease.Remember(() =>
@@ -94,7 +106,7 @@ public sealed partial class WFCockpitView
             }
             _gunneryPanel.UpdateState(message.State);
         }
-        _aimLines.UpdateWeapons(available ? message.State!.FireControllables : null);
+        _aimPreview.UpdateWeapons(available ? message.State!.FireControllables : null);
         var visibilityChanged = _gunneryModes.Visible != available;
         _gunneryModes.Visible = available;
         if (!available && _showGunnery)

@@ -1,5 +1,6 @@
 using Content.Shared._NF.Shuttles.Events;
 using Content.Shared._WF.ShipShields;
+using Content.Shared._WF.Shuttles;
 using Content.Shared.Shuttles.Systems;
 
 namespace Content.Client._WF.Cockpit;
@@ -15,9 +16,11 @@ public readonly record struct WFCockpitStatusReading(WFCockpitLampState State, s
         _ => new(WFCockpitLampState.Unavailable, "wf-cockpit-status-autopilot-unavailable"),
     };
 
-    /// <summary>Maps the actual FTL phase without treating unavailable telemetry as readiness.</summary>
-    public static WFCockpitStatusReading Ftl(FTLState state) => state switch
+    /// <summary>Maps the actual FTL phase without treating unavailable telemetry, or a ship without a powered drive, as readiness.</summary>
+    public static WFCockpitStatusReading Ftl(FTLState state, WFFtlDriveStatus drive) => state switch
     {
+        FTLState.Available when drive == WFFtlDriveStatus.Missing => new(WFCockpitLampState.Fault, "shuttle-console-no-powered-ftl-drive"),
+        FTLState.Available when drive == WFFtlDriveStatus.Unpowered => new(WFCockpitLampState.Fault, "shuttle-console-ftl-drive-unpowered"),
         FTLState.Available => new(WFCockpitLampState.Good, "wf-cockpit-status-ftl-ready"),
         FTLState.Starting => new(WFCockpitLampState.Caution, "wf-cockpit-status-ftl-starting"),
         FTLState.Travelling => new(WFCockpitLampState.Active, "wf-cockpit-status-ftl-travelling"),
@@ -66,4 +69,7 @@ public enum WFCockpitLampState : byte
     Good,
     Active,
     Caution,
+
+    /// <summary>A fault the pilot must fix before the system works, such as a missing or unpowered FTL drive.</summary>
+    Fault,
 }

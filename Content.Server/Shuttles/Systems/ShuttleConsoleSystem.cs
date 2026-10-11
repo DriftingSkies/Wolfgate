@@ -1,6 +1,7 @@
 using Content.Server._Mono.Ships.Systems;
 using Content.Server._Mono.Shuttles.Components;
 using Content.Server._WF.Shuttles.Systems; // WOLFGATE(Shuttles)
+using Content.Shared._WF.Shuttles; // WOLFGATE(Shuttles)
 using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
@@ -418,7 +419,8 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
                 FTLState.Invalid,
                 default,
                 new List<ShuttleBeaconObject>(),
-                new List<ShuttleExclusionObject>());
+                new List<ShuttleExclusionObject>(),
+                WFFtlDriveStatus.Missing); // WOLFGATE(Shuttles): a console off any grid has no drive
         }
 
         if (_ui.HasUi(consoleUid, ShuttleConsoleUiKey.Key))
@@ -442,6 +444,7 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
         UpdateTractorCaptureWarnings(frameTime); // WOLFGATE(TractorBeam)
         UpdateWolfgateShieldHelms(frameTime); // WOLFGATE(ShipShields): refresh open helm shield status on visible changes
         UpdateWfCockpitStatuses(frameTime); // WOLFGATE(Cockpit): keep autopilot lamps current while any helm page is open.
+        UpdateWfFtlDrive(frameTime); // WOLFGATE(Shuttles): keep the FTL page current when a drive is built, removed or loses power
 
         var toRemove = new ValueList<(EntityUid, PilotComponent)>();
         var query = EntityQueryEnumerator<PilotComponent>();
@@ -613,7 +616,8 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
             ftlState,
             stateDuration,
             beacons ?? new List<ShuttleBeaconObject>(),
-            exclusions ?? new List<ShuttleExclusionObject>());
+            exclusions ?? new List<ShuttleExclusionObject>(),
+            _shuttle.GetFtlDriveStatus(shuttle.Owner)); // WOLFGATE(Shuttles): report the drive so the FTL page can warn
     }
 
     /// <summary>

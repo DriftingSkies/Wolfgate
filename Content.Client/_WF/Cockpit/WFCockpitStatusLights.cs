@@ -77,12 +77,14 @@ public sealed class WFCockpitStatusLamp : Control
             _fontSkin = skin.Id;
         }
         var reading = Reading;
-        var lit = reading.State is WFCockpitLampState.Good or WFCockpitLampState.Active or WFCockpitLampState.Caution;
+        var lit = reading.State is WFCockpitLampState.Good or WFCockpitLampState.Active or WFCockpitLampState.Caution
+            or WFCockpitLampState.Fault;
         var color = reading.State switch
         {
             WFCockpitLampState.Good => skin.Good,
             WFCockpitLampState.Active => skin.Accent,
             WFCockpitLampState.Caution => skin.Caution,
+            WFCockpitLampState.Fault => skin.Danger,
             _ => skin.EdgeLight,
         };
         if (WFInstrumentTheme.Digital)

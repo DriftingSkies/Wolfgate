@@ -7,6 +7,8 @@ their palette and fonts, and restyle open windows without resetting selections o
 The helm retains navigation,
 FTL/autopilot, docking, hull cameras, ship systems, access and shields. Its title bar carries the flight deck
 caption and the Enter Cockpit key beside the pop-out and close controls, so the page tabs start the window body.
+The FTL page's drive panel opens with a notice in the skin's danger colour, and keeps the FTL button off, while the
+ship has no powered FTL drive (see Shuttles).
 The helm opens at 1240 by 960 and each page is laid out to fit that size without scrolling; smaller windows fall
 back to scroll bars. On z-level maps the Navigation telemetry column adds altitude and climb, side by side in
 shallow strips, and the travel readout, and still fits. Navigation shows the ship's position in its own glass box

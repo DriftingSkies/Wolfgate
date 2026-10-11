@@ -8,12 +8,11 @@ public partial class ShuttleNavControl
     /// <summary>Uses the radar's existing pan, zoom and rotation transform for cockpit aiming.</summary>
     public EntityCoordinates WfCockpitAimCoordinates(Vector2 relativePosition) => GetMouseEntityCoordinates(relativePosition);
 
-    /// <summary>The radar's current world-to-pixel transform and tracked entity, for cockpit overlays drawn over it.</summary>
-    public bool WfCockpitTryGetWorldToView(out Matrix3x2 worldToView, out MapId map, out EntityUid tracked)
+    /// <summary>The radar's current world-to-pixel transform and the map it plots, for cockpit overlays drawn over it.</summary>
+    public bool WfCockpitTryGetWorldToView(out Matrix3x2 worldToView, out MapId map)
     {
         worldToView = default;
         map = MapId.Nullspace;
-        tracked = default;
         if (_coordinates == null || _rotation == null ||
             !EntManager.TryGetComponent<TransformComponent>(_coordinates.Value.EntityId, out var xform) ||
             xform.MapID == MapId.Nullspace)
@@ -24,7 +23,6 @@ public partial class ShuttleNavControl
         var shuttleToView = Matrix3x2.CreateScale(new Vector2(MinimapScale, -MinimapScale)) * Matrix3x2.CreateTranslation(MidPointVector);
         worldToView = worldToShuttle * shuttleToView;
         map = xform.MapID;
-        tracked = _coordinates.Value.EntityId;
         return true;
     }
 

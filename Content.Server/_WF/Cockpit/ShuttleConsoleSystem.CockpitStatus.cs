@@ -29,6 +29,9 @@ public sealed partial class ShuttleConsoleSystem
             _wfCockpitStatusViewers[console] = viewers = new Dictionary<EntityUid, GameTick>();
         viewers[actor] = _wfCockpitTiming.CurTick;
         _wfShieldHelmStates.Remove(console);
+        // The cached helm state can predate a drive change made while the helm was closed.
+        if (TryComp<ShuttleConsoleComponent>(console, out var helm))
+            RefreshWfFtlDrive(console, helm);
     }
 
     /// <summary>Checks active steering rather than an old destination or the destination selection button.</summary>

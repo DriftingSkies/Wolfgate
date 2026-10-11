@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using Content.Client._Mono.Radar;
 using Content.Client._WF.Cockpit;
+using Content.Client._WF.CombatConsole;
 using Content.Client.Shuttles.UI;
 using Content.Client.UserInterface.Controls;
+using Content.Client.Viewport;
 using Content.Shared._Mono.FireControl;
+using Content.Shared._Mono.Radar;
 using Content.Shared.Input;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
@@ -19,6 +23,7 @@ using Robust.Shared.Input;
 using Robust.Shared.IoC;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
+using Robust.Shared.Timing;
 
 namespace Content.IntegrationTests.Tests._WF.Cockpit;
 
@@ -268,7 +273,7 @@ public sealed class WFCockpitFireInputTest
             Tick(fire, 0, pointer, false);
             Assert.That(fire.AimTarget, Is.Not.Null, "An armed hover publishes the aim point the preview lines end at.");
             var transforms = pair.Client.EntMan.System<SharedTransformSystem>();
-            Assert.That(nav.WfCockpitTryGetWorldToView(out var worldToView, out var plotMap, out _), Is.True);
+            Assert.That(nav.WfCockpitTryGetWorldToView(out var worldToView, out var plotMap), Is.True);
             Assert.That(plotMap, Is.EqualTo(map));
             var aimPixel = Vector2.Transform(transforms.ToMapCoordinates(fire.AimTarget!.Value).Position, worldToView);
             Assert.That((aimPixel - nav.PixelSize / 2f).Length(), Is.LessThan(2f),
@@ -277,15 +282,16 @@ public sealed class WFCockpitFireInputTest
             var north = Vector2.Transform(new Vector2(0, 10), worldToView);
             Assert.That(east.X, Is.GreaterThan(aimPixel.X + 1), "World east is plot right.");
             Assert.That(north.Y, Is.LessThan(aimPixel.Y - 1), "World north is plot up.");
-            var selectedWeapon = new NetEntity(901);
-            var lines = new WFCockpitAimLines(nav, () => fire.AimTarget, weapon => weapon == selectedWeapon);
+            var selectedWeapon = UnknownWeapon(1);
+            var preview = new WFCockpitAimPreview(() => fire.AimTarget, weapon => weapon == selectedWeapon);
+            var lines = new WFCockpitAimLines(nav, preview);
             Assert.That(lines.Lines(), Is.Empty, "No weapons, no preview.");
             var mount = pair.Client.EntMan.SpawnEntity(null, new MapCoordinates(new Vector2(6, 3), map));
             var idle = pair.Client.EntMan.SpawnEntity(null, new MapCoordinates(new Vector2(-4, 2), map));
-            lines.UpdateWeapons(new[]
+            preview.UpdateWeapons(new[]
             {
                 new FireControllableEntry { NetEntity = selectedWeapon, Coordinates = pair.Client.EntMan.GetNetCoordinates(new EntityCoordinates(mount, Vector2.Zero)), IgnoresLos = true },
-                new FireControllableEntry { NetEntity = new NetEntity(902), Coordinates = pair.Client.EntMan.GetNetCoordinates(new EntityCoordinates(idle, Vector2.Zero)), IgnoresLos = true },
+                new FireControllableEntry { NetEntity = UnknownWeapon(2), Coordinates = pair.Client.EntMan.GetNetCoordinates(new EntityCoordinates(idle, Vector2.Zero)), IgnoresLos = true },
             });
             var drawn = lines.Lines().ToArray();
             Assert.That(drawn, Has.Length.EqualTo(1), "Only selected weapons draw a preview line.");
@@ -372,6 +378,160 @@ public sealed class WFCockpitFireInputTest
         });
         await pair.CleanReturnAsync();
     }
+
+    [Test]
+    public async Task NavPlotAndShipCamDrawTheSameAimLines()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var maps = pair.Client.ResolveDependency<IMapManager>();
+            var entities = pair.Client.EntMan;
+            var map = maps.CreateMap();
+            var otherMap = maps.CreateMap();
+            var mapEntity = maps.GetMapEntityId(map);
+            var gunA = UnknownWeapon(11);
+            var gunB = UnknownWeapon(12);
+            var selection = new HashSet<NetEntity> { gunA };
+            EntityCoordinates? aim = new EntityCoordinates(mapEntity, new Vector2(12, 4));
+            var preview = new WFCockpitAimPreview(() => aim, selection.Contains);
+            using var host = new Control { MouseFilter = Control.MouseFilterMode.Ignore };
+            using var world = new MainViewport();
+            using var nav = new ShuttleNavControl { WfFitInstrument = true, SetSize = new Vector2(float.NaN), WorldRange = 40 };
+            using var lines = new WFCockpitAimLines(nav, preview);
+            var overlay = new WFCockpitAimOverlay(preview, world.Viewport);
+            world.Viewport.ViewportSize = new Vector2i(400, 300);
+            host.AddChild(world);
+            host.AddChild(nav);
+            ui.RootControl.AddChild(host);
+            host.Measure(new Vector2(850, 340));
+            host.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(850, 340)));
+            world.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(400, 300)));
+            nav.Arrange(UIBox2.FromDimensions(new Vector2(420, 0), new Vector2(400, 300)));
+            var eye = new Robust.Shared.Graphics.Eye { Position = new MapCoordinates(Vector2.Zero, map) };
+            world.Viewport.Eye = eye;
+            nav.SetMatrix(new EntityCoordinates(mapEntity, new Vector2(10, 20)), Angle.Zero);
+
+            var mount = entities.SpawnEntity(null, new MapCoordinates(new Vector2(6, 3), map));
+            var mountAt = entities.GetNetCoordinates(new EntityCoordinates(mount, Vector2.Zero));
+            preview.UpdateWeapons(new[]
+            {
+                new FireControllableEntry { NetEntity = gunA, Coordinates = mountAt, IgnoresLos = true },
+                new FireControllableEntry { NetEntity = gunB, Coordinates = mountAt, IgnoresLos = true },
+            });
+
+            Assert.That(overlay.TryGetSegments(eye, map, out var cam), Is.True);
+            var camLines = cam.ToArray();
+            Assert.That(camLines, Has.Length.EqualTo(1), "Only the selected weapon draws a line on the ship cam.");
+            Assert.That(Vector2.Distance(camLines[0].From, new Vector2(6, 3)), Is.LessThan(0.01f), "The ship cam line starts at the weapon.");
+            Assert.That(Vector2.Distance(camLines[0].To, new Vector2(12, 4)), Is.LessThan(0.01f), "The ship cam line ends at the aim point.");
+            Assert.That(camLines[0].Color, Is.EqualTo(WFInstrumentTheme.Accent), "A weapon with no radar blip uses the console accent.");
+
+            Assert.That(nav.WfCockpitTryGetWorldToView(out var worldToView, out _), Is.True);
+            var plot = lines.Lines().ToArray();
+            Assert.That(plot, Has.Length.EqualTo(1), "The NAV plot draws the same weapons as the ship cam.");
+            Assert.That(Vector2.Distance(plot[0].From, Vector2.Transform(camLines[0].From, worldToView)), Is.LessThan(0.01f));
+            Assert.That(Vector2.Distance(plot[0].To, Vector2.Transform(camLines[0].To, worldToView)), Is.LessThan(0.01f));
+            Assert.That(plot[0].Color, Is.EqualTo(camLines[0].Color));
+
+            Assert.That(overlay.TryGetSegments(eye, otherMap, out _), Is.False, "Only the aim point's map is drawn on.");
+            Assert.That(overlay.TryGetSegments(eye, MapId.Nullspace, out _), Is.False);
+            Assert.That(overlay.TryGetSegments(null, map, out _), Is.False);
+            Assert.That(overlay.TryGetSegments(new Robust.Shared.Graphics.Eye { Position = eye.Position }, map, out _), Is.False,
+                "Another viewport's eye is not the cockpit's world view.");
+            var level = new ScalingViewport.ZEye(0, 0, 0) { Primary = true, Position = eye.Position, Rotation = eye.Rotation };
+            Assert.That(overlay.TryGetSegments(level, map, out _), Is.True, "The pilot's own level pass is the world view.");
+            level.Primary = false;
+            Assert.That(overlay.TryGetSegments(level, map, out _), Is.False, "Passes for the levels around it are skipped.");
+
+            world.Visible = false;
+            Assert.That(overlay.TryGetSegments(eye, map, out _), Is.False, "A hidden world view draws nothing.");
+            Assert.That(lines.Lines(), Has.Count.EqualTo(1), "The NAV plot keeps its lines while the world view is hidden.");
+            world.Visible = true;
+
+            selection.Clear();
+            Assert.That(overlay.TryGetSegments(eye, map, out _), Is.False, "Nothing selected, nothing drawn.");
+            Assert.That(lines.Lines(), Is.Empty);
+            selection.Add(gunB);
+            aim = null;
+            Assert.That(overlay.TryGetSegments(eye, map, out _), Is.False, "A pointer that is not aiming draws nothing.");
+            Assert.That(lines.Lines(), Is.Empty);
+
+            selection.Clear();
+            selection.Add(gunA);
+            aim = new EntityCoordinates(mapEntity, new Vector2(12, 4));
+            var tracked = lines.Lines().ToArray();
+            var carrier = entities.SpawnEntity(null, new MapCoordinates(new Vector2(4, -2), map));
+            nav.SetMatrix(new EntityCoordinates(carrier, new Vector2(6, 22)), Angle.Zero);
+            var panned = lines.Lines().ToArray();
+            Assert.That(panned, Has.Length.EqualTo(tracked.Length), "Which entity the radar tracks cannot change which lines draw.");
+            Assert.That(Vector2.Distance(panned[0].From, tracked[0].From), Is.LessThan(0.01f));
+            Assert.That(Vector2.Distance(panned[0].To, tracked[0].To), Is.LessThan(0.01f));
+            Assert.That(overlay.TryGetSegments(eye, map, out cam), Is.True);
+            Assert.That(cam, Has.Count.EqualTo(1));
+
+            nav.SetMatrix(new EntityCoordinates(maps.GetMapEntityId(otherMap), Vector2.Zero), Angle.Zero);
+            Assert.That(lines.Lines(), Is.Empty, "A plot of another map has no line to draw.");
+
+            maps.DeleteMap(map);
+            maps.DeleteMap(otherMap);
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task AimLinesTakeTheWeaponsRadarBlipColour()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var maps = pair.Client.ResolveDependency<IMapManager>();
+            var timing = pair.Client.ResolveDependency<IGameTiming>();
+            var entities = pair.Client.EntMan;
+            var map = maps.CreateMap();
+            var mapEntity = maps.GetMapEntityId(map);
+            var coloured = UnknownWeapon(21);
+            var plain = UnknownWeapon(22);
+            var at = entities.GetNetCoordinates(new EntityCoordinates(mapEntity, new Vector2(2, 2)));
+            var preview = new WFCockpitAimPreview(() => new EntityCoordinates(mapEntity, new Vector2(12, 4)), _ => true);
+            var radar = entities.System<RadarBlipsSystem>();
+            var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            var blipField = typeof(RadarBlipsSystem).GetField("_blips", flags)!;
+            var paletteField = typeof(RadarBlipsSystem).GetField("_configPalette", flags)!;
+            var updatedField = typeof(RadarBlipsSystem).GetField("_lastUpdatedTime", flags)!;
+            var oldBlips = blipField.GetValue(radar);
+            var oldPalette = paletteField.GetValue(radar);
+            var oldUpdated = updatedField.GetValue(radar);
+            try
+            {
+                paletteField.SetValue(radar, new List<BlipConfig> { new() { Color = Color.Cyan } });
+                blipField.SetValue(radar, new List<BlipNetData> { new(coloured, at, Vector2.Zero, Angle.Zero, 0, null) });
+                updatedField.SetValue(radar, timing.CurTime);
+                preview.UpdateWeapons(new[]
+                {
+                    new FireControllableEntry { NetEntity = coloured, Coordinates = at, IgnoresLos = true },
+                    new FireControllableEntry { NetEntity = plain, Coordinates = at, IgnoresLos = true },
+                });
+
+                var segments = preview.Refresh();
+                Assert.That(segments, Has.Count.EqualTo(2));
+                Assert.That(segments[0].Color, Is.EqualTo(Color.Cyan), "A weapon with a radar blip is drawn in the blip's colour.");
+                Assert.That(segments[1].Color, Is.EqualTo(WFInstrumentTheme.Accent), "A weapon without one uses the console accent.");
+            }
+            finally
+            {
+                blipField.SetValue(radar, oldBlips);
+                paletteField.SetValue(radar, oldPalette);
+                updatedField.SetValue(radar, oldUpdated);
+            }
+            maps.DeleteMap(map);
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A weapon id no entity has, so the client falls back to the coordinates the gunnery state gave it.</summary>
+    internal static NetEntity UnknownWeapon(int index) => new(9_000_000 + index);
 
     internal static ScreenCoordinates Pointer(Control control, Vector2 local) =>
         new(control.GlobalPixelPosition + local * control.UIScale, control.Window!.Id);

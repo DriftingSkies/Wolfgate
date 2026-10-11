@@ -14,6 +14,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._NF.Shuttles.Events;
 using Content.Shared._WF.ShipShields;
+using Content.Shared._WF.Shuttles;
 using Content.Shared.NPC;
 using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Shuttles.Components;
@@ -31,10 +32,20 @@ public sealed class WFCockpitStatusTest
     [Test]
     public void StatusMappingDoesNotInventReadinessOrDeployment()
     {
-        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Invalid).State, Is.EqualTo(WFCockpitLampState.Unavailable));
-        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Available).State, Is.EqualTo(WFCockpitLampState.Good));
-        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Travelling).State, Is.EqualTo(WFCockpitLampState.Active));
-        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Cooldown).State, Is.EqualTo(WFCockpitLampState.Caution));
+        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Invalid, WFFtlDriveStatus.Ready).State, Is.EqualTo(WFCockpitLampState.Unavailable));
+        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Available, WFFtlDriveStatus.Ready).State, Is.EqualTo(WFCockpitLampState.Good));
+        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Travelling, WFFtlDriveStatus.Ready).State, Is.EqualTo(WFCockpitLampState.Active));
+        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Cooldown, WFFtlDriveStatus.Ready).State, Is.EqualTo(WFCockpitLampState.Caution));
+        foreach (var drive in new[] { WFFtlDriveStatus.Missing, WFFtlDriveStatus.Unpowered })
+        {
+            Assert.That(WFCockpitStatusReading.Ftl(FTLState.Available, drive).State, Is.EqualTo(WFCockpitLampState.Fault),
+                "An idle ship without a powered drive must never read ready.");
+            Assert.That(WFCockpitStatusReading.Ftl(FTLState.Travelling, drive).State, Is.EqualTo(WFCockpitLampState.Active),
+                "A jump already under way is still reported as it is.");
+            Assert.That(WFCockpitStatusReading.Ftl(FTLState.Invalid, drive).State, Is.EqualTo(WFCockpitLampState.Unavailable));
+        }
+        Assert.That(WFCockpitStatusReading.Ftl(FTLState.Available, WFFtlDriveStatus.Missing).Detail,
+            Is.Not.EqualTo(WFCockpitStatusReading.Ftl(FTLState.Available, WFFtlDriveStatus.Unpowered).Detail));
         Assert.That(WFCockpitStatusReading.Autopilot(null).State, Is.EqualTo(WFCockpitLampState.Unavailable));
         Assert.That(WFCockpitStatusReading.Dampening(InertiaDampeningMode.Station, false).State, Is.EqualTo(WFCockpitLampState.Unavailable));
         Assert.That(WFCockpitStatusReading.Dampening(InertiaDampeningMode.Dampen, false).State, Is.EqualTo(WFCockpitLampState.Good));

@@ -13,7 +13,7 @@ public sealed partial class MapScreen
         FTLBar.Visible = false;
         var progress = new WFGlassGauge("wf-gauge-ftl", () => WFGaugeReading.Number(
             _shuttleEntity == null || _state == FTLState.Invalid ? null : FTLBar.Value * 100, 0, 100, "wf-gauge-unit-percent"), true);
-        var jump = Panel("wf-console-drive", Column(new WFGlassReadout(MapFTLState), progress, FTLBar,
+        var jump = Panel("wf-console-drive", Column(_wfDriveNotice, new WFGlassReadout(MapFTLState), progress, FTLBar,
             MapFTLButton, MapAutopilotButton, MapRebuildButton, MapBeaconsButton));
         var destinations = Panel("wf-console-destinations", Scroll(HyperspaceDestinations), true);
         var side = Column(jump, destinations);
