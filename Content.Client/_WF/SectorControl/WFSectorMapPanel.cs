@@ -4,7 +4,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WF.SectorControl;
 
-/// <summary>The sector map over a bar with "Centre on me", "Whole sector" and the scale; the window and the shuttle console show it.</summary>
+/// <summary>The sector map over a bar with "Centre on me", "Whole sector" and the scale, as the sector map window shows it.</summary>
 public sealed class WFSectorMapPanel : BoxContainer
 {
     private static readonly Color ScaleColor = Color.FromHex("#8a96a3");

@@ -1,10 +1,9 @@
-using System.Numerics;
 using Robust.Shared.Map;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._WF.SectorControl;
 
-/// <summary>The whole territory of one map, sent on every change and when a player attaches; no claims, contests or landmarks clears it.</summary>
+/// <summary>The whole territory of one map, sent on every change and when a player attaches; no claims or contests clears it, except on the sector map.</summary>
 [Serializable, NetSerializable]
 public sealed class WFSectorTerritoryEvent : EntityEventArgs
 {
@@ -20,13 +19,9 @@ public sealed class WFSectorTerritoryEvent : EntityEventArgs
 
     public List<WFSectorContestEntry> Contests = new();
 
-    /// <summary>The map's stations for the sector map to name, hidden ones left out.</summary>
-    public List<WFSectorLandmarkEntry> Landmarks = new();
+    /// <summary>Whether this is the sector map, which the client keeps with nothing held so the sector map can draw its grid.</summary>
+    public bool Sector;
 }
-
-/// <summary>A station on the sector map: its name and the centre of its bounds in map space.</summary>
-[Serializable, NetSerializable]
-public readonly record struct WFSectorLandmarkEntry(string Name, Vector2 Position);
 
 /// <summary>A held cell and the index of its owner in <see cref="WFSectorTerritoryEvent.Factions"/>.</summary>
 [Serializable, NetSerializable]

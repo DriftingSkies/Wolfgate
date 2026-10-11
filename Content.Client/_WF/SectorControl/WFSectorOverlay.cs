@@ -14,8 +14,8 @@ public sealed class WFSectorOverlay
 
     private Vector2[] _buffer = new Vector2[256];
 
-    /// <summary>Draws vertices moved to pixels through a buffer reused between calls.</summary>
-    private void Draw(DrawingHandleScreen handle, DrawPrimitiveTopology topology, Vector2[] source, in Matrix3x2 worldToView, Color color)
+    /// <summary>Draws map-space vertices moved to pixels through a buffer reused between calls.</summary>
+    public void Draw(DrawingHandleScreen handle, DrawPrimitiveTopology topology, Vector2[] source, in Matrix3x2 worldToView, Color color)
     {
         if (_buffer.Length < source.Length)
             _buffer = new Vector2[Math.Max(source.Length, _buffer.Length * 2)];
@@ -79,12 +79,18 @@ public sealed class WFSectorOverlay
     /// <summary>Prints the callsign of each held cell once a cell is wide enough on screen to hold one.</summary>
     public void DrawCallsigns(DrawingHandleScreen handle, WFSectorMapView view, in Matrix3x2 worldToView, Font font, float scale, float minimapScale, UIBox2 bounds)
     {
+        DrawCallsigns(handle, view.Labels, view.CellSize, worldToView, font, scale, minimapScale, bounds);
+    }
+
+    /// <summary>Prints each label at its cell's centre once a cell is wide enough on screen to hold one.</summary>
+    public void DrawCallsigns(DrawingHandleScreen handle, List<WFSectorLabelView> labels, float cellSize, in Matrix3x2 worldToView, Font font, float scale, float minimapScale, UIBox2 bounds)
+    {
         // Flat to flat, in pixels.
-        var width = view.CellSize * MathF.Sqrt(3f) * minimapScale;
+        var width = cellSize * MathF.Sqrt(3f) * minimapScale;
         if (width < LabelPixels * scale)
             return;
 
-        foreach (var label in view.Labels)
+        foreach (var label in labels)
         {
             DrawCentred(handle, font, scale * 0.85f, Vector2.Transform(label.Centre, worldToView), label.Text, label.Color.WithAlpha(0.7f), bounds);
         }

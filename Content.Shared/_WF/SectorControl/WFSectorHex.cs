@@ -113,6 +113,25 @@ public static class WFSectorHex
         return cells;
     }
 
+    /// <summary>The cells whose centre lies within <paramref name="radius"/> metres of the origin, nearest ring first.</summary>
+    public static List<WFSectorCell> CellsWithin(float radius, float size)
+    {
+        var cells = new List<WFSectorCell>();
+        if (radius < 0f || size <= 0f)
+            return cells;
+
+        // Every centre in ring k lies at least 1.5 * size * k from the origin.
+        var rings = (int) MathF.Ceiling(radius / (1.5f * size));
+        var limit = radius * radius;
+        foreach (var cell in Within(WFSectorCell.Origin, rings))
+        {
+            if (Centre(cell, size).LengthSquared() <= limit)
+                cells.Add(cell);
+        }
+
+        return cells;
+    }
+
     /// <summary>The cell's name for announcements and the map, a letter run and a number such as N-13 for the origin.</summary>
     public static string Callsign(WFSectorCell cell)
     {

@@ -3,20 +3,18 @@ sector-control-notice-sender = Sector Watch
 sector-control-notice-entered = WARNING: entering {$faction} controlled space ({$callsign}).
 sector-control-notice-left = Leaving {$faction} controlled space. Now in open space at {$callsign}.
 
-# Sector map: the top-bar button and key, the game menu entry, its window and the shuttle console mode
+# Sector map: the top-bar button and key, the game menu entry and its window; distance is km from the sector centre
 wf-sector-map-button = Sector map
 wf-sector-map-button-tooltip = Open the sector map.
 ui-options-function-open-sector-map = Open sector map
 wf-sector-map-window-title = Sector map
-wf-sector-map-mode = SECTOR
 wf-sector-map-centre-on-me = Centre on me
 wf-sector-map-whole-sector = Whole sector
 wf-sector-map-scale = {$width} km across
-wf-sector-map-ring = {$km} km
 wf-sector-map-no-data = No territory data
-wf-sector-map-hover-held = {$callsign}: {$faction}
-wf-sector-map-hover-open = {$callsign}: open space
-wf-sector-map-hover-contested = {$callsign}: contested by {$faction}, {$time}
+wf-sector-map-hover-held = {$callsign} ({$distance} km): {$faction}
+wf-sector-map-hover-open = {$callsign} ({$distance} km): open space
+wf-sector-map-hover-contested = {$callsign} ({$distance} km): contested by {$faction}, {$time}
 
 # wf_sectormap command
 cmd-wf_sectormap-desc = Opens or closes the sector map.

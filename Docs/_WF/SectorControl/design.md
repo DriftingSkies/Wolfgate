@@ -1,7 +1,7 @@
 # Sector control
 
 Faction territory on the sector map: a hex grid over the sector, cells held by factions, drawn on the shuttle
-console's sector map and the nav radar, with a claim API that drivers use. The first driver is the Ashfall Reaver
+console's MAP tab, the nav radar and the sector map window, with a claim API that drivers use. The first driver is the Ashfall Reaver
 campaign (`Docs/_WF/ReaverCampaign/design.md`); ADS incursions and TSF/PDV sector control come later as drivers of
 their own. This module knows nothing about strongholds, threat tiers or pirates.
 
@@ -55,10 +55,10 @@ warnings. Sector control is the only framework code that touches ShipPa.
 
 **Sync.** `WFSectorSyncSystem` sends `WFSectorTerritoryEvent` to everyone when territory changes and to a player when
 they attach: the map, the cell size, the faction ids, the claims as `(q, r, faction index)`, the contested cells with
-their deadlines, and the landmarks: each station's name and the centre of its bounds, from the territory system's
-`Stations(map)` (the storyteller's list with blockaded stations kept and hidden ones left out). The sector map is sent
-on attach even with nothing held, so the map has its stations before the first claim. One update without claims after
-the last claim goes, then silence; the client drops a map only when an event has no claims, contests or landmarks. Drivers send `WFSectorStatusEvent`: per
+their deadlines, and whether it is the sector map. No grids or stations go on the wire: the sector map names what the
+client already knows, as the console's MAP tab does. The sector map is sent on attach even with nothing held, so the
+map has its grid before the first claim. One update without claims after the last claim goes, then silence; the
+client drops a map when an event has no claims or contests, except the sector map, which it keeps empty. Drivers send `WFSectorStatusEvent`: per
 faction, a legend line already localised on the server (a driver's tier and stronghold count are its own business;
 the framework only shows the line).
 
@@ -71,19 +71,27 @@ once when an event arrives. `ShuttleNavControl.SectorControl.cs` draws the borde
 and contacts, so a pilot sees the line they are about to cross. Both hooks are one marked line in the upstream
 control, like the Planets and Encounters hooks.
 
-**Sector map.** `WFSectorMapControl` is a map of the sector alone, not the mass scanner: a dark backing, zoom from 1.5
-to 60 km half-width (fitted at first to the stations and territory plus 3 km), the wheel zooming about the cursor,
-left-drag panning and a double-click centring on the player's own grid. It draws faint rings every 5 km about the
-origin with their distance, the territory through `WFSectorOverlay` (one `worldToView` matrix a frame, `view = (world -
-centre) * scale` with Y flipped about the midpoint), the stations as dots with names (a name that would overlap one
-already printed is left out), every encounter ship as its radar glyph and colour (strongholds fly the flag), the
-player's grid as a white triangle along its heading, and at the cursor the cell's callsign and owner ("open space", or
-"contested by X, m:ss"). With no view of the map it shows only "No territory data". `WFSectorMapPanel` puts it over a
-bar with "Centre on me", "Whole sector" and the scale. It opens several ways: `WFSectorMapWindow` (resizable, 900x700)
-from the top-bar button beside the guidebook or its key (`OpenSectorMap`, N by default, rebindable), "Sector map" in the game
-menu or the client command `wf_sectormap`, all through `WFSectorMapUIController`, for every player, ghosts included
-(a ghost is never "aboard" a ship, so "Centre on me" centres on the ghost and a white ring marks it); the window follows
-the player's map (or any map the client has). The SECTOR mode of the shuttle console follows the console's map.
+**Sector map.** `WFSectorMapControl` is a map of the sector alone, not the mass scanner, and it gives no intel the
+console's MAP tab would not: a dark backing, zoom from 1.5 to 60 km half-width (fitted at first to the named grids
+within 60 km, the player's ship and the territory, plus 3 km), the wheel zooming about the cursor, left-drag panning
+and a double-click centring on the player's own grid. It draws a faint outline (white at alpha 0.08, one LineList) of
+every cell whose centre lies within 30 km of the origin (`WFSectorClientSystem.SectorRadius`; `WFSectorHex.CellsWithin`),
+each shared edge once and none once a cell is under 6 px across; the territory over it through `WFSectorOverlay` (one
+`worldToView` matrix a frame, `view = (world - centre) * scale` with Y flipped about the midpoint); the callsign of every
+cell once a cell spans 60 px, held cells in their faction's colour and open ones in dim grey (a contested cell shows its
+countdown instead); the grids the MAP tab names without a scan, by its own rule on the client's grids
+(`WFSectorClientSystem.CollectLandmarks`): none on a beacon map, none with IFF `Hide` or `HideLabelAlways`, none with
+`HideLabel` (the map has no console to detect them with), never the player's own ship, each as a dot and its name (a
+name that would overlap one already printed is left out); one marker per visible encounter at its first ship, as the
+MAP tab lists them, in its category's glyph and colour with the encounter's name; the player's grid as a white
+triangle along its heading; and at the cursor the cell's callsign, its distance from the origin and its owner ("K-7
+(12.4 km): open space", or "contested by X, m:ss"). With no view of the map it shows only "No territory data".
+`WFSectorMapPanel` puts it over a bar with "Centre on me", "Whole sector" and the scale. It opens several ways:
+`WFSectorMapWindow` (resizable, 900x700) from the top-bar button beside the guidebook or its key (`OpenSectorMap`, N by
+default, rebindable), "Sector map" in the game menu or the client command `wf_sectormap`, all through
+`WFSectorMapUIController`, for every player, ghosts included (a ghost is never "aboard" a ship, so "Centre on me" centres
+on the ghost and a white ring marks it); the window follows the player's map (or any map the client has, the sector map
+first). The shuttle console has no sector mode: its MAP tab already shows the territory.
 
 **Admin.** `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest <faction> <q> <r> <minutes> | clear
 [faction] | callsign <x> <y>` (`LocalizedEntityCommands`, `AdminFlags.Admin`).
@@ -110,20 +118,19 @@ after being switched off or resized, so drivers can claim what they still hold a
   `Systems/WFSectorSyncSystem.cs`, `Systems/WFSectorNoticeSystem.cs`, `Commands/WFSectorCommand.cs`.
 - `Content.Client/_WF/SectorControl`: `WFSectorClientSystem.cs`, `WFSectorOverlay.cs`, `ShuttleMapControl.SectorControl.cs`,
   `ShuttleNavControl.SectorControl.cs`, `WFSectorMapControl.cs`, `WFSectorMapPanel.cs`, `WFSectorMapWindow.cs`,
-  `WFSectorMapUIController.cs`, `WFSectorMapCommand.cs`, `ShuttleConsoleWindow.SectorControl.cs`.
+  `WFSectorMapUIController.cs`, `WFSectorMapCommand.cs`.
 - `Resources/Locale/en-US/_WF/SectorControl/sectorcontrol.ftl`. The module ships no faction; each driver defines its
   own `wfSectorFaction` (the Reavers' is in `Resources/Prototypes/_WF/ReaverCampaign/factions.yml`), and the tests
   declare theirs.
 - Tests: `Content.Tests/_WF/SectorControl/WFSectorHexTest.cs`; `Content.IntegrationTests/Tests/_WF/SectorControl/`
   (claims and sources, protection veto, activity with the station and moved rules, contest deadline, sync event,
-  notices in chat with and without a PA speaker, a leave told inside the cooldown, landmarks on the client, the map
-  window's layout, fit and zoom, the console's sector mode, the top-bar button and key, a ghost's sync and centring).
+  notices in chat with and without a PA speaker, a leave told inside the cooldown, no grids on the wire, the sector
+  map kept empty, the cell grid and callsigns, the grids named by the MAP tab's rule, one marker per encounter, the map
+  window's layout, fit and zoom, the top-bar button and key, a ghost's sync and centring).
 
 Upstream edits, each one marked line: `Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs` after
 `DrawStarSystem(handle, matty);` and `Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs` after the `DrawWfTerrain`
-line. The sector map adds marked hooks in `ShuttleConsoleWindow.xaml` (the SECTOR button, the panel and its xmlns) and
-`ShuttleConsoleWindow.xaml.cs` (the mode enum value, its init, show, hide and state calls), the game menu entry in
-`EscapeMenu.xaml` and `EscapeUIController.cs`, the top-bar button and key (`GameTopMenuBar.xaml`,
+line. The sector map adds the game menu entry in `EscapeMenu.xaml` and `EscapeUIController.cs`, the top-bar button and key (`GameTopMenuBar.xaml`,
 `GameTopMenuBarUIController.cs`, `ContentKeyFunctions.cs`, `ContentContexts.cs`, `KeyRebindTab.xaml.cs`, `keybinds.yml`;
 icon `Resources/Textures/_WF/SectorControl/menu.rsi`, set in code), and `wf_sectormap` in `Resources/clientCommandPerms.yml` so every
 player may run it. Edits inside `_WF/Encounters` (same fork, no markers): `WFEncounterStationsEvent` raised in the scheduler's
@@ -137,3 +144,5 @@ player may run it. Edits inside `_WF/Encounters` (same fork, no markers): `WFEnc
 - Protection is an event, so every driver gets the same vetoes without a list of its own.
 - Moving ships only count as activity. Parked pickets would otherwise fence the sector for free.
 - Only the framework draws and networks; drivers send text for the legend.
+- The sector map shows no more than a MAP scan: the server sends territory only, and the client names grids and
+  encounters by the MAP tab's own rules, without the detection a console would add.

@@ -139,6 +139,23 @@ public sealed class WFSectorHexTest
         Assert.That(WFSectorHex.Distance(WFSectorCell.Origin, new WFSectorCell(3, -1)), Is.EqualTo(3));
     }
 
+    [TestCase(30000f)]
+    [TestCase(4500f)]
+    [TestCase(0f)]
+    public void CellsWithinARadiusAreEveryCentreInsideIt(float radius)
+    {
+        var cells = WFSectorHex.CellsWithin(radius, Size);
+        Assert.That(cells, Does.Contain(WFSectorCell.Origin));
+        Assert.That(cells.Distinct().Count(), Is.EqualTo(cells.Count));
+
+        // Every cell a few rings past the radius whose centre is inside it, and no other.
+        var expected = Cells((int) (radius / Size) + 3)
+            .Where(cell => WFSectorHex.Centre(cell, Size).Length() <= radius)
+            .ToHashSet();
+        Assert.That(cells.ToHashSet().SetEquals(expected), Is.True);
+        Assert.That(WFSectorHex.CellsWithin(-1f, Size), Is.Empty);
+    }
+
     [Test]
     public void CornersRunAnticlockwiseFromEast()
     {

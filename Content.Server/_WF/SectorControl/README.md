@@ -1,8 +1,8 @@
 # SectorControl
 
 Faction territory on the sector map. The sector is a grid of flat-top hexes (`wf.sector.cell_size`, 3000 m) around
-the origin; a `wfSectorFaction` holds cells, and the shuttle console's sector map and the nav radar show them in the
-faction's colour. The module only keeps and shows territory: who claims what, and why, is up to a driver such as the
+the origin; a `wfSectorFaction` holds cells, and the shuttle console's MAP tab, the nav radar and the sector map
+window show them in the faction's colour. The module only keeps and shows territory: who claims what, and why, is up to a driver such as the
 Reaver campaign. Every cell has a callsign (`WFSectorHex.Callsign`, such as `N-13` for the origin) for
 announcements and the map.
 
@@ -16,11 +16,13 @@ docked and idle ships count for nothing; stations never do), and a contest is on
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
 
-The sector map shows only the sector: held and contested cells, the stations by name (hidden ones never sent), the
-encounter ships as their radar glyphs and the player's own ship, from 1.5 km to 60 km either side of centre. The wheel
-zooms about the cursor, left-drag pans, a double-click centres on your ship, and hovering names the cell and who holds
-it. Everyone, ghosts included, opens it from the top-bar button beside the guidebook or its key (N, rebindable), "Sector map"
-in the game menu, the `wf_sectormap` command or the SECTOR mode of a shuttle console (`WFSectorMapControl`,
+The sector map window shows the sector and nothing a shuttle console's MAP scan would not: the whole hex grid out to
+30 km with every cell's callsign, held and contested cells, the grids the MAP tab names (none hidden by IFF, and no
+label-hidden ones, since the map has no console to detect them), one marker per encounter and the player's own ship,
+from 1.5 km to 60 km either side of centre. The server sends only territory; the client names the grids it knows. The
+wheel zooms about the cursor, left-drag pans, a double-click centres on your ship, and hovering names the cell, its
+distance from the centre and who holds it. Everyone, ghosts included, opens it from the top-bar button beside the
+guidebook or its key (N, rebindable), "Sector map" in the game menu or the `wf_sectormap` command (`WFSectorMapControl`,
 `WFSectorMapWindow`, `WFSectorMapUIController` in `Content.Client/_WF/SectorControl`).
 
 Drivers use `WFSectorTerritorySystem` (`CellOf`, `Centre`, `Owner`, `TryClaim`, `Contest`, `Release`, `Free`,
@@ -62,7 +64,6 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 
 ### Client
 
-- [`Content.Client/_WF/SectorControl/ShuttleConsoleWindow.SectorControl.cs`](../../../Content.Client/_WF/SectorControl/ShuttleConsoleWindow.SectorControl.cs)
 - [`Content.Client/_WF/SectorControl/ShuttleMapControl.SectorControl.cs`](../../../Content.Client/_WF/SectorControl/ShuttleMapControl.SectorControl.cs)
 - [`Content.Client/_WF/SectorControl/ShuttleNavControl.SectorControl.cs`](../../../Content.Client/_WF/SectorControl/ShuttleNavControl.SectorControl.cs)
 - [`Content.Client/_WF/SectorControl/WFSectorClientSystem.cs`](../../../Content.Client/_WF/SectorControl/WFSectorClientSystem.cs)
@@ -104,16 +105,6 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 - [`Content.Client/Input/ContentContexts.cs`](../../../Content.Client/Input/ContentContexts.cs): sector map
 - [`Content.Client/Options/UI/EscapeMenu.xaml`](../../../Content.Client/Options/UI/EscapeMenu.xaml): sector map entry under the roadmap
 - [`Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs): sector map
-- [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml)
-  - xmlns:sector for the sector map mode
-  - sector map mode button
-  - the sector map panel the mode shows
-- [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs)
-  - wire up the sector map mode button.
-  - hide the sector map in other modes
-  - show the sector map in its mode
-  - the sector map mode.
-  - the sector map follows the console's map.
 - [`Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs): faction territory fills, borders and legend on the sector map.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): faction territory borders beneath radar contacts.
 - [`Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs`](../../../Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs): sector map entry in the game menu

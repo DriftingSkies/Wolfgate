@@ -7,6 +7,7 @@ using Content.Client._WF.SectorControl;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Shared._WF.SectorControl;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
 
 namespace Content.IntegrationTests.Tests._WF.SectorControl;
 
@@ -19,7 +20,7 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
     private static readonly WFSectorCell C = new(-4, 2);
     private static readonly WFSectorCell D = new(-6, 3);
 
-    /// <summary>The event carries the cell size, the factions used, every claim by faction index and every contest with its deadline.</summary>
+    /// <summary>The event carries the cell size, the factions used, every claim by faction index, every contest with its deadline and whether it is the sector map; no stations or other grids.</summary>
     [Test]
     public async Task BuildCarriesClaimsContestsAndLegend()
     {
@@ -30,7 +31,14 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
             var sync = Server.System<WFSectorSyncSystem>();
             var map = MapData.MapId;
 
-            Assert.That(sync.Build(map).Claims, Is.Empty);
+            SpawnStation(new System.Numerics.Vector2(-12000f, -9000f), "Test Outpost");
+            var empty = sync.Build(map);
+            Assert.That(empty.Claims, Is.Empty);
+            Assert.That(empty.Sector, Is.True, "The round's map is the sector map.");
+
+            // Grids are not on the wire: the client names the ones its own MAP scan would.
+            Assert.That(typeof(WFSectorTerritoryEvent).GetFields().Select(field => field.Name),
+                Is.EquivalentTo(new[] { "Map", "CellSize", "Factions", "Claims", "Contests", "Sector" }));
             Assert.That(territory.TryClaim(map, A, Holder, null), Is.True);
             Assert.That(territory.TryClaim(map, B, Holder, null), Is.True);
             Assert.That(territory.TryClaim(map, C, Rival, null), Is.True);
@@ -61,11 +69,13 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
         });
     }
 
-    /// <summary>A change reaches the client as drawable cells; the last claim going sends one empty update that clears them.</summary>
+    /// <summary>A change reaches the client as drawable cells; the last claim going sends one empty update that clears them, and the sector map stays with its grid.</summary>
     [Test]
     public async Task ClientHearsTerritoryAndLegendAndClearsThem()
     {
         await StartRound();
+        var other = MapId.Nullspace;
+        var otherUid = EntityUid.Invalid;
         await Server.WaitAssertion(() =>
         {
             var territory = Server.System<WFSectorTerritorySystem>();
@@ -75,12 +85,18 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
             Assert.That(territory.TryClaim(map, C, Rival, null), Is.True);
             Assert.That(territory.Contest(map, D, Rival, STiming.CurTime + TimeSpan.FromMinutes(3)), Is.True);
             Server.System<WFSectorSyncSystem>().SetStatus(Holder, "Test faction: Scattered");
+
+            otherUid = Server.System<SharedMapSystem>().CreateMap(out other);
+            Assert.That(territory.TryClaim(other, A, Holder, null), Is.True);
         });
         await RunTicks(90);
         await Client.WaitAssertion(() =>
         {
             var client = Client.System<WFSectorClientSystem>();
+            Assert.That(client.TryGetMap(other, out var away), Is.True, "Another held map reaches the client too.");
+            Assert.That(away.Sector, Is.False);
             Assert.That(client.TryGetMap(MapData.MapId, out var view), Is.True, "The client has the map's territory.");
+            Assert.That(view.Sector, Is.True);
             Assert.That(view.CellSize, Is.EqualTo(3000f));
             Assert.That(view.Labels.Select(label => label.Text), Is.EquivalentTo(new[]
             {
@@ -100,14 +116,23 @@ public sealed class WFSectorSyncTest : WFSectorTestBase
         await Server.WaitAssertion(() =>
         {
             Server.System<WFSectorTerritorySystem>().Clear(MapData.MapId);
+            Server.System<WFSectorTerritorySystem>().Clear(other);
             Server.System<WFSectorSyncSystem>().SetStatus(Holder, null);
         });
         await RunTicks(90);
         await Client.WaitAssertion(() =>
         {
             var client = Client.System<WFSectorClientSystem>();
-            Assert.That(client.TryGetMap(MapData.MapId, out _), Is.False, "The empty update clears the map.");
+            Assert.That(client.TryGetMap(other, out _), Is.False, "The empty update clears another map.");
+            Assert.That(client.TryGetMap(MapData.MapId, out var view), Is.True, "The sector map stays, so its grid is still drawn.");
+            Assert.That(view.Owners, Is.Empty);
+            Assert.That(view.Contests, Is.Empty);
+            Assert.That(view.Labels, Is.Empty);
+            Assert.That(view.Grid, Is.Not.Empty);
+            Assert.That(view.CellLabels.All(label => label.Color == WFSectorClientSystem.OpenCellColor), Is.True, "Every cell is open.");
             Assert.That(client.Legend, Is.Empty);
         });
+
+        await Server.WaitPost(() => SEntMan.DeleteEntity(otherUid));
     }
 }

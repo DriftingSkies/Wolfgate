@@ -12,7 +12,6 @@ namespace Content.Server._WF.SectorControl.Systems;
 public sealed partial class WFSectorSyncSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private WFSectorTerritorySystem _territory = default!;
 
@@ -122,7 +121,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         SendTo(args.Player);
     }
 
-    /// <summary>Sends one player the sector map, with its stations even before the first claim, any other held map and the legend.</summary>
+    /// <summary>Sends one player the sector map, even before the first claim, any other held map and the legend.</summary>
     public void SendTo(ICommonSession player)
     {
         var sector = _territory.SectorMap;
@@ -145,12 +144,13 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
     /// <summary>The territory event for a map as it stands.</summary>
     public WFSectorTerritoryEvent Build(MapId map)
     {
-        var ev = new WFSectorTerritoryEvent { Map = map, CellSize = _territory.CellSize };
-        // Blockaded stations stay on the map; the storyteller's hidden ones never reach it.
-        foreach (var station in _territory.Stations(map))
+        // Grids are not sent: the client names the ones its own scan would.
+        var ev = new WFSectorTerritoryEvent
         {
-            ev.Landmarks.Add(new WFSectorLandmarkEntry(Name(station), _lookup.GetWorldAABB(station).Center));
-        }
+            Map = map,
+            CellSize = _territory.CellSize,
+            Sector = _territory.Enabled && map == _territory.SectorMap,
+        };
 
         if (_territory.Territory(map) is not { } territory)
             return ev;
