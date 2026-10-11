@@ -32,12 +32,13 @@ public sealed partial class WFReaverCampaignSystem
         }
     }
 
-    /// <summary>Pays a broken stronghold's bounty, at its higher tier, to those who hit it and the ships that stood by; returns the bounty and how many were paid.</summary>
+    /// <summary>Pays a broken stronghold's bounty, at its higher tier and scaled by its level, to those who hit it or its reinforcements and the ships that stood by; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PayStrongholdBounty(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state,
         Entity<WFReaverStrongholdComponent, WFEncounterComponent> stronghold)
     {
         var (uid, comp, encounter) = stronghold;
-        var bounty = ByTier(campaign.StrongholdBounty, Math.Max(comp.Tier, state.Tier), 0);
+        var factor = LevelFactor(campaign, comp.Level);
+        var bounty = (int) (ByTier(campaign.StrongholdBounty, Math.Max(comp.Tier, state.Tier), 0) * factor);
         var attackers = encounter.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
         var supporters = new List<EntityUid>();
         foreach (var (ship, seconds) in comp.Support)
@@ -46,7 +47,7 @@ public sealed partial class WFReaverCampaignSystem
                 supporters.Add(ship);
         }
 
-        var (reward, extra) = Rewards(campaign, bounty, grant => grant.Stronghold);
+        var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * factor));
         var paid = _rewards.PayBounty(uid, reward, "breaking the Reaver stronghold", supporters, extra);
         return (bounty, paid);
     }
@@ -56,6 +57,14 @@ public sealed partial class WFReaverCampaignSystem
     {
         var (reward, extra) = Rewards(campaign, campaign.PatrolBounty, grant => grant.Patrol);
         var paid = _rewards.PayBounty(patrol, reward, "destroying the Reaver patrol", null, extra);
+        return (campaign.PatrolBounty, paid);
+    }
+
+    /// <summary>Pays a destroyed reinforcement's bounty, the patrol bounty, to those who hit it; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayReinforcementBounty(WFReaverCampaignPrototype campaign, EntityUid reinforcement)
+    {
+        var (reward, extra) = Rewards(campaign, campaign.PatrolBounty, grant => grant.Patrol);
+        var paid = _rewards.PayBounty(reinforcement, reward, "destroying the Reaver reinforcements", null, extra);
         return (campaign.PatrolBounty, paid);
     }
 

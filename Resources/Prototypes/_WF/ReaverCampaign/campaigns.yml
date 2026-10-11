@@ -24,6 +24,12 @@
   tierThresholds: [ 10, 22, 40, 60, 80 ]
   strongholdBounty: [ 60000, 90000, 120000, 160000, 200000, 250000 ]
   patrolBounty: 20000
+  # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
+  # cap by tier (0..5), and the convoy for each level from 1.
+  reinforcementInterval: 20m
+  maxLevelByTier: [ 0, 1, 1, 2, 2, 2 ]
+  levelBountyScale: 0.5
+  reinforcements: [ WFReaverReinforcementGunship, WFReaverReinforcementGunship, WFReaverReinforcementHeavy, WFReaverReinforcementHeavy ]
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
@@ -64,6 +70,12 @@
   tierThresholds: [ 12, 30, 55, 80, 105 ]
   strongholdBounty: [ 60000, 90000, 120000, 160000, 200000, 250000 ]
   patrolBounty: 20000
+  # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
+  # cap by tier (0..5), and the convoy for each level from 1.
+  reinforcementInterval: 12m
+  maxLevelByTier: [ 0, 1, 2, 2, 3, 4 ]
+  levelBountyScale: 0.5
+  reinforcements: [ WFReaverReinforcementGunship, WFReaverReinforcementGunship, WFReaverReinforcementHeavy, WFReaverReinforcementHeavy ]
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
@@ -104,6 +116,12 @@
   tierThresholds: [ 15, 35, 60, 90, 120 ]
   strongholdBounty: [ 60000, 90000, 120000, 160000, 200000, 250000 ]
   patrolBounty: 20000
+  # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
+  # cap by tier (0..5), and the convoy for each level from 1.
+  reinforcementInterval: 8m
+  maxLevelByTier: [ 0, 1, 2, 3, 4, 4 ]
+  levelBountyScale: 0.5
+  reinforcements: [ WFReaverReinforcementGunship, WFReaverReinforcementGunship, WFReaverReinforcementHeavy, WFReaverReinforcementHeavy ]
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]

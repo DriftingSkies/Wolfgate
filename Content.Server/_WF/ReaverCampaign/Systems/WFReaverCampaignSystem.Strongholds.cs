@@ -80,19 +80,19 @@ public sealed partial class WFReaverCampaignSystem
         if (standing.Count == 0)
         {
             return TryFirstCell(campaign, out var first)
-                && TryFoundAt(_territory.Centre(_territory.SectorMap, first), out stronghold, campaign.StrongholdLight);
+                && TryFoundAt(_territory.Centre(_territory.SectorMap, first), out stronghold);
         }
 
         return TryLaterCell(campaign, Occupied(standing), out var later)
-            && TryFoundAt(_territory.Centre(_territory.SectorMap, later), out stronghold, PickStronghold(campaign, state.Tier));
+            && TryFoundAt(_territory.Centre(_territory.SectorMap, later), out stronghold);
     }
 
-    /// <summary>Founds a stronghold at a point, claims its cell and ring and announces it.</summary>
+    /// <summary>Founds a level 0 hub at a point, shields it, claims its cell and ring and announces it.</summary>
     public bool TryFoundAt(MapCoordinates at, out EntityUid stronghold, ProtoId<WFEncounterPrototype>? prototype = null)
     {
         stronghold = default;
         if (Campaign is not { } campaign || State(true) is not { } state
-            || !_prototypes.TryIndex(prototype ?? PickStronghold(campaign, state.Tier), out var encounterPrototype)
+            || !_prototypes.TryIndex(prototype ?? campaign.Stronghold, out var encounterPrototype)
             || encounterPrototype.Ships.Count == 0)
             return false;
 
@@ -100,9 +100,17 @@ public sealed partial class WFReaverCampaignSystem
         if (!_encounters.TrySpawn(encounterPrototype, at, out var uid))
             return false;
 
+        ShieldHub(campaign, uid, encounterPrototype.Ships[0].Key);
         Establish(campaign, state, uid, encounterPrototype.Ships[0].Key, _territory.CellOf(at), at, regroup);
         stronghold = uid;
         return true;
+    }
+
+    /// <summary>Anchors a shield generator on the hub's lead hull if it has none.</summary>
+    private void ShieldHub(WFReaverCampaignPrototype campaign, EntityUid encounter, string lead)
+    {
+        if (TryComp<WFEncounterComponent>(encounter, out var comp) && comp.Ships.TryGetValue(lead, out var ship))
+            EnsureShield(campaign, ship.Grid);
     }
 
     /// <summary>Makes an encounter a stronghold in a cell: claims the cell and ring, counts the founding and announces it at a point.</summary>
@@ -115,6 +123,9 @@ public sealed partial class WFReaverCampaignSystem
         comp.Tier = state.Tier;
         comp.Lead = lead;
         comp.NextPatrol = now + FirstPatrolDelay;
+        comp.NextReinforcement = now + campaign.ReinforcementInterval;
+        if (TryComp<WFEncounterComponent>(uid, out var encounter))
+            SetLevel((uid, comp, encounter), 0);
 
         ClaimCells(campaign, at.MapId, cell, uid);
         state.Founded++;
@@ -158,17 +169,6 @@ public sealed partial class WFReaverCampaignSystem
         {
             comp.Target = _territory.CellOf(new MapCoordinates(comp.TargetPosition, map));
         }
-    }
-
-    /// <summary>The stronghold for a tier: light at low tiers or with few players, heavy at high tiers with many.</summary>
-    private ProtoId<WFEncounterPrototype> PickStronghold(WFReaverCampaignPrototype campaign, int tier)
-    {
-        var players = Players();
-        if (tier >= campaign.HeavyTier && players >= campaign.HeavyPlayers)
-            return campaign.StrongholdHeavy;
-        if (tier >= campaign.MidTier && players >= campaign.MidPlayers)
-            return campaign.StrongholdMid;
-        return campaign.StrongholdLight;
     }
 
     /// <summary>A random quiet, claimable cell 14 to 24 km out, its centre clear and 8 km from any living player.</summary>
@@ -262,7 +262,14 @@ public sealed partial class WFReaverCampaignSystem
         return positions;
     }
 
-    /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, marks the ships that land them, times support and recalls a patrol once one is attacked.</summary>
+    /// <summary>Runs <see cref="TendStrongholds"/> once, as a tick does.</summary>
+    public void CheckStrongholds()
+    {
+        if (State() is { } state)
+            TendStrongholds(state, _activity.CrewedShips(_territory.SectorMap), 1f);
+    }
+
+    /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, marks the ships that land them, breaks reinforcements away from a hub under attack and brings them back, times support and recalls a patrol once one is attacked.</summary>
     private void TendStrongholds(WFReaverCampaignComponent state, HashSet<EntityUid> ships, float elapsed)
     {
         foreach (var stronghold in Strongholds())
@@ -278,12 +285,15 @@ public sealed partial class WFReaverCampaignSystem
             if (hits > comp.Hits)
             {
                 comp.LastHit = _timing.CurTime;
-                MarkAttackers(comp, encounter);
+                ScatterReinforcements(uid, MarkAttackers(comp, encounter));
             }
 
             comp.Hits = hits;
             if (comp.Hits == 0)
                 continue;
+
+            if (comp.Scattered)
+                RegroupReinforcements(uid, false);
 
             if (_timing.CurTime - comp.LastHit <= SupportWindow)
                 TrackSupport(comp, encounter, _transform.GetWorldPosition(lead.Grid), ships, elapsed);
@@ -301,11 +311,13 @@ public sealed partial class WFReaverCampaignSystem
         if (resolution != WFEncounterResolution.Destroyed || campaign == null || state == null
             || !TryComp<WFEncounterComponent>(uid, out var encounter))
         {
+            SweepReinforcements(stronghold, false);
             _territory.Release(uid);
             AfterStrongholdGone(state);
             return;
         }
 
+        SweepReinforcements(stronghold, true);
         var (bounty, paid) = PayStrongholdBounty(campaign, state, (uid, comp, encounter));
         var freed = _territory.Release(uid);
         state.Broken++;

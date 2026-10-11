@@ -3,6 +3,7 @@ using Content.Server._NF.GameTicking.Events;
 using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.Encounters.Systems;
+using Content.Server._WF.NpcCrew;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.SectorControl;
@@ -11,6 +12,7 @@ using Content.Server._WF.ShipPa;
 using Content.Server.Chat.Systems;
 using Content.Server.GameTicking;
 using Content.Server.Radio.EntitySystems;
+using Content.Server.Shuttles.Systems;
 using Content.Shared._WF.CCVar;
 using Content.Shared._WF.ReaverCampaign;
 using Content.Shared._WF.SectorControl;
@@ -64,6 +66,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
     [Dependency] private WFSectorNoticeSystem _notices = default!;
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
     [Dependency] private WFCrewShipStatusSystem _status = default!;
+    [Dependency] private DockingSystem _docking = default!;
 
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
 
@@ -149,6 +152,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         SubscribeLocalEvent<StationsGeneratedEvent>(OnStationsGenerated);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
         SubscribeLocalEvent<WFEncounterResolvedEvent>(OnResolved);
+        SubscribeLocalEvent<WFPilotDockFailedEvent>(OnDockFailed);
         SubscribeLocalEvent<WFEncounterWeightEvent>(OnWeight);
         SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
@@ -200,6 +204,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         var ships = _activity.CrewedShips(_territory.SectorMap);
         TendStrongholds(state, ships, elapsed);
         TendConvoys(state, running && !Paused);
+        TendReinforcements();
         TendPatrols();
         TendIntercepts(state);
         TendMarks();
@@ -212,6 +217,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         if (!Paused)
         {
             TickFounding(campaign, state);
+            TickReinforce(campaign, state);
             TickSpread(campaign, state);
             TickPatrols(campaign, state);
             TickIntercepts(campaign, state, ships);
@@ -376,6 +382,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             PatrolResolved((args.Encounter, patrol), args.Resolution);
         else if (TryComp<WFReaverConvoyComponent>(args.Encounter, out var convoy))
             ConvoyResolved((args.Encounter, convoy), args.Resolution);
+        else if (TryComp<WFReaverReinforcementComponent>(args.Encounter, out var reinforcement))
+            ReinforcementResolved((args.Encounter, reinforcement), args.Resolution);
     }
 
     /// <summary>Scales the storyteller's own Reaver encounters by the tier, within the campaign's cap.</summary>
@@ -410,7 +418,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         while (query.MoveNext(out var uid, out var encounter))
         {
             if (encounter.Resolution == null && (HasComp<WFReaverStrongholdComponent>(uid) || HasComp<WFReaverConvoyComponent>(uid)
-                    || HasComp<WFReaverPatrolComponent>(uid) || HasComp<WFReaverRaidComponent>(uid)))
+                    || HasComp<WFReaverPatrolComponent>(uid) || HasComp<WFReaverRaidComponent>(uid)
+                    || HasComp<WFReaverReinforcementComponent>(uid)))
                 ended.Add(uid);
         }
 

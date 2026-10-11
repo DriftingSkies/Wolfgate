@@ -14,24 +14,28 @@ level that rises while nobody stops them and falls when crews do.
 ## Strongholds
 
 A stronghold is an encounter (`start: Manual`, `lifetime: Persistent`, never pinned) holding station at a cell
-centre. Three prototypes, picked by tier and population:
-
-| | lead | guards | crew | when |
-|---|---|---|---|---|
-| `WFReaverStrongholdLight` | Kalisto, Metis | 1 × Kalisto, Metis | 3 hands, 2 guards | tier ≤ 2 or under 12 players |
-| `WFReaverStrongholdMid` | Fenrir, Garm | 2 × Kalisto, Metis, Bastion | 4 hands, 3 guards | tier 3 |
-| `WFReaverStrongholdHeavy` | Saintie, Vulture, Ganymede | 2 × Fenrir, Garm | 4 hands, 4 guards | tier ≥ 4 and 15+ players |
-
-The lead holds; the guards fly `Circle` on the lead's key. Only the lead carries zones (warn 1500 m, attack 900 m,
-`wf-encounter-pirate-zone` lines, `disengage: Deter` at 1200 m); the guards have none and fight whoever attacks. The
-encounter has `leash: 2000` so nobody chases a hauler across the sector. The lead's hold carries four crates of
+centre: a **hub**. One prototype, `WFReaverStronghold`, whose lead is a pirate frigate with several docking ports and
+a shield, and no guard ships. It gains levels as reinforcements dock (see Stronghold levels below). The lead holds and
+does not evade (`evades: false`): a hub that ran from an alert would undock everything on it. Only the lead carries
+zones (warn 1500 m, attack 900 m, `wf-encounter-pirate-zone` lines, `disengage: Deter` at 1200 m). The encounter has
+`leash: 2000` so nobody chases a hauler across the sector. The lead's hold carries four crates of
 `WFManifestContraband`: loot for whoever boards and wins. `icon: Flag`; `company: WFAshfallReavers`, `faction:
 PirateNF`, profile `WFCrewProfilePirate`, `distress: false`.
+
+**The hub hull.** The lead is a **Saintie**: 4 docking ports and a shield generator (an Aegis,
+`ShieldGeneratorMedium`) already wired into its power plant. No other pirate hull with several ports carries one but
+the Vulture (9 ports, a Sentinel, 3115 entities against Saintie's 1754), so the hub uses the Saintie and the
+campaign only places a generator itself on a hull that has none: when a hub spawns, `EnsureShield` looks for a
+`ShipShieldEmitter` on the hull and, if there is none, spawns `WFReaverHubShieldGenerator` (the Aegis) on a free
+floor tile with floor on every side, within three tiles of a power provider (an APC or extension cable, the reach of
+`ExtensionCableReceiver`), and anchors it there. The ship's power is already on from the encounter spawn, so the
+field comes up a few seconds later. The shield covers the hub's own grid only; a docked reinforcement is outside it.
 
 Founding claims the cell and its ring with the encounter entity as the source. A stronghold is **broken** when its
 lead is out of the fight (`WFEncounterSystem.InFight` false): the campaign calls `Resolve(Destroyed)` itself, since
 the Encounters judge waits for every ship. On `WFEncounterResolvedEvent` with `Destroyed` the campaign pays the
-bounty, releases the source (freeing every cell it alone supported) and announces. `Ended` (admin or round end) frees
+bounty (`strongholdBounty[tier]` times one plus half the level), ends the stronghold's reinforcements, releases the
+source (freeing every cell it alone supported) and announces. `Ended` (admin or round end) frees
 and pays nothing.
 
 **First stronghold.** `firstStrongholdDelay` after `StationsGeneratedEvent`, once the round is in progress, in a
@@ -42,17 +46,80 @@ living player. **Later strongholds** fly out as convoys (below). **Regroup.** Wi
 the only stronghold buys a real lull instead of ending the arc. The first and a regroup appear at once: nothing stands
 to launch them from.
 
+## Stronghold levels
+
+A hub is founded at level 0 and grows one level for each reinforcement that docks with it, up to a cap set by the
+threat tier. State is on `WFReaverStrongholdComponent` (`Level`, `NextReinforcement`, `Reinforcements`, `Inbound`,
+`Scattered`) and the campaign prototype (`reinforcementInterval`, `maxLevelByTier`, `reinforcements`,
+`levelBountyScale`).
+
+| | Quiet | Standard | Dangerous |
+|---|---|---|---|
+| reinforcementInterval | 20 min | 12 min | 8 min |
+| maxLevelByTier (0..5) | 0,1,1,2,2,2 | 0,1,2,2,3,4 | 0,1,2,3,4,4 |
+
+| level | reinforcement | ship |
+|---|---|---|
+| 1, 2 | `WFReaverReinforcementGunship` | Kalisto, Metis or Bastion: pilot, gunner, captain, 2 hands |
+| 3, 4 | `WFReaverReinforcementHeavy` | Saintie, Vulture or Ganymede: 3 hands, 2 guards, a full crew |
+
+All are `start: Manual`, `lifetime: Persistent`, off budget, `evades: false` and fly the hub's company and faction.
+
+**Launching.** A hub that has stood `reinforcementInterval` since its founding or its last level, with no reinforcement
+on its way, no fight in progress (`Scattered`, or a hit from a player ship in the last two minutes) and `Level`
+under the cap for the current tier, sends the next one
+(`TryReinforce`; a hub that cannot send one tries again after a minute). The convoy spawns at a clear point 25 to
+28 km from the origin on the side the hub is on (within about 20 degrees of the line from the origin through it), or
+failing that at a clear point 3 to 5 km from the hub. The lead is ordered `GoTo` the hub (range 600 m), then `Dock`
+on the hub's grid, and the sector watch says "Reaver reinforcements are inbound to K-7, ETA n min" (no chime; the
+ETA is the distance at 30 m/s). It carries `WFReaverReinforcementComponent` (stronghold, level, phase, deadline).
+There is one on the way per hub.
+
+**Docking.** Each tick the campaign checks whether the reinforcement's grid is docked to the hub's
+(`DockingSystem.AreGridsDocked`). On the dock (`CompleteDock`) the hub's level becomes the reinforcement's, it joins
+`Reinforcements`, `NextReinforcement` restarts, the hub encounter is renamed "Reaver stronghold XX-123 (level n)",
+which the map's hover card and the admin window read, and the legend gains the levels ("level 2", or "levels 3/1");
+the sector watch says "The Reaver stronghold at K-7 has grown to level n" (no chime). A pilot that runs out of docking
+attempts (`WFPilotDockFailedEvent`; a crowded face, a lane that is never clear, three failed attempts) flies the
+reinforcement to 300 m of the hub and holds there (`Holding`), and it still counts: a dock that cannot be flown does
+not stall the stronghold. There is no timer on a dock in progress, so a heavy still settling in is not cut off.
+Hand-flown NPC docking of large hulls has not been proven, which is why the fallback exists.
+
+**Deadline.** A reinforcement is due at the hub twice the reckoned trip (30 m/s) plus three minutes after it sets
+out (`Overdue`). If its crew gave up the flight short of the hub (the queue ran out) it is ordered to dock again, at
+most every 30 s. Past its deadline: within 900 m of the hub it is given five more minutes to finish docking; farther
+out it is ended, which frees the hub (`Inbound`) and restarts the interval. A reinforcement on its way back that is
+past its deadline is ordered to dock again instead.
+
+**Lost on the way.** A reinforcement whose lead is out of the fight is resolved `Destroyed` by the campaign: it
+founds no level, pays the patrol bounty to those who hit it, marks them, and is announced "Reaver reinforcements bound
+for K-7 are destroyed" with the paid line; the hub tries again after the interval. One lost after docking is dropped
+from the list the same way and the level stays. Killing a reinforcement never breaks the stronghold.
+
+**Break-apart.** When a hub takes fresh hits from player ships (the `Hits` count, as for patrol recall), every
+reinforcement that has joined it (docked, holding or on its way back) is given `Undock` then `Attack` on the player
+ship that is hitting it: of the ships whose hit total grew since the last look, the one with most hits. Reinforcements
+already out turn on a different attacker the same way. The hub holds under its shield. A reinforcement that docks
+while the fight is on (`Scattered`, or a hit in the last two minutes) goes straight out, onto the last attacker if it
+is within 5 km of the hub, else the top attacker near the hub, else the top attacker anywhere. Three minutes after the last hit, with none of the ships that hit the hub within 2.5 km of it, they
+fly `GoTo` the hub (600 m) and `Dock` again, with the same deadline and dock-failure rules.
+
+**Breaking the hub.** When the hub's lead is out of the fight the stronghold resolves `Destroyed`; its reinforcements
+are ended with it, and the hits players landed on them are added to the hub's so that those who only shot a
+reinforcement are paid. The bounty is `strongholdBounty[tier]` times `1 + levelBountyScale * level` (credits scale the
+same way), so a level 4 hub pays three times a level 0 one. Ended by an admin or the round, it pays nothing.
+
 ## Founding convoys
 
 A later stronghold is not placed: it sets out from one that stands. When held cells ≥ `cellsPerStronghold` ×
 strongholds, `foundInterval` has passed since the last completed founding, strongholds plus convoys out are under
 `maxStrongholds` and no convoy is out (one founding at a time), the campaign picks the target as before (a held cell on
 the edge of held space at least two cells from every stronghold and convoy target, nearer the core preferred, with a
-clear centre) and `TryLaunchConvoy` spawns the stronghold prototype for the tier and population at a clear point
+clear centre) and `TryLaunchConvoy` spawns the hub prototype (shield placed as at any founding) at a clear point
 600–1000 m from the lead of the standing stronghold nearest the target (off budget, not pinned), with
 `WFReaverConvoyComponent` (target cell and point, source stronghold, lead key, launch time, and an overdue time of twice
 the reckoned trip plus the slack). Orders by `SetOrders`: the
-lead `GoTo` the target centre (range 300, nudged clear as patrol route points are), each guard `Escort` the lead. The
+lead `GoTo` the target centre (range 300, nudged clear as patrol route points are). The
 encounter's leash is off while it flies. The target cell is contested for the faction with the convoy as the source
 and a deadline of the reckoned arrival (distance / 30 m/s) plus 3 min, moved with `SetContestDeadline` as the convoy
 goes, so the framework never takes it first. The sector watch says so without a chime: "A Reaver convoy is under way to
@@ -62,8 +129,7 @@ the founding is tried again after a minute.
 **Arrival.** Each tick a convoy whose lead is within 400 m of the target point, or is in the target cell and has flown
 its orders or is overdue, is completed by `CompleteFounding`: the convoy component goes,
 `WFReaverStrongholdComponent` is added as a founding sets it, the contest is withdrawn, the cell and ring are claimed,
-the lead holds and each guard `Circle`s it at the range its own prototype gives (a guard with no circle keeps
-escorting), the leash comes back around the point it stopped at (the target point, or where a lead that stopped short
+the lead holds as a level 0 hub, the leash comes back around the point it stopped at (the target point, or where a lead that stopped short
 in the cell stands), the founding is counted (`LastFounded` from now) and announced as any founding. Hits the convoy
 took on the way are carried over (`Hits`, `AttackerHits`, `Recalled` set, `LastHit` out of the support window) and the
 ships that landed them are marked once, so they do not read as a fresh attack that recalls a patrol.
@@ -168,7 +234,7 @@ companies and stronghold and patrol amounts per navy; the first grant rides on t
 under attack, meaning within two minutes of the last hit on it, without hitting it (medics, tenders, scouts). The
 campaign tracks supporters on `WFReaverStrongholdComponent`. `PayBounty` returns how many players were paid; the
 announcement says the bounty was paid only when it is above zero. Stronghold bounty: `strongholdBounty[tier]` (Standard 60k, 90k, 120k, 160k, 200k,
-250k); patrol bounty `patrolBounty` (20k). Paid on `Destroyed` only.
+250k) times one plus half the stronghold's level; patrol bounty `patrolBounty` (20k). Paid on `Destroyed` only.
 
 ## The vote
 
@@ -207,9 +273,11 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
 - Navies: the Halcyon's cell is never taken, but a front at the doorstep is theirs, and each navy's faction credits
   (TSF and PDV alike) flow through the bounty.
 - Ghosts: strongholds, patrols and raids on the Encounters tab of the orbit menu as any encounter.
-- Admins: `wf_reavers status | found [x y] | convoy | tier <n> | spread | patrol | raid | intercept <grid uid> |
-  pause | resume | clear` (`found` founds at once as an admin shortcut, `convoy` sends one out as the campaign does;
-  status lists convoys with their target and distance left, intercepts and marks), and every campaign encounter in
+- Admins: `wf_reavers status | found [x y] | convoy | reinforce <stronghold uid> | tier <n> | spread | patrol | raid | intercept <grid uid> |
+  pause | resume | clear` (`found` founds a level 0 hub at once as an admin shortcut, `convoy` sends one out as the campaign does, `reinforce`
+  sends a stronghold its next reinforcement now, within the tier cap; status lists each stronghold's level and
+  reinforcements, convoys with their target and distance left, reinforcements with their phase and range, intercepts
+  and marks), and every campaign encounter in
   the Encounters admin window.
 - Round end: a summary line (peak cells held, strongholds founded and broken, patrols destroyed, convoys stopped)
   through `RoundEndTextAppendEvent`.
@@ -220,11 +288,12 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
   above, the prototype ids, bounties, sounds and colours), `ReaverCampaignCVars.cs` (`wf.reavers.enabled`).
 - `Content.Server/_WF/ReaverCampaign`: `README.md`, `Components/WFReaverStrongholdComponent.cs` (cell, tier at
   founding, hits seen, supporters), `Components/WFReaverConvoyComponent.cs` (target, source, lead, launch time),
+  `Components/WFReaverReinforcementComponent.cs` (hub, level, phase, arrival time),
   `Components/WFReaverPatrolComponent.cs` (stronghold, route),
   `Components/WFReaverRaidComponent.cs` (target), `Components/WFReaverMarkComponent.cs` (until when a ship is
   marked), `Components/WFReaverCampaignComponent.cs` (campaign state on the sector map entity: tier, score, clocks,
   intercept clocks, counters for the round summary), `Systems/WFReaverCampaignSystem.cs` with partials
-  `.Strongholds.cs`, `.Convoys.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
+  `.Strongholds.cs`, `.Hub.cs` (shield placement, levels), `.Reinforcements.cs`, `.Convoys.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
   `.Rewards.cs`, `Commands/WFReaverCommand.cs`.
 - `Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`, `encounters.yml`; `Resources/Locale/en-US/_WF/ReaverCampaign/reavers.ftl`;
   `Resources/ServerInfo/_WF/ReaverCampaign/Reavers.xml` guidebook page if the guidebook takes module pages without
@@ -234,7 +303,8 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
   hysteresis, regroup, every votable preset has exactly one campaign, intercept past the dwell and not outside held
   space, route restored and cooldown held, marks from a patrol kill and a stronghold hit steering a raid, the Reaver
   border notice, convoys launched, arriving and stopped). Every step is a one-shot method the test can call
-  (`TryFound`, `TryLaunchConvoy`, `CheckConvoys`, `CompleteFounding`, `TrySpreadOnce`, `TryLaunchPatrol`,
+  (`TryFound`, `TryLaunchConvoy`, `CheckConvoys`, `CompleteFounding`, `TryReinforce`, `CheckReinforcements`,
+  `CompleteDock`, `CheckStrongholds`, `ScatterReinforcements`, `RegroupReinforcements`, `TrySpreadOnce`, `TryLaunchPatrol`,
   `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`), with time from `IGameTiming`.
 
 Edits inside `_WF/Encounters` (same fork, no markers; the README overview gains a paragraph): `TrySpawn(...,
@@ -247,11 +317,13 @@ stationClearance)` and `Stations(map)` on the scheduler.
 
 - Strongholds are encounters, not stations: crews, zones, markers, the admin window, the ghost menu and cleanup
   come for free, and no map file is needed.
-- Lead down is broken. The judge waits for the guards; the campaign does not. The same goes for a convoy.
+- Lead down is broken. The judge waits for every ship; the campaign does not. The same goes for a convoy, and a
+  reinforcement lost, docked or not, breaks nothing.
 - Later strongholds fly out from a standing one: the expansion is seen coming and can be stopped on the way.
 - Killing a patrol frees its cell at once. Slow decay would hide the feedback.
 - One raid clock for the campaign, capped by population. Per-stronghold clocks reached 36 raids an hour.
-- Light garrisons first. A pirate frigate at minute 20 on a ten-player round is not a fight, it is a wall.
+- Start small and grow. A hub is a shielded frigate with nothing beside it; the wall builds as it ages, capped by the
+  threat tier, so a quiet round never meets a fully grown one.
 - Only tiers, strongholds and patrol kills are announced. Cell churn shows on the map.
 - Staying in held space, not crossing it, is what brings a patrol, and intercepts use the patrols already out first,
   so the downside of Reaver space is a fight, not a toll.

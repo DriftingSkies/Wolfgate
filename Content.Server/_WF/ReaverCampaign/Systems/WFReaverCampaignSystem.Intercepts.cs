@@ -270,8 +270,8 @@ public sealed partial class WFReaverCampaignSystem
         }
     }
 
-    /// <summary>Marks the player ships that have hit a stronghold since it was last looked at.</summary>
-    private void MarkAttackers(WFReaverStrongholdComponent stronghold, WFEncounterComponent encounter)
+    /// <summary>Marks the player ships that have hit a stronghold since it was last looked at, and returns them.</summary>
+    private List<EntityUid> MarkAttackers(WFReaverStrongholdComponent stronghold, WFEncounterComponent encounter)
     {
         var totals = new Dictionary<EntityUid, int>();
         foreach (var ((attacker, _), hits) in encounter.ShipHits)
@@ -290,6 +290,7 @@ public sealed partial class WFReaverCampaignSystem
         }
 
         Mark(fresh);
+        return fresh;
     }
 
     /// <summary>Takes off the marks that have run out.</summary>

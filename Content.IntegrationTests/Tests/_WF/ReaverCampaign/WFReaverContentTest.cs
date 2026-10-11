@@ -133,21 +133,34 @@ public sealed class WFReaverContentTest
                     Assert.That(resources.ContentFileExists(path), Is.True, $"{id}: {path}");
                 }
 
-                foreach (var strongholdId in new[] { campaign.StrongholdLight, campaign.StrongholdMid, campaign.StrongholdHeavy })
+                var strongholdId = campaign.Stronghold;
+                var stronghold = prototypes.Index(strongholdId);
+                Assert.That(stronghold.Start, Is.EqualTo(WFEncounterStart.Manual), $"{strongholdId}: only the campaign starts it");
+                Assert.That(stronghold.Lifetime, Is.EqualTo(WFEncounterLifetime.Persistent), $"{strongholdId}");
+                Assert.That(stronghold.StartRadius, Is.Zero, $"{strongholdId}");
+                Assert.That(stronghold.Ships, Has.Count.EqualTo(1), $"{strongholdId}: a hub with no guard ships");
+                var hub = stronghold.Ships[0];
+                Assert.That(hub.Key, Is.EqualTo("lead"), $"{strongholdId}: the first ship is the lead");
+                Assert.That(hub.WarnRange, Is.GreaterThan(hub.AttackRange), $"{strongholdId}: the lead carries the zones");
+                Assert.That(hub.Evades, Is.False, $"{strongholdId}: a hub that ran from an alert would undock everything on it");
+                Assert.That(hub.Vessels, Is.Not.Empty, $"{strongholdId}");
+                Assert.That(prototypes.TryIndex(campaign.HubShield, out var shield), Is.True, $"{id}: hub shield generator");
+                Assert.That(shield!.Components.ContainsKey("ShipShieldEmitter"), Is.True, $"{id}: {campaign.HubShield} is a shield generator");
+
+                Assert.That(campaign.MaxLevelByTier, Has.Count.EqualTo(6), $"{id}: level cap by tier");
+                Assert.That(campaign.MaxLevelByTier, Is.Ordered.Ascending, $"{id}: higher tiers grow strongholds at least as far");
+                Assert.That(campaign.MaxLevelByTier[0], Is.Zero, $"{id}: no reinforcements at tier 0");
+                Assert.That(campaign.Reinforcements, Has.Count.GreaterThanOrEqualTo(campaign.MaxLevelByTier.Max()), $"{id}: a convoy for every level");
+                Assert.That(campaign.ReinforcementInterval, Is.GreaterThan(TimeSpan.Zero), $"{id}");
+                foreach (var reinforcementId in campaign.Reinforcements)
                 {
-                    var stronghold = prototypes.Index(strongholdId);
-                    Assert.That(stronghold.Start, Is.EqualTo(WFEncounterStart.Manual), $"{strongholdId}: only the campaign starts it");
-                    Assert.That(stronghold.Lifetime, Is.EqualTo(WFEncounterLifetime.Persistent), $"{strongholdId}");
-                    Assert.That(stronghold.StartRadius, Is.Zero, $"{strongholdId}");
-                    Assert.That(stronghold.Ships, Has.Count.GreaterThanOrEqualTo(2), $"{strongholdId}: a lead and a guard");
-                    var lead = stronghold.Ships[0];
-                    Assert.That(lead.Key, Is.EqualTo("lead"), $"{strongholdId}: the first ship is the lead");
-                    Assert.That(lead.WarnRange, Is.GreaterThan(lead.AttackRange), $"{strongholdId}: the lead carries the zones");
-                    foreach (var guard in stronghold.Ships.Skip(1))
-                    {
-                        Assert.That(guard.Objectives.Any(objective => objective.Kind == WFCrewObjectiveKind.Circle && objective.Target == "lead"),
-                            Is.True, $"{strongholdId}: {guard.Key} circles the lead");
-                    }
+                    var reinforcement = prototypes.Index(reinforcementId);
+                    Assert.That(reinforcement.Start, Is.EqualTo(WFEncounterStart.Manual), $"{reinforcementId}");
+                    Assert.That(reinforcement.Lifetime, Is.EqualTo(WFEncounterLifetime.Persistent), $"{reinforcementId}: it stays with the hub");
+                    Assert.That(reinforcement.StartRadius, Is.Zero, $"{reinforcementId}");
+                    Assert.That(reinforcement.Leash, Is.Zero, $"{reinforcementId}: a leash would turn it back from the hub");
+                    Assert.That(reinforcement.Ships[0].Key, Is.EqualTo("lead"), $"{reinforcementId}");
+                    Assert.That(reinforcement.Ships[0].Evades, Is.False, $"{reinforcementId}: only the campaign sends it out of a dock");
                 }
 
                 var patrol = prototypes.Index(campaign.Patrol);

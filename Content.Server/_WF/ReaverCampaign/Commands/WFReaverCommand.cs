@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq;
+using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Server._WF.SectorControl.Systems;
@@ -15,7 +16,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WF.ReaverCampaign.Commands;
 
-/// <summary>The Reaver campaign from the console: show it, found a stronghold or send a convoy, set the tier, step it, send an intercept, pause it or clear it.</summary>
+/// <summary>The Reaver campaign from the console: show it, found a stronghold or send a convoy or a reinforcement, set the tier, step it, send an intercept, pause it or clear it.</summary>
 [AdminCommand(AdminFlags.Admin)]
 public sealed partial class WFReaverCommand : LocalizedEntityCommands
 {
@@ -23,7 +24,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
     [Dependency] private WFReaverCampaignSystem _campaign = default!;
     [Dependency] private WFSectorTerritorySystem _territory = default!;
 
-    private static readonly string[] Subcommands = { "status", "found", "convoy", "tier", "spread", "patrol", "raid", "intercept", "pause", "resume", "clear" };
+    private static readonly string[] Subcommands = { "status", "found", "convoy", "reinforce", "tier", "spread", "patrol", "raid", "intercept", "pause", "resume", "clear" };
 
     public override string Command => "wf_reavers";
 
@@ -39,6 +40,9 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 break;
             case "convoy" when args.Length == 1:
                 Convoy(shell);
+                break;
+            case "reinforce" when args.Length == 2:
+                Reinforce(shell, args[1]);
                 break;
             case "tier" when args.Length == 2:
                 if (!int.TryParse(args[1], out var tier) || tier < 0 || tier > WFReaverCampaignSystem.MaxTier)
@@ -99,6 +103,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
             2 when args[0] == "found" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-x")),
             3 when args[0] == "found" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-y")),
             2 when args[0] == "intercept" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-grid")),
+            2 when args[0] == "reinforce" => CompletionResult.FromHint(Loc.GetString("cmd-wf_reavers-hint-stronghold")),
             2 when args[0] == "tier" => CompletionResult.FromHintOptions(
                 Enumerable.Range(0, WFReaverCampaignSystem.MaxTier + 1).Select(tier => tier.ToString()),
                 Loc.GetString("cmd-wf_reavers-hint-tier")),
@@ -141,9 +146,35 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
             shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-stronghold",
                 ("uid", EntityManager.GetNetEntity(uid).ToString()),
                 ("callsign", WFSectorHex.Callsign(stronghold.Cell)),
+                ("level", stronghold.Level),
                 ("prototype", encounter.Prototype.Id),
                 ("hits", stronghold.Hits),
-                ("patrols", patrols.Count(patrol => patrol.Comp1.Stronghold == uid))));
+                ("patrols", patrols.Count(patrol => patrol.Comp1.Stronghold == uid)),
+                ("reinforcements", stronghold.Reinforcements.Count),
+                ("state", (stronghold.Inbound != null ? Loc.GetString("cmd-wf_reavers-status-stronghold-inbound") : string.Empty)
+                    + (stronghold.Scattered ? Loc.GetString("cmd-wf_reavers-status-stronghold-scattered") : string.Empty))));
+        }
+
+        foreach (var (uid, reinforcement, encounter) in _campaign.Reinforcements())
+        {
+            var hubEncounter = EntityManager.GetComponentOrNull<WFEncounterComponent>(reinforcement.Stronghold);
+            var home = EntityManager.GetComponentOrNull<WFReaverStrongholdComponent>(reinforcement.Stronghold);
+            var range = "-";
+            if (hubEncounter != null && home != null && hubEncounter.Ships.TryGetValue(home.Lead, out var hub)
+                && encounter.Ships.TryGetValue(reinforcement.Lead, out var ship)
+                && EntityManager.EntityExists(hub.Grid) && EntityManager.EntityExists(ship.Grid))
+            {
+                var position = EntityManager.System<SharedTransformSystem>();
+                range = WFReaverCampaignSystem.Kilometres(position.GetWorldPosition(ship.Grid), position.GetWorldPosition(hub.Grid));
+            }
+
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-reinforcement",
+                ("uid", EntityManager.GetNetEntity(uid).ToString()),
+                ("callsign", home != null ? WFSectorHex.Callsign(home.Cell) : "-"),
+                ("level", reinforcement.Level),
+                ("phase", reinforcement.Phase.ToString()),
+                ("range", range),
+                ("seconds", Math.Max(0, (int) (now - reinforcement.Launched).TotalSeconds))));
         }
 
         var transform = EntityManager.System<SharedTransformSystem>();
@@ -287,6 +318,34 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
         shell.WriteLine(Loc.GetString("cmd-wf_reavers-convoy",
             ("uid", EntityManager.GetNetEntity(convoy).ToString()),
             ("callsign", WFSectorHex.Callsign(comp.Target))));
+    }
+
+    /// <summary>wf_reavers reinforce &lt;stronghold uid&gt;: sends a stronghold its next reinforcement now.</summary>
+    private void Reinforce(IConsoleShell shell, string arg)
+    {
+        if (_campaign.Campaign == null)
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-no-campaign"));
+            return;
+        }
+
+        if (!NetEntity.TryParse(arg, out var net) || !EntityManager.TryGetEntity(net, out var stronghold)
+            || !_campaign.Strongholds().Any(entry => entry.Owner == stronghold))
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-bad-stronghold", ("arg", arg)));
+            return;
+        }
+
+        if (!_campaign.TryReinforce(stronghold.Value)
+            || EntityManager.GetComponent<WFReaverStrongholdComponent>(stronghold.Value).Inbound is not { } inbound)
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-reinforce-failed"));
+            return;
+        }
+
+        shell.WriteLine(Loc.GetString("cmd-wf_reavers-reinforce",
+            ("uid", EntityManager.GetNetEntity(inbound).ToString()),
+            ("callsign", WFSectorHex.Callsign(EntityManager.GetComponent<WFReaverStrongholdComponent>(stronghold.Value).Cell))));
     }
 
     /// <summary>wf_reavers patrol: from the stronghold with the fewest patrols out.</summary>

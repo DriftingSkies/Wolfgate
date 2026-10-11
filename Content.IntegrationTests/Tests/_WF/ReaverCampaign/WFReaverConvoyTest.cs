@@ -40,7 +40,7 @@ public sealed class WFReaverConvoyTest : WFReaverTestBase
         return (stronghold, convoy, target);
     }
 
-    /// <summary>A convoy spawns beside the stronghold nearest its target, flies there escorted, contests the cell meanwhile and is announced.</summary>
+    /// <summary>A convoy spawns beside the stronghold nearest its target, flies there, contests the cell meanwhile and is announced.</summary>
     [Test]
     public async Task ConvoyLaunchesBesideItsSourceAndContestsTheTarget()
     {
@@ -63,6 +63,7 @@ public sealed class WFReaverConvoyTest : WFReaverTestBase
             Assert.That(comp.Launched, Is.EqualTo(STiming.CurTime));
             Assert.That(encounter.Prototype.Id, Is.EqualTo(Stronghold), "The stronghold it will be.");
             Assert.That(encounter.Leash, Is.Zero, "No leash turns it back under way.");
+            Assert.That(campaign.ShieldOf(encounter.Ships["lead"].Grid), Is.Not.Null, "A hub sets out shielded.");
             AssertSpawnedBeside(convoy, stronghold);
 
             Assert.That(SEntMan.HasComponent<WFReaverStrongholdComponent>(convoy), Is.False, "Under way it is no stronghold yet.");
@@ -75,9 +76,6 @@ public sealed class WFReaverConvoyTest : WFReaverTestBase
             Assert.That(lead.Kind, Is.EqualTo(WFCrewObjectiveKind.GoTo));
             Assert.That(lead.Position, Is.EqualTo(comp.TargetPosition));
             Assert.That(lead.Range, Is.EqualTo(300f));
-            var guard = Orders(convoy, "guard").Single();
-            Assert.That(guard.Kind, Is.EqualTo(WFCrewObjectiveKind.Escort));
-            Assert.That(guard.Target, Is.EqualTo(SEntMan.GetNetEntity(encounter.Ships["lead"].Grid)), "The guard escorts the lead.");
 
             var contest = territory.ContestOf(map, target);
             Assert.That(contest, Is.Not.Null, "The target is shown contested.");
@@ -97,7 +95,7 @@ public sealed class WFReaverConvoyTest : WFReaverTestBase
             "The sector watch announces it.");
     }
 
-    /// <summary>A convoy whose lead reaches its target becomes the stronghold: the cell and ring are claimed, the contest goes and the guards circle.</summary>
+    /// <summary>A convoy whose lead reaches its target becomes the stronghold: the cell and ring are claimed, the contest goes and the hub holds.</summary>
     [Test]
     public async Task ArrivedConvoyFoundsTheStronghold()
     {
@@ -137,10 +135,6 @@ public sealed class WFReaverConvoyTest : WFReaverTestBase
             }
 
             Assert.That(Orders(convoy, "lead").Single().Kind, Is.EqualTo(WFCrewObjectiveKind.Hold));
-            var guard = Orders(convoy, "guard").Single();
-            Assert.That(guard.Kind, Is.EqualTo(WFCrewObjectiveKind.Circle));
-            Assert.That(guard.Target, Is.EqualTo(SEntMan.GetNetEntity(leadGrid)));
-
             var state = campaign.State()!;
             Assert.That(state.Founded, Is.EqualTo(2));
             Assert.That(state.LastFounded, Is.EqualTo(STiming.CurTime), "The founding interval runs from the arrival.");
@@ -359,27 +353,6 @@ public sealed class WFReaverConvoyTest : WFReaverTestBase
             Assert.That(stronghold.Hits, Is.EqualTo(hits));
             Assert.That(stronghold.LastHit, Is.EqualTo(lastHit), "No fresh hit was seen.");
             Assert.That(stronghold.Support, Is.Empty);
-        });
-    }
-
-    /// <summary>A founded stronghold's guards circle as far out as their own prototype has them.</summary>
-    [Test]
-    public async Task FoundedGuardsCircleAsTheirPrototypeHasThem()
-    {
-        await StartCampaign();
-        await Server.WaitAssertion(() =>
-        {
-            var campaign = Server.System<WFReaverCampaignSystem>();
-            campaign.SetTier(5);
-            var (_, convoy, _) = Launch();
-            var encounter = SEntMan.GetComponent<WFEncounterComponent>(convoy);
-            Assert.That(encounter.Prototype.Id, Is.EqualTo("WFTestReaverStrongholdWide"));
-
-            Place(encounter.Ships["lead"].Grid, SEntMan.GetComponent<WFReaverConvoyComponent>(convoy).TargetPosition);
-            campaign.CheckConvoys();
-            var guard = Orders(convoy, "guard").Single();
-            Assert.That(guard.Kind, Is.EqualTo(WFCrewObjectiveKind.Circle));
-            Assert.That(guard.Range, Is.EqualTo(1200f));
         });
     }
 

@@ -2,7 +2,7 @@ using Content.Shared._WF.SectorControl;
 
 namespace Content.Server._WF.ReaverCampaign.Components;
 
-/// <summary>A Reaver stronghold, on its encounter entity. It is broken when its lead ship is out of the fight.</summary>
+/// <summary>A Reaver stronghold hub, on its encounter entity. It grows a level for each reinforcement that docks, and is broken when its lead ship is out of the fight.</summary>
 [RegisterComponent]
 public sealed partial class WFReaverStrongholdComponent : Component
 {
@@ -41,4 +41,32 @@ public sealed partial class WFReaverStrongholdComponent : Component
     /// <summary>When it may next send out a patrol.</summary>
     [ViewVariables]
     public TimeSpan NextPatrol;
+
+    /// <summary>How many reinforcements have joined it; zero at its founding.</summary>
+    [ViewVariables]
+    public int Level;
+
+    /// <summary>When the next reinforcement may set out.</summary>
+    [ViewVariables]
+    public TimeSpan NextReinforcement;
+
+    /// <summary>The reinforcement encounters that have docked or holding beside it.</summary>
+    [ViewVariables]
+    public List<EntityUid> Reinforcements = new();
+
+    /// <summary>The reinforcement on its way, if any; there is one at a time.</summary>
+    [ViewVariables]
+    public EntityUid? Inbound;
+
+    /// <summary>Whether its reinforcements have broken away to fight an attacker and not yet come back.</summary>
+    [ViewVariables]
+    public bool Scattered;
+
+    /// <summary>The player ship its reinforcements were last sent against.</summary>
+    [ViewVariables]
+    public EntityUid? Attacker;
+
+    /// <summary>The encounter's name without its level, so the level can be shown on the map.</summary>
+    [ViewVariables]
+    public string BaseName = string.Empty;
 }

@@ -21,7 +21,7 @@ namespace Content.IntegrationTests.Tests._WF.ReaverCampaign;
 [TestOf(typeof(WFReaverCampaignSystem))]
 public sealed class WFReaverStrongholdTest : WFReaverTestBase
 {
-    /// <summary>The lead out of the fight breaks a stronghold whose guard still stands; its bounty goes to those who shot at it.</summary>
+    /// <summary>The lead out of the fight breaks a stronghold; its bounty goes to those who shot at it.</summary>
     [Test]
     public async Task LeadDownBreaksTheStrongholdAndPaysTheBounty()
     {
@@ -50,7 +50,6 @@ public sealed class WFReaverStrongholdTest : WFReaverTestBase
             Assert.That(Balance(), Is.EqualTo(before));
 
             KillCrew(stronghold, "lead");
-            Assert.That(Server.System<WFEncounterSystem>().InFight(encounter.Ships["guard"]), Is.True, "The guard is still fighting.");
         });
         await RunTicks(90);
         await Server.WaitAssertion(() =>
@@ -58,7 +57,7 @@ public sealed class WFReaverStrongholdTest : WFReaverTestBase
             var campaign = Server.System<WFReaverCampaignSystem>();
             var territory = Server.System<WFSectorTerritorySystem>();
             var encounter = SEntMan.GetComponent<WFEncounterComponent>(stronghold);
-            Assert.That(encounter.Resolution, Is.EqualTo(WFEncounterResolution.Destroyed), "Lead down is broken, whatever the guards do.");
+            Assert.That(encounter.Resolution, Is.EqualTo(WFEncounterResolution.Destroyed), "Lead down is broken.");
             Assert.That(campaign.Strongholds(), Is.Empty);
             Assert.That(territory.Held(MapData.MapId, Reavers), Is.Empty, "Its cells are freed.");
             var state = campaign.State()!;

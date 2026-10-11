@@ -61,6 +61,14 @@ wf-reaver-convoy-destroyed = The Reaver convoy bound for {$callsign} is destroye
        *[other] Bounty {$bounty} spesos paid.
     }
 
+# A hub gaining a level; $minutes is the reinforcement's reckoned flight
+wf-reaver-reinforcement-launched = Reaver reinforcements are inbound to {$callsign}, ETA {$minutes} min.
+wf-reaver-grown = The Reaver stronghold at {$callsign} has grown to level {$level}.
+wf-reaver-reinforcement-destroyed = Reaver reinforcements bound for {$callsign} are destroyed. { $paid ->
+        [0] No bounty was claimed.
+       *[other] Bounty {$bounty} spesos paid.
+    }
+
 wf-reaver-raid-warning-pa = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-warning-radio = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-station-warning = Reaver raiders are heading for {$station}, bearing {$bearing}, {$range} km.
@@ -74,7 +82,11 @@ wf-reaver-legend = {$faction}: {$tier}, { $strongholds ->
     }, { $cells ->
         [one] {$cells} cell
        *[other] {$cells} cells
-    }, bounty {$bounty}
+    }, bounty {$bounty}{$levels}
+wf-reaver-legend-levels = , { $count ->
+        [one] level {$levels}
+       *[other] levels {$levels}
+    }
 
 wf-reaver-round-end = Reavers held up to { $peak ->
         [one] {$peak} cell
@@ -98,13 +110,14 @@ wf-reaver-round-end = Reavers held up to { $peak ->
 
 # wf_reavers command
 cmd-wf_reavers-desc = Shows and drives the Ashfall Reaver campaign.
-cmd-wf_reavers-help = Usage: {$command} status | found [x y] | convoy | tier <n> | spread | patrol | raid | intercept <grid uid> | pause | resume | clear
-    found places a stronghold at once, an admin shortcut; convoy sends one out from a standing stronghold, as the campaign does.
+cmd-wf_reavers-help = Usage: {$command} status | found [x y] | convoy | reinforce <stronghold uid> | tier <n> | spread | patrol | raid | intercept <grid uid> | pause | resume | clear
+    found places a level 0 hub at once, an admin shortcut; convoy sends one out from a standing stronghold, as the campaign does; reinforce sends a stronghold its next reinforcement now.
 cmd-wf_reavers-hint-sub = Subcommand
 cmd-wf_reavers-hint-x = Map x in metres
 cmd-wf_reavers-hint-y = Map y in metres
 cmd-wf_reavers-hint-tier = Threat tier
 cmd-wf_reavers-hint-grid = Grid uid of the ship to intercept
+cmd-wf_reavers-hint-stronghold = Stronghold uid
 cmd-wf_reavers-no-campaign = No Reaver campaign runs under the current preset.
 cmd-wf_reavers-status-header = Campaign {$campaign}: running {$running}, paused {$paused}, tier {$tier}, score {$score}.
 cmd-wf_reavers-status-counts = { $strongholds ->
@@ -135,12 +148,18 @@ cmd-wf_reavers-status-regroup-due = No stronghold stands. The Reavers regroup in
     }. Run wf_reavers found to place one now.
 cmd-wf_reavers-status-founding-overdue = No stronghold stands. A founding is due now and retries every minute until a cell qualifies. Run wf_reavers found to place one now.
 cmd-wf_reavers-status-founding-untimed = No stronghold stands and the founding clock has not started. Run wf_reavers found to place one now.
-cmd-wf_reavers-status-stronghold = Stronghold {$uid} at {$callsign}: {$prototype}, {$hits} hits, {$patrols} patrols.
+cmd-wf_reavers-status-stronghold = Stronghold {$uid} at {$callsign}: level {$level}, {$prototype}, {$hits} hits, {$patrols} patrols, {$reinforcements} reinforcements{$state}.
+cmd-wf_reavers-status-stronghold-inbound = , one inbound
+cmd-wf_reavers-status-stronghold-scattered = , broken apart
+cmd-wf_reavers-status-reinforcement = Reinforcement {$uid} for {$callsign}, level {$level}: {$phase}, {$range} km from the hub, out {$seconds} s.
 cmd-wf_reavers-status-intercept = Patrol {$patrol} intercepting {$ship} ({$uid}) for {$seconds} s.
 cmd-wf_reavers-status-mark = {$ship} ({$uid}) is marked for {$seconds} s more.
 cmd-wf_reavers-status-convoy-out = A convoy is under way; the next founding waits until it arrives or is stopped.
 cmd-wf_reavers-status-convoy = Convoy {$uid} bound for {$callsign}: {$range} km to go, under way {$seconds} s.
 cmd-wf_reavers-founded = Founded stronghold {$uid} at {$callsign}.
+cmd-wf_reavers-bad-stronghold = Not a standing stronghold: {$arg}
+cmd-wf_reavers-reinforce = Reinforcement {$uid} sent to the stronghold at {$callsign}.
+cmd-wf_reavers-reinforce-failed = No reinforcement could be sent: the stronghold is at its tier's level cap, one is already on its way, or there is no clear space for it.
 cmd-wf_reavers-found-failed = No stronghold could be founded there.
 cmd-wf_reavers-convoy = Convoy {$uid} sent to found a stronghold at {$callsign}.
 cmd-wf_reavers-convoy-failed = No convoy could be sent: one is already under way, or no held cell qualifies, or no stronghold has clear space beside it.
@@ -162,6 +181,8 @@ cmd-wf_reavers-cleared = Cleared the campaign: {$count} encounters ended.
 
 # Encounter names
 wf-reaver-name-stronghold = Reaver stronghold {$designation}
+wf-reaver-name-level = {$name} (level {$level})
+wf-reaver-name-reinforcement = Reaver reinforcements {$designation}
 wf-reaver-name-patrol = Reaver patrol {$designation}
 wf-reaver-name-raid = Reaver raiders {$designation}
 wf-reaver-name-boarders = Reaver boarders {$designation}

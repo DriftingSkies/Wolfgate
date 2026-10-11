@@ -125,7 +125,8 @@ public sealed partial class WFReaverCampaignSystem
             ("tier", TierName(state.Tier)),
             ("strongholds", strongholds),
             ("cells", cells),
-            ("bounty", ByTier(campaign.StrongholdBounty, state.Tier, 0))));
+            ("bounty", ByTier(campaign.StrongholdBounty, state.Tier, 0)),
+            ("levels", LevelsText())));
         _legend = campaign.Faction;
     }
 

@@ -57,12 +57,12 @@ public sealed partial class WFReaverCampaignSystem
             && TryLaunchConvoy(target, out convoy);
     }
 
-    /// <summary>Sends a stronghold from the standing one nearest a cell to found itself there: contests the cell and announces it.</summary>
+    /// <summary>Sends a hub from the standing stronghold nearest a cell to found itself there: contests the cell and announces it.</summary>
     public bool TryLaunchConvoy(WFSectorCell target, out EntityUid convoy)
     {
         convoy = default;
         if (Campaign is not { } campaign || State(true) is not { } state
-            || !_prototypes.TryIndex(PickStronghold(campaign, state.Tier), out var prototype) || prototype.Ships.Count == 0)
+            || !_prototypes.TryIndex(campaign.Stronghold, out var prototype) || prototype.Ships.Count == 0)
             return false;
 
         var map = _territory.SectorMap;
@@ -77,8 +77,9 @@ public sealed partial class WFReaverCampaignSystem
 
             var encounter = Comp<WFEncounterComponent>(uid);
             var lead = prototype.Ships[0].Key;
+            ShieldHub(campaign, uid, lead);
             var goal = ClearRoutePoint(map, centre) ?? centre;
-            if (!encounter.Ships.TryGetValue(lead, out var leadShip) || !_encounters.SetOrders(uid, lead, TravelOrders(goal)))
+            if (!_encounters.SetOrders(uid, lead, TravelOrders(goal)))
             {
                 _encounters.End(uid);
                 return false;
@@ -86,11 +87,6 @@ public sealed partial class WFReaverCampaignSystem
 
             // The leash holds a stronghold to its station; under way it would turn the convoy back.
             encounter.Leash = 0f;
-            var escorted = GetNetEntity(leadShip.Grid);
-            foreach (var key in encounter.Ships.Keys.Where(key => key != lead).ToList())
-            {
-                _encounters.SetOrders(uid, key, new List<WFCrewObjective> { new() { Kind = WFCrewObjectiveKind.Escort, Target = escorted } });
-            }
 
             var comp = AddComp<WFReaverConvoyComponent>(uid);
             comp.Target = target;
@@ -195,8 +191,7 @@ public sealed partial class WFReaverCampaignSystem
 
     /// <summary>
     /// Makes a convoy the stronghold it set out to be: drops the contest, claims the cell and ring, holds the lead
-    /// where it stands with the guards circling it as their prototype has them, and announces the founding. Once
-    /// strongholds have map assets, this is where the station grid is placed.
+    /// where it stands as a level 0 hub, and announces the founding.
     /// </summary>
     public bool CompleteFounding(EntityUid convoy)
     {
@@ -224,27 +219,8 @@ public sealed partial class WFReaverCampaignSystem
 
         // Its station is where it stopped: the leash holds it there from now on.
         encounter.Origin = at;
-        var hasPrototype = _prototypes.TryIndex(encounter.Prototype, out var prototype);
-        encounter.Leash = hasPrototype ? prototype!.Leash : 0f;
-        if (encounter.Ships.TryGetValue(lead, out var leadShip))
-        {
-            _encounters.SetOrders(convoy, lead, new List<WFCrewObjective> { new() { Kind = WFCrewObjectiveKind.Hold } });
-            var circled = GetNetEntity(leadShip.Grid);
-            foreach (var key in encounter.Ships.Keys.Where(key => key != lead).ToList())
-            {
-                // Each guard circles as far out as its own prototype has it; one without a circle keeps escorting.
-                var circle = hasPrototype
-                    ? prototype!.Ships.FirstOrDefault(ship => ship.Key == key)?.Objectives.FirstOrDefault(objective => objective.Kind == WFCrewObjectiveKind.Circle)
-                    : null;
-                if (circle == null)
-                    continue;
-
-                _encounters.SetOrders(convoy, key, new List<WFCrewObjective>
-                {
-                    new() { Kind = WFCrewObjectiveKind.Circle, Target = circled, Range = circle.Range },
-                });
-            }
-        }
+        encounter.Leash = _prototypes.TryIndex(encounter.Prototype, out var prototype) ? prototype.Leash : 0f;
+        _encounters.SetOrders(convoy, lead, new List<WFCrewObjective> { new() { Kind = WFCrewObjectiveKind.Hold } });
 
         Establish(campaign, state, convoy, lead, target, at, false);
         SeedHits(convoy, encounter);

@@ -102,29 +102,35 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public List<WFReaverCreditGrant> Credits = new();
 
-    /// <summary>The stronghold for low tiers or few players.</summary>
+    /// <summary>The stronghold hub: a shielded hull with docking ports and no guards, which reinforcements dock with.</summary>
     [DataField]
-    public ProtoId<WFEncounterPrototype> StrongholdLight = "WFReaverStrongholdLight";
+    public ProtoId<WFEncounterPrototype> Stronghold = "WFReaverStronghold";
 
+    /// <summary>The shield generator the campaign anchors on a hub whose hull has none.</summary>
     [DataField]
-    public ProtoId<WFEncounterPrototype> StrongholdMid = "WFReaverStrongholdMid";
+    public EntProtoId HubShield = "WFReaverHubShieldGenerator";
 
+    /// <summary>How long a stronghold stands, from its founding or its last level, before the next reinforcement sets out.</summary>
     [DataField]
-    public ProtoId<WFEncounterPrototype> StrongholdHeavy = "WFReaverStrongholdHeavy";
+    public TimeSpan ReinforcementInterval = TimeSpan.FromMinutes(12);
 
-    /// <summary>The tier from which the mid stronghold is founded, given <see cref="MidPlayers"/>.</summary>
+    /// <summary>The highest stronghold level reinforcements bring it to, by tier.</summary>
     [DataField]
-    public int MidTier = 3;
+    public List<int> MaxLevelByTier = new() { 0, 1, 2, 2, 3, 4 };
 
+    /// <summary>The reinforcement convoy for each level, from level 1: the prototype that docks to raise a stronghold to that level.</summary>
     [DataField]
-    public int MidPlayers = 12;
+    public List<ProtoId<WFEncounterPrototype>> Reinforcements = new()
+    {
+        "WFReaverReinforcementGunship",
+        "WFReaverReinforcementGunship",
+        "WFReaverReinforcementHeavy",
+        "WFReaverReinforcementHeavy",
+    };
 
-    /// <summary>The tier from which the heavy stronghold is founded, given <see cref="HeavyPlayers"/>.</summary>
+    /// <summary>What each stronghold level adds to its bounty, as a fraction of the base: the bounty is base times one plus this times the level.</summary>
     [DataField]
-    public int HeavyTier = 4;
-
-    [DataField]
-    public int HeavyPlayers = 15;
+    public float LevelBountyScale = 0.5f;
 
     [DataField]
     public ProtoId<WFEncounterPrototype> Patrol = "WFReaverPatrol";
