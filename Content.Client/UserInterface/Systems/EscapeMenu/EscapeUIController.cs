@@ -1,4 +1,5 @@
 ﻿using Content.Client.Gameplay;
+using Content.Client.Lobby; // WOLFGATE(InRoundCreator)
 using Content.Client._WF.Roadmap; // WOLFGATE(Roadmap)
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.Guidebook;
@@ -75,6 +76,14 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         {
             CloseEscapeWindow();
             UIManager.GetUIController<RoadmapUIController>().ToggleRoadmap();
+        };
+        // WOLFGATE END
+
+        // WOLFGATE(InRoundCreator) START: character creator entry in the game menu
+        _escapeWindow.CharacterButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            UIManager.GetUIController<LobbyUIController>().OpenInRoundCharacterSetup();
         };
         // WOLFGATE END
 

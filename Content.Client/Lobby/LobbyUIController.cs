@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Client._Mono.Company; // Mono
 using Content.Client._Mono.MonoCoins;
+using Content.Client.Gameplay; // WOLFGATE(InRoundCreator)
 using Content.Client.Guidebook;
 using Content.Client.Humanoid;
 using Content.Client.Inventory;
@@ -23,6 +24,7 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.State;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
+using Robust.Client.UserInterface.Controls; // WOLFGATE(InRoundCreator)
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -30,7 +32,8 @@ using Robust.Shared.Utility;
 
 namespace Content.Client.Lobby;
 
-public sealed partial class LobbyUIController : UIController, IOnStateEntered<LobbyState>, IOnStateExited<LobbyState>
+// WOLFGATE(InRoundCreator): IOnStateExited<GameplayState> added
+public sealed partial class LobbyUIController : UIController, IOnStateEntered<LobbyState>, IOnStateExited<LobbyState>, IOnStateExited<GameplayState>
 {
     [Dependency] private IClientPreferencesManager _preferencesManager = default!;
     [Dependency] private IConfigurationManager _configurationManager = default!;
@@ -64,6 +67,9 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
     private HumanoidCharacterProfile? EditedProfile => _profileEditor?.Profile;
 
     private int? EditedSlot => _profileEditor?.CharacterSlot;
+
+    // WOLFGATE(InRoundCreator): slot picked in the in-round creator; picking there must not select the character
+    private int? _inRoundSlot;
 
     public override void Initialize()
     {
@@ -199,6 +205,54 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
         _profileEditor = null;
     }
 
+    // WOLFGATE(InRoundCreator) START: the creator opened from the game menu, over the round
+    /// <summary>
+    /// Opens the creator full-screen during a round. Any character can be edited, but the selected one stays
+    /// selected; edits apply on the next spawn.
+    /// </summary>
+    public void OpenInRoundCharacterSetup()
+    {
+        if (_stateManager.CurrentState is not GameplayState || !_preferencesManager.ServerDataLoaded)
+            return;
+
+        var (characterGui, _) = EnsureGui();
+
+        if (characterGui.Parent == null)
+        {
+            _inRoundSlot = null;
+            characterGui.SetInRound();
+            UIManager.StateRoot.AddChild(characterGui);
+            LayoutContainer.SetAnchorPreset(characterGui, LayoutContainer.LayoutPreset.Wide);
+        }
+
+        ReloadCharacterSetup();
+    }
+
+    public void OnStateExited(GameplayState state)
+    {
+        _savePanel?.Close();
+        _profileEditor?.Dispose();
+        _characterSetup?.Dispose();
+
+        _characterSetup = null;
+        _profileEditor = null;
+        _inRoundSlot = null;
+    }
+
+    /// <summary>
+    /// The slot the creator shows: the selected character, or in a round the one picked from the slot list.
+    /// </summary>
+    private int? ShownSlot()
+    {
+        var prefs = _preferencesManager.Preferences;
+
+        if (_inRoundSlot is { } slot && _stateManager.CurrentState is GameplayState && prefs?.Characters.ContainsKey(slot) == true)
+            return slot;
+
+        return prefs?.SelectedCharacterIndex;
+    }
+    // WOLFGATE END
+
     /// <summary>
     /// Reloads every single character setup control.
     /// </summary>
@@ -206,10 +260,18 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
     {
         RefreshLobbyPreview();
         var (characterGui, profileEditor) = EnsureGui();
+        // WOLFGATE(InRoundCreator) START: shows the picked slot, which in a round need not be the selected one
+        // characterGui.ReloadCharacterPickers();
+        // profileEditor.SetProfile(
+        //     (HumanoidCharacterProfile?) _preferencesManager.Preferences?.SelectedCharacter,
+        //     _preferencesManager.Preferences?.SelectedCharacterIndex);
+        var slot = ShownSlot();
+        characterGui.EditedSlot = slot;
         characterGui.ReloadCharacterPickers();
         profileEditor.SetProfile(
-            (HumanoidCharacterProfile?) _preferencesManager.Preferences?.SelectedCharacter,
-            _preferencesManager.Preferences?.SelectedCharacterIndex);
+            slot == null ? null : _preferencesManager.Preferences?.Characters.GetValueOrDefault(slot.Value) as HumanoidCharacterProfile,
+            slot);
+        // WOLFGATE END
     }
 
     /// <summary>
@@ -300,6 +362,13 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
 
         _profileEditor.SetProfile(null, null);
         _profileEditor.Visible = false;
+
+        // WOLFGATE(InRoundCreator): in a round the creator sits on the state root; leaving it there would cover the game
+        if (_stateManager.CurrentState is GameplayState)
+        {
+            _characterSetup?.Orphan();
+            _inRoundSlot = null;
+        }
 
         if (_stateManager.CurrentState is LobbyState lobbyGui)
         {
@@ -402,7 +471,11 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
         {
             void Switch()
             {
-                _preferencesManager.SelectCharacter(args);
+                // WOLFGATE(InRoundCreator): in a round the slot is only shown, the server refuses to select it
+                if (_stateManager.CurrentState is GameplayState)
+                    _inRoundSlot = args;
+                else
+                    _preferencesManager.SelectCharacter(args);
                 ReloadCharacterSetup();
             }
 

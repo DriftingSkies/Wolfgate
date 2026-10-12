@@ -193,7 +193,7 @@ namespace Content.Client.Lobby.UI
 
             ResetButton.OnPressed += args =>
             {
-                SetProfile((HumanoidCharacterProfile?) _preferencesManager.Preferences?.SelectedCharacter, _preferencesManager.Preferences?.SelectedCharacterIndex);
+                ResetToDefault(); // WOLFGATE(InRoundCreator): was SetProfile(SelectedCharacter, SelectedCharacterIndex)
             };
 
             SaveButton.OnPressed += args =>
@@ -1179,7 +1179,7 @@ namespace Content.Client.Lobby.UI
                 selector.Select(Profile?.AntagPreferences.Contains(antag.ID) == true ? 0 : 1);
 
                 var requirements = _entManager.System<SharedRoleSystem>().GetAntagRequirement(antag);
-                if (!_requirements.CheckRoleRequirements(requirements, (HumanoidCharacterProfile?)_preferencesManager.Preferences?.SelectedCharacter, out var reason))
+                if (!_requirements.CheckRoleRequirements(requirements, SavedProfile(), out var reason)) // WOLFGATE(InRoundCreator): was SelectedCharacter
                 {
                     selector.LockRequirements(reason);
                     Profile = Profile?.WithAntagPreference(antag.ID, false);
@@ -1222,14 +1222,14 @@ namespace Content.Client.Lobby.UI
             }
 
             // If we have no selected character to compare against, we're dirty
-            if (_preferencesManager.Preferences?.SelectedCharacter == null)
+            // WOLFGATE(InRoundCreator) START: compares against the edited slot, was Preferences.SelectedCharacter
+            var selectedCharacter = SavedProfile();
+            if (selectedCharacter == null)
             {
                 IsDirty = true;
                 return;
             }
-
-            // Get the selected character for comparison
-            var selectedCharacter = (HumanoidCharacterProfile)_preferencesManager.Preferences.SelectedCharacter;
+            // WOLFGATE END
 
             // Check explicitly if company changed
             if (selectedCharacter.Company != Profile.Company)
@@ -1281,10 +1281,24 @@ namespace Content.Client.Lobby.UI
         /// </summary>
         public void ResetToDefault()
         {
-            SetProfile(
-                (HumanoidCharacterProfile?) _preferencesManager.Preferences?.SelectedCharacter,
-                _preferencesManager.Preferences?.SelectedCharacterIndex);
+            // WOLFGATE(InRoundCreator): was SetProfile(SelectedCharacter, SelectedCharacterIndex)
+            SetProfile(SavedProfile(), CharacterSlot ?? _preferencesManager.Preferences?.SelectedCharacterIndex);
         }
+
+        // WOLFGATE(InRoundCreator) START: the saved copy of the slot being edited
+        /// <summary>
+        /// In the lobby this is the selected character. In a round another slot can be open without being selected.
+        /// </summary>
+        private HumanoidCharacterProfile? SavedProfile()
+        {
+            var prefs = _preferencesManager.Preferences;
+
+            if (prefs != null && CharacterSlot is { } slot && prefs.Characters.TryGetValue(slot, out var saved))
+                return saved as HumanoidCharacterProfile;
+
+            return prefs?.SelectedCharacter as HumanoidCharacterProfile;
+        }
+        // WOLFGATE END
 
         /// <summary>
         /// Sets the editor to the specified profile with the specified slot.
@@ -1575,7 +1589,7 @@ namespace Content.Client.Lobby.UI
                     icon.Texture = jobIcon.Icon.Frame0();
                     selector.Setup(items, job.LocalizedName, 200, job.LocalizedDescription, icon, job.Guides);
 
-                    if (!_requirements.IsAllowed(job, (HumanoidCharacterProfile?)_preferencesManager.Preferences?.SelectedCharacter, out var reason))
+                    if (!_requirements.IsAllowed(job, SavedProfile(), out var reason)) // WOLFGATE(InRoundCreator): was SelectedCharacter
                     {
                         selector.LockRequirements(reason);
                     }
