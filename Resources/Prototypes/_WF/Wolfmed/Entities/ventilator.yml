@@ -1,0 +1,77 @@
+# The ventilator: a wheeled stand with a gas tank and a mask. Fit a tank, put the mask on a patient (a verb or drag the
+# stand onto them) and it breathes for them while the tank lasts. Sprites are NovaSector's anesthetic tank stand.
+- type: entity
+  parent: [BaseStructureDynamic, StructureWheeled]
+  id: WFWolfmedVentilator
+  name: ventilator
+  description: A wheeled stand that breathes for a patient from a gas tank. It keeps the brain fed while the lungs can't. It does nothing for a stopped heart.
+  components:
+  - type: Sprite
+    sprite: _WF/Wolfmed/Medical/ventilator.rsi
+    noRot: true
+    layers:
+    - state: ventilator
+    - state: tank
+      map: [ "enum.WolfmedVentilatorLayers.Tank" ]
+      visible: false
+    - state: mask_on
+      map: [ "enum.WolfmedVentilatorLayers.Mask" ]
+  - type: Icon
+    sprite: _WF/Wolfmed/Medical/ventilator.rsi
+    state: icon
+  - type: Appearance
+  # The states keep Nova's names: mask_on is the mask on the stand, mask_off is the mask off it and on a patient.
+  - type: GenericVisualizer
+    visuals:
+      enum.WolfmedVentilatorVisuals.Tank:
+        enum.WolfmedVentilatorLayers.Tank:
+          True: { visible: true }
+          False: { visible: false }
+      enum.WolfmedVentilatorVisuals.Attached:
+        enum.WolfmedVentilatorLayers.Mask:
+          True: { state: mask_off }
+          False: { state: mask_on }
+  - type: InteractionOutline
+  # A thin stand, like the IV drip: nobody bumps into it.
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 60
+        mask:
+        - TableMask
+  - type: WolfmedVentilator
+  - type: ItemSlots
+    slots:
+      wolfmed_ventilator_tank:
+        name: wolfmed-ventilator-slot-tank
+        whitelist:
+          components:
+          - GasTank
+  - type: ContainerContainer
+    containers:
+      wolfmed_ventilator_tank: !type:ContainerSlot
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: StaticPrice
+    price: 100

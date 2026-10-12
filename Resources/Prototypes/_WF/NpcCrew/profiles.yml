@@ -188,7 +188,8 @@
     head: ClothingHeadHatUtilityTsfmc
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetTsf
+    id: TsfEngiIDCard
 
 - type: startingGear
   id: WFCrewTsfOfficer
@@ -198,7 +199,8 @@
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
     pocket2: Magazine45_ACPPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetTsf
+    id: SergeantIDCard
 
 - type: startingGear
   id: WFCrewTsfGuard
@@ -212,10 +214,13 @@
     belt: WeaponPistolMk58
     pocket1: Magazine68x52mmCaseless
     pocket2: Magazine45_ACPPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetTsf
+    id: DeputyIDCard
 
 - type: wfCrewProfile
   id: WFCrewProfileTsf
+  firstNames: WFNamesTsfFirst
+  lastNames: WFNamesTsfLast
   bodies:
   - WFMobCrewBodyHuman
   - WFMobCrewBodyHuman
@@ -245,7 +250,8 @@
     head: ClothingHeadHatNfsdBeretBrown
     belt: WeaponPistolViper
     pocket1: Magazine9x19mmPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetPdv
+    id: PDVRakhshanIDCard
 
 - type: startingGear
   id: WFCrewPdvOfficer
@@ -256,7 +262,8 @@
     belt: WeaponPistolViper
     pocket1: Magazine9x19mmPistolFMJ
     pocket2: Magazine9x19mmPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetPdv
+    id: PDVDenasvarIDCard
 
 - type: startingGear
   id: WFCrewPdvGuard
@@ -270,10 +277,13 @@
     belt: WeaponPistolViper
     pocket1: Magazine556x45mmFMJ
     pocket2: Magazine9x19mmPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetPdv
+    id: PDVAsvaranIDCard
 
 - type: wfCrewProfile
   id: WFCrewProfilePdv
+  firstNames: WFNamesPdvFirst
+  lastNames: WFNamesPdvLast
   bodies:
   - WFMobCrewBodyHuman
   - WFMobCrewBodyHuman
@@ -293,55 +303,67 @@
     WFCrewGunner: [ WFCrewPdvOfficer ]
     WFCrewMarine: [ WFCrewPdvGuard ]
 
-# Pirates: armed to a man, in whatever they took off the last crew.
+# Reavers: pirate slops and bandanas, a tricorn on the officers, and whatever armour they took off the last crew.
 - type: startingGear
   id: WFCrewPirateHand
   equipment:
-    jumpsuit: ClothingUniformJumpsuitMercenary
-    shoes: ClothingShoesBootsJack
+    jumpsuit: ClothingUniformJumpsuitPirateSlops
+    shoes: ClothingShoesBootsPirate
     head: ClothingHeadBandRed
     gloves: ClothingHandsGlovesFingerless
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
     pocket2: Magazine45_ACPPistolFMJ
     ears: WFCrewHeadset
+    id: PirateIDCard
 
 - type: startingGear
   id: WFCrewPirateBruiser
   equipment:
-    jumpsuit: ClothingUniformJumpsuitColorBrown
+    jumpsuit: ClothingUniformJumpsuitPirate
     outerClothing: ClothingOuterArmorBasic
-    shoes: ClothingShoesBootsCombat
+    head: ClothingHeadHatPirates
+    eyes: ClothingEyesEyepatch
+    shoes: ClothingShoesBootsPirate
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
     pocket2: Crowbar
     ears: WFCrewHeadset
+    id: PirateIDCard
 
 - type: startingGear
   id: WFCrewPirateRifle
   equipment:
-    jumpsuit: ClothingUniformJumpsuitMercenary
+    jumpsuit: ClothingUniformJumpsuitPirate
     outerClothing: ClothingOuterArmorBulletproof
-    shoes: ClothingShoesBootsCombat
+    head: ClothingHeadBandBlack
+    shoes: ClothingShoesBootsPirate
     gloves: ClothingHandsGlovesColorBlack
     back: WeaponRifleLecter
     pocket1: Magazine68x52mmCaseless
     pocket2: Magazine68x52mmCaseless
     ears: WFCrewHeadset
+    id: PirateIDCard
 
 - type: startingGear
   id: WFCrewPirateOfficer
   equipment:
-    jumpsuit: ClothingUniformJumpsuitMercenary
-    outerClothing: ClothingOuterCoatJensen
-    shoes: ClothingShoesBootsCombat
+    jumpsuit: ClothingUniformJumpsuitPirate
+    outerClothing: ClothingOuterCoatPirateCaptain
+    head: ClothingHeadHatPirateTricord
+    shoes: ClothingShoesBootsPirate
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
     pocket2: Magazine45_ACPPistolFMJ
     ears: WFCrewHeadset
+    id: PirateIDCard
 
 - type: wfCrewProfile
   id: WFCrewProfilePirate
+  firstNames: WFNamesPirateFirst
+  lastNames: WFNamesPirateLast
+  components:
+  - type: PirateAccent
   bodies:
   - WFMobCrewBodyHuman
   - WFMobCrewBodyHuman
@@ -372,7 +394,8 @@
     head: ClothingHeadHelmetCombatUSSP
     belt: WeaponPistolMk32
     pocket1: Magazine9x19mmPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetUssp
+    id: USSPRiflemanIDCard
 
 - type: startingGear
   id: WFCrewUsspOfficer
@@ -384,7 +407,8 @@
     belt: WeaponPistolMk32
     pocket1: Magazine9x19mmPistolFMJ
     pocket2: Magazine9x19mmPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetUssp
+    id: USSPSergeantIDCard
 
 - type: startingGear
   id: WFCrewUsspGuard
@@ -398,10 +422,15 @@
     belt: WeaponPistolMk32
     pocket1: Magazine762x39mmFMJ
     pocket2: Magazine9x19mmPistolFMJ
-    ears: WFCrewHeadset
+    ears: WFCrewHeadsetUssp
+    id: USSPRiflemanIDCard
 
 - type: wfCrewProfile
   id: WFCrewProfileUssp
+  firstNames: WFNamesUsspFirst
+  lastNames: WFNamesUsspLast
+  components:
+  - type: RussianAccent
   bodies:
   - WFMobCrewBodyHuman
   - WFMobCrewBodyHuman
@@ -429,6 +458,7 @@
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
     ears: WFCrewHeadset
+    id: MercenaryIDCard
 
 - type: startingGear
   id: WFCrewMercOfficer
@@ -441,6 +471,7 @@
     belt: WeaponPistolMk58
     pocket1: Magazine45_ACPPistolFMJ
     ears: WFCrewHeadset
+    id: MercenaryIDCard
 
 - type: startingGear
   id: WFCrewMercGuard
@@ -455,6 +486,7 @@
     pocket1: Magazine68x52mmCaseless
     pocket2: Magazine45_ACPPistolFMJ
     ears: WFCrewHeadset
+    id: MercenaryIDCard
 
 - type: wfCrewProfile
   id: WFCrewProfileMercenary

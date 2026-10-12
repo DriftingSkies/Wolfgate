@@ -282,11 +282,13 @@ public sealed partial class MarkingSet
 
                 if (marking.Sprites.Count != list[i].MarkingColors.Count)
                 {
-                    // WOLFGATE(Genitals) START: keep saved colours when a marking gains colour-linked sprites
+                    // WOLFGATE(Genitals) START: keep saved colours when a marking gains colour-linked sprites or loses them again
                     // list[i] = new Marking(marking.ID, marking.Sprites.Count);
                     list[i] = TryPadLinkedColors(marking, list[i], out var padded)
                         ? padded
-                        : new Marking(marking.ID, marking.Sprites.Count);
+                        : TryTrimColors(marking, list[i], out var trimmed)
+                            ? trimmed
+                            : new Marking(marking.ID, marking.Sprites.Count);
                     // WOLFGATE END
                 }
             }
@@ -343,6 +345,18 @@ public sealed partial class MarkingSet
         }
 
         padded = new Marking(proto.ID, colors) { Visible = saved.Visible, Forced = saved.Forced };
+        return true;
+    }
+
+    /// <summary>Keeps the leading colours of a list saved with more sprites than the marking has now; false if it is not longer.</summary>
+    private static bool TryTrimColors(MarkingPrototype proto, Marking saved, [NotNullWhen(true)] out Marking? trimmed)
+    {
+        trimmed = null;
+        var count = proto.Sprites.Count;
+        if (count == 0 || saved.MarkingColors.Count <= count)
+            return false;
+
+        trimmed = new Marking(proto.ID, saved.MarkingColors.Take(count).ToList()) { Visible = saved.Visible, Forced = saved.Forced };
         return true;
     }
     // WOLFGATE END

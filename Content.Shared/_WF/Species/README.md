@@ -64,9 +64,11 @@ clone.
 - [`Content.IntegrationTests/Tests/_WF/Species/AvaliChemistryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/AvaliChemistryTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/AvaliClothingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/AvaliClothingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/EyeMarkingsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/EyeMarkingsTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Species/HairColourTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/HairColourTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsBodyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsBodyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/ShadekinNightVisionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/ShadekinNightVisionTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Species/SpeciesLoadoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/SpeciesLoadoutTest.cs)
 
 ### Prototypes
 
@@ -285,6 +287,9 @@ clone.
   - ported from HardLight
   - ported from HardLight, unrestricted skin colour
 - [`Content.Shared/Preferences/HumanoidCharacterProfile.cs`](../../Preferences/HumanoidCharacterProfile.cs): the option widens the hair check
+- [`Content.Shared/Preferences/Loadouts/RoleLoadout.cs`](../../Preferences/Loadouts/RoleLoadout.cs)
+  - a loadout is held once, and a saved profile may carry the repeats the defaults used to add
+  - a default already held is not added again
 - [`Content.Shared/Teleportation/Components/PortalComponent.cs`](../../Teleportation/Components/PortalComponent.cs): ported from HardLight/Starlight - lets systems veto a portal teleport
 - [`Content.Shared/Teleportation/Systems/SharedPortalSystem.cs`](../../Teleportation/Systems/SharedPortalSystem.cs): lets a portal refuse a subject (the Shadekin dark portal)
 - [`Resources/Audio/_DEN/`](../../../Resources/Audio/_DEN/): The Den species voice sounds, ported in
@@ -402,6 +407,7 @@ clone.
 - [`Resources/Prototypes/_DV/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_EE/Entities/Mobs/Customization/bishop.yml`](../../../Resources/Prototypes/_EE/Entities/Mobs/Customization/bishop.yml): added Canine
 - [`Resources/Prototypes/_EE/Entities/Mobs/Customization/hephiastos.yml`](../../../Resources/Prototypes/_EE/Entities/Mobs/Customization/hephiastos.yml): added Canine
+- [`Resources/Prototypes/_EinsteinEngines/Species/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Species/ipc.yml): was MobHumanoidMarkingMatchSkin; hair colour is the player's pick
 - [`Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_FarHorizons/Body/Organs/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Body/Organs/protogen.yml)
   - ported from HardLight - Protogen subspecies.
@@ -426,6 +432,7 @@ clone.
   - the 14 Protogen subspecies, ported from HardLight.
   - groups it under Protogen in the creator
   - blank, LED face markings replace eyes
+  - was MobSlimeMarkingFollowSkin; hair colour is the player's pick
 - [`Resources/Prototypes/_FarHorizons/Voices/protogen_speech_emotes_sounds.yml`](../../../Resources/Prototypes/_FarHorizons/Voices/protogen_speech_emotes_sounds.yml)
   - _Mono protogen mobs use this emote
   - Whine collection does not exist here
@@ -642,6 +649,8 @@ clone.
   - was 0, reptilians can wear facial hair
 - [`Resources/Prototypes/Species/slime.yml`](../../../Resources/Prototypes/Species/slime.yml)
   - Anycolor skin support for slimes
+  - was MobSlimeMarkingFollowSkin; hair colour is the player's pick
+  - was MobSlimeMarkingFollowSkin; facial hair colour is the player's pick
   - ported from HardLight, slimes take the head and tail marking slots of other species
 - [`Resources/Prototypes/Species/species_weights.yml`](../../../Resources/Prototypes/Species/species_weights.yml)
   - ported from HardLight/Starlight

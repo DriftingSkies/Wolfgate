@@ -25,7 +25,10 @@ nf-tips-dataset-24 = When salvaging, you can use your proto-kinetic accelerator 
 nf-tips-dataset-25 = Many chemicals have unique reactions - Make sure to check the effects and sources of each one! Knowing your medicine can save your life.
 nf-tips-dataset-26 = You can mutate and crossbreed plants together to create more potent produce that also has higher yields."
 nf-tips-dataset-27 = When playing in a faction role, remember to communicate with your other members - Coordination saves lives and wins wars, the radio is your best friend!"
-nf-tips-dataset-28 = As a TSFMC officer, your strength lies in your vessel's armament. Beware of boarding actions from enemies, as while you are adequately equipped, you're better off glassing whatever hostile approaches with artillery fire!"
+# WOLFGATE(ColdWar) START: was "glassing whatever hostile approaches"
+# nf-tips-dataset-28 = As a TSFMC officer, your strength lies in your vessel's armament. Beware of boarding actions from enemies, as while you are adequately equipped, you're better off glassing whatever hostile approaches with artillery fire!"
+nf-tips-dataset-28 = As a TSFMC officer, your strength lies in your vessel's armament. Beware of boarding actions from enemies, as while you are adequately equipped, you're better off keeping hostiles at range with artillery fire!"
+# WOLFGATE END
 nf-tips-dataset-29 = As a Phaethon Imperial soldier, stealth, cunning, and incredible ground combat capability are your only friends. Make sure to play to your strengths!"
 nf-tips-dataset-30 = In a pinch, you can repair cracked windows by using a lit welding tool on them while not in combat mode."
 nf-tips-dataset-31 = Plasma glass and Uranium glass windows can be used to reinforce an area and prevent radiation... Somehow."
@@ -119,3 +122,7 @@ nf-tips-dataset-117 = If you get stranded in space, make sure to notify others u
 nf-tips-dataset-118 = Salvage isn't just about whacking rocks. You can try to find large derelict stations, or try to bury deep into an unusual asteroid - but beware of the dangers that await you inside.
 nf-tips-dataset-119 = Trust is something that takes ages to build, and seconds to lose. Don't give players and admins a reason to hate you!
 nf-tips-dataset-120 = There are multiple ways to earn money. Why not get a job at Caelestinus Central, join TSFMC, go salvaging, do science, or do something totally illegal? Other players can teach you each one of them!
+# WOLFGATE(ColdWar): cold war tips
+nf-tips-dataset-121 = Your PDA shows the war level. While it's COLD, TSF and PDV are under a ceasefire and can't just shoot each other.
+nf-tips-dataset-122 = As the Colonel or Grand Vizier, your war declarator only starts a war if the other side uses theirs too. Use it again to take it back.
+nf-tips-dataset-123 = Faction patrols will warn you before shooting during the ceasefire. Back off and they'll leave you alone.

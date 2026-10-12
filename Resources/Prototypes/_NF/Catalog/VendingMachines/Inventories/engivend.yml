@@ -12,6 +12,7 @@
     InflatableWallStack1: 4294967295 # Infinite
     InflatableDoorStack1: 4294967295 # Infinite
     GeigerCounter: 4294967295 # Infinite
+    ClothingOuterSuitRad: 4294967295 # WOLFGATE: radiation suits buyable from the EngiVend
     PowerCellMedium: 4294967295 # Infinite
 #    NetworkConfigurator: 5
     ShipRepairDevice: 4294967295 # Mono

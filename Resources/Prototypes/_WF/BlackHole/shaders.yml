@@ -1,0 +1,8 @@
+- type: shader
+  id: WFBlackHole
+  kind: source
+  path: "/Textures/_WF/BlackHole/Shaders/black_hole.swsl"
+  params:
+    diskTilt: 0.22
+    rotationSpeed: 0.12
+    lensStrength: 0.85

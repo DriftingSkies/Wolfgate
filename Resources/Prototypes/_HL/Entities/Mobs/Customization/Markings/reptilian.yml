@@ -21,80 +21,45 @@
   - sprite: _HL/Mobs/Customization/Reptilian/chest_female_alternate.rsi
     state: nipples
 
+# WOLFGATE(Species): ported from HardLight
 - type: marking
   id: ReptilianTailNaga
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Reptilian, Human, ProtoReptile, IPC, Oni]
-  layering: # WOLFGATE(Genitals): the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
-    naga_primary_BEHIND: TailBehind
-    naga_secondary_BEHIND: TailBehind
-  colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
-    naga_primary_BEHIND: naga_primary_FRONT
-    naga_secondary_BEHIND: naga_secondary_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_primary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_secondary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_primary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_secondary_BEHIND
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_primary
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_secondary
 
+# WOLFGATE(Species): ported from HardLight
 - type: marking
   id: ReptilianTailNagaStriped
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Reptilian, Human, ProtoReptile, IPC, Oni]
-  layering: # WOLFGATE(Genitals): the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
-    naga_striped_primary_BEHIND: TailBehind
-    naga_striped_secondary_BEHIND: TailBehind
-    naga_striped_tertiary_BEHIND: TailBehind
-  colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
-    naga_striped_primary_BEHIND: naga_striped_primary_FRONT
-    naga_striped_secondary_BEHIND: naga_striped_secondary_FRONT
-    naga_striped_tertiary_BEHIND: naga_striped_tertiary_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_striped_primary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_striped_secondary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_striped_tertiary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_striped_primary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_striped_secondary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_striped_tertiary_BEHIND
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_striped_primary
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_striped_secondary
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_striped_tertiary
 
+# WOLFGATE(Species): ported from HardLight
 - type: marking
   id: ReptilianTailNagaRattlesnake
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Reptilian, Human, ProtoReptile, IPC, Oni]
-  layering: # WOLFGATE(Genitals): the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
-    naga_rattlesnake_primary_BEHIND: TailBehind
-    naga_rattlesnake_secondary_BEHIND: TailBehind
-    naga_rattlesnake_tertiary_BEHIND: TailBehind
-  colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
-    naga_rattlesnake_primary_BEHIND: naga_rattlesnake_primary_FRONT
-    naga_rattlesnake_secondary_BEHIND: naga_rattlesnake_secondary_FRONT
-    naga_rattlesnake_tertiary_BEHIND: naga_rattlesnake_tertiary_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_rattlesnake_primary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_rattlesnake_secondary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): split art, anatomy zone only
-      state: naga_rattlesnake_tertiary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_rattlesnake_primary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_rattlesnake_secondary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
-      state: naga_rattlesnake_tertiary_BEHIND
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_rattlesnake_primary
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_rattlesnake_secondary
+    - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
+      state: naga_rattlesnake_tertiary
 
 # Xeno Spines
 

@@ -6,11 +6,29 @@
   name: wf-roadmap-column-current
   order: 0
   items:
+  - name: wf-roadmap-item-wolfmed
+    description: wf-roadmap-item-wolfmed-desc
+    state: Complete
+  - name: wf-roadmap-item-planets
+    description: wf-roadmap-item-planets-desc
+    state: Complete
+  - name: wf-roadmap-item-encounters
+    description: wf-roadmap-item-encounters-desc
+    state: Complete
+  - name: wf-roadmap-item-ship-shields
+    description: wf-roadmap-item-ship-shields-desc
+    state: Complete
   - name: wf-roadmap-item-species
     description: wf-roadmap-item-species-desc
     state: Complete
   - name: wf-roadmap-item-anatomy
     description: wf-roadmap-item-anatomy-desc
+    state: Complete
+  - name: wf-roadmap-item-custom-markings
+    description: wf-roadmap-item-custom-markings-desc
+    state: Complete
+  - name: wf-roadmap-item-appearance
+    description: wf-roadmap-item-appearance-desc
     state: Complete
   - name: wf-roadmap-item-ship-pa
     description: wf-roadmap-item-ship-pa-desc
@@ -36,6 +54,9 @@
   - name: wf-roadmap-item-ship-consoles
     description: wf-roadmap-item-ship-consoles-desc
     state: Complete
+  - name: wf-roadmap-item-pilot-view
+    description: wf-roadmap-item-pilot-view-desc
+    state: Complete
   - name: wf-roadmap-item-deposit-boxes
     description: wf-roadmap-item-deposit-boxes-desc
     state: Complete
@@ -51,19 +72,34 @@
   - name: wf-roadmap-item-heat-haze
     description: wf-roadmap-item-heat-haze-desc
     state: Complete
+  - name: wf-roadmap-item-blood-trails
+    description: wf-roadmap-item-blood-trails-desc
+    state: Complete
   - name: wf-roadmap-item-job-titles
     description: wf-roadmap-item-job-titles-desc
     state: Complete
   - name: wf-roadmap-item-emote-voices
     description: wf-roadmap-item-emote-voices-desc
     state: Complete
+  - name: wf-roadmap-item-subtle
+    description: wf-roadmap-item-subtle-desc
+    state: Complete
   - name: wf-roadmap-item-headshots
     description: wf-roadmap-item-headshots-desc
     state: Complete
   - name: wf-roadmap-item-avali
     state: Complete
+  - name: wf-roadmap-item-avali-feathers
+    description: wf-roadmap-item-avali-feathers-desc
+    state: Complete
   - name: wf-roadmap-item-fire-sprites
     description: wf-roadmap-item-fire-sprites-desc
+    state: Complete
+  - name: wf-roadmap-item-resprites
+    description: wf-roadmap-item-resprites-desc
+    state: Complete
+  - name: wf-roadmap-item-cc-medbay
+    description: wf-roadmap-item-cc-medbay-desc
     state: Complete
 
 - type: roadmapColumn
@@ -71,11 +107,8 @@
   name: wf-roadmap-column-upcoming
   order: 1
   items:
-  - name: wf-roadmap-item-wolfmed
-    description: wf-roadmap-item-wolfmed-desc
-    state: InProgress
-  - name: wf-roadmap-item-planets
-    description: wf-roadmap-item-planets-desc
+  - name: wf-roadmap-item-encounters-fleets
+    description: wf-roadmap-item-encounters-fleets-desc
     state: InProgress
   - name: wf-roadmap-item-planet-structures
     description: wf-roadmap-item-planet-structures-desc
@@ -104,18 +137,12 @@
   - name: wf-roadmap-item-outposts-more
     description: wf-roadmap-item-outposts-more-desc
     state: Planned
-  - name: wf-roadmap-item-encounters-freighters
-    description: wf-roadmap-item-encounters-freighters-desc
+  - name: wf-roadmap-item-encounters-scanner
+    description: wf-roadmap-item-encounters-scanner-desc
     state: Planned
-  - name: wf-roadmap-item-encounters-tiers
-    description: wf-roadmap-item-encounters-tiers-desc
+  - name: wf-roadmap-item-encounters-freight
+    description: wf-roadmap-item-encounters-freight-desc
     state: Planned
-  - name: wf-roadmap-item-encounters-pirates
-    description: wf-roadmap-item-encounters-pirates-desc
-    state: Planned
-  - name: wf-roadmap-item-encounters-distress
-    description: wf-roadmap-item-encounters-distress-desc
-    state: Planned
-  - name: wf-roadmap-item-encounters-storyteller
-    description: wf-roadmap-item-encounters-storyteller-desc
+  - name: wf-roadmap-item-encounters-follow-ups
+    description: wf-roadmap-item-encounters-follow-ups-desc
     state: Planned

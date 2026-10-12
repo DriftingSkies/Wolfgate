@@ -825,10 +825,16 @@ public sealed class WolfmedCVars
 
     /// <summary>
     /// What a hit on a wound host in Avali stasis keeps before it becomes a wound. The stock stasis healed back half
-    /// of the flat total after the fact, which a wound host does not read.
+    /// of the flat total after the fact, which a wound host does not read. 1 is the whole hit.
     /// </summary>
     public static readonly CVarDef<float> StasisDamageFactor =
-        CVarDef.Create("wolfmed.stasis_damage_factor", 0.5f, CVar.SERVERONLY);
+        CVarDef.Create("wolfmed.stasis_damage_factor", 1f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Seconds a wound host can hold Avali stasis before it ends by itself and the cooldown starts. 0 is no limit.
+    /// </summary>
+    public static readonly CVarDef<float> StasisMaxSeconds =
+        CVarDef.Create("wolfmed.stasis_max_seconds", 60f, CVar.SERVERONLY);
 
     /// <summary>
     /// Share of a wound host's blood each point of spawn Bloodloss takes (a corpse's preset damage, a medical

@@ -436,6 +436,9 @@ public partial class NavMapControl : MapGridControl
 
             // Calculate font size for current zoom level
             var fontSize = (int)Math.Round(1 / WorldRange * DefaultDisplayedRange * UIScale * _targetFontsize, 0);
+            // WOLFGATE(Cockpit): department labels stay compact instead of growing with map zoom.
+            if (WfCockpitControls)
+                fontSize = Math.Max(1, (int)Math.Round(9f * UIScale));
             var font = new VectorFont(_cache.GetResource<FontResource>("/Fonts/NotoSans/NotoSans-Bold.ttf"), fontSize);
 
             foreach (var beacon in _navMap.Beacons.Values)
@@ -452,6 +455,7 @@ public partial class NavMapControl : MapGridControl
 
     protected override void FrameUpdate(FrameEventArgs args)
     {
+        base.FrameUpdate(args); // WOLFGATE(Cockpit): update shared right-mouse map panning.
         // Update the timer
         _updateTimer += args.DeltaSeconds;
 

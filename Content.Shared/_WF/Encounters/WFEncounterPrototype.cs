@@ -88,6 +88,10 @@ public sealed partial class WFEncounterPrototype : IPrototype
     [DataField]
     public WFEncounterCategory Category = WFEncounterCategory.Traffic;
 
+    /// <summary>The glyph the radar draws for it off the scope; left as Category, the category's own.</summary>
+    [DataField]
+    public WFEncounterIcon Icon = WFEncounterIcon.Category;
+
     /// <summary>How much of the storyteller's budget it takes while it runs.</summary>
     [DataField]
     public int Cost = 1;
@@ -113,6 +117,10 @@ public sealed partial class WFEncounterPrototype : IPrototype
 
     [DataField]
     public int MinPlayers;
+
+    /// <summary>Only scheduled once war has been declared: a clash between the navies has no place under the ceasefire.</summary>
+    [DataField]
+    public bool RequiresWar;
 
     /// <summary>Seconds before the scheduler may pick the same encounter again.</summary>
     [DataField]
@@ -218,6 +226,10 @@ public sealed partial class WFEncounterShip
     /// <summary>Position relative to the encounter's origin.</summary>
     [DataField]
     public Vector2 Offset;
+
+    /// <summary>The ship's own radar glyph, where its side is not what the encounter is about; Category for the encounter's.</summary>
+    [DataField]
+    public WFEncounterIcon Icon = WFEncounterIcon.Category;
 
     /// <summary>Ships of the same side are one battlegroup. The encounter is decided when one side is left.</summary>
     [DataField]
@@ -446,6 +458,20 @@ public enum WFEncounterCategory : byte
     Patrol,
     Threat,
     Distress,
+}
+
+/// <summary>The glyph a radar draws for an encounter at the rim of the scope. Category draws the category's own.</summary>
+public enum WFEncounterIcon : byte
+{
+    Category,
+    Skull,
+    Shield,
+    Crate,
+    Cross,
+    Coins,
+    Flag,
+    Swords,
+    Ghost,
 }
 
 public enum WFEncounterPlacement : byte

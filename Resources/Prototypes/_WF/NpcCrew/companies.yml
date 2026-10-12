@@ -1,0 +1,9 @@
+# The company the encounter pirates fly under. Nobody can pick it at character setup; it is the flag on their ships and
+# cards, so patrols know them for what they are and crews treat them as nobody's friends.
+- type: company
+  id: WFAshfallReavers
+  name: Ashfall Reavers
+  description: wf-company-ashfall-reavers-description
+  color: "#c2461f"
+  image: /Textures/_NF/Interface/Pirate/piratelogo.png
+  disabled: true

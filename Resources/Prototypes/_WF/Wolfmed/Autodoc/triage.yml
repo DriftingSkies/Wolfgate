@@ -38,6 +38,10 @@
   - surgeries:
     - WFSurgeryCloseEvisceration
 
+  # 5a. Dead tissue in the torso or head: it feeds the sepsis that is damaging the organs below.
+  - surgeries:
+    - WFSurgeryRemoveNecroticFlesh
+
   # 6. Organ repair in place. Removal and insertion need a hand at the tray, so the planner skips them.
   - surgeries:
     - WFSurgeryHealHeart

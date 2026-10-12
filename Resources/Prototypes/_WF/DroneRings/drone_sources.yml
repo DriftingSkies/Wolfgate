@@ -1,0 +1,9 @@
+# Debris-table entries that count as drones for the radar's drone rings.
+- type: wfDroneSources
+  id: WFDroneSourcesMono
+  spawners:
+  - MonoDroneSpawnerT0
+  - MonoDroneSpawnerT1
+  - MonoDroneSpawnerT2Inner
+  - MonoDroneSpawnerT2Middle
+  - MonoDroneSpawnerT2Far

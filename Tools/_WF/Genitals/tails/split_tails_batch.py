@@ -21,6 +21,9 @@ Markings in the Special category are left alone: bodyPart: Tail is used there to
 on the top-most layer, not to draw a tail, so their art cannot reach anatomy and moving it behind the
 body would only hide it behind the head.
 
+Markings in LOWER_BODY_MARKINGS are left alone as well: a naga tail replaces the legs, so it has to
+draw over them and over the clothing worn on them from every facing.
+
 --mode zone is the second pass over the markings the first one split. Moving the whole south frame
 behind the body is right for a tail that is behind the body anyway and wrong for art drawn to sit in
 front of the mob - wings and ruffs wired to the tail layer, tails that wrap round the hips - which
@@ -86,6 +89,10 @@ ZONE_TINT = (64, 216, 255, 255)
 # Categories whose bodyPart: Tail is a layer hack rather than a tail. Special is the head ornament
 # slot: the art sits on the skull and never reaches anatomy, so the split would only hide it.
 NOT_TAIL_CATEGORIES = ("Special",)
+
+# Markings that stand in for the legs instead of hanging behind them. The art has to cover the legs
+# and whatever is worn on them from every facing, so none of it may move behind the body.
+LOWER_BODY_MARKINGS = ("ReptilianTailNaga", "ReptilianTailNagaStriped", "ReptilianTailNagaRattlesnake")
 
 # What a reviewer needs to look at by eye: the south view the body now hides. A marking is flagged
 # when the split hides this much of it on every species the marking is allowed on, or leaves this
@@ -472,6 +479,11 @@ def plan_for(path, marking):
         # end up behind the head.
         plan.kind = "not a tail"
         plan.skipped = [(state, "%s category, so not a tail" % plan.category) for _, state in plan.sprites]
+        return plan
+
+    if plan.id in LOWER_BODY_MARKINGS:
+        plan.kind = "lower body"
+        plan.skipped = [(state, "replaces the legs, so it stays in front") for _, state in plan.sprites]
         return plan
 
     if any(rsi.startswith(DONE_ROOTS) for rsi, _ in plan.sprites):

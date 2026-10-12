@@ -1,3 +1,4 @@
+using System.Numerics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
@@ -15,6 +16,9 @@ public enum ShuttleCameraView : byte
     Rear,
     Left,
     Right,
+
+    /// <summary>The whole ship from outside, with its hulls roofed over. The pilot pans it.</summary>
+    External,
 }
 
 /// <summary>
@@ -26,6 +30,11 @@ public sealed partial class ShuttleCameraComponent : Component
     public const float MinZoom = 1f;
     public const float MaxZoom = 4f;
     public const float ZoomStep = 0.25f;
+
+    /// <summary>
+    /// How far past the hull's bounds the external view can be panned, in tiles.
+    /// </summary>
+    public const float PanMargin = 10f;
 
     [DataField, AutoNetworkedField]
     public ShuttleCameraView View = ShuttleCameraView.Helm;
@@ -45,6 +54,17 @@ public sealed partial class ShuttleCameraComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public EntityUid? Camera;
+
+    /// <summary>
+    /// The grid being flown while in the external view, which the pan is measured on. Null otherwise.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntityUid? Grid;
+
+    /// <summary>
+    /// When the server next takes a pan from this pilot. Not networked.
+    /// </summary>
+    public TimeSpan NextPan;
 
     public override bool SendOnlyToOwner => true;
 }
@@ -78,5 +98,29 @@ public sealed class ShuttleCameraSetMessage : BoundUserInterfaceMessage
         View = view;
         Zoom = zoom;
         LowLight = lowLight;
+    }
+}
+
+/// <summary>Pilot panned the external view. Carries the point on the flown grid they're looking at.</summary>
+[Serializable, NetSerializable]
+public sealed class ShuttleCameraPanMessage : BoundUserInterfaceMessage
+{
+    public Vector2 Position;
+
+    public ShuttleCameraPanMessage(Vector2 position)
+    {
+        Position = position;
+    }
+}
+
+/// <summary>Pilot changed the zoom alone, leaving the view and low-light as they are.</summary>
+[Serializable, NetSerializable]
+public sealed class ShuttleCameraZoomMessage : BoundUserInterfaceMessage
+{
+    public float Zoom;
+
+    public ShuttleCameraZoomMessage(float zoom)
+    {
+        Zoom = zoom;
     }
 }

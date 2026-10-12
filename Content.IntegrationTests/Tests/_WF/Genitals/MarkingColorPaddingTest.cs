@@ -159,9 +159,7 @@ public sealed class MarkingColorPaddingTest
             Assert.That(Validate(markings, new Marking("WFTestForwardLinkedTail", new List<Color> { Saved })).MarkingColors,
                 Is.EqualTo(new[] { Color.White, Color.White, Color.White }));
 
-            // A list that shrinks, and an empty list.
-            Assert.That(Validate(markings, new Marking("ProtogenTail", new List<Color> { Saved, Other, Saved })).MarkingColors,
-                Is.EqualTo(new[] { Color.White, Color.White }));
+            // An empty list. A longer one keeps its leading colours, which TailSplitFunctionalityTest covers.
             Assert.That(Validate(markings, new Marking("ProtogenTail", new List<Color>())).MarkingColors,
                 Is.EqualTo(new[] { Color.White, Color.White }));
         });

@@ -43,6 +43,10 @@ safety-deposit-console-error-not-lost = This box is not lost and cannot be recla
 safety-deposit-console-reclaim-success = Lost box reclaimed! A new empty box has been issued.
 safety-deposit-console-error-already-withdrawn = Box already withdrawn in world.
 safety-deposit-console-withdraw-success = Safety deposit box retrieved.
+safety-deposit-console-withdraw-refused = Safety deposit box retrieved. {$count ->
+    [one] One item can no longer be stored in it and was left at your feet.
+   *[other] {$count} items can no longer be stored in it and were left at your feet.
+}
 
 # Examine text
 safety-deposit-stored-examine = [color=gray]This item has a signature on it that indicates that it was at one point stowed in a deposit box.[/color]

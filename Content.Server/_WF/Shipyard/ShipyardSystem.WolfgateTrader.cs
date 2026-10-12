@@ -11,6 +11,7 @@ using Content.Shared._Mono.Shipyard;
 using Content.Shared._Mono.Ships.Components;
 using Content.Shared._WF.ShipPa;
 using Content.Shared._NF.Shipyard;
+using Content.Shared._NF.Shipyard.BUI;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._NF.Shipyard.Events;
 using Content.Shared.Access.Components;
@@ -187,6 +188,53 @@ public sealed partial class ShipyardSystem
     public string? GetDeedName(EntityUid idCard)
     {
         return TryComp<ShuttleDeedComponent>(idCard, out var deed) ? GetFullName(deed) : null;
+    }
+
+    /// <summary>
+    /// The cash a console can charge: what its host holds for it, or its own slot when nothing hosts it.
+    /// </summary>
+    public int GetConsoleCash(EntityUid console, EntityUid? buyer, int slotBalance)
+    {
+        var ev = new Content.Server._WF.Shipyard.ShipyardHostCashQueryEvent(buyer);
+        RaiseLocalEvent(console, ref ev);
+        return ev.Handled ? ev.Balance : slotBalance;
+    }
+
+    /// <summary>
+    /// Takes a purchase's cash share from the console's host, or from its own slot when nothing hosts it.
+    /// </summary>
+    private bool TryTakeConsoleCash(EntityUid console, EntityUid buyer, int amount)
+    {
+        var ev = new Content.Server._WF.Shipyard.ShipyardHostCashPaymentEvent(buyer, amount);
+        RaiseLocalEvent(console, ref ev);
+        return ev.Handled ? ev.Paid : _cash.TryCashPayment(console, amount, out _);
+    }
+
+    /// <summary>
+    /// Sends an open hosted listing the cash its host holds now; a counter changes without touching a slot.
+    /// </summary>
+    public void RefreshHostedCash(EntityUid host, Enum uiKey)
+    {
+        if (!_ui.TryGetUiState<ShipyardConsoleInterfaceState>(host, uiKey, out var state))
+            return;
+
+        var cash = GetConsoleCash(host, null, state.CashBalance);
+        if (cash == state.CashBalance)
+            return;
+
+        // A new state object: the UI system skips one it already holds.
+        _ui.SetUiState(host, uiKey, new ShipyardConsoleInterfaceState(
+            state.Balance,
+            cash,
+            state.AccessGranted,
+            state.ShipDeedTitle,
+            state.ShipSellValue,
+            state.IsTargetIdPresent,
+            state.UiKey,
+            state.ShipyardPrototypes,
+            state.ShipyardName,
+            state.FreeListings,
+            state.SellRate));
     }
 
     #endregion

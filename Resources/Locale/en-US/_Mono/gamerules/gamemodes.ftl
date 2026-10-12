@@ -13,11 +13,18 @@ mono-mixed-description = Native PDV imperials threaten TSF colonial expansion in
 mono-tsfussp-title = Cold War (TSF)
 mono-tsfussp-description = TSF colonization efforts are threatened by USSP expansion. A cold war is in place between the local TSFMC detachment and USSP colonization forces.
 
-mono-standard-title = Insurgency (TSF|PDV)
-mono-standard-description = The Trans-Solarian Federation's efforts to colonise the Colossus sector are put into danger by a theocratic insurgency, with civilians caught in the crossfire.
+# WOLFGATE(ColdWar) START: the default round opens under a ceasefire
+# mono-standard-title = Insurgency (TSF|PDV)
+# mono-standard-description = The Trans-Solarian Federation's efforts to colonise the Colossus sector are put into danger by a theocratic insurgency, with civilians caught in the crossfire.
+mono-standard-title = Standoff (TSF|PDV)
+mono-standard-description = The Trans-Solarian Federation's efforts to colonise the Colossus sector are opposed by the Phaethon Dynasty. A ceasefire holds, for now.
+# WOLFGATE END
 
 mono-ads-title = Remnants (TSF|PDV)
-mono-ads-description = Native PD imperials threaten TSF colonial expansion into the sector. A tense cold war between the TSF Marine Corps detachment. Pre-fracture warriors and defense systems threaten their plans.
+# WOLFGATE(ColdWar) START: names both sides of the cold war
+# mono-ads-description = Native PD imperials threaten TSF colonial expansion into the sector. A tense cold war between the TSF Marine Corps detachment. Pre-fracture warriors and defense systems threaten their plans.
+mono-ads-description = Native PDV imperials threaten TSF colonial expansion into the sector. A tense cold war between them and the TSF Marine Corps detachment. Pre-fracture warriors and defense systems threaten their plans.
+# WOLFGATE END
 
 mono-chimera-title = Biothreat (TSF|PDV)
 mono-chimera-description = Native PDV imperials threaten TSF colonial expansion into the sector. The effects of a far away letoferol outbreak seep in.

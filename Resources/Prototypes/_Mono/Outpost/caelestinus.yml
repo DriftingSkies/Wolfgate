@@ -4,7 +4,10 @@
   mapPath: /Maps/_Mono/Outpost/caelestinus_central.yml # Mono
   minPlayers: 0
   maxPlayers: 100
-  randomRotation: true
+  # WOLFGATE(BlackHole) START: align Caelestinus Central with world north for the sector backdrop.
+  # randomRotation: true
+  randomRotation: false
+  # WOLFGATE END
   maxRandomOffset: 0
   stations:
     Frontier:
@@ -45,7 +48,7 @@
             StationRepresentative: [ 1, 1 ]
             #StationTrafficController: [ 2, 2 ]
             SecurityGuard: [ 3, 3 ]
-            #CCServiceWorker: [ 2, 2 ]
+            CCServiceWorker: [ 4, 4 ]
             #NFJanitor: [ 2, 2 ]
             #MailCarrier: [ 2, 2 ]
             DirectorOfCare: [ 1, 1 ]

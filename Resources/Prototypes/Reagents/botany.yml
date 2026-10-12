@@ -233,6 +233,13 @@
           types:
             Asphyxiation: -1
       # WOLFGATE END
+      # WOLFGATE(Avali) START: ammonia quenches Avali thirst; in the Poison group so only their heart takes it up
+      - !type:SatiateThirst
+        factor: 8
+        conditions:
+        - !type:OrganType
+          type: Avali
+      # WOLFGATE END
     Gas:
       effects:
       - !type:HealthChange
@@ -242,6 +249,9 @@
           shouldHave: false
         - !type:OrganType
           type: Rat
+          shouldHave: false
+        - !type:OrganType # WOLFGATE(Avali): Avali breathe ammonia unharmed
+          type: Avali
           shouldHave: false
         - !type:ReagentThreshold
           reagent: Ammonia
@@ -261,6 +271,9 @@
           shouldHave: false
         - !type:OrganType
           type: Vox
+          shouldHave: false
+        - !type:OrganType # WOLFGATE(Avali): Avali breathe ammonia unharmed
+          type: Avali
           shouldHave: false
         - !type:ReagentThreshold
           reagent: Ammonia

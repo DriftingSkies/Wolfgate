@@ -724,3 +724,23 @@ WolfmedStimPen: WFWolfmedStimPen
 WFWindreignCarrierComputer: null
 # WOLFGATE END
 
+# WOLFGATE START: Monolith#4816 renamed the WL-01 suit and helmet without a migration
+# 2026-10-08
+ClothingOuterHardsuitMercenaryWarlord: ClothingOuterHardsuitWarlord
+ClothingHelmetHardsuitMercenaryWarlord: ClothingHelmetHardsuitWarlord
+# WOLFGATE END
+
+
+# WOLFGATE(Avali) START: WF prefix on the Avali brain and bio-synthetic limbs
+# 2026-10-09
+OrganAvaliBrain: WFOrganAvaliBrain
+BioSynthAvaliHeadEmpty: WFBioSynthAvaliHeadEmpty
+BioSynthAvaliLeftArm: WFBioSynthAvaliLeftArm
+BioSynthAvaliRightArm: WFBioSynthAvaliRightArm
+BioSynthAvaliLeftHand: WFBioSynthAvaliLeftHand
+BioSynthAvaliRightHand: WFBioSynthAvaliRightHand
+BioSynthAvaliLeftLeg: WFBioSynthAvaliLeftLeg
+BioSynthAvaliRightLeg: WFBioSynthAvaliRightLeg
+BioSynthAvaliLeftFoot: WFBioSynthAvaliLeftFoot
+BioSynthAvaliRightFoot: WFBioSynthAvaliRightFoot
+# WOLFGATE END

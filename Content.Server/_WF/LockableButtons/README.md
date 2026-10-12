@@ -23,9 +23,14 @@ the button's reader holds. `LockableButtonAccessTest` covers it.
 
 - [`Content.IntegrationTests/Tests/_WF/LockableButtons/LockableButtonAccessTest.cs`](../../../Content.IntegrationTests/Tests/_WF/LockableButtons/LockableButtonAccessTest.cs)
 
+### Prototypes
+
+- [`Resources/Prototypes/_WF/LockableButtons/buttons.yml`](../../../Resources/Prototypes/_WF/LockableButtons/buttons.yml)
+
 ## Non-modular edits
 
 - [`Content.Server/DeviceLinking/Systems/SignalSwitchSystem.cs`](../../DeviceLinking/Systems/SignalSwitchSystem.cs): a locked switch fires only for someone its reader admits
+- [`Resources/Maps/_Mono/POI/underground.yml`](../../../Resources/Maps/_Mono/POI/underground.yml): The two blast door buttons take Underground access; the station's crew has no Pirate access.
 - [`Resources/Prototypes/Entities/Structures/Wallmounts/switch.yml`](../../../Resources/Prototypes/Entities/Structures/Wallmounts/switch.yml): a card with access presses the button, and it stays locked
 
 <!-- WOLFGATE-GENERATED END -->

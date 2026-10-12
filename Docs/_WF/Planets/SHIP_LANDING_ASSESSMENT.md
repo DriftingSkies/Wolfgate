@@ -1,5 +1,7 @@
 # Stock vessel landing assessment: Atmosphere Mode
 
+> These figures predate Monolith#4748 (standard thrusters 200 to 100, large 800 to 400). Lift from ordinary engines is now half of what is listed, so far fewer ships hover without landing kits.
+
 Updated 2026-09-18. Actual hull fixture mass and installed thrust were measured by loading all 144 purchasable vessel definitions. This report applies the new atmospheric efficiency to those measurements.
 
 ## Rules

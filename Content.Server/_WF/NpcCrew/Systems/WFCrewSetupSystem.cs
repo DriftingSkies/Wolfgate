@@ -9,6 +9,7 @@ using Content.Shared._NF.Shipyard.Prototypes;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Administration;
 using Content.Shared.Database;
+using Content.Shared.Dataset;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
@@ -29,6 +30,8 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
     [Dependency] private IAdminManager _admins = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private MetaDataSystem _meta = default!;
+    [Dependency] private WFCrewAccessSystem _crewAccess = default!;
     [Dependency] private WFCrewSystem _crew = default!;
     [Dependency] private WFCrewPlannerSystem _planner = default!;
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
@@ -191,7 +194,8 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
                 return false;
             var coordinates = new EntityCoordinates(grid, post.Position);
             var tile = _maps.TileIndicesFor(grid, map, coordinates);
-            if (!_planner.IsSafePost(grid, tile, map))
+            // A post without air is allowed; the crewman put there is spawned in a void kit.
+            if (!_planner.IsStandable(grid, tile, map))
                 return false;
         }
         return true;
@@ -259,9 +263,12 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
                 loadout = _random.Pick(pool);
             // A role the profile has no loadout for keeps its own mob and gear, so nobody is spawned naked.
             var body = loadout != null && profile != null && profile.Bodies.Count > 0 ? _random.Pick(profile.Bodies) : (EntProtoId?) null;
-            var uid = _crew.SpawnCrewman(post.Role, new EntityCoordinates(grid, post.Position), mission.Group, loadout, body);
+            var uid = _crew.SpawnCrewman(post.Role, new EntityCoordinates(grid, post.Position), mission.Group, loadout, body,
+                profile != null ? FlavourName(profile) : null);
             if (uid is not { } mob)
                 continue;
+            if (profile != null && profile.Components.Count > 0)
+                EntityManager.AddComponents(mob, profile.Components);
             if (post.Engagement is { } engagement)
                 _crew.SetEngagement(mob, engagement);
             else if (profile != null && profile.Engagement.TryGetValue(post.Role, out var manner))
@@ -274,6 +281,17 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
             spawned.Add(mob);
         }
         return spawned.Count == posts.Count;
+    }
+
+    /// <summary>A name rolled from a profile's datasets, or null for a profile that leaves crews the names their bodies roll.</summary>
+    private string? FlavourName(WFCrewProfilePrototype profile)
+    {
+        if (profile.FirstNames is not { } firstId || profile.LastNames is not { } lastId
+            || !_prototypes.TryIndex(firstId, out var first) || !_prototypes.TryIndex(lastId, out var last)
+            || first.Values.Count == 0 || last.Values.Count == 0)
+            return null;
+
+        return $"{_random.Pick(first.Values)} {_random.Pick(last.Values)}";
     }
 
     /// <summary>Sets the company, or removes it when the company is empty.</summary>

@@ -668,7 +668,7 @@
     account: Medical
   - type: CompanyAccessReader
     requiredCompanies:
-    - MD
+    - Colonial # WOLFGATE: Medical Dispatch staff are Colonial since Monolith#4807
   - type: AccessReader
     access: [["ChiefMedicalOfficer"]]
 

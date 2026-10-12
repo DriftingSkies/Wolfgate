@@ -1,10 +1,12 @@
 using System.Linq;
 using System.Text;
+using Content.Server._NF.Shipyard.Components;
 using Content.Server._NF.Shipyard.Systems;
 using Content.Server._WF.Shipyard;
 using Content.Server.GameTicking;
 using Content.Shared._Mono.Shipyard;
 using Content.Shared._Mono.Ships.Components;
+using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._NF.Bank;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
@@ -17,7 +19,7 @@ namespace Content.Server._WF.Traders;
 /// <summary>
 /// Fronts real shipyard console listings over a counter. The trader carries a copy of the chosen
 /// console's own components, so every upstream purchase rule runs unchanged with the NPC as the
-/// console - it just refuses to buy anything back.
+/// console - it just refuses to buy anything back, and takes cash off its counter instead of a slot.
 /// </summary>
 public sealed partial class TraderShipyardSystem : EntitySystem
 {
@@ -27,6 +29,8 @@ public sealed partial class TraderShipyardSystem : EntitySystem
     [Dependency] private TraderSystem _trader = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
 
+    private float _cashAccumulator;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -35,6 +39,8 @@ public sealed partial class TraderShipyardSystem : EntitySystem
         SubscribeLocalEvent<TraderShipyardComponent, TraderConversationEndedEvent>(OnConversationEnded);
         SubscribeLocalEvent<TraderShipyardComponent, BoundUIClosedEvent>(OnUiClosed);
         SubscribeLocalEvent<TraderShipyardComponent, ShipyardConsoleActionAttemptEvent>(OnConsoleAction);
+        SubscribeLocalEvent<TraderShipyardComponent, ShipyardHostCashQueryEvent>(OnCashQuery);
+        SubscribeLocalEvent<TraderShipyardComponent, ShipyardHostCashPaymentEvent>(OnCashPayment);
         SubscribeLocalEvent<TraderShipyardComponent, TraderConfirmedEvent>(OnConfirmed);
         SubscribeLocalEvent<TraderShipyardComponent, TraderTextEnteredEvent>(OnTextEntered);
         SubscribeLocalEvent<ShipyardShuttlePurchaseEvent>(OnShipPurchased);
@@ -97,6 +103,59 @@ public sealed partial class TraderShipyardSystem : EntitySystem
         // The listing replaces the conversation window for as long as the customer browses it.
         _trader.HideDialogue(traderEnt, args.Customer);
         _ui.TryOpenUi(ent.Owner, uiKey, args.Customer);
+
+        // An Ironman's account pays for nothing here, so say where the money has to be.
+        if (HasComp<IronmanComponent>(args.Customer) && !HasComp<ShipyardVoucherComponent>(idCard))
+            _trader.Say(traderEnt, Loc.GetString("trader-shipyard-cash-only"));
+    }
+
+    /// <summary>
+    /// The cash on the counter is the hosted console's cash slot, for the customer being served.
+    /// </summary>
+    private void OnCashQuery(Entity<TraderShipyardComponent> ent, ref ShipyardHostCashQueryEvent args)
+    {
+        if (args.Handled || !TryComp<TraderComponent>(ent, out var trader))
+            return;
+
+        args.Handled = true;
+
+        // Somebody else pressing the button does not get to spend the customer's cash.
+        if (args.Buyer is { } buyer && buyer != trader.Customer)
+            return;
+
+        args.Balance = _trader.GetZoneCash((ent.Owner, trader));
+    }
+
+    /// <summary>
+    /// Takes a purchase's cash share off the counter and leaves the rest there as change.
+    /// </summary>
+    private void OnCashPayment(Entity<TraderShipyardComponent> ent, ref ShipyardHostCashPaymentEvent args)
+    {
+        if (args.Handled || !TryComp<TraderComponent>(ent, out var trader))
+            return;
+
+        args.Handled = true;
+        args.Paid = trader.Customer == args.Buyer
+                    && _trader.TryTakeZoneCash((ent.Owner, trader), args.Buyer, args.Amount);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        _cashAccumulator += frameTime;
+        if (_cashAccumulator < 1f)
+            return;
+
+        _cashAccumulator = 0f;
+
+        // Cash lands on the counter without touching the hosted console, so its readout has to be pushed.
+        var query = EntityQueryEnumerator<TraderShipyardComponent>();
+        while (query.MoveNext(out var uid, out var dealer))
+        {
+            if (dealer.ActiveKey is { } key)
+                _shipyard.RefreshHostedCash(uid, key);
+        }
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.NPC.HTN;
 using Content.Server._WF.NpcCrew;
@@ -106,9 +107,12 @@ public sealed partial class WFCrewTest
         });
     }
 
-    /// <summary>Planning and edited rosters both reject vacuum, oxygen-free, hot and contaminated tiles.</summary>
+    /// <summary>
+    /// Planning keeps off vacuum, oxygen-free, hot and contaminated tiles while the hull has better; a roster that
+    /// posts a crewman on one gets him a void kit.
+    /// </summary>
     [Test]
-    public async Task CrewSetupRejectsUnsafeAir()
+    public async Task CrewSetupKitsOutPostsInUnsafeAir()
     {
         await AddAtmosphere();
         var deck = await CreateDeck(new Vector2(6, 0), 7, gravity: true);
@@ -136,8 +140,10 @@ public sealed partial class WFCrewTest
                 tiles[tile].Air = unsafeAir;
                 Assert.That(planner.IsSafePost(deck, tile), Is.False);
                 Assert.That(planner.Plan(deck, 32).Exists(post => post.Coordinates.Position == new Vector2(1.5f)), Is.False);
-                Assert.That(setup.TrySpawn(deck, posts, mission, out var spawned), Is.False);
-                Assert.That(spawned, Is.Empty);
+                Assert.That(setup.TrySpawn(deck, posts, mission, out var spawned), Is.True);
+                Assert.That(SEntMan.HasComponent<WFCrewVoidKitComponent>(spawned.Single()), Is.True);
+                Assert.That(Server.System<WFCrewEvaSystem>().Prepare(spawned.Single()), Is.True,
+                    "A crewman posted in bad air should be suited and on internals.");
             }
             tiles[tile].Air = air;
 #pragma warning restore RA0002

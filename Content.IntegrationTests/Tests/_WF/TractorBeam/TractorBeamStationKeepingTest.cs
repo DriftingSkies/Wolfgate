@@ -76,7 +76,7 @@ public sealed class TractorBeamStationKeepingTest
             if (expectedBraking)
             {
                 Assert.That(appliedForce.X, Is.LessThan(0));
-                Assert.That(appliedForce.Length(), Is.LessThanOrEqualTo(1500f));
+                Assert.That(appliedForce.Length(), Is.LessThanOrEqualTo(1000f * ShuttleComponent.BrakeCoefficient));
                 Assert.That(appliedTorque, Is.LessThan(0));
                 Assert.That(shuttle.ThrustDirections, Is.Not.EqualTo(Robust.Shared.Maths.DirectionFlag.None));
             }
@@ -340,13 +340,14 @@ public sealed class TractorBeamStationKeepingTest
             pilot.HeldButtons = ShuttleButtons.Brake;
             mover.AddPilot(source, pilotUid);
             mover.UpdateBeforeSolve(false, Step);
-            Assert.That(body.Force.X, Is.EqualTo(-1500).Within(0.01f));
+            var brake = 1000f * ShuttleComponent.BrakeCoefficient;
+            Assert.That(body.Force.X, Is.EqualTo(-brake).Within(0.01f));
 
             // A late external force must be included, but the already queued helm brake
             // consumes the same engines, not an independent second budget.
             physics.ApplyForce(source, new Vector2(3000, 0), body: body);
             entities.System<TractorBeamStationKeepingSystem>().UpdateBeforeSolve(false, Step);
-            Assert.That(body.Force.X - 3000, Is.EqualTo(-1500).Within(0.01f));
+            Assert.That(body.Force.X - 3000, Is.EqualTo(-brake).Within(0.01f));
             entities.DeleteEntity(source);
             entities.DeleteEntity(target);
         });

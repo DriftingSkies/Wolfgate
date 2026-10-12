@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.Shuttles.Systems; // WOLFGATE(Shuttles)
 using Content.Shared.DoAfter;
 using Content.Client.UserInterface.Systems;
 using Robust.Client.GameObjects;
@@ -85,6 +86,10 @@ public sealed class DoAfterOverlay : Overlay
         while (enumerator.MoveNext(out var uid, out _, out var comp, out var sprite, out var xform))
         {
             if (xform.MapID != args.MapId)
+                continue;
+
+            // WOLFGATE(Shuttles): a progress bar would give away a mob the external pilot view hides
+            if (_entManager.System<ShuttleExternalCameraSystem>().IsHidden(uid))
                 continue;
 
             if (comp.DoAfters.Count == 0)

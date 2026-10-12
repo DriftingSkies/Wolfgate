@@ -896,6 +896,8 @@
     - TsfmcEngineering # Mono
     - GrandVizier
     - PDVCommand # Mono
+    - Underground # WOLFGATE: the universal card opens the Underground Black Market too
+    - Godfather # WOLFGATE: the universal card opens the Underground Black Market too
   - type: Tag #  Ignore Chameleon tags
     tags:
     - DoorBumpOpener

@@ -191,6 +191,23 @@
       stasisEnterSound: /Audio/Effects/teleport_departure.ogg
       stasisExitSound: /Audio/Effects/teleport_arrival.ogg
       # WOLFGATE END
+      # WOLFGATE(Avali) START: stasis mends at a quarter of the stock rate and rests twice as long
+      # It also ends by itself and no longer softens a hit: wolfmed.stasis_max_seconds, wolfmed.stasis_damage_factor.
+      stasisCooldown: 600
+      stasisBluntHealPerSecond: 0.5
+      stasisSlashingHealPerSecond: 0.5
+      stasisPiercingHealPerSecond: 0.5
+      stasisHeatHealPerSecond: 0.5
+      stasisColdHealPerSecond: 0.5
+      # WOLFGATE END
+    # WOLFGATE(Avali) START: flight between z-levels, on the moth's numbers
+    - type: CEZFlyer
+      flightSpeed: 0.35
+      flightMoveSpeedModifier: 0.35
+      hoverStaminaDrain: 4
+    - type: CEControllableFlight
+      startFlightDoAfter: 2
+    # WOLFGATE END
     - type: Carriable  # Hardlight change they can be carry now
 # Chirp!
 

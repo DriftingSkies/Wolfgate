@@ -66,5 +66,7 @@ ship-pa-sound-cooldown =
     }
 ship-pa-sound-refused = The PA won't play that.
 ship-pa-sound-queued = Fetching the track. It plays as each listener receives it.
+ship-pa-playlist-added = Added to the queue, number {$position}.
+ship-pa-playlist-full = The queue is full. Wait for a track to end or take one out.
 
 ship-pa-subtitle-title = {$ship} · PA

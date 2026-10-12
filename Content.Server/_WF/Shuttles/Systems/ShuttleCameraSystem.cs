@@ -3,6 +3,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Shared._WF.Shuttles;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Popups;
 using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Shuttles.Components;
 using Robust.Server.GameObjects;
@@ -10,22 +11,31 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Server._WF.Shuttles.Systems;
 
 /// <summary>
 /// Lets a pilot look through cameras on the hull instead of their own eyes. The eye rides a camera
 /// entity parented to the grid, so FOV is cast from the camera and the hull blocks what it should.
+/// The external view rides the same entity over the hull, and the client draws it without FOV.
 /// </summary>
 public sealed partial class ShuttleCameraSystem : EntitySystem
 {
+    [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedContentEyeSystem _contentEye = default!;
     [Dependency] private SharedEyeSystem _eye = default!;
     [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private ViewSubscriberSystem _viewSubscriber = default!;
 
     private static readonly EntProtoId CameraProto = "WFShuttleCamera";
+
+    /// <summary>
+    /// Least time between two pans taken from one pilot. Each one moves a PVS viewer.
+    /// </summary>
+    private static readonly TimeSpan PanInterval = TimeSpan.FromSeconds(0.1);
 
     /// <summary>
     /// How far past the hull edge a camera sits, in tiles, so it never ends up inside a wall.
@@ -63,6 +73,8 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
         Subs.BuiEvents<ShuttleConsoleComponent>(ShuttleConsoleUiKey.Key, subs =>
         {
             subs.Event<ShuttleCameraSetMessage>(OnSetMessage);
+            subs.Event<ShuttleCameraPanMessage>(OnPanMessage);
+            subs.Event<ShuttleCameraZoomMessage>(OnZoomMessage);
         });
 
         SubscribeLocalEvent<ShuttleCameraComponent, ComponentShutdown>(OnCameraShutdown);
@@ -85,14 +97,12 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
 
     /// <summary>
     /// Keeps hull cameras on the hull as it's shot away, built on or split. A camera left hanging
-    /// where the bow used to be looks straight into whatever is now open to space.
+    /// where the bow used to be looks straight into whatever is now open to space. The external view
+    /// is looked at every time, since what allows it can change without the hull doing so.
     /// </summary>
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-
-        if (_changedHulls.Count == 0)
-            return;
 
         _hullCheckAccumulator += frameTime;
 
@@ -106,6 +116,22 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
         while (query.MoveNext(out var pilot, out var comp, out var piloting))
         {
             if (comp.Camera is not { } camera || piloting.Console is not { } console)
+                continue;
+
+            // A camera can go without its pilot, such as when a drone's hull is deleted.
+            if (TerminatingOrDeleted(camera))
+            {
+                Apply(pilot, console, comp.View, comp.Zoom, comp.LowLight);
+                continue;
+            }
+
+            if (comp.View == ShuttleCameraView.External)
+            {
+                RepositionExternal(pilot, comp, console, camera);
+                continue;
+            }
+
+            if (_changedHulls.Count == 0)
                 continue;
 
             // A split can leave the camera on the half the console isn't on, which counts as changed too.
@@ -129,7 +155,7 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
     /// </summary>
     private void Reposition(EntityUid pilot, ShuttleCameraComponent comp, EntityUid console, EntityUid camera)
     {
-        if (!TryGetCameraCoordinates(console, comp.View, out var coords))
+        if (!TryGetCameraCoordinates(pilot, console, comp.View, out var coords))
         {
             // Nothing left to stand on.
             Apply(pilot, console, ShuttleCameraView.Helm, comp.Zoom, comp.LowLight);
@@ -142,6 +168,40 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
             return;
 
         _transform.SetCoordinates(camera, xform, coords);
+    }
+
+    /// <summary>
+    /// Keeps the external view's anchor within reach of the hull. It's only pulled in as far as the
+    /// bounds ask, so losing a tile doesn't throw away where the pilot was looking.
+    /// </summary>
+    private void RepositionExternal(EntityUid pilot, ShuttleCameraComponent comp, EntityUid console, EntityUid camera)
+    {
+        if (!TryGetShuttle(console, out var shuttle) || !CanViewExternal(pilot, shuttle))
+        {
+            Apply(pilot, console, ShuttleCameraView.Helm, comp.Zoom, comp.LowLight);
+            PopupRefused(pilot);
+            return;
+        }
+
+        if (comp.Grid != shuttle.Owner)
+        {
+            comp.Grid = shuttle.Owner;
+            Dirty(pilot, comp);
+        }
+
+        var xform = Transform(camera);
+        var bounds = shuttle.Comp.LocalAABB;
+
+        // A split can leave the anchor on the half that isn't flown, where its old spot means nothing.
+        var onHull = xform.ParentUid == shuttle.Owner;
+        var local = onHull
+            ? bounds.Enlarged(ShuttleCameraComponent.PanMargin).ClosestPoint(xform.LocalPosition)
+            : bounds.Center;
+
+        if (onHull && xform.LocalPosition.EqualsApprox(local))
+            return;
+
+        _transform.SetCoordinates(camera, xform, new EntityCoordinates(shuttle.Owner, local));
     }
 
     /// <summary>
@@ -179,12 +239,84 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
         if (!Enum.IsDefined(args.View) || !float.IsFinite(args.Zoom))
             return;
 
-        var settings = EnsureComp<ShuttleCameraSettingsComponent>(ent);
-        settings.View = args.View;
-        settings.Zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
-        settings.LowLight = args.LowLight;
+        var zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
+        // WOLFGATE(Cockpit) START: temporary cockpit views never replace the helm's shared saved camera.
+        if (!WfCockpitCameraActive(args.Actor, ent))
+        {
+            var settings = EnsureComp<ShuttleCameraSettingsComponent>(ent);
+            settings.View = args.View;
+            settings.Zoom = zoom;
+            settings.LowLight = args.LowLight;
+        }
+        // WOLFGATE END
 
-        Apply(args.Actor, ent, settings.View, settings.Zoom.Value, settings.LowLight);
+        Apply(args.Actor, ent, args.View, zoom, args.LowLight);
+
+        if (args.View == ShuttleCameraView.External &&
+            CompOrNull<ShuttleCameraComponent>(args.Actor)?.View != ShuttleCameraView.External)
+        {
+            PopupRefused(args.Actor);
+        }
+    }
+
+    /// <summary>
+    /// Tells a pilot the external view can't be had where the ship is. Its button otherwise just springs back.
+    /// </summary>
+    private void PopupRefused(EntityUid pilot)
+    {
+        _popup.PopupEntity(Loc.GetString("shuttle-console-camera-external-unavailable"), pilot, pilot);
+    }
+
+    /// <summary>
+    /// Moves the external view's anchor to where the pilot has panned, so PVS follows the look point.
+    /// </summary>
+    private void OnPanMessage(Entity<ShuttleConsoleComponent> ent, ref ShuttleCameraPanMessage args)
+    {
+        if (!TryComp<PilotComponent>(args.Actor, out var pilot) || pilot.Console != ent.Owner)
+            return;
+
+        if (!TryComp<ShuttleCameraComponent>(args.Actor, out var comp) ||
+            comp.View != ShuttleCameraView.External ||
+            comp.Camera is not { } camera ||
+            TerminatingOrDeleted(camera) ||
+            comp.Grid is not { } gridUid ||
+            TerminatingOrDeleted(gridUid) ||
+            !TryComp<MapGridComponent>(gridUid, out var grid))
+        {
+            return;
+        }
+
+        if (!float.IsFinite(args.Position.X) || !float.IsFinite(args.Position.Y))
+            return;
+
+        if (_timing.CurTime < comp.NextPan)
+            return;
+
+        comp.NextPan = _timing.CurTime + PanInterval;
+
+        var local = grid.LocalAABB.Enlarged(ShuttleCameraComponent.PanMargin).ClosestPoint(args.Position);
+        var xform = Transform(camera);
+
+        if (xform.ParentUid == gridUid && xform.LocalPosition.EqualsApprox(local))
+            return;
+
+        _transform.SetCoordinates(camera, xform, new EntityCoordinates(gridUid, local));
+    }
+
+    private void OnZoomMessage(Entity<ShuttleConsoleComponent> ent, ref ShuttleCameraZoomMessage args)
+    {
+        if (!TryComp<PilotComponent>(args.Actor, out var pilot) || pilot.Console != ent.Owner)
+            return;
+
+        if (!float.IsFinite(args.Zoom) || !TryComp<ShuttleCameraComponent>(args.Actor, out var comp))
+            return;
+
+        var zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
+        // WOLFGATE(Cockpit): temporary wheel zoom belongs only to this pilot.
+        if (!WfCockpitCameraActive(args.Actor, ent))
+            EnsureComp<ShuttleCameraSettingsComponent>(ent).Zoom = zoom;
+
+        Apply(args.Actor, ent, comp.View, zoom, comp.LowLight);
     }
 
     private void Apply(EntityUid pilot, EntityUid console, ShuttleCameraView view, float zoom, bool lowLight)
@@ -195,14 +327,19 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
         var pvsScale = Math.Clamp(zoom / PvsFreeZoom, 1f, MaxPvsScale);
 
         // Measuring the hull walks every tile, so a zoom or low-light change on the same view skips it.
-        // Hull changes are picked up separately.
+        // Hull changes are picked up separately. It also leaves a panned external view where it is.
         var placed = view == comp.View && comp.Camera is { } current && !TerminatingOrDeleted(current);
 
         // Fall back to the helm if the hull can't be measured, rather than leaving the eye nowhere.
         EntityCoordinates coords = default;
 
-        if (view != ShuttleCameraView.Helm && !placed && !TryGetCameraCoordinates(console, view, out coords))
+        if (view != ShuttleCameraView.Helm && !placed && !TryGetCameraCoordinates(pilot, console, view, out coords))
             view = ShuttleCameraView.Helm;
+
+        if (view != ShuttleCameraView.External)
+            comp.Grid = null;
+        else if (!placed)
+            comp.Grid = coords.EntityId;
 
         if (view == ShuttleCameraView.Helm)
         {
@@ -244,9 +381,14 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
 
     /// <summary>
     /// Where a view's camera sits: just off the hull on that side, lined up with the tiles that
-    /// stick out furthest, so a pointed bow puts the camera on the point.
+    /// stick out furthest, so a pointed bow puts the camera on the point. The external view starts
+    /// over the middle of the hull.
     /// </summary>
-    private bool TryGetCameraCoordinates(EntityUid console, ShuttleCameraView view, out EntityCoordinates coords)
+    private bool TryGetCameraCoordinates(
+        EntityUid pilot,
+        EntityUid console,
+        ShuttleCameraView view,
+        out EntityCoordinates coords)
     {
         coords = default;
 
@@ -255,6 +397,15 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
 
         var gridUid = shuttle.Owner;
         var grid = shuttle.Comp;
+
+        if (view == ShuttleCameraView.External)
+        {
+            if (!CanViewExternal(pilot, shuttle))
+                return false;
+
+            coords = new EntityCoordinates(gridUid, grid.LocalAABB.Center);
+            return true;
+        }
 
         var dir = view switch
         {
@@ -300,6 +451,19 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
 
         coords = new EntityCoordinates(gridUid, local * grid.TileSize);
         return true;
+    }
+
+    /// <summary>
+    /// Whether a pilot can be shown this hull from outside. Planet terrain has no bounds to pan in, a
+    /// ship on a planet's ground layer sits among buildings that have no roof to draw, and crew with
+    /// no player behind them have nobody looking.
+    /// </summary>
+    private bool CanViewExternal(EntityUid pilot, Entity<MapGridComponent> shuttle)
+    {
+        return HasComp<ActorComponent>(pilot) &&
+               !HasComp<MapComponent>(shuttle) &&
+               shuttle.Comp.LocalAABB.Size != Vector2.Zero &&
+               !HasComp<MapGridComponent>(Transform(shuttle).MapUid);
     }
 
     /// <summary>

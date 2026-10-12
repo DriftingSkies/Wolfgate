@@ -1,0 +1,35 @@
+# Supercapital hulls for the encounter system and the admin vessel spawner; never sold at a shipyard.
+- type: vessel
+  id: WFChengdu
+  parent: BaseVesselIFFDisabled
+  name: TSFN Chengdu
+  description: The Federation's heaviest hull, with enough main batteries to crack a planet. Not for sale; admins and encounters only.
+  price: 3000000
+  purchasable: false
+  category: Large
+  group: Security
+  access: Security
+  shuttlePath: /SharedMaps/_WF/Encounters/chengdu.yml
+  guidebookPage: null
+  class:
+  - Capital
+  - Brawler
+  engine:
+  - AME
+
+- type: vessel
+  id: WFJupiter
+  parent: BaseVesselIFFDisabled
+  name: PDV Jupiter
+  description: The Dynasty's crewed Hyperwar carrier-flagship, the largest hull the Vanguard fields. Not for sale; admins and encounters only.
+  price: 3500000
+  purchasable: false
+  category: Large
+  group: BlackMarket
+  shuttlePath: /SharedMaps/_WF/Encounters/jupiter.yml
+  guidebookPage: null
+  class:
+  - Capital
+  - Carrier
+  engine:
+  - AME

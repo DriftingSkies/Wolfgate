@@ -11,6 +11,7 @@
         <Button Name="RearButton" Text="{Loc 'shuttle-console-camera-rear'}" ToggleMode="True" HorizontalExpand="True" StyleClasses="ButtonSquare"/>
         <Button Name="LeftButton" Text="{Loc 'shuttle-console-camera-left'}" ToggleMode="True" HorizontalExpand="True" StyleClasses="ButtonSquare"/>
         <Button Name="RightButton" Text="{Loc 'shuttle-console-camera-right'}" ToggleMode="True" HorizontalExpand="True" StyleClasses="ButtonSquare"/>
+        <Button Name="ExternalButton" Text="{Loc 'shuttle-console-camera-external'}" ToolTip="{Loc 'shuttle-console-camera-external-tooltip'}" ToggleMode="True" HorizontalExpand="True" StyleClasses="ButtonSquare"/>
         <Button Name="LowLightButton" Text="{Loc 'shuttle-console-camera-low-light'}" ToolTip="{Loc 'shuttle-console-camera-low-light-tooltip'}" ToggleMode="True" StyleClasses="ButtonSquare" Margin="12 0 0 0"/>
         <Label Text="{Loc 'shuttle-console-camera-zoom'}" FontColorOverride="#00ff2a" Margin="16 0 8 0"/>
         <Button Name="ZoomInButton" Text="-" SetWidth="36" StyleClasses="ButtonSquare"/>

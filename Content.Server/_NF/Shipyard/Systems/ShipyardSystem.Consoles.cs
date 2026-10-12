@@ -52,9 +52,15 @@ using Robust.Shared.Player;
 using Robust.Server.Player;
 using Content.Shared._Mono.Ships.Components;
 using Content.Shared._Mono.Shipyard;
+using Content.Shared._Mono.Traits.Physical; // Mono
+using Content.Shared.Coordinates; // Mono
+using Content.Shared.Stacks; // Mono
+using Content.Server.Stack; // Mono
 using Content.Shared.Tag;
 using Robust.Shared.Timing;
 using Content.Server._Mono.Detection;
+using Content.Shared._Mono.Economy; // Mono
+using Content.Shared._Mono.Economy.Component; // Mono
 
 namespace Content.Server._NF.Shipyard.Systems;
 
@@ -83,9 +89,12 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private TagSystem _tagSystem = default!;
     [Dependency] private GridModifierSystem _hullmods = default!;
+    [Dependency] private StackSystem _stackSystem = default!; // Mono
+    [Dependency] private SharedCreditReceiverSystem _cash = default!; // Mono
 
     private static readonly ProtoId<TagPrototype> CrewedShuttleTag = "CrewedShuttle";
     private static readonly Regex DeedRegex = new(@"\s*\([^()]*\)");
+    private const string CreditPrototype = "Credit"; // Mono
 
     public void InitializeConsole()
     {
@@ -184,7 +193,6 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             Del(shuttleUid);
             return;
         }
-
         if (TryComp<ShipyardListingComponent>(shipyardConsoleUid, out var listingComp) && listingComp.Hullmods.Count > 0)
         {
             List<ProtoId<GridModificationPrototype>> modifiers = [];
@@ -194,6 +202,10 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             }
             _hullmods.ModifyGrid(ev.Shuttle, modifiers);
         }
+
+        // Mono - whether we use a voucher or not, we need the current balance here.
+        _cash.TryGetCash(shipyardConsoleUid, out var cash, out var cashBalance);
+        cashBalance = GetConsoleCash(shipyardConsoleUid, player, cashBalance); // WOLFGATE(Traders): a hosting trader's counter is the cash slot
 
         // Keep track of whether or not a voucher was used.
         // TODO: voucher purchase should be done in a separate function.
@@ -239,7 +251,25 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         }
         else
         {
-            if (bank.Balance <= vessel.Price)
+            // WOLFGATE(Shipyard) START: refuse the sale when the bank share can't be taken; an Ironman's frozen balance bought ships for free
+            // if (bank.Balance + cashBalance < vessel.Price) // Mono - Only proceed if we have enough combined funds to buy shit.
+            // {
+            //     Del(shuttleUid);
+            //     ConsolePopup(player, Loc.GetString("cargo-console-insufficient-funds", ("cost", vessel.Price)));
+            //     PlayDenySound(player, shipyardConsoleUid, component);
+            //     return;
+            // }
+            //
+            // if (_cash.TryCashPayment(shipyardConsoleUid, vessel.Price, out var remainingDebt, true)) // Mono
+            //     cashBalance = Math.Max(cashBalance - vessel.Price,0);
+            // if (remainingDebt > 0) // Mono
+            //     _bank.TryBankWithdraw(player, remainingDebt); // Mono
+            var fromCash = Math.Min(cashBalance, vessel.Price);
+            var fromBank = vessel.Price - fromCash;
+            _bank.TryGetBalance(player, out var bankFunds);
+
+            // The bank goes first, so a refused withdrawal leaves the cash in the slot.
+            if (bankFunds < fromBank || fromBank > 0 && !_bank.TryBankWithdraw(player, fromBank))
             {
                 Del(shuttleUid);
                 ConsolePopup(player, Loc.GetString("cargo-console-insufficient-funds", ("cost", vessel.Price)));
@@ -247,13 +277,9 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
                 return;
             }
 
-            if (!_bank.TryBankWithdraw(player, vessel.Price))
-            {
-                Del(shuttleUid);
-                ConsolePopup(player, Loc.GetString("cargo-console-insufficient-funds", ("cost", vessel.Price)));
-                PlayDenySound(player, shipyardConsoleUid, component);
-                return;
-            }
+            if (fromCash > 0 && TryTakeConsoleCash(shipyardConsoleUid, player, fromCash)) // WOLFGATE(Traders): the cash share comes off a hosting trader's counter
+                cashBalance -= fromCash;
+            // WOLFGATE END
         }
 
         // Add company information to the shuttle from the ID card or voucher
@@ -453,7 +479,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
 
         var purchaseEv = new ShipyardShuttlePurchaseEvent(shuttleUid, player); // Mono: half of this shit could be an event.
         RaiseLocalEvent(purchaseEv);
-        RefreshState(shipyardConsoleUid, bank.Balance, true, name, sellValue, targetId, (ShipyardConsoleUiKey)args.UiKey, voucherUsed);
+        RefreshState(shipyardConsoleUid, bank.Balance, cashBalance, true, name, sellValue, targetId, (ShipyardConsoleUiKey)args.UiKey, voucherUsed); // Mono
     }
 
     private void TryParseShuttleName(ShuttleDeedComponent deed, string name)
@@ -581,8 +607,24 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             }
             bill = int.Max(0, bill);
 
-            _bank.TryBankDeposit(player, bill);
-            PlayConfirmSound(player, uid, component);
+            if (HasComp<IronmanComponent>(args.Actor)) // Mono start - Ironman players cannot access their bank, so they need physical money
+            {
+                //spawn the cash stack for Ironman players
+                _adminLogger.Add(LogType.ShipYardUsage, LogImpact.Low, $"{ToPrettyString(player):actor} withdrew {bill} from {ToPrettyString(uid)}");
+                var stackPrototype = _prototypeManager.Index<StackPrototype>(CreditPrototype);
+                // WOLFGATE(Traders) START: a trader hosting this console pays the cash out on its counter
+                var payoutEv = new Content.Server._WF.Shipyard.ShipyardCashPayoutEvent(player, bill);
+                RaiseLocalEvent(uid, ref payoutEv);
+                // _stackSystem.Spawn(bill, stackPrototype, uid.ToCoordinates());
+                if (!payoutEv.Handled)
+                    _stackSystem.Spawn(bill, stackPrototype, uid.ToCoordinates());
+                // WOLFGATE END
+            }
+            else
+            {
+                _bank.TryBankDeposit(player, bill);
+                PlayConfirmSound(player, uid, component);
+            } // Mono end
         }
 
         var name = GetFullName(deed);
@@ -606,7 +648,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             refreshId = null;
         }
 
-        RefreshState(uid, bank.Balance, true, null, 0, refreshId, (ShipyardConsoleUiKey)args.UiKey, voucherUsed);
+        RefreshState(uid, bank.Balance, _cash.GetCashBalance(uid), true, null, 0, refreshId, (ShipyardConsoleUiKey)args.UiKey, voucherUsed); // Mono
     }
 
     /// <summary>
@@ -676,7 +718,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             // For now we'll just let them see the cooldown message when they try to use it
         }
 
-        RefreshState(uid, bank.Balance, true, fullName, sellValue, targetId, (ShipyardConsoleUiKey)args.UiKey, voucherUsed);
+        RefreshState(uid, bank.Balance, _cash.GetCashBalance(uid), true, fullName, sellValue, targetId, (ShipyardConsoleUiKey)args.UiKey, voucherUsed); // Mono
     }
 
     private void ConsolePopup(EntityUid uid, string text)
@@ -731,7 +773,10 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             return;
 
         if (args.Container.ID != component.TargetIdSlot.ID)
-            return;
+        {
+            if (!(_cash.TryGetCashSlot(uid, out var slot) && args.Container.ID != slot.Name))
+                return;
+        }
 
         // kind of cursed. We need to update the UI when an Id is entered, but the UI needs to know the player characters bank account.
         // WOLFGATE(Traders) START: a trader hosting this console has no ActivatableUI, so fall back to whichever shipyard key is open on it.
@@ -772,9 +817,18 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
                 sellValue = CalculateShipResaleValue((uid, component), sellValue);
             }
 
+            var cashBalance = 0;
+            if (TryComp<CreditReceiverComponent>(uid, out var receiverComponent)
+                && _cash.CanPayWithCredit((uid, receiverComponent))
+                && _cash.TryGetCashBalance(uid, out var cash)) // Mono
+            {
+                cashBalance = cash.Value;
+            }
+
             var fullName = deed != null ? GetFullName(deed) : null;
             RefreshState(uid,
                 bank.Balance,
+                cashBalance, // Mono
                 true,
                 fullName,
                 sellValue,
@@ -973,10 +1027,12 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         return (available, unavailable);
     }
 
-    private void RefreshState(EntityUid uid, int balance, bool access, string? shipDeed, int shipSellValue, EntityUid? targetId, ShipyardConsoleUiKey uiKey, bool freeListings)
+    private void RefreshState(EntityUid uid, int balance, int cashBalance, bool access, string? shipDeed, int shipSellValue, EntityUid? targetId, ShipyardConsoleUiKey uiKey, bool freeListings) // Mono
     {
+        cashBalance = GetConsoleCash(uid, null, cashBalance); // WOLFGATE(Traders): a hosting trader's counter is the cash slot
         var newState = new ShipyardConsoleInterfaceState(
             balance,
+            cashBalance, // Mono
             access,
             shipDeed,
             shipSellValue,
@@ -1129,7 +1185,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
 
             // Update the UI with the new ship name, preserving the original sell value
             var fullName = GetFullName(deed);
-            RefreshState(uid, balance, true, fullName, originalSellValue, targetId, (ShipyardConsoleUiKey)args.UiKey, false);
+            RefreshState(uid, balance, _cash.GetCashBalance(uid), true, fullName, originalSellValue, targetId, (ShipyardConsoleUiKey)args.UiKey, false); // Mono
 
             _adminLogger.Add(LogType.ShipYardUsage, LogImpact.Low,
                 $"{ToPrettyString(player):actor} renamed ship from '{oldName}' to '{GetFullName(deed)}' via {ToPrettyString(uid)}");
@@ -1214,7 +1270,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             balance = bank.Balance;
 
         // Update the UI
-        RefreshState(uid, balance, true, null, 0, targetId, (ShipyardConsoleUiKey)args.UiKey, false);
+        RefreshState(uid, balance, _cash.GetCashBalance(uid), true, null, 0, targetId, (ShipyardConsoleUiKey)args.UiKey, false); // Mono
 
         _adminLogger.Add(LogType.ShipYardUsage, LogImpact.Low,
             $"{ToPrettyString(player):actor} unassigned deed for ship '{shipName}' from {ToPrettyString(targetId)} via {ToPrettyString(uid)}");

@@ -9,6 +9,7 @@ using Content.Server.Stack;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Organ;
+using Content.Shared.Body.Part; // WOLFGATE(Wolfmed)
 using Content.Shared.Chemistry;
 using Content.Shared.Database;
 using Content.Shared.DoAfter;
@@ -87,6 +88,10 @@ public sealed partial class FoodSystem : EntitySystem
         if (ev.Handled)
             return;
 
+        // WOLFGATE(Wolfmed): using a severed limb in hand does not eat it
+        if (HasComp<BodyPartComponent>(entity.Owner))
+            return;
+
         var result = TryFeed(ev.User, ev.User, entity, entity.Comp);
         ev.Handled = result.Handled;
     }
@@ -97,6 +102,10 @@ public sealed partial class FoodSystem : EntitySystem
     private void OnFeedFood(Entity<FoodComponent> entity, ref AfterInteractEvent args)
     {
         if (args.Handled || args.Target == null || !args.CanReach)
+            return;
+
+        // WOLFGATE(Wolfmed): clicking a severed limb on someone does not force-feed it to them
+        if (HasComp<BodyPartComponent>(entity.Owner))
             return;
 
         var result = TryFeed(args.User, args.Target.Value, entity, entity.Comp);

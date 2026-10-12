@@ -136,6 +136,14 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
             {
                 var loadout = loadouts[i];
 
+                // WOLFGATE(Species) START: a loadout is held once, and a saved profile may carry the repeats the defaults used to add
+                if (loadouts.IndexOf(loadout) != i)
+                {
+                    loadouts.RemoveAt(i);
+                    continue;
+                }
+                // WOLFGATE END
+
                 // Old prototype or otherwise invalid.
                 if (!protoManager.TryIndex(loadout.Prototype, out var loadoutProto))
                 {
@@ -199,6 +207,9 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
                             Prototype = loadoutProto.ID,
                         };
 
+                        if (loadouts.Contains(defaultLoadout)) // WOLFGATE(Species): a default already held is not added again
+                            continue;
+
                         // Not valid so don't default to it anyway.
                         if (!IsValid(profile, session, defaultLoadout.Prototype, collection, out _))
                             continue;
@@ -221,6 +232,9 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
                     {
                         Prototype = loadoutProto.ID,
                     };
+
+                    if (loadouts.Contains(defaultLoadout)) // WOLFGATE(Species): a default already held is not added again
+                        continue;
 
                     // Not valid so don't default to it anyway.
                     if (!IsValid(profile, session, defaultLoadout.Prototype, collection, out _))
@@ -293,6 +307,9 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
                         Prototype = loadoutProto.ID,
                     };
 
+                    if (loadouts.Contains(defaultLoadout)) // WOLFGATE(Species): a default already held is not added again
+                        continue;
+
                     // Not valid so don't default to it anyway.
                     if (!IsValid(profile, session, defaultLoadout.Prototype, collection, out _))
                         continue;
@@ -319,6 +336,9 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
                     {
                         Prototype = loadoutProto.ID,
                     };
+
+                    if (loadouts.Contains(defaultLoadout)) // WOLFGATE(Species): a default already held is not added again
+                        continue;
 
                     // Not valid so don't default to it anyway.
                     if (!IsValid(profile, session, defaultLoadout.Prototype, collection, out _))

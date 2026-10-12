@@ -8,6 +8,7 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Popups;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 
@@ -19,13 +20,14 @@ namespace Content.Server._WF.Wolfmed.Stasis;
 /// long as it lasts, closes wounds at topical strength (the component's per-second amounts, spent over the body's
 /// wounds), thins the parts' stored damage by the same amounts, and lets a hit keep only
 /// wolfmed.stasis_damage_factor of itself before it becomes a wound. It never touches a fracture: a broken bone is
-/// surgery's (owner's rule).
+/// surgery's (owner's rule). It ends by itself after wolfmed.stasis_max_seconds.
 /// </summary>
 public sealed class WolfmedStasisSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private SharedBodySystem _body = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private WoundBleedingSystem _bleeding = default!;
     [Dependency] private WoundDamageRoutingSystem _routing = default!;
     [Dependency] private WoundSystem _wounds = default!;
@@ -59,6 +61,8 @@ public sealed class WolfmedStasisSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        var limit = _cfg.GetCVar(WolfmedCVars.StasisMaxSeconds);
+        List<EntityUid>? spent = null;
         var query = EntityQueryEnumerator<StasisComponent, WoundHostComponent>();
         while (query.MoveNext(out var uid, out var stasis, out _))
         {
@@ -79,12 +83,29 @@ public sealed class WolfmedStasisSystem : EntitySystem
             else
                 continue;
 
+            hold.Elapsed += frameTime;
+            if (limit > 0f && hold.Elapsed >= limit)
+            {
+                (spent ??= new()).Add(uid);
+                continue;
+            }
+
             hold.Accumulated += frameTime;
             if (hold.Accumulated < 1f)
                 continue;
 
             hold.Accumulated -= 1f;
             Tick(uid, stasis);
+        }
+
+        // Out of the loop: leaving stasis swaps the body's actions and components.
+        if (spent == null)
+            return;
+
+        foreach (var uid in spent)
+        {
+            _popup.PopupEntity(Loc.GetString("wolfmed-stasis-spent"), uid, uid, PopupType.Medium);
+            RaiseLocalEvent(uid, new ExitStasisActionEvent());
         }
     }
 

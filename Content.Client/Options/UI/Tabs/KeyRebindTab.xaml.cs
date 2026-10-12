@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.Options; // WOLFGATE(Options)
 using Content.Client.Stylesheets;
 using Content.Shared.CCVar;
 using Content.Shared.Input;
@@ -122,6 +123,17 @@ namespace Content.Client.Options.UI.Tabs
                     _inputManager.SaveToUserData();
                 });
             };
+
+            // WOLFGATE(Options) START: SS13 keybind preset button
+            Ss13DefaultsButton.OnPressed += _ =>
+            {
+                _deferCommands.Add(() =>
+                {
+                    Ss13KeybindPreset.Apply(_inputManager, _cfg.GetCVar(CCVars.ToggleWalk));
+                    _inputManager.SaveToUserData();
+                });
+            };
+            // WOLFGATE END
 
             var first = true;
 

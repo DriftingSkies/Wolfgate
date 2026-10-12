@@ -61,7 +61,7 @@
     attackRate: 1.5
   - type: Temperature
     heatDamageThreshold: 400
-    coldDamageThreshold: 285
+    coldDamageThreshold: 240 # WOLFGATE(Wolfmed): was 285; room air chills a lizard, only cold that harms a human harms it
     currentTemperature: 310.15
     specificHeat: 42
     coldDamage:

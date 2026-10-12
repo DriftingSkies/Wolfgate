@@ -4,6 +4,7 @@ using Content.Server._NF.Bank;
 using Content.Server._NF.Shipyard.Systems;
 using Content.Server._Mono.Shipyard;
 using Content.Server._WF.Shipyard;
+using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
@@ -46,6 +47,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         SubscribeLocalEvent<TraderUsedShipsComponent, TraderConversationEndedEvent>(OnConversationEnded);
         SubscribeLocalEvent<TraderUsedShipsComponent, BoundUIClosedEvent>(OnUiClosed);
         SubscribeLocalEvent<TraderUsedShipsComponent, TraderUsedShipBuyMessage>(OnBuy);
+        SubscribeLocalEvent<TraderUsedShipsComponent, ShipyardCashPayoutEvent>(OnCashPayout);
         SubscribeLocalEvent<UsedShipListedEvent>(OnListed);
     }
 
@@ -144,7 +146,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         var bill = _shipyard.GetShipResaleValue(ent.Owner, shuttle);
         var shipName = Name(shuttle);
 
-        // Everything past here is the console's own sale: docking, organics, taxes, the bank deposit.
+        // Everything past here is the console's own sale: docking, organics, taxes, the payout.
         var sold = _shipyard.TryHostedSell(ent.Owner, customer, uiKey, idCard, out var refusal);
 
         _trader.ReturnHeldItems(traderEnt);
@@ -159,8 +161,21 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         }
 
         PrintSaleReceipt(traderEnt, customer, shipName, bill);
-        _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-sale-done",
+        _trader.SayAndShow(traderEnt, Loc.GetString(
+            HasComp<IronmanComponent>(customer) ? "trader-used-sale-done-cash" : "trader-used-sale-done",
             ("amount", BankSystemExtensions.ToSpesoString(bill))));
+    }
+
+    /// <summary>
+    /// An Ironman seller is paid in cash, which goes on the counter like any other change.
+    /// </summary>
+    private void OnCashPayout(Entity<TraderUsedShipsComponent> ent, ref ShipyardCashPayoutEvent args)
+    {
+        if (args.Handled || !TryComp<TraderComponent>(ent, out var trader))
+            return;
+
+        _trader.GiveChange((ent.Owner, trader), args.Amount);
+        args.Handled = true;
     }
 
     /// <summary>
@@ -265,6 +280,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
             return;
         }
 
+        // Counter cash first, the bank for the rest; an Ironman's frozen account refuses and the cash stays put.
         if (!_trader.TryTakePayment(traderEnt, args.Actor, listing.Price))
         {
             QueueDel(shuttle.Value);
@@ -273,10 +289,20 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
 
         if (!AssignDeed(shuttle.Value, idCard, session, listing))
         {
-            // Paid but not deeded: scrap the hull, keep the listing and put the money back in the bank.
+            // Paid but not deeded: scrap the hull, keep the listing and give the money back. An Ironman
+            // could never draw it out of the bank again, so theirs goes back on the counter.
             QueueDel(shuttle.Value);
-            _bank.TryBankDeposit(args.Actor, listing.Price, tax: false);
-            _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-deed-failed"));
+            if (HasComp<IronmanComponent>(args.Actor))
+            {
+                _trader.GiveChange(traderEnt, listing.Price);
+                _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-deed-failed-cash"));
+            }
+            else
+            {
+                _bank.TryBankDeposit(args.Actor, listing.Price, tax: false);
+                _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-deed-failed"));
+            }
+
             UpdateState(ent, traderEnt, args.Actor);
             return;
         }

@@ -8,7 +8,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Client._FarHorizons.StarSystem;
 
-public sealed class StarOverlay : Overlay
+public sealed partial class StarOverlay : Overlay // WOLFGATE(BlackHole): extend the star pass with background lensing.
 {
     private readonly IEntityManager _entMan;
     private readonly IPrototypeManager _protoMan;
@@ -36,6 +36,9 @@ public sealed class StarOverlay : Overlay
         }
 
         var star = starSystem.StarSystem.Star;
+        // WOLFGATE(BlackHole): skip the background copy and full-screen pass when the effect is outside the view.
+        if (!BlackHoleVisible(star, args))
+            return false;
 
         if (_star == star)
             return true;
@@ -56,6 +59,7 @@ public sealed class StarOverlay : Overlay
         _shaderInstance.SetParameter("viewportSize", viewportBounds.Size);
         _shaderInstance.SetParameter("parallaxCenter", args.Viewport.Eye?.Position.Position ?? viewportBounds.Center);
         
+        PrepareBlackHoleShader(args); // WOLFGATE(BlackHole): bind the space background and camera projection.
         handle.UseShader(_shaderInstance);
         handle.DrawRect(viewportBounds, Color.White);
         handle.UseShader(null);

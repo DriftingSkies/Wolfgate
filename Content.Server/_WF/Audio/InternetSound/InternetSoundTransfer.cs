@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Content.Server._WF.Audio.InternetSound;
 
-/// <summary>A track's outgoing data, released immediately on Cut even if a client is stalled.</summary>
+/// <summary>A track's outgoing data, released immediately on Stop even if a client is stalled.</summary>
 internal sealed class InternetSoundTransfer : IDisposable
 {
     private byte[]? _payload;

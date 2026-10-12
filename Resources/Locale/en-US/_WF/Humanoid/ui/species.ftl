@@ -11,6 +11,7 @@ species-summary-canine = Vulpkanin build, but you pick the muzzle. Sharp nose, d
 species-summary-chitinid = Chitin shell. Shrugs off radiation, hates cold. Needles will not go through.
 species-summary-diona = Plant. Tough against blows, catches fire easily. No shoes. Splits into nymphs.
 species-summary-dwarf = Sees ore through rock. Human durability otherwise.
+species-summary-felinid = Small and weak. Takes more slash and blunt damage. Silent on bare feet. Claws.
 species-summary-felionoid = Silent on bare paws. Human durability.
 species-summary-feroxi = Tough build, cuts hurt more. Dries out fast, so keep drinking.
 species-summary-goblin = Small and poison hardy. Rummages bins. Sets off every mousetrap.

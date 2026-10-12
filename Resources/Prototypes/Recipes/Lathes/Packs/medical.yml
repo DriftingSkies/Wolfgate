@@ -106,6 +106,17 @@
   - SynthRightArm
   - SynthLeftHand
   - SynthRightHand
+  # WOLFGATE(Avali) START: Avali limbs
+  - WFSynthAvaliHeadEmpty
+  - WFSynthAvaliLeftArm
+  - WFSynthAvaliRightArm
+  - WFSynthAvaliLeftHand
+  - WFSynthAvaliRightHand
+  - WFSynthAvaliLeftLeg
+  - WFSynthAvaliRightLeg
+  - WFSynthAvaliLeftFoot
+  - WFSynthAvaliRightFoot
+  # WOLFGATE END
 
 # Shitmed
 - type: latheRecipePack

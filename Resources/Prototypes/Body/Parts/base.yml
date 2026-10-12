@@ -134,7 +134,7 @@
 
 - type: entity
   abstract: true
-  parent: [MajorLimb, WFWolfmedBaseLeftArm] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MajorLimb, WFWolfmedBaseLeftArm, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseLeftArm
   name: "left arm"
   components:
@@ -153,7 +153,7 @@
 
 - type: entity
   abstract: true
-  parent: [MajorLimb, WFWolfmedBaseRightArm] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MajorLimb, WFWolfmedBaseRightArm, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseRightArm
   name: "right arm"
   components:
@@ -173,7 +173,7 @@
 
 - type: entity
   abstract: true
-  parent: [MinorLimb, WFWolfmedBaseLeftHand] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MinorLimb, WFWolfmedBaseLeftHand, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseLeftHand
   name: "left hand"
   components:
@@ -188,7 +188,7 @@
 
 - type: entity
   abstract: true
-  parent: [MinorLimb, WFWolfmedBaseRightHand] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MinorLimb, WFWolfmedBaseRightHand, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseRightHand
   name: "right hand"
   components:
@@ -203,7 +203,7 @@
 
 - type: entity
   abstract: true
-  parent: [MajorLimb, WFWolfmedBaseLeftLeg] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MajorLimb, WFWolfmedBaseLeftLeg, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseLeftLeg
   name: "left leg"
   components:
@@ -223,7 +223,7 @@
 
 - type: entity
   abstract: true
-  parent: [MajorLimb, WFWolfmedBaseRightLeg] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MajorLimb, WFWolfmedBaseRightLeg, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseRightLeg
   name: "right leg"
   components:
@@ -243,7 +243,7 @@
 
 - type: entity
   abstract: true
-  parent: [MinorLimb, WFWolfmedBaseLeftFoot] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MinorLimb, WFWolfmedBaseLeftFoot, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseLeftFoot
   name: "left foot"
   components:
@@ -258,7 +258,7 @@
 
 - type: entity
   abstract: true
-  parent: [MinorLimb, WFWolfmedBaseRightFoot] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
+  parent: [MinorLimb, WFWolfmedBaseRightFoot, BaseEdibleLimb] # Mono, WOLFGATE(Wolfmed): WP7, D8: adds Wolfmed fracture/amputation data
   id: BaseRightFoot
   name: "right foot"
   components:
@@ -341,3 +341,29 @@
       - !type:PlaySoundBehavior
         sound:
           collection: MeatLaserImpact
+
+- type: entity
+  id: BaseEdibleLimb
+  abstract: true
+  components:
+  - type: Food
+  - type: Extractable
+    grindableSolutionName: limb
+  - type: SolutionContainerManager
+    solutions:
+      limb:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+  - type: FlavorProfile
+    flavors:
+      - chicken
+  - type: Tag
+    tags:
+    - Meat

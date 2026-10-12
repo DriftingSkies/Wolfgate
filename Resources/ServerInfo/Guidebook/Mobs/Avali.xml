@@ -16,7 +16,7 @@
   - Deal [color=red]6.25[/color] slashing damage with claws.
   - Can fly in Zero-G.
   - Slightly faster.
-  - [color=#ffbc48]Nanite Technology![/color] Can encase themselves in a [color=#ffbc48]Nanite Shell[/color] to heal most common types of damage.
+  <!-- WOLFGATE(Avali): the shell is a short hold, not a heal -->- [color=#ffbc48]Nanite Technology![/color] Can encase themselves in a [color=#ffbc48]Nanite Shell[/color] for up to a minute. It holds their bleeding and slowly mends wounds, but they can't move in it and it does not soften a hit.
   - 2x Hunger rate, stay fed!
   - Can only eat meat-related food items (including organs) and pills.
   - Heal airloss from Ammonia and Amoxla but..
@@ -30,5 +30,11 @@
   </Box>
   Use the context menu to [color=#1e90ff]preen your own or another Avali's feathers[/color]. Preening takes five seconds and stops if you move or take damage. Avali have up to three feathers available, regrowing one every two and a half minutes after the last feather was removed.
   A brute injury can tear out a bloody feather and grant three seconds of [color=#1e90ff]adrenaline[/color], temporarily ignoring injury slowdown. Shed feathers keep their owner's color and DNA. They can be used as quills or worn in the head or ear slot.
+  <!-- WOLFGATE END -->
+
+  <!-- WOLFGATE(Avali) START: flight, as on the moth page -->
+  ## Flight
+
+  This species is capable of flight on planets and other areas with altitude. Read the Flight entry for more information.
   <!-- WOLFGATE END -->
 </Document>

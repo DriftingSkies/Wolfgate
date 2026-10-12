@@ -41,6 +41,9 @@ public sealed partial class WFEncounterComponent : Component
     public WFEncounterCategory Category;
 
     [DataField]
+    public WFEncounterIcon Icon;
+
+    [DataField]
     public int Cost;
 
     [DataField]
@@ -53,6 +56,10 @@ public sealed partial class WFEncounterComponent : Component
     /// <summary>Whether it is kept off the sector markers.</summary>
     [DataField]
     public bool Hidden;
+
+    /// <summary>Started by an admin: it stays, ships and all, with no clock on it, until an admin ends it.</summary>
+    [DataField]
+    public bool Pinned;
 
     /// <summary>The stations its placement chose, in the order a route calls at them.</summary>
     [DataField]
@@ -99,6 +106,15 @@ public sealed partial class WFEncounterComponent : Component
     /// <summary>Player ships a side has taken as allies for the encounter.</summary>
     public List<(EntityUid Ship, EntityUid Ally)> Allies = new();
 
+    /// <summary>When each other vessel's ship weapon hits landed on each side over the last half minute, excused or not: whom it is really fighting.</summary>
+    public Dictionary<(EntityUid Attacker, string Side), List<TimeSpan>> Fire = new();
+
+    /// <summary>The vessels each side has hailed, and when it may hail each again: one voice for a side, however many ships.</summary>
+    public Dictionary<(string Side, EntityUid Intruder), TimeSpan> Hailed = new();
+
+    /// <summary>The vessels each side has called its guns onto, and when it may call each again.</summary>
+    public Dictionary<(string Side, EntityUid Intruder), TimeSpan> Called = new();
+
     /// <summary>When its ships jump out, whoever is near.</summary>
     [DataField]
     public TimeSpan? JumpAt;
@@ -131,6 +147,10 @@ public sealed partial class WFEncounterShipState
     /// <summary>Its radar colour, when the encounter gave it one.</summary>
     [DataField]
     public Color? Color;
+
+    /// <summary>Its own radar glyph; Category for the encounter's.</summary>
+    [DataField]
+    public WFEncounterIcon Icon;
 
     /// <summary>How it arrived stranded, if it did.</summary>
     [DataField]

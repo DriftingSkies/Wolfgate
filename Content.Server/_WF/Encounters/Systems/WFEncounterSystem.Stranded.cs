@@ -19,6 +19,15 @@ public sealed partial class WFEncounterSystem
     [Dependency] private BatterySystem _battery = default!;
     [Dependency] private DestructibleSystem _destructible = default!;
 
+    /// <summary>Where forward (local north) thrust sits in a shuttle's linear thrust table.</summary>
+    private const int ForwardThrust = 2;
+
+    /// <summary>Whether a ship can drive ahead, as against only nudging sideways on a side thruster.</summary>
+    private bool HasForwardThrust(EntityUid grid)
+    {
+        return TryComp<ShuttleComponent>(grid, out var shuttle) && shuttle.LinearThrust[ForwardThrust] > 0f;
+    }
+
     /// <summary>How long a stranded ship must keep its thrust without a break before it counts as rescued.</summary>
     private static readonly TimeSpan RescueDelay = TimeSpan.FromSeconds(20);
 

@@ -387,6 +387,7 @@ public sealed class WolfmedVisualInspectionSystem : EntitySystem
             WolfmedBreathing.Gasping => "wolfmed-look-gasping",
             WolfmedBreathing.Depressed => "wolfmed-look-breathing-slow",
             WolfmedBreathing.Laboured => "wolfmed-look-short-of-breath", // M3: damaged lungs
+            WolfmedBreathing.Ventilated => "wolfmed-look-ventilated",
             _ => null,
         };
     }

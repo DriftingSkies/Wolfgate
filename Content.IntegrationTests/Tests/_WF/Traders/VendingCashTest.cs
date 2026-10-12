@@ -100,7 +100,7 @@ public sealed class VendingCashTest
             Assert.That(credit.GetCashBalance(vendor), Is.EqualTo(CashAmount));
 
             // Both rejections log, and the logger was never assigned.
-            Assert.That(credit.TryCashPayment(vendor, 0, out _), Is.False);
+            Assert.That(credit.TryCashPayment(vendor, -1, out _), Is.False);
             Assert.That(credit.TryCashPayment(user, 10, out _), Is.False);
         });
 

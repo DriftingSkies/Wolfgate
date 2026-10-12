@@ -143,7 +143,7 @@
     WeaponShotgunEnforcer: 1
     WeaponSniperMosin: 1
     Magazine9x19mmPistolFMJ: 6
-    Magazine9x19mmPistolHighCapacityFMJ: 3
+    Magazine9x19mmPistolHighCapacityEmpty: 3
     Magazine45_ACPPistolFMJ: 4
     Magazine46x30mmSubMachineGunTopMountedFMJ: 3
     Magazine762x39mmFMJ: 4
@@ -355,6 +355,7 @@
     HandheldCrewMonitor: 1
     HypoMini: 1
     WFWolfmedIvDripFlatpack: 1
+    WFWolfmedVentilatorFlatpack: 1
     WFMachineAutodocFlatpack: 1
     WFAutodocProgramDiskTransplant: 1
     DefibrillatorCompact: 1

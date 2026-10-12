@@ -18,7 +18,7 @@ public sealed class PlanetOverlay : Overlay
 
     public PlanetOverlay(IEntityManager entMan, IPrototypeManager protoMan)
     {
-        ZIndex = ParallaxSystem.ParallaxZIndex + 1;
+        ZIndex = ParallaxSystem.ParallaxZIndex + 2; // WOLFGATE(BlackHole): draw nearby bodies after the star and its background lensing.
         _entMan = entMan;
         _protoMan = protoMan;
     }

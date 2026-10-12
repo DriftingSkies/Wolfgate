@@ -1,9 +1,15 @@
 using Content.Shared._Mono.Blocking;
 using Content.Shared.Damage;
 using Content.Shared.Item.ItemToggle.Components;
+using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Content.Shared.Blocking.Components;
+using Content.Shared.Weapons.Ranged.Events;
+using Content.Shared._Mono.Blocking.Components;
+using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Hands.Components;
+using System.Linq;
 
 namespace Content.Shared.Blocking;
 
@@ -11,6 +17,8 @@ public sealed partial class BlockingSystem : SharedBlockingSystem // Mono
 {
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+
+    private TimeSpan _nextShieldShootPopup; // WOLFGATE: throttles the shield refusal popup
 
     private void InitializeUser()
     {
@@ -21,6 +29,8 @@ public sealed partial class BlockingSystem : SharedBlockingSystem // Mono
         SubscribeLocalEvent<BlockingUserComponent, ContainerGettingInsertedAttemptEvent>(OnInsertAttempt);
         SubscribeLocalEvent<BlockingUserComponent, AnchorStateChangedEvent>(OnAnchorChanged);
         SubscribeLocalEvent<BlockingUserComponent, EntityTerminatingEvent>(OnEntityTerminating);
+
+        SubscribeLocalEvent<HandsComponent, ShotAttemptedEvent>(OnBeforeGunShot);
     }
 
     private void OnParentChanged(EntityUid uid, BlockingUserComponent component, ref EntParentChangedMessage args)
@@ -39,6 +49,40 @@ public sealed partial class BlockingSystem : SharedBlockingSystem // Mono
             return;
 
         UserStopBlocking(uid, component);
+    }
+
+    /// <summary>
+    /// Mono: can't shoot with shield
+    /// </summary>
+    private void OnBeforeGunShot(Entity<HandsComponent> ent, ref ShotAttemptedEvent args)
+    {
+        // WOLFGATE(Weapons) START: a gun can inherit the exemption and have it switched off
+        // if (HasComp<CanShootWithShieldComponent>(args.Used)) // don't bother if this gun will always be allowed to be used
+        if (TryComp<CanShootWithShieldComponent>(args.Used.Owner, out var exempt) && exempt.Enabled)
+        // WOLFGATE END
+            return;
+
+        // WOLFGATE: only a gun the user carries is refused, not an innate ability or a mounted weapon
+        if (Transform(args.Used).ParentUid != ent.Owner)
+            return;
+
+        var heldItems = _handsSystem.EnumerateHeld(ent, ent.Comp).ToArray();
+        foreach (var item in heldItems)
+        {
+            if (HasComp<BlockingComponent>(item) && _toggle.IsActivated(item)) // WOLFGATE: a switched-off or folded shield blocks nothing
+            {
+                // WOLFGATE START: the attempt repeats every tick while the trigger is held
+                // _popupSystem.PopupClient(Loc.GetString("shield-user-attempt-shoot"), ent);
+                if (_gameTiming.IsFirstTimePredicted && _gameTiming.CurTime >= _nextShieldShootPopup)
+                {
+                    _nextShieldShootPopup = _gameTiming.CurTime + TimeSpan.FromSeconds(1);
+                    _popupSystem.PopupClient(Loc.GetString("shield-user-attempt-shoot"), ent);
+                }
+                // WOLFGATE END
+                args.Cancel();
+                break;
+            }
+        }
     }
 
     private void OnUserDamageModified(EntityUid uid, BlockingUserComponent component, DamageModifyEvent args)

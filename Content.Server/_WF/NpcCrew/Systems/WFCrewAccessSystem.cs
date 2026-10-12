@@ -3,6 +3,7 @@ using Content.Server.StationRecords;
 using Content.Server.StationRecords.Systems;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.ShipAccess;
+using Content.Shared._WF.NpcCrew;
 using Content.Shared._WF.ShipAccess;
 using Content.Shared.Access.Systems;
 using Content.Shared.Inventory;
@@ -21,6 +22,7 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
     [Dependency] private WFShipAccessServerSystem _ships = default!;
     [Dependency] private StationRecordsSystem _records = default!;
     [Dependency] private StationRecordKeyStorageSystem _keys = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private static readonly EntProtoId CrewCard = "PassengerIDCard";
 
@@ -55,8 +57,15 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
                 Del(card);
                 return;
             }
-            _id.TryChangeFullName(card, Name(uid));
         }
+
+        // The card names him and his post; a loadout's faction card comes blank.
+        var title = TryComp<WFCrewComponent>(uid, out var member) && member.Role is { } roleId
+            && _prototypes.TryIndex(roleId, out var role) ? Loc.GetString(role.Title) : null;
+        var name = Name(uid);
+        if (title != null && name.StartsWith(title + " ", StringComparison.Ordinal))
+            name = name[(title.Length + 1)..];
+        Label(uid, name, title, card);
 
         if (!_access.TryGetKey(card, out _))
         {
@@ -70,6 +79,20 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
 
         if (_ships.TryAddCard(ship, card, Name(uid)) && TryComp<WFCrewComponent>(uid, out var crew))
             crew.AccessShip = grid;
+    }
+
+    /// <summary>Writes a crewman's name and post on the card he wears.</summary>
+    public void Label(EntityUid uid, string name, string? title, EntityUid? card = null)
+    {
+        EntityUid id;
+        if (card is { } given)
+            id = given;
+        else if (!_access.TryGetWornCard(uid, out id))
+            return;
+
+        _id.TryChangeFullName(id, name);
+        if (title != null)
+            _id.TryChangeJobTitle(id, title);
     }
 
     /// <summary>A deleted crewman's card key comes off the ship's allow list; a dead one keeps it, as a looted card would.</summary>

@@ -12,6 +12,7 @@ using Content.Server.Power.EntitySystems; // Mono
 using Content.Server.Shuttles.Components; // Mono
 using Content.Server.Storage.Components;
 using Content.Server.Temperature.Components;
+using Content.Shared.Body.Part; // WOLFGATE(Wolfmed)
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
@@ -196,6 +197,10 @@ public sealed partial class NPCUtilitySystem : EntitySystem
                 if (!TryComp<FoodComponent>(targetUid, out var food))
                     return 0f;
 
+                // WOLFGATE(Wolfmed): animals leave severed limbs alone so they can be reattached
+                if (HasComp<BodyPartComponent>(targetUid))
+                    return 0f;
+
                 // mice can't eat unpeeled bananas, need monkey's help
                 if (_openable.IsClosed(targetUid))
                     return 0f;
@@ -375,13 +380,13 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             // Mono
             case GunTargetGoodCon con:
             {
-                if (!_gun.TryGetGun(owner, out var gunUid, out var gun))
+                if (!_gun.TryGetGun(owner, out var gunUid))
                     return 0f;
 
                 var radius = blackboard.GetValueOrDefault<float>(blackboard.GetVisionRadiusKey(EntityManager), EntityManager);
                 const float bufferRange = 0.5f;
 
-                return _npcCombat.InRangeGoodTarget((gunUid, gun), owner, targetUid, radius + bufferRange, con.ShootThroughThreshold) ? 1f : 0f;
+                return _npcCombat.InRangeGoodTarget((gunUid, gunUid.Comp), owner, targetUid, radius + bufferRange, con.ShootThroughThreshold) ? 1f : 0f;
             }
             case TargetIsAliveCon:
             {

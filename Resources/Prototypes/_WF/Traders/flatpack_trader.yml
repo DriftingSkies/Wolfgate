@@ -50,4 +50,4 @@
   - type: Trader
     dialogue: WFTraderFlatpackDialogue
   - type: TraderShop
-    vendors: [ FlatpackVendPremium ]
+    vendors: [ FlatpackVendPremium, VendingMachineFlatpackVendRadio ]

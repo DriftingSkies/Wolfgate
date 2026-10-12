@@ -23,6 +23,10 @@
     sprite: _NF/Clothing/Neck/Scarfs/pilot.rsi
   - type: Clothing
     sprite: _NF/Clothing/Neck/Scarfs/pilot.rsi
+  # WOLFGATE(Wolfmed) START: warm like the other scarves
+  - type: TemperatureProtection
+    coolingCoefficient: 0.3
+  # WOLFGATE END
   - type: Tag
     tags:
     - PetWearable

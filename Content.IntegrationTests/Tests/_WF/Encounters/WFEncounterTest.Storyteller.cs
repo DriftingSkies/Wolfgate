@@ -44,6 +44,17 @@ public sealed partial class WFEncounterTest
     roles: [ WFCrewPilot, WFCrewGunner ]
 
 - type: wfEncounter
+  id: WFTestStoryUnion
+  name: wf-encounter-name-convoy
+  start: Manual
+  ships:
+  - key: ship
+    vessel: WFDredger
+    company: USSP
+    faction: USSP
+    profile: WFCrewProfileUssp
+
+- type: wfEncounter
   id: WFTestStoryIff
   name: wf-encounter-name-convoy
   start: Manual
@@ -506,13 +517,60 @@ public sealed partial class WFEncounterTest
         await RunTicks(10);
     }
 
-    /// <summary>An encounter ship inside another's zone, of a company that zone minds, makes enemies of the two.</summary>
+    /// <summary>A faction's crew carry its names and its accent: a Union crew are Russians with Russian names.</summary>
+    [Test]
+    public async Task FactionCrewCarryItsNamesAndAccent()
+    {
+        EntityUid encounter = default, ship = default;
+        await Server.WaitAssertion(() =>
+        {
+            var prototypes = Server.ResolveDependency<IPrototypeManager>();
+            var prototype = prototypes.Index<WFEncounterPrototype>("WFTestStoryUnion");
+            Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(-37000, -37000), MapData.MapId), out encounter), Is.True);
+            ship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["ship"].Grid;
+            var surnames = prototypes.Index<Content.Shared.Dataset.DatasetPrototype>("WFNamesUsspLast").Values;
+
+            var crew = 0;
+            var members = SEntMan.EntityQueryEnumerator<WFCrewComponent, TransformComponent>();
+            while (members.MoveNext(out var uid, out _, out var xform))
+            {
+                if (xform.GridUid != ship)
+                    continue;
+                crew++;
+                Assert.That(SEntMan.HasComponent<Content.Server.Speech.Components.RussianAccentComponent>(uid), Is.True, "A Union crewman speaks with a Russian accent.");
+                var name = SEntMan.GetComponent<MetaDataComponent>(uid).EntityName;
+                Assert.That(surnames.Any(surname => name.EndsWith(surname)), Is.True, $"A Union crewman has a Russian surname: {name}");
+
+                var inventory = Server.System<Content.Shared.Inventory.InventorySystem>();
+                Assert.That(inventory.TryGetSlotEntity(uid, "ears", out var headset) && SEntMan.GetComponent<MetaDataComponent>(headset.Value).EntityPrototype?.ID == "WFCrewHeadsetUssp",
+                    Is.True, "A Union crewman wears a Union headset.");
+                Assert.That(inventory.TryGetSlotEntity(uid, "id", out var card), Is.True, "And carries a card.");
+                var id = SEntMan.GetComponent<Content.Shared.Access.Components.IdCardComponent>(card!.Value);
+                Assert.That(SEntMan.GetComponent<MetaDataComponent>(card.Value).EntityPrototype?.ID, Does.StartWith("USSP"), "A Union service card.");
+                Assert.That(id.FullName, Is.Not.Null.And.Not.Empty);
+                Assert.That(name, Does.EndWith(id.FullName!), "The card carries his name without the title.");
+                Assert.That(id.LocalizedJobTitle, Is.Not.Null.And.Not.Empty, "And his post.");
+            }
+            Assert.That(crew, Is.GreaterThan(0));
+            Server.System<WFEncounterSystem>().End(encounter);
+        });
+        await RunTicks(10);
+    }
+
+    /// <summary>
+    /// An encounter ship inside another's zone, of a company that zone minds, makes enemies of the two. The two navies
+    /// leave each other alone until war has been declared.
+    /// </summary>
     [Test]
     public async Task EncounterShipsInEachOthersZonesTurnHostile()
     {
-        EntityUid first = default, second = default;
+        EntityUid first = default, second = default, host = default;
         await Server.WaitAssertion(() =>
         {
+            // The war level lives on the sector service entity, which a station's host component brings up.
+            host = SEntMan.SpawnEntity(null, MapCoordinates.Nullspace);
+            SEntMan.AddComponent<Content.Server._NF.SectorServices.StationSectorServiceHostComponent>(host);
+
             var system = Server.System<WFEncounterSystem>();
             var prototypes = Server.ResolveDependency<IPrototypeManager>();
             Assert.That(system.TrySpawn(prototypes.Index<WFEncounterPrototype>("WFTestStoryIff"), new MapCoordinates(new Vector2(37000, 37000), MapData.MapId), out first), Is.True);
@@ -524,10 +582,21 @@ public sealed partial class WFEncounterTest
             var alerts = Server.System<WFCrewAlertSystem>();
             var patrol = SEntMan.GetComponent<WFEncounterComponent>(first).Ships["patrol"];
             var rival = SEntMan.GetComponent<WFEncounterComponent>(second).Ships["rival"];
-            Assert.That(alerts.GetHostileShips(patrol.Grid, patrol.Group), Does.Contain(rival.Grid), "The patrol takes the enemy ship in its zone for a threat.");
+            Assert.That(alerts.GetHostileShips(patrol.Grid, patrol.Group), Is.Empty, "Under the ceasefire the patrol lets the other navy's ship be.");
+            Assert.That(alerts.GetHostileShips(rival.Grid, rival.Group), Is.Empty, "And is let be in turn.");
+            Server.System<Content.Server._Mono.AlertLevel.WarLevelSystem>().SetLevel(true);
+        });
+        await RunTicks(150);
+        await Server.WaitAssertion(() =>
+        {
+            var alerts = Server.System<WFCrewAlertSystem>();
+            var patrol = SEntMan.GetComponent<WFEncounterComponent>(first).Ships["patrol"];
+            var rival = SEntMan.GetComponent<WFEncounterComponent>(second).Ships["rival"];
+            Assert.That(alerts.GetHostileShips(patrol.Grid, patrol.Group), Does.Contain(rival.Grid), "Once war is declared the patrol takes the enemy ship in its zone for a threat.");
             Assert.That(alerts.GetHostileShips(rival.Grid, rival.Group), Does.Contain(patrol.Grid), "And is one to it in turn.");
             Server.System<WFEncounterSystem>().End(first);
             Server.System<WFEncounterSystem>().End(second);
+            SEntMan.DeleteEntity(host);
         });
         await RunTicks(10);
     }

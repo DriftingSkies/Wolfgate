@@ -90,6 +90,7 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
 - [`Content.IntegrationTests/Tests/_WF/Genitals/ArousalTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ArousalTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/ConsentMindReentryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ConsentMindReentryTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalAnchorLayerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalAnchorLayerTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalAutosurgeonTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalAutosurgeonTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalCloningPolymorphTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalCloningPolymorphTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalConsentGateTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalConsentGateTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalCoverageTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalCoverageTest.cs)
@@ -172,7 +173,6 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
 - [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi/)
 - [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi/)
 - [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi/)
-- [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi/)
 - [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/xeno_tails.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/xeno_tails.rsi/)
 - [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi/)
 - [`Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi/`](../../../Resources/Textures/_WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi/)
@@ -318,6 +318,7 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
 - [`Content.Shared/_Common/Consent/SharedConsentSystem.cs`](../../../Content.Shared/_Common/Consent/SharedConsentSystem.cs): consent system, ported from HardLight
 - [`Content.Shared/_Shitmed/Humanoid/Events/ProfileLoadFinishedEvent.cs`](../../../Content.Shared/_Shitmed/Humanoid/Events/ProfileLoadFinishedEvent.cs): lets anatomy read the loaded profile
 - [`Content.Shared/_Shitmed/Surgery/SharedSurgerySystem.cs`](../../../Content.Shared/_Shitmed/Surgery/SharedSurgerySystem.cs): let a surgery refuse a particular surgeon (adult content and patient consent)
+- [`Content.Shared/Body/Systems/SharedBodySystem.Organs.cs`](../../../Content.Shared/Body/Systems/SharedBodySystem.Organs.cs): an organ only attaches in its own slot, so an empty genital slot must not take it
 - [`Content.Shared/Humanoid/HumanoidVisualLayers.cs`](../../../Content.Shared/Humanoid/HumanoidVisualLayers.cs)
   - underwear and genital layers, ported from HardLight
   - split tail layers, ported from HardLight/Floof
@@ -332,7 +333,7 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
 - [`Content.Shared/Humanoid/Markings/MarkingsSet.cs`](../../../Content.Shared/Humanoid/Markings/MarkingsSet.cs)
   - one undergarment top and one bottom per character
   - collect removals per category
-  - keep saved colours when a marking gains colour-linked sprites
+  - keep saved colours when a marking gains colour-linked sprites or loses them again
   - remove from the back so earlier indices stay valid
   - pads missing colours from their colorLinks parents
 - [`Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs`](../../../Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs): pass profile
@@ -498,11 +499,8 @@ markings. `MarkingSet` caps undergarments at one top and one bottom per characte
   - underwear/genital layers ported from HardLight
   - split tail layers ported from HardLight/Floof
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/reptilian.yml)
-  - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
-  - both halves of a tail share one colour
-  - split art, anatomy zone only
-  - anatomy zone of the south frame on TailBehind
   - the south frame draws behind the body, so the tail never covers anatomy
+  - both halves of a tail share one colour
   - split art
   - south frame on TailBehind
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/shadekin.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/shadekin.yml)

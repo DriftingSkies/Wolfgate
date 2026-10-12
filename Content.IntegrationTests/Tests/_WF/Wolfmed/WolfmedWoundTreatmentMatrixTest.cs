@@ -196,9 +196,10 @@ public sealed class WolfmedWoundTreatmentMatrixTest : WolfmedGameTest
             "a strong shock", "heart damage, and locked muscles for a moment"),
 
         // W5, time.
-        ["WFWolfmedNecrosisWound"] = new(Nothing, Exit.Permanent,
+        // A limb's exit is still amputation; the surgery is the torso's and the head's.
+        ["WFWolfmedNecrosisWound"] = new(Nothing, Exit.Surgery,
             "a tourniquet left on, a frozen or charred limb, a late reattachment",
-            "dead tissue: permanent, and it keeps the patient septic"),
+            "dead tissue that keeps the patient septic", "WFSurgeryRemoveNecroticFlesh"),
 
         // W6, mechanical.
         ["WFWolfmedDentWound"] = new(Panel, Exit.Items,

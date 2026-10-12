@@ -75,6 +75,22 @@ namespace Content.Client.Lobby.UI
             _cfg.OnValueChanged(CCVars.SeeOwnNotes, p => AdminRemarksButton.Visible = p, true);
         }
 
+        // WOLFGATE(InRoundCreator) START: the slot shown can differ from the selected one in a round
+        /// <summary>The slot to highlight in the list; null means the selected character.</summary>
+        public int? EditedSlot;
+
+        private bool _inRound;
+
+        /// <summary>
+        /// Keeps the selected character, the one being played, from being deleted. The window has its own close.
+        /// </summary>
+        public void SetInRound()
+        {
+            _inRound = true;
+            CloseButton.Visible = false;
+        }
+        // WOLFGATE END
+
         /// <summary>
         /// Disposes and reloads all character picker buttons from the preferences data.
         /// </summary>
@@ -110,7 +126,7 @@ namespace Content.Client.Lobby.UI
                         _protomanager,
                         characterButtonsGroup,
                         character,
-                        slot == selectedSlot);
+                        slot == (EditedSlot ?? selectedSlot)); // WOLFGATE(InRoundCreator): was slot == selectedSlot
                 }
                 catch (Exception e)
                 {
@@ -118,6 +134,10 @@ namespace Content.Client.Lobby.UI
                     continue;
                 }
                 // WOLFGATE END
+
+                // WOLFGATE(InRoundCreator): the character being played cannot be deleted, the server refuses it
+                if (_inRound && slot == selectedSlot)
+                    characterPickerButton.HideDelete();
 
                 Characters.AddChild(characterPickerButton);
 

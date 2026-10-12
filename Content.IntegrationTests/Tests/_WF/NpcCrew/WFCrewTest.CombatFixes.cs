@@ -150,6 +150,28 @@ public sealed partial class WFCrewTest
         });
     }
 
+    /// <summary>
+    /// A crew that only deters attackers still answers one firing on it from beyond its disengage range, while a
+    /// ship merely inside its zone that far out is left alone.
+    /// </summary>
+    [Test]
+    public async Task DeterringCrewAnswersFireFromBeyondItsReach()
+    {
+        var deck = await CreateDeck(new Vector2(700, 1300), 5, true);
+        var sniper = await CreateDeck(new Vector2(1300, 1300), 5, true);
+        await Server.WaitAssertion(() =>
+        {
+            ConvoyCrew(deck, "WFCrewPilot", "deter");
+            Server.System<WFCrewShipStatusSystem>().SetPolicy(deck, WFCrewDisengage.Deter, 300f);
+            var alerts = Server.System<WFCrewAlertSystem>();
+            alerts.ReportZoneThreat(deck, "deter", sniper);
+            Assert.That(alerts.IsHostileShip(deck, "deter", sniper), Is.False, "A zone intruder beyond the disengage range is let be.");
+            alerts.ReportShipThreat(deck, "deter", sniper);
+            Assert.That(alerts.IsHostileShip(deck, "deter", sniper), Is.True, "One that fires on the ship is answered however far off.");
+            Assert.That(alerts.GetHostileShips(deck, "deter"), Is.EquivalentTo(new[] { sniper }));
+        });
+    }
+
     /// <summary>Someone who attacks a crew makes an enemy vessel of whatever ship he goes back to.</summary>
     [Test]
     public async Task CrewAttackersShipIsAnEnemyVessel()

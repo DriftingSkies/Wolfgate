@@ -4499,6 +4499,12 @@ the owner's call; left as it plays.
   `WoundFractureComponent` outright. `WolfmedStasisTest` pins the hold, the half hit against a control, the topical
   close, the stored-damage thinning, the untouched fracture (same wound, grade, severity, no treatment) and the bleed's
   return after exit.
+- **Avali stasis cut down (owner, 2026-10-08): "MAJORLY nerfed".** The numbers are ours: the Avali prototype mends
+  0.5 a second of each type (was 2) and rests 600 s (was 300), `wolfmed.stasis_damage_factor` ships at 1 (a hit in
+  stasis lands whole, was half), and `wolfmed.stasis_max_seconds` (60, 0 for no limit) ends a hold by itself with a
+  popup, counted on `WolfmedStasisHoldComponent`. The bleed hold and the rule on bones are unchanged. A closing still
+  stabilises the cut it works on, which stops that cut's bleed for good, one wound at a time.
+  `WolfmedStasisTest` pins the knob at a half, the whole hit as shipped and the hold ending on its limit.
 - **A coagulant reaches the wounds (2026-09-29).** "Medicines don't do what they're advertised to, tranexamic acid in
   particular." `ModifyBleedAmount` wrote the bloodstream's bleed figure, which on a wound host is only the wounds'
   projection and refuses every other writer (GUARD E3). Tranexamic acid, bicaridine, inaprovaline, polypyrylium,
@@ -5037,3 +5043,13 @@ As there, nitrous oxide still puts a thaven to sleep.
 `WolfmedAirlossRecoveryTest` stands every species a player can pick in station air for a minute: none takes
 suffocation damage, and each sheds what it was given. Before these changes it names the thaven, the shadekin and the
 Proto shadekin.
+
+## Necrotic torso and head (2026-10-10)
+
+Dead tissue had one exit, amputation, and a torso or a head cannot come off: a necrotic chest kept the patient septic
+for good. `WFSurgeryRemoveNecroticFlesh` (open incision, scalpel, skin graft, cautery) lists on a necrotic torso or
+head only; a dead limb is still an amputation. The scalpel only marks the part (`WolfmedNecrosisExcisedComponent`);
+the graft step calls `WolfmedNecrosisSystem.RemoveNecrosis`, so closing up after the cut alone cures nothing: the
+necrosis wound goes, the part is alive again, and a risk still on the part (charring, a deep freeze) restarts its clock. The part's own
+infection is left at the top and recovers by itself or with spaceacillin. The pod does it from the base program,
+before organ repair. `WolfmedNecrosisSurgeryTest`.

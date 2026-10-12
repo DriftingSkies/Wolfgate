@@ -93,6 +93,8 @@ public sealed partial class IdCardConsoleComponent : Component
     "Mieyo", // Mono
     "MieyoSecurity", // Mono
     "MieyoLiason", // Mono
+    "Underground", // WOLFGATE: Monolith#4816 added the level without a way to hand it out
+    "Godfather", // WOLFGATE: Monolith#4816 added the level without a way to hand it out
     };
 
     [Serializable, NetSerializable]

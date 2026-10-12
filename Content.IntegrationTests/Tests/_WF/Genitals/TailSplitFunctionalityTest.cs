@@ -179,6 +179,41 @@ public sealed class TailSplitFunctionalityTest
     }
 
     /// <summary>
+    /// A tail that is taken back out of the split has fewer sprites than the colour lists saved while it was split. The
+    /// leading colours are the ones the character picked, so every tail marking must keep them instead of resetting.
+    /// </summary>
+    [Test]
+    public async Task UnsplitTailKeepsSavedColoursTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var markingMan = server.ResolveDependency<MarkingManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.Multiple(() =>
+            {
+                foreach (var tail in TailMarkings(pair, server.ProtoMan))
+                {
+                    // One colour per sprite, then a linked half for each of them, as the split saved it.
+                    var saved = new List<Color>();
+                    for (var i = 0; i < tail.Sprites.Count * 2; i++)
+                    {
+                        saved.Add(Palette[i % tail.Sprites.Count % Palette.Length]);
+                    }
+
+                    var trimmed = Validate(markingMan, new Marking(tail.ID, saved) { Visible = false });
+                    Assert.That(trimmed.MarkingColors, Is.EqualTo(saved.Take(tail.Sprites.Count)),
+                        $"{tail.ID}: EnsureValid must keep the leading colours of a longer saved list.");
+                    Assert.That(trimmed.Visible, Is.False, $"{tail.ID}: EnsureValid must keep the saved visibility.");
+                }
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
     /// The wagging action swaps a tail marking for its Animated variant and back. SetMarkingId copies colours by index,
     /// so both variants must offer the same colour boxes in the same places, and any half only one of them gained from
     /// the split must follow another sprite's colour rather than be left white.

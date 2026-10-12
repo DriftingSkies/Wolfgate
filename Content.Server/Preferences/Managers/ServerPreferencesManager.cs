@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Server.Database;
+using Content.Server.GameTicking; // WOLFGATE(InRoundCreator)
 using Content.Shared.CCVar;
 using Content.Shared.Preferences;
 using Robust.Server.Player;
@@ -38,6 +39,16 @@ namespace Content.Server.Preferences.Managers
 
         private int MaxCharacterSlots => _cfg.GetCVar(CCVars.GameMaxCharacterSlots);
 
+        // WOLFGATE(InRoundCreator) START: the selected character is fixed for a player who is in the round
+        /// <summary>
+        /// The bank, deposit boxes and persistence all write to the selected slot, so a client must not move it mid-round.
+        /// </summary>
+        private bool SelectionLocked(NetUserId userId)
+        {
+            return _entityManager.System<GameTicker>().UserHasJoinedGame(userId);
+        }
+        // WOLFGATE END
+
         public void Init()
         {
             _netManager.RegisterNetMessage<MsgPreferencesAndSettings>();
@@ -70,6 +81,10 @@ namespace Content.Server.Preferences.Managers
                 // Non-existent slot.
                 return;
             }
+
+            // WOLFGATE(InRoundCreator): no switching character mid-round
+            if (index != curPrefs.SelectedCharacterIndex && SelectionLocked(userId))
+                return;
 
             prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, index, curPrefs.AdminOOCColor);
 
@@ -151,7 +166,11 @@ namespace Content.Server.Preferences.Managers
                 [slot] = profile
             };
 
-            prefsData.Prefs = new PlayerPreferences(profiles, slot, curPrefs.AdminOOCColor);
+            // WOLFGATE(InRoundCreator) START: a client saving another slot mid-round does not select it
+            // prefsData.Prefs = new PlayerPreferences(profiles, slot, curPrefs.AdminOOCColor);
+            var selected = !authoritative && SelectionLocked(userId) ? curPrefs.SelectedCharacterIndex : slot;
+            prefsData.Prefs = new PlayerPreferences(profiles, selected, curPrefs.AdminOOCColor);
+            // WOLFGATE END
 
             if (ShouldStorePrefs(session.Channel.AuthType))
                 await _db.SaveCharacterSlotAsync(userId, profile, slot);
@@ -180,6 +199,10 @@ namespace Content.Server.Preferences.Managers
             int? nextSlot = null;
             if (curPrefs.SelectedCharacterIndex == slot)
             {
+                // WOLFGATE(InRoundCreator): deleting the selected character would switch to another one
+                if (SelectionLocked(userId))
+                    return;
+
                 // That ! on the end is because Rider doesn't like .NET 5.
                 var (ns, profile) = curPrefs.Characters.FirstOrDefault(p => p.Key != message.Slot)!;
                 if (profile == null)

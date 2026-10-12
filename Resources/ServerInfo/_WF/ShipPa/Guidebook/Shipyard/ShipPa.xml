@@ -35,8 +35,10 @@
   ## Internet audio
 
   Paste an HTTPS audio or video link into the PA panel and press Play. The link, any redirects,
-  and the audio stream must all use HTTPS; plain HTTP streams are not supported. Press Cut to
-  stop the track and allow an immediate replacement.
+  and the audio stream must all use HTTPS; plain HTTP streams are not supported. If something is
+  already playing, the link joins the ship's queue (eight links at most) and plays when the track
+  ends. Skip ends the current track, X takes a link out of the queue, Clear empties it, and Stop
+  ends the track and empties the queue.
 
   ## Damage and repair
 

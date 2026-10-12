@@ -23,22 +23,22 @@ public sealed class WolfgateMarkingIcon : Control
         Direction.South, Direction.East, Direction.West, Direction.North,
     };
 
-    // Populating a body part builds hundreds of these, each probing several sprites and directions,
-    // so the two managers are resolved once rather than per probe.
-    private static SpriteSystem? _spriteSystem;
-    private static IClickMapManager? _clickMaps;
+    // Resolved per call, never kept in a static: each client has its own managers, and pooled test clients
+    // share one process, so a static would hand one client's managers to another client's thread.
+    private static SpriteSystem Sprites => IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<SpriteSystem>();
 
-    private static SpriteSystem Sprites =>
-        _spriteSystem ??= IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<SpriteSystem>();
-
-    private static IClickMapManager ClickMaps => _clickMaps ??= IoCManager.Resolve<IClickMapManager>();
+    private static IClickMapManager ClickMaps => IoCManager.Resolve<IClickMapManager>();
 
     private readonly IReadOnlyList<SpriteSpecifier> _sprites;
     private readonly List<TextureRect> _layers = new();
+    private readonly float _scale;
+    private readonly float _size;
 
     public WolfgateMarkingIcon(IReadOnlyList<SpriteSpecifier>? sprites, Direction direction, float scale = 2f, float size = 64f)
     {
         _sprites = sprites ?? Array.Empty<SpriteSpecifier>();
+        _scale = scale;
+        _size = size;
         MinSize = new Vector2(size, size);
         HorizontalAlignment = HAlignment.Center;
 
@@ -80,7 +80,13 @@ public sealed class WolfgateMarkingIcon : Control
     {
         var shown = VisibleDirection(_sprites, direction);
         for (var i = 0; i < _layers.Count; i++)
-            _layers[i].Texture = FrameFor(_sprites[i], shown);
+        {
+            var texture = FrameFor(_sprites[i], shown);
+            // A sprite wider than the usual 32 px, such as a naga tail, is scaled down to stay inside the icon.
+            var fit = MathF.Min(_scale, _size / MathF.Max(1f, MathF.Max(texture.Width, texture.Height)));
+            _layers[i].TextureScale = new Vector2(fit, fit);
+            _layers[i].Texture = texture;
+        }
     }
 
     /// <summary>

@@ -7,4 +7,8 @@ public sealed partial class WolfmedStasisHoldComponent : Component
     /// <summary>Seconds towards the next healing tick.</summary>
     [DataField]
     public float Accumulated;
+
+    /// <summary>Seconds this stasis has lasted, against wolfmed.stasis_max_seconds.</summary>
+    [DataField]
+    public float Elapsed;
 }

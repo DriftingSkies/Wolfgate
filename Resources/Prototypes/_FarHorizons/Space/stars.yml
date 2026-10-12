@@ -45,8 +45,15 @@
 - type: starType
   id: StarKyphrus
   name: Kyphrus
-  shader: MainSequenceStar
+  # WOLFGATE(BlackHole) START: replace Kyphrus's stellar surface with an accreting black hole.
+  # shader: MainSequenceStar
+  shader: WFBlackHole
+  # WOLFGATE END
   solarMass: 0.62
-  color: '#FFD2A1'
-  rotation: 0.6
+  # WOLFGATE(BlackHole) START: cast warm accretion light with a slightly inclined disk.
+  # color: '#FFD2A1'
+  # rotation: 0.6
+  color: '#FFB36A'
+  rotation: 0.16
+  # WOLFGATE END
   rings: StandardRings

@@ -313,15 +313,18 @@ public sealed class AtmosphereThrusterTest
             Assert.That(ordinary, Has.Length.EqualTo(4));
             Assert.That(em.GetComponent<ShuttleComponent>(hull).AngularThrust, Is.GreaterThan(0f),
                 "The powered gyroscope must be present to prove it does not contribute lift.");
-            Assert.That(zLevels.WfGetLandingThrust(hull), Is.EqualTo(400f / Gravity + 100f).Within(0.01f));
+            // Read off the engine, so an upstream change to the stock rating doesn't move this test.
+            var ordinaryForce = server.System<ThrusterSystem>().WfAtmosphericForce(ordinary[0], em.GetComponent<ThrusterComponent>(ordinary[0]));
+            Assert.That(ordinaryForce, Is.GreaterThan(0f));
+            Assert.That(zLevels.WfGetLandingThrust(hull), Is.EqualTo(4f * ordinaryForce / Gravity + 100f).Within(0.01f));
 
             em.EventBus.RaiseLocalEvent(ordinary[0], new ActivateInWorldEvent(ordinary[0], ordinary[0], true));
             Assert.That(em.GetComponent<ThrusterComponent>(ordinary[0]).Enabled, Is.False);
-            Assert.That(zLevels.WfGetLandingThrust(hull), Is.EqualTo(300f / Gravity + 100f).Within(0.01f));
+            Assert.That(zLevels.WfGetLandingThrust(hull), Is.EqualTo(3f * ordinaryForce / Gravity + 100f).Within(0.01f));
 
             em.EventBus.RaiseLocalEvent(converted[0], new ActivateInWorldEvent(converted[0], converted[0], true));
             Assert.That(em.GetComponent<ThrusterComponent>(converted[0]).Enabled, Is.False);
-            Assert.That(zLevels.WfGetLandingThrust(hull), Is.EqualTo(300f / Gravity + 50f).Within(0.01f));
+            Assert.That(zLevels.WfGetLandingThrust(hull), Is.EqualTo(3f * ordinaryForce / Gravity + 50f).Within(0.01f));
 
         });
 

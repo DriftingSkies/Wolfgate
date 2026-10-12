@@ -276,6 +276,47 @@
     amount: 10
   - type: SurgeryStepEmoteEffect
 
+# Necrosis (W5) ---------------------------------------------------------------
+# The scalpel cuts the dead flesh away and the graft replaces it. The part stays necrotic until the graft is on, so
+# closing up after the cut alone cures nothing. One pass each: like charring, dead tissue has no damage to whittle down.
+
+- type: entity
+  parent: SurgeryStepBase
+  id: WFSurgeryStepRemoveNecroticFlesh
+  name: Cut away the necrotic flesh
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SurgeryStep
+    tool:
+    - type: Scalpel
+    add:
+    - type: WolfmedNecrosisExcised
+    duration: 6
+  - type: Sprite
+    sprite: _Shitmed/Objects/Specific/Medical/Surgery/scalpel.rsi
+    state: scalpel
+  - type: WolfmedSurgeryPainEffect
+    amount: 14
+  - type: SurgeryStepEmoteEffect
+
+- type: entity
+  parent: SurgeryStepBase
+  id: WFSurgeryStepGraftNecroticFlesh
+  name: Graft over the excised flesh
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SurgeryStep
+    tool:
+    - type: WolfmedSkinGraft
+    duration: 6
+  - type: Sprite
+    sprite: _DV/Objects/Specific/medical.rsi
+    state: regenerative-mesh
+  - type: WolfmedSurgeryRemoveNecrosisEffect
+  - type: WolfmedSurgeryPainEffect
+    amount: 14
+  - type: SurgeryStepEmoteEffect
+
 # Mechanical (W6) -------------------------------------------------------------
 
 - type: entity

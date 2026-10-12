@@ -572,6 +572,7 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
             }
 
             // Deserialize and spawn items into the box
+            var refused = 0;
             if (TryComp<StorageComponent>(boxEntity, out var storageComp))
             {
                 foreach (var itemData in box.Items)
@@ -580,7 +581,11 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
                     {
                         using var reader = new StringReader(itemData.EntityData);
                         if (!_loader.TryLoadEntity(reader, "safety deposit box", out var entity))
-                            return;
+                        {
+                            // Carry on, or the box comes out while the database still holds everything.
+                            Log.Error($"Failed to load item from safety deposit box {boxId}: {itemData.EntityData}");
+                            continue;
+                        }
 
                         var itemEntity = entity.Value.Owner;
                         // Mark item as having been stored in a deposit box
@@ -588,7 +593,10 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
 
                         // Insert into storage
                         if (!_storage.Insert(boxEntity, itemEntity, out _, storageComp: storageComp, playSound: false))
-                            QueueDel(itemEntity);
+                        {
+                            DropRefusedItem(player, boxId, boxEntity, itemEntity);
+                            refused++;
+                        }
 
                     }
                     catch (Exception ex)
@@ -611,7 +619,7 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
                 _transform.SetLocalRotation(boxEntity, Angle.Zero);
             }
 
-            ConsolePopup(player, Loc.GetString("safety-deposit-console-withdraw-success"));
+            ConsolePopup(player, WithdrawPopup(refused));
             PlayConfirmSound(consoleUid, component);
 
             _adminLogger.Add(LogType.Action, LogImpact.Medium,

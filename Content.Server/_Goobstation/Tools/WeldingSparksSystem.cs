@@ -14,6 +14,7 @@ namespace Content.Server._Goobstation.Tools;
 public sealed class WeldingSparksSystem : EntitySystem
 {
     [Dependency] private readonly ToolSystem _toolSystem = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!; // WOLFGATE: tells an instant do-after from a running one
 
     public override void Initialize()
     {
@@ -33,6 +34,10 @@ public sealed class WeldingSparksSystem : EntitySystem
 
         // Get the actual `DoAfterID` using its index, for use as a dictionary key.
         var doAfterId = new DoAfterId(args.User, args.DoAfterIdx);
+
+        // WOLFGATE: an instant do-after has already ended, so nothing would ever delete the effect
+        if (!_doAfter.IsRunning(doAfterId))
+            return;
 
         var spawnLoc = GetSpawnLoc(ent, args.Target);
         if (spawnLoc is not { } loc)

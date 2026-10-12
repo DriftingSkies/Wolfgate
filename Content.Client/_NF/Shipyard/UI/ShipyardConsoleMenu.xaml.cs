@@ -56,6 +56,10 @@ public sealed partial class ShipyardConsoleMenu : FancyWindow
     {
         SellShipButton.Visible = false;
         UnassignDeedButton.Visible = false;
+
+        // A dealer has no slot: the cash readout is what lies on its counter.
+        if (CashSlotControls.ChildCount > 0 && CashSlotControls.GetChild(0) is Label cashTitle)
+            cashTitle.Text = Loc.GetString("trader-shipyard-counter-cash-label");
     }
     // WOLFGATE END
 
@@ -318,6 +322,7 @@ public sealed partial class ShipyardConsoleMenu : FancyWindow
     public void UpdateState(ShipyardConsoleInterfaceState state)
     {
         BalanceLabel.Text = BankSystemExtensions.ToSpesoString(state.Balance);
+        CashSlotLabel.Text = BankSystemExtensions.ToSpesoString(state.CashBalance);
         var shipPrice = 0;
         if (!state.FreeListings)
             shipPrice = state.ShipSellValue;

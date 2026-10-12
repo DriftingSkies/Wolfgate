@@ -139,6 +139,8 @@
     - USSP # Mono
     - Xenoborg # WOLFGATE(Xenoborgs): Monolith #4558
     - Mothership # WOLFGATE(Xenoborgs): Monolith #4558
+    - Underground # WOLFGATE: Monolith#4816 added the level without a way to hand it out
+    - Godfather # WOLFGATE: Monolith#4816 added the level without a way to hand it out
     privilegedIdSlot:
       name: id-card-console-privileged-id
       ejectSound: /Audio/Machines/id_swipe.ogg

@@ -6,7 +6,7 @@
     Magazine762x39mmLowCapacityFMJ: 4294967295 # Infinite
     Magazine762x54mmRFMJ: 4294967295 # Infinite
     Magazine9x19mmPistolFMJ: 4294967295 # Infinite
-    Magazine9x19mmPistolHighCapacityFMJ: 20
+    Magazine9x19mmPistolHighCapacityEmpty: 20 # WOLFGATE: the loaded magazine is class-3 contraband worth 10 FMC since Monolith#4816
     SpeedLoader762x39mmFMJ: 4294967295 # Infinite
     SpeedLoader762x54mmRFMJ: 4294967295 # Infinite
     AmmoBox23x75mmSlug: 4294967295 # 4 gauge

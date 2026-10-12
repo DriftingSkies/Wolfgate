@@ -1,0 +1,9 @@
+# Lockable buttons for access levels upstream maps need but ship no button for.
+
+- type: entity
+  id: WFLockableButtonUnderground
+  suffix: Underground
+  parent: LockableButton
+  components:
+  - type: AccessReader
+    access: [["Underground"]]

@@ -62,6 +62,7 @@ public sealed partial class WFEncounterMarkerSystem : EntitySystem
                     Ship = MetaData(ship.Grid).EntityName,
                     Side = ship.Side,
                     Category = encounter.Category,
+                    Icon = ship.Icon != WFEncounterIcon.Category ? ship.Icon : encounter.Icon,
                     Grid = GetNetEntity(ship.Grid),
                     Color = ShipColor(encounter, ship),
                     Map = position.MapId,

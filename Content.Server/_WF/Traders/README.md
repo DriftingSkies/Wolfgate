@@ -11,6 +11,10 @@ Entry points: `TraderSystem` (dialogue, barter zone, payment and receipts), the 
 `Resources/Prototypes/_WF/Traders`. `IdCardOwnerSystem` (stamps an ID card with its owner at spawn) and
 `InteractionRangeBonusEvent` (reach across the table) exist for traders only.
 
+Payment is cash on the counter first, then the customer's bank for the rest, with the bank charged before any cash
+is taken. The shipyard dealer's hosted console counts the counter as its cash slot. An Ironman's account is frozen,
+so only the cash pays for them: a short counter is refused and nothing is taken.
+
 Every living trader wears a question mark status icon in the SSD indicator's spot (`TraderIconSystem`, client).
 Station traders are invulnerable and rooted. A killable trader (the wanderers, `killable: true`) keeps the body
 that dies and runs: the wound system ignores damage totals, so it only kills through blood, breath and the organs,
@@ -66,6 +70,7 @@ while they stay near and calms down once they are far off or gone.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Traders/TraderDamageTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traders/TraderDamageTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Traders/TraderIronmanTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traders/TraderIronmanTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Traders/TraderShipTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traders/TraderShipTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Traders/TraderStockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traders/TraderStockTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Traders/TraderTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traders/TraderTest.cs)
@@ -108,7 +113,10 @@ while they stay near and calms down once they are far off or gone.
 - [`Content.Client/_NF/Shipyard/UI/ShipyardConsoleMenu.xaml.cs`](../../../Content.Client/_NF/Shipyard/UI/ShipyardConsoleMenu.xaml.cs): an NPC dealer only sells ships; the server refuses these two anyway.
 - [`Content.IntegrationTests/Tests/PrototypeSaveTest.cs`](../../../Content.IntegrationTests/Tests/PrototypeSaveTest.cs): traders are skipped; they are humanoids kept savable so mappers can place them
 - [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs)
+  - a hosting trader's counter is the cash slot
+  - the cash share comes off a hosting trader's counter
   - a trader hosting this console may refuse to buy ships back.
+  - a trader hosting this console pays the cash out on its counter
   - a trader hosting this console has no ActivatableUI, so check the key that was opened.
   - hosting traders read back why a sale was refused
   - a trader hosting this console has no ActivatableUI, so fall back to whichever shipyard key is open on it.

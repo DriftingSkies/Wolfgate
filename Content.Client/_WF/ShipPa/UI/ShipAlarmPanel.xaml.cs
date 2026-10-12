@@ -10,7 +10,8 @@ using Robust.Shared.Timing;
 namespace Content.Client._WF.ShipPa.UI;
 
 /// <summary>
-/// Console panel for the ship's PA: the situation code, the general quarters alarm and free-text announcements.
+/// Console panel for the ship's PA: the situation code, the general quarters alarm, free-text announcements
+/// and the playlist of linked sounds.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class ShipAlarmPanel : BoxContainer
@@ -28,6 +29,12 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     private static readonly Color AlarmColor = Color.FromHex("#ff8080");
 
     private readonly Dictionary<string, Button> _codeButtons = new();
+
+    /// <summary>The queue the rows were last built from, so they are only rebuilt when it changes.</summary>
+    private readonly List<ShipPaPlaylistEntry> _shownQueue = new();
+
+    /// <summary>One code button, which shows whether the theme has cleared the code colours.</summary>
+    private Button? _codeProbe;
 
     private EntityUid? _grid;
     private bool _generalQuarters;
@@ -53,8 +60,11 @@ public sealed partial class ShipAlarmPanel : BoxContainer
         SoundEdit.OnTextChanged += args => SoundButton.Disabled = string.IsNullOrWhiteSpace(args.Text);
         SoundButton.Disabled = true;
         SoundStopButton.OnPressed += _ => SoundStopRequested?.Invoke();
+        SkipButton.OnPressed += _ => PlaylistRequested?.Invoke(ShipPaPlaylistAction.Skip, 0);
+        ClearQueueButton.OnPressed += _ => PlaylistRequested?.Invoke(ShipPaPlaylistAction.Clear, 0);
 
         Refresh(null);
+        RefreshPlaylist(null);
     }
 
     /// <summary>
@@ -73,14 +83,19 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     public event Action<string>? AnnounceRequested;
 
     /// <summary>
-    /// Pilot pasted a link to play over the ship's speakers.
+    /// Pilot pasted a link to play over the ship's speakers, now or after what is already queued.
     /// </summary>
     public event Action<string>? SoundRequested;
 
     /// <summary>
-    /// Pilot cut whatever the ship is playing.
+    /// Pilot stopped whatever the ship is playing and emptied its queue.
     /// </summary>
     public event Action? SoundStopRequested;
+
+    /// <summary>
+    /// Pilot skipped the playing track, removed a queued link (named by its id) or cleared the queue.
+    /// </summary>
+    public event Action<ShipPaPlaylistAction, int>? PlaylistRequested;
 
     /// <summary>
     /// The pilot switched the collision warning on or off.
@@ -99,6 +114,10 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
+
+        // A theme change while the page was hidden cleared them; put them back before the page is first drawn.
+        if (_codeProbe is { Label.FontColorOverride: null })
+            ApplyCodeColours();
 
         _pollAccumulator += args.DeltaSeconds;
 
@@ -138,6 +157,17 @@ public sealed partial class ShipAlarmPanel : BoxContainer
 
             CodeContainer.AddChild(button);
             _codeButtons[id] = button;
+            _codeProbe ??= button;
+        }
+    }
+
+    /// <summary>Gives each code button its code's colour, which the console theme clears whenever it restyles them.</summary>
+    private void ApplyCodeColours()
+    {
+        foreach (var (id, button) in _codeButtons)
+        {
+            if (_protoManager.TryIndex<ShipAlertCodePrototype>(id, out var codeProto))
+                button.Label.FontColorOverride = codeProto.Color;
         }
     }
 
@@ -145,6 +175,7 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     {
         _pollAccumulator = 0f;
         Refresh(_entManager.TryGetComponent<ShipAlertComponent>(_grid, out var alert) ? alert : null);
+        RefreshPlaylist(_entManager.TryGetComponent<ShipPaPlaylistComponent>(_grid, out var playlist) ? playlist : null);
     }
 
     /// <summary>
@@ -169,6 +200,8 @@ public sealed partial class ShipAlarmPanel : BoxContainer
         {
             button.Disabled = code != null && code.Value.Id == id;
         }
+
+        ApplyCodeColours();
 
         // The collision warning is a grid component rather than console state, so it rides the same poll.
         _collisionAlertOff = _entManager.HasComponent<CollisionWarningDisabledComponent>(_grid);
@@ -205,6 +238,83 @@ public sealed partial class ShipAlarmPanel : BoxContainer
             ("online", alert.SpeakersOnline),
             ("total", alert.SpeakersTotal));
         SpeakersLabel.FontColorOverride = ReadoutColor;
+    }
+
+    /// <summary>
+    /// Shows what the PA is playing and what waits behind it. The section is hidden while the ship has neither.
+    /// </summary>
+    private void RefreshPlaylist(ShipPaPlaylistComponent? playlist)
+    {
+        var current = playlist?.Current;
+        var queue = playlist?.Queue;
+        var queued = queue?.Count ?? 0;
+
+        PlaylistBox.Visible = current != null || queued > 0;
+
+        if (!PlaylistBox.Visible)
+        {
+            if (_shownQueue.Count > 0)
+            {
+                _shownQueue.Clear();
+                QueueList.DisposeAllChildren();
+            }
+
+            return;
+        }
+
+        NowPlayingLabel.Text = current is { } now
+            ? Loc.GetString("shuttle-console-ship-playlist-now", ("title", now.Label))
+            : Loc.GetString("shuttle-console-ship-playlist-waiting");
+
+        QueueHeader.Visible = QueueScroll.Visible = queued > 0;
+        QueueLabel.Text = Loc.GetString("shuttle-console-ship-playlist-queue",
+            ("count", queued),
+            ("max", ShipPaPlaylistComponent.MaxQueued));
+
+        if (queue == null || _shownQueue.SequenceEqual(queue))
+            return;
+
+        _shownQueue.Clear();
+        _shownQueue.AddRange(queue);
+        RebuildQueue();
+    }
+
+    /// <summary>One row per waiting link, each with a button to take it out.</summary>
+    private void RebuildQueue()
+    {
+        QueueList.DisposeAllChildren();
+
+        for (var i = 0; i < _shownQueue.Count; i++)
+        {
+            var entry = _shownQueue[i];
+            var title = new Label
+            {
+                Text = Loc.GetString("shuttle-console-ship-playlist-row", ("position", i + 1), ("title", entry.Label)),
+                HorizontalExpand = true,
+                VerticalAlignment = VAlignment.Center,
+                ClipText = true,
+            };
+
+            var remove = new Button
+            {
+                Text = Loc.GetString("shuttle-console-ship-playlist-remove"),
+                ToolTip = Loc.GetString("shuttle-console-ship-playlist-remove-tooltip"),
+                Margin = new Thickness(4, 0, 0, 0),
+            };
+            remove.AddStyleClass("ButtonSquare");
+
+            var id = entry.Id;
+            remove.OnPressed += _ => PlaylistRequested?.Invoke(ShipPaPlaylistAction.Remove, id);
+
+            var row = new BoxContainer { HorizontalExpand = true };
+            row.AddChild(title);
+            row.AddChild(remove);
+
+            if (_wfInstrumentsRefitted)
+                WfStyleQueueRow(row, remove);
+
+            QueueList.AddChild(row);
+        }
     }
 
     private void QueueSound()

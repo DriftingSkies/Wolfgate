@@ -13,8 +13,8 @@
   id: MobSlimeSprites
   sprites:
     Head: MobSlimeHead
-    Hair: MobSlimeMarkingFollowSkin
-    FacialHair: MobSlimeMarkingFollowSkin
+    Hair: MobHumanoidAnyMarking # WOLFGATE(Species): was MobSlimeMarkingFollowSkin; hair colour is the player's pick
+    FacialHair: MobHumanoidAnyMarking # WOLFGATE(Species): was MobSlimeMarkingFollowSkin; facial hair colour is the player's pick
     # WOLFGATE(Species) START: ported from HardLight, slimes take the head and tail marking slots of other species
     # Anthro ears, snouts and tails render on them.
     Snout: MobHumanoidAnyMarking

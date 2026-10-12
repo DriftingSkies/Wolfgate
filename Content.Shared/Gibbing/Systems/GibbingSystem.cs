@@ -10,6 +10,7 @@ using Robust.Shared.Physics.Components; // WOLFGATE: bodiless giblets are skippe
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Chemistry.Components.SolutionManager;
 
 namespace Content.Shared.Gibbing.Systems;
 
@@ -148,6 +149,9 @@ public sealed partial class GibbingSystem : EntitySystem
                 {
                     foreach (var ent in container.ContainedEntities.ToArray()) // WOLFGATE(Wolfmed): snapshot, DropEntity/GibEntity mutate the container
                     {
+                        // Do not gib solution entities
+                        if (HasComp<ContainedSolutionComponent>(ent))
+                            continue;
                         DropEntity(new Entity<GibbableComponent?>(ent, null), parentXform, randomSpreadMod,
                             ref droppedEntities, launchGibs,
                             launchDirection, launchImpulse, launchImpulseVariance, launchCone);
@@ -162,6 +166,9 @@ public sealed partial class GibbingSystem : EntitySystem
                 {
                     foreach (var ent in container.ContainedEntities.ToArray()) // WOLFGATE(Wolfmed): snapshot, DropEntity/GibEntity mutate the container
                     {
+                        // Do not gib solution entities
+                        if (HasComp<ContainedSolutionComponent>(ent))
+                            continue;
                         GibEntity(new Entity<GibbableComponent?>(ent, null), parentXform, randomSpreadMod,
                             ref droppedEntities, launchGibs,
                             launchDirection, launchImpulse, launchImpulseVariance, launchCone);

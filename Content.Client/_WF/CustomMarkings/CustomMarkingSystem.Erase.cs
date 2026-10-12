@@ -97,12 +97,13 @@ public sealed partial class CustomMarkingSystem
     private List<Part> FindErasable(Entity<SpriteComponent?> sprite)
     {
         var parts = FindLimbs(sprite);
+        var extras = FindExtras(sprite, parts);
         if (sprite.Comp is { } comp
             && _sprite.LayerMapTryGet(sprite, HumanoidVisualLayers.Eyes, out var index, false)
             && TryGetPart(comp, index, HumanoidVisualLayers.Eyes, nameof(HumanoidVisualLayers.Eyes), out var eyes))
             parts.Add(eyes);
 
-        parts.AddRange(FindExtras(sprite));
+        parts.AddRange(extras);
         return parts;
     }
 

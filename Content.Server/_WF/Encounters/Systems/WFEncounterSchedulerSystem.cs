@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._Mono.AlertLevel;
 using Content.Server._NF.GameTicking.Events;
 using Content.Server.GameTicking;
 using Content.Shared._NF.Shipyard.Components;
@@ -37,6 +38,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
     [Dependency] private WFEncounterSystem _encounters = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private WarLevelSystem _warLevel = default!;
 
     /// <summary>Space that has to be free of other grids around an open-space origin.</summary>
     private const float Clearance = 600f;
@@ -226,16 +228,17 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
 
     /// <summary>
     /// Starts an encounter for an admin. Open-space encounters go where asked; the others are placed beside
-    /// stations on that map as usual, because their orders are aimed at those stations.
+    /// stations on that map as usual, because their orders are aimed at those stations. Pinned, it stays until an
+    /// admin ends it; otherwise it jumps out and is cleaned up like a scheduled one.
     /// </summary>
-    public bool TryStartAt(WFEncounterPrototype prototype, MapCoordinates near, out EntityUid encounter, EntityUid? spawner)
+    public bool TryStartAt(WFEncounterPrototype prototype, MapCoordinates near, out EntityUid encounter, EntityUid? spawner, bool pinned = true)
     {
         encounter = default;
         if (prototype.Placement == WFEncounterPlacement.OpenSpace)
-            return _encounters.TrySpawn(prototype, near, out encounter, spawner);
+            return _encounters.TrySpawn(prototype, near, out encounter, spawner, pinned: pinned);
 
         return TryPlaceAtStations(prototype, near.MapId, out var origin, out var stops)
-            && _encounters.TrySpawn(prototype, origin, out encounter, spawner, stops);
+            && _encounters.TrySpawn(prototype, origin, out encounter, spawner, stops, pinned);
     }
 
     private bool TryStart(WFEncounterPrototype prototype, out EntityUid encounter)
@@ -256,6 +259,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         var players = _playerManager.PlayerCount;
         var preset = Preset;
         var room = Budget() - _encounters.ActiveCost();
+        var atWar = _warLevel.GetWarLevel(EntityUid.Invalid);
         var candidates = new List<(WFEncounterPrototype Prototype, float Weight)>();
         var total = 0f;
         foreach (var prototype in _prototypes.EnumeratePrototypes<WFEncounterPrototype>())
@@ -272,6 +276,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
                 : prototype.Cost;
             // One of a kind at a time: an encounter that is still running is not picked again.
             if (!fits || weight <= 0f || players < prototype.MinPlayers || cost > Math.Max(0, room) || skip.Contains(prototype.ID)
+                || prototype.RequiresWar && !atWar
                 || _encounters.IsRunning(prototype.ID)
                 || _lastStarted.TryGetValue(prototype.ID, out var last)
                     && _timing.CurTime - last < TimeSpan.FromSeconds(prototype.Cooldown))

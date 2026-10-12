@@ -16,6 +16,7 @@ public sealed partial class WolfgateAdminVerbSystem : EntitySystem
     [Dependency] private IConGroupController _groupController = default!;
     [Dependency] private IServerConsoleHost _console = default!;
     [Dependency] private GhostOfferSystem _ghostOffer = default!;
+    [Dependency] private SecondChanceSystem _secondChance = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
 
     public override void Initialize()
@@ -59,6 +60,26 @@ public sealed partial class WolfgateAdminVerbSystem : EntitySystem
                 Act = () =>
                 {
                     var offered = _ghostOffer.TryOffer(target, player, null, null, null, out var message);
+                    _popup.PopupCursor(message, player, offered ? PopupType.Medium : PopupType.MediumCaution);
+                },
+                Impact = LogImpact.Medium,
+            });
+        }
+
+        // Offer Second Chance: asks the body's player; a yes returns them to it and rejuvenates it.
+        if (_groupController.CanCommand(player, WolfgateAdminCommands.SecondChance)
+            && _secondChance.CanOffer(args.Target))
+        {
+            var target = args.Target;
+            args.Verbs.Add(new Verb
+            {
+                Text = Loc.GetString("wf-admin-verbs-second-chance"),
+                Message = Loc.GetString("wf-admin-verbs-second-chance-description"),
+                Category = VerbCategory.Admin,
+                Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/VerbIcons/rejuvenate.svg.192dpi.png")),
+                Act = () =>
+                {
+                    var offered = _secondChance.TryOffer(target, player, out var message);
                     _popup.PopupCursor(message, player, offered ? PopupType.Medium : PopupType.MediumCaution);
                 },
                 Impact = LogImpact.Medium,

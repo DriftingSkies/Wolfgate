@@ -72,41 +72,41 @@
         id: "eyes"
 
 - type: entity
-  parent: [ PartIPCBase, BaseLeftArm ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseLeftArm ] # WOLFGATE(Wolfmed): metallic edible profile
   id: LeftArmIPC
   name: "left ipc arm"
 
 - type: entity
-  parent: [ PartIPCBase, BaseRightArm ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseRightArm ] # WOLFGATE(Wolfmed): metallic edible profile
   id: RightArmIPC
   name: "right ipc arm"
 
 - type: entity
-  parent: [ PartIPCBase, BaseLeftHand ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseLeftHand ] # WOLFGATE(Wolfmed): metallic edible profile
   id: LeftHandIPC
   name: "left ipc hand"
 
 - type: entity
-  parent: [ PartIPCBase, BaseRightHand ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseRightHand ] # WOLFGATE(Wolfmed): metallic edible profile
   id: RightHandIPC
   name: "right ipc hand"
 
 - type: entity
-  parent: [ PartIPCBase, BaseLeftLeg ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseLeftLeg ] # WOLFGATE(Wolfmed): metallic edible profile
   id: LeftLegIPC
   name: "left ipc leg"
 
 - type: entity
-  parent: [ PartIPCBase, BaseRightLeg ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseRightLeg ] # WOLFGATE(Wolfmed): metallic edible profile
   id: RightLegIPC
   name: "right ipc leg"
 
 - type: entity
-  parent: [ PartIPCBase, BaseLeftFoot ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseLeftFoot ] # WOLFGATE(Wolfmed): metallic edible profile
   id: LeftFootIPC
   name: "left ipc foot"
 
 - type: entity
-  parent: [ PartIPCBase, BaseRightFoot ]
+  parent: [ PartIPCBase, BaseEdibleCyberneticLimb, BaseRightFoot ] # WOLFGATE(Wolfmed): metallic edible profile
   id: RightFootIPC
   name: "right ipc foot"

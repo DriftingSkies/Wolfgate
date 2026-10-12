@@ -292,7 +292,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     /// nothing behind, when a ship cannot be loaded or crewed or its orders are invalid.
     /// </summary>
     public bool TrySpawn(WFEncounterPrototype prototype, MapCoordinates origin, out EntityUid encounter, EntityUid? spawner = null,
-        IReadOnlyList<EntityUid>? stops = null)
+        IReadOnlyList<EntityUid>? stops = null, bool pinned = false)
     {
         encounter = default;
         if (origin.MapId == MapId.Nullspace || prototype.Ships.Count == 0 || !_mapSystem.TryGetMap(origin.MapId, out var map))
@@ -310,9 +310,17 @@ public sealed partial class WFEncounterSystem : EntitySystem
             ? _timing.CurTime + TimeSpan.FromSeconds(prototype.Duration)
             : null;
         comp.Category = prototype.Category;
+        comp.Icon = prototype.Icon;
         comp.Cost = prototype.Cost;
         comp.Lifetime = prototype.Lifetime;
         comp.OffBudget = prototype.Lifetime == WFEncounterLifetime.Persistent || prototype.Start == WFEncounterStart.RoundStart;
+        // A pinned encounter is the admin's to end: no clock, no slot under the cap, and its ships stay however it goes.
+        comp.Pinned = pinned;
+        if (comp.Pinned)
+        {
+            comp.Expires = null;
+            comp.OffBudget = true;
+        }
         comp.Hidden = prototype.Hidden;
         comp.AnnounceOnRadio = prototype.AnnounceOnRadio;
         comp.AnnouncementSound = prototype.AnnouncementSound;
@@ -579,11 +587,15 @@ public sealed partial class WFEncounterSystem : EntitySystem
             AttackRange = ship.AttackRange,
             ZoneLines = ship.ZoneLines,
             ZoneTargets = ship.ZoneTargets,
+            Icon = ship.Icon,
             Hunt = ship.Hunt,
             Distress = ship.Distress,
             Passengers = ship.Passengers.Count > 0,
         };
         encounter.Comp.Ships.Add(ship.Key, state);
+        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only.
+        if (ship.Hunt)
+            EnsureComp<WFHoldFireComponent>(grid);
 
         // Cargo goes aboard first, so the crew are posted around it and not on it.
         if (manifest != null && manifest.Crates.Count > 0)
@@ -732,7 +744,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         encounter.Comp.Resolution = resolution;
         encounter.Comp.ResolvedAt = _timing.CurTime;
         if (resolution is WFEncounterResolution.Completed or WFEncounterResolution.Expired
-            && encounter.Comp.Lifetime == WFEncounterLifetime.Transient)
+            && encounter.Comp.Lifetime == WFEncounterLifetime.Transient && !encounter.Comp.Pinned)
             encounter.Comp.JumpAt = _timing.CurTime + JumpDelay;
         Log.Info($"Encounter {encounter.Comp.Prototype} {ToPrettyString(encounter)} resolved: {resolution}.");
         var ev = new WFEncounterResolvedEvent(encounter, resolution);
@@ -804,9 +816,14 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
                 SkipBlockedOrders(encounter);
                 Tend((uid, encounter));
+                Retarget((uid, encounter));
                 _running.Add((uid, encounter));
                 continue;
             }
+
+            // An admin's ships are never swept up, whoever is near; he removes them with the encounter.
+            if (encounter.Pinned)
+                continue;
 
             if (!CleanUp(encounter))
                 QueueDel(uid);
@@ -923,7 +940,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
             var adrift = _status.IsAdrift(ship.Grid);
             if (IsStranded(ship))
             {
-                ship.UnderwaySince = adrift ? null : (ship.UnderwaySince ?? now);
+                // Under way means able to drive ahead: a side thruster alone nudges a wrecked ship, it doesn't rescue it.
+                var driving = !adrift && (ship.Stranding != WFEncounterStranding.Thrusters || HasForwardThrust(ship.Grid));
+                ship.UnderwaySince = driving ? ship.UnderwaySince ?? now : null;
                 if (ship.UnderwaySince is { } underway && now - underway >= RescueDelay)
                     Rescue(encounter, key, ship);
             }
@@ -1069,8 +1088,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
             return WFEncounterResolution.Destroyed;
         if (sides.Count > 1 && fighting.Count == 1)
             return WFEncounterResolution.Decided;
-        // A persistent encounter stays for the round: finished orders and the clock don't end it.
-        if (encounter.Lifetime == WFEncounterLifetime.Persistent)
+        // A persistent encounter stays for the round, an admin's until he ends it: finished orders and the clock don't
+        // end either.
+        if (encounter.Lifetime == WFEncounterLifetime.Persistent || encounter.Pinned)
             return null;
         if (ordered > 0 && done == ordered)
             return WFEncounterResolution.Completed;

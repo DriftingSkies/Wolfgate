@@ -14,6 +14,7 @@ using Content.Shared._WF.Wolfmed.Consciousness;
 using Content.Shared._WF.Wolfmed.Life;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Inventory;
 using NUnit.Framework;
 using Robust.Shared.GameObjects;
 
@@ -439,7 +440,7 @@ public sealed class WolfmedTemperatureTest : WolfmedGameTest
 
     /// <summary>
     /// The lines come from each species' own thresholds, scaled so none sits closer to the normal temperature than
-    /// wolfmed.temperature_line_max_share of the gap allows: a reptilian (cold threshold 285 K, normal 310 K) is not
+    /// wolfmed.temperature_line_max_share of the gap allows: an asakim (cold threshold 285 K, normal 310 K) is not
     /// hypothermic at its own normal temperature, and an avali (normal 261 K, heat threshold 310 K) is not pushed into
     /// heat stroke by a fever. Both stand in station air.
     /// </summary>
@@ -449,37 +450,96 @@ public sealed class WolfmedTemperatureTest : WolfmedGameTest
         await Pin();
         var map = await CreateTestMap();
         var s = new WolfmedScenario(SEntMan);
-        EntityUid human = default, reptilian = default, avali = default;
+        EntityUid human = default, asakim = default, avali = default;
 
         await Server.WaitPost(() =>
         {
             s.SetAir(map.MapUid, true);
             human = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
-            reptilian = SEntMan.SpawnEntity("MobReptilian", map.GridCoords);
+            asakim = SEntMan.SpawnEntity("MobAsakim", map.GridCoords);
             avali = SEntMan.SpawnEntity("MobAvali", map.GridCoords);
         });
         await RunSeconds(10);
 
         await Server.WaitAssertion(() =>
         {
-            var lizard = BodyTemperature.GetLines(reptilian)!.Value;
+            var lizard = BodyTemperature.GetLines(asakim)!.Value;
             var bird = BodyTemperature.GetLines(avali)!.Value;
-            Note($"SpeciesLinesTest: reptilian cold lines {lizard.ColdDown:0.0}/{lizard.ColdOut:0.0}/{lizard.ColdArrest:0.0} K " +
+            Note($"SpeciesLinesTest: asakim cold lines {lizard.ColdDown:0.0}/{lizard.ColdOut:0.0}/{lizard.ColdArrest:0.0} K " +
                  $"(normal {lizard.Normal:0.0}); avali heat lines {bird.HeatDown:0.0}/{bird.HeatOut:0.0} K (normal {bird.Normal:0.0}), " +
                  $"fever ceiling {BodyTemperature.FeverCeiling(avali, 313f):0.0} K.");
             Assert.Multiple(() =>
             {
-                Assert.That(lizard.ColdDown, Is.LessThan(lizard.Normal - 5f), "a reptilian is hypothermic at its own normal temperature.");
+                Assert.That(lizard.ColdDown, Is.LessThan(lizard.Normal - 5f), "an asakim is hypothermic at its own normal temperature.");
                 Assert.That(lizard.ColdOut, Is.LessThan(lizard.ColdDown).And.GreaterThan(lizard.ColdArrest));
                 Assert.That(lizard.ColdArrest, Is.GreaterThan(285f));
                 Assert.That(BodyTemperature.FeverCeiling(human, 313f), Is.EqualTo(313f), "the human fever moved.");
                 Assert.That(BodyTemperature.FeverCeiling(avali, 313f), Is.LessThan(bird.HeatDown), "a fever can put an avali down.");
-                foreach (var body in new[] { human, reptilian, avali })
+                foreach (var body in new[] { human, asakim, avali })
                 {
                     Assert.That(s.State(body), Is.EqualTo(WolfmedConsciousness.Up), $"{SEntMan.ToPrettyString(body)} is down in station air.");
                     Assert.That(Holds(s, body, WolfmedCause.Cold) || Holds(s, body, WolfmedCause.Heat), Is.False);
                 }
             });
+        });
+    }
+
+    /// <summary>
+    /// A reptilian barely warms itself, so its surface settles a few kelvin over the air. Naked in 293 K station air
+    /// and in a 283 K unheated hull it is chilled, but takes no cold damage, stays on its feet and keeps its heart
+    /// however long it stays. A scarf is enough to keep it from being chilled in station air.
+    /// </summary>
+    [Test]
+    public async Task ReptilianAmbientAirTest()
+    {
+        await Pin();
+        var s = new WolfmedScenario(SEntMan);
+        var atmos = SEntMan.System<AtmosphereSystem>();
+        var airs = new[] { 293.15f, 283.15f };
+        var bodies = new List<EntityUid>();
+        EntityUid scarfed = default;
+
+        foreach (var kelvin in airs)
+        {
+            var map = await CreateTestMap();
+            await Server.WaitPost(() =>
+            {
+                atmos.SetMapAtmosphere(map.MapUid, false, AirAt(kelvin));
+                s.KeepGrid(map.Grid);
+                bodies.Add(SEntMan.SpawnEntity("MobReptilian", map.GridCoords));
+                if (scarfed.IsValid())
+                    return;
+
+                scarfed = SEntMan.SpawnEntity("MobReptilian", map.GridCoords);
+                var scarf = SEntMan.SpawnEntity("ClothingNeckScarfStripedRed", map.GridCoords);
+                Assert.That(SEntMan.System<InventorySystem>().TryEquip(scarfed, scarf, "neck", force: true), Is.True);
+            });
+        }
+
+        await RunSeconds(120);
+
+        await Server.WaitAssertion(() =>
+        {
+            for (var i = 0; i < airs.Length; i++)
+            {
+                var body = bodies[i];
+                var surface = Surface(body);
+                var lines = BodyTemperature.GetLines(body)!.Value;
+                Hold(s, body, surface, 3600);
+                Note($"ReptilianAmbientAirTest: {airs[i]:0} K air holds a {surface:0.0} K surface; after an hour core " +
+                     $"{BodyTemperature.GetCore(body):0.0} K, {s.State(body)}, lines {lines.ColdDown:0.0}/{lines.ColdOut:0.0}/{lines.ColdArrest:0.0} K.");
+                Assert.Multiple(() =>
+                {
+                    Assert.That(surface, Is.LessThan(298f), $"a reptilian is not chilled in {airs[i]:0} K air.");
+                    Assert.That(surface, Is.GreaterThan(SEntMan.GetComponent<TemperatureComponent>(body).ColdDamageThreshold),
+                        $"a reptilian takes cold damage in {airs[i]:0} K air.");
+                    Assert.That(s.State(body), Is.EqualTo(WolfmedConsciousness.Up), $"{airs[i]:0} K air put a reptilian down.");
+                    Assert.That(s.Life.InArrest(body), Is.False, $"{airs[i]:0} K air stopped a reptilian's heart.");
+                });
+            }
+
+            Note($"ReptilianAmbientAirTest: with a scarf, {airs[0]:0} K air holds a {Surface(scarfed):0.0} K surface.");
+            Assert.That(Surface(scarfed), Is.GreaterThan(298f), "a scarf does not keep a reptilian warm in station air.");
         });
     }
 

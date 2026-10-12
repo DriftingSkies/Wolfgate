@@ -78,7 +78,7 @@ public sealed class StructuralCrashTest
     // Three sizes of shipyard hull.
     [TestCase("/SharedMaps/_Mono/Shuttles/Civilian/autumn.yml")]
     [TestCase("/SharedMaps/_Mono/Shuttles/CivilianExp/pelican.yml")]
-    [TestCase("/SharedMaps/_Mono/Shuttles/Scrapyard/mudskipper.yml")]
+    [TestCase("/SharedMaps/_Mono/Shuttles/Underground/mudskipper.yml")]
     public async Task RealHullLayoutsHaveBoundedFractures(string path)
     {
         await using var pair = await PoolManager.GetServerClient();

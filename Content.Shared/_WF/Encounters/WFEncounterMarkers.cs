@@ -29,6 +29,9 @@ public sealed class WFEncounterMarker
 
     public WFEncounterCategory Category;
 
+    /// <summary>The glyph drawn for it at the rim of the scope; Category for the category's own.</summary>
+    public WFEncounterIcon Icon;
+
     /// <summary>The ship's grid. The radar draws the zones around it where the client knows it.</summary>
     public NetEntity Grid;
 

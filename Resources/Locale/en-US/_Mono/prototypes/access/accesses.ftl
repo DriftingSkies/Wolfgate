@@ -16,3 +16,7 @@ id-card-access-level-vg-command = Viper Group Command
 id-card-access-level-mieyo = Mieyo
 id-card-access-level-mieyo-security = Mieyo Security
 id-card-access-level-mieyo-liason = Mieyo Liason
+
+# WOLFGATE: Monolith#4816 shipped the Underground access levels without names
+id-card-access-level-underground = Underground
+id-card-access-level-godfather = Godfather

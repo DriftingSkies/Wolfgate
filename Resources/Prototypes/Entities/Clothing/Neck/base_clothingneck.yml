@@ -35,6 +35,10 @@
   parent: ClothingNeckBase
   id: ClothingScarfBase
   components:
+  # WOLFGATE(Wolfmed) START: a scarf keeps its wearer warm, enough for a reptilian in station air
+  - type: TemperatureProtection
+    coolingCoefficient: 0.3
+  # WOLFGATE END
   - type: Tag
     tags:
     - Scarf

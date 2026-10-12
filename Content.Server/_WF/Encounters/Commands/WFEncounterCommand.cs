@@ -33,7 +33,7 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
             case "list" when args.Length == 1:
                 List(shell);
                 break;
-            case "spawn" when args.Length is 2 or 3:
+            case "spawn" when args.Length is >= 2 and <= 4:
                 Spawn(shell, args);
                 break;
             case "end" when args.Length == 2:
@@ -66,7 +66,8 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
             2 when args[0] == "spawn" => CompletionResult.FromHintOptions(
                 _prototypes.EnumeratePrototypes<WFEncounterPrototype>().Select(prototype => prototype.ID).Order(),
                 Loc.GetString("cmd-wf_encounter-hint-prototype")),
-            3 when args[0] == "spawn" => CompletionResult.FromHint(Loc.GetString("cmd-wf_encounter-hint-distance")),
+            3 when args[0] == "spawn" => CompletionResult.FromHintOptions(Keeping, Loc.GetString("cmd-wf_encounter-hint-distance")),
+            4 when args[0] == "spawn" => CompletionResult.FromHintOptions(Keeping, Loc.GetString("cmd-wf_encounter-hint-keep")),
             2 when args[0] == "end" => CompletionResult.FromHint(Loc.GetString("cmd-wf_encounter-hint-uid")),
             _ => CompletionResult.Empty,
         };
@@ -92,7 +93,13 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
         shell.WriteLine(Loc.GetString("cmd-wf_encounter-list-footer", ("count", count)));
     }
 
-    /// <summary>wf_encounter spawn &lt;prototype&gt; [distance]: its origin north of the caller.</summary>
+    /// <summary>The words for keeping a spawned encounter until it is ended, or letting it jump out as usual.</summary>
+    private static readonly string[] Keeping = { "keep", "jump" };
+
+    /// <summary>
+    /// wf_encounter spawn &lt;prototype&gt; [distance] [keep|jump]: its origin north of the caller, kept until ended unless
+    /// told to jump out as usual.
+    /// </summary>
     private void Spawn(IConsoleShell shell, string[] args)
     {
         if (shell.Player?.AttachedEntity is not { Valid: true } player
@@ -109,14 +116,24 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
         }
 
         var distance = DefaultDistance;
-        if (args.Length == 3 && (!float.TryParse(args[2], out distance) || !float.IsFinite(distance) || distance is < 0 or > 20000))
+        var pinned = true;
+        for (var i = 2; i < args.Length; i++)
         {
-            shell.WriteLine(Loc.GetString("cmd-wf_encounter-bad-distance", ("arg", args[2])));
-            return;
+            if (args[i] == Keeping[0] || args[i] == Keeping[1])
+            {
+                pinned = args[i] == Keeping[0];
+                continue;
+            }
+
+            if (!float.TryParse(args[i], out distance) || !float.IsFinite(distance) || distance is < 0 or > 20000)
+            {
+                shell.WriteLine(Loc.GetString("cmd-wf_encounter-bad-distance", ("arg", args[i])));
+                return;
+            }
         }
 
         var origin = new MapCoordinates(here.Position + new System.Numerics.Vector2(0f, distance), here.MapId);
-        shell.WriteLine(_scheduler.TryStartAt(prototype, origin, out var encounter, player)
+        shell.WriteLine(_scheduler.TryStartAt(prototype, origin, out var encounter, player, pinned)
             ? Loc.GetString("cmd-wf_encounter-spawned", ("name", EntityManager.GetComponent<WFEncounterComponent>(encounter).Name),
                 ("uid", EntityManager.GetNetEntity(encounter)))
             : Loc.GetString("cmd-wf_encounter-spawn-failed", ("prototype", prototype.ID)));

@@ -858,7 +858,8 @@ public sealed class TraderSystem : EntitySystem
     {
         stack = default!;
 
-        if (!HasComp<CashComponent>(uid))
+        // Cash already taken this tick lies on the table until the tick ends.
+        if (EntityManager.IsQueuedForDeletion(uid) || !HasComp<CashComponent>(uid))
             return false;
 
         if (!TryComp(uid, out StackComponent? stackComp) || stackComp.StackTypeId != CashStackType.Id)
@@ -1009,6 +1010,15 @@ public sealed class TraderSystem : EntitySystem
         }
 
         return total;
+    }
+
+    /// <summary>
+    /// Takes an amount the cash in the barter zone covers and hands the rest back as change. Never
+    /// touches the bank; false, with nothing taken, when the cash falls short.
+    /// </summary>
+    public bool TryTakeZoneCash(Entity<TraderComponent> ent, EntityUid customer, int amount)
+    {
+        return amount <= 0 || GetZoneCash(ent) >= amount && TryTakePayment(ent, customer, amount);
     }
 
     /// <summary>

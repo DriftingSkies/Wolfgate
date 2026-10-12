@@ -8,7 +8,8 @@ using Robust.Shared.Timing;
 namespace Content.Client._WF.Shuttles.UI;
 
 /// <summary>
-/// Strip of hull camera controls: which side of the ship to look from, and how far out.
+/// Strip of hull camera controls: which side of the ship to look from, or the whole of it from
+/// outside, and how far out.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class ShuttleCameraBar : PanelContainer
@@ -44,6 +45,7 @@ public sealed partial class ShuttleCameraBar : PanelContainer
             (RearButton, ShuttleCameraView.Rear),
             (LeftButton, ShuttleCameraView.Left),
             (RightButton, ShuttleCameraView.Right),
+            (ExternalButton, ShuttleCameraView.External),
         };
 
         var group = new ButtonGroup();

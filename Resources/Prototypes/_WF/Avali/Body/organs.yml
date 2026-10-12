@@ -1,0 +1,10 @@
+- type: entity
+  parent: OrganHumanBrain
+  id: WFOrganAvaliBrain
+  name: avali brain
+  suffix: Avali
+  description: Where Avali think evil thoughts.
+  components:
+  - type: Sprite
+    sprite: _WF/Avali/organs.rsi
+    state: brain

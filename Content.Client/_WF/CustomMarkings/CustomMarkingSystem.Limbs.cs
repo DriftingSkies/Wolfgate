@@ -108,7 +108,10 @@ public sealed partial class CustomMarkingSystem
 
         foreach (var limb in Limbs)
         {
-            if (_sprite.LayerMapTryGet(sprite, limb, out var index, false) && TryGetPart(comp, index, limb, limb.ToString(), out var part))
+            if (!_sprite.LayerMapTryGet(sprite, limb, out var index, false))
+                continue;
+
+            if (TryGetPart(comp, index, limb, limb.ToString(), out var part) || TryGetMarkingLimb(sprite, comp, limb, out part))
                 limbs.Add(part);
         }
 
@@ -117,10 +120,48 @@ public sealed partial class CustomMarkingSystem
     }
 
     /// <summary>
+    /// The body part of a species whose own layer for it is blank and whose limb is a marking instead, as an IPC's
+    /// are: the lowest sprite of the markings worn on that part.
+    /// </summary>
+    private bool TryGetMarkingLimb(Entity<SpriteComponent?> sprite, SpriteComponent comp, HumanoidVisualLayers limb, out Part part)
+    {
+        part = default;
+        if (!TryComp<HumanoidAppearanceComponent>(sprite, out var humanoid))
+            return false;
+
+        var found = false;
+        foreach (var worn in humanoid.MarkingSet.Markings.Values)
+        {
+            foreach (var marking in worn)
+            {
+                if (!_markings.TryGetMarking(marking, out var prototype) || prototype.BodyPart != limb)
+                    continue;
+
+                foreach (var specifier in prototype.Sprites)
+                {
+                    if (specifier is not SpriteSpecifier.Rsi drawn)
+                        continue;
+
+                    var key = $"{prototype.ID}-{drawn.RsiState}";
+                    if (_sprite.LayerMapTryGet(sprite, key, out var index, false)
+                        && (!found || index < part.Index)
+                        && TryGetPart(comp, index, key, limb.ToString(), out var candidate))
+                    {
+                        part = candidate;
+                        found = true;
+                    }
+                }
+            }
+        }
+
+        return found;
+    }
+
+    /// <summary>
     /// The sprites of the markings a body shows, such as a tail, ears or hair, lowest drawn first. One that is
     /// hidden, by a helmet say, is left out: art has nothing to lie on there.
     /// </summary>
-    private List<Part> FindExtras(Entity<SpriteComponent?> sprite)
+    private List<Part> FindExtras(Entity<SpriteComponent?> sprite, List<Part> limbs)
     {
         var extras = new List<Part>();
         if (sprite.Comp is not { } comp || !TryComp<HumanoidAppearanceComponent>(sprite, out var humanoid))
@@ -143,7 +184,9 @@ public sealed partial class CustomMarkingSystem
 
                     // The humanoid system keys each marking sprite's layer this way.
                     var key = $"{prototype.ID}-{drawn.RsiState}";
+                    // A marking that stands in for a body part is listed with the limbs.
                     if (_sprite.LayerMapTryGet(sprite, key, out var index, false)
+                        && !limbs.Exists(limb => limb.Index == index)
                         && TryGetPart(comp, index, key, prototype.ID, out var part)
                         && !part.Hidden)
                         extras.Add(part);
@@ -253,7 +296,7 @@ public sealed partial class CustomMarkingSystem
     public byte[]? GetSections(Entity<SpriteComponent?> sprite, CustomMarkingPlacement placement)
     {
         var limbs = FindLimbs(sprite);
-        return limbs.Count == 0 ? null : SectionsFor(limbs, FindExtras(sprite), GetLayerIndex(sprite, placement), out _);
+        return limbs.Count == 0 ? null : SectionsFor(limbs, FindExtras(sprite, limbs), GetLayerIndex(sprite, placement), out _);
     }
 
     /// <summary>
@@ -268,7 +311,7 @@ public sealed partial class CustomMarkingSystem
         if (limbs.Count == 0)
             return null;
 
-        var sections = SectionsFor(limbs, FindExtras(sprite), depth, out var body);
+        var sections = SectionsFor(limbs, FindExtras(sprite, limbs), depth, out var body);
         var key = new StringBuilder(marking.Hash).Append('|').Append(body).Append('|');
         foreach (var limb in limbs)
         {

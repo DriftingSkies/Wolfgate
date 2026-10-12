@@ -360,7 +360,7 @@
   sprites:
     TailBehind: MobHumanoidAnyMarking #HL modifcation
     TailOversuit: MobHumanoidAnyMarking #HL modifcation
-    Hair: MobSlimeMarkingFollowSkin
+    Hair: MobHumanoidAnyMarking # WOLFGATE(Species): was MobSlimeMarkingFollowSkin; hair colour is the player's pick
     Head: MobSlimeHead
     Eyes: MobHumanoidAnyMarking # WOLFGATE(Species): blank, LED face markings replace eyes
     Snout: MobHumanoidAnyMarking

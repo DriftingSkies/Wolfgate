@@ -56,6 +56,15 @@ public sealed class GenitalAnchorLayerTest
     /// <summary>Layer key of the boxers marking sprite (HumanoidAppearanceSystem names marking layers id-state).</summary>
     private const string BoxersLayer = "UndergarmentBottomBoxers-boxers";
 
+    /// <summary>
+    /// Tail markings that stand in for the legs. Their art covers the legs and whatever is worn on them from every
+    /// facing, so none of it goes behind the body. Kept in step with LOWER_BODY_MARKINGS in split_tails_batch.py.
+    /// </summary>
+    private static readonly HashSet<string> LowerBodyMarkings = new()
+    {
+        "ReptilianTailNaga", "ReptilianTailNagaStriped", "ReptilianTailNagaRattlesnake",
+    };
+
     /// <summary>Keyed layers above each anchor, bottom to top.</summary>
     private static readonly string[] BehindKeys = { "wf-gen-behind-breasts", "wf-gen-behind-testicles", "wf-gen-behind-penis" };
 
@@ -431,7 +440,8 @@ public sealed class GenitalAnchorLayerTest
     /// to TailBehind must also be colour-linked to an earlier sprite of the same marking, so the picker shows no extra
     /// colour box and MarkingSet.EnsureValid pads saved colours onto it. Markings in the Special category are exempt:
     /// bodyPart: Tail is used there to draw a head ornament on the top-most layer (the Skrell headdresses), so the art sits
-    /// on the skull, never reaches anatomy, and behind the body would only end up behind the head.
+    /// on the skull, never reaches anatomy, and behind the body would only end up behind the head. So are the
+    /// <see cref="LowerBodyMarkings"/>, whose art has to stay in front.
     /// </summary>
     [Test]
     public async Task TailSouthFramesBehindTest()
@@ -514,6 +524,9 @@ public sealed class GenitalAnchorLayerTest
                             Assert.Fail($"{marking.ID}: RSI state {rsi.RsiState} of {rsi.RsiPath} does not exist.");
                             continue;
                         }
+
+                        if (LowerBodyMarkings.Contains(marking.ID))
+                            continue; // stands in for the legs, so it covers them from every facing
 
                         if (!south.TryGetValue((path, rsi.RsiState), out var pixels))
                         {

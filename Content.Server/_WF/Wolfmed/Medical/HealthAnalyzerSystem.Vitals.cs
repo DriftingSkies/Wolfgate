@@ -55,6 +55,8 @@ public sealed partial class HealthAnalyzerSystem
             Heartless = consciousness.Heartless, // M4 (OD16)
         };
         (report.Breathing, report.BreathingSource) = _vitalsBreathing.Assess(body);
+        report.Lungless = _vitalsBreathing.HasNoLungs(body);
+        report.Ventilated = _vitalsBreathing.IsVentilated(body);
         if (report.State == WolfmedVitalsState.Faint)
             report.FaintSeconds = _vitalsConsciousness.GetFaintSecondsLeft(body) ?? -1;
 

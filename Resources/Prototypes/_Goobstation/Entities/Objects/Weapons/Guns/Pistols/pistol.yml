@@ -60,3 +60,5 @@
   - type: AltFireMelee
     attackType: Light
   # Mono end
+  # WOLFGATE(Weapons): this ballistic sidearm and its children (Hawk-4, Dragoon, registered copy) fire alongside a shield
+  - type: CanShootWithShield

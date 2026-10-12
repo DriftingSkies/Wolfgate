@@ -92,6 +92,8 @@ trader-shipyard-papers-refused = I can't change those papers right now.
 trader-shipyard-papers-refused-reason = I can't change those papers right now. { $reason }
 trader-text-submit = Confirm
 trader-shipyard-sold = She's all yours. Fly her carefully.
+trader-shipyard-cash-only = I can't draw on your account, so the whole price has to be on the counter in cash. You'll get your change back.
+trader-shipyard-counter-cash-label = On the counter:{" "}
 trader-shipyard-unknown-design = Unknown design
 trader-shipyard-receipt-name = Vessel Purchase Receipt
 trader-shipyard-receipt-header = [head=2]{ $trader }[/head]
@@ -109,11 +111,13 @@ trader-used-quote = I can give you { $amount } for the { $ship }.
 trader-used-sale-refused = Can't take her like that, I'm afraid.
 trader-used-sale-refused-reason = Can't take her like that, I'm afraid. { $reason }
 trader-used-sale-done = { $amount }, straight into your account. Pleasure.
+trader-used-sale-done-cash = { $amount }, cash on the counter. Pleasure.
 trader-used-gone = Somebody beat you to that one.
 trader-used-load-failed = She won't come out of the yard. Your money's back on the table.
 trader-used-sold = The { $ship }, sold! No refunds, no take-backs.
 trader-used-no-session = I need a real buyer to put on the paperwork.
 trader-used-deed-failed = The paperwork won't go through. I've put the money back in your account; she stays on the lot.
+trader-used-deed-failed-cash = The paperwork won't go through. Your money's back on the counter; she stays on the lot.
 trader-used-new-stock = Fresh on the lot: the { $ship }, a { $design } - { $price }.
 trader-used-sale-receipt-name = Vessel Trade-In Receipt
 trader-used-sale-receipt-header = [head=2]{ $trader }[/head]

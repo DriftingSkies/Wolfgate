@@ -2,7 +2,8 @@
 - type: entity
   id: OrganAvaliStomach
   parent: OrganAnimalStomach
-  categories: [ HideSpawnMenu ]
+  # categories: [ HideSpawnMenu ] # WOLFGATE(Avali): listed in the spawn menu
+  suffix: Avali # WOLFGATE(Avali)
   components:
   - type: Stomach
     specialDigestible:
@@ -21,11 +22,15 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Sprite # WOLFGATE(Avali): Starlight organ sprites
+    sprite: _WF/Avali/organs.rsi
+    state: stomach
 
 - type: entity
   id: OrganAvaliHeart
   parent: OrganHumanHeart
-  categories: [ HideSpawnMenu ]
+  # categories: [ HideSpawnMenu ] # WOLFGATE(Avali): listed in the spawn menu
+  suffix: Avali # WOLFGATE(Avali)
   components:
   - type: Metabolizer
     maxReagents: 2
@@ -35,11 +40,15 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Sprite # WOLFGATE(Avali): Starlight organ sprites
+    sprite: _WF/Avali/organs.rsi
+    state: heart-on
 
 - type: entity
   id: OrganAvaliLiver
   parent: OrganHumanLiver
-  categories: [ HideSpawnMenu ]
+  # categories: [ HideSpawnMenu ] # WOLFGATE(Avali): listed in the spawn menu
+  suffix: Avali # WOLFGATE(Avali)
   components:
   - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
     updateInterval: 1.5
@@ -48,13 +57,38 @@
     groups:
     - id: Alcohol
       rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
+  - type: Sprite # WOLFGATE(Avali): Starlight organ sprites
+    sprite: _WF/Avali/organs.rsi
+    state: liver
+  - type: Item # WOLFGATE(Avali): the Starlight sheet has no held liver
+    sprite: Mobs/Species/Human/organs.rsi
 
 - type: entity
   id: OrganAvaliKidneys
   parent: OrganHumanKidneys
-  categories: [ HideSpawnMenu ]
+  # categories: [ HideSpawnMenu ]
+  # WOLFGATE(Avali): listed in the spawn menu, with the Starlight organ sprites
+  suffix: Avali
+  description: "The kidneys of an avali."
+  components:
+  - type: Sprite
+    sprite: _WF/Avali/organs.rsi
+    layers:
+    - state: kidney-l
+    - state: kidney-r
 
 - type: entity
   id: OrganAvaliLungs
   parent: OrganHumanLungs
-  categories: [ HideSpawnMenu ]
+  # categories: [ HideSpawnMenu ]
+  # WOLFGATE(Avali): listed in the spawn menu, with the Starlight organ sprites and the Avali type for ammonia gas
+  suffix: Avali
+  description: "The lungs of an avali."
+  components:
+  - type: Metabolizer
+    metabolizerTypes: [ Human, Avali ]
+  - type: Sprite
+    sprite: _WF/Avali/organs.rsi
+    layers:
+    - state: lung-l
+    - state: lung-r

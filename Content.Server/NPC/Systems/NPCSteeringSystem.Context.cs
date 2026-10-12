@@ -68,11 +68,9 @@ public sealed partial class NPCSteeringSystem
 
             foreach (var intersecting in ents)
             {
-                // WOLFGATE(NpcCrew) START: compare both bodies for crew while the engine helper reads the first fixtures twice.
+                // WOLFGATE(NpcCrew) START: compare both bodies for every NPC; the engine helper reads the first fixtures twice.
                 // if (!_physics.IsCurrentlyHardCollidable((uid, fixtures, physics), intersecting))
-                if (!((steering.Flags & PathFlags.Access) != 0x0
-                        ? IsCrewObstacleCollidable(uid, intersecting)
-                        : _physics.IsCurrentlyHardCollidable((uid, fixtures, physics), intersecting)))
+                if (!IsCrewObstacleCollidable(uid, intersecting))
                 // WOLFGATE END
                 {
                     continue;

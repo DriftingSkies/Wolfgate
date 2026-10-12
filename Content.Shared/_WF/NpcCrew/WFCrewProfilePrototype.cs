@@ -1,3 +1,4 @@
+using Content.Shared.Dataset;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 
@@ -32,4 +33,15 @@ public sealed partial class WFCrewProfilePrototype : IPrototype
     /// <summary>Chance, from 0 to 1 by role, that a crewman is a coward: he never fights and takes shelter instead.</summary>
     [DataField]
     public Dictionary<ProtoId<WFCrewRolePrototype>, float> Cowards = new();
+
+    /// <summary>Datasets every crewman's first and last name are drawn from. Left out, each keeps the name his body rolled.</summary>
+    [DataField]
+    public ProtoId<DatasetPrototype>? FirstNames;
+
+    [DataField]
+    public ProtoId<DatasetPrototype>? LastNames;
+
+    /// <summary>Components every crewman gets, such as an accent.</summary>
+    [DataField]
+    public ComponentRegistry Components = new();
 }

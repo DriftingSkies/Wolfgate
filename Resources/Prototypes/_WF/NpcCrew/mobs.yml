@@ -122,20 +122,6 @@
   description: Crew of a working ship.
   suffix: NPC crew body
   categories: [ HideSpawnMenu ]
-  components:
-  # A cold-blooded spacer dresses for it: an unheated hull falls below a lizard's 285 K long before it troubles
-  # anyone else aboard, and nobody is there to turn the heaters on.
-  - type: Temperature
-    heatDamageThreshold: 400
-    coldDamageThreshold: 260
-    currentTemperature: 310.15
-    specificHeat: 42
-    coldDamage:
-      types:
-        Cold: 0.15
-    heatDamage:
-      types:
-        Heat: 1.5
 
 - type: entity
   parent: [ BaseMobDwarf, MobPrying, WFCrewKit ]

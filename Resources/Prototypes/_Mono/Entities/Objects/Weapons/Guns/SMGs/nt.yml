@@ -62,3 +62,6 @@
       collection: MetalThud
   - type: AltFireMelee
     attackType: Light
+  # WOLFGATE(Weapons): a full-auto SMG is no sidearm, so the revolver base's shield exemption is switched off
+  - type: CanShootWithShield
+    enabled: false

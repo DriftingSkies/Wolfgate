@@ -5,8 +5,12 @@ using Content.Server.NPC.Components;
 using Content.Shared.Damage;
 using Content.Shared.Access.Components;
 using Content.Shared.Clothing.Components;
+using Content.Shared.Inventory;
+using Content.Shared.Medical.SuitSensor;
 using Content.Shared.Roles;
 using Content.Server.NPC.Systems;
+using Content.Server.Medical.SuitSensors;
+using Content.Server.Radiation.Components;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
@@ -35,6 +39,8 @@ public sealed class WFCrewSystem : EntitySystem
     [Dependency] private NpcFactionSystem _factions = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private SuitSensorSystem _suitSensors = default!;
+    [Dependency] private InventorySystem _inventory = default!;
 
     private readonly List<EntityUid> _expired = new();
     private readonly List<EntityUid> _kept = new();
@@ -346,7 +352,7 @@ public sealed class WFCrewSystem : EntitySystem
 
     /// <summary>Spawns one crewman of a role with its post at the coordinates. Null when the role is unknown.</summary>
     public EntityUid? SpawnCrewman(ProtoId<WFCrewRolePrototype> roleId, EntityCoordinates post, string group,
-        ProtoId<StartingGearPrototype>? loadout = null, EntProtoId? body = null)
+        ProtoId<StartingGearPrototype>? loadout = null, EntProtoId? body = null, string? name = null)
     {
         if (!_prototypes.TryIndex(roleId, out var role))
         {
@@ -378,6 +384,14 @@ public sealed class WFCrewSystem : EntitySystem
         crew.Engagement = role.Engagement;
         crew.Group = group;
         crew.Post = post;
+        // A name given here replaces the body's before the title goes on and the card and records are written.
+        if (name != null)
+            _meta.SetEntityName(uid, name);
+        // A post in vacuum, such as an open cockpit, is manned in a pressure suit whose tank never empties.
+        if (post.EntityId is { Valid: true } deck && TryComp<Robust.Shared.Map.Components.MapGridComponent>(deck, out var deckGrid)
+            && !EntityManager.System<WFCrewPlannerSystem>().IsSafePost(deck,
+                EntityManager.System<SharedMapSystem>().TileIndicesFor(deck, deckGrid, post), deckGrid))
+            EntityManager.System<WFCrewEvaSystem>().GiveVoidKit(uid);
         Apply((uid, crew));
         _crewAccess.RegisterSpawnShip(uid);
         if (Transform(uid).GridUid is { } ship && !HasComp<Content.Shared._Mono.ShipRepair.Components.ShipRepairDataComponent>(ship))
@@ -449,6 +463,15 @@ public sealed class WFCrewSystem : EntitySystem
         EnsureComp<AccessComponent>(uid);
         // Nobody plays an NPC, so its body never shows the disconnected-player sleep icon, alive or dead.
         RemComp<SSDIndicatorComponent>(uid);
+        // Crews work and fight beside reactors with nothing but their jumpsuits; radiation passes them by.
+        RemComp<RadiationReceiverComponent>(uid);
+        // Their suit sensors are switched off, so a crew monitor shows players and not a sector's worth of NPCs. A
+        // player who takes the suit can switch them back on.
+        foreach (var worn in _inventory.GetHandOrInventoryEntities(uid))
+        {
+            if (TryComp<SuitSensorComponent>(worn, out var sensor) && sensor.Mode != SuitSensorMode.SensorOff)
+                _suitSensors.SetSensor((worn, sensor), SuitSensorMode.SensorOff);
+        }
         EntityManager.System<WFCrewEscortSystem>().Invalidate();
 
         if (TryComp<HTNComponent>(uid, out var htn))

@@ -1,6 +1,8 @@
 using Content.Server.Body.Components;
 using Content.Shared._Shitmed.Body.Components;
+using Content.Server._WF.Wolfmed.Autodoc;
 using Content.Server._WF.Wolfmed.Consciousness;
+using Content.Server._WF.Wolfmed.Medical;
 using Content.Shared._Shitmed.Body.Organ;
 using Content.Shared._WF.Wolfmed.Body;
 using Content.Shared._WF.Wolfmed.CCVar;
@@ -33,6 +35,7 @@ public sealed class WolfmedBreathingSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedBodySystem _body = default!;
+    [Dependency] private AutodocSystem _autodoc = default!;
     [Dependency] private WolfmedConsciousnessSystem _consciousness = default!;
     [Dependency] private WolfmedPainReliefSystem _relief = default!;
 
@@ -144,6 +147,21 @@ public sealed class WolfmedBreathingSystem : EntitySystem
         return count == 0 ? 0f : Math.Clamp(total / count * factor, 0f, 1f);
     }
 
+    /// <summary>
+    /// A machine is breathing for the body: a ventilator with gas in its tank, or an autodoc sealed around it. It
+    /// answers for the airway, the lungs and sedated breathing, as CPR's rescue breaths do; it does nothing for a
+    /// stopped heart.
+    /// </summary>
+    public bool IsVentilated(EntityUid body) =>
+        TryComp(body, out WolfmedVentilatedComponent? ventilated) && ventilated.Until > _timing.CurTime ||
+        _autodoc.IsSealedIn(body);
+
+    /// <summary>A body that needs lungs and has none in it.</summary>
+    public bool HasNoLungs(EntityUid body) =>
+        HasComp<RespiratorComponent>(body) && !HasComp<BreathingImmunityComponent>(body) &&
+        TryComp(body, out BodyComponent? bodyComp) &&
+        _body.GetBodyOrganEntityComps<LungComponent>((body, bodyComp)).Count == 0;
+
     /// <summary>What the chest is doing and why, in the order a medic would rule things out.</summary>
     public (WolfmedBreathing Breathing, WolfmedBreathingSource Source) Assess(EntityUid body)
     {
@@ -159,6 +177,16 @@ public sealed class WolfmedBreathingSystem : EntitySystem
         if (HasComp<DebrainedComponent>(body))
             return (WolfmedBreathing.None, WolfmedBreathingSource.NoBrain);
 
+        var unaided = AssessUnaided(body, respirator);
+        return unaided.Breathing != WolfmedBreathing.Normal && IsVentilated(body)
+            ? (WolfmedBreathing.Ventilated, unaided.Source)
+            : unaided;
+    }
+
+    /// <summary>What a beating heart's chest does by itself, before any machine breathing for it.</summary>
+    private (WolfmedBreathing Breathing, WolfmedBreathingSource Source) AssessUnaided(EntityUid body,
+        RespiratorComponent respirator)
+    {
         if (TryComp(body, out BodyComponent? bodyComp) &&
             _body.GetBodyOrganEntityComps<LungComponent>((body, bodyComp)).Count == 0)
             return (WolfmedBreathing.None, WolfmedBreathingSource.Lungs);
