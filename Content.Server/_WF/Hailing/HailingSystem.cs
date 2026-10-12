@@ -39,6 +39,7 @@ public sealed class HailingSystem : EntitySystem
     [Dependency] private PvsOverrideSystem _pvs = default!;
     [Dependency] private DetectionSystem _detection = default!;
     [Dependency] private ShipPaSystem _pa = default!;
+    [Dependency] private MetaDataSystem _meta = default!;
 
     /// <summary>Lines of a call each console keeps.</summary>
     public const int MaxLog = 60;
@@ -47,6 +48,9 @@ public sealed class HailingSystem : EntitySystem
     private const float DropRangeFactor = 1.25f;
 
     private static readonly TimeSpan RingInterval = TimeSpan.FromSeconds(3);
+
+    /// <summary>God's ring is a seven second choir, so it comes round less often.</summary>
+    private static readonly TimeSpan DivineRingInterval = TimeSpan.FromSeconds(9);
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(0.5);
     private static readonly TimeSpan RehailDelay = TimeSpan.FromSeconds(2);
     private static readonly Color PaColor = Color.FromHex("#ffbf40");
@@ -59,6 +63,8 @@ public sealed class HailingSystem : EntitySystem
     private static readonly SoundSpecifier OpenSound = new SoundPathSpecifier("/Audio/_WF/Hailing/hail_open.ogg");
     private static readonly SoundSpecifier CloseSound = new SoundPathSpecifier("/Audio/_WF/Hailing/hail_close.ogg");
     private static readonly SoundSpecifier MessageSound = new SoundPathSpecifier("/Audio/_WF/Hailing/hail_message.ogg");
+    private static readonly SoundSpecifier DivineSound = new SoundPathSpecifier("/Audio/_WF/Hailing/hail_god.ogg");
+    private static readonly Color DivineColor = Color.FromHex("#ffe28a");
 
     private float _range;
     private float _ringTimeout;
@@ -153,11 +159,19 @@ public sealed class HailingSystem : EntitySystem
                 continue;
             }
 
-            if (hail.State == HailState.Connected || now < hail.NextRing)
+            // An admin's stand-in is nowhere, so there is nobody for it to ring at.
+            if (hail.State == HailState.Connected || hail.Remote || now < hail.NextRing)
                 continue;
 
-            hail.NextRing = now + RingInterval;
-            _audio.PlayPvs(hail.State == HailState.Ringing ? RingSound : CallingSound, uid);
+            if (hail.State == HailState.Calling)
+            {
+                hail.NextRing = now + RingInterval;
+                _audio.PlayPvs(CallingSound, uid);
+                continue;
+            }
+
+            hail.NextRing = now + (hail.Divine ? DivineRingInterval : RingInterval);
+            _audio.PlayPvs(hail.Divine ? DivineSound : RingSound, uid);
         }
 
         foreach (var (uid, reason, peerReason) in _ending)
@@ -202,7 +216,9 @@ public sealed class HailingSystem : EntitySystem
     /// </summary>
     private (HailEndReason Reason, HailEndReason PeerReason)? Failure(EntityUid uid, HailConsoleComponent hail, TimeSpan now)
     {
-        if (!Usable(uid, out var grid))
+        EntityUid grid = default;
+
+        if (!hail.Remote && !Usable(uid, out grid))
             return (HailEndReason.Lost, HailEndReason.Lost);
 
         switch (hail.State)
@@ -214,8 +230,11 @@ public sealed class HailingSystem : EntitySystem
                 if (now > hail.StateTime + TimeSpan.FromSeconds(_ringTimeout))
                     return (HailEndReason.NoAnswer, HailEndReason.PeerClosed);
 
-                if (hail.PeerGrid is not { } hailed || !CanReach(uid, grid, hailed, _range * DropRangeFactor, out _))
+                if (hail.PeerGrid is not { } hailed || TerminatingOrDeleted(hailed) ||
+                    !hail.Remote && !CanReach(uid, grid, hailed, _range * DropRangeFactor, out _))
+                {
                     return (HailEndReason.Unavailable, HailEndReason.PeerClosed);
+                }
 
                 break;
 
@@ -230,9 +249,15 @@ public sealed class HailingSystem : EntitySystem
                 if (!OperatorPresent(uid, hail))
                     return (HailEndReason.Closed, HailEndReason.PeerClosed);
 
-                if (!TryComp<HailConsoleComponent>(hail.Peer, out var peer) || peer.Peer != uid ||
-                    hail.PeerGrid is not { } other || !InRange(grid, other, _range * DropRangeFactor, out _))
+                if (!TryComp<HailConsoleComponent>(hail.Peer, out var peer) || peer.Peer != uid)
                     return (HailEndReason.Lost, HailEndReason.Lost);
+
+                // Range only means something between two ships.
+                if (!hail.Remote && !peer.Remote &&
+                    (hail.PeerGrid is not { } other || !InRange(grid, other, _range * DropRangeFactor, out _)))
+                {
+                    return (HailEndReason.Lost, HailEndReason.Lost);
+                }
 
                 break;
         }
@@ -379,6 +404,66 @@ public sealed class HailingSystem : EntitySystem
     }
 
     /// <summary>
+    /// Hails a ship as God, from no ship at all: an admin's stand-in entity takes the caller's end, and the
+    /// ship rings with a choir instead of the chime. Returns the stand-in, or null if no console could ring.
+    /// </summary>
+    public EntityUid? HailAsGod(EntityUid user, ICommonSession session, EntityUid ship)
+    {
+        if (TerminatingOrDeleted(ship))
+            return null;
+
+        _consoles.Clear();
+        var query = EntityQueryEnumerator<ShuttleConsoleComponent, TransformComponent>();
+
+        while (query.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid == ship && this.IsPowered(uid, EntityManager) && !HasComp<HailConsoleComponent>(uid))
+                _consoles.Add(uid);
+        }
+
+        if (_consoles.Count == 0)
+            return null;
+
+        var now = _timing.CurTime;
+        var god = Loc.GetString("hail-god-name");
+        var endpoint = Spawn(null, MapCoordinates.Nullspace);
+        _meta.SetEntityName(endpoint, god);
+
+        var hail = AddComp<HailConsoleComponent>(endpoint);
+        hail.Remote = true;
+        hail.State = HailState.Calling;
+        hail.PeerShip = Name(ship);
+        hail.PeerGrid = ship;
+        hail.OperatorUid = user;
+        hail.Operator = GetNetEntity(user);
+        hail.StateTime = now;
+        Dirty(endpoint, hail);
+
+        // The stand-in is nowhere, and the admin's window reads the hail off it.
+        _pvs.AddSessionOverride(endpoint, session);
+
+        var paged = _pa.Announce(ship, Loc.GetString("hail-pa-god", ("ship", Name(ship))), DivineSound,
+            Loc.GetString("hail-pa-sender", ("ship", _pa.GetShipName(ship))), DivineColor);
+
+        foreach (var target in _consoles)
+        {
+            var ring = AddComp<HailConsoleComponent>(target);
+            ring.State = HailState.Ringing;
+            ring.Divine = true;
+            ring.PeerShip = god;
+            ring.Peer = endpoint;
+            ring.StateTime = now;
+            ring.NextRing = paged ? now + DivineRingInterval : now;
+            Dirty(target, ring);
+        }
+
+        _adminLogger.Add(LogType.AdminMessage, LogImpact.Medium,
+            $"{ToPrettyString(user):player} hailed {ToPrettyString(ship):grid} as God");
+
+        return endpoint;
+    }
+
+    /// <summary>
     /// Answers or declines the hail ringing at a console. Declining turns the caller away from the whole ship.
     /// </summary>
     public void Answer(EntityUid console, EntityUid user, bool accept)
@@ -389,8 +474,7 @@ public sealed class HailingSystem : EntitySystem
             return;
         }
 
-        if (!TryComp<HailConsoleComponent>(caller, out var callerHail) || callerHail.State != HailState.Calling ||
-            hail.PeerGrid is not { } callerGrid || callerHail.PeerGrid is not { } grid)
+        if (!TryComp<HailConsoleComponent>(caller, out var callerHail) || callerHail.State != HailState.Calling)
         {
             RemComp<HailConsoleComponent>(console);
             return;
@@ -409,7 +493,7 @@ public sealed class HailingSystem : EntitySystem
         Open((caller, callerHail), callerOperator, console, user);
 
         _adminLogger.Add(LogType.Action, LogImpact.Low,
-            $"{ToPrettyString(user):player} on {ToPrettyString(grid):grid} answered a hail from {ToPrettyString(callerOperator):player} on {ToPrettyString(callerGrid):grid}");
+            $"{ToPrettyString(user):player} on {ToPrettyString(callerHail.PeerGrid):grid} answered a hail from {ToPrettyString(callerOperator):player} on {ToPrettyString(hail.PeerGrid):grid}");
     }
 
     /// <summary>
@@ -476,7 +560,7 @@ public sealed class HailingSystem : EntitySystem
         if (text.Length == 0)
             return false;
 
-        var name = Identity.Name(user, EntityManager);
+        var name = hail.Remote ? Loc.GetString("hail-god-name") : Identity.Name(user, EntityManager);
         AddLine((console, hail), name, text, true);
         AddLine((peer, peerHail), name, text, false);
         _audio.PlayPvs(MessageSound, peer);
@@ -513,14 +597,26 @@ public sealed class HailingSystem : EntitySystem
         hail.Peer = peer;
         hail.OperatorUid = user;
         hail.Operator = GetNetEntity(user);
-        hail.PeerOperator = GetNetEntity(peerUser);
-        hail.PeerName = peerUser is { } other ? Identity.Name(other, EntityManager) : string.Empty;
         hail.StateTime = _timing.CurTime;
         hail.Log.Clear();
         hail.NextLine = 0;
 
+        // God has no face: the admin behind the voice is never named, shown or sent to the pilot.
+        hail.Divine = TryComp<HailConsoleComponent>(peer, out var peerHail) && peerHail.Remote;
+
+        if (hail.Divine)
+        {
+            hail.PeerOperator = null;
+            hail.PeerName = Loc.GetString("hail-god-name");
+        }
+        else
+        {
+            hail.PeerOperator = GetNetEntity(peerUser);
+            hail.PeerName = peerUser is { } other ? Identity.Name(other, EntityManager) : string.Empty;
+        }
+
         // The other pilot is far outside this one's view, and the screen draws the real person.
-        if (peerUser != null && TryComp<ActorComponent>(user, out var actor))
+        if (!hail.Divine && peerUser != null && TryComp<ActorComponent>(user, out var actor))
         {
             _pvs.AddSessionOverride(peerUser.Value, actor.PlayerSession);
             hail.Viewer = actor.PlayerSession;
@@ -528,7 +624,9 @@ public sealed class HailingSystem : EntitySystem
         }
 
         Dirty(ent);
-        _audio.PlayPvs(OpenSound, ent);
+
+        if (!hail.Remote)
+            _audio.PlayPvs(OpenSound, ent);
     }
 
     private void Remove(EntityUid console, HailConsoleComponent hail, HailEndReason? reason)
@@ -542,11 +640,20 @@ public sealed class HailingSystem : EntitySystem
             _nextHail[console] = _timing.CurTime + delay;
         }
 
-        if (hail.State == HailState.Connected)
-            _audio.PlayPvs(CloseSound, console);
+        if (hail.Remote)
+        {
+            // Whoever stands behind it hears about it their own way.
+            var ended = new HailEndedEvent(reason, hail.PeerShip);
+            RaiseLocalEvent(console, ref ended);
+        }
+        else
+        {
+            if (hail.State == HailState.Connected)
+                _audio.PlayPvs(CloseSound, console);
 
-        if (reason != null)
-            _ui.ServerSendUiMessage(console, ShuttleConsoleUiKey.Key, new HailEndedMessage(reason.Value, hail.PeerShip));
+            if (reason != null)
+                _ui.ServerSendUiMessage(console, ShuttleConsoleUiKey.Key, new HailEndedMessage(reason.Value, hail.PeerShip));
+        }
 
         RemComp<HailConsoleComponent>(console);
     }
@@ -595,6 +702,10 @@ public sealed class HailingSystem : EntitySystem
     /// </summary>
     private bool OperatorPresent(EntityUid console, HailConsoleComponent hail)
     {
+        // An admin's stand-in lasts for as long as their window does, whatever body they are in.
+        if (hail.Remote)
+            return true;
+
         return hail.OperatorUid is { } user && Exists(user) && _ui.IsUiOpen(console, ShuttleConsoleUiKey.Key, user);
     }
 

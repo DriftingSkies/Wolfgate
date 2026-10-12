@@ -36,6 +36,17 @@ public sealed partial class HailConsoleComponent : Component
     [ViewVariables, AutoNetworkedField]
     public List<HailLine> Log = new();
 
+    /// <summary>The other end is an admin speaking as God: there is no ship and nobody to show.</summary>
+    [ViewVariables, AutoNetworkedField]
+    public bool Divine;
+
+    /// <summary>
+    /// This end is not a console at all but an admin's stand-in, so none of the rules about power, range,
+    /// radar or staying at the helm apply to it.
+    /// </summary>
+    [ViewVariables]
+    public bool Remote;
+
     /// <summary>The console on the other end: the caller while ringing, the other party once connected.</summary>
     [ViewVariables]
     public EntityUid? Peer;

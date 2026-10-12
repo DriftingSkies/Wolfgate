@@ -94,6 +94,7 @@ public sealed class HailScreen : Control
     public void ShowFeed(NetEntity? person, string ship, string name, string noVisual)
     {
         _feed = true;
+        _noise.Glow = false;
         _noVisual = noVisual;
         _shipLabel.Text = ship;
         _nameLabel.Text = name;
@@ -104,6 +105,21 @@ public sealed class HailScreen : Control
             _view.SetEntity(null);
 
         _view.Visible = true;
+    }
+
+    /// <summary>
+    /// Shows the other end as God: no picture and no static, only a slow glow behind the name.
+    /// </summary>
+    public void ShowDivine(string name)
+    {
+        _feed = false;
+        _view.Visible = false;
+        _view.SetEntity(null);
+        _shipLabel.Text = string.Empty;
+        _nameLabel.Text = string.Empty;
+        _captionLabel.Text = name;
+        _noise.Static = false;
+        _noise.Glow = true;
     }
 
     /// <summary>
@@ -118,6 +134,7 @@ public sealed class HailScreen : Control
         _nameLabel.Text = string.Empty;
         _captionLabel.Text = caption;
         _noise.Static = true;
+        _noise.Glow = false;
     }
 
     protected override void FrameUpdate(FrameEventArgs args)
@@ -148,16 +165,27 @@ public sealed class HailScreen : Control
 
         private static readonly Color ScanColor = Color.Black.WithAlpha(0.28f);
         private static readonly Color BandColor = Color.White.WithAlpha(0.04f);
+        private static readonly Color GlowColor = Color.FromHex("#ffe9a8");
 
         private readonly Random _random = new();
 
         public bool Static = true;
+        public bool Glow;
         public float Time;
 
         protected override void Draw(DrawingHandleScreen handle)
         {
             var size = PixelSize;
             var line = MathF.Max(1f, MathF.Round(UIScale));
+
+            if (Glow)
+            {
+                // Brightest across the middle and breathing slowly.
+                var breath = 0.5f + 0.5f * MathF.Sin(Time * 1.4f);
+                handle.DrawRect(new UIBox2(0f, 0f, size.X, size.Y), GlowColor.WithAlpha(0.10f + 0.06f * breath));
+                handle.DrawRect(new UIBox2(0f, size.Y * 0.25f, size.X, size.Y * 0.75f), GlowColor.WithAlpha(0.10f + 0.08f * breath));
+                handle.DrawRect(new UIBox2(0f, size.Y * 0.4f, size.X, size.Y * 0.6f), GlowColor.WithAlpha(0.12f + 0.10f * breath));
+            }
 
             if (Static)
             {

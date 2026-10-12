@@ -21,6 +21,12 @@ comes in. In the cockpit a `HailStrip` rides the caption row of the COMMUNICATIO
 its title: one clipped line of status and the keys to hail, answer, decline, view or end. It reports no height, so
 the chat below keeps all of its room.
 
+Admins get a **Hail as God** verb on every shuttle console (`AdminHailSystem`, Fun flag). It rings that ship as
+"God" with a choir instead of the chime, PA included, from no ship at all: a stand-in entity carries the admin's
+end, so range, power and the helm rules don't apply to it. Whoever answers gets a glowing screen with no face, and
+is never sent or told who the admin is; the admin gets the ordinary hail window (`AdminHailEui`) with the pilot on
+screen. Closing that window ends the call.
+
 To try it alone, the admin command `hailtest` (`HailTestSystem`) brings a small test ship in near the ship you stand
 on and has its pilot hail you. That pilot also answers your hails and sends back whatever you say, and the ship
 removes itself after three idle minutes or on `hailtest clear`.
@@ -32,6 +38,9 @@ removes itself after three idle minutes or on `hailtest clear`.
 
 ### Server
 
+- [`Content.Server/_WF/Hailing/AdminHailEndpointComponent.cs`](AdminHailEndpointComponent.cs)
+- [`Content.Server/_WF/Hailing/AdminHailEui.cs`](AdminHailEui.cs)
+- [`Content.Server/_WF/Hailing/AdminHailSystem.cs`](AdminHailSystem.cs)
 - [`Content.Server/_WF/Hailing/HailingSystem.cs`](HailingSystem.cs)
 - [`Content.Server/_WF/Hailing/HailTestCommand.cs`](HailTestCommand.cs)
 - [`Content.Server/_WF/Hailing/HailTestShipComponent.cs`](HailTestShipComponent.cs)
@@ -39,12 +48,14 @@ removes itself after three idle minutes or on `hailtest clear`.
 
 ### Shared
 
+- [`Content.Shared/_WF/Hailing/AdminHailEui.cs`](../../../Content.Shared/_WF/Hailing/AdminHailEui.cs)
 - [`Content.Shared/_WF/Hailing/HailConsoleComponent.cs`](../../../Content.Shared/_WF/Hailing/HailConsoleComponent.cs)
 - [`Content.Shared/_WF/Hailing/HailingCVars.cs`](../../../Content.Shared/_WF/Hailing/HailingCVars.cs)
 - [`Content.Shared/_WF/Hailing/HailMessages.cs`](../../../Content.Shared/_WF/Hailing/HailMessages.cs)
 
 ### Client
 
+- [`Content.Client/_WF/Hailing/AdminHailEui.cs`](../../../Content.Client/_WF/Hailing/AdminHailEui.cs)
 - [`Content.Client/_WF/Hailing/HailKey.cs`](../../../Content.Client/_WF/Hailing/HailKey.cs)
 - [`Content.Client/_WF/Hailing/HailKeySystem.cs`](../../../Content.Client/_WF/Hailing/HailKeySystem.cs)
 - [`Content.Client/_WF/Hailing/HailScreen.cs`](../../../Content.Client/_WF/Hailing/HailScreen.cs)
@@ -67,6 +78,7 @@ removes itself after three idle minutes or on `hailtest clear`.
 - [`Resources/Audio/_WF/Hailing/attributions.yml`](../../../Resources/Audio/_WF/Hailing/attributions.yml)
 - [`Resources/Audio/_WF/Hailing/hail_calling.ogg`](../../../Resources/Audio/_WF/Hailing/hail_calling.ogg)
 - [`Resources/Audio/_WF/Hailing/hail_close.ogg`](../../../Resources/Audio/_WF/Hailing/hail_close.ogg)
+- [`Resources/Audio/_WF/Hailing/hail_god.ogg`](../../../Resources/Audio/_WF/Hailing/hail_god.ogg)
 - [`Resources/Audio/_WF/Hailing/hail_message.ogg`](../../../Resources/Audio/_WF/Hailing/hail_message.ogg)
 - [`Resources/Audio/_WF/Hailing/hail_open.ogg`](../../../Resources/Audio/_WF/Hailing/hail_open.ogg)
 - [`Resources/Audio/_WF/Hailing/hail_ring.ogg`](../../../Resources/Audio/_WF/Hailing/hail_ring.ogg)

@@ -16,7 +16,9 @@ using Content.Shared._WF.Hailing;
 using Content.Shared._WF.ShipPa;
 using Content.Shared.Buckle;
 using Content.Shared.CCVar;
+using Content.Shared.IdentityManagement;
 using Content.Shared.Shuttles.Components;
+using Content.Shared.Verbs;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
@@ -553,6 +555,95 @@ public sealed class HailingTest : InteractionTest
         {
             Assert.That(SEntMan.EntityExists(tester), Is.False, "Clearing should remove the test ship.");
             Assert.That(State(_console), Is.Null, "And the call with it.");
+        });
+    }
+
+    [Test]
+    public async Task AdminHailsAsGod()
+    {
+        await SetupShips();
+        var hailing = SEntMan.System<HailingSystem>();
+        var admin = SEntMan.System<AdminHailSystem>();
+        var god = string.Empty;
+        var otherShip = string.Empty;
+        var pilotName = string.Empty;
+        EntityUid endpoint = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            god = Loc.GetString("hail-god-name");
+            otherShip = SEntMan.GetComponent<MetaDataComponent>(_otherGrid).EntityName;
+            pilotName = Identity.Name(_otherPilot, SEntMan);
+
+            var verbs = SEntMan.System<SharedVerbSystem>().GetLocalVerbs(_otherConsole, SPlayer, typeof(Verb));
+            Assert.That(verbs.Any(verb => verb.Text == Loc.GetString("hail-admin-verb")),
+                "An admin should get the verb on any shuttle console.");
+
+            Assert.That(admin.Start(ServerSession, _otherConsole), Is.Not.Null);
+
+            var ring = SEntMan.GetComponent<HailConsoleComponent>(_otherConsole);
+            Assert.That(ring.State, Is.EqualTo(HailState.Ringing));
+            Assert.That(ring.Divine, Is.True);
+            Assert.That(ring.PeerShip, Is.EqualTo(god), "The ship is told God is calling, not which admin or ship.");
+            Assert.That(State(_console), Is.Null, "The admin's own ship has nothing to do with it.");
+            endpoint = ring.Peer!.Value;
+
+            hailing.Answer(_otherConsole, _otherPilot, true);
+            Assert.That(ring.State, Is.EqualTo(HailState.Connected));
+            Assert.That(ring.PeerName, Is.EqualTo(god));
+            Assert.That(ring.PeerOperator, Is.Null, "The pilot is never shown or sent the admin.");
+            Assert.That(ring.Viewed, Is.Null);
+
+            var own = SEntMan.GetComponent<HailConsoleComponent>(endpoint);
+            Assert.That(own.PeerOperator, Is.EqualTo(SEntMan.GetNetEntity(_otherPilot)), "The admin sees who answered.");
+
+            admin.Say(endpoint, "Be not afraid.");
+            Assert.That(hailing.Say(_otherConsole, _otherPilot, "Who is this?"), Is.True);
+            Assert.That(ring.Log.Select(l => (l.Sender, l.Text, l.Own)), Is.EqualTo(new[]
+            {
+                (god, "Be not afraid.", false),
+                (pilotName, "Who is this?", true),
+            }));
+        });
+
+        // God has no ship to drift out of range or helm to walk away from.
+        await RunSeconds(2f);
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(State(_otherConsole), Is.EqualTo(HailState.Connected));
+            Assert.That(State(endpoint), Is.EqualTo(HailState.Connected));
+        });
+
+        HailWindow window = default!;
+
+        await Client.WaitAssertion(() =>
+        {
+            window = FindHailWindow()!;
+            Assert.That(window, Is.Not.Null, "The admin should get a hail window of their own.");
+            Assert.That(window.FindControl<Label>("StatusLabel").Text, Is.EqualTo(Loc.GetString("hail-banner-open", ("ship", otherShip))));
+            Assert.That(window.FindControl<LineEdit>("ChatEntry").Editable, "The admin can transmit.");
+            Assert.That(window.FindControl<Control>("ContactsBox").Visible, Is.False, "There is no contact list to hail from.");
+        });
+
+        // The pilot hangs up: the admin is told, and keeps the window and its log.
+        await Server.WaitPost(() => hailing.End(_otherConsole));
+        await RunTicks(10);
+
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(window.IsOpen);
+            Assert.That(window.FindControl<Label>("StatusLabel").Text, Is.EqualTo(Loc.GetString("hail-ended-peer-closed", ("ship", otherShip))));
+            Assert.That(window.FindControl<Control>("BackButton").Visible, Is.False);
+            window.Close();
+        });
+
+        await RunTicks(10);
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.EntityExists(endpoint), Is.False, "Closing the window should remove the admin's stand-in.");
+            Assert.That(State(_otherConsole), Is.Null);
         });
     }
 

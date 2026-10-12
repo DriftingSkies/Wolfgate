@@ -47,6 +47,8 @@ public sealed partial class HailWindow : FancyWindow
     private readonly List<NetEntity> _gone = new();
 
     private EntityUid? _console;
+    private NetEntity? _netConsole;
+    private bool _standalone;
     private HailState? _state;
     private bool _transmit;
     private NetEntity? _person;
@@ -95,6 +97,27 @@ public sealed partial class HailWindow : FancyWindow
 
         _console = console;
         Refresh();
+    }
+
+    /// <summary>
+    /// Points the window at an entity that may not have reached this client yet.
+    /// </summary>
+    public void SetConsole(NetEntity console)
+    {
+        _netConsole = console;
+        _console = null;
+        Refresh();
+    }
+
+    /// <summary>
+    /// Makes this a window onto one hail with no console behind it: no contact list to go back to, and
+    /// whoever has the window may transmit.
+    /// </summary>
+    public void SetStandalone()
+    {
+        _standalone = true;
+        _callView = true;
+        Apply(null);
     }
 
     /// <summary>
@@ -188,11 +211,15 @@ public sealed partial class HailWindow : FancyWindow
     {
         HailConsoleComponent? hail = null;
 
+        if (_console == null && _netConsole is { } pending && _entManager.TryGetEntity(pending, out var arrived))
+            _console = arrived;
+
         if (_console != null)
             _entManager.TryGetComponent(_console, out hail);
 
         var state = hail?.State;
-        var transmit = hail != null && hail.Operator != null && _entManager.GetNetEntity(_player.LocalEntity) == hail.Operator;
+        var transmit = hail != null &&
+                       (_standalone || hail.Operator != null && _entManager.GetNetEntity(_player.LocalEntity) == hail.Operator);
 
         if (state != _state || transmit != _transmit || hail?.PeerOperator != _person || (hail != null && hail.PeerName != _personName))
         {
@@ -253,7 +280,7 @@ public sealed partial class HailWindow : FancyWindow
 
         PendingRow.Visible = hail != null && hail.State != HailState.Connected;
         ChatRow.Visible = hail?.State == HailState.Connected;
-        BackButton.Visible = hail == null;
+        BackButton.Visible = hail == null && !_standalone;
 
         if (hail == null)
         {
@@ -279,7 +306,11 @@ public sealed partial class HailWindow : FancyWindow
 
             case HailState.Connected:
                 StatusLabel.Text = Loc.GetString("hail-banner-open", ("ship", hail.PeerShip));
-                Viewscreen.ShowFeed(hail.PeerOperator, hail.PeerShip, hail.PeerName, Loc.GetString("hail-screen-no-visual"));
+                if (hail.Divine)
+                    Viewscreen.ShowDivine(hail.PeerName);
+                else
+                    Viewscreen.ShowFeed(hail.PeerOperator, hail.PeerShip, hail.PeerName, Loc.GetString("hail-screen-no-visual"));
+
                 ChatEntry.Editable = _transmit;
                 SendButton.Disabled = !_transmit;
                 ChatEntry.PlaceHolder = Loc.GetString(_transmit ? "hail-chat-placeholder" : "hail-chat-listening");

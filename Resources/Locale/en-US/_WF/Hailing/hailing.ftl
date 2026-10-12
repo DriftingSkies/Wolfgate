@@ -65,6 +65,12 @@ hail-ended-busy = That ship is on another channel.
 hail-ended-lost = Signal lost.
 hail-ended-cooldown = The hailing array is resetting. Try again shortly.
 
+hail-god-name = God
+hail-pa-god = God is hailing { $ship }. Helm, respond.
+hail-admin-verb = Hail as God
+hail-admin-verb-description = Ring this ship's helm as God and talk to whoever answers. Nobody sees who you are.
+hail-admin-no-console = That ship has no powered shuttle console free to ring.
+
 hail-test-ship-name = Hail Test Vessel
 hail-test-greeting = This is a test vessel. Anything you send comes straight back.
 hail-test-reply = Receiving you: "{ $text }"
