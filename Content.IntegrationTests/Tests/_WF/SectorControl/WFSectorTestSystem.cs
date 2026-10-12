@@ -21,6 +21,9 @@ public sealed class WFSectorTestSystem : EntitySystem
     public readonly List<WFSectorCellRetakingEvent> Retaking = new();
     public readonly List<WFSectorCellRetakenEvent> Retaken = new();
 
+    public readonly List<WFSectorCellClearingEvent> Clearing = new();
+    public readonly List<WFSectorCellClearedEvent> Cleared = new();
+
     /// <summary>Cells a retake is vetoed for.</summary>
     public readonly HashSet<WFSectorCell> RetakeVetoed = new();
 
@@ -38,6 +41,18 @@ public sealed class WFSectorTestSystem : EntitySystem
         SubscribeLocalEvent<WFSectorRetakeAttemptEvent>(OnRetakeAttempt);
         SubscribeLocalEvent<WFSectorCellRetakingEvent>(OnRetaking);
         SubscribeLocalEvent<WFSectorCellRetakenEvent>(OnRetaken);
+        SubscribeLocalEvent<WFSectorCellClearingEvent>(OnClearing);
+        SubscribeLocalEvent<WFSectorCellClearedEvent>(OnCleared);
+    }
+
+    private void OnClearing(ref WFSectorCellClearingEvent args)
+    {
+        Clearing.Add(args);
+    }
+
+    private void OnCleared(ref WFSectorCellClearedEvent args)
+    {
+        Cleared.Add(args);
     }
 
     /// <summary>Forgets what was recorded and lifts every veto.</summary>
@@ -53,6 +68,8 @@ public sealed class WFSectorTestSystem : EntitySystem
         Retaking.Clear();
         Retaken.Clear();
         RetakeVetoed.Clear();
+        Clearing.Clear();
+        Cleared.Clear();
     }
 
     private void OnRetakeAttempt(ref WFSectorRetakeAttemptEvent args)

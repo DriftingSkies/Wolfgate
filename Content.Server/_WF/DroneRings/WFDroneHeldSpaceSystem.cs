@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.DroneRings;
 
-/// <summary>Keeps drones from spawning in sector cells a faction holds.</summary>
+/// <summary>Keeps drones from spawning in sector cells a faction holds or has just freed.</summary>
 public sealed class WFDroneHeldSpaceSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _prototypes = default!;
@@ -26,7 +26,7 @@ public sealed class WFDroneHeldSpaceSystem : EntitySystem
 
     private void OnPlacing(ref WFDebrisPlacingEvent args)
     {
-        if (Sources().Contains(args.Proto) && _territory.IsHeld(args.At))
+        if (Sources().Contains(args.Proto) && _territory.IsHeldOrClearing(args.At))
             args.Cancelled = true;
     }
 

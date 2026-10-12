@@ -29,6 +29,10 @@ public sealed partial class WFSectorTerritoryComponent : Component
     [ViewVariables]
     public Dictionary<WFSectorCell, WFSectorRetake> Retakes = new();
 
+    /// <summary>The freed cells that drones keep out of, with when each stops clearing.</summary>
+    [ViewVariables]
+    public Dictionary<WFSectorCell, TimeSpan> Clearing = new();
+
     /// <summary>When disputes were last worked out, so contest deadlines can be held by the time since.</summary>
     [ViewVariables]
     public TimeSpan DisputeChecked;

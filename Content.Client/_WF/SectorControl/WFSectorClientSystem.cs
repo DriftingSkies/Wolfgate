@@ -185,6 +185,13 @@ public sealed class WFSectorClientSystem : EntitySystem
                 retaking[retake.Cell] = retake.Deadline;
         }
 
+        var clearingUntil = new Dictionary<WFSectorCell, TimeSpan>();
+        foreach (var entry in ev.Clearing)
+        {
+            if (!owners.ContainsKey(entry.Cell) && !ev.Contests.Exists(contest => contest.Cell == entry.Cell))
+                clearingUntil[entry.Cell] = entry.Until;
+        }
+
         var labels = new List<WFSectorLabelView>();
         var corners = new Vector2[6];
         Box2? extent = null;
@@ -223,6 +230,20 @@ public sealed class WFSectorClientSystem : EntitySystem
             }
 
             retakes.Add(new WFSectorRetakeView(cell, centre, fill.ToArray(), outline, deadline));
+        }
+
+        var clearing = new List<WFSectorClearingView>();
+        foreach (var (cell, until) in clearingUntil)
+        {
+            WFSectorHex.Corners(cell, size, corners);
+            var outline = new Vector2[12];
+            for (var i = 0; i < 6; i++)
+            {
+                outline[i * 2] = corners[i];
+                outline[i * 2 + 1] = corners[(i + 1) % 6];
+            }
+
+            clearing.Add(new WFSectorClearingView(cell, WFSectorHex.Centre(cell, size), outline, until));
         }
 
         var disputes = new Dictionary<WFSectorCell, int>();
@@ -288,8 +309,8 @@ public sealed class WFSectorClientSystem : EntitySystem
                 grid.Add(corners[(i + 1) % 6]);
             }
 
-            // A contested or retaken cell shows its countdown there instead.
-            if (contested.Contains(cell) || retaking.ContainsKey(cell))
+            // A contested, retaken or clearing cell shows its countdown there instead.
+            if (contested.Contains(cell) || retaking.ContainsKey(cell) || clearingUntil.ContainsKey(cell))
                 continue;
 
             var color = owners.TryGetValue(cell, out var owner) ? colors[owner] : OpenCellColor;
@@ -304,7 +325,7 @@ public sealed class WFSectorClientSystem : EntitySystem
         }
 
         return new WFSectorMapView(ev.Map, ev.Sector, size, colors, names, ToArrays(fills), ToArrays(edges), labels, contests,
-            owners, grid.ToArray(), cellLabels, extent, disputes, disputed, retakes);
+            owners, grid.ToArray(), cellLabels, extent, disputes, disputed, retakes, clearing);
     }
 
     /// <summary>Diagonal line pairs across a hexagon, a fifth of its radius apart.</summary>
@@ -432,12 +453,16 @@ public sealed class WFSectorMapView
     /// <summary>The fill and outline of every held cell a crewed player ship is retaking, with when it is freed.</summary>
     public readonly List<WFSectorRetakeView> Retakes;
 
+    /// <summary>The outline of every freed cell still clearing, with when drones return.</summary>
+    public readonly List<WFSectorClearingView> Clearing;
+
     public WFSectorMapView(MapId map, bool sector, float cellSize, Color[] colors, string[] names, Vector2[][] fills, Vector2[][] edges,
         List<WFSectorLabelView> labels, List<WFSectorContestView> contests, Dictionary<WFSectorCell, int> owners,
         Vector2[] grid, List<WFSectorLabelView> cellLabels, Box2? extent, Dictionary<WFSectorCell, int> disputes,
-        List<WFSectorDisputedView> disputed, List<WFSectorRetakeView> retakes)
+        List<WFSectorDisputedView> disputed, List<WFSectorRetakeView> retakes, List<WFSectorClearingView> clearing)
     {
         Retakes = retakes;
+        Clearing = clearing;
         Disputes = disputes;
         Disputed = disputed;
         Map = map;
@@ -483,6 +508,16 @@ public readonly record struct WFSectorRetakeView(WFSectorCell Cell, Vector2 Cent
     public TimeSpan Remaining(TimeSpan now)
     {
         return Deadline - now;
+    }
+}
+
+/// <summary>A freed cell still clearing: its outline lines and when drones return, in server time.</summary>
+public readonly record struct WFSectorClearingView(WFSectorCell Cell, Vector2 Centre, Vector2[] Outline, TimeSpan Until)
+{
+    /// <summary>The time left at a game time.</summary>
+    public TimeSpan Remaining(TimeSpan now)
+    {
+        return Until - now;
     }
 }
 

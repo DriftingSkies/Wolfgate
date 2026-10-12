@@ -73,6 +73,14 @@ public sealed partial class WFReaverCampaignComponent : Component
     [ViewVariables]
     public int ConvoysDestroyed;
 
+    /// <summary>Whether the last stronghold has broken with none founded since: the Reavers are broken for now.</summary>
+    [ViewVariables]
+    public bool Defeated;
+
+    /// <summary>How many times the Reavers were broken this round.</summary>
+    [ViewVariables]
+    public int Defeats;
+
     /// <summary>Held cells players have retaken this round.</summary>
     [ViewVariables]
     public int Retaken;

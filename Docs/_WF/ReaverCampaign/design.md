@@ -197,6 +197,14 @@ asks, `WFSectorCellRetakenEvent` follows); the campaign vetoes a cell with a sta
 by breaking the hub, and announces the others, with no chime: "K-7 retaken from the Reavers." A ship out of the fight no
 longer counts as the Reavers' presence in a cell.
 
+**Freed space and the ending.** Any Reaver cell that is freed (a broken hub, a retake, `clear`) is clearing for
+`wf.sector.clearing_minutes`: no drones, and Sector Watch says so with no chime, one line per batch freed in the same
+frame: "Reaver space at K-7, K-8 is clearing. Drone activity returns in 10 minutes. Clear the area." When the last
+standing stronghold breaks with no convoy out, a chimed line follows the stronghold's own: "The Ashfall Reavers are
+broken. Their strongholds are gone and the sector is clear." The legend shows "broken, no strongholds standing" until a
+regroup founds a new hub (its own announcement, as before), and the round summary counts the times they were broken.
+Nothing extra is said when the round ends with the campaign rule.
+
 ## Raids
 
 One campaign-wide raid clock from tier 3, interval `raidInterval[tier]` divided by nothing (not per stronghold),

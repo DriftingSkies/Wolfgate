@@ -120,6 +120,13 @@ public sealed partial class WFReaverCampaignSystem
         }
 
         var faction = _prototypes.TryIndex(campaign.Faction, out var prototype) ? Loc.GetString(prototype.Name) : campaign.Faction.Id;
+        if (state.Defeated && strongholds == 0)
+        {
+            _sync.SetStatus(campaign.Faction, Loc.GetString("wf-reaver-legend-broken", ("faction", faction), ("cells", cells)));
+            _legend = campaign.Faction;
+            return;
+        }
+
         _sync.SetStatus(campaign.Faction, Loc.GetString("wf-reaver-legend",
             ("faction", faction),
             ("tier", TierName(state.Tier)),

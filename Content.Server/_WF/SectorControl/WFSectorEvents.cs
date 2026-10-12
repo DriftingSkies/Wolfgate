@@ -65,6 +65,14 @@ public readonly record struct WFSectorCellRetakenEvent(
     ProtoId<WFSectorFactionPrototype> Faction,
     IReadOnlyList<EntityUid>? Ships = null);
 
+/// <summary>Raised, by ref and broadcast, when a freed cell starts clearing until a time; <c>Previous</c> is the faction that held it.</summary>
+[ByRefEvent]
+public readonly record struct WFSectorCellClearingEvent(MapId Map, WFSectorCell Cell, TimeSpan Until, ProtoId<WFSectorFactionPrototype> Previous);
+
+/// <summary>Raised, by ref and broadcast, when a cell's clearing period runs out; a cell claimed again while clearing raises nothing.</summary>
+[ByRefEvent]
+public readonly record struct WFSectorCellClearedEvent(MapId Map, WFSectorCell Cell);
+
 /// <summary>Raised, by ref and broadcast, when territory was cleared by a switch or a resize and is on again; drivers claim what they hold anew.</summary>
 [ByRefEvent]
 public readonly record struct WFSectorResetEvent;

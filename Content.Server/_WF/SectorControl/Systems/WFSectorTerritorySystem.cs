@@ -34,6 +34,12 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     /// <summary>How long a player ship must sit in a held cell, with none of its holder's ships there, to free it; zero is off.</summary>
     private TimeSpan _retakeDelay;
 
+    /// <summary>How long a freed cell stays clearing; zero is off.</summary>
+    private TimeSpan _clearingDelay;
+
+    /// <summary>Set while territory is wiped, so the cells it frees do not start clearing.</summary>
+    private bool _wiping;
+
     /// <summary>Set while this system reads the station list, so blockaded stations stay in it.</summary>
     private bool _unfiltered;
 
@@ -70,6 +76,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
                 Reset();
         }, true);
         Subs.CVar(_config, SectorControlCVars.RetakeMinutes, value => _retakeDelay = TimeSpan.FromMinutes(Math.Max(0f, value)), true);
+        Subs.CVar(_config, SectorControlCVars.ClearingMinutes, value => _clearingDelay = TimeSpan.FromMinutes(Math.Max(0f, value)), true);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
         SubscribeLocalEvent<WFEncounterStationsEvent>(OnStations);
     }
@@ -111,6 +118,29 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             CheckDisputes(map, territory);
             CheckRetakes(map, territory);
             CheckContests(map, territory);
+            CheckClearing(map, territory);
+        }
+    }
+
+    /// <summary>Ends the clearing of cells whose time is up.</summary>
+    private void CheckClearing(MapId map, WFSectorTerritoryComponent territory)
+    {
+        if (territory.Clearing.Count == 0)
+            return;
+
+        var now = _timing.CurTime;
+        var done = new List<WFSectorCell>();
+        foreach (var (cell, until) in territory.Clearing)
+        {
+            if (now >= until)
+                done.Add(cell);
+        }
+
+        foreach (var cell in done)
+        {
+            territory.Clearing.Remove(cell);
+            var ev = new WFSectorCellClearedEvent(map, cell);
+            RaiseLocalEvent(ref ev);
         }
     }
 
@@ -402,6 +432,19 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         return Owner(coordinates.MapId, CellOf(coordinates)) != null;
     }
 
+    /// <summary>Whether the cell a map position lies in is held or still clearing after being freed.</summary>
+    public bool IsHeldOrClearing(MapCoordinates coordinates)
+    {
+        var cell = CellOf(coordinates);
+        return Owner(coordinates.MapId, cell) != null || ClearingOf(coordinates.MapId, cell) != null;
+    }
+
+    /// <summary>When a freed cell stops clearing, or null if it is not clearing.</summary>
+    public TimeSpan? ClearingOf(MapId map, WFSectorCell cell)
+    {
+        return Territory(map)?.Clearing.TryGetValue(cell, out var until) == true ? until : null;
+    }
+
     /// <summary>The contest on a cell, or null.</summary>
     public WFSectorContest? ContestOf(MapId map, WFSectorCell cell)
     {
@@ -475,6 +518,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         }
 
         territory.Claims[cell] = claim;
+        territory.Clearing.Remove(cell);
         var changed = new WFSectorCellChangedEvent(map, cell, null, faction);
         RaiseLocalEvent(ref changed);
         return true;
@@ -590,6 +634,13 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
 
         var ev = new WFSectorCellChangedEvent(map, cell, claim.Faction, null);
         RaiseLocalEvent(ref ev);
+        if (_wiping || _clearingDelay <= TimeSpan.Zero)
+            return true;
+
+        var until = _timing.CurTime + _clearingDelay;
+        territory.Clearing[cell] = until;
+        var clearing = new WFSectorCellClearingEvent(map, cell, until, claim.Faction);
+        RaiseLocalEvent(ref clearing);
         return true;
     }
 
@@ -645,14 +696,18 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             territories.Add((xform.MapID, territory));
         }
 
+        _wiping = true;
         foreach (var (map, territory) in territories)
         {
             Clear(map);
+            territory.Clearing.Clear();
             territory.Activity.Clear();
             territory.Presence.Clear();
             territory.Disputed.Clear();
             territory.Retakes.Clear();
         }
+
+        _wiping = false;
     }
 
     /// <summary>The cells a faction holds on a map.</summary>

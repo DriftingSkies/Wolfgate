@@ -157,6 +157,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
         SubscribeLocalEvent<WFSectorRetakeAttemptEvent>(OnRetakeAttempt);
         SubscribeLocalEvent<WFSectorCellRetakenEvent>(OnRetaken);
+        SubscribeLocalEvent<WFSectorCellClearingEvent>(OnClearing);
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
     }
 
@@ -178,6 +179,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         _lastTick = TimeSpan.Zero;
         _nextFoundTry = TimeSpan.Zero;
         _legend = null;
+        _clearingPending.Clear();
         _campaignDirty = true;
         Paused = false;
     }
@@ -186,6 +188,9 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
     {
         base.Update(frameTime);
         var now = _timing.CurTime;
+        if (_clearingPending.Count > 0)
+            AnnounceClearing();
+
         if (now < _nextTick)
             return;
 
@@ -425,6 +430,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             ("convoys", state.ConvoysDestroyed),
             ("raids", state.Raids),
             ("retaken", state.Retaken)));
+        if (state.Defeats > 0)
+            args.AddLine(Loc.GetString("wf-reaver-round-end-broken", ("count", state.Defeats)));
     }
 
     /// <summary>Ends every campaign encounter, frees the faction's cells and starts the regroup clock. Returns how many encounters ended.</summary>

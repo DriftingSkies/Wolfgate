@@ -59,6 +59,12 @@ wf-reaver-retaken = {$callsign} retaken from the Reavers. { $paid ->
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} spesos paid.
     }
+# $cells is a list of callsigns
+wf-reaver-clearing = Reaver space at {$cells} is clearing. Drone activity returns in { $minutes ->
+        [one] {$minutes} minute
+       *[other] {$minutes} minutes
+    }. Clear the area.
+wf-reaver-defeated = The Ashfall Reavers are broken. Their strongholds are gone and the sector is clear.
 wf-reaver-retake-name = retaking {$callsign}
 wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. They take the cell in {$minutes} minutes unless traffic keeps the lane.
 
@@ -91,6 +97,7 @@ wf-reaver-legend = {$faction}: {$tier}, { $strongholds ->
         [one] {$cells} cell
        *[other] {$cells} cells
     }, bounty {$bounty}{$levels}
+wf-reaver-legend-broken = {$faction}: broken, no strongholds standing
 wf-reaver-legend-levels = , { $count ->
         [one] level {$levels}
        *[other] levels {$levels}
@@ -117,6 +124,11 @@ wf-reaver-round-end = Reavers held up to { $peak ->
     } sent. Players retook { $retaken ->
         [one] {$retaken} cell
        *[other] {$retaken} cells
+    }.
+
+wf-reaver-round-end-broken = The Reavers were broken { $count ->
+        [one] once
+       *[other] {$count} times
     }.
 
 # wf_reavers command

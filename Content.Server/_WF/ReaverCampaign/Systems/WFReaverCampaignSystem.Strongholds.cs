@@ -131,6 +131,7 @@ public sealed partial class WFReaverCampaignSystem
         state.Founded++;
         state.LastFounded = now;
         state.NoStrongholdSince = null;
+        state.Defeated = false;
         Recompute();
         AnnouncePlace(campaign, regroup ? "wf-reaver-regrouped" : "wf-reaver-founded", true, at.MapId, at.Position,
             ("callsign", WFSectorHex.Callsign(cell)),
@@ -328,6 +329,19 @@ public sealed partial class WFReaverCampaignSystem
             ("bounty", bounty),
             ("paid", paid),
             ("cells", freed));
+        AnnounceDefeat(campaign, state);
+    }
+
+    /// <summary>Announces the end of the campaign when the last stronghold has broken with no convoy out to found another.</summary>
+    private void AnnounceDefeat(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state)
+    {
+        if (Strongholds().Count > 0 || Convoys().Count > 0)
+            return;
+
+        state.Defeated = true;
+        state.Defeats++;
+        Announce(campaign, Loc.GetString("wf-reaver-defeated"), false);
+        Recompute();
     }
 
     /// <summary>Starts the regroup clock when the last stronghold goes, and rescores.</summary>

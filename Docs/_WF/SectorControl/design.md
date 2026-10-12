@@ -41,6 +41,14 @@ raised. The countdown goes to clients in `WFSectorTerritoryEvent.Retakes` and th
 colour with "Retaking m:ss" in place of its callsign; the hover line says so. This is the one place a parked ship
 counts, and only against a holder with no presence there.
 
+**Clearing.** `Free` (so a retake, a lost source, `Release` and `Clear` too) puts the cell in
+`WFSectorTerritoryComponent.Clearing` until `wf.sector.clearing_minutes` (10, 0 is off) pass. Drones stay out of a clearing
+cell exactly as out of a held one (`IsHeldOrClearing`, used by the DroneRings hook), the territory event carries the cell
+and its end time in `Clearing`, and the map draws a dim neutral outline with "Clearing m:ss" in place of the callsign
+(the hover line and blip card say drones return in that time). `WFSectorCellClearingEvent(map, cell, until, previous)`
+fires when it starts, `WFSectorCellClearedEvent(map, cell)` when the time runs out; a claim on the cell ends the state
+quietly. Wiping all territory (switch off, resize) starts no clearing. A contest on a clearing cell does not end it.
+
 **Activity.** `WFSectorActivitySystem` scans every 60 s. A grid counts when it is on the sector map, has a living,
 non-ghost player aboard, is not an encounter grid, is not a station (a `StationMember` grid with no `ShuttleDeed`) and
 has moved at least 100 m since the last scan: parked, docked and AFK ships hold nothing. A ship that jumped (its cell
@@ -131,7 +139,7 @@ and the round is in progress.
 `StationsIn(map, cell)`. `WFSectorActivitySystem`: `LastActivity`, `IsQuiet`, `ActiveShips(map, cell)`. Local events
 in `WFSectorEvents.cs`: `WFSectorClaimAttemptEvent` (cancellable, by ref), `WFSectorCellChangedEvent`,
 `WFSectorCellContestedEvent`, `WFSectorContestResolvedEvent`, `WFSectorRetakeAttemptEvent` (cancellable),
-`WFSectorCellRetakingEvent`, `WFSectorCellRetakenEvent`, and `WFSectorResetEvent`, raised when territory comes back on
+`WFSectorCellRetakingEvent`, `WFSectorCellRetakenEvent`, `WFSectorCellClearingEvent`, `WFSectorCellClearedEvent`, and `WFSectorResetEvent`, raised when territory comes back on
 after being switched off or resized, so drivers can claim what they still hold again.
 
 ## Module layout

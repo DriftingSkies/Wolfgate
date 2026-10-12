@@ -19,6 +19,11 @@ A held cell that a crewed player ship has sat in for three minutes (`wf.sector.r
 of the holder's ships there is retaken: the map pulses it in a neutral colour with the countdown, and at zero it is freed
 (`WFSectorRetakeAttemptEvent` lets a driver veto a cell, `WFSectorCellRetakenEvent` tells it and names the crewed player
 ships that held the cell through the whole countdown). The holder's ships reappearing, the player leaving or a contest on the cell reset the countdown.
+A cell that was held and is freed (a retake, the last source gone, `Free`, `Release` or `Clear`) is clearing for
+`wf.sector.clearing_minutes` (10, 0 turns it off): `IsHeldOrClearing` keeps the drone hook out of it as for a held cell,
+`WFSectorCellClearingEvent` (with the faction that held it) fires when it starts and `WFSectorCellClearedEvent` when it
+ends, and the map outlines it dim with "Clearing m:ss" and a hover line saying when drones return. Claiming the cell
+again ends the state with no cleared event. Wiping territory (a switch or a resize) starts no clearing.
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
 A faction can leave some parties alone (`neutralCompanies`, `neutralStations`): `WFSectorActivitySystem.IsNeutralTo`
@@ -89,6 +94,7 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorClearingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorClearingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorDisputeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorHiddenStationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorHiddenStationTest.cs)

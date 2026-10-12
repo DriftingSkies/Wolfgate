@@ -22,6 +22,7 @@ public sealed partial class ShuttleMapControl
         _sectorOverlay.DrawBorders(handle, view, worldToView);
         _sectorOverlay.DrawContests(handle, system, view, worldToView, Font, UIScale, bounds);
         _sectorOverlay.DrawRetakes(handle, system, view, worldToView, Font, UIScale, bounds);
+        _sectorOverlay.DrawClearing(handle, system, view, worldToView, Font, UIScale, bounds);
         _sectorOverlay.DrawCallsigns(handle, view, worldToView, Font, UIScale, MinimapScale, bounds);
         _sectorOverlay.DrawLegend(handle, system, Font, UIScale);
     }

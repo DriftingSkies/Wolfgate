@@ -21,6 +21,13 @@ public sealed class SectorControlCVars
     public static readonly CVarDef<float> RetakeMinutes =
         CVarDef.Create("wf.sector.retake_minutes", 3f, CVar.SERVERONLY);
 
+    /// <summary>
+    /// How many minutes a cell that was held and freed stays clearing: nothing spawns drones in it, and the sector map
+    /// counts down to when they return. Zero turns the grace period off.
+    /// </summary>
+    public static readonly CVarDef<float> ClearingMinutes =
+        CVarDef.Create("wf.sector.clearing_minutes", 10f, CVar.SERVERONLY);
+
     /// <summary>Stations whose cell can never be claimed: a comma-separated list of name fragments.</summary>
     public static readonly CVarDef<string> ProtectedStations =
         CVarDef.Create("wf.sector.protected_stations", "Halcyon", CVar.SERVERONLY);

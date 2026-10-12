@@ -35,6 +35,8 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         SubscribeLocalEvent<WFSectorContestResolvedEvent>(OnContestResolved);
         SubscribeLocalEvent<WFSectorCellDisputedEvent>(OnCellDisputed);
         SubscribeLocalEvent<WFSectorCellRetakingEvent>(OnCellRetaking);
+        SubscribeLocalEvent<WFSectorCellClearingEvent>(OnCellClearing);
+        SubscribeLocalEvent<WFSectorCellClearedEvent>(OnCellCleared);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
         SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
@@ -79,6 +81,16 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
     }
 
     private void OnCellRetaking(ref WFSectorCellRetakingEvent args)
+    {
+        MarkDirty(args.Map);
+    }
+
+    private void OnCellClearing(ref WFSectorCellClearingEvent args)
+    {
+        MarkDirty(args.Map);
+    }
+
+    private void OnCellCleared(ref WFSectorCellClearedEvent args)
     {
         MarkDirty(args.Map);
     }
@@ -129,7 +141,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         foreach (var map in _dirty)
         {
             var ev = Build(map);
-            var empty = ev.Claims.Count == 0 && ev.Contests.Count == 0;
+            var empty = ev.Claims.Count == 0 && ev.Contests.Count == 0 && ev.Clearing.Count == 0;
             var forced = _forced.Remove(map);
             if (empty && !_sent.Remove(map) && !forced)
                 continue;
@@ -169,7 +181,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         var query = EntityQueryEnumerator<WFSectorTerritoryComponent, TransformComponent>();
         while (query.MoveNext(out _, out var territory, out var xform))
         {
-            if (xform.MapID != sector && (territory.Claims.Count > 0 || territory.Contests.Count > 0))
+            if (xform.MapID != sector && (territory.Claims.Count > 0 || territory.Contests.Count > 0 || territory.Clearing.Count > 0))
                 RaiseNetworkEvent(Build(xform.MapID), player);
         }
 
@@ -213,6 +225,12 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         {
             if (territory.Claims.ContainsKey(cell))
                 ev.Retakes.Add(new WFSectorRetakeEntry(cell, retake.Deadline));
+        }
+
+        foreach (var (cell, until) in territory.Clearing)
+        {
+            if (!territory.Claims.ContainsKey(cell))
+                ev.Clearing.Add(new WFSectorClearingEntry(cell, until));
         }
 
         return ev;

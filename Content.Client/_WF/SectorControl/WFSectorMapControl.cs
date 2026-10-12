@@ -212,6 +212,15 @@ public sealed class WFSectorMapControl : Control
                 ("callsign", callsign), ("distance", distance), ("faction", view.Names[contest.Faction]), ("time", remaining));
         }
 
+        foreach (var clearing in view.Clearing)
+        {
+            if (clearing.Cell != cell)
+                continue;
+
+            return Loc.GetString("wf-sector-map-hover-clearing", ("callsign", callsign), ("distance", distance),
+                ("time", WFSectorOverlay.FormatRemaining(clearing.Remaining(_timing.CurTime))));
+        }
+
         if (view.Owners.TryGetValue(cell, out var owner))
         {
             return Loc.GetString("wf-sector-map-hover-held",
@@ -263,6 +272,16 @@ public sealed class WFSectorMapControl : Control
 
             into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-retaking",
                 ("time", WFSectorOverlay.FormatRemaining(retake.Remaining(_timing.CurTime)))), CardColor, null));
+            break;
+        }
+
+        foreach (var clearing in view.Clearing)
+        {
+            if (clearing.Cell != cell)
+                continue;
+
+            into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-clearing",
+                ("time", WFSectorOverlay.FormatRemaining(clearing.Remaining(_timing.CurTime)))), CardColor, null));
             break;
         }
 
@@ -626,6 +645,7 @@ public sealed class WFSectorMapControl : Control
         _overlay.DrawBorders(handle, view, worldToView);
         _overlay.DrawContests(handle, system, view, worldToView, _font, UIScale, bounds);
         _overlay.DrawRetakes(handle, system, view, worldToView, _font, UIScale, bounds);
+        _overlay.DrawClearing(handle, system, view, worldToView, _font, UIScale, bounds);
         _overlay.DrawDisputes(handle, system, view, worldToView);
         _overlay.DrawCallsigns(handle, view.CellLabels, view.CellSize, worldToView, _font, UIScale, scale, bounds);
         DrawBlips(handle, view, worldToView, bounds);

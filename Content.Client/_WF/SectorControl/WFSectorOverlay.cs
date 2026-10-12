@@ -12,6 +12,9 @@ public sealed class WFSectorOverlay
     /// <summary>The neutral colour of a cell being retaken: it belongs to no faction.</summary>
     public static readonly Color RetakeColor = Color.FromHex("#dfe6ea");
 
+    /// <summary>The dim neutral colour of a freed cell that is clearing.</summary>
+    public static readonly Color ClearingColor = Color.FromHex("#8a949c");
+
     /// <summary>The cell width on screen above which held cells print their callsign.</summary>
     private const float LabelPixels = 60f;
 
@@ -85,6 +88,18 @@ public sealed class WFSectorOverlay
         }
     }
 
+    /// <summary>Outlines freed cells in a dim neutral colour with a countdown to when drones return.</summary>
+    public void DrawClearing(DrawingHandleScreen handle, WFSectorClientSystem system, WFSectorMapView view, in Matrix3x2 worldToView, Font font, float scale, UIBox2 bounds)
+    {
+        var now = system.Now;
+        foreach (var clearing in view.Clearing)
+        {
+            Draw(handle, DrawPrimitiveTopology.LineList, clearing.Outline, worldToView, ClearingColor.WithAlpha(0.45f));
+            var text = Loc.GetString("wf-sector-map-clearing-label", ("time", FormatRemaining(clearing.Remaining(now))));
+            DrawCentred(handle, font, scale, Vector2.Transform(clearing.Centre, worldToView), text, ClearingColor, bounds);
+        }
+    }
+
     /// <summary>Hatches disputed cells with diagonal lines in their faction's colour and pulses their borders.</summary>
     public void DrawDisputes(DrawingHandleScreen handle, WFSectorClientSystem system, WFSectorMapView view, in Matrix3x2 worldToView)
     {
@@ -134,6 +149,9 @@ public sealed class WFSectorOverlay
 
         if (system.TryGetAnyMap(out var retaking) && retaking.Retakes.Count > 0)
             legend.Add(new WFSectorLegendView(RetakeColor, Loc.GetString("wf-sector-map-legend-retaking")));
+
+        if (system.TryGetAnyMap(out var freed) && freed.Clearing.Count > 0)
+            legend.Add(new WFSectorLegendView(ClearingColor, Loc.GetString("wf-sector-map-legend-clearing")));
 
         if (legend.Count == 0)
             return;

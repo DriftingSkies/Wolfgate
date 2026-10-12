@@ -13,7 +13,7 @@ debris-table entries are drones. The radii go to clients in `WFDroneRingsCompone
 
 World generation raises `WFDebrisPlacingEvent` before it spawns a debris feature (a marked hook in
 `DebrisFeaturePlacerSystem`); `WFDroneHeldSpaceSystem` cancels it for a `wfDroneSources` spawner whose position lies in
-a sector cell that any faction holds, so no drones appear in held space. Chunks already generated, and cells claimed
+a sector cell that any faction holds or has just freed (it stays clearing for `wf.sector.clearing_minutes`), so no drones appear there. Chunks already generated, and cells claimed
 after, keep the drones they have.
 
 Biomes pinned to a block of chunks (the Wilds) also hold drones but are patches, not distances, and get no ring.

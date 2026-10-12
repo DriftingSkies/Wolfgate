@@ -4,6 +4,7 @@ using Content.IntegrationTests.Tests._WF.SectorControl;
 using Content.Server._WF.DroneRings;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Shared._WF.SectorControl;
+using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 
@@ -30,7 +31,17 @@ public sealed class WFDroneHeldSpaceTest : WFSectorTestBase
     private static readonly WFSectorCell Held = new(4, -2);
     private static readonly WFSectorCell Open = new(5, -2);
 
-    /// <summary>A drone spawner in a held cell is cancelled; one in open space, and other debris in a held cell, are not.</summary>
+    [TearDown]
+    public async Task ResetClearing()
+    {
+        await Server.WaitPost(() =>
+        {
+            Server.ResolveDependency<IConfigurationManager>().SetCVar(SectorControlCVars.ClearingMinutes, SectorControlCVars.ClearingMinutes.DefaultValue);
+            Server.System<WFSectorTerritorySystem>().Clear(MapData.MapId);
+        });
+    }
+
+    /// <summary>A drone spawner in a held or clearing cell is cancelled; one in open space or after the clearing, and other debris in a held cell, are not.</summary>
     [Test]
     public async Task DronesAreCancelledOnlyInHeldCells()
     {
@@ -45,8 +56,16 @@ public sealed class WFDroneHeldSpaceTest : WFSectorTestBase
             Assert.That(Placing("WFDroneHeldTestSpawner", map, CentreOf(Open)), Is.False, "A drone in open space.");
             Assert.That(Placing("WFDroneHeldTestRock", map, CentreOf(Held)), Is.False, "Other debris in held space.");
 
+            Server.ResolveDependency<IConfigurationManager>().SetCVar(SectorControlCVars.ClearingMinutes, 0.05f);
             Assert.That(territory.Free(map, Held), Is.True);
-            Assert.That(Placing("WFDroneHeldTestSpawner", map, CentreOf(Held)), Is.False, "Once the cell is freed.");
+            Assert.That(Placing("WFDroneHeldTestSpawner", map, CentreOf(Held)), Is.True, "Still clearing once freed.");
+            Assert.That(Placing("WFDroneHeldTestRock", map, CentreOf(Held)), Is.False, "Other debris in a clearing cell.");
+        });
+
+        await RunTicks(200);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(Placing("WFDroneHeldTestSpawner", MapData.MapId, CentreOf(Held)), Is.False, "Once the clearing is over.");
         });
     }
 

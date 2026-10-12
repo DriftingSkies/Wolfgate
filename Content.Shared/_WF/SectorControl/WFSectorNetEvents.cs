@@ -25,6 +25,9 @@ public sealed class WFSectorTerritoryEvent : EntityEventArgs
     /// <summary>The held cells a crewed player ship is retaking, each with the server time it is freed.</summary>
     public List<WFSectorRetakeEntry> Retakes = new();
 
+    /// <summary>The freed cells that are clearing, each with the server time drones return.</summary>
+    public List<WFSectorClearingEntry> Clearing = new();
+
     /// <summary>Whether this is the sector map, which the client keeps with nothing held so the sector map can draw its grid.</summary>
     public bool Sector;
 }
@@ -44,6 +47,10 @@ public readonly record struct WFSectorDisputedEntry(WFSectorCell Cell, int Facti
 /// <summary>A held cell being retaken and when it is freed, in server time.</summary>
 [Serializable, NetSerializable]
 public readonly record struct WFSectorRetakeEntry(WFSectorCell Cell, TimeSpan Deadline);
+
+/// <summary>A freed cell that is clearing and when it stops, in server time.</summary>
+[Serializable, NetSerializable]
+public readonly record struct WFSectorClearingEntry(WFSectorCell Cell, TimeSpan Until);
 
 /// <summary>The map legend's lines, one per faction, already localised by the driver that set them.</summary>
 [Serializable, NetSerializable]

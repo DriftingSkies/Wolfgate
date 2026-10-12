@@ -76,7 +76,9 @@ hold applies while the campaign or the Encounters switch is off and while the ev
 paused, which also holds every running encounter's expiry; `wf_reavers status` says which. A retaken cell pays the
 tier's `retakeBounty` to the crews of the ships that held it, through the encounter bounty path and its hourly cap, and
 the "retaken" announcement says so. The round-end summary lists peak cells held, strongholds founded and broken, patrols destroyed, convoys
-stopped, raids launched and cells retaken.
+stopped, raids launched and cells retaken, and how often the Reavers were broken.
+Freed Reaver cells are announced as clearing (no chime, one line per batch) and breaking the last stronghold with no
+convoy out announces the ending; see `WFSectorCellClearingEvent` in the SectorControl module.
 
 `Docs/_WF/ReaverCampaign/design.md` is the design.
 
@@ -125,6 +127,7 @@ stopped, raids launched and cells retaken.
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverConvoyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverConvoyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverEndingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverEndingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGameModeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGameModeTest.cs)

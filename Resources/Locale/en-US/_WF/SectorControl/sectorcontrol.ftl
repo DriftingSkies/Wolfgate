@@ -17,6 +17,9 @@ wf-sector-map-hover-open = {$callsign} ({$distance} km): open space
 wf-sector-map-hover-contested = {$callsign} ({$distance} km): contested by {$faction}, {$time}
 wf-sector-map-hover-disputed = {$callsign} ({$distance} km): disputed, {$faction} ships and a player ship are both there
 wf-sector-map-hover-retaking = {$callsign} ({$distance} km): held by {$faction}, being retaken, {$time}
+wf-sector-map-hover-clearing = {$callsign} ({$distance} km): clearing, drones return in {$time}
+wf-sector-map-legend-clearing = Clearing: no drones yet
+wf-sector-map-clearing-label = Clearing {$time}
 wf-sector-map-legend-disputed = Disputed: timers paused
 wf-sector-map-legend-retaking = Being retaken
 wf-sector-map-retake-label = Retaking {$time}
@@ -35,6 +38,7 @@ wf-sector-map-card-open = {$callsign}: open space
 wf-sector-map-card-contested = Contested by {$faction}, {$time}
 wf-sector-map-card-disputed = Disputed with {$faction}: timers paused
 wf-sector-map-card-retaking = Being retaken, {$time}
+wf-sector-map-card-clearing = Clearing, drones return in {$time}
 
 # wf_sectormap command
 cmd-wf_sectormap-desc = Opens or closes the sector map.
