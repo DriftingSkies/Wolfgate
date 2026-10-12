@@ -80,6 +80,7 @@ public sealed class HailingSystem : EntitySystem
     private readonly List<(EntityUid Console, HailEndReason Reason, HailEndReason PeerReason)> _ending = new();
     private readonly List<EntityUid> _consoles = new();
     private readonly List<EntityUid> _expired = new();
+    private readonly HashSet<EntityUid> _feed = new();
     private readonly Dictionary<EntityUid, bool> _ships = new();
 
     public override void Initialize()
@@ -106,8 +107,15 @@ public sealed class HailingSystem : EntitySystem
 
     private void OnShutdown(Entity<HailConsoleComponent> ent, ref ComponentShutdown args)
     {
-        if (ent.Comp.Viewer is { } viewer && ent.Comp.Viewed is { } viewed)
-            _pvs.RemoveSessionOverride(viewed, viewer);
+        if (ent.Comp.Viewer is not { } viewer)
+            return;
+
+        foreach (var uid in ent.Comp.Sent)
+        {
+            _pvs.RemoveForceSend(uid, viewer);
+        }
+
+        ent.Comp.Sent.Clear();
     }
 
     private void OnTargetsRequest(Entity<ShuttleConsoleComponent> ent, ref HailTargetsRequestMessage args)
@@ -163,6 +171,9 @@ public sealed class HailingSystem : EntitySystem
                 _ending.Add((uid, failure.Reason, failure.PeerReason));
                 continue;
             }
+
+            if (check && hail.State == HailState.Connected)
+                RefreshFeed(hail);
 
             // An admin's stand-in is nowhere, so there is nobody for it to ring at.
             if (hail.State == HailState.Connected || hail.Remote || now < hail.NextRing)
@@ -623,15 +634,67 @@ public sealed class HailingSystem : EntitySystem
         // The other pilot is far outside this one's view, and the screen draws the real person.
         if (!hail.Divine && peerUser != null && TryComp<ActorComponent>(user, out var actor))
         {
-            _pvs.AddSessionOverride(peerUser.Value, actor.PlayerSession);
             hail.Viewer = actor.PlayerSession;
             hail.Viewed = peerUser;
+            RefreshFeed(hail);
         }
 
         Dirty(ent);
 
         if (!hail.Remote)
             _audio.PlayPvs(OpenSound, ent);
+    }
+
+    /// <summary>
+    /// Keeps the viewer sent the person on their screen and everything that person wears and carries, which
+    /// is what their picture is drawn from. An ordinary override sends the children only as the entry budget
+    /// allows and drops the rest of them for the tick whenever it runs out, so limbs and clothes came and
+    /// went; each one is force-sent instead, and the set follows what they pick up and put down.
+    /// </summary>
+    private void RefreshFeed(HailConsoleComponent hail)
+    {
+        if (hail.Viewer is not { } viewer || hail.Viewed is not { } viewed)
+            return;
+
+        _feed.Clear();
+
+        if (!TerminatingOrDeleted(viewed))
+            CollectFeed(viewed);
+
+        _expired.Clear();
+
+        foreach (var uid in hail.Sent)
+        {
+            if (!_feed.Contains(uid))
+                _expired.Add(uid);
+        }
+
+        foreach (var uid in _expired)
+        {
+            hail.Sent.Remove(uid);
+            _pvs.RemoveForceSend(uid, viewer);
+        }
+
+        _expired.Clear();
+
+        foreach (var uid in _feed)
+        {
+            if (hail.Sent.Add(uid))
+                _pvs.AddForceSend(uid, viewer);
+        }
+    }
+
+    private void CollectFeed(EntityUid uid)
+    {
+        if (!_feed.Add(uid))
+            return;
+
+        var children = Transform(uid).ChildEnumerator;
+
+        while (children.MoveNext(out var child))
+        {
+            CollectFeed(child);
+        }
     }
 
     private void Remove(EntityUid console, HailConsoleComponent hail, HailEndReason? reason)

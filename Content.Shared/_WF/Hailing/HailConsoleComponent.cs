@@ -64,6 +64,9 @@ public sealed partial class HailConsoleComponent : Component
     [ViewVariables]
     public EntityUid? Viewed;
 
+    /// <summary>That operator and everything they wear and carry, as last sent to the viewer.</summary>
+    public HashSet<EntityUid> Sent = new();
+
     [ViewVariables]
     public TimeSpan StateTime;
 
