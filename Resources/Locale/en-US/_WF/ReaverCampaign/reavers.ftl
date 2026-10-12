@@ -52,6 +52,7 @@ wf-reaver-patrol-destroyed-held = Reaver patrol destroyed at {$callsign}. { $pai
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} spesos paid.
     }
+wf-reaver-retaken = {$callsign} retaken from the Reavers.
 wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. They take the cell in {$minutes} minutes unless traffic keeps the lane.
 
 # A stronghold flying out from a standing one to found itself; $station, $bearing and $range are as above

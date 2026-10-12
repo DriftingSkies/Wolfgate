@@ -98,7 +98,7 @@ public sealed partial class WFReaverCampaignSystem
         {
             // A marked ship is hunted wherever it is on the map.
             var marked = IsMarked(ship);
-            if (docked.Contains(ship) || state.Raided.TryGetValue(ship, out var last) && now - last < RaidCooldown
+            if (docked.Contains(ship) || _scheduler.IsSecretPlace(ship) || state.Raided.TryGetValue(ship, out var last) && now - last < RaidCooldown
                 || !marked && !InOrBeside(held, _territory.GridCell(ship)))
                 continue;
 
@@ -144,7 +144,7 @@ public sealed partial class WFReaverCampaignSystem
             return false;
         }
 
-        Raided(state, uid.Owner, target, from.Owner, false);
+        Raided(state, uid.Owner, target, from.Owner, prototype.Ships[0].Key, false);
         var hunted = IsMarked(target);
         WarnShip(campaign, map, target, _transform.GetWorldPosition(uid.Comp.Ships[prototype.Ships[0].Key].Grid),
             hunted ? "wf-reaver-raid-hunting" : "wf-reaver-raid-warning-pa",
@@ -194,7 +194,7 @@ public sealed partial class WFReaverCampaignSystem
             return false;
         }
 
-        Raided(state, uid.Owner, station, from.Owner, true);
+        Raided(state, uid.Owner, station, from.Owner, lead, true);
         WarnStation(campaign, map, station, start);
         return true;
     }
@@ -248,15 +248,28 @@ public sealed partial class WFReaverCampaignSystem
     }
 
     /// <summary>Marks a launched raid, its target's cooldown and the tallies.</summary>
-    private void Raided(WFReaverCampaignComponent state, EntityUid raid, EntityUid target, EntityUid stronghold, bool station)
+    private void Raided(WFReaverCampaignComponent state, EntityUid raid, EntityUid target, EntityUid stronghold, string lead, bool station)
     {
         var comp = AddComp<WFReaverRaidComponent>(raid);
+        comp.Lead = lead;
         comp.Target = target;
         comp.Station = station;
         comp.Stronghold = stronghold;
         state.Raids++;
         state.Raided[target] = _timing.CurTime;
         Log.Info($"Reaver raid {ToPrettyString(raid)} launched at {ToPrettyString(target)}.");
+    }
+
+    /// <summary>Breaks raids whose lead is out of the fight, so a wing does not escort a wreck and the raid cap is freed.</summary>
+    private void TendRaids()
+    {
+        var query = EntityQueryEnumerator<WFReaverRaidComponent, WFEncounterComponent>();
+        while (query.MoveNext(out var uid, out var raid, out var encounter))
+        {
+            if (encounter.Resolution == null && !TerminatingOrDeleted(uid)
+                && (!encounter.Ships.TryGetValue(raid.Lead, out var lead) || !_encounters.InFight(lead)))
+                BreakLead(uid, encounter, raid.Lead);
+        }
     }
 
     /// <summary>Whether a cell is held or next to a held one.</summary>

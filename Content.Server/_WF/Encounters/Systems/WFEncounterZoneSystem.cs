@@ -32,6 +32,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     [Dependency] private WFEncounterSystem _encounters = default!;
     [Dependency] private WFCrewAlertSystem _alerts = default!;
     [Dependency] private WFCrewEscortSystem _escorts = default!;
+    [Dependency] private WFCrewShipStatusSystem _status = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WarLevelSystem _warLevel = default!;
@@ -81,7 +82,8 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             foreach (var ship in encounter.Ships.Values)
             {
                 // A ship lying in wait gives itself away to nobody.
-                if (ship.WarnRange <= 0f && ship.AttackRange <= 0f || ship.Lurking || TerminatingOrDeleted(ship.Grid))
+                if (ship.WarnRange <= 0f && ship.AttackRange <= 0f || ship.Lurking || TerminatingOrDeleted(ship.Grid)
+                    || Disabled(ship))
                     continue;
 
                 if (!crewedKnown)
@@ -120,7 +122,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
 
             foreach (var ship in encounter.Ships.Values)
             {
-                if (!ship.Lurking && !TerminatingOrDeleted(ship.Grid))
+                if (!ship.Lurking && !TerminatingOrDeleted(ship.Grid) && !Disabled(ship))
                     _fleet.Add((uid, ship));
             }
         }
@@ -206,14 +208,26 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
         return HasComp<ShuttleDeedComponent>(grid) || !HasComp<StationMemberComponent>(grid);
     }
 
-    /// <summary>Whether any port of a grid is docked to another.</summary>
+    /// <summary>Whether a ship is out of the fight, a derelict aside: a disabled one no longer hails, fires or answers rivals.</summary>
+    private bool Disabled(WFEncounterShipState ship)
+    {
+        return !ship.Derelict && _status.IsDisabled(ship.Grid);
+    }
+
+    /// <summary>Whether any port of a grid is docked to another, a ship of its own company and encounter fleet aside: its garrison is not a berth.</summary>
     private bool IsDocked(EntityUid grid)
     {
         var docks = EntityQueryEnumerator<Content.Server.Shuttles.Components.DockingComponent, TransformComponent>();
         while (docks.MoveNext(out _, out var dock, out var xform))
         {
-            if (xform.GridUid == grid && dock.DockedWith != null)
-                return true;
+            if (xform.GridUid != grid || dock.DockedWith is not { } other)
+                continue;
+
+            if (Transform(other).GridUid is { } alongside && HasComp<WFEncounterGridComponent>(alongside)
+                && WFCompanyFamily.Same(Company(grid), Company(alongside)))
+                continue;
+
+            return true;
         }
 
         return false;

@@ -12,6 +12,10 @@ public sealed partial class WFReaverRaidComponent : Component
     [ViewVariables]
     public bool Station;
 
+    /// <summary>The key of its lead ship.</summary>
+    [ViewVariables]
+    public string Lead = string.Empty;
+
     [ViewVariables]
     public EntityUid Stronghold;
 }

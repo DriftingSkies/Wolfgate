@@ -34,6 +34,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         SubscribeLocalEvent<WFSectorCellContestedEvent>(OnCellContested);
         SubscribeLocalEvent<WFSectorContestResolvedEvent>(OnContestResolved);
         SubscribeLocalEvent<WFSectorCellDisputedEvent>(OnCellDisputed);
+        SubscribeLocalEvent<WFSectorCellRetakingEvent>(OnCellRetaking);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
         SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
@@ -73,6 +74,11 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
     }
 
     private void OnCellDisputed(ref WFSectorCellDisputedEvent args)
+    {
+        MarkDirty(args.Map);
+    }
+
+    private void OnCellRetaking(ref WFSectorCellRetakingEvent args)
     {
         MarkDirty(args.Map);
     }
@@ -201,6 +207,12 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         {
             if (territory.Claims.ContainsKey(cell) || territory.Contests.ContainsKey(cell))
                 ev.Disputed.Add(new WFSectorDisputedEntry(cell, Index(ev, indices, faction)));
+        }
+
+        foreach (var (cell, retake) in territory.Retakes)
+        {
+            if (territory.Claims.ContainsKey(cell))
+                ev.Retakes.Add(new WFSectorRetakeEntry(cell, retake.Deadline));
         }
 
         return ev;

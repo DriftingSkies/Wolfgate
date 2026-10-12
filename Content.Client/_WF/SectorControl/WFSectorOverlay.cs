@@ -9,6 +9,9 @@ public sealed class WFSectorOverlay
     private const float FillAlpha = 0.10f;
     private const float EdgeAlpha = 0.8f;
 
+    /// <summary>The neutral colour of a cell being retaken: it belongs to no faction.</summary>
+    public static readonly Color RetakeColor = Color.FromHex("#dfe6ea");
+
     /// <summary>The cell width on screen above which held cells print their callsign.</summary>
     private const float LabelPixels = 60f;
 
@@ -67,6 +70,21 @@ public sealed class WFSectorOverlay
         }
     }
 
+    /// <summary>Pulses and outlines cells being retaken in a neutral colour and counts down to when they are freed.</summary>
+    public void DrawRetakes(DrawingHandleScreen handle, WFSectorClientSystem system, WFSectorMapView view, in Matrix3x2 worldToView, Font font, float scale, UIBox2 bounds)
+    {
+        var pulse = system.Pulse;
+        var now = system.Now;
+        foreach (var retake in view.Retakes)
+        {
+            Draw(handle, DrawPrimitiveTopology.TriangleList, retake.Fill, worldToView, RetakeColor.WithAlpha(0.04f + 0.10f * pulse));
+            Draw(handle, DrawPrimitiveTopology.LineList, retake.Outline, worldToView, RetakeColor.WithAlpha(0.4f + 0.5f * pulse));
+
+            var text = Loc.GetString("wf-sector-map-retake-label", ("time", FormatRemaining(retake.Remaining(now))));
+            DrawCentred(handle, font, scale, Vector2.Transform(retake.Centre, worldToView), text, RetakeColor, bounds);
+        }
+    }
+
     /// <summary>Hatches disputed cells with diagonal lines in their faction's colour and pulses their borders.</summary>
     public void DrawDisputes(DrawingHandleScreen handle, WFSectorClientSystem system, WFSectorMapView view, in Matrix3x2 worldToView)
     {
@@ -113,6 +131,9 @@ public sealed class WFSectorOverlay
         var legend = new List<WFSectorLegendView>(system.Legend);
         if (system.TryGetAnyMap(out var map) && map.Disputed.Count > 0)
             legend.Add(new WFSectorLegendView(Color.White, Loc.GetString("wf-sector-map-legend-disputed")));
+
+        if (system.TryGetAnyMap(out var retaking) && retaking.Retakes.Count > 0)
+            legend.Add(new WFSectorLegendView(RetakeColor, Loc.GetString("wf-sector-map-legend-retaking")));
 
         if (legend.Count == 0)
             return;

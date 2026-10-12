@@ -15,6 +15,10 @@ cell is what keeps it: every minute each crewed player ship that moved 100 m cou
 docked and idle ships count for nothing; stations never do), and a contest is only claimed if the cell stayed quiet.
 A cell with a faction ship and a crewed player ship in it is disputed (`SetPresence`, `IsDisputed`,
 `WFSectorCellDisputedEvent`): the map hatches it and its contest deadline holds until one side leaves or dies.
+A held cell that a crewed player ship has sat in for three minutes (`wf.sector.retake_minutes`, 0 turns it off) with none
+of the holder's ships there is retaken: the map pulses it in a neutral colour with the countdown, and at zero it is freed
+(`WFSectorRetakeAttemptEvent` lets a driver veto a cell, `WFSectorCellRetakenEvent` tells it). The holder's ships
+reappearing, the player leaving or a contest on the cell reset the countdown.
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
 
@@ -83,8 +87,10 @@ Admins use `wf_sector status | claim <faction> <q> <r> | free <q> <r> | contest 
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorActivityTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorControlTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorDisputeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorHiddenStationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorHiddenStationTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorMapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorMapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorNoticeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorRetakeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorRetakeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorSyncTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorSyncTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorTestBase.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorTestBase.cs)
 - [`Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorTestSystem.cs`](../../../Content.IntegrationTests/Tests/_WF/SectorControl/WFSectorTestSystem.cs)

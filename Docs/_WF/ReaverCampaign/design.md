@@ -33,7 +33,11 @@ field comes up a few seconds later. The shield covers the hub's own grid only; a
 
 Founding claims the cell and its ring with the encounter entity as the source. A stronghold is **broken** when its
 lead is out of the fight (`WFEncounterSystem.InFight` false): the campaign calls `Resolve(Destroyed)` itself, since
-the Encounters judge waits for every ship. On `WFEncounterResolvedEvent` with `Destroyed` the campaign pays the
+the Encounters judge waits for every ship. A lead is out of the fight when its crew are all dead, it is disabled
+(`WFCrewShipStatusSystem`: abandoned, disarmed, crippled, or **wrecked**: under 60% of the hull tiles it was first seen
+with for 10 s, which covers a hull shot to pieces or split into fragments although its crew live), or its helm has been
+unmanned for **two minutes** (the queue's status is `no-pilot`, `pilot-away` or `awaiting-helm`: no living pilot, none
+aboard, or none who reaches a helm). Patrols and raids break the same way when their lead goes, though a wing is left. On `WFEncounterResolvedEvent` with `Destroyed` the campaign pays the
 bounty (`strongholdBounty[tier]` times one plus half the level), ends the stronghold's reinforcements, releases the
 source (freeing every cell it alone supported) and announces. `Ended` (admin or round end) frees
 and pays nothing.
@@ -176,8 +180,22 @@ route flown, it resolves `Completed`, jumps out and is swept; the stronghold sen
 
 **Patrol killed.** When a patrol resolves `Destroyed`, the cell its lead died in is freed unless a stronghold stands
 in it, the patrol bounty is paid, and the sector watch says so without a chime ("Reaver patrol destroyed at K-7, the
-cell is clear, bounty paid"). **Stronghold under attack.** Once a stronghold has taken hits from player ships, the
-nearest patrol within one cell is recalled to it (`SetOrders`: `GoTo` the stronghold at 600 m); a recalled patrol drops any intercept it was on.
+cell is clear, bounty paid"). A patrol whose lead is out of the fight (above) is broken at once, whatever its wing is
+doing: the encounter resolves `Destroyed` (cell freed, bounty paid, cap freed) and the wing turns for the point it set out
+from. **Leash.** A patrol's lead outside held space and the ring of cells round it for 10 s is called back: its orders
+become the rest of its route and home (its recall, if it was recalled), which also breaks a captain's evasion chase, and
+the ship it was chasing goes on cooldown. **Stronghold under attack.** Each fresh hit from a player ship makes a hub
+recall every patrol within two cells (`GoTo` the stronghold at 600 m, then `Circle` it) and, when it has no reinforcement
+docked, no sortie out, the campaign running, the ship within 5 km and five minutes since the last, send a **sortie pack**:
+a fresh offBudget patrol with orders `GoTo` the ship, `Attack` it, then home. The pack gives the chase up and flies home
+when it is more than 6 km from the hub or its target has been out of held space for 20 s. A hub's gunners also answer a
+ship that fires on it from beyond its 1200 m deterrence range, out to three times that, and its zones stay up while its
+own reinforcement is docked. A reinforcement that broke away to attack is called back past 6 km.
+
+**Retaken cells.** Sector control frees a held cell a player ship has sat in unopposed for a while (`WFSectorRetakeAttemptEvent`
+asks, `WFSectorCellRetakenEvent` follows); the campaign vetoes a cell with a standing stronghold in it, which is freed only
+by breaking the hub, and announces the others, with no chime: "K-7 retaken from the Reavers." A ship out of the fight no
+longer counts as the Reavers' presence in a cell.
 
 ## Raids
 
@@ -207,8 +225,8 @@ to intercept Hauler, bearing 045, 3.2 km." over its PA and in chat to those aboa
 with bearing and range from the ship to the patrol. A ship no patrol could be sent after is tried again in 30 s.
 
 An intercept ends when its target is disabled (`WFCrewShipStatusSystem.IsDisabled`, the test the `Attack` task ends
-on), deleted or off the sector map, has been out of held space for 60 s, or has been more than three cells from the
-patrol for 60 s. The patrol gets the rest of its route and home again, and the target goes on `interceptCooldown`. A
+on), deleted or off the sector map, has been out of held space for 20 s, or has been more than three cells from the
+patrol for 20 s, or the patrol's lead has strayed out of held space and the ring round it (the leash above). The patrol gets the rest of its route and home again, and the target goes on `interceptCooldown`. A
 patrol recalled to its stronghold, or one that resolves, drops its intercept the same way. The state is
 `InsideSince` and `InterceptCooldowns` on `WFReaverCampaignComponent`, and `Intercepting`, `InterceptSince`, `Resume`
 and the two give-up clocks on `WFReaverPatrolComponent`.
@@ -300,7 +318,7 @@ Dominant near the fifth hour, the front in the inner ring by the end. Any crew c
   `Components/WFReaverRaidComponent.cs` (target), `Components/WFReaverMarkComponent.cs` (until when a ship is
   marked), `Components/WFReaverCampaignComponent.cs` (campaign state on the sector map entity: tier, score, clocks,
   intercept clocks, counters for the round summary), `Systems/WFReaverCampaignSystem.cs` with partials
-  `.Strongholds.cs`, `.Hub.cs` (shield placement, levels), `.Reinforcements.cs`, `.Convoys.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
+  `.Strongholds.cs`, `.Hub.cs` (shield placement, levels), `.Reinforcements.cs`, `.Convoys.cs`, `.Spread.cs`, `.Patrols.cs`, `.Intercepts.cs`, `.Response.cs` (sorties), `.Retakes.cs`, `.Raids.cs`, `.Threat.cs`, `.Announce.cs`,
   `.Rewards.cs`, `Commands/WFReaverCommand.cs`.
 - `Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`, `encounters.yml`; `Resources/Locale/en-US/_WF/ReaverCampaign/reavers.ftl`;
   `Resources/ServerInfo/_WF/ReaverCampaign/Reavers.xml` guidebook page if the guidebook takes module pages without

@@ -25,6 +25,10 @@ public sealed partial class WFSectorTerritoryComponent : Component
     [ViewVariables]
     public Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>> Disputed = new();
 
+    /// <summary>The held cells a crewed player ship is retaking, with when each is freed.</summary>
+    [ViewVariables]
+    public Dictionary<WFSectorCell, WFSectorRetake> Retakes = new();
+
     /// <summary>When disputes were last worked out, so contest deadlines can be held by the time since.</summary>
     [ViewVariables]
     public TimeSpan DisputeChecked;
@@ -55,6 +59,16 @@ public sealed class WFSectorClaim
 
     [ViewVariables]
     public TimeSpan Since;
+}
+
+/// <summary>A countdown to freeing a held cell: a crewed player ship has been in it with no ship of its holder.</summary>
+public sealed class WFSectorRetake
+{
+    [ViewVariables]
+    public TimeSpan Started;
+
+    [ViewVariables]
+    public TimeSpan Deadline;
 }
 
 /// <summary>A cell a faction takes at the deadline if it has been quiet since the contest began.</summary>

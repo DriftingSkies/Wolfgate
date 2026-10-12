@@ -42,6 +42,31 @@ public sealed class WFReaverDisputeTest : WFReaverTestBase
         });
     }
 
+    /// <summary>A disputed hub's sortie cooldown keeps running, so a siege gets a sortie every five minutes and not one.</summary>
+    [Test]
+    public async Task DisputeDoesNotHoldTheSortieClock()
+    {
+        await StartCampaign();
+        EntityUid stronghold = default;
+        TimeSpan due = default;
+        await Server.WaitAssertion(() =>
+        {
+            stronghold = FoundAt(Home);
+            var comp = SEntMan.GetComponent<WFReaverStrongholdComponent>(stronghold);
+            due = STiming.CurTime + TimeSpan.FromSeconds(30);
+            comp.NextSortie = due;
+            Board(SpawnGrid(CentreOf(Home) + new Vector2(1500f, 0f), "Test Hauler"));
+        });
+
+        await RunTicks(270);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(Server.System<WFSectorTerritorySystem>().IsDisputed(MapData.MapId, Home), Is.True);
+            Assert.That(SEntMan.GetComponent<WFReaverStrongholdComponent>(stronghold).NextSortie, Is.EqualTo(due));
+            Disembark();
+        });
+    }
+
     /// <summary>Spread skips a disputed frontier cell and takes it once the dispute is over.</summary>
     [Test]
     public async Task SpreadSkipsADisputedCell()

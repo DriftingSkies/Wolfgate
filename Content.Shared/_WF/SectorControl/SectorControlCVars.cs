@@ -14,6 +14,13 @@ public sealed class SectorControlCVars
     public static readonly CVarDef<float> CellSize =
         CVarDef.Create("wf.sector.cell_size", 3000f, CVar.SERVERONLY);
 
+    /// <summary>
+    /// How many minutes a crewed player ship must sit in a held cell, with no ship of the holding faction in it, before
+    /// the cell is freed. Zero turns retaking off.
+    /// </summary>
+    public static readonly CVarDef<float> RetakeMinutes =
+        CVarDef.Create("wf.sector.retake_minutes", 3f, CVar.SERVERONLY);
+
     /// <summary>Stations whose cell can never be claimed: a comma-separated list of name fragments.</summary>
     public static readonly CVarDef<string> ProtectedStations =
         CVarDef.Create("wf.sector.protected_stations", "Halcyon", CVar.SERVERONLY);

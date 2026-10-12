@@ -12,6 +12,8 @@ using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared._WF.SectorControl;
+using Content.Shared.Shuttles.Components;
+using Content.Shared.Shuttles.Systems;
 using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests._WF.ReaverCampaign;
@@ -86,6 +88,30 @@ public sealed class WFReaverInterceptTest : WFReaverTestBase
         await RunTicks(30);
         Assert.That(ChatSince(since).Any(line => line.Contains("Reaver patrol turning to intercept Test Hauler, bearing")), Is.True,
             "Those aboard are warned in chat.");
+    }
+
+    /// <summary>A ship whose IFF hides it, as a secret station does to those docked at it, is neither intercepted nor named to the sector.</summary>
+    [Test]
+    public async Task ShipHiddenByIffIsNeverIntercepted()
+    {
+        await StartCampaign();
+        await Server.WaitAssertion(() =>
+        {
+            var campaign = Server.System<WFReaverCampaignSystem>();
+            FoundAt(Home);
+            campaign.SetTier(1);
+            var ship = SpawnGrid(CentreOf(Home.Neighbour(1)), "Test Hauler");
+            Board(ship);
+            Server.System<SharedShuttleSystem>().AddIFFFlag(ship, IFFFlags.HideLabelAlways);
+            var state = campaign.State()!;
+
+            campaign.CheckIntercepts();
+            Assert.That(state.InsideSince.ContainsKey(ship), Is.False, "Its time in held space is not counted.");
+            state.InsideSince[ship] = STiming.CurTime - TimeSpan.FromMinutes(10);
+            campaign.CheckIntercepts();
+            Assert.That(campaign.Patrols(), Is.Empty, "Nobody is sent after it.");
+            Assert.That(campaign.TryIntercept(ship), Is.False, "Not even when asked.");
+        });
     }
 
     /// <summary>A ship out of held space is not intercepted however long it was in; back in, with no patrol out, a fresh one is sent.</summary>

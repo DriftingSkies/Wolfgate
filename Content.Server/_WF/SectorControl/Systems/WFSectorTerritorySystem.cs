@@ -31,6 +31,9 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
 
     private TimeSpan _nextCheck;
 
+    /// <summary>How long a player ship must sit in a held cell, with none of its holder's ships there, to free it; zero is off.</summary>
+    private TimeSpan _retakeDelay;
+
     /// <summary>Set while this system reads the station list, so blockaded stations stay in it.</summary>
     private bool _unfiltered;
 
@@ -66,6 +69,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             if (Enabled)
                 Reset();
         }, true);
+        Subs.CVar(_config, SectorControlCVars.RetakeMinutes, value => _retakeDelay = TimeSpan.FromMinutes(Math.Max(0f, value)), true);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundCleanup);
         SubscribeLocalEvent<WFEncounterStationsEvent>(OnStations);
     }
@@ -105,6 +109,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         {
             CheckSources(map, territory);
             CheckDisputes(map, territory);
+            CheckRetakes(map, territory);
             CheckContests(map, territory);
         }
     }
@@ -242,6 +247,106 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         }
     }
 
+    /// <summary>When a held cell will be freed by a retake, or null if none is counting down.</summary>
+    public TimeSpan? RetakeOf(MapId map, WFSectorCell cell)
+    {
+        return Territory(map)?.Retakes.TryGetValue(cell, out var retake) == true ? retake.Deadline : null;
+    }
+
+    /// <summary>Works out a map's retakes now, as the second timer does.</summary>
+    public void CheckRetakes(MapId map)
+    {
+        if (Territory(map) is { } territory)
+            CheckRetakes(map, territory);
+    }
+
+    /// <summary>
+    /// Counts down held cells a crewed player ship is in while none of the holder's ships are, frees those whose time is
+    /// up and drops countdowns whose condition lapsed. A driver can veto a cell with <see cref="WFSectorRetakeAttemptEvent"/>.
+    /// </summary>
+    private void CheckRetakes(MapId map, WFSectorTerritoryComponent territory)
+    {
+        var now = _timing.CurTime;
+        if (_retakeDelay <= TimeSpan.Zero || territory.Claims.Count == 0)
+        {
+            DropRetakes(map, territory, c => true);
+            return;
+        }
+
+        var ships = _activity.CellsWithCrewedShips(map);
+        var retaking = new Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>>();
+        foreach (var (cell, claim) in territory.Claims)
+        {
+            if (!ships.ContainsKey(cell) || territory.Contests.ContainsKey(cell) || Present(territory, claim.Faction, cell, now))
+                continue;
+
+            var attempt = new WFSectorRetakeAttemptEvent(map, cell, claim.Faction);
+            RaiseLocalEvent(ref attempt);
+            if (!attempt.Cancelled)
+                retaking[cell] = claim.Faction;
+        }
+
+        DropRetakes(map, territory, cell => !retaking.ContainsKey(cell));
+        var due = new List<(WFSectorCell Cell, ProtoId<WFSectorFactionPrototype> Faction)>();
+        foreach (var (cell, faction) in retaking)
+        {
+            if (!territory.Retakes.TryGetValue(cell, out var retake))
+            {
+                var deadline = now + _retakeDelay;
+                territory.Retakes[cell] = new WFSectorRetake { Started = now, Deadline = deadline };
+                var started = new WFSectorCellRetakingEvent(map, cell, faction, deadline);
+                RaiseLocalEvent(ref started);
+            }
+            else if (now >= retake.Deadline)
+            {
+                due.Add((cell, faction));
+            }
+        }
+
+        foreach (var (cell, faction) in due)
+        {
+            territory.Retakes.Remove(cell);
+            if (!Free(map, cell))
+                continue;
+
+            // The cell is quiet again at once otherwise, and a faction that spreads into quiet cells would take it back.
+            _activity.Stamp(map, cell);
+            var retaken = new WFSectorCellRetakenEvent(map, cell, faction);
+            RaiseLocalEvent(ref retaken);
+        }
+    }
+
+    /// <summary>Drops the countdowns whose cell matches, telling listeners each stopped.</summary>
+    private void DropRetakes(MapId map, WFSectorTerritoryComponent territory, Func<WFSectorCell, bool> match)
+    {
+        if (territory.Retakes.Count == 0)
+            return;
+
+        var dropped = new List<WFSectorCell>();
+        foreach (var cell in territory.Retakes.Keys)
+        {
+            if (match(cell))
+                dropped.Add(cell);
+        }
+
+        foreach (var cell in dropped)
+        {
+            territory.Retakes.Remove(cell);
+            if (!territory.Claims.TryGetValue(cell, out var claim))
+                continue;
+
+            var ended = new WFSectorCellRetakingEvent(map, cell, claim.Faction, null);
+            RaiseLocalEvent(ref ended);
+        }
+    }
+
+    /// <summary>Whether a faction's driver reported a ship of its in a cell within the presence timeout.</summary>
+    private bool Present(WFSectorTerritoryComponent territory, ProtoId<WFSectorFactionPrototype> faction, WFSectorCell cell, TimeSpan now)
+    {
+        return territory.Presence.TryGetValue(faction, out var presence)
+            && now - presence.Reported <= PresenceTimeout && presence.Cells.Contains(cell);
+    }
+
     /// <summary>The territory of a map, made on its map entity if asked and the map exists.</summary>
     public WFSectorTerritoryComponent? Territory(MapId map, bool create = false)
     {
@@ -270,6 +375,12 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     public ProtoId<WFSectorFactionPrototype>? Owner(MapId map, WFSectorCell cell)
     {
         return Territory(map)?.Claims.TryGetValue(cell, out var claim) == true ? (ProtoId<WFSectorFactionPrototype>?) claim.Faction : null;
+    }
+
+    /// <summary>Whether any faction holds the cell a map position lies in; false on a map with no territory.</summary>
+    public bool IsHeld(MapCoordinates coordinates)
+    {
+        return Owner(coordinates.MapId, CellOf(coordinates)) != null;
     }
 
     /// <summary>The contest on a cell, or null.</summary>
@@ -456,6 +567,8 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         if (Territory(map) is not { } territory || !territory.Claims.Remove(cell, out var claim))
             return false;
 
+        territory.Retakes.Remove(cell);
+
         var ev = new WFSectorCellChangedEvent(map, cell, claim.Faction, null);
         RaiseLocalEvent(ref ev);
         return true;
@@ -519,6 +632,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             territory.Activity.Clear();
             territory.Presence.Clear();
             territory.Disputed.Clear();
+            territory.Retakes.Clear();
         }
     }
 

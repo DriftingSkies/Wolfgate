@@ -4,6 +4,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Mobs.Systems;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
@@ -19,6 +20,7 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private PowerReceiverSystem _power = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedMapSystem _maps = default!;
     [Dependency] private Content.Server.Shuttles.Systems.DockingSystem _docking = default!;
 
     private readonly List<EntityUid> _boarded = new();
@@ -29,15 +31,22 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     /// <summary>A ship with less than this share of the most thrust it was seen with cannot manoeuvre.</summary>
     private const float CrippledThrust = 0.25f;
 
+    /// <summary>A hull with less than this share of the most tiles it was seen with is a wreck: shot to pieces or split apart.</summary>
+    private const float WreckedHull = 0.6f;
+
     private static readonly TimeSpan CacheTime = TimeSpan.FromSeconds(2);
     // A gap this long between readings means the spell was not watched continuously.
     private static readonly TimeSpan ReadingGap = TimeSpan.FromSeconds(5);
+
+    /// <summary>How many times its disengage range a deterring crew still answers a ship that fires on it.</summary>
+    public const float ShooterReach = 3f;
 
     /// <summary>How often the watched ships are read.</summary>
     private static readonly TimeSpan WatchInterval = TimeSpan.FromSeconds(1);
 
     private readonly Dictionary<EntityUid, (TimeSpan Until, Reading Reading)> _cache = new();
     private readonly Dictionary<EntityUid, float> _peakThrust = new();
+    private readonly Dictionary<EntityUid, int> _peakTiles = new();
     private readonly HashSet<EntityUid> _armed = new();
     private readonly HashSet<EntityUid> _crewed = new();
     private readonly Dictionary<(EntityUid Grid, Condition Condition), (TimeSpan Since, TimeSpan Last)> _spells = new();
@@ -50,9 +59,9 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     private readonly HashSet<EntityUid> _served = new();
     private readonly HashSet<EntityUid> _gunned = new();
 
-    private enum Condition : byte { Abandoned, Disarmed, Crippled }
+    private enum Condition : byte { Abandoned, Disarmed, Crippled, Wrecked }
 
-    private readonly record struct Reading(bool Abandoned, bool Disarmed, bool Crippled);
+    private readonly record struct Reading(bool Abandoned, bool Disarmed, bool Crippled, bool Wrecked);
 
     /// <summary>Sets when the crew of a ship stop attacking other ships.</summary>
     public void SetPolicy(EntityUid grid, WFCrewDisengage rule, float range)
@@ -63,9 +72,10 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     /// <summary>
     /// Whether the crew of <paramref name="grid"/> should leave <paramref name="target"/> alone under their rule.
     /// <paramref name="range"/> lets a deterring crew also give up on a ship that is far enough away; an Attack task
-    /// passes false, because it starts out of range.
+    /// passes false, because it starts out of range. A <paramref name="shooter"/> that is firing on the ship is
+    /// answered from farther out, up to <see cref="ShooterReach"/> times the range, and not chased past that.
     /// </summary>
-    public bool ShouldDisengage(EntityUid grid, EntityUid target, bool range = true)
+    public bool ShouldDisengage(EntityUid grid, EntityUid target, bool range = true, bool shooter = false)
     {
         var (rule, distance) = _policies.TryGetValue(grid, out var policy) ? policy : (WFCrewDisengage.Disable, 0f);
         var reading = Read(target);
@@ -73,26 +83,27 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
             return true;
         if (rule == WFCrewDisengage.Destroy)
             return false;
-        if (reading.Disarmed || reading.Crippled)
+        if (reading.Disarmed || reading.Crippled || reading.Wrecked)
             return true;
-        if (rule != WFCrewDisengage.Deter || !range || TerminatingOrDeleted(grid) || TerminatingOrDeleted(target))
+        if (rule != WFCrewDisengage.Deter || !range && !shooter || TerminatingOrDeleted(grid) || TerminatingOrDeleted(target))
             return false;
 
         var here = _transform.GetMapCoordinates(grid);
         var there = _transform.GetMapCoordinates(target);
-        return here.MapId != there.MapId || (here.Position - there.Position).LengthSquared() > distance * distance;
+        var reach = range ? distance : distance * ShooterReach;
+        return here.MapId != there.MapId || (here.Position - there.Position).LengthSquared() > reach * reach;
     }
 
     /// <summary>
     /// Whether a ship is out of the fight: for <see cref="DisabledDelay"/> without a break, everyone who was aboard
     /// is dead or gone, or it had ship weapons and none can be fired, or it has no weapon that can and under a
-    /// quarter of its thrust. Each is judged against what the ship was seen with earlier, so stations, wrecks,
-    /// asteroids and drones are never disabled for lacking what they never had.
+    /// quarter of its thrust, or under 60% of its hull is left. Each is judged against what the ship was seen with
+    /// earlier, so stations, wrecks, asteroids and drones are never disabled for lacking what they never had.
     /// </summary>
     public bool IsDisabled(EntityUid grid)
     {
         var reading = Read(grid);
-        return reading.Abandoned || reading.Disarmed || reading.Crippled;
+        return reading.Abandoned || reading.Disarmed || reading.Crippled || reading.Wrecked;
     }
 
     /// <summary>Whether a ship has no working thruster at all right now.</summary>
@@ -136,6 +147,11 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
         if (thrust > peak)
             _peakThrust[grid] = peak = thrust;
 
+        var tiles = TryComp<MapGridComponent>(grid, out var hull) ? _maps.GetFilledTileCount((grid, hull)) : 0;
+        var peakTiles = _peakTiles.GetValueOrDefault(grid);
+        if (tiles > peakTiles)
+            _peakTiles[grid] = peakTiles = tiles;
+
         if (armed)
             _armed.Add(grid);
 
@@ -145,7 +161,8 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
         return new Reading(
             Sustained(grid, Condition.Abandoned, !crewed && _crewed.Contains(grid), now),
             Sustained(grid, Condition.Disarmed, !armed && _armed.Contains(grid), now),
-            Sustained(grid, Condition.Crippled, !armed && peak > 0f && thrust < peak * CrippledThrust, now));
+            Sustained(grid, Condition.Crippled, !armed && peak > 0f && thrust < peak * CrippledThrust, now),
+            Sustained(grid, Condition.Wrecked, peakTiles > 0 && tiles < peakTiles * WreckedHull, now));
     }
 
     /// <summary>Whether a condition has held, watched without a gap, for the whole delay.</summary>
@@ -260,6 +277,7 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
         _nextWatch = now + WatchInterval;
         _watch.Clear();
         _watch.UnionWith(_peakThrust.Keys);
+        _watch.UnionWith(_peakTiles.Keys);
         _watch.UnionWith(_armed);
         _watch.UnionWith(_crewed);
         if (_watch.Count > 0)
@@ -342,10 +360,12 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     {
         _cache.Remove(grid);
         _peakThrust.Remove(grid);
+        _peakTiles.Remove(grid);
         _armed.Remove(grid);
         _crewed.Remove(grid);
         _spells.Remove((grid, Condition.Abandoned));
         _spells.Remove((grid, Condition.Disarmed));
         _spells.Remove((grid, Condition.Crippled));
+        _spells.Remove((grid, Condition.Wrecked));
     }
 }

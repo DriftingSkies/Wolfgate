@@ -155,6 +155,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         SubscribeLocalEvent<WFPilotDockFailedEvent>(OnDockFailed);
         SubscribeLocalEvent<WFEncounterWeightEvent>(OnWeight);
         SubscribeLocalEvent<WFSectorResetEvent>(OnSectorReset);
+        SubscribeLocalEvent<WFSectorRetakeAttemptEvent>(OnRetakeAttempt);
+        SubscribeLocalEvent<WFSectorCellRetakenEvent>(OnRetaken);
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
     }
 
@@ -209,7 +211,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         TendStrongholds(state, ships, elapsed);
         TendConvoys(state, running && !Paused);
         TendReinforcements();
-        TendPatrols();
+        TendPatrols(state);
+        TendRaids();
         TendIntercepts(state);
         TendMarks();
         if (!running || Campaign is not { } campaign)

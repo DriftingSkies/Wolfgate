@@ -8,6 +8,7 @@ using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Encounters;
 using Content.Shared.GameTicking;
 using Content.Shared.Ghost;
+using Content.Shared.Shuttles.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Station.Components;
 using Robust.Server.Player;
@@ -414,7 +415,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
             if (!ported.Contains(uid))
                 continue;
 
-            if (_hidden.Count > 0 && Avoided(uid, _hidden))
+            if (IsHidden(uid))
                 continue;
 
             if (HasComp<StationMemberComponent>(uid))
@@ -452,6 +453,15 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         }).ToList();
     }
 
+    /// <summary>Whether a grid is a secret station: its name matches the hidden list, or its IFF hides it or its label.</summary>
+    public bool IsHidden(EntityUid station)
+    {
+        if (TryComp<IFFComponent>(station, out var iff) && (iff.Flags & (IFFFlags.Hide | IFFFlags.HideLabel | IFFFlags.HideLabelAlways)) != 0)
+            return true;
+
+        return _hidden.Count > 0 && Avoided(station, _hidden);
+    }
+
     /// <summary>Whether a station's grid name, station name or station id contains any of the given fragments.</summary>
     private bool Avoided(EntityUid station, List<string> fragments)
     {
@@ -474,7 +484,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
     /// <summary>Whether a point is within the hidden clearance of a station kept secret.</summary>
     private bool NearHiddenStation(Vector2 point, MapId map)
     {
-        if (_hidden.Count == 0 || _hiddenClearance <= 0f)
+        if (_hiddenClearance <= 0f)
             return false;
 
         var query = EntityQueryEnumerator<MapGridComponent, TransformComponent>();
@@ -482,8 +492,32 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         {
             if (xform.MapID == map && uid != xform.MapUid && !HasComp<ShuttleDeedComponent>(uid)
                 && (HasComp<StationMemberComponent>(uid) || HasComp<Content.Server.Station.Components.BecomesStationComponent>(uid))
-                && Avoided(uid, _hidden)
+                && IsHidden(uid)
                 && (_transform.GetWorldPosition(xform) - point).LengthSquared() < _hiddenClearance * _hiddenClearance)
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>Whether a grid is part of a secret place: itself hidden, docked to a hidden station, or within the hidden clearance of one.</summary>
+    public bool IsSecretPlace(EntityUid grid)
+    {
+        if (TerminatingOrDeleted(grid))
+            return false;
+
+        if (IsHidden(grid))
+            return true;
+
+        var xform = Transform(grid);
+        if (NearHiddenStation(_transform.GetWorldPosition(xform), xform.MapID))
+            return true;
+
+        var docks = EntityQueryEnumerator<Content.Server.Shuttles.Components.DockingComponent, TransformComponent>();
+        while (docks.MoveNext(out _, out var dock, out var dockXform))
+        {
+            if (dockXform.GridUid == grid && dock.DockedWith is { } other
+                && Transform(other).GridUid is { } otherGrid && IsHidden(otherGrid))
                 return true;
         }
 

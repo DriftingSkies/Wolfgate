@@ -47,4 +47,12 @@ public sealed partial class WFReaverPatrolComponent : Component
     /// <summary>Since when the intercepted ship has been more than three cells off.</summary>
     [ViewVariables]
     public TimeSpan? TargetFarSince;
+
+    /// <summary>Whether it was sent out from a stronghold under attack, to hunt the ship that hit it and fly home.</summary>
+    [ViewVariables]
+    public bool Sortie;
+
+    /// <summary>Since when its lead has been outside held space and the ring round it; it is called off its chase after a few seconds.</summary>
+    [ViewVariables]
+    public TimeSpan? OutsideSince;
 }

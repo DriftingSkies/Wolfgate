@@ -34,6 +34,14 @@ public sealed partial class WFReaverStrongholdComponent : Component
     [ViewVariables]
     public bool Recalled;
 
+    /// <summary>When it may next send a sortie pack out against an attacker.</summary>
+    [ViewVariables]
+    public TimeSpan NextSortie;
+
+    /// <summary>The sortie pack it sent, while it is out; there is one at a time.</summary>
+    [ViewVariables]
+    public EntityUid? Sortie;
+
     /// <summary>Seconds each player ship that never hit it has spent near it while it was under attack.</summary>
     [ViewVariables]
     public Dictionary<EntityUid, float> Support = new();

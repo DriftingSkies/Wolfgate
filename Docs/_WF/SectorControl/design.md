@@ -26,9 +26,20 @@ another owner fails (drivers contest explicitly).
 
 **Protected cells.** `WFSectorProtectionSystem` vetoes claims on the origin cell and its ring, and on any cell that
 holds a station whose name matches `wf.sector.protected_stations` (default `Halcyon`: the TSF flagship). Hidden
-stations (`wf.encounters.hidden_stations`, PDV Helios) are not protected: an unclaimable hole in held space would give
-them away. Drivers keep spawns and routes out of them with the Encounters placement helper, which already knows the
-hidden clearance.
+stations are not protected: an unclaimable hole in held space would give them away. A station is hidden when its name
+matches `wf.encounters.hidden_stations` (PDV Helios) or its IFF has `Hide`, `HideLabel` or `HideLabelAlways`
+(`WFEncounterSchedulerSystem.IsHidden`). `Stations()` leaves hidden ones out, so no driver names them, blockades them,
+raids them or lists them as the nearest station, and their cell is claimed silently like open space. Drivers keep spawns
+and routes out of them with the Encounters placement helper, which already knows the hidden clearance.
+
+**Retaking.** Each second `CheckRetakes` looks at every held cell with a crewed player ship in it (the same ships as
+disputes), no contest on it, and none of the holder's ships reported there within the presence timeout (a driver that
+reports nothing counts as absent). Such a cell gets a countdown of `wf.sector.retake_minutes` (3, 0 is off); any break
+in those conditions drops it and starts over. A driver can veto a cell with `WFSectorRetakeAttemptEvent`. At zero the
+cell is freed, stamped active so a spreading faction waits out its quiet time, and `WFSectorCellRetakenEvent` is
+raised. The countdown goes to clients in `WFSectorTerritoryEvent.Retakes` and the map pulses the cell in a neutral
+colour with "Retaking m:ss" in place of its callsign; the hover line says so. This is the one place a parked ship
+counts, and only against a holder with no presence there.
 
 **Activity.** `WFSectorActivitySystem` scans every 60 s. A grid counts when it is on the sector map, has a living,
 non-ghost player aboard, is not an encounter grid, is not a station (a `StationMember` grid with no `ShuttleDeed`) and
@@ -119,7 +130,8 @@ and the round is in progress.
 `Free`, `Contest`, `SetContestDeadline`, `DropContest`, `Held(faction)`, `Frontier(faction)` (unowned cells adjacent to held ones), `Sources(map, cell)`,
 `StationsIn(map, cell)`. `WFSectorActivitySystem`: `LastActivity`, `IsQuiet`, `ActiveShips(map, cell)`. Local events
 in `WFSectorEvents.cs`: `WFSectorClaimAttemptEvent` (cancellable, by ref), `WFSectorCellChangedEvent`,
-`WFSectorCellContestedEvent`, `WFSectorContestResolvedEvent`, and `WFSectorResetEvent`, raised when territory comes back on
+`WFSectorCellContestedEvent`, `WFSectorContestResolvedEvent`, `WFSectorRetakeAttemptEvent` (cancellable),
+`WFSectorCellRetakingEvent`, `WFSectorCellRetakenEvent`, and `WFSectorResetEvent`, raised when territory comes back on
 after being switched off or resized, so drivers can claim what they still hold again.
 
 ## Module layout
@@ -155,7 +167,8 @@ player may run it. Edits inside `_WF/Encounters` (same fork, no markers): `WFEnc
   are ring counts, and a later owner needs no new drawing.
 - Claims carry sources, not ranges: the framework only checks liveness; what supports what is the driver's rule.
 - Protection is an event, so every driver gets the same vetoes without a list of its own.
-- Moving ships only count as activity. Parked pickets would otherwise fence the sector for free.
+- Moving ships only count as activity. Parked pickets would otherwise fence the sector for free. Retaking is the
+  exception, and it needs the holder to be absent, so a picket cannot take a cell a faction is flying in.
 - Only the framework draws and networks; drivers send text for the legend.
 - The sector map shows no more than a MAP scan: the server sends territory only, and the client names grids and
   encounters by the MAP tab's own rules, without the detection a console would add.

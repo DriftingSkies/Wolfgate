@@ -107,12 +107,17 @@ crew and ship shield integration cases passed; module `--check` and `--pr-check 
   Each attacking vessel has its own 60 second expiry.
 - A ship is out of the fight (`WFCrewShipStatusSystem`) after 10 seconds without a break of any of: everyone who
   was aboard is dead or gone (abandoned); it had ship weapons and none is powered (disarmed); or it has no powered
-  weapon and under a quarter of the thrust it was seen with (crippled). Each test is against what the ship was seen
+  weapon and under a quarter of the thrust it was seen with (crippled); or it holds under 60% of the hull tiles it was
+  seen with (wrecked: shot to pieces or split apart, crew or no). Each test is against what the ship was seen
   with, so a hull that never had crew, weapons or thrust is never judged for lacking them.
 - When a crew stops attacking a ship is its own mission setting, `Disengage`: `Destroy` stops only for an abandoned
-  ship, `Disable` (default) for any of the three, `Deter` also once the ship is beyond `DisengageRange`. It decides
+  ship, `Disable` (default) for any of the four, `Deter` also once the ship is beyond `DisengageRange`. It decides
   the threat list, gunner fire and when an Attack task completes (`ShouldDisengage`; the range part is skipped for
-  the Attack task, which starts out of range).
+  the Attack task, which starts out of range). A ship that has fired on a deterring crew is still answered beyond
+  `DisengageRange`, by the captain and the gunners alike, but only out to three times it.
+- A pilot looking for a helm takes the nearest console, one square to the hull before any that is turned: cruise
+  flight faces the helm's north while the thrust is laid in the hull's frame, so a turned console flies the ship
+  stern first (Saintie's aft console is turned 180 degrees).
 - Each crewman has a `Skill` (Green, Regular, Veteran, Elite; `WFCrewSkills`), set per crew by the mission. It sets
   hand weapon aim error and time to first shot, how far off and how well led the ship's guns are laid, thrust and
   turn rate at the helm, how far ahead the pilot looks, and whether he dodges incoming fire. Veteran is the crew

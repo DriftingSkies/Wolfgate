@@ -1015,9 +1015,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
     }
 
     /// <summary>
-    /// Whether a ship is still in the fight: its hull is there and not disabled, and any of its crew live, aboard or
-    /// not. A stranded ship waiting for rescue is not out of it for being unable to move or shoot. A side is in the
-    /// fight while any of its ships is.
+    /// Whether a ship is still in the fight: its hull is there and not disabled or wrecked, any of its crew live,
+    /// aboard or not, and its helm has not gone unmanned for two minutes. A stranded ship waiting for rescue is not
+    /// out of it for being unable to move or shoot. A side is in the fight while any of its ships is.
     /// </summary>
     public bool InFight(WFEncounterShipState ship)
     {
@@ -1030,8 +1030,21 @@ public sealed partial class WFEncounterSystem : EntitySystem
             && (ship.NoPilotSince is not { } since || _timing.CurTime - since < NoPilotGrace);
     }
 
-    /// <summary>How long a ship with orders may have nobody left to fly it before it is out of the encounter.</summary>
-    private static readonly TimeSpan NoPilotGrace = TimeSpan.FromSeconds(60);
+    /// <summary>Whether a ship is out of the fight only because nobody has manned its helm for two minutes: hull sound and crew alive.</summary>
+    public bool OutForWantOfPilot(WFEncounterShipState ship)
+    {
+        return !ship.Derelict && !TerminatingOrDeleted(ship.Grid) && (IsStranded(ship) || !_status.IsDisabled(ship.Grid))
+            && HasLivingCrew(ship, anywhere: true) && !InFight(ship);
+    }
+
+    /// <summary>How long a ship with orders may have nobody at its helm before it is out of the encounter.</summary>
+    private static readonly TimeSpan NoPilotGrace = TimeSpan.FromMinutes(2);
+
+    /// <summary>Whether a queue's status says its ship has no pilot to fly it: none alive, none aboard or none at the helm.</summary>
+    private static bool Unpiloted(string? status)
+    {
+        return status is "no-pilot" or "pilot-away" or "awaiting-helm";
+    }
 
     /// <summary>A task that never finishes by itself: a hold, loiter, circle, follow or escort with no duration.</summary>
     private static bool Endless(WFCrewObjective objective)
@@ -1068,9 +1081,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
         foreach (var ship in encounter.Ships.Values)
         {
             sides.Add(ship.Side);
-            // The crew hand the helm on when a pilot falls; "no-pilot" means nobody left can fly it.
+            // The crew hand the helm on when a pilot falls; a ship none can fly, or whose helm none reaches, ages out.
             if (ship.HasOrders && !TerminatingOrDeleted(ship.Grid)
-                && _objectives.QueueStatus(ship.Grid, ship.Group) == "no-pilot")
+                && Unpiloted(_objectives.QueueStatus(ship.Grid, ship.Group)))
                 ship.NoPilotSince ??= _timing.CurTime;
             else
                 ship.NoPilotSince = null;

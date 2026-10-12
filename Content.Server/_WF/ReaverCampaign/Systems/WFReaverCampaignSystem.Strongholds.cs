@@ -269,7 +269,7 @@ public sealed partial class WFReaverCampaignSystem
             TendStrongholds(state, _activity.CrewedShips(_territory.SectorMap), 1f);
     }
 
-    /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, marks the ships that land them, breaks reinforcements away from a hub under attack and brings them back, times support and recalls a patrol once one is attacked.</summary>
+    /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, marks the ships that land them, answers each fresh hit with a sortie pack and the patrols nearby, breaks reinforcements away from a hub under attack and brings them back, and times support.</summary>
     private void TendStrongholds(WFReaverCampaignComponent state, HashSet<EntityUid> ships, float elapsed)
     {
         foreach (var stronghold in Strongholds())
@@ -277,7 +277,7 @@ public sealed partial class WFReaverCampaignSystem
             var (uid, comp, encounter) = stronghold;
             if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
             {
-                _encounters.Resolve(uid, WFEncounterResolution.Destroyed);
+                _encounters.Resolve(uid, LostResolution(encounter, comp.Lead));
                 continue;
             }
 
@@ -285,7 +285,9 @@ public sealed partial class WFReaverCampaignSystem
             if (hits > comp.Hits)
             {
                 comp.LastHit = _timing.CurTime;
-                ScatterReinforcements(uid, MarkAttackers(comp, encounter));
+                var fresh = MarkAttackers(comp, encounter);
+                ScatterReinforcements(uid, fresh);
+                RespondToHit(stronghold, fresh);
             }
 
             comp.Hits = hits;
@@ -297,8 +299,6 @@ public sealed partial class WFReaverCampaignSystem
 
             if (_timing.CurTime - comp.LastHit <= SupportWindow)
                 TrackSupport(comp, encounter, _transform.GetWorldPosition(lead.Grid), ships, elapsed);
-            if (!comp.Recalled)
-                comp.Recalled = TryRecallPatrol(stronghold);
         }
     }
 

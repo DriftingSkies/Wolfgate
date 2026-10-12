@@ -173,7 +173,7 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>
     /// Stops reinforcements whose lead is out of the fight, joins those that have docked with their hub, holds
     /// those whose crew gave up docking beside it, orders again those whose flight ended short, ends those lost on
-    /// the way, and sends back to dock any that came apart.
+    /// the way, sends back to dock any that came apart and calls in any that chased an attacker too far from the hub.
     /// </summary>
     private void TendReinforcements()
     {
@@ -215,6 +215,10 @@ public sealed partial class WFReaverCampaignSystem
                         TendArrival(reinforcement, lead, hub.Grid, now);
                     break;
                 case WFReaverReinforcementPhase.Docked when !docked && !home.Scattered:
+                    Return(reinforcement, hub.Grid);
+                    break;
+                case WFReaverReinforcementPhase.Sortie
+                    when Vector2.Distance(_transform.GetWorldPosition(lead.Grid), _transform.GetWorldPosition(hub.Grid)) > SortieLeash:
                     Return(reinforcement, hub.Grid);
                     break;
             }
@@ -326,7 +330,7 @@ public sealed partial class WFReaverCampaignSystem
 
         // Arriving mid-fight, it goes straight out.
         if ((home.Scattered || UnderFire(home)) && hubEncounter.Ships.TryGetValue(home.Lead, out var hub) && !TerminatingOrDeleted(hub.Grid)
-            && PickAttacker(home, hubEncounter, hub.Grid, null) is { } attacker)
+            && PickAttacker(home, hubEncounter, hub.Grid, null) is { } attacker && InAttackerReach(attacker, hub.Grid))
         {
             home.Attacker = attacker;
             home.Scattered = true;
@@ -366,13 +370,19 @@ public sealed partial class WFReaverCampaignSystem
         return pool.Count == 0 ? null : pool.OrderByDescending(pair => pair.Value).First().Key;
     }
 
+    /// <summary>Whether a ship is near enough its target hub to be sent after, so a reinforcement is not sent out only to be called back by its leash.</summary>
+    private bool InAttackerReach(EntityUid attacker, EntityUid hubGrid)
+    {
+        return Vector2.Distance(_transform.GetWorldPosition(attacker), _transform.GetWorldPosition(hubGrid)) <= AttackerLeash;
+    }
+
     /// <summary>Breaks the reinforcements of a hub under attack away: each undocks and attacks the ship that is hitting the hub; ones already out turn on a new attacker.</summary>
     public void ScatterReinforcements(EntityUid stronghold, IReadOnlyCollection<EntityUid>? fresh = null)
     {
         if (!TryComp<WFReaverStrongholdComponent>(stronghold, out var home)
             || !TryComp<WFEncounterComponent>(stronghold, out var hubEncounter)
             || !hubEncounter.Ships.TryGetValue(home.Lead, out var hub) || TerminatingOrDeleted(hub.Grid)
-            || PickAttacker(home, hubEncounter, hub.Grid, fresh) is not { } attacker)
+            || PickAttacker(home, hubEncounter, hub.Grid, fresh) is not { } attacker || !InAttackerReach(attacker, hub.Grid))
             return;
 
         home.Attacker = attacker;

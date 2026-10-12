@@ -414,7 +414,7 @@ public sealed class WFReaverReinforcementTest : WFReaverTestBase
         {
             var campaign = Server.System<WFReaverCampaignSystem>();
             campaign.SetTier(1);
-            var ship = SpawnGrid(CentreOf(Home) + new Vector2(0f, 7000f), "Test Gunship");
+            var ship = SpawnGrid(CentreOf(Home) + new Vector2(0f, 4000f), "Test Gunship");
             Board(ship);
             var (stronghold, reinforcement) = Launch();
             var home = SEntMan.GetComponent<WFReaverStrongholdComponent>(stronghold);
@@ -439,8 +439,8 @@ public sealed class WFReaverReinforcementTest : WFReaverTestBase
         {
             var campaign = Server.System<WFReaverCampaignSystem>();
             campaign.SetTier(2);
-            var old = SpawnGrid(CentreOf(Home) + new Vector2(0f, 7000f), "Old Gunship");
-            var current = SpawnGrid(CentreOf(Home) + new Vector2(0f, -7000f), "Current Gunship");
+            var old = SpawnGrid(CentreOf(Home) + new Vector2(0f, 4000f), "Old Gunship");
+            var current = SpawnGrid(CentreOf(Home) + new Vector2(0f, -4000f), "Current Gunship");
             Board(old);
             var (stronghold, reinforcement) = Launch();
             Assert.That(campaign.CompleteDock(reinforcement), Is.True);
@@ -507,8 +507,8 @@ public sealed class WFReaverReinforcementTest : WFReaverTestBase
         {
             var campaign = Server.System<WFReaverCampaignSystem>();
             campaign.SetTier(2);
-            var near = SpawnGrid(CentreOf(Home) + new Vector2(0f, 7000f), "Test Gunship");
-            var other = SpawnGrid(CentreOf(Home) + new Vector2(0f, -7000f), "Other Gunship");
+            var near = SpawnGrid(CentreOf(Home) + new Vector2(0f, 4000f), "Test Gunship");
+            var other = SpawnGrid(CentreOf(Home) + new Vector2(0f, -4000f), "Other Gunship");
             Board(near);
             var (stronghold, reinforcement) = Launch();
             Assert.That(campaign.CompleteDock(reinforcement), Is.True);

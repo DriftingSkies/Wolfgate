@@ -36,16 +36,22 @@ bounties and encounter prototypes; a preset with none runs no campaign. It runs 
 `wf.sector.enabled` and `wf.reavers.enabled` are on and the round is in progress, and its own Reaver encounters on
 the storyteller's side are weighted up by tier through `WFEncounterWeightEvent`.
 
+A lead out of the fight (crew dead, disabled, hull shot to pieces, or no one at the helm for two minutes) breaks its
+patrol, raid, convoy, reinforcement or stronghold. A patrol that chases out of held space and the ring round it is
+called back. A hub hit by a player ship recalls the patrols within two cells and, with no reinforcement docked, sends a
+sortie pack after the attacker every five minutes. A cell sector control gives back to a ship that held it is announced;
+a standing hub's own cell is never given back.
+
 Reaver space has a cost. A crewed ship that stays a minute in held space (`interceptDwell`) has the nearest patrol
 within three cells, or a fresh one from the nearest stronghold, turned on it to close and attack, and is warned with
 the patrol's bearing and range; the patrol gives up when the ship is disabled or gone, or has been out of held space
-or out of reach for a minute, then flies the rest of its route, and the ship is left alone for `interceptCooldown`.
+or out of reach for twenty seconds, then flies the rest of its route, and the ship is left alone for `interceptCooldown`.
 How many intercepts run at once is set by tier (`intercepts`). A ship that hits a stronghold or helps kill a patrol is
 marked for half an hour: raids weigh it three times as heavy and hunt it anywhere on the map.
 
 `WFReaverCampaignSystem` is the driver, in partials by concern: `.Strongholds` (founding, regroup, breaking),
 `.Hub` (shield placement, levels), `.Reinforcements` (convoys, docking, break-apart), `.Convoys` (later foundings flown out from a standing stronghold),
-`.Spread`, `.Patrols` (routes and recall), `.Intercepts` (intercepts and marks), `.Raids`, `.Threat` (score, tier,
+`.Spread`, `.Patrols` (routes, recall and the leash), `.Intercepts` (intercepts and marks), `.Response` (a hub's sortie packs), `.Retakes`, `.Raids`, `.Threat` (score, tier,
 legend), `.Announce` (sector watch announcements, PA, chat and radio warnings) and `.Rewards` (bounties and the support
 pool). Each step is a one-shot public method for tests and the command: `TryFound`, `TryFoundAt`, `TryLaunchConvoy`,
 `CheckConvoys`, `CompleteFounding`, `TryReinforce`, `CheckReinforcements`, `CompleteDock`, `CheckStrongholds`, `ScatterReinforcements`, `RegroupReinforcements`, `TrySpreadOnce`, `TryLaunchPatrol`, `TryLaunchRaid`, `TryIntercept`, `CheckIntercepts`, `SetTier`, `Recompute`, `ClearCampaign`. State
@@ -85,6 +91,8 @@ stopped and raids launched.
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Patrols.cs`](Systems/WFReaverCampaignSystem.Patrols.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Raids.cs`](Systems/WFReaverCampaignSystem.Raids.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Reinforcements.cs`](Systems/WFReaverCampaignSystem.Reinforcements.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Response.cs`](Systems/WFReaverCampaignSystem.Response.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Retakes.cs`](Systems/WFReaverCampaignSystem.Retakes.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Rewards.cs`](Systems/WFReaverCampaignSystem.Rewards.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Spread.cs`](Systems/WFReaverCampaignSystem.Spread.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Strongholds.cs`](Systems/WFReaverCampaignSystem.Strongholds.cs)
@@ -100,6 +108,7 @@ stopped and raids launched.
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverContentTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverConvoyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverConvoyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs)

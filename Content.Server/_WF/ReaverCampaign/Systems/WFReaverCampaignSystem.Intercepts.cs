@@ -18,7 +18,7 @@ public sealed partial class WFReaverCampaignSystem
     public const int InterceptReach = 3;
 
     /// <summary>How long a target may be out of held space, or out of reach, before its patrol gives it up.</summary>
-    public static readonly TimeSpan InterceptLose = TimeSpan.FromSeconds(60);
+    public static readonly TimeSpan InterceptLose = TimeSpan.FromSeconds(20);
 
     /// <summary>How soon a ship no patrol could be sent after is tried again.</summary>
     private static readonly TimeSpan InterceptRetry = TimeSpan.FromSeconds(30);
@@ -45,7 +45,7 @@ public sealed partial class WFReaverCampaignSystem
     {
         var now = _timing.CurTime;
         var held = _territory.Held(_territory.SectorMap, campaign.Faction).ToHashSet();
-        var inside = ships.Where(ship => held.Contains(_territory.GridCell(ship))).ToHashSet();
+        var inside = ships.Where(ship => held.Contains(_territory.GridCell(ship)) && !_scheduler.IsSecretPlace(ship)).ToHashSet();
         foreach (var ship in state.InsideSince.Keys.ToList())
         {
             if (!inside.Contains(ship))
@@ -90,7 +90,8 @@ public sealed partial class WFReaverCampaignSystem
     {
         var map = _territory.SectorMap;
         if (Campaign is not { } campaign || State(true) is not { } state || TerminatingOrDeleted(target)
-            || !HasComp<MapGridComponent>(target) || HasComp<WFEncounterGridComponent>(target) || Transform(target).MapID != map)
+            || !HasComp<MapGridComponent>(target) || HasComp<WFEncounterGridComponent>(target) || Transform(target).MapID != map
+            || _scheduler.IsSecretPlace(target))
             return false;
 
         var patrols = Patrols();
@@ -160,7 +161,7 @@ public sealed partial class WFReaverCampaignSystem
         return true;
     }
 
-    /// <summary>Ends each intercept whose target is disabled or gone, or has been out of held space or out of reach for a minute.</summary>
+    /// <summary>Ends each intercept whose target is disabled or gone, has been out of held space or out of reach for twenty seconds, or has drawn a sortie pack too far from its stronghold.</summary>
     private void TendIntercepts(WFReaverCampaignComponent state)
     {
         if (CampaignFor(state) is not { } campaign)
@@ -177,6 +178,13 @@ public sealed partial class WFReaverCampaignSystem
                 continue;
 
             if (TerminatingOrDeleted(target) || Transform(target).MapID != map || _status.IsDisabled(target))
+            {
+                EndIntercept(patrol);
+                continue;
+            }
+
+            if (comp.Sortie && StrongholdLead(comp.Stronghold) is { } hub
+                && Vector2.Distance(_transform.GetWorldPosition(lead.Grid), _transform.GetWorldPosition(hub)) > SortieLeash)
             {
                 EndIntercept(patrol);
                 continue;

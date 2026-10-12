@@ -178,6 +178,13 @@ public sealed class WFSectorClientSystem : EntitySystem
             edges[i] = new List<Vector2>();
         }
 
+        var retaking = new Dictionary<WFSectorCell, TimeSpan>();
+        foreach (var retake in ev.Retakes)
+        {
+            if (owners.ContainsKey(retake.Cell))
+                retaking[retake.Cell] = retake.Deadline;
+        }
+
         var labels = new List<WFSectorLabelView>();
         var corners = new Vector2[6];
         Box2? extent = null;
@@ -196,7 +203,26 @@ public sealed class WFSectorClientSystem : EntitySystem
                 edges[faction].Add(corners[(i + 1) % 6]);
             }
 
-            labels.Add(new WFSectorLabelView(centre, WFSectorHex.Callsign(cell), colors[faction]));
+            // A cell being retaken shows its countdown there instead.
+            if (!retaking.ContainsKey(cell))
+                labels.Add(new WFSectorLabelView(centre, WFSectorHex.Callsign(cell), colors[faction]));
+        }
+
+        var retakes = new List<WFSectorRetakeView>();
+        foreach (var (cell, deadline) in retaking)
+        {
+            WFSectorHex.Corners(cell, size, corners);
+            var centre = WFSectorHex.Centre(cell, size);
+            var fill = new List<Vector2>();
+            AddFan(fill, centre, corners);
+            var outline = new Vector2[12];
+            for (var i = 0; i < 6; i++)
+            {
+                outline[i * 2] = corners[i];
+                outline[i * 2 + 1] = corners[(i + 1) % 6];
+            }
+
+            retakes.Add(new WFSectorRetakeView(cell, centre, fill.ToArray(), outline, deadline));
         }
 
         var disputes = new Dictionary<WFSectorCell, int>();
@@ -262,8 +288,8 @@ public sealed class WFSectorClientSystem : EntitySystem
                 grid.Add(corners[(i + 1) % 6]);
             }
 
-            // A contested cell shows its countdown there instead.
-            if (contested.Contains(cell))
+            // A contested or retaken cell shows its countdown there instead.
+            if (contested.Contains(cell) || retaking.ContainsKey(cell))
                 continue;
 
             var color = owners.TryGetValue(cell, out var owner) ? colors[owner] : OpenCellColor;
@@ -273,12 +299,12 @@ public sealed class WFSectorClientSystem : EntitySystem
         // Held cells past the radius keep their callsign.
         foreach (var (cell, faction) in owners)
         {
-            if (!inside.Contains(cell) && !contested.Contains(cell))
+            if (!inside.Contains(cell) && !contested.Contains(cell) && !retaking.ContainsKey(cell))
                 cellLabels.Add(new WFSectorLabelView(WFSectorHex.Centre(cell, size), WFSectorHex.Callsign(cell), colors[faction]));
         }
 
         return new WFSectorMapView(ev.Map, ev.Sector, size, colors, names, ToArrays(fills), ToArrays(edges), labels, contests,
-            owners, grid.ToArray(), cellLabels, extent, disputes, disputed);
+            owners, grid.ToArray(), cellLabels, extent, disputes, disputed, retakes);
     }
 
     /// <summary>Diagonal line pairs across a hexagon, a fifth of its radius apart.</summary>
@@ -403,11 +429,15 @@ public sealed class WFSectorMapView
     /// <summary>The hatch and outline of every disputed cell.</summary>
     public readonly List<WFSectorDisputedView> Disputed;
 
+    /// <summary>The fill and outline of every held cell a crewed player ship is retaking, with when it is freed.</summary>
+    public readonly List<WFSectorRetakeView> Retakes;
+
     public WFSectorMapView(MapId map, bool sector, float cellSize, Color[] colors, string[] names, Vector2[][] fills, Vector2[][] edges,
         List<WFSectorLabelView> labels, List<WFSectorContestView> contests, Dictionary<WFSectorCell, int> owners,
         Vector2[] grid, List<WFSectorLabelView> cellLabels, Box2? extent, Dictionary<WFSectorCell, int> disputes,
-        List<WFSectorDisputedView> disputed)
+        List<WFSectorDisputedView> disputed, List<WFSectorRetakeView> retakes)
     {
+        Retakes = retakes;
         Disputes = disputes;
         Disputed = disputed;
         Map = map;
@@ -445,6 +475,16 @@ public readonly record struct WFSectorContestView(WFSectorCell Cell, Vector2 Cen
 
 /// <summary>A disputed cell: its hatch lines, its outline lines and the faction index whose ship is in it.</summary>
 public readonly record struct WFSectorDisputedView(WFSectorCell Cell, Vector2 Centre, Vector2[] Hatch, Vector2[] Outline, Color Color, int Faction);
+
+/// <summary>A held cell being retaken: its fill triangles, its outline lines and when it is freed, in server time.</summary>
+public readonly record struct WFSectorRetakeView(WFSectorCell Cell, Vector2 Centre, Vector2[] Fill, Vector2[] Outline, TimeSpan Deadline)
+{
+    /// <summary>The time left at a game time.</summary>
+    public TimeSpan Remaining(TimeSpan now)
+    {
+        return Deadline - now;
+    }
+}
 
 /// <summary>One line of the map legend.</summary>
 public readonly record struct WFSectorLegendView(Color Color, string Text);

@@ -8,7 +8,7 @@ namespace Content.Server._WF.ReaverCampaign.Systems;
 
 public sealed partial class WFReaverCampaignSystem
 {
-    /// <summary>Reports the cells of every campaign ship to sector control, which marks the ones a player ship shares as disputed.</summary>
+    /// <summary>Reports the cells of every campaign ship still in the fight to sector control, which marks the ones a player ship shares as disputed.</summary>
     private void ReportPresence(WFReaverCampaignPrototype campaign)
     {
         var map = _territory.SectorMap;
@@ -21,7 +21,8 @@ public sealed partial class WFReaverCampaignSystem
 
             foreach (var ship in encounter.Ships.Values)
             {
-                if (!TerminatingOrDeleted(ship.Grid))
+                // A hulk out of the fight holds no ground.
+                if (!TerminatingOrDeleted(ship.Grid) && _encounters.InFight(ship))
                     cells.Add(_territory.CellOf(new MapCoordinates(_transform.GetWorldPosition(ship.Grid), map)));
             }
         }

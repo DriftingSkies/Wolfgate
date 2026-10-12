@@ -16,7 +16,10 @@ wf-sector-map-hover-held = {$callsign} ({$distance} km): {$faction}
 wf-sector-map-hover-open = {$callsign} ({$distance} km): open space
 wf-sector-map-hover-contested = {$callsign} ({$distance} km): contested by {$faction}, {$time}
 wf-sector-map-hover-disputed = {$callsign} ({$distance} km): disputed, {$faction} ships and a player ship are both there
+wf-sector-map-hover-retaking = {$callsign} ({$distance} km): held by {$faction}, being retaken, {$time}
 wf-sector-map-legend-disputed = Disputed: timers paused
+wf-sector-map-legend-retaking = Being retaken
+wf-sector-map-retake-label = Retaking {$time}
 
 # Sector map hover card for a blip; distance and bearing are from the player, or from the origin when they are not on the map
 wf-sector-map-kind-station = Station
@@ -31,6 +34,7 @@ wf-sector-map-card-held = {$callsign}: held by {$faction}
 wf-sector-map-card-open = {$callsign}: open space
 wf-sector-map-card-contested = Contested by {$faction}, {$time}
 wf-sector-map-card-disputed = Disputed with {$faction}: timers paused
+wf-sector-map-card-retaking = Being retaken, {$time}
 
 # wf_sectormap command
 cmd-wf_sectormap-desc = Opens or closes the sector map.
@@ -49,6 +53,7 @@ cmd-wf_sector-hint-y = Map y in metres
 cmd-wf_sector-status-header = Sector control: enabled {$enabled}, map {$map}, cell size {$size} m.
 cmd-wf_sector-status-faction = {$faction} ({$name}): {$cells} cells {$callsigns}
 cmd-wf_sector-status-contest = Contested {$callsign} by {$faction}, {$seconds} s left.
+cmd-wf_sector-status-retake = Retaking {$callsign}, {$seconds} s left.
 cmd-wf_sector-claimed = {$faction} now holds {$callsign}.
 cmd-wf_sector-claim-failed = {$faction} cannot claim {$callsign}.
 cmd-wf_sector-freed = {$callsign} is free.

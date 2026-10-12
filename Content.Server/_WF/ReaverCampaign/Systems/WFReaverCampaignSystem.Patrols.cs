@@ -32,6 +32,12 @@ public sealed partial class WFReaverCampaignSystem
     private const float RecallRange = 600f;
     private const float RecallCircle = 600f;
 
+    /// <summary>How many cells from a stronghold under attack a patrol may be to be called back to it.</summary>
+    private const int RecallReach = 2;
+
+    /// <summary>How long a patrol's lead may be outside held space and the ring round it before it is called off its chase.</summary>
+    private static readonly TimeSpan LeashDelay = TimeSpan.FromSeconds(10);
+
     /// <summary>One patrol per this many players, campaign-wide, within the cap.</summary>
     private const int PlayersPerPatrol = 5;
     private const int MaxPatrols = 6;
@@ -162,56 +168,145 @@ public sealed partial class WFReaverCampaignSystem
         return null;
     }
 
-    /// <summary>Notes where each patrol's lead is, for the cell it dies in.</summary>
-    private void TendPatrols()
+    /// <summary>Runs <see cref="TendPatrols"/> and <see cref="TendRaids"/> once, as a tick does.</summary>
+    public void CheckPatrols()
     {
-        foreach (var (_, patrol, encounter) in Patrols())
+        if (State() is not { } state)
+            return;
+
+        TendPatrols(state);
+        TendRaids();
+    }
+
+    /// <summary>
+    /// Breaks patrols whose lead is out of the fight, notes where each lead is, for the cell it dies in, and calls a
+    /// patrol whose lead has been outside held space and the ring round it for ten seconds back to its route.
+    /// </summary>
+    private void TendPatrols(WFReaverCampaignComponent state)
+    {
+        var now = _timing.CurTime;
+        var held = CampaignFor(state) is { } campaign
+            ? _territory.Held(_territory.SectorMap, campaign.Faction).ToHashSet()
+            : new HashSet<WFSectorCell>();
+        foreach (var patrol in Patrols())
         {
-            if (encounter.Ships.TryGetValue(patrol.Lead, out var lead) && !TerminatingOrDeleted(lead.Grid))
-                patrol.LastSeen = _transform.GetWorldPosition(lead.Grid);
+            var (_, comp, encounter) = patrol;
+            if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
+            {
+                BreakLead(patrol.Owner, encounter, comp.Lead);
+                continue;
+            }
+
+            comp.LastSeen = _transform.GetWorldPosition(lead.Grid);
+            if (held.Count == 0 || InOrBeside(held, _territory.GridCell(lead.Grid)))
+            {
+                comp.OutsideSince = null;
+                continue;
+            }
+
+            comp.OutsideSince ??= now;
+            if (now - comp.OutsideSince >= LeashDelay)
+                CallOff(patrol);
         }
     }
 
-    /// <summary>Calls the nearest patrol within one cell back to a stronghold under attack, to circle it a while.</summary>
-    private bool TryRecallPatrol(Entity<WFReaverStrongholdComponent, WFEncounterComponent> stronghold)
+    /// <summary>
+    /// Ends an encounter whose lead is out of the fight: the rest of its ships turn for the point it set out from,
+    /// and it is destroyed, so its bounty is paid and its cap freed.
+    /// </summary>
+    private void BreakLead(EntityUid uid, WFEncounterComponent encounter, string lead)
+    {
+        foreach (var key in encounter.Ships.Keys)
+        {
+            if (key == lead)
+                continue;
+
+            _encounters.SetOrders(uid, key, new List<WFCrewObjective>
+            {
+                new() { Kind = WFCrewObjectiveKind.GoTo, Position = encounter.Origin.Position, Range = RouteRange },
+            });
+        }
+
+        Log.Info($"Reaver encounter {ToPrettyString(uid)} lost its lead and is broken.");
+        _encounters.Resolve(uid, LostResolution(encounter, lead));
+    }
+
+    /// <summary>
+    /// How an encounter whose lead is out of the fight ends: destroyed if the lead was wrecked, lost its crew or took
+    /// hits from a player ship, else ended, so a pilot stall frees the cap but does not free ground or announce a kill.
+    /// </summary>
+    private WFEncounterResolution LostResolution(WFEncounterComponent encounter, string lead)
+    {
+        return encounter.ShipHits.Count == 0 && encounter.Ships.TryGetValue(lead, out var state) && _encounters.OutForWantOfPilot(state)
+            ? WFEncounterResolution.Ended
+            : WFEncounterResolution.Destroyed;
+    }
+
+    /// <summary>Gives a patrol that strayed from held space back its route, or its recall if it was called to a stronghold, and puts its chase on cooldown.</summary>
+    private void CallOff(Entity<WFReaverPatrolComponent, WFEncounterComponent> patrol)
+    {
+        var (uid, comp, _) = patrol;
+        comp.OutsideSince = null;
+        List<WFCrewObjective> orders;
+        if (comp.Recalled && StrongholdLead(comp.Stronghold) is { } hub)
+            orders = RecallOrders(_transform.GetWorldPosition(hub), hub);
+        else
+            orders = RouteOrders(comp, comp.Intercepting != null ? comp.Resume.ToList() : RemainingRoute(patrol));
+
+        if (!_encounters.SetOrders(uid, comp.Lead, orders))
+            return;
+
+        Log.Info($"Reaver patrol {ToPrettyString(uid)} strayed from held space and was called back.");
+        DropIntercept(comp);
+    }
+
+    /// <summary>The lead hull of a stronghold, if it still has one.</summary>
+    private EntityUid? StrongholdLead(EntityUid stronghold)
+    {
+        return TryComp<WFReaverStrongholdComponent>(stronghold, out var home)
+            && TryComp<WFEncounterComponent>(stronghold, out var encounter)
+            && encounter.Ships.TryGetValue(home.Lead, out var lead) && !TerminatingOrDeleted(lead.Grid)
+            ? lead.Grid
+            : null;
+    }
+
+    /// <summary>The orders that bring a patrol back to a stronghold's lead and circle it.</summary>
+    private List<WFCrewObjective> RecallOrders(Vector2 at, EntityUid hub)
+    {
+        return new List<WFCrewObjective>
+        {
+            new() { Kind = WFCrewObjectiveKind.GoTo, Position = at, Range = RecallRange },
+            new() { Kind = WFCrewObjectiveKind.Circle, Target = GetNetEntity(hub), Range = RecallRange, Duration = RecallCircle },
+        };
+    }
+
+    /// <summary>Calls every patrol within two cells of a stronghold under attack back to circle it a while; returns how many came.</summary>
+    private int RecallPatrols(Entity<WFReaverStrongholdComponent, WFEncounterComponent> stronghold)
     {
         var (uid, comp, encounter) = stronghold;
         if (!encounter.Ships.TryGetValue(comp.Lead, out var target) || TerminatingOrDeleted(target.Grid))
-            return false;
+            return 0;
 
         var at = _transform.GetWorldPosition(target.Grid);
-        Entity<WFReaverPatrolComponent, WFEncounterComponent>? nearest = null;
-        var best = float.MaxValue;
+        var called = 0;
         foreach (var patrol in Patrols())
         {
-            if (patrol.Comp1.Recalled || !patrol.Comp2.Ships.TryGetValue(patrol.Comp1.Lead, out var lead)
+            if (patrol.Comp1.Recalled || patrol.Comp1.Sortie || !patrol.Comp2.Ships.TryGetValue(patrol.Comp1.Lead, out var lead)
                 || TerminatingOrDeleted(lead.Grid))
                 continue;
 
-            var position = _transform.GetWorldPosition(lead.Grid);
-            var distance = Vector2.DistanceSquared(position, at);
-            if (WFSectorHex.Distance(WFSectorHex.CellOf(position, _territory.CellSize), comp.Cell) > 1 || distance >= best)
+            var cell = WFSectorHex.CellOf(_transform.GetWorldPosition(lead.Grid), _territory.CellSize);
+            if (WFSectorHex.Distance(cell, comp.Cell) > RecallReach
+                || !_encounters.SetOrders(patrol.Owner, patrol.Comp1.Lead, RecallOrders(at, target.Grid)))
                 continue;
 
-            best = distance;
-            nearest = patrol;
+            patrol.Comp1.Recalled = true;
+            DropIntercept(patrol.Comp1);
+            called++;
+            Log.Info($"Reaver patrol {ToPrettyString(patrol.Owner)} recalled to stronghold {ToPrettyString(uid)}.");
         }
 
-        if (nearest is not { } called)
-            return false;
-
-        var queue = new List<WFCrewObjective>
-        {
-            new() { Kind = WFCrewObjectiveKind.GoTo, Position = at, Range = RecallRange },
-            new() { Kind = WFCrewObjectiveKind.Circle, Target = GetNetEntity(target.Grid), Range = RecallRange, Duration = RecallCircle },
-        };
-        if (!_encounters.SetOrders(called.Owner, called.Comp1.Lead, queue))
-            return false;
-
-        called.Comp1.Recalled = true;
-        DropIntercept(called.Comp1);
-        Log.Info($"Reaver patrol {ToPrettyString(called.Owner)} recalled to stronghold {ToPrettyString(uid)}.");
-        return true;
+        return called;
     }
 
     /// <summary>Whether a stronghold may send another patrol under its tier's count and the campaign-wide cap.</summary>
@@ -230,7 +325,11 @@ public sealed partial class WFReaverCampaignSystem
         var campaign = CampaignFor(state);
         var now = _timing.CurTime;
         if (campaign != null && TryComp<WFReaverStrongholdComponent>(comp.Stronghold, out var home))
+        {
             home.NextPatrol = home.NextPatrol > now + campaign.PatrolInterval ? home.NextPatrol : now + campaign.PatrolInterval;
+            if (home.Sortie == uid)
+                home.Sortie = null;
+        }
 
         DropIntercept(comp);
         if (resolution != WFEncounterResolution.Destroyed || campaign == null || state == null

@@ -135,6 +135,13 @@ public sealed partial class WFSectorCommand : LocalizedEntityCommands
                 ("faction", contest.Faction.Id),
                 ("seconds", Math.Max(0, (int) (contest.Deadline - _timing.CurTime).TotalSeconds))));
         }
+
+        foreach (var (cell, retake) in territory.Retakes)
+        {
+            shell.WriteLine(Loc.GetString("cmd-wf_sector-status-retake",
+                ("callsign", WFSectorHex.Callsign(cell)),
+                ("seconds", Math.Max(0, (int) (retake.Deadline - _timing.CurTime).TotalSeconds))));
+        }
     }
 
     /// <summary>wf_sector contest &lt;faction&gt; &lt;q&gt; &lt;r&gt; &lt;minutes&gt;: a contest decided that many minutes from now.</summary>

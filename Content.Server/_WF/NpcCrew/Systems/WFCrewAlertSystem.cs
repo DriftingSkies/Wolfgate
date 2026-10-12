@@ -87,12 +87,13 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     /// <summary>
     /// A formation partner stays an ally unless it fired on this ship within the attack window. A vessel that has
     /// <paramref name="fired"/> on the ship is a target however far off it is: a crew that only deters attackers still
-    /// answers one shooting at it from beyond its reach, and lets it go once its fire stops. Zone intruders and docking
-    /// threats keep the disengage range.
+    /// answers one shooting at it from beyond its reach, and lets it go once its fire stops or it is past
+    /// <see cref="WFCrewShipStatusSystem.ShooterReach"/> times that range. Zone intruders and docking threats keep the
+    /// disengage range.
     /// </summary>
     private bool ValidShip(EntityUid grid, EntityUid ship, bool attacked, bool fired = false)
     {
-        return !TerminatingOrDeleted(ship) && !_status.ShouldDisengage(grid, ship, range: !fired)
+        return !TerminatingOrDeleted(ship) && !_status.ShouldDisengage(grid, ship, range: !fired, shooter: fired)
             && Transform(ship).MapID == Transform(grid).MapID && (attacked || !_escorts.AreInFormation(grid, ship));
     }
 

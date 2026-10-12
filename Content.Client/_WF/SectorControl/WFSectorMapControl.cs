@@ -193,6 +193,15 @@ public sealed class WFSectorMapControl : Control
                 ("callsign", callsign), ("distance", distance), ("faction", view.Names[disputing]));
         }
 
+        foreach (var retake in view.Retakes)
+        {
+            if (retake.Cell != cell || !view.Owners.TryGetValue(cell, out var holder))
+                continue;
+
+            return Loc.GetString("wf-sector-map-hover-retaking", ("callsign", callsign), ("distance", distance),
+                ("faction", view.Names[holder]), ("time", WFSectorOverlay.FormatRemaining(retake.Remaining(_timing.CurTime))));
+        }
+
         foreach (var contest in view.Contests)
         {
             if (contest.Cell != cell)
@@ -244,6 +253,16 @@ public sealed class WFSectorMapControl : Control
             var remaining = WFSectorOverlay.FormatRemaining(contest.Remaining(_timing.CurTime));
             into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-contested",
                 ("faction", view.Names[contest.Faction]), ("time", remaining)), CardColor, null));
+            break;
+        }
+
+        foreach (var retake in view.Retakes)
+        {
+            if (retake.Cell != cell)
+                continue;
+
+            into.Add(new WFSectorReadoutLine(Loc.GetString("wf-sector-map-card-retaking",
+                ("time", WFSectorOverlay.FormatRemaining(retake.Remaining(_timing.CurTime)))), CardColor, null));
             break;
         }
 
@@ -606,6 +625,7 @@ public sealed class WFSectorMapControl : Control
         _overlay.DrawFills(handle, view, worldToView);
         _overlay.DrawBorders(handle, view, worldToView);
         _overlay.DrawContests(handle, system, view, worldToView, _font, UIScale, bounds);
+        _overlay.DrawRetakes(handle, system, view, worldToView, _font, UIScale, bounds);
         _overlay.DrawDisputes(handle, system, view, worldToView);
         _overlay.DrawCallsigns(handle, view.CellLabels, view.CellSize, worldToView, _font, UIScale, scale, bounds);
         DrawBlips(handle, view, worldToView, bounds);
