@@ -13,7 +13,8 @@ SOCKS5 tunnel that only connects to checked addresses), `InternetSoundReplaySyst
 the `WolfgateMusicPause` partials. `WFAudioBudgetSystem` caps how many network sounds a client starts at once, so a
 burst of hundreds of clips (a large crash) can't exhaust audio sources. On the server, break, landing and impact
 sounds are each held to a handful a second (`WFSoundBudget`), counted per grid, or per map for things on no grid, so
-a crash on one ship never mutes another. The admin panel and the play command are in Administration; settings are in
+a crash on one ship never mutes another. `WFLoopDopplerSystem` takes Doppler off looping sounds on the client, which
+works around an OpenAL Soft 1.24.3 crash (a pitched-up loop overruns the mix buffer). The admin panel and the play command are in Administration; settings are in
 `InternetSoundCVars`.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -46,6 +47,7 @@ a crash on one ship never mutes another. The admin panel and the play command ar
 - [`Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.cs`](../../../Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.cs)
 - [`Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.Replay.cs`](../../../Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.Replay.cs)
 - [`Content.Client/_WF/Audio/WFAudioBudgetSystem.cs`](../../../Content.Client/_WF/Audio/WFAudioBudgetSystem.cs)
+- [`Content.Client/_WF/Audio/WFLoopDopplerSystem.cs`](../../../Content.Client/_WF/Audio/WFLoopDopplerSystem.cs)
 
 ### Integration tests
 
