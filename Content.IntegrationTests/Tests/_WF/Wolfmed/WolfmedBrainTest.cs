@@ -486,6 +486,43 @@ public sealed class WolfmedBrainTest : WolfmedGameTest
         });
     }
 
+    /// <summary>Rejuvenate brings every damaged organ back to full health, not only the brain.</summary>
+    [Test]
+    public async Task RejuvenateRestoresEveryOrganTest()
+    {
+        var server = Pair.Server;
+        await server.WaitIdleAsync();
+        var entities = server.ResolveDependency<IEntityManager>();
+        var map = await CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var organs = entities.System<OrganHealthSystem>();
+            var body = entities.SpawnEntity("MobHuman", map.GridCoords);
+            var damaged = entities.System<SharedBodySystem>().GetBodyOrgans(body)
+                .Where(organ => entities.HasComponent<WolfmedOrganComponent>(organ.Id))
+                .Select(organ => (organ.Id, Health: entities.GetComponent<WolfmedOrganComponent>(organ.Id)))
+                .ToList();
+            Assert.That(damaged, Has.Count.GreaterThan(1), "a human should have more organs with health than a brain.");
+
+            foreach (var (organ, health) in damaged)
+            {
+                organs.SetHealth((organ, health), health.MaxHealth / 4);
+            }
+
+            entities.EventBus.RaiseLocalEvent(body, new RejuvenateEvent());
+
+            Assert.Multiple(() =>
+            {
+                foreach (var (organ, health) in damaged)
+                {
+                    Assert.That(health.Health, Is.EqualTo(health.MaxHealth),
+                        $"{entities.ToPrettyString(organ)} kept its damage through a rejuvenate.");
+                }
+            });
+        });
+    }
+
     /// <summary>
     /// A machine body has no clock. Losing the pump shuts it down, which is not death; losing the positronic
     /// brain is.
