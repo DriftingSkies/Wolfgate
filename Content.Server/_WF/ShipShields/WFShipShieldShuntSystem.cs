@@ -29,8 +29,8 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
     private float _generatorUiAccumulator;
     private readonly Dictionary<EntityUid, WFShipShieldShuntState> _generatorStates = new();
 
-    /// <summary>What each open gunnery console was last sent, and how many people were looking at it.</summary>
-    private readonly Dictionary<EntityUid, (WFShipShieldShuntState State, int Viewers)> _gunneryStates = new();
+    /// <summary>What each open gunnery console was last sent, and who was looking at it.</summary>
+    private readonly Dictionary<EntityUid, (WFShipShieldShuntState State, HashSet<EntityUid> Viewers)> _gunneryStates = new();
 
     public override void Initialize()
     {
@@ -83,12 +83,13 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
         var query = EntityQueryEnumerator<FireControlConsoleComponent>();
         while (query.MoveNext(out var uid, out _))
         {
-            var viewers = _ui.GetActors(uid, FireControlConsoleUiKey.Key).Count();
-            if (viewers == 0)
+            var viewers = _ui.GetActors(uid, FireControlConsoleUiKey.Key).ToHashSet();
+            if (viewers.Count == 0)
                 continue;
             open.Add(uid);
             var state = GetState(GunneryGrid(uid));
-            if (_gunneryStates.TryGetValue(uid, out var previous) && previous.Viewers == viewers && Unchanged(previous.State, state))
+            // Who, not how many: one gunner leaving as another arrives still leaves the newcomer with nothing.
+            if (_gunneryStates.TryGetValue(uid, out var previous) && previous.Viewers.SetEquals(viewers) && Unchanged(previous.State, state))
                 continue;
             _gunneryStates[uid] = (state, viewers);
             _ui.ServerSendUiMessage(uid, FireControlConsoleUiKey.Key, new WFShipShieldHelmUpdateMessage(state));
@@ -145,16 +146,7 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
     private void UpdateGeneratorUi(EntityUid uid, bool force = false)
     {
         var state = GetState(Transform(uid).Anchored ? Transform(uid).GridUid : null);
-        if (!force && _generatorStates.TryGetValue(uid, out var previous) &&
-            previous.Available == state.Available && previous.Active == state.Active && previous.Enabled == state.Enabled &&
-            WFShipShieldGeneratorStats.Same(previous.Stats, state.Stats) &&
-            previous.RecoveryStatus == state.RecoveryStatus && previous.RecoverySeconds == state.RecoverySeconds &&
-            MathF.Round(previous.Health * 100f) == MathF.Round(state.Health * 100f) &&
-            (previous.Health < 0.1f) == (state.Health < 0.1f) &&
-            previous.DirectionRadians == state.DirectionRadians && previous.Concentration == state.Concentration &&
-            previous.ArcRadians == state.ArcRadians &&
-            previous.TargetDirectionRadians == state.TargetDirectionRadians && previous.TargetConcentration == state.TargetConcentration &&
-            previous.TargetArcRadians == state.TargetArcRadians)
+        if (!force && _generatorStates.TryGetValue(uid, out var previous) && Unchanged(previous, state))
             return;
         _generatorStates[uid] = state;
         _ui.SetUiState(uid, WFShipShieldUiKey.Key, new WFShipShieldGeneratorUiState(state));

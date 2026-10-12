@@ -80,4 +80,7 @@ cmd-hailtest-help = Usage: hailtest [clear]
 cmd-hailtest-no-grid = Stand on the ship you want hailed.
 cmd-hailtest-no-console = This ship has no powered shuttle console free to ring.
 cmd-hailtest-started = A test ship is hailing { $ship }. You can hail it back from the HAIL list.
-cmd-hailtest-cleared = Removed { $count } test ships.
+cmd-hailtest-cleared = Removed { $count } test { $count ->
+    [one] ship
+   *[other] ships
+}.

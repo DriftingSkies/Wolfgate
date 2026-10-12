@@ -139,6 +139,10 @@ public sealed class HailingTest : InteractionTest
             Assert.That(other.PeerOperator, Is.EqualTo(SEntMan.GetNetEntity(SPlayer)));
             Assert.That(own.PeerName, Is.Not.Empty);
 
+            // Someone else looking at the console can't hang up a call that isn't theirs.
+            Raise(_console, new HailEndMessage(), _otherPilot);
+            Assert.That(own.State, Is.EqualTo(HailState.Connected), "Only the person on the call may close it.");
+
             Raise(_console, new HailSayMessage("  Heave to and\nprepare to be boarded.  "), SPlayer);
             Assert.That(hailing.Say(_otherConsole, _otherPilot, "No."), Is.True);
             Assert.That(hailing.Say(_otherConsole, SPlayer, "Someone else's console."), Is.False,

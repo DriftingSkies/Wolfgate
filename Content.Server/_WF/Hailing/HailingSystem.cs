@@ -128,9 +128,14 @@ public sealed class HailingSystem : EntitySystem
 
     private void OnEnd(Entity<ShuttleConsoleComponent> ent, ref HailEndMessage args)
     {
-        if (TryComp<HailConsoleComponent>(ent, out var hail) && hail.State == HailState.Ringing)
+        if (!TryComp<HailConsoleComponent>(ent, out var hail))
+            return;
+
+        // Anyone at a ringing console may decline, as anyone may answer. A hail or call under way belongs to
+        // whoever is on it.
+        if (hail.State == HailState.Ringing)
             Answer(ent, args.Actor, false);
-        else
+        else if (hail.OperatorUid == args.Actor)
             End(ent);
     }
 
