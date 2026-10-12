@@ -35,20 +35,20 @@ public abstract partial class SharedGunSystem
         if (TryComp<MechPilotComponent>(user.Value, out var mechPilot))
             user = mechPilot.Mech;
 
-        if (!TryGetGun(user.Value, out var ent, out var gunComp) || HasComp<ItemComponent>(user) || ent != GetEntity(gun))
+        if (!TryGetGun(user.Value, out var ent) || HasComp<ItemComponent>(user) || ent.Owner != GetEntity(gun))
             return null;
 
-        gunComp.ShootCoordinates = GetCoordinates(coordinates);
+        ent.Comp.ShootCoordinates = GetCoordinates(coordinates);
 
         // Goob edit - a locked burst keeps its target
-        if (gunComp.Target == null || !gunComp.BurstActivated || !gunComp.LockOnTargetBurst)
-            gunComp.Target = GetEntity(target);
+        if (ent.Comp.Target == null || !ent.Comp.BurstActivated || !ent.Comp.LockOnTargetBurst)
+            ent.Comp.Target = GetEntity(target);
 
         var predictedShot = new PredictedShot(session, ent, shot, predicted);
         PredictedShotContext = predictedShot;
         try
         {
-            AttemptShoot(user.Value, ent, gunComp);
+            AttemptShoot(user.Value, ent, ent.Comp);
         }
         finally
         {

@@ -1,5 +1,6 @@
 #nullable enable
 using System.Numerics;
+using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server.NPC.HTN;
 using Content.Shared._WF.NpcCrew;
@@ -29,6 +30,8 @@ public sealed partial class WFCrewTest
             SEntMan.GetComponent<HTNComponent>(airless).Enabled = false;
 
             Assert.That(sleep.StaysAwake(idle), Is.False, "Nothing to do in safe air.");
+            Assert.That(sleep.StaysAwake(airless), Is.False, "A crewman kitted out for a post in vacuum may rest there.");
+            SEntMan.RemoveComponent<WFCrewVoidKitComponent>(airless);
             Assert.That(sleep.StaysAwake(airless), Is.True, "Vacuum has to be walked out of.");
 
             Server.System<WFCrewAlertSystem>().ReportShipThreat(deck, "sleep", attacker);

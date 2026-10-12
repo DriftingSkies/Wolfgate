@@ -9,6 +9,7 @@ using Content.Shared.Interaction;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.NpcCrew.Systems;
@@ -25,6 +26,7 @@ public sealed class WFCrewEvaSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     private readonly Dictionary<EntityUid, TimeSpan> _prepared = new();
     private readonly Dictionary<EntityUid, EntityCoordinates> _safetyDestinations = new();
     private readonly Dictionary<EntityUid, (TimeSpan Until, EntityUid Grid, bool Safe)> _safetyChecked = new();
@@ -36,6 +38,48 @@ public sealed class WFCrewEvaSystem : EntitySystem
     private static readonly TimeSpan TankReachBackoff = TimeSpan.FromSeconds(1);
     private float _timer;
     private TimeSpan _nextPrune;
+
+    /// <summary>The slots of a void kit, in the order they have to go on: the tank hangs off the suit.</summary>
+    private static readonly string[] VoidKitSlots = { "outerClothing", "head", "mask", "suitstorage" };
+
+    /// <summary>
+    /// Dresses a crewman for a post with no air: a pressure suit, helmet, mask and a tank that is kept full for as
+    /// long as he wears it. What his loadout had in those slots is replaced.
+    /// </summary>
+    public void GiveVoidKit(EntityUid mob)
+    {
+        var kit = EnsureComp<WFCrewVoidKitComponent>(mob);
+        if (!Prepare(mob) && _prototypes.TryIndex(kit.Gear, out var gear))
+        {
+            var coordinates = Transform(mob).Coordinates;
+            foreach (var slot in VoidKitSlots)
+            {
+                if (!gear.Equipment.TryGetValue(slot, out var proto))
+                    continue;
+                if (_inventory.TryGetSlotEntity(mob, slot, out var old) && _inventory.TryUnequip(mob, slot, silent: true, force: true))
+                    QueueDel(old);
+                var item = Spawn(proto, coordinates);
+                if (!_inventory.TryEquip(mob, item, slot, silent: true, force: true))
+                    QueueDel(item);
+            }
+        }
+        TopUp(mob, kit);
+        Prepare(mob);
+    }
+
+    /// <summary>Refills the oxygen a void kit's tank has lost.</summary>
+    private void TopUp(EntityUid mob, WFCrewVoidKitComponent kit)
+    {
+        if (!_inventory.TryGetSlotEntity(mob, "suitstorage", out var tank) || !TryComp<GasTankComponent>(tank, out var gas))
+            return;
+        var air = gas.Air;
+        if (air.Volume <= 0f || air.Pressure >= kit.TankPressure * 0.9f)
+            return;
+        if (air.TotalMoles <= 0f)
+            air.Temperature = Content.Shared.Atmos.Atmospherics.T20C;
+        var missing = (kit.TankPressure - air.Pressure) * air.Volume / (Content.Shared.Atmos.Atmospherics.R * air.Temperature);
+        air.AdjustMoles(Content.Shared.Atmos.Gas.Oxygen, missing);
+    }
 
     /// <summary>Requires a pressure suit, helmet, breathing interface and an actual nonempty oxygen tank.</summary>
     public bool Prepare(EntityUid mob)
@@ -187,6 +231,8 @@ public sealed class WFCrewEvaSystem : EntitySystem
         {
             if (!_mobs.IsAlive(uid) || HasComp<ActorComponent>(uid))
                 continue;
+            if (TryComp<WFCrewVoidKitComponent>(uid, out var kit))
+                TopUp(uid, kit);
             var safe = xform.GridUid is { } grid && TryComp<MapGridComponent>(grid, out var map)
                 && _planner.IsSafePost(grid, _maps.TileIndicesFor(grid, map, xform.Coordinates), map);
             var low = _inventory.TryGetSlotEntity(uid, "suitstorage", out var worn)

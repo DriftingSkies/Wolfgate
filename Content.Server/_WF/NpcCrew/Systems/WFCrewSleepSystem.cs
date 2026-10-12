@@ -62,7 +62,9 @@ public sealed partial class WFCrewSleepSystem : EntitySystem
         if (TryComp<NPCRetaliationComponent>(uid, out var retaliation) && retaliation.AttackMemories.Count > 0)
             return true;
 
-        // Bad air has to be walked out of.
+        // Bad air has to be walked out of, except by a crewman kitted out to stand in it.
+        if (HasComp<WFCrewVoidKitComponent>(uid))
+            return false;
         if (!TryComp<MapGridComponent>(home, out var grid))
             return true;
         var air = _atmos.GetTileMixture(home, xform.MapUid, _map.LocalToTile(home, grid, xform.Coordinates));

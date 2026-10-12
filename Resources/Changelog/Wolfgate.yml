@@ -1537,3 +1537,19 @@ Entries:
   id: 100118
   time: '2026-10-11T23:00:36.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/221
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: Fixes mob pathing with SmashNav.
+  id: 100119
+  time: '2026-10-12T01:07:26.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/224
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: NPC's now fight more smartly.
+    - type: Tweak
+      message: NPC's now spawn with hardsuits if they are exposed to space.
+  id: 100120
+  time: '2026-10-12T02:40:01.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/225

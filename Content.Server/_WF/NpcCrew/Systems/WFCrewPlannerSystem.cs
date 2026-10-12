@@ -34,6 +34,8 @@ public enum WFCrewPostKind : byte
 /// <summary>
 /// Decides where crew go on a grid. Spawn markers win when the map has any; otherwise a pilot beside the helm, a
 /// radio officer beside that, a deckhand inside each airlock and the rest on the most open deck tiles, spread out.
+/// Posts keep to breathable deck; a console with none beside it, or a hull with none at all, is manned from open
+/// deck, and whoever is posted there is spawned in a void kit.
 /// </summary>
 public sealed class WFCrewPlannerSystem : EntitySystem
 {
@@ -100,14 +102,18 @@ public sealed class WFCrewPlannerSystem : EntitySystem
             if (xform.GridUid != grid)
                 continue;
             hasMarkers = true;
-            if (IsSafePost(grid, _map.TileIndicesFor(grid, gridComp, xform.Coordinates), gridComp))
+            if (IsStandable(grid, _map.TileIndicesFor(grid, gridComp, xform.Coordinates), gridComp))
                 posts.Add(new WFCrewPost(xform.Coordinates, marker.Role, WFCrewPostKind.Marker));
         }
 
         if (hasMarkers)
             return posts;
 
-        var free = FreeTiles(grid, gridComp);
+        var open = FreeTiles(grid, gridComp);
+        var free = open.Where(tile => HasSafeAir(grid, tile)).ToHashSet();
+        // A hull with no air anywhere is crewed on its open deck.
+        if (free.Count == 0)
+            free = open;
         var taken = new HashSet<Vector2i>();
 
         // The helm, and a radio post beside it.
@@ -118,11 +124,17 @@ public sealed class WFCrewPlannerSystem : EntitySystem
                 continue;
 
             var tile = _map.TileIndicesFor(grid, gridComp, xform.Coordinates);
-            if (!TryNeighbour(tile, free, taken, out var helm))
-                continue;
+            // An open cockpit is flown from the vacuum beside it.
+            var deck = free;
+            if (!TryNeighbour(tile, deck, taken, out var helm))
+            {
+                deck = open;
+                if (!TryNeighbour(tile, deck, taken, out helm))
+                    continue;
+            }
 
             Add(helm, WFCrewRoles.Pilot, WFCrewPostKind.Helm);
-            if (TryNeighbour(tile, free, taken, out var radio))
+            if (TryNeighbour(tile, deck, taken, out var radio))
                 Add(radio, WFCrewRoles.RadioOperator, WFCrewPostKind.Radio);
             break;
         }
@@ -135,7 +147,9 @@ public sealed class WFCrewPlannerSystem : EntitySystem
             var tile = _map.TileIndicesFor(grid, gridComp, gunneryTransform.Coordinates);
             // The gunner walks to his console from wherever he is posted, so a ship never goes without one: a console
             // boxed in by the helm's tile takes the nearest free tile, and failing that shares the helm's.
-            if (TryNear(tile, free, taken, out var post) || TryNear(tile, free, NoTiles, out post))
+            // A console with no air beside it is not worked from the next room over.
+            if (TryNeighbour(tile, free, taken, out var post) || TryNeighbour(tile, open, taken, out post)
+                || TryNear(tile, free, taken, out post) || TryNear(tile, free, NoTiles, out post))
                 Add(post, WFCrewRoles.Gunner, WFCrewPostKind.Gunnery);
         }
 
@@ -194,6 +208,7 @@ public sealed class WFCrewPlannerSystem : EntitySystem
             return tiles;
 
         var free = FreeTiles(grid, gridComp);
+        free.RemoveWhere(tile => !HasSafeAir(grid, tile));
         if (free.Count == 0)
             return tiles;
 
@@ -206,26 +221,36 @@ public sealed class WFCrewPlannerSystem : EntitySystem
         return tiles;
     }
 
-    /// <summary>Tiles a mob can stand on.</summary>
+    /// <summary>Tiles a mob can stand on, whatever the air over them.</summary>
     private HashSet<Vector2i> FreeTiles(EntityUid grid, MapGridComponent gridComp)
     {
         var free = new HashSet<Vector2i>();
         var tiles = _map.GetAllTilesEnumerator(grid, gridComp);
         while (tiles.MoveNext(out var tile))
         {
-            if (IsSafePost(grid, tile.Value.GridIndices, gridComp))
+            if (IsStandable(grid, tile.Value.GridIndices, gridComp))
                 free.Add(tile.Value.GridIndices);
         }
 
         return free;
     }
 
+    /// <summary>Unobstructed flooring, whatever the air over it.</summary>
+    public bool IsStandable(EntityUid grid, Vector2i tile, MapGridComponent? gridComp = null)
+    {
+        return Resolve(grid, ref gridComp) && _map.TryGetTileRef(grid, gridComp, tile, out var turf)
+            && !turf.Tile.IsEmpty && !_turf.IsTileBlocked(grid, tile, CollisionGroup.MobMask, gridComp);
+    }
+
     /// <summary>Requires unobstructed flooring and air suitable for crew without sealed internals.</summary>
     public bool IsSafePost(EntityUid grid, Vector2i tile, MapGridComponent? gridComp = null)
     {
-        if (!Resolve(grid, ref gridComp) || !_map.TryGetTileRef(grid, gridComp, tile, out var turf)
-            || turf.Tile.IsEmpty || _turf.IsTileBlocked(grid, tile, CollisionGroup.MobMask, gridComp))
-            return false;
+        return IsStandable(grid, tile, gridComp) && HasSafeAir(grid, tile);
+    }
+
+    /// <summary>Whether the air over a tile can be stood in without a suit.</summary>
+    private bool HasSafeAir(EntityUid grid, Vector2i tile)
+    {
         var air = _atmos.GetTileMixture(grid, Transform(grid).MapUid, tile);
         if (air == null || !_atmos.IsMixtureProbablySafe(air) || !float.IsFinite(air.Pressure))
             return false;

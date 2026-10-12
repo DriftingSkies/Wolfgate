@@ -1,12 +1,8 @@
 - type: entity
   name: UGR Typewriter (.45 ACP) # Mono
-  # WOLFGATE START: a legal base, so the PA Keyboard and expedition variants don't inherit the black-market contraband parent
-  # parent: [BaseWeaponSubMachineGun, BaseGunWieldable, BaseC3SyndicateContraband] # Mono
-  # id: WeaponSubMachineGunTypewriter
-  parent: [BaseWeaponSubMachineGun, BaseGunWieldable]
-  id: WFBaseWeaponSubMachineGunTypewriter
-  abstract: true
-  # WOLFGATE END
+  abstract: true # Mono: Make the base Typewriter abstract.
+  parent: [BaseWeaponSubMachineGun, BaseGunWieldable] # Mono
+  id: WeaponSubMachineGunTypewriterBase
   description: A modern take on the classic design used by mobsters throughout space and time. Uses .45 ACP ammo.
   components:
   - type: Sprite
@@ -55,8 +51,6 @@
     zeroVisible: true
   - type: Appearance
 
-# WOLFGATE START: the black-market Typewriter keeps its id and its contraband parent
 - type: entity
-  parent: [WFBaseWeaponSubMachineGunTypewriter, BaseC3SyndicateContraband]
+  parent: [WeaponSubMachineGunTypewriterBase, BaseC3SyndicateContraband]
   id: WeaponSubMachineGunTypewriter
-# WOLFGATE END
