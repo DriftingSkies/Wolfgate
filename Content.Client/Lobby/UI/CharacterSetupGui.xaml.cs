@@ -82,12 +82,12 @@ namespace Content.Client.Lobby.UI
         private bool _inRound;
 
         /// <summary>
-        /// Stops clicks reaching the game underneath, and keeps the selected character from being deleted.
+        /// Keeps the selected character, the one being played, from being deleted. The window has its own close.
         /// </summary>
         public void SetInRound()
         {
             _inRound = true;
-            MouseFilter = MouseFilterMode.Stop;
+            CloseButton.Visible = false;
         }
         // WOLFGATE END
 

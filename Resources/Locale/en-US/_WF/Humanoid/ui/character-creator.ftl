@@ -1,6 +1,4 @@
 wf-creator-slots = Characters
-wf-escape-character-creator = Character Creator
-wf-escape-character-creator-tooltip = Edit or create characters. Changes apply the next time you spawn.
 wf-creator-identity = Identity
 wf-creator-body = Body
 wf-creator-hair = Hair

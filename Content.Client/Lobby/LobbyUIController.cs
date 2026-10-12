@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Client._Mono.Company; // Mono
 using Content.Client._Mono.MonoCoins;
+using Content.Client._WF.InRoundCreator; // WOLFGATE(InRoundCreator)
 using Content.Client.Gameplay; // WOLFGATE(InRoundCreator)
 using Content.Client.Guidebook;
 using Content.Client.Humanoid;
@@ -24,7 +25,6 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.State;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
-using Robust.Client.UserInterface.Controls; // WOLFGATE(InRoundCreator)
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -70,6 +70,9 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
 
     // WOLFGATE(InRoundCreator): slot picked in the in-round creator; picking there must not select the character
     private int? _inRoundSlot;
+
+    // WOLFGATE(InRoundCreator): holds the creator during a round
+    private InRoundCreatorWindow? _inRoundWindow;
 
     public override void Initialize()
     {
@@ -207,25 +210,51 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
 
     // WOLFGATE(InRoundCreator) START: the creator opened from the game menu, over the round
     /// <summary>
-    /// Opens the creator full-screen during a round. Any character can be edited, but the selected one stays
-    /// selected; edits apply on the next spawn.
+    /// Opens the creator in a window during a round, so chat stays usable. Any character can be edited, but the
+    /// selected one stays selected; edits apply on the next spawn.
     /// </summary>
     public void OpenInRoundCharacterSetup()
     {
         if (_stateManager.CurrentState is not GameplayState || !_preferencesManager.ServerDataLoaded)
             return;
 
-        var (characterGui, _) = EnsureGui();
-
-        if (characterGui.Parent == null)
+        if (_inRoundWindow is { IsOpen: true })
         {
-            _inRoundSlot = null;
-            characterGui.SetInRound();
-            UIManager.StateRoot.AddChild(characterGui);
-            LayoutContainer.SetAnchorPreset(characterGui, LayoutContainer.LayoutPreset.Wide);
+            _inRoundWindow.MoveToFront();
+            return;
         }
 
+        var (characterGui, _) = EnsureGui();
+
+        if (_inRoundWindow == null)
+        {
+            characterGui.SetInRound();
+
+            // Sized to the screen with a margin; the creator was laid out for a full screen.
+            var screen = UIManager.RootControl.Size;
+            _inRoundWindow = new InRoundCreatorWindow
+            {
+                Title = Loc.GetString("character-setup-gui-character-setup-label"),
+                SetSize = new System.Numerics.Vector2(Math.Min(1500f, screen.X - 80f), Math.Min(900f, screen.Y - 80f)),
+                CloseRequested = RequestCloseProfileEditor,
+            };
+            _inRoundWindow.Contents.AddChild(characterGui);
+        }
+
+        _inRoundSlot = null;
+        _inRoundWindow.OpenCentered();
         ReloadCharacterSetup();
+    }
+
+    /// <summary>
+    /// Closes the creator, asking first if there are unsaved edits.
+    /// </summary>
+    private void RequestCloseProfileEditor()
+    {
+        if (_profileEditor is { Profile: not null, IsDirty: true })
+            OpenSavePanel(CloseProfileEditor);
+        else
+            CloseProfileEditor();
     }
 
     public void OnStateExited(GameplayState state)
@@ -234,8 +263,15 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
         _profileEditor?.Dispose();
         _characterSetup?.Dispose();
 
+        if (_inRoundWindow != null)
+        {
+            _inRoundWindow.CloseRequested = null;
+            _inRoundWindow.Dispose();
+        }
+
         _characterSetup = null;
         _profileEditor = null;
+        _inRoundWindow = null;
         _inRoundSlot = null;
     }
 
@@ -363,10 +399,10 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
         _profileEditor.SetProfile(null, null);
         _profileEditor.Visible = false;
 
-        // WOLFGATE(InRoundCreator): in a round the creator sits on the state root; leaving it there would cover the game
+        // WOLFGATE(InRoundCreator): in a round the creator lives in its own window
         if (_stateManager.CurrentState is GameplayState)
         {
-            _characterSetup?.Orphan();
+            _inRoundWindow?.ForceClose();
             _inRoundSlot = null;
         }
 
