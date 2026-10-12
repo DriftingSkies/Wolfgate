@@ -81,6 +81,9 @@ public sealed partial class CharacterPickerButton : ContainerButton
         };
     }
 
+    // WOLFGATE(InRoundCreator): for the character being played, which is not always the highlighted one
+    public void HideDelete() => DeleteButton.Visible = false;
+
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);

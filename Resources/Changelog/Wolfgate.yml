@@ -1553,3 +1553,10 @@ Entries:
   id: 100120
   time: '2026-10-12T02:40:01.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/225
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: You can now edit characters in-game.
+  id: 100121
+  time: '2026-10-12T04:26:10.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/226
