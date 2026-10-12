@@ -201,6 +201,9 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public EntityUid? Prey;
 
+    /// <summary>Set on an extorter: where it is in its round of tolls.</summary>
+    public WFExtortState? Extort;
+
     /// <summary>Whether it answers an attack by turning on the attacker.</summary>
     [DataField]
     public bool Evades = true;

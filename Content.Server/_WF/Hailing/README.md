@@ -30,7 +30,8 @@ screen. Closing that window ends the call.
 NPC ships use the same path. A console with `HailConsoleComponent.Automated` set (server-only) needs no UI and no
 player: it counts as manned while its operator exists, is alive and is on the console's ship, and power, range,
 radar, cooldowns and the PA page apply as for a player. Start one with `HailingSystem.TryHailAutomated(console,
-operator, ship)` and answer with `AnswerAutomated`; `Answer`, `Say` and `End` work on it as they are, and
+operator, ship)` (its `out refused` overload says why a hail never started: unreachable, busy or too soon) and answer
+with `AnswerAutomated`; `Answer`, `Say` and `End` work on it as they are, and
 `GetState(console)` says what a console is doing. The player on the other end sees the NPC on the screen and its
 lines like any other pilot. Hailing raises by-ref broadcast events for whatever drives the NPC (`HailEvents.cs`):
 `HailCallEndedEvent` when an automated console's hail or call stops (with the reason and whether it had connected),

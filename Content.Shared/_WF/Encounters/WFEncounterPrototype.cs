@@ -192,6 +192,13 @@ public sealed partial class WFEncounterShip
     [DataField]
     public bool Hunt;
 
+    /// <summary>
+    /// Set, the ship is an extorter: it roams on its wander legs, now and then runs down a player ship and hails it
+    /// for a toll, and boards a ship that refuses or will not answer as a hunting ship does.
+    /// </summary>
+    [DataField]
+    public WFEncounterExtort? Extort;
+
     /// <summary>Only these roles of the planned crew are spawned. Empty spawns the whole plan.</summary>
     [DataField]
     public List<ProtoId<WFCrewRolePrototype>> Roles = new();
@@ -323,6 +330,37 @@ public sealed partial class WFEncounterShip
     /// <summary>Set, the hull arrives a hulk: no crew and no fuel, squatters aboard, and it can be claimed.</summary>
     [DataField]
     public WFEncounterDerelict? Derelict;
+}
+
+/// <summary>How an extorter picks its marks and what it asks of them.</summary>
+[DataDefinition]
+public sealed partial class WFEncounterExtort
+{
+    /// <summary>Spesos it demands of a ship. Every toll paid is added to the encounter's warrant.</summary>
+    [DataField]
+    public int Toll = 10000;
+
+    /// <summary>How far off a player ship may be for it to go after it.</summary>
+    [DataField]
+    public float Reach = 4000f;
+
+    /// <summary>How near its mark it closes before it hails, and keeps station while it waits.</summary>
+    [DataField]
+    public float Standoff = 300f;
+
+    /// <summary>Seconds between one toll run and the next, picked between the two each time.</summary>
+    [DataField]
+    public float MarkMin = 300f;
+
+    [DataField]
+    public float MarkMax = 720f;
+
+    /// <summary>
+    /// Fluent prefix of what it says: "-demand-", "-paid-", "-short-", "-refused-", "-timeout-" and "-silent-" with
+    /// 1 to 3 appended, and "-option-pay" and "-option-refuse" for the answers.
+    /// </summary>
+    [DataField]
+    public string Lines = "wf-encounter-extort";
 }
 
 /// <summary>A warrant for an encounter's target, posted on the sector bounty board when it starts.</summary>

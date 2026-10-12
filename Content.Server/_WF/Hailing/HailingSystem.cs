@@ -369,7 +369,7 @@ public sealed class HailingSystem : EntitySystem
     /// </summary>
     public bool TryHail(EntityUid console, EntityUid user, EntityUid ship)
     {
-        return StartHail(console, user, ship, false);
+        return StartHail(console, user, ship, false, out _);
     }
 
     /// <summary>
@@ -378,21 +378,40 @@ public sealed class HailingSystem : EntitySystem
     /// </summary>
     public bool TryHailAutomated(EntityUid console, EntityUid operatorUid, EntityUid ship)
     {
-        return AutomatedPresent(console, operatorUid) && StartHail(console, operatorUid, ship, true);
+        return TryHailAutomated(console, operatorUid, ship, out _);
     }
 
-    private bool StartHail(EntityUid console, EntityUid user, EntityUid ship, bool automated)
+    /// <summary>
+    /// As above, and says why a hail that never started was turned away: the other ship can't be reached, is
+    /// busy, or this console hailed too recently. Null when the fault is at this end: the console is in use
+    /// or dead, or its operator is not there.
+    /// </summary>
+    public bool TryHailAutomated(EntityUid console, EntityUid operatorUid, EntityUid ship, out HailEndReason? refused)
     {
+        refused = null;
+        return AutomatedPresent(console, operatorUid) && StartHail(console, operatorUid, ship, true, out refused);
+    }
+
+    private bool StartHail(EntityUid console, EntityUid user, EntityUid ship, bool automated, out HailEndReason? refused)
+    {
+        refused = null;
+
         if (HasComp<HailConsoleComponent>(console) || !Usable(console, out var grid))
             return false;
 
         var now = _timing.CurTime;
 
         if (_nextHail.TryGetValue(console, out var next) && now < next)
+        {
+            refused = HailEndReason.Cooldown;
             return Refuse(console, HailEndReason.Cooldown);
+        }
 
         if (!CanReach(console, grid, ship, _range, out _))
+        {
+            refused = HailEndReason.Unavailable;
             return Refuse(console, HailEndReason.Unavailable);
+        }
 
         _consoles.Clear();
         var busy = false;
@@ -410,7 +429,10 @@ public sealed class HailingSystem : EntitySystem
         }
 
         if (_consoles.Count == 0)
-            return Refuse(console, busy ? HailEndReason.Busy : HailEndReason.Unavailable);
+        {
+            refused = busy ? HailEndReason.Busy : HailEndReason.Unavailable;
+            return Refuse(console, refused.Value);
+        }
 
         var hail = AddComp<HailConsoleComponent>(console);
         hail.State = HailState.Calling;

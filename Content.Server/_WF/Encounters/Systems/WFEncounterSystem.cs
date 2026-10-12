@@ -93,6 +93,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         // DamageChangedEvent then has no origin.
         SubscribeLocalEvent<WFEncounterPassengerComponent, BeforeDamageChangedEvent>(OnPassengerDamaged,
             before: [typeof(Content.Shared._Onyx.Wounds.WoundDamageRoutingSystem)]);
+        InitializeExtort();
     }
 
     /// <summary>A hidden encounter shows itself once one of its crews raises the alarm.</summary>
@@ -382,7 +383,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
     {
         foreach (var ship in prototype.Ships)
         {
-            if (!comp.Ships.TryGetValue(ship.Key, out var state) || TerminatingOrDeleted(state.Grid) || IsStranded(state))
+            // An extorter flies its wander legs as its own roaming, not as orders that can be flown out.
+            if (!comp.Ships.TryGetValue(ship.Key, out var state) || TerminatingOrDeleted(state.Grid) || IsStranded(state)
+                || state.Extort != null)
                 continue;
 
             if (!IssueShipOrders(comp, prototype, ship, state))
@@ -592,7 +595,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
             ZoneLines = ship.ZoneLines,
             ZoneTargets = ship.ZoneTargets,
             Icon = ship.Icon,
-            Hunt = ship.Hunt,
+            Hunt = ship.Hunt || ship.Extort != null,
+            Extort = ship.Extort is { } extort ? NewExtort(extort) : null,
             Distress = ship.Distress,
             Evades = ship.Evades,
             Flees = ship.Flees,
@@ -600,7 +604,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         };
         encounter.Comp.Ships.Add(ship.Key, state);
         // Boarders come for the ship, not to shoot it up: their guns answer ship guns only.
-        if (ship.Hunt)
+        if (state.Hunt)
             EnsureComp<WFHoldFireComponent>(grid);
 
         // Cargo goes aboard first, so the crew are posted around it and not on it.
@@ -749,6 +753,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
         encounter.Comp.Resolution = resolution;
         encounter.Comp.ResolvedAt = _timing.CurTime;
+        EndExtortCalls(encounter.Comp);
         if (resolution is WFEncounterResolution.Completed or WFEncounterResolution.Expired
             && encounter.Comp.Lifetime == WFEncounterLifetime.Transient && !encounter.Comp.Pinned)
             encounter.Comp.JumpAt = _timing.CurTime + JumpDelay;
@@ -935,7 +940,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
             if (ship.Flees > 0f && encounter.Comp.Begun)
                 Flee(encounter, key, ship);
-            if (ship.Hunt && encounter.Comp.Begun)
+            if (ship.Extort != null && encounter.Comp.Begun)
+                Extort(encounter, key, ship, ship.Extort);
+            else if (ship.Hunt && encounter.Comp.Begun)
                 Hunt(ship);
             else if (encounter.Comp.Leash > 0f && ship.HasOrders)
                 Recall(encounter.Comp, ship);

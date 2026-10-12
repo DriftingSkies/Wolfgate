@@ -343,7 +343,10 @@ public sealed partial class WFEncounterTest
         await Server.WaitAssertion(() =>
         {
             board = EnsureBoard();
-            encounter = SpawnBountyEncounter("WFTestBountyCrew", new Vector2(-30000, 66000));
+            // Pinned, so the encounter is still there to look at after the poll that finds its only ship gone.
+            var prototype = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestBountyCrew");
+            Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(-30000, 66000), MapData.MapId),
+                out encounter, pinned: true), Is.True);
             id = SEntMan.GetComponent<WFEncounterBountyComponent>(encounter).Contract!.Value;
             SEntMan.DeleteEntity(SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["raider"].Grid);
         });

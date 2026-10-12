@@ -73,6 +73,25 @@ four tiers of this with a warrant on the captain: petty (unarmed shuttle, pilot,
 guards, Regular), dangerous (corvette, hard crew, Veteran) and most wanted (pirate frigate, full crew, Elite, turns and
 fights when attacked).
 
+A ship with an `extort:` block is an extorter (`WFEncounterSystem.Extort.cs`, state in `WFExtortState`). It roams on
+its wander legs, flown about the nearest player ship it has no business with yet. Every few minutes (`markMin` to
+`markMax`) it picks the nearest ship with a player aboard inside `reach`, closes to `standoff` and keeps station, and
+hails it from its own helm through the `Hailing` module's automated path, its captain or pilot speaking. A hail that
+rings out or is declined is one of three; after the third it says so on the radio and boards. A ship it cannot raise
+(no working console, running dark) is not an attempt: the mark is dropped and left alone for 15 minutes. Once answered
+it names its `toll` and offers two answers, pay or refuse, with 45 seconds to pick. Paying takes the whole toll from the
+bank account of whoever picked it, adds it to the encounter's warrant (`AddToBounty`), and the ship is left alone for
+30 minutes while the extorter flies clear and roams. Refusing, being short of the toll, picking nothing in time or
+closing the channel gets the ship boarded: the mark is handed to the hunt (`Hunt(ship, free: false)`), which runs the
+boarders' raid on that ship alone and, flown, given up or lost, hands the ship back to roam; the raided ship is left
+alone for 20 minutes and hands still off the ship are left behind and taken off the warrant. Extorter encounters are
+`lifetime: Persistent`: no clock, no jump out, no share of the budget, and the scheduler's one-of-a-kind rule keeps at
+most one of each prototype alive. `extorters.yml` has three tiers flying as the Reavers with a warrant on the crew: light
+(Hazel, Green, 6000 toll, 15000 base), medium (Metis or Mudskipper, Regular, 15000 toll, 40000 base) and heavy (Kalisto
+or Scallywag, Veteran, four guards, 40000 toll, 90000 base). The admin window and `wf_encounter list` show what each
+extorter is doing (roaming, closing on a ship, hailing with the attempt, waiting for an answer, boarding) and what any
+warrant pays now.
+
 Admins use the Encounters window in the Wolfgate admin tab, or `wf_encounter list | spawn <prototype> [distance] |
 end <encounter> | schedule | pause | resume`. Other code calls `WFEncounterSystem.TrySpawn`, `Resolve`, `End` and
 `Reveal` and listens for `WFEncounterStartedEvent` and `WFEncounterResolvedEvent`.
@@ -91,6 +110,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Server/_WF/Encounters/Components/WFEncounterBountyComponent.cs`](Components/WFEncounterBountyComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterComponent.cs`](Components/WFEncounterComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterGridComponent.cs`](Components/WFEncounterGridComponent.cs)
+- [`Content.Server/_WF/Encounters/Components/WFExtortState.cs`](Components/WFExtortState.cs)
 - [`Content.Server/_WF/Encounters/Components/WFSalvageClaimComponent.cs`](Components/WFSalvageClaimComponent.cs)
 - [`Content.Server/_WF/Encounters/Systems/BountyContractSystem.Warrants.cs`](Systems/BountyContractSystem.Warrants.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterAdminSystem.cs`](Systems/WFEncounterAdminSystem.cs)
@@ -101,6 +121,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Battle.cs`](Systems/WFEncounterSystem.Battle.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.cs`](Systems/WFEncounterSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Derelict.cs`](Systems/WFEncounterSystem.Derelict.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Extort.cs`](Systems/WFEncounterSystem.Extort.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Fugitive.cs`](Systems/WFEncounterSystem.Fugitive.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Hunt.cs`](Systems/WFEncounterSystem.Hunt.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Radar.cs`](Systems/WFEncounterSystem.Radar.cs)
@@ -136,6 +157,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Bounty.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Bounty.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs)
@@ -147,6 +169,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Resources/Prototypes/_WF/Encounters/crates.yml`](../../../Resources/Prototypes/_WF/Encounters/crates.yml)
 - [`Resources/Prototypes/_WF/Encounters/dwellers.yml`](../../../Resources/Prototypes/_WF/Encounters/dwellers.yml)
 - [`Resources/Prototypes/_WF/Encounters/encounters.yml`](../../../Resources/Prototypes/_WF/Encounters/encounters.yml)
+- [`Resources/Prototypes/_WF/Encounters/extorters.yml`](../../../Resources/Prototypes/_WF/Encounters/extorters.yml)
 - [`Resources/Prototypes/_WF/Encounters/fugitives.yml`](../../../Resources/Prototypes/_WF/Encounters/fugitives.yml)
 - [`Resources/Prototypes/_WF/Encounters/manifests.yml`](../../../Resources/Prototypes/_WF/Encounters/manifests.yml)
 - [`Resources/Prototypes/_WF/Encounters/presets.yml`](../../../Resources/Prototypes/_WF/Encounters/presets.yml)
@@ -158,6 +181,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 
 - [`Resources/Locale/en-US/_WF/Encounters/bounties.ftl`](../../../Resources/Locale/en-US/_WF/Encounters/bounties.ftl)
 - [`Resources/Locale/en-US/_WF/Encounters/encounters.ftl`](../../../Resources/Locale/en-US/_WF/Encounters/encounters.ftl)
+- [`Resources/Locale/en-US/_WF/Encounters/extorters.ftl`](../../../Resources/Locale/en-US/_WF/Encounters/extorters.ftl)
 
 ### Textures
 

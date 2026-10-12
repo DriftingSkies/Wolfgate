@@ -87,6 +87,19 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         return true;
     }
 
+    /// <summary>
+    /// Takes a crewman off a live warrant on a crew: he is no longer one of those who must fall for it to be paid.
+    /// For hands a ship has left behind for good.
+    /// </summary>
+    public void Release(EntityUid encounter, EntityUid crewman)
+    {
+        if (!TryComp<WFEncounterBountyComponent>(encounter, out var bounty) || bounty.Target != WFEncounterBountyTarget.Crew
+            || !bounty.Crew.Remove(crewman))
+            return;
+
+        RemComp<WFEncounterBountyTargetComponent>(crewman);
+    }
+
     private void OnStarted(Entity<WFEncounterComponent> ent, ref WFEncounterStartedEvent args)
     {
         if (!_prototypes.TryIndex(ent.Comp.Prototype, out var prototype) || prototype.Bounty is not { } warrant)
