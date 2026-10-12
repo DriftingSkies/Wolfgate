@@ -34,6 +34,16 @@ stores, or no living engineer, and the ship goes dark; a ship stranded for fuel 
 leave no room for an engineer tops its own generators up whenever they run low, as long as any of its crew live.
 Crewmen carry no radiation receiver, so standing by a reactor costs them nothing.
 
+Posts keep to breathable deck where a hull has any. A helm or gunnery console with no air beside it (an open
+cockpit), or a hull with no air at all, is manned from open deck instead, and a crewman whose post has no safe air is
+spawned in a void kit (`WFCrewVoidKit`, gear `WFCrewVoidKitGear`): a pressure suit, helmet and mask over whatever
+his loadout wore there, and a tank that is topped up for as long as he wears it.
+
+An attacking ship presents its guns. Every 30 s `WFPilotDutySystem.GunBearings` counts, for 16 bearings round the
+hull, the guns with a clear line of fire past their own ship (fire control's own test); inside 1.5 times its attack
+orbit the pilot holds the best armed bearing on the target, taking the nearer of equal sides, instead of flying nose
+along the orbit. A hull whose guns bear equally all round flies as before.
+
 A Warn crew gives a stranger it notices aboard `WarnTime` (30 s) to leave; if he stays, or strikes any crewman, the
 crew's fighters (on-sight crew, marines, the captain and radio officer; not the helm or the guns) take him on as
 their own attacker, by the usual rules: in sight, and one man hunting him unseen. A when-attacked hand answers only
@@ -216,6 +226,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSecurityComponent.cs`](Components/WFCrewSecurityComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewShipFireComponent.cs`](Components/WFCrewShipFireComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSpawnPointComponent.cs`](Components/WFCrewSpawnPointComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFCrewVoidKitComponent.cs`](Components/WFCrewVoidKitComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewWeaponComponent.cs`](Components/WFCrewWeaponComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFGunnerDutyComponent.cs`](Components/WFGunnerDutyComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFHoldFireComponent.cs`](Components/WFHoldFireComponent.cs)
@@ -268,6 +279,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.cs`](Systems/WFPilotDutySystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.Docking.cs`](Systems/WFPilotDutySystem.Docking.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.Navigation.cs`](Systems/WFPilotDutySystem.Navigation.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.Stance.cs`](Systems/WFPilotDutySystem.Stance.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFRadioOperatorSystem.cs`](Systems/WFRadioOperatorSystem.cs)
 - [`Content.Server/_WF/NpcCrew/WFCrewEvents.cs`](WFCrewEvents.cs)
 - [`Content.Server/_WF/NpcCrew/WFCrewSkills.cs`](WFCrewSkills.cs)
@@ -326,6 +338,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Routines.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Routines.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.SafetyTactics.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.SafetyTactics.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Security.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Security.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Sensors.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Sensors.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.ServerNavigationSettings.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.ServerNavigationSettings.cs)
