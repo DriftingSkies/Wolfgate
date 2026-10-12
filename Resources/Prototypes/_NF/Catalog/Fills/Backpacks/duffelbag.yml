@@ -46,6 +46,7 @@
       - id: Drill
       - id: Hemostat
       - id: Retractor
+      - id: BoneGel # WOLFGATE(Wolfmed): the advanced bag had no bone gel for mending fractures
       - id: NitrousOxideTankFilled # Mono
 
 - type: entity
