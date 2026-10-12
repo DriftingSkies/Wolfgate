@@ -1,6 +1,9 @@
 # Faction name
 wf-sector-faction-reavers = Ashfall Reavers
 
+# The Underground black market's company, which the Reavers leave alone
+wf-company-underground-description = The Underground is the black market and the people who work out of it: fugitives, fixers and their boss. The Reavers leave its ships and crews alone.
+
 # Border notices for Reaver space, in place of the sector control defaults
 wf-reaver-notice-entered = WARNING: entering Ashfall Reaver controlled space ({$callsign}). Their patrols attack on sight and will come looking for you.
 wf-reaver-notice-left = Leaving Ashfall Reaver controlled space ({$callsign}).

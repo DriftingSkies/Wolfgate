@@ -198,11 +198,15 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             return;
 
         var next = new Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>>();
-        var ships = _activity.CellsWithCrewedShips(map);
+        var crewed = new Dictionary<ProtoId<WFSectorFactionPrototype>, Dictionary<WFSectorCell, List<EntityUid>>>();
         foreach (var (faction, presence) in territory.Presence)
         {
             if (now - presence.Reported > PresenceTimeout)
                 continue;
+
+            // Ships a faction leaves alone are no one's trespass.
+            if (!crewed.TryGetValue(faction, out var ships))
+                crewed[faction] = ships = _activity.CellsWithCrewedShips(map, faction);
 
             foreach (var cell in presence.Cells)
             {
@@ -273,10 +277,13 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             return;
         }
 
-        var ships = _activity.CellsWithCrewedShips(map);
+        var crewed = new Dictionary<ProtoId<WFSectorFactionPrototype>, Dictionary<WFSectorCell, List<EntityUid>>>();
         var retaking = new Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>>();
         foreach (var (cell, claim) in territory.Claims)
         {
+            if (!crewed.TryGetValue(claim.Faction, out var ships))
+                crewed[claim.Faction] = ships = _activity.CellsWithCrewedShips(map, claim.Faction);
+
             if (!ships.ContainsKey(cell) || territory.Contests.ContainsKey(cell) || Present(territory, claim.Faction, cell, now))
                 continue;
 
@@ -719,6 +726,6 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
         args.Stations.RemoveAll(station =>
             territory.Claims.TryGetValue(GridCell(station), out var claim)
             && _prototypes.TryIndex(claim.Faction, out var faction)
-            && faction.Blockades);
+            && faction.Blockades && !_activity.IsNeutralStation(claim.Faction, station));
     }
 }

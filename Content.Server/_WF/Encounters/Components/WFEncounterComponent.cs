@@ -190,6 +190,10 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public WFEncounterZoneTargets ZoneTargets;
 
+    /// <summary>Companies its zones and hunt leave alone: never warned, fired on or boarded, though a shot at it is still answered.</summary>
+    [DataField]
+    public List<string> NeutralCompanies = new();
+
     /// <summary>Since when no player has been near it, while resolved.</summary>
     public TimeSpan? Quiet;
 

@@ -93,7 +93,7 @@ public sealed partial class WFReaverCampaignSystem
         if (route.Count == 0)
             return false;
 
-        if (!_encounters.TrySpawn(prototype, new MapCoordinates(home, map), out uid, offBudget: true))
+        if (!SpawnEncounter(prototype, new MapCoordinates(home, map), out uid, offBudget: true))
             return false;
 
         var lead = prototype.Ships[0].Key;

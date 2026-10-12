@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Content.Server._NF.GameRule;
 using Content.Shared._Mono.Company;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared._WF.ReaverCampaign;
 using Content.Shared._WF.SectorControl;
+using Content.Shared.Roles;
 using Robust.Shared.ContentPack;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
@@ -75,6 +77,44 @@ public sealed class WFReaverContentTest
                 Assert.That(prototypes.HasIndex(campaign.Faction), Is.True, $"{campaign.ID}: faction");
                 Assert.That(prototypes.Index(campaign.Faction).Blockades, Is.True, $"{campaign.ID}: Reaver stations are blockaded");
             }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>The Reavers leave the Underground alone: its company is real and hidden from the picker, its jobs and station fly it, and the faction names both.</summary>
+    [Test]
+    public async Task TheUndergroundIsNeutralToTheReavers()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        await pair.Server.WaitAssertion(() =>
+        {
+            var prototypes = pair.Server.ResolveDependency<IPrototypeManager>();
+            var localization = pair.Server.ResolveDependency<ILocalizationManager>();
+            var company = prototypes.Index<CompanyPrototype>("WFUnderground");
+            Assert.That(company.Name, Is.EqualTo("Underground"));
+            Assert.That(company.Disabled, Is.True, "Nobody picks it at character setup.");
+            Assert.That(localization.TryGetString(company.Description, out _), Is.True, "Its description is a string.");
+
+            var reavers = prototypes.Index<WFSectorFactionPrototype>("WFSectorFactionReavers");
+            Assert.That(reavers.NeutralCompanies.Select(entry => entry.Id), Is.EquivalentTo(new[] { "WFUnderground" }));
+            Assert.That(reavers.NeutralStations, Is.EquivalentTo(new[] { "Underground" }));
+            foreach (var faction in prototypes.EnumeratePrototypes<WFSectorFactionPrototype>())
+            {
+                foreach (var neutral in faction.NeutralCompanies)
+                {
+                    Assert.That(prototypes.HasIndex(neutral), Is.True, $"{faction.ID}: neutral company {neutral}");
+                }
+            }
+
+            foreach (var job in new[] { "Fugitive", "Godfather" })
+            {
+                Assert.That(prototypes.Index<JobPrototype>(job).AssignedCompany.Id, Is.EqualTo("WFUnderground"), $"{job} flies the Underground flag");
+            }
+
+            var station = prototypes.Index<PointOfInterestPrototype>("Underground");
+            Assert.That(station.AddComponents.TryGetValue("Company", out var entry), Is.True, "The station flies it too.");
+            Assert.That(((CompanyComponent) entry!.Component).CompanyName.Id, Is.EqualTo("WFUnderground"));
         });
 
         await pair.CleanReturnAsync();

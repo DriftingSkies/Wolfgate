@@ -72,7 +72,7 @@ public sealed partial class WFReaverCampaignSystem
             if (!TryClearPoint(map, Position(source.Comp2, source.Comp1.Lead), ConvoySpawnMin, ConvoySpawnMax, SpawnClearance, out var start))
                 continue;
 
-            if (!_encounters.TrySpawn(prototype, new MapCoordinates(start, map), out var uid, offBudget: true))
+            if (!SpawnEncounter(prototype, new MapCoordinates(start, map), out var uid, offBudget: true))
                 return false;
 
             var encounter = Comp<WFEncounterComponent>(uid);

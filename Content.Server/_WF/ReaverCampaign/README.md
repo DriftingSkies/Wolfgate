@@ -14,7 +14,14 @@ given one, anchored on a free tile in reach of an APC, when the hub spawns. The 
 after the last falls, appear far out at once. Every later one flies out as a convoy: the hub spawns beside the
 standing stronghold nearest the chosen cell and flies there, the cell shown contested meanwhile and the sector
 warned of it. Arrived, it founds the stronghold; its lead out of the fight on the way stops it, founds nothing and pays
-half a stronghold's bounty. One convoy is out at a time.
+half a stronghold's bounty. One convoy is out at a time. The hub is a gun platform (`platform: true`): once founded it
+never leaves its point, but turns in place to put its guns on the ship that hit it or the nearest ship in its attack zone.
+
+The Underground (company `WFUnderground`, held by the Fugitive and Godfather jobs and the black market station) is
+neutral to the Reavers (`neutralCompanies`, `neutralStations` on the faction): their zones never warn or fire on its
+ships (the campaign copies the list to each ship's `NeutralCompanies`, and a shot at one is still answered), patrols and
+raids never go after them, they are never marked or counted as presence, and the station's cell is claimed without a
+blockade.
 
 Strongholds level up the longer they stand. A hub at level 0 sends a reinforcement every `reinforcementInterval`
 while its level is under the cap for the threat tier (`maxLevelByTier`): a convoy that appears 25 to 28 km out on the
@@ -88,6 +95,7 @@ stopped and raids launched.
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Disputes.cs`](Systems/WFReaverCampaignSystem.Disputes.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hub.cs`](Systems/WFReaverCampaignSystem.Hub.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Intercepts.cs`](Systems/WFReaverCampaignSystem.Intercepts.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Neutral.cs`](Systems/WFReaverCampaignSystem.Neutral.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Patrols.cs`](Systems/WFReaverCampaignSystem.Patrols.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Raids.cs`](Systems/WFReaverCampaignSystem.Raids.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Reinforcements.cs`](Systems/WFReaverCampaignSystem.Reinforcements.cs)
@@ -110,7 +118,9 @@ stopped and raids launched.
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGunPlatformTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGunPlatformTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs)
@@ -121,6 +131,7 @@ stopped and raids launched.
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml)
+- [`Resources/Prototypes/_WF/ReaverCampaign/companies.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/companies.yml)
 - [`Resources/Prototypes/_WF/ReaverCampaign/encounters.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/encounters.yml)
 - [`Resources/Prototypes/_WF/ReaverCampaign/factions.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/factions.yml)
 - [`Resources/Prototypes/_WF/ReaverCampaign/shields.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/shields.yml)
@@ -135,6 +146,8 @@ stopped and raids launched.
 
 ## Non-modular edits
 
-None.
+- [`Resources/Prototypes/_Mono/PointsOfInterest/underground.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/underground.yml): the station flies the neutral WFUnderground company, so the Reavers leave it and its cell alone
+- [`Resources/Prototypes/_Mono/Roles/Jobs/Underground/fugitive.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Underground/fugitive.yml): Underground crew fly the neutral WFUnderground company, so the Reavers leave them alone
+- [`Resources/Prototypes/_Mono/Roles/Jobs/Underground/godfather.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Underground/godfather.yml): Underground crew fly the neutral WFUnderground company, so the Reavers leave them alone
 
 <!-- WOLFGATE-GENERATED END -->

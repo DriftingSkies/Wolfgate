@@ -94,7 +94,7 @@ public sealed partial class WFReaverCampaignSystem
         if (!TryEdgePoint(map, hubAt, out var start) && !TryClearPoint(map, hubAt, NearMin, NearMax, SpawnClearance, out start))
             return false;
 
-        if (!_encounters.TrySpawn(prototype, new MapCoordinates(start, map), out var uid, offBudget: true))
+        if (!SpawnEncounter(prototype, new MapCoordinates(start, map), out var uid, offBudget: true))
             return false;
 
         var lead = prototype.Ships[0].Key;

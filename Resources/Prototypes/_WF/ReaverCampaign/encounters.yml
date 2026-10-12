@@ -29,6 +29,7 @@
     cargo: 4
     skill: Regular
     evades: false
+    platform: true
     warnRange: 1500
     attackRange: 900
     zoneLines: wf-encounter-pirate-zone

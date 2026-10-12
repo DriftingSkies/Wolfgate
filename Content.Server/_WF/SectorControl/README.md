@@ -21,6 +21,10 @@ of the holder's ships there is retaken: the map pulses it in a neutral colour wi
 reappearing, the player leaving or a contest on the cell reset the countdown.
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
+A faction can leave some parties alone (`neutralCompanies`, `neutralStations`): `WFSectorActivitySystem.IsNeutralTo`
+is true for a grid of a neutral company, docked to or being a neutral station, or crewed only by people of a neutral
+company. Such ships are left out of the faction's disputes and retakes and get no entering or leaving notice, and a
+neutral station is not cut off by a blockade. `CrewedShips(map, faction)` lists the crewed ships without them.
 
 The sector map window shows the sector and nothing a shuttle console's MAP scan would not: the whole hex grid out to
 30 km with every cell's callsign, held and contested cells, the grids the MAP tab names (none hidden by IFF, and no

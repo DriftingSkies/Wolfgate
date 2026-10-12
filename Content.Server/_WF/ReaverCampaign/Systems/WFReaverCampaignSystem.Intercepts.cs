@@ -37,7 +37,7 @@ public sealed partial class WFReaverCampaignSystem
 
         TendIntercepts(state);
         if (Campaign is { } campaign)
-            TickIntercepts(campaign, state, _activity.CrewedShips(_territory.SectorMap));
+            TickIntercepts(campaign, state, Crewed());
     }
 
     /// <summary>Times each crewed ship in held space and sends a patrol after each one past the dwell and off cooldown, within the tier's cap.</summary>
@@ -91,7 +91,7 @@ public sealed partial class WFReaverCampaignSystem
         var map = _territory.SectorMap;
         if (Campaign is not { } campaign || State(true) is not { } state || TerminatingOrDeleted(target)
             || !HasComp<MapGridComponent>(target) || HasComp<WFEncounterGridComponent>(target) || Transform(target).MapID != map
-            || _scheduler.IsSecretPlace(target))
+            || _scheduler.IsSecretPlace(target) || Neutral(target))
             return false;
 
         var patrols = Patrols();
@@ -271,7 +271,7 @@ public sealed partial class WFReaverCampaignSystem
         var until = _timing.CurTime + MarkTime;
         foreach (var ship in ships)
         {
-            if (TerminatingOrDeleted(ship) || HasComp<WFEncounterGridComponent>(ship))
+            if (TerminatingOrDeleted(ship) || HasComp<WFEncounterGridComponent>(ship) || Neutral(ship))
                 continue;
 
             EnsureComp<WFReaverMarkComponent>(ship).Until = until;

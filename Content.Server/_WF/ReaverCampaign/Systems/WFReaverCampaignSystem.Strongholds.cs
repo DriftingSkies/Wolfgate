@@ -97,7 +97,7 @@ public sealed partial class WFReaverCampaignSystem
             return false;
 
         var regroup = state.Founded > 0 && Strongholds().Count == 0;
-        if (!_encounters.TrySpawn(encounterPrototype, at, out var uid))
+        if (!SpawnEncounter(encounterPrototype, at, out var uid))
             return false;
 
         ShieldHub(campaign, uid, encounterPrototype.Ships[0].Key);
@@ -144,7 +144,7 @@ public sealed partial class WFReaverCampaignSystem
         cells.AddRange(WFSectorHex.Ring(cell, 1));
         foreach (var claimed in cells)
         {
-            if (_territory.Owner(map, claimed) == null && _territory.StationsIn(map, claimed) is { Count: > 0 } stations)
+            if (_territory.Owner(map, claimed) == null && BlockadeTargets(campaign, map, claimed) is { Count: > 0 } stations)
                 TryBlockade(campaign, map, claimed, stronghold, stations[0]);
             else
                 _territory.TryClaim(map, claimed, campaign.Faction, stronghold);
@@ -266,7 +266,7 @@ public sealed partial class WFReaverCampaignSystem
     public void CheckStrongholds()
     {
         if (State() is { } state)
-            TendStrongholds(state, _activity.CrewedShips(_territory.SectorMap), 1f);
+            TendStrongholds(state, Crewed(), 1f);
     }
 
     /// <summary>Breaks strongholds whose lead is out of the fight, counts hits, marks the ships that land them, answers each fresh hit with a sortie pack and the patrols nearby, breaks reinforcements away from a hub under attack and brings them back, and times support.</summary>

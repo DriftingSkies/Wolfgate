@@ -1,6 +1,8 @@
+using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.NpcCrew.Components;
+using Content.Shared._Mono.Company;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Ghost;
 using Robust.Shared.Map;
@@ -120,7 +122,7 @@ public sealed partial class WFEncounterSystem
                 return;
 
             hunt.Misses = 0;
-            ship.Prey = NearestCrewedShip(ship.Grid);
+            ship.Prey = NearestCrewedShip(ship.Grid, neutral: ship.NeutralCompanies);
             if (ship.Prey is not { } found)
                 return;
 
@@ -371,7 +373,7 @@ public sealed partial class WFEncounterSystem
     /// The nearest ship on the same map with a living player aboard, within <paramref name="range"/>: not part of an
     /// encounter, not a station or outpost, and not one this hunter has given up on.
     /// </summary>
-    private EntityUid? NearestCrewedShip(EntityUid hunter, float range = float.MaxValue)
+    private EntityUid? NearestCrewedShip(EntityUid hunter, float range = float.MaxValue, List<string>? neutral = null)
     {
         var shunned = _huntRecords.TryGetValue(hunter, out var hunt) ? hunt.Shunned : null;
         var here = _transform.GetMapCoordinates(hunter);
@@ -384,7 +386,7 @@ public sealed partial class WFEncounterSystem
                 || HasComp<GhostComponent>(uid) || _mobs.IsDead(uid) || HasComp<WFEncounterGridComponent>(grid)
                 || HasComp<Content.Shared.Station.Components.StationMemberComponent>(grid)
                 && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(grid)
-                || shunned != null && shunned.Contains(grid))
+                || shunned != null && shunned.Contains(grid) || neutral is { Count: > 0 } && IsNeutralPlayer(uid, grid, neutral))
                 continue;
 
             var distance = (_transform.GetWorldPosition(grid) - here.Position).LengthSquared();
@@ -396,6 +398,37 @@ public sealed partial class WFEncounterSystem
         }
 
         return nearest;
+    }
+
+    /// <summary>Whether a player's ship flies a neutral company's flag or, with none, the player is of one, or it is berthed at a neutral station.</summary>
+    private bool IsNeutralPlayer(EntityUid player, EntityUid grid, List<string> neutral)
+    {
+        var company = CompOrNull<CompanyComponent>(grid)?.CompanyName.Id;
+        if (company is null or "None")
+            company = CompOrNull<CompanyComponent>(player)?.CompanyName.Id;
+
+        return company != null && neutral.Contains(company) || IsBerthedAtNeutral(grid, neutral);
+    }
+
+    /// <summary>Whether a grid is docked to a station that flies one of the neutral companies' flags.</summary>
+    public bool IsBerthedAtNeutral(EntityUid grid, List<string> neutral)
+    {
+        var docks = EntityQueryEnumerator<Content.Server.Shuttles.Components.DockingComponent, TransformComponent>();
+        while (docks.MoveNext(out _, out var dock, out var xform))
+        {
+            if (xform.GridUid != grid || dock.DockedWith is not { } other || Transform(other).GridUid is not { } alongside)
+                continue;
+
+            // A station is a station member without a deed, or a grid that becomes one; a ship flying the flag is not.
+            var station = HasComp<Content.Shared.Station.Components.StationMemberComponent>(alongside)
+                          && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(alongside)
+                          || HasComp<Content.Server.Station.Components.BecomesStationComponent>(alongside);
+            var flag = WFCompanyFamily.Of(CompOrNull<CompanyComponent>(alongside)?.CompanyName.Id);
+            if (station && flag.Length > 0 && neutral.Any(company => WFCompanyFamily.Of(company) == flag))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>A hunter's record, made on first use; records of hunters that are gone are dropped then.</summary>

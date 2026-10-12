@@ -203,7 +203,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             return;
         }
 
-        var ships = _activity.CrewedShips(_territory.SectorMap);
+        var ships = Crewed();
         if (CampaignFor(state) is { } reporting)
             ReportPresence(reporting);
 

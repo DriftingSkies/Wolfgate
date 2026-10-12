@@ -92,7 +92,7 @@ public sealed partial class WFReaverCampaignSystem
     {
         var now = _timing.CurTime;
         var docked = DockedGrids();
-        var crews = Crews(_activity.CrewedShips(map));
+        var crews = Crews(Crewed());
         var candidates = new List<(EntityUid Ship, float Weight)>();
         foreach (var (ship, crew) in crews)
         {
@@ -209,7 +209,7 @@ public sealed partial class WFReaverCampaignSystem
         var bestCore = false;
         foreach (var station in _territory.Stations(map))
         {
-            if (state.Raided.TryGetValue(station, out var last) && now - last < RaidCooldown)
+            if (state.Raided.TryGetValue(station, out var last) && now - last < RaidCooldown || NeutralStation(station))
                 continue;
 
             var cell = _territory.GridCell(station);
@@ -239,7 +239,7 @@ public sealed partial class WFReaverCampaignSystem
         raid = default;
         from = standing.MinBy(stronghold => Vector2.DistanceSquared(Position(stronghold.Comp2, stronghold.Comp1.Lead), target));
         if (!TryClearPoint(map, Position(from.Comp2, from.Comp1.Lead), PatrolSpawnMin, PatrolSpawnMax, SpawnClearance, out var spawn)
-            || !_encounters.TrySpawn(prototype, new MapCoordinates(spawn, map), out var uid, offBudget: true)
+            || !SpawnEncounter(prototype, new MapCoordinates(spawn, map), out var uid, offBudget: true)
             || !TryComp<WFEncounterComponent>(uid, out var encounter))
             return false;
 

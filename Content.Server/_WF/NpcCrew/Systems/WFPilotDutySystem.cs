@@ -519,6 +519,7 @@ public sealed partial class WFPilotDutySystem : EntitySystem
             steerer.TargetRotation = cruising ? TravelHeadingOffset(ent) : 0f;
         }
         PresentGuns(ent, steerer);
+        FaceThreatsHolding(ent, steerer);
         switch (duty.Orders)
         {
             case WFPilotOrder.Dock:

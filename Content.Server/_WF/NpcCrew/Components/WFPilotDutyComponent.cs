@@ -36,6 +36,10 @@ public sealed partial class WFPilotDutyComponent : Component
     [DataField]
     public bool ReactToAttacks = true;
 
+    /// <summary>Hold: turns the hull in place to put its guns on attackers or zone intruders; never chases.</summary>
+    [DataField]
+    public bool FaceThreats;
+
     /// <summary>A heading the steerer holds whatever the bearing to its target; set while close to an escort slot.</summary>
     public Angle? HeadingOverride;
     public bool CorrectingHold;

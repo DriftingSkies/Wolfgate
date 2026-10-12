@@ -636,6 +636,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             BoardingResponse = ship.Boarding,
             DockingResponse = ship.Docking,
             HeaveTo = ship.Evades,
+            FaceThreats = ship.Platform,
             CallsForHelp = ship.Distress && ship.Passengers.Count == 0,
             Disengage = ship.Disengage,
             DisengageRange = ship.DisengageRange,

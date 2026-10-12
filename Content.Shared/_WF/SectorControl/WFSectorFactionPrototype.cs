@@ -26,6 +26,14 @@ public sealed partial class WFSectorFactionPrototype : IPrototype
     [DataField]
     public bool Blockades;
 
+    /// <summary>Companies whose ships it leaves alone: never counted as present in a dispute or retake, never told they are in its space.</summary>
+    [DataField]
+    public List<ProtoId<CompanyPrototype>> NeutralCompanies = new();
+
+    /// <summary>Station ids, as a station grid's BecomesStation id, it leaves alone, along with the ships docked to them.</summary>
+    [DataField]
+    public List<string> NeutralStations = new();
+
     /// <summary>The notice a ship gets on entering its space, in place of the default; takes $faction, $callsign and $ship.</summary>
     [DataField]
     public LocId? EnteredNotice;

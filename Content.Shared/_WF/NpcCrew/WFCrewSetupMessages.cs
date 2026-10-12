@@ -97,6 +97,9 @@ public sealed class WFCrewMission
     public string AlertChannel = "Common";
     public bool HeaveTo = true;
 
+    /// <summary>Whether the ship holding station turns its guns on threats; kept as set, not edited in the form.</summary>
+    public bool FaceThreats;
+
     /// <summary>Whether the ship's radio officer calls a mayday when it is attacked.</summary>
     public bool CallsForHelp = true;
     public WFCrewDisengage Disengage = WFCrewDisengage.Disable;

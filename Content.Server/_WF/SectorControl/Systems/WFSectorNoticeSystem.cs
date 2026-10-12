@@ -86,6 +86,9 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
         {
             var cell = _territory.CellOf(_transform.GetMapCoordinates(grid));
             var owner = _territory.Owner(map, cell);
+            if (owner is { } holder && _activity.IsNeutralTo(holder, grid))
+                owner = null;
+
             if (!_ships.TryGetValue(grid, out var state))
             {
                 state = new NoticeState { Since = now, LastSeen = now };

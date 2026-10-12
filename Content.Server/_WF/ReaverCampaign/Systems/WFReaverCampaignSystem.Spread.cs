@@ -68,7 +68,7 @@ public sealed partial class WFReaverCampaignSystem
         if (PickWeighted(candidates) is not { } pick)
             return false;
 
-        if (_territory.StationsIn(map, pick.Cell) is { Count: > 0 } stations)
+        if (BlockadeTargets(campaign, map, pick.Cell) is { Count: > 0 } stations)
             return TryBlockade(campaign, map, pick.Cell, pick.Source, stations[0]);
 
         return _territory.TryClaim(map, pick.Cell, campaign.Faction, pick.Source);

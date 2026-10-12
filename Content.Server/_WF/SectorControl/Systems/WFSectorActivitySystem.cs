@@ -1,6 +1,9 @@
+using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Encounters.Components;
 using Content.Server.GameTicking;
+using Content.Server.Station.Components;
+using Content.Shared._Mono.Company;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.SectorControl;
 using Content.Shared.GameTicking;
@@ -9,6 +12,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Station.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.SectorControl.Systems;
@@ -17,6 +21,7 @@ namespace Content.Server._WF.SectorControl.Systems;
 public sealed partial class WFSectorActivitySystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private GameTicker _ticker = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -179,11 +184,32 @@ public sealed partial class WFSectorActivitySystem : EntitySystem
         return ships;
     }
 
+    /// <summary><see cref="CrewedShips(MapId)"/> without the ships neutral to a faction.</summary>
+    public HashSet<EntityUid> CrewedShips(MapId map, ProtoId<WFSectorFactionPrototype> faction)
+    {
+        var ships = CrewedShips(map);
+        if (_prototypes.TryIndex(faction, out var proto) && Neutrals(proto))
+            ships.RemoveWhere(ship => IsNeutralTo(proto, ship));
+
+        return ships;
+    }
+
     /// <summary>The crewed player ships in each cell on a map right now, by position with no moved rule.</summary>
     public Dictionary<WFSectorCell, List<EntityUid>> CellsWithCrewedShips(MapId map)
     {
+        return CellsOf(CrewedShips(map));
+    }
+
+    /// <summary><see cref="CellsWithCrewedShips(MapId)"/> without the ships neutral to a faction.</summary>
+    public Dictionary<WFSectorCell, List<EntityUid>> CellsWithCrewedShips(MapId map, ProtoId<WFSectorFactionPrototype> faction)
+    {
+        return CellsOf(CrewedShips(map, faction));
+    }
+
+    private Dictionary<WFSectorCell, List<EntityUid>> CellsOf(HashSet<EntityUid> grids)
+    {
         var cells = new Dictionary<WFSectorCell, List<EntityUid>>();
-        foreach (var grid in CrewedShips(map))
+        foreach (var grid in grids)
         {
             var cell = WFSectorHex.CellOf(_transform.GetWorldPosition(grid), _territory.CellSize);
             if (!cells.TryGetValue(cell, out var ships))
@@ -193,6 +219,79 @@ public sealed partial class WFSectorActivitySystem : EntitySystem
         }
 
         return cells;
+    }
+
+    private static bool Neutrals(WFSectorFactionPrototype faction)
+    {
+        return faction.NeutralCompanies.Count > 0 || faction.NeutralStations.Count > 0;
+    }
+
+    /// <summary>Whether a grid is a station a faction leaves alone: of one of its neutral companies, or with one of its neutral station ids.</summary>
+    public bool IsNeutralStation(ProtoId<WFSectorFactionPrototype> faction, EntityUid grid)
+    {
+        return _prototypes.TryIndex(faction, out var proto) && IsNeutralStation(proto, grid);
+    }
+
+    private bool IsNeutralStation(WFSectorFactionPrototype faction, EntityUid grid)
+    {
+        if (!Neutrals(faction) || TerminatingOrDeleted(grid))
+            return false;
+
+        if (TryComp<CompanyComponent>(grid, out var company) && faction.NeutralCompanies.Contains(company.CompanyName))
+            return true;
+
+        return TryComp<BecomesStationComponent>(grid, out var station)
+            && faction.NeutralStations.Any(id => string.Equals(id, station.Id, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>Whether a grid is a station: a station member without a deed, or a grid that becomes one.</summary>
+    private bool IsStation(EntityUid grid)
+    {
+        return HasComp<StationMemberComponent>(grid) && !HasComp<ShuttleDeedComponent>(grid) || HasComp<BecomesStationComponent>(grid);
+    }
+
+    /// <summary>
+    /// Whether a faction leaves a grid alone: a neutral station, docked to one, flying a neutral company's flag or,
+    /// with no flag of its own, crewed only by people of neutral companies.
+    /// </summary>
+    public bool IsNeutralTo(ProtoId<WFSectorFactionPrototype> faction, EntityUid grid)
+    {
+        return _prototypes.TryIndex(faction, out var proto) && IsNeutralTo(proto, grid);
+    }
+
+    private bool IsNeutralTo(WFSectorFactionPrototype faction, EntityUid grid)
+    {
+        if (!Neutrals(faction) || TerminatingOrDeleted(grid))
+            return false;
+
+        if (IsNeutralStation(faction, grid))
+            return true;
+
+        var docks = EntityQueryEnumerator<Content.Server.Shuttles.Components.DockingComponent, TransformComponent>();
+        while (docks.MoveNext(out _, out var dock, out var dockXform))
+        {
+            if (dockXform.GridUid == grid && dock.DockedWith is { } other
+                && Transform(other).GridUid is { } alongside && IsStation(alongside) && IsNeutralStation(faction, alongside))
+                return true;
+        }
+
+        if (TryComp<CompanyComponent>(grid, out var flag) && flag.CompanyName.Id != "None")
+            return false;
+
+        var aboard = false;
+        var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (players.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid != grid || HasComp<GhostComponent>(uid) || _mobs.IsDead(uid))
+                continue;
+
+            if (!TryComp<CompanyComponent>(uid, out var own) || !faction.NeutralCompanies.Contains(own.CompanyName))
+                return false;
+
+            aboard = true;
+        }
+
+        return aboard;
     }
 
     /// <summary>Where a ship was at the last scan, and when it was last counted.</summary>
