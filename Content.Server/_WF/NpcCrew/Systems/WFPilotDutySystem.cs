@@ -70,6 +70,7 @@ public sealed partial class WFPilotDutySystem : EntitySystem
         base.Update(frameTime);
 
         var now = _timing.CurTime;
+        PruneStances(now);
         var refreshDocks = _docksChanged;
         _docksChanged = false;
         _toRelease.Clear();
@@ -513,6 +514,7 @@ public sealed partial class WFPilotDutySystem : EntitySystem
             duty.HeadingOverride = cruising ? null : heading;
             steerer.TargetRotation = cruising ? TravelHeadingOffset(ent) : 0f;
         }
+        PresentGuns(ent, steerer);
         switch (duty.Orders)
         {
             case WFPilotOrder.Dock:
