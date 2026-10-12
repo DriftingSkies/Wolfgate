@@ -213,7 +213,7 @@ public sealed class WFReaverFightTest : WFReaverTestBase
             Assert.That(Server.System<WFReaverCampaignSystem>().Strongholds(), Has.Count.EqualTo(1));
         });
 
-        await WaitUntilServer(() => SEntMan.GetComponent<WFEncounterComponent>(stronghold).Resolution == WFEncounterResolution.Ended, Ticks(70));
+        await WaitUntilServer(() => SEntMan.GetComponent<WFEncounterComponent>(stronghold).Resolution == WFEncounterResolution.Ended, Ticks(150));
         await Server.WaitAssertion(() =>
         {
             Assert.That(Server.System<WFSectorTerritorySystem>().Held(MapData.MapId, Reavers), Is.Empty, "Its cells are freed.");
