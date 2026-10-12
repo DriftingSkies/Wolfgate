@@ -10,6 +10,10 @@ prompt with a chime for every current ghost, like an ERT call. A mob nobody is p
 draw; an entity that is already an open ghost role, such as a spawner or one set up with Make Ghost Role for custom
 text, is advertised as it is. Prompts close once the role is taken or gone.
 
+Offer Second Chance (right-click Admin verb on a body or a player's ghost, or `secondchance <entity>`) asks the
+body's player, wherever they are now, whether they want to come back. Yes puts them back in the body and rejuvenates
+it; no or closing the prompt leaves them as they are. Admins are told the answer.
+
 A vessel spawned for an owner, and an ERT's ship, are registered to the players' accounts through ShipAccess, so
 their access stays with the player in any body, a ghost included. The owner's living body's ID card also gets
 the deed when it has none; ERT responders aboard a ship get a crew record so their cards can key its doors, and a plain ID card when their outfit has none.
@@ -23,7 +27,7 @@ scanner moves the ghost to that spot.
 
 Entry points: `WolfgateTab` (the admin menu tab), `WolfgateAdminVerbSystem` (right-click verbs under Admin), the
 console commands in `Commands/` (names in `WolfgateAdminCommands`), and the server systems `AdminVesselSpawnSystem`,
-`ErtSystem`, `GridPowerSystem`, `GhostPossessSystem`, `GhostOfferSystem`, `RadarTeleportSystem` and `AdminRadarSystem`
+`ErtSystem`, `GridPowerSystem`, `GhostPossessSystem`, `GhostOfferSystem`, `SecondChanceSystem`, `RadarTeleportSystem` and `AdminRadarSystem`
 (the scanner's player list). The admin scanner is the client's `AdminRadarWindow`. Internet sound playback itself is in
 Audio.
 
@@ -38,6 +42,7 @@ Audio.
 - [`Content.Server/_WF/Administration/Commands/GridPowerCommand.cs`](Commands/GridPowerCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/InternetSoundCommands.cs`](Commands/InternetSoundCommands.cs)
 - [`Content.Server/_WF/Administration/Commands/OfferToGhostsCommand.cs`](Commands/OfferToGhostsCommand.cs)
+- [`Content.Server/_WF/Administration/Commands/SecondChanceCommand.cs`](Commands/SecondChanceCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SpawnOutfitCommand.cs`](Commands/SpawnOutfitCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SpawnOutfitGhostCommand.cs`](Commands/SpawnOutfitGhostCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SpawnVesselCommand.cs`](Commands/SpawnVesselCommand.cs)
@@ -48,6 +53,7 @@ Audio.
 - [`Content.Server/_WF/Administration/Systems/GhostPossessSystem.cs`](Systems/GhostPossessSystem.cs)
 - [`Content.Server/_WF/Administration/Systems/GridPowerSystem.cs`](Systems/GridPowerSystem.cs)
 - [`Content.Server/_WF/Administration/Systems/RadarTeleportSystem.cs`](Systems/RadarTeleportSystem.cs)
+- [`Content.Server/_WF/Administration/Systems/SecondChanceSystem.cs`](Systems/SecondChanceSystem.cs)
 - [`Content.Server/_WF/Administration/Systems/WolfgateAdminVerbSystem.cs`](Systems/WolfgateAdminVerbSystem.cs)
 
 ### Shared
@@ -60,6 +66,7 @@ Audio.
 - [`Content.Shared/_WF/Administration/GhostShortcuts/SharedGhostPossessSystem.cs`](../../../Content.Shared/_WF/Administration/GhostShortcuts/SharedGhostPossessSystem.cs)
 - [`Content.Shared/_WF/Administration/GridPower/GridPowerEvents.cs`](../../../Content.Shared/_WF/Administration/GridPower/GridPowerEvents.cs)
 - [`Content.Shared/_WF/Administration/RadarTeleport/RadarTeleportEvents.cs`](../../../Content.Shared/_WF/Administration/RadarTeleport/RadarTeleportEvents.cs)
+- [`Content.Shared/_WF/Administration/SecondChance/SecondChanceEvents.cs`](../../../Content.Shared/_WF/Administration/SecondChance/SecondChanceEvents.cs)
 - [`Content.Shared/_WF/Administration/SpawnOutfitBody.cs`](../../../Content.Shared/_WF/Administration/SpawnOutfitBody.cs)
 - [`Content.Shared/_WF/Administration/WolfgateAdminCommands.cs`](../../../Content.Shared/_WF/Administration/WolfgateAdminCommands.cs)
 
@@ -75,6 +82,7 @@ Audio.
 - [`Content.Client/_WF/Administration/GhostShortcuts/GhostPossessSystem.cs`](../../../Content.Client/_WF/Administration/GhostShortcuts/GhostPossessSystem.cs)
 - [`Content.Client/_WF/Administration/GridPower/GridPowerSystem.cs`](../../../Content.Client/_WF/Administration/GridPower/GridPowerSystem.cs)
 - [`Content.Client/_WF/Administration/RadarTeleport/RadarTeleportSystem.cs`](../../../Content.Client/_WF/Administration/RadarTeleport/RadarTeleportSystem.cs)
+- [`Content.Client/_WF/Administration/SecondChance/SecondChanceSystem.cs`](../../../Content.Client/_WF/Administration/SecondChance/SecondChanceSystem.cs)
 - [`Content.Client/_WF/Administration/UI/AdminRadar/AdminRadarControl.cs`](../../../Content.Client/_WF/Administration/UI/AdminRadar/AdminRadarControl.cs)
 - [`Content.Client/_WF/Administration/UI/AdminRadar/AdminRadarWindow.xaml`](../../../Content.Client/_WF/Administration/UI/AdminRadar/AdminRadarWindow.xaml)
 - [`Content.Client/_WF/Administration/UI/AdminRadar/AdminRadarWindow.xaml.cs`](../../../Content.Client/_WF/Administration/UI/AdminRadar/AdminRadarWindow.xaml.cs)
@@ -90,6 +98,8 @@ Audio.
 - [`Content.Client/_WF/Administration/UI/GridPower/GridPowerWindow.xaml.cs`](../../../Content.Client/_WF/Administration/UI/GridPower/GridPowerWindow.xaml.cs)
 - [`Content.Client/_WF/Administration/UI/InternetSound/InternetSoundAdminWindow.xaml`](../../../Content.Client/_WF/Administration/UI/InternetSound/InternetSoundAdminWindow.xaml)
 - [`Content.Client/_WF/Administration/UI/InternetSound/InternetSoundAdminWindow.xaml.cs`](../../../Content.Client/_WF/Administration/UI/InternetSound/InternetSoundAdminWindow.xaml.cs)
+- [`Content.Client/_WF/Administration/UI/SecondChance/SecondChancePromptWindow.xaml`](../../../Content.Client/_WF/Administration/UI/SecondChance/SecondChancePromptWindow.xaml)
+- [`Content.Client/_WF/Administration/UI/SecondChance/SecondChancePromptWindow.xaml.cs`](../../../Content.Client/_WF/Administration/UI/SecondChance/SecondChancePromptWindow.xaml.cs)
 - [`Content.Client/_WF/Administration/UI/SpawnOutfit/SpawnOutfitMenu.xaml`](../../../Content.Client/_WF/Administration/UI/SpawnOutfit/SpawnOutfitMenu.xaml)
 - [`Content.Client/_WF/Administration/UI/SpawnOutfit/SpawnOutfitMenu.xaml.cs`](../../../Content.Client/_WF/Administration/UI/SpawnOutfit/SpawnOutfitMenu.xaml.cs)
 - [`Content.Client/_WF/Administration/UI/Tabs/WolfgateTab.xaml`](../../../Content.Client/_WF/Administration/UI/Tabs/WolfgateTab.xaml)
@@ -104,6 +114,7 @@ Audio.
 
 - [`Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/SetOutfitPickerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SetOutfitPickerTest.cs)
 
 ### Prototypes
@@ -119,6 +130,7 @@ Audio.
 - [`Resources/Locale/en-US/_WF/Administration/ghost-shortcuts.ftl`](../../../Resources/Locale/en-US/_WF/Administration/ghost-shortcuts.ftl)
 - [`Resources/Locale/en-US/_WF/Administration/grid-power.ftl`](../../../Resources/Locale/en-US/_WF/Administration/grid-power.ftl)
 - [`Resources/Locale/en-US/_WF/Administration/radar-teleport.ftl`](../../../Resources/Locale/en-US/_WF/Administration/radar-teleport.ftl)
+- [`Resources/Locale/en-US/_WF/Administration/second-chance.ftl`](../../../Resources/Locale/en-US/_WF/Administration/second-chance.ftl)
 
 ## Non-modular edits
 
