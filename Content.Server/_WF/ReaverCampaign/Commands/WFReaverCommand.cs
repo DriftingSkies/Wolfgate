@@ -218,7 +218,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
         switch (_campaign.Idle())
         {
             case WFReaverIdle.CampaignOff:
-                return Loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", ReaverCampaignCVars.Enabled.Name));
+                return Loc.GetString("cmd-wf_reavers-status-mode-off", ("cvar", ReaverCampaignCVars.Enabled.Name));
             case WFReaverIdle.EncountersOff:
                 return Loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", EncountersCVars.Enabled.Name));
             case WFReaverIdle.SectorControlOff:

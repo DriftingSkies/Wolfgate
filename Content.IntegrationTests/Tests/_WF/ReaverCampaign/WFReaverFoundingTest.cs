@@ -50,6 +50,7 @@ public sealed class WFReaverFoundingTest : WFReaverTestBase
 
             // On, it runs the campaign of the preset in force; by default that is the standard one.
             config.SetCVar(EncountersCVars.Enabled, true);
+            config.SetCVar(ReaverCampaignCVars.Enabled, true);
             Assert.That(campaign.Campaign?.ID, Is.EqualTo("WFReaverCampaignStandard"));
             Assert.That(campaign.Running, Is.True);
             config.SetCVar(EncountersCVars.Preset, TestPreset);
@@ -477,8 +478,9 @@ public sealed class WFReaverFoundingTest : WFReaverTestBase
             {
                 await Server.WaitPost(() => config.SetCVar(cvar, false));
                 status = await Run(output, "wf_reavers status");
-                Assert.That(status.Last(), Is.EqualTo(loc.GetString("cmd-wf_reavers-status-switch-off", ("cvar", cvar.Name))));
-                Assert.That(status.Last(), Does.Contain(cvar.Name).And.Contain("wf_reavers found"));
+                Assert.That(status.Last(), Is.EqualTo(loc.GetString(
+                    cvar == ReaverCampaignCVars.Enabled ? "cmd-wf_reavers-status-mode-off" : "cmd-wf_reavers-status-switch-off", ("cvar", cvar.Name))));
+                Assert.That(status.Last(), Does.Contain(cvar.Name));
                 await Server.WaitPost(() => config.SetCVar(cvar, true));
             }
 

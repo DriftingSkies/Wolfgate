@@ -147,6 +147,7 @@ cmd-wf_reavers-status-counts = { $strongholds ->
 cmd-wf_reavers-status-clocks = Seconds to next spread: {$spread}. Seconds to next raid: {$raid}.
 cmd-wf_reavers-no-stronghold = No stronghold stands. Run wf_reavers found to place one now.
 cmd-wf_reavers-status-switch-off = No stronghold stands and none will be founded: {$cvar} is off. Run wf_reavers found to place one anyway.
+cmd-wf_reavers-status-mode-off = No stronghold stands and none will be founded: the Ashfall game mode is not running. Admins can force it with {$cvar} or by adding the rule (addgamerule WFReaverCampaignRule).
 cmd-wf_reavers-status-not-in-round = No stronghold stands and none will be founded: no round is in progress.
 cmd-wf_reavers-status-paused = No stronghold stands and none will be founded: the campaign is paused. Run wf_reavers resume.
 cmd-wf_reavers-status-runner-paused = No stronghold stands and none will be founded: the event runner is paused, which holds the campaign too. Unpause it in the Encounters window.
@@ -198,3 +199,7 @@ wf-reaver-name-reinforcement = Reaver reinforcements {$designation}
 wf-reaver-name-patrol = Reaver patrol {$designation}
 wf-reaver-name-raid = Reaver raiders {$designation}
 wf-reaver-name-boarders = Reaver boarders {$designation}
+
+# Game mode
+wf-reaver-preset-title = Ashfall
+wf-reaver-preset-description = Standard sector, and the Ashfall Reavers build strongholds and spread across it.

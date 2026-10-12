@@ -13,6 +13,7 @@ using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._WF.CCVar;
+using Content.Shared._WF.ReaverCampaign;
 using Content.Shared._WF.SectorControl;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
@@ -215,6 +216,7 @@ public abstract class WFReaverTestBase : WFSectorTestBase
         {
             var config = Server.ResolveDependency<IConfigurationManager>();
             config.SetCVar(EncountersCVars.Enabled, true);
+            config.SetCVar(ReaverCampaignCVars.Enabled, true);
             config.SetCVar(EncountersCVars.Preset, TestPreset);
             // Not paused: a paused event runner holds the campaign too. No room for its own encounters keeps it quiet.
             config.SetCVar(EncountersCVars.MaxActive, 0);

@@ -40,7 +40,8 @@ died in is freed and a smaller bounty paid; each navy's members also get its own
 contested for ten minutes, announced as a blockade, before it falls. Each storyteller preset has its own
 `wfReaverCampaign` (`Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`) with the pace, caps, tier ladder,
 bounties and encounter prototypes; a preset with none runs no campaign. It runs only while `wf.encounters.enabled`,
-`wf.sector.enabled` and `wf.reavers.enabled` are on and the round is in progress, and its own Reaver encounters on
+`wf.sector.enabled` are on, the round is in progress and the Ashfall game mode runs (rule `WFReaverCampaignRule`, in
+preset `MonoAshfall`; `wf.reavers.enabled` forces it on without the rule), and its own Reaver encounters on
 the storyteller's side are weighted up by tier through `WFEncounterWeightEvent`.
 
 A lead out of the fight (crew dead, disabled, hull shot to pieces, or no one at the helm for two minutes) breaks its
@@ -88,12 +89,14 @@ stopped, raids launched and cells retaken.
 
 - [`Content.Server/_WF/ReaverCampaign/Commands/WFReaverCommand.cs`](Commands/WFReaverCommand.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverCampaignComponent.cs`](Components/WFReaverCampaignComponent.cs)
+- [`Content.Server/_WF/ReaverCampaign/Components/WFReaverCampaignRuleComponent.cs`](Components/WFReaverCampaignRuleComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverConvoyComponent.cs`](Components/WFReaverConvoyComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverMarkComponent.cs`](Components/WFReaverMarkComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverPatrolComponent.cs`](Components/WFReaverPatrolComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverRaidComponent.cs`](Components/WFReaverRaidComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverReinforcementComponent.cs`](Components/WFReaverReinforcementComponent.cs)
 - [`Content.Server/_WF/ReaverCampaign/Components/WFReaverStrongholdComponent.cs`](Components/WFReaverStrongholdComponent.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignRuleSystem.cs`](Systems/WFReaverCampaignRuleSystem.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Announce.cs`](Systems/WFReaverCampaignSystem.Announce.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Convoys.cs`](Systems/WFReaverCampaignSystem.Convoys.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.cs`](Systems/WFReaverCampaignSystem.cs)
@@ -124,6 +127,7 @@ stopped, raids launched and cells retaken.
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverDisputeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGameModeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGameModeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGunPlatformTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGunPlatformTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs)
@@ -141,6 +145,8 @@ stopped, raids launched and cells retaken.
 - [`Resources/Prototypes/_WF/ReaverCampaign/companies.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/companies.yml)
 - [`Resources/Prototypes/_WF/ReaverCampaign/encounters.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/encounters.yml)
 - [`Resources/Prototypes/_WF/ReaverCampaign/factions.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/factions.yml)
+- [`Resources/Prototypes/_WF/ReaverCampaign/game_presets.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/game_presets.yml)
+- [`Resources/Prototypes/_WF/ReaverCampaign/game_rules.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/game_rules.yml)
 - [`Resources/Prototypes/_WF/ReaverCampaign/shields.yml`](../../../Resources/Prototypes/_WF/ReaverCampaign/shields.yml)
 
 ### Localization
@@ -153,8 +159,14 @@ stopped, raids launched and cells retaken.
 
 ## Non-modular edits
 
+- [`Resources/Prototypes/_Mono/PointsOfInterest/nodes.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/nodes.yml): the Ashfall game mode spawns the same sector as Standard
+- [`Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml): the Ashfall game mode spawns the same sector as Standard
+- [`Resources/Prototypes/_Mono/PointsOfInterest/tsfmchalcyon.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/tsfmchalcyon.yml): the Ashfall game mode spawns the same sector as Standard
+- [`Resources/Prototypes/_Mono/PointsOfInterest/tsfmcindustry.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/tsfmcindustry.yml): the Ashfall game mode spawns the same sector as Standard
 - [`Resources/Prototypes/_Mono/PointsOfInterest/underground.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/underground.yml): the station flies the neutral WFUnderground company, so the Reavers leave it and its cell alone
+- [`Resources/Prototypes/_Mono/PointsOfInterest/ussp.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/ussp.yml): the Ashfall game mode spawns the same sector as Standard
 - [`Resources/Prototypes/_Mono/Roles/Jobs/Underground/fugitive.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Underground/fugitive.yml): Underground crew fly the neutral WFUnderground company, so the Reavers leave them alone
 - [`Resources/Prototypes/_Mono/Roles/Jobs/Underground/godfather.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Underground/godfather.yml): Underground crew fly the neutral WFUnderground company, so the Reavers leave them alone
+- [`Resources/Prototypes/_NF/PointsOfInterest/base.yml`](../../../Resources/Prototypes/_NF/PointsOfInterest/base.yml): the Ashfall game mode spawns the same sector as Standard
 
 <!-- WOLFGATE-GENERATED END -->

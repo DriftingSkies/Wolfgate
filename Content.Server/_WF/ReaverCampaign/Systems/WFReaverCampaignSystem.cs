@@ -130,7 +130,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
     /// <summary>The first thing that keeps the campaign from acting, or none while it runs.</summary>
     public WFReaverIdle Idle()
     {
-        if (!_enabled)
+        if (!_enabled && !_ticker.IsGameRuleActive<WFReaverCampaignRuleComponent>())
             return WFReaverIdle.CampaignOff;
         if (!_encountersEnabled)
             return WFReaverIdle.EncountersOff;
