@@ -1,4 +1,5 @@
 using Content.Shared.Procedural;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WF.PlanetPois;
@@ -10,6 +11,10 @@ public sealed partial class WFPlanetPoiTablePrototype : IPrototype
     /// <inheritdoc/>
     [IdDataField]
     public string ID { get; private set; } = default!;
+
+    /// <summary>Optional physical road network connecting the sites.</summary>
+    [DataField]
+    public WFPlanetRoadNetwork? Roads;
 
     /// <summary>The kinds of site this world can hold, drawn by weight.</summary>
     [DataField(required: true)]
@@ -47,12 +52,76 @@ public sealed partial class WFPlanetPoiTablePrototype : IPrototype
 [DataDefinition]
 public sealed partial class WFPlanetPoiEntry
 {
-    [DataField(required: true)]
-    public ProtoId<DungeonConfigPrototype> Dungeon;
+    [DataField]
+    public ProtoId<DungeonConfigPrototype>? Dungeon;
+
+    /// <summary>Authored map to stamp instead of a procedural dungeon.</summary>
+    [DataField]
+    public string? MapPath;
+
+    /// <summary>Reserved tile bounds relative to the placement origin, with exclusive upper bounds.</summary>
+    [DataField]
+    public Box2i? Footprint;
+
+    /// <summary>Guaranteed number of this entry before weighted selection.</summary>
+    [DataField]
+    public int MinCount;
+
+    /// <summary>Maximum number of this entry, or no limit.</summary>
+    [DataField]
+    public int? MaxCount;
+
+    /// <summary>How the site joins the road network.</summary>
+    [DataField]
+    public WFPlanetPoiConnection Connection = WFPlanetPoiConnection.Roadside;
+
+    /// <summary>Road entrances relative to the placement origin.</summary>
+    [DataField]
+    public List<WFPlanetPoiSocket> Sockets = new();
 
     [DataField(required: true)]
     public LocId Name;
 
     [DataField]
     public float Weight = 1f;
+}
+
+/// <summary>Whether a site has one entrance, multiple entrances, or no roads.</summary>
+public enum WFPlanetPoiConnection { Roadside, Through, Isolated }
+
+/// <summary>Outward direction of a road entrance.</summary>
+public enum WFPlanetPoiDirection { North, East, South, West }
+
+/// <summary>An authored entrance and the direction roads leave it.</summary>
+[DataDefinition]
+public sealed partial class WFPlanetPoiSocket
+{
+    /// <summary>Tile position relative to the site origin.</summary>
+    [DataField(required: true)]
+    public Vector2i Offset;
+
+    /// <summary>Direction away from the building.</summary>
+    [DataField(required: true)]
+    public WFPlanetPoiDirection Direction;
+}
+
+/// <summary>Surface and clearance of the shared road network.</summary>
+[DataDefinition]
+public sealed partial class WFPlanetRoadNetwork
+{
+    /// <summary>Road surface tile prototype.</summary>
+    [DataField]
+    public string Tile = "FloorDirt";
+
+    /// <summary>Odd road width in tiles, from 1 to 15.</summary>
+    [DataField]
+    public int Width = 3;
+
+    /// <summary>Optional shoulder surface tile prototype.</summary>
+    [DataField]
+    public string? ShoulderTile;
+
+    /// <summary>Shoulder width on each side of the road.</summary>
+    [DataField]
+    public int ShoulderWidth;
 }

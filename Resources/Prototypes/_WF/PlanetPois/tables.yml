@@ -1,8 +1,13 @@
-# What each world rolls its dungeon sites from. These are one kind of site among the ones to come, so a world gets
-# only a few; spacing 128 and a 96-tile margin at the edge, tighter on the small worlds.
+# Real dungeon sites remain active until authored settlement maps are ready.
+# Every non-isolated site joins the world route network.
 
 - type: wfPlanetPoiTable
   id: WFPoisAsclepiu
+  roads:
+    tile: FloorAsphalt
+    width: 5
+    shoulderTile: FloorConcrete
+    shoulderWidth: 1
   minCount: 2
   maxCount: 4
   entries:
@@ -16,6 +21,11 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisMerak
+  roads:
+    tile: FloorAsphalt
+    width: 5
+    shoulderTile: FloorConcrete
+    shoulderWidth: 1
   minCount: 2
   maxCount: 4
   entries:
@@ -26,6 +36,9 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisFervidus
+  roads:
+    tile: FloorDarkPavement
+    width: 3
   minCount: 1
   maxCount: 3
   entries:
@@ -36,6 +49,9 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisThrascias
+  roads:
+    tile: FloorSnowDug
+    width: 3
   minCount: 1
   maxCount: 3
   entries:
@@ -46,6 +62,9 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisAerumna
+  roads:
+    tile: FloorChromite
+    width: 3
   minCount: 1
   maxCount: 2
   spacing: 96
@@ -59,6 +78,9 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisCarcinoma
+  roads:
+    tile: FloorDirt
+    width: 3
   minCount: 1
   maxCount: 2
   spacing: 96

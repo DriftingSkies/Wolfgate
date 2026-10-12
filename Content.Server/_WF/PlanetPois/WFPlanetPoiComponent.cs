@@ -1,4 +1,5 @@
 using Content.Shared.Procedural;
+using Content.Shared._WF.PlanetPois;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.PlanetPois;
@@ -9,17 +10,33 @@ public sealed partial class WFPlanetPoiComponent : Component
 {
     [ViewVariables]
     public List<WFPlanetPoiSite> Sites = new();
+
+    [ViewVariables]
+    public bool NetworkReady;
+
+    [ViewVariables]
+    public string? GenerationError;
+
+    [ViewVariables]
+    public HashSet<Vector2i> RoadTiles = new();
+
+    [ViewVariables]
+    public HashSet<Vector2i> ShoulderTiles = new();
 }
 
 /// <summary>One placed site: what was generated, where, how big it came out and the signal that marks it.</summary>
 public sealed class WFPlanetPoiSite
 {
-    public ProtoId<DungeonConfigPrototype> Dungeon;
+    public ProtoId<DungeonConfigPrototype>? Dungeon;
+    public string? MapPath;
+    public WFPlanetPoiConnection Connection;
+    public List<WFPlanetRoadSocket> Sockets = new();
+    public Dictionary<WFPlanetRoadSocket, List<Vector2i>> AccessPaths = new();
     public LocId Name;
     /// <summary>Where the generator was pointed; the site spreads round it.</summary>
     public Vector2i Origin;
 
-    /// <summary>The tiles the site came out with, and the box round them; the signal sits over the box's middle.</summary>
+    /// <summary>The generated tile count and reserved bounds with exclusive upper edges.</summary>
     public int TileCount;
     public Box2i Bounds;
     public EntityUid Signal;
