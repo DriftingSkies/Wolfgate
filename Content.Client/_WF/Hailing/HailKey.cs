@@ -31,6 +31,7 @@ public sealed class HailKey : Button
 
     private EntityUid? _console;
     private HailState? _state;
+    private bool _choosing;
     private string? _notice;
     private float _noticeTime;
     private float _pollAccumulator;
@@ -122,7 +123,14 @@ public sealed class HailKey : Button
         if (_console != null)
             _entManager.TryGetComponent(_console, out hail);
 
-        Show(hail?.State, false);
+        var choosing = hail is { State: HailState.Connected, Options.Count: > 0 };
+        var changed = choosing != _choosing;
+        _choosing = choosing;
+        Show(hail?.State, changed);
+
+        // Answers to pick bring the window up like an answered hail does.
+        if (changed && choosing)
+            UserInterfaceManager.DeferAction(() => ChannelOpened?.Invoke());
     }
 
     private void Show(HailState? state, bool force)
@@ -153,8 +161,8 @@ public sealed class HailKey : Button
                 break;
 
             case HailState.Connected:
-                Text = Loc.GetString("hail-key-open");
-                Modulate = OpenColor;
+                Text = Loc.GetString(_choosing ? "hail-key-reply" : "hail-key-open");
+                Modulate = _choosing ? RingColor : OpenColor;
                 break;
 
             default:

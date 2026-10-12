@@ -37,7 +37,7 @@ namespace Content.IntegrationTests.Tests._WF.Hailing;
 /// Ship-to-ship hailing: one console rings another ship's, an answer opens a channel with the other
 /// pilot sent to each client, and every way out of a hail leaves both consoles idle.
 /// </summary>
-public sealed class HailingTest : InteractionTest
+public sealed partial class HailingTest : InteractionTest
 {
     // The cockpit needs a pilot who can buckle in and has the usual HUD parts.
     [TestPrototypes]

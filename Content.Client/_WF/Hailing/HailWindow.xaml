@@ -33,10 +33,11 @@
                 <Button Name="DeclineButton" Text="{Loc 'hail-decline'}" HorizontalExpand="True" StyleClasses="ButtonSquare"/>
             </BoxContainer>
             <BoxContainer Name="ChatRow" Orientation="Vertical" SeparationOverride="6">
-                <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                <BoxContainer Name="TypeRow" Orientation="Horizontal" SeparationOverride="6">
                     <LineEdit Name="ChatEntry" HorizontalExpand="True" PlaceHolder="{Loc 'hail-chat-placeholder'}"/>
                     <Button Name="SendButton" Text="{Loc 'hail-chat-send'}" StyleClasses="ButtonSquare"/>
                 </BoxContainer>
+                <BoxContainer Name="OptionRow" Orientation="Vertical" SeparationOverride="4" Visible="False"/>
                 <Button Name="EndButton" Text="{Loc 'hail-close-channel'}" StyleClasses="ButtonSquare"/>
             </BoxContainer>
             <Button Name="BackButton" Text="{Loc 'hail-back'}" StyleClasses="ButtonSquare"/>
