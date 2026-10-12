@@ -487,8 +487,12 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
-    /// <summary>The orders a ship's prototype gives it. <paramref name="grid"/> is the ship's own, for @player.</summary>
-    private List<WFCrewObjective> BuildQueue(WFEncounterComponent comp, WFEncounterShip ship, EntityUid grid)
+    /// <summary>
+    /// The orders a ship's prototype gives it. <paramref name="grid"/> is the ship's own, for @player; its wander legs
+    /// are flown about <paramref name="around"/>, the encounter's origin if none.
+    /// </summary>
+    private List<WFCrewObjective> BuildQueue(WFEncounterComponent comp, WFEncounterShip ship, EntityUid grid,
+        System.Numerics.Vector2? around = null)
     {
         var queue = new List<WFCrewObjective>();
         // Meandering: one random point after another around where it arrived.
@@ -497,7 +501,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             queue.Add(new WFCrewObjective
             {
                 Kind = WFCrewObjectiveKind.GoTo,
-                Position = comp.Origin.Position + _random.NextAngle().ToVec() * _random.NextFloat(ship.WanderRadius * 0.3f, ship.WanderRadius),
+                Position = (around ?? comp.Origin.Position) + _random.NextAngle().ToVec() * _random.NextFloat(ship.WanderRadius * 0.3f, ship.WanderRadius),
                 Range = 200f,
             });
             if (ship.WanderPause > 0f)
@@ -590,6 +594,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
             Icon = ship.Icon,
             Hunt = ship.Hunt,
             Distress = ship.Distress,
+            Evades = ship.Evades,
+            Flees = ship.Flees,
             Passengers = ship.Passengers.Count > 0,
         };
         encounter.Comp.Ships.Add(ship.Key, state);
@@ -779,6 +785,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     private void RemoveShip(WFEncounterShipState ship)
     {
+        ship.Removed = true;
         if (TerminatingOrDeleted(ship.Grid))
             return;
 
@@ -926,6 +933,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
             if (TerminatingOrDeleted(ship.Grid))
                 continue;
 
+            if (ship.Flees > 0f && encounter.Comp.Begun)
+                Flee(encounter, key, ship);
             if (ship.Hunt && encounter.Comp.Begun)
                 Hunt(ship);
             else if (encounter.Comp.Leash > 0f && ship.HasOrders)

@@ -52,6 +52,27 @@ ships are never swept up however far away players are, until an admin ends it. U
 up like a scheduled one. The window's search box filters both the start list and the running list by name,
 prototype, ship or state.
 
+An encounter can carry a warrant (`bounty:`: a ship key, `target: Captain | Crew`, a base prize in spesos and the
+Fluent title and description). When it starts, `WFEncounterBountySystem` posts the warrant on the PDA bounty program, in
+the Warrants collection (`WFWarrants`, first tab, PDA notification). Players can read it and cannot post to it or delete
+from it: the collection is restricted to the `CentralCommand` access level, because an empty list lets anyone through.
+The system posts with no player behind it through a partial of `BountyContractSystem` (`BountyContractSystem.Warrants.cs`):
+post, change a reward in place, remove. A warrant on a captain is named for one flagged crewman; on a crew, for the ship.
+It is claimed when the crewman is dead (not just down) or gone, or for a crew when every hand is dead or the ship is
+gone. The prize is shared equally, into bank accounts, by the players whose ships hit the encounter's ships at least
+`MinimumHits` times, the players who hurt a target in person, and the players aboard the ship or within 200 m when it
+fell. The hourly cap on encounter rewards does not apply to a warrant, since the board promised the number. Then the
+warrant comes off the board and the encounter resolves as destroyed. An encounter that expires, completes or is ended,
+or whose ships are swept up first, takes its warrant down and pays nobody. `WFEncounterBountySystem.AddToBounty` raises
+the prize of a live warrant and updates the board entry, for encounters whose prize grows.
+
+Ships with `flees: <metres>` run from player ships: while one with a player aboard is within that range the ship flies
+directly away from it, and with none near it goes back to its wander. It never starts a fight; `evades: false` keeps it
+running while its guns answer an attacker, and the default turns it on the attacker. The fugitives (`fugitives.yml`) are
+four tiers of this with a warrant on the captain: petty (unarmed shuttle, pilot, Green), wanted (light armed hull, two
+guards, Regular), dangerous (corvette, hard crew, Veteran) and most wanted (pirate frigate, full crew, Elite, turns and
+fights when attacked).
+
 Admins use the Encounters window in the Wolfgate admin tab, or `wf_encounter list | spawn <prototype> [distance] |
 end <encounter> | schedule | pause | resume`. Other code calls `WFEncounterSystem.TrySpawn`, `Resolve`, `End` and
 `Reveal` and listens for `WFEncounterStartedEvent` and `WFEncounterResolvedEvent`.
@@ -67,16 +88,20 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 ### Server
 
 - [`Content.Server/_WF/Encounters/Commands/WFEncounterCommand.cs`](Commands/WFEncounterCommand.cs)
+- [`Content.Server/_WF/Encounters/Components/WFEncounterBountyComponent.cs`](Components/WFEncounterBountyComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterComponent.cs`](Components/WFEncounterComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterGridComponent.cs`](Components/WFEncounterGridComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFSalvageClaimComponent.cs`](Components/WFSalvageClaimComponent.cs)
+- [`Content.Server/_WF/Encounters/Systems/BountyContractSystem.Warrants.cs`](Systems/BountyContractSystem.Warrants.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterAdminSystem.cs`](Systems/WFEncounterAdminSystem.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterBountySystem.cs`](Systems/WFEncounterBountySystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterMarkerSystem.cs`](Systems/WFEncounterMarkerSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterRewardSystem.cs`](Systems/WFEncounterRewardSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSchedulerSystem.cs`](Systems/WFEncounterSchedulerSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Battle.cs`](Systems/WFEncounterSystem.Battle.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.cs`](Systems/WFEncounterSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Derelict.cs`](Systems/WFEncounterSystem.Derelict.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Fugitive.cs`](Systems/WFEncounterSystem.Fugitive.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Hunt.cs`](Systems/WFEncounterSystem.Hunt.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Radar.cs`](Systems/WFEncounterSystem.Radar.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Stranded.cs`](Systems/WFEncounterSystem.Stranded.cs)
@@ -109,6 +134,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AuditZones.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AuditZones.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Bounty.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Bounty.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs)
@@ -121,13 +147,16 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Resources/Prototypes/_WF/Encounters/crates.yml`](../../../Resources/Prototypes/_WF/Encounters/crates.yml)
 - [`Resources/Prototypes/_WF/Encounters/dwellers.yml`](../../../Resources/Prototypes/_WF/Encounters/dwellers.yml)
 - [`Resources/Prototypes/_WF/Encounters/encounters.yml`](../../../Resources/Prototypes/_WF/Encounters/encounters.yml)
+- [`Resources/Prototypes/_WF/Encounters/fugitives.yml`](../../../Resources/Prototypes/_WF/Encounters/fugitives.yml)
 - [`Resources/Prototypes/_WF/Encounters/manifests.yml`](../../../Resources/Prototypes/_WF/Encounters/manifests.yml)
 - [`Resources/Prototypes/_WF/Encounters/presets.yml`](../../../Resources/Prototypes/_WF/Encounters/presets.yml)
 - [`Resources/Prototypes/_WF/Encounters/standing.yml`](../../../Resources/Prototypes/_WF/Encounters/standing.yml)
 - [`Resources/Prototypes/_WF/Encounters/vessels.yml`](../../../Resources/Prototypes/_WF/Encounters/vessels.yml)
+- [`Resources/Prototypes/_WF/Encounters/warrants.yml`](../../../Resources/Prototypes/_WF/Encounters/warrants.yml)
 
 ### Localization
 
+- [`Resources/Locale/en-US/_WF/Encounters/bounties.ftl`](../../../Resources/Locale/en-US/_WF/Encounters/bounties.ftl)
 - [`Resources/Locale/en-US/_WF/Encounters/encounters.ftl`](../../../Resources/Locale/en-US/_WF/Encounters/encounters.ftl)
 
 ### Textures

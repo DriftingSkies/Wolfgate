@@ -50,6 +50,10 @@ public sealed partial class WFEncounterPrototype : IPrototype
     [DataField]
     public List<WFEncounterReward> Rewards = new();
 
+    /// <summary>A warrant posted on the sector bounty board while the encounter runs, paid to whoever takes its target down.</summary>
+    [DataField]
+    public WFEncounterBounty? Bounty;
+
     /// <summary>Has the ship's radio officer make the announcement on the common channel, not sector control.</summary>
     [DataField]
     public bool AnnounceOnRadio;
@@ -279,6 +283,14 @@ public sealed partial class WFEncounterShip
     [DataField]
     public bool Evades = true;
 
+    /// <summary>
+    /// Runs from player ships: while one with a player aboard is within this many metres, the ship flies directly away
+    /// from it; with none near it goes back to its wander. Zero stands its ground. Unlike <see cref="Evades"/>, which is
+    /// how it answers an attack, this is how it keeps clear of people who have not attacked.
+    /// </summary>
+    [DataField]
+    public float Flees;
+
     /// <summary>Flight limits; none uses the cautious defaults.</summary>
     [DataField]
     public ProtoId<WFCrewNavigationProfilePrototype>? Navigation;
@@ -311,6 +323,40 @@ public sealed partial class WFEncounterShip
     /// <summary>Set, the hull arrives a hulk: no crew and no fuel, squatters aboard, and it can be claimed.</summary>
     [DataField]
     public WFEncounterDerelict? Derelict;
+}
+
+/// <summary>A warrant for an encounter's target, posted on the sector bounty board when it starts.</summary>
+[DataDefinition]
+public sealed partial class WFEncounterBounty
+{
+    /// <summary>Key of the ship the warrant is for.</summary>
+    [DataField(required: true)]
+    public string Ship = string.Empty;
+
+    [DataField]
+    public WFEncounterBountyTarget Target = WFEncounterBountyTarget.Captain;
+
+    /// <summary>Spesos the warrant starts at; it can grow while the encounter runs.</summary>
+    [DataField]
+    public int Spesos;
+
+    /// <summary>What the payout line calls the warrant.</summary>
+    [DataField(required: true)]
+    public LocId Title;
+
+    /// <summary>The board entry's text; takes $name, the wanted name, and $ship.</summary>
+    [DataField(required: true)]
+    public LocId Description;
+}
+
+/// <summary>Who a warrant is for.</summary>
+public enum WFEncounterBountyTarget : byte
+{
+    /// <summary>One named crewman, the ship's captain: paid when he is dead.</summary>
+    Captain,
+
+    /// <summary>The ship itself: paid when every hand aboard is dead or the ship is gone.</summary>
+    Crew,
 }
 
 /// <summary>What lives in a hulk and what it takes to own it.</summary>
