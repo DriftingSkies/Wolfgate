@@ -1,0 +1,48 @@
+- type: traderDialogue
+  id: WFPoiSupplyDialogue
+  greeting: wf-poi-supply-greeting
+  farewell: wf-poi-trader-farewell
+  options:
+  - prompt: wf-poi-supply-shop
+    response: wf-poi-supply-stock
+    action: OpenShop
+
+- type: traderDialogue
+  id: WFPoiFuelDialogue
+  greeting: wf-poi-fuel-greeting
+  farewell: wf-poi-trader-farewell
+  options:
+  - prompt: wf-poi-fuel-shop
+    response: wf-poi-fuel-stock
+    action: OpenShop
+
+- type: entity
+  id: WFPoiSupplyTrader
+  parent: WFBaseTrader
+  components:
+  - type: HumanoidAppearance
+    species: Human
+    initial: WFTraderToolsProfile
+  - type: Loadout
+    prototypes: [ WFTraderToolsGear ]
+  - type: Trader
+    dialogue: WFPoiSupplyDialogue
+  - type: TraderShop
+    vendors: [ VendingMachineYouToolPOI, VendingMachineEngivendPOI ]
+    randomStock: 12
+    stockMin: 2
+    stockMax: 8
+
+- type: entity
+  id: WFPoiFuelTrader
+  parent: WFBaseTrader
+  components:
+  - type: HumanoidAppearance
+    species: Human
+    initial: WFTraderFuelTechnicianProfile
+  - type: Loadout
+    prototypes: [ WFTraderFuelTechnicianGear ]
+  - type: Trader
+    dialogue: WFPoiFuelDialogue
+  - type: TraderShop
+    vendors: [ VendingMachineFuelVend, VendingMachineYouToolPOI ]

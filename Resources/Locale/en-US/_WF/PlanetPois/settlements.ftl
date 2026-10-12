@@ -1,0 +1,26 @@
+wf-poi-asclepiu-city = Overgrown Industrial Township
+wf-poi-merak-caravan-city = Caravan Freight District
+wf-poi-asclepiu-garden-village = Garden Village
+wf-poi-asclepiu-derelict-village = Deserted Village
+wf-poi-merak-caravan-camp = Caravan Work Camp
+wf-poi-merak-abandoned-work-camp = Abandoned Excavation Camp
+wf-poi-asclepiu-roadside-trader = Woodland Trading Post
+wf-poi-merak-roadside-trader = Caravan Trading Post
+wf-poi-asclepiu-fuel-service = Woodland Fuel and Repair Stop
+wf-poi-merak-fuel-service = Caravan Fuel and Repair Stop
+wf-poi-fervidus-rim-shelter = Abandoned Rim Shelter
+wf-poi-thrascias-survey-shelter = Frozen Survey Shelter
+wf-poi-aerumna-salvage-yard = Silent Salvage Yard
+wf-poi-carcinoma-ruin-shelter = Overrun Field Shelter
+
+ent-WFPoiSupplyTrader = settlement provisioner
+    .desc = A local supplier offering tools and engineering supplies to passing travellers.
+ent-WFPoiFuelTrader = roadside fuel merchant
+    .desc = A roadside merchant selling packaged fuel for the journey ahead.
+wf-poi-supply-greeting = Welcome in. Need tools or supplies for the road?
+wf-poi-supply-shop = Show me your supplies.
+wf-poi-supply-stock = Here is what we have left. Deliveries can be a while coming.
+wf-poi-fuel-greeting = Running low? We sell packaged reactor fuel and welding fuel here.
+wf-poi-fuel-shop = Show me your fuel stock.
+wf-poi-fuel-stock = Pick what you need. You will need to load it into your equipment yourself.
+wf-poi-trader-farewell = Safe travels. Mind the abandoned blocks.

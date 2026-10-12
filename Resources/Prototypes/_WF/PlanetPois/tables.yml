@@ -1,91 +1,227 @@
-# Real dungeon sites remain active until authored settlement maps are ready.
-# Every non-isolated site joins the world route network.
+# Generated authored entries: python Tools/_WF/PlanetPois/generate.py
+# Hazard worlds retain procedural dungeon variety alongside their authored shelter.
 
 - type: wfPlanetPoiTable
   id: WFPoisAsclepiu
   roads:
     tile: FloorAsphalt
     width: 5
-    shoulderTile: FloorConcrete
+    shoulderTile: FloorConcreteCrocus
     shoulderWidth: 1
-  minCount: 2
-  maxCount: 4
+  minCount: 5
+  maxCount: 5
   entries:
-  - dungeon: WFPoiAsclepiuResearch
-    name: wf-poi-asclepiu-research
-    weight: 2
-  - dungeon: WFPoiAsclepiuClinic
-    name: wf-poi-asclepiu-clinic
-  - dungeon: WFPoiAsclepiuDorms
-    name: wf-poi-asclepiu-dorms
-
+  - mapPath: /Maps/_WF/PlanetPois/asclepiu_city.yml
+    name: wf-poi-asclepiu-city
+    footprint: -144,-72,144,72
+    minCount: 1
+    maxCount: 1
+    connection: Through
+    sockets:
+    - offset: -144,0
+      direction: West
+    - offset: 143,0
+      direction: East
+    - offset: -72,71
+      direction: North
+    - offset: 72,-72
+      direction: South
+  - mapPath: /Maps/_WF/PlanetPois/asclepiu_garden_village.yml
+    name: wf-poi-asclepiu-garden-village
+    footprint: -32,-24,32,24
+    minCount: 1
+    maxCount: 1
+    connection: Through
+    sockets:
+    - offset: -32,0
+      direction: West
+    - offset: 31,0
+      direction: East
+  - mapPath: /Maps/_WF/PlanetPois/asclepiu_derelict_village.yml
+    name: wf-poi-asclepiu-derelict-village
+    footprint: -40,-28,40,28
+    minCount: 1
+    maxCount: 1
+    connection: Through
+    sockets:
+    - offset: -40,0
+      direction: West
+    - offset: 39,0
+      direction: East
+  - mapPath: /Maps/_WF/PlanetPois/asclepiu_roadside_trader.yml
+    name: wf-poi-asclepiu-roadside-trader
+    footprint: -20,-16,20,16
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -20,-5
+      direction: West
+  - mapPath: /Maps/_WF/PlanetPois/asclepiu_fuel_service.yml
+    name: wf-poi-asclepiu-fuel-service
+    footprint: -24,-20,24,20
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -24,-6
+      direction: West
+  spacing: 96
+  edgeMargin: 96
+  centreClear: 96
 - type: wfPlanetPoiTable
   id: WFPoisMerak
   roads:
     tile: FloorAsphalt
     width: 5
-    shoulderTile: FloorConcrete
+    shoulderTile: FloorConcreteCrocus
     shoulderWidth: 1
-  minCount: 2
-  maxCount: 4
+  minCount: 5
+  maxCount: 5
   entries:
-  - dungeon: WFPoiMerakMineshaft
-    name: wf-poi-merak-mineshaft
-  - dungeon: WFPoiMerakOutpost
-    name: wf-poi-merak-outpost
-
+  - mapPath: /Maps/_WF/PlanetPois/merak_caravan_city.yml
+    name: wf-poi-merak-caravan-city
+    footprint: -144,-72,144,72
+    minCount: 1
+    maxCount: 1
+    connection: Through
+    sockets:
+    - offset: -144,0
+      direction: West
+    - offset: 143,0
+      direction: East
+    - offset: -72,71
+      direction: North
+    - offset: 72,-72
+      direction: South
+  - mapPath: /Maps/_WF/PlanetPois/merak_caravan_camp.yml
+    name: wf-poi-merak-caravan-camp
+    footprint: -32,-24,32,24
+    minCount: 1
+    maxCount: 1
+    connection: Through
+    sockets:
+    - offset: -32,0
+      direction: West
+    - offset: 31,0
+      direction: East
+  - mapPath: /Maps/_WF/PlanetPois/merak_abandoned_work_camp.yml
+    name: wf-poi-merak-abandoned-work-camp
+    footprint: -32,-24,32,24
+    minCount: 1
+    maxCount: 1
+    connection: Through
+    sockets:
+    - offset: -32,0
+      direction: West
+    - offset: 31,0
+      direction: East
+  - mapPath: /Maps/_WF/PlanetPois/merak_roadside_trader.yml
+    name: wf-poi-merak-roadside-trader
+    footprint: -20,-16,20,16
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -20,-5
+      direction: West
+  - mapPath: /Maps/_WF/PlanetPois/merak_fuel_service.yml
+    name: wf-poi-merak-fuel-service
+    footprint: -24,-20,24,20
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -24,-6
+      direction: West
+  spacing: 96
+  edgeMargin: 96
+  centreClear: 96
 - type: wfPlanetPoiTable
   id: WFPoisFervidus
   roads:
     tile: FloorDarkPavement
     width: 3
-  minCount: 1
+  minCount: 2
   maxCount: 3
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/fervidus_rim_shelter.yml
+    name: wf-poi-fervidus-rim-shelter
+    footprint: -24,-20,24,20
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -24,-1
+      direction: West
   - dungeon: WFPoiFervidusBrig
     name: wf-poi-fervidus-brig
   - dungeon: WFPoiFervidusCamp
     name: wf-poi-fervidus-camp
-
 - type: wfPlanetPoiTable
   id: WFPoisThrascias
   roads:
     tile: FloorSnowDug
     width: 3
-  minCount: 1
+  minCount: 2
   maxCount: 3
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/thrascias_survey_shelter.yml
+    name: wf-poi-thrascias-survey-shelter
+    footprint: -24,-20,24,20
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -24,-1
+      direction: West
   - dungeon: WFPoiThrasciasLabs
     name: wf-poi-thrascias-labs
   - dungeon: WFPoiThrasciasVirology
     name: wf-poi-thrascias-virology
-
 - type: wfPlanetPoiTable
   id: WFPoisAerumna
   roads:
     tile: FloorChromite
     width: 3
-  minCount: 1
+  minCount: 2
   maxCount: 2
   spacing: 96
   edgeMargin: 72
   centreClear: 64
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/aerumna_salvage_yard.yml
+    name: wf-poi-aerumna-salvage-yard
+    footprint: -24,-20,24,20
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -24,-1
+      direction: West
   - dungeon: WFPoiAerumnaFactory
     name: wf-poi-aerumna-factory
   - dungeon: WFPoiAerumnaMine
     name: wf-poi-aerumna-mine
-
 - type: wfPlanetPoiTable
   id: WFPoisCarcinoma
   roads:
     tile: FloorDirt
     width: 3
-  minCount: 1
+  minCount: 2
   maxCount: 2
   spacing: 96
   edgeMargin: 72
   centreClear: 64
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/carcinoma_ruin_shelter.yml
+    name: wf-poi-carcinoma-ruin-shelter
+    footprint: -24,-20,24,20
+    minCount: 1
+    maxCount: 1
+    connection: Roadside
+    sockets:
+    - offset: -24,-1
+      direction: West
   - dungeon: WFPoiCarcinomaRuin
     name: wf-poi-carcinoma-ruin

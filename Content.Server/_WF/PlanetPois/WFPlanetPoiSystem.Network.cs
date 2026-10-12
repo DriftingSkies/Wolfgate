@@ -73,32 +73,21 @@ public sealed partial class WFPlanetPoiSystem
                 }
                 else
                 {
-                    var stagingMap = _maps.CreateMap(out var stagingId, runMapInit: false);
-                    var staging = _mapManager.CreateGridEntity(stagingId);
-                    staging.Comp.CanSplit = false;
+                    var generated = await GenerateAccessibleDungeonAsync(entry, table.Roads, footprint, _random.Next());
                     try
                     {
-                        var config = _proto.Index(entry.Dungeon!.Value);
-                        await _dungeon.GenerateDungeonAsync(config, config.ID, staging.Owner, staging.Comp, Vector2i.Zero, _random.Next());
-                        if (TerminatingOrDeleted(ground) || TerminatingOrDeleted(staging.Owner)) return;
-                        var localTiles = new HashSet<Vector2i>();
-                        var generatedTiles = _maps.GetAllTilesEnumerator(staging.Owner, staging.Comp);
-                        while (generatedTiles.MoveNext(out var tile)) localTiles.Add(tile.Value.GridIndices);
-                        if (localTiles.Count == 0) throw new InvalidOperationException($"{entry.Name} generated no tiles.");
-                        var actualFootprint = BoundsOf(localTiles);
-                        var clearance = table.Roads is { } accessRoads && entry.Connection != WFPlanetPoiConnection.Isolated ? accessRoads.Width / 2 + accessRoads.ShoulderWidth + 2 : 0;
-                        actualFootprint = new Box2i(actualFootprint.Left - clearance, actualFootprint.Bottom - clearance, actualFootprint.Right + clearance, actualFootprint.Top + clearance);
-                        footprint = Union(footprint, actualFootprint);
+                        if (TerminatingOrDeleted(ground)) return;
+                        footprint = generated.Footprint;
                         if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, out origin))
                             throw new InvalidOperationException($"No room for generated {entry.Name}: enlarge the world or reduce counts or clearance.");
                         reservation = Translate(footprint, origin);
-                        siteTiles = localTiles.Select(tile => tile + origin).ToHashSet();
+                        siteTiles = generated.Tiles.Select(tile => tile + origin).ToHashSet();
                         changed.UnionWith(siteTiles);
-                        MergeSite(ground, grid, staging, origin, footprint, created, createdDecals);
+                        MergeSite(ground, grid, generated.Grid, origin, footprint, created, createdDecals);
                         EnsureComp<RoofComponent>(ground);
                         foreach (var tile in siteTiles) _roof.SetRoof((ground, grid, null), tile, true);
                     }
-                    finally { if (!TerminatingOrDeleted(stagingMap)) QueueDel(stagingMap); }
+                    finally { if (!TerminatingOrDeleted(generated.Map)) QueueDel(generated.Map); }
                 }
                 changed.UnionWith(siteTiles);
                 if (siteTiles.Count == 0)
@@ -106,7 +95,7 @@ public sealed partial class WFPlanetPoiSystem
                 var actual = BoundsOf(siteTiles);
                 if (!Fits(actual, centre, radius - 1, table.CentreClear) || reserved.Any(other => Overlaps(other, actual)))
                     throw new InvalidOperationException($"{entry.Name} exceeded its reserved placement; increase its footprint or world radius.");
-                reserved.Add(Union(reservation, actual));
+                reserved.Add(PlacementBounds(Union(reservation, actual), entry, table.Roads));
                 if (entry.MapPath != null)
                 {
                     var claimed = new HashSet<Vector2i>();
@@ -197,6 +186,55 @@ public sealed partial class WFPlanetPoiSystem
         }
     }
 
+    /// <summary>A staged procedural layout validated before it touches the planet.</summary>
+    internal sealed record StagedDungeon(EntityUid Map, Entity<MapGridComponent> Grid, HashSet<Vector2i> Tiles, Box2i Footprint, WFPlanetPoiSite Site, int Attempts, int Seed);
+
+    /// <summary>Regenerates sealed layouts with deterministic seeds before placing any tiles on the planet.</summary>
+    internal async Task<StagedDungeon> GenerateAccessibleDungeonAsync(WFPlanetPoiEntry entry, WFPlanetRoadNetwork? roads, Box2i footprint, int seed)
+    {
+        var config = _proto.Index(entry.Dungeon!.Value);
+        var retries = new Random(seed);
+        var lastError = "Generated no usable exterior entrance.";
+        for (var attempt = 0; attempt < 16; attempt++)
+        {
+            var generationSeed = attempt == 0 ? seed : retries.Next();
+            var map = _maps.CreateMap(out var mapId, runMapInit: false);
+            var grid = _mapManager.CreateGridEntity(mapId);
+            grid.Comp.CanSplit = false;
+            var retained = false;
+            try
+            {
+                await _dungeon.GenerateDungeonAsync(config, config.ID, grid.Owner, grid.Comp, Vector2i.Zero, generationSeed);
+                var tiles = new HashSet<Vector2i>();
+                var enumerator = _maps.GetAllTilesEnumerator(grid.Owner, grid.Comp);
+                while (enumerator.MoveNext(out var tile)) tiles.Add(tile.Value.GridIndices);
+                if (tiles.Count == 0)
+                    throw new InvalidOperationException($"{entry.Name} generated no tiles.");
+                var bounds = BoundsOf(tiles);
+                var clearance = roads != null && entry.Connection != WFPlanetPoiConnection.Isolated ? roads.Width / 2 + roads.ShoulderWidth + 2 : 0;
+                var reserved = Union(footprint, new Box2i(bounds.Left - clearance, bounds.Bottom - clearance, bounds.Right + clearance, bounds.Top + clearance));
+                var site = new WFPlanetPoiSite { Origin = Vector2i.Zero, Bounds = reserved, Connection = entry.Connection, Dungeon = entry.Dungeon, Name = entry.Name };
+                if (roads != null && entry.Connection != WFPlanetPoiConnection.Isolated)
+                {
+                    EnsureComp<WFPlanetPoiComponent>(grid.Owner);
+                    try
+                    {
+                        site.Sockets = ResolveSockets(grid.Owner, grid.Comp, entry, site, tiles, roads, new HashSet<Vector2i>(), Vector2.Zero, 4096, 0);
+                        if (entry.Connection == WFPlanetPoiConnection.Through) ValidateThrough(grid.Owner, grid.Comp, site, tiles);
+                    }
+                    catch (InvalidOperationException error)
+                    {
+                        lastError = error.Message;
+                        continue;
+                    }
+                }
+                retained = true;
+                return new StagedDungeon(map, grid, tiles, reserved, site, attempt + 1, generationSeed);
+            }
+            finally { if (!retained && !TerminatingOrDeleted(map)) QueueDel(map); }
+        }
+        throw new InvalidOperationException($"{entry.Name} had no usable entrance after 16 validated layouts: {lastError}");
+    }
     private static Box2i Translate(Box2i b, Vector2i o) => new(b.Left + o.X, b.Bottom + o.Y, b.Right + o.X, b.Top + o.Y);
     private static bool Overlaps(Box2i a, Box2i b) => a.Left < b.Right && a.Right > b.Left && a.Bottom < b.Top && a.Top > b.Bottom;
     private static Box2i Union(Box2i a, Box2i b) => new(Math.Min(a.Left, b.Left), Math.Min(a.Bottom, b.Bottom), Math.Max(a.Right, b.Right), Math.Max(a.Top, b.Top));
@@ -213,6 +251,11 @@ public sealed partial class WFPlanetPoiSystem
         return Vector2.DistanceSquared(nearest, c) >= clear * clear;
     }
 
+    /// <summary>Keeps a full exterior road ring free while retaining the authored socket bounds.</summary>
+    private static Box2i PlacementBounds(Box2i bounds, WFPlanetPoiEntry entry, WFPlanetRoadNetwork? roads) =>
+        (entry.MapPath == null || entry.Connection == WFPlanetPoiConnection.Through) && entry.Connection != WFPlanetPoiConnection.Isolated && roads != null
+            ? WFPlanetPoiPlacementPlanner.WithRoadClearance(bounds, roads.Width, roads.ShoulderWidth)
+            : bounds;
     /// <summary>Searches a bounded number of origins for a collision-free footprint.</summary>
     private bool TryOrigin(Entity<BiomeComponent> ground, Vector2 centre, float radius, WFPlanetPoiTablePrototype table, WFPlanetPoiEntry entry, Box2i footprint, List<Box2i> reserved, out Vector2i origin)
     {
@@ -220,21 +263,31 @@ public sealed partial class WFPlanetPoiSystem
         var reach = radius - table.EdgeMargin;
         if (reach <= table.CentreClear)
             return false;
+        bool Available(Vector2i candidateOrigin)
+        {
+            var box = Translate(footprint, candidateOrigin);
+            var placement = PlacementBounds(box, entry, table.Roads);
+            if (!Fits(placement, centre, radius - 1, table.CentreClear) || reserved.Any(other => Overlaps(other, placement) || Vector2.DistanceSquared(new Vector2((other.Left+other.Right)/2f, (other.Bottom+other.Top)/2f), candidateOrigin) < table.Spacing * table.Spacing))
+                return false;
+            if (entry.MapPath != null && table.Roads is { } roads && entry.Connection != WFPlanetPoiConnection.Isolated
+                && entry.Sockets.Any(socket => !ApproachFits(candidateOrigin + socket.Offset, socket.Direction, roads, centre, radius - 1, table.CentreClear,
+                    tile => reserved.Any(other => Contains(other, tile)) || _biome.WfIsPinned(ground, tile))))
+                return false;
+            return !ground.Comp.ModifiedTiles.Values.Any(indices => indices.Any(tile => Contains(placement, tile)));
+        }
         for (var attempt = 0; attempt < AttemptsPerSite; attempt++)
         {
             var candidate = centre + _random.NextAngle().ToVec() * MathF.Sqrt(_random.NextFloat(table.CentreClear * table.CentreClear, reach * reach));
             origin = new Vector2i((int)MathF.Floor(candidate.X), (int)MathF.Floor(candidate.Y));
-            var candidateOrigin = origin;
-            var box = Translate(footprint, candidateOrigin);
-            if (!Fits(box, centre, radius - 1, table.CentreClear) || reserved.Any(other => Overlaps(other, box) || Vector2.DistanceSquared(new Vector2((other.Left+other.Right)/2f, (other.Bottom+other.Top)/2f), candidateOrigin) < table.Spacing * table.Spacing))
-                continue;
-            if (entry.MapPath != null && table.Roads is { } roads && entry.Connection != WFPlanetPoiConnection.Isolated
-                && entry.Sockets.Any(socket => !ApproachFits(candidateOrigin + socket.Offset, socket.Direction, roads, centre, radius - 1, table.CentreClear,
-                    tile => reserved.Any(other => Contains(other, tile)) || _biome.WfIsPinned(ground, tile))))
-                continue;
-            var pinned = ground.Comp.ModifiedTiles.Values.Any(indices => indices.Any(tile => Contains(box, tile)));
-            if (!pinned)
+            if (Available(origin))
                 return true;
+        }
+        foreach (var candidate in WFPlanetPoiPlacementPlanner.FallbackOrigins(centre, reach, footprint, _random.Next()))
+        {
+            if (!Available(candidate))
+                continue;
+            origin = candidate;
+            return true;
         }
         return false;
     }

@@ -3,12 +3,18 @@
 ## What exists now
 
 The world builds its randomized POI layout and routes before terrain preloading. All non-isolated
-sites belong to one connected network. Production tables still select the existing procedural
-expedition dungeons: research facilities, clinics, dormitories, mineshafts, outposts, camps, laboratories,
-factories and ruins. No finished city, village, trader post or fuel station map is registered yet.
-Those are the mapping work listed below; a network does not turn a dungeon into a settlement.
-Carcinoma retains the haunted cave layout, with exterior airlocks added during dungeon generation
-so its otherwise sealed rock boundary has real entrances for the route network.
+sites belong to one connected network. Production tables combine fourteen authored maps with the
+existing procedural expedition dungeons. Asclepiu and Merak each have a 288 × 144 city district,
+an inhabited through settlement, an abandoned through settlement, a roadside trader and a fuel
+service stop. Fervidus, Thrascias, Aerumna and Carcinoma each add one abandoned roadside shelter.
+The cities mix an occupied western service core with a derelict eastern quarter; neither copies
+Crocus's station or multilevel setup. Fuel services sell real reactor fuel and welding-fuel cans,
+plus repair supplies. They do not provide automatic docking or ship refuelling.
+
+Carcinoma retains the haunted cave layout, with exterior airlocks added during dungeon generation.
+Procedural layouts are checked for a usable exterior approach before placement. Sealed rolls are
+regenerated with deterministic retry seeds, up to sixteen attempts; exhausted retries fail atomically
+without stamping a partial network or demolishing walls.
 
 Reusable content already present includes `FloorAsphalt`, concrete and pavement tiles, Mono's
 `RoadSlow`/`RoadStop` decals, Frontier planet-base dungeon interiors and the biome/dungeon tile-pinning
@@ -19,9 +25,9 @@ Traders should use the existing Wolfgate Traders module rather than a new shop i
 
 `Resources/Prototypes/_Mono/Maps/crocus.yml` selects `jianghui_industrial_1.yml` as the Crocus ground
 map, with level 0 below and levels 2–5 above. Decoding the ground map's version-7 tile chunks gives
-non-Space bounds **x = -112..175, y = -48..95**, or **288 × 144 tiles**, with **28,395 non-Space tiles**.
+non-Space bounds **x = -105..175, y = -46..93**, or **281 × 140 tiles**, with **24,577 non-Space tiles**.
 This measures the ground footprint, not the combined floors, building count or populated area.
-A city of roughly Crocus ground size should start as a **288 × 144** district. Do not copy Crocus's
+The enclosing serialized chunk envelope is **288 × 144** tiles; use that convenient rounded size for a city district of roughly Crocus ground size. Do not copy Crocus's
 station setup or six-level stack into a surface POI: the authored loader currently stamps one grid.
 
 Current playable ground radii are 384 Asclepiu, 320 Merak, 256 Fervidus and Thrascias, and 192 Aerumna
@@ -33,8 +39,9 @@ fits most comfortably on those two larger worlds. Do not promise multiple Crocus
 384-tile-diameter world.
 
 A centered 288 × 144 city has a corner radius of about 161 tiles. Keep its complete footprint inside
-the world and away from the arrival area. The current centre exclusion and site spacing were tuned
-for small expeditions; large cities need an explicit placement-budget review. Increase the world
+the world and away from the arrival area. The live tables guarantee five sites per habitable world and use 96-tile origin spacing.
+Through sites reserve an exterior road-clearance ring; a bounded fallback search handles narrow
+city placement regions when random attempts miss them. Increase the world
 radius if the intended content is several such cities with substantial rural travel between them.
 Entry count is not a guarantee of placement when clear land is insufficient.
 
@@ -125,7 +132,31 @@ specific village street or service driveway. Register new map paths only once th
 Maps inside `_WF/PlanetPois` are discovered by the module generator; regenerate module
 documentation after adding them. Only maps outside `_WF` need an `unmarked` entry. New themes usually need only a map, one localized name and one table entry.
 
-## Mapping queue
+## Shipped map pack
+
+Both habitable tables guarantee one city, one inhabited settlement, one abandoned settlement,
+one trading post and one fuel service. Positions and connecting routes change between rounds.
+The four hazard tables each guarantee their authored shelter and retain randomized expedition sites.
+
+- Asclepiu: `asclepiu_city` (288 × 144), `asclepiu_garden_village` (64 × 48),
+  `asclepiu_derelict_village` (80 × 56), `asclepiu_roadside_trader` (40 × 32),
+  `asclepiu_fuel_service` (48 × 40).
+- Merak: `merak_caravan_city` (288 × 144), `merak_caravan_camp` and
+  `merak_abandoned_work_camp` (64 × 48 each), `merak_roadside_trader` (40 × 32),
+  `merak_fuel_service` (48 × 40).
+- Other worlds: `fervidus_rim_shelter`, `thrascias_survey_shelter`, `aerumna_salvage_yard`
+  and `carcinoma_ruin_shelter` (48 × 40 each), all abandoned.
+
+Actual game-sprite previews: [Asclepiu city](Previews/asclepiu_city.webp),
+[Merak city](Previews/merak_caravan_city.webp), [garden village](Previews/asclepiu_garden_village.webp)
+and [Merak fuel stop](Previews/merak_fuel_service.webp). These are static map renders, without
+runtime planetary weather or generated exterior roads. Regenerate with `Content.MapRenderer`
+after changing a map; the optional Python previews are simpler tile plans.
+
+## Content roadmap
+
+The generated layouts below are starter authored content. Their shape, equipment and services are
+explicit; mapper refinement should focus on varied interiors, richer signage, decoration and playtesting.
 
 1. **Asclepiu city district, 288 × 144.** One per world; two to four clear road exits, with a complete
    authored internal street network. Add a civic square, clinic, housing, small industry and trader
@@ -159,6 +190,30 @@ documentation after adding them. Only maps outside `_WF` need an `unmarked` entr
 9. **Carcinoma salvage sites, 40 × 32 to 64 × 48.** Dirt tracks, flesh encroachment, abandoned
    infrastructure and quarantine barriers. Roadside or Through when connected; explicitly
    Isolated only for intentionally unreachable horror sites. This world is unsanctioned.
+
+## Reproducing and refining the maps
+
+Run `python Tools/_WF/PlanetPois/generate.py` from the repository root to regenerate the fourteen maps
+and live table entries from `cities.py`, `settlements.py` and the shared `map_author.py` helpers.
+The generator requires PyYAML; `--check` compares the generated files without rewriting them.
+Optional `--preview bin/poi-map-previews` also writes tile-plan PNGs and requires Pillow.
+Generation checks for overlapping fixtures and inaccessible doors or road entrances. Review the
+actual game renders and playtest before accepting layout changes.
+Edit the layout source for repeatable changes; direct mapper edits require an explicit decision
+about retaining that map outside future generation so they are not overwritten.
+
+The two city sources intentionally use five-wide trunk streets and three-wide local loops,
+with four cardinal exits. Asclepiu uses grass, timber homes, clinics, markets, gardens and derelict
+industrial blocks. Merak uses desert ground, modular steel cabins, freight and water storage,
+with abandoned old buildings reflecting the earthquake lore. Inhabited means operating traders
+and furnished usable spaces; it does not promise a simulated civilian population.
+
+Through villages and caravan camps include opposite-side exits and accessible buildings on each
+side of the street. Abandoned variants retain salvage and broken roofs without resident traders.
+Roadside service maps keep the building and loading yard beside a single branch driveway.
+Fuel and repair merchants mirror the existing fuel and tool vendor catalogues through the Trader
+system; they do not depend on a mapped powered vending machine. Hazard shelters are exploration sites, not safe breathable
+settlements, and keep the corresponding world's terrain and route palette.
 
 ## Fixture and acceptance
 
