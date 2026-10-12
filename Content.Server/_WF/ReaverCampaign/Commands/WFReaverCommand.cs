@@ -126,7 +126,7 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
         shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-header",
             ("campaign", campaign.ID),
             ("running", _campaign.Running.ToString()),
-            ("paused", _campaign.Paused.ToString()),
+            ("paused", _campaign.Held.ToString()),
             ("tier", _campaign.TierName(state?.Tier ?? 0)),
             ("score", (state?.Score ?? 0f).ToString("0.0", CultureInfo.InvariantCulture))));
         shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-counts",
@@ -229,6 +229,9 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
 
         if (_campaign.Paused)
             return Loc.GetString("cmd-wf_reavers-status-paused");
+
+        if (_campaign.RunnerPaused)
+            return Loc.GetString("cmd-wf_reavers-status-runner-paused");
 
         if (_campaign.Convoys().Count > 0)
             return Loc.GetString("cmd-wf_reavers-status-convoy-out");

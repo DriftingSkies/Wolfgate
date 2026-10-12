@@ -22,6 +22,7 @@ using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
 using Robust.Client.Input;
 using Robust.Client.UserInterface;
+using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Input;
 using Robust.Shared.Map;
@@ -254,6 +255,99 @@ public sealed class WFSectorMapTest : WFSectorTestBase
             Position = position,
             Color = color,
         };
+    }
+
+    /// <summary>A saved file that left the sector map key unbound, or on the old plain N, gets Shift+N back once; a key the player chose, or a later unbind, is left alone.</summary>
+    [Test]
+    public async Task StaleSectorMapKeyIsRepairedOnce()
+    {
+        var controller = UiMan.GetUIController<WFSectorMapUIController>();
+        var cfg = Client.ResolveDependency<IConfigurationManager>();
+        var function = ContentKeyFunctions.OpenSectorMap;
+        var repaired = false;
+
+        try
+        {
+            await Client.WaitPost(() =>
+            {
+                // Unbound, as a saved leaveEmpty entry would leave it.
+                foreach (var binding in InputManager.GetKeyBindings(function).ToArray())
+                {
+                    InputManager.RemoveBinding(binding);
+                }
+
+                cfg.SetCVar(SectorControlCVars.MapKeyRepaired, false);
+                repaired = controller.RepairKeyBinding();
+            });
+
+            Assert.That(repaired, Is.True, "An unbound key is repaired.");
+            AssertShiftN(function);
+            Assert.That(InputManager.IsKeyFunctionModified(function), Is.False, "The repaired key is the default again.");
+            Assert.That(cfg.GetCVar(SectorControlCVars.MapKeyRepaired), Is.True);
+
+            await Client.WaitPost(() =>
+            {
+                // A deliberate unbind after the repair stays.
+                foreach (var binding in InputManager.GetKeyBindings(function).ToArray())
+                {
+                    InputManager.RemoveBinding(binding);
+                }
+
+                repaired = controller.RepairKeyBinding();
+            });
+
+            Assert.That(repaired, Is.False, "The repair runs once.");
+            Assert.That(InputManager.GetKeyBindings(function), Is.Empty);
+
+            await Client.WaitPost(() =>
+            {
+                // The old default, saved as a modified key, is replaced.
+                InputManager.ResetBindingsFor(function);
+                foreach (var binding in InputManager.GetKeyBindings(function).ToArray())
+                {
+                    InputManager.RemoveBinding(binding);
+                }
+
+                InputManager.RegisterBinding(new KeyBindingRegistration { Function = function, BaseKey = Keyboard.Key.N, Type = KeyBindingType.State });
+                cfg.SetCVar(SectorControlCVars.MapKeyRepaired, false);
+                repaired = controller.RepairKeyBinding();
+            });
+
+            Assert.That(repaired, Is.True, "The old plain N is repaired.");
+            AssertShiftN(function);
+
+            await Client.WaitPost(() =>
+            {
+                // A key the player chose is left alone.
+                InputManager.ResetBindingsFor(function);
+                foreach (var binding in InputManager.GetKeyBindings(function).ToArray())
+                {
+                    InputManager.RemoveBinding(binding);
+                }
+
+                InputManager.RegisterBinding(new KeyBindingRegistration { Function = function, BaseKey = Keyboard.Key.M, Type = KeyBindingType.State });
+                cfg.SetCVar(SectorControlCVars.MapKeyRepaired, false);
+                repaired = controller.RepairKeyBinding();
+            });
+
+            Assert.That(repaired, Is.False, "A chosen key is not undone.");
+            Assert.That(InputManager.GetKeyBindings(function).Single().BaseKey, Is.EqualTo(Keyboard.Key.M));
+        }
+        finally
+        {
+            await Client.WaitPost(() =>
+            {
+                InputManager.ResetAllBindings();
+                cfg.SetCVar(SectorControlCVars.MapKeyRepaired, true);
+            });
+        }
+    }
+
+    private void AssertShiftN(BoundKeyFunction function)
+    {
+        var binding = InputManager.GetKeyBindings(function).Single();
+        Assert.That(binding.BaseKey, Is.EqualTo(Keyboard.Key.N));
+        Assert.That(binding.Mod1, Is.EqualTo(Keyboard.Key.Shift));
     }
 
     /// <summary>The top bar has a sector map button with an icon, a tooltip and the key; clicking it, the key and the command all open and close the window, and the button stays pressed while the window is open.</summary>

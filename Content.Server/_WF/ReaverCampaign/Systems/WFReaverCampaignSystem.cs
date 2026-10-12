@@ -86,7 +86,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
     /// <summary>The faction whose legend line is up, so it can be taken down.</summary>
     private ProtoId<WFSectorFactionPrototype>? _legend;
 
-    /// <summary>Stops founding, spread, patrols and raids until resumed; strongholds still break and pay.</summary>
+    /// <summary>Stops founding, spread, patrols and raids and holds every clock until resumed; strongholds still break and pay.</summary>
     public new bool Paused;
 
     /// <summary>When the sector's stations were generated this round.</summary>
@@ -190,14 +190,21 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             return;
 
         var elapsed = _lastTick == TimeSpan.Zero ? 1f : Math.Clamp((float) (now - _lastTick).TotalSeconds, 0f, 5f);
+        var since = _lastTick == TimeSpan.Zero ? TimeSpan.Zero : now - _lastTick;
         _lastTick = now;
         _nextTick = now + TickInterval;
         if (_ticker.RunLevel != GameRunLevel.InRound)
             return;
 
-        // Strongholds already standing still break and pay with the campaign switched off.
+        // Strongholds already standing still break and pay with the campaign switched off. A campaign that is
+        // switched off, paused or held by the event runner has its clocks pushed on, so none falls due on resuming.
         var running = Running;
-        if (State(running) is not { } state)
+        var held = !running || Held;
+        var current = State(running);
+        if (held)
+            HoldClocks(since, current);
+
+        if (current is not { } state)
         {
             ClearLegend();
             return;
@@ -207,9 +214,11 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         if (CampaignFor(state) is { } reporting)
             ReportPresence(reporting);
 
-        HoldDisputed(TimeSpan.FromSeconds(elapsed));
+        if (!held)
+            HoldDisputed(TimeSpan.FromSeconds(elapsed));
+
         TendStrongholds(state, ships, elapsed);
-        TendConvoys(state, running && !Paused);
+        TendConvoys(state, !held);
         TendReinforcements();
         TendPatrols(state);
         TendRaids();
@@ -221,7 +230,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             return;
         }
 
-        if (!Paused)
+        if (!held)
         {
             TickFounding(campaign, state);
             TickReinforce(campaign, state);
@@ -414,7 +423,8 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             ("broken", state.Broken),
             ("patrols", state.PatrolsDestroyed),
             ("convoys", state.ConvoysDestroyed),
-            ("raids", state.Raids)));
+            ("raids", state.Raids),
+            ("retaken", state.Retaken)));
     }
 
     /// <summary>Ends every campaign encounter, frees the faction's cells and starts the regroup clock. Returns how many encounters ended.</summary>

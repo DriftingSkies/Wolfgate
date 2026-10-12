@@ -116,13 +116,19 @@ public sealed class WFCrewPlannerSystem : EntitySystem
             free = open;
         var taken = new HashSet<Vector2i>();
 
-        // The helm, and a radio post beside it.
+        // The helm, and a radio post beside it. Consoles square to the hull come first, as the pilot picks one of them
+        // over a turned console however near, so he is posted where he will fly from.
+        var helms = new List<(EntityUid Uid, TransformComponent Xform)>();
         var consoles = EntityQueryEnumerator<ShuttleConsoleComponent, TransformComponent>();
-        while (consoles.MoveNext(out _, out _, out var xform))
+        while (consoles.MoveNext(out var console, out _, out var xform))
         {
-            if (xform.GridUid != grid || !xform.Anchored)
-                continue;
+            if (xform.GridUid == grid && xform.Anchored)
+                helms.Add((console, xform));
+        }
 
+        foreach (var (_, xform) in helms.OrderByDescending(entry => WFPilotDutySystem.IsSquareHelm(entry.Xform.LocalRotation))
+                     .ThenBy(entry => entry.Uid.Id))
+        {
             var tile = _map.TileIndicesFor(grid, gridComp, xform.Coordinates);
             // An open cockpit is flown from the vacuum beside it.
             var deck = free;

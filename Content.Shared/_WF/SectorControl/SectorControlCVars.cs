@@ -24,4 +24,8 @@ public sealed class SectorControlCVars
     /// <summary>Stations whose cell can never be claimed: a comma-separated list of name fragments.</summary>
     public static readonly CVarDef<string> ProtectedStations =
         CVarDef.Create("wf.sector.protected_stations", "Halcyon", CVar.SERVERONLY);
+
+    /// <summary>Set once a client has had a stale sector map key binding cleared, so a later rebind is never undone.</summary>
+    public static readonly CVarDef<bool> MapKeyRepaired =
+        CVarDef.Create("wf.sector.map_key_repaired", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 }

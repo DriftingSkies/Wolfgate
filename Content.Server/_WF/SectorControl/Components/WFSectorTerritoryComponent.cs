@@ -69,6 +69,10 @@ public sealed class WFSectorRetake
 
     [ViewVariables]
     public TimeSpan Deadline;
+
+    /// <summary>The crewed player ships that have been in the cell since the countdown began.</summary>
+    [ViewVariables]
+    public HashSet<EntityUid> Ships = new();
 }
 
 /// <summary>A cell a faction takes at the deadline if it has been quiet since the contest began.</summary>

@@ -401,6 +401,49 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         List<(ICommonSession Session, EntityUid Mob)> helpers, string deed, List<int>? shares = null,
         IReadOnlyList<WFEncounterReward>? extraCredits = null)
     {
+        return Pay(encounter.Name, $"encounter {encounter.Prototype} ({ToPrettyString(uid):entity})", reward, helpers, deed, shares, extraCredits);
+    }
+
+    /// <summary>
+    /// Pays spesos to the living players aboard some ships, an equal share to each crewed ship and then to each player
+    /// aboard it, within the hourly cap; returns how many were paid. <paramref name="name"/> is what the payment says it
+    /// is for and <paramref name="subject"/> names the same in the admin log.
+    /// </summary>
+    public int PayCrews(string name, string subject, int spesos, IEnumerable<EntityUid> ships, string deed)
+    {
+        var aboard = new Dictionary<EntityUid, List<(ICommonSession Session, EntityUid Mob)>>();
+        foreach (var ship in ships)
+        {
+            if (!TerminatingOrDeleted(ship))
+                aboard[ship] = new List<(ICommonSession, EntityUid)>();
+        }
+
+        var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (players.MoveNext(out var uid, out var actor, out var xform))
+        {
+            if (xform.GridUid is { } grid && aboard.TryGetValue(grid, out var crew) && !HasComp<GhostComponent>(uid) && !_mobs.IsDead(uid))
+                crew.Add((actor.PlayerSession, uid));
+        }
+
+        var helpers = new List<(ICommonSession Session, EntityUid Mob)>();
+        var shares = new List<int>();
+        var crewed = aboard.Values.Count(crew => crew.Count > 0);
+        foreach (var crew in aboard.Values)
+        {
+            foreach (var helper in crew)
+            {
+                helpers.Add(helper);
+                shares.Add(spesos / crewed / crew.Count);
+            }
+        }
+
+        return helpers.Count == 0 ? 0 : Pay(name, subject, new WFEncounterReward { Spesos = spesos }, helpers, deed, shares);
+    }
+
+    private int Pay(string name, string subject, WFEncounterReward reward,
+        List<(ICommonSession Session, EntityUid Mob)> helpers, string deed, List<int>? shares = null,
+        IReadOnlyList<WFEncounterReward>? extraCredits = null)
+    {
         var received = 0;
         var cap = _config.GetCVar(EncountersCVars.PayoutHourlyCap);
         for (var i = 0; i < helpers.Count; i++)
@@ -428,9 +471,9 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
             received++;
             _chat.DispatchServerMessage(session, Loc.GetString(credits > 0 ? "wf-encounter-reward-paid-credits" : "wf-encounter-reward-paid",
-                ("name", encounter.Name), ("amount", paid), ("credits", credits)));
+                ("name", name), ("amount", paid), ("credits", credits)));
             _adminLog.Add(LogType.Action, LogImpact.Medium,
-                $"{session.Name} was paid {paid} spesos and {credits} faction credits for {deed} encounter {encounter.Prototype} ({ToPrettyString(uid):entity})");
+                $"{session.Name} was paid {paid} spesos and {credits} faction credits for {deed} {subject}");
         }
 
         return received;

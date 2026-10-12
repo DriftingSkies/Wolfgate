@@ -72,4 +72,8 @@ public sealed partial class WFReaverCampaignComponent : Component
 
     [ViewVariables]
     public int ConvoysDestroyed;
+
+    /// <summary>Held cells players have retaken this round.</summary>
+    [ViewVariables]
+    public int Retaken;
 }

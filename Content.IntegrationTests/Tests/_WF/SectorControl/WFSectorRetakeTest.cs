@@ -44,6 +44,7 @@ public sealed class WFSectorRetakeTest : WFSectorTestBase
     {
         await StartRound();
         await SetDelay(0.05f);
+        EntityUid hauler = default;
         await Server.WaitAssertion(() =>
         {
             var territory = Server.System<WFSectorTerritorySystem>();
@@ -56,7 +57,8 @@ public sealed class WFSectorRetakeTest : WFSectorTestBase
             territory.CheckRetakes(map);
             Assert.That(territory.RetakeOf(map, Far), Is.Null, "No player ship there yet.");
 
-            Board(SpawnGrid(CentreOf(Far) + new System.Numerics.Vector2(500f, 0f), "Test Hauler"));
+            hauler = SpawnGrid(CentreOf(Far) + new System.Numerics.Vector2(500f, 0f), "Test Hauler");
+            Board(hauler);
             territory.CheckRetakes(map);
             var deadline = territory.RetakeOf(map, Far);
             Assert.That(deadline, Is.EqualTo(STiming.CurTime + TimeSpan.FromSeconds(3)));
@@ -77,7 +79,9 @@ public sealed class WFSectorRetakeTest : WFSectorTestBase
             Assert.That(territory.Owner(map, Far), Is.Null, "Freed.");
             Assert.That(territory.Owner(map, Next), Is.Not.Null);
             Assert.That(territory.RetakeOf(map, Far), Is.Null);
-            Assert.That(recorder.Retaken.Single(), Is.EqualTo(new WFSectorCellRetakenEvent(map, Far, Holder)));
+            var retaken = recorder.Retaken.Single();
+            Assert.That((retaken.Map, retaken.Cell, retaken.Faction), Is.EqualTo((map, Far, Holder)));
+            Assert.That(retaken.Ships, Is.EqualTo(new[] { hauler }), "The ship that sat in the cell is named.");
             Assert.That(Server.System<WFSectorActivitySystem>().IsQuiet(map, Far, STiming.CurTime - TimeSpan.FromMinutes(1)), Is.False,
                 "Marked active, so a faction spreading into quiet cells waits.");
         });

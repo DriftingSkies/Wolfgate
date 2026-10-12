@@ -41,6 +41,9 @@ public abstract class WFReaverTestBase : WFSectorTestBase
 
     protected const int PatrolBounty = 2000;
 
+    /// <summary>The retake bounties of the test campaign, by tier.</summary>
+    protected static readonly int[] RetakeBounties = { 1000, 1100, 1200, 1300, 1400, 1500 };
+
     /// <summary>A cell far enough out to hold a stronghold, a ring and two more rings clear of the core.</summary>
     protected static readonly WFSectorCell Home = new(4, -1);
 
@@ -80,6 +83,7 @@ public abstract class WFReaverTestBase : WFSectorTestBase
   maxThreatScale: 1.25
   strongholdBounty: [ 5000, 6000, 7000, 8000, 9000, 10000 ]
   patrolBounty: 2000
+  retakeBounty: [ 1000, 1100, 1200, 1300, 1400, 1500 ]
   stronghold: WFTestReaverStronghold
   reinforcementInterval: 5m
   maxLevelByTier: [ 0, 1, 2, 2, 3, 4 ]
@@ -196,10 +200,14 @@ public abstract class WFReaverTestBase : WFSectorTestBase
     [TearDown]
     public async Task ResumeScheduler()
     {
-        await Server.WaitPost(() => Server.System<WFEncounterSchedulerSystem>().Paused = false);
+        await Server.WaitPost(() =>
+        {
+            Server.System<WFEncounterSchedulerSystem>().Paused = false;
+            Server.ResolveDependency<IConfigurationManager>().SetCVar(EncountersCVars.MaxActive, EncountersCVars.MaxActive.DefaultValue);
+        });
     }
 
-    /// <summary>Starts a round with the test campaign in force and the storyteller's own scheduling held.</summary>
+    /// <summary>Starts a round with the test campaign in force and the storyteller starting nothing of its own.</summary>
     protected async Task StartCampaign()
     {
         await StartRound();
@@ -208,7 +216,8 @@ public abstract class WFReaverTestBase : WFSectorTestBase
             var config = Server.ResolveDependency<IConfigurationManager>();
             config.SetCVar(EncountersCVars.Enabled, true);
             config.SetCVar(EncountersCVars.Preset, TestPreset);
-            Server.System<WFEncounterSchedulerSystem>().Paused = true;
+            // Not paused: a paused event runner holds the campaign too. No room for its own encounters keeps it quiet.
+            config.SetCVar(EncountersCVars.MaxActive, 0);
         });
     }
 

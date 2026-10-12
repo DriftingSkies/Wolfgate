@@ -24,6 +24,8 @@
   tierThresholds: [ 10, 22, 40, 60, 80 ]
   strongholdBounty: [ 60000, 90000, 120000, 160000, 200000, 250000 ]
   patrolBounty: 20000
+  # Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.
+  retakeBounty: [ 8000, 10000, 12000, 14000, 16000, 20000 ]
   # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
   # cap by tier (0..5), and the convoy for each level from 1.
   reinforcementInterval: 20m
@@ -70,6 +72,8 @@
   tierThresholds: [ 12, 30, 55, 80, 105 ]
   strongholdBounty: [ 60000, 90000, 120000, 160000, 200000, 250000 ]
   patrolBounty: 20000
+  # Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.
+  retakeBounty: [ 10000, 12000, 14000, 17000, 20000, 25000 ]
   # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
   # cap by tier (0..5), and the convoy for each level from 1.
   reinforcementInterval: 12m
@@ -116,6 +120,8 @@
   tierThresholds: [ 15, 35, 60, 90, 120 ]
   strongholdBounty: [ 60000, 90000, 120000, 160000, 200000, 250000 ]
   patrolBounty: 20000
+  # Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.
+  retakeBounty: [ 12000, 15000, 18000, 22000, 26000, 30000 ]
   # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
   # cap by tier (0..5), and the convoy for each level from 1.
   reinforcementInterval: 8m

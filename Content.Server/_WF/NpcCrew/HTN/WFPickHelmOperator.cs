@@ -17,6 +17,10 @@ public sealed partial class WFPickHelmOperator : HTNOperator
 
     private WFPilotDutySystem _pilot = default!;
 
+    /// <summary>Takes the nearest helm however it is turned, for the branch tried when no square one can be reached.</summary>
+    [DataField]
+    public bool AnyHelm;
+
     public override void Initialize(IEntitySystemManager sysManager)
     {
         base.Initialize(sysManager);
@@ -26,7 +30,7 @@ public sealed partial class WFPickHelmOperator : HTNOperator
     public override async Task<(bool Valid, Dictionary<string, object>? Effects)> Plan(NPCBlackboard blackboard,
         CancellationToken cancelToken)
     {
-        if (!_pilot.TryFindHelm(blackboard.GetValue<EntityUid>(NPCBlackboard.Owner), out var helm))
+        if (!_pilot.TryFindHelm(blackboard.GetValue<EntityUid>(NPCBlackboard.Owner), out var helm, !AnyHelm))
             return (false, null);
 
         return (true, new Dictionary<string, object>
@@ -38,7 +42,7 @@ public sealed partial class WFPickHelmOperator : HTNOperator
 
     public override HTNOperatorStatus Update(NPCBlackboard blackboard, float frameTime)
     {
-        if (!_pilot.TryFindHelm(blackboard.GetValue<EntityUid>(NPCBlackboard.Owner), out var helm))
+        if (!_pilot.TryFindHelm(blackboard.GetValue<EntityUid>(NPCBlackboard.Owner), out var helm, !AnyHelm))
             return HTNOperatorStatus.Failed;
 
         blackboard.SetValue(WFPilotDutySystem.HelmKey, helm);

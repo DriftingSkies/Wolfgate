@@ -69,8 +69,13 @@ player ships.
 Admins use `wf_reavers status | found [x y] | convoy | reinforce <stronghold uid> | tier <n> | spread | patrol | raid | intercept <grid uid> |
 pause | resume | clear` (`found` places a level 0 hub at once, `convoy` sends one out as the campaign does, `reinforce` sends a
 stronghold its next reinforcement; status lists levels, reinforcements, convoys, intercepts and marks; a pause ends with the round), and see every campaign encounter in the Encounters
-window. The round-end summary lists peak cells held, strongholds founded and broken, patrols destroyed, convoys
-stopped and raids launched.
+window. A pause holds every campaign clock (founding, patrols, reinforcements, spread, raids, intercept dwell and cooldowns,
+marks, tier falls, blockades and the timers of campaign encounters), so nothing falls due at once on resuming. The same
+hold applies while the campaign or the Encounters switch is off and while the event runner (the Encounters scheduler) is
+paused, which also holds every running encounter's expiry; `wf_reavers status` says which. A retaken cell pays the
+tier's `retakeBounty` to the crews of the ships that held it, through the encounter bounty path and its hourly cap, and
+the "retaken" announcement says so. The round-end summary lists peak cells held, strongholds founded and broken, patrols destroyed, convoys
+stopped, raids launched and cells retaken.
 
 `Docs/_WF/ReaverCampaign/design.md` is the design.
 
@@ -93,6 +98,7 @@ stopped and raids launched.
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Convoys.cs`](Systems/WFReaverCampaignSystem.Convoys.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.cs`](Systems/WFReaverCampaignSystem.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Disputes.cs`](Systems/WFReaverCampaignSystem.Disputes.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hold.cs`](Systems/WFReaverCampaignSystem.Hold.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hub.cs`](Systems/WFReaverCampaignSystem.Hub.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Intercepts.cs`](Systems/WFReaverCampaignSystem.Intercepts.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Neutral.cs`](Systems/WFReaverCampaignSystem.Neutral.cs)
@@ -123,6 +129,7 @@ stopped and raids launched.
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPauseTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPauseTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverReinforcementTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverReinforcementTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStrongholdTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStrongholdTest.cs)

@@ -37,7 +37,7 @@ public sealed class WFReaverGunPlatformTest : WFReaverTestBase
     private string _group = string.Empty;
     private Vector2 _station;
 
-    /// <summary>Spawns the real hub and seats its pilot at the helm, which a test pair does not do by itself.</summary>
+    /// <summary>Spawns the real hub and waits for its pilot to take the helm on his own.</summary>
     private async Task SpawnHub()
     {
         await StartCampaign();
@@ -50,18 +50,29 @@ public sealed class WFReaverGunPlatformTest : WFReaverTestBase
             _hull = ship.Grid;
             _group = ship.Group;
         });
-        await RunTicks(600);
+        await RunTicks(300);
         await Server.WaitPost(() =>
         {
             _pilot = SEntMan.EntityQuery<WFPilotDutyComponent, WFCrewComponent>()
                 .First(pair => pair.Item2.Group == _group && pair.Item2.Role == WFCrewRoles.Pilot.Id).Item1.Owner;
-            var consoles = SEntMan.EntityQueryEnumerator<ShuttleConsoleComponent, TransformComponent>();
-            while (consoles.MoveNext(out var console, out _, out var xform))
-            {
-                if (xform.GridUid == _hull && Server.System<WFPilotDutySystem>().TryTakeHelm(_pilot, console))
-                    break;
-            }
-            Assert.That(SEntMan.GetComponent<WFPilotDutyComponent>(_pilot).AtHelm, Is.True, "The hub's pilot has the helm.");
+        });
+        await WaitUntilServer(() => SEntMan.GetComponent<WFPilotDutyComponent>(_pilot).AtHelm, 3000);
+    }
+
+    /// <summary>The real hub's pilot takes a helm square to the hull by himself well inside the two minutes a ship may go unpiloted.</summary>
+    [Test]
+    public async Task HubPilotTakesTheHelmUnaided()
+    {
+        await SpawnHub();
+        await Server.WaitAssertion(() =>
+        {
+            var duty = SEntMan.GetComponent<WFPilotDutyComponent>(_pilot);
+            Assert.That(duty.AtHelm, Is.True);
+            var console = duty.Console!.Value;
+            Assert.That(SEntMan.GetComponent<TransformComponent>(console).GridUid, Is.EqualTo(_hull));
+            Assert.That(WFPilotDutySystem.IsSquareHelm(SEntMan.GetComponent<TransformComponent>(console).LocalRotation), Is.True,
+                "The hub is flown from a console square to the hull.");
+            Assert.That(Server.System<WFCrewObjectiveSystem>().QueueStatus(_hull, _group), Is.Not.EqualTo("awaiting-helm"));
         });
     }
 

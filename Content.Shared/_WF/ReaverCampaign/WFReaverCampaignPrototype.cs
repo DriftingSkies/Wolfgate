@@ -98,6 +98,10 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public int PatrolBounty = 20000;
 
+    /// <summary>Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.</summary>
+    [DataField]
+    public List<int> RetakeBounty = new() { 10000, 12000, 14000, 17000, 20000, 25000 };
+
     /// <summary>The faction credits each navy's members get with a bounty.</summary>
     [DataField]
     public List<WFReaverCreditGrant> Credits = new();

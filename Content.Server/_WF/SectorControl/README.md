@@ -17,8 +17,8 @@ A cell with a faction ship and a crewed player ship in it is disputed (`SetPrese
 `WFSectorCellDisputedEvent`): the map hatches it and its contest deadline holds until one side leaves or dies.
 A held cell that a crewed player ship has sat in for three minutes (`wf.sector.retake_minutes`, 0 turns it off) with none
 of the holder's ships there is retaken: the map pulses it in a neutral colour with the countdown, and at zero it is freed
-(`WFSectorRetakeAttemptEvent` lets a driver veto a cell, `WFSectorCellRetakenEvent` tells it). The holder's ships
-reappearing, the player leaving or a contest on the cell reset the countdown.
+(`WFSectorRetakeAttemptEvent` lets a driver veto a cell, `WFSectorCellRetakenEvent` tells it and names the crewed player
+ships that held the cell through the whole countdown). The holder's ships reappearing, the player leaving or a contest on the cell reset the countdown.
 A station in a cell held by a faction with `blockades` drops out of the storyteller's station list, so NPC freight and
 traders stop calling there.
 A faction can leave some parties alone (`neutralCompanies`, `neutralStations`): `WFSectorActivitySystem.IsNeutralTo`

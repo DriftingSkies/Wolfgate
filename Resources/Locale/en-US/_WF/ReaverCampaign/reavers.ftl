@@ -55,7 +55,11 @@ wf-reaver-patrol-destroyed-held = Reaver patrol destroyed at {$callsign}. { $pai
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} spesos paid.
     }
-wf-reaver-retaken = {$callsign} retaken from the Reavers.
+wf-reaver-retaken = {$callsign} retaken from the Reavers. { $paid ->
+        [0] No bounty was claimed.
+       *[other] Bounty {$bounty} spesos paid.
+    }
+wf-reaver-retake-name = retaking {$callsign}
 wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. They take the cell in {$minutes} minutes unless traffic keeps the lane.
 
 # A stronghold flying out from a standing one to found itself; $station, $bearing and $range are as above
@@ -110,7 +114,10 @@ wf-reaver-round-end = Reavers held up to { $peak ->
     } stopped and { $raids ->
         [one] {$raids} raid was
        *[other] {$raids} raids were
-    } sent.
+    } sent. Players retook { $retaken ->
+        [one] {$retaken} cell
+       *[other] {$retaken} cells
+    }.
 
 # wf_reavers command
 cmd-wf_reavers-desc = Shows and drives the Ashfall Reaver campaign.
@@ -142,6 +149,7 @@ cmd-wf_reavers-no-stronghold = No stronghold stands. Run wf_reavers found to pla
 cmd-wf_reavers-status-switch-off = No stronghold stands and none will be founded: {$cvar} is off. Run wf_reavers found to place one anyway.
 cmd-wf_reavers-status-not-in-round = No stronghold stands and none will be founded: no round is in progress.
 cmd-wf_reavers-status-paused = No stronghold stands and none will be founded: the campaign is paused. Run wf_reavers resume.
+cmd-wf_reavers-status-runner-paused = No stronghold stands and none will be founded: the event runner is paused, which holds the campaign too. Unpause it in the Encounters window.
 cmd-wf_reavers-status-first-due = No stronghold stands. The first is due in { $minutes ->
         [one] {$minutes} minute
        *[other] {$minutes} minutes

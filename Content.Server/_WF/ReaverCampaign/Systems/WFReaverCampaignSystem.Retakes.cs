@@ -21,13 +21,26 @@ public sealed partial class WFReaverCampaignSystem
         }
     }
 
-    /// <summary>Announces a cell the Reavers lost to a ship that held it, with no chime, and rescores the threat.</summary>
+    /// <summary>Pays the ships that held a retaken cell its bounty, announces it with no chime, and rescores the threat.</summary>
     private void OnRetaken(ref WFSectorCellRetakenEvent args)
     {
-        if (CampaignFor(State()) is not { } campaign || args.Faction != campaign.Faction)
+        var state = State();
+        if (CampaignFor(state) is not { } campaign || args.Faction != campaign.Faction)
             return;
 
-        Announce(campaign, Loc.GetString("wf-reaver-retaken", ("callsign", WFSectorHex.Callsign(args.Cell))), false, chime: false);
+        var callsign = WFSectorHex.Callsign(args.Cell);
+        var bounty = ByTier(campaign.RetakeBounty, state?.Tier ?? 0, 0);
+        var paid = 0;
+        if (bounty > 0 && args.Ships is { Count: > 0 } ships)
+        {
+            paid = _rewards.PayCrews(Loc.GetString("wf-reaver-retake-name", ("callsign", callsign)), $"Reaver cell {callsign}", bounty, ships,
+                "retaking");
+        }
+
+        if (state != null)
+            state.Retaken++;
+
+        Announce(campaign, Loc.GetString("wf-reaver-retaken", ("callsign", callsign), ("bounty", bounty), ("paid", paid)), false, chime: false);
         Recompute();
     }
 }

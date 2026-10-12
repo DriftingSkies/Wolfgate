@@ -24,7 +24,7 @@ public sealed partial class WFReaverCampaignSystem
             comp.Recalled = true;
 
         var now = _timing.CurTime;
-        if (!Running || Paused || comp.Reinforcements.Count > 0 || comp.Sortie != null || now < comp.NextSortie
+        if (!Running || Held || comp.Reinforcements.Count > 0 || comp.Sortie != null || now < comp.NextSortie
             || Campaign is not { } campaign || !encounter.Ships.TryGetValue(comp.Lead, out var lead) || TerminatingOrDeleted(lead.Grid)
             || PickAttacker(comp, encounter, lead.Grid, fresh) is not { } attacker)
             return;

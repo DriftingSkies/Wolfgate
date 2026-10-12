@@ -54,9 +54,16 @@ public record struct WFSectorRetakeAttemptEvent(MapId Map, WFSectorCell Cell, Pr
 [ByRefEvent]
 public readonly record struct WFSectorCellRetakingEvent(MapId Map, WFSectorCell Cell, ProtoId<WFSectorFactionPrototype> Faction, TimeSpan? Deadline);
 
-/// <summary>Raised, by ref and broadcast, when a held cell was retaken and freed; <c>Faction</c> is the one that held it.</summary>
+/// <summary>
+/// Raised, by ref and broadcast, when a held cell was retaken and freed; <c>Faction</c> is the one that held it and
+/// <c>Ships</c> the crewed player ships that held the cell through the whole countdown.
+/// </summary>
 [ByRefEvent]
-public readonly record struct WFSectorCellRetakenEvent(MapId Map, WFSectorCell Cell, ProtoId<WFSectorFactionPrototype> Faction);
+public readonly record struct WFSectorCellRetakenEvent(
+    MapId Map,
+    WFSectorCell Cell,
+    ProtoId<WFSectorFactionPrototype> Faction,
+    IReadOnlyList<EntityUid>? Ships = null);
 
 /// <summary>Raised, by ref and broadcast, when territory was cleared by a switch or a resize and is on again; drivers claim what they hold anew.</summary>
 [ByRefEvent]

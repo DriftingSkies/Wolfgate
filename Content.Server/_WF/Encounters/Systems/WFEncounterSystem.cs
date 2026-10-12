@@ -40,6 +40,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private AdminVesselSpawnSystem _vessels = default!;
+    [Dependency] private WFEncounterSchedulerSystem _scheduler = default!;
     [Dependency] private WFCrewSetupSystem _setup = default!;
     [Dependency] private WFCrewWorkSystem _work = default!;
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
@@ -75,6 +76,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     private static readonly TimeSpan PowerInterval = TimeSpan.FromMinutes(2);
 
     private TimeSpan _nextPoll;
+    private TimeSpan _heldAt;
     private float _cleanupRange;
     private TimeSpan _cleanupDelay;
     private TimeSpan _cleanupLinger;
@@ -801,9 +803,39 @@ public sealed partial class WFEncounterSystem : EntitySystem
         _lifecycle.UnparentPlayersFromGrid(ship.Grid, true);
     }
 
+    /// <summary>Pushes an encounter's expiry and jump-out time forward by a span the event runner sat paused, so paused time does not count against it.</summary>
+    public void Hold(Entity<WFEncounterComponent> encounter, TimeSpan span)
+    {
+        encounter.Comp.Expires += span;
+        encounter.Comp.JumpAt += span;
+    }
+
+    /// <summary>While the event runner is paused, holds the timers of every encounter by the time since the last frame.</summary>
+    private void HoldTimers()
+    {
+        if (!_scheduler.Paused)
+        {
+            _heldAt = TimeSpan.Zero;
+            return;
+        }
+
+        var now = _timing.CurTime;
+        var span = _heldAt == TimeSpan.Zero ? TimeSpan.Zero : now - _heldAt;
+        _heldAt = now;
+        if (span <= TimeSpan.Zero)
+            return;
+
+        var query = EntityQueryEnumerator<WFEncounterComponent>();
+        while (query.MoveNext(out var uid, out var encounter))
+        {
+            Hold((uid, encounter), span);
+        }
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        HoldTimers();
         if (_timing.CurTime < _nextPoll)
             return;
 

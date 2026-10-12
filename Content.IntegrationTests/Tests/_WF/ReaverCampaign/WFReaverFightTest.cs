@@ -12,6 +12,7 @@ using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Server._WF.SectorControl;
 using Content.Server._WF.SectorControl.Systems;
+using Content.Server.GameTicking;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
@@ -450,5 +451,52 @@ public sealed class WFReaverFightTest : WFReaverTestBase
 
         await RunTicks(30);
         Assert.That(ChatSince(since).Any(line => line.Contains("retaken from the Reavers")), Is.True, "The sector watch says so.");
+    }
+
+    /// <summary>A retaken cell pays the tier's bounty to the crews of the ships that held it, says so, and is counted for the round.</summary>
+    [Test]
+    public async Task RetakenCellPaysTheShipsThatHeldIt()
+    {
+        await StartCampaign();
+        var since = ChatCount();
+        var before = 0;
+        await Server.WaitAssertion(() =>
+        {
+            Server.System<WFReaverCampaignSystem>().SetTier(2);
+            var ship = SpawnGrid(CentreOf(Home.Neighbour(1)) + new Vector2(500f, 0f), "Test Hauler");
+            Board(ship);
+            before = Balance();
+            var retaken = new WFSectorCellRetakenEvent(MapData.MapId, Home.Neighbour(1), Reavers, new[] { ship });
+            SEntMan.EventBus.RaiseEvent(EventSource.Local, ref retaken);
+            Assert.That(Balance() - before, Is.EqualTo(RetakeBounties[2]), "The bounty of the tier, to the crew aboard.");
+            Assert.That(State().Retaken, Is.EqualTo(1));
+
+            before = Balance();
+            var unheld = new WFSectorCellRetakenEvent(MapData.MapId, Home.Neighbour(2), Reavers);
+            SEntMan.EventBus.RaiseEvent(EventSource.Local, ref unheld);
+            Assert.That(Balance() - before, Is.Zero, "No ship held it, so nothing is paid.");
+            Assert.That(State().Retaken, Is.EqualTo(2));
+        });
+
+        await RunTicks(30);
+        var lines = ChatSince(since);
+        Assert.That(lines.Any(line => line.Contains("retaken from the Reavers") && line.Contains($"Bounty {RetakeBounties[2]} spesos paid")), Is.True,
+            "The announcement says the bounty was paid.");
+        Assert.That(lines.Any(line => line.Contains("retaken from the Reavers") && line.Contains("No bounty was claimed")), Is.True);
+    }
+
+    /// <summary>The round summary counts the cells players retook.</summary>
+    [Test]
+    public async Task RoundSummaryCountsRetakenCells()
+    {
+        await StartCampaign();
+        await Server.WaitAssertion(() =>
+        {
+            FoundAt(Home);
+            State().Retaken = 3;
+            var text = new RoundEndTextAppendEvent();
+            SEntMan.EventBus.RaiseEvent(EventSource.Local, text);
+            Assert.That(text.Text, Does.Contain("Players retook 3 cells"));
+        });
     }
 }

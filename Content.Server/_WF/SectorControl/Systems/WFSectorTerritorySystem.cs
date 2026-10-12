@@ -279,6 +279,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
 
         var crewed = new Dictionary<ProtoId<WFSectorFactionPrototype>, Dictionary<WFSectorCell, List<EntityUid>>>();
         var retaking = new Dictionary<WFSectorCell, ProtoId<WFSectorFactionPrototype>>();
+        var holders = new Dictionary<WFSectorCell, List<EntityUid>>();
         foreach (var (cell, claim) in territory.Claims)
         {
             if (!crewed.TryGetValue(claim.Faction, out var ships))
@@ -289,8 +290,11 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
 
             var attempt = new WFSectorRetakeAttemptEvent(map, cell, claim.Faction);
             RaiseLocalEvent(ref attempt);
-            if (!attempt.Cancelled)
-                retaking[cell] = claim.Faction;
+            if (attempt.Cancelled)
+                continue;
+
+            retaking[cell] = claim.Faction;
+            holders[cell] = ships[cell];
         }
 
         DropRetakes(map, territory, cell => !retaking.ContainsKey(cell));
@@ -300,25 +304,33 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
             if (!territory.Retakes.TryGetValue(cell, out var retake))
             {
                 var deadline = now + _retakeDelay;
-                territory.Retakes[cell] = new WFSectorRetake { Started = now, Deadline = deadline };
+                territory.Retakes[cell] = new WFSectorRetake { Started = now, Deadline = deadline, Ships = new HashSet<EntityUid>(holders[cell]) };
                 var started = new WFSectorCellRetakingEvent(map, cell, faction, deadline);
                 RaiseLocalEvent(ref started);
             }
-            else if (now >= retake.Deadline)
+            else
             {
-                due.Add((cell, faction));
+                // Ships that came later, or left and came back, did not hold the cell through the countdown; if all
+                // were replaced, the ships there now take over.
+                retake.Ships.IntersectWith(holders[cell]);
+                if (retake.Ships.Count == 0)
+                    retake.Ships.UnionWith(holders[cell]);
+
+                if (now >= retake.Deadline)
+                    due.Add((cell, faction));
             }
         }
 
         foreach (var (cell, faction) in due)
         {
+            var ships = territory.Retakes.TryGetValue(cell, out var done) ? new List<EntityUid>(done.Ships) : new List<EntityUid>();
             territory.Retakes.Remove(cell);
             if (!Free(map, cell))
                 continue;
 
             // The cell is quiet again at once otherwise, and a faction that spreads into quiet cells would take it back.
             _activity.Stamp(map, cell);
-            var retaken = new WFSectorCellRetakenEvent(map, cell, faction);
+            var retaken = new WFSectorCellRetakenEvent(map, cell, faction, ships);
             RaiseLocalEvent(ref retaken);
         }
     }
