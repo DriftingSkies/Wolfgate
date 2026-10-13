@@ -33,8 +33,9 @@ public sealed partial class WFEncounterSystem
             if (!ship.Fleeing)
                 return;
 
-            ship.Fleeing = false;
-            ResumeWander(encounter, key, ship);
+            // Still running until its orders are back, so a failed try is made again on the next look.
+            if (ResumeWander(encounter, key, ship))
+                ship.Fleeing = false;
             return;
         }
 
@@ -62,18 +63,26 @@ public sealed partial class WFEncounterSystem
         ship.Flown = false;
     }
 
-    /// <summary>Gives a ship that has got clear its prototype's orders again, its wander flown about where it is now.</summary>
-    private void ResumeWander(Entity<WFEncounterComponent> encounter, string key, WFEncounterShipState ship)
+    /// <summary>
+    /// Gives a ship that has got clear its prototype's orders again, its wander flown about where it is now. False
+    /// if the orders could not be given.
+    /// </summary>
+    private bool ResumeWander(Entity<WFEncounterComponent> encounter, string key, WFEncounterShipState ship)
     {
         if (!_prototypes.TryIndex(encounter.Comp.Prototype, out var prototype)
             || prototype.Ships.FirstOrDefault(entry => entry.Key == key) is not { } entry)
-            return;
+            return false;
 
         var queue = BuildQueue(encounter.Comp, entry, ship.Grid, _transform.GetWorldPosition(ship.Grid));
-        if (queue.Count == 0 || !_objectives.SetQueue(ship.Grid, ship.Group, queue))
-            return;
+        // A ship with no orders of its own keeps the hold its run ended in.
+        if (queue.Count == 0)
+            return true;
+
+        if (!_objectives.SetQueue(ship.Grid, ship.Group, queue))
+            return false;
 
         ship.HasOrders = true;
         ship.Flown = false;
+        return true;
     }
 }

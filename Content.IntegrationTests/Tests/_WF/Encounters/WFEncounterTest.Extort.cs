@@ -759,6 +759,8 @@ public sealed partial class WFEncounterTest
             member.NextPatrol = TimeSpan.MaxValue;
             transform.SetCoordinates(left, post);
             Server.System<WFCrewSystem>().SetPost((left, member), post);
+            // The prey here is a bare deck with no gravity: pinned, so he is not carried off it going after its crew.
+            Server.System<Robust.Shared.Physics.Systems.SharedPhysicsSystem>().SetBodyType(left, Robust.Shared.Physics.BodyType.Static);
             foreach (var uid in crew)
             {
                 if (!crewed && uid != left)

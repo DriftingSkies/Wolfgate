@@ -702,9 +702,18 @@ public sealed class HailingSystem : EntitySystem
             if (string.IsNullOrEmpty(option.Id) || string.IsNullOrEmpty(option.Text) || !ids.Add(option.Id))
                 return false;
 
+            // Cut to length, then cleaned as a spoken line is, so the answer shown is the one that goes in the logs.
             var text = option.Text.Length > HailConsoleComponent.MaxOptionLength
                 ? option.Text[..HailConsoleComponent.MaxOptionLength]
                 : option.Text;
+
+            text = SharedChatSystem.SanitizeAnnouncement(text, HailConsoleComponent.MaxLineLength)
+                .Replace('\r', ' ')
+                .Replace('\n', ' ')
+                .Trim();
+
+            if (text.Length == 0)
+                return false;
 
             list.Add(new HailOption(option.Id, text));
         }

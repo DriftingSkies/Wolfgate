@@ -151,8 +151,9 @@ public sealed partial class WFEncounterSystem
         }
 
         // No orders yet, or the last run at the prey failed or lost it: go again.
-        if (status is null or "dock-failed" or "target-lost")
-            IssueRaid(ship, prey);
+        // A hunter given its prey that cannot be ordered at it hands the ship back; a free one tries again next look.
+        if (status is null or "dock-failed" or "target-lost" && !IssueRaid(ship, prey) && !free)
+            return false;
 
         return true;
     }

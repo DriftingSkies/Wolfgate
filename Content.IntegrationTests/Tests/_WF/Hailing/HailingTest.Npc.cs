@@ -331,6 +331,8 @@ public sealed partial class HailingTest
             Assert.That(hailing.Offer(_otherConsole, _otherPilot, tooMany), Is.False);
             Assert.That(hailing.Offer(_otherConsole, _otherPilot, new List<HailOption> { new("x", "A"), new("x", "B") }), Is.False);
             Assert.That(hailing.Offer(_otherConsole, _otherPilot, new List<HailOption> { new("", "A") }), Is.False);
+            Assert.That(hailing.Offer(_otherConsole, _otherPilot, new List<HailOption> { new("x", "  \n ") }), Is.False,
+                "An answer with nothing to read is no answer.");
             Assert.That(hail.Options, Is.Empty);
 
             Assert.That(hailing.Offer(_otherConsole, _otherPilot, new List<HailOption> { new("x", longText), new("y", "No") }), Is.True);
