@@ -77,7 +77,7 @@ public sealed partial class WFPilotDutyComponent : Component
     [DataField]
     public float FollowRange = 150f;
 
-    /// <summary>Maximum cruise speed, in m/s; formation flight also accounts for the leader's velocity.</summary>
+    /// <summary>Maximum cruise speed, in m/s, or 0 for the hull's own limit; formation flight also accounts for the leader's velocity.</summary>
     [DataField]
     public float CruiseSpeed { get => Navigation.CruiseSpeed; set => Navigation.CruiseSpeed = value; }
 

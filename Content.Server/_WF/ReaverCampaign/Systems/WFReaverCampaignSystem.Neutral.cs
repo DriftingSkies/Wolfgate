@@ -22,11 +22,13 @@ public sealed partial class WFReaverCampaignSystem
         return CampaignFor(State()) is { } campaign && _activity.IsNeutralStation(campaign.Faction, station);
     }
 
-    /// <summary>The crewed ships on the sector map the campaign deals with: those of a neutral company or station left out.</summary>
+    /// <summary>The crewed ships on the sector map the campaign deals with: those of a neutral company or station, and those docked at a station, left out.</summary>
     private HashSet<EntityUid> Crewed()
     {
         var map = _territory.SectorMap;
-        return CampaignFor(State()) is { } campaign ? _activity.CrewedShips(map, campaign.Faction) : _activity.CrewedShips(map);
+        var ships = CampaignFor(State()) is { } campaign ? _activity.CrewedShips(map, campaign.Faction) : _activity.CrewedShips(map);
+        ships.RemoveWhere(_encounters.DockedAtStation);
+        return ships;
     }
 
     /// <summary>The stations in a cell the campaign may blockade; a neutral station is left out, so its cell is claimed like open space.</summary>

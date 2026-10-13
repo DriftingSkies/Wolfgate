@@ -260,15 +260,39 @@ public sealed partial class WFReaverCampaignSystem
         Log.Info($"Reaver raid {ToPrettyString(raid)} launched at {ToPrettyString(target)}.");
     }
 
-    /// <summary>Breaks raids whose lead is out of the fight, so a wing does not escort a wreck and the raid cap is freed.</summary>
+    /// <summary>
+    /// Breaks raids whose lead is out of the fight, so a wing does not escort a wreck and the raid cap is freed, and
+    /// calls off a ship raid whose target berthed at a station.
+    /// </summary>
     private void TendRaids()
     {
         var query = EntityQueryEnumerator<WFReaverRaidComponent, WFEncounterComponent>();
         while (query.MoveNext(out var uid, out var raid, out var encounter))
         {
-            if (encounter.Resolution == null && !TerminatingOrDeleted(uid)
-                && (!encounter.Ships.TryGetValue(raid.Lead, out var lead) || !_encounters.InFight(lead)))
+            if (encounter.Resolution != null || TerminatingOrDeleted(uid))
+                continue;
+
+            if (!encounter.Ships.TryGetValue(raid.Lead, out var lead) || !_encounters.InFight(lead))
                 BreakLead(uid, encounter, raid.Lead);
+            else if (!raid.Station && !raid.CalledOff && !TerminatingOrDeleted(raid.Target) && _encounters.DockedAtStation(raid.Target))
+                CallOffRaid(uid, encounter, raid);
+        }
+    }
+
+    /// <summary>
+    /// Takes a raid off a target that berthed at a station: its hunters drop the prey on their own, and the lead of a
+    /// raid that is not hunting flies home.
+    /// </summary>
+    private void CallOffRaid(EntityUid uid, WFEncounterComponent encounter, WFReaverRaidComponent raid)
+    {
+        raid.CalledOff = true;
+        Log.Info($"Reaver raid {ToPrettyString(uid)} is called off: {ToPrettyString(raid.Target)} is berthed at a station.");
+        if (encounter.Ships.TryGetValue(raid.Lead, out var lead) && !lead.Hunt)
+        {
+            _encounters.SetOrders(uid, raid.Lead, new List<WFCrewObjective>
+            {
+                new() { Kind = WFCrewObjectiveKind.GoTo, Position = encounter.Origin.Position, Range = RouteRange },
+            });
         }
     }
 

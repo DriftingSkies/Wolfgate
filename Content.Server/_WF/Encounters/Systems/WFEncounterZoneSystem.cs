@@ -187,7 +187,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
 
             if (!_crewed.TryGetValue(grid, out var crewed))
             {
-                if (!IsPlayerShip(grid))
+                if (!IsPlayerShip(grid) || _encounters.DockedAtStation(grid))
                     continue;
 
                 _crewed[grid] = crewed = new Crewed { GridFlag = WFCompanyFamily.Of(Company(grid)) };

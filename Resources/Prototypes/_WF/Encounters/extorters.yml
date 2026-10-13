@@ -28,7 +28,7 @@
   ships:
   - key: extorter
     stealth: true
-    navigation: WFCrewNavigationRaider
+    navigation: WFCrewNavigationHunter
     vessels: [ Hazel ]
     side: pirates
     faction: PirateNF
@@ -71,7 +71,7 @@
   ships:
   - key: extorter
     stealth: true
-    navigation: WFCrewNavigationRaider
+    navigation: WFCrewNavigationHunter
     vessels: [ Metis, Mudskipper ]
     side: pirates
     faction: PirateNF
@@ -113,7 +113,7 @@
   ships:
   - key: extorter
     stealth: true
-    navigation: WFCrewNavigationRaider
+    navigation: WFCrewNavigationHunter
     vessels: [ Kalisto, Scallywag ]
     side: pirates
     faction: PirateNF

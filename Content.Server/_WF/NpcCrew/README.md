@@ -94,7 +94,9 @@ A pilot with `FaceThreats` (a mission setting) turns a holding hull in place so 
 attacked it, or else the nearest zone intruder the crew was told of; it never flies at them.
 Flight tuning in creation/live settings exposes 37 speed, handling, clearance and docking values. Reusable
 `wfCrewNavigation` profiles supply scenario defaults; each mission gets an independent copy. Changes apply to
-the current pilot without restarting the queue. See `Docs/_WF/NpcCrew/navigation.md` for scenario configuration.
+the current pilot without restarting the queue. A cruise, follow, attack or near-target speed of 0 sets no limit
+(the `WFCrewNavigationHunter` profile): the pilot flies as fast as the hull's thrust allows, and travel budgets count
+on its `BaseMaxLinearVelocity`. See `Docs/_WF/NpcCrew/navigation.md` for scenario configuration.
 
 Autonomous crew projectiles pass through allies; allied damage is also stopped before wound routing, armor or
 retaliation. Crews holster when no living hostile remains. Forward travel faces the destination, and pilots face
@@ -342,6 +344,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HunterSpeed.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HunterSpeed.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs)

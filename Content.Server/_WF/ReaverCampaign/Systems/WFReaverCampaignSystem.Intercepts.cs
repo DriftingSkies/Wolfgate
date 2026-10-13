@@ -91,7 +91,7 @@ public sealed partial class WFReaverCampaignSystem
         var map = _territory.SectorMap;
         if (Campaign is not { } campaign || State(true) is not { } state || TerminatingOrDeleted(target)
             || !HasComp<MapGridComponent>(target) || HasComp<WFEncounterGridComponent>(target) || Transform(target).MapID != map
-            || _scheduler.IsSecretPlace(target) || Neutral(target))
+            || _scheduler.IsSecretPlace(target) || Neutral(target) || _encounters.DockedAtStation(target))
             return false;
 
         var patrols = Patrols();
@@ -177,7 +177,9 @@ public sealed partial class WFReaverCampaignSystem
                 || TerminatingOrDeleted(lead.Grid))
                 continue;
 
-            if (TerminatingOrDeleted(target) || Transform(target).MapID != map || _status.IsDisabled(target))
+            // A target that berthed at a station is out of reach.
+            if (TerminatingOrDeleted(target) || Transform(target).MapID != map || _status.IsDisabled(target)
+                || _encounters.DockedAtStation(target))
             {
                 EndIntercept(patrol);
                 continue;

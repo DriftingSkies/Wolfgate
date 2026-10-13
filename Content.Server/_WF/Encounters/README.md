@@ -103,6 +103,10 @@ or Scallywag, Veteran, four guards, 40000 toll, 90000 base). The admin window an
 extorter is doing (roaming, closing on a ship, hailing with the attempt, waiting for an answer, boarding) and what any
 warrant pays now.
 
+A ship docked to a station (a station member without a deed) is in sanctuary (`DockedAtStation`): hunts, extorters,
+`@player` objectives, the Reaver raids and intercepts and the zones never pick it, and a hunter, extorter, raid or
+patrol already on it lets it go when it berths.
+
 Boarders and extorters are stealth ships (`stealth: true`): their IFF label is off for good, so a scope shows an
 unknown contact, and their encounter never comes onto the sector markers unless an admin reveals it. Every hunting
 ship carries docking clamps (`WFDockingClampSystem`): the ship it docks with cannot undock from it at its own helm or
@@ -196,6 +200,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.NeutralZones.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.NeutralZones.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs)
 

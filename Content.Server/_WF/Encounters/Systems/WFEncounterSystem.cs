@@ -1209,6 +1209,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
             // A persistent ship that only lost power, with nobody shooting at it, is not beaten: its engineer and the restock bring it back.
             if (encounter.Lifetime == WFEncounterLifetime.Persistent && encounter.ShipHits.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPower))
                 return null;
+            // A helm left unmanned, with no player having hit the ship, is a stall and not a kill; the campaign ends it the same way.
+            if (encounter.ShipHits.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPilot))
+                return WFEncounterResolution.Ended;
             return WFEncounterResolution.Destroyed;
         }
         if (sides.Count > 1 && fighting.Count == 1)

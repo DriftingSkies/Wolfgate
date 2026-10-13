@@ -6,15 +6,15 @@ namespace Content.Shared._WF.NpcCrew;
 [DataDefinition, Serializable, NetSerializable]
 public sealed partial class WFCrewNavigationSettings
 {
-    /// <summary>Travel speed limit in metres per second.</summary>
+    /// <summary>Travel speed limit in metres per second; 0 sets none, and the pilot flies as fast as the hull allows.</summary>
     [DataField] public float CruiseSpeed = 10f;
-    /// <summary>Follow and escort speed allowance above the target's world speed, in metres per second.</summary>
+    /// <summary>Follow and escort speed allowance above the target's world speed, in metres per second; 0 sets no limit.</summary>
     [DataField] public float FollowSpeed = 10f;
     /// <summary>Loiter speed allowance above the target's world speed, in metres per second.</summary>
     [DataField] public float LoiterSpeed = 6f;
     /// <summary>Circle speed allowance above the target's world speed, in metres per second.</summary>
     [DataField] public float CircleSpeed = 4f;
-    /// <summary>Attack speed allowance above the target's world speed, in metres per second.</summary>
+    /// <summary>Attack speed allowance above the target's world speed, in metres per second; 0 sets no limit.</summary>
     [DataField] public float AttackSpeed = 6f;
     /// <summary>Position recovery speed while holding, in metres per second.</summary>
     [DataField] public float HoldCorrectionSpeed = 2f;
@@ -24,7 +24,7 @@ public sealed partial class WFCrewNavigationSettings
     [DataField] public float DockCreepSpeed = 1.5f;
     /// <summary>Departure speed and arrival threshold for clearing docks, in metres per second.</summary>
     [DataField] public float UndockSpeed = 3f;
-    /// <summary>Approach speed near a navigation target, in metres per second.</summary>
+    /// <summary>Approach speed near a navigation target, in metres per second; 0 slows nothing near a target.</summary>
     [DataField] public float NearTargetSpeed = 3f;
     /// <summary>Maximum rotation rate in radians per second.</summary>
     [DataField] public float MaximumTurnRate = 0.15f;
@@ -84,13 +84,13 @@ public sealed partial class WFCrewNavigationSettings
     /// <summary>Shared editor metadata and bounds for every flight setting.</summary>
     public static readonly IReadOnlyList<WFCrewNavigationField> Fields = new WFCrewNavigationField[]
     {
-        new("cruise-speed", "speeds", s => s.CruiseSpeed, (s, v) => s.CruiseSpeed = v, 0.1f, 500f),
-        new("follow-speed", "speeds", s => s.FollowSpeed, (s, v) => s.FollowSpeed = v, 0.1f, 500f),
+        new("cruise-speed", "speeds", s => s.CruiseSpeed, (s, v) => s.CruiseSpeed = v, 0f, 500f),
+        new("follow-speed", "speeds", s => s.FollowSpeed, (s, v) => s.FollowSpeed = v, 0f, 500f),
         new("loiter-speed", "speeds", s => s.LoiterSpeed, (s, v) => s.LoiterSpeed = v, 0.1f, 500f),
         new("circle-speed", "speeds", s => s.CircleSpeed, (s, v) => s.CircleSpeed = v, 0.1f, 500f),
-        new("attack-speed", "speeds", s => s.AttackSpeed, (s, v) => s.AttackSpeed = v, 0.1f, 500f),
+        new("attack-speed", "speeds", s => s.AttackSpeed, (s, v) => s.AttackSpeed = v, 0f, 500f),
         new("hold-correction-speed", "speeds", s => s.HoldCorrectionSpeed, (s, v) => s.HoldCorrectionSpeed = v, 0.1f, 500f),
-        new("near-target-speed", "speeds", s => s.NearTargetSpeed, (s, v) => s.NearTargetSpeed = v, 0.1f, 500f),
+        new("near-target-speed", "speeds", s => s.NearTargetSpeed, (s, v) => s.NearTargetSpeed = v, 0f, 500f),
         new("maximum-turn-rate", "handling", s => s.MaximumTurnRate, (s, v) => s.MaximumTurnRate = v, 0.001f, 10f),
         new("orbit-lookahead-angle", "handling", s => s.OrbitLookaheadAngle, (s, v) => s.OrbitLookaheadAngle = v, 1f, 45f),
         new("thrust-multiplier", "handling", s => s.ThrustMultiplier, (s, v) => s.ThrustMultiplier = v, 0.01f, 10f),

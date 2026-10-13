@@ -201,7 +201,7 @@
   duration: 1800
   ships:
   - key: boarder
-    navigation: WFCrewNavigationRaider
+    navigation: WFCrewNavigationHunter
     side: reavers
     faction: PirateNF
     distress: false
