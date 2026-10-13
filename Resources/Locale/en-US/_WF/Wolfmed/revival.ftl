@@ -25,7 +25,7 @@ health-analyzer-wound-brain-dead-core = [color=#d63c2c]CORE FAILURE[/color] - co
 alerts-wolfmed-cant-breathe-air-name = Can't breathe: no air
 alerts-wolfmed-cant-breathe-air-desc = Nothing breathable reaches your lungs. Find air, or put on internals.
 alerts-wolfmed-cant-breathe-lungs-name = Can't breathe: no lungs
-alerts-wolfmed-cant-breathe-lungs-desc = You have no working lungs. You need new ones; CPR buys time.
+alerts-wolfmed-cant-breathe-lungs-desc = You have no working lungs. You need new ones; a ventilator, an autodoc or CPR buys time.
 
 # The explanation card on the unconscious screen (plan §5.2, §2.3). No numbers.
 wolfmed-card-blockers = Also holding you down: { $blockers }.

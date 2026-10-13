@@ -13,8 +13,8 @@
     - type: DeadDropStation
       message: smuggling-report-nfsd-specific
   - prob: 0.8
-    minDelay: 4 # Mono edits - faster time
-    maxDelay: 8 # Mono
+    minDelay: 10 # WOLFGATE: PDV pack, TSF pod report 2 min later
+    maxDelay: 14 # WOLFGATE: PDV pack, TSF pod report 2 min later
     messages:
     - type: PodLocation
       message: smuggling-report-nfsd-pod
@@ -30,4 +30,4 @@
     messages:
     - type: PodLocation
       message: smuggling-report-pirate
-      maxError: 950 # Mono - More connected to the underworld or what not, less error
+      maxError: 600 # WOLFGATE: PDV pack, tighter PDV pod coordinates

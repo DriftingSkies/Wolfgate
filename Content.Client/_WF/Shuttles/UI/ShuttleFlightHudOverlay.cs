@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.Cockpit; // WOLFGATE(Cockpit)
 using Content.Shared._WF.Shuttles;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
@@ -65,7 +66,9 @@ public sealed partial class ShuttleFlightHudOverlay : Overlay
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)
     {
-        return _entManager.TryGetComponent<ShuttleCameraComponent>(_player.LocalEntity, out var camera) &&
+        // WOLFGATE(Cockpit): the cockpit already supplies permanent flight instruments.
+        return !_uiManager.GetUIController<WFCockpitUIController>().Active &&
+               _entManager.TryGetComponent<ShuttleCameraComponent>(_player.LocalEntity, out var camera) &&
                camera.View == ShuttleCameraView.External &&
                camera.Grid != null &&
                _entManager.TryGetComponent<EyeComponent>(_player.LocalEntity, out var eye) &&

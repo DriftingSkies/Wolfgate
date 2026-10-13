@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
+using Content.Client._WF.Shuttles.Systems;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
@@ -110,6 +111,15 @@ public sealed class ShuttleCameraTest : InteractionTest
             {
                 var clientCamera = CEntMan.GetEntity(SEntMan.GetNetEntity(hullCamera));
                 Assert.That(CEntMan.EntityExists(clientCamera), "The camera should reach the pilot's client.");
+                var listener = CEntMan.System<ShuttleCameraListenerSystem>();
+                var clientXform = CEntMan.System<SharedTransformSystem>();
+                var body = clientXform.GetMapCoordinates(CPlayer);
+                Assert.That(listener.Active, "A camera view should hear from the pilot's body.");
+                Assert.That(listener.GetListener().MapId, Is.EqualTo(body.MapId));
+                Assert.That((listener.GetListener().Position - body.Position).Length(), Is.LessThan(0.01f));
+                var eyePosition = Client.ResolveDependency<Robust.Client.Graphics.IEyeManager>().CurrentEye.Position.Position;
+                Assert.That((listener.SourceShift - (eyePosition - body.Position)).Length(), Is.LessThan(0.01f));
+                Assert.That(listener.SourceShift.Length(), Is.GreaterThan(1f), "The camera should sit away from the body.");
                 Assert.That(CEntMan.GetComponent<EyeComponent>(CPlayer).Target, Is.EqualTo(clientCamera),
                     "The client's eye should be riding the camera.");
             });
@@ -199,6 +209,9 @@ public sealed class ShuttleCameraTest : InteractionTest
         await Client.WaitAssertion(() =>
         {
             Assert.That(CEntMan.GetComponent<EyeComponent>(CPlayer).Target, Is.Null);
+            var listener = CEntMan.System<ShuttleCameraListenerSystem>();
+            Assert.That(listener.Active, Is.False, "Back at the helm the engine hears from the eye again.");
+            Assert.That(listener.SourceShift, Is.EqualTo(Vector2.Zero));
         });
 
         // Sitting back down picks up where the console was left.

@@ -113,15 +113,15 @@ public sealed class HarpoonTest
             });
 
             // The whole point of the upstream hook: the operator's shoot input reaches the turret's gun.
-            Assert.That(entities.System<SharedGunSystem>().TryGetGun(user, out var gun, out _), Is.True);
-            Assert.That(gun, Is.EqualTo(turret));
+            Assert.That(entities.System<SharedGunSystem>().TryGetGun(user, out var gun), Is.True);
+            Assert.That(gun.Owner, Is.EqualTo(turret));
 
             entities.System<SharedBuckleSystem>().Unbuckle(user, null);
             Assert.Multiple(() =>
             {
                 Assert.That(entities.HasComponent<MannedTurretOperatorComponent>(user), Is.False);
                 Assert.That(entities.GetComponent<ShipHarpoonTurretComponent>(turret).Operator, Is.Null);
-                Assert.That(entities.System<SharedGunSystem>().TryGetGun(user, out _, out _), Is.False);
+                Assert.That(entities.System<SharedGunSystem>().TryGetGun(user, out _), Is.False);
             });
 
             entities.DeleteEntity(user);

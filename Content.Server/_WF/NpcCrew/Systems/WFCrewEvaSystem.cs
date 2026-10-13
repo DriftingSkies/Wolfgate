@@ -2,6 +2,7 @@ using Content.Server._WF.NpcCrew.Components;
 using Content.Server.Atmos.Components;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
+using Content.Shared._Shitmed.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Mobs.Systems;
@@ -9,6 +10,7 @@ using Content.Shared.Interaction;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.NpcCrew.Systems;
@@ -25,6 +27,7 @@ public sealed class WFCrewEvaSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     private readonly Dictionary<EntityUid, TimeSpan> _prepared = new();
     private readonly Dictionary<EntityUid, EntityCoordinates> _safetyDestinations = new();
     private readonly Dictionary<EntityUid, (TimeSpan Until, EntityUid Grid, bool Safe)> _safetyChecked = new();
@@ -37,8 +40,56 @@ public sealed class WFCrewEvaSystem : EntitySystem
     private float _timer;
     private TimeSpan _nextPrune;
 
+    /// <summary>The slots of a void kit, in the order they have to go on: the tank hangs off the suit.</summary>
+    private static readonly string[] VoidKitSlots = { "outerClothing", "head", "mask", "suitstorage" };
+
+    /// <summary>
+    /// Dresses a crewman for a post with no air: a pressure suit, helmet, mask and a tank that is kept full for as
+    /// long as he wears it. What his loadout had in those slots is replaced.
+    /// </summary>
+    public void GiveVoidKit(EntityUid mob)
+    {
+        var kit = EnsureComp<WFCrewVoidKitComponent>(mob);
+        if (!Ready(mob) && _prototypes.TryIndex(kit.Gear, out var gear))
+        {
+            var coordinates = Transform(mob).Coordinates;
+            foreach (var slot in VoidKitSlots)
+            {
+                if (!gear.Equipment.TryGetValue(slot, out var proto))
+                    continue;
+                if (_inventory.TryGetSlotEntity(mob, slot, out var old) && _inventory.TryUnequip(mob, slot, silent: true, force: true))
+                    QueueDel(old);
+                var item = Spawn(proto, coordinates);
+                if (!_inventory.TryEquip(mob, item, slot, silent: true, force: true))
+                    QueueDel(item);
+            }
+        }
+        TopUp(mob, kit);
+        Ready(mob);
+    }
+
+    /// <summary>Whether a mob neither needs pressure nor breathes, so bad air cannot hurt him.</summary>
+    public bool IsImmune(EntityUid mob) => HasComp<PressureImmunityComponent>(mob) && HasComp<BreathingImmunityComponent>(mob);
+
+    /// <summary>Refills the oxygen a void kit's tank has lost.</summary>
+    private void TopUp(EntityUid mob, WFCrewVoidKitComponent kit)
+    {
+        if (!_inventory.TryGetSlotEntity(mob, "suitstorage", out var tank) || !TryComp<GasTankComponent>(tank, out var gas))
+            return;
+        var air = gas.Air;
+        if (air.Volume <= 0f || air.Pressure >= kit.TankPressure * 0.9f)
+            return;
+        if (air.TotalMoles <= 0f)
+            air.Temperature = Content.Shared.Atmos.Atmospherics.T20C;
+        var missing = (kit.TankPressure - air.Pressure) * air.Volume / (Content.Shared.Atmos.Atmospherics.R * air.Temperature);
+        air.AdjustMoles(Content.Shared.Atmos.Gas.Oxygen, missing);
+    }
+
+    /// <summary>Whether a crewman can work in bad air: immune to it, or on working internals.</summary>
+    public bool Prepare(EntityUid mob) => IsImmune(mob) || Ready(mob);
+
     /// <summary>Requires a pressure suit, helmet, breathing interface and an actual nonempty oxygen tank.</summary>
-    public bool Prepare(EntityUid mob)
+    private bool Ready(EntityUid mob)
     {
         TryReplaceLowTank(mob);
         if (!_inventory.TryGetSlotEntity(mob, "outerClothing", out var suit)
@@ -187,9 +238,16 @@ public sealed class WFCrewEvaSystem : EntitySystem
         {
             if (!_mobs.IsAlive(uid) || HasComp<ActorComponent>(uid))
                 continue;
+            if (TryComp<WFCrewVoidKitComponent>(uid, out var kit))
+                TopUp(uid, kit);
             var safe = xform.GridUid is { } grid && TryComp<MapGridComponent>(grid, out var map)
                 && _planner.IsSafePost(grid, _maps.TileIndicesFor(grid, map, xform.Coordinates), map);
-            var low = _inventory.TryGetSlotEntity(uid, "suitstorage", out var worn)
+            // Crew who suit up when the air goes bad dress before anything else looks at their tank.
+            if (!safe && HasComp<WFCrewSuitUpComponent>(uid) && !HasComp<WFCrewVoidKitComponent>(uid))
+                GiveVoidKit(uid);
+            // Immune crew have no air to lose: no suit tank to fret over, and no work dropped for want of it.
+            var immune = IsImmune(uid);
+            var low = !immune && _inventory.TryGetSlotEntity(uid, "suitstorage", out var worn)
                 && TryComp<GasTankComponent>(worn, out var wornGas) && wornGas.Air.Pressure <= ReservePressure;
             var seeking = _safetyDestinations.ContainsKey(uid);
             var attempted = false;
@@ -197,7 +255,7 @@ public sealed class WFCrewEvaSystem : EntitySystem
             if (low && (!safe || seeking || work.HasJob(uid)))
             {
                 attempted = true;
-                if (!Prepare(uid))
+                if (!Ready(uid))
                 {
                     // Only a worker in bad air drops his job; in breathable air the work system ends one that needs the suit.
                     if (!safe)
@@ -216,7 +274,7 @@ public sealed class WFCrewEvaSystem : EntitySystem
             if (!safe)
             {
                 if (!attempted)
-                    Prepare(uid);
+                    Ready(uid);
             }
             else if ((!_prepared.TryGetValue(uid, out var until) || _timing.CurTime >= until)
                 && _inventory.TryGetSlotEntity(uid, "suitstorage", out var tank)

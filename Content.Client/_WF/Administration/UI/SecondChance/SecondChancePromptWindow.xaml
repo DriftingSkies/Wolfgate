@@ -1,0 +1,19 @@
+<!-- Names must avoid DefaultWindow's own: CloseButton, ContentsContainer, TitleLabel, WindowHeader. -->
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc 'wf-second-chance-prompt-title'}"
+               MinSize="400 0">
+    <BoxContainer Orientation="Vertical" Margin="8 4">
+        <RichTextLabel Name="MessageLabel" HorizontalExpand="True" Margin="0 4" />
+        <BoxContainer Orientation="Horizontal" Margin="0 8 0 0">
+            <Button Name="YesButton"
+                    Text="{Loc 'wf-second-chance-prompt-yes'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalExpand="True" />
+            <Button Name="NoButton"
+                    Text="{Loc 'wf-second-chance-prompt-no'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalExpand="True"
+                    Margin="4 0 0 0" />
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>

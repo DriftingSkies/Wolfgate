@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server._WF.Encounters.Components;
+using Content.Server._WF.NpcCrew.Systems;
 using Content.Shared._WF.Encounters;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.Map;
@@ -14,6 +15,7 @@ public sealed partial class WFEncounterMarkerSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private WFCrewShipStatusSystem _status = default!;
 
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(2);
 
@@ -54,6 +56,8 @@ public sealed partial class WFEncounterMarkerSystem : EntitySystem
                     continue;
 
                 TryComp<PhysicsComponent>(ship.Grid, out var body);
+                // A disabled ship keeps its zones on the scope no longer: only the armed and manned ones are drawn.
+                var disabled = !ship.Derelict && _status.IsDisabled(ship.Grid);
                 var position = _transform.ToMapCoordinates(new EntityCoordinates(ship.Grid, body?.LocalCenter ?? Vector2.Zero));
                 ev.Markers.Add(new WFEncounterMarker
                 {
@@ -68,8 +72,8 @@ public sealed partial class WFEncounterMarkerSystem : EntitySystem
                     Map = position.MapId,
                     Position = position.Position,
                     Velocity = body?.LinearVelocity ?? Vector2.Zero,
-                    WarnRange = ship.WarnRange,
-                    AttackRange = ship.AttackRange,
+                    WarnRange = disabled ? 0f : ship.WarnRange,
+                    AttackRange = disabled ? 0f : ship.AttackRange,
                 });
             }
         }

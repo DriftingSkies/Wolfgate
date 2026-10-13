@@ -12,7 +12,7 @@ public sealed class CollisionWarningCVars
     /// Whether ships predict collisions and warn their crew at all.
     /// </summary>
     public static readonly CVarDef<bool> Enabled =
-        CVarDef.Create("wf.tcas.enabled", true, CVar.SERVERONLY);
+        CVarDef.Create("wf.tcas.enabled", true, CVar.SERVER | CVar.REPLICATED);
 
     /// <summary>
     /// How far ahead contact is predicted, in seconds. Nothing further out than this warns.

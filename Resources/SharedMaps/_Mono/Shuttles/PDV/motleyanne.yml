@@ -13078,7 +13078,7 @@ entities:
       powerLoad: 5
     - type: Battery
       startingCharge: 0
-- proto: WallPlastitanium
+- proto: WFWallAdamantite
   entities:
   - uid: 1889
     components:
@@ -15198,7 +15198,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: -18.5,-0.5
       parent: 1
-- proto: WallPlastitaniumDiagonal
+- proto: WFWallAdamantiteDiagonal
   entities:
   - uid: 2268
     components:

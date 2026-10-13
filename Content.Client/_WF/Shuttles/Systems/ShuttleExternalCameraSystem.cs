@@ -1,8 +1,11 @@
 using System.Numerics;
 using Content.Client._WF.Shuttles.UI;
+using Content.Client.CombatMode;
+using Content.Client.ContextMenu.UI;
 using Content.Client.Eye;
 using Content.Client.Movement.Systems;
 using Content.Client.UserInterface.Controls;
+using Content.Client.Verbs;
 using Content.Client.Viewport;
 using Content.Shared._WF.Shuttles;
 using Content.Shared.Camera;
@@ -27,7 +30,7 @@ namespace Content.Client._WF.Shuttles.Systems;
 
 /// <summary>
 /// Runs the local pilot's external view. The eye rides an anchor the server keeps near the look point
-/// for PVS, and this offsets it onto the exact point each frame, pans that point with a middle-mouse
+/// for PVS, and this offsets it onto the exact point each frame, pans that point with a right-mouse
 /// drag, zooms with the wheel and stops the eye drawing FOV. Hulls are roofed over by
 /// <see cref="ShuttleHullRoofOverlay"/> instead, and mobs aren't drawn at all.
 /// </summary>
@@ -40,9 +43,11 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     [Dependency] private IOverlayManager _overlay = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IUserInterfaceManager _uiManager = default!;
+    [Dependency] private CombatModeSystem _combatMode = default!;
     [Dependency] private ContentEyeSystem _contentEye = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private VerbSystem _verbs = default!;
 
     /// <summary>
     /// How far a drag carries the look point before the server is told, in tiles.
@@ -53,6 +58,11 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     /// How close the anchor is brought to the look point once a drag is over, in tiles.
     /// </summary>
     private const float PanSettleDistance = 0.05f;
+
+    /// <summary>
+    /// How far the pointer can stray from a right press, in screen pixels, and still be a click.
+    /// </summary>
+    private const float PanClickSlop = 4f;
 
     private static readonly TimeSpan PanInterval = TimeSpan.FromSeconds(0.2);
 
@@ -88,9 +98,14 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     private Vector2 _offset;
 
     private bool _dragging;
-    private bool _wasDown;
+    private bool _panButtonDown;
     private ScalingViewport? _dragViewport;
     private Vector2? _lastMouse;
+
+    /// <summary>
+    /// Where the right press landed, until the pointer strays far enough for it to be a drag.
+    /// </summary>
+    private Vector2? _panStart;
 
     private Vector2 _sentLook;
     private TimeSpan _sentAt;
@@ -109,6 +124,11 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     /// Whether the local player is looking through the external view.
     /// </summary>
     public bool Active => _pilot != null;
+
+    /// <summary>
+    /// Raised when a right click that wasn't a pan asks for the entity menu, before the world is searched.
+    /// </summary>
+    public event Action<ScreenCoordinates>? WfEntityMenuRequested;
 
     /// <summary>
     /// The point being looked at, in the flown grid's coordinates.
@@ -134,6 +154,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+        _input.FirstChanceOnKeyEvent += OnPanKey;
 
         SubscribeLocalEvent<ShuttleCameraComponent, GetEyeOffsetEvent>(OnGetEyeOffset);
         SubscribeLocalEvent<ShuttleCameraComponent, MenuVisibilityEvent>(OnMenuVisibility);
@@ -159,6 +180,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
 
     public override void Shutdown()
     {
+        _input.FirstChanceOnKeyEvent -= OnPanKey;
         base.Shutdown();
 
         Deactivate();
@@ -224,8 +246,6 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
             _wheel = 0f;
             EndDrag();
 
-            // A button already held as the view comes up isn't a press on it.
-            _wasDown = true;
         }
 
         // Traversal isn't networked. Left on, the anchor's own lerp hands it to the map over open space.
@@ -279,36 +299,80 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
         return HasComp<MapComponent>(gridUid) || HasComp<MapGridComponent>(Transform(gridUid).MapUid);
     }
 
-    /// <summary>
-    /// Pans with the middle mouse button, keeping hold of the spot of space that was grabbed. The button
-    /// is read raw: a pilot's input context has no function for it, and its binding is shared anyway.
-    /// </summary>
-    private void UpdateDrag(EntityUid gridUid)
-    {
-        var mouse = _input.MouseScreenPosition;
-        var down = _input.IsKeyDown(Keyboard.Key.MouseMiddle);
-        var pressed = down && !_wasDown;
-        _wasDown = down;
+    private void OnPanKey(KeyEventArgs args, KeyEventType type) =>
+        OnPanKey(args, type, _input.MouseScreenPosition);
 
-        // Shift, control and alt make it something else, such as pointing.
-        if (pressed &&
-            _clyde.IsFocused &&
-            mouse.IsValid &&
-            !_input.IsKeyDown(Keyboard.Key.Shift) &&
-            !_input.IsKeyDown(Keyboard.Key.Control) &&
-            !_input.IsKeyDown(Keyboard.Key.Alt) &&
-            _uiManager.MouseGetControl(mouse) is ScalingViewport { Parent: MainViewport } viewport)
+    /// <summary>
+    /// Owns unmodified right-button presses only over the active external world view. A press that
+    /// is released without being dragged opens the entity menu there instead.
+    /// </summary>
+    private void OnPanKey(KeyEventArgs args, KeyEventType type, ScreenCoordinates mouse)
+    {
+        if (args.Key != Keyboard.Key.MouseRight)
+            return;
+        if (_panButtonDown)
         {
-            _dragging = true;
-            _dragViewport = viewport;
-            _lastMouse = mouse.Position;
+            args.Handle();
+            if (type == KeyEventType.Up)
+            {
+                var held = _dragViewport;
+                var click = IsPanClick(mouse);
+                EndDrag();
+
+                if (click && held != null)
+                    OpenEntityMenu(held, mouse);
+            }
             return;
         }
+        if (args.Handled || type != KeyEventType.Down || args.IsRepeat || !Active || !_net.IsConnected ||
+            !_clyde.IsFocused || !mouse.IsValid || args.Shift || args.Control || args.Alt ||
+            _uiManager.MouseGetControl(mouse) is not ScalingViewport { Parent: MainViewport } viewport)
+            return;
+        args.Handle();
+        _panButtonDown = _dragging = true;
+        _dragViewport = viewport;
+        _lastMouse = mouse.Position;
+        _panStart = mouse.Position;
+    }
 
+    /// <summary>
+    /// Whether the pointer is still where the right press landed, on the viewport it landed on.
+    /// </summary>
+    private bool IsPanClick(ScreenCoordinates mouse)
+    {
+        return _panStart is { } start &&
+               _dragViewport is { } viewport &&
+               mouse.IsValid &&
+               mouse.Window == viewport.Window?.Id &&
+               (mouse.Position - start).LengthSquared() <= PanClickSlop * PanClickSlop;
+    }
+
+    /// <summary>
+    /// Opens the entity menu at the pointer, as the right press would have if it hadn't been taken for a pan.
+    /// </summary>
+    private void OpenEntityMenu(ScalingViewport viewport, ScreenCoordinates mouse)
+    {
+        if (_combatMode.IsInCombatMode())
+            return;
+
+        WfEntityMenuRequested?.Invoke(mouse);
+
+        // The point a plain right-click would pick, so a lens such as a singularity's bends it the same way.
+        var coordinates = viewport.PixelToMap(mouse.Position);
+
+        if (coordinates.MapId != MapId.Nullspace && _verbs.TryGetEntityMenuEntities(coordinates, out var entities))
+            _uiManager.GetUIController<EntityMenuUIController>().OpenRootMenu(entities);
+    }
+
+    /// <summary>Keeps hold of the grabbed world point through viewport rotation, zoom and pointer movement.</summary>
+    private void UpdateDrag(EntityUid gridUid) => UpdateDrag(gridUid, _input.MouseScreenPosition, _clyde.IsFocused);
+
+    private void UpdateDrag(EntityUid gridUid, ScreenCoordinates mouse, bool focused)
+    {
         if (!_dragging)
             return;
 
-        if (!down || !_clyde.IsFocused || _dragViewport is not { IsInsideTree: true } dragged)
+        if (!_panButtonDown || !focused || _dragViewport is not { IsInsideTree: true, VisibleInTree: true } dragged)
         {
             EndDrag();
             return;
@@ -319,6 +383,15 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
         {
             _lastMouse = null;
             return;
+        }
+
+        // A press that hasn't strayed yet may still be a click, so the look point stays put.
+        if (_panStart is { } start)
+        {
+            if ((mouse.Position - start).LengthSquared() <= PanClickSlop * PanClickSlop)
+                return;
+
+            _panStart = null;
         }
 
         if (_lastMouse is { } last)
@@ -336,9 +409,11 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
 
     private void EndDrag()
     {
+        _panButtonDown = false;
         _dragging = false;
         _dragViewport = null;
         _lastMouse = null;
+        _panStart = null;
     }
 
     /// <summary>
@@ -362,7 +437,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
         if (!behind)
             return;
 
-        _ui.ClientSendUiMessage(console, ShuttleConsoleUiKey.Key, new ShuttleCameraPanMessage(_look));
+        WfSendOrderedCameraInput(console, new ShuttleCameraPanMessage(_look)); // WOLFGATE(Cockpit): order pans with camera session changes.
         _sentLook = _look;
         _sentAt = now;
     }
@@ -390,7 +465,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
         if (now < _nextZoom || _sentZoom == pending)
             return;
 
-        _ui.ClientSendUiMessage(console, ShuttleConsoleUiKey.Key, new ShuttleCameraZoomMessage(pending));
+        WfSendOrderedCameraInput(console, new ShuttleCameraZoomMessage(pending)); // WOLFGATE(Cockpit): order wheel zoom with camera session changes.
         _sentZoom = pending;
         _nextZoom = now + ZoomInterval;
     }

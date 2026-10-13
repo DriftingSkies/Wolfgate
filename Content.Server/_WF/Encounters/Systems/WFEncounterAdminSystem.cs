@@ -111,7 +111,7 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
             case WFEncounterAdminAction.Reveal:
                 if (!TryGetEntity(request.Target, out var hidden) || !HasComp<WFEncounterComponent>(hidden))
                     return Loc.GetString("wf-encounter-admin-gone");
-                _encounters.Reveal(hidden.Value);
+                _encounters.Reveal(hidden.Value, true);
                 Audit(session, $"revealed encounter {ToPrettyString(hidden.Value):entity}");
                 return null;
 
@@ -178,9 +178,9 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                 Resolved = encounter.Resolution != null,
                 Hidden = encounter.Hidden,
                 Pinned = encounter.Pinned,
-                State = Loc.GetString(encounter.Resolution is { } resolution
+                State = _encounters.StateDetail(uid, encounter, Loc.GetString(encounter.Resolution is { } resolution
                     ? $"wf-encounter-resolution-{resolution.ToString().ToLowerInvariant()}"
-                    : "cmd-wf_encounter-state-active"),
+                    : "cmd-wf_encounter-state-active"), false),
                 Age = (float) (_timing.CurTime - encounter.Started).TotalSeconds,
                 ExpiresIn = encounter.Expires is { } expires ? MathF.Max(0f, (float) (expires - _timing.CurTime).TotalSeconds) : -1f,
             };
@@ -189,6 +189,15 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                 var exists = !TerminatingOrDeleted(ship.Grid);
                 var net = exists ? GetNetEntity(ship.Grid) : NetEntity.Invalid;
                 var crew = crews.FirstOrDefault(row => row.Grid == net && row.Group == ship.Group);
+                var activity = crew?.Activity ?? string.Empty;
+                // An extorter's row leads with where it is in its round.
+                if (encounter.Resolution == null && _encounters.ExtortStatus(ship) is { } extorting)
+                {
+                    activity = activity.Length > 0
+                        ? Loc.GetString("wf-encounter-admin-state-detail", ("state", extorting), ("detail", activity))
+                        : extorting;
+                }
+
                 entry.Ships.Add(new WFEncounterAdminShip
                 {
                     Key = key,
@@ -199,7 +208,7 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                     Exists = exists,
                     Disabled = exists && _status.IsDisabled(ship.Grid),
                     Crew = crew?.Alive ?? 0,
-                    Activity = crew?.Activity ?? string.Empty,
+                    Activity = activity,
                 });
             }
 

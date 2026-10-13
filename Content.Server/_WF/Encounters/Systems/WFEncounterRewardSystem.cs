@@ -67,11 +67,14 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         SubscribeLocalEvent<WFCrewHullHitEvent>(OnHullHit, after: [typeof(WFCrewAlertSystem)]);
         SubscribeLocalEvent<WFShipShieldAttackedEvent>(OnShieldHit, after: [typeof(WFCrewAlertSystem)]);
         SubscribeLocalEvent<WFEncounterResolvedEvent>(OnResolved);
+        SubscribeLocalEvent<WFCrewFriendlyFireQueryEvent>(OnFriendlyFireQuery);
     }
 
     private void OnHullHit(ref WFCrewHullHitEvent args)
     {
+        // Judged before it is counted, as the crews judged it, so the same hit is never weighed twice.
         RecordHit(args.Grid, args.AttackerGrid);
+        Track(args.Grid, args.AttackerGrid);
     }
 
     private void OnShieldHit(ref WFShipShieldAttackedEvent args)
@@ -81,6 +84,59 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
             return;
 
         RecordHit(args.Grid, args.AttackerGrid);
+        Track(args.Grid, args.AttackerGrid);
+    }
+
+    /// <summary>How long a vessel's hits count toward whom it is fighting.</summary>
+    private static readonly TimeSpan FireWindow = TimeSpan.FromSeconds(30);
+
+    /// <summary>How many times over its hits on a side a vessel must have hit that side's enemies to be its friend.</summary>
+    private const int FriendlyFireRatio = 2;
+
+    /// <summary>Counts a ship weapon hit on an encounter ship by any vessel outside the encounter, excused or not.</summary>
+    private void Track(EntityUid victim, EntityUid attacker)
+    {
+        if (!TryComp<WFEncounterGridComponent>(victim, out var marker) || HasComp<WFEncounterGridComponent>(attacker)
+            || !TryComp<WFEncounterComponent>(marker.Encounter, out var encounter)
+            || !encounter.Ships.TryGetValue(marker.Key, out var ship))
+            return;
+
+        var now = _timing.CurTime;
+        var key = (attacker, ship.Side);
+        if (!encounter.Fire.TryGetValue(key, out var fire))
+            encounter.Fire[key] = fire = new List<TimeSpan>();
+        fire.RemoveAll(hit => now - hit > FireWindow);
+        fire.Add(now);
+    }
+
+    /// <summary>
+    /// Vouches for a vessel to a ship's crew: it is their friend while, over the last half minute, it has hit their
+    /// side's enemies at least twice as often as it has hit them, this hit included. In a melee the odd round goes
+    /// astray; a vessel plainly fighting their fight is not an enemy for it. Conduct alone decides, an alliance
+    /// notwithstanding: an ally that turns its guns on the side loses the excuse, and with it the alliance.
+    /// </summary>
+    private void OnFriendlyFireQuery(ref WFCrewFriendlyFireQueryEvent args)
+    {
+        if (args.Friendly || !TryComp<WFEncounterGridComponent>(args.Grid, out var marker)
+            || !TryComp<WFEncounterComponent>(marker.Encounter, out var encounter)
+            || !encounter.Ships.TryGetValue(marker.Key, out var ship))
+            return;
+
+        var now = _timing.CurTime;
+        var onUs = 0;
+        var onEnemies = 0;
+        foreach (var ((attacker, side), fire) in encounter.Fire)
+        {
+            if (attacker != args.Attacker)
+                continue;
+            var recent = fire.Count(hit => now - hit <= FireWindow);
+            if (side == ship.Side)
+                onUs += recent;
+            else
+                onEnemies += recent;
+        }
+
+        args.Friendly = onEnemies >= FriendlyFireRatio * (onUs + 1);
     }
 
     /// <summary>Counts a ship weapon hit by a player-crewed ship on an encounter ship as help for the other sides.</summary>
@@ -120,11 +176,11 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         if (hits != MinimumHits)
             return;
 
-        // Having fought this side and no other, the ship is on the others' side: they hold their fire for it.
+        // Having fought this side and hardly the others, the ship is on their side: they hold their fire for it.
         foreach (var other in encounter.Ships.Values)
         {
             if (other.Side == ship.Side || TerminatingOrDeleted(other.Grid)
-                || encounter.ShipHits.GetValueOrDefault((attacker, other.Side)) > 0)
+                || encounter.ShipHits.GetValueOrDefault((attacker, other.Side)) * FriendlyFireRatio > hits)
                 continue;
 
             _escorts.AddAlly(other.Grid, attacker);
@@ -192,36 +248,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
             || prototype.Rewards.FirstOrDefault(entry => entry.Side == side) is not { } reward)
             return;
 
-        // A destroyed hull is gone by now, so its company is read from the prototype as well.
-        var losers = new HashSet<string>();
-        foreach (var (key, ship) in encounter.Ships)
-        {
-            if (ship.Side == side)
-                continue;
-
-            if (prototype.Ships.FirstOrDefault(entry => entry.Key == key)?.Company?.Id is { Length: > 0 } listed)
-                losers.Add(listed);
-            if (!TerminatingOrDeleted(ship.Grid)
-                && CompOrNull<CompanyComponent>(ship.Grid)?.CompanyName.Id is { Length: > 0 } company)
-                losers.Add(company);
-        }
-
-        var helpers = new List<(ICommonSession Session, EntityUid Mob)>();
-        foreach (var (user, bySide) in encounter.Hits)
-        {
-            var against = bySide.Where(pair => pair.Key != side).Sum(pair => pair.Value);
-            if (against < MinimumHits || bySide.GetValueOrDefault(side) > 0
-                || !_playerManager.TryGetSessionById(user, out var session) || session.AttachedEntity is not { } mob
-                || HasComp<GhostComponent>(mob) || _mobs.IsDead(mob))
-                continue;
-
-            // Nobody is paid for helping to destroy a ship of their own company.
-            if (CompOrNull<CompanyComponent>(mob)?.CompanyName.Id is { Length: > 0 } own && losers.Contains(own))
-                continue;
-
-            helpers.Add((session, mob));
-        }
-
+        var helpers = GetHelpers(encounter, encounter.Ships.Values.Where(ship => ship.Side != side).Select(ship => ship.Side).ToHashSet());
         if (helpers.Count == 0)
             return;
 
@@ -236,6 +263,96 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
                     break;
             }
         }
+    }
+
+    /// <summary>The living players who hit the losing sides at least <see cref="MinimumHits"/> times, hit no other side and are not of a loser's company.</summary>
+    public List<(ICommonSession Session, EntityUid Mob)> GetHelpers(WFEncounterComponent encounter, IReadOnlyCollection<string> losingSides)
+    {
+        _prototypes.TryIndex(encounter.Prototype, out var prototype);
+
+        // A destroyed hull is gone by now, so its company is read from the prototype as well.
+        var losers = new HashSet<string>();
+        foreach (var (key, ship) in encounter.Ships)
+        {
+            if (!losingSides.Contains(ship.Side))
+                continue;
+
+            if (prototype?.Ships.FirstOrDefault(entry => entry.Key == key)?.Company?.Id is { Length: > 0 } listed)
+                losers.Add(listed);
+            if (!TerminatingOrDeleted(ship.Grid)
+                && CompOrNull<CompanyComponent>(ship.Grid)?.CompanyName.Id is { Length: > 0 } company)
+                losers.Add(company);
+        }
+
+        var helpers = new List<(ICommonSession Session, EntityUid Mob)>();
+        foreach (var (user, bySide) in encounter.Hits)
+        {
+            var against = bySide.Where(pair => losingSides.Contains(pair.Key)).Sum(pair => pair.Value);
+            if (against < MinimumHits || bySide.Any(pair => pair.Value > 0 && !losingSides.Contains(pair.Key))
+                || !_playerManager.TryGetSessionById(user, out var session) || session.AttachedEntity is not { } mob
+                || HasComp<GhostComponent>(mob) || _mobs.IsDead(mob))
+                continue;
+
+            // Nobody is paid for helping to destroy a ship of their own company.
+            if (CompOrNull<CompanyComponent>(mob)?.CompanyName.Id is { Length: > 0 } own && losers.Contains(own))
+                continue;
+
+            helpers.Add((session, mob));
+        }
+
+        return helpers;
+    }
+
+    /// <summary>
+    /// Pays a bounty on a beaten encounter to its helpers, and a fifth to living players aboard supporters; returns how many were paid.
+    /// <paramref name="extraCredits"/> are further rewards of which only the faction credits are handed out.
+    /// </summary>
+    public int PayBounty(Entity<WFEncounterComponent?> encounter, WFEncounterReward reward, string deed,
+        IReadOnlyList<EntityUid>? supporters = null, IReadOnlyList<WFEncounterReward>? extraCredits = null)
+    {
+        if (!Resolve(encounter, ref encounter.Comp, false))
+            return 0;
+
+        // Helpers share per attacking ship and then per head; the support pool is taken only if someone else is aboard a supporter.
+
+        var comp = encounter.Comp;
+        var helpers = GetHelpers(comp, comp.Ships.Values.Select(ship => ship.Side).ToHashSet());
+        var aids = new List<(ICommonSession Session, EntityUid Mob)>();
+        if (supporters is { Count: > 0 })
+        {
+            var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+            while (players.MoveNext(out var uid, out var actor, out var xform))
+            {
+                if (xform.GridUid is { } grid && supporters.Contains(grid) && !HasComp<GhostComponent>(uid) && !_mobs.IsDead(uid)
+                    && helpers.All(helper => helper.Session != actor.PlayerSession))
+                    aids.Add((actor.PlayerSession, uid));
+            }
+        }
+
+        if (helpers.Count == 0 && aids.Count == 0)
+            return 0;
+
+        var pool = aids.Count > 0 ? reward.Spesos / 5 : 0;
+        var shares = new List<int>();
+        if (helpers.Count > 0)
+        {
+            // Hits are kept per ship; a helper counts for the attacking ship they are aboard, or for none.
+            var attackers = comp.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
+            var groups = helpers.Select(helper => Transform(helper.Mob).GridUid is { } grid && attackers.Contains(grid) ? grid : EntityUid.Invalid).ToList();
+            var perGroup = (reward.Spesos - pool) / groups.Distinct().Count();
+            foreach (var group in groups)
+            {
+                shares.Add(perGroup / groups.Count(other => other == group));
+            }
+        }
+
+        foreach (var _ in aids)
+        {
+            shares.Add(pool / aids.Count);
+        }
+
+        helpers.AddRange(aids);
+        return Pay(encounter, comp, reward, helpers, deed, shares, extraCredits);
     }
 
     /// <summary>
@@ -279,18 +396,60 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
             _encounters.TrySay(ship, ThanksChannel, Loc.GetString(thanks, ("count", helpers.Count)));
     }
 
-    /// <summary>
-    /// Shares a reward's spesos equally among the helpers within the hourly cap, hands faction credits to those of its
-    /// companies, and tells each what they got.
-    /// </summary>
-    private void Pay(EntityUid uid, WFEncounterComponent encounter, WFEncounterReward reward,
-        List<(ICommonSession Session, EntityUid Mob)> helpers, string deed)
+    /// <summary>Pays a reward to the helpers within the hourly cap, equally unless shares are given, and returns how many received anything.</summary>
+    private int Pay(EntityUid uid, WFEncounterComponent encounter, WFEncounterReward reward,
+        List<(ICommonSession Session, EntityUid Mob)> helpers, string deed, List<int>? shares = null,
+        IReadOnlyList<WFEncounterReward>? extraCredits = null)
     {
-        var share = reward.Spesos / helpers.Count;
-        var cap = _config.GetCVar(EncountersCVars.PayoutHourlyCap);
-        foreach (var (session, mob) in helpers)
+        return Pay(encounter.Name, $"encounter {encounter.Prototype} ({ToPrettyString(uid):entity})", reward, helpers, deed, shares, extraCredits);
+    }
+
+    /// <summary>
+    /// Pays spesos to the living players aboard some ships, an equal share to each crewed ship and then to each player
+    /// aboard it, within the hourly cap; returns how many were paid. <paramref name="name"/> is what the payment says it
+    /// is for and <paramref name="subject"/> names the same in the admin log.
+    /// </summary>
+    public int PayCrews(string name, string subject, int spesos, IEnumerable<EntityUid> ships, string deed)
+    {
+        var aboard = new Dictionary<EntityUid, List<(ICommonSession Session, EntityUid Mob)>>();
+        foreach (var ship in ships)
         {
-            var paid = Capped(session.UserId, share, cap);
+            if (!TerminatingOrDeleted(ship))
+                aboard[ship] = new List<(ICommonSession, EntityUid)>();
+        }
+
+        var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (players.MoveNext(out var uid, out var actor, out var xform))
+        {
+            if (xform.GridUid is { } grid && aboard.TryGetValue(grid, out var crew) && !HasComp<GhostComponent>(uid) && !_mobs.IsDead(uid))
+                crew.Add((actor.PlayerSession, uid));
+        }
+
+        var helpers = new List<(ICommonSession Session, EntityUid Mob)>();
+        var shares = new List<int>();
+        var crewed = aboard.Values.Count(crew => crew.Count > 0);
+        foreach (var crew in aboard.Values)
+        {
+            foreach (var helper in crew)
+            {
+                helpers.Add(helper);
+                shares.Add(spesos / crewed / crew.Count);
+            }
+        }
+
+        return helpers.Count == 0 ? 0 : Pay(name, subject, new WFEncounterReward { Spesos = spesos }, helpers, deed, shares);
+    }
+
+    private int Pay(string name, string subject, WFEncounterReward reward,
+        List<(ICommonSession Session, EntityUid Mob)> helpers, string deed, List<int>? shares = null,
+        IReadOnlyList<WFEncounterReward>? extraCredits = null)
+    {
+        var received = 0;
+        var cap = _config.GetCVar(EncountersCVars.PayoutHourlyCap);
+        for (var i = 0; i < helpers.Count; i++)
+        {
+            var (session, mob) = helpers[i];
+            var paid = Capped(session.UserId, shares?[i] ?? reward.Spesos / helpers.Count, cap);
             // A deposit that fails, with no bank account or deposits off, pays nothing and keeps the allowance.
             if (paid > 0 && !_bank.TryBankDeposit(mob, paid, false))
             {
@@ -298,25 +457,41 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
                 paid = 0;
             }
 
-            var credits = 0;
-            if (reward.Credits > 0 && reward.CreditEntity is { } creditEntity
-                && CompOrNull<CompanyComponent>(mob)?.CompanyName.Id is { } company && reward.CreditCompanies.Contains(company))
+            var credits = GiveCredits(reward, mob);
+            if (extraCredits != null)
             {
-                credits = reward.Credits;
-                foreach (var stack in _stack.SpawnMultiple(creditEntity, credits, Transform(mob).Coordinates))
+                foreach (var extra in extraCredits)
                 {
-                    _hands.PickupOrDrop(mob, stack);
+                    credits += GiveCredits(extra, mob);
                 }
             }
 
             if (paid == 0 && credits == 0)
                 continue;
 
+            received++;
             _chat.DispatchServerMessage(session, Loc.GetString(credits > 0 ? "wf-encounter-reward-paid-credits" : "wf-encounter-reward-paid",
-                ("name", encounter.Name), ("amount", paid), ("credits", credits)));
+                ("name", name), ("amount", paid), ("credits", credits)));
             _adminLog.Add(LogType.Action, LogImpact.Medium,
-                $"{session.Name} was paid {paid} spesos and {credits} faction credits for {deed} encounter {encounter.Prototype} ({ToPrettyString(uid):entity})");
+                $"{session.Name} was paid {paid} spesos and {credits} faction credits for {deed} {subject}");
         }
+
+        return received;
+    }
+
+    /// <summary>Hands a mob the faction credits of a reward if it is of one of its companies, and returns how many.</summary>
+    private int GiveCredits(WFEncounterReward reward, EntityUid mob)
+    {
+        if (reward.Credits <= 0 || reward.CreditEntity is not { } creditEntity
+            || CompOrNull<CompanyComponent>(mob)?.CompanyName.Id is not { } company || !reward.CreditCompanies.Contains(company))
+            return 0;
+
+        foreach (var stack in _stack.SpawnMultiple(creditEntity, reward.Credits, Transform(mob).Coordinates))
+        {
+            _hands.PickupOrDrop(mob, stack);
+        }
+
+        return reward.Credits;
     }
 
     /// <summary>What of an amount a player may still be paid within the hourly cap, and counts it. The window opens at the first payout.</summary>

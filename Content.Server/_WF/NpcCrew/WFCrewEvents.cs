@@ -3,6 +3,16 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.NpcCrew;
 
+/// <summary>
+/// Broadcast when a ship's crew weigh a ship weapon hit from a vessel: whoever knows the vessel for a friend of the
+/// ship, by alliance or by the way it has been fighting, sets <see cref="Friendly"/>, and its fire is let pass.
+/// </summary>
+[ByRefEvent]
+public record struct WFCrewFriendlyFireQueryEvent(EntityUid Grid, EntityUid Attacker)
+{
+    public bool Friendly;
+}
+
 /// <summary>Raised on the crewman and broadcast when a crewman goes critical or dies.</summary>
 [ByRefEvent]
 public readonly record struct WFCrewMemberDownEvent(

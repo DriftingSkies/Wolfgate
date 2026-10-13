@@ -396,7 +396,7 @@ public sealed partial class WFPilotDutySystem
         {
             foreach (var dock in _docking.GetDocks(grid))
             {
-                if (!dock.Comp.Docked)
+                if (!dock.Comp.Docked || ent.Comp.FaceThreats && ShareFlag(grid, dock.Comp.DockedWith))
                     continue;
                 ent.Comp.Docked = true;
                 break;
@@ -405,6 +405,14 @@ public sealed partial class WFPilotDutySystem
         if (ent.Comp.Docked != wasDocked && ent.Comp.AtHelm && WaitsWhileDocked(ent.Comp))
             Steer(ent);
         return ent.Comp.Docked;
+    }
+
+    /// <summary>Whether the grid a dock is docked to flies the same faction's flag, so a garrison berthed on a facing hull is not a berth.</summary>
+    private bool ShareFlag(EntityUid grid, EntityUid? other)
+    {
+        return other is { } dock && Transform(dock).GridUid is { } alongside
+               && WFCompanyFamily.Same(CompOrNull<Content.Shared._Mono.Company.CompanyComponent>(grid)?.CompanyName.Id,
+                   CompOrNull<Content.Shared._Mono.Company.CompanyComponent>(alongside)?.CompanyName.Id);
     }
 
     // GetDocks must not run inside a dock handler; the caches refresh on the next update.

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Client._WF.ChatTabs;
 using Content.Client._WF.UserInterface.WindowPopout;
 using Content.Client.ContextMenu.UI;
 using Content.Client.Examine;
@@ -143,6 +144,9 @@ public sealed partial class StyleWolfgate
         pill.SetPadding(StyleBox.Margin.All, 2);
         var pillBordered = Box("pill_bordered.png", 8);
         pillBordered.SetPadding(StyleBox.Margin.All, 2);
+        var chatTab = Box("pill.png", 8);
+        chatTab.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        chatTab.SetContentMarginOverride(StyleBox.Margin.Horizontal, 9);
 
         // Sliders
         var sliderFillTex = Tex("slider_fill.png");
@@ -454,6 +458,8 @@ public sealed partial class StyleWolfgate
                 .Prop(PanelContainer.StylePropertyPanel, chatPanel),
             Element<Button>().Class(StyleNano.StyleClassChatChannelSelectorButton)
                 .Prop(Button.StylePropertyStyleBox, pill),
+            Element<Button>().Class(ChatTabBar.StyleClassChatTab)
+                .Prop(Button.StylePropertyStyleBox, chatTab),
             Element<ContainerButton>().Class(StyleNano.StyleClassChatFilterOptionButton)
                 .Prop(ContainerButton.StylePropertyStyleBox, pillBordered),
             Element<ContainerButton>().Class(StyleNano.StyleClassChatFilterOptionButton).Pseudo(ContainerButton.StylePseudoClassNormal)

@@ -19,5 +19,5 @@
     flags: Anchorable
   - type: Thruster
     baseThrust: 50
-    thrust: 50 # 0.5x - plus cant be upgraded with parts!
+    thrust: 50 # WOLFGATE: PDV pack, 0.33x of the 150 default; cant be upgraded with parts
     heatSignatureRatio: 7.5

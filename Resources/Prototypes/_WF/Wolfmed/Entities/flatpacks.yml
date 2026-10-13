@@ -28,3 +28,15 @@
   - type: Sprite
     layers:
     - state: medical_lathe
+
+- type: entity
+  parent: BaseNFFlatpack
+  id: WFWolfmedVentilatorFlatpack
+  name: ventilator flatpack
+  description: A flatpack used for constructing a ventilator.
+  components:
+  - type: Flatpack
+    entity: WFWolfmedVentilator
+  - type: Sprite
+    layers:
+    - state: medical_lathe

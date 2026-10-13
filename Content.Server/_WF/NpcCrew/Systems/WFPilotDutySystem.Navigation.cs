@@ -246,7 +246,7 @@ public sealed partial class WFPilotDutySystem
                 duty.CorrectingHold = false;
             steerer.Range = duty.CorrectingHold ? limits.HoldReturnRange : limits.HoldRange;
             steerer.TargetRotation = CreepHeadingOffset(steerer, duty.HoldHeading, grid);
-            if (!duty.CorrectingHold)
+            if (!duty.CorrectingHold && !TurningToThreat(duty, steerer, grid))
             {
                 // Brake tiny residual movement without steering toward a changing zero-length direction.
                 args.Input = new ShuttleInput(Vector2.Zero, 0f, 1f);

@@ -11,7 +11,10 @@
         <tabs:AudioTab Name="AudioTab" />
         <tabs:AccessibilityTab Name="AccessibilityTab" />
         <tabs:AdminOptionsTab Name="AdminOptionsTab" />
-        <dtabs:DeltaTab Name="ExtraTab" /> <!-- Delta-V -->
+        <!-- WOLFGATE(Options) START: the Extra tab is the Wolfgate one, which carries the Delta-V setting too -->
+        <!-- <dtabs:DeltaTab Name="ExtraTab" /> --> <!-- Delta-V -->
+        <wftabs:WolfgateExtraTab Name="ExtraTab" />
+        <!-- WOLFGATE END -->
         <wftabs:WolfgateConsentTab Name="ConsentTab" /> <!-- WOLFGATE(Options): consent tab (xmlns:wftabs), appended so existing tab indices stay valid -->
     </TabContainer>
 </DefaultWindow>

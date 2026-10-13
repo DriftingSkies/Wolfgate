@@ -49,6 +49,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
     [Dependency] private IResourceManager _resourceManager = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private ShipPaSystem _shipPa = default!;
+    [Dependency] private ShipPaPlaylistSystem _playlist = default!;
 
     private const int MaxTitleLength = 200;
 
@@ -362,9 +363,19 @@ public sealed partial class InternetSoundSystem : EntitySystem
     /// </summary>
     public void Stop(ICommonSession? admin)
     {
+        var playing = _tracks.Count > 0;
+        _playlist.ClearAll();
+
         foreach (var track in _tracks.Values.ToList())
         {
             Drop(track);
+        }
+
+        // A round restart with nothing playing is not worth an admin log entry, and the test pool's recycled rounds collide on its id.
+        if (admin == null && !playing)
+        {
+            SendState();
+            return;
         }
 
         Report(admin, Loc.GetString("wf-internet-sound-stopped"), false);
@@ -391,6 +402,15 @@ public sealed partial class InternetSoundSystem : EntitySystem
     public bool IsPlayingOn(EntityUid grid)
     {
         return _byGrid.ContainsKey(grid);
+    }
+
+    /// <summary>
+    /// True when a track for this ship would not be turned away for want of room: it already holds a slot,
+    /// or the server-wide cap has one free.
+    /// </summary>
+    public bool HasFreeSlot(EntityUid grid)
+    {
+        return _byGrid.ContainsKey(grid) || _tracks.Count < _cfg.GetCVar(InternetSoundCVars.MaxConcurrent);
     }
 
     /// <summary>
@@ -656,7 +676,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
         }
         catch (OperationCanceledException) when (transfer.Token.IsCancellationRequested)
         {
-            // Cut or replacement stopped this transfer before its next chunk.
+            // Stop or replacement stopped this transfer before its next chunk.
         }
         catch (Exception e)
         {

@@ -41,7 +41,7 @@ public sealed partial class ShuttleConsoleWindow
     {
         _wfShieldHelmRotation = helmRotation;
         _shieldModeButton.Visible = state is { Available: true };
-        if (!_shieldModeButton.Visible && _mode == ShuttleConsoleMode.Shields)
+        if (!_shieldModeButton.Visible && _mode == ShuttleConsoleMode.Shields && !WfCockpitActive)
         {
             NavModeButton.Pressed = true;
             SwitchMode(ShuttleConsoleMode.Nav);

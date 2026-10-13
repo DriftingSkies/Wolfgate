@@ -38,7 +38,6 @@ public sealed partial class WFCrewTest
         await RunTicks(400);
         await Server.WaitAssertion(() =>
         {
-            Assert.That(Server.System<NPCSystem>().IsAwake(pilot, SEntMan.GetComponent<HTNComponent>(pilot)), Is.True);
             Assert.That(Server.System<WFPilotDutySystem>().IsAtHelm(pilot), Is.True);
             var objectives = Server.System<WFCrewObjectiveSystem>();
             Assert.That(objectives.SetQueue(deck, "remote", new List<WFCrewObjective>

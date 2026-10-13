@@ -121,6 +121,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+    - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NewsReaderCartridge

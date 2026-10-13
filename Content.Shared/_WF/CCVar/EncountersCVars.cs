@@ -52,6 +52,7 @@ public sealed class EncountersCVars
     /// <summary>
     /// Stations no encounter is placed at or routed to, and that open-space encounters keep clear of: a comma-separated
     /// list of name fragments, matched against the grid, station and station id names. For places meant to stay secret.
+    /// A grid whose IFF hides it or its label counts as hidden too.
     /// </summary>
     public static readonly CVarDef<string> HiddenStations =
         CVarDef.Create("wf.encounters.hidden_stations", "Helios", CVar.SERVERONLY);

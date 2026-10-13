@@ -1,11 +1,14 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Content.IntegrationTests.Pair;
 using Content.Shared._WF.Vehicles.Base;
 using Content.Shared._WF.Vehicles.Grid.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -150,5 +153,17 @@ internal static class VehicleRigs
     public static GridVehicleMoverComponent Mover(VehicleRig rig)
     {
         return rig.Pair.Server.EntMan.GetComponent<GridVehicleMoverComponent>(rig.Vehicle);
+    }
+}
+
+/// <summary>The gun lookup with the gun's id and component apart, as the vehicle tests read it.</summary>
+internal static class VehicleGunLookup
+{
+    public static bool TryGetGun(this SharedGunSystem guns, EntityUid entity, out EntityUid gunUid, [NotNullWhen(true)] out GunComponent? gun)
+    {
+        var found = guns.TryGetGun(entity, out var ent);
+        gunUid = found ? ent.Owner : EntityUid.Invalid;
+        gun = found ? ent.Comp : null;
+        return found;
     }
 }

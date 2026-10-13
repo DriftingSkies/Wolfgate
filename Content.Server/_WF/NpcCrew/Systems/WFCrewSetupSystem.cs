@@ -194,7 +194,8 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
                 return false;
             var coordinates = new EntityCoordinates(grid, post.Position);
             var tile = _maps.TileIndicesFor(grid, map, coordinates);
-            if (!_planner.IsSafePost(grid, tile, map))
+            // A post without air is allowed; the crewman put there is spawned in a void kit.
+            if (!_planner.IsStandable(grid, tile, map))
                 return false;
         }
         return true;
@@ -338,6 +339,7 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
         if (TryComp<WFPilotDutyComponent>(mob, out var pilot))
         {
             pilot.ReactToAttacks = mission.HeaveTo;
+            pilot.FaceThreats = mission.FaceThreats;
             _pilots.SetNavigation(mob, mission.Navigation);
         }
         EntityManager.System<WFCrewSecuritySystem>().Reset(mob);

@@ -19,4 +19,5 @@ public static class WolfgateAdminCommands
     public const string PlanetControl = "planetcontrol";
     public const string Cavern = "wfcavern";
     public const string OfferToGhosts = "offertoghosts";
+    public const string SecondChance = "secondchance";
 }

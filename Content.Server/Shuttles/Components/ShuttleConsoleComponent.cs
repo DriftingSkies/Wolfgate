@@ -64,7 +64,11 @@ namespace Content.Server.Shuttles.Components
         public string AutopilotRotationKey = "TargetRotation";
 
         [DataField]
-        public SoundSpecifier? AutopilotDoneSound = new SoundPathSpecifier("/Audio/Effects/Shuttle/radar_ping.ogg");
+        // WOLFGATE(Shuttles) START: use the supplied quiet autopilot disengagement cue.
+        // public SoundSpecifier? AutopilotDoneSound = new SoundPathSpecifier("/Audio/Effects/Shuttle/radar_ping.ogg");
+        public SoundSpecifier? AutopilotDoneSound = new SoundPathSpecifier(
+            "/Audio/_WF/Shuttles/Autopilot/autopilot_disengaged.ogg", AudioParams.Default.WithVolume(-7f));
+        // WOLFGATE END
         // </Mono>
 
         // Network Port Button Source Ports

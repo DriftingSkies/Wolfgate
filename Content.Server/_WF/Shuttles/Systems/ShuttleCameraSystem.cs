@@ -239,12 +239,18 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
         if (!Enum.IsDefined(args.View) || !float.IsFinite(args.Zoom))
             return;
 
-        var settings = EnsureComp<ShuttleCameraSettingsComponent>(ent);
-        settings.View = args.View;
-        settings.Zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
-        settings.LowLight = args.LowLight;
+        var zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
+        // WOLFGATE(Cockpit) START: temporary cockpit views never replace the helm's shared saved camera.
+        if (!WfCockpitCameraActive(args.Actor, ent))
+        {
+            var settings = EnsureComp<ShuttleCameraSettingsComponent>(ent);
+            settings.View = args.View;
+            settings.Zoom = zoom;
+            settings.LowLight = args.LowLight;
+        }
+        // WOLFGATE END
 
-        Apply(args.Actor, ent, settings.View, settings.Zoom.Value, settings.LowLight);
+        Apply(args.Actor, ent, args.View, zoom, args.LowLight);
 
         if (args.View == ShuttleCameraView.External &&
             CompOrNull<ShuttleCameraComponent>(args.Actor)?.View != ShuttleCameraView.External)
@@ -305,10 +311,12 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
         if (!float.IsFinite(args.Zoom) || !TryComp<ShuttleCameraComponent>(args.Actor, out var comp))
             return;
 
-        var settings = EnsureComp<ShuttleCameraSettingsComponent>(ent);
-        settings.Zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
+        var zoom = Math.Clamp(args.Zoom, ShuttleCameraComponent.MinZoom, ShuttleCameraComponent.MaxZoom);
+        // WOLFGATE(Cockpit): temporary wheel zoom belongs only to this pilot.
+        if (!WfCockpitCameraActive(args.Actor, ent))
+            EnsureComp<ShuttleCameraSettingsComponent>(ent).Zoom = zoom;
 
-        Apply(args.Actor, ent, comp.View, settings.Zoom.Value, comp.LowLight);
+        Apply(args.Actor, ent, comp.View, zoom, comp.LowLight);
     }
 
     private void Apply(EntityUid pilot, EntityUid console, ShuttleCameraView view, float zoom, bool lowLight)

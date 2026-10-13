@@ -8216,7 +8216,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -8.5,-0.5
       parent: 1
-- proto: WallPlastitanium
+- proto: WFWallAdamantite
   entities:
   - uid: 1179
     components:
@@ -8523,7 +8523,7 @@ entities:
     - type: Transform
       pos: -5.5,-4.5
       parent: 1
-- proto: WallPlastitaniumCapital
+- proto: WFWallAdamantiteCapital
   entities:
   - uid: 1240
     components:
@@ -9776,7 +9776,7 @@ entities:
     - type: Transform
       pos: -7.5,-8.5
       parent: 1
-- proto: WallPlastitaniumDiagonal
+- proto: WFWallAdamantiteDiagonal
   entities:
   - uid: 1490
     components:
@@ -9789,7 +9789,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 0.5,5.5
       parent: 1
-- proto: WallPlastitaniumDiagonalCapital
+- proto: WFWallAdamantiteDiagonalCapital
   entities:
   - uid: 1492
     components:

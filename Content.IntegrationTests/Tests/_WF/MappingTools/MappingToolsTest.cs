@@ -358,6 +358,45 @@ public sealed class MappingToolsTest
     }
 
     [Test]
+    public async Task PasteConstructedEntities()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var testMap = await pair.CreateTestMap();
+        var mapSys = entMan.System<MapSystem>();
+        var tools = entMan.System<MappingToolsSystem>();
+        var session = pair.Player!;
+        var grid = testMap.Grid;
+
+        await server.WaitAssertion(() =>
+        {
+            grid.Comp.CanSplit = false;
+            var plating = new Tile(server.ResolveDependency<ITileDefinitionManager>()["Plating"].TileId);
+            mapSys.SetTiles(grid, grid, new() { (new Vector2i(10, 0), plating), (new Vector2i(11, 0), plating) });
+
+            // A conveyor's construction node snaps it to the grid on startup, which threw for a pasted one.
+            entMan.SpawnEntity("ConveyorBelt", new EntityCoordinates(grid, new Vector2(10.5f, 0.5f)));
+            entMan.SpawnEntity("GasPipeStraight", new EntityCoordinates(grid, new Vector2(11.5f, 0.5f)));
+
+            tools.Copy(session, new MappingSelection { Grid = entMan.GetNetEntity(grid), Area = new Box2i(10, 0, 12, 1) }, cut: false);
+            tools.Paste(session, new EntityCoordinates(grid, new Vector2(20.5f, 5.5f)), 0);
+
+            var pasted = MappingToolsMath.PasteOrigin(new Vector2i(20, 5), new Vector2i(2, 1), 0);
+            string?[] At(Vector2i cell) => mapSys.GetAnchoredEntities(grid, grid, cell)
+                .Select(uid => entMan.GetComponent<MetaDataComponent>(uid).EntityPrototype?.ID).ToArray();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(At(pasted), Does.Contain("ConveyorBelt"));
+                Assert.That(At(pasted + new Vector2i(1, 0)), Does.Contain("GasPipeStraight"));
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public void TileStateMath()
     {
         Assert.Multiple(() =>

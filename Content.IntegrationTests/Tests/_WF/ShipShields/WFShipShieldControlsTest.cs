@@ -2,12 +2,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using Content.Client._WF.Cockpit;
+using Content.Client._WF.CombatConsole;
 using Content.Client._WF.ShipShields;
+using Content.Client._WF.Stylesheets;
 using Content.Client.Shuttles.UI;
+using Content.Shared._WF.CCVar;
 using Content.Shared._WF.ShipShields;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Configuration;
 using Robust.Shared.Maths;
 using Robust.Shared.Timing;
 
@@ -114,6 +119,21 @@ public sealed class WFShipShieldControlsTest
             Assert.That(tab.Visible, Is.True);
             helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Shields);
             Assert.That(screen.Visible, Is.True);
+            foreach (var size in new[] { helm.MinSize, new Vector2(1128, 776) })
+            {
+                helm.SetSize = size;
+                helm.Measure(size);
+                helm.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+                var body = Tree(screen).Single(control => control.GetType().Name == "ShieldColumns");
+                Assert.That(body.Height, Is.GreaterThan(100), "The instrument layout must reserve space for the coverage dial.");
+                foreach (var action in new Control[] { Field<Button>(screen, "_enabled"), Field<Button>(screen, "_reset"), Field<ProgressBar>(screen, "_health") })
+                {
+                    Assert.That(action.Height, Is.GreaterThan(0));
+                    Assert.That(action.GlobalPosition.Y, Is.GreaterThanOrEqualTo(screen.GlobalPosition.Y));
+                    Assert.That(action.GlobalPosition.Y + action.Height, Is.LessThanOrEqualTo(helm.GlobalPosition.Y + size.Y),
+                        "Deployment, reset and integrity must remain visible at the helm's minimum size.");
+                }
+            }
             var allocations = new List<(float Direction, float Amount, float Arc)>();
             helm.ShieldShuntRequested += (direction, amount, arc) => allocations.Add((direction, amount, arc));
             screen.SetDraft(43f, 0.75f, 120f);
@@ -157,6 +177,97 @@ public sealed class WFShipShieldControlsTest
             Assert.That(tab.Visible, Is.False);
             Assert.That(screen.Visible, Is.False, "Removing the generator must leave Shields mode.");
             Assert.That(Field<ShuttleConsoleWindow.ShuttleConsoleMode>(helm, "_mode"), Is.EqualTo(ShuttleConsoleWindow.ShuttleConsoleMode.Nav));
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task CockpitShuntStripSpansTheDialBank()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var settings = pair.Client.ResolveDependency<IConfigurationManager>();
+            var originalTheme = settings.GetCVar(WolfgateCVars.UiStyle);
+            using var screen = new WFShipShieldShuntScreen();
+            screen.WfRefitInstruments();
+            screen.UpdateState(State(), 0f);
+            var original = Tree(screen).OfType<WFGlassGauge>()
+                .ToDictionary(gauge => gauge, gauge => (gauge.Parent, gauge.SetSize));
+            var lease = new WFCockpitLease();
+            using var page = screen.WfCockpitShieldDetails(lease);
+            try
+            {
+                foreach (var theme in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
+                foreach (var size in new[] { new Vector2(300, 500), new Vector2(560, 800) })
+                {
+                    settings.SetCVar(WolfgateCVars.UiStyle, theme);
+                    foreach (var control in Tree(page))
+                        control.InvalidateMeasure();
+                    page.Measure(size);
+                    page.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+                    var strip = Tree(page).OfType<WFGlassGauge>().Single(gauge => gauge.Strip);
+                    var rounds = Tree(page).OfType<WFGlassGauge>().Where(gauge => !gauge.Strip).ToArray();
+                    var bank = (GridContainer) rounds[0].Parent!;
+                    Assert.That(strip.Height, Is.EqualTo(64).Within(1), "Target shunt must retain a thin linear scale in both themes.");
+                    Assert.That(strip.Width, Is.EqualTo(bank.Width).Within(1), "The target scale spans both dial columns.");
+                    Assert.That(strip.GlobalPosition.X, Is.EqualTo(bank.GlobalPosition.X).Within(1));
+                    Assert.That(strip.GlobalPosition.Y, Is.EqualTo(page.GlobalPosition.Y).Within(1), "Target shunt belongs at the top of the shield page.");
+                    Assert.That(strip.GlobalPosition.Y + strip.Height, Is.LessThanOrEqualTo(bank.GlobalPosition.Y));
+                    Assert.That(rounds, Has.Length.EqualTo(4));
+                    Assert.That(bank.Columns, Is.EqualTo(2));
+                    Assert.That(rounds.Select(gauge => gauge.GlobalPosition.X).Distinct().Count(), Is.EqualTo(2));
+                    Assert.That(rounds.Select(gauge => gauge.GlobalPosition.Y).Distinct().Count(), Is.EqualTo(2));
+                    foreach (var gauge in rounds)
+                        Assert.That(gauge.Height, Is.EqualTo(160).Within(1), "Round dials keep one height in both themes.");
+                }
+            }
+            finally
+            {
+                lease.Restore();
+                settings.SetCVar(WolfgateCVars.UiStyle, originalTheme);
+            }
+            foreach (var (gauge, layout) in original)
+            {
+                Assert.That(gauge.Parent, Is.SameAs(layout.Parent));
+                Assert.That(gauge.SetSize, Is.EqualTo(layout.SetSize), "Exiting cockpit must restore the original shield-console sizing.");
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Wide screens give the coverage panel a second column; narrow ones keep a single stack.</summary>
+    [Test]
+    public async Task SettingsSplitIntoTwoColumnsOnlyWhenWide()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            using var screen = new WFShipShieldShuntScreen();
+            screen.UpdateState(State(), 0f);
+            var settings = Tree(screen).Single(control => control.GetType().Name == "ShieldSettings");
+            foreach (var (size, wide) in new[] { (new Vector2(760f, 900f), false), (new Vector2(1400f, 900f), true) })
+            {
+                foreach (var control in Tree(screen))
+                    control.InvalidateMeasure();
+                screen.Measure(size);
+                screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+                var panels = settings.Children.Where(child => child.Visible).ToArray();
+                Assert.That(panels, Has.Length.EqualTo(3));
+                Assert.That(panels[1].GlobalPosition.X, Is.EqualTo(panels[0].GlobalPosition.X).Within(1f));
+                if (wide)
+                {
+                    Assert.That(panels[2].GlobalPosition.X, Is.GreaterThanOrEqualTo(panels[0].GlobalPosition.X + panels[0].Width),
+                        "The coverage panel takes its own column at wide sizes.");
+                    Assert.That(panels[2].GlobalPosition.Y, Is.EqualTo(panels[0].GlobalPosition.Y).Within(1f));
+                }
+                else
+                {
+                    Assert.That(panels[2].GlobalPosition.X, Is.EqualTo(panels[0].GlobalPosition.X).Within(1f),
+                        "Narrow screens keep one column.");
+                    Assert.That(panels[2].GlobalPosition.Y, Is.GreaterThan(panels[1].GlobalPosition.Y));
+                }
+            }
         });
         await pair.CleanReturnAsync();
     }

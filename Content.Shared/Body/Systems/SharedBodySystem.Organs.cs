@@ -197,6 +197,10 @@ public partial class SharedBodySystem
 
         foreach (var slotId in part.Organs.Keys)
         {
+            // WOLFGATE(Genitals): an organ only attaches in its own slot, so an empty genital slot must not take it
+            if (!GetOrganContainerId(slotId).Contains(OrganSlotContainerIdPrefix + organ.SlotId))
+                continue;
+
             if (InsertOrgan(partId, organId, slotId, part, organ))
                 return true;
         }

@@ -10,12 +10,12 @@ using Robust.Shared.Timing;
 namespace Content.IntegrationTests.Tests._WF.ShipPa;
 
 /// <summary>
-/// The console cut must release the request cooldown only when it actually removes a ship track.
+/// The console Stop must release the request cooldown only when it actually removes a ship track.
 /// </summary>
-public sealed class ShipPaCutTest : InteractionTest
+public sealed class ShipPaStopTest : InteractionTest
 {
     [Test]
-    public async Task CutReleasesCooldownOnlyWhenTrackExists()
+    public async Task StopReleasesCooldownOnlyWhenTrackExists()
     {
         await SpawnTarget("ComputerShuttle");
         var console = SEntMan.GetEntity(Target!.Value);
@@ -54,30 +54,30 @@ public sealed class ShipPaCutTest : InteractionTest
                 Assert.That(alert.NextInternetSound, Is.GreaterThan(timing.CurTime),
                     "A successful request should start the request cooldown.");
 
-                var cut = new ShipPaInternetSoundStopMessage { Actor = SPlayer };
-                ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, cut);
+                var stop = new ShipPaInternetSoundStopMessage { Actor = SPlayer };
+                ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, stop);
 
                 Assert.That(internet.IsPlayingOn(grid), Is.False,
-                    "A successful cut should remove the pending ship track.");
+                    "A successful stop should remove the pending ship track.");
                 Assert.That(alert.NextInternetSound, Is.EqualTo(TimeSpan.Zero),
-                    "A successful cut should release the request cooldown.");
+                    "A successful stop should release the request cooldown.");
 
                 var replacement = new ShipPaInternetSoundRequestMessage(url) { Actor = SPlayer };
                 ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, replacement);
 
                 Assert.That(internet.IsPlayingOn(grid), Is.True,
-                    "A replacement request should be accepted immediately after a successful cut.");
+                    "A replacement request should be accepted immediately after a successful stop.");
                 Assert.That(alert.NextInternetSound, Is.GreaterThan(timing.CurTime));
 
-                // Remove the replacement, then create cooldown state without a track. A second cut is a
+                // Remove the replacement, then create cooldown state without a track. A second stop is a
                 // no-op and must not clear that cooldown.
-                ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, cut);
+                ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, stop);
                 var noOpCooldown = timing.CurTime + TimeSpan.FromSeconds(60);
                 alert.NextInternetSound = noOpCooldown;
-                ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, cut);
+                ui.RaiseUiMessage(console, ShuttleConsoleUiKey.Key, stop);
 
                 Assert.That(alert.NextInternetSound, Is.EqualTo(noOpCooldown),
-                    "A no-op cut must leave the existing cooldown untouched.");
+                    "A no-op stop must leave the existing cooldown untouched.");
             }
             finally
             {
