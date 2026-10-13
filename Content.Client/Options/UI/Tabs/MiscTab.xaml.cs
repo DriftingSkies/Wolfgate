@@ -1,6 +1,4 @@
 using System.Linq;
-using Content.Client._WF.Stylesheets; // WOLFGATE(Stylesheets)
-using Content.Shared._WF.CCVar; // WOLFGATE(Stylesheets)
 using Content.Client.UserInterface.Screens;
 using Content.Shared._Mono.CCVar;
 using Content.Shared.CCVar;
@@ -43,15 +41,8 @@ public sealed partial class MiscTab : Control
         // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
         ShowOocPatronColor.Visible = _playerManager.LocalSession?.Channel?.UserData.PatronTier is { };
 
-        // WOLFGATE(Stylesheets) START: UI skin picker
-        var styleEntries = WolfgateSkins.All
-            .Select(skin => new OptionDropDownCVar<string>.ValueOption(skin.Id, Loc.GetString(skin.Name)))
-            .ToList();
-        Control.AddOptionDropDown(WolfgateCVars.UiStyle, DropDownWolfgateStyle, styleEntries);
-        // WOLFGATE END
         Control.AddOptionDropDown(CVars.InterfaceTheme, DropDownHudTheme, themeEntries);
         Control.AddOptionDropDown(CCVars.UILayout, DropDownHudLayout, layoutEntries);
-        Control.AddOptionCheckBox(WolfgateCVars.CockpitAutoEnter, CockpitAutoEnterCheckBox); // WOLFGATE(Cockpit): option to open the cockpit view automatically
 
         Control.AddOptionCheckBox(CVars.DiscordEnabled, DiscordRich);
         Control.AddOptionCheckBox(CCVars.ShowOocPatronColor, ShowOocPatronColor);

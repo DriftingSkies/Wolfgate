@@ -224,8 +224,6 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 
 - [`Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs`](../../../Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs): let the cockpit controls own their reticle and ordinary HUD cursors.
 - [`Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs`](../../../Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs): character combat indicators must not cover the ship's aiming reticle.
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): open the cockpit view automatically
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): option to open the cockpit view automatically
 - [`Content.Client/Pinpointer/UI/NavMapControl.cs`](../../../Content.Client/Pinpointer/UI/NavMapControl.cs)
   - department labels stay compact instead of growing with map zoom.
   - update shared right-mouse map panning.
