@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared._WF.Vehicles.Grid;
 using Content.Shared.Tag;
 using Content.Shared.Whitelist;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WF.Vehicles.Crushing;
@@ -27,6 +28,10 @@ public sealed partial class VehicleSmashRuleSystem : EntitySystem
 
     private readonly Dictionary<string, (bool Plowable, bool Wall)> _plow = new();
 
+    /// <summary>The one of <see cref="RequiredComponents"/> that only the server has; a client's copy of a prototype leaves it out.</summary>
+    private const string ServerOnlyComponent = "Destructible";
+
+    [Dependency] private INetManager _net = default!;
     [Dependency] private IPrototypeManager _proto = default!;
 
     private List<VehicleSmashRulePrototype>? _rules;
@@ -155,6 +160,10 @@ public sealed partial class VehicleSmashRuleSystem : EntitySystem
     {
         foreach (var name in RequiredComponents)
         {
+            // The client predicts the smash, and would be stopped by everything the server drives through if it asked for this.
+            if (_net.IsClient && name == ServerOnlyComponent)
+                continue;
+
             if (!proto.Components.ContainsKey(name))
                 return false;
         }

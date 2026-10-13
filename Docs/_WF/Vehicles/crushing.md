@@ -16,7 +16,7 @@ RMC's weight-class rules, and run over mobs as RMC does. This is how, and what t
   instead, and one the driver has no access to holds.
 
 Weight classes in order: Weak, Light, Medium, Heavy. Mobs are not smashables: a standing mob is run over (8 Blunt, a
-knockdown, `VehicleRunover`) at 4 tiles per second or more, and left alone below that.
+knockdown, `VehicleRunover`) at 1.5 tiles per second or more, and left alone below that.
 
 ## What Wolfgate does
 
@@ -163,6 +163,16 @@ and that a mob is run over.
 Add a `vehicleSmashRule` entry with the narrowest selector that works: the base prototype of the family, not a component
 half the game has. Run `VehicleSmashRuleTest` and read what it reports. Never edit the upstream prototype; a prototype that
 needs settings of its own can carry a `VehicleSmashable` component in the module instead.
+
+## Machines
+
+Owner, 2026-10-13: vehicles were getting stuck on computers and fax machines, so `WFVehicleSmashMachines` lets any vehicle
+drive through an ordinary machine or computer (`BaseMachine`, `BaseStructureComputer`). Its blacklist keeps what a ship
+cannot fly, fight, power or pay without (thrusters, gyroscopes, shuttle consoles, FTL drives, shields, ship guns,
+generators and batteries, bank, deposit and shipyard machines), the machines that hold a person or a hazard (cryo pods,
+cloning pods, the AI core, containment and engine parts), wall-mounted and access-locked machines and vending machines,
+and `BaseStructureDisableAnchoring` keeps the fixtures of a station, outpost or point of interest. Some of those
+components exist only on the server, so a client may predict driving through one and be put back.
 
 ## The plow
 

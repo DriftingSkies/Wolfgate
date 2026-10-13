@@ -6,7 +6,7 @@
 # A rule only ever matches a prototype that has both Damageable and Destructible, and never a wall or anything
 # built on an indestructible base (VehicleSmashRuleSystem.NeverParents). VehicleSmashRuleTest checks every entity
 # prototype: no wall, nothing indestructible, no safe, deposit box,
-# console, thruster, gyroscope, generator, shield or other machine of a ship, and no two rules at one priority for the
+# shuttle console, thruster, gyroscope, generator, shield or bank and shipyard machine, and no two rules at one priority for the
 # same prototype. Keep the selectors narrow: list the base prototype of a family, not a component half the game has.
 #
 # Ship hull (the windows and airlocks ships are built from) is broken by tanks only: its rules set minDestroyWeightClass
@@ -93,6 +93,80 @@
   - VendingMachineBountyVendPunk
   blacklist:
     components:
+    - WallMount
+    - AccessReader
+    - CompanyAccessReader
+    - Store
+
+# Machines and computers: a vehicle drives through one as through a table (owner, 2026-10-13: vehicles were getting
+# stuck on computers and fax machines). Left alone are the parts a ship cannot fly, fight, power or pay without and the
+# machines that hold a person or a hazard (the components below), wall-mounted and access-locked machines, vending
+# machines (their own rule above) and the fixtures of a station, outpost or point of interest.
+- type: vehicleSmashRule
+  id: WFVehicleSmashMachines
+  parents:
+  - BaseMachine
+  - BaseStructureComputer
+  # Besides the fixtures: the disposal units (their own rule below), and the machines that are built not to break
+  # (research servers, the economy's lathes and furnaces, ammunition loaders and the like).
+  excludeParents:
+  - BaseStructureDisableAnchoring
+  - DisposalUnit
+  - MailingUnit
+  - AmmoLoader
+  - AmmoLoaderSmall
+  - BaseRdServerFaction
+  - CentrifugeLathe
+  - DataChitStorageServer
+  - IndustrialFurnaceEconomy
+  - PrecisionAssemblerEconomy
+  - TechDiskPrinter
+  - MachineAnomalyGenerator
+  - MachineHeavyFTLDriveConsole
+  - ReagentGrinderIndustrial
+  - Recycler
+  blacklist:
+    components:
+    - Item
+    - ResearchServer
+    - Thruster
+    - WFLandingThruster
+    - ShuttleConsole
+    - FTLDrive
+    - FTLBeacon
+    - StationAnchor
+    - ShipShield
+    - ShipShieldEmitter
+    - Gun
+    - Smes
+    - PowerNetworkBattery
+    - PowerSupplier
+    - PortableGenerator
+    - FuelGenerator
+    - NuclearReactor
+    - TegGenerator
+    - GravityGenerator
+    - SingularityGenerator
+    - ContainmentFieldGenerator
+    - Emitter
+    - AmeController
+    - ParticleAcceleratorControlBox
+    - ParticleAcceleratorEmitter
+    - ParticleAcceleratorEndCap
+    - ParticleAcceleratorFuelChamber
+    - ParticleAcceleratorPowerBox
+    - RadiationCollector
+    - StationAiCore
+    - CryoSleep
+    - CryoPod
+    - CloningPod
+    - MedicalScanner
+    - SafetyDepositBox
+    - SafetyDepositConsole
+    - BankATM
+    - StationBankATM
+    - ShipyardConsole
+    - VendingMachine
     - WallMount
     - AccessReader
     - CompanyAccessReader

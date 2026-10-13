@@ -34,7 +34,7 @@ public sealed class VehicleSmashRuleTest
     /// <summary>Components of the machines of a ship, of things that keep player property, and of the grid itself.</summary>
     private static readonly string[] ForbiddenComponents =
     {
-        "MapGrid", "ProtectedGrid", "AsteroidRock", "Thruster", "WFLandingThruster", "ShuttleConsole", "Computer",
+        "MapGrid", "ProtectedGrid", "AsteroidRock", "Thruster", "WFLandingThruster", "ShuttleConsole",
         "FTLDrive", "FTLBeacon", "FTLSmashImmune", "StationAnchor", "ShipShield", "ShipShieldEmitter",
         "Smes", "PowerSupplier", "PortableGenerator", "FuelGenerator", "NuclearReactor", "TegGenerator", "GravityGenerator",
         "SafetyDepositBox", "SafetyDepositConsole", "BankATM", "StationBankATM", "ShipyardConsole", "TradeCrate",
@@ -107,6 +107,45 @@ public sealed class VehicleSmashRuleTest
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// A driver's client predicts the drive, so it has to know what the vehicle smashes: whatever the server's rules give
+    /// a prototype, the client's give it too. The client has no Destructible component to go by.
+    /// </summary>
+    [Test]
+    public async Task TheClientFindsEveryRuleTheServerDoes()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        var server = pair.Server;
+        var client = pair.Client;
+        var smashable = new List<string>();
+        var missing = new List<string>();
+
+        await server.WaitPost(() =>
+        {
+            var rules = server.System<VehicleSmashRuleSystem>();
+            foreach (var proto in server.ProtoMan.EnumeratePrototypes<EntityPrototype>())
+            {
+                if (rules.TryGetSettings(proto, out _))
+                    smashable.Add(proto.ID);
+            }
+        });
+
+        await client.WaitPost(() =>
+        {
+            var rules = client.System<VehicleSmashRuleSystem>();
+            foreach (var id in smashable)
+            {
+                if (!client.ProtoMan.TryIndex<EntityPrototype>(id, out var proto) || !rules.TryGetSettings(proto, out _))
+                    missing.Add(id);
+            }
+        });
+
+        Assert.That(smashable, Is.Not.Empty, "Test setup: the server's rules match nothing.");
+        Assert.That(missing, Is.Empty, $"The client would be stopped by {missing.Count} things the server smashes, such as {string.Join(", ", missing.Take(8))}.");
+
+        await pair.CleanReturnAsync();
     }
 
     /// <summary>
