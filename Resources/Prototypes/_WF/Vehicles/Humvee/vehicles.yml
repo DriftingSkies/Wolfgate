@@ -12,14 +12,14 @@
     follow: true
     location: Humvee
   - type: GridVehicleMover
-    plowRamMinSpeed: 5
+    plowRamMinSpeed: 10
     maxRotationSpeedDegrees: 120
     rotationAccelerationDegrees: 240
     rotationDecelerationDegrees: 300
     alignmentAssistDegrees: 8
-    maxSpeed: 6
-    acceleration: 5
-    deceleration: 12
+    maxSpeed: 14
+    acceleration: 8
+    deceleration: 14
     turnDelay: 0.25
     weightClass: Light
   - type: VehicleOvercharge

@@ -110,6 +110,11 @@ not set them: `weedsSpeedFactor`, `xenoBlockMinimumSize`, `xenoPushMinimumSize`,
 vehicle (`canPushVehicles`). Mobs never block: a standing mob is run over at 4 tiles per second or more (8 Blunt, a
 knockdown and `VehicleRunover`), slower than that it is left alone.
 
+Speeds are Wolfgate's (owner, 2026-10-13: fast enough to be transport on open planets; a mob sprints at about 4.5
+tiles a second). Top speed and acceleration: humvee 14 and 8, vans and the civilian vehicles 13 and 7, APCs 11 and 6
+(SPP 11 and 4.5), tanks 7 and 2.5, the AEV 6 and 2.2, the Bison 9 and 6. RMC's and CMU's were 6, 6, 5, 3, 3 and 5. The
+turn rates are unchanged, so a vehicle at speed turns in a wide arc and has to slow down for a tight one.
+
 Steering is CMU's, not RMC's. A vehicle with `freeSteering` (every roster vehicle; the test chassis keeps the four-way
 drive) reads forward and back as throttle and left and right as steering. The chassis has a turn rate of its own
 (`maxRotationSpeedDegrees`, `rotationAccelerationDegrees`, `rotationDecelerationDegrees`), so it holds any heading and

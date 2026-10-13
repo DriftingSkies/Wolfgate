@@ -186,14 +186,14 @@
     rotationAccelerationDegrees: 120
     rotationDecelerationDegrees: 180
     alignmentAssistDegrees: 8
-    maxSpeed: 3
-    acceleration: 1.154
-    deceleration: 8
-    maxReverseSpeed: 2
-    reverseAcceleration: 1.154
+    maxSpeed: 6
+    acceleration: 2.2
+    deceleration: 9
+    maxReverseSpeed: 3
+    reverseAcceleration: 2
     turnDelay: 1
     turnInPlace: true
-    turnInPlaceMaxSpeed: 0.5
+    turnInPlaceMaxSpeed: 1
     canPushVehicles: true
     weightClass: Medium
   - type: VehicleOvercharge

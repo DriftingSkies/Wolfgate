@@ -13,19 +13,19 @@
     follow: true
     location: Tank
   - type: GridVehicleMover
-    plowRamMinSpeed: 1.5
+    plowRamMinSpeed: 3.5
     maxRotationSpeedDegrees: 60
     rotationAccelerationDegrees: 120
     rotationDecelerationDegrees: 180
     alignmentAssistDegrees: 8
-    maxSpeed: 3
-    acceleration: 1.154
-    deceleration: 8
-    maxReverseSpeed: 2
-    reverseAcceleration: 1.154
+    maxSpeed: 7
+    acceleration: 2.5
+    deceleration: 9
+    maxReverseSpeed: 3.5
+    reverseAcceleration: 2
     turnDelay: 1
     turnInPlace: true
-    turnInPlaceMaxSpeed: 0.5
+    turnInPlaceMaxSpeed: 1
     canPushVehicles: true
     weightClass: Medium
   - type: VehicleOvercharge

@@ -14,14 +14,14 @@
     follow: true
     location: APC
   - type: GridVehicleMover
-    plowRamMinSpeed: 3
+    plowRamMinSpeed: 6
     maxRotationSpeedDegrees: 90
     rotationAccelerationDegrees: 150
     rotationDecelerationDegrees: 210
     alignmentAssistDegrees: 8
-    maxSpeed: 5
-    acceleration: 4
-    deceleration: 10
+    maxSpeed: 11
+    acceleration: 6
+    deceleration: 12
     turnDelay: 0.4
     weightClass: Light
   - type: VehicleOvercharge
@@ -267,11 +267,11 @@
   suffix: Drivable, APC, Base, SPP
   components:
   - type: GridVehicleMover
-    maxSpeed: 5
-    acceleration: 2.0
-    deceleration: 7.5
-    maxReverseSpeed: 2.5
-    reverseAcceleration: 2.0
+    maxSpeed: 11
+    acceleration: 4.5
+    deceleration: 10
+    maxReverseSpeed: 4
+    reverseAcceleration: 3
     turnDelay: 0.25
     turnInPlace: false
   - type: Sprite

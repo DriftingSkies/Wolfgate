@@ -24,13 +24,15 @@
   - type: StaticPrice
     price: 20000
   - type: GridVehicleMover
+    plowRamDamage: 14
+    maxReverseSpeed: 5
     freeSteering: true
     maxRotationSpeedDegrees: 90
     rotationAccelerationDegrees: 90
     rotationDecelerationDegrees: 120
-    maxSpeed: 6
-    acceleration: 5
-    deceleration: 12
+    maxSpeed: 13
+    acceleration: 7
+    deceleration: 14
     turnDelay: 0.25
   - type: VehicleOvercharge
     speedMultiplier: 1.6

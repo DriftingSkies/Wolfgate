@@ -100,10 +100,10 @@
     maxRotationSpeedDegrees: 90
     rotationAccelerationDegrees: 180
     rotationDecelerationDegrees: 180
-    maxSpeed: 5
-    acceleration: 4
-    deceleration: 10
-    maxReverseSpeed: 3
+    maxSpeed: 9
+    acceleration: 6
+    deceleration: 12
+    maxReverseSpeed: 5
     reverseAcceleration: 4
     turnDelay: 0
     turnInPlace: true

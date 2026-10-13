@@ -170,9 +170,10 @@ Owner decision of 2026-10-13: plow vehicles break walls. A hardpoint with `Vehic
 tank snowplows) is a plow while it has integrity left. When the vehicle is stopped by something and that something lies
 off the hull's front face (`GridVehicleMotionSimulator.IsFrontImpact`), the plow damages it, on the server only:
 
-- A ram: `speed squared x plowRamDamage (75) x the plow's multiplier (1.5) x the chassis' multiplier`, if the contact is
-  at `plowRamMinSpeed` or faster (tank 1.5, APC 3, humvee and van 5, AEV 0.1; never below 0.5). A humvee at top speed
-  does about 4000, which is any wall but an outpost's.
+- A ram: `speed squared x plowRamDamage x the plow's multiplier (1.5) x the chassis' multiplier`, if the contact is at
+  `plowRamMinSpeed` or faster (tank 3.5, APC 6, humvee and van 10, AEV 0.1; never below 0.5). `plowRamDamage` is 14 on
+  the vehicles (the component's own default of 75 is CMU's, for CMU's speeds), so a humvee at its top speed of 14 does
+  about 4000, which is any wall but an outpost's, and a tank at 7 about 1000.
 - A grind, for a vehicle with `VehiclePlowChassis` and a `poweredDemolitionDamagePerSecond` (the AEV: 2000, after half a
   second of unbroken contact): that much per second for as long as the driver keeps pushing, with a popup and a creak.
 
