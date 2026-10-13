@@ -79,6 +79,10 @@ public sealed partial class WFDrydockJobComponent : Component
     [ViewVariables]
     public int SkippedRefund;
 
+    /// <summary>Credits of the price paid in cash and not refunded yet; refunds come back as cash first.</summary>
+    [ViewVariables]
+    public int CashPaid;
+
     /// <summary>Whether the job was paid in materials, so refunds return materials instead of credits.</summary>
     [ViewVariables]
     public bool PaidInMaterials;

@@ -22,6 +22,10 @@
     minFee: 0
     feeFraction: 0
     noticeChannel: null
+  # Paid in materials, so it takes no cash.
+  - type: CreditReceiver
+    cashSlot:
+      locked: true
   # Rates and limits are pegged to a T2 ship voucher; see the Drydock README.
   - type: WFDrydockMaterialPayment
     rates:

@@ -33,7 +33,9 @@ A booking takes the smallest free berth that fits the ship, for 5 minutes, and g
 approach lights (`WFDrydockGuideComponent`, drawn by `WFDrydockGuideOverlay`). Work starts once the ship has held
 still in the berth for 2 s and is paid then; a booking that lapses or is cancelled costs nothing. Walk-in consoles
 sell work on the ship in their berth directly, and their berth lights button shows the same guide for
-`BerthLightsTime` seconds.
+`BerthLightsTime` seconds. A walk-in console also has a cash slot (`CreditReceiver`): cash in it is spent before the
+payer's bank, so no bank account is needed, and refunds of a cash payment drop as cash at the console. Booked work
+is paid from the bank only.
 
 A job restores missing hull tiles and entities and heals damage, from the ship's repair snapshot
 (`ShipRepairDataComponent`). Cranes take the nearest item and skip any they can't reach within 10 s, refunding it. At

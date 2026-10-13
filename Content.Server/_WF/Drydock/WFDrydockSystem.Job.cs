@@ -348,7 +348,7 @@ public sealed partial class WFDrydockSystem
         {
             var refund = returned.Sum(i => i.Cost);
             job.SkippedRefund += refund;
-            Refund(job, refund);
+            Refund(console, job, refund);
         }
         _audio.PlayPvs(comp.DenySound, console);
     }
@@ -642,9 +642,19 @@ public sealed partial class WFDrydockSystem
             (_random.NextFloat() * 2f - 1f) * range);
     }
 
-    /// <summary>Banks a refund to the job's payer, if the payer still exists.</summary>
-    private void Refund(WFDrydockJobComponent job, int amount)
+    /// <summary>
+    /// Refunds the job: cash it took drops at the console, and the rest is banked to the payer if the payer still exists.
+    /// </summary>
+    private void Refund(EntityUid console, WFDrydockJobComponent job, int amount)
     {
+        var cash = Math.Min(amount, job.CashPaid);
+        if (cash > 0)
+        {
+            job.CashPaid -= cash;
+            amount -= cash;
+            _stack.SpawnMultiple(CashPrototype, cash, Transform(console).Coordinates);
+        }
+
         if (amount > 0 && job.Payer is { } payer && !TerminatingOrDeleted(payer))
             _bank.TryBankDeposit(payer, amount, false);
     }
@@ -677,7 +687,7 @@ public sealed partial class WFDrydockSystem
             else
             {
                 var refund = unfinished.Sum(i => i.Cost);
-                Refund(job, refund);
+                Refund(console, job, refund);
                 Notify(console, comp, job, Loc.GetString(powerLost ? "drydock-console-aborted-power" : "drydock-console-aborted", ("refund", refund)));
             }
             _audio.PlayPvs(comp.DenySound, console);

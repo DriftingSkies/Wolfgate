@@ -6,6 +6,7 @@ drydock-console-ship-moving = Hold the ship still first.
 drydock-console-nothing-to-repair = Nothing to repair.
 drydock-console-insufficient-funds = Insufficient funds: { $price } cr required.
 drydock-console-no-bank-account = No bank account found.
+drydock-console-no-bank-account-cash = No bank account found. Put cash in the console to pay.
 drydock-console-no-character = No character data found.
 drydock-console-transaction-failed = The transaction failed.
 drydock-console-started = Repair started: { $count } { $count ->

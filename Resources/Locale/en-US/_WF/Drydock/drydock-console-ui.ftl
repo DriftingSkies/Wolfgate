@@ -30,6 +30,7 @@ drydock-ui-count-parts = Parts
 drydock-ui-count-damage = Damage
 drydock-ui-quote = Quote
 drydock-ui-stock = Stock
+drydock-ui-cash = Cash
 drydock-ui-eta = Time left
 drydock-ui-expires = Expires
 drydock-ui-credits = { $price } cr

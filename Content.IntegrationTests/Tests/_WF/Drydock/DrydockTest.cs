@@ -14,6 +14,8 @@ using Content.Server.Construction.Components;
 using Content.Server.DeviceLinking.Systems;
 using Content.Server.Power.Components;
 using Content.Server.Shuttles.Components;
+using Content.Server.Stack;
+using Content.Shared._Mono.Economy;
 using Content.Shared._Mono.Ships.Components;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
@@ -21,6 +23,7 @@ using Content.Shared._WF.Drydock;
 using Content.Shared._WF.Hailing;
 using Content.Shared._WF.Planets.Flight;
 using Content.Shared.Construction.Components;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
@@ -1313,6 +1316,77 @@ public sealed class DrydockTest
                 Assert.That(skipped, Is.EqualTo(0), "The cranes should reach every item from a moving host.");
                 Assert.That(maps.GetTileRef(ship, grid, HoleTile).Tile.TypeId, Is.EqualTo(plating), "The hole was not refloored.");
             });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Cash in the console pays for a payer with no bank account, and unfinished work is refunded as cash.</summary>
+    [Test]
+    public async Task CashInConsolePaysWithoutBankAccount()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var drydock = server.System<WFDrydockSystem>();
+        var slots = server.System<ItemSlotsSystem>();
+        var stacks = server.System<StackSystem>();
+        var containers = server.System<SharedContainerSystem>();
+        var cashSys = server.System<SharedCreditReceiverSystem>();
+        const int inserted = 100_000;
+
+        Shipyard yard = default;
+        EntityUid ship = default;
+        var paid = 0;
+
+        await server.WaitAssertion(() =>
+        {
+            // Power goes aside, as the walk-in start checks the crane's arm lane.
+            yard = SpawnShipyard(pair, map.MapId, powered: false);
+            PowerHostAside(pair, yard.Grid);
+            var comp = em.GetComponent<WFDrydockConsoleComponent>(yard.Console);
+            Assert.That(drydock.TryGetBerth(yard.Console, comp, out var berth), "The host's crane should make a berth.");
+            ship = CreateDamagedShip(pair, map.MapId);
+            PlaceOver(pair, ship, yard.Grid, berth.Area.Center);
+        });
+
+        // The crane needs power before it takes work.
+        await server.WaitRunTicks(120);
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = em.GetComponent<WFDrydockConsoleComponent>(yard.Console);
+            var payer = em.SpawnEntity("MobHuman", new MapCoordinates(0, 0, map.MapId));
+            Assert.That(drydock.TryStartRepair(yard.Console, comp, ship, payer), Is.False, "No bank account and no cash should refuse work.");
+
+            var cash = stacks.Spawn(inserted, "Credit", em.GetComponent<TransformComponent>(yard.Console).Coordinates);
+            Assert.That(slots.TryInsert(yard.Console, "cash_slot", cash, null), "The console should take cash.");
+            Assert.That(drydock.TryStartRepair(yard.Console, comp, ship, payer), Is.True, "Cash should pay for the work.");
+
+            paid = em.GetComponent<WFDrydockJobComponent>(yard.Console).CashPaid;
+            Assert.That(paid, Is.GreaterThan(0), "The job should record the cash it took.");
+            Assert.That(cashSys.GetCashBalance(yard.Console), Is.EqualTo(inserted - paid), "The slot should keep the change.");
+
+            // The ship leaves before the cranes get to it.
+            server.System<SharedTransformSystem>().SetWorldPosition(ship, OutsideBayPos);
+        });
+
+        await RunJob(pair, yard.Console);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(em.HasComponent<WFDrydockJobComponent>(yard.Console), Is.False, "The job should abort.");
+
+            var refunded = 0;
+            var query = em.EntityQueryEnumerator<StackComponent, TransformComponent>();
+            while (query.MoveNext(out var uid, out var stack, out var xform))
+            {
+                if (stack.StackTypeId == "Credit" && xform.GridUid == yard.Grid && !containers.IsEntityInContainer(uid))
+                    refunded += stack.Count;
+            }
+
+            Assert.That(refunded, Is.GreaterThan(0).And.LessThanOrEqualTo(paid), "The unfinished work should come back as cash at the console.");
         });
 
         await pair.CleanReturnAsync();

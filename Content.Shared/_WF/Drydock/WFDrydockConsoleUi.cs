@@ -33,6 +33,9 @@ public sealed class WFDrydockConsoleState : BoundUserInterfaceState
     /// <summary>Total price of the next repair job, including the base fee.</summary>
     public int RepairPrice;
 
+    /// <summary>Cash in the console's slot, spent before the payer's bank.</summary>
+    public int Cash;
+
     /// <summary>Whether a job is running.</summary>
     public bool Working;
 

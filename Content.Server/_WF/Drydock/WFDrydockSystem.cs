@@ -6,7 +6,9 @@ using Content.Server.Destructible;
 using Content.Server.Popups;
 using Content.Server.Preferences.Managers;
 using Content.Server.Shuttles.Components;
+using Content.Server.Stack;
 using Content.Shared._Crescent.Hardpoints;
+using Content.Shared._Mono.Economy;
 using Content.Shared._Mono.ShipRepair.Components;
 using Content.Shared._Mono.Ships.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
@@ -41,6 +43,8 @@ public sealed partial class WFDrydockSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private BankSystem _bank = default!;
+    [Dependency] private SharedCreditReceiverSystem _cash = default!;
+    [Dependency] private StackSystem _stack = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private TransformSystem _transform = default!;
@@ -58,6 +62,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
     /// <summary>Upper bound on ship tiles kept for ambient sparks.</summary>
     private const int MaxSparkTiles = 512;
+
+    /// <summary>Cash entity a refund of a cash payment drops.</summary>
+    private static readonly EntProtoId CashPrototype = "SpaceCash";
 
     private List<Entity<MapGridComponent>> _grids = new();
 
@@ -495,7 +502,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
         var parts = new List<string>
         {
             s.ShipName ?? "-",
-            $"{s.MissingTiles}/{s.MissingParts}/{s.DamagedParts}/{s.RepairPrice}",
+            $"{s.MissingTiles}/{s.MissingParts}/{s.DamagedParts}/{s.RepairPrice}/{s.Cash}",
             $"{s.Working}/{s.PowerRatio}/{s.CraneCount}/{s.BlockedCranes}/{s.Deploying}/{s.Progress}/{s.RemainingSeconds}",
             $"{s.Booking}/{s.BookedBerth}/{s.BookingSeconds}/{s.Notice}/{s.PaysWithMaterials}/{s.BerthLightsOn}",
             $"{s.Station}/{s.BerthConsole}/{s.BerthLabel}/{s.BerthArea}/{s.Approach}/{s.Ship}/{s.Marks.Count}",
@@ -539,6 +546,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
         }
 
         var pay = CompOrNull<WFDrydockMaterialPaymentComponent>(console);
+        if (pay == null)
+            state.Cash = _cash.GetCashBalance(console);
+
         if (pay != null)
         {
             state.PaysWithMaterials = true;
@@ -680,11 +690,12 @@ public sealed partial class WFDrydockSystem : EntitySystem
             return true;
         }
 
+        // A booked job's payer is aboard their ship, so the cash in the console isn't theirs to spend.
         var price = WorkPrice(ship, comp, upgrade, items);
-        if (!TryCharge(console, comp, actor, price))
+        if (!TryCharge(console, comp, actor, price, !booked, out var cashPaid))
             return false;
 
-        StartJob(console, comp, ship, actor, items, price);
+        StartJob(console, comp, ship, actor, items, price, cashPaid: cashPaid);
         return true;
     }
 
@@ -724,22 +735,44 @@ public sealed partial class WFDrydockSystem : EntitySystem
         return (_physics.GetMapLinearVelocity(ship) - stationVelocity).Length() <= comp.MaxStartSpeed;
     }
 
-    /// <summary>Withdraws the price from the actor's bank. Shows the reason and plays the deny sound on failure.</summary>
-    private bool TryCharge(EntityUid console, WFDrydockConsoleComponent comp, EntityUid actor, int price)
+    /// <summary>
+    /// Takes the price from the cash in the console's slot, then the rest from the actor's bank. Shows the reason and
+    /// plays the deny sound on failure.
+    /// </summary>
+    private bool TryCharge(EntityUid console, WFDrydockConsoleComponent comp, EntityUid actor, int price, bool useCash, out int cashPaid)
     {
-        if (!TryComp<BankAccountComponent>(actor, out var bank))
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-no-bank-account"));
+        cashPaid = 0;
+        var cash = useCash ? Math.Min(_cash.GetCashBalance(console), price) : 0;
+        var owed = price - cash;
+        if (owed > 0)
+        {
+            if (!TryComp<BankAccountComponent>(actor, out var bank))
+            {
+                return Deny(console, comp, actor, cash > 0
+                    ? Loc.GetString("drydock-console-insufficient-funds", ("price", price.ToString("N0")))
+                    : Loc.GetString(useCash ? "drydock-console-no-bank-account-cash" : "drydock-console-no-bank-account"));
+            }
 
-        if (!HasCharacter(actor))
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-no-character"));
+            if (!HasCharacter(actor))
+                return Deny(console, comp, actor, Loc.GetString("drydock-console-no-character"));
 
-        if (bank.Balance < price)
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-insufficient-funds", ("price", price.ToString("N0"))));
+            if (bank.Balance < owed)
+                return Deny(console, comp, actor, Loc.GetString("drydock-console-insufficient-funds", ("price", price.ToString("N0"))));
 
-        // The entity overload also updates the actor's cached balance, which the bank UI reads.
-        if (!_bank.TryBankWithdraw(actor, price))
+            // The entity overload also updates the actor's cached balance, which the bank UI reads.
+            if (!_bank.TryBankWithdraw(actor, owed))
+                return Deny(console, comp, actor, Loc.GetString("drydock-console-transaction-failed"));
+        }
+
+        if (cash > 0 && !_cash.TryCashPayment(console, cash, out _))
+        {
+            if (owed > 0)
+                _bank.TryBankDeposit(actor, owed, false);
+
             return Deny(console, comp, actor, Loc.GetString("drydock-console-transaction-failed"));
+        }
 
+        cashPaid = cash;
         return true;
     }
 
@@ -761,7 +794,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     }
 
     /// <summary>Starts a paid job: queues its items, then deploys the cranes over the ship.</summary>
-    public void StartJob(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid? payer, List<WFDrydockWorkItem> items, int price, bool paidInMaterials = false)
+    public void StartJob(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid? payer, List<WFDrydockWorkItem> items, int price, bool paidInMaterials = false, int cashPaid = 0)
     {
         if (IsShipyardGrid(console, comp, ship))
         {
@@ -774,6 +807,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
         job.Ship = ship;
         job.Payer = payer;
         job.PaidInMaterials = paidInMaterials;
+        job.CashPaid = cashPaid;
         job.Total = items.Count;
 
         AddSlots(console, comp, job);

@@ -26,6 +26,13 @@
     - WFRefitGyroscopes
     - WFRefitPower
     - WFRefitLandingThrusters
+  # Cash put in the console is spent before the payer's bank.
+  - type: CreditReceiver
+    cashSlot:
+      ejectOnBreak: true
+      whitelist:
+        components:
+        - Cash
   - type: DeviceLinkSource
     ports:
       - WFDrydockCraneSender

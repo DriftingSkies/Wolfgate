@@ -48,6 +48,7 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
     private readonly WFDrydockReadout _damage = new("drydock-ui-count-damage", counter: true);
     private readonly WFDrydockReadout _quote = new("drydock-ui-quote");
     private readonly WFDrydockReadout _stock = new("drydock-ui-stock");
+    private readonly WFDrydockReadout _cash = new("drydock-ui-cash");
     private readonly WFDrydockReadout _eta = new("drydock-ui-eta");
     private readonly WFDrydockReadout _expires = new("drydock-ui-expires");
     private readonly WFGlassGauge _progress;
@@ -110,7 +111,7 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
 
         // Right: the hull survey and repair key, the refit bay, and the berth's lights and booking.
         var counters = Row(_tiles, _parts, _damage);
-        var survey = Panel("drydock-ui-repairs", Column(counters, _quote, _stock, _progress, _eta, RepairButton), padding: 10, gap: 4);
+        var survey = Panel("drydock-ui-repairs", Column(counters, _quote, _stock, _cash, _progress, _eta, RepairButton), padding: 10, gap: 4);
         var refits = Panel("drydock-ui-refits", RefitContainer, padding: 10, gap: 4);
         _bookingPanel = Panel("drydock-ui-booking", Column(_booked, _expires, CancelBookingButton), padding: 10, gap: 4);
         _berthPanel = Panel("drydock-ui-berth", BerthLightsButton, padding: 10, gap: 4);
@@ -234,6 +235,10 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
 
         _stock.Visible = state.PaysWithMaterials;
         _stock.Value = FormatMaterials(state.StoredMaterials);
+
+        _cash.Visible = state.Cash > 0;
+        _cash.Value = Loc.GetString("drydock-ui-credits", ("price", state.Cash.ToString("N0", CultureInfo.InvariantCulture)));
+        _cash.Lit = true;
 
         _quote.Visible = !state.Working;
         _progress.Visible = state.Working;
