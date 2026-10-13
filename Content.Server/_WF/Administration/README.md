@@ -116,6 +116,7 @@ Audio.
 - [`Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/SetOutfitPickerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SetOutfitPickerTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Administration/SpawnVesselStationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SpawnVesselStationTest.cs)
 
 ### Prototypes
 

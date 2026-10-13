@@ -51,9 +51,11 @@ public sealed partial class ShipyardSystem
             Dirty(shuttleUid, company);
         }
 
-        // Ships with a matching game map get a station so players can late-join onto them.
-        EntityUid? shuttleStation = null;
-        if (vessel != null
+        // Ships with a matching game map get a station so players can late-join onto them, unless the ship has one.
+        EntityUid? shuttleStation = _station.GetOwningStation(shuttleUid);
+        if (shuttleStation != null)
+            name = Name(shuttleStation.Value);
+        else if (vessel != null
             && _prototypeManager.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto)
             && stationProto.Stations.TryGetValue(vessel.ID, out var stationConfig))
         {

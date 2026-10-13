@@ -2,16 +2,20 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Content.Server._Mono.ShipRepair;
 using Content.Server._NF.Shipyard.Systems;
+using Content.Server._NF.Station.Components;
 using Content.Server._WF.ShipAccess;
 using Content.Server.Access.Systems;
 using Content.Server.Administration.Logs;
+using Content.Server.Station.Systems;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
 using Content.Shared.Database;
 using Content.Shared.Ghost;
+using Content.Shared.Maps;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.Administration.Systems;
 
@@ -23,7 +27,9 @@ public sealed partial class AdminVesselSpawnSystem : EntitySystem
     [Dependency] private MapLoaderSystem _mapLoader = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private IdCardSystem _idCard = default!;
+    [Dependency] private StationSystem _station = default!;
     [Dependency] private ShipyardSystem _shipyard = default!;
     [Dependency] private ShipRepairSystem _shipRepair = default!;
     [Dependency] private WFShipAccessServerSystem _shipAccess = default!;
@@ -51,6 +57,15 @@ public sealed partial class AdminVesselSpawnSystem : EntitySystem
         // Same post-load steps the shipyard applies, minus deeds and ownership.
         EntityManager.AddComponents(gridUid.Value, vessel.AddComponents);
         _metaData.SetEntityName(gridUid.Value, vessel.Name);
+
+        // The station a bought vessel gets, for late joins and for whatever asks the grid's owning station, such as the
+        // expedition console.
+        if (_proto.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto)
+            && stationProto.Stations.TryGetValue(vessel.ID, out var stationConfig))
+        {
+            var station = _station.InitializeNewStation(stationConfig, new List<EntityUid> { gridUid.Value });
+            EnsureComp<ExtraShuttleInformationComponent>(station).Vessel = vessel.ID;
+        }
 
         // This path raises no purchase event: the shipyard's repair snapshot has to be taken here too, or an SRD has
         // nothing to rebuild the vessel from.
