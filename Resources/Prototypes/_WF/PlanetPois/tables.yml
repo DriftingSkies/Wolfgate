@@ -4,6 +4,7 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisAsclepiu
+  difficulty: Moderate
   roads:
     tile: FloorAsphalt
     width: 5
@@ -14,6 +15,7 @@
   entries:
   - mapPath: /Maps/_WF/PlanetPois/asclepiu_city.yml
     name: wf-poi-asclepiu-city
+    expeditions: false
     footprint: -144,-72,144,72
     minCount: 1
     maxCount: 1
@@ -29,6 +31,7 @@
       direction: South
   - mapPath: /Maps/_WF/PlanetPois/asclepiu_garden_village.yml
     name: wf-poi-asclepiu-garden-village
+    expeditions: false
     footprint: -32,-24,32,24
     minCount: 1
     maxCount: 1
@@ -51,6 +54,7 @@
       direction: East
   - mapPath: /Maps/_WF/PlanetPois/asclepiu_roadside_trader.yml
     name: wf-poi-asclepiu-roadside-trader
+    expeditions: false
     footprint: -20,-16,20,16
     minCount: 1
     maxCount: 1
@@ -60,6 +64,7 @@
       direction: West
   - mapPath: /Maps/_WF/PlanetPois/asclepiu_fuel_service.yml
     name: wf-poi-asclepiu-fuel-service
+    expeditions: false
     footprint: -24,-20,24,20
     minCount: 1
     maxCount: 1
@@ -84,6 +89,7 @@
   centreClear: 96
 - type: wfPlanetPoiTable
   id: WFPoisMerak
+  difficulty: Moderate
   roads:
     tile: FloorAsphalt
     width: 5
@@ -94,6 +100,7 @@
   entries:
   - mapPath: /Maps/_WF/PlanetPois/merak_caravan_city.yml
     name: wf-poi-merak-caravan-city
+    expeditions: false
     footprint: -144,-72,144,72
     minCount: 1
     maxCount: 1
@@ -109,6 +116,7 @@
       direction: South
   - mapPath: /Maps/_WF/PlanetPois/merak_caravan_camp.yml
     name: wf-poi-merak-caravan-camp
+    expeditions: false
     footprint: -32,-24,32,24
     minCount: 1
     maxCount: 1
@@ -131,6 +139,7 @@
       direction: East
   - mapPath: /Maps/_WF/PlanetPois/merak_roadside_trader.yml
     name: wf-poi-merak-roadside-trader
+    expeditions: false
     footprint: -20,-16,20,16
     minCount: 1
     maxCount: 1
@@ -140,6 +149,7 @@
       direction: West
   - mapPath: /Maps/_WF/PlanetPois/merak_fuel_service.yml
     name: wf-poi-merak-fuel-service
+    expeditions: false
     footprint: -24,-20,24,20
     minCount: 1
     maxCount: 1
@@ -160,6 +170,7 @@
   centreClear: 96
 - type: wfPlanetPoiTable
   id: WFPoisFervidus
+  difficulty: Hazardous
   roads:
     tile: FloorDarkPavement
     width: 3
@@ -181,6 +192,7 @@
     name: wf-poi-fervidus-camp
 - type: wfPlanetPoiTable
   id: WFPoisThrascias
+  difficulty: Hazardous
   roads:
     tile: FloorSnowDug
     width: 3
@@ -202,6 +214,7 @@
     name: wf-poi-thrascias-virology
 - type: wfPlanetPoiTable
   id: WFPoisAerumna
+  difficulty: Extreme
   roads:
     tile: FloorChromite
     width: 3
@@ -226,6 +239,7 @@
     name: wf-poi-aerumna-mine
 - type: wfPlanetPoiTable
   id: WFPoisCarcinoma
+  difficulty: Extreme
   roads:
     tile: FloorDirt
     width: 3

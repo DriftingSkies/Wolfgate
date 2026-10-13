@@ -80,6 +80,7 @@ namespace Content.Server.Salvage
             UpdateExpeditions();
             UpdateMagnet();
             UpdateRunner();
+            WfUpdatePlanetExpeditions(); // WOLFGATE(PlanetExpeditions)
         }
     }
 }

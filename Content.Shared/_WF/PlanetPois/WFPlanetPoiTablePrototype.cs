@@ -1,4 +1,5 @@
 using Content.Shared.Procedural;
+using Content.Shared.Salvage;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
@@ -46,6 +47,10 @@ public sealed partial class WFPlanetPoiTablePrototype : IPrototype
     /// <summary>Metres from a site's origin at which someone on the ground identifies its signal.</summary>
     [DataField]
     public float RevealRange = 48f;
+
+    /// <summary>The expedition rating of this world's sites, unless an entry says otherwise.</summary>
+    [DataField]
+    public DifficultyRating Difficulty = DifficultyRating.Moderate;
 }
 
 /// <summary>One kind of site: the dungeon generated for it and what its signal is called once identified.</summary>
@@ -84,6 +89,14 @@ public sealed partial class WFPlanetPoiEntry
 
     [DataField]
     public float Weight = 1f;
+
+    /// <summary>Whether the expedition console may offer this site; off for an inhabited settlement.</summary>
+    [DataField]
+    public bool Expeditions = true;
+
+    /// <summary>The expedition rating of this site, over the table's.</summary>
+    [DataField]
+    public DifficultyRating? Difficulty;
 }
 
 /// <summary>Whether a site has one entrance, multiple entrances, or no roads.</summary>

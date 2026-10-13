@@ -126,6 +126,7 @@ public sealed partial class WFPlanetPoiSystem
                     Dungeon = entry.Dungeon, MapPath = entry.MapPath, Name = entry.Name,
                     Origin = origin, Bounds = table.Roads != null || entry.MapPath != null ? reservation : actual,
                     TileCount = siteTiles.Count, Connection = entry.Connection,
+                    Expeditions = entry.Expeditions, Difficulty = entry.Difficulty ?? table.Difficulty,
                 };
                 if (table.Roads != null && entry.Connection != WFPlanetPoiConnection.Isolated)
                 {

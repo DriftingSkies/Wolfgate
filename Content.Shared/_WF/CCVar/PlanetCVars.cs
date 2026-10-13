@@ -67,6 +67,13 @@ public sealed class PlanetCVars
         CVarDef.Create("wf.planet_poi_table", "", CVar.SERVERONLY);
 
     /// <summary>
+    /// Whether expedition consoles offer sites on the sector's worlds, flown to, in place of generated maps jumped
+    /// to. A round with no free site falls back to the maps.
+    /// </summary>
+    public static readonly CVarDef<bool> PlanetExpeditions =
+        CVarDef.Create("wf.planet_expeditions", true, CVar.SERVERONLY);
+
+    /// <summary>
     /// Whether planet terrain nobody is near is unloaded. Off, upstream's unloader is all there is, and it lets go of
     /// almost nothing.
     /// </summary>

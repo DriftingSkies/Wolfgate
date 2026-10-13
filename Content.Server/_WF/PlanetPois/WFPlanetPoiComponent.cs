@@ -1,5 +1,6 @@
 using Content.Shared.Procedural;
 using Content.Shared._WF.PlanetPois;
+using Content.Shared.Salvage;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.PlanetPois;
@@ -40,6 +41,14 @@ public sealed class WFPlanetPoiSite
     public int TileCount;
     public Box2i Bounds;
     public EntityUid Signal;
+
+    /// <summary>Whether an expedition console may offer the site, and at what rating.</summary>
+    public bool Expeditions = true;
+    public DifficultyRating Difficulty = DifficultyRating.Moderate;
+
+    /// <summary>The station running an expedition on the site, and whether one has already cleared it this round.</summary>
+    public EntityUid? ExpeditionClaim;
+    public bool Cleared;
 }
 
 /// <summary>
