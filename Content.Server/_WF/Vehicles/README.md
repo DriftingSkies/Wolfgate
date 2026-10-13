@@ -70,6 +70,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Control.cs`](Bison/CMUCargoVehicleSystem.Control.cs)
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.cs`](Bison/CMUCargoVehicleSystem.cs)
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Destruct.cs`](Bison/CMUCargoVehicleSystem.Destruct.cs)
+- [`Content.Server/_WF/Vehicles/Core/VehicleChatRelaySystem.cs`](Core/VehicleChatRelaySystem.cs)
 - [`Content.Server/_WF/Vehicles/Core/VehicleEntranceItemSystem.cs`](Core/VehicleEntranceItemSystem.cs)
 - [`Content.Server/_WF/Vehicles/Core/VehicleRunoverScreamSystem.cs`](Core/VehicleRunoverScreamSystem.cs)
 - [`Content.Server/_WF/Vehicles/Crushing/VehicleCrushingSystem.cs`](Crushing/VehicleCrushingSystem.cs)
@@ -255,6 +256,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedDataTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedDataTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.Rounds.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.Rounds.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleChatRelayTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleChatRelayTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleClientTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleClientTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCompatTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCompatTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCoreFeaturesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCoreFeaturesTest.cs)
@@ -687,6 +689,10 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - at the muzzle of a mounted gun
 - [`Content.IntegrationTests/Pair/TestPair.cs`](../../../Content.IntegrationTests/Pair/TestPair.cs): records the events the vehicle mover raises
 - [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs): people inside a parked vehicle stand on its interior map, not under the hull.
+- [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Chat/Systems/ChatSystem.cs)
+  - a listener may see the speech bubble on another entity
+  - bubbleSource in place of source
+  - BubbleSource, the entity this listener sees the bubble on
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
   - the origin is settled before the event so handlers can move it and the target
