@@ -6,6 +6,8 @@ using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
+using Content.Server.Preferences.Managers;
+using Content.Shared._Mono.CCVar;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._NF.BountyContracts;
 using Content.Shared._WF.Encounters;
@@ -14,7 +16,9 @@ using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.Ghost;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Preferences;
 using Robust.Server.Player;
+using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
@@ -26,14 +30,17 @@ namespace Content.Server._WF.Encounters.Systems;
 /// <summary>
 /// Posts an encounter's warrant on the sector bounty board and pays it out. A warrant is for one crewman or for a whole
 /// crew; it is claimed when they are dead or gone, and shared equally by the players who brought them down: those
-/// whose ships hit the encounter's ships, those who hurt a target in person, and those aboard or beside it when it
-/// fell. An encounter that ends any other way takes its warrant off the board and pays nobody.
+/// whose ships hit the encounter's ships and those who hurt a target in person, whether or not they lived, and the
+/// living aboard or beside it when it fell. An encounter that ends any other way takes its warrant off the board
+/// and pays nobody. With no board up the warrant stands unposted: it still grows and still pays.
 /// </summary>
 public sealed partial class WFEncounterBountySystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IChatManager _chat = default!;
+    [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private IServerPreferencesManager _prefs = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private BountyContractSystem _board = default!;
@@ -131,14 +138,11 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         var contract = _board.TryPostSystemContract(BountyContractSystem.WarrantCollection, BountyContractCategory.Criminal,
             bounty.Name, bounty.Pool, Loc.GetString(warrant.Description, ("name", bounty.Name), ("ship", shipName)), shipName,
             Loc.GetString("wf-encounter-bounty-author"));
+        // Off the board the warrant still stands, so what is added to it is not lost and whoever takes the target is paid.
         if (contract == null)
-        {
-            Log.Warning($"Encounter {prototype.ID} could not post its warrant: the bounty board is not up.");
-            RemComp<WFEncounterBountyComponent>(ent);
-            return;
-        }
+            Log.Warning($"Encounter {prototype.ID} could not post its warrant: the bounty board is not up. It stands unposted.");
 
-        bounty.Contract = contract.ContractId;
+        bounty.Contract = contract?.ContractId;
         NoteLocation(bounty, ship);
     }
 
@@ -189,6 +193,7 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         // A beam names the gun as its origin; the attacker is whoever holds it.
         var origin = _crew.Wielder(source);
         if (origin == ent.Owner || TerminatingOrDeleted(origin) || !TryComp<ActorComponent>(origin, out var actor)
+            || !HasComp<BankAccountComponent>(origin)
             || !TryComp<WFEncounterBountyComponent>(ent.Comp.Encounter, out var bounty))
             return;
 
@@ -296,53 +301,72 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
     }
 
     /// <summary>
-    /// The living players who helped: those whose ships hit the encounter's ships at least as often as a reward
-    /// counts, those who hurt a target in person, and those aboard the target's ship or within
-    /// <see cref="PayRange"/> of it.
+    /// The players who helped. Those whose ships hit the encounter's ships at least as often as a reward counts and
+    /// those who hurt a target in person have earned it whether or not they lived. Those aboard the target's ship
+    /// or within <see cref="PayRange"/> of it count only if alive.
     /// </summary>
-    public List<(ICommonSession Session, EntityUid Mob)> Helpers(WFEncounterBountyComponent bounty, WFEncounterComponent encounter)
+    public List<ICommonSession> Helpers(WFEncounterBountyComponent bounty, WFEncounterComponent encounter)
     {
-        var found = new Dictionary<NetUserId, (ICommonSession Session, EntityUid Mob)>();
-        void Add(ICommonSession session)
-        {
-            if (session.AttachedEntity is { } mob && !HasComp<GhostComponent>(mob) && !_mobs.IsDead(mob))
-                found[session.UserId] = (session, mob);
-        }
-
+        var found = new Dictionary<NetUserId, ICommonSession>();
         foreach (var user in bounty.Fighters)
         {
             if (_players.TryGetSessionById(user, out var session))
-                Add(session);
+                found[user] = session;
         }
 
         foreach (var (user, bySide) in encounter.Hits)
         {
             if (bySide.Values.Sum() >= WFEncounterRewardSystem.MinimumHits && _players.TryGetSessionById(user, out var session))
-                Add(session);
+                found[user] = session;
         }
 
         var grid = encounter.Ships.TryGetValue(bounty.Ship, out var ship) && !TerminatingOrDeleted(ship.Grid) ? ship.Grid : (EntityUid?) null;
         var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-        while (players.MoveNext(out _, out var actor, out var xform))
+        while (players.MoveNext(out var uid, out var actor, out var xform))
         {
+            if (HasComp<GhostComponent>(uid) || _mobs.IsDead(uid))
+                continue;
+
             var aboard = grid != null && xform.GridUid == grid;
             var near = xform.MapID == bounty.LastMap
                        && (_transform.GetWorldPosition(xform) - bounty.LastSeen).LengthSquared() <= PayRange * PayRange;
             if (aboard || near)
-                Add(actor.PlayerSession);
+                found[actor.PlayerSession.UserId] = actor.PlayerSession;
         }
 
         return found.Values.ToList();
     }
 
+    /// <summary>Whether a helper has an account to be paid into: their body's, or as a ghost their character's.</summary>
+    private bool Payable(ICommonSession session)
+    {
+        if (session.AttachedEntity is { } mob && !HasComp<GhostComponent>(mob))
+            return HasComp<BankAccountComponent>(mob);
+
+        return _prefs.TryGetCachedPreferences(session.UserId, out var prefs) && prefs.SelectedCharacter is HumanoidCharacterProfile;
+    }
+
+    private bool Deposit(ICommonSession session, int amount)
+    {
+        if (session.AttachedEntity is { } mob && HasComp<BankAccountComponent>(mob))
+            return _bank.TryBankDeposit(mob, amount, false);
+
+        // A ghost has no account of its own: the money goes to the player's character.
+        return _config.GetCVar(MonoCVars.DepositEnabled)
+               && _prefs.TryGetCachedPreferences(session.UserId, out var prefs)
+               && prefs.SelectedCharacter is HumanoidCharacterProfile profile
+               && _bank.TryBankDeposit(session, prefs, profile, amount, out _);
+    }
+
     /// <summary>
     /// Shares the prize equally among helpers with a bank account, into those accounts. The board promised the whole
-    /// number, so the hourly cap on encounter rewards does not apply, and a warrant does not count toward it.
+    /// number, so the hourly cap on encounter rewards does not apply, and a warrant does not count toward it. What an
+    /// equal split leaves over, and any share that will not go in, rides on the next share paid.
     /// </summary>
     private void Pay(EntityUid uid, WFEncounterBountyComponent bounty, WFEncounterComponent encounter, uint? contract,
-        List<(ICommonSession Session, EntityUid Mob)> helpers)
+        List<ICommonSession> helpers)
     {
-        helpers.RemoveAll(helper => !HasComp<BankAccountComponent>(helper.Mob));
+        helpers.RemoveAll(helper => !Payable(helper));
         if (helpers.Count == 0 || bounty.Pool <= 0)
         {
             _adminLog.Add(LogType.Action, LogImpact.Low,
@@ -351,15 +375,30 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         }
 
         var share = bounty.Pool / helpers.Count;
-        foreach (var (session, mob) in helpers)
+        var carry = bounty.Pool - share * helpers.Count;
+        foreach (var session in helpers)
         {
-            if (share <= 0 || !_bank.TryBankDeposit(mob, share, false))
+            var amount = share + carry;
+            if (amount <= 0)
                 continue;
 
+            if (!Deposit(session, amount))
+            {
+                carry = amount;
+                continue;
+            }
+
+            carry = 0;
             _chat.DispatchServerMessage(session, Loc.GetString("wf-encounter-bounty-paid",
-                ("title", bounty.Title), ("name", bounty.Name), ("amount", share)));
+                ("title", bounty.Title), ("name", bounty.Name), ("amount", amount)));
             _adminLog.Add(LogType.Action, LogImpact.Medium,
-                $"{session.Name} was paid {share} spesos for warrant {contract} ({bounty.Title}) on encounter {encounter.Prototype} ({ToPrettyString(uid):entity})");
+                $"{session.Name} was paid {amount} spesos for warrant {contract} ({bounty.Title}) on encounter {encounter.Prototype} ({ToPrettyString(uid):entity})");
+        }
+
+        if (carry > 0)
+        {
+            _adminLog.Add(LogType.Action, LogImpact.Medium,
+                $"{carry} spesos of warrant {contract} ({bounty.Title}) on encounter {encounter.Prototype} ({ToPrettyString(uid):entity}) could not be paid to anyone");
         }
     }
 }

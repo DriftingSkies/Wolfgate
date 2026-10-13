@@ -848,7 +848,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         var crews = _objectives.Snapshot();
         foreach (var (uid, encounter) in _running)
         {
-            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(encounter, crews) is { } resolution)
+            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(uid, encounter, crews) is { } resolution)
                 Resolve((uid, encounter), resolution);
         }
 
@@ -1060,9 +1060,10 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     /// <summary>
     /// How the encounter has ended, if it has. Its orders are done once every ship with orders that can finish has
-    /// flown them or is gone; a ship left on an endless task, such as an escort, doesn't hold the rest up.
+    /// flown them or is gone; a ship left on an endless task, such as an escort, doesn't hold the rest up. Its time
+    /// does not run out while players are on its open warrant.
     /// </summary>
-    private WFEncounterResolution? Judge(WFEncounterComponent encounter, List<WFCrewSetupCrew> crews)
+    private WFEncounterResolution? Judge(EntityUid uid, WFEncounterComponent encounter, List<WFCrewSetupCrew> crews)
     {
         var sides = new HashSet<string>();
         var fighting = new HashSet<string>();
@@ -1110,9 +1111,38 @@ public sealed partial class WFEncounterSystem : EntitySystem
             return null;
         if (ordered > 0 && done == ordered)
             return WFEncounterResolution.Completed;
-        if (encounter.Expires is { } expires && _timing.CurTime >= expires)
+        if (encounter.Expires is { } expires && _timing.CurTime >= expires && !WarrantContested(uid, encounter))
             return WFEncounterResolution.Expired;
         return null;
+    }
+
+    /// <summary>
+    /// Whether players are on an encounter's open warrant: one of its ships is alerted, or has a living player aboard,
+    /// docked with it or within the warrant's paying range.
+    /// </summary>
+    private bool WarrantContested(EntityUid uid, WFEncounterComponent encounter)
+    {
+        if (_bounties.Pool(uid) == null)
+            return false;
+
+        foreach (var ship in encounter.Ships.Values)
+        {
+            if (TerminatingOrDeleted(ship.Grid))
+                continue;
+
+            if (_alerts.IsAlerted(ship.Grid, ship.Group) || PlayersAboard(ship.Grid))
+                return true;
+
+            var here = _transform.GetMapCoordinates(ship.Grid);
+            foreach (var player in _players)
+            {
+                if (player.MapId == here.MapId
+                    && (player.Position - here.Position).LengthSquared() <= WFEncounterBountySystem.PayRange * WFEncounterBountySystem.PayRange)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     private void FindPlayers()

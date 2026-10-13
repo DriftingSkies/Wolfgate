@@ -19,8 +19,9 @@ namespace Content.Server._WF.Encounters.Systems;
 
 /// <summary>
 /// Extorters: a ship that roams, now and then closes on a player ship, hails it and demands a toll. A ship that pays is
-/// left alone for a long while and its toll goes on the encounter's warrant. One that refuses, cannot pay, or lets
-/// three hails ring out is boarded as a hunting ship boards its prey, and the extorter goes back to roaming after.
+/// left alone by every extorter for a long while and its toll goes on the encounter's warrant. One that refuses,
+/// cannot pay, or lets three hails go by is boarded as a hunting ship boards its prey, and the extorter goes back to
+/// roaming after. A ship alongside whose line cannot ring has let a hail go by all the same.
 /// </summary>
 public sealed partial class WFEncounterSystem
 {
@@ -29,7 +30,7 @@ public sealed partial class WFEncounterSystem
     [Dependency] private WFEncounterBountySystem _bounties = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
 
-    /// <summary>Hails that may ring out or be declined before it boards.</summary>
+    /// <summary>Hails that may go unanswered before it boards.</summary>
     public const int ExtortHails = 3;
 
     /// <summary>The ids of the answers it offers.</summary>
@@ -53,11 +54,14 @@ public sealed partial class WFEncounterSystem
     /// <summary>How soon it looks for a mark again after finding none or losing one.</summary>
     private static readonly TimeSpan ExtortLookAgain = TimeSpan.FromSeconds(90);
 
-    /// <summary>How long it chases a mark it cannot close on, and how long it waits on a busy or dead line.</summary>
+    /// <summary>How long it chases a mark it cannot close on, and how long it waits on its own console.</summary>
     private static readonly TimeSpan ExtortCloseTime = TimeSpan.FromMinutes(5);
     private static readonly TimeSpan ExtortHailPatience = TimeSpan.FromMinutes(2);
 
-    /// <summary>How long it leaves alone a ship that paid, one it raided and one it could not raise or catch.</summary>
+    /// <summary>How long it chases a ship it means to board without getting a port on it.</summary>
+    public static readonly TimeSpan ExtortChaseTime = TimeSpan.FromMinutes(10);
+
+    /// <summary>How long it leaves alone a ship that paid, one it raided and one it could not catch.</summary>
     public static readonly TimeSpan ExtortPaidSpare = TimeSpan.FromMinutes(30);
     public static readonly TimeSpan ExtortRaidSpare = TimeSpan.FromMinutes(20);
     public static readonly TimeSpan ExtortLostSpare = TimeSpan.FromMinutes(15);
@@ -96,7 +100,9 @@ public sealed partial class WFEncounterSystem
 
         if (extort.Phase == WFExtortPhase.Board)
         {
-            if (!Hunt(ship, false))
+            // Never alongside in all this time: the ship has outrun it.
+            var outrun = ship.RaidEnds == null && now - extort.PhaseSince > ExtortChaseTime;
+            if (outrun || !Hunt(ship, false))
                 EndExtortRaid(encounter, key, ship, extort);
             return;
         }
@@ -145,7 +151,7 @@ public sealed partial class WFEncounterSystem
             return;
 
         PruneSpared(extort);
-        if (NearestCrewedShip(ship.Grid, extort.Config.Reach, extort.Spared.Keys) is not { } mark || !Shadow(ship, extort, mark))
+        if (NearestCrewedShip(ship.Grid, extort.Config.Reach, ExtortOffLimits(extort)) is not { } mark || !Shadow(ship, extort, mark))
         {
             extort.NextMark = now + ExtortLookAgain;
             return;
@@ -153,6 +159,7 @@ public sealed partial class WFEncounterSystem
 
         extort.Mark = mark;
         extort.Attempts = 0;
+        extort.DeadSince = null;
         SetExtortPhase(extort, WFExtortPhase.Close);
         Log.Info($"Encounter ship {ToPrettyString(ship.Grid)} goes after {ToPrettyString(mark)} for its toll.");
         // Already alongside: it hails at once.
@@ -215,18 +222,66 @@ public sealed partial class WFEncounterSystem
         if (_hailing.TryHailAutomated(console, speaker, mark, out var refused))
         {
             extort.Attempts++;
+            extort.DeadSince = null;
             SetExtortPhase(extort, WFExtortPhase.Calling);
             return;
         }
 
-        // No working console, running dark or out of reach: there is nobody to ask, and that is not a hail ignored.
-        if (refused == HailEndReason.Unavailable)
-            DropMark(encounter, key, ship, extort, ExtortLostSpare);
-        // Busy, too soon after its last hail, or its own console is not free: it tries again shortly, for a while.
+        if (refused is HailEndReason.Unavailable or HailEndReason.Busy)
+            ExtortDeadLine(encounter, key, ship, extort, mark);
+        // Too soon after its last hail, or its own console is not free: it tries again shortly, for a while.
         else if (now - extort.PhaseSince > ExtortHailPatience)
-            DropMark(encounter, key, ship, extort, refused == HailEndReason.Busy ? ExtortLostSpare : null);
+            DropMark(encounter, key, ship, extort, null);
         else
             extort.NextHail = now + ExtortRetry;
+    }
+
+    /// <summary>
+    /// The mark's line cannot ring: no powered console, running dark, on another call or out of hail range. A mark
+    /// that has got away from it is chased again with its count kept. Alongside, a line dead for as long as a hail
+    /// rings is a hail gone by, so cutting the power or holding a call open buys nothing.
+    /// </summary>
+    private void ExtortDeadLine(Entity<WFEncounterComponent> encounter, string key, WFEncounterShipState ship, WFExtortState extort,
+        EntityUid mark)
+    {
+        var now = _timing.CurTime;
+        var distance = (_transform.GetWorldPosition(mark) - _transform.GetWorldPosition(ship.Grid)).Length();
+        if (distance > extort.Config.Standoff + ExtortHailSlack)
+        {
+            extort.DeadSince = null;
+            SetExtortPhase(extort, WFExtortPhase.Close);
+            return;
+        }
+
+        extort.DeadSince ??= now;
+        if (now - extort.DeadSince < TimeSpan.FromSeconds(_config.GetCVar(HailingCVars.RingTimeout)))
+        {
+            extort.NextHail = now + ExtortRetry;
+            return;
+        }
+
+        extort.DeadSince = null;
+        extort.Attempts++;
+        // Nothing rang aboard, so the ship is told on the radio what its silence is costing it.
+        if (extort.Attempts < ExtortHails)
+            TrySay(ship, AnnounceChannel, ExtortLine(extort, "dead", ("ship", ExtortMarkName(extort))));
+
+        MissedHail(encounter, key, ship, extort, ExtortRetry);
+    }
+
+    /// <summary>One of its hails has gone by: it waits to hail again, and after the last it boards.</summary>
+    private void MissedHail(Entity<WFEncounterComponent> encounter, string key, WFEncounterShipState ship, WFExtortState extort,
+        TimeSpan delay)
+    {
+        if (extort.Attempts < ExtortHails)
+        {
+            RetryHail(extort, delay, true);
+            return;
+        }
+
+        // There is no channel to say it on, so the ship hears it on the radio.
+        TrySay(ship, AnnounceChannel, ExtortLine(extort, "silent", ("ship", ExtortMarkName(extort))));
+        Board(encounter, key, ship, extort);
     }
 
     private void ExtortDemand(Entity<WFEncounterComponent> encounter, string key, WFEncounterShipState ship, WFExtortState extort)
@@ -325,8 +380,8 @@ public sealed partial class WFEncounterSystem
     }
 
     /// <summary>
-    /// A hail that rang out or was declined is one of its three; a mark that cannot be raised is dropped. A channel
-    /// closed with the toll unanswered is a refusal.
+    /// A hail that rang out, was declined or was cut off from the mark's end is one of its three. A channel closed
+    /// with the toll unanswered is a refusal.
     /// </summary>
     private void OnExtortCallEnded(ref HailCallEndedEvent args)
     {
@@ -351,18 +406,9 @@ public sealed partial class WFEncounterSystem
             case HailEndReason.NoAnswer:
             case HailEndReason.Declined:
             case HailEndReason.PeerClosed:
-                if (extort.Attempts < ExtortHails)
-                {
-                    RetryHail(extort, TimeSpan.FromSeconds(_config.GetCVar(HailingCVars.RetryDelay) + 0.5f), true);
-                    break;
-                }
-
-                // There is no channel to say it on, so the ship hears it on the radio.
-                TrySay(ship, AnnounceChannel, ExtortLine(extort, "silent", ("ship", ExtortMarkName(extort))));
-                Board(encounter, key, ship, extort);
-                break;
+            // The mark went dark, lost its console or left hail range while it rang: it rang all the same.
             case HailEndReason.Unavailable:
-                DropMark(encounter, key, ship, extort, ExtortLostSpare);
+                MissedHail(encounter, key, ship, extort, TimeSpan.FromSeconds(_config.GetCVar(HailingCVars.RetryDelay) + 0.5f));
                 break;
             default:
                 // Its own end failed: power, or its speaker. Not a hail the mark ignored.
@@ -421,6 +467,7 @@ public sealed partial class WFEncounterSystem
         _huntRecords.Remove(ship.Grid);
         extort.Mark = null;
         extort.Attempts = 0;
+        extort.DeadSince = null;
         SetExtortPhase(extort, WFExtortPhase.Roam);
         extort.NextMark = now + ExtortInterval(extort.Config);
         Roam(encounter, key, ship, extort);
@@ -428,11 +475,13 @@ public sealed partial class WFEncounterSystem
     }
 
     /// <summary>
-    /// Hands still off the ship when its raid ends are left where they are, as a stranded party is, and are no longer
-    /// among those who must fall for the warrant to be paid. The hands aboard go looking for trouble again.
+    /// Hands still off the ship when its raid ends are left where they are, as a stranded party is. While anyone
+    /// lives aboard the ship they are no longer among those who must fall for the warrant to be paid; with nobody
+    /// left aboard they are all the crew it has, and stay on it. The hands aboard go looking for trouble again.
     /// </summary>
     private void LeaveBehind(Entity<WFEncounterComponent> encounter, WFEncounterShipState ship)
     {
+        var crewed = HasLivingCrew(ship);
         var crew = EntityQueryEnumerator<WFCrewComponent, TransformComponent>();
         while (crew.MoveNext(out var uid, out var member, out var xform))
         {
@@ -446,7 +495,8 @@ public sealed partial class WFEncounterSystem
                 continue;
             }
 
-            _bounties.Release(encounter, uid);
+            if (crewed)
+                _bounties.Release(encounter, uid);
             // Already left, by this raid or an earlier one.
             if (member.Post is { } post && post.EntityId != ship.Grid)
                 continue;
@@ -472,6 +522,7 @@ public sealed partial class WFEncounterSystem
 
         extort.Mark = null;
         extort.Attempts = 0;
+        extort.DeadSince = null;
         SetExtortPhase(extort, WFExtortPhase.Roam);
         extort.NextMark = now + ExtortLookAgain;
         EndExtortCall(extort);
@@ -514,7 +565,7 @@ public sealed partial class WFEncounterSystem
             && prototype.Ships.FirstOrDefault(entry => entry.Key == key) is { } entry)
         {
             PruneSpared(extort);
-            Vector2? around = NearestCrewedShip(ship.Grid, except: extort.Spared.Keys) is { } traffic
+            Vector2? around = NearestCrewedShip(ship.Grid, except: ExtortOffLimits(extort)) is { } traffic
                 ? _transform.GetWorldPosition(traffic)
                 : null;
             queue.AddRange(BuildQueue(encounter.Comp, entry, ship.Grid, around));
@@ -562,6 +613,44 @@ public sealed partial class WFEncounterSystem
             if (now >= until || TerminatingOrDeleted(spared))
                 extort.Spared.Remove(spared);
         }
+    }
+
+    /// <summary>
+    /// Ships it does not go for: those any extorter is leaving alone, and those another extorter has as its mark or
+    /// is boarding. A toll paid to one buys peace from them all.
+    /// </summary>
+    private HashSet<EntityUid> ExtortOffLimits(WFExtortState extort)
+    {
+        var now = _timing.CurTime;
+        var ships = new HashSet<EntityUid>();
+        var encounters = EntityQueryEnumerator<WFEncounterComponent>();
+        while (encounters.MoveNext(out _, out var encounter))
+        {
+            if (encounter.Resolution != null)
+                continue;
+
+            foreach (var ship in encounter.Ships.Values)
+            {
+                if (ship.Extort is not { } other)
+                    continue;
+
+                foreach (var (spared, until) in other.Spared)
+                {
+                    if (now < until)
+                        ships.Add(spared);
+                }
+
+                if (other == extort)
+                    continue;
+
+                if (other.Mark is { } mark)
+                    ships.Add(mark);
+                if (ship.Prey is { } prey)
+                    ships.Add(prey);
+            }
+        }
+
+        return ships;
     }
 
     private string ExtortLine(WFExtortState extort, string step, params (string, object)[] args)

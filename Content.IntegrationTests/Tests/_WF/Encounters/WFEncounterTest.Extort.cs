@@ -31,8 +31,9 @@ namespace Content.IntegrationTests.Tests._WF.Encounters;
 
 /// <summary>
 /// Extorters: a ship that closes on a player ship and hails it for a toll. Paying moves the toll from the payer's
-/// account onto the extorter's warrant and buys the ship peace; refusing, being unable to pay, hanging up or letting
-/// three hails go by gets the ship boarded as a hunter boards its prey, and the extorter roams again after.
+/// account onto the extorter's warrant and buys the ship peace from every extorter; refusing, being unable to pay,
+/// hanging up, letting three hails go by or having no line to ring gets the ship boarded as a hunter boards its prey,
+/// and the extorter roams again after.
 /// </summary>
 public sealed partial class WFEncounterTest
 {
@@ -105,15 +106,17 @@ public sealed partial class WFEncounterTest
 
     /// <summary>
     /// Puts the test player at the powered helm of a small ship with money in the bank, starts an extorter 400 m off and
-    /// waits for its first hail to ring. With <paramref name="answer"/> the player answers it.
+    /// waits for its first hail to ring. With <paramref name="answer"/> the player answers it. Without
+    /// <paramref name="board"/> the sector has no bounty board.
     /// </summary>
-    private async Task<ExtortScene> StartExtortion(string prototype, Vector2 at, bool answer)
+    private async Task<ExtortScene> StartExtortion(string prototype, Vector2 at, bool answer, bool board = true)
     {
         var scene = new ExtortScene();
         var ui = SEntMan.System<SharedUserInterfaceSystem>();
         await Server.WaitAssertion(() =>
         {
-            scene.Board = EnsureBoard();
+            if (board)
+                scene.Board = EnsureBoard();
             var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
             scene.PlayerShip = grid.Owner;
             var tiles = new List<(Vector2i, Tile)>();
@@ -217,6 +220,45 @@ public sealed partial class WFEncounterTest
         message.UiKey = ShuttleConsoleUiKey.Key;
         message.Entity = SEntMan.GetNetEntity(helm);
         SEntMan.EventBus.RaiseLocalEvent(helm, (object) message);
+    }
+
+    /// <summary>Runs a test with hails that ring out after a second and may be made again a second later.</summary>
+    private async Task WithShortHails(Func<Task> test)
+    {
+        var cfg = Server.ResolveDependency<IConfigurationManager>();
+        var timeout = cfg.GetCVar(HailingCVars.RingTimeout);
+        var retry = cfg.GetCVar(HailingCVars.RetryDelay);
+        await Server.WaitPost(() =>
+        {
+            cfg.SetCVar(HailingCVars.RingTimeout, 1f);
+            cfg.SetCVar(HailingCVars.RetryDelay, 1f);
+        });
+
+        try
+        {
+            await test();
+        }
+        finally
+        {
+            await Server.WaitPost(() =>
+            {
+                cfg.SetCVar(HailingCVars.RingTimeout, timeout);
+                cfg.SetCVar(HailingCVars.RetryDelay, retry);
+            });
+        }
+    }
+
+    private List<EntityUid> ExtortCrew(WFEncounterShipState ship)
+    {
+        var crew = new List<EntityUid>();
+        var query = SEntMan.EntityQueryEnumerator<WFCrewComponent>();
+        while (query.MoveNext(out var uid, out var member))
+        {
+            if (member.Group == ship.Group)
+                crew.Add(uid);
+        }
+
+        return crew;
     }
 
     private int ExtortBalance()
@@ -535,39 +577,222 @@ public sealed partial class WFEncounterTest
         await EndExtortion(scene);
     }
 
-    /// <summary>A ship with no working helm console cannot be asked. That is no hail ignored: it is left alone, not boarded.</summary>
+    /// <summary>
+    /// A ship alongside with no working helm console cannot be rung, and that is no way out: each stretch its line
+    /// stays dead is one of its three hails, and after the third it is boarded.
+    /// </summary>
     [Test]
-    public async Task ExtorterLeavesAShipItCannotRaise()
+    public async Task ExtorterBoardsAShipItCannotRaise()
     {
-        EntityUid? board = null;
-        EntityUid grid = default, encounter = default;
-        WFEncounterShipState ship = default!;
-        await Server.WaitAssertion(() =>
+        await WithShortHails(async () =>
         {
-            board = EnsureBoard();
-            grid = PutPlayerOnGrid(new Vector2(40000, -88000));
-            var proto = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestExtorter");
-            Assert.That(Server.System<WFEncounterSystem>().TrySpawn(proto, new MapCoordinates(new Vector2(40400, -88000), MapData.MapId),
-                out encounter), Is.True);
-            ship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["extorter"];
-            PowerHelms(ship.Grid);
-        });
-        await WaitUntilServer(() => ship.Extort!.Spared.ContainsKey(grid), 900);
-        await Server.WaitAssertion(() =>
-        {
-            var extort = ship.Extort!;
-            Assert.That(extort.Attempts, Is.Zero, "A ship that cannot be raised has not ignored a hail.");
-            Assert.That(extort.Phase, Is.EqualTo(WFExtortPhase.Roam));
-            Assert.That(extort.Mark, Is.Null);
-            Assert.That(extort.Raids, Is.Zero, "It is not boarded for having no console.");
-            Assert.That(ship.Prey, Is.Null);
+            EntityUid? board = null;
+            EntityUid grid = default, encounter = default;
+            WFEncounterShipState ship = default!;
+            await Server.WaitAssertion(() =>
+            {
+                board = EnsureBoard();
+                grid = PutPlayerOnGrid(new Vector2(40000, -88000));
+                var proto = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestExtorter");
+                Assert.That(Server.System<WFEncounterSystem>().TrySpawn(proto, new MapCoordinates(new Vector2(40400, -88000), MapData.MapId),
+                    out encounter), Is.True);
+                ship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["extorter"];
+                PowerHelms(ship.Grid);
+            });
 
-            Server.System<WFEncounterSystem>().End(encounter);
-            SendPlayerHome(grid);
-            if (board is { } host)
-                SEntMan.DeleteEntity(host);
+            var early = false;
+            for (var waited = 0; waited < 3000 && ship.Extort!.Phase != WFExtortPhase.Board; waited += 10)
+            {
+                await RunTicks(10);
+                await Server.WaitPost(() =>
+                    early |= ship.Extort!.Phase == WFExtortPhase.Board && ship.Extort.Attempts < WFEncounterSystem.ExtortHails);
+            }
+
+            await Server.WaitAssertion(() =>
+            {
+                var extort = ship.Extort!;
+                Assert.That(early, Is.False, "It does not board before the third.");
+                Assert.That(extort.Phase, Is.EqualTo(WFExtortPhase.Board), "No console is no way out of the toll.");
+                Assert.That(extort.Attempts, Is.EqualTo(WFEncounterSystem.ExtortHails), "A dead line is a hail gone by.");
+                Assert.That(extort.Raids, Is.EqualTo(1));
+                Assert.That(ship.Prey, Is.EqualTo(grid));
+                Assert.That(extort.Spared.ContainsKey(grid), Is.False, "It is not left alone for having no console.");
+
+                Server.System<WFEncounterSystem>().End(encounter);
+                SendPlayerHome(grid);
+                if (board is { } host)
+                    SEntMan.DeleteEntity(host);
+            });
+            await RunTicks(10);
         });
-        await RunTicks(10);
+    }
+
+    /// <summary>Cutting the helm's power after the first hail does not stop the count: the ship is boarded after three.</summary>
+    [Test]
+    public async Task ExtorterBoardsAShipThatCutsItsLine()
+    {
+        await WithShortHails(async () =>
+        {
+            var scene = await StartExtortion("WFTestExtorter", new Vector2(46000, -40000), false);
+            await Server.WaitPost(() =>
+            {
+                var power = SEntMan.GetComponent<ApcPowerReceiverComponent>(scene.Helm);
+                power.NeedsPower = true;
+                power.Powered = false;
+            });
+            await WaitUntilServer(() => scene.Extort.Phase is WFExtortPhase.Board or WFExtortPhase.Roam, 3000);
+            await Server.WaitAssertion(() =>
+            {
+                Assert.That(scene.Extort.Attempts, Is.EqualTo(WFEncounterSystem.ExtortHails), "The hail that rang and two dead lines.");
+                Assert.That(scene.Extort.Spared.ContainsKey(scene.PlayerShip), Is.False, "A dead console buys no peace.");
+                AssertBoarding(scene);
+            });
+            await EndExtortion(scene);
+        });
+    }
+
+    /// <summary>A ship it means to board and cannot get alongside in ten minutes has outrun it: it roams again.</summary>
+    [Test]
+    public async Task ExtorterGivesUpAShipItCannotCatch()
+    {
+        var scene = await StartExtortion("WFTestExtorter", new Vector2(46000, -46000), true);
+        await Server.WaitAssertion(() =>
+        {
+            RaiseHelm(scene.Helm, new HailChooseMessage(WFEncounterSystem.ExtortRefuse));
+            AssertBoarding(scene);
+            scene.Extort.PhaseSince -= WFEncounterSystem.ExtortChaseTime;
+        });
+        await WaitUntilServer(() => scene.Extort.Phase == WFExtortPhase.Roam, 900);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(scene.Ship.Prey, Is.Null);
+            Assert.That(scene.Extort.Spared.ContainsKey(scene.PlayerShip), Is.True, "The ship that got away is left alone a while.");
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(scene.Encounter).Resolution, Is.Null);
+        });
+        await EndExtortion(scene);
+    }
+
+    /// <summary>
+    /// Extorters keep off each other's ships: a second one does not go for a ship the first is asking for its toll,
+    /// nor for one that has paid the first.
+    /// </summary>
+    [Test]
+    public async Task ExtortersLeaveEachOthersShipsAlone()
+    {
+        var at = new Vector2(46000, -52000);
+        var scene = await StartExtortion("WFTestExtorter", at, true);
+        EntityUid second = default;
+        WFEncounterShipState other = default!;
+        await Server.WaitAssertion(() =>
+        {
+            var proto = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestExtorter");
+            Assert.That(Server.System<WFEncounterSystem>().TrySpawn(proto, new MapCoordinates(at - new Vector2(400f, 0f), MapData.MapId),
+                out second), Is.True);
+            other = SEntMan.GetComponent<WFEncounterComponent>(second).Ships["extorter"];
+            PowerHelms(other.Grid);
+        });
+        await RunTicks(400);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(scene.Extort.Phase, Is.EqualTo(WFExtortPhase.Demand), "The first still has its toll in front of the ship.");
+            Assert.That(other.Extort!.Mark, Is.Null, "The second does not go for a ship the first is working.");
+            Assert.That(other.Extort.Phase, Is.EqualTo(WFExtortPhase.Roam));
+
+            RaiseHelm(scene.Helm, new HailChooseMessage(WFEncounterSystem.ExtortPay));
+            Assert.That(scene.Extort.Spared.ContainsKey(scene.PlayerShip), Is.True);
+            // The second is due a toll run at once.
+            other.Extort.NextMark = TimeSpan.Zero;
+        });
+        await RunTicks(400);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(other.Extort!.Mark, Is.Null, "A toll paid to one buys peace from the other.");
+            Assert.That(other.Extort.Phase, Is.EqualTo(WFExtortPhase.Roam));
+            Assert.That(other.Extort.Attempts, Is.Zero);
+            Assert.That(Server.System<HailingSystem>().GetState(scene.Helm), Is.Null, "Nobody is hailing the ship.");
+            Server.System<WFEncounterSystem>().End(second);
+        });
+        await EndExtortion(scene);
+    }
+
+    /// <summary>With no bounty board up the warrant is not posted but still stands, and a toll paid goes on it.</summary>
+    [Test]
+    public async Task TollGoesOnAWarrantWithNoBoard()
+    {
+        var scene = await StartExtortion("WFTestExtorter", new Vector2(46000, -58000), true, board: false);
+        await Server.WaitAssertion(() =>
+        {
+            var bounties = Server.System<WFEncounterBountySystem>();
+            var bounty = SEntMan.GetComponent<WFEncounterBountyComponent>(scene.Encounter);
+            Assert.That(bounty.Contract, Is.Null, "The test needs a sector with no board.");
+            Assert.That(bounty.State, Is.EqualTo(WFBountyState.Open));
+            var before = ExtortBalance();
+            RaiseHelm(scene.Helm, new HailChooseMessage(WFEncounterSystem.ExtortPay));
+            Assert.That(before - ExtortBalance(), Is.EqualTo(ExtortToll));
+            Assert.That(bounties.Pool(scene.Encounter), Is.EqualTo(ExtortBase + ExtortToll), "The toll is not lost for want of a board.");
+        });
+        await EndExtortion(scene);
+    }
+
+    /// <summary>
+    /// Hands left aboard a ship that jumps away with them come off the warrant while the extorter still has crew
+    /// aboard. With everyone aboard it dead they are the crew it has left: the warrant stays open until they fall.
+    /// </summary>
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task HandsLeftBehindComeOffTheWarrantOnlyWhileTheShipIsCrewed(bool crewed)
+    {
+        var scene = await StartExtortion("WFTestExtorter", new Vector2(46000, crewed ? -64000 : -70000), true);
+        EntityUid left = default, away = default;
+        await Server.WaitAssertion(() =>
+        {
+            RaiseHelm(scene.Helm, new HailChooseMessage(WFEncounterSystem.ExtortRefuse));
+            AssertBoarding(scene);
+
+            // The raid as it stands once docked: one guard posted aboard the prey, and the prey jumps away with him.
+            var transform = Server.System<SharedTransformSystem>();
+            var crew = ExtortCrew(scene.Ship);
+            left = crew.First(uid => SEntMan.GetComponent<WFCrewComponent>(uid).Role == WFCrewRoles.Marine);
+            var member = SEntMan.GetComponent<WFCrewComponent>(left);
+            var post = new EntityCoordinates(scene.PlayerShip, new Vector2(0.5f, 0.5f));
+            scene.Ship.BoardingParty[left] = member.Post;
+            member.NextPatrol = TimeSpan.MaxValue;
+            transform.SetCoordinates(left, post);
+            Server.System<WFCrewSystem>().SetPost((left, member), post);
+            foreach (var uid in crew)
+            {
+                if (!crewed && uid != left)
+                    Server.System<MobStateSystem>().ChangeMobState(uid, MobState.Dead);
+            }
+
+            scene.Ship.Boarded = scene.PlayerShip;
+            scene.Ship.RaidEnds = TimeSpan.MaxValue;
+            away = Server.System<SharedMapSystem>().CreateMap(out _);
+            transform.SetCoordinates(scene.PlayerShip, new EntityCoordinates(away, Vector2.Zero));
+        });
+        await WaitUntilServer(() => scene.Extort.Phase == WFExtortPhase.Roam, 900);
+        await RunTicks(60);
+        await Server.WaitAssertion(() =>
+        {
+            var bounty = SEntMan.GetComponent<WFEncounterBountyComponent>(scene.Encounter);
+            Assert.That(SEntMan.GetComponent<TransformComponent>(left).GridUid, Is.EqualTo(scene.PlayerShip), "He was left aboard the prey.");
+            Assert.That(bounty.Crew.Contains(left), Is.EqualTo(!crewed));
+            Assert.That(SEntMan.HasComponent<WFEncounterBountyTargetComponent>(left), Is.EqualTo(!crewed));
+            Assert.That(bounty.State, Is.EqualTo(WFBountyState.Open), "Nobody has taken the crew yet.");
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(scene.Encounter).Resolution, Is.Null);
+            if (!crewed)
+                Server.System<MobStateSystem>().ChangeMobState(left, MobState.Dead);
+        });
+        await RunTicks(100);
+        await Server.WaitAssertion(() =>
+        {
+            var bounty = SEntMan.GetComponent<WFEncounterBountyComponent>(scene.Encounter);
+            Assert.That(bounty.State, Is.EqualTo(crewed ? WFBountyState.Open : WFBountyState.Claimed),
+                "The last of them dead, the warrant is taken.");
+        });
+        await EndExtortion(scene);
+        await Server.WaitPost(() => SEntMan.DeleteEntity(away));
+        await RunTicks(5);
     }
 
     /// <summary>Killing the crew pays the warrant's base and every toll taken, and ends the encounter.</summary>

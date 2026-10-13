@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Content.Server._NF.Bank;
 using Content.Server._NF.BountyContracts;
 using Content.Server._NF.SectorServices;
 using Content.Server._WF.Encounters.Components;
@@ -13,6 +14,7 @@ using Content.Shared._NF.BountyContracts;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -325,6 +327,84 @@ public sealed partial class WFEncounterTest
         {
             var player = SEntMan.GetEntity(Player);
             Assert.That(SEntMan.GetComponent<BankAccountComponent>(player).Balance - before, Is.EqualTo(20000), "Beside the ship when he fell.");
+            Server.System<WFEncounterSystem>().End(encounter);
+            SendPlayerHome(grid);
+            if (board is { } host)
+                SEntMan.DeleteEntity(host);
+        });
+        await RunTicks(10);
+    }
+
+    /// <summary>
+    /// An encounter's time does not run out while a player is beside the ship its warrant is on. Once they have gone
+    /// it expires and the warrant comes down.
+    /// </summary>
+    [Test]
+    public async Task WarrantDoesNotExpireUnderThePlayersOnIt()
+    {
+        EntityUid? board = null, grid = null;
+        EntityUid encounter = default;
+        uint id = 0;
+        await Server.WaitAssertion(() =>
+        {
+            board = EnsureBoard();
+            encounter = SpawnBountyEncounter("WFTestBountyCrew", new Vector2(-36000, 30000));
+            var comp = SEntMan.GetComponent<WFEncounterComponent>(encounter);
+            id = SEntMan.GetComponent<WFEncounterBountyComponent>(encounter).Contract!.Value;
+            var at = SEntMan.GetComponent<TransformComponent>(comp.Ships["raider"].Grid).LocalPosition;
+            grid = PutPlayerOnGrid(at + new Vector2(60f, 0f));
+            comp.Expires = TimeSpan.Zero;
+        });
+        await RunTicks(400);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(encounter).Resolution, Is.Null, "Its time is up, but a player is on it.");
+            Assert.That(Server.System<BountyContractSystem>().TryGetContract(id, out _), Is.True, "The warrant stands.");
+            SendPlayerHome(grid);
+            grid = null;
+        });
+        await WaitUntilServer(() => SEntMan.GetComponent<WFEncounterComponent>(encounter).Resolution != null, 2400);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(encounter).Resolution, Is.EqualTo(WFEncounterResolution.Expired));
+            Assert.That(Server.System<BountyContractSystem>().TryGetContract(id, out _), Is.False, "Left alone, it expires and the warrant goes.");
+            Server.System<WFEncounterSystem>().End(encounter);
+            if (board is { } host)
+                SEntMan.DeleteEntity(host);
+        });
+        await RunTicks(10);
+    }
+
+    /// <summary>A player who hurt the wanted man and died for it is still paid, far off and dead as he is.</summary>
+    [Test]
+    public async Task AFighterWhoFellIsStillPaid()
+    {
+        EntityUid? board = null, grid = null;
+        EntityUid encounter = default;
+        var before = 0;
+        await Server.WaitAssertion(() =>
+        {
+            board = EnsureBoard();
+            encounter = SpawnBountyEncounter("WFTestBountyCaptain", new Vector2(-36000, 36000));
+            var bounty = SEntMan.GetComponent<WFEncounterBountyComponent>(encounter);
+            grid = PutPlayerOnGrid(new Vector2(-26000, 36000));
+            var player = SEntMan.GetEntity(Player);
+            SEntMan.EnsureComponent<BankAccountComponent>(player);
+            Assert.That(Server.System<BankSystem>().TryGetBalance(ServerSession, out before), Is.True);
+
+            bounty.Fighters.Add(ServerSession.UserId);
+            var mobs = Server.System<MobStateSystem>();
+            SEntMan.EnsureComponent<MobStateComponent>(player);
+            mobs.ChangeMobState(player, MobState.Dead);
+            Assert.That(mobs.IsDead(player), Is.True, "The test needs a dead player.");
+            mobs.ChangeMobState(bounty.Fugitive!.Value, MobState.Dead);
+        });
+        await RunTicks(100);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.GetComponent<WFEncounterBountyComponent>(encounter).State, Is.EqualTo(WFBountyState.Claimed));
+            Assert.That(Server.System<BankSystem>().TryGetBalance(ServerSession, out var after), Is.True);
+            Assert.That(after - before, Is.EqualTo(20000), "He earned it before he died.");
             Server.System<WFEncounterSystem>().End(encounter);
             SendPlayerHome(grid);
             if (board is { } host)

@@ -33,7 +33,13 @@ wf-encounter-extort-timeout-1 = Out of time. We are coming aboard.
 wf-encounter-extort-timeout-2 = Too slow. Stand by to be boarded.
 wf-encounter-extort-timeout-3 = No answer is a no. Boarding now.
 
-# Said on the common radio channel after the last hail rings out, as there is no channel open.
+# Said on the common radio channel when a hail cannot ring aboard a ship it is alongside: no powered console, running
+# dark, or its line is busy.
+wf-encounter-extort-dead-1 = {$ship}, your line is dead. Answer our hail or we board you.
+wf-encounter-extort-dead-2 = {$ship}, we can't raise you. Pick up or be boarded.
+wf-encounter-extort-dead-3 = {$ship}, hiding from a hail won't save you. Answer it.
+
+# Said on the common radio channel after the last hail goes unanswered, as there is no channel open.
 wf-encounter-extort-silent-1 = {$ship}, three hails and no answer. We are coming aboard.
 wf-encounter-extort-silent-2 = {$ship}, you had your chance to talk. Stand by to be boarded.
 wf-encounter-extort-silent-3 = Nobody home on {$ship}? We will see for ourselves. Boarding.

@@ -356,8 +356,8 @@ public sealed partial class WFEncounterExtort
     public float MarkMax = 720f;
 
     /// <summary>
-    /// Fluent prefix of what it says: "-demand-", "-paid-", "-short-", "-refused-", "-timeout-" and "-silent-" with
-    /// 1 to 3 appended, and "-option-pay" and "-option-refuse" for the answers.
+    /// Fluent prefix of what it says: "-demand-", "-paid-", "-short-", "-refused-", "-timeout-", "-dead-" and
+    /// "-silent-" with 1 to 3 appended, and "-option-pay" and "-option-refuse" for the answers.
     /// </summary>
     [DataField]
     public string Lines = "wf-encounter-extort";

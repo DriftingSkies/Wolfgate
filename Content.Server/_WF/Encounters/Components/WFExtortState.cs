@@ -37,8 +37,11 @@ public sealed class WFExtortState
     /// <summary>The ship it is after.</summary>
     public EntityUid? Mark;
 
-    /// <summary>Hails that rang aboard the mark, answered or not.</summary>
+    /// <summary>Hails the mark has had: those that rang aboard, and those that could not ring with it alongside.</summary>
     public int Attempts;
+
+    /// <summary>Since when the mark's line has been unable to ring.</summary>
+    public TimeSpan? DeadSince;
 
     /// <summary>When it next picks a mark.</summary>
     public TimeSpan NextMark;
@@ -57,7 +60,7 @@ public sealed class WFExtortState
 
     public EntityUid? Operator;
 
-    /// <summary>Ships it leaves alone, and until when: those that paid, those it raided and those it could not raise.</summary>
+    /// <summary>Ships it leaves alone, and until when: those that paid, those it raided and those it could not catch.</summary>
     public Dictionary<EntityUid, TimeSpan> Spared = new();
 
     /// <summary>Tolls taken, and their sum.</summary>

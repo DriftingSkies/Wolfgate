@@ -60,11 +60,14 @@ The system posts with no player behind it through a partial of `BountyContractSy
 post, change a reward in place, remove. A warrant on a captain is named for one flagged crewman; on a crew, for the ship.
 It is claimed when the crewman is dead (not just down) or gone, or for a crew when every hand is dead or the ship is
 gone. The prize is shared equally, into bank accounts, by the players whose ships hit the encounter's ships at least
-`MinimumHits` times, the players who hurt a target in person, and the players aboard the ship or within 200 m when it
-fell. The hourly cap on encounter rewards does not apply to a warrant, since the board promised the number. Then the
-warrant comes off the board and the encounter resolves as destroyed. An encounter that expires, completes or is ended,
-or whose ships are swept up first, takes its warrant down and pays nobody. `WFEncounterBountySystem.AddToBounty` raises
-the prize of a live warrant and updates the board entry, for encounters whose prize grows.
+`MinimumHits` times and the players who hurt a target in person (dead or ghosted, they are still paid), and the living
+players aboard the ship or within 200 m when it fell. A share that cannot be paid, and the odd spesos of the split, go
+with the next share. The hourly cap on encounter rewards does not apply to a warrant, since the board promised the
+number. Then the warrant comes off the board and the encounter resolves as destroyed. An encounter that expires,
+completes or is ended, or whose ships are swept up first, takes its warrant down and pays nobody; its clock does not
+run out while players are on the warrant (a ship alerted, or a player aboard, docked or within 200 m).
+`WFEncounterBountySystem.AddToBounty` raises the prize of a live warrant and updates the board entry, for encounters
+whose prize grows. With no bounty board up the warrant is not posted but still stands: it grows and pays the same.
 
 Ships with `flees: <metres>` run from player ships: while one with a player aboard is within that range the ship flies
 directly away from it, and with none near it goes back to its wander. It never starts a fight; `evades: false` keeps it
@@ -77,14 +80,19 @@ A ship with an `extort:` block is an extorter (`WFEncounterSystem.Extort.cs`, st
 its wander legs, flown about the nearest player ship it has no business with yet. Every few minutes (`markMin` to
 `markMax`) it picks the nearest ship with a player aboard inside `reach`, closes to `standoff` and keeps station, and
 hails it from its own helm through the `Hailing` module's automated path, its captain or pilot speaking. A hail that
-rings out or is declined is one of three; after the third it says so on the radio and boards. A ship it cannot raise
-(no working console, running dark) is not an attempt: the mark is dropped and left alone for 15 minutes. Once answered
-it names its `toll` and offers two answers, pay or refuse, with 45 seconds to pick. Paying takes the whole toll from the
-bank account of whoever picked it, adds it to the encounter's warrant (`AddToBounty`), and the ship is left alone for
-30 minutes while the extorter flies clear and roams. Refusing, being short of the toll, picking nothing in time or
-closing the channel gets the ship boarded: the mark is handed to the hunt (`Hunt(ship, free: false)`), which runs the
-boarders' raid on that ship alone and, flown, given up or lost, hands the ship back to roam; the raided ship is left
-alone for 20 minutes and hands still off the ship are left behind and taken off the warrant. Extorter encounters are
+rings out, is declined or is cut off from the mark's end is one of three; after the third it says so on the radio and
+boards. A ship alongside that cannot be rung (no powered console, running dark, line busy) gets no way out of it: a
+line dead for as long as a hail rings is one of the three too, with a warning on the radio. A mark that gets out of
+reach between hails is chased again with its count kept, and left alone for 15 minutes only once it has outrun the
+extorter for 5. Once answered it names its `toll` and offers two answers, pay or refuse, with 45 seconds to pick.
+Paying takes the whole toll from the bank account of whoever picked it, adds it to the encounter's warrant
+(`AddToBounty`), and the ship is left alone for 30 minutes while the extorter flies clear and roams. Refusing, being
+short of the toll, picking nothing in time or closing the channel gets the ship boarded: the mark is handed to the hunt
+(`Hunt(ship, free: false)`), which runs the boarders' raid on that ship alone and, flown, given up or lost, hands the
+ship back to roam; a ship it has not got a port on in 10 minutes has outrun it. The raided ship is left alone for 20
+minutes. Hands still off the ship are left behind, and taken off the warrant while anyone lives aboard the extorter;
+with nobody left aboard they are its crew and stay on it. Extorters share what they know: a ship one of them is
+leaving alone, has as its mark or is boarding is not gone for by another. Extorter encounters are
 `lifetime: Persistent`: no clock, no jump out, no share of the budget, and the scheduler's one-of-a-kind rule keeps at
 most one of each prototype alive. `extorters.yml` has three tiers flying as the Reavers with a warrant on the crew: light
 (Hazel, Green, 6000 toll, 15000 base), medium (Metis or Mudskipper, Regular, 15000 toll, 40000 base) and heavy (Kalisto
