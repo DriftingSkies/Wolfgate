@@ -62,7 +62,10 @@ public sealed partial class VehicleTurretMuzzleSystem : EntitySystem
             ? shotRotation
             : _transform.GetWorldRotation(uid);
         var useRight = useRightOverride ?? (muzzle.Alternate && muzzle.UseRightNext);
-        var offset = GetOffset(muzzle, baseRotation, useRight);
+
+        // The barrel's pose is picked by its rotation on the deck, not in the world.
+        var frameRotation = Transform(uid).GridUid is { } deck ? _transform.GetWorldRotation(deck) : Angle.Zero;
+        var offset = GetOffset(muzzle, baseRotation - frameRotation, useRight);
         return offset == Vector2.Zero ? Vector2.Zero : baseRotation.RotateVec(offset);
     }
 

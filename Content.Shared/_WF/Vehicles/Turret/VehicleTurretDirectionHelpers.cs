@@ -1,3 +1,4 @@
+using System.Numerics;
 using System;
 using Robust.Shared.Maths;
 
@@ -22,5 +23,11 @@ public static class VehicleTurretDirectionHelpers
             2 => Direction.North,
             _ => Direction.West
         };
+    }
+
+    /// <summary>A pose's pixel offset in the axes of the thing that shows the pose: turned back by the pose's own angle.</summary>
+    public static Vector2 GetLocalOffsetForRenderDirection(Vector2 offset, Angle facing)
+    {
+        return (-GetRenderAlignedCardinalDir(facing).ToAngle()).RotateVec(offset);
     }
 }

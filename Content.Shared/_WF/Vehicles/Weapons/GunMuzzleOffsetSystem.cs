@@ -74,8 +74,8 @@ public sealed partial class GunMuzzleOffsetSystem : EntitySystem
                 : GetBaseRotation(baseUid, frameRotation) + component.AngleOffset + frameRotation;
         var baseRotation = worldBaseRotation - frameRotation;
 
-        // The barrel's cardinal is the one its sprite is drawn in, which follows the world; a mount's is the frame's.
-        var (offset, rotateOffset) = GetOffset(component, baseUid, useBarrelDirectionOffsets ? worldBaseRotation : baseRotation, useBarrelDirectionOffsets);
+        // The pose a barrel's or a mount's sprite is drawn in is picked by its rotation in the deck's frame, which the crew's view is level with.
+        var (offset, rotateOffset) = GetOffset(component, baseUid, baseRotation, useBarrelDirectionOffsets);
         muzzleCoords = rotateOffset
             ? baseCoords.Offset(baseRotation.RotateVec(offset))
             : baseCoords.Offset(offset);
