@@ -42,7 +42,8 @@ public sealed class VehicleEventProbeSystem : EntitySystem
     {
         SubscribeLocalEvent<PhysicsComponent, VehicleCollisionEvent>(OnCollision);
         SubscribeLocalEvent<PhysicsComponent, VehicleOpenTileAttemptEvent>(OnOpenTile);
-        SubscribeLocalEvent<DestructibleComponent, DestructionEventArgs>(OnDestruction);
+        // On the body, not on Destructible: only one system may take an event from a component, and the ship status system has that one.
+        SubscribeLocalEvent<PhysicsComponent, DestructionEventArgs>(OnDestruction);
         SubscribeLocalEvent<PhysicsUpdateBeforeSolveEvent>(OnBeforeSolve);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
     }
@@ -61,7 +62,7 @@ public sealed class VehicleEventProbeSystem : EntitySystem
         Collisions.Add((ent.Owner, args));
     }
 
-    private void OnDestruction(EntityUid uid, DestructibleComponent comp, DestructionEventArgs args)
+    private void OnDestruction(EntityUid uid, PhysicsComponent comp, DestructionEventArgs args)
     {
         Destructions[uid] = Destructions.GetValueOrDefault(uid) + 1;
     }
