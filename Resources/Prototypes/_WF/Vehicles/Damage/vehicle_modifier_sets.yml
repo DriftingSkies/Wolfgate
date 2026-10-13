@@ -1,0 +1,73 @@
+# Ported unchanged from RMC-14 (marine_modifier_sets.yml). Vehicle prototypes use damageContainer StructuralInorganic.
+
+- type: damageModifierSet
+  id: VehicleArmorBallistic
+  coefficients:
+    Blunt: 0.9
+    Slash: 0.603
+    Piercing: 0.603
+    Structural: 0.9
+    Heat: 0.9
+
+- type: damageModifierSet
+  id: VehicleArmorCaustic
+  coefficients:
+    Blunt: 0.9
+    Slash: 0.9
+    Piercing: 0.9
+    Structural: 0.9
+    Heat: 0.603
+
+- type: damageModifierSet
+  id: VehicleArmorConcussive
+  coefficients:
+    Blunt: 0.603
+    Slash: 0.9
+    Piercing: 0.9
+    Structural: 0.9
+    Heat: 0.9
+
+- type: damageModifierSet
+  id: VehicleArmorPaladin
+  coefficients:
+    Blunt: 0.9
+    Slash: 0.9
+    Piercing: 0.9
+    Structural: 0.603
+    Heat: 0.9
+
+- type: damageModifierSet
+  id: VehicleFrameTank
+  coefficients:
+    Blunt: 0.8
+    Slash: 0.7
+    Piercing: 0.4
+    Structural: 0.8
+    Heat: 1.5
+
+- type: damageModifierSet
+  id: VehicleFrameAPC
+  coefficients:
+    Blunt: 0.7
+    Slash: 0.8
+    Piercing: 0.6
+    Structural: 0.7
+    Heat: 1
+
+- type: damageModifierSet
+  id: VehicleFrameARC
+  coefficients:
+    Blunt: 0.8
+    Slash: 1
+    Piercing: 0.6
+    Structural: 0.8
+    Heat: 1
+
+- type: damageModifierSet
+  id: VehicleFrameCLFVan
+  coefficients:
+    Blunt: 0.8
+    Slash: 0.9
+    Piercing: 0.8
+    Structural: 0.8
+    Heat: 1

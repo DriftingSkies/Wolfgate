@@ -60,7 +60,11 @@ public sealed partial class SpriteFadeSystem : EntitySystem
             var mapPos = _transform.GetMapCoordinates(_playerManager.LocalEntity!.Value, xform: playerXform);
 
             // Also want to handle large entities even if they may not be clickable.
-            foreach (var ent in state.GetClickableEntities(mapPos))
+            // WOLFGATE(Vehicles) START: roofs the player stands under still fade
+            // upstream original, kept for merges:
+            // foreach (var ent in state.GetClickableEntities(mapPos))
+            foreach (var ent in state.GetClickableEntities(mapPos, ignoreInteractionTransparency: true))
+            // WOLFGATE END
             {
                 if (ent == player ||
                     !_fadeQuery.HasComponent(ent) ||

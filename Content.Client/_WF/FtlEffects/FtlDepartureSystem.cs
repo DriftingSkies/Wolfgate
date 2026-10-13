@@ -91,11 +91,20 @@ public sealed partial class FtlDepartureSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Whether the local player stands on the grid or on another ship of its docked convoy.</summary>
+    /// <summary>
+    /// Whether the local player stands on the grid or on another ship of its docked convoy. Someone whose view follows
+    /// something else, as a vehicle's driver's does from the cabin, is where that thing is.
+    /// </summary>
     private bool Aboard(EntityUid grid, FtlDepartureComponent effect)
     {
-        if (_player.LocalEntity is not { } player || !TryComp(player, out TransformComponent? xform) ||
-            xform.GridUid is not { } deck)
+        if (_player.LocalEntity is not { } player)
+            return false;
+
+        var viewed = TryComp(player, out EyeComponent? eye) && eye.Target is { } target && Exists(target)
+            ? target
+            : player;
+
+        if (!TryComp(viewed, out TransformComponent? xform) || xform.GridUid is not { } deck)
             return false;
         var lead = effect.Lead ?? grid;
         return deck == grid || deck == lead || TryComp(deck, out FtlDepartureComponent? own) && own.Lead == lead;

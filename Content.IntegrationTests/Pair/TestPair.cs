@@ -5,6 +5,7 @@ using Content.Client.IoC;
 using Content.Client.Parallax.Managers;
 using Content.IntegrationTests.Tests.Destructible;
 using Content.IntegrationTests.Tests.DeviceNetwork;
+using Content.IntegrationTests.Tests._WF.Vehicles; // WOLFGATE(Vehicles)
 using Content.Server.GameTicking;
 using Content.Shared.CCVar;
 using Content.Shared.Players;
@@ -150,6 +151,7 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair, IAsyncDis
             var entSysMan = IoCManager.Resolve<IEntitySystemManager>();
             entSysMan.LoadExtraSystemType<DeviceNetworkTestSystem>();
             entSysMan.LoadExtraSystemType<TestDestructibleListenerSystem>();
+            entSysMan.LoadExtraSystemType<VehicleEventProbeSystem>(); // WOLFGATE(Vehicles): records the events the vehicle mover raises
         };
         return opts;
     }

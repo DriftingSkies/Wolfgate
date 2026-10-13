@@ -1,0 +1,74 @@
+# APCs with their weapons fitted, for admin spawning: RMC fitted them from a hardpoint vendor that is not ported. Each has the
+# dual cannon on the turret mount, the frontal cannon on the secondary and the flare launcher on the support mount, and keeps
+# the two port guns. The slots are listed in full because a child's slots replace the parent's. Names are in armed.ftl.
+#
+# The loadout is the FIRST parent: with two parents the first one's value of a field wins, and the slots of an APC are one
+# field, so a loadout listed second would be dropped and the vehicle would spawn unarmed. VehicleArmedDataTest checks it.
+
+- type: entity
+  id: WFVehicleAPCArmedLoadout
+  categories: [ WFVehicles ]
+  abstract: true
+  components:
+  - type: ItemSlots
+    slots:
+      port-gun-north:
+        startingItem: VehicleAPCM56FPWPortGunRight
+        insertOnInteract: false
+        ejectOnInteract: false
+        ejectOnUse: false
+        locked: true
+        disableEject: true
+        whitelist:
+          components:
+          - VehiclePortGun
+      port-gun-south:
+        startingItem: VehicleAPCM56FPWPortGunLeft
+        insertOnInteract: false
+        ejectOnInteract: false
+        ejectOnUse: false
+        locked: true
+        disableEject: true
+        whitelist:
+          components:
+          - VehiclePortGun
+      primary:
+        startingItem: RMCAPCDualCannon
+        whitelist:
+          components:
+          - HardpointItem
+      secondary:
+        startingItem: RMCAPCFrontCannon
+        whitelist:
+          components:
+          - HardpointItem
+      support:
+        startingItem: RMCAPCFlareLauncher
+        whitelist:
+          components:
+          - HardpointItem
+      wheel-1:
+        startingItem: RMCAPCWheel
+        whitelist:
+          components:
+          - VehicleWheelItem
+
+- type: entity
+  parent: [ WFVehicleAPCArmedLoadout, VehicleAPC ]
+  id: WFVehicleAPCArmed
+  suffix: Drivable, APC, Armed
+
+- type: entity
+  parent: [ WFVehicleAPCArmedLoadout, VehicleAPCTracked ]
+  id: WFVehicleAPCTrackedArmed
+  suffix: Drivable, APC, Armed, Tracked
+
+- type: entity
+  parent: [ WFVehicleAPCArmedLoadout, VehicleAPCMed ]
+  id: WFVehicleAPCMedArmed
+  suffix: Drivable, APC, Armed, Medical, Tracked
+
+- type: entity
+  parent: [ WFVehicleAPCArmedLoadout, VehicleAPCCommand ]
+  id: WFVehicleAPCCommandArmed
+  suffix: Drivable, APC, Armed, Command, Tracked

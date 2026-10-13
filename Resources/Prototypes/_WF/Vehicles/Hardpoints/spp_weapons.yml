@@ -1,0 +1,398 @@
+# The SPP weapons: the APC's minigun, autocannon, launcher and flare launcher, the tank's rotary cannon, railgun, launcher,
+# cupola, smoke launcher and flare module, and the van's roof turret and cannon. Each is a child of the matching tank,
+# APC or humvee gun with an SPP compatibility id.
+
+- type: entity
+  parent: RMCAPCDualCannon
+  id: VehicleSPPAPCMinigun
+  name: SPP APC minigun
+  description: A minigun fitted to an SPP APC turret.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/sppapc.rsi
+    state: apc_minigun
+  - type: HardpointItem
+    hardpointType: HardpointTypeCannon
+    vehicleFamily: HardpointVehicleFamilyAPC
+    slotType: HardpointSlotTypeCannon
+    compatibilityId: HardpointCompatibilitySPPAPCTurret
+    damageMultiplier: 0.2
+    repairRate: 0.01
+  - type: VehicleTurretAttachment
+  - type: VehicleTurret
+    showOverlay: true
+    offsetRotatesWithTurret: true
+    useDirectionalOffsets: true
+    overlayRsi: _WF/Vehicles/sppapc.rsi
+    overlayState: apc_minigun_0
+    overlayDamagedState: apc_minigun_1
+    fireWhileRotatingGraceDegrees: 180
+    useBarrelDirectionForShots: true
+    maxShotCurvatureDegrees: 10
+  - type: GunMuzzleOffset
+    useDirectionalOffsets: true
+    rotateDirectionalOffsets: true
+    offsetNorth: "0,-1.2"
+    offsetEast: "0,-1.2"
+    offsetSouth: "0,-1.2"
+    offsetWest: "0,-1.2"
+    muzzleOffset: "0,0"
+    useAimDirection: true
+  - type: HardpointVisual
+    vehicleState: apc_minigun_0
+    damagedVehicleState: apc_minigun_1
+
+- type: entity
+  parent: RMCAPCFrontCannon
+  id: VehicleSPPAPCAutocannon
+  name: SPP APC autocannon
+  description: A frontal autocannon hardpoint for an SPP APC.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/sppapc.rsi
+    state: apc_autocannon
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPAPC
+  - type: GunMuzzleOffset
+    useDirectionalOffsets: true
+    rotateDirectionalOffsets: true
+    offsetNorth: "0.5,-1.7"
+    offsetEast: "0.5,-1.7"
+    offsetSouth: "0.5,-1.7"
+    offsetWest: "0.5,-1.7"
+    muzzleOffset: "0,0"
+    useAimDirection: true
+  - type: HardpointVisual
+    vehicleState: apc_autocannon_0
+    damagedVehicleState: apc_autocannon_1
+
+- type: entity
+  parent: VehicleTankTowLauncher
+  id: VehicleSPPAPCHJ35Launcher
+  name: HJ35 APC launcher
+  description: A missile launcher fitted to the secondary mount of an SPP APC.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/sppapc.rsi
+    state: hj35launcher
+  - type: HardpointItem
+    hardpointType: HardpointTypeCannon
+    vehicleFamily: HardpointVehicleFamilyAPC
+    slotType: HardpointSlotTypeCannon
+    compatibilityId: HardpointCompatibilitySPPAPC
+    damageMultiplier: 0.11
+  - type: HardpointIntegrity
+    maxIntegrity: 350
+  - type: HardpointVisual
+    vehicleState: apc_hj35_0
+    damagedVehicleState: apc_hj35_1
+
+- type: entity
+  parent: RMCAPCFlareLauncher
+  id: VehicleSPPAPCFlareLauncher
+  name: SPP APC flare launcher
+  description: A flare launcher hardpoint for SPP APC support slots.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/sppapc.rsi
+    state: spp_flare_launcher
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPAPC
+  - type: HardpointVisual
+    vehicleState: spp_flare_launcher_0
+    damagedVehicleState: spp_flare_launcher_1
+
+- type: entity
+  parent: VehicleTankLTAAAPMinigun
+  id: VehicleSPPTankP17702
+  name: P-17702 rotary cannon
+  description: An SPP rotary cannon tank hardpoint.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: p17702
+  - type: VehicleTurret
+    fireWhileRotatingGraceDegrees: 180
+    useBarrelDirectionForShots: true
+    maxShotCurvatureDegrees: 10
+    offsetRotatesWithTurret: true
+    useDirectionalOffsets: true
+    pixelOffsetNorth: "-1,18"
+    pixelOffsetEast: "17,12"
+    pixelOffsetSouth: "0,-35"
+    pixelOffsetWest: "-15,13"
+    showOverlay: true
+    overlayRsi: _WF/Vehicles/spptank.rsi
+    overlayState: p17702_0
+    overlayDamagedState: p17702_1
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: p17702_0
+    damagedVehicleState: p17702_1
+  - type: GunMuzzleOffset
+    offset: "0,0"
+    applyToMuzzleFlash: true
+    useDirectionalOffsets: true
+    rotateDirectionalOffsets: true
+    offsetEast: "-0.1,-1.7"
+    offsetWest: "0.1, -1.7"
+    offsetSouth: "0, -1"
+    offsetNorth: "0, -1.8"
+    useAimDirection: true
+    useContainerOwner: false
+
+- type: entity
+  parent: VehicleTankLTBCannon
+  id: VehicleSPPTankRailgun
+  name: SPP railgun
+  description: A railgun hardpoint for SPP tank turrets.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: railgun
+  - type: VehicleTurret
+    fireWhileRotatingGraceDegrees: 180
+    useBarrelDirectionForShots: true
+    offsetRotatesWithTurret: true
+    useDirectionalOffsets: true
+    pixelOffsetNorth: "0,20"
+    pixelOffsetEast: "24,10"
+    pixelOffsetSouth: "0,-50"
+    pixelOffsetWest: "-28,14"
+    showOverlay: true
+    overlayRsi: _WF/Vehicles/spptank.rsi
+    overlayState: railgun_0
+    overlayDamagedState: railgun_1
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: railgun_0
+    damagedVehicleState: railgun_1
+  - type: GunMuzzleOffset
+    offset: "0,0"
+    useDirectionalOffsets: true
+    offsetNorth: "0,-1"
+    offsetEast: "0,-1"
+    offsetSouth: "0,0"
+    offsetWest: "0,-1"
+    muzzleOffset: "0,-1"
+    useAimDirection: true
+    useContainerOwner: false
+
+- type: entity
+  parent: VehicleTankTowLauncher
+  id: VehicleSPPTankHJ35TLauncher
+  name: HJ35T launcher
+  description: An SPP anti-armor launcher for tank turrets.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: hj35tlauncher
+  - type: VehicleTurret
+    fireWhileRotatingGraceDegrees: 180
+    useBarrelDirectionForShots: true
+    offsetRotatesWithTurret: true
+    useDirectionalOffsets: true
+    pixelOffsetNorth: "0,-10"
+    pixelOffsetEast: "-10,0"
+    pixelOffsetSouth: "0,10"
+    pixelOffsetWest: "10,0"
+    showOverlay: true
+    overlayRsi: _WF/Vehicles/spptank.rsi
+    overlayState: hj35t_0
+    overlayDamagedState: hj35t_1
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: hj35t_0
+    damagedVehicleState: hj35t_1
+  - type: GunMuzzleOffset
+    offset: "0,0"
+    useDirectionalOffsets: true
+    rotateDirectionalOffsets: true
+    offsetNorth: "-0.5,-0.7"
+    offsetEast: "0,-0.5"
+    offsetSouth: "-0.5,0"
+    offsetWest: "-0.7,-0.4"
+    muzzleOffset: "0,0"
+    useAimDirection: true
+    useContainerOwner: false
+
+- type: entity
+  parent: VehicleTankM56Cupola
+  id: VehicleSPPTankCupola
+  name: T60P3M cupola
+  description: A cupola-mounted weapon fitted to SPP armor.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: t60p3m
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: VehicleTurret
+    fireWhileRotatingGraceDegrees: 180
+    useBarrelDirectionForShots: true
+    offsetRotatesWithTurret: true
+    useDirectionalOffsets: true
+    pixelOffsetNorth: "0,-10"
+    pixelOffsetEast: "-10,0"
+    pixelOffsetSouth: "0,10"
+    pixelOffsetWest: "10,0"
+    showOverlay: true
+    overlayRsi: _WF/Vehicles/spptank.rsi
+    overlayState: t60p3m_0
+    overlayDamagedState: t60p3m_1
+  - type: HardpointVisual
+    vehicleState: t60p3m_0
+    damagedVehicleState: t60p3m_1
+  - type: GunMuzzleOffset
+    offset: "0,0"
+    useDirectionalOffsets: true
+    rotateDirectionalOffsets: true
+    offsetNorth: "-0.5,-0.7"
+    offsetEast: "0,-0.5"
+    offsetSouth: "-0.5,0"
+    offsetWest: "-0.7,-0.4"
+    muzzleOffset: "0,0"
+    useAimDirection: true
+    useContainerOwner: false
+
+- type: entity
+  parent: VehicleTankRocketLauncher
+  id: VehicleSPPTankRocketLauncher
+  name: SPP smoke launcher
+  description: A smoke launcher support attachment for an SPP tank.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: turret_slauncher
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: slauncher_0
+    damagedVehicleState: slauncher_1
+
+- type: entity
+  parent: VehicleTankFlareModule
+  id: VehicleSPPTankFlareModule
+  name: SPP flare module
+  description: A flare launcher support attachment for an SPP tank.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: turret_slauncher_e
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: slauncher_1
+    damagedVehicleState: slauncher_2
+
+- type: entity
+  parent: BaseItem
+  id: VehicleSPPVanTurret
+  categories: [ WFVehicles ]
+  name: SPP van turret
+  description: A roof-mounted turret fitted to an SPP van.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/sppvan.rsi
+    state: van_turret_0
+  - type: Item
+    size: Large
+  - type: HardpointItem
+    hardpointType: HardpointTypeSecondary
+    vehicleFamily: HardpointVehicleFamilyVan
+    slotType: HardpointSlotTypeLauncher
+    compatibilityId: HardpointCompatibilitySPPVan
+    damageMultiplier: 0.15
+    repairRate: 0.0125
+  - type: HardpointIntegrity
+    maxIntegrity: 100
+  - type: VehicleTurret
+    rotateToCursor: true
+    stabilizedRotation: false
+    rotationSpeed: 180
+    useDirectionalOffsets: true
+    showOverlay: true
+    overlayRsi: _WF/Vehicles/sppvan.rsi
+    overlayState: van_turret_0
+    overlayDamagedState: van_turret_1
+    pixelOffsetNorth: "0,4"
+    pixelOffsetEast: "-6,16"
+    pixelOffsetSouth: "0,15"
+    pixelOffsetWest: "6,16"
+  - type: ContainerContainer
+    containers:
+      turret-cannon: !type:ContainerSlot
+  - type: HardpointState
+  - type: ItemSlots
+    slots:
+      turret-cannon:
+        startingItem: VehicleSPPVanCannon
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+  - type: HardpointSlots
+    vehicleFamily: HardpointVehicleFamilyVan
+    slots:
+    - id: turret-cannon
+      hardpointType: HardpointTypeCannon
+      slotType: HardpointSlotTypeCannon
+      compatibilityId: HardpointCompatibilitySPPVan
+      required: false
+      insertDelay: 2.0
+
+- type: entity
+  parent: VehicleHumveeCannon
+  id: VehicleSPPVanCannon
+  name: SPP van cannon
+  description: A turret-mounted cannon for an SPP van.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/sppvan.rsi
+    state: t60p3m_0
+  - type: HardpointItem
+    hardpointType: HardpointTypeCannon
+    vehicleFamily: HardpointVehicleFamilyVan
+    slotType: HardpointSlotTypeCannon
+    compatibilityId: HardpointCompatibilitySPPVan
+    damageMultiplier: 0.0
+    repairRate: 0.01
+  - type: HardpointIntegrity
+    maxIntegrity: 350
+  - type: VehicleTurret
+    showOverlay: true
+    overlayRsi: _WF/Vehicles/sppvan.rsi
+    overlayState: t60p3m_0
+    overlayDamagedState: t60p3m_1
+    fireWhileRotatingGraceDegrees: 180
+    useBarrelDirectionForShots: true
+    maxShotCurvatureDegrees: 10
+  - type: Gun
+    projectileSpeed: 53
+    recoil: 0
+    fireRate: 6
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+    soundGunshot: /Audio/_WF/Vehicles/guns/gun_ml66a_2.ogg
+    cameraRecoilScalar: 0
+  - type: BallisticAmmoProvider
+    cycleable: false
+    proto: VehicleCartridgeSentry10x50mm
+    capacity: 500
+  - type: VehicleHardpointAmmo
+    magazineSize: 500
+    maxStoredMagazines: 1
+  - type: RefillableByBulletBox
+    bulletType: VehicleAmmoBoxCupola
+  - type: GunMuzzleOffset
+    offset: "0,0"
+    muzzleOffset: "0,-0.5"
+    useAimDirection: true
+    useContainerOwner: false
+  - type: HardpointVisual
+    vehicleState: t60p3m_0
+    damagedVehicleState: t60p3m_1

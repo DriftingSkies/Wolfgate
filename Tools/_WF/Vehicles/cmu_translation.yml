@@ -1,0 +1,201 @@
+# Rules for translate_cmu_yaml.py: CMU vehicle and hardpoint prototypes onto RMC's framework. See the script for what each key does.
+# Reasons are printed in the dropped-field report, so keep each to one clause.
+
+# CMU parent id -> RMC parent id. CMU's roster children already use ids RMC also has (VehicleTankBase, VehicleVanBase, ...).
+parents: {}
+
+rename_components:
+  # The ride-on Vehicle component is Wolfgate's; RMC's base is RMCVehicle (CMU's Bison carrier uses it).
+  Vehicle: RMCVehicle
+  VehicleOperator: RMCVehicleOperator
+
+drop_components:
+  # RMC creates these when the hardpoint system starts, so a prototype does not spell them out.
+  HardpointState: RMC creates it itself
+  ContainerContainer: RMC creates the hardpoint containers itself
+  # CMU gameplay systems that are not ported.
+  TankCookOff: cook-off is not ported
+  VehicleOperatorDamage: operator damage is not ported
+  VehicleMaintenance: maintenance mode is not ported
+  VehiclePlowChassis: plows and wall smashing are not ported
+  VehiclePlow: plows and wall smashing are not ported
+  CMUZPhysics: CMU z-levels; Wolfgate's are CE
+  CMUVehicleZTraversal: CMU z-levels; Wolfgate's are CE
+  CMUZLevelViewer: CMU z-levels; Wolfgate's are CE
+  # No tactical map, dropship or CAS.
+  MarineMapTracked: no tactical map
+  TacticalMapTracked: no tactical map
+  TacticalMapIcon: no tactical map
+  DropshipTarget: no CAS
+  # Xenos, acid and power loaders do not exist.
+  MeleeReceivedMultiplier: no xenos
+  ReceiverXenoClaws: no xenos
+  Corrodible: no acid
+  VehicleXenoSize: no xenos
+  PowerLoaderGrabbable: no power loader
+  RMCWallExplosionDeletable: RMC wall rules are not ported
+  # Marine-faction gun systems.
+  GunIFF: IFF is not ported
+  UserIFF: IFF is not ported
+  RMCWeaponAccuracy: weapon accuracy is not ported
+  RMCGunChamber: RMC gun chambers are not ported
+  GunIgnorePrediction: Wolfgate predicts shots its own way; add an opt-out marker only if launchers misbehave
+  # RMC bits of the vehicle base that have no Wolfgate meaning.
+  RMCNightVisionVisible: no RMC night vision
+  RMCIgnoreGhostInteractionLimits: no RMC ghost rules
+  RMCMesonsNonviewable: no RMC mesons
+  # RMC's mob-targeting rule is dropped from vehicles so all fire can hit them.
+  RequireProjectileTarget: dropped from vehicles by decision
+  # The prototype-level removal registry is stripped; bases no longer need it.
+  RemoveComponents: stripped; the roster package must pick an unarmed or plain base instead of removing components
+  # Folded into Damageable.
+  Injurable: folded into Damageable.damageContainer
+
+drop_fields:
+  HardpointItem:
+    damageRegion: directional damage is not ported
+  HardpointIntegrity:
+    integrity: RMC starts it at maxIntegrity
+  VehicleHardpointVisuals:
+    layers: RMC builds the layers itself
+  RMCVehicle:
+    transferDamage: ride-on vehicle option
+    requiresHands: ride-on vehicle option
+  VehicleSound:
+    collisionSoundMinSpeed: no RMC counterpart
+  VehicleEnter:
+    maxXenos: no xenos
+    reservedPassengerPools: no jobs
+  GridVehicleMover:
+    canSmashWalls: wall smashing is not ported
+    wallSmashMinSpeed: wall smashing is not ported
+    wallSmashWheelDamage: wall smashing is not ported
+    wallSmashHullDamage: wall smashing is not ported
+    wallSmashSlowdownMultiplier: wall smashing is not ported
+    wallSmashSlowdownDuration: wall smashing is not ported
+    maxRotationSpeedDegrees: RMC turns by cardinal steps
+    rotationAccelerationDegrees: RMC turns by cardinal steps
+    rotationDecelerationDegrees: RMC turns by cardinal steps
+    alignmentAssistDegrees: RMC turns by cardinal steps
+    speedAtZeroIntegrity: no RMC counterpart
+    crashImmobileDuration: crash lock-out is not ported
+    crashImmobileMinSpeed: crash lock-out is not ported
+    mobCrashImmobileDuration: crash lock-out is not ported
+    mobCrashImmobileMinSpeed: crash lock-out is not ported
+    xenoMobCrashImmobileDuration: crash lock-out is not ported
+    xenoMobCrashImmobileMinSpeed: crash lock-out is not ported
+    mobCollisionHullDamage: no RMC counterpart
+    xenoBlockMinimumSize: no xenos
+    canXenosPush: no xenos
+  RequireProjectileTarget:
+    alwaysHitWhitelist: no RMC counterpart
+
+# A slot entry of HardpointSlots: fields RMC's HardpointSlot class lacks.
+drop_slot_fields:
+  disableEject: CMU-only slot option
+
+# Mask and layer entries for collision bits Wolfgate does not have.
+drop_list_values:
+  BarricadeImpassable: no such collision bit
+  DropshipImpassable: no such collision bit
+
+# Tag values removed; a Tag component left empty goes too.
+drop_tags:
+  VehiclePlow: plows are not ported
+
+# Components removed when nothing is left in them after the field drops.
+drop_if_empty: [VehicleHardpointVisuals, HardpointIntegrity, Tag, VehicleSound]
+
+# Components dropped whole because the thin child inherits RMC's family value; the report prints the CMU values.
+inherit_components: [GridVehicleMover]
+
+value_renames:
+  StructuralMarine: StructuralInorganic
+
+# Data bugs in the CMU files, fixed on the way.
+fix_values:
+  mountedflag_2: mountedflag_1
+
+# The prefix a hardpoint id gets: RMC defines each as an entity prototype (vehicle_hardpoint_types.yml).
+hardpoint_id_fields:
+  hardpointType: HardpointType
+  slotType: HardpointSlotType
+  vehicleFamily: HardpointVehicleFamily
+  compatibilityId: HardpointCompatibility
+
+# CMU's weapon sounds have no attribution anywhere, so RMC's stand in.
+sound_substitutions:
+  /Audio/CMU14/Weapons/vehicle/autocannon.ogg: /Audio/_WF/Vehicles/weapons/autocannon_fire.ogg
+  /Audio/CMU14/Weapons/vehicle/tankgun.ogg: /Audio/_WF/Vehicles/weapons/cannon_fire1.ogg
+  /Audio/CMU14/Weapons/vehicle/electrolaser_1.ogg: /Audio/_WF/Vehicles/weapons/dual_autocannon_fire.ogg
+  /Audio/CMU14/Weapons/vehicle/towfire.ogg: /Audio/_WF/Vehicles/guns/m5_shoot.ogg
+  /Audio/CMU14/Weapons/agl/gun_agl_fire1.ogg: /Audio/Weapons/Guns/Gunshots/grenade_launcher.ogg
+  # CMU's tank loops are under a bundle licence or have no attribution; RMC's tank uses these.
+  /Audio/_RMC14/Vehicle/tank_boost_rev.wav: /Audio/_WF/Vehicles/overdrive_activate.ogg
+  /Audio/_RMC14/Vehicle/tank_engine_loop.wav: /Audio/Effects/Vehicle/vehicleengineidle.ogg
+  # The flamer sound goes with the flamers (deferred); the cupola's L98 collection is unattributed too.
+  /Audio/_RMC14/Weapons/Guns/Flamer/gun_flamethrower2.ogg: /Audio/_WF/Vehicles/guns/gun_ml66a_2.ogg
+
+# Sound collections that name CMU-only audio, replaced by a path.
+sound_collection_substitutions:
+  L98FireSound: /Audio/_WF/Vehicles/guns/gun_ml66a_2.ogg
+
+# Components whose fields are checked against RMC's C# class; a key RMC's class lacks is dropped and reported.
+check_fields: [GridVehicleMover, VehicleEnter, HardpointItem, HardpointIntegrity, HardpointSlots, VehicleSound, VehicleTurret,
+               VehicleWheelItem, VehicleWheelSlots]
+# The class that describes the entries of a list field, so unknown keys inside entries are found too.
+entry_classes:
+  HardpointSlots.slots: HardpointSlot
+
+# RMC C# folders (relative to the rmc checkout) scanned for components and their fields.
+rmc_component_roots:
+  - Content.Shared/_RMC14/Vehicle
+  - Content.Server/_RMC14/Vehicle
+  - Content.Client/_RMC14/Vehicle
+
+# Entities that get a compatibility id on every slot and on the item itself, so a hardpoint only fits its own family.
+add_compatibility:
+  VehicleTankTWE: HardpointCompatibilityTWETank
+  VehicleTankTurretTWE: HardpointCompatibilityTWETank
+  VehicleTankTreadsTWE: HardpointCompatibilityTWETank
+  VehicleTankAutocannonTWE: HardpointCompatibilityTWETank
+  VehicleTankHeavyElectrolaserTWE: HardpointCompatibilityTWETank
+  VehicleTankCupolaTWE: HardpointCompatibilityTWETank
+  VehicleTankRocketLauncherTWE: HardpointCompatibilityTWETank
+  TWEVehicleTankArtilleryModule: HardpointCompatibilityTWETank
+  VehicleTankSnowplowTWE: HardpointCompatibilityTWETank
+
+# New hardpoint ids the translation relies on (written to compatibility.yml and counted as defined).
+extra_prototypes:
+  - id: HardpointCompatibilityTWETank
+    text: |
+      - type: entity
+        id: HardpointCompatibilityTWETank
+        categories: [ HideSpawnMenu ]
+        components:
+        - type: HardpointCompatibility
+
+# What `--roster` translates: the four military vehicles, the 17 civilian ones and the 11 CMU hardpoints.
+roster:
+  - file: Resources/Prototypes/_RMC14/Vehicles/Tank/vehicles.yml
+    ids: [VehicleTankPMC, VehicleAev, VehicleTankTWE]
+    out: military_tanks.yml
+  - file: Resources/Prototypes/_RMC14/Vehicles/APC/vehicles.yml
+    ids: [VehicleAPCPMC]
+    out: military_apc.yml
+  - file: Content.CMU/Resources/Prototypes/CMU14/Vehicles/CivTruck/vehicles.yml
+    out: civilian_trucks.yml
+  - file: Content.CMU/Resources/Prototypes/CMU14/Vehicles/Paddywagons/vehicles.yml
+    out: civilian_vans.yml
+  - file: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_base.yml
+    ids: [VehicleTankTurretTWE, VehicleTankTurretPMC, VehicleTankTreadsTWE]
+    out: hardpoints_base.yml
+  - file: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_cannon.yml
+    ids: [VehicleTankAutocannonTWE, VehicleTankHeavyElectrolaserTWE]
+    out: hardpoints_cannon.yml
+  - file: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_launcher.yml
+    ids: [VehicleTankRERE700, VehicleTankCupolaTWE]
+    out: hardpoints_launcher.yml
+  - file: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_support.yml
+    ids: [VehicleTankRocketLauncherTWE, VehicleTankMountedFlag, TWEVehicleTankArtilleryModule, VehicleTankSnowplowTWE]
+    out: hardpoints_support.yml

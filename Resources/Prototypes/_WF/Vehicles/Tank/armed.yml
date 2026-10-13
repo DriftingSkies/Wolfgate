@@ -1,0 +1,57 @@
+# A tank with its weapons fitted, for admin spawning. The turret carries the LTB cannon and the M56 cupola, and a smoke
+# launcher sits on the support mount. Names are in armed.ftl.
+
+- type: entity
+  parent: VehicleTankTurret
+  id: WFVehicleTankTurretArmed
+  components:
+  - type: ItemSlots
+    slots:
+      turret-cannon:
+        startingItem: VehicleTankLTBCannon
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+      turret-launcher:
+        startingItem: VehicleTankM56Cupola
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+
+- type: entity
+  parent: VehicleTank
+  id: WFVehicleTankArmed
+  suffix: Drivable, Tank, Armed
+  components:
+  - type: ItemSlots
+    slots:
+      armor:
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+      primary:
+        startingItem: WFVehicleTankTurretArmed
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+      secondary:
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+      support:
+        startingItem: VehicleTankRocketLauncher
+        disableEject: true
+        whitelist:
+          components:
+          - HardpointItem
+      wheel-1:
+        startingItem: VehicleTankTreads
+        disableEject: true
+        whitelist:
+          components:
+          - VehicleWheelItem

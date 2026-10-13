@@ -1,0 +1,21 @@
+# The ARC humvee with its burst cannon fitted, for admin spawning: RMC fitted weapons from a hardpoint vendor that is not ported
+# (the plain humvee, VehicleHumvee, already starts with its cannon). The medical and transport humvees have no turret slot, no
+# turret sprite layer and no gunner seat or ammo loader in their interiors, so they have no armed twin. Names are in armed.ftl.
+
+- type: entity
+  parent: VehicleHumveeARC
+  id: WFVehicleHumveeARCArmed
+  suffix: Drivable, Humvee, Armed, ARC, Tracked
+  components:
+  - type: ItemSlots
+    slots:
+      turret:
+        startingItem: VehicleHumveeARCTurret
+        whitelist:
+          components:
+          - HardpointItem
+      wheel-1:
+        startingItem: VehicleHumveeWheel
+        whitelist:
+          components:
+          - VehicleWheelItem

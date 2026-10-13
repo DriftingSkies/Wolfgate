@@ -1,0 +1,26 @@
+# Driver actions. Granted at runtime to whoever sits in a driver seat or peeks through a viewport, never in a loadout.
+# The names and descriptions are in Resources/Locale/en-US/_WF/Vehicles/interiors.ftl.
+
+- type: entity
+  id: ActionVehicleToggleView
+  categories: [ WFVehicles ]
+  components:
+  - type: InstantAction
+    icon: Interface/Actions/eyeopen.png
+    iconOn: Interface/Actions/eyeclose.png
+    itemIconStyle: BigAction
+    event: !type:VehicleToggleViewActionEvent
+
+- type: entity
+  id: ActionVehicleLock
+  categories: [ WFVehicles ]
+  components:
+  - type: InstantAction
+    icon:
+      sprite: _WF/Vehicles/Actions/id_lock_actions.rsi
+      state: id_lock_unlocked
+    iconOn:
+      sprite: _WF/Vehicles/Actions/id_lock_actions.rsi
+      state: id_lock_locked
+    itemIconStyle: BigItem
+    event: !type:VehicleLockActionEvent

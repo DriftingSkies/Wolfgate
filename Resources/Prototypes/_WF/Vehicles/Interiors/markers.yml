@@ -1,0 +1,152 @@
+# VehicleExitArea is the clickable doorway inside an interior map; its fixture also keeps people from walking onto it.
+# The blockers fence an area for vehicles (a mapper places them) or wall an interior in with invisible walls.
+
+- type: entity
+  id: VehicleExitArea
+  categories: [ WFVehicles ]
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Icon
+    sprite: _WF/Vehicles/Markers/landmarks.rsi
+    state: invisible_wall
+  - type: Sprite
+    drawdepth: LowFloors
+    texture: /Textures/_WF/Vehicles/Tiles/void.png
+  - type: VehicleExit
+  - type: RMCVehicle
+  - type: Physics
+    bodyType: Static
+    canCollide: true
+  - type: Fixtures
+    fixtures:
+      marker:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,0.49"
+        density: 20000
+        hard: true
+        mask:
+        - FullTileMask
+        layer:
+        - HighImpassable
+        - MidImpassable
+        - LowImpassable
+        - Opaque
+
+- type: entity
+  id: RMCBlockerVehicle
+  categories: [ WFVehicles ]
+  parent: MarkerBase
+  name: vehicle blocker
+  suffix: RMC, Blocker
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Markers/landmarks.rsi
+    state: vehicle_blocker
+    drawdepth: Overdoors
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 100
+        mask:
+        - Vehicle
+        layer:
+        - Vehicle
+
+- type: entity
+  parent: MarkerBase
+  id: RMCWallInvisibleBulletBlocker
+  categories: [ WFVehicles ]
+  name: wall blocker
+  suffix: Projectile Blocker
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Markers/landmarks.rsi
+    state: invisible_wall
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+  - type: PlacementReplacement
+    key: walls
+  - type: Occluder
+    enabled: false
+  - type: Airtight
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        hard: true
+        mask:
+        - FullTileMask
+        - MobMask
+        layer:
+        - HighImpassable
+        - MidImpassable
+        - LowImpassable
+        - InteractImpassable
+        - BulletImpassable
+        density: 1000
+
+- type: entity
+  parent: MarkerBase
+  id: RMCWallInvisibleBulletLightBlocker
+  categories: [ WFVehicles ]
+  name: wall blocker
+  suffix: Projectile + Light Blocker
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Markers/landmarks.rsi
+    state: invisible_wall
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+  - type: PlacementReplacement
+    key: walls
+  - type: Occluder
+  - type: Airtight
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        hard: true
+        mask:
+        - FullTileMask
+        - MobMask
+        layer:
+        - HighImpassable
+        - MidImpassable
+        - LowImpassable
+        - InteractImpassable
+        - BulletImpassable
+        - Opaque
+        density: 1000
+
+# Where the camera sits while someone looks into an interior from a doorway.
+- type: entity
+  id: VehiclePeekAnchor
+  parent: MarkerBase
+  categories: [ HideSpawnMenu, WFVehicles ]
+  components:
+  - type: Physics
+    bodyType: Static
+    canCollide: false

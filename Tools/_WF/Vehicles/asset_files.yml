@@ -1,0 +1,344 @@
+# The textures, tile textures and audio of the Vehicles port, as a list for copy_assets.py (see Docs/_WF/Vehicles/assets.md).
+# Source roots and licences come from the `sources` block of import_files.yml.
+#
+# A group copies from `from` (a folder in the source repo) to `to` (a folder in this repo).
+#   kind: rsi        each item is an RSI folder: meta.json and the state PNGs it names are copied. `keep: [states]` trims the
+#                    RSI to those states; licence and copyright strings are never touched.
+#   kind: rsi-merge  each item adds states from the source's copy of an RSI to the one already copied (a later group).
+#                    The destination keeps its own PNGs and gains the named ones; the copyright becomes the source's,
+#                    which must extend the destination's.
+#   kind: files      each item is a file, or a {src: dest} pair, or {glob: pattern} for every match in `from`.
+# An item may be a bare path (same relative path on both sides) or {src: ..., dest: ...}.
+# `attribution` on a files group gives the licence entry for audio and tile textures; without it the script looks for
+# the source's own attributions.yml entry and stops if there is none. `uncertain: true` marks origin that is a best guess.
+
+groups:
+  # ------------------------------------------------------------------------------------------------------------------
+  # Vehicle bodies, hardpoint overlays and interior pieces (WP7 vans and humvees, WP8 APCs and tanks).
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 7
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures/Vehicles
+    to: Resources/Textures/_WF/Vehicles
+    items:
+      - CLF_van.rsi
+      - box_van.rsi
+      - pizza_van.rsi
+      - van.rsi
+      - sppvan.rsi
+      - sppvan_logistics.rsi
+      - humvee.rsi
+      - humvee_medical.rsi
+      - humvee_transport.rsi
+      - hardpoints/van.rsi
+      - hardpoints/sppvan.rsi
+      - hardpoints/humvee.rsi
+      - Interiors/box_van_interior.rsi
+      - Interiors/general.rsi
+      - Interiors/general_humvee.rsi
+      - Interiors/humvee_chassis.rsi
+      - Interiors/pizza_van_interior.rsi
+      - Interiors/sppvan.rsi
+      - Interiors/sppvan_chassis.rsi
+      - Interiors/van.rsi
+  - wp: 8
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures/Vehicles
+    to: Resources/Textures/_WF/Vehicles
+    items:
+      - apc.rsi
+      # Not used by RMC; VehicleAPCPMC (WP13) uses it.
+      - apc_pmc.rsi
+      - sppapc.rsi
+      - tank.rsi
+      - spptank.rsi
+      - hardpoints/apc.rsi
+      - hardpoints/sppapc.rsi
+      - hardpoints/tank.rsi
+      - hardpoints/spptank.rsi
+      - Interiors/apc.rsi
+      - Interiors/sppapc.rsi
+      - Interiors/sppapc_chassis.rsi
+      - Interiors/tank.rsi
+      - Interiors/spptank.rsi
+      - Interiors/spptank_chassis.rsi
+  - wp: 12
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures/Vehicles
+    to: Resources/Textures/_WF/Vehicles
+    items:
+      # Ammo boxes of the armed hardpoints.
+      - ammo/vehicles.rsi
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # Pieces from other RMC folders that the vehicle prototypes reference.
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 7
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14
+    to: Resources/Textures/_WF/Vehicles
+    items:
+      - {src: Actions/id_lock_actions.rsi, dest: Actions/id_lock_actions.rsi}
+      - {src: Objects/Misc/vehicle_key.rsi, dest: Objects/vehicle_key.rsi}
+      # The invisible cabin walls and the vehicle blocker marker. The other 186 states are not vehicle art.
+      - {src: Markers/landmarks.rsi, dest: Markers/landmarks.rsi, keep: [invisible_wall, vehicle_blocker]}
+      # Van driver seat is the comfychair state.
+      - {src: Structures/Furniture/chairs.rsi, dest: Furniture/chairs.rsi, keep: [comfychair]}
+      - {src: Structures/Furniture/hotseat.rsi, dest: Furniture/hotseat.rsi}
+      - {src: Structures/Furniture/vehicle_seats.rsi, dest: Furniture/vehicle_seats.rsi}
+      - {src: Structures/Wallmounts/camera.rsi, dest: Wallmounts/camera.rsi}
+  - wp: 12
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Objects/Weapons/Guns
+    to: Resources/Textures/_WF/Vehicles/Projectiles
+    items:
+      - {src: Ammunition/Projectiles/bullet_projectiles.rsi, dest: bullet_projectiles.rsi}
+      - {src: Ammunition/Projectiles/m5spec_projectiles.rsi, dest: m5spec_projectiles.rsi}
+      # State ltb is the LTB cannon shell.
+      - {src: Projectiles/projectiles.rsi, dest: projectiles.rsi}
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # CMU vehicles (WP13) and the Bison carrier (WP14).
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 13
+    kind: rsi
+    source: cmu
+    from: Resources/Textures/_RMC14/Structures/Vehicles
+    to: Resources/Textures/_WF/Vehicles
+    items:
+      # PMC tank skin; exists only in CMU's copy of the RMC folder.
+      - wytank.rsi
+  - wp: 13
+    kind: rsi-merge
+    source: cmu
+    from: Resources/Textures/_RMC14/Structures/Vehicles
+    to: Resources/Textures/_WF/Vehicles
+    items:
+      # CMU's own tank_base and towlauncher_0 differ from RMC's; only the states RMC lacks are taken. CMU's copyright credits
+      # aev_base (AndroBetel) and names nobody for the flag and cupola states, which `uncredited` records in the assets table.
+      - {rsi: tank.rsi, states: [aev_base, mountedflag_0, mountedflag_1, re700cupola_0], uncredited: [mountedflag_0, mountedflag_1, re700cupola_0]}
+      - {rsi: hardpoints/tank.rsi, states: [mounted_flag, re700_cupola], uncredited: [mounted_flag, re700_cupola]}
+  - wp: 13
+    kind: rsi
+    source: cmu
+    from: Content.CMU/Resources/Textures/CMU14/Structures/vehicles
+    to: Resources/Textures/_WF/Vehicles/CMU
+    items:
+      - {src: fv150/exterior.rsi, dest: fv150/exterior.rsi}
+      - {src: fv150/icons.rsi, dest: fv150/icons.rsi}
+      - {src: marshalpaddywagon.rsi, dest: marshalpaddywagon.rsi}
+      - {src: hybrisavehicles/ambulance.rsi, dest: hybrisa/ambulance.rsi}
+      - {src: hybrisavehicles/civtruck.rsi, dest: hybrisa/civtruck.rsi}
+      - {src: hybrisavehicles/civvan.rsi, dest: hybrisa/civvan.rsi}
+      - {src: hybrisavehicles/cop_car.rsi, dest: hybrisa/cop_car.rsi}
+      - {src: hybrisavehicles/small_truck_blue.rsi, dest: hybrisa/small_truck_blue.rsi}
+      - {src: hybrisavehicles/small_truck_blue_cargo.rsi, dest: hybrisa/small_truck_blue_cargo.rsi}
+      - {src: hybrisavehicles/small_truck_brown_cargo.rsi, dest: hybrisa/small_truck_brown_cargo.rsi}
+      - {src: hybrisavehicles/small_truck_brown_cargobarrels.rsi, dest: hybrisa/small_truck_brown_cargobarrels.rsi}
+      - {src: hybrisavehicles/small_truck_garbage.rsi, dest: hybrisa/small_truck_garbage.rsi}
+      - {src: hybrisavehicles/small_truck_medical.rsi, dest: hybrisa/small_truck_medical.rsi}
+      - {src: hybrisavehicles/small_truck_turquoise_cargo.rsi, dest: hybrisa/small_truck_turquoise_cargo.rsi}
+      - {src: hybrisavehicles/van.rsi, dest: hybrisa/van.rsi}
+  - wp: 14
+    kind: rsi
+    source: cmu
+    from: Content.CMU/Resources/Textures/CMU14/Structures/vehicles
+    to: Resources/Textures/_WF/Vehicles/CMU
+    items:
+      # The Bison.
+      - cargo_carrier.rsi
+  - wp: 14
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Objects/Devices
+    to: Resources/Textures/_WF/Vehicles/Objects
+    items:
+      # The Bison controller, and the icon of its return action.
+      - command_tablet.rsi
+  - wp: 14
+    kind: files
+    source: rmc
+    from: Resources/Audio/_RMC14
+    to: Resources/Audio/_WF/Vehicles
+    attributions_file: Resources/Audio/_WF/Vehicles/attributions.yml
+    # Credited to cmss13 in RMC. The Bison's other sounds are Wolfgate's own (metal_thud1, double_beep) or box_van_driving.ogg.
+    items:
+      - {src: Medical/reset_key_shortbeep.ogg, dest: effects/reset_key_shortbeep.ogg}
+      - {src: Machines/hydraulics_1.ogg, dest: effects/hydraulics_1.ogg}
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # Tile textures. RMC ships them without an attribution file.
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 7
+    kind: files
+    source: rmc
+    from: Resources/Textures/Tiles/vehicle_interior
+    to: Resources/Textures/_WF/Vehicles/Tiles/vehicle_interior
+    attributions_file: Resources/Textures/_WF/Vehicles/Tiles/attributions.yml
+    attribution:
+      license: CC-BY-SA-3.0
+      copyright: >-
+        Added to RMC-14 without attribution in PR #8791 (Vehicles) by Vixting. Probably cut from cmss13 vehicle interior turf
+        sprites, which are CC-BY-SA-3.0; the author did not say. Origin not confirmed.
+      source: https://github.com/RMC-14/RMC-14/pull/8791
+      uncertain: true
+    items:
+      - {glob: "*.png"}
+  - wp: 7
+    kind: files
+    source: rmc
+    from: Resources/Textures/_RMC14/Tiles/floors
+    to: Resources/Textures/_WF/Vehicles/Tiles
+    attributions_file: Resources/Textures/_WF/Vehicles/Tiles/attributions.yml
+    attribution:
+      license: CC-BY-SA-3.0
+      copyright: >-
+        Added to RMC-14 without attribution in PR #8391 (Bosenmori Basho Content) by noctis. A 32x32 filler tile used as the
+        void tile and the exit marker. Origin not confirmed; RMC's assets default to CC-BY-SA-3.0.
+      source: https://github.com/RMC-14/RMC-14/pull/8391
+      uncertain: true
+    items:
+      - void.png
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # Audio. Resources/Audio/_RMC14/Vehicle ships without an attribution file in RMC.
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 7
+    kind: files
+    source: rmc
+    from: Resources/Audio/_RMC14/Vehicle
+    to: Resources/Audio/_WF/Vehicles
+    attributions_file: Resources/Audio/_WF/Vehicles/attributions.yml
+    attribution:
+      license: CC-BY-SA-3.0
+      copyright: >-
+        Added to RMC-14 without attribution in PR #8791 (Vehicles) by Vixting. Taken to be cmss13 sounds: the names look like
+        cmss13's and smokelauncher_fire.ogg from the same PR is credited to cmss13 in RMC. Origin not confirmed; Colonial
+        Marines Universe lists them as MIT, RMC-14 contributors.
+      source: https://github.com/RMC-14/RMC-14/pull/8791
+      uncertain: true
+    items:
+      - box_van_driving.ogg
+      - box_van_horn.ogg
+      - box_van_overdrive.ogg
+      - honk_1_truck.ogg
+      - honk_2_truck.ogg
+      - honk_3_ambulence.ogg
+      - honk_4_light.ogg
+      - overdrive_activate.ogg
+      - sound_vehicles_humvee_driving.ogg
+      - sound_vehicles_humvee_horn.ogg
+      - tank_driving.ogg
+  - wp: 12
+    kind: files
+    source: rmc
+    from: Resources/Audio/_RMC14/Vehicle/weapons
+    to: Resources/Audio/_WF/Vehicles/weapons
+    attributions_file: Resources/Audio/_WF/Vehicles/attributions.yml
+    # Left out: flamethrower.ogg (flamers are deferred) and the uncredited duplicate of smokelauncher_fire.ogg (the credited
+    # copy comes from Weapons/Vehicles below).
+    attribution:
+      license: CC-BY-SA-3.0
+      copyright: >-
+        Added to RMC-14 without attribution in PR #8791 (Vehicles) by Vixting. Taken to be cmss13 sounds, as the sibling
+        smokelauncher_fire.ogg (same length, credited to cmss13 in RMC) is. Origin not confirmed; Colonial Marines Universe
+        lists them as MIT, RMC-14 contributors.
+      source: https://github.com/RMC-14/RMC-14/pull/8791
+      uncertain: true
+    items:
+      - autocannon_fire.ogg
+      - autocannon_fire_old.ogg
+      - cannon_distant1.ogg
+      - cannon_distant2.ogg
+      - cannon_fire1.ogg
+      - cannon_fire2.ogg
+      - dual_autocannon_fire.ogg
+      - minigun_loop.ogg
+      - minigun_select.ogg
+      - minigun_start.ogg
+      - minigun_stop.ogg
+      - sound_weapons_humvee_cannon.ogg
+  # These have entries in RMC's own attributions.yml; the script carries them over.
+  - wp: 7
+    kind: files
+    source: rmc
+    from: Resources/Audio/_RMC14
+    to: Resources/Audio/_WF/Vehicles
+    attributions_file: Resources/Audio/_WF/Vehicles/attributions.yml
+    items:
+      - {src: Effects/metal_crash.ogg, dest: effects/metal_crash.ogg}
+      - {src: Structures/metalhit.ogg, dest: effects/metalhit.ogg}
+      - {src: Xeno/alien_claw_block.ogg, dest: effects/alien_claw_block.ogg}
+      # Credited to cmss13 in RMC.
+      - {src: Weapons/Vehicles/smokelauncher_fire.ogg, dest: weapons/smokelauncher_fire.ogg}
+  - wp: 12
+    kind: files
+    source: rmc
+    from: Resources/Audio/_RMC14/Weapons/Guns
+    to: Resources/Audio/_WF/Vehicles/guns
+    attributions_file: Resources/Audio/_WF/Vehicles/attributions.yml
+    items:
+      - Gunshots/gun_ml66a_2.ogg: gun_ml66a_2.ogg
+      - Gunshots/m5_shoot.ogg: m5_shoot.ogg
+      - Reload/gun_sg_reload.ogg: gun_sg_reload.ogg
+      - Reload/gun_sg_unload.ogg: gun_sg_unload.ogg
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # Scenery vehicles (static props).
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 15
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures/Vehicles
+    to: Resources/Textures/_WF/Vehicles/Props
+    items:
+      - vehicles.rsi
+      - vehicles2.rsi
+      - vehicles3.rsi
+      - digger.rsi
+  - wp: 15
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures/Tyrargo_Vehicles
+    to: Resources/Textures/_WF/Vehicles/Props/Tyrargo
+    items:
+      - tyrargo_apc.rsi
+      - tyrargo_bison.rsi
+      - tyrargo_evac.rsi
+      - tyrargo_halftrack.rsi
+      - tyrargo_humvee.rsi
+      - tyrargo_ifv.rsi
+      - tyrargo_tank.rsi
+      - tyrargo_truck.rsi
+      - tyrargo_vtol.rsi
+  - wp: 15
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures
+    to: Resources/Textures/_WF/Vehicles/Props
+    items:
+      - vehicle_pileup.rsi
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # The flamers: the jet sprite and the flamethrower sound.
+  # ------------------------------------------------------------------------------------------------------------------
+  - wp: 16
+    kind: rsi
+    source: rmc
+    from: Resources/Textures/_RMC14/Objects/Weapons/Guns/Ammunition/Projectiles
+    to: Resources/Textures/_WF/Vehicles/Projectiles
+    items:
+      - firesentry_projectile.rsi
+  - wp: 16
+    kind: files
+    source: rmc
+    from: Resources/Audio/_RMC14/Weapons/Guns
+    to: Resources/Audio/_WF/Vehicles/guns
+    attributions_file: Resources/Audio/_WF/Vehicles/attributions.yml
+    items:
+      - Flamer/gun_flamethrower2.ogg: gun_flamethrower2.ogg
