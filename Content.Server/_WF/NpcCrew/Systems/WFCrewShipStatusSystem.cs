@@ -106,6 +106,16 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
         return reading.Abandoned || reading.Disarmed || reading.Crippled || reading.Wrecked;
     }
 
+    /// <summary>
+    /// Whether a ship is out of the fight only for want of power: its guns or thrust have gone dead for the whole
+    /// delay while its hull is whole and its people are aboard.
+    /// </summary>
+    public bool IsStarved(EntityUid grid)
+    {
+        var reading = Read(grid);
+        return (reading.Disarmed || reading.Crippled) && !reading.Wrecked && !reading.Abandoned;
+    }
+
     /// <summary>Whether a ship has no working thruster at all right now.</summary>
     public bool IsAdrift(EntityUid grid)
     {

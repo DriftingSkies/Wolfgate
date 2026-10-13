@@ -278,10 +278,22 @@ public sealed partial class WFReaverCampaignSystem
             var (uid, comp, encounter) = stronghold;
             if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
             {
+                // A hub that went dark with nobody shooting at it has not been beaten: its engineer and the restock
+                // bring the power back.
+                if (lead != null && encounter.ShipHits.Count == 0 && _encounters.OutForWantOfPower(lead))
+                {
+                    if (!comp.Starved)
+                        Log.Info($"Reaver stronghold {ToPrettyString(uid)} is out of power with no attack on it and is left standing.");
+
+                    comp.Starved = true;
+                    continue;
+                }
+
                 _encounters.Resolve(uid, LostResolution(encounter, comp.Lead));
                 continue;
             }
 
+            comp.Starved = false;
             var hits = encounter.ShipHits.Values.Sum();
             if (hits > comp.Hits)
             {

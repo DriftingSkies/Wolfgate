@@ -32,6 +32,9 @@ overspeeds, down while it runs slow, halved when it stalls), its flow rate set a
 100 L/s per gas channel plus 200. No
 stores, or no living engineer, and the ship goes dark; a ship stranded for fuel gets neither. A fighter whose roles
 leave no room for an engineer tops its own generators up whenever they run low, as long as any of its crew live.
+A persistent ship (a Reaver hub) is stocked to its prototype's `fuelStores` jars and stacks a generator (12 for the
+hubs: about eight hours of an AME at 0.6 units a second), and every five minutes `RestockFuel` tops its crate back up to
+two while its engineer lives. With no living engineer left it is refuelled like a fighter.
 Crewmen carry no radiation receiver, so standing by a reactor costs them nothing.
 
 Posts keep to breathable deck where a hull has any. A helm or gunnery console with no air beside it (an open
