@@ -263,6 +263,12 @@ public sealed partial class GridVehicleMoverComponent : Component
     public Angle? RestRotation;
 
     /// <summary>
+    /// the steering switch the current driver was given
+    /// </summary>
+    [NonSerialized]
+    public EntityUid? SteeringAction;
+
+    /// <summary>
     /// earliest time the next impact is reported; a hull scraping along a wall meets it every step
     /// </summary>
     [NonSerialized]

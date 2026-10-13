@@ -107,7 +107,8 @@ and water slowdown, toxic water, ride surfaces, barricade handling, RMC power fo
 push-speed path and the bypass around blocking mobs. These `GridVehicleMover` fields went with them and prototypes must
 not set them: `weedsSpeedFactor`, `xenoBlockMinimumSize`, `xenoPushMinimumSize`, `canXenosPush`, `pushCooldown`,
 `pushImpulseSpeed`, `blockingMobBypassNudgeLimit`, `blockingMobBypassNudgeStep`. A vehicle can still push another
-vehicle (`canPushVehicles`). Mobs never block: a standing mob is run over at 4 tiles per second or more (8 Blunt, a
+vehicle (`canPushVehicles`). Mobs never block: a standing mob is run over at 1.5 tiles per second or more (Blunt of 8
+plus 2 per tile a second, times 1.25 for a light vehicle, 1.75 for a tank and 2.25 above, at most 60; a scream; a
 knockdown and `VehicleRunover`), slower than that it is left alone.
 
 Speeds are Wolfgate's (owner, 2026-10-13: fast enough to be transport on open planets; a mob sprints at about 4.5
@@ -128,6 +129,10 @@ a thing, or lies over an empty tile, is asked of the turned rectangle itself (`H
 vehicle close to a wall still cannot swing its tail into it, since the hull turns about its middle. On the client `VehicleSteeredSpriteSystem` draws one of the four
 sprites turned by what is left of the angle: the side sprites within 22.5 degrees of east and west, the front and
 back sprites everywhere else.
+
+The driver can switch a vehicle between the two drives (`WFActionVehicleSteeringMode`, given to whoever drives;
+`GridVehicleMoverSystem.TrySetFreeSteering`). The choice is the vehicle's and stays with it. Going to the four-way drive
+squares the hull to the nearest direction, which needs room; without it nothing changes.
 
 The mover knows neither wheels nor the cabin. When a probe with effects is stopped by something hard it raises
 `VehicleCollisionEvent` (kind `Impact`) on the vehicle, and when a drive step ends blocked it raises the same event with

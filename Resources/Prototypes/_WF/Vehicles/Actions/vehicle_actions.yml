@@ -24,3 +24,21 @@
       state: id_lock_locked
     itemIconStyle: BigItem
     event: !type:VehicleLockActionEvent
+
+# The driver's switch between free steering (lit) and the four-way drive. Given to whoever drives, taken back when they stop.
+- type: entity
+  id: WFActionVehicleSteeringMode
+  categories: [ WFVehicles ]
+  components:
+  - type: InstantAction
+    icon:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_thrusters_off
+    iconOn:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_thrusters_on
+    event: !type:VehicleSteeringModeActionEvent
+    checkCanInteract: false
+    raiseOnUser: true
+    itemIconStyle: NoItem
+    useDelay: 1

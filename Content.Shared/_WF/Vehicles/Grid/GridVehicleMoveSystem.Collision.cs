@@ -1003,7 +1003,28 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         PlayMobCollisionSound(vehicle, ref playedCollisionSound);
 
-        _damageable.TryChangeDamage(target, _mobCollisionDamage);
+        // Harder the faster and the heavier the vehicle.
+        var speed = vehicleMover == null ? 0f : MathF.Abs(vehicleMover.CurrentSpeed);
+        var weight = (vehicleMover?.WeightClass ?? VehicleWeightClass.Weak) switch
+        {
+            VehicleWeightClass.Light => 1.25,
+            VehicleWeightClass.Medium => 1.75,
+            VehicleWeightClass.Heavy => 2.25,
+            _ => 1.0,
+        };
+        var amount = Math.Min((MobCollisionDamage + MobCollisionDamagePerSpeed * speed) * weight, MobCollisionMaxDamage);
+        var damage = new DamageSpecifier
+        {
+            DamageDict =
+            {
+                [CollisionDamageType] = amount,
+            },
+        };
+
+        _damageable.TryChangeDamage(target, damage, origin: vehicle);
+
+        var ranOver = new VehicleRanOverEvent(vehicle, speed);
+        RaiseLocalEvent(target, ref ranOver);
 
         _stun.TryKnockdown(target, MobCollisionKnockdown, true);
         var runover = EnsureComp<VehicleRunoverComponent>(target);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Content.Shared._WF.Vehicles.Base;
 using Content.Shared._WF.Vehicles.Grid.Components;
 using Content.Shared.ActionBlocker;
+using Content.Shared.Actions;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Destructible;
@@ -38,6 +39,7 @@ namespace Content.Shared._WF.Vehicles.Grid;
 public sealed partial class GridVehicleMoverSystem : EntitySystem
 {
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private SharedDestructibleSystem _destructible = default!;
@@ -61,9 +63,15 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
     private const float Clearance = PhysicsConstants.PolygonRadius * 0.75f;
     private const double MobCollisionDamage = 8;
+
+    /// <summary>Further damage to someone run over, per tile a second of the vehicle's speed.</summary>
+    private const double MobCollisionDamagePerSpeed = 2;
+
+    /// <summary>The most a single run-over does, whatever the speed and weight.</summary>
+    private const double MobCollisionMaxDamage = 60;
     private static readonly TimeSpan MobCollisionKnockdown = TimeSpan.FromSeconds(1.5);
     private static readonly TimeSpan MobCollisionCooldown = TimeSpan.FromSeconds(0.75);
-    private const float MobCollisionMinKnockdownSpeed = 4f;
+    private const float MobCollisionMinKnockdownSpeed = 1.5f;
     private static readonly ProtoId<DamageTypePrototype> CollisionDamageType = "Blunt";
     private const int GridVehicleStaticBlockerMask =
         (int) (CollisionGroup.Impassable |
@@ -86,7 +94,6 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     private readonly List<EntityUid>[] _hitsBuffers = { new(), new(), new() };
     private int _hitsDepth;
     private readonly Dictionary<EntityUid, TimeSpan> _lastMobCollision = new();
-    private readonly DamageSpecifier _mobCollisionDamage = new() { DamageDict = { [CollisionDamageType] = MobCollisionDamage } };
     private readonly Dictionary<EntityUid, float> _movementAccumulator = new();
     private readonly HashSet<EntityUid>[] _pushIgnoredBuffers = { new(), new(), new() };
     private readonly HashSet<EntityUid> _bypassInitialBlockers = new();
@@ -159,6 +166,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         SubscribeLocalEvent<GridVehicleMoverComponent, PreventCollideEvent>(OnMoverPreventCollide);
         SubscribeLocalEvent<GridVehicleMoverComponent, ThrownEvent>(OnMoverThrown);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
+        InitializeSteeringMode();
     }
 
     /// <summary>Mobs the mover is holding a run-over cooldown for; emptied when the round restarts.</summary>
@@ -199,6 +207,9 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     private void OnMoverShutdown(Entity<GridVehicleMoverComponent> ent, ref ComponentShutdown args)
     {
         _movementAccumulator.Remove(ent.Owner);
+
+        if (!_net.IsClient)
+            RemoveSteeringAction(ent.Comp, null);
 
         if (!TerminatingOrDeleted(ent))
             Transform(ent).GridTraversal = true;

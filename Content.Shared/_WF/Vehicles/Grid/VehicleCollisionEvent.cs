@@ -17,3 +17,7 @@ public enum VehicleCollisionKind : byte
 /// <param name="MaxSpeed">The vehicle's current top speed with modifiers, to scale the effect.</param>
 [ByRefEvent]
 public readonly record struct VehicleCollisionEvent(VehicleCollisionKind Kind, EntityUid? Other, float Speed, float MaxSpeed);
+
+/// <summary>Raised on someone a vehicle has just run over, on the server.</summary>
+[ByRefEvent]
+public readonly record struct VehicleRanOverEvent(EntityUid Vehicle, float Speed);

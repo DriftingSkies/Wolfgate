@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Numerics;
+using Content.Shared._WF.Vehicles.Grid;
 using Content.Shared._WF.Vehicles.Grid.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.GameObjects;
@@ -293,6 +294,61 @@ public sealed class GridVehicleSteeringTest
                 Assert.That(position.X, Is.GreaterThan(start.X + 8f), "The wall stopped the hull instead of letting it slide along.");
                 Assert.That(position.Y, Is.LessThan(4f), "The hull went into the wall.");
                 Assert.That(mover.CurrentSpeed, Is.GreaterThan(2f), "Sliding along a wall at a shallow angle should keep most of the speed.");
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// The driver is given the steering switch. To the four-way drive it squares the hull to the nearest direction and the
+    /// keys turn the vehicle to face them; back to free steering the vehicle keeps the heading it has.
+    /// </summary>
+    [Test]
+    public async Task TheDriverSwitchesBetweenTheTwoDrives()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var rig = await VehicleRigs.Build(pair, proto: Wheeled, facingRight: true, maxY: 12, startX: 10.5f, startY: 6.5f);
+        var server = pair.Server;
+        var movers = server.System<GridVehicleMoverSystem>();
+
+        await server.WaitPost(() => server.System<SharedTransformSystem>().SetLocalRotation(rig.Vehicle, East + Angle.FromDegrees(20)));
+        await VehicleRigs.Seat(rig);
+
+        // A touch of throttle gives it its heading.
+        await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.Up));
+        await server.WaitRunTicks(3);
+        await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.None));
+        await server.WaitRunTicks(30);
+
+        await server.WaitAssertion(() =>
+        {
+            var mover = VehicleRigs.Mover(rig);
+            var xform = server.EntMan.GetComponent<TransformComponent>(rig.Vehicle);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(mover.SteeringAction, Is.Not.Null, "The driver was not given the steering switch.");
+                Assert.That(movers.TrySetFreeSteering((rig.Vehicle, mover), false), Is.True, "It could not switch to the four-way drive in the open.");
+                Assert.That(mover.FreeSteering, Is.False);
+                Assert.That(mover.CurrentDirection, Is.EqualTo(new Vector2i(1, 0)));
+                Assert.That(DegreesFrom(East, xform.LocalRotation), Is.EqualTo(0).Within(0.01), "The hull was not squared to the nearest direction.");
+            }
+        });
+
+        await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.Up));
+        await server.WaitRunTicks(30);
+
+        await server.WaitAssertion(() =>
+        {
+            var mover = VehicleRigs.Mover(rig);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(mover.CurrentDirection, Is.EqualTo(new Vector2i(0, 1)), "On the four-way drive the up key should turn it to face up.");
+                Assert.That(movers.TrySetFreeSteering((rig.Vehicle, mover), true), Is.True);
+                Assert.That(mover.FreeSteering, Is.True);
+                Assert.That(DegreesFrom(Angle.FromWorldVec(Vector2.UnitY), mover.Heading), Is.EqualTo(0).Within(0.01), "Free steering should start from the heading it had.");
             }
         });
 

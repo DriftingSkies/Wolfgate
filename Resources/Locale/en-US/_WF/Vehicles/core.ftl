@@ -20,3 +20,9 @@ wf-vehicles-entity-category = Vehicles
 
 wf-vehicle-plow-working = The plow bites into the structure. Keep pushing forward!
 wf-vehicle-plow-indestructible = The plow cannot break through this structure.
+
+ent-WFActionVehicleSteeringMode = Switch steering
+    .desc = Switch between free steering and fixed four-way driving.
+wf-vehicle-steering-free = Steering: free.
+wf-vehicle-steering-fixed = Steering: four-way.
+wf-vehicle-steering-no-room = No room to square the vehicle up.
