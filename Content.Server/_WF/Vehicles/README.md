@@ -683,7 +683,8 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Client/Sprite/SpriteFadeSystem.cs`](../../../Content.Client/Sprite/SpriteFadeSystem.cs): roofs the player stands under still fade
 - [`Content.Client/Weapons/Ranged/Systems/GunSystem.cs`](../../../Content.Client/Weapons/Ranged/Systems/GunSystem.cs)
   - an operator on another map aims relative to the grid under the gun, which is on the map the cursor is over
-  - a mounted gun's flash follows the gun, not an operator on another map
+  - a mounted gun's flash follows the gun at its muzzle, not an operator on another map
+  - at the muzzle of a mounted gun
 - [`Content.IntegrationTests/Pair/TestPair.cs`](../../../Content.IntegrationTests/Pair/TestPair.cs): records the events the vehicle mover raises
 - [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs): people inside a parked vehicle stand on its interior map, not under the hull.
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers

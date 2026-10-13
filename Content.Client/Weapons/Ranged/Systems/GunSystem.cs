@@ -393,9 +393,13 @@ public sealed partial class GunSystem : SharedGunSystem
         var ent = Spawn(message.Prototype, coordinates);
         TransformSystem.SetWorldRotationNoLerp(ent, message.Angle);
 
-        // WOLFGATE(Vehicles) START: a mounted gun's flash follows the gun, not an operator on another map
+        // WOLFGATE(Vehicles) START: a mounted gun's flash follows the gun at its muzzle, not an operator on another map
+        Vector2? mountedFlashOffset = null;
         if (HasComp<GunUseGunOriginComponent>(gunUid))
+        {
             user = gunUid;
+            mountedFlashOffset = GetMountedFlashOffset(gunUid, gunXform, message.Angle);
+        }
         // WOLFGATE END
 
         // Don't track muzzle flash to user if this is a fire control console weapon (ship artillery)
@@ -405,7 +409,7 @@ public sealed partial class GunSystem : SharedGunSystem
         {
             var track = EnsureComp<TrackUserComponent>(ent);
             track.User = user;
-            track.Offset = Vector2.UnitX / 2f;
+            track.Offset = mountedFlashOffset ?? Vector2.UnitX / 2f; // WOLFGATE(Vehicles): at the muzzle of a mounted gun
         }
 
         var lifetime = 0.4f;
