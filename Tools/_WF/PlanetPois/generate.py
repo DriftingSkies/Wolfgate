@@ -95,10 +95,12 @@ def main():
         write(ROOT / "Resources/Maps/_WF/PlanetPois" / f"{m.slug}.yml", m.serialize(), args.check)
         if args.preview:
             preview(m, args.preview)
+    # Only the maps built here are replaced; a hand-registered map entry is kept like any other.
+    generated = {m.entry()["mapPath"] for m in maps}
     for table in tables:
         planet = table["id"].removeprefix("WFPois")
         authored = [m.entry() for m in maps if m.planet == planet]
-        table["entries"] = authored + [entry for entry in table["entries"] if "mapPath" not in entry]
+        table["entries"] = authored + [entry for entry in table["entries"] if entry.get("mapPath") not in generated]
     write(table_path, header + yaml.safe_dump(tables, sort_keys=False, width=120), args.check)
     print(f"{'Checked' if args.check else 'Generated'} {len(maps)} maps, {sum(len(m.entities) for m in maps):,} mapped entities, six planet tables.")
 
