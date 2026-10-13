@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Content.Shared._WF.Vehicles.Grid.Components;
 using Content.Shared._WF.Vehicles.Turret;
 using Content.Client._WF.Vehicles.Turret;
@@ -19,6 +20,9 @@ public sealed partial class VehicleSteeredSpriteSystem : EntitySystem
     [Dependency] private SpriteSystem _sprite = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 
+    // Hulls drawn this way, with the sprite settings they had before, put back when they go to the four-way drive.
+    private readonly Dictionary<EntityUid, (bool NoRotation, bool Granular)> _steered = new();
+
     public override void Initialize()
     {
         UpdatesAfter.Add(typeof(VehicleTurretVisualSystem));
@@ -30,7 +34,14 @@ public sealed partial class VehicleSteeredSpriteSystem : EntitySystem
         while (vehicles.MoveNext(out var uid, out var mover, out var sprite))
         {
             if (mover.FreeSteering)
+            {
+                _steered.TryAdd(uid, (sprite.NoRotation, sprite.GranularLayersRendering));
                 ApplyDirection(uid, sprite);
+            }
+            else if (_steered.Remove(uid, out var before))
+            {
+                Restore(uid, sprite, before.NoRotation, before.Granular);
+            }
         }
 
         var turrets = EntityQueryEnumerator<VehicleTurretVisualComponent, SpriteComponent>();
@@ -38,6 +49,26 @@ public sealed partial class VehicleSteeredSpriteSystem : EntitySystem
         {
             ApplyDirection(uid, sprite);
         }
+    }
+
+    private void Restore(EntityUid uid, SpriteComponent sprite, bool noRotation, bool granular)
+    {
+        sprite.EnableDirectionOverride = false;
+        sprite.NoRotation = noRotation;
+
+        var index = 0;
+        foreach (var layer in sprite.AllLayers)
+        {
+            var i = index++;
+            if (layer.ActualRsi is { } rsi &&
+                rsi.TryGetState(layer.RsiState, out var state) &&
+                state.RsiDirections == RsiDirectionType.Dir4)
+            {
+                _sprite.LayerSetRotation((uid, sprite), i, Angle.Zero);
+            }
+        }
+
+        _sprite.SetGranularLayersRendering((uid, sprite), granular);
     }
 
     private void ApplyDirection(EntityUid uid, SpriteComponent sprite)
