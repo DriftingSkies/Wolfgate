@@ -438,6 +438,9 @@ namespace Content.Server.Shuttles.Systems
 
             var dock = (dockEnt.Value, dockComp);
 
+            if (WfClampHolds(uid, dock)) // WOLFGATE(Encounters): a raider's docking clamps hold the ship until released at its helm.
+                return;
+
             if (!CanUndock(dock))
             {
                 _popup.PopupCursor(Loc.GetString("shuttle-console-undock-fail"));
@@ -559,6 +562,9 @@ namespace Content.Server.Shuttles.Systems
                 }
 
                 var dock = (dockEnt.Value, dockComp);
+
+                if (WfClampHolds(uid, dock)) // WOLFGATE(Encounters): a raider's docking clamps hold the ship until released at its helm.
+                    continue;
 
                 if (!CanUndock(dock))
                 {

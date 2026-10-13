@@ -1,0 +1,167 @@
+- type: constructionGraph
+  id: WFAdamantiteWall
+  start: start
+  graph:
+    - node: start
+      edges:
+        - to: girder
+          completed:
+            - !type:SnapToGrid {}
+          steps:
+            - material: Steel
+              amount: 2
+              doAfter: 1
+
+    - node: girder
+      entity: Girder
+      edges:
+        - to: start
+          completed:
+            - !type:SpawnPrototype
+              prototype: SheetSteel1
+              amount: 2
+            - !type:DeleteEntity {}
+          conditions:
+            - !type:EntityAnchored
+              anchored: false
+          steps:
+            - tool: Screwing
+              doAfter: 2
+
+        - to: adamantiteWallDiagonal
+          completed:
+          - !type:SnapToGrid
+            southRotation: false
+          conditions:
+          - !type:EntityAnchored { }
+          steps:
+          - tool: Prying
+            doAfter: 1
+          - tool: Welding
+            doAfter: 2
+          - material: Plasteel
+            amount: 2
+            doAfter: 1
+          - material: PdvComposite
+            amount: 2
+            doAfter: 1
+
+        - to: adamantiteWall
+          completed:
+          - !type:SnapToGrid
+            southRotation: true
+          conditions:
+          - !type:EntityAnchored { }
+          steps:
+          - tool: Welding
+            doAfter: 5
+          - material: Plasteel
+            amount: 4
+            doAfter: 1
+          - material: PdvComposite
+            amount: 4
+            doAfter: 1
+
+    - node: adamantiteWallDiagonal
+      entity: WFWallAdamantiteDiagonal
+      edges:
+      - to: girder
+        completed:
+        - !type:SpawnPrototype
+          prototype: ScrapSteel
+          amount: 1
+        steps:
+        - tool: Cutting
+          doAfter: 1
+        - tool: Screwing
+          doAfter: 1
+        - tool: Welding
+          doAfter: 5
+        - tool: Prying
+          doAfter: 1
+        - tool: Anchoring
+          doAfter: 1
+        - tool: Welding
+          doAfter: 10
+        - tool: Prying
+          doAfter: 1
+        - tool: Screwing
+          doAfter: 1
+        - tool: Cutting
+          doAfter: 1
+        - tool: Welding
+          doAfter: 15
+        - tool: Prying
+          doAfter: 5
+        - tool: Anchoring
+          doAfter: 1
+
+    - node: adamantiteWall
+      entity: WFWallAdamantite
+      edges:
+      - to: girder
+        completed:
+        - !type:SpawnPrototype
+          prototype: ScrapSteel
+          amount: 2
+        steps:
+        - tool: Cutting
+          doAfter: 1
+        - tool: Screwing
+          doAfter: 1
+        - tool: Welding
+          doAfter: 5
+        - tool: Prying
+          doAfter: 1
+        - tool: Anchoring
+          doAfter: 1
+        - tool: Welding
+          doAfter: 10
+        - tool: Prying
+          doAfter: 1
+        - tool: Screwing
+          doAfter: 1
+        - tool: Cutting
+          doAfter: 1
+        - tool: Welding
+          doAfter: 15
+        - tool: Prying
+          doAfter: 5
+        - tool: Anchoring
+          doAfter: 1
+
+- type: construction
+  name: adamantite wall
+  id: WFAdamantiteWall
+  graph: WFAdamantiteWall
+  startNode: start
+  targetNode: adamantiteWall
+  category: construction-category-structures
+  description: Plastitanium plating laced with Phaethon adamantite. Soaks up the hits meant for what's mounted on it.
+  icon:
+    sprite: /Textures/_WF/ShipArmor/adamantite.rsi
+    state: full
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: false
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileNotBlocked
+
+- type: construction
+  name: diagonal adamantite wall
+  id: WFAdamantiteWallDiagonal
+  graph: WFAdamantiteWall
+  startNode: start
+  targetNode: adamantiteWallDiagonal
+  category: construction-category-structures
+  description: Plastitanium plating laced with Phaethon adamantite. Soaks up the hits meant for what's mounted on it.
+  icon:
+    sprite: /Textures/_WF/ShipArmor/adamantite_diagonal.rsi
+    state: state0
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: true
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileNotBlocked

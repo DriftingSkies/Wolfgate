@@ -98,6 +98,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         // DamageChangedEvent then has no origin.
         SubscribeLocalEvent<WFEncounterPassengerComponent, BeforeDamageChangedEvent>(OnPassengerDamaged,
             before: [typeof(Content.Shared._Onyx.Wounds.WoundDamageRoutingSystem)]);
+        InitializeExtort();
     }
 
     /// <summary>A hidden encounter shows itself once one of its crews raises the alarm.</summary>
@@ -184,10 +185,16 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Puts a hidden encounter on the sector markers and lets it make its announcement.</summary>
-    public void Reveal(Entity<WFEncounterComponent?> encounter)
+    /// <summary>
+    /// Puts a hidden encounter on the sector markers and lets it make its announcement. One with a stealth ship stays
+    /// hidden unless <paramref name="force"/> is set.
+    /// </summary>
+    public void Reveal(Entity<WFEncounterComponent?> encounter, bool force = false)
     {
         if (!Resolve(encounter, ref encounter.Comp, false) || !encounter.Comp.Hidden)
+            return;
+
+        if (!force && encounter.Comp.Ships.Values.Any(ship => ship.Stealth))
             return;
 
         encounter.Comp.Hidden = false;
@@ -388,7 +395,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
     {
         foreach (var ship in prototype.Ships)
         {
-            if (!comp.Ships.TryGetValue(ship.Key, out var state) || TerminatingOrDeleted(state.Grid) || IsStranded(state))
+            // An extorter flies its wander legs as its own roaming, not as orders that can be flown out.
+            if (!comp.Ships.TryGetValue(ship.Key, out var state) || TerminatingOrDeleted(state.Grid) || IsStranded(state)
+                || state.Extort != null)
                 continue;
 
             if (!IssueShipOrders(comp, prototype, ship, state))
@@ -505,8 +514,12 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
-    /// <summary>The orders a ship's prototype gives it. <paramref name="grid"/> is the ship's own, for @player.</summary>
-    private List<WFCrewObjective> BuildQueue(WFEncounterComponent comp, WFEncounterShip ship, EntityUid grid)
+    /// <summary>
+    /// The orders a ship's prototype gives it. <paramref name="grid"/> is the ship's own, for @player; its wander legs
+    /// are flown about <paramref name="around"/>, the encounter's origin if none.
+    /// </summary>
+    private List<WFCrewObjective> BuildQueue(WFEncounterComponent comp, WFEncounterShip ship, EntityUid grid,
+        System.Numerics.Vector2? around = null)
     {
         var queue = new List<WFCrewObjective>();
         // Meandering: one random point after another around where it arrived.
@@ -515,7 +528,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             queue.Add(new WFCrewObjective
             {
                 Kind = WFCrewObjectiveKind.GoTo,
-                Position = comp.Origin.Position + _random.NextAngle().ToVec() * _random.NextFloat(ship.WanderRadius * 0.3f, ship.WanderRadius),
+                Position = (around ?? comp.Origin.Position) + _random.NextAngle().ToVec() * _random.NextFloat(ship.WanderRadius * 0.3f, ship.WanderRadius),
                 Range = 200f,
             });
             if (ship.WanderPause > 0f)
@@ -606,14 +619,24 @@ public sealed partial class WFEncounterSystem : EntitySystem
             ZoneLines = ship.ZoneLines,
             ZoneTargets = ship.ZoneTargets,
             Icon = ship.Icon,
-            Hunt = ship.Hunt,
+            Hunt = ship.Hunt || ship.Extort != null,
+            Extort = ship.Extort is { } extort ? NewExtort(extort) : null,
             Distress = ship.Distress,
+            Evades = ship.Evades,
+            Flees = ship.Flees,
+            Stealth = ship.Stealth,
             Passengers = ship.Passengers.Count > 0,
         };
         encounter.Comp.Ships.Add(ship.Key, state);
-        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only.
-        if (ship.Hunt)
+        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only. Docked, their clamps hold it.
+        if (state.Hunt)
+        {
             EnsureComp<WFHoldFireComponent>(grid);
+            EnsureComp<WFDockingClampComponent>(grid);
+        }
+
+        if (state.Stealth)
+            _shuttles.AddIFFFlag(grid, Content.Shared.Shuttles.Components.IFFFlags.HideLabel);
 
         // Cargo goes aboard first, so the crew are posted around it and not on it.
         if (manifest != null && manifest.Crates.Count > 0)
@@ -762,6 +785,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
         encounter.Comp.Resolution = resolution;
         encounter.Comp.ResolvedAt = _timing.CurTime;
+        EndExtortCalls(encounter.Comp);
         if (resolution is WFEncounterResolution.Completed or WFEncounterResolution.Expired
             && encounter.Comp.Lifetime == WFEncounterLifetime.Transient && !encounter.Comp.Pinned)
             encounter.Comp.JumpAt = _timing.CurTime + JumpDelay;
@@ -798,6 +822,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     private void RemoveShip(WFEncounterShipState ship)
     {
+        ship.Removed = true;
         if (TerminatingOrDeleted(ship.Grid))
             return;
 
@@ -885,7 +910,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         var crews = _objectives.Snapshot();
         foreach (var (uid, encounter) in _running)
         {
-            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(encounter, crews) is { } resolution)
+            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(uid, encounter, crews) is { } resolution)
                 Resolve((uid, encounter), resolution);
         }
 
@@ -975,7 +1000,11 @@ public sealed partial class WFEncounterSystem : EntitySystem
             if (TerminatingOrDeleted(ship.Grid))
                 continue;
 
-            if (ship.Hunt && encounter.Comp.Begun)
+            if (ship.Flees > 0f && encounter.Comp.Begun)
+                Flee(encounter, key, ship);
+            if (ship.Extort != null && encounter.Comp.Begun)
+                Extort(encounter, key, ship, ship.Extort);
+            else if (ship.Hunt && encounter.Comp.Begun)
                 Hunt(ship);
             else if (encounter.Comp.Leash > 0f && ship.HasOrders)
                 Recall(encounter.Comp, ship);
@@ -1134,9 +1163,10 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     /// <summary>
     /// How the encounter has ended, if it has. Its orders are done once every ship with orders that can finish has
-    /// flown them or is gone; a ship left on an endless task, such as an escort, doesn't hold the rest up.
+    /// flown them or is gone; a ship left on an endless task, such as an escort, doesn't hold the rest up. Its time
+    /// does not run out while players are on its open warrant.
     /// </summary>
-    private WFEncounterResolution? Judge(WFEncounterComponent encounter, List<WFCrewSetupCrew> crews)
+    private WFEncounterResolution? Judge(EntityUid uid, WFEncounterComponent encounter, List<WFCrewSetupCrew> crews)
     {
         var sides = new HashSet<string>();
         var fighting = new HashSet<string>();
@@ -1189,9 +1219,38 @@ public sealed partial class WFEncounterSystem : EntitySystem
             return null;
         if (ordered > 0 && done == ordered)
             return WFEncounterResolution.Completed;
-        if (encounter.Expires is { } expires && _timing.CurTime >= expires)
+        if (encounter.Expires is { } expires && _timing.CurTime >= expires && !WarrantContested(uid, encounter))
             return WFEncounterResolution.Expired;
         return null;
+    }
+
+    /// <summary>
+    /// Whether players are on an encounter's open warrant: one of its ships is alerted, or has a living player aboard,
+    /// docked with it or within the warrant's paying range.
+    /// </summary>
+    private bool WarrantContested(EntityUid uid, WFEncounterComponent encounter)
+    {
+        if (_bounties.Pool(uid) == null)
+            return false;
+
+        foreach (var ship in encounter.Ships.Values)
+        {
+            if (TerminatingOrDeleted(ship.Grid))
+                continue;
+
+            if (_alerts.IsAlerted(ship.Grid, ship.Group) || PlayersAboard(ship.Grid))
+                return true;
+
+            var here = _transform.GetMapCoordinates(ship.Grid);
+            foreach (var player in _players)
+            {
+                if (player.MapId == here.MapId
+                    && (player.Position - here.Position).LengthSquared() <= WFEncounterBountySystem.PayRange * WFEncounterBountySystem.PayRange)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     private void FindPlayers()

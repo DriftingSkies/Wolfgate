@@ -223,23 +223,49 @@ public sealed partial class MappingToolsSystem
         if (byYaml.Count == 0)
             return;
 
-        var options = new MapLoadOptions
+        // The roots start up on a paused holding map, not in nullspace, where some startup handlers throw (a
+        // conveyor's construction node snaps it to the grid).
+        var holding = _map.CreateMap(out var holdingId, runMapInit: false);
+        try
         {
-            DeserializationOptions = DeserializationOptions.Default with
+            var options = new MapLoadOptions
             {
-                StoreYamlUids = true,
-                LogInvalidEntities = false,
-            },
-        };
+                MergeMap = holdingId,
+                DeserializationOptions = DeserializationOptions.Default with
+                {
+                    StoreYamlUids = true,
+                    LogInvalidEntities = false,
+                },
+            };
 
-        if (!_loader.TryLoadGeneric(group.Data.Copy(), "mapping tools", out var result, options))
+            if (!_loader.TryLoadGeneric(group.Data.Copy(), "mapping tools", out var result, options))
+            {
+                Log.Error("Failed to restore a mapping tools snapshot");
+                return;
+            }
+
+            PlaceRestored(byYaml, holding, result);
+        }
+        finally
         {
-            Log.Error("Failed to restore a mapping tools snapshot");
-            return;
+            Del(holding);
+        }
+    }
+
+    /// <summary>
+    /// Moves restored roots from the holding map to their poses and points their refs at the new entities.
+    /// </summary>
+    private void PlaceRestored(Dictionary<int, MappingGroupRoot> byYaml, EntityUid holding, LoadResult result)
+    {
+        var orphans = new List<EntityUid>();
+        var children = Transform(holding).ChildEnumerator;
+        while (children.MoveNext(out var child))
+        {
+            orphans.Add(child);
         }
 
         var placed = new List<EntityUid>();
-        foreach (var orphan in result.Orphans)
+        foreach (var orphan in orphans)
         {
             if (!TryComp(orphan, out YamlUidComponent? yaml) ||
                 !byYaml.Remove(yaml.Uid, out var root) ||

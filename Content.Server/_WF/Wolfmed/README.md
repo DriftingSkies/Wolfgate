@@ -1700,6 +1700,7 @@ Skipped ("dirty-disposed").
 - [`Resources/Prototypes/_NF/Body/Organs/goblin_organs.yml`](../../../Resources/Prototypes/_NF/Body/Organs/goblin_organs.yml)
   - M4: OD16 parity, Wolfmed lung data (plan 9.2 group A-prime)
   - in the lungs slot; BaseHumanOrgan leaves it blank, so surgery and the analyzer missed it
+- [`Resources/Prototypes/_NF/Catalog/Fills/Backpacks/duffelbag.yml`](../../../Resources/Prototypes/_NF/Catalog/Fills/Backpacks/duffelbag.yml): the advanced bag had no bone gel for mending fractures
 - [`Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/civimed.yml`](../../../Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/civimed.yml)
   - playtest 3 IPC 2: Infinite, a chassis's refill beside the blood packs.
   - V5: Infinite

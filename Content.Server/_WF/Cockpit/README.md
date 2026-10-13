@@ -26,7 +26,7 @@ There is no header row: the Wolfgate wordmark and Exit Cockpit share one slim ro
 which stays put in every arrangement, so the other columns start at the screen margin. Only a tractor capture
 warning adds a full-width row above everything, and only while it shows.
 Flight instruments, compact camera controls and propulsion occupy the left column. A row above the central world viewport holds the longitudinal strip, a coordinates box
-(the ship's centre-of-mass position, X and Y at a fixed width) and the lateral strip; communications and shield controls sit below it. The shield panel is only as
+(the ship's centre-of-mass position, X and Y at a fixed width) and the lateral strip; communications and shield controls sit below it. On screens taller than 720 px that row stands up to 40 px above the flight panel beside it (`WFCockpitPanelLayout.RowHeight`), taken from the world view, since chat and the shield controls need the room more; shorter screens keep the three panels level. The shield panel is only as
 wide as its controls need (found from the controls, not a ratio) and communications take the rest of the row,
 so the chat is the larger panel on any window wide enough for both. The velocity dial shows
 actual drift relative to the bow, with forward at the top and starboard on the right, alongside total speed.
@@ -224,8 +224,6 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 
 - [`Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs`](../../../Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs): let the cockpit controls own their reticle and ordinary HUD cursors.
 - [`Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs`](../../../Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs): character combat indicators must not cover the ship's aiming reticle.
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): open the cockpit view automatically
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): option to open the cockpit view automatically
 - [`Content.Client/Pinpointer/UI/NavMapControl.cs`](../../../Content.Client/Pinpointer/UI/NavMapControl.cs)
   - department labels stay compact instead of growing with map zoom.
   - update shared right-mouse map panning.

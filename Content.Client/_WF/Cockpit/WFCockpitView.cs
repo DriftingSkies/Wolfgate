@@ -42,6 +42,7 @@ public sealed partial class WFCockpitView : Control
     private readonly (Control Dial, float Full)[] _dials;
     private bool _restored;
     private bool _compactDials;
+    private string _page = DefaultPage;
 
     /// <summary>Whether the dial column is too short for full-size dials and shows the smaller faces.</summary>
     public bool CompactDials => _compactDials;
@@ -111,6 +112,7 @@ public sealed partial class WFCockpitView : Control
         _world = world;
         _translation = parts.Translation;
         _comms = Panel("wf-cockpit-comms", communications, true);
+        console.WfHailJoinComms(_comms, _lease); // WOLFGATE(Hailing): the hail strip rides the communications caption row.
         var flight = Column(Scroll(parts.Flight), console.WfCockpitStatus());
         flight.VerticalExpand = true;
         _flight = Panel("wf-cockpit-flight", flight, true);
@@ -126,8 +128,12 @@ public sealed partial class WFCockpitView : Control
             button.AddStyleClass("WfCompact");
             button.ToolTip = Loc.GetString(key);
             button.Group = group;
-            button.OnPressed += _ => SelectPage(key);
-            button.Pressed = key == "wf-cockpit-nav";
+            button.OnPressed += _ =>
+            {
+                SelectPage(key);
+                SaveLayout();
+            };
+            button.Pressed = key == DefaultPage;
             selectors.AddChild(button);
             _selectors.Add(key, button);
             content.HorizontalExpand = content.VerticalExpand = true;
@@ -136,11 +142,23 @@ public sealed partial class WFCockpitView : Control
         }
         // Short captions, with the full names in the tooltips, so the caption and the three toggles fit the narrowest MFD header.
         _swap = PanelButton("wf-cockpit-swap", "wf-cockpit-swap-help", "CockpitMfdSwap", 60);
-        _swap.OnToggled += args => SetSwapped(args.Pressed);
+        _swap.OnToggled += args =>
+        {
+            SetSwapped(args.Pressed);
+            SaveLayout();
+        };
         _expand = PanelButton("wf-cockpit-expand", "wf-cockpit-expand-help", "CockpitMfdExpand", 80);
-        _expand.OnToggled += args => SetExpanded(args.Pressed);
+        _expand.OnToggled += args =>
+        {
+            SetExpanded(args.Pressed);
+            SaveLayout();
+        };
         _maximise = PanelButton("wf-cockpit-maximise", "wf-cockpit-maximise-help", "CockpitMfdMaximise", 84);
-        _maximise.OnToggled += args => SetMaximised(args.Pressed);
+        _maximise.OnToggled += args =>
+        {
+            SetMaximised(args.Pressed);
+            SaveLayout();
+        };
         var caption = Label("wf-cockpit-mfd", Accent);
         caption.HorizontalExpand = true;
         var mfd = Column(Row(caption, _swap, _expand, _maximise), selectors, display);
@@ -171,7 +189,7 @@ public sealed partial class WFCockpitView : Control
         InitializeGunnery(viewport);
         LayoutContainer.SetAnchorPreset(this, LayoutContainer.LayoutPreset.Wide);
         screen.AddChild(this);
-        SelectPage("wf-cockpit-nav");
+        LoadLayout();
         console.WfSendCockpitGunnery(new Content.Shared._WF.Cockpit.WFCockpitGunnerySessionMessage(true));
         console.WfSetCockpitActive(true);
         Install(this);
@@ -180,6 +198,7 @@ public sealed partial class WFCockpitView : Control
     /// <summary>Switches only the MFD; cameras, flight controls, shield controls and chat stay in place.</summary>
     public void SelectPage(string key)
     {
+        _page = key;
         foreach (var (page, _) in _pages)
             _pageHosts[page].Visible = page == key;
         foreach (var (page, button) in _selectors)
@@ -213,6 +232,7 @@ public sealed partial class WFCockpitView : Control
         _banner.Measure(new Vector2(availableSize.X - 2 * margin, availableSize.Y));
         var (top, left, side, bottom) = Edges(availableSize);
         UpdateExpand(availableSize, left);
+        var flight = WFCockpitPanelLayout.FlightHeight(availableSize);
         var height = WFCockpitPanelLayout.Height(availableSize, top);
         PreMeasureDocked(availableSize, left, side, height, bottom);
         var frame = CurrentFrame(availableSize);
@@ -221,12 +241,12 @@ public sealed partial class WFCockpitView : Control
         var leftSpan = availableSize.Y - margin - leftTop;
         _tcas.Measure(new Vector2(left, leftSpan));
         var modesHeight = MeasureGunnery(left, leftSpan - _tcas.DesiredSize.Y - 6);
-        _camera.Measure(new Vector2(left, leftSpan - bottom));
-        var leftHeight = Math.Max(80, leftSpan - bottom - _camera.DesiredSize.Y - modesHeight - _tcas.DesiredSize.Y - 18);
+        _camera.Measure(new Vector2(left, leftSpan - flight));
+        var leftHeight = Math.Max(80, leftSpan - flight - _camera.DesiredSize.Y - modesHeight - _tcas.DesiredSize.Y - 18);
         if (!_showGunnery)
             FitDials(leftHeight);
         _left.Measure(new Vector2(left, leftHeight));
-        _flight.Measure(new Vector2(left, bottom));
+        _flight.Measure(new Vector2(left, flight));
         _right.Measure(frame.Mfd.Size);
         if (frame.WorldShown)
             _world.Measure(frame.World.Size);
@@ -250,7 +270,8 @@ public sealed partial class WFCockpitView : Control
         _brand.Arrange(UIBox2.FromDimensions(new Vector2(margin, top), new Vector2(left, brandHeight)));
         var leftTop = top + brandHeight + 6;
         var leftSpan = size.Y - margin - leftTop;
-        var flightY = size.Y - bottom - margin;
+        var flight = WFCockpitPanelLayout.FlightHeight(size);
+        var flightY = size.Y - flight - margin;
         var cameraHeight = _camera.DesiredSize.Y;
         var cameraY = flightY - cameraHeight - 6;
         var tcasHeight = _tcas.DesiredSize.Y;
@@ -259,7 +280,7 @@ public sealed partial class WFCockpitView : Control
         _left.Arrange(UIBox2.FromDimensions(new Vector2(margin, instrumentsTop), new Vector2(left, Math.Max(1, tcasY - instrumentsTop - 6))));
         _tcas.Arrange(UIBox2.FromDimensions(new Vector2(margin, tcasY), new Vector2(left, tcasHeight)));
         _camera.Arrange(UIBox2.FromDimensions(new Vector2(margin, cameraY), new Vector2(left, cameraHeight)));
-        _flight.Arrange(UIBox2.FromDimensions(new Vector2(margin, flightY), new Vector2(left, bottom)));
+        _flight.Arrange(UIBox2.FromDimensions(new Vector2(margin, flightY), new Vector2(left, flight)));
         _translation.Arrange(frame.Motion);
         _right.Arrange(frame.Mfd);
         if (frame.WorldShown)
@@ -271,13 +292,13 @@ public sealed partial class WFCockpitView : Control
         return size;
     }
 
-    /// <summary>The top of the centre and side columns, the left and side column widths, and the lower row's height.</summary>
+    /// <summary>The top of the centre and side columns, the left and side column widths, and the communications and shield row's height.</summary>
     private (float Top, float Left, float Side, float Bottom) Edges(Vector2 size)
     {
         var top = WFCockpitPanelLayout.Margin + (_banner.Visible ? _banner.DesiredSize.Y + 6 : 0);
         var left = _showGunnery ? Math.Clamp(size.X * 0.27f, 320, 420) : Math.Clamp(size.X * 0.21f, 220, 320);
         var side = WFCockpitPanelLayout.SideWidth(size, left, _expanded && !_maximised);
-        var bottom = Math.Clamp(size.Y * 0.27f, 218, 250);
+        var bottom = WFCockpitPanelLayout.RowHeight(size);
         return (top, left, side, bottom);
     }
 

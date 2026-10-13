@@ -23,6 +23,30 @@ public sealed class WolfgateCVars
         CVarDef.Create("wf.cockpit_auto_enter", true, CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
+    /// The MFD page the cockpit last showed, as its page key. Empty or unknown means the NAV page.
+    /// </summary>
+    public static readonly CVarDef<string> CockpitMfdPage =
+        CVarDef.Create("wf.cockpit_mfd_page", string.Empty, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Whether the cockpit was left with the MFD and the world view swapped.
+    /// </summary>
+    public static readonly CVarDef<bool> CockpitMfdSwapped =
+        CVarDef.Create("wf.cockpit_mfd_swapped", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Whether the cockpit was left with the MFD expanded to an even split.
+    /// </summary>
+    public static readonly CVarDef<bool> CockpitMfdExpanded =
+        CVarDef.Create("wf.cockpit_mfd_expanded", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Whether the cockpit was left with the MFD maximised over the world view.
+    /// </summary>
+    public static readonly CVarDef<bool> CockpitMfdMaximised =
+        CVarDef.Create("wf.cockpit_mfd_maximised", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
     /// Kill switch for the anatomy system. When false every anatomy gate fails and every anatomy UI is hidden.
     /// </summary>
     public static readonly CVarDef<bool> AnatomyEnabled =

@@ -1040,7 +1040,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 10.5,4.5
       parent: 1
-- proto: WallPlastitanium
+- proto: WFWallAdamantite
   entities:
   - uid: 153
     components:
@@ -1205,7 +1205,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 9.5,8.5
       parent: 1
-- proto: WallPlastitaniumDiagonal
+- proto: WFWallAdamantiteDiagonal
   entities:
   - uid: 184
     components:

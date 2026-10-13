@@ -18,7 +18,7 @@
       amount: 1
     # Material
     - id: SheetPlastitanium10
-      amount: 2
+      amount: 1 # WOLFGATE: PDV pack, halve drone plastitanium
     # Parts
     - id: SuperCapacitorStockPart
       prob: 0.8
@@ -75,7 +75,7 @@
       amount: 3
     # Material
     - id: SheetPlastitanium10
-      amount: 4
+      amount: 2 # WOLFGATE: PDV pack, halve drone plastitanium
     # Parts
     - id: SuperCapacitorStockPart
       amount: 3
@@ -124,7 +124,7 @@
       amount: 6
     # Material
     - id: SheetPlastitanium10
-      amount: 8
+      amount: 4 # WOLFGATE: PDV pack, halve drone plastitanium
     # Parts
     - id: SuperCapacitorStockPart
       amount: 6

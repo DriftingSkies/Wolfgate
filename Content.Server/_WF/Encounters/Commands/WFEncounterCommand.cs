@@ -84,7 +84,8 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
                 ("uid", EntityManager.GetNetEntity(uid)),
                 ("prototype", encounter.Prototype.Id),
                 ("name", encounter.Name),
-                ("state", encounter.Resolution?.ToString() ?? Loc.GetString("cmd-wf_encounter-state-active")),
+                ("state", _encounters.StateDetail(uid, encounter,
+                    encounter.Resolution?.ToString() ?? Loc.GetString("cmd-wf_encounter-state-active"), true)),
                 ("ships", encounter.Ships.Values.Count(ship => !EntityManager.Deleted(ship.Grid))),
                 ("x", encounter.Origin.Position.X.ToString("0")),
                 ("y", encounter.Origin.Position.Y.ToString("0"))));

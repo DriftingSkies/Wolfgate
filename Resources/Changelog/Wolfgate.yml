@@ -1560,3 +1560,87 @@ Entries:
   id: 100121
   time: '2026-10-12T04:26:10.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/226
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Ship hailing! this should be your go-to for talking to a ship you wish
+        to escelate with.
+  id: 100122
+  time: '2026-10-12T07:36:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/227
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: several balance changes to factions
+    - type: Tweak
+      message: thrusters buffed some again
+    - type: Add
+      message: >-
+        adamantite plastitanium wall for PDV, all their ships retroactively
+        refitted with it.
+    - type: Tweak
+      message: armored hardpoints now protect from all damage types
+    - type: Tweak
+      message: >-
+        TSF now receives the report for a smuggling drop several minutes later
+        than before on average
+  id: 100123
+  time: '2026-10-12T20:14:30.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/220
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Doppler shifting no longer applies to looping sounds.
+  id: 100124
+  time: '2026-10-12T22:44:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/230
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Sector map (Shift+N) showing faction territory, stations and encounters.
+    - type: Add
+      message: >-
+        The Ashfall Reavers now found strongholds, spread across the sector,
+        patrol, raid and level up over the round. Hunt them for bounties.
+  id: 100125
+  time: '2026-10-12T23:25:24.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/215
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Wolfgate settings now show up in the wolfgate tab.
+    - type: Fix
+      message: Cockpit UI now saves states
+  id: 100126
+  time: '2026-10-13T01:08:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/232
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: mapping tools no longer give an error when pasting conveyors.
+  id: 100127
+  time: '2026-10-13T02:41:10.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/234
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Extortion encounters!
+    - type: Add
+      message: NPC hailing.
+    - type: Add
+      message: NPC fugitives, kill em for a reward.
+  id: 100128
+  time: '2026-10-13T03:25:51.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/233
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Adds a proper shipyard POI to repair your ships and a machine that does
+        the same job if fitted into a ship.
+    - type: Tweak
+      message: TSF vouchers are now single use.
+  id: 100129
+  time: '2026-10-13T04:50:41.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/229

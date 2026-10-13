@@ -1,0 +1,154 @@
+# Mobile drydock: a buildable console and crane pair that pays in stored materials, not credits.
+# The crane is a Machine2x2 graph machine on the same four tiles as MachineFrame2x2 (origin, +X, and the two below -Y).
+
+- type: entity
+  parent: WFComputerDrydock
+  id: WFComputerMobileDrydock
+  name: mobile drydock console
+  description: A drydock console for ships. Work is paid from materials in its linked cranes or a linked material silo.
+  components:
+  - type: Computer
+    board: WFComputerMobileDrydockCircuitboard
+  # Wrenchable and rotatable while unanchored, like a ship machine.
+  - type: Anchorable
+    flags:
+    - Anchorable
+    - Unanchorable
+  - type: Rotatable
+    rotateWhileAnchored: false
+  - type: WiresPanel
+  # No fee, and no radio notice since the crew is aboard.
+  - type: WFDrydockConsole
+    minFee: 0
+    feeFraction: 0
+    noticeChannel: null
+  # Rates and limits are pegged to a T2 ship voucher; see the Drydock README.
+  - type: WFDrydockMaterialPayment
+    rates:
+      Steel: 0.055
+      Plasteel: 0.025
+      Glass: 0.025
+      Plastic: 0.01
+    maxBill:
+      Steel: 6000
+      Plasteel: 3000
+      Glass: 3000
+      Plastic: 1500
+      Plastitanium: 600
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: WFComputerMobileDrydockCircuitboard
+  name: mobile drydock console board
+  components:
+  - type: ComputerBoard
+    prototype: WFComputerMobileDrydock
+
+- type: entity
+  parent: [WFDrydockCrane, ConstructibleMachine]
+  id: WFMobileDrydockCrane
+  name: mobile drydock crane
+  description: A compact drydock crane for ships. Repairs and refits ships held alongside.
+  components:
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Dynamic
+  # Wrenchable both ways. Restores the flags the station crane base removes.
+  - type: Anchorable
+    delay: 2
+    flags:
+    - Anchorable
+    - Unanchorable
+  - type: Rotatable
+    rotateWhileAnchored: false
+  # 26 tiles of berth after a 3-tile gap; 4 sections of 4 reach 13 tiles across.
+  - type: WFDrydockCrane
+    maxArm: 29
+    berthGap: 3
+    mirrorInPlace: true
+    armRoot: -1.5
+    sections: 4
+    sectionLength: 4
+    extension: 4
+    idleLoad: 200
+    workingLoad: 6000
+  - type: Machine
+    board: WFMobileDrydockCraneMachineCircuitboard
+  # Two-by-two graph, so deconstruction and breakage give a MachineFrame2x2 on the same tiles.
+  # Pries only with the panel open, as on other machines.
+  - type: WiresPanel
+  - type: Construction
+    graph: Machine2x2
+    node: machine
+  - type: Sprite
+    layers:
+    - state: machine
+      offset: 0.5,-0.5
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-1.5,1.5,0.5"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  # Holds the sheets jobs pay with. Like a lathe, can also draw from a linked material silo.
+  - type: MaterialStorage
+    whitelist:
+      tags:
+      - Sheet
+      - RawMaterial
+      - Ingot
+  - type: OreSiloClient
+  # Medium-voltage draw, for a ship's MV network.
+  - type: PowerConsumer
+    voltage: Medium
+    drawRate: 200
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      input:
+        !type:CableDeviceNode
+        nodeGroupID: MVPower
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+        - !type:TriggerBehavior
+        - !type:DoActsBehavior
+          acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+        - !type:TriggerBehavior
+        - !type:DoActsBehavior
+          acts: ["Destruction"]
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:ChangeConstructionNodeBehavior
+          node: machineFrame
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: WFMobileDrydockCraneMachineCircuitboard
+  name: mobile drydock crane machine board
+  components:
+  - type: MachineBoard
+    prototype: WFMobileDrydockCrane
+    requirements:
+      Manipulator: 2
+      Capacitor: 1
+    stackRequirements:
+      Steel: 10
+      Cable: 5

@@ -4,6 +4,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._Crescent.ShipShields;
+using Content.Shared._Mono.FireControl;
 using Content.Shared._WF.ShipShields;
 using Content.Shared.Access.Systems;
 using Content.Shared.ActionBlocker;
@@ -28,6 +29,9 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
     private float _generatorUiAccumulator;
     private readonly Dictionary<EntityUid, WFShipShieldShuntState> _generatorStates = new();
 
+    /// <summary>What each open gunnery console was last sent, and who was looking at it.</summary>
+    private readonly Dictionary<EntityUid, (WFShipShieldShuntState State, HashSet<EntityUid> Viewers)> _gunneryStates = new();
+
     public override void Initialize()
     {
         base.Initialize();
@@ -41,6 +45,12 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
             subs.Event<BoundUIOpenedEvent>(OnGeneratorOpened);
             subs.Event<WFShipShieldSetShuntMessage>(OnGeneratorSetShunt);
             subs.Event<WFShipShieldSetEnabledMessage>(OnGeneratorSetEnabled);
+        });
+        // The gunnery console's own systems handle everything else on this interface; only shield requests are taken here.
+        Subs.BuiEvents<FireControlConsoleComponent>(FireControlConsoleUiKey.Key, subs =>
+        {
+            subs.Event<WFShipShieldSetShuntMessage>(OnGunnerySetShunt);
+            subs.Event<WFShipShieldSetEnabledMessage>(OnGunnerySetEnabled);
         });
     }
 
@@ -63,6 +73,69 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
         }
         foreach (var uid in _generatorStates.Keys.Where(uid => !open.Contains(uid)).ToArray())
             _generatorStates.Remove(uid);
+        UpdateGunneryConsoles();
+    }
+
+    /// <summary>Sends each open gunnery console its ship's shield state when it changes or someone new looks.</summary>
+    private void UpdateGunneryConsoles()
+    {
+        var open = new HashSet<EntityUid>();
+        var query = EntityQueryEnumerator<FireControlConsoleComponent>();
+        while (query.MoveNext(out var uid, out _))
+        {
+            var viewers = _ui.GetActors(uid, FireControlConsoleUiKey.Key).ToHashSet();
+            if (viewers.Count == 0)
+                continue;
+            open.Add(uid);
+            var state = GetState(GunneryGrid(uid));
+            // Who, not how many: one gunner leaving as another arrives still leaves the newcomer with nothing.
+            if (_gunneryStates.TryGetValue(uid, out var previous) && previous.Viewers.SetEquals(viewers) && Unchanged(previous.State, state))
+                continue;
+            _gunneryStates[uid] = (state, viewers);
+            _ui.ServerSendUiMessage(uid, FireControlConsoleUiKey.Key, new WFShipShieldHelmUpdateMessage(state));
+        }
+        foreach (var uid in _gunneryStates.Keys.Where(uid => !open.Contains(uid)).ToArray())
+            _gunneryStates.Remove(uid);
+    }
+
+    /// <summary>Whether two snapshots would show the same thing on a control panel.</summary>
+    private static bool Unchanged(WFShipShieldShuntState previous, WFShipShieldShuntState state)
+    {
+        return previous.Available == state.Available && previous.Active == state.Active && previous.Enabled == state.Enabled &&
+            WFShipShieldGeneratorStats.Same(previous.Stats, state.Stats) &&
+            previous.RecoveryStatus == state.RecoveryStatus && previous.RecoverySeconds == state.RecoverySeconds &&
+            MathF.Round(previous.Health * 100f) == MathF.Round(state.Health * 100f) &&
+            (previous.Health < 0.1f) == (state.Health < 0.1f) &&
+            previous.DirectionRadians == state.DirectionRadians && previous.Concentration == state.Concentration &&
+            previous.ArcRadians == state.ArcRadians &&
+            previous.TargetDirectionRadians == state.TargetDirectionRadians && previous.TargetConcentration == state.TargetConcentration &&
+            previous.TargetArcRadians == state.TargetArcRadians;
+    }
+
+    /// <summary>The ship a working gunnery console speaks for.</summary>
+    private EntityUid? GunneryGrid(EntityUid uid)
+    {
+        return !TerminatingOrDeleted(uid) && Transform(uid).Anchored && this.IsPowered(uid, EntityManager)
+            ? Transform(uid).GridUid : null;
+    }
+
+    private void OnGunnerySetShunt(Entity<FireControlConsoleComponent> ent, ref WFShipShieldSetShuntMessage args)
+    {
+        if (TryGetGunneryGrid(ent.Owner, args.Actor) is { } grid)
+            _shields.RequestWolfgateShieldShunt(grid, args.DirectionRadians, args.Concentration, args.ArcRadians);
+    }
+
+    private void OnGunnerySetEnabled(Entity<FireControlConsoleComponent> ent, ref WFShipShieldSetEnabledMessage args)
+    {
+        if (TryGetGunneryGrid(ent.Owner, args.Actor) is { } grid)
+            _shields.SetWolfgateShieldEnabled(grid, args.Enabled);
+    }
+
+    /// <summary>A gunner may work the shields of the ship their powered, anchored console sits on, if it has any.</summary>
+    private EntityUid? TryGetGunneryGrid(EntityUid uid, EntityUid actor)
+    {
+        return GunneryGrid(uid) is { } grid && _blocker.CanInteract(actor, uid) && _access.IsAllowed(actor, uid) &&
+            HasShieldGenerator(grid) ? grid : null;
     }
 
     private void OnGeneratorOpened(Entity<ShipShieldEmitterComponent> ent, ref BoundUIOpenedEvent args)
@@ -73,16 +146,7 @@ public sealed class WFShipShieldShuntSystem : EntitySystem
     private void UpdateGeneratorUi(EntityUid uid, bool force = false)
     {
         var state = GetState(Transform(uid).Anchored ? Transform(uid).GridUid : null);
-        if (!force && _generatorStates.TryGetValue(uid, out var previous) &&
-            previous.Available == state.Available && previous.Active == state.Active && previous.Enabled == state.Enabled &&
-            WFShipShieldGeneratorStats.Same(previous.Stats, state.Stats) &&
-            previous.RecoveryStatus == state.RecoveryStatus && previous.RecoverySeconds == state.RecoverySeconds &&
-            MathF.Round(previous.Health * 100f) == MathF.Round(state.Health * 100f) &&
-            (previous.Health < 0.1f) == (state.Health < 0.1f) &&
-            previous.DirectionRadians == state.DirectionRadians && previous.Concentration == state.Concentration &&
-            previous.ArcRadians == state.ArcRadians &&
-            previous.TargetDirectionRadians == state.TargetDirectionRadians && previous.TargetConcentration == state.TargetConcentration &&
-            previous.TargetArcRadians == state.TargetArcRadians)
+        if (!force && _generatorStates.TryGetValue(uid, out var previous) && Unchanged(previous, state))
             return;
         _generatorStates[uid] = state;
         _ui.SetUiState(uid, WFShipShieldUiKey.Key, new WFShipShieldGeneratorUiState(state));

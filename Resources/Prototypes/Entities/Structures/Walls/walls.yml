@@ -433,7 +433,7 @@
     tags:
     - Wall
     - WallT3
-  # WOLFGATE(ShipArmor): plastitanium counts as full hull armor
+  # WOLFGATE(ShipArmor): plastitanium hull armor takes 80% of mount hits (10 of 12.5)
   - type: ArmorThickness
     thickness: 10
 
@@ -455,7 +455,7 @@
   - type: Construction # Mono
     graph: Girder
     node: wallPlastitaniumDiagonal
-  # WOLFGATE(ShipArmor): plastitanium counts as full hull armor
+  # WOLFGATE(ShipArmor): plastitanium hull armor takes 80% of mount hits (10 of 12.5)
   - type: ArmorThickness
     thickness: 10
 

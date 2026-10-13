@@ -11,6 +11,7 @@ using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
 using Content.Shared.Projectiles;
 using Content.Shared.Verbs;
+using Content.Shared.Weapons.Hitscan.Components;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -21,7 +22,7 @@ using Robust.Shared.Utility;
 namespace Content.Server._WF.ShipArmor;
 
 /// <summary>
-/// Moves part of the explosion and projectile damage taken by thrusters and ship mounts onto adjacent hull armor.
+/// Moves part of the explosion, projectile and hitscan damage taken by thrusters and ship mounts onto adjacent hull armor.
 /// </summary>
 public sealed partial class WFArmorBackedSystem : EntitySystem
 {
@@ -37,12 +38,11 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
     private EntityQuery<DamageableComponent> _damageableQuery;
     private EntityQuery<DestructibleComponent> _destructibleQuery;
     private EntityQuery<ProjectileComponent> _projectileQuery;
+    private EntityQuery<HitscanBasicDamageComponent> _hitscanQuery;
     private bool _redirecting;
 
-    private float _explosionTransfer;
-    private float _projectileTransfer;
-    private float _penetratingTransfer;
-    private int _fullThickness;
+    private float _transfer;
+    private float _fullThickness;
 
     public override void Initialize()
     {
@@ -51,10 +51,9 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
         _damageableQuery = GetEntityQuery<DamageableComponent>();
         _destructibleQuery = GetEntityQuery<DestructibleComponent>();
         _projectileQuery = GetEntityQuery<ProjectileComponent>();
+        _hitscanQuery = GetEntityQuery<HitscanBasicDamageComponent>();
 
-        Subs.CVar(_cfg, ShipArmorCVars.ExplosionTransfer, v => _explosionTransfer = v, true);
-        Subs.CVar(_cfg, ShipArmorCVars.ProjectileTransfer, v => _projectileTransfer = v, true);
-        Subs.CVar(_cfg, ShipArmorCVars.PenetratingTransfer, v => _penetratingTransfer = v, true);
+        Subs.CVar(_cfg, ShipArmorCVars.Transfer, v => _transfer = v, true);
         Subs.CVar(_cfg, ShipArmorCVars.FullThickness, v => _fullThickness = v, true);
 
         SubscribeLocalEvent<ThrusterComponent, BeforeDamageChangedEvent>(
@@ -112,14 +111,15 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
 
     /// <summary>
     /// Returns the share of this hit that the mount hands to armor, before thickness scaling.
+    /// Blasts, shell hits and beams share alike, armor-piercing rounds included.
     /// </summary>
     private float GetTransfer(BeforeDamageChangedEvent args)
     {
         if (args.OriginFlag == DamageableSystem.DamageOriginFlag.Explosion)
-            return _explosionTransfer;
+            return _transfer;
 
-        if (args.Tool is { } tool && _projectileQuery.TryComp(tool, out var projectile))
-            return projectile.PenetrationThreshold > FixedPoint2.Zero ? _penetratingTransfer : _projectileTransfer;
+        if (args.Tool is { } tool && (_projectileQuery.HasComp(tool) || _hitscanQuery.HasComp(tool)))
+            return _transfer;
 
         return 0f;
     }
@@ -129,7 +129,7 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
     /// </summary>
     private float Coverage(int thickness)
     {
-        return Math.Clamp(thickness / (float) _fullThickness, 0f, 1f);
+        return Math.Clamp(thickness / _fullThickness, 0f, 1f);
     }
 
     /// <summary>
@@ -148,7 +148,7 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
 
         foreach (var maybeUid in _map.GetLocalAnchoredEntities(gridUid, grid, footprint))
         {
-            if (maybeUid == uid || IsMount(maybeUid))
+            if (maybeUid == uid || IsMount(maybeUid) || EntityManager.IsQueuedForDeletion(maybeUid))
                 continue;
 
             // Indestructible armor would make the mount nearly immune, so it is not a backing.
@@ -209,6 +209,15 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
         return local.Enlarged(FootprintMargin);
     }
 
+    /// <summary>
+    /// True when a mount has armor behind it, so explosions leave its floor tile alone until the armor falls.
+    /// Without this the tile breaks first and the hardpoint drops its gun.
+    /// </summary>
+    public bool HoldsFloor(EntityUid uid)
+    {
+        return IsMount(uid) && FindBacking(uid) is not null;
+    }
+
     private bool IsMount(EntityUid uid)
     {
         return HasComp<ThrusterComponent>(uid) || HasComp<HardpointComponent>(uid) || HasComp<HardpointAnchorableOnlyComponent>(uid);
@@ -235,8 +244,7 @@ public sealed partial class WFArmorBackedSystem : EntitySystem
 
         var coverage = Coverage(backing.Comp.Thickness);
         msg.AddMarkupOrThrow(Loc.GetString("wf-armor-backed-examine",
-            ("blast", (int) MathF.Round(_explosionTransfer * coverage * 100f)),
-            ("shot", (int) MathF.Round(_projectileTransfer * coverage * 100f))));
+            ("share", (int) MathF.Round(_transfer * coverage * 100f))));
         return msg;
     }
 }

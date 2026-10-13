@@ -404,7 +404,7 @@
   description: uplink-faction-materials-exotic-desc
   productEntity: CrateMaterialsExoticFilledTsf
   cost:
-    FederationMilitaryCredit: 125
+    FederationMilitaryCredit: 175 # WOLFGATE: PDV pack, price 125->175
   categories:
   - UplinkSecurityMaterials
   conditions:

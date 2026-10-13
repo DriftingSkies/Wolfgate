@@ -96,6 +96,19 @@ public sealed class WFCockpitTest : InteractionTest
 ";
     protected override string PlayerPrototype => "WFCockpitTestMob";
 
+    /// <summary>The pooled client keeps its settings, so a saved cockpit layout must not reach the next test.</summary>
+    [TearDown]
+    public async Task ResetCockpitLayout() => await Client.WaitPost(ResetSavedLayout);
+
+    private void ResetSavedLayout()
+    {
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        settings.SetCVar(WolfgateCVars.CockpitMfdPage, WolfgateCVars.CockpitMfdPage.DefaultValue);
+        settings.SetCVar(WolfgateCVars.CockpitMfdSwapped, false);
+        settings.SetCVar(WolfgateCVars.CockpitMfdExpanded, false);
+        settings.SetCVar(WolfgateCVars.CockpitMfdMaximised, false);
+    }
+
     [Test]
     public async Task SeatedCockpitRestoresHudAndBindings()
     {
@@ -534,8 +547,9 @@ public sealed class WFCockpitTest : InteractionTest
             var reentered = screen.Children.OfType<WFCockpitView>().Single();
             Assert.That(reentered, Is.Not.SameAs(hud));
             Assert.That(AimOverlayPresent(), Is.True, "Entering again must draw the aim lines again.");
-            Assert.That((reentered.PanelsSwapped, reentered.MfdExpanded, reentered.MfdMaximised), Is.EqualTo((false, false, false)),
-                "Panel arrangements last one cockpit session.");
+            Assert.That((reentered.PanelsSwapped, reentered.MfdExpanded, reentered.MfdMaximised), Is.EqualTo((true, true, true)),
+                "A new cockpit opens in the arrangement the pilot last set.");
+            ResetSavedLayout();
             reentered.SetMaximised(true);
             Assert.That(viewport.Visible, Is.False);
             window.Close();
@@ -1084,12 +1098,16 @@ public sealed class WFCockpitTest : InteractionTest
 
             Toggle(expand, true);
             Toggle(swap, true);
+            Toggle(Named<Control>(hud, "CockpitMfdSelectors").Children.OfType<Button>().ElementAt(2), true);
             controller.Exit();
             Assert.That(controller.Enter(window), Is.True);
             var fresh = screen.Children.OfType<WFCockpitView>().Single();
             Assert.That(fresh, Is.Not.SameAs(hud));
-            Assert.That((fresh.PanelsSwapped, fresh.MfdExpanded, fresh.MfdMaximised), Is.EqualTo((false, false, false)),
-                "Panel arrangements last one cockpit session.");
+            Assert.That((fresh.PanelsSwapped, fresh.MfdExpanded, fresh.MfdMaximised), Is.EqualTo((true, true, false)),
+                "A new cockpit opens in the arrangement the pilot last set.");
+            Assert.That(Named<Control>(fresh, "CockpitMfdSelectors").Children.OfType<Button>().Select(button => button.Pressed),
+                Is.EqualTo(new[] { false, false, true, false, false, false, false, false }),
+                "A new cockpit opens on the MFD page the pilot last chose.");
         });
     }
 
@@ -1777,9 +1795,11 @@ public sealed class WFCockpitTest : InteractionTest
         }
         else
             Assert.That(Bottom(mfd), Is.LessThanOrEqualTo(comms.GlobalPosition.Y), "A maximised MFD stops above the lower row.");
-        Assert.That(flight.GlobalPosition.Y, Is.EqualTo(comms.GlobalPosition.Y).Within(1), "The lower control panels must align.");
-        Assert.That(flight.Height, Is.EqualTo(comms.Height).Within(1));
-        Assert.That(flight.Height, Is.EqualTo(shields.Height).Within(1));
+        Assert.That(Bottom(flight), Is.EqualTo(Bottom(comms)).Within(1), "The lower control panels must end on one line.");
+        Assert.That(comms.Height, Is.EqualTo(shields.Height).Within(1));
+        Assert.That(comms.Height - flight.Height,
+            Is.EqualTo(WFCockpitPanelLayout.RowHeight(hud.Size) - WFCockpitPanelLayout.FlightHeight(hud.Size)).Within(1),
+            "Communications and shields stand as much taller than the flight panel as the screen can spare.");
         var status = Named<WFCockpitStatusLights>(hud, "CockpitStatus");
         Assert.That(status.VisibleInTree, Is.True);
         Assert.That(status.ChildCount, Is.EqualTo(6));

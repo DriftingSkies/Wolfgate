@@ -1705,7 +1705,7 @@
   description: uplink-pdv-t3-voucher-desc
   productEntity: ShipVoucherPdvT3
   cost:
-    Doubloon: 650 # +50 tax from mat cost since no research cost
+    Doubloon: 500 # WOLFGATE: PDV pack, 650->500 (+50 tax over mat cost)
   categories:
   - UplinkPdvVouchers
   conditions:
@@ -1720,7 +1720,7 @@
   description: uplink-pdv-t4-saturn-voucher-desc
   productEntity: ShipVoucherSaturn
   cost:
-    Doubloon: 1250 # +100 tax from mat cost since no research cost
+    Doubloon: 1000 # WOLFGATE: PDV pack, 1250->1000 (+100 tax over mat cost)
   categories:
   - UplinkPdvVouchers
   conditions:
