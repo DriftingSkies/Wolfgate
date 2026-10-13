@@ -96,6 +96,19 @@ public sealed class WFCockpitTest : InteractionTest
 ";
     protected override string PlayerPrototype => "WFCockpitTestMob";
 
+    /// <summary>The pooled client keeps its settings, so a saved cockpit layout must not reach the next test.</summary>
+    [TearDown]
+    public async Task ResetCockpitLayout() => await Client.WaitPost(ResetSavedLayout);
+
+    private void ResetSavedLayout()
+    {
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        settings.SetCVar(WolfgateCVars.CockpitMfdPage, WolfgateCVars.CockpitMfdPage.DefaultValue);
+        settings.SetCVar(WolfgateCVars.CockpitMfdSwapped, false);
+        settings.SetCVar(WolfgateCVars.CockpitMfdExpanded, false);
+        settings.SetCVar(WolfgateCVars.CockpitMfdMaximised, false);
+    }
+
     [Test]
     public async Task SeatedCockpitRestoresHudAndBindings()
     {
@@ -534,8 +547,9 @@ public sealed class WFCockpitTest : InteractionTest
             var reentered = screen.Children.OfType<WFCockpitView>().Single();
             Assert.That(reentered, Is.Not.SameAs(hud));
             Assert.That(AimOverlayPresent(), Is.True, "Entering again must draw the aim lines again.");
-            Assert.That((reentered.PanelsSwapped, reentered.MfdExpanded, reentered.MfdMaximised), Is.EqualTo((false, false, false)),
-                "Panel arrangements last one cockpit session.");
+            Assert.That((reentered.PanelsSwapped, reentered.MfdExpanded, reentered.MfdMaximised), Is.EqualTo((true, true, true)),
+                "A new cockpit opens in the arrangement the pilot last set.");
+            ResetSavedLayout();
             reentered.SetMaximised(true);
             Assert.That(viewport.Visible, Is.False);
             window.Close();
@@ -1084,12 +1098,16 @@ public sealed class WFCockpitTest : InteractionTest
 
             Toggle(expand, true);
             Toggle(swap, true);
+            Toggle(Named<Control>(hud, "CockpitMfdSelectors").Children.OfType<Button>().ElementAt(2), true);
             controller.Exit();
             Assert.That(controller.Enter(window), Is.True);
             var fresh = screen.Children.OfType<WFCockpitView>().Single();
             Assert.That(fresh, Is.Not.SameAs(hud));
-            Assert.That((fresh.PanelsSwapped, fresh.MfdExpanded, fresh.MfdMaximised), Is.EqualTo((false, false, false)),
-                "Panel arrangements last one cockpit session.");
+            Assert.That((fresh.PanelsSwapped, fresh.MfdExpanded, fresh.MfdMaximised), Is.EqualTo((true, true, false)),
+                "A new cockpit opens in the arrangement the pilot last set.");
+            Assert.That(Named<Control>(fresh, "CockpitMfdSelectors").Children.OfType<Button>().Select(button => button.Pressed),
+                Is.EqualTo(new[] { false, false, true, false, false, false, false, false }),
+                "A new cockpit opens on the MFD page the pilot last chose.");
         });
     }
 

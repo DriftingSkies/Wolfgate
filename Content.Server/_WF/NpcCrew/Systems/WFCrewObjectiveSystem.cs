@@ -339,6 +339,7 @@ public sealed partial class WFCrewObjectiveSystem : EntitySystem
             {
                 navigation = oldDuty.Navigation;
                 duty.ReactToAttacks = oldDuty.ReactToAttacks;
+                duty.FaceThreats = oldDuty.FaceThreats;
                 duty.AbsentCrewWait = oldDuty.AbsentCrewWait;
                 duty.DockMaxAttempts = oldDuty.DockMaxAttempts;
             }
@@ -452,6 +453,7 @@ public sealed partial class WFCrewObjectiveSystem : EntitySystem
             if (TryComp<WFPilotDutyComponent>(uid, out var pilot))
             {
                 row.Settings.Navigation = pilot.Navigation.Clone();
+                row.Settings.FaceThreats = pilot.FaceThreats;
                 if (_mobs.IsAlive(uid))
                     SetActivity(row, pilot);
             }

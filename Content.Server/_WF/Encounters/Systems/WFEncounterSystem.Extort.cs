@@ -151,7 +151,7 @@ public sealed partial class WFEncounterSystem
             return;
 
         PruneSpared(extort);
-        if (NearestCrewedShip(ship.Grid, extort.Config.Reach, ExtortOffLimits(extort)) is not { } mark || !Shadow(ship, extort, mark))
+        if (NearestCrewedShip(ship.Grid, extort.Config.Reach, ExtortOffLimits(extort), ship.NeutralCompanies) is not { } mark || !Shadow(ship, extort, mark))
         {
             extort.NextMark = now + ExtortLookAgain;
             return;

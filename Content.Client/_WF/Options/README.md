@@ -6,6 +6,11 @@ than the shared Apply row.
 
 Entry point: `WolfgateConsentTab`, added to `OptionsMenu` at `OptionsMenu.ConsentTabIndex` by a marked edit.
 
+The Extra tab is `WolfgateExtraTab`, which takes the place of Delta-V's `DeltaTab` by a marked edit in `OptionsMenu`.
+It lists every Wolfgate client setting a player can change (UI skin, window pop-out, cockpit auto-enter, heat haze,
+shockwave, Wolfmed effects, admin radio volume) on the shared Apply row, plus the one Delta-V setting the old tab had.
+A new player-facing client cvar gets a control here; a setting Delta-V adds to `DeltaTab` has to be copied over.
+
 The Controls tab also gets a "Set to SS13 default" button. It resets every keybind and then applies
 `Ss13KeybindPreset`, the SS13 hotkey layout for each action that has a counterpart here, and saves it.
 
@@ -19,19 +24,25 @@ The Controls tab also gets a "Set to SS13 default" button. It resets every keybi
 - [`Content.Client/_WF/Options/Ss13KeybindPreset.cs`](Ss13KeybindPreset.cs)
 - [`Content.Client/_WF/Options/UI/Tabs/WolfgateConsentTab.xaml`](UI/Tabs/WolfgateConsentTab.xaml)
 - [`Content.Client/_WF/Options/UI/Tabs/WolfgateConsentTab.xaml.cs`](UI/Tabs/WolfgateConsentTab.xaml.cs)
+- [`Content.Client/_WF/Options/UI/Tabs/WolfgateExtraTab.xaml`](UI/Tabs/WolfgateExtraTab.xaml)
+- [`Content.Client/_WF/Options/UI/Tabs/WolfgateExtraTab.xaml.cs`](UI/Tabs/WolfgateExtraTab.xaml.cs)
 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Options/Ss13KeybindPresetTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Options/Ss13KeybindPresetTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Options/WolfgateExtraTabTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Options/WolfgateExtraTabTest.cs)
 
 ### Localization
 
 - [`Resources/Locale/en-US/_WF/Options/consent.ftl`](../../../Resources/Locale/en-US/_WF/Options/consent.ftl)
+- [`Resources/Locale/en-US/_WF/Options/extra.ftl`](../../../Resources/Locale/en-US/_WF/Options/extra.ftl)
 - [`Resources/Locale/en-US/_WF/Options/keybinds.ftl`](../../../Resources/Locale/en-US/_WF/Options/keybinds.ftl)
 
 ## Non-modular edits
 
-- [`Content.Client/Options/UI/OptionsMenu.xaml`](../../Options/UI/OptionsMenu.xaml): consent tab (xmlns:wftabs), appended so existing tab indices stay valid
+- [`Content.Client/Options/UI/OptionsMenu.xaml`](../../Options/UI/OptionsMenu.xaml)
+  - the Extra tab is the Wolfgate one, which carries the Delta-V setting too
+  - consent tab (xmlns:wftabs), appended so existing tab indices stay valid
 - [`Content.Client/Options/UI/OptionsMenu.xaml.cs`](../../Options/UI/OptionsMenu.xaml.cs)
 - [`Content.Client/Options/UI/Tabs/KeyRebindTab.xaml`](../../Options/UI/Tabs/KeyRebindTab.xaml): SS13 keybind preset button
 - [`Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs`](../../Options/UI/Tabs/KeyRebindTab.xaml.cs)

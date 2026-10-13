@@ -302,9 +302,12 @@ public sealed partial class WFPilotDutySystem : EntitySystem
 
     /// <summary>
     /// The assigned helm if it can be flown from, else the nearest anchored, powered shuttle console on the
-    /// crewman's grid. A helm the crewman already holds wins.
+    /// crewman's grid, one turned square to the hull before any that is not: a ship steered from a console turned
+    /// away from its thrusters would fly stern first. A helm the crewman already holds wins. With
+    /// <paramref name="squareFirst"/> off the nearest console wins however it is turned, for a pilot who cannot reach
+    /// a square one.
     /// </summary>
-    public bool TryFindHelm(EntityUid mob, out EntityUid console)
+    public bool TryFindHelm(EntityUid mob, out EntityUid console, bool squareFirst = true)
     {
         console = default;
         if (Transform(mob).GridUid is not { } grid)
@@ -316,7 +319,8 @@ public sealed partial class WFPilotDutySystem : EntitySystem
             return true;
         }
 
-        if (TryComp<WFPilotDutyComponent>(mob, out var duty)
+        if (squareFirst
+            && TryComp<WFPilotDutyComponent>(mob, out var duty)
             && duty.Console is { } assigned
             && IsUsableHelm(assigned, grid))
         {
@@ -326,17 +330,20 @@ public sealed partial class WFPilotDutySystem : EntitySystem
 
         var position = _transform.GetWorldPosition(mob);
         var best = float.MaxValue;
+        var bestSquare = false;
         var consoles = EntityQueryEnumerator<ShuttleConsoleComponent, TransformComponent>();
         while (consoles.MoveNext(out var uid, out _, out var xform))
         {
             if (xform.GridUid != grid || !IsUsableHelm(uid, grid))
                 continue;
 
+            var square = squareFirst && IsSquareHelm(xform.LocalRotation);
             var distance = (_transform.GetWorldPosition(xform) - position).LengthSquared();
-            if (distance >= best)
+            if (best < float.MaxValue && (bestSquare && !square || bestSquare == square && distance >= best))
                 continue;
 
             best = distance;
+            bestSquare = square;
             console = uid;
         }
 
@@ -515,6 +522,7 @@ public sealed partial class WFPilotDutySystem : EntitySystem
             steerer.TargetRotation = cruising ? TravelHeadingOffset(ent) : 0f;
         }
         PresentGuns(ent, steerer);
+        FaceThreatsHolding(ent, steerer);
         switch (duty.Orders)
         {
             case WFPilotOrder.Dock:
@@ -673,6 +681,15 @@ public sealed partial class WFPilotDutySystem : EntitySystem
         // Status is only refreshed when the ship next asks for input; don't let the last target's arrival count.
         steerer.Status = ShipSteeringStatus.Moving;
         return steerer;
+    }
+
+    /// <summary>How far, in radians, a console may be turned from the hull and still count as square to it.</summary>
+    private const double SquareHelm = 0.1;
+
+    /// <summary>Whether a console turned by this much from the hull counts as square to it.</summary>
+    public static bool IsSquareHelm(Angle rotation)
+    {
+        return Math.Abs(Angle.ShortestDistance(rotation, Angle.Zero).Theta) < SquareHelm;
     }
 
     /// <summary>Uses the helm's north direction for cruise flight.</summary>

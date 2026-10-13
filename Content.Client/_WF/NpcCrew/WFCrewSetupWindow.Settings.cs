@@ -152,6 +152,9 @@ public sealed partial class WFCrewSetupWindow
 
         /// <summary>Not edited here; kept from the loaded crew so applying settings never turns a raider's radio on.</summary>
         private bool _callsForHelp = true;
+
+        /// <summary>Not edited here; kept from the loaded crew so applying settings never turns a hub's guns off.</summary>
+        private bool _faceThreats;
         private readonly List<string> _companies;
         private readonly List<string> _factions;
         private readonly List<string> _channels;
@@ -219,7 +222,7 @@ public sealed partial class WFCrewSetupWindow
         {
             Group = group, Callsign = _callsign.Text, Battlegroup = _battlegroup.Text.Trim(), Company = _companies[_company.SelectedId], Faction = _factions[_faction.SelectedId],
             LocalChannel = _channels[_local.SelectedId], AlertChannel = _channels[_alert.SelectedId], HeaveTo = _heave.Pressed,
-            CallsForHelp = _callsForHelp,
+            CallsForHelp = _callsForHelp, FaceThreats = _faceThreats,
             BoardingResponse = (WFCrewSecurityResponse) _boarding.SelectedId, DockingResponse = (WFCrewSecurityResponse) _docking.SelectedId, Disengage = (WFCrewDisengage) _disengage.SelectedId, Skill = (WFCrewSkill) _skill.SelectedId,
             Navigation = _navigation.Read(),
         };
@@ -238,6 +241,7 @@ public sealed partial class WFCrewSetupWindow
             _docking.SelectId((int) mission.DockingResponse);
             _heave.Pressed = mission.HeaveTo;
             _callsForHelp = mission.CallsForHelp;
+            _faceThreats = mission.FaceThreats;
             _navigation.Load(mission.Navigation);
         }
     }

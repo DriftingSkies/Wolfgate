@@ -10,6 +10,9 @@
   spawnGroup: SyndicateFOB
   gridPath: /Maps/_Mono/POI/underground.yml
   addComponents:
+  # WOLFGATE(ReaverCampaign): the station flies the neutral WFUnderground company, so the Reavers leave it and its cell alone
+  - type: Company
+    companyName: WFUnderground
   - type: IFF
     color: "#991111"
     readOnly: true # mono

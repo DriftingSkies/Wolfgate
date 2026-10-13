@@ -339,6 +339,7 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
         if (TryComp<WFPilotDutyComponent>(mob, out var pilot))
         {
             pilot.ReactToAttacks = mission.HeaveTo;
+            pilot.FaceThreats = mission.FaceThreats;
             _pilots.SetNavigation(mob, mission.Navigation);
         }
         EntityManager.System<WFCrewSecuritySystem>().Reset(mob);

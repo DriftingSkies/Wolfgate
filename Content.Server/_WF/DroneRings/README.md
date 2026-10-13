@@ -11,6 +11,11 @@ which the drone spawners in the winning biome's debris tables change. `wfDroneSo
 debris-table entries are drones. The radii go to clients in `WFDroneRingsComponent` on the map, and
 `WFDroneRingDrawing` draws them.
 
+World generation raises `WFDebrisPlacingEvent` before it spawns a debris feature (a marked hook in
+`DebrisFeaturePlacerSystem`); `WFDroneHeldSpaceSystem` cancels it for a `wfDroneSources` spawner whose position lies in
+a sector cell that any faction holds or has just freed (it stays clearing for `wf.sector.clearing_minutes`), so no drones appear there. Chunks already generated, and cells claimed
+after, keep the drones they have.
+
 Biomes pinned to a block of chunks (the Wilds) also hold drones but are patches, not distances, and get no ring.
 A biome claims a chunk by its centre, so the real edge wanders up to half a chunk (64 m) either side of the ring.
 
@@ -22,6 +27,8 @@ A biome claims a chunk by its centre, so the real edge wanders up to half a chun
 ### Server
 
 - [`Content.Server/_WF/DroneRings/DebrisSelectorEntries.cs`](DebrisSelectorEntries.cs)
+- [`Content.Server/_WF/DroneRings/WFDebrisPlacingEvent.cs`](WFDebrisPlacingEvent.cs)
+- [`Content.Server/_WF/DroneRings/WFDroneHeldSpaceSystem.cs`](WFDroneHeldSpaceSystem.cs)
 - [`Content.Server/_WF/DroneRings/WFDroneRingSystem.cs`](WFDroneRingSystem.cs)
 
 ### Shared
@@ -37,6 +44,7 @@ A biome claims a chunk by its centre, so the real edge wanders up to half a chun
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/DroneRings/WFDroneHeldSpaceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/DroneRings/WFDroneHeldSpaceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/DroneRings/WFDroneRingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/DroneRings/WFDroneRingTest.cs)
 
 ### Prototypes
@@ -51,5 +59,6 @@ A biome claims a chunk by its centre, so the real edge wanders up to half a chun
 
 - [`Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs): draw rings where drones start to spawn.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): draw rings where drones start to spawn.
+- [`Content.Server/Worldgen/Systems/Debris/DebrisFeaturePlacerSystem.cs`](../../Worldgen/Systems/Debris/DebrisFeaturePlacerSystem.cs): no drone spawns in held space
 
 <!-- WOLFGATE-GENERATED END -->

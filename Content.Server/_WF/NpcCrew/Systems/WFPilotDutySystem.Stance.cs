@@ -14,6 +14,10 @@ namespace Content.Server._WF.NpcCrew.Systems;
 public sealed partial class WFPilotDutySystem
 {
     [Dependency] private SharedPhysicsSystem _stancePhysics = default!;
+    [Dependency] private WFCrewAlertSystem _threats = default!;
+
+    /// <summary>How far, in radians, a threat's bearing may move before a holding ship turns its guns again.</summary>
+    private const double AimDeadband = 0.1;
 
     /// <summary>How many bearings around the hull are tried for clear lines of fire.</summary>
     private const int StanceSectors = 16;
@@ -47,6 +51,53 @@ public sealed partial class WFPilotDutySystem
 
         duty.HeadingOverride = heading;
         steerer.TargetRotation = 0f;
+    }
+
+    /// <summary>Hold with FaceThreats: turns the held heading so the hull's best armed side looks at the nearest threat; the station is not left.</summary>
+    private void FaceThreatsHolding(Entity<WFPilotDutyComponent> ent, ShipSteererComponent steerer)
+    {
+        var duty = ent.Comp;
+        if (!duty.FaceThreats || duty.Orders != WFPilotOrder.Hold || duty.Docked
+            || Transform(ent).GridUid is not { } grid || !TryComp<WFCrewComponent>(ent, out var crew)
+            || NearestThreat(grid, crew.Group) is not { } threat)
+            return;
+
+        var toThreat = _transform.GetWorldPosition(threat) - _transform.GetWorldPosition(grid);
+        if (GunHeading(grid, toThreat) is not { } heading
+            || Math.Abs(ShipSteeringSystem.ShortestAngleDistance(duty.HoldHeading, heading).Theta) < AimDeadband)
+            return;
+
+        duty.HoldHeading = heading;
+        steerer.InRangeRotation = heading;
+    }
+
+    /// <summary>The nearest ship that fired on this one, or failing that the nearest zone intruder.</summary>
+    private EntityUid? NearestThreat(EntityUid grid, string group)
+    {
+        var here = _transform.GetWorldPosition(grid);
+        EntityUid? best = null;
+        var bestZone = true;
+        var bestDistance = float.MaxValue;
+        foreach (var ship in _threats.GetHostileShips(grid, group))
+        {
+            var zone = _threats.IsZoneThreat(grid, group, ship);
+            var distance = (_transform.GetWorldPosition(ship) - here).LengthSquared();
+            if (zone && !bestZone || zone == bestZone && distance >= bestDistance)
+                continue;
+            best = ship;
+            bestZone = zone;
+            bestDistance = distance;
+        }
+        return best;
+    }
+
+    /// <summary>Whether a holding ship that faces threats is still short of the heading it is to hold.</summary>
+    private bool TurningToThreat(WFPilotDutyComponent duty, ShipSteererComponent steerer, EntityUid grid)
+    {
+        if (!duty.FaceThreats)
+            return false;
+        var facing = _transform.GetWorldRotation(grid) + new Angle(Math.PI);
+        return Math.Abs(ShipSteeringSystem.ShortestAngleDistance(facing, duty.HoldHeading).Theta) > steerer.RotationTolerance;
     }
 
     /// <summary>
