@@ -13,8 +13,8 @@ plus repair supplies. They do not provide automatic docking or ship refuelling.
 
 Carcinoma retains the haunted cave layout, with exterior airlocks added during dungeon generation.
 Procedural layouts are checked for a usable exterior approach before placement. Sealed rolls are
-regenerated with deterministic retry seeds, up to sixteen attempts; exhausted retries fail atomically
-without stamping a partial network or demolishing walls.
+regenerated with deterministic retry seeds, up to sixteen attempts; if every attempt is sealed, that
+site is skipped with a warning and the rest of the network is still built. No walls are demolished.
 
 Reusable content already present includes `FloorAsphalt`, concrete and pavement tiles, Mono's
 `RoadSlow`/`RoadStop` decals, Frontier planet-base dungeon interiors and the biome/dungeon tile-pinning

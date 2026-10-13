@@ -201,10 +201,15 @@ class PoiMap:
 
     def entry(self):
         ox, oy = self.width // 2, self.height // 2
-        return {"mapPath": f"/Maps/_WF/PlanetPois/{self.slug}.yml", "name": self.title_key,
-                "footprint": f"{-ox},{-oy},{self.width - ox},{self.height - oy}",
-                "minCount": 1, "maxCount": 1, "connection": self.connection,
-                "sockets": [{"offset": f"{x - self.width // 2},{y - self.height // 2}", "direction": d} for x, y, d in self.sockets]}
+        entry = {"mapPath": f"/Maps/_WF/PlanetPois/{self.slug}.yml", "name": self.title_key}
+        # An inhabited settlement is never an expedition target.
+        if self.inhabited:
+            entry["expeditions"] = False
+        entry.update({
+            "footprint": f"{-ox},{-oy},{self.width - ox},{self.height - oy}",
+            "minCount": 1, "maxCount": 1, "connection": self.connection,
+            "sockets": [{"offset": f"{x - self.width // 2},{y - self.height // 2}", "direction": d} for x, y, d in self.sockets]})
+        return entry
 
     def serialize(self):
         """Encode v7 tile chunks and 8x8 roof masks using engine traversal order."""

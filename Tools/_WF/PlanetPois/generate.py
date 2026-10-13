@@ -85,7 +85,11 @@ def main():
     args = parser.parse_args()
     maps = cities() + settlements()
     table_path = ROOT / "Resources/Prototypes/_WF/PlanetPois/tables.yml"
-    tables = yaml.safe_load(table_path.read_text(encoding="utf-8"))
+    table_text = table_path.read_text(encoding="utf-8")
+    tables = yaml.safe_load(table_text)
+    # The hand-written header and everything in a table but its authored entries are kept as they are.
+    header = "".join(line for line in table_text.splitlines(keepends=True)[:next(
+        (i for i, line in enumerate(table_text.splitlines()) if line.strip() and not line.startswith("#")), 0)])
     for m in maps:
         validate(m)
         write(ROOT / "Resources/Maps/_WF/PlanetPois" / f"{m.slug}.yml", m.serialize(), args.check)
@@ -94,16 +98,8 @@ def main():
     for table in tables:
         planet = table["id"].removeprefix("WFPois")
         authored = [m.entry() for m in maps if m.planet == planet]
-        if planet in ("Asclepiu", "Merak"):
-            table.update(minCount=len(authored), maxCount=len(authored), spacing=96, edgeMargin=96, centreClear=96)
-            table["roads"]["shoulderTile"] = "FloorConcreteCrocus"
-            table["entries"] = authored
-        else:
-            table["entries"] = authored + [entry for entry in table["entries"] if "dungeon" in entry]
-            table["minCount"] = 2
-            table["maxCount"] = max(2, table["maxCount"])
-    content = "# Generated authored entries: python Tools/_WF/PlanetPois/generate.py\n# Hazard worlds retain procedural dungeon variety alongside their authored shelter.\n\n"
-    write(table_path, content + yaml.safe_dump(tables, sort_keys=False, width=120), args.check)
+        table["entries"] = authored + [entry for entry in table["entries"] if "mapPath" not in entry]
+    write(table_path, header + yaml.safe_dump(tables, sort_keys=False, width=120), args.check)
     print(f"{'Checked' if args.check else 'Generated'} {len(maps)} maps, {sum(len(m.entities) for m in maps):,} mapped entities, six planet tables.")
 
 

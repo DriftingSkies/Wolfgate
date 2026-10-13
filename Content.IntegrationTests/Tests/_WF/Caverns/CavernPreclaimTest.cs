@@ -8,6 +8,7 @@ using Content.Shared._WF.Planets;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Maths;
+using Robust.Shared.Prototypes;
 using static Content.IntegrationTests.Tests._WF.Caverns.CavernFixture;
 
 namespace Content.IntegrationTests.Tests._WF.Caverns;
@@ -26,6 +27,7 @@ public sealed class CavernPreclaimTest
         var server = pair.Server;
         var entMan = server.EntMan;
         var maps = server.System<SharedMapSystem>();
+        var proto = server.ResolveDependency<IPrototypeManager>();
 
         await EnableCaverns(pair);
         await server.WaitPost(() =>
@@ -50,7 +52,18 @@ public sealed class CavernPreclaimTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(ground.Mouths.Count, Is.GreaterThan(1), "Only the gate was claimed before the preload.");
-                    Assert.That(ground.Cells.Values.Any(cell => cell.State == WFCavernClaim.Unclaimed), Is.False, "A cell was left unclaimed.");
+
+                    // Every cell the circle's square touches was settled one way or the other, none skipped or put off.
+                    var spec = proto.Index(ground.Prototype).Mouths;
+                    var min = WFCavernMouthSystem.CellOf(spec, new Vector2i(-Radius, -Radius));
+                    var max = WFCavernMouthSystem.CellOf(spec, new Vector2i(Radius, Radius));
+                    for (var x = min.X; x <= max.X; x++)
+                    for (var y = min.Y; y <= max.Y; y++)
+                    {
+                        var cell = new Vector2i(x, y);
+                        Assert.That(ground.Cells.TryGetValue(cell, out var state), Is.True, $"Cell {cell} was never visited.");
+                        Assert.That(state?.State, Is.EqualTo(WFCavernClaim.Claimed).Or.EqualTo(WFCavernClaim.Empty), $"Cell {cell} was not settled.");
+                    }
 
                     foreach (var mouth in ground.Mouths)
                     {

@@ -39,6 +39,11 @@ public sealed partial class SalvageSystem
 
     private TimeSpan _wfNextCheck;
 
+    private void WfInitializePlanetExpeditions()
+    {
+        SubscribeLocalEvent<WFPlanetExpeditionComponent, ComponentShutdown>(WfOnExpeditionShutdown);
+    }
+
     /// <summary>
     /// Fills the station's offers from free sites on the worlds; false when there are none, so upstream generates
     /// its maps instead.
@@ -52,6 +57,10 @@ public sealed partial class SalvageSystem
         var query = EntityQueryEnumerator<WFPlanetPoiComponent>();
         while (query.MoveNext(out var ground, out var record))
         {
+            // A world still placing its sites has nothing to stand an objective on yet.
+            if (!record.NetworkReady)
+                continue;
+
             for (var i = 0; i < record.Sites.Count; i++)
             {
                 var site = record.Sites[i];
@@ -111,13 +120,32 @@ public sealed partial class SalvageSystem
         }
 
         var mission = GetMission(missionParams.MissionType, missionParams.Difficulty, missionParams.Seed);
+        var hostiles = new List<EntityUid>();
+        var objectives = WfArmSite(offer.Ground, site, mission, missionParams, hostiles);
+
+        if (objectives.Count == 0)
+        {
+            // Nothing to clear would complete, and pay, at once. The site has no room; it is not offered again.
+            foreach (var hostile in hostiles)
+                QueueDel(hostile);
+
+            site.Expeditions = false;
+            Log.Warning($"{site.Name} on {ToPrettyString(offer.Ground)} had no room for an expedition's objectives.");
+            PlayDenySound(console, component);
+            _popupSystem.PopupEntity(Loc.GetString("wf-expedition-site-unusable"), console, PopupType.MediumCaution);
+            data.NextOffer = _timing.CurTime;
+            UpdateConsoles(station, data);
+            return true;
+        }
+
         var active = new WFPlanetExpeditionActive
         {
             Ground = offer.Ground,
             SiteIndex = offer.SiteIndex,
             Params = missionParams,
             Mission = mission,
-            Objectives = WfArmSite(offer.Ground, site, mission, missionParams),
+            Objectives = objectives,
+            Hostiles = hostiles,
             EndTime = _timing.CurTime + mission.Duration,
         };
 
@@ -147,7 +175,7 @@ public sealed partial class SalvageSystem
     }
 
     /// <summary>Spawns the mission's objectives and hostiles on the site's free floor; returns what must be cleared.</summary>
-    private List<EntityUid> WfArmSite(EntityUid ground, WFPlanetPoiSite site, SalvageMission mission, SalvageMissionParams missionParams)
+    private List<EntityUid> WfArmSite(EntityUid ground, WFPlanetPoiSite site, SalvageMission mission, SalvageMissionParams missionParams, List<EntityUid> hostiles)
     {
         var objectives = new List<EntityUid>();
         if (!TryComp<MapGridComponent>(ground, out var grid))
@@ -215,8 +243,8 @@ public sealed partial class SalvageSystem
 
                 foreach (var proto in EntitySpawnCollection.GetSpawns(group.Entries, random))
                 {
-                    if (proto != null)
-                        Place(proto);
+                    if (proto != null && Place(proto) is { } hostile)
+                        hostiles.Add(hostile);
                 }
 
                 break;
@@ -312,25 +340,8 @@ public sealed partial class SalvageSystem
     {
         var active = comp.Active!;
         comp.Active = null;
-
-        if (TryComp<WFPlanetPoiComponent>(active.Ground, out var record) && active.SiteIndex < record.Sites.Count)
-        {
-            var site = record.Sites[active.SiteIndex];
-            site.ExpeditionClaim = null;
-            site.Cleared = completed;
-        }
-
-        if (!completed)
-        {
-            // What was never cleared goes, so the next claim of the site doesn't stack on it.
-            foreach (var objective in active.Objectives)
-            {
-                if (!TerminatingOrDeleted(objective))
-                    QueueDel(objective);
-            }
-        }
-
         WfAnnounce(station, active, message);
+        WfRelease(active, completed);
 
         if (completed)
         {
@@ -346,6 +357,45 @@ public sealed partial class SalvageSystem
         data.Cooldown = true;
         data.CanFinish = false;
         UpdateConsoles(station, data);
+    }
+
+    /// <summary>
+    /// Frees a mission's site, cleared or not. What an unfinished mission left standing goes, objectives and living
+    /// hostiles both, so the next claim of the site doesn't stack on it.
+    /// </summary>
+    private void WfRelease(WFPlanetExpeditionActive active, bool completed)
+    {
+        if (TryComp<WFPlanetPoiComponent>(active.Ground, out var record) && active.SiteIndex < record.Sites.Count)
+        {
+            var site = record.Sites[active.SiteIndex];
+            site.ExpeditionClaim = null;
+            site.Cleared = completed;
+        }
+
+        if (completed)
+            return;
+
+        foreach (var objective in active.Objectives)
+        {
+            if (!TerminatingOrDeleted(objective))
+                QueueDel(objective);
+        }
+
+        foreach (var hostile in active.Hostiles)
+        {
+            if (!TerminatingOrDeleted(hostile) && !_mobState.IsDead(hostile))
+                QueueDel(hostile);
+        }
+    }
+
+    /// <summary>A station deleted mid-mission, such as a sold ship, gives its site back.</summary>
+    private void WfOnExpeditionShutdown(Entity<WFPlanetExpeditionComponent> station, ref ComponentShutdown args)
+    {
+        if (station.Comp.Active is not { } active)
+            return;
+
+        station.Comp.Active = null;
+        WfRelease(active, false);
     }
 
     /// <summary>The mission's rewards, at one of the station's expedition consoles, as upstream pays them.</summary>

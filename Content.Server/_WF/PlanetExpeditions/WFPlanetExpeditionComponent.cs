@@ -28,6 +28,9 @@ public sealed class WFPlanetExpeditionActive
     /// <summary>The structures or creature the crew must destroy; the mission completes when none is left.</summary>
     public List<EntityUid> Objectives = new();
 
+    /// <summary>The hostiles spawned with them, removed if the mission ends unfinished.</summary>
+    public List<EntityUid> Hostiles = new();
+
     public TimeSpan EndTime;
     public bool WarnedMinutes;
     public bool WarnedSeconds;

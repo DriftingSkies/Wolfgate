@@ -133,7 +133,7 @@ public sealed partial class WFCavernMouthSystem : EntitySystem
     }
 
     /// <summary>Carves an admin mouth anchored at a ground tile, its shape seeded by that tile, clearing biome entities from loaded terrain.</summary>
-    /// <param name="refusal">Why it was refused: cavern (either map is gone), grid, built, mob or mouth.</param>
+    /// <param name="refusal">Why it was refused: cavern (either map is gone), bounds, grid, built, mob or mouth.</param>
     /// <param name="ignore">A mob allowed to stand in the hole, such as the admin carving it.</param>
     public bool TryOpenMouth(
         Entity<WFCavernGroundComponent> ground,
@@ -152,6 +152,14 @@ public sealed partial class WFCavernMouthSystem : EntitySystem
         var shape = AdminShape(context, origin);
         var mapId = Comp<MapComponent>(ground).MapId;
         var hole = Offset(origin, shape.Hole);
+
+        // The whole pad stays inside the world's circle, as a claimed mouth's does.
+        if (TryComp<WFPlanetBoundsComponent>(ground, out var worldBounds) && worldBounds.Radius > 0f
+            && Offset(origin, shape.Pad(context.Spec.PadRadius)).Any(index => !worldBounds.ContainsTile(index)))
+        {
+            refusal = "bounds";
+            return false;
+        }
 
         // Another mouth's hole or climb point in the footprint, or its pinned pad under ours, which the stamp would overwrite.
         var levelBiome = (context.Level.Owner, context.Level.Comp1);
