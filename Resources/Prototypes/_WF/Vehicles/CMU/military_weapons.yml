@@ -177,6 +177,10 @@
     maxIntegrity: 350
   - type: VehicleTurretAttachment
   - type: VehicleTurret
+    # On the FV150 the cupola sits in a hull slot, not on the turret, so nothing turns it but itself.
+    rotateToCursor: true
+    stabilizedRotation: false
+    rotationSpeed: 180
     useBarrelDirectionForShots: true
     fireWhileRotatingGraceDegrees: 180
     offsetRotatesWithTurret: false

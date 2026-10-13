@@ -31,11 +31,13 @@ public sealed partial class GunFireArcSystem : EntitySystem
             return;
         }
 
-        // A gun on a turret that turns to the cursor is held to the turret's limits; one fixed to the hull is held to its arc.
+        // A gun on a turret that turns to the cursor is held to the turret's limits; one mounted on the hull is held to its
+        // arc, whether it is fixed there or traverses on its own mount.
         if (TryComp(ent.Owner, out VehicleTurretComponent? turret) &&
             turret.UseBarrelDirectionForShots &&
-            _vehicleTurret.TryResolveRotationTarget(ent.Owner, out _, out var rotationTarget) &&
-            rotationTarget.RotateToCursor)
+            _vehicleTurret.TryResolveRotationTarget(ent.Owner, out var rotationTargetUid, out var rotationTarget) &&
+            rotationTarget.RotateToCursor &&
+            rotationTargetUid != ent.Owner)
         {
             return;
         }
