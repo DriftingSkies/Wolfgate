@@ -111,7 +111,7 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
             case WFEncounterAdminAction.Reveal:
                 if (!TryGetEntity(request.Target, out var hidden) || !HasComp<WFEncounterComponent>(hidden))
                     return Loc.GetString("wf-encounter-admin-gone");
-                _encounters.Reveal(hidden.Value);
+                _encounters.Reveal(hidden.Value, true);
                 Audit(session, $"revealed encounter {ToPrettyString(hidden.Value):entity}");
                 return null;
 

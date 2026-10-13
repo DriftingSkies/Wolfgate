@@ -178,6 +178,10 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public bool Lurking;
 
+    /// <summary>Whether it flies unlabelled for good and keeps its encounter off the sector markers.</summary>
+    [DataField]
+    public bool Stealth;
+
     [DataField]
     public float WarnRange;
 

@@ -71,7 +71,8 @@ public sealed partial class WFEncounterSystem
         else if (ship.RaidEnds != null)
         {
             // Off the prey with the raid under way: it cast off, or the prey broke away.
-            var looting = CurrentOrder(ship) == WFCrewObjectiveKind.Loot;
+            // Still looting or holding alongside: the prey broke away. Any later order and the ship cast off itself.
+            var looting = CurrentOrder(ship) is WFCrewObjectiveKind.Loot or WFCrewObjectiveKind.Hold;
             ship.RaidEnds = null;
             // Shaken off with the boarding party still aboard the prey: the ship goes straight back for them and takes
             // the raid up again where it docks. They are only given up once it can't get a port on the prey again, or
@@ -82,7 +83,7 @@ public sealed partial class WFEncounterSystem
                     return free;
                 status = null;
             }
-            // Broken off before the loot was in and with nobody left aboard: the raid starts over and the ship goes
+            // Broken off before the raid was done and with nobody left aboard: the raid starts over and the ship goes
             // after its prey again. The new orders cancel the old raid's work.
             else if (looting)
             {

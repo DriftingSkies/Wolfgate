@@ -92,6 +92,7 @@
     spesos: 12000
     title: wf-bounty-title-fugitive-petty
     description: wf-bounty-desc-fugitive-petty
+    broadcast: wf-bounty-broadcast-fugitive
   ships:
   - key: fugitive
     navigation: WFCrewNavigationFreight
@@ -133,6 +134,7 @@
     spesos: 30000
     title: wf-bounty-title-fugitive-wanted
     description: wf-bounty-desc-fugitive-wanted
+    broadcast: wf-bounty-broadcast-fugitive
   ships:
   - key: fugitive
     navigation: WFCrewNavigationFugitive
@@ -174,6 +176,7 @@
     spesos: 70000
     title: wf-bounty-title-fugitive-dangerous
     description: wf-bounty-desc-fugitive-dangerous
+    broadcast: wf-bounty-broadcast-fugitive
   ships:
   - key: fugitive
     navigation: WFCrewNavigationFugitive
@@ -216,6 +219,7 @@
     spesos: 140000
     title: wf-bounty-title-fugitive-most-wanted
     description: wf-bounty-desc-fugitive-most-wanted
+    broadcast: wf-bounty-broadcast-fugitive
   ships:
   - key: fugitive
     navigation: WFCrewNavigationWarship

@@ -10,6 +10,7 @@
   name: wf-encounter-name-extorter-light
   start: Scheduled
   lifetime: Persistent
+  hidden: true
   category: Threat
   icon: Skull
   weight: 0.6
@@ -26,6 +27,7 @@
     description: wf-bounty-desc-extorter-light
   ships:
   - key: extorter
+    stealth: true
     navigation: WFCrewNavigationRaider
     vessels: [ Hazel ]
     side: pirates
@@ -51,6 +53,7 @@
   name: wf-encounter-name-extorter-medium
   start: Scheduled
   lifetime: Persistent
+  hidden: true
   category: Threat
   icon: Skull
   weight: 0.4
@@ -67,6 +70,7 @@
     description: wf-bounty-desc-extorter-medium
   ships:
   - key: extorter
+    stealth: true
     navigation: WFCrewNavigationRaider
     vessels: [ Metis, Mudskipper ]
     side: pirates
@@ -91,6 +95,7 @@
   name: wf-encounter-name-extorter-heavy
   start: Scheduled
   lifetime: Persistent
+  hidden: true
   category: Threat
   icon: Skull
   weight: 0.25
@@ -107,6 +112,7 @@
     description: wf-bounty-desc-extorter-heavy
   ships:
   - key: extorter
+    stealth: true
     navigation: WFCrewNavigationRaider
     vessels: [ Kalisto, Scallywag ]
     side: pirates

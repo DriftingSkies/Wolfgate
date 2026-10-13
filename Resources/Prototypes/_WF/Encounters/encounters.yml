@@ -527,6 +527,7 @@
   maxDistance: 2500
   ships:
   - key: boarder
+    stealth: true
     navigation: WFCrewNavigationRaider
     vessels: [ Hazel, Metis, Mudskipper ]
     side: pirates

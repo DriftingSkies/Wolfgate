@@ -182,10 +182,16 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Puts a hidden encounter on the sector markers and lets it make its announcement.</summary>
-    public void Reveal(Entity<WFEncounterComponent?> encounter)
+    /// <summary>
+    /// Puts a hidden encounter on the sector markers and lets it make its announcement. One with a stealth ship stays
+    /// hidden unless <paramref name="force"/> is set.
+    /// </summary>
+    public void Reveal(Entity<WFEncounterComponent?> encounter, bool force = false)
     {
         if (!Resolve(encounter, ref encounter.Comp, false) || !encounter.Comp.Hidden)
+            return;
+
+        if (!force && encounter.Comp.Ships.Values.Any(ship => ship.Stealth))
             return;
 
         encounter.Comp.Hidden = false;
@@ -615,12 +621,19 @@ public sealed partial class WFEncounterSystem : EntitySystem
             Distress = ship.Distress,
             Evades = ship.Evades,
             Flees = ship.Flees,
+            Stealth = ship.Stealth,
             Passengers = ship.Passengers.Count > 0,
         };
         encounter.Comp.Ships.Add(ship.Key, state);
-        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only.
+        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only. Docked, their clamps hold it.
         if (state.Hunt)
+        {
             EnsureComp<WFHoldFireComponent>(grid);
+            EnsureComp<WFDockingClampComponent>(grid);
+        }
+
+        if (state.Stealth)
+            _shuttles.AddIFFFlag(grid, Content.Shared.Shuttles.Components.IFFFlags.HideLabel);
 
         // Cargo goes aboard first, so the crew are posted around it and not on it.
         if (manifest != null && manifest.Crates.Count > 0)

@@ -298,6 +298,13 @@ public sealed partial class WFEncounterShip
     [DataField]
     public float Flees;
 
+    /// <summary>
+    /// Flies with its IFF label off for good, an unknown contact on every scope, and never brings its encounter onto
+    /// the sector markers, whatever its crew get into.
+    /// </summary>
+    [DataField]
+    public bool Stealth;
+
     /// <summary>Whether the ship holds its station and turns its guns on threats, without ever flying at them.</summary>
     [DataField]
     public bool Platform;
@@ -389,6 +396,10 @@ public sealed partial class WFEncounterBounty
     /// <summary>The board entry's text; takes $name, the wanted name, and $ship.</summary>
     [DataField(required: true)]
     public LocId Description;
+
+    /// <summary>Read out to the whole sector when the warrant is posted; takes $name, $ship and $reward. None keeps it to the board.</summary>
+    [DataField]
+    public LocId? Broadcast;
 }
 
 /// <summary>Who a warrant is for.</summary>

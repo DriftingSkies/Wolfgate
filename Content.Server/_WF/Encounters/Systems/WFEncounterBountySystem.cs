@@ -6,6 +6,7 @@ using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
+using Content.Server.Chat.Systems;
 using Content.Server.Preferences.Managers;
 using Content.Shared._Mono.CCVar;
 using Content.Shared._NF.Bank.Components;
@@ -39,6 +40,7 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IChatManager _chat = default!;
+    [Dependency] private ChatSystem _chatSystem = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private IServerPreferencesManager _prefs = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
@@ -49,6 +51,8 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
     [Dependency] private WFCrewSystem _crew = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+
+    private static readonly Color BroadcastColor = Color.FromHex("#d7a64a");
 
     /// <summary>How near a target a player must be when it falls to share the warrant.</summary>
     public const float PayRange = 200f;
@@ -144,6 +148,12 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
 
         bounty.Contract = contract?.ContractId;
         NoteLocation(bounty, ship);
+        if (warrant.Broadcast is { } broadcast)
+        {
+            _chatSystem.DispatchGlobalAnnouncement(
+                Loc.GetString(broadcast, ("name", bounty.Name), ("ship", shipName), ("reward", bounty.Pool)),
+                Loc.GetString("wf-encounter-bounty-author"), colorOverride: BroadcastColor);
+        }
     }
 
     /// <summary>Marks the crewmen a warrant is for: the ship's captain, else its pilot, else any hand; or every hand.</summary>
