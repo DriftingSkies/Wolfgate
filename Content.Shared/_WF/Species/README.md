@@ -399,7 +399,11 @@ clone.
   - HardLight's GalacticCommon is TauCetiBasic here
   - was RMCSkrellWarble, which shared Warble's trigger words
 - [`Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml): this species has wag-capable tails but had no Wagging Tail action
-- [`Resources/Prototypes/_DV/Species/skrell.yml`](../../../Resources/Prototypes/_DV/Species/skrell.yml): ported from HardLight (Skrell)
+- [`Resources/Prototypes/_DV/Species/avali.yml`](../../../Resources/Prototypes/_DV/Species/avali.yml): two markings per arm, hand, leg and foot (was 6)
+- [`Resources/Prototypes/_DV/Species/harpy.yml`](../../../Resources/Prototypes/_DV/Species/harpy.yml): two markings per arm, hand, leg and foot (was 1)
+- [`Resources/Prototypes/_DV/Species/skrell.yml`](../../../Resources/Prototypes/_DV/Species/skrell.yml)
+  - ported from HardLight (Skrell)
+  - two markings per arm, hand, leg and foot (was 4)
 - [`Resources/Prototypes/_DV/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Species/vulpkanin.yml)
   - was MobVulpkaninSprites; Starlight's body on digitigrade legs
   - was VulpTail; Starlight's tail for Starlight's body
@@ -407,7 +411,9 @@ clone.
 - [`Resources/Prototypes/_DV/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_EE/Entities/Mobs/Customization/bishop.yml`](../../../Resources/Prototypes/_EE/Entities/Mobs/Customization/bishop.yml): added Canine
 - [`Resources/Prototypes/_EE/Entities/Mobs/Customization/hephiastos.yml`](../../../Resources/Prototypes/_EE/Entities/Mobs/Customization/hephiastos.yml): added Canine
-- [`Resources/Prototypes/_EinsteinEngines/Species/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Species/ipc.yml): was MobHumanoidMarkingMatchSkin; hair colour is the player's pick
+- [`Resources/Prototypes/_EinsteinEngines/Species/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Species/ipc.yml)
+  - was MobHumanoidMarkingMatchSkin; hair colour is the player's pick
+  - two markings per arm, hand, leg and foot on top of the four defaults (was 4)
 - [`Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_FarHorizons/Body/Organs/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Body/Organs/protogen.yml)
   - ported from HardLight - Protogen subspecies.
@@ -432,7 +438,9 @@ clone.
   - the 14 Protogen subspecies, ported from HardLight.
   - groups it under Protogen in the creator
   - blank, LED face markings replace eyes
+  - two markings per arm, hand, leg and foot (was 2)
   - was MobSlimeMarkingFollowSkin; hair colour is the player's pick
+  - two markings per arm, hand, leg and foot (was 4)
 - [`Resources/Prototypes/_FarHorizons/Voices/protogen_speech_emotes_sounds.yml`](../../../Resources/Prototypes/_FarHorizons/Voices/protogen_speech_emotes_sounds.yml)
   - _Mono protogen mobs use this emote
   - Whine collection does not exist here
@@ -440,6 +448,8 @@ clone.
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml): ported from HardLight
 - [`Resources/Prototypes/_Goobstation/Entities/Mobs/Customization/Markings/vox_tails.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Mobs/Customization/Markings/vox_tails.yml): add ProtoVox
+- [`Resources/Prototypes/_Goobstation/Species/tajaran.yml`](../../../Resources/Prototypes/_Goobstation/Species/tajaran.yml): two markings per arm, hand, leg and foot (was 2)
+- [`Resources/Prototypes/_Goobstation/Species/yowie.yml`](../../../Resources/Prototypes/_Goobstation/Species/yowie.yml): two markings per arm, hand, leg and foot (was 2)
 - [`Resources/Prototypes/_HL/ai_factions.yml`](../../../Resources/Prototypes/_HL/ai_factions.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Body/Organs/skrell.yml`](../../../Resources/Prototypes/_HL/Body/Organs/skrell.yml): ported from HardLight (Skrell)
 - [`Resources/Prototypes/_HL/Body/Organs/synth.yml`](../../../Resources/Prototypes/_HL/Body/Organs/synth.yml): HardLight's GalacticCommon is TauCetiBasic here
@@ -479,6 +489,7 @@ clone.
   - HardLight's GalacticCommon is TauCetiBasic here
 - [`Resources/Prototypes/_HL/Reagents/biological.yml`](../../../Resources/Prototypes/_HL/Reagents/biological.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Reagents/nanites.yml`](../../../Resources/Prototypes/_HL/Reagents/nanites.yml): ported from HardLight
+- [`Resources/Prototypes/_HL/Species/synth.yml`](../../../Resources/Prototypes/_HL/Species/synth.yml): two markings per arm, hand, leg and foot (was 4)
 - [`Resources/Prototypes/_HL/tags.yml`](../../../Resources/Prototypes/_HL/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Traits/shadekin.yml`](../../../Resources/Prototypes/_HL/Traits/shadekin.yml): ported from HardLight, adapted to Wolfgate's TraitPrototype.
 - [`Resources/Prototypes/_HL/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_HL/Voice/speech_emote_sounds.yml): ported from HardLight
@@ -508,6 +519,7 @@ clone.
 - [`Resources/Prototypes/_Impstation/Flavors/flavors.yml`](../../../Resources/Prototypes/_Impstation/Flavors/flavors.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/InventoryTemplates/thaven_inventory_template.yml`](../../../Resources/Prototypes/_Impstation/InventoryTemplates/thaven_inventory_template.yml): HardLight's ACCESSORY/ACCESSORYALT slots are removed
 - [`Resources/Prototypes/_Impstation/Reagents/biological.yml`](../../../Resources/Prototypes/_Impstation/Reagents/biological.yml): ported from HardLight.
+- [`Resources/Prototypes/_Impstation/Species/thaven.yml`](../../../Resources/Prototypes/_Impstation/Species/thaven.yml): two markings per arm, hand, leg and foot (was 6)
 - [`Resources/Prototypes/_Impstation/Species/Thavens/datasets.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/datasets.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/horny.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/horny.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/hornyemag.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/hornyemag.yml): ported from HardLight
@@ -520,8 +532,10 @@ clone.
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_hair.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_hair.yml): was [Resomi]
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_tail.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_tail.yml): was [Resomi]
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml): eye markings get their own points (was Head)
+- [`Resources/Prototypes/_Moffstation/Species/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Species/resomi.yml): two markings per arm, hand, leg and foot (was 6)
 - [`Resources/Prototypes/_Mono/Entities/Mobs/Customization/Markings/protogen.yml`](../../../Resources/Prototypes/_Mono/Entities/Mobs/Customization/Markings/protogen.yml): was [Protogen]
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/med_assembler.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/med_assembler.yml): Avali auto-injector (amoxla and tranexamic acid)
+- [`Resources/Prototypes/_Mono/Species/asakim.yml`](../../../Resources/Prototypes/_Mono/Species/asakim.yml): two markings per arm, hand, leg and foot (was 2)
 - [`Resources/Prototypes/_Mono/Species/protogen.yml`](../../../Resources/Prototypes/_Mono/Species/protogen.yml): was false, so only the subspecies were playable
 - [`Resources/Prototypes/_Mono/Traits/physical.yml`](../../../Resources/Prototypes/_Mono/Traits/physical.yml): Canine is a Vulpkanin copy
 - [`Resources/Prototypes/_NF/Body/Organs/avali.yml`](../../../Resources/Prototypes/_NF/Body/Organs/avali.yml): ported from HardLight
@@ -534,6 +548,7 @@ clone.
 - [`Resources/Prototypes/_NF/Loadouts/species_loadout_groups.yml`](../../../Resources/Prototypes/_NF/Loadouts/species_loadout_groups.yml)
   - one more for the Avali auto-injector
   - Avali auto-injector, like the Vox tank
+- [`Resources/Prototypes/_NF/Species/goblin_species.yml`](../../../Resources/Prototypes/_NF/Species/goblin_species.yml): two markings per arm, hand, leg and foot (was 2)
 - [`Resources/Prototypes/_RMC14/Actions/types.yml`](../../../Resources/Prototypes/_RMC14/Actions/types.yml): ported from HardLight
 - [`Resources/Prototypes/_RMC14/Datasets/skrell_names.yml`](../../../Resources/Prototypes/_RMC14/Datasets/skrell_names.yml): converted from HardLight localizedDataset - Wolfgate species use plain datasets.
 - [`Resources/Prototypes/_RMC14/Entities/Mobs/Customization/reptilian.yml`](../../../Resources/Prototypes/_RMC14/Entities/Mobs/Customization/reptilian.yml): ported from HardLight
@@ -590,6 +605,7 @@ clone.
 - [`Resources/Prototypes/_StarLight/Reagents/biological.yml`](../../../Resources/Prototypes/_StarLight/Reagents/biological.yml): ported from HardLight.
 - [`Resources/Prototypes/_StarLight/SoundCollections/felionoid.yml`](../../../Resources/Prototypes/_StarLight/SoundCollections/felionoid.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/SoundCollections/shadekin.yml`](../../../Resources/Prototypes/_StarLight/SoundCollections/shadekin.yml): ported from HardLight
+- [`Resources/Prototypes/_StarLight/Species/felionoid.yml`](../../../Resources/Prototypes/_StarLight/Species/felionoid.yml): two markings per arm, hand, leg and foot (was 4)
 - [`Resources/Prototypes/_StarLight/tags.yml`](../../../Resources/Prototypes/_StarLight/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_emote_sounds.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_emotes.yml): was the default scream icon
@@ -641,6 +657,7 @@ clone.
   - dexalin plus doesn't heal Avali; their blood is ammonia-based (Starlight)
   - dexalin plus poisons Avali harder than dexalin (Starlight; lethal dose 15u)
   - saline is lethal to Avali (Starlight); the heart pass doubles the blood restore for everyone else
+- [`Resources/Prototypes/Species/moth.yml`](../../../Resources/Prototypes/Species/moth.yml): two markings per arm, hand, leg and foot (was 4)
 - [`Resources/Prototypes/Species/reptilian.yml`](../../../Resources/Prototypes/Species/reptilian.yml)
   - hair layer so reptilian hair is drawn
   - facial hair layer so reptilian facial hair is drawn
@@ -656,6 +673,7 @@ clone.
   - ported from HardLight/Starlight
   - ported from HardLight
   - ported from HardLight/Impstation
+- [`Resources/Prototypes/Species/vox.yml`](../../../Resources/Prototypes/Species/vox.yml): two markings per arm, hand, leg and foot on top of the four defaults (was 6)
 - [`Resources/Prototypes/Traits/speech.yml`](../../../Resources/Prototypes/Traits/speech.yml): Felionoids and ProtoFelines have it as their species accent
 - [`Resources/Prototypes/Voice/speech_emotes.yml`](../../../Resources/Prototypes/Voice/speech_emotes.yml): was the default scream action icon; this is the open-mouthed face
 - [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoArachnid.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoArachnid.xml): ported from HardLight

@@ -76,10 +76,10 @@
       points: 4 # imp 1<4
       required: false
     Legs:
-      points: 4 # imp 2<4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
     Arms:
-      points: 4 # imp 2<4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
 
 - type: humanoidBaseSprite

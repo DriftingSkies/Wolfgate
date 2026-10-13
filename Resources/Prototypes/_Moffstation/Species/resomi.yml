@@ -58,10 +58,10 @@
       required: true
       defaultMarkings: [ ResomiTailFeathered ]
     Legs:
-      points: 6
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 6)
       required: false
     Arms:
-      points: 6
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 6)
       required: false
     Head:
       points: 4

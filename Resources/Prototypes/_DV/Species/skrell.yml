@@ -76,10 +76,10 @@
       points: 1
       required: false
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
     UndergarmentTop:
       points: 3

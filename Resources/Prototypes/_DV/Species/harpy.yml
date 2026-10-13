@@ -63,7 +63,7 @@
       points: 8 # imp/mono 2<8
       required: false
     Arms:
-      points: 1
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 1)
       required: false
       defaultMarkings: [ HarpyWingDefaultHuescale ]
 

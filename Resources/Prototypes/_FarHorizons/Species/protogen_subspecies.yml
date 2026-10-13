@@ -76,10 +76,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 - type: humanoidBaseSprite
@@ -247,10 +247,10 @@
       points: 1
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 - type: humanoidBaseSprite
@@ -335,10 +335,10 @@
       points: 1
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region LASPI ####
@@ -411,10 +411,10 @@
       points: 2
       required: false
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
 
 #region SHADEKIN ####
@@ -497,10 +497,10 @@
       points: 1
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region RESOMI ####
@@ -586,10 +586,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region REPTILIAN ####
@@ -667,10 +667,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region MOTH ####
@@ -748,10 +748,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region HUMAN ####
@@ -824,10 +824,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region FELINID ####
@@ -905,10 +905,10 @@
       points: 2
       required: false
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
 
 #region DWARF ####
@@ -954,10 +954,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
 
 #region DIONA ####
@@ -1035,10 +1035,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Overlay:
       points: 2
@@ -1128,10 +1128,10 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: false
 
 #region ARACHNID ####
@@ -1215,8 +1215,8 @@
       points: 2
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 2)
       required: false

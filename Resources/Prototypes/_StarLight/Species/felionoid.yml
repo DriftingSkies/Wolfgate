@@ -60,10 +60,10 @@
       points: 1
       required: true
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: true
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): two markings per arm, hand, leg and foot (was 4)
       required: true
     Chest:
       points: 1
