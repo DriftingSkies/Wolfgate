@@ -158,10 +158,10 @@ public sealed class PlanetBoundsTest
         });
     }
 
-    /// <summary>Runs ticks until the ground reports itself preloaded.</summary>
+    /// <summary>Runs ticks until the ground reports itself preloaded; the surface's sites generate first, a slice a tick.</summary>
     public static async Task WaitPreloaded(TestPair pair, EntityUid ground)
     {
-        for (var tick = 0; tick < 200; tick++)
+        for (var tick = 0; tick < 3000; tick++)
         {
             if (pair.Server.EntMan.HasComponent<WFPlanetPreloadedComponent>(ground))
                 return;

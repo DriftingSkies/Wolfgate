@@ -66,20 +66,36 @@ public sealed partial class WFPlanetPoiSystem
                 Box2i reservation;
                 if (entry.MapPath is { } path)
                 {
+                    // A site with no room is left out rather than costing the world every other site.
                     if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, out origin))
-                        throw new InvalidOperationException($"No room for {entry.Name}: enlarge the world or reduce counts, footprint or clearance.");
+                    {
+                        Log.Warning($"No room for {entry.Name} on {ToPrettyString(ground)}; the site is skipped.");
+                        continue;
+                    }
                     reservation = Translate(footprint, origin);
                     siteTiles = LoadSite(ground, grid, path, origin, footprint, created, createdDecals, changed);
                 }
                 else
                 {
-                    var generated = await GenerateAccessibleDungeonAsync(entry, table.Roads, footprint, _random.Next());
+                    StagedDungeon generated;
+                    try
+                    {
+                        generated = await GenerateAccessibleDungeonAsync(entry, table.Roads, footprint, _random.Next());
+                    }
+                    catch (InvalidOperationException error)
+                    {
+                        Log.Warning($"{entry.Name} on {ToPrettyString(ground)} is skipped: {error.Message}");
+                        continue;
+                    }
                     try
                     {
                         if (TerminatingOrDeleted(ground)) return;
                         footprint = generated.Footprint;
                         if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, out origin))
-                            throw new InvalidOperationException($"No room for generated {entry.Name}: enlarge the world or reduce counts or clearance.");
+                        {
+                            Log.Warning($"No room for {entry.Name} on {ToPrettyString(ground)}; the site is skipped.");
+                            continue;
+                        }
                         reservation = Translate(footprint, origin);
                         siteTiles = generated.Tiles.Select(tile => tile + origin).ToHashSet();
                         changed.UnionWith(siteTiles);
@@ -113,26 +129,34 @@ public sealed partial class WFPlanetPoiSystem
                 };
                 if (table.Roads != null && entry.Connection != WFPlanetPoiConnection.Isolated)
                 {
-                    site.Sockets = ResolveSockets(ground, grid, entry, site, siteTiles, table.Roads, initialPins, centre, radius - 1, table.CentreClear);
-                    if (entry.Connection == WFPlanetPoiConnection.Through)
-                        ValidateThrough(ground, grid, site, siteTiles);
+                    // A site whose entrances can't be reached on this ground stays, off the roads.
+                    try
+                    {
+                        site.Sockets = ResolveSockets(ground, grid, entry, site, siteTiles, table.Roads, initialPins, centre, radius - 1, table.CentreClear);
+                        if (entry.Connection == WFPlanetPoiConnection.Through)
+                            ValidateThrough(ground, grid, site, siteTiles);
+                    }
+                    catch (InvalidOperationException error)
+                    {
+                        Log.Warning($"{entry.Name} on {ToPrettyString(ground)} stays off the roads: {error.Message}");
+                        site.Sockets = new List<WFPlanetRoadSocket>();
+                        site.AccessPaths.Clear();
+                        site.Connection = WFPlanetPoiConnection.Isolated;
+                    }
                 }
                 site.Signal = SpawnSignal(ground, orbit, new Vector2i((actual.Left + actual.Right) / 2, (actual.Bottom + actual.Top) / 2), entry, table);
                 record.Sites.Add(site);
                 created.Add(site.Signal);
             }
-            if (table.Roads is { } roads)
+            if (table.Roads is { } roads && record.Sites.Any(site => site.Sockets.Count > 0))
             {
                 if (!float.IsFinite(radius) || radius <= 0 || radius > 4096)
                     throw new InvalidOperationException("Road worlds must have a finite radius of at most 4096 tiles.");
+                // Only pinned ground is in the way: the sites, their clearance, cavern mouths and the ring. Whatever
+                // the biome has grown elsewhere by now is cleared when the road is painted, as under the ring.
                 var blocked = new HashSet<Vector2i>(initialPins);
-                var existing = _maps.GetAllTilesEnumerator(ground, grid);
-                while (existing.MoveNext(out var tileRef))
-                {
-                    var tile = tileRef.Value.GridIndices;
-                    if (_biome.WfIsPinned((ground, biome), tile) || !Usable(ground, grid, tile))
-                        blocked.Add(tile);
-                }
+                foreach (var pinned in biome.ModifiedTiles.Values)
+                    blocked.UnionWith(pinned);
                 foreach (var site in record.Sites)
                 foreach (var socket in site.Sockets)
                 {
@@ -149,17 +173,20 @@ public sealed partial class WFPlanetPoiSystem
                 var sites = record.Sites.Select(site => new WFPlanetRoadSite(site.Bounds, site.Connection, site.Sockets)).ToList();
                 var plan = WFPlanetRoadPlanner.Plan(centre, radius - 1, table.CentreClear, sites, blocked, roads.Width, roads.ShoulderWidth, _random.Next());
                 if (!plan.Success)
-                    throw new InvalidOperationException(plan.Error ?? "Road routing failed.");
-                foreach (var site in record.Sites)
-                foreach (var socket in site.Sockets)
-                    if (site.AccessPaths.TryGetValue(socket, out var access))
-                        plan.RoadTiles.UnionWith(access.Where(tile => _maps.GetTileRef(ground, grid, tile).Tile.IsEmpty));
-                changed.UnionWith(plan.ShoulderTiles);
-                changed.UnionWith(plan.RoadTiles);
-                PaintRoad(ground, grid, biome, plan.ShoulderTiles, roads.ShoulderTile ?? roads.Tile);
-                PaintRoad(ground, grid, biome, plan.RoadTiles, roads.Tile);
-                record.RoadTiles.UnionWith(plan.RoadTiles);
-                record.ShoulderTiles.UnionWith(plan.ShoulderTiles);
+                    Log.Warning($"No roads on {ToPrettyString(ground)}: {plan.Error ?? "routing failed"}. The sites stay.");
+                else
+                {
+                    foreach (var site in record.Sites)
+                    foreach (var socket in site.Sockets)
+                        if (site.AccessPaths.TryGetValue(socket, out var access))
+                            plan.RoadTiles.UnionWith(access.Where(tile => _maps.GetTileRef(ground, grid, tile).Tile.IsEmpty));
+                    changed.UnionWith(plan.ShoulderTiles);
+                    changed.UnionWith(plan.RoadTiles);
+                    PaintRoad(ground, grid, biome, plan.ShoulderTiles, roads.ShoulderTile ?? roads.Tile);
+                    PaintRoad(ground, grid, biome, plan.RoadTiles, roads.Tile);
+                    record.RoadTiles.UnionWith(plan.RoadTiles);
+                    record.ShoulderTiles.UnionWith(plan.ShoulderTiles);
+                }
             }
             record.NetworkReady = true;
         }
@@ -616,11 +643,23 @@ public sealed partial class WFPlanetPoiSystem
         _ => throw new InvalidOperationException("Invalid socket direction."),
     };
 
-    /// <summary>Writes and pins the full road batch with open sky.</summary>
+    /// <summary>Writes and pins the full road batch with open sky; whatever the biome grew on an unpinned tile goes first.</summary>
     private void PaintRoad(EntityUid ground, MapGridComponent grid, BiomeComponent biome, IEnumerable<Vector2i> positions, string prototype)
     {
         var tiles = positions.ToHashSet();
         var tile = new Tile(_tiles[prototype].TileId);
+        var anchored = new List<EntityUid>();
+        foreach (var position in tiles)
+        {
+            if (_biome.WfIsPinned((ground, biome), position))
+                continue;
+            anchored.Clear();
+            var enumerator = _maps.GetAnchoredEntitiesEnumerator(ground, grid, position);
+            while (enumerator.MoveNext(out var uid))
+                anchored.Add(uid.Value);
+            foreach (var uid in anchored)
+                QueueDel(uid);
+        }
         _maps.SetTiles(ground, grid, tiles.Select(position => (position, tile)).ToList());
         _biome.WfPinTiles((ground, biome), tiles);
         foreach (var position in tiles) _roof.SetRoof((ground, grid, null), position, false);

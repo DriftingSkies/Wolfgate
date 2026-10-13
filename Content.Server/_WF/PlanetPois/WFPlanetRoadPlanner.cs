@@ -107,11 +107,14 @@ public static class WFPlanetRoadPlanner
                 var point = socket.Position + direction * step;
                 // At the entrance, width runs across the socket; it must not paint back into the building.
                 for (var side = low - shoulderWidth; side <= high + shoulderWidth; side++)
-                    if (!TileAllowed(point + new Vector2i(-direction.Y, direction.X) * side))
-                        return Fail("An entrance approach is blocked or outside the world.");
+                {
+                    var lane = point + new Vector2i(-direction.Y, direction.X) * side;
+                    if (!TileAllowed(lane))
+                        return Fail($"The approach from the entrance at {socket.Position} is blocked or outside the world at {lane}.");
+                }
             }
             if (!Allowed(start))
-                return Fail("An entrance lacks road clearance.");
+                return Fail($"The entrance at {socket.Position} lacks road clearance at {start}.");
             if (network.Count > 0)
             {
                 var goal = network.OrderBy(p => Math.Abs(p.X - start.X) + Math.Abs(p.Y - start.Y)).ThenBy(p => p.X).ThenBy(p => p.Y).First();
@@ -138,7 +141,7 @@ public static class WFPlanetRoadPlanner
                     }
                 }
                 if (!found)
-                    return Fail("An entrance cannot reach the road network within the routing budget.");
+                    return Fail($"The entrance at {socket.Position} cannot reach the road network within the routing budget.");
                 for (var point = goal; point != start; point = previous[point])
                     network.Add(point);
             }

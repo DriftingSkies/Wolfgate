@@ -3,7 +3,10 @@
 Randomized ground points of interest and connecting routes are generated before a planet preloads.
 `WFPlanetPoiSystem` draws procedural dungeons or single-grid authored maps from `wfPlanetPoiTable`,
 reserves their footprints and connects every non-isolated site before biome terrain loads. Asclepiu
-and Merak use paved roads; the other worlds use routes suited to their terrain.
+and Merak use paved roads; the other worlds use routes suited to their terrain. A site that finds no
+room, or whose entrances can't be reached, is skipped or left off the roads with a warning, and a route
+that can't be laid costs the world its roads, never its sites; roads clear whatever the biome had grown
+on unpinned ground, as the boundary ring does.
 
 Players discover orbit signals by approaching sites on the ground. Content authors add maps, entry
 limits and road sockets through the table prototypes; see [MapperGuide](../../../Docs/_WF/PlanetPois/MapperGuide.md)
