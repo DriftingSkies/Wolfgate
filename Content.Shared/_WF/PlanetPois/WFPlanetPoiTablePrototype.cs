@@ -137,4 +137,8 @@ public sealed partial class WFPlanetRoadNetwork
     /// <summary>Shoulder width on each side of the road.</summary>
     [DataField]
     public int ShoulderWidth;
+
+    /// <summary>Kerbs, lane lines, street lights and scattered traffic laid over the painted roads; none leaves them bare.</summary>
+    [DataField]
+    public ProtoId<WFRoadDressingPrototype>? Dressing;
 }

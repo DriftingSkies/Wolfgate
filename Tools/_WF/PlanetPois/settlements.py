@@ -3,7 +3,7 @@
 from map_author import PoiMap
 
 
-def _through(m, y, surface="FloorAsphalt"):
+def _through(m, y, surface="RMCPlanetHybrisaAsphalt"):
     m.road(0, y, m.width - 1, y, surface=surface)
     m.socket(0, y, "West")
     m.socket(m.width - 1, y, "East")

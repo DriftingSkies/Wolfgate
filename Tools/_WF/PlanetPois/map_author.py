@@ -39,7 +39,7 @@ class PoiMap:
                 else:
                     self.roofs.discard((tx, ty))
 
-    def road(self, x1, y1, x2, y2, width=5, surface="FloorAsphalt", shoulder="FloorConcreteCrocus", shoulder_width=1, markings=True):
+    def road(self, x1, y1, x2, y2, width=5, surface="RMCPlanetHybrisaAsphalt", shoulder="RMCPlanetHybrisaSidewalk", shoulder_width=1, markings=True):
         if x1 != x2 and y1 != y2:
             raise ValueError("Road centerlines must be cardinal")
         half = width // 2

@@ -187,6 +187,8 @@ public sealed partial class WFPlanetPoiSystem
                     PaintRoad(ground, grid, biome, plan.RoadTiles, roads.Tile);
                     record.RoadTiles.UnionWith(plan.RoadTiles);
                     record.ShoulderTiles.UnionWith(plan.ShoulderTiles);
+                    record.Centreline.UnionWith(plan.Centreline);
+                    DressRoads(ground, grid, record, roads, plan, created, createdDecals);
                 }
             }
             record.NetworkReady = true;
@@ -208,6 +210,8 @@ public sealed partial class WFPlanetPoiSystem
             record.Sites.Clear();
             record.RoadTiles.Clear();
             record.ShoulderTiles.Clear();
+            record.Centreline.Clear();
+            record.Furniture.Clear();
             record.GenerationError = $"POI table {table.ID}: {error.Message}";
             Log.Error(record.GenerationError);
             throw;

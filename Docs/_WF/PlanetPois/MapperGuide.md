@@ -132,6 +132,31 @@ specific village street or service driveway. Register new map paths only once th
 Maps inside `_WF/PlanetPois` are discovered by the module generator; regenerate module
 documentation after adding them. Only maps outside `_WF` need an `unmarked` entry. New themes usually need only a map, one localized name and one table entry.
 
+## Road dressing
+
+A table's `roads` block may name a `dressing` (`wfRoadDressing`, in `road_dressing.yml`). It is applied to the
+generated network only, never inside a site's footprint, so a site furnishes its own streets.
+
+- `kerbs` maps where the road lies from a shoulder tile (`North`, `SouthEast`, `InnerNorthWest`, ...) to the tile
+  that shows a kerb on that side. A case left out keeps the network's `shoulderTile`.
+- `lineNorthSouth` and `lineEastWest` are the decals drawn down the middle of straight stretches, every
+  `lineEvery` tiles.
+- `light` stands on the shoulder every `lightSpacing` tiles on alternating sides; `brokenLight` replaces it
+  `brokenLightChance` of the time. `junctionLight` stands on two corners where three or more roads meet.
+- `scatter` rules drop pieces along the straight stretches: `where` is `Lane` or `Shoulder`, `per100` is how many
+  per hundred tiles of road, `axis` limits a rule to roads running `NorthSouth` or `EastWest`, and `align` turns the
+  piece to point along the road. The tiles a piece covers come from its fixtures.
+- `decals` rules scatter marks the same way.
+
+RMC's civilian vehicle props are drawn from the side only. Sound ones belong on `EastWest` roads; wrecks may go
+anywhere, since a wreck slewed across a lane reads well. The `WFRoadProp*` army vehicles are drawn from every side
+and can be aligned on any road. A rule with `align` must not name a prototype whose `Transform` has `noRot`
+(`PlanetRoadDressingTest` checks the shipped ones). A piece is only placed where every tile it covers is road (or
+shoulder), none is the middle tile of the road, and no other blocking piece is within seven tiles.
+
+The generator draws a site's own streets with the same asphalt and pavement tiles (`map_author.py`, `road()`), so a
+site meets the network without a seam.
+
 ## Shipped map pack
 
 Both habitable tables guarantee one city, one inhabited settlement, one abandoned settlement,

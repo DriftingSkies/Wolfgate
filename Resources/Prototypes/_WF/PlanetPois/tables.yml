@@ -6,10 +6,11 @@
   id: WFPoisAsclepiu
   difficulty: Moderate
   roads:
-    tile: FloorAsphalt
+    tile: RMCPlanetHybrisaAsphalt
     width: 5
-    shoulderTile: FloorConcreteCrocus
+    shoulderTile: RMCPlanetHybrisaSidewalk
     shoulderWidth: 1
+    dressing: WFRoadDressingAsclepiu
   minCount: 6
   maxCount: 7
   entries:
@@ -91,10 +92,11 @@
   id: WFPoisMerak
   difficulty: Moderate
   roads:
-    tile: FloorAsphalt
+    tile: RMCPlanetHybrisaAsphalt
     width: 5
-    shoulderTile: FloorConcreteCrocus
+    shoulderTile: RMCPlanetHybrisaSidewalk
     shoulderWidth: 1
+    dressing: WFRoadDressingMerak
   minCount: 6
   maxCount: 7
   entries:

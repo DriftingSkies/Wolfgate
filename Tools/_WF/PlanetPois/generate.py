@@ -52,7 +52,8 @@ def preview(m, folder):
     img = Image.new("RGB", (m.width * scale + 48, m.height * scale + 100), "#15202a")
     draw = ImageDraw.Draw(img)
     colors = {"FloorGrass": "#61734b", "FloorPlanetGrassCrocusNoEdge": "#61734b", "FloorDesert": "#aa9265",
-              "FloorAsphalt": "#343b40", "FloorConcreteCrocus": "#9b9f96", "FloorWood": "#9c805e",
+              "FloorAsphalt": "#343b40", "FloorConcreteCrocus": "#9b9f96", "RMCPlanetHybrisaAsphalt": "#343b40",
+              "RMCPlanetHybrisaSidewalk": "#9b9f96", "FloorWood": "#9c805e",
               "FloorBrokenWood": "#665647", "FloorConcreteMonoCrocus": "#747f7e", "FloorSnow": "#b5c5c5",
               "FloorSnowDug": "#829ca5", "FloorFlesh": "#713f47", "FloorChromite": "#535560",
               "FloorBasalt": "#514740", "FloorDarkPavement": "#3f4449"}

@@ -23,6 +23,13 @@ public sealed partial class WFPlanetPoiComponent : Component
 
     [ViewVariables]
     public HashSet<Vector2i> ShoulderTiles = new();
+
+    /// <summary>The tiles down the middle of the roads, and everything the roads were furnished with.</summary>
+    [ViewVariables]
+    public HashSet<Vector2i> Centreline = new();
+
+    [ViewVariables]
+    public List<EntityUid> Furniture = new();
 }
 
 /// <summary>One placed site: what was generated, where, how big it came out and the signal that marks it.</summary>

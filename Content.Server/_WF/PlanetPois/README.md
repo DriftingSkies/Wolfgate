@@ -8,6 +8,14 @@ room, or whose entrances can't be reached, is skipped or left off the roads with
 that can't be laid costs the world its roads, never its sites; roads clear whatever the biome had grown
 on unpinned ground, as the boundary ring does.
 
+A network that names a `wfRoadDressing` is furnished as it is painted (`WFPlanetPoiSystem.Dressing`,
+laid out by `WFRoadDressingPlanner`): the shoulder becomes kerbed pavement facing the road, a dashed
+line runs down the middle of the straight stretches, street lights stand on alternating sides, signals
+on the corners where roads meet, and parked and wrecked vehicles, barriers, bins and litter are
+scattered along it from the Streets and Vehicles props. Blocking pieces keep off the middle of the road
+and apart from one another, so a road is never shut, and nothing is placed inside a site. Asclepiu and
+Merak have one each (`road_dressing.yml`).
+
 Players discover orbit signals by approaching sites on the ground. Content authors add maps, entry
 limits and road sockets through the table prototypes; see [MapperGuide](../../../Docs/_WF/PlanetPois/MapperGuide.md)
 for the map contract, generator and content roadmap. Fourteen authored maps add two Crocus-scale
@@ -25,12 +33,15 @@ items and repair supplies through Traders; they do not automatically refuel dock
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiComponent.cs`](WFPlanetPoiComponent.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiPlacementPlanner.cs`](WFPlanetPoiPlacementPlanner.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.cs`](WFPlanetPoiSystem.cs)
+- [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Dressing.cs`](WFPlanetPoiSystem.Dressing.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Network.cs`](WFPlanetPoiSystem.Network.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetRoadPlanner.cs`](WFPlanetRoadPlanner.cs)
+- [`Content.Server/_WF/PlanetPois/WFRoadDressingPlanner.cs`](WFRoadDressingPlanner.cs)
 
 ### Shared
 
 - [`Content.Shared/_WF/PlanetPois/WFPlanetPoiTablePrototype.cs`](../../../Content.Shared/_WF/PlanetPois/WFPlanetPoiTablePrototype.cs)
+- [`Content.Shared/_WF/PlanetPois/WFRoadDressingPrototype.cs`](../../../Content.Shared/_WF/PlanetPois/WFRoadDressingPrototype.cs)
 
 ### Integration tests
 
@@ -40,12 +51,16 @@ items and repair supplies through Traders; they do not automatically refuel dock
 - [`Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetPoiPlacementPlannerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetPoiPlacementPlannerTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetPoiProceduralAccessTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetPoiProceduralAccessTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetPoiTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetPoiTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetRoadDressingPlannerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetRoadDressingPlannerTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetRoadDressingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetRoadDressingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetRoadPlannerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PlanetPois/PlanetRoadPlannerTest.cs)
 
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/PlanetPois/dungeons.yml`](../../../Resources/Prototypes/_WF/PlanetPois/dungeons.yml)
 - [`Resources/Prototypes/_WF/PlanetPois/entities.yml`](../../../Resources/Prototypes/_WF/PlanetPois/entities.yml)
+- [`Resources/Prototypes/_WF/PlanetPois/road_dressing.yml`](../../../Resources/Prototypes/_WF/PlanetPois/road_dressing.yml)
+- [`Resources/Prototypes/_WF/PlanetPois/road_props.yml`](../../../Resources/Prototypes/_WF/PlanetPois/road_props.yml)
 - [`Resources/Prototypes/_WF/PlanetPois/tables.yml`](../../../Resources/Prototypes/_WF/PlanetPois/tables.yml)
 - [`Resources/Prototypes/_WF/PlanetPois/traders.yml`](../../../Resources/Prototypes/_WF/PlanetPois/traders.yml)
 

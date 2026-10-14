@@ -14,7 +14,11 @@ public sealed record WFPlanetRoadSite(Box2i Bounds, WFPlanetPoiConnection Connec
 public sealed record WFPlanetRoadSocket(Vector2i Position, WFPlanetPoiDirection Direction);
 
 /// <summary>A connected road network, or an explicit routing failure with no paintable tiles.</summary>
-public sealed record WFPlanetRoadPlan(bool Success, string? Error, HashSet<Vector2i> RoadTiles, HashSet<Vector2i> ShoulderTiles);
+public sealed record WFPlanetRoadPlan(bool Success, string? Error, HashSet<Vector2i> RoadTiles, HashSet<Vector2i> ShoulderTiles)
+{
+    /// <summary>The tiles down the middle of the routed roads; the short approaches into the sites are not among them.</summary>
+    public HashSet<Vector2i> Centreline { get; init; } = new();
+}
 
 /// <summary>Routes a bounded connected network without crossing reserved buildings or pinned terrain.</summary>
 public static class WFPlanetRoadPlanner
@@ -175,7 +179,7 @@ public static class WFPlanetRoadPlanner
             }
         }
         shoulders.ExceptWith(roads);
-        return new(true, null, roads, shoulders);
+        return new(true, null, roads, shoulders) { Centreline = network };
     }
 
     private static bool Inside(Vector2i p, Box2i bounds) => p.X >= bounds.Left && p.X < bounds.Right && p.Y >= bounds.Bottom && p.Y < bounds.Top;
