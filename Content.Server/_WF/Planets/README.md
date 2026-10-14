@@ -10,7 +10,9 @@ Worlds have day and night, phased weather with thunder, fauna, ambience, terrain
 cinematic on the hop in; Carcinoma is a quarantined flesh world whose tendrils hold landed hulls down. Lower layers of a planet are drawn smaller
 (`WFPlanetView`, the perspective Monolith turned off for other z-levels). Over a world's layers the shuttle console's
 strategic plot shows the world itself, drawn by the sector's planet shader close enough to fill it, instead of space
-(`ShuttleMapControl.PlanetBackground`). Jetpacks only
+(`ShuttleMapControl.PlanetBackground`). A floor nobody built that breaks on a planet, pried up or blown apart, gives
+the natural ground back instead of station plating and lattice (`WFPlanetTileBreakSystem`); a player's own floor over
+the ground breaks the station way, down to the ground they built on. Jetpacks only
 work in orbit and lattice goes straight onto natural ground. A room built on a planet holds its own air once it has a
 floor: bare ground counts as outdoors and keeps the planet's air. Players use landing thruster kits, parachutes and the
 planet timepiece. Admins get the Planet Control panel in the Wolfgate admin tab (`planetcontrol`) for sanction, time
@@ -151,6 +153,7 @@ ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpac
 - [`Content.Server/_WF/Planets/WFPlanetNetworkSystem.Prebuild.cs`](WFPlanetNetworkSystem.Prebuild.cs)
 - [`Content.Server/_WF/Planets/WFPlanetRegistrySystem.cs`](WFPlanetRegistrySystem.cs)
 - [`Content.Server/_WF/Planets/WFPlanetRegistrySystem.Lobby.cs`](WFPlanetRegistrySystem.Lobby.cs)
+- [`Content.Server/_WF/Planets/WFPlanetTileBreakSystem.cs`](WFPlanetTileBreakSystem.cs)
 - [`Content.Server/_WF/Planets/WFPlanetTimepieceSystem.cs`](WFPlanetTimepieceSystem.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherComponent.cs`](WFPlanetWeatherComponent.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.Admin.cs`](WFPlanetWeatherSystem.Admin.cs)
@@ -251,6 +254,7 @@ ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpac
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetPrototypeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarDrawingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarDrawingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Planets/PlanetTileBreakTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetTileBreakTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetTimepieceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetTimepieceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetWeatherTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetWeatherTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/SetDownTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/SetDownTest.cs)
