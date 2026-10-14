@@ -213,23 +213,27 @@ public sealed class ShipFuelTelemetryTest
     }
 
     [Test]
-    public void LowStartsAtTwentyPercentAndCriticalBelowTen()
+    public void LowStartsAtTwentyPercentCriticalBelowTenAndEmergencyBelowFive()
     {
         Assert.That(ShipFuelSummary.CriticalThreshold, Is.LessThan(ShipFuelSummary.LowThreshold));
-        foreach (var (fraction, low, critical) in new (float, bool, bool)[]
+        Assert.That(ShipFuelSummary.EmergencyThreshold, Is.LessThan(ShipFuelSummary.CriticalThreshold));
+        foreach (var (fraction, low, critical, emergency) in new (float, bool, bool, bool)[]
         {
-            (1f, false, false),
-            (0.21f, false, false),
-            (ShipFuelSummary.LowThreshold, true, false),
-            (0.15f, true, false),
-            (ShipFuelSummary.CriticalThreshold, true, false),
-            (0.09f, true, true),
-            (0f, true, true),
+            (1f, false, false, false),
+            (0.21f, false, false, false),
+            (ShipFuelSummary.LowThreshold, true, false, false),
+            (0.15f, true, false, false),
+            (ShipFuelSummary.CriticalThreshold, true, false, false),
+            (0.09f, true, true, false),
+            (ShipFuelSummary.EmergencyThreshold, true, true, false),
+            (0.04f, true, true, true),
+            (0f, true, true, true),
         })
         {
             var fuel = new ShipFuelSummary { Sources = 2, Fraction = fraction };
             Assert.That(fuel.Low, Is.EqualTo(low), $"Low at {fraction}");
             Assert.That(fuel.Critical, Is.EqualTo(critical), $"Critical at {fraction}");
+            Assert.That(fuel.Emergency, Is.EqualTo(emergency), $"Emergency at {fraction}");
         }
 
         foreach (var fuel in new ShipFuelSummary[]
@@ -241,13 +245,14 @@ public sealed class ShipFuelTelemetryTest
         {
             Assert.That(fuel.Low, Is.False, "An incomplete reading never reports low.");
             Assert.That(fuel.Critical, Is.False, "An incomplete reading never reports critical.");
+            Assert.That(fuel.Emergency, Is.False, "An incomplete reading never reports an emergency.");
         }
     }
 
     [Test]
-    public void LampIsDarkAboveTwentySteadyDownToTenAndFlashingBelow()
+    public void LampIsDarkAboveTwentyAmberDownToTenRedDownToFiveAndFlashingBelow()
     {
-        var critical = new ShipFuelSummary { Sources = 2, Fraction = 0.05f };
+        var critical = new ShipFuelSummary { Sources = 2, Fraction = 0.04f };
         Assert.That(WFCockpitFuelLamp.IsLit(critical, At(0)), Is.True);
         Assert.That(WFCockpitFuelLamp.IsLit(critical, At(500)), Is.False);
         Assert.That(WFCockpitFuelLamp.IsLit(critical, At(1000)), Is.True, "One flash per second.");
@@ -265,9 +270,9 @@ public sealed class ShipFuelTelemetryTest
             var time = At(ms);
             foreach (var fraction in new[] { 1f, 0.21f })
                 Assert.That(WFCockpitFuelLamp.IsLit(Reserve(fraction), time), Is.False, $"Dark at {fraction}, {ms} ms");
-            foreach (var fraction in new[] { ShipFuelSummary.LowThreshold, 0.15f, ShipFuelSummary.CriticalThreshold })
+            foreach (var fraction in new[] { ShipFuelSummary.LowThreshold, 0.15f, ShipFuelSummary.CriticalThreshold, 0.09f, ShipFuelSummary.EmergencyThreshold })
                 Assert.That(WFCockpitFuelLamp.IsLit(Reserve(fraction), time), Is.True, $"Steady at {fraction}, {ms} ms");
-            foreach (var fraction in new[] { 0.09f, 0f })
+            foreach (var fraction in new[] { 0.04f, 0f })
                 Assert.That(WFCockpitFuelLamp.IsLit(Reserve(fraction), time), Is.EqualTo(ms % 1000 < 500),
                     $"Flashing at {fraction}, {ms} ms");
             foreach (var fuel in new ShipFuelSummary?[]
@@ -284,8 +289,11 @@ public sealed class ShipFuelTelemetryTest
 
         foreach (var skin in WolfgateSkins.All)
         {
-            Assert.That(WFCockpitFuelLamp.Lens(skin), Is.EqualTo(skin.Danger), $"{skin.Id}: the lit lens is red.");
-            Assert.That(WFCockpitFuelLamp.Lens(skin), Is.Not.EqualTo(skin.Caution), $"{skin.Id}: the lit lens is not amber.");
+            Assert.That(skin.Caution, Is.Not.EqualTo(skin.Danger), $"{skin.Id}: amber and red must differ.");
+            foreach (var fraction in new[] { ShipFuelSummary.LowThreshold, 0.15f, ShipFuelSummary.CriticalThreshold })
+                Assert.That(WFCockpitFuelLamp.Lens(skin, Reserve(fraction)), Is.EqualTo(skin.Caution), $"{skin.Id}: amber at {fraction}.");
+            foreach (var fraction in new[] { 0.09f, ShipFuelSummary.EmergencyThreshold, 0.04f, 0f })
+                Assert.That(WFCockpitFuelLamp.Lens(skin, Reserve(fraction)), Is.EqualTo(skin.Danger), $"{skin.Id}: red at {fraction}.");
         }
 
         static TimeSpan At(int ms) => new(ms * TimeSpan.TicksPerMillisecond);

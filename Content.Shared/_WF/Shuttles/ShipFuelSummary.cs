@@ -6,11 +6,14 @@ namespace Content.Shared._WF.Shuttles;
 [Serializable, NetSerializable]
 public struct ShipFuelSummary
 {
-    /// <summary>Reserve fraction at or below which FUEL LOW lights steadily.</summary>
+    /// <summary>Reserve fraction at or below which FUEL LOW lights amber.</summary>
     public const float LowThreshold = 0.2f;
 
-    /// <summary>Reserve fraction below which FUEL LOW flashes.</summary>
+    /// <summary>Reserve fraction below which FUEL LOW turns red.</summary>
     public const float CriticalThreshold = 0.1f;
+
+    /// <summary>Reserve fraction below which FUEL LOW flashes.</summary>
+    public const float EmergencyThreshold = 0.05f;
 
     /// <summary>Mean remaining fraction among sources with known capacity, from zero to one.</summary>
     public float Fraction;
@@ -29,4 +32,7 @@ public struct ShipFuelSummary
 
     /// <summary>Reserves below the critical threshold, which also makes the reading <see cref="Low"/>.</summary>
     public readonly bool Critical => Available && Fraction < CriticalThreshold;
+
+    /// <summary>Reserves below the emergency threshold, which also makes the reading <see cref="Critical"/>.</summary>
+    public readonly bool Emergency => Available && Fraction < EmergencyThreshold;
 }
