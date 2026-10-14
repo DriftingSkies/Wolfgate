@@ -76,6 +76,7 @@ public sealed partial class DungeonJob
                 var newStart = remaining.First();
                 frontier.Enqueue(newStart, 0f);
                 lastDirection[newStart] = Direction.Invalid;
+                costSoFar[newStart] = 0f; // WOLFGATE(PlanetPois): a restart after the frontier empties needs a cost too, or the next step throws.
             }
 
             var node = frontier.Dequeue();

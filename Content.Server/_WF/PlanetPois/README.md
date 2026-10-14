@@ -104,6 +104,6 @@ items and repair supplies through Traders; they do not automatically refuel dock
 
 ## Non-modular edits
 
-None.
+- [`Content.Server/Procedural/DungeonJob/DungeonJob.PostGenAutoCabling.cs`](../../Procedural/DungeonJob/DungeonJob.PostGenAutoCabling.cs): a restart after the frontier empties needs a cost too, or the next step throws.
 
 <!-- WOLFGATE-GENERATED END -->
