@@ -112,6 +112,7 @@
         mask: [ TableMask ]
         layer: [ TableLayer ]
   - type: PlaceableSurface
+  - type: VehicleSmashable
 
 - type: entity
   parent: RMCPropSupermartShelfEmpty
@@ -201,6 +202,7 @@
     damageContainer: Inorganic
     damageModifierSet: Metallic
   - type: PlaceableSurface
+  - type: VehicleSmashable
 
 - type: entity
   parent: RMCPropSupermartFreezerLeft

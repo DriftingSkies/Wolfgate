@@ -137,6 +137,7 @@
         layer: [ MachineLayer ]
   - type: Appearance
   - type: RequireProjectileTarget
+  - type: VehicleSmashable
 
 - type: entity
   parent: BaseStructure
@@ -167,6 +168,7 @@
         density: 155
         mask: [ MachineMask ]
         layer: [ MachineLayer ]
+  - type: VehicleSmashable
 
 - type: entity
   parent: RMCTallFloodlight
@@ -290,6 +292,7 @@
   - type: Repairable
   - type: Appearance
   - type: RequireProjectileTarget
+  - type: VehicleSmashable
 
 - type: entity
   parent: RMCTrafficLightBase

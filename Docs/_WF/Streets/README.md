@@ -36,6 +36,10 @@ Marines Universe's AGPL-3.0; the art is CC-BY-SA-3.0 unless its `meta.json` says
 
 ## Files
 
+### Integration tests
+
+- [`Content.IntegrationTests/Tests/_WF/Streets/StreetFurnitureSmashTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Streets/StreetFurnitureSmashTest.cs)
+
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/Streets/base.yml`](../../../Resources/Prototypes/_WF/Streets/base.yml)

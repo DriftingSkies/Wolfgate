@@ -148,6 +148,7 @@
             max: 3
       - !type:DoActsBehavior
         acts: [ Destruction ]
+  - type: VehicleSmashable
 
 - type: entity
   parent: RMCPropSlotmachinebroken

@@ -23,6 +23,8 @@
         density: 75
         mask: [ MachineMask ]
         layer: [ MachineLayer ]
+  - type: VehicleSmashable
+    minDestroyWeightClass: Medium
 
 - type: entity
   parent: RMCConcreteStatue

@@ -26,3 +26,5 @@
   - type: PlaceableSurface
     placeCentered: true
     isPlaceable: false
+  - type: VehicleSmashable
+    minContinueWeightClass: Light

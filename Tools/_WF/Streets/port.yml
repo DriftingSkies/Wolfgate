@@ -93,6 +93,7 @@ set:
       - state: bigflood
       - state: bigfloodon
         shader: unshaded
+    VehicleSmashable: {}
   RMCStreetlight:
     Sprite:
       layers:
@@ -105,6 +106,7 @@ set:
       - state: trafficlight
       - state: trafficlight_on
         shader: unshaded
+    VehicleSmashable: {}
   RMCTrafficLightAlt:
     Sprite:
       layers:
@@ -121,6 +123,38 @@ set:
     AmbientOnPowered: null
     AmbientSound: null
     Appearance: null
+    VehicleSmashable:
+      minDestroyWeightClass: Medium
+
+  # Street furniture a vehicle drives through, breaking it (Docs/_WF/Vehicles/crushing.md). A light breaks into its
+  # broken twin, which goes next. Dumpsters and planters stop a car; the pump and the statue take a tank.
+  RMCFloodlightBroken:
+    VehicleSmashable: {}
+  RMCBenchLeft:
+    VehicleSmashable: {}
+  RMCPhoneboxBase:
+    VehicleSmashable: {}
+  RMCPhoneboxBrokenBase:
+    VehicleSmashable: {}
+  RMCPropSlotmachinebroken:
+    VehicleSmashable: {}
+  RMCPropSupermartFreezerLeft:
+    VehicleSmashable: {}
+  RMCPropSupermartShelfEmpty:
+    VehicleSmashable: {}
+  AU14TrafficDirectorProp:
+    VehicleSmashable: {}
+  AU14PropTents:
+    VehicleSmashable: {}
+  AU14Dumpster:
+    VehicleSmashable:
+      minContinueWeightClass: Light
+  RMCPlanter:
+    VehicleSmashable:
+      minContinueWeightClass: Light
+  RMCConcreteStatue:
+    VehicleSmashable:
+      minDestroyWeightClass: Medium
 
   # A body with no fixture can't collide; saying so keeps the prototype as it spawns (PrototypeSaveTest).
   RMCBasketballHoop:

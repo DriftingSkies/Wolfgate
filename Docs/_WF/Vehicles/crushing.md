@@ -199,3 +199,13 @@ will not give.
 
 CMU's own ramming model, in which every vehicle damages structures by its impact energy and takes damage back, is not
 ported; without a plow a vehicle breaks exactly what the rules above say.
+
+## Street furniture
+
+Owner, 2026-10-13: street furnishings break when driven through. The planet cities' furniture comes from the Streets port
+(`Tools/_WF/Streets/port.yml`, its `set` rules), which gives the RMC and CMU pieces a `VehicleSmashable` component
+rather than a rule: many have no `Destructible`, and a rule never matches those. Lights, traffic lights, benches, bins,
+traffic directors, phone boxes, tents, shop shelves and slot machines go down under any vehicle, which drives on; a light
+breaks into its broken twin, which goes next. Dumpsters and planters stop a car or van that breaks them (it drives on from
+a humvee up); the fuel pump and the concrete statue take a tank. Hydrants, signs and the rest that nothing collides with
+are driven over as before. `StreetFurnitureSmashTest` checks a piece of each kind.

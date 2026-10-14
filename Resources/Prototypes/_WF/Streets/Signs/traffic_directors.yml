@@ -34,6 +34,7 @@
       behaviors:
       - !type:DoActsBehavior
         acts: [ Destruction ]
+  - type: VehicleSmashable
 
 - type: entity
   parent: AU14TrafficDirectorProp
