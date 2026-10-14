@@ -17,7 +17,7 @@ public sealed partial class WFPlanetExpeditionComponent : Component
 /// <summary>A site on a ground, by its index in the ground's record.</summary>
 public sealed record WFPlanetExpeditionOffer(EntityUid Ground, int SiteIndex);
 
-/// <summary>A claimed site mission: what must be cleared and by when.</summary>
+/// <summary>A claimed site mission: what must be cleared, and by when once the crew has reached it.</summary>
 public sealed class WFPlanetExpeditionActive
 {
     public EntityUid Ground;
@@ -31,7 +31,14 @@ public sealed class WFPlanetExpeditionActive
     /// <summary>The hostiles spawned with them, removed if the mission ends unfinished.</summary>
     public List<EntityUid> Hostiles = new();
 
+    /// <summary>Whether the crew has reached the site; the clock runs from then, to <see cref="EndTime"/>.</summary>
+    public bool Arrived;
+
+    /// <summary>When the mission fails if nobody has reached the site.</summary>
+    public TimeSpan ArriveBy;
+
     public TimeSpan EndTime;
+    public bool WarnedTravel;
     public bool WarnedMinutes;
     public bool WarnedSeconds;
 }

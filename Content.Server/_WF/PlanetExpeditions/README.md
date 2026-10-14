@@ -4,7 +4,9 @@ Salvage expeditions on the sector's worlds. The expedition console offers sites 
 (`PlanetPois`) instead of generating a map: each offer names a site and its world, with the mission type, hostiles,
 time limit and rewards drawn as upstream draws them. Claiming arms the site with the mission's objectives and a
 faction's hostiles and names its signal in orbit; there is no jump. The crew flies to the world, hops into orbit, finds
-the signal, lands and clears the site before the time runs out. Destroying every objective completes the mission and
+the signal, lands and clears the site before the time runs out. The clock starts when the crew reaches the site (its
+ship landed or flying low within 24 tiles of it, a driven vehicle there, or anyone alive on foot there); until then the
+crew has 30 minutes to get there, or the mission fails. Destroying every objective completes the mission and
 pays the rewards at the console; the finish button gives the mission up; running out of time fails it, and a failed
 or abandoned site is released with its leftover objectives removed, while a cleared site is not offered again that
 round.

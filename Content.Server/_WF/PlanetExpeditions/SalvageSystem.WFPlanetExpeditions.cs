@@ -2,6 +2,10 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WF.PlanetExpeditions;
 using Content.Server._WF.PlanetPois;
+using Content.Shared._WF.Planets;
+using Content.Shared._WF.Vehicles.Base;
+using Content.Shared.Mobs.Components;
+using Robust.Server.Player;
 using Content.Server.Ghost.Roles.Components;
 using Content.Server.Salvage.Expeditions;
 using Content.Server.Salvage.Expeditions.Structure;
@@ -31,8 +35,15 @@ public sealed partial class SalvageSystem
 {
     [Dependency] private WFPlanetPoiSystem _wfPois = default!;
     [Dependency] private SharedRoofSystem _wfRoof = default!;
+    [Dependency] private IPlayerManager _wfPlayers = default!;
 
     private static readonly TimeSpan WfCheckInterval = TimeSpan.FromSeconds(1);
+
+    /// <summary>How long a crew has to reach its site after claiming it, before the mission fails.</summary>
+    private static readonly TimeSpan WfTravelTime = TimeSpan.FromMinutes(30);
+
+    /// <summary>How far outside a site's bounds counts as having reached it.</summary>
+    private const int WfArrivalMargin = 24;
 
     /// <summary>How far from the site's middle a crew on the ground hears the mission's announcements.</summary>
     private const float WfAnnounceRange = 96f;
@@ -146,20 +157,21 @@ public sealed partial class SalvageSystem
             Mission = mission,
             Objectives = objectives,
             Hostiles = hostiles,
-            EndTime = _timing.CurTime + mission.Duration,
+            ArriveBy = _timing.CurTime + WfTravelTime,
         };
 
         site.ExpeditionClaim = station;
         comp.Active = active;
         data.ActiveMission = missionParams.Index;
-        data.NextOffer = _timing.CurTime + mission.Duration + TimeSpan.FromSeconds(1);
+        data.NextOffer = active.ArriveBy + mission.Duration + TimeSpan.FromSeconds(1);
         data.CanFinish = true;
 
         if (TryComp<WFPoiSignalComponent>(site.Signal, out var signal) && !signal.Revealed)
             _wfPois.Reveal((site.Signal, signal), null);
 
         WfAnnounce(station, active, Loc.GetString("wf-expedition-claimed",
-            ("site", Loc.GetString(site.Name)), ("world", Name(offer.Ground)), ("minutes", (int) mission.Duration.TotalMinutes)));
+            ("site", Loc.GetString(site.Name)), ("world", Name(offer.Ground)), ("minutes", (int) mission.Duration.TotalMinutes),
+            ("travel", (int) WfTravelTime.TotalMinutes)));
         UpdateConsoles(station, data);
         return true;
     }
@@ -317,6 +329,29 @@ public sealed partial class SalvageSystem
                 WfAnnounce(station, active, Loc.GetString(key, ("count", active.Objectives.Count)));
             }
 
+            // The clock only runs once the crew is there; until then it is the time to get there that counts.
+            if (!active.Arrived)
+            {
+                if (WfArrived(station, active))
+                {
+                    active.Arrived = true;
+                    active.EndTime = _timing.CurTime + active.Mission.Duration;
+                    data.NextOffer = active.EndTime + TimeSpan.FromSeconds(1);
+                    WfAnnounce(station, active, Loc.GetString("wf-expedition-arrived", ("minutes", (int) active.Mission.Duration.TotalMinutes)));
+                }
+                else if (_timing.CurTime > active.ArriveBy)
+                {
+                    WfEnd(station, data, comp, false, Loc.GetString("wf-expedition-never-arrived"));
+                }
+                else if (!active.WarnedTravel && active.ArriveBy - _timing.CurTime < TimeSpan.FromMinutes(5))
+                {
+                    active.WarnedTravel = true;
+                    WfAnnounce(station, active, Loc.GetString("wf-expedition-travel-warning", ("minutes", 5)));
+                }
+
+                continue;
+            }
+
             var remaining = active.EndTime - _timing.CurTime;
             if (remaining <= TimeSpan.Zero)
             {
@@ -333,6 +368,57 @@ public sealed partial class SalvageSystem
                 WfAnnounce(station, active, Loc.GetString("salvage-expedition-announcement-countdown-seconds", ("duration", 45)));
             }
         }
+    }
+
+    /// <summary>
+    /// Whether the crew has reached its site: the claiming ship landed at it or flying low over it, a driven vehicle at
+    /// it, or anyone alive on foot at it.
+    /// </summary>
+    private bool WfArrived(EntityUid station, WFPlanetExpeditionActive active)
+    {
+        if (!TryComp<WFPlanetPoiComponent>(active.Ground, out var record) || active.SiteIndex >= record.Sites.Count)
+            return false;
+
+        var bounds = record.Sites[active.SiteIndex].Bounds;
+        var area = new Box2(bounds.Left - WfArrivalMargin, bounds.Bottom - WfArrivalMargin,
+            bounds.Right + WfArrivalMargin, bounds.Top + WfArrivalMargin);
+        var network = CompOrNull<WFPlanetLayerComponent>(active.Ground)?.Network;
+
+        bool At(EntityUid uid, bool anyLowLayer)
+        {
+            var xform = Transform(uid);
+            if (xform.MapUid is not { } map)
+                return false;
+
+            var here = map == active.Ground
+                || anyLowLayer && network != null && !HasComp<WFOrbitLayerComponent>(map)
+                    && CompOrNull<WFPlanetLayerComponent>(map)?.Network == network;
+            return here && area.Contains(_transform.GetWorldPosition(xform));
+        }
+
+        if (TryComp<StationDataComponent>(station, out var stationData))
+        {
+            foreach (var grid in stationData.Grids)
+            {
+                if (At(grid, true))
+                    return true;
+            }
+        }
+
+        var vehicles = EntityQueryEnumerator<RMCVehicleComponent>();
+        while (vehicles.MoveNext(out var vehicle, out var comp))
+        {
+            if (comp.Operator != null && At(vehicle, false))
+                return true;
+        }
+
+        foreach (var session in _wfPlayers.Sessions)
+        {
+            if (session.AttachedEntity is { } player && HasComp<MobStateComponent>(player) && !_mobState.IsDead(player) && At(player, false))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>Ends the station's site mission: the site is cleared or released, the rewards paid or the failed cooldown run.</summary>
