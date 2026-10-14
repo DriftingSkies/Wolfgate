@@ -133,7 +133,8 @@ public sealed class PlanetSignalsTest
                 }
             });
 
-            await server.WaitRunTicks(90);
+            // Past one full two-second refresh, wherever the last one fell.
+            await server.WaitRunTicks(pair.SecondsToTicks(2.5f));
 
             await server.WaitAssertion(() =>
             {
