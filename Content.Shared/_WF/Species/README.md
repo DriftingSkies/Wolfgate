@@ -614,10 +614,13 @@ and its own sprite.
   - ShadekinSystem turns this on in the dark
 - [`Resources/Prototypes/_StarLight/fonts.yml`](../../../Resources/Prototypes/_StarLight/fonts.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Language/Animals/carptongue.yml`](../../../Resources/Prototypes/_StarLight/Language/Animals/carptongue.yml): icon and obfuscation font fields dropped
-- [`Resources/Prototypes/_StarLight/Language/Galactic/scratch.yml`](../../../Resources/Prototypes/_StarLight/Language/Galactic/scratch.yml): icon and obfuscation font fields dropped
+- [`Resources/Prototypes/_StarLight/Language/Galactic/scratch.yml`](../../../Resources/Prototypes/_StarLight/Language/Galactic/scratch.yml)
+  - icon and obfuscation font fields dropped
+  - Scratch is a cipher font, unreadable to listeners who understand it
 - [`Resources/Prototypes/_StarLight/Language/generic.yml`](../../../Resources/Prototypes/_StarLight/Language/generic.yml)
   - icon and obfuscation font fields dropped
   - ported from HardLight
+  - Octatrax is a cipher font, unreadable to listeners who understand it
 - [`Resources/Prototypes/_StarLight/Language/Species/thaveyan.yml`](../../../Resources/Prototypes/_StarLight/Language/Species/thaveyan.yml): icon and obfuscation font fields dropped
 - [`Resources/Prototypes/_StarLight/Reagents/biological.yml`](../../../Resources/Prototypes/_StarLight/Reagents/biological.yml): ported from HardLight.
 - [`Resources/Prototypes/_StarLight/SoundCollections/felionoid.yml`](../../../Resources/Prototypes/_StarLight/SoundCollections/felionoid.yml): ported from HardLight

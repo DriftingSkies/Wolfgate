@@ -56,7 +56,9 @@ when a filter first reveals it.
 
 ## Non-modular edits
 
-- [`Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs`](../../UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs): a line whose markup does not parse is shown as text instead of throwing out of a refill
+- [`Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs`](../../UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs)
+  - a line whose markup does not parse is shown as text instead of throwing out of a refill
+  - a line whose tags fail to lay out is shown as text instead of throwing out of a refill
 - [`Content.Client/UserInterface/Systems/Chat/Widgets/ResizableChatBox.cs`](../../UserInterface/Systems/Chat/Widgets/ResizableChatBox.cs): the input line left behind by a popped-out log can't be resized
 
 <!-- WOLFGATE-GENERATED END -->

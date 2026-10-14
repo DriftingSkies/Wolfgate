@@ -119,8 +119,8 @@ public sealed class WFReaverSanctuaryTest : WFReaverTestBase
             Berth(ship, station);
         });
 
-        // Boarders drop their prey on the encounters' next look, which comes every five seconds.
-        await RunTicks(Ticks(7));
+        // Past one 5 s encounter poll, so the boarders take their look at the berthed prey.
+        await RunTicks(Ticks(6));
         await Server.WaitAssertion(() =>
         {
             var comp = SEntMan.GetComponent<WFReaverRaidComponent>(raid);

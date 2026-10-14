@@ -61,7 +61,7 @@
   - type: UserInterface
     interfaces:
       enum.AmmoLoaderUiKey.Key:
-        type: AmmoLoaderBoundUserInterface
+        type: Content.Client._Lua.AmmoLoader.UI.AmmoLoaderBoundUserInterface # WOLFGATE(Vehicles): full name, the bare one suffix-matches VehicleAmmoLoaderBoundUserInterface
   - type: ApcPowerReceiver
     powerLoad: 200
   - type: DeviceLinkSource

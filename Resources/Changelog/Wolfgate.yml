@@ -1676,3 +1676,24 @@ Entries:
   id: 100133
   time: '2026-10-14T02:42:31.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/237
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: Fixed autoloader UI
+  id: 100134
+  time: '2026-10-14T20:55:05.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/241
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Species languages are now readable
+  id: 100135
+  time: '2026-10-14T21:17:02.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/242
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Chat should no longer break randomly while in cockpit view. Mk.2
+  id: 100136
+  time: '2026-10-14T21:46:45.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/244

@@ -716,5 +716,6 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - a refused vehicle shot leaves no cooldown
   - shoot from and at what the handlers settled on
   - handlers can rewrite the shot's origin and target, or refuse it without a cooldown
+- [`Resources/Prototypes/_Mono/Entities/Clothing/AmmoLoader/ammo_loader.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/AmmoLoader/ammo_loader.yml): full name, the bare one suffix-matches VehicleAmmoLoaderBoundUserInterface
 
 <!-- WOLFGATE-GENERATED END -->

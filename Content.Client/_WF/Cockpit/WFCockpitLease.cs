@@ -41,6 +41,18 @@ public sealed class WFCockpitLease
                 catch (Exception e)
                 {
                     Logger.GetSawmill("wf.cockpit").Error($"Cockpit could not return {child.Name ?? child.GetType().Name}: {e}");
+                    // A throw during tree entry leaves the child parented with its descendants outside the tree, where
+                    // an input takes no text. Out and in again gives the whole subtree a second entry.
+                    try
+                    {
+                        if (child.Parent == root)
+                            root.RemoveChild(child);
+                        root.AddChild(child);
+                    }
+                    catch (Exception again)
+                    {
+                        Logger.GetSawmill("wf.cockpit").Error($"Cockpit could not return {child.Name ?? child.GetType().Name} on a second try: {again}");
+                    }
                 }
             }
         });

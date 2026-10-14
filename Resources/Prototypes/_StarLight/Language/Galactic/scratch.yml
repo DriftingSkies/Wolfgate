@@ -4,6 +4,6 @@
   id: Scratch
   speech:
     color: "#fc7921"
-    fontId: Scratch
+    # fontId: Scratch # WOLFGATE(Species): Scratch is a cipher font, unreadable to listeners who understand it
   obfuscation:
     !type:RandomObfuscation

@@ -7,7 +7,7 @@ wf-cold-war-declarator-unlinked = War declaration failed: No uplink
 guide-entry-wf-rule-conflict-five-declaring-war = Conflict Rule 5 - Declaring War
 guide-entry-wf-pdv-standing-orders = Standing Orders
 
-wf-escalation-preset-title = Escalation (TSF|PDV)
+wf-escalation-preset-title = Escalation (TSF|PDV, 3hr)
 wf-escalation-preset-description = TSF/PDV talks break down 30 minutes in. The war level goes HOT and stays HOT. The round ends after 3 hours.
 wf-escalation-warning = Attention! Talks between TSF and PDV high command are breaking down. In {$minutes} {$minutes ->
     [one] minute

@@ -32,16 +32,25 @@ public partial class ChatBox
     {
         base.EnteredTree();
 
-        WfEnsureTabBar();
+        // A throw here stops the engine's tree entry before the children: the input line then never starts text
+        // input, and the chat is dead until the player rejoins. Nothing below is worth that.
+        try
+        {
+            WfEnsureTabBar();
 
-        // A chat box outside the tree gets no messages; it catches up from the history when it comes back.
-        _controller.MessageAdded -= OnMessageAdded;
-        _controller.MessageAdded += OnMessageAdded;
-        _wfTabs.FilterChanged += WfApplyTab;
-        WfApplyTab();
+            // A chat box outside the tree gets no messages; it catches up from the history when it comes back.
+            _controller.MessageAdded -= OnMessageAdded;
+            _controller.MessageAdded += OnMessageAdded;
+            _wfTabs.FilterChanged += WfApplyTab;
+            WfApplyTab();
 
-        _wfTabBar!.PopoutButton.Visible = _wfPopout.Enabled || WfLogPoppedOut;
-        _wfPopout.ChatEntered(this);
+            _wfTabBar!.PopoutButton.Visible = _wfPopout.Enabled || WfLogPoppedOut;
+            _wfPopout.ChatEntered(this);
+        }
+        catch (Exception e)
+        {
+            Logger.GetSawmill("wf.chat").Error($"Chat box failed to set up on entering the tree: {e}");
+        }
     }
 
     protected override void ExitedTree()
@@ -131,6 +140,27 @@ public partial class ChatBox
             {
                 formatted.AddText(message);
             }
+        }
+    }
+
+    /// <summary>
+    /// Adds the entry to the log. A tag that throws while laying out (bad parameters, say) would otherwise throw out of
+    /// every refill for the rest of the round, so the line falls back to its text.
+    /// </summary>
+    private void WfAddEntry(FormattedMessage formatted, string message, Color color)
+    {
+        try
+        {
+            Contents.AddMessage(formatted, tagsAllowed: null);
+        }
+        catch (Exception e)
+        {
+            Logger.GetSawmill("wf.chat").Error($"Chat line could not be laid out, showing it as text: {e}");
+            var plain = new FormattedMessage(3);
+            plain.PushColor(color);
+            plain.AddText(message);
+            plain.Pop();
+            Contents.AddMessage(plain, tagsAllowed: null);
         }
     }
 
