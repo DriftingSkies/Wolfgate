@@ -135,7 +135,8 @@ public sealed partial class WFPlanetPoiSystem
                 {
                     var spot = centre + WFRoadDressingPlanner.Across(axis) * (side * offset);
                     var covered = WFRoadDressingPlanner.Footprint(bounds, spot).ToList();
-                    if (covered.Any(tile => !allowed.Contains(tile) || centreline.Contains(tile) || occupied.Contains(tile) || InSite(tile)))
+                    if (covered.Any(tile => !allowed.Contains(tile) || centreline.Contains(tile) || occupied.Contains(tile) || InSite(tile))
+                        || rule.Where == WFRoadSpot.Kerb && !covered.Any(tile => WFRoadDressingPlanner.TouchesAny(tile, plan.ShoulderTiles)))
                         continue;
 
                     found = spot;

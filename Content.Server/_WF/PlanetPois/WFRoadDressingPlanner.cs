@@ -120,6 +120,10 @@ public static class WFRoadDressingPlanner
     /// <summary>The step across the road at a stretch running the given way.</summary>
     public static Vector2i Across(WFRoadAxis axis) => axis == WFRoadAxis.NorthSouth ? East : North;
 
+    /// <summary>Whether a tile has one of the set beside it, not counting corners.</summary>
+    public static bool TouchesAny(Vector2i tile, IReadOnlySet<Vector2i> set)
+        => set.Contains(tile + North) || set.Contains(tile + South) || set.Contains(tile + East) || set.Contains(tile + West);
+
     /// <summary>
     /// Street light tiles: every <paramref name="spacing"/> tiles along each straight stretch, on the first shoulder
     /// tile, on alternating sides. Counted from the world's origin, so the rhythm carries across a junction.
