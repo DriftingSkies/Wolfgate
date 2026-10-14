@@ -6,6 +6,7 @@ using Content.IntegrationTests.Tests._WF.Planets;
 using Content.Server._WF.PlanetPois;
 using Content.Server._WF.Planets;
 using Content.Server._WF.PlanetSignals;
+using Content.Shared.Players;
 using Content.Server.Station.Systems;
 using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Planets;
@@ -109,8 +110,10 @@ public sealed class PlanetSignalsTest
                 stations.AddGridToStation(station, hauler);
                 site.ExpeditionClaim = station;
 
-                // Two player characters on the ground; only the one with a medical tracker is named.
+                // Two player characters on the ground; only the one with a medical tracker is named. The pair may come
+                // from another test with the player's mind still about, so it goes first.
                 var minds = server.System<SharedMindSystem>();
+                minds.WipeMind(server.PlayerMan.GetSessionById(pair.Client.Session!.UserId).ContentData()?.Mind);
                 Person("WF Test Hiker", new Vector2(4f, 4f));
                 var tracked = Person("WF Test Medic", new Vector2(6f, 4f));
                 var implant = entMan.SpawnEntity("MedicalTrackingImplant", MapCoordinates.Nullspace);
