@@ -2,6 +2,7 @@ using Content.Client._WF.ChatTabs;
 using Content.Shared.Chat;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.LineEdit;
 
 namespace Content.Client.UserInterface.Systems.Chat.Widgets;
@@ -107,6 +108,30 @@ public partial class ChatBox
         }
 
         _controller.ClearUnfilteredUnreads(channels);
+    }
+
+    /// <summary>
+    /// Adds a chat line. One that does not parse stays in the history for the round, so it must not throw: every
+    /// later refill would stop at it, and a refill runs as the chat box enters the tree.
+    /// </summary>
+    private static void WfAddMarkup(FormattedMessage formatted, string message)
+    {
+        try
+        {
+            formatted.AddMarkupOrThrow(message);
+        }
+        catch (Exception)
+        {
+            // The permissive parser keeps the tags that do parse; it can still give up.
+            try
+            {
+                formatted.AddMarkupPermissive(message);
+            }
+            catch (Exception)
+            {
+                formatted.AddText(message);
+            }
+        }
     }
 
     private void WfOnChannelFilter(ChatChannel channel, bool active)
