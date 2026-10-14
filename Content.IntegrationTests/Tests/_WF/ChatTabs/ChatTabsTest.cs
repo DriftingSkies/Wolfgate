@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Content.Client._WF.ChatTabs;
+using Content.Client.UserInterface.Controls;
+using Content.Shared.CCVar;
 using Content.Client.UserInterface.Screens;
 using Content.Client.UserInterface.Systems.Chat;
 using Content.Client.UserInterface.Systems.Chat.Controls;
@@ -518,6 +520,47 @@ public sealed class ChatTabsTest : InteractionTest
                 plain.Orphan();
                 _chat.UnregisterChat(plain);
             });
+        }
+    }
+
+    /// <summary>
+    /// The game screen is added to the tree before its controllers set it up: the world view gets its size after that. A chat box
+    /// that threw while entering the tree left a black view with the HUD collapsed in the middle of the window.
+    /// </summary>
+    [Test]
+    public async Task ALineWithBrokenMarkupDoesNotBreakLoadingTheGameScreen()
+    {
+        await Prepare();
+
+        var layout = _cfg.GetCVar(CCVars.UILayout);
+        try
+        {
+            await Client.WaitAssertion(() =>
+            {
+                Say(ChatChannel.OOC, "plain [bracket");
+
+                foreach (var next in new[] { "Separated", "Default" })
+                {
+                    _cfg.SetCVar(CCVars.UILayout, next);
+
+                    var screen = (InGameScreen) _ui.ActiveScreen!;
+                    Assert.That(screen.GetType().Name, Does.StartWith(next), "the layout change loaded its screen");
+                    Assert.That(screen.HorizontalAlignment, Is.EqualTo(Control.HAlignment.Stretch), $"{next}: the screen fills the window");
+                    Assert.That(screen.VerticalAlignment, Is.EqualTo(Control.VAlignment.Stretch));
+                    Assert.That(Descendants(screen).Where(control => !control.IsInsideTree), Is.Empty,
+                        $"{next}: every HUD control entered the tree");
+                    var view = screen.GetWidget<MainViewport>()!.Viewport;
+                    Assert.That(Client.ResolveDependency<Robust.Client.Graphics.IEyeManager>().MainViewport, Is.SameAs(view),
+                        $"{next}: the screen finished loading, so the world view is the one drawn to");
+                    Assert.That(view.ViewportSize.X * view.ViewportSize.Y, Is.GreaterThan(0), $"{next}: the world view has a size");
+                    Assert.That(screen.ChatBox.ChatInput.Input.IsInsideTree, $"{next}: the chat input takes text");
+                    Assert.That(screen.ChatBox.FindControl<OutputPanel>("Contents").EntryCount, Is.EqualTo(1));
+                }
+            });
+        }
+        finally
+        {
+            await Client.WaitPost(() => _cfg.SetCVar(CCVars.UILayout, layout));
         }
     }
 
