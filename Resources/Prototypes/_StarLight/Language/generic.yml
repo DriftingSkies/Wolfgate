@@ -5,6 +5,6 @@
   id: Machine
   speech:
     color: "#6174ff"
-    fontId: Octatrax
+    fontId: Monospace # WOLFGATE(Species): Octatrax is a cipher font, unreadable to listeners who understand it
   obfuscation:
     !type:RandomObfuscation
