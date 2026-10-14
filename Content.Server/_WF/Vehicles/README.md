@@ -14,7 +14,9 @@ Players walk up to a vehicle's doorway and use it to go in, sit in a seat to dri
 and use the horn, spotlight and overcharge button while driving. The driver turns the view outside with the camera keys
 (the four-way drive follows the turned view), coming inside turns the view to the interior's north, and the driver's seat
 carries the vehicle's mass scanner (`WFVehicleScannerSystem`): a hotbar action opens a radar that looks out from the
-vehicle, with its position, the world's terrain and its sites. Leaving puts you on free floor you can walk to from the
+vehicle, with its position, the world's terrain and its sites. A vehicle with someone alive inside takes their NPC
+factions and counts as a live target (`VehicleOccupantFactionSystem`, hooked into NPC target scoring and melee reach), so
+mobs hostile to the crew attack it; empty, it belongs to nobody. Leaving puts you on free floor you can walk to from the
 hull, never behind a wall, a closed door or a deck edge; a vehicle walled in on every side keeps you inside. A prying tool
 on the vehicle opens the hardpoint window to fit or remove parts; a welder repairs them. A gunner picks a hardpoint in the
 seat's window or on the hotbar and aims with the cursor, and the turret turns to follow; rounds aimed at a point stop at
@@ -79,6 +81,9 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Server/_WF/Vehicles/Crushing/VehicleCrushingSystem.cs`](Crushing/VehicleCrushingSystem.cs)
 - [`Content.Server/_WF/Vehicles/Falling/VehicleFallSystem.cs`](Falling/VehicleFallSystem.cs)
 - [`Content.Server/_WF/Vehicles/Hardpoint/VehicleHardpointVisualsSystem.cs`](Hardpoint/VehicleHardpointVisualsSystem.cs)
+- [`Content.Server/_WF/Vehicles/Npc/NPCCombatSystem.Vehicles.cs`](Npc/NPCCombatSystem.Vehicles.cs)
+- [`Content.Server/_WF/Vehicles/Npc/NPCUtilitySystem.Vehicles.cs`](Npc/NPCUtilitySystem.Vehicles.cs)
+- [`Content.Server/_WF/Vehicles/Npc/VehicleOccupantFactionSystem.cs`](Npc/VehicleOccupantFactionSystem.cs)
 - [`Content.Server/_WF/Vehicles/Safety/ShipyardOrganicsSearchEvent.cs`](Safety/ShipyardOrganicsSearchEvent.cs)
 - [`Content.Server/_WF/Vehicles/Safety/VehicleSafetySystem.cs`](Safety/VehicleSafetySystem.cs)
 - [`Content.Server/_WF/Vehicles/Viewport/VehicleViewportSystem.cs`](Viewport/VehicleViewportSystem.cs)
@@ -275,6 +280,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunHookTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunHookTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunSpinupTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunSpinupTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleInteriorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleInteriorTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleNpcAttackTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleNpcAttackTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRigs.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRigs.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRosterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRosterTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRunoverTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRunoverTest.cs)
@@ -701,6 +707,8 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - a listener may see the speech bubble on another entity
   - bubbleSource in place of source
   - BubbleSource, the entity this listener sees the bubble on
+- [`Content.Server/NPC/Systems/NPCCombatSystem.Melee.cs`](../../NPC/Systems/NPCCombatSystem.Melee.cs): a vehicle is in reach once its hull is.
+- [`Content.Server/NPC/Systems/NPCUtilitySystem.cs`](../../NPC/Systems/NPCUtilitySystem.cs): an occupied vehicle is a live target.
 - [`Content.Server/Shuttles/Systems/RadarConsoleSystem.cs`](../../Shuttles/Systems/RadarConsoleSystem.cs): a vehicle's scanner looks out from the vehicle, not from the seat inside it.
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
