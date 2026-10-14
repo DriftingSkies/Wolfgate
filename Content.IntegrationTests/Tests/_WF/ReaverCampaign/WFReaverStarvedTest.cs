@@ -125,6 +125,46 @@ public sealed class WFReaverStarvedTest : WFReaverTestBase
         });
     }
 
+    /// <summary>A dark thruster does not explain guns that are gone: the hub is beaten all the same.</summary>
+    [Test]
+    public async Task HubWithItsGunsTornOutAndAThrusterDarkIsBroken()
+    {
+        await StartCampaign();
+        EntityUid stronghold = default;
+        await Server.WaitAssertion(() => stronghold = FoundAt(Home));
+        var lead = Lead(stronghold);
+        var weapons = await Guns(lead);
+        await Server.WaitAssertion(() =>
+        {
+            var power = Server.System<PowerReceiverSystem>();
+            EntityUid? thruster = null;
+            var query = SEntMan.EntityQueryEnumerator<ThrusterComponent, ApcPowerReceiverComponent, TransformComponent>();
+            while (query.MoveNext(out var uid, out _, out _, out var xform))
+            {
+                if (xform.GridUid == lead)
+                {
+                    thruster = uid;
+                    break;
+                }
+            }
+
+            Assert.That(thruster, Is.Not.Null, "The hull has a thruster that takes power.");
+            power.TogglePower(thruster!.Value, false);
+            foreach (var uid in weapons)
+                SEntMan.DeleteEntity(uid);
+        });
+        var status = Server.System<WFCrewShipStatusSystem>();
+        await WaitUntilServer(() => status.IsDisabled(lead), Ticks(30));
+        await RunTicks(Ticks(5));
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(status.IsStarved(lead), Is.False, "The dark thruster does not explain the missing guns.");
+            Server.System<WFReaverCampaignSystem>().CheckStrongholds();
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(stronghold).Resolution, Is.EqualTo(WFEncounterResolution.Destroyed));
+        });
+    }
+
     /// <summary>A hub still dark once the grace runs out is broken like any other.</summary>
     [Test]
     public async Task HubDarkPastTheGraceIsBroken()

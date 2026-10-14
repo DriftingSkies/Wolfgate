@@ -62,7 +62,8 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
 
     private enum Condition : byte { Abandoned, Disarmed, Crippled, Wrecked }
 
-    private readonly record struct Reading(bool Abandoned, bool Disarmed, bool Crippled, bool Wrecked);
+    /// <summary>One reading of a ship, with the power evidence taken at the same moment as the conditions it explains.</summary>
+    private readonly record struct Reading(bool Abandoned, bool Disarmed, bool Crippled, bool Wrecked, bool GunsUnpowered, bool ThrustUnpowered);
 
     /// <summary>Sets when the crew of a ship stop attacking other ships.</summary>
     public void SetPolicy(EntityUid grid, WFCrewDisengage rule, float range)
@@ -109,17 +110,20 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
 
     /// <summary>
     /// Whether a ship is out of the fight only for want of power: its guns or thrust have gone dead for the whole
-    /// delay while its hull is whole and its people are aboard, and a ship weapon, gunnery server or thruster still
-    /// aboard is unpowered. Guns torn out or pulled apart by hand leave no such evidence and count as a kill.
+    /// delay while its hull is whole and its people are aboard, and each dead capability is explained by gear still
+    /// aboard that takes power and has none: a ship weapon or gunnery server for the guns, a thruster for the thrust.
+    /// Guns torn out or pulled apart by hand leave no such evidence and count as a kill. The evidence is part of the
+    /// same reading as the conditions, so this and <see cref="IsDisabled"/> never disagree within a reading.
     /// </summary>
     public bool IsStarved(EntityUid grid)
     {
         var reading = Read(grid);
-        return (reading.Disarmed || reading.Crippled) && !reading.Wrecked && !reading.Abandoned && HasUnpowered(grid);
+        return (reading.Disarmed || reading.Crippled) && !reading.Wrecked && !reading.Abandoned
+               && (!reading.Disarmed || reading.GunsUnpowered) && (!reading.Crippled || reading.ThrustUnpowered);
     }
 
-    /// <summary>Whether a ship weapon, gunnery server or thruster aboard takes power and has none.</summary>
-    private bool HasUnpowered(EntityUid grid)
+    /// <summary>Whether a ship weapon or gunnery server aboard takes power and has none.</summary>
+    private bool GunsUnpowered(EntityUid grid)
     {
         var weapons = EntityQueryEnumerator<FireControllableComponent, ApcPowerReceiverComponent, TransformComponent>();
         while (weapons.MoveNext(out _, out _, out var receiver, out var xform))
@@ -135,6 +139,12 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
                 return true;
         }
 
+        return false;
+    }
+
+    /// <summary>Whether a thruster aboard takes power and has none.</summary>
+    private bool ThrustUnpowered(EntityUid grid)
+    {
         var thrusters = EntityQueryEnumerator<ThrusterComponent, ApcPowerReceiverComponent, TransformComponent>();
         while (thrusters.MoveNext(out _, out _, out var receiver, out var xform))
         {
@@ -201,7 +211,9 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
             Sustained(grid, Condition.Abandoned, !crewed && _crewed.Contains(grid), now),
             Sustained(grid, Condition.Disarmed, !armed && _armed.Contains(grid), now),
             Sustained(grid, Condition.Crippled, !armed && peak > 0f && thrust < peak * CrippledThrust, now),
-            Sustained(grid, Condition.Wrecked, peakTiles > 0 && tiles < peakTiles * WreckedHull, now));
+            Sustained(grid, Condition.Wrecked, peakTiles > 0 && tiles < peakTiles * WreckedHull, now),
+            GunsUnpowered(grid),
+            ThrustUnpowered(grid));
     }
 
     /// <summary>Whether a condition has held, watched without a gap, for the whole delay.</summary>
