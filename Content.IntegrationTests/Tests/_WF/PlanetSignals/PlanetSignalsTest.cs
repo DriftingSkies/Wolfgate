@@ -44,8 +44,11 @@ public sealed class PlanetSignalsTest
   centreClear: 24
   footprint: 24
   entries:
-  - dungeon: WFPoiAsclepiuResearch
+  # A small authored site, so two always fit on a small world.
+  - mapPath: /Maps/_WF/PlanetPois/Tests/through_service.yml
     name: wf-poi-asclepiu-research
+    footprint: 0,0,16,12
+    connection: Isolated
 ";
 
     [Test]
