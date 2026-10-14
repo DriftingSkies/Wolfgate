@@ -28,6 +28,8 @@
   id: MobIPCSprites
   sprites:
     Head: MobIPCHead
+    Snout: MobHumanoidAnyMarking # WOLFGATE(Species): snout markings had no layer to draw on
+    Eyes: MobHumanoidAnyMarking # WOLFGATE(Species): eye markings had no layer to draw on
     HeadTop: MobHumanoidAnyMarking
     HeadSide: MobHumanoidAnyMarking
     Tail: MobHumanoidAnyMarking
@@ -53,25 +55,50 @@
 - type: markingPoints
   id: MobIPCMarkingLimits
   points:
+    # WOLFGATE(Species) START: chassis parts get their own budget, the body categories are for markings
+    # The parts used to fill Head, Chest, Legs and Arms, so any other marking there swapped a body part out.
+    # Head:
+    #   points: 1
+    #   required: true
+    #   defaultMarkings: [ MobIPCHeadDefault ]
+    # Chest:
+    #   points: 1
+    #   required: true
+    #   defaultMarkings: [ MobIPCTorsoDefault ]
+    # Legs:
+    #   points: 4
+    #   required: true
+    #   defaultMarkings: [ MobIPCLLegDefault, MobIPCLFootDefault, MobIPCRLegDefault, MobIPCRFootDefault ]
+    # Arms:
+    #   points: 4
+    #   required: true
+    #   defaultMarkings: [ MobIPCLArmDefault, MobIPCLHandDefault, MobIPCRArmDefault, MobIPCRHandDefault ]
+    # HeadSide:
+    #   points: 1
+    #   required: false
+    Chassis:
+      points: 10
+      required: true
+      defaultMarkings: [ MobIPCHeadDefault, MobIPCTorsoDefault, MobIPCLArmDefault, MobIPCLHandDefault, MobIPCRArmDefault, MobIPCRHandDefault, MobIPCLLegDefault, MobIPCLFootDefault, MobIPCRLegDefault, MobIPCRFootDefault ]
     Head:
-      points: 1
-      required: true
-      defaultMarkings: [ MobIPCHeadDefault ]
-    Chest:
-      points: 1
-      required: true
-      defaultMarkings: [ MobIPCTorsoDefault ]
-    Legs:
-      points: 4
-      required: true
-      defaultMarkings: [ MobIPCLLegDefault, MobIPCLFootDefault, MobIPCRLegDefault, MobIPCRFootDefault ]
-    Arms:
-      points: 4
-      required: true
-      defaultMarkings: [ MobIPCLArmDefault, MobIPCLHandDefault, MobIPCRArmDefault, MobIPCRHandDefault ]
-    HeadSide: 
+      points: 3
+      required: false
+    Snout:
       points: 1
       required: false
+    Chest:
+      points: 3
+      required: false
+    Legs:
+      points: 8
+      required: false
+    Arms:
+      points: 8
+      required: false
+    HeadSide:
+      points: 2
+      required: false
+    # WOLFGATE END
     Wings:
       points: 1
       required: false
@@ -98,7 +125,7 @@
 - type: marking
   id: MobIPCHeadDefault
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -118,7 +145,7 @@
 - type: marking
   id: MobIPCTorsoDefault
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -127,7 +154,7 @@
 - type: marking
   id: MobIPCTorsoFemaleDefault
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -141,7 +168,7 @@
 - type: marking
   id: MobIPCLLegDefault
   bodyPart: LLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -155,7 +182,7 @@
 - type: marking
   id: MobIPCLArmDefault
   bodyPart: LArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -169,7 +196,7 @@
 - type: marking
   id: MobIPCLHandDefault
   bodyPart: LHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -183,7 +210,7 @@
 - type: marking
   id: MobIPCLFootDefault
   bodyPart: LFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -197,7 +224,7 @@
 - type: marking
   id: MobIPCRLegDefault
   bodyPart: RLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -211,7 +238,7 @@
 - type: marking
   id: MobIPCRArmDefault
   bodyPart: RArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -225,7 +252,7 @@
 - type: marking
   id: MobIPCRHandDefault
   bodyPart: RHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi
@@ -239,7 +266,7 @@
 - type: marking
   id: MobIPCRFootDefault
   bodyPart: RFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC] 
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/IPC/parts.rsi

@@ -27,6 +27,7 @@ namespace Content.Shared.Humanoid.Markings
         Overlay,
         Eyes,
         // WOLFGATE END
+        Chassis, // WOLFGATE(Species): IPC body parts get their own points instead of filling the body categories
     }
 
     public static class MarkingCategoriesConversion

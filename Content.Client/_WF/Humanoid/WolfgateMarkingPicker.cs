@@ -279,6 +279,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         _sex = sex;
         CurrentSkinColor = skinColor;
         CurrentEyeColor = eyeColor;
+        _current.EnsureChassis(skinColor, eyeColor, _markingManager);
 
         Populate(_search.Text);
         PopulateUsed();
@@ -307,6 +308,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         _current = MarkingSet.ForProfile(list, speciesProto.MarkingPoints, MismatchedParts, _markingManager, _prototypeManager);
         _current.EnsureSpecies(_species, null, MismatchedParts, _markingManager);
         _current.EnsureSexes(_sex, _markingManager);
+        _current.EnsureChassis(CurrentSkinColor, CurrentEyeColor, _markingManager);
         Populate(_search.Text);
         PopulateUsed();
     }
@@ -327,15 +329,15 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     }
 
     /// <summary>
-    /// Every marking the species can use, from every category that is not ignored, minus the hidden ones. With
-    /// Mismatched parts on, other species' markings the character's sprite has no layer for are left out.
+    /// Every marking the species can use, from every category that is not ignored, minus the hidden ones and the
+    /// ones on a body part the character's sprite has no layer for.
     /// </summary>
     private IEnumerable<MarkingPrototype> ValidMarkings()
     {
         return _allCategories.Where(c => !_ignoreCategories.Contains(c))
             .SelectMany(c => GetMarkings(c).Values)
             .Where(m => !_hiddenMarkings.Contains(m.ID))
-            .Where(m => !MismatchedParts || MismatchedPartsRules.Drawable(m, _species, _prototypeManager));
+            .Where(m => MismatchedPartsRules.Drawable(m, _species, _prototypeManager));
     }
 
     private IEnumerable<MarkingPrototype> PartMarkings(HumanoidVisualLayers part)
@@ -400,7 +402,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         var sorted = PartMarkings(_part).Where(m =>
                 m.ID.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                 Name(m).Contains(filter, StringComparison.OrdinalIgnoreCase))
-            .OrderBy(Name);
+            .OrderBy(m => m.MarkingCategory != MarkingCategories.Chassis)
+            .ThenBy(Name);
 
         foreach (var proto in sorted)
         {
@@ -419,12 +422,16 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         UpdatePoints();
     }
 
-    /// <summary>Points left in every category the selected body part draws its markings from.</summary>
+    /// <summary>
+    /// Points left in every category the selected body part draws its markings from. The chassis is left out: it
+    /// always holds one part per body part.
+    /// </summary>
     private void UpdatePoints()
     {
         var counts = PartMarkings(_part)
             .Select(m => m.MarkingCategory)
             .Distinct()
+            .Where(c => c != MarkingCategories.Chassis)
             .Select(c => (category: c, left: _current.PointsLeft(c)))
             .Where(p => p.left != -1)
             .ToList();
@@ -437,7 +444,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                 ("category", Loc.GetString($"markings-category-{p.category}")), ("points", p.left))));
     }
 
-    private void Toggle(MarkingPrototype proto)
+    /// <summary>Puts a marking on or takes it off, as pressing its tile does.</summary>
+    public void Toggle(MarkingPrototype proto)
     {
         if (_current.TryGetMarking(proto.MarkingCategory, proto.ID, out _))
             Remove(proto);
@@ -451,8 +459,9 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
         // A full category whose whole budget is one marking (an undergarment top or bottom, a tail) swaps that
         // marking for the new one in place, as the hair slot picker does, instead of refusing the pick.
-        var replaceAt = -1;
-        if (_current.PointsLeft(category) == 0 && !Forced)
+        // A chassis holds one part per body part, so a new part takes the place of the one on its body part.
+        var replaceAt = category == MarkingCategories.Chassis ? ChassisIndex(proto.BodyPart) : -1;
+        if (replaceAt < 0 && _current.PointsLeft(category) == 0 && !Forced)
         {
             replaceAt = SingleSlotIndex(category);
             if (replaceAt < 0)
@@ -545,8 +554,42 @@ public sealed class WolfgateMarkingPicker : BoxContainer
             colors[i] = replaced.MarkingColors[i];
     }
 
+    /// <summary>Index of the chassis part worn on a body part, or -1.</summary>
+    private int ChassisIndex(HumanoidVisualLayers part)
+    {
+        if (!_current.Markings.TryGetValue(MarkingCategories.Chassis, out var applied))
+            return -1;
+
+        return applied.FindIndex(m => _markingManager.TryGetMarking(m, out var worn) && worn.BodyPart == part);
+    }
+
+    /// <summary>The chassis part the species wears on a body part by default, if it has a chassis.</summary>
+    private MarkingPrototype? ChassisDefault(HumanoidVisualLayers part)
+    {
+        if (!_current.Points.TryGetValue(MarkingCategories.Chassis, out var points))
+            return null;
+
+        foreach (var id in points.DefaultMarkings)
+        {
+            if (_markingManager.Markings.TryGetValue(id, out var proto) && proto.BodyPart == part)
+                return proto;
+        }
+
+        return null;
+    }
+
     private void Remove(MarkingPrototype proto)
     {
+        // A body part can't go without its chassis part: taking one off puts the default back.
+        if (proto.MarkingCategory == MarkingCategories.Chassis && ChassisDefault(proto.BodyPart) is { } fallback)
+        {
+            if (fallback.ID != proto.ID)
+                Add(fallback);
+            else
+                Populate(_search.Text);
+            return;
+        }
+
         _current.Remove(proto.MarkingCategory, proto.ID);
         Populate(_search.Text);
         PopulateUsed();

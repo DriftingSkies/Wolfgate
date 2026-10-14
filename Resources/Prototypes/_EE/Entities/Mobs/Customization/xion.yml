@@ -1,7 +1,7 @@
 - type: marking
   id: CyberLimbsMarkingXionHead
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_monitor.rsi
@@ -12,7 +12,7 @@
 - type: marking
   id: CyberLimbsMarkingXionHeadAlt
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_alt1.rsi
@@ -23,7 +23,7 @@
 - type: marking
   id: CyberLimbsMarkingXionChest
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -34,7 +34,7 @@
 - type: marking
   id: CyberLimbsMarkingXionLArm
   bodyPart: LArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -45,7 +45,7 @@
 - type: marking
   id: CyberLimbsMarkingXionLHand
   bodyPart: LHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -56,7 +56,7 @@
 - type: marking
   id: CyberLimbsMarkingXionLLeg
   bodyPart: LLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -68,7 +68,7 @@
 - type: marking
   id: CyberLimbsMarkingXionLFoot
   bodyPart: LFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -81,7 +81,7 @@
 - type: marking
   id: CyberLimbsMarkingXionRArm
   bodyPart: RArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -94,7 +94,7 @@
 - type: marking
   id: CyberLimbsMarkingXionRHand
   bodyPart: RHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -105,7 +105,7 @@
 - type: marking
   id: CyberLimbsMarkingXionRLeg
   bodyPart: RLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
@@ -117,7 +117,7 @@
 - type: marking
   id: CyberLimbsMarkingXionRFoot
   bodyPart: RFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/xion/xion_main.rsi
