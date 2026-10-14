@@ -813,6 +813,10 @@ public sealed class CavernHoleTest
             await LoadChunks(pair, world.Ground, spot - Vector2i.One, spot + Vector2i.One);
             await SetTile(pair, world.Ground, floor, new Tile(tileDefs["FloorSteel"].TileId));
 
+            // A floor a player laid over the chromite, so it breaks down to plating rather than giving the ground back.
+            await server.WaitPost(() => entMan.EnsureComponent<WFPlanetBuiltTilesComponent>(world.Ground).Underlay[floor] =
+                maps.GetTileRef(world.Ground, entMan.GetComponent<MapGridComponent>(world.Ground), spot).Tile);
+
             await Spill(pair, world.Ground, spot);
             await Spill(pair, world.Ground, floor);
             await server.WaitRunTicks(2);
