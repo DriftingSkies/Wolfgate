@@ -177,7 +177,10 @@ public partial class ChatBox : UIWidget
                 ("size", 8+sizeIncrease)
             ));
         } // WD EDIT END
-        Contents.AddMessage(formatted, tagsAllowed: null);
+        // WOLFGATE(ChatTabs) START: a line whose tags fail to lay out is shown as text instead of throwing out of a refill
+        // Contents.AddMessage(formatted, tagsAllowed: null);
+        WfAddEntry(formatted, message, color);
+        // WOLFGATE END
     }
 
     public void Focus(ChatSelectChannel? channel = null)

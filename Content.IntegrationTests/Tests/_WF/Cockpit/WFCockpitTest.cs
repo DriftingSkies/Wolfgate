@@ -38,6 +38,7 @@ using Content.Shared._WF.Cockpit;
 using Content.Shared._WF.Shuttles;
 using Content.Shared._WF.ShipShields;
 using Content.Shared.Buckle;
+using Content.Shared.Chat;
 using Content.Shared.Inventory;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Shuttles.Components;
@@ -49,6 +50,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Input;
 using Robust.Shared.Localization;
+using Robust.Shared.Log;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Physics;
@@ -888,6 +890,87 @@ public sealed class WFCockpitTest : InteractionTest
             window.Dispose();
             settings.SetCVar(CCVars.UILayout, originalLayout);
         });
+    }
+
+    /// <summary>
+    /// A chat line whose tag throws while laying out (an empty scramble alphabet divides by zero) stays in the history
+    /// for the round. Every refill ran into it, and the one as the chat box re-entered the screen on leaving the cockpit
+    /// stopped the engine's tree entry before the input line: the chat then took no text until the player rejoined.
+    /// </summary>
+    [Test]
+    public async Task AChatLineThatFailsToLayOutDoesNotKillTheChatOnCockpitExit()
+    {
+        var (console, chair) = await SpawnHelm();
+        await MakePilot(console);
+        await Buckle(chair);
+        await RunTicks(10);
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        var originalLayout = settings.GetCVar(CCVars.UILayout);
+        await Client.WaitAssertion(() => settings.SetCVar(CCVars.UILayout, "Default"));
+        await RunTicks(3);
+        // The fallback logs the bad line as an error, which is the point; focusing the chat also warns about the
+        // typing indicator on the tick after. Neither is a failure.
+        var failureLevel = Pair.ClientLogHandler.FailureLevel;
+        Pair.ClientLogHandler.FailureLevel = LogLevel.Fatal;
+        try
+        {
+            await Client.WaitAssertion(() =>
+            {
+                var ui = Client.ResolveDependency<IUserInterfaceManager>();
+                var controller = ui.GetUIController<WFCockpitUIController>();
+                var chatController = ui.GetUIController<ChatUIController>();
+                var screen = (InGameScreen) ui.ActiveScreen!;
+                var chat = screen.ChatBox;
+                var input = chat.ChatInput.Input;
+                var log = chat.FindControl<OutputPanel>("Contents");
+                var window = OpenHelm(console);
+                try
+                {
+                    chatController.History.Clear();
+                    chat.Repopulate();
+                    void Say(string text) => chatController.ProcessChatMessage(
+                        new ChatMessage(ChatChannel.Local, text, text, NetEntity.Invalid, null), speechBubble: false);
+                    Say("before");
+                    var bad = "[scramble rate=1 length=5 chars=\"\"]";
+                    Assert.DoesNotThrow(() => Say(bad), "The line arrives like any other.");
+                    Say("after");
+                    Assert.That(log.EntryCount, Is.EqualTo(3), "The bad line is shown, as text.");
+                    Assert.That(log.GetMessage(1).ToString(), Does.Contain("scramble"));
+                    for (var round = 0; round < 3; round++)
+                    {
+                        var context = $"round {round}";
+                        chat.Focus();
+                        Assert.That(ui.KeyboardFocused, Is.SameAs(input), context);
+                        Assert.That(controller.Enter(window), Is.True, context);
+                        Assert.That(input.IsInsideTree, $"{context}: the chat input takes text in the cockpit");
+                        Say($"in the cockpit {round}");
+                        chat.Focus();
+                        controller.Exit();
+                        Assert.That(controller.Active, Is.False, context);
+                        Assert.That(input.IsInsideTree, $"{context}: the chat input must be in the tree to take text");
+                        Assert.That(Descendants(screen).Where(control => !control.IsInsideTree), Is.Empty,
+                            $"{context}: every HUD control came back into the tree");
+                        Assert.That(screen.GetWidget<ResizableChatBox>(), Is.SameAs(chat), $"{context}: the screen knows its chat box again");
+                        Assert.That(log.EntryCount, Is.EqualTo(4 + round), $"{context}: the refill shows every line");
+                        chat.Focus();
+                        Assert.That(ui.KeyboardFocused, Is.SameAs(input), $"{context}: the chat takes focus after the cockpit");
+                    }
+                }
+                finally
+                {
+                    controller.Exit();
+                    window.Dispose();
+                    chatController.History.Clear();
+                    chat.Repopulate();
+                    settings.SetCVar(CCVars.UILayout, originalLayout);
+                }
+            });
+            await RunTicks(5);
+        }
+        finally
+        {
+            Pair.ClientLogHandler.FailureLevel = failureLevel;
+        }
     }
 
     /// <summary>
