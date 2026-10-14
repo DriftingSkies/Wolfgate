@@ -8,7 +8,9 @@ fall out of orbit, and a world's gravity well pulls adrift hulls in from the sec
 
 Worlds have day and night, phased weather with thunder, fauna, ambience, terrain on the orbit radar and an approach
 cinematic on the hop in; Carcinoma is a quarantined flesh world whose tendrils hold landed hulls down. Lower layers of a planet are drawn smaller
-(`WFPlanetView`, the perspective Monolith turned off for other z-levels). Jetpacks only
+(`WFPlanetView`, the perspective Monolith turned off for other z-levels). Over a world's layers the shuttle console's
+strategic plot shows the world itself, drawn by the sector's planet shader close enough to fill it, instead of space
+(`ShuttleMapControl.PlanetBackground`). Jetpacks only
 work in orbit and lattice goes straight onto natural ground. A room built on a planet holds its own air once it has a
 floor: bare ground counts as outdoors and keeps the planet's air. Players use landing thruster kits, parachutes and the
 planet timepiece. Admins get the Planet Control panel in the Wolfgate admin tab (`planetcontrol`) for sanction, time
@@ -200,6 +202,7 @@ ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpac
 - [`Content.Client/_WF/Planets/Flight/WFEnterAtmosphereConfirmWindow.xaml`](../../../Content.Client/_WF/Planets/Flight/WFEnterAtmosphereConfirmWindow.xaml)
 - [`Content.Client/_WF/Planets/Flight/WFEnterAtmosphereConfirmWindow.xaml.cs`](../../../Content.Client/_WF/Planets/Flight/WFEnterAtmosphereConfirmWindow.xaml.cs)
 - [`Content.Client/_WF/Planets/Parachute/WFParachuteVisualsSystem.cs`](../../../Content.Client/_WF/Planets/Parachute/WFParachuteVisualsSystem.cs)
+- [`Content.Client/_WF/Planets/ShuttleMapControl.PlanetBackground.cs`](../../../Content.Client/_WF/Planets/ShuttleMapControl.PlanetBackground.cs)
 - [`Content.Client/_WF/Planets/ShuttleNavControl.Terrain.cs`](../../../Content.Client/_WF/Planets/ShuttleNavControl.Terrain.cs)
 - [`Content.Client/_WF/Planets/WFOrbitButton.cs`](../../../Content.Client/_WF/Planets/WFOrbitButton.cs)
 - [`Content.Client/_WF/Planets/WFPlanetAmbienceSystem.cs`](../../../Content.Client/_WF/Planets/WFPlanetAmbienceSystem.cs)
@@ -395,6 +398,7 @@ ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpac
   - open grating is no roof.
 - [`Content.Client/Shuttles/UI/NavScreen.xaml`](../../../Content.Client/Shuttles/UI/NavScreen.xaml): enter/leave planet orbit, which needs no FTL drive (xmlns:wf above).
 - [`Content.Client/Shuttles/UI/NavScreen.xaml.cs`](../../../Content.Client/Shuttles/UI/NavScreen.xaml.cs): the orbit button reads its state off the console entity.
+- [`Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs): over a world, the world fills the plot instead of space.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs)
   - retain the moving origin while panned.
   - a map-pinned radar must follow travel to another map.

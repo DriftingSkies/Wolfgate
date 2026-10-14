@@ -277,7 +277,10 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
             return;
         }
 
-        DrawParallax(handle);
+        // WOLFGATE(Planets) START: over a world, the world fills the plot instead of space.
+        if (!DrawWfPlanetBackground(handle, _mapManager.GetMapEntityId(ViewingMap)))
+            DrawParallax(handle);
+        // WOLFGATE END
 
         var viewedMapUid = _mapManager.GetMapEntityId(ViewingMap);
         var matty = Matrix3Helpers.CreateInverseTransform(Offset, Angle.Zero);
