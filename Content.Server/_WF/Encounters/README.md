@@ -18,6 +18,9 @@ that the side took as an ally or that has hit the side's enemies at least twice 
 last half minute, so a stray round in a melee is not an attack. `WFEncounterMarkerSystem` sends every ship of every visible
 encounter to all players, each with its side and colour; the radar draws them, with their zones, sector-wide, and
 ghosts find them on the Encounters tab of the orbit menu.
+A ship's stores are stowed at spawn (`fuelStores` jars and stacks a generator, two by default). A persistent ship's crate
+is checked every five minutes and topped up while its engineer lives, it is refuelled like a fighter once he is dead, and
+`Judge` does not destroy a persistent encounter whose ships are out of the fight only for want of power with no hit on them.
 
 Ships can arrive stranded (`stranded: Fuel | Thrusters | Random`) and pay their side's reward to whoever gets them
 under way: thrust held for 20 s, and for a ship wrecked for thrusters, thrust that drives it ahead, not a side
@@ -99,6 +102,10 @@ most one of each prototype alive. `extorters.yml` has three tiers flying as the 
 or Scallywag, Veteran, four guards, 40000 toll, 90000 base). The admin window and `wf_encounter list` show what each
 extorter is doing (roaming, closing on a ship, hailing with the attempt, waiting for an answer, boarding) and what any
 warrant pays now.
+
+A ship docked to a station (a station member without a deed) is in sanctuary (`DockedAtStation`): hunts, extorters,
+`@player` objectives, the Reaver raids and intercepts and the zones never pick it, and a hunter, extorter, raid or
+patrol already on it lets it go when it berths.
 
 Boarders and extorters are stealth ships (`stealth: true`): their IFF label is off for good, so a scope shows an
 unknown contact, and their encounter never comes onto the sector markers unless an admin reveals it. Every hunting
@@ -189,9 +196,11 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Fuel.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Fuel.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.NeutralZones.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.NeutralZones.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs)
 

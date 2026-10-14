@@ -587,11 +587,12 @@ public sealed partial class WFEncounterSystem
         });
     }
 
-    /// <summary>Its mark, if it is still there to go for.</summary>
+    /// <summary>Its mark, if it is still there to go for and not berthed at a station.</summary>
     private bool ExtortMark(WFEncounterShipState ship, WFExtortState extort, out EntityUid mark)
     {
         mark = extort.Mark ?? default;
-        return extort.Mark != null && !TerminatingOrDeleted(mark) && Transform(mark).MapID == Transform(ship.Grid).MapID;
+        return extort.Mark != null && !TerminatingOrDeleted(mark) && Transform(mark).MapID == Transform(ship.Grid).MapID
+               && !DockedAtStation(mark);
     }
 
     private string ExtortMarkName(WFExtortState extort)

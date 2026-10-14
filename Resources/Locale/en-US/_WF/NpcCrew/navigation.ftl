@@ -6,6 +6,7 @@ wf-crew-setup-navigation-defaults = Safe defaults
 wf-crew-navigation-freight = Freighter
 wf-crew-navigation-warship = Warship
 wf-crew-navigation-raider = Raider
+wf-crew-navigation-hunter = Hunter
 wf-crew-setup-navigation-reset = Reset flight tuning to safe defaults
 wf-crew-setup-navigation-bounds = Allowed range: { $min } to { $max }
 wf-crew-setup-navigation-invalid-value = Flight tuning: { $setting } must be a finite number from { $min } to { $max }.
@@ -14,13 +15,13 @@ wf-crew-setup-navigation-category-speeds = Speeds
 wf-crew-setup-navigation-category-handling = Handling
 wf-crew-setup-navigation-category-clearances = Clearances
 wf-crew-setup-navigation-category-docking = Docking
-wf-crew-setup-navigation-cruise-speed = Travel speed (m/s)
-wf-crew-setup-navigation-follow-speed = Follow / escort speed (m/s)
+wf-crew-setup-navigation-cruise-speed = Travel speed (m/s, 0 = hull maximum)
+wf-crew-setup-navigation-follow-speed = Follow / escort speed (m/s, 0 = hull maximum)
 wf-crew-setup-navigation-loiter-speed = Loiter speed (m/s)
 wf-crew-setup-navigation-circle-speed = Circle speed (m/s)
-wf-crew-setup-navigation-attack-speed = Attack speed (m/s)
+wf-crew-setup-navigation-attack-speed = Attack speed (m/s, 0 = hull maximum)
 wf-crew-setup-navigation-hold-correction-speed = Hold correction speed (m/s)
-wf-crew-setup-navigation-near-target-speed = Near-target speed (m/s)
+wf-crew-setup-navigation-near-target-speed = Near-target speed (m/s, 0 = hull maximum)
 wf-crew-setup-navigation-maximum-turn-rate = Maximum turn rate (rad/s)
 wf-crew-setup-navigation-orbit-lookahead-angle = Orbit look-ahead angle (degrees)
 wf-crew-setup-navigation-thrust-multiplier = Linear thrust multiplier

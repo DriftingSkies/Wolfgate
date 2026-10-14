@@ -607,7 +607,7 @@ public sealed partial class WFPilotDutySystem : EntitySystem
                 target = center;
                 mode = ShipSteeringMode.Orbit;
                 range = SafeOrbitRange(grid, center, duty.LoiterRadius, duty.Navigation.NavigationClearance);
-                speed = duty.LoiterSpeed;
+                speed = SpeedLimit(duty.LoiterSpeed);
                 break;
             case WFPilotOrder.Follow when duty.FollowTarget is { } followed && !TerminatingOrDeleted(followed) && !elsewhere:
                 // Grid-relative coordinates move with the grid.

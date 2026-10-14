@@ -1,7 +1,9 @@
 # Flight profiles. The crew setup default is deliberately cautious (10 m/s); a ship flown for a purpose picks one of
 # these. Thruster power and the engine's speed limit still cap what a hull can actually do.
-# Cruise and follow speeds stay at or under 30 m/s: thrust falls off past the shuttle's 20 m/s soft cap
+# Cruise and follow speeds stay at or under 30 m/s: thrust falls off past the shuttle's soft cap
 # (ShuttleComponent.BaseMaxLinearVelocity), and a travel order's time budget assumes the hull reaches its cruise speed.
+# A cruise, follow, attack or near-target speed of 0 sets no limit: the pilot flies as fast as the hull's thrust
+# allows, and travel budgets count on the hull's BaseMaxLinearVelocity.
 
 - type: wfCrewNavigation
   id: WFCrewNavigationFreight
@@ -51,6 +53,33 @@
     circleSpeed: 16
     attackSpeed: 30
     nearTargetSpeed: 10
+    maximumTurnRate: 0.7
+    thrustMultiplier: 1
+    angularThrustMultiplier: 1
+    dockApproachSpeed: 16
+    dockCreepSpeed: 3
+    undockSpeed: 14
+    dockStandoff: 30
+    dockAlignmentRange: 100
+    dockCreepRange: 0.4
+    dockSettleSpeed: 0.8
+    dockSettleTurnRate: 0.12
+    dockSettleTimeout: 15
+    dockCreepTimeout: 45
+    attackRange: 250
+
+# Hunters run a ship down with no speed limit but the hull's own. Dock speeds are the raider's, so the last stretch
+# of a boarding run is flown as carefully as a raider's.
+- type: wfCrewNavigation
+  id: WFCrewNavigationHunter
+  name: wf-crew-navigation-hunter
+  settings:
+    cruiseSpeed: 0
+    followSpeed: 0
+    loiterSpeed: 20
+    circleSpeed: 16
+    attackSpeed: 0
+    nearTargetSpeed: 0
     maximumTurnRate: 0.7
     thrustMultiplier: 1
     angularThrustMultiplier: 1

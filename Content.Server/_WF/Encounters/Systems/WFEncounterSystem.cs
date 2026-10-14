@@ -75,6 +75,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
     /// <summary>How often a living crew top up their ship's batteries. Encounter ships don't burn fuel.</summary>
     private static readonly TimeSpan PowerInterval = TimeSpan.FromMinutes(2);
 
+    /// <summary>How often a persistent ship's fuel stores are checked.</summary>
+    private static readonly TimeSpan StockInterval = TimeSpan.FromMinutes(5);
+
     private TimeSpan _nextPoll;
     private TimeSpan _heldAt;
     private float _cleanupRange;
@@ -720,7 +723,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             _power.SetPower(true, grid, false);
             _work.Commission(grid);
             if (engineer)
-                _work.StockFuel(grid);
+                _work.StockFuel(grid, ship.FuelStores);
         }
         // A fighter with nobody to post by the plant keeps itself fuelled instead.
         state.AutoRefuel = !engineer;
@@ -1009,8 +1012,16 @@ public sealed partial class WFEncounterSystem : EntitySystem
             if (HoldsForVisitors(ship) && ship.HasOrders)
                 Serve(ship);
 
-            if (ship.AutoRefuel && !IsStranded(ship) && HasLivingCrew(ship))
+            // A persistent ship outlives its first stores: its engineer's crate is topped up, and with no engineer left
+            // the plant is kept running as a fighter's is.
+            var persistent = encounter.Comp.Lifetime == WFEncounterLifetime.Persistent;
+            if ((ship.AutoRefuel || persistent && !HasLivingEngineer(ship)) && !IsStranded(ship) && HasLivingCrew(ship))
                 _work.Refuel(ship.Grid);
+            else if (persistent && now >= ship.NextStock && !IsStranded(ship) && HasLivingCrew(ship))
+            {
+                ship.NextStock = now + StockInterval;
+                _work.RestockFuel(ship.Grid);
+            }
 
             var adrift = _status.IsAdrift(ship.Grid);
             if (IsStranded(ship))
@@ -1063,6 +1074,19 @@ public sealed partial class WFEncounterSystem : EntitySystem
         _objectives.Control(ship.Grid, ship.Group, customers ? WFCrewSetupAction.Pause : WFCrewSetupAction.Resume);
     }
 
+    /// <summary>Whether any of a ship's engineers is alive, wherever he is.</summary>
+    public bool HasLivingEngineer(WFEncounterShipState ship)
+    {
+        var engineers = EntityQueryEnumerator<WFCrewEngineerComponent, WFCrewComponent>();
+        while (engineers.MoveNext(out var uid, out _, out var member))
+        {
+            if (member.Group == ship.Group && _mobs.IsAlive(uid))
+                return true;
+        }
+
+        return false;
+    }
+
     /// <summary>Whether any of a ship's crew is alive: aboard it, or with <paramref name="anywhere"/> wherever they are.</summary>
     public bool HasLivingCrew(WFEncounterShipState ship, bool anywhere = false)
     {
@@ -1096,6 +1120,13 @@ public sealed partial class WFEncounterSystem : EntitySystem
     public bool OutForWantOfPilot(WFEncounterShipState ship)
     {
         return !ship.Derelict && !TerminatingOrDeleted(ship.Grid) && (IsStranded(ship) || !_status.IsDisabled(ship.Grid))
+            && HasLivingCrew(ship, anywhere: true) && !InFight(ship);
+    }
+
+    /// <summary>Whether a ship is out of the fight only because its guns or thrust lost power: hull whole, crew alive.</summary>
+    public bool OutForWantOfPower(WFEncounterShipState ship)
+    {
+        return !ship.Derelict && !TerminatingOrDeleted(ship.Grid) && !IsStranded(ship) && _status.IsStarved(ship.Grid)
             && HasLivingCrew(ship, anywhere: true) && !InFight(ship);
     }
 
@@ -1174,7 +1205,15 @@ public sealed partial class WFEncounterSystem : EntitySystem
         }
 
         if (fighting.Count == 0)
+        {
+            // A persistent ship that only lost power, with nobody shooting at it, is not beaten: its engineer and the restock bring it back.
+            if (encounter.Lifetime == WFEncounterLifetime.Persistent && encounter.ShipHits.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPower))
+                return null;
+            // A helm left unmanned, with no player having hit the ship, is a stall and not a kill; the campaign ends it the same way.
+            if (encounter.ShipHits.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPilot))
+                return WFEncounterResolution.Ended;
             return WFEncounterResolution.Destroyed;
+        }
         if (sides.Count > 1 && fighting.Count == 1)
             return WFEncounterResolution.Decided;
         // A persistent encounter stays for the round, an admin's until he ends it: finished orders and the clock don't

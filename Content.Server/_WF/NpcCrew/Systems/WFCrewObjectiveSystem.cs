@@ -288,7 +288,7 @@ public sealed partial class WFCrewObjectiveSystem : EntitySystem
                 (_transform.ToMapCoordinates(new EntityCoordinates(target, targetGrid.LocalAABB.Center)).Position - from).Length(),
             _ => duty.DockStandoff,
         };
-        return TravelSlack + 2f * distance / MathF.Max(duty.CruiseSpeed, 1f);
+        return TravelSlack + 2f * distance / MathF.Max(_pilots.TravelSpeed(duty, grid), 1f);
     }
 
     /// <summary>

@@ -27,6 +27,8 @@
     deckhands: 4
     guards: 3
     cargo: 4
+    # Jars stowed for the AME: ~40 minutes each, so the hub burns through them in a long round. The restock tops the crate up past that.
+    fuelStores: 12
     skill: Regular
     evades: false
     platform: true
@@ -85,6 +87,7 @@
     vessels: [ Saintie, Vulture, Ganymede ]
     deckhands: 3
     guards: 2
+    fuelStores: 12
     skill: Regular
     evades: false
     warnRange: 900
@@ -198,7 +201,7 @@
   duration: 1800
   ships:
   - key: boarder
-    navigation: WFCrewNavigationRaider
+    navigation: WFCrewNavigationHunter
     side: reavers
     faction: PirateNF
     distress: false
