@@ -12,6 +12,8 @@ public partial class ShuttleNavControl
 {
     private static readonly Color WfSiteColor = Color.FromHex("#ffb347");
     private static readonly Color WfVesselColor = Color.FromHex("#9fc3ff");
+    private static readonly Color WfPersonColor = Color.FromHex("#7fe0ff");
+    private static readonly Color WfPersonHurtColor = Color.FromHex("#ff4b4b");
     private static readonly Color WfExpeditionColor = Color.FromHex("#3fe05a");
 
     /// <summary>Where each world was drawn this frame, in pixels: its blip, the circle round it and its name.</summary>
@@ -22,7 +24,8 @@ public partial class ShuttleNavControl
     private WFPlanetSignalsWindow? _wfSignalsWindow;
 
     /// <summary>
-    /// On a world's layers, marks its sites and the vessels on its other layers; the ship's own expedition site is
+    /// On a world's layers, marks its sites, the vessels on its other layers and the people a medical tracker gives
+    /// away, wherever they are; the ship's own expedition site is
     /// marked in green, with an arrow at the rim while it is off the scope.
     /// </summary>
     private void DrawWfPlanetSignals(DrawingHandleScreen handle, Matrix3x2 worldToView, TransformComponent xform)
@@ -66,8 +69,18 @@ public partial class ShuttleNavControl
                 continue;
             }
 
-            var color = mine ? WfExpeditionColor : signal.Kind == WFPlanetSignalKind.Site ? WfSiteColor : WfVesselColor;
-            if (signal.Kind == WFPlanetSignalKind.Site)
+            var color = mine ? WfExpeditionColor : signal.Kind switch
+            {
+                WFPlanetSignalKind.Site => WfSiteColor,
+                WFPlanetSignalKind.Person => signal.Condition == WFPlanetSignalCondition.Alive ? WfPersonColor : WfPersonHurtColor,
+                _ => WfVesselColor,
+            };
+            if (signal.Kind == WFPlanetSignalKind.Person)
+            {
+                handle.DrawLine(point - new Vector2(size, 0f), point + new Vector2(size, 0f), color);
+                handle.DrawLine(point - new Vector2(0f, size), point + new Vector2(0f, size), color);
+            }
+            else if (signal.Kind == WFPlanetSignalKind.Site)
             {
                 var corner = mine ? size * 1.6f : size;
                 handle.DrawLine(point + new Vector2(0f, -corner), point + new Vector2(corner, 0f), color);
@@ -80,7 +93,9 @@ public partial class ShuttleNavControl
                 handle.DrawRect(UIBox2.FromDimensions(point - new Vector2(size, size), new Vector2(size, size) * 2f), color, false);
             }
 
-            var label = signal.Kind == WFPlanetSignalKind.Site
+            var label = signal.Kind == WFPlanetSignalKind.Person
+                ? Loc.GetString("wf-planet-signals-marker-person", ("name", signal.Name), ("condition", WFPlanetSignalsWindow.ConditionOf(signal)))
+                : signal.Kind == WFPlanetSignalKind.Site
                 ? mine
                     ? Loc.GetString("wf-planet-signals-marker-expedition", ("site", WFPlanetSignalsWindow.NameOf(signal)))
                     : WFPlanetSignalsWindow.NameOf(signal)
@@ -91,7 +106,7 @@ public partial class ShuttleNavControl
         }
     }
 
-    /// <summary>Under a world's name on the radar out in space: how many vessels and sites it holds, and whether the ship's expedition is there.</summary>
+    /// <summary>Over a world's name on the radar out in space: how many vessels, sites and people it holds, and whether the ship's expedition is there.</summary>
     private void WfDrawPlanetSignalTag(DrawingHandleScreen handle, EntityUid body, Vector2 uiPosition, Vector2 labelOffset, string label)
     {
         if (!EntManager.TryGetComponent<WFPlanetSignalsComponent>(body, out var signals))
@@ -108,17 +123,17 @@ public partial class ShuttleNavControl
         {
             if (signal.Kind == WFPlanetSignalKind.Vessel)
                 vessels++;
-            else
+            else if (signal.Kind == WFPlanetSignalKind.Site)
                 sites++;
             mine |= ours != null && signal.Expedition == ours;
         }
 
-        if (vessels == 0 && sites == 0)
+        if (vessels == 0 && sites == 0 && signals.People == 0)
             return;
 
         // Stacked upward from the name, so the detailed lines below it keep their place.
         var at = labelAt;
-        var tag = Loc.GetString("wf-planet-signals-tag", ("vessels", vessels), ("sites", sites));
+        var tag = Loc.GetString("wf-planet-signals-tag", ("vessels", vessels), ("sites", sites), ("people", signals.People));
         at.Y -= handle.GetDimensions(Font, tag, UIScale * 0.7f).Y;
         handle.DrawString(Font, at, tag, UIScale * 0.7f, WfSiteColor);
 

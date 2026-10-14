@@ -4,14 +4,24 @@ using Content.Server._WF.PlanetPois;
 using Content.Server._WF.Planets;
 using Content.Shared._WF.Planets;
 using Content.Shared._WF.PlanetSignals;
+using Content.Shared._WF.Vehicles.Core;
+using Content.Shared.Implants.Components;
+using Content.Shared.Mind;
+using Content.Shared.Mind.Components;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Station;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.PlanetSignals;
 
-/// <summary>Keeps each sector body's list of the vessels on its world's layers and the sites on its ground.</summary>
+/// <summary>
+/// Keeps each sector body's list of the vessels on its world's layers, the sites on its ground and the people on it:
+/// counted, and named only where a medical tracking implant gives them away.
+/// </summary>
 public sealed class WFPlanetSignalsSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -23,7 +33,11 @@ public sealed class WFPlanetSignalsSystem : EntitySystem
     /// <summary>Grids smaller than this many square metres are debris, not vessels.</summary>
     private const float MinVesselArea = 6f;
 
+    /// <summary>The implant that names whoever carries it on a world's signal list.</summary>
+    private static readonly EntProtoId MedicalTracker = "MedicalTrackingImplant";
+
     private TimeSpan _next;
+    private readonly Dictionary<EntityUid, int> _people = new();
     private readonly Dictionary<EntityUid, (EntityUid Body, WFPlanetSignalLayer Layer)> _layers = new();
     private readonly Dictionary<EntityUid, List<WFPlanetSignal>> _found = new();
 
@@ -38,6 +52,7 @@ public sealed class WFPlanetSignalsSystem : EntitySystem
         _next = _timing.CurTime + Interval;
         _layers.Clear();
         _found.Clear();
+        _people.Clear();
 
         var networks = EntityQueryEnumerator<WFPlanetNetworkComponent>();
         while (networks.MoveNext(out var network, out var comp))
@@ -54,8 +69,15 @@ public sealed class WFPlanetSignalsSystem : EntitySystem
                     : WFPlanetSignalLayer.Air);
             }
 
+            foreach (var lower in comp.LowerLayers)
+            {
+                _layers[lower] = (body, WFPlanetSignalLayer.Underground);
+            }
+
             AddSites(comp.GroundMap, signals);
         }
+
+        AddPeople();
 
         var grids = EntityQueryEnumerator<MapGridComponent, TransformComponent>();
         while (grids.MoveNext(out var grid, out var gridComp, out var xform))
@@ -83,10 +105,12 @@ public sealed class WFPlanetSignalsSystem : EntitySystem
                 : a.Position.Y.CompareTo(b.Position.Y));
 
             var comp = EnsureComp<WFPlanetSignalsComponent>(body);
-            if (comp.Signals.SequenceEqual(signals))
+            var people = _people.GetValueOrDefault(body);
+            if (comp.Signals.SequenceEqual(signals) && comp.People == people)
                 continue;
 
             comp.Signals = signals;
+            comp.People = people;
             Dirty(body, comp);
         }
 
@@ -94,12 +118,66 @@ public sealed class WFPlanetSignalsSystem : EntitySystem
         var stale = EntityQueryEnumerator<WFPlanetSignalsComponent>();
         while (stale.MoveNext(out var body, out var comp))
         {
-            if (_found.ContainsKey(body) || comp.Signals.Count == 0)
+            if (_found.ContainsKey(body) || comp.Signals.Count == 0 && comp.People == 0)
                 continue;
 
             comp.Signals = new List<WFPlanetSignal>();
+            comp.People = 0;
             Dirty(body, comp);
         }
+    }
+
+    /// <summary>
+    /// Counts the player characters on each world, living or dead, aboard a vessel or inside a vehicle on it too, and
+    /// lists by name those with a medical tracking implant.
+    /// </summary>
+    private void AddPeople()
+    {
+        var query = EntityQueryEnumerator<MindContainerComponent, MobStateComponent, TransformComponent>();
+        while (query.MoveNext(out var mob, out var container, out var mobState, out var xform))
+        {
+            // A player character, whether or not its player is still with it.
+            if (container.Mind is not { } mindId || !TryComp<MindComponent>(mindId, out var mind)
+                || mind.UserId == null && mind.OriginalOwnerUserId == null)
+                continue;
+
+            // Someone inside a vehicle is wherever the vehicle is.
+            var where = xform;
+            if (xform.MapUid is { } inside && !_layers.ContainsKey(inside)
+                && TryComp<VehicleInteriorOccupantComponent>(mob, out var occupant)
+                && TryComp<TransformComponent>(occupant.Vehicle, out var vehicleXform))
+                where = vehicleXform;
+
+            if (where.MapUid is not { } map || !_layers.TryGetValue(map, out var at))
+                continue;
+
+            _people[at.Body] = _people.GetValueOrDefault(at.Body) + 1;
+            if (!HasMedicalTracker(mob))
+                continue;
+
+            var condition = mobState.CurrentState switch
+            {
+                MobState.Critical => WFPlanetSignalCondition.Critical,
+                MobState.Dead => WFPlanetSignalCondition.Dead,
+                _ => WFPlanetSignalCondition.Alive,
+            };
+            _found[at.Body].Add(new WFPlanetSignal(WFPlanetSignalKind.Person, Name(mob), _transform.GetWorldPosition(where).Floored(),
+                GetNetEntity(map), at.Layer, null, condition));
+        }
+    }
+
+    private bool HasMedicalTracker(EntityUid mob)
+    {
+        if (!TryComp<ImplantedComponent>(mob, out var implanted))
+            return false;
+
+        foreach (var implant in implanted.ImplantContainer.ContainedEntities)
+        {
+            if (MetaData(implant).EntityPrototype?.ID == MedicalTracker.Id)
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>Every site on a ground, named once identified, with the grid of any ship running an expedition there.</summary>

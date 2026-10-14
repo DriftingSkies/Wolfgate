@@ -7,7 +7,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WF.PlanetSignals;
 
-/// <summary>The vessels and sites on one world, opened by clicking it on a radar; kept current while open.</summary>
+/// <summary>The vessels, sites and people on one world, opened by clicking it on a radar; kept current while open.</summary>
 [GenerateTypedNameReferences]
 public sealed partial class WFPlanetSignalsWindow : FancyWindow
 {
@@ -16,6 +16,7 @@ public sealed partial class WFPlanetSignalsWindow : FancyWindow
     private static readonly Color HeadingColor = Color.FromHex("#a0a0a0");
     private static readonly Color SiteColor = Color.FromHex("#ffb347");
     private static readonly Color VesselColor = Color.FromHex("#9fc3ff");
+    private static readonly Color PersonColor = Color.FromHex("#7fe0ff");
     private static readonly Color ExpeditionColor = Color.FromHex("#3fe05a");
 
     private EntityUid _body;
@@ -71,12 +72,16 @@ public sealed partial class WFPlanetSignalsWindow : FancyWindow
                 AddRow(Loc.GetString("wf-planet-signals-expedition", ("site", NameOf(signal)), ("x", signal.Position.X), ("y", signal.Position.Y)), ExpeditionColor);
         }
 
-        if (comp.Signals.Count == 0)
+        if (comp.Signals.Count == 0 && comp.People == 0)
         {
             AddRow(Loc.GetString("wf-planet-signals-none"), HeadingColor);
             return;
         }
 
+        if (comp.People > 0)
+            AddRow(Loc.GetString("wf-planet-signals-people", ("count", comp.People)), PersonColor);
+
+        AddSection(comp.Signals, WFPlanetSignalKind.Person, "wf-planet-signals-tracked", PersonColor);
         AddSection(comp.Signals, WFPlanetSignalKind.Vessel, "wf-planet-signals-vessels", VesselColor);
         AddSection(comp.Signals, WFPlanetSignalKind.Site, "wf-planet-signals-sites", SiteColor);
     }
@@ -94,7 +99,10 @@ public sealed partial class WFPlanetSignalsWindow : FancyWindow
                 AddRow(Loc.GetString(heading), HeadingColor);
             first = false;
 
-            var text = kind == WFPlanetSignalKind.Vessel
+            var text = kind == WFPlanetSignalKind.Person
+                ? Loc.GetString("wf-planet-signals-person", ("name", signal.Name), ("condition", ConditionOf(signal)), ("layer", LayerOf(signal)),
+                    ("x", signal.Position.X), ("y", signal.Position.Y))
+                : kind == WFPlanetSignalKind.Vessel
                 ? Loc.GetString("wf-planet-signals-vessel", ("name", NameOf(signal)), ("layer", LayerOf(signal)), ("x", signal.Position.X), ("y", signal.Position.Y))
                 : Loc.GetString(signal.Expedition == null ? "wf-planet-signals-site" : "wf-planet-signals-site-claimed",
                     ("name", NameOf(signal)), ("x", signal.Position.X), ("y", signal.Position.Y));
@@ -116,14 +124,26 @@ public sealed partial class WFPlanetSignalsWindow : FancyWindow
         return signal.Name.Length > 0 ? Loc.GetString(signal.Name) : Loc.GetString("wf-poi-unknown-signal");
     }
 
-    /// <summary>Where on the world a vessel is: landed, in flight or in orbit.</summary>
+    /// <summary>Where on the world a vessel or person is: landed, in flight, in orbit or underground.</summary>
     public static string LayerOf(WFPlanetSignal signal)
     {
         return Loc.GetString(signal.Layer switch
         {
             WFPlanetSignalLayer.Ground => "wf-planet-signals-layer-ground",
             WFPlanetSignalLayer.Air => "wf-planet-signals-layer-air",
+            WFPlanetSignalLayer.Underground => "wf-planet-signals-layer-underground",
             _ => "wf-planet-signals-layer-orbit",
+        });
+    }
+
+    /// <summary>How a tracked person is doing.</summary>
+    public static string ConditionOf(WFPlanetSignal signal)
+    {
+        return Loc.GetString(signal.Condition switch
+        {
+            WFPlanetSignalCondition.Critical => "wf-planet-signals-condition-critical",
+            WFPlanetSignalCondition.Dead => "wf-planet-signals-condition-dead",
+            _ => "wf-planet-signals-condition-alive",
         });
     }
 }

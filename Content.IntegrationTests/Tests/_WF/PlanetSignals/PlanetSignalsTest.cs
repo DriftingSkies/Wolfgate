@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Content.IntegrationTests.Tests._WF.Planets;
 using Content.Server._WF.PlanetPois;
 using Content.Server._WF.Planets;
@@ -9,7 +10,10 @@ using Content.Server.Station.Systems;
 using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Planets;
 using Content.Shared._WF.PlanetSignals;
+using Content.Shared.Implants;
+using Content.Shared.Implants.Components;
 using Content.Shared.Maps;
+using Content.Shared.Mind;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
 using Content.Shared.Station.Components;
@@ -104,6 +108,23 @@ public sealed class PlanetSignalsTest
                 entMan.AddComponent<StationDataComponent>(station);
                 stations.AddGridToStation(station, hauler);
                 site.ExpeditionClaim = station;
+
+                // Two player characters on the ground; only the one with a medical tracker is named.
+                var minds = server.System<SharedMindSystem>();
+                Person("WF Test Hiker", new Vector2(4f, 4f));
+                var tracked = Person("WF Test Medic", new Vector2(6f, 4f));
+                var implant = entMan.SpawnEntity("MedicalTrackingImplant", MapCoordinates.Nullspace);
+                server.System<SharedSubdermalImplantSystem>().ForceImplant(tracked, implant, entMan.GetComponent<SubdermalImplantComponent>(implant));
+
+                EntityUid Person(string name, Vector2 at)
+                {
+                    var mob = entMan.SpawnEntity("MobHuman", new EntityCoordinates(ground, at));
+                    server.System<MetaDataSystem>().SetEntityName(mob, name);
+                    // The pair's one player owns both in turn: the first keeps its player as its original owner.
+                    var mind = minds.CreateMind(pair.Client.Session!.UserId, name);
+                    minds.TransferTo(mind, mob, mind: mind.Comp);
+                    return mob;
+                }
             });
 
             await server.WaitRunTicks(90);
@@ -127,6 +148,13 @@ public sealed class PlanetSignalsTest
                 var claimed = sites.Single(site => site.Expedition != null);
                 Assert.That(claimed.Name, Is.EqualTo("wf-poi-asclepiu-research"));
                 Assert.That(claimed.Expedition, Is.EqualTo(entMan.GetNetEntity(hauler)), "The expedition site does not name the ship running it.");
+
+                var comp = entMan.GetComponent<WFPlanetSignalsComponent>(body);
+                var people = signals.Where(signal => signal.Kind == WFPlanetSignalKind.Person).ToList();
+                Assert.That(comp.People, Is.EqualTo(2), "The world does not count the people on it.");
+                Assert.That(people.Select(person => person.Name), Is.EquivalentTo(new[] { "WF Test Medic" }),
+                    "Only the person with a medical tracker should be named.");
+                Assert.That(people[0].Condition, Is.EqualTo(WFPlanetSignalCondition.Alive));
             });
         }
         finally
