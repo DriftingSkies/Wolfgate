@@ -47,7 +47,7 @@ public sealed partial class WFVehicleShopWindow : FancyWindow
         PadLabel.Text = state.Pad switch
         {
             WFVehicleShopPad.Missing => Loc.GetString("wf-vehicle-shop-pad-missing"),
-            WFVehicleShopPad.Blocked => Loc.GetString("wf-vehicle-shop-pad-blocked"),
+            WFVehicleShopPad.Blocked => Loc.GetString("wf-vehicle-shop-pad-blocked", ("thing", state.PadVehicle ?? string.Empty)),
             WFVehicleShopPad.Vehicle => Loc.GetString(state.Occupied ? "wf-vehicle-shop-pad-occupied" : "wf-vehicle-shop-pad-vehicle",
                 ("vehicle", state.PadVehicle ?? string.Empty)),
             _ => Loc.GetString("wf-vehicle-shop-pad-clear"),

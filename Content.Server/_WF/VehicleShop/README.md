@@ -3,10 +3,11 @@
 Vehicle purchase terminals. A terminal (`WFVehicleShopComponent`) sells the vehicles of its catalogue
 (`wfVehicleCatalog`, `Resources/Prototypes/_WF/VehicleShop/catalogs.yml`) onto the nearest delivery pad
 (`WFVehicleDeliveryPad`) on its grid within 16 metres. The window lists each vehicle with a picture and its price; Buy
-takes the price from the customer's bank and delivers the vehicle onto the pad, if the pad is clear (nothing solid within
-2.5 metres). A vehicle parked on the pad is sold back from the same window for 75% of the lower of its appraised value
+takes the price from the customer's bank and delivers the vehicle onto the pad, if the pad is clear: nothing solid in the
+room the biggest vehicle of the catalogue takes up (loose items and what lies under the floor don't count), and the
+window names whatever is in the way. A vehicle parked on the pad is sold back from the same window for 75% of the lower of its appraised value
 and its listed price, paid into the bank (as cash for an Ironman); a vehicle with anyone or anything dragged still inside
-can't be sold. Mappers place a terminal and a pad with a five-metre square kept clear round it.
+can't be sold. Mappers place a terminal and a pad with room for the biggest vehicle round it.
 
 The first terminal is `WFComputerVehicleShopExpeditionary` with `WFVehicleCatalogExpeditionary`: two small cargo trucks,
 the box and pizza vans, the ambulance and the transport and medical humvees. Prices sit about a fifth over each

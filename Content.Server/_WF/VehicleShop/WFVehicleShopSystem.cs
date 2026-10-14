@@ -1,16 +1,21 @@
-using Content.Server._NF.Bank;
+using System.Numerics;
 using Content.Server.Administration.Logs;
 using Content.Server.Cargo.Systems;
 using Content.Server.Stack;
-using Content.Shared._Mono.Traits.Physical;
-using Content.Shared._WF.Vehicles.Base;
-using Content.Shared._WF.Vehicles.Core;
-using Content.Shared._WF.VehicleShop;
+using Content.Server._NF.Bank;
 using Content.Shared.Database;
+using Content.Shared.Item;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.SubFloor;
+using Content.Shared._Mono.Traits.Physical;
+using Content.Shared._WF.VehicleShop;
+using Content.Shared._WF.Vehicles.Base;
+using Content.Shared._WF.Vehicles.Core;
 using Robust.Server.GameObjects;
+using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
 
@@ -115,9 +120,10 @@ public sealed class WFVehicleShopSystem : EntitySystem
     private void UpdateUi(Entity<WFVehicleShopComponent> ent, EntityUid user)
     {
         var catalog = _proto.Index(ent.Comp.Catalog);
-        var (_, status, vehicle) = InspectPad(ent);
+        var (_, status, thing) = InspectPad(ent);
         int? balance = _bank.TryGetBalance(user, out var funds) ? funds : null;
-        var name = vehicle is { } padVehicle ? Name(padVehicle) : null;
+        var vehicle = status == WFVehicleShopPad.Vehicle ? thing : null;
+        var name = thing is { } onPad ? Name(onPad) : null;
         var price = vehicle is { } priced ? SellPrice(ent, priced) : 0;
         var occupied = vehicle is { } inside && IsOccupied(inside);
 
@@ -126,10 +132,11 @@ public sealed class WFVehicleShopSystem : EntitySystem
     }
 
     /// <summary>
-    /// The terminal's pad, the nearest on its grid within reach, and what stands on it: a vehicle, anything else solid,
-    /// or nothing.
+    /// The terminal's pad, the nearest on its grid within reach, and what stands on it: a vehicle, anything else solid
+    /// inside the room the biggest vehicle of the catalogue needs (<see cref="WFVehicleShopPad.Blocked"/>, with the
+    /// first such thing), or nothing.
     /// </summary>
-    public (EntityUid? Pad, WFVehicleShopPad Status, EntityUid? Vehicle) InspectPad(Entity<WFVehicleShopComponent> ent)
+    public (EntityUid? Pad, WFVehicleShopPad Status, EntityUid? Thing) InspectPad(Entity<WFVehicleShopComponent> ent)
     {
         var xform = Transform(ent);
         var origin = _transform.GetWorldPosition(xform);
@@ -153,29 +160,65 @@ public sealed class WFVehicleShopSystem : EntitySystem
         if (pad is not { } padUid)
             return (null, WFVehicleShopPad.Missing, null);
 
-        var clearance = Comp<WFVehicleDeliveryPadComponent>(padUid).Clearance;
+        // A vehicle parked anywhere near the pad is the one for sale.
         var coords = _transform.GetMapCoordinates(padUid);
-        EntityUid? vehicle = null;
-        var blocked = false;
-        foreach (var other in _lookup.GetEntitiesInRange(coords, clearance, LookupFlags.Dynamic | LookupFlags.Static))
+        foreach (var other in _lookup.GetEntitiesInRange(coords, Comp<WFVehicleDeliveryPadComponent>(padUid).Clearance, LookupFlags.Dynamic))
         {
-            if (other == padUid)
-                continue;
-
             if (HasComp<RMCVehicleComponent>(other))
-            {
-                vehicle ??= other;
-                continue;
-            }
-
-            if (TryComp<PhysicsComponent>(other, out var body) && body.CanCollide && body.Hard)
-                blocked = true;
+                return (pad, WFVehicleShopPad.Vehicle, other);
         }
 
-        if (vehicle != null)
-            return (pad, WFVehicleShopPad.Vehicle, vehicle);
+        // Anything solid where the biggest vehicle on sale would stand keeps the pad shut.
+        var footprint = Footprint(ent.Comp.Catalog).Translated(coords.Position);
+        // The vehicle is delivered square to the deck, whichever way the pad itself was turned.
+        var area = new Box2Rotated(footprint, _transform.GetWorldRotation(Transform(padUid).ParentUid), coords.Position);
+        foreach (var other in _lookup.GetEntitiesIntersecting(coords.MapId, area, LookupFlags.Dynamic | LookupFlags.Static))
+        {
+            if (Blocks(other, padUid))
+                return (pad, WFVehicleShopPad.Blocked, other);
+        }
 
-        return (pad, blocked ? WFVehicleShopPad.Blocked : WFVehicleShopPad.Clear, null);
+        return (pad, WFVehicleShopPad.Clear, null);
+    }
+
+    /// <summary>Whether something would be in a delivered vehicle's way: solid, and neither loose items nor what lies under the floor.</summary>
+    private bool Blocks(EntityUid other, EntityUid pad)
+    {
+        if (other == pad
+            || HasComp<MapGridComponent>(other)
+            || HasComp<MapComponent>(other)
+            || HasComp<ItemComponent>(other)
+            || HasComp<SubFloorHideComponent>(other))
+            return false;
+
+        return TryComp<PhysicsComponent>(other, out var body) && body.CanCollide && body.Hard;
+    }
+
+    /// <summary>The room the biggest vehicle of a catalogue takes up, about the pad, from the hard fixtures of each.</summary>
+    private Box2 Footprint(ProtoId<WFVehicleCatalogPrototype> catalog)
+    {
+        Box2? bounds = null;
+        foreach (var listing in _proto.Index(catalog).Vehicles)
+        {
+            if (!_proto.Index(listing.Vehicle).TryGetComponent<Robust.Shared.Physics.FixturesComponent>(out var fixtures, EntityManager.ComponentFactory))
+                continue;
+
+            foreach (var fixture in fixtures.Fixtures.Values)
+            {
+                if (!fixture.Hard)
+                    continue;
+
+                for (var child = 0; child < fixture.Shape.ChildCount; child++)
+                {
+                    var box = fixture.Shape.ComputeAABB(Robust.Shared.Physics.Transform.Empty, child);
+                    bounds = bounds?.Union(box) ?? box;
+                }
+            }
+        }
+
+        // Shrunk a little, so a wall just outside the room doesn't count as inside it.
+        var room = bounds ?? Box2.CenteredAround(Vector2.Zero, new Vector2(3f, 3f));
+        return new Box2(room.Left + 0.05f, room.Bottom + 0.05f, room.Right - 0.05f, room.Top - 0.05f);
     }
 
     /// <summary>

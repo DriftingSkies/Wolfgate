@@ -55,11 +55,30 @@ public sealed class VehicleShopTest
         });
         await server.WaitRunTicks(5);
 
+        // A crate on the pad is in the way, and named; a tool dropped there isn't.
+        EntityUid crate = default, tool = default;
+        await server.WaitPost(() =>
+        {
+            crate = entMan.SpawnEntity("CrateGenericSteel", new EntityCoordinates(map.Grid.Owner, 13.5f, 12.5f));
+            tool = entMan.SpawnEntity("Wrench", new EntityCoordinates(map.Grid.Owner, 12.5f, 12.5f));
+        });
+        await server.WaitRunTicks(3);
+        await server.WaitAssertion(() =>
+        {
+            var (_, status, thing) = shop.InspectPad((terminal, entMan.GetComponent<WFVehicleShopComponent>(terminal)));
+            Assert.That(status, Is.EqualTo(WFVehicleShopPad.Blocked), "A crate on the pad didn't block it.");
+            Assert.That(thing, Is.EqualTo(crate), "The pad named the wrong thing in the way.");
+            entMan.DeleteEntity(crate);
+        });
+        await server.WaitRunTicks(2);
+
         var before = 0;
         await server.WaitAssertion(() =>
         {
             Assert.That(index, Is.GreaterThanOrEqualTo(0), "The box van is not in the expeditionary catalogue.");
-            Assert.That(shop.InspectPad((terminal, entMan.GetComponent<WFVehicleShopComponent>(terminal))).Status, Is.EqualTo(WFVehicleShopPad.Clear));
+            Assert.That(shop.InspectPad((terminal, entMan.GetComponent<WFVehicleShopComponent>(terminal))).Status, Is.EqualTo(WFVehicleShopPad.Clear),
+                "A tool lying on the pad blocked it.");
+            entMan.DeleteEntity(tool);
             before = entMan.GetComponent<BankAccountComponent>(payer).Balance;
             entMan.EventBus.RaiseLocalEvent(terminal, new WFVehicleShopBuyMessage(index) { Actor = payer });
         });

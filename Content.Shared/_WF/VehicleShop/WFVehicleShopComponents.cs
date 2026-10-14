@@ -23,7 +23,7 @@ public sealed partial class WFVehicleShopComponent : Component
 [RegisterComponent]
 public sealed partial class WFVehicleDeliveryPadComponent : Component
 {
-    /// <summary>How far round the pad must be free of anything solid for a delivery.</summary>
+    /// <summary>How far from the pad a parked vehicle counts as standing on it, to be sold.</summary>
     [DataField]
     public float Clearance = 2.5f;
 }
@@ -67,7 +67,7 @@ public sealed class WFVehicleShopState(
 
     public readonly WFVehicleShopPad Pad = pad;
 
-    /// <summary>The name of the vehicle on the pad, and what it would fetch.</summary>
+    /// <summary>The name of the vehicle on the pad, or of what is in the way, and what the vehicle would fetch.</summary>
     public readonly string? PadVehicle = padVehicle;
 
     public readonly int SellPrice = sellPrice;
