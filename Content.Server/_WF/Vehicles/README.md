@@ -11,7 +11,10 @@ Wolfgate's own ride-on vehicles (`Content.Shared/Vehicle`: hoverbikes, janicarts
 base layer is renamed `RMCVehicle*` so the two cannot clash.
 
 Players walk up to a vehicle's doorway and use it to go in, sit in a seat to drive or man a gun, steer with the move keys,
-and use the horn, spotlight and overcharge button while driving. Leaving puts you on free floor you can walk to from the
+and use the horn, spotlight and overcharge button while driving. The driver turns the view outside with the camera keys
+(the four-way drive follows the turned view), coming inside turns the view to the interior's north, and the driver's seat
+carries the vehicle's mass scanner (`WFVehicleScannerSystem`): a hotbar action opens a radar that looks out from the
+vehicle, with its position, the world's terrain and its sites. Leaving puts you on free floor you can walk to from the
 hull, never behind a wall, a closed door or a deck edge; a vehicle walled in on every side keeps you inside. A prying tool
 on the vehicle opens the hardpoint window to fit or remove parts; a welder repairs them. A gunner picks a hardpoint in the
 seat's window or on the hotbar and aims with the cursor, and the turret turns to follow; rounds aimed at a point stop at
@@ -167,6 +170,8 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Hardpoint/VehicleSupportModifierComponents.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/VehicleSupportModifierComponents.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/VehicleTurretSlotIds.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/VehicleTurretSlotIds.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/VehicleWeaponSupportSystem.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/VehicleWeaponSupportSystem.cs)
+- [`Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerComponent.cs`](../../../Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerComponent.cs)
+- [`Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerSystem.cs`](../../../Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Turret/VehicleTurretAttachmentComponent.cs`](../../../Content.Shared/_WF/Vehicles/Turret/VehicleTurretAttachmentComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Turret/VehicleTurretComponent.cs`](../../../Content.Shared/_WF/Vehicles/Turret/VehicleTurretComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Turret/VehicleTurretDirectionHelpers.cs`](../../../Content.Shared/_WF/Vehicles/Turret/VehicleTurretDirectionHelpers.cs)
@@ -225,6 +230,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Client/_WF/Vehicles/Ui/HardpointBoundUserInterface.cs`](../../../Content.Client/_WF/Vehicles/Ui/HardpointBoundUserInterface.cs)
 - [`Content.Client/_WF/Vehicles/Ui/HardpointMenu.cs`](../../../Content.Client/_WF/Vehicles/Ui/HardpointMenu.cs)
 - [`Content.Client/_WF/Vehicles/Ui/HardpointMenu.xaml`](../../../Content.Client/_WF/Vehicles/Ui/HardpointMenu.xaml)
+- [`Content.Client/_WF/Vehicles/Ui/ShuttleNavControl.VehicleScanner.cs`](../../../Content.Client/_WF/Vehicles/Ui/ShuttleNavControl.VehicleScanner.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderBoundUserInterface.cs`](../../../Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderBoundUserInterface.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.cs`](../../../Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.xaml`](../../../Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.xaml)
@@ -682,6 +688,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - passes the flag on
   - takes the click-through flag of the overload above
   - a click passes through the cabin roof or wall the player stands inside
+- [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): a vehicle scanner marks the vehicle and its position.
 - [`Content.Client/Sprite/SpriteFadeSystem.cs`](../../../Content.Client/Sprite/SpriteFadeSystem.cs): roofs the player stands under still fade
 - [`Content.Client/Weapons/Ranged/Systems/GunSystem.cs`](../../../Content.Client/Weapons/Ranged/Systems/GunSystem.cs)
   - an operator on another map aims relative to the grid under the gun, which is on the map the cursor is over
@@ -693,6 +700,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - a listener may see the speech bubble on another entity
   - bubbleSource in place of source
   - BubbleSource, the entity this listener sees the bubble on
+- [`Content.Server/Shuttles/Systems/RadarConsoleSystem.cs`](../../Shuttles/Systems/RadarConsoleSystem.cs): a vehicle's scanner looks out from the vehicle, not from the seat inside it.
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
   - the origin is settled before the event so handlers can move it and the target

@@ -399,7 +399,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 continue;
             }
 
-            var input = GetMoverInput(vehicle);
+            var input = GetMoverInput(vehicle, xform);
             var accumulator = _movementAccumulator.GetValueOrDefault(uid) + frameTime;
             var maxAccum = MovementFixedStep * MaxFixedStepsPerFrame;
             if (accumulator > maxAccum)

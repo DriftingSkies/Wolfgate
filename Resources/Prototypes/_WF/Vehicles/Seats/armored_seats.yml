@@ -10,6 +10,8 @@
     mode: SnapgridCenter
   components:
   - type: VehicleDriverSeat
+  - type: WFVehicleScanner
+  - type: RadarConsole
   - type: VehicleWeaponsSeat
     isPrimaryOperatorSeat: false
     allowUiSelection: false
@@ -20,6 +22,8 @@
     interfaces:
       enum.VehicleWeaponsUiKey.Key:
         type: VehicleWeaponsBoundUserInterface
+      enum.RadarConsoleUiKey.Key:
+        type: RadarConsoleBoundUserInterface
 
 - type: entity
   parent: RMCSeatArmoredBase

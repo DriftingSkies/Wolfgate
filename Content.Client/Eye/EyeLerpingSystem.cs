@@ -162,7 +162,11 @@ public sealed partial class EyeLerpingSystem : EntitySystem
         var watched = new EyeWatchedGridEvent();
         RaiseLocalEvent(uid, ref watched);
         if (watched.Relative is { } watchedRelative)
-            return -_transform.GetWorldRotation(watchedRelative);
+        {
+            // The watcher's own camera turn still applies, so a driver can rotate the view outside.
+            var turn = Resolve(uid, ref mover, false) ? mover.RelativeRotation : Angle.Zero;
+            return -(_transform.GetWorldRotation(watchedRelative) + turn);
+        }
         // WOLFGATE END
 
         // If we can move then tie our eye to our inputs (these also get lerped so it should be fine).

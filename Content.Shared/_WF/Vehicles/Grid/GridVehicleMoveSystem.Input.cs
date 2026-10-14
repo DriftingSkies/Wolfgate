@@ -15,7 +15,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     /// <summary>What the driver asks for: a grid direction for the four-way drive, throttle and steering for the free one.</summary>
     private readonly record struct VehicleControlInput(Vector2i Direction, float Throttle, float Steering);
 
-    private Vector2i GetInputDirection(InputMoverComponent input)
+    private Vector2i GetInputDirection(InputMoverComponent input, Angle turn)
     {
         var buttons = input.HeldMoveButtons;
         var dir = Vector2i.Zero;
@@ -36,11 +36,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 dir = new Vector2i(0, Math.Sign(dir.Y));
         }
 
-        return dir;
+        var turned = turn.RotateVec(new Vector2(dir.X, dir.Y));
+        return new Vector2i((int) MathF.Round(turned.X), (int) MathF.Round(turned.Y));
     }
 
     /// <summary>The operator's held keys; a driver who is dead, unconscious or stunned steers nothing, whatever keys they still hold.</summary>
-    private VehicleControlInput GetMoverInput(RMCVehicleComponent vehicle)
+    private VehicleControlInput GetMoverInput(RMCVehicleComponent vehicle, TransformComponent vehicleXform)
     {
         if (vehicle.Operator is not { } op)
             return default;
@@ -64,6 +65,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if ((buttons & MoveButtons.Right) != 0)
             steering -= 1f;
 
-        return new VehicleControlInput(GetInputDirection(inputComp), throttle, steering);
+        // A driver watching from the interior has the outside view turned by their camera keys; the four-way drive goes
+        // where the keys point on that view. One standing on the vehicle's own map drives by the grid, as before.
+        var turn = Transform(op).MapID != vehicleXform.MapID
+            ? inputComp.TargetRelativeRotation.GetCardinalDir().ToAngle()
+            : Angle.Zero;
+
+        return new VehicleControlInput(GetInputDirection(inputComp, turn), throttle, steering);
     }
 }

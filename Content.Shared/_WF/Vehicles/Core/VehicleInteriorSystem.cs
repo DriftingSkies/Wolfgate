@@ -15,6 +15,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
 using Robust.Shared.EntitySerialization;
@@ -158,6 +159,7 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
 
         var targetMapCoords = _transform.ToMapCoordinates(coords);
         _rmcTeleporter.HandlePulling(user, targetMapCoords);
+        FaceInteriorNorth(user);
         return true;
     }
 
@@ -747,6 +749,25 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
         }
 
         RemCompDeferred<VehicleInteriorOccupantComponent>(ent.Owner);
+    }
+
+    /// <summary>Turns the view of someone who has just come inside round to the interior's north, over the usual camera turn.</summary>
+    private void FaceInteriorNorth(EntityUid user)
+    {
+        if (!TryComp(user, out InputMoverComponent? mover))
+            return;
+
+        var xform = Transform(user);
+        var relative = xform.GridUid ?? xform.MapUid;
+        var before = TryComp(mover.RelativeEntity, out TransformComponent? oldXform) ? _transform.GetWorldRotation(oldXform) : Angle.Zero;
+        var after = relative is { } now ? _transform.GetWorldRotation(now) : Angle.Zero;
+
+        // The view starts where it was outside and turns from there.
+        mover.RelativeRotation -= after - before;
+        mover.RelativeEntity = relative;
+        mover.TargetRelativeRotation = Angle.Zero;
+        mover.LerpTarget = TimeSpan.Zero;
+        Dirty(user, mover);
     }
 
     private void OnOccupantMetaFlagRemoveAttempt(Entity<VehicleInteriorOccupantComponent> ent, ref MetaFlagRemoveAttemptEvent args)

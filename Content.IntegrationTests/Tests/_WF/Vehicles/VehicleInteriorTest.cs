@@ -6,6 +6,7 @@ using System.Numerics;
 using Content.IntegrationTests.Pair;
 using Content.Shared._WF.Vehicles.Base;
 using Content.Shared._WF.Vehicles.Core;
+using Content.Shared._WF.Vehicles.Scanner;
 using Content.Shared._WF.Vehicles.Viewport;
 using Content.Shared.Actions;
 using Content.Shared.Bed.Sleep;
@@ -17,6 +18,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Standing;
@@ -351,11 +353,19 @@ public sealed class VehicleInteriorTest
         });
         await server.WaitRunTicks(5);
 
+        // The user has turned their view outside; coming in turns it to the interior's north.
+        await server.WaitPost(() => entMan.GetComponent<InputMoverComponent>(user).TargetRelativeRotation = Angle.FromDegrees(90));
+
         await Enter(pair, rig, user, 0);
 
         await server.WaitAssertion(() =>
         {
             Assert.That(MapOf(pair, user), Is.EqualTo(Interior(pair, rig).MapId), "The user did not get in through the doorway on a turned grid.");
+
+            var mover = entMan.GetComponent<InputMoverComponent>(user);
+            Assert.That(mover.TargetRelativeRotation, Is.EqualTo(Angle.Zero), "Coming in did not turn the view to north.");
+            Assert.That(entMan.GetComponent<TransformComponent>(mover.RelativeEntity!.Value).MapID, Is.EqualTo(Interior(pair, rig).MapId),
+                "The view is not held to the interior.");
 
             // The ship moves and turns while the user is inside.
             var xform = server.System<SharedTransformSystem>();
@@ -649,6 +659,12 @@ public sealed class VehicleInteriorTest
                 Assert.That(entMan.HasComponent<VehicleLockActionComponent>(user), Is.True, "The driver has no lock action.");
                 Assert.That(entMan.HasComponent<VehicleViewToggleComponent>(user), Is.True, "The driver has no view toggle.");
             }
+
+            // The seat's scanner: an action for the driver, looking out from the vehicle.
+            FindAction(pair, user, "WFActionVehicleScanner");
+            var origin = new WFRadarOriginEvent();
+            entMan.EventBus.RaiseLocalEvent(seat, ref origin);
+            Assert.That(origin.Origin, Is.EqualTo(rig.Vehicle), "The driver's scanner does not look out from the vehicle.");
         });
 
         // The lock action drives the same lock the keys use; the view action swaps the driver's eye.
@@ -687,6 +703,9 @@ public sealed class VehicleInteriorTest
                 Assert.That(entMan.HasComponent<VehicleLockActionComponent>(user), Is.False);
                 Assert.That(entMan.HasComponent<VehicleViewToggleComponent>(user), Is.False);
                 Assert.That(entMan.GetComponent<EyeComponent>(user).Target, Is.Null, "The driver's eye is still on the vehicle.");
+                Assert.That(entMan.GetComponent<ActionsComponent>(user).Actions
+                    .Any(action => entMan.GetComponent<MetaDataComponent>(action).EntityPrototype?.ID == "WFActionVehicleScanner"),
+                    Is.False, "The scanner action stayed with someone who got up.");
             }
         });
 
