@@ -267,6 +267,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCompatTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCompatTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCoreFeaturesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCoreFeaturesTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCrushingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCrushingTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleDraggedCrateTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleDraggedCrateTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleEventProbeSystem.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleEventProbeSystem.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallBodyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallBodyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallRigs.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallRigs.cs)
