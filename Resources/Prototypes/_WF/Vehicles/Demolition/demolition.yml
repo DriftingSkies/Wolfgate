@@ -1,0 +1,22 @@
+# Blowing up a vehicle wreck: the charge that rigs it and the blast it leaves.
+
+- type: entity
+  parent: C4
+  id: WFVehicleDemolitionCharge
+  categories: [ WFVehicles ]
+  components:
+  - type: RMCVehicleDemolitionCharge
+
+# FireBomb breaks no floor and does no structural damage, so a wreck on a ship deck cannot hole the hull; it burns instead.
+# Intensity numbers are RMC's wreck explosion.
+- type: entity
+  id: WFVehicleWreckExplosion
+  categories: [ HideSpawnMenu, WFVehicles ]
+  components:
+  - type: Transform
+  - type: Explosive
+    explosionType: FireBomb
+    totalIntensity: 1500
+    intensitySlope: 6
+    maxIntensity: 45
+    canCreateVacuum: false

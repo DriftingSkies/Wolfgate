@@ -1,0 +1,191 @@
+# What convert_interior_map.py changes in a vehicle interior map. Keys are the source's names.
+#
+#   prototypes   source id -> Wolfgate id, or null to delete the placement (and everything parented to it).
+#   map_prototypes   the same, for one output map only (keyed by output file name); it wins over `prototypes`.
+#   components   source name -> Wolfgate name, or null to drop the block (and its missingComponents entry).
+#   component_fields   fields that no longer exist on a component, removed from its blocks.
+#   tiles        source name -> Wolfgate name (null becomes Space).
+#   provided_by  ids that a roster package still has to define under the same id, found by reading the source files
+#                (`paths` are folders or files of prototypes, `ids` are listed by hand, `component_roots` are folders of C#
+#                whose registered components are ported). They are reported as pending, not unmapped.
+#   known_engine_components   registered by RobustToolbox, which the script does not read.
+#   map_atmosphere  a MapAtmosphere the map entity gets when it has none (see below).
+#   cabin_tile   the tile laid under a placed entity the source left over an empty tile (see below).
+#
+# An id the Wolfgate tree already defines needs no entry. Run the script with --dry-run over --rmc-all --cmu-all to see
+# what is still unmapped.
+
+prototypes:
+  # Furniture and props that have a Wolfgate twin.
+  CMChairComfy: ComfyChair
+  CMTableReinforcedBlack: TableReinforcedBlack
+  RMCTablePrison: Table
+  RMCTableTOCEast: Table
+  RMCTableTOCWest: Table
+  # CMU's plain passenger seat: CMSeatPassenger without the damage components RemoveComponents stripped.
+  RMCSeatVehiclePassenger: CMSeatPassenger
+  CMWindoor: WFVehicleWindoor
+  CMWindoorSecure: WFVehicleWindoorSecure
+  RMCBarricadeHandrail: Railing
+  CMRandomPosterAny: RandomPosterAny
+
+  # Medical fittings.
+  CMDefibrillator: Defibrillator
+  CMUDefibrillatorCabinetFilled: DefibrillatorCabinetFilled
+  CMRollerBed: RollerBed
+  RMCRollerBedHospitalSheet2: RollerBed
+  CMPortableSurgicalBed: OperatingTable
+  CMIV: WFWolfmedIvDrip
+  AU14IVFoldable: WFWolfmedIvDrip
+
+  # Cargo of the pizza van and the AEV.
+  RMCBoxPizzaGalaxyMystery: FoodBoxPizzaFilled
+  RMCCrateFreezer: CrateFreezer
+  RMCSheetCardboard25: MaterialCardboard
+  RMCCrateGreen: CrateGenericSteel
+  RMCCrateMetalSheets: CrateMaterialSteel
+  RMCCratePlasteelSheets: CrateMaterialPlasteel
+
+  # Lights that need no APC (the interior grid has none).
+  RMCLightFixtureSmallAlwaysPowered: AlwaysPoweredWallLight
+  RMCLightFixtureSmallBlueAlwaysPoweredOffset: AlwaysPoweredlightBlue
+
+  # No Wolfgate meaning: marine command equipment, phones, the rifle rack, strapped cases, loot spawners, the radio relay,
+  # and the vendors (CMAutomatedVendor is not ported; the nanomed props stay, reparented by the roster package).
+  RMCOverwatchConsole: null
+  RMCOverwatchConsoleSPPTOCRotating: null
+  RMCOverwatchConsoleTOCMapRotating: null
+  RMCOverwatchConsoleTOCShuttle: null
+  RMCGroundsideOperationsConsole: null
+  RMCTacticalMapTable: null
+  RMCComputerIntel: null
+  RMCRotaryPhoneWallmount: null
+  VehicleInteriorWallPhone: null
+  RMCGunRackType71Filled: null
+  RMCSecureCaseStrapped: null
+  RMCSpawnerRandomCrateLoot: null
+  CMEffectGrab: null
+  # The stasis bag lies buckled on the ambulance's surgical bed; the bed's own strap list is cleaned up with it.
+  CMStasisBag: null
+  AU14VehicleRadioSet: null
+  VehicleAPCSupplyVendor: null
+  VehicleInteriorMedVendor: null
+  VehicleInteriorMedVendorVend: null
+  VehicleInteriorBloodVendor: null
+  VehicleHumveeBloodVendor: null
+  VehicleHumveeBloodVendorVend: null
+
+# The AEV has no weapons hardpoints, so its driver sits in the plain armored driver seat, not the tank's driver seat (which is a
+# weapons seat and would give the vehicle a weapons component).
+map_prototypes:
+  cmu_arv.yml:
+    RMCSeatTankDriver: RMCSeatArmoredDriver
+
+components:
+  # Areas are not ported, and the interior grid gets its air from the map (see the brief's atmosphere decision).
+  AreaGrid: null
+  GridAtmosphere: null
+  GasTileOverlay: null
+  # Stripped everywhere; the interior prototypes no longer inherit what it removed.
+  RemoveComponents: null
+
+component_fields:
+  # Skill gates are gone; the seat attempt event replaces them.
+  VehicleDriverSeat: [skills]
+  VehicleWeaponsSeat: [skills]
+  VehiclePortGunSeat: [skills]
+  VehicleDemolition: [skills]
+
+tiles:
+  CMFloorPlate: FloorSteel
+
+# With the grid's own atmosphere gone, the cabin reads the map's. RMC's maps carry none, so every converted map gets the
+# standard-air mixture the hand-made test interior has: oxygen and nitrogen, immutable, 12 gas entries.
+map_atmosphere:
+  volume: 2500
+  temperature: 293.15
+  gas_count: 12
+  moles:
+  - 21.824879
+  - 82.10312
+
+# The out-of-bounds sweep treats every empty tile of an interior grid as outside the cabin, and RMC never had a sweep: some
+# maps stand a seat, a locker or a wall fitting over a gap in the wall ring (the SPP APC's two alcove seats are even parented
+# to the map entity, not the grid). The converter lays this tile under any placed entity over an empty tile that touches
+# the cabin, so someone buckled in such a seat is not sent back to the entry point. RMCVoid is what the maps already ring
+# their floors with. An empty tile that touches nothing (a stray marker out in space) is left alone and reported.
+cabin_tile: RMCVoid
+
+provided_by:
+  - source: rmc
+    note: ported by the interior and roster packages under the same id
+    paths:
+      - Resources/Prototypes/_RMC14/Vehicles
+      - Resources/Prototypes/_RMC14/Entities/Structures/Dropships/vehicle_seats.yml
+      - Resources/Prototypes/_RMC14/Entities/Markers/rmc_vehicle_blocker.yml
+    ids:
+      - RMCWallInvisibleBulletBlocker
+      - RMCWallInvisibleBulletLightBlocker
+    component_roots:
+      - Content.Shared/_RMC14/Vehicle
+      - Content.Shared/Vehicle
+      - Content.Server/_RMC14/Vehicle
+      - Content.Client/_RMC14/Vehicle
+      # The gun add-ons the armed hardpoints use (WP9, WP11, WP12).
+      - Content.Shared/_RMC14/Weapons/Ranged
+      - Content.Server/_RMC14/Trigger
+  - source: cmu
+    note: CMU-only interior pieces, re-authored by the CMU package
+    paths:
+      - Resources/Prototypes/_RMC14/Entities/Structures/Dropships/vehicle_seats.yml
+      - Content.CMU/Resources/Prototypes/CMU14/Vehicles
+    component_roots:
+      - Content.CMU/Shared/Vehicle
+
+known_engine_components:
+  - ActiveUserInterface
+  - Actor
+  - AnimationPlayer
+  - Appearance
+  - Audio
+  - AudioAuxiliary
+  - AudioEffect
+  - AudioPreset
+  - Broadphase
+  - CollideOnAnchor
+  - CollisionWake
+  - ContainerContainer
+  - Eye
+  - Fixtures
+  - FixturesChange
+  - GenericVisualizer
+  - GridTree
+  - Icon
+  - IgnoreUIRange
+  - Input
+  - Joint
+  - JointRelayTarget
+  - LightTree
+  - LoadedMap
+  - Map
+  - MapGrid
+  - MapLight
+  - MapSaveTileMap
+  - MetaData
+  - Occluder
+  - OccluderTree
+  - Physics
+  - PlacementReplacement
+  - PointLight
+  - PredictedPhysics
+  - PredictedSpawn
+  - Sprite
+  - SpriteTree
+  - SyncSprite
+  - TimedDespawn
+  - Transform
+  - UserInterface
+  - UserInterfaceUser
+  - ViewSubscriber
+  - Visibility
+  - YamlUid

@@ -41,6 +41,7 @@
     notificationsEnabled: false
     diskSpace: 10 # DeltaV
     preinstalled:
+    - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NewsReaderCartridge

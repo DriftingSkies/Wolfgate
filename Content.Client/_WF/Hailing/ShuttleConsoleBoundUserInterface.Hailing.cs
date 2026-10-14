@@ -18,6 +18,7 @@ public sealed partial class ShuttleConsoleBoundUserInterface
         _window.HailAnswerRequested += accept => SendMessage(new HailAnswerMessage(accept));
         _window.HailEndRequested += () => SendMessage(new HailEndMessage());
         _window.HailSayRequested += text => SendMessage(new HailSayMessage(text));
+        _window.HailChooseRequested += id => SendMessage(new HailChooseMessage(id));
     }
 
     private void WfHailReceiveMessage(BoundUserInterfaceMessage message)

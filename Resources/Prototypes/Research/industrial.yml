@@ -177,6 +177,10 @@
   - MiniStationAnchorCircuitboard # Frontier
   - SmallThrusterMachineCircuitboard # Frontier
   - SmallGyroscopeMachineCircuitboard # Frontier
+  # WOLFGATE(Drydock) START: mobile drydock boards
+  - WFComputerMobileDrydockCircuitboard
+  - WFMobileDrydockCraneMachineCircuitboard
+  # WOLFGATE END
   technologyPrerequisites:
   - AdvancedParts
   position: -5, 7

@@ -63,9 +63,13 @@ public partial class ShuttleNavControl
 
             var point = Vector2.Transform(system.GetPosition(marker), worldToView);
             var onScope = (point - centre).Length() <= rim;
-            if (!_encounterPoints.TryGetValue(key, out var points))
-                _encounterPoints[key] = points = new List<Vector2>();
-            points.Add(point);
+            // Only a ship with zones of its own widens its side's rings: a wreck the server sent without ranges does not.
+            if (marker.WarnRange > 0f || marker.AttackRange > 0f)
+            {
+                if (!_encounterPoints.TryGetValue(key, out var points))
+                    _encounterPoints[key] = points = new List<Vector2>();
+                points.Add(point);
+            }
             if (onScope)
             {
                 handle.DrawLine(point + new Vector2(0f, -size), point + new Vector2(size, 0f), color);
@@ -88,10 +92,19 @@ public partial class ShuttleNavControl
 
         foreach (var (key, group) in _encounterGroups)
         {
-            // The side's zones as one envelope: its widest ranges out from the middle of its ships, plus their spread.
-            var middle = group.Sum / group.Count;
+            // The side's zones as one envelope: its widest ranges out from the middle of its armed ships, plus their spread.
+            if (!_encounterPoints.TryGetValue(key, out var zoned) || zoned.Count == 0)
+                continue;
+
+            var middle = Vector2.Zero;
+            foreach (var point in zoned)
+            {
+                middle += point;
+            }
+
+            middle /= zoned.Count;
             var spread = 0f;
-            foreach (var point in _encounterPoints[key])
+            foreach (var point in zoned)
             {
                 spread = MathF.Max(spread, (point - middle).Length());
             }

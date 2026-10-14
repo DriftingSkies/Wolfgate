@@ -1,0 +1,21 @@
+# Drydock POI. Loads from gridPath only, so it has no station jobs or bounties.
+
+- type: pointOfInterest
+  id: WFDrydock
+  parent: BasePOI
+  name: 'Anvilhold Drydock'
+  minimumDistance: 8000
+  maximumDistance: 9500
+  spawnGroup: Required
+  gridPath: /Maps/_WF/Drydock/drydock.yml
+  addComponents:
+  - type: IFF
+    color: "#E0782A"
+  - type: WorldGenDistanceCarver
+    distanceThresholds:
+    - maxDistance: 800
+      prob: 0.0
+    - maxDistance: 1500
+      prob: 0.3
+  # Has a shuttle console for the dockmaster's hails, but is not a ship: no piloting or FTL.
+  - type: PreventPilot

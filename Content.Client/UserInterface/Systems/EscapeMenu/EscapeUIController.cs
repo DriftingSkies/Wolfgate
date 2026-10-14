@@ -1,6 +1,7 @@
 ﻿using Content.Client.Gameplay;
 using Content.Client.Lobby; // WOLFGATE(InRoundCreator)
 using Content.Client._WF.Roadmap; // WOLFGATE(Roadmap)
+using Content.Client._WF.SectorControl; // WOLFGATE(SectorControl)
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Client.UserInterface.Systems.Info;
@@ -76,6 +77,14 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         {
             CloseEscapeWindow();
             UIManager.GetUIController<RoadmapUIController>().ToggleRoadmap();
+        };
+        // WOLFGATE END
+
+        // WOLFGATE(SectorControl) START: sector map entry in the game menu
+        _escapeWindow.SectorMapButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            UIManager.GetUIController<WFSectorMapUIController>().ToggleWindow();
         };
         // WOLFGATE END
 

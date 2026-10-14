@@ -44,6 +44,7 @@ public sealed class HailStrip : BoxContainer
     private EntityUid? _console;
     private bool _shown;
     private HailState? _state;
+    private bool _choosing;
     private string _ship = string.Empty;
     private string? _notice;
     private float _noticeTime;
@@ -156,8 +157,9 @@ public sealed class HailStrip : BoxContainer
 
         var state = hail?.State;
         var ship = hail?.PeerShip ?? string.Empty;
+        var choosing = hail is { State: HailState.Connected, Options.Count: > 0 };
 
-        if (_shown && state == _state && ship == _ship)
+        if (_shown && state == _state && ship == _ship && choosing == _choosing)
             return;
 
         // A new hail outranks the word about the last one.
@@ -166,6 +168,7 @@ public sealed class HailStrip : BoxContainer
 
         _shown = true;
         _state = state;
+        _choosing = choosing;
         _ship = ship;
         _pulse = 0f;
         _status.Modulate = Color.White;
@@ -183,7 +186,11 @@ public sealed class HailStrip : BoxContainer
                 break;
 
             case HailState.Connected:
-                Status(Loc.GetString("hail-strip-open", ("ship", ship)), WFInstrumentTheme.Green);
+                if (choosing)
+                    Status(Loc.GetString("hail-strip-reply", ("ship", ship)), RingColor);
+                else
+                    Status(Loc.GetString("hail-strip-open", ("ship", ship)), WFInstrumentTheme.Green);
+
                 Keys("hail-strip-view", "hail-strip-end");
                 break;
 

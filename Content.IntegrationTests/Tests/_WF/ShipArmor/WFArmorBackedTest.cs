@@ -1,6 +1,7 @@
 #nullable enable
 using System.Numerics;
 using Content.IntegrationTests.Pair;
+using Content.Server.Explosion.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
@@ -14,8 +15,8 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._WF.ShipArmor;
 
 /// <summary>
-/// Armor-backed mounts hand part of explosion and projectile damage to the thickest adjacent armor,
-/// scaled by that armor's thickness, and keep the rest. Plain damage and penetrating shots stay on the mount.
+/// Armor-backed mounts hand part of blast, shell and beam damage to the thickest adjacent armor, scaled by that
+/// armor's thickness, and keep the rest. Plain damage stays on the mount. Any backing armor keeps the mount's floor.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(Content.Server._WF.ShipArmor.WFArmorBackedSystem))]
@@ -24,11 +25,14 @@ public sealed class WFArmorBackedTest
     /// <summary>Mount that moves part of its damage onto adjacent armor.</summary>
     private const string MountProto = "WFTestArmorBackedMount";
 
-    /// <summary>Armor of thickness 10, full coverage.</summary>
+    /// <summary>Armor of thickness 10, 10/13 coverage.</summary>
     private const string ThickWallProto = "WFTestArmorWallThick";
 
-    /// <summary>Armor of thickness 5, half coverage.</summary>
+    /// <summary>Armor of thickness 5, 5/13 coverage.</summary>
     private const string ThinWallProto = "WFTestArmorWallThin";
+
+    /// <summary>Armor thick enough for full coverage.</summary>
+    private const string FullWallProto = "WFTestArmorWallFull";
 
     /// <summary>Mount with a 2x2 hard fixture.</summary>
     private const string MultiTileMountProto = "WFTestMultiTileMount";
@@ -38,6 +42,12 @@ public sealed class WFArmorBackedTest
 
     /// <summary>Projectile used as the damage tool for a shot.</summary>
     private const string ProjectileProto = "WFTestArmorProjectile";
+
+    /// <summary>An armor-piercing projectile, shared like any other shell hit.</summary>
+    private const string PiercingProjectileProto = "WFTestArmorPiercingProjectile";
+
+    /// <summary>A hitscan beam, shared like a shell hit.</summary>
+    private const string BeamProto = "WFTestArmorBeam";
 
     [TestPrototypes]
     private const string Prototypes = @"
@@ -114,9 +124,40 @@ public sealed class WFArmorBackedTest
       behaviors: []
 
 - type: entity
+  id: WFTestArmorWallFull
+  components:
+  - type: Transform
+  - type: Damageable
+  - type: ArmorThickness
+    thickness: 13
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100000
+      behaviors: []
+
+- type: entity
   id: WFTestArmorProjectile
   components:
   - type: Projectile
+    damage:
+      types:
+        Structural: 1
+
+- type: entity
+  id: WFTestArmorPiercingProjectile
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Structural: 1
+    penetrationThreshold: 1000
+
+- type: entity
+  id: WFTestArmorBeam
+  components:
+  - type: HitscanBasicDamage
     damage:
       types:
         Structural: 1
@@ -129,14 +170,14 @@ public sealed class WFArmorBackedTest
         await RunCase(null, explosion: true, projectile: false, expectMount: 100, expectWall: 0);
     }
 
-    /// <summary>A thick wall next to the mount takes 80% of an explosion, leaving 20% on the mount.</summary>
+    /// <summary>A thick wall next to the mount takes 10/12.5 of an explosion, leaving the rest on the mount.</summary>
     [Test]
     public async Task ThickWallTakesExplosionShare()
     {
         await RunCase(ThickWallProto, explosion: true, projectile: false, expectMount: 20, expectWall: 80);
     }
 
-    /// <summary>A thin wall takes half the explosion share, since its thickness is half of full coverage.</summary>
+    /// <summary>A thin wall takes its thickness share of the explosion (5 of 12.5).</summary>
     [Test]
     public async Task ThinWallTakesScaledExplosionShare()
     {
@@ -150,11 +191,27 @@ public sealed class WFArmorBackedTest
         await RunCase(ThickWallProto, explosion: false, projectile: false, expectMount: 100, expectWall: 0);
     }
 
-    /// <summary>A projectile hit takes 40% of the share onto a fully covering wall.</summary>
+    /// <summary>A projectile hit moves the same 10/12.5 of its damage onto the wall as a blast.</summary>
     [Test]
     public async Task ProjectileHitTakesShare()
     {
-        await RunCase(ThickWallProto, explosion: false, projectile: true, expectMount: 60, expectWall: 40);
+        await RunCase(ThickWallProto, explosion: false, projectile: true, expectMount: 20, expectWall: 80);
+    }
+
+    /// <summary>An armor-piercing hit is shared like any other shell hit.</summary>
+    [Test]
+    public async Task PiercingHitTakesShare()
+    {
+        await RunCase(ThickWallProto, explosion: false, projectile: true, expectMount: 20, expectWall: 80,
+            projectileProto: PiercingProjectileProto);
+    }
+
+    /// <summary>A hitscan beam is shared like a shell hit.</summary>
+    [Test]
+    public async Task BeamHitTakesShare()
+    {
+        await RunCase(ThickWallProto, explosion: false, projectile: true, expectMount: 20, expectWall: 80,
+            projectileProto: BeamProto);
     }
 
     /// <summary>A 2x2 mount reaches armor two tiles away from its origin tile, past the old 3x3 box.</summary>
@@ -173,12 +230,50 @@ public sealed class WFArmorBackedTest
             mountProto: HardFixtureMountProto, wallPos: new Vector2(0.5f, -1.5f), tiles: new[] { new Vector2i(0, 0), new Vector2i(0, -2) });
     }
 
+    /// <summary>Any backing armor makes explosions treat the mount's floor as blocked; a bare mount does not.</summary>
+    [Test]
+    [TestCase(FullWallProto, true)]
+    [TestCase(ThickWallProto, true)]
+    [TestCase(ThinWallProto, true)]
+    [TestCase(null, false)]
+    public async Task FullArmorHoldsMountFloor(string? wallProto, bool expectHeld)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        var entMan = server.EntMan;
+        var mapSys = server.System<SharedMapSystem>();
+        var xformSys = server.System<SharedTransformSystem>();
+        var explosion = server.System<ExplosionSystem>();
+        var grid = map.Grid;
+
+        await server.WaitAssertion(() =>
+        {
+            mapSys.SetTile(grid.Owner, grid.Comp, new Vector2i(0, 0), new Tile(1));
+            mapSys.SetTile(grid.Owner, grid.Comp, new Vector2i(1, 0), new Tile(1));
+
+            var mount = entMan.SpawnEntity(MountProto, new EntityCoordinates(grid.Owner, new Vector2(0.5f, 0.5f)));
+            xformSys.AnchorEntity((mount, entMan.GetComponent<TransformComponent>(mount)));
+
+            if (wallProto is not null)
+            {
+                var wall = entMan.SpawnEntity(wallProto, new EntityCoordinates(grid.Owner, new Vector2(1.5f, 0.5f)));
+                xformSys.AnchorEntity((wall, entMan.GetComponent<TransformComponent>(wall)));
+            }
+
+            Assert.That(explosion.IsBlockingTurf(mount), Is.EqualTo(expectHeld));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>
     /// Spawns a mount (and optional wall) on the test grid, deals 100 Structural damage and checks the split.
     /// Tolerance covers fixed-point rounding of the shared share.
     /// </summary>
     private static async Task RunCase(string? wallProto, bool explosion, bool projectile, float expectMount, float expectWall,
-        string mountProto = MountProto, Vector2? wallPos = null, Vector2i[]? tiles = null)
+        string mountProto = MountProto, Vector2? wallPos = null, Vector2i[]? tiles = null, string projectileProto = ProjectileProto)
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -209,7 +304,7 @@ public sealed class WFArmorBackedTest
             }
 
             if (projectile)
-                tool = entMan.SpawnEntity(ProjectileProto, new EntityCoordinates(grid.Owner, new Vector2(0.5f, 0.5f)));
+                tool = entMan.SpawnEntity(projectileProto, new EntityCoordinates(grid.Owner, new Vector2(0.5f, 0.5f)));
         });
 
         await server.WaitAssertion(() =>

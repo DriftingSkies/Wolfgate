@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Client._WF.Vehicles.Interaction; // WOLFGATE(Vehicles)
 using Content.Client.Clickable;
 using Content.Client.UserInterface;
 using Content.Client.Viewport;
@@ -127,12 +128,24 @@ namespace Content.Client.Gameplay
             return GetClickableEntities(transformSystem.ToMapCoordinates(coordinates));
         }
 
-        public IEnumerable<EntityUid> GetClickableEntities(MapCoordinates coordinates)
+        // WOLFGATE(Vehicles) START: the sprite fade system can ask for clickables without the click-through rule, so it still sees cabin roofs
+        // upstream original, kept for merges:
+        // public IEnumerable<EntityUid> GetClickableEntities(MapCoordinates coordinates)
+        public IEnumerable<EntityUid> GetClickableEntities(MapCoordinates coordinates, bool ignoreInteractionTransparency = false)
+        // WOLFGATE END
         {
-            return GetClickableEntities(coordinates, _eyeManager.CurrentEye);
+            // WOLFGATE(Vehicles) START: passes the flag on
+            // upstream original, kept for merges:
+            // return GetClickableEntities(coordinates, _eyeManager.CurrentEye);
+            return GetClickableEntities(coordinates, _eyeManager.CurrentEye, ignoreInteractionTransparency);
+            // WOLFGATE END
         }
 
-        public IEnumerable<EntityUid> GetClickableEntities(MapCoordinates coordinates, IEye? eye)
+        // WOLFGATE(Vehicles) START: takes the click-through flag of the overload above
+        // upstream original, kept for merges:
+        // public IEnumerable<EntityUid> GetClickableEntities(MapCoordinates coordinates, IEye? eye)
+        public IEnumerable<EntityUid> GetClickableEntities(MapCoordinates coordinates, IEye? eye, bool ignoreInteractionTransparency = false)
+        // WOLFGATE END
         {
             /*
              * TODO:
@@ -154,6 +167,11 @@ namespace Content.Client.Gameplay
 
             foreach (var entity in entities)
             {
+                // WOLFGATE(Vehicles) START: a click passes through the cabin roof or wall the player stands inside
+                if (!ignoreInteractionTransparency && _entitySystemManager.GetEntitySystem<InteractionTransparencySystem>().IsTransparent(entity.Uid, _playerManager.LocalEntity, eye))
+                    continue;
+                // WOLFGATE END
+
                 if (clickQuery.TryGetComponent(entity.Uid, out var component) &&
                     clickables.CheckClick((entity.Uid, component, entity.Component, entity.Transform), coordinates.Position, eye,  out var drawDepthClicked, out var renderOrder, out var bottom))
                 {

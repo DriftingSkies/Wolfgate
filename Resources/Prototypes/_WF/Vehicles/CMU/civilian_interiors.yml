@@ -1,0 +1,12 @@
+# Interior pieces of CMU's civilian vehicles that Wolfgate has no twin for. The rest of the CMU maps use the RMC pieces in
+# Interiors/, Van/ and Humvee/ and Wolfgate's own furniture (see Tools/_WF/Vehicles/interior_map_mapping.yml).
+
+# The police car's cell doors. A secure windoor that needs no power: the interior grid has none, and a windoor that needs it
+# can only be pried open, which would shut anyone who walks in at the back into the cell (see WFVehicleWindoor).
+- type: entity
+  parent: WindoorSecure
+  id: WFVehicleWindoorSecure
+  categories: [ WFVehicles ]
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false

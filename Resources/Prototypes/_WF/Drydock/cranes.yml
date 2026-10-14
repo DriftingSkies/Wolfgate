@@ -1,0 +1,162 @@
+# Drydock crane: a 2x2 body on the berth edge. The arm runs down the bay to the ship's far end, and the boom works the ship's width.
+# Anchored, not damageable or deconstructable. Local +X points into the bay; Mirrored variants face -X.
+# A multitool link to a drydock console (ports.yml) sets the berth it works. Unlinked, it works nothing.
+
+- type: entity
+  abstract: true
+  id: WFDrydockCraneBase
+  name: drydock crane
+  description: A drydock crane. Its arm runs down the bay and its boom works the hull.
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: _WF/Drydock/crane_machine.rsi
+    drawdepth: Effects
+    noRot: false
+    layers:
+    - state: machine
+      offset: 0.5,0.5
+  # Anchored, no unwrenching, so a station crane stays on its berth.
+  - type: Anchorable
+    flags:
+    - Anchorable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,1.5,1.5"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Clickable
+  - type: InteractionOutline
+  # High-voltage draw; the drydock system switches it between the crane's idle and working loads.
+  - type: PowerConsumer
+    voltage: High
+    drawRate: 500
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      input:
+        !type:CableDeviceNode
+        nodeGroupID: HVPower
+  - type: DeviceLinkSink
+    ports:
+      - WFDrydockCraneReceiver
+  # Drive motor, running while the crane works.
+  - type: AmbientSound
+    enabled: false
+    volume: -6
+    range: 10
+    sound:
+      path: /Audio/Ambience/Objects/engine_hum.ogg
+
+# 15-tile bay plus walls: 4 sections of 5 reach 17 tiles. Arm reaches 36 tiles down the bay.
+- type: entity
+  parent: WFDrydockCraneBase
+  id: WFDrydockCrane
+  components:
+  - type: WFDrydockCrane
+    maxArm: 36
+    sections: 4
+    sectionLength: 5
+    extension: 5
+
+- type: entity
+  parent: WFDrydockCrane
+  id: WFDrydockCraneMirrored
+  suffix: Mirrored
+  components:
+  - type: Sprite
+    layers:
+    - state: machine_mirrored
+      offset: -0.5,0.5
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.5,0.5,1.5"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: WFDrydockCrane
+    mirrored: true
+
+# 23-tile bay plus walls: 5 sections of 6 reach 26 tiles. Arm reaches 60 tiles down the bay.
+- type: entity
+  parent: WFDrydockCraneBase
+  id: WFDrydockCraneLarge
+  suffix: Large
+  components:
+  - type: WFDrydockCrane
+    maxArm: 60
+    sections: 5
+    sectionLength: 6
+    extension: 6
+
+- type: entity
+  parent: WFDrydockCraneLarge
+  id: WFDrydockCraneLargeMirrored
+  suffix: Large, Mirrored
+  components:
+  - type: Sprite
+    layers:
+    - state: machine_mirrored
+      offset: -0.5,0.5
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.5,0.5,1.5"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: WFDrydockCrane
+    mirrored: true
+
+# 33-tile bay plus walls: 5 sections of 7 reach 35 tiles. Arm reaches 80 tiles down the bay.
+- type: entity
+  parent: WFDrydockCraneBase
+  id: WFDrydockCraneHuge
+  suffix: Huge
+  components:
+  - type: WFDrydockCrane
+    maxArm: 80
+    sections: 5
+    sectionLength: 7
+    extension: 7
+
+- type: entity
+  parent: WFDrydockCraneHuge
+  id: WFDrydockCraneHugeMirrored
+  suffix: Huge, Mirrored
+  components:
+  - type: Sprite
+    layers:
+    - state: machine_mirrored
+      offset: -0.5,0.5
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.5,0.5,1.5"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: WFDrydockCrane
+    mirrored: true

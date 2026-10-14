@@ -23,7 +23,9 @@ public sealed partial class HailTestCommand : LocalizedEntityCommands
             return;
         }
 
-        if (args.Length != 0)
+        var options = args.Length == 1 && args[0] == "options";
+
+        if (args.Length != 0 && !options)
         {
             shell.WriteError(Loc.GetString("shell-wrong-arguments-number"));
             return;
@@ -42,12 +44,13 @@ public sealed partial class HailTestCommand : LocalizedEntityCommands
             return;
         }
 
-        _test.Hail(grid);
-        shell.WriteLine(Loc.GetString("cmd-hailtest-started", ("ship", EntityManager.GetComponent<MetaDataComponent>(grid).EntityName)));
+        _test.Hail(grid, options);
+        shell.WriteLine(Loc.GetString(options ? "cmd-hailtest-started-options" : "cmd-hailtest-started",
+            ("ship", EntityManager.GetComponent<MetaDataComponent>(grid).EntityName)));
     }
 
     public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
     {
-        return args.Length == 1 ? CompletionResult.FromOptions(new[] { "clear" }) : CompletionResult.Empty;
+        return args.Length == 1 ? CompletionResult.FromOptions(new[] { "options", "clear" }) : CompletionResult.Empty;
     }
 }

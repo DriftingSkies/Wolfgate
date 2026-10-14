@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.Vehicles.Visuals; // WOLFGATE(Vehicles)
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using JetBrains.Annotations;
@@ -156,6 +157,13 @@ public sealed partial class EyeLerpingSystem : EntitySystem
     {
         if (!Resolve(uid, ref xform))
             return Angle.Zero;
+
+        // WOLFGATE(Vehicles) START: an eye watching something on another map turns with the grid under what it watches
+        var watched = new EyeWatchedGridEvent();
+        RaiseLocalEvent(uid, ref watched);
+        if (watched.Relative is { } watchedRelative)
+            return -_transform.GetWorldRotation(watchedRelative);
+        // WOLFGATE END
 
         // If we can move then tie our eye to our inputs (these also get lerped so it should be fine).
         if (Resolve(uid, ref mover, false))

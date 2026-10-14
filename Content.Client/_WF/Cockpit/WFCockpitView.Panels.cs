@@ -1,5 +1,7 @@
 using System.Numerics;
+using Content.Shared._WF.CCVar;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Configuration;
 using static Content.Client._WF.CombatConsole.WFInstrumentTheme;
 
 namespace Content.Client._WF.Cockpit;
@@ -14,6 +16,9 @@ public sealed partial class WFCockpitView
 
     /// <summary>What the shield panel needs around its controls: the panel frame and room for a scroll bar.</summary>
     private const float ShieldChrome = 38;
+
+    /// <summary>The MFD page a cockpit opens on when none is saved.</summary>
+    public const string DefaultPage = "wf-cockpit-nav";
 
     private bool _swapped;
     private bool _expanded;
@@ -30,6 +35,28 @@ public sealed partial class WFCockpitView
 
     /// <summary>Whether the MFD has taken over the world view's space and the world view is not drawn.</summary>
     public bool MfdMaximised => _maximised;
+
+    /// <summary>Opens on the MFD page and panel arrangement the player last chose in any cockpit.</summary>
+    private void LoadLayout()
+    {
+        var config = IoCManager.Resolve<IConfigurationManager>();
+        var page = config.GetCVar(WolfgateCVars.CockpitMfdPage);
+        SelectPage(_pageHosts.ContainsKey(page) ? page : DefaultPage);
+        SetSwapped(config.GetCVar(WolfgateCVars.CockpitMfdSwapped));
+        SetExpanded(config.GetCVar(WolfgateCVars.CockpitMfdExpanded));
+        SetMaximised(config.GetCVar(WolfgateCVars.CockpitMfdMaximised));
+    }
+
+    /// <summary>Saves the MFD page and panel arrangement when the player changes one.</summary>
+    private void SaveLayout()
+    {
+        var config = IoCManager.Resolve<IConfigurationManager>();
+        config.SetCVar(WolfgateCVars.CockpitMfdPage, _page);
+        config.SetCVar(WolfgateCVars.CockpitMfdSwapped, _swapped);
+        config.SetCVar(WolfgateCVars.CockpitMfdExpanded, _expanded);
+        config.SetCVar(WolfgateCVars.CockpitMfdMaximised, _maximised);
+        config.SaveToFile();
+    }
 
     /// <summary>Creates a compact toggle for the MFD's own controls; console buttons clip their text, so the width is fixed.</summary>
     private static Button PanelButton(string text, string help, string name, float width)

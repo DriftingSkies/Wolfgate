@@ -287,6 +287,7 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
         _viewportExclusions.Clear();
 
         DrawStarSystem(handle, matty);
+        DrawSectorTerritory(handle, matty); // WOLFGATE(SectorControl): faction territory fills, borders and legend on the sector map.
         DrawDroneRings(handle, matty, viewedMapUid); // WOLFGATE(DroneRings): draw rings where drones start to spawn.
 
         // Draw our FTL range + no FTL zones

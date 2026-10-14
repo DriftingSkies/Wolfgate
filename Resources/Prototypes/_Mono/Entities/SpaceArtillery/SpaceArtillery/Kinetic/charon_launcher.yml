@@ -18,6 +18,7 @@
     range: 500
   - type: GunSignalControl
   - type: Gun
+    damageModifier: 2 # WOLFGATE: CHARON damage doubled, it fell behind the other heavy guns
     fireRate: 0.05
     recoil: 2500 # 100x
     minAngle: 0

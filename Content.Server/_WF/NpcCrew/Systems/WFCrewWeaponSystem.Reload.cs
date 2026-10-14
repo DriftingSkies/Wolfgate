@@ -26,6 +26,7 @@ public sealed partial class WFCrewWeaponSystem
     [Dependency] private NpcFactionSystem _factions = default!;
     [Dependency] private Content.Server.Atmos.EntitySystems.AtmosphereSystem _atmos = default!;
     [Dependency] private SharedMapSystem _maps = default!;
+    [Dependency] private WFCrewEvaSystem _eva = default!;
     [Dependency] private Robust.Shared.Timing.IGameTiming _timing = default!;
 
     private const string MagazineSlot = "gun_magazine";
@@ -252,9 +253,11 @@ public sealed partial class WFCrewWeaponSystem
         }
     }
 
-    /// <summary>Whether a mob stands where there is air to breathe.</summary>
+    /// <summary>Whether a mob stands where there is air to breathe, or needs none.</summary>
     private bool HasAir(EntityUid mob)
     {
+        if (_eva.IsImmune(mob))
+            return true;
         var xform = Transform(mob);
         if (xform.GridUid is not { } grid || !TryComp<Robust.Shared.Map.Components.MapGridComponent>(grid, out var map))
             return false;

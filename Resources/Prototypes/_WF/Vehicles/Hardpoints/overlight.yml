@@ -1,0 +1,23 @@
+# The one humvee part that reshapes the vehicle spotlight (see VehicleSpotlightSystem), so it came with the core features
+# rather than with the rest of the humvee parts in support.yml.
+- type: entity
+  parent: VehicleHumveeHardpointBase
+  id: VehicleHumveeOverlight
+  name: humvee overlight
+  description: An overlight array for a humvee.
+  components:
+  - type: Sprite
+    state: overlight
+  - type: HardpointItem
+    hardpointType: HardpointTypeRoofAttachment
+    vehicleFamily: HardpointVehicleFamilyHumvee
+    slotType: HardpointSlotTypeRoofAttachment
+    damageMultiplier: 0.1
+    repairRate: 0.0125
+  - type: HardpointIntegrity
+    maxIntegrity: 500
+  - type: VehicleSpotlightModifier
+    radiusMultiplier: 2.0
+  - type: HardpointVisual
+    vehicleState: overlight_0
+    damagedVehicleState: overlight_1

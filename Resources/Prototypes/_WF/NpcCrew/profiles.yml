@@ -364,6 +364,9 @@
   lastNames: WFNamesPirateLast
   components:
   - type: PirateAccent
+  - type: WFCrewSuitUp
+  - type: PressureImmunity
+  - type: BreathingImmunity
   bodies:
   - WFMobCrewBodyHuman
   - WFMobCrewBodyHuman

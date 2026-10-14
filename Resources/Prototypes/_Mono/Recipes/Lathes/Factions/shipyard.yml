@@ -133,7 +133,7 @@
   completetime: 100
   materialDiscountScale: 0.2
   materials:
-    PdvComposite: 12000
+    PdvComposite: 9000 # WOLFGATE: PDV pack, composite cost 12000->9000
 
 - type: latheRecipe
   parent: BaseVoucherRecipe
@@ -142,7 +142,7 @@
   completetime: 100
   materialDiscountScale: 0.2
   materials:
-    PdvComposite: 12000
+    PdvComposite: 9000 # WOLFGATE: PDV pack, composite cost 12000->9000
 
 - type: latheRecipe
   parent: BaseVoucherRecipe
@@ -151,7 +151,7 @@
   completetime: 240
   materialDiscountScale: 0.2
   materials:
-    PdvComposite: 23000
+    PdvComposite: 18000 # WOLFGATE: PDV pack, composite cost 23000->18000
 
 - type: latheRecipe
   parent: BaseVoucherRecipe

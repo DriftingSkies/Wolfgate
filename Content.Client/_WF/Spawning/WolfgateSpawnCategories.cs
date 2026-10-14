@@ -11,6 +11,7 @@ public enum WfSpawnGroup : byte
 {
     Mobs,
     Weapons,
+    Vehicles,
     Clothing,
     Engineering,
     Medical,
@@ -43,6 +44,12 @@ public enum WfSpawnCategory : byte
     Ammunition,
     Explosives,
     Shields,
+
+    // Vehicles
+    VehiclesDrivable,
+    VehicleParts,
+    VehicleInteriors,
+    VehicleScenery,
 
     // Clothing
     ClothingHead,
@@ -139,6 +146,11 @@ public static class WfSpawnCategories
         (WfSpawnCategory.Explosives, WfSpawnGroup.Weapons),
         (WfSpawnCategory.Shields, WfSpawnGroup.Weapons),
 
+        (WfSpawnCategory.VehiclesDrivable, WfSpawnGroup.Vehicles),
+        (WfSpawnCategory.VehicleParts, WfSpawnGroup.Vehicles),
+        (WfSpawnCategory.VehicleInteriors, WfSpawnGroup.Vehicles),
+        (WfSpawnCategory.VehicleScenery, WfSpawnGroup.Vehicles),
+
         (WfSpawnCategory.ClothingHead, WfSpawnGroup.Clothing),
         (WfSpawnCategory.ClothingEyes, WfSpawnGroup.Clothing),
         (WfSpawnCategory.ClothingNeck, WfSpawnGroup.Clothing),
@@ -233,6 +245,7 @@ public static class WfSpawnCategories
         {
             WfSpawnGroup.Mobs => Color.FromHex("#6FD98A"),
             WfSpawnGroup.Weapons => skin.Danger,
+            WfSpawnGroup.Vehicles => Color.FromHex("#8FA86B"),
             WfSpawnGroup.Clothing => Color.FromHex("#C79BFF"),
             WfSpawnGroup.Engineering => Color.FromHex("#FFC14D"),
             WfSpawnGroup.Medical => Color.FromHex("#7FC7FF"),

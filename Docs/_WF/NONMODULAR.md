@@ -55,6 +55,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - a failed save is logged with its slot
   - sanitized here like FinishLoad does on login
 - [`Content.Server/Radio/EntitySystems/RadioDeviceSystem.cs`](../../Content.Server/Radio/EntitySystems/RadioDeviceSystem.cs): keep the speaker's own output type and the admin-safe ghost range the radio host port dropped
+- [`Content.Server/Shuttles/Components/ShuttleComponent.cs`](../../Content.Server/Shuttles/Components/ShuttleComponent.cs): PDV pack, partial revert of Monolith speed cap (50->20)
+- [`Content.Server/Shuttles/Components/ThrusterComponent.cs`](../../Content.Server/Shuttles/Components/ThrusterComponent.cs): PDV pack, partial revert of Monolith thrust nerf (200->100)
 - [`Content.Server/Shuttles/Systems/FTLAntiCollisionSystem.cs`](../../Content.Server/Shuttles/Systems/FTLAntiCollisionSystem.cs): a docking jump ends on a free dock at its target, so don't push the shuttle off it
 - [`Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs`](../../Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs)
   - start a real jump, as an ensured FTLComponent stayed Available and was removed
@@ -100,13 +102,26 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/migration.yml`](../../Resources/migration.yml): Monolith#4816 renamed the WL-01 suit and helmet without a migration
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml): the camera bounty asked for optical sensors (OpticsEconomy1)
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml): MMC cash bounties pay 0.9x their value so cash-to-MIC-to-cash can't loop for profit
+- [`Resources/Prototypes/_Mono/Catalogs/Fills/Backpacks/drone_loot.yml`](../../Resources/Prototypes/_Mono/Catalogs/Fills/Backpacks/drone_loot.yml): PDV pack, halve drone plastitanium
+- [`Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml`](../../Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml)
+  - PDV pack, 650->500 (+50 tax over mat cost)
+  - PDV pack, 1250->1000 (+100 tax over mat cost)
+- [`Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml`](../../Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml): PDV pack, price 125->175
 - [`Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/ussp.yml`](../../Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/ussp.yml): the loaded magazine is class-3 contraband worth 10 FMC since Monolith#4816
 - [`Resources/Prototypes/_Mono/Entities/Markers/Spawners/Random/scrap_processor.yml`](../../Resources/Prototypes/_Mono/Entities/Markers/Spawners/Random/scrap_processor.yml): plastitanium moved into the rare materials group so scrap doesn't undercut the crystallizer
 - [`Resources/Prototypes/_Mono/Entities/Objects/Economy/components.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Economy/components.yml): Monolith#4805 commented the price out with the flash, leaving 300 for a good made from 1800
+- [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml`](../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml): CHARON damage doubled, it fell behind the other heavy guns
+- [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml`](../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml): CYREXA 2->1, its shells one-shot any hardpoint or wall
+- [`Resources/Prototypes/_Mono/Entities/Structures/Shuttles/capital_thrusters.yml`](../../Resources/Prototypes/_Mono/Entities/Structures/Shuttles/capital_thrusters.yml): PDV pack, capital thruster 400->600
+- [`Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_nfsd.yml`](../../Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_nfsd.yml): PDV pack, 0.33x of the 150 default; cant be upgraded with parts
+- [`Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_rogue.yml`](../../Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_rogue.yml): PDV pack, 0.33x of the 150 default; cant be upgraded with parts
 - [`Resources/Prototypes/_Mono/Guidebook/rules.yml`](../../Resources/Prototypes/_Mono/Guidebook/rules.yml)
   - erotic roleplay rule removed, PR #27
   - erotic roleplay rule entry removed, PR #27
 - [`Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml`](../../Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml): the ER PDAs, was MedicalDoctorPDA and ContractorSeniorPhysicianPDA, whose ID resets to medical doctor access
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml)
+  - PDV pack, composite cost 12000->9000
+  - PDV pack, composite cost 23000->18000
 - [`Resources/Prototypes/_Mono/Roles/Jobs/Medical/medic.yml`](../../Resources/Prototypes/_Mono/Roles/Jobs/Medical/medic.yml): responders start with advanced jaws of life
 - [`Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml): was WeaponSubMachineGunTypewriter, class-3 contraband since Monolith#4816
@@ -115,6 +130,9 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - gas leak event disabled
   - vent clog event disabled
 - [`Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml`](../../Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml): the Medical department has no roles since Monolith#4807, so count medic time instead
+- [`Resources/Prototypes/_NF/Smuggling/report_message_sets.yml`](../../Resources/Prototypes/_NF/Smuggling/report_message_sets.yml)
+  - PDV pack, TSF pod report 2 min later
+  - PDV pack, tighter PDV pod coordinates
 - [`Resources/Prototypes/_Obelisk/Species/hydrakin.yml`](../../Resources/Prototypes/_Obelisk/Species/hydrakin.yml): hydrakin is not selectable in character creation
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/Entities/Clothing/Head/hoods.yml`](../../Resources/Prototypes/Entities/Clothing/Head/hoods.yml): radiation hood blocks more radiation (was 0.65)
@@ -163,3 +181,4 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/ServerInfo/Guidebook/ServerRules/WizDenLRPRules.xml`](../../Resources/ServerInfo/Guidebook/ServerRules/WizDenLRPRules.xml): was 16
 - [`Resources/ServerInfo/Guidebook/ServerRules/WizDenMRPRules.xml`](../../Resources/ServerInfo/Guidebook/ServerRules/WizDenMRPRules.xml): was 16
 - [`Resources/ServerInfo/Rules.txt`](../../Resources/ServerInfo/Rules.txt): Monolith renamed to Wolfgate in the intro and section headings (#19); the file is unused (server.rules_file is MonolithRuleset).
+- [`Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml`](../../Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml): PDV pack, top-left thruster was mapped disabled.

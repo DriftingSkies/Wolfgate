@@ -1,3 +1,5 @@
+using Content.Shared._WF.Hailing;
+
 namespace Content.Server._WF.Hailing;
 
 /// <summary>
@@ -26,6 +28,40 @@ public sealed partial class HailTestShipComponent : Component
     /// <summary>When the console last had a hail on it. The ship is removed some minutes after.</summary>
     [ViewVariables]
     public TimeSpan IdleSince;
+
+    /// <summary>The pilot offers three answers to pick from instead of echoing straight away.</summary>
+    [ViewVariables]
+    public bool Options;
+
+    /// <summary>The answer picked, and when the pilot says so.</summary>
+    [ViewVariables]
+    public string? Picked;
+
+    [ViewVariables]
+    public TimeSpan PickedAt;
+
+    /// <summary>The next line from the other end is the picked answer, which is not echoed.</summary>
+    [ViewVariables]
+    public bool SkipLine;
+
+    /// <summary>
+    /// What the hailing events have told this ship, for checking by hand and in tests: hails answered, calls
+    /// ended and how the last one ended, and answers picked.
+    /// </summary>
+    [ViewVariables]
+    public int Answered;
+
+    [ViewVariables]
+    public int Ended;
+
+    [ViewVariables]
+    public HailEndReason? LastEnd;
+
+    [ViewVariables]
+    public bool LastEndConnected;
+
+    [ViewVariables]
+    public int Chosen;
 
     /// <summary>The pilot has said their piece on this call.</summary>
     [ViewVariables]

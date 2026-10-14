@@ -31,6 +31,7 @@ using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared._WF.Tether.Harpoon; // WOLFGATE(Tether): manned turret gun relay
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using GunUseGunOriginComponent = Content.Shared._WF.Vehicles.Weapons.GunUseGunOriginComponent; // WOLFGATE(Vehicles)
 using Content.Shared.Weapons.Hitscan.Events;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -466,7 +467,13 @@ public abstract partial class SharedGunSystem : EntitySystem
             shots = Math.Min(shots, gun.ShotsPerBurstModified - gun.ShotCounter);
         }
 
-        var attemptEv = new AttemptShootEvent(user, null);
+        // WOLFGATE(Vehicles) START: the origin is settled before the event so handlers can move it and the target
+        // upstream original, kept for merges:
+        // var attemptEv = new AttemptShootEvent(user, null);
+        var originEntity = HasComp<GunUseGunOriginComponent>(gunUid) ? gunUid : user;
+        var fromCoordinates = Transform(originEntity).Coordinates;
+        var attemptEv = new AttemptShootEvent(user, null, FromCoordinates: fromCoordinates, ToCoordinates: toCoordinates);
+        // WOLFGATE END
         RaiseLocalEvent(gunUid, ref attemptEv);
 
         if (attemptEv.Cancelled)
@@ -481,10 +488,21 @@ public abstract partial class SharedGunSystem : EntitySystem
             gun.BurstShotsCount = 0;
             gun.ShotCounter = 0;
             gun.NextFire = TimeSpan.FromSeconds(Math.Max(lastFire.TotalSeconds + SafetyNextFire, gun.NextFire.TotalSeconds));
+            // WOLFGATE(Vehicles) START: a refused vehicle shot leaves no cooldown
+            if (attemptEv.ResetCooldown)
+                gun.NextFire = curTime;
+            // WOLFGATE END
             return;
         }
 
-        var fromCoordinates = Transform(user).Coordinates;
+        // WOLFGATE(Vehicles) START: shoot from and at what the handlers settled on
+        // upstream original, kept for merges:
+        // var fromCoordinates = Transform(user).Coordinates;
+        fromCoordinates = attemptEv.FromCoordinates;
+        toCoordinates = attemptEv.ToCoordinates;
+        if (toCoordinates == null)
+            return;
+        // WOLFGATE END
         // Remove ammo
         var ev = new TakeAmmoEvent(shots, new List<(EntityUid? Entity, IShootable Shootable)>(), fromCoordinates, user, true); // Frontier: add intent to fire
 
@@ -947,7 +965,12 @@ public record struct BoltStateChangedEvent(EntityUid User, bool Closed); //Mono
 /// <param name="Cancelled">Set this to true if the shot should be cancelled.</param>
 /// <param name="ThrowItems">Set this to true if the ammo shouldn't actually be fired, just thrown.</param>
 [ByRefEvent]
-public record struct AttemptShootEvent(EntityUid User, string? Message, bool Cancelled = false, bool ThrowItems = false);
+// WOLFGATE(Vehicles) START: handlers can rewrite the shot's origin and target, or refuse it without a cooldown
+// upstream original, kept for merges:
+// public record struct AttemptShootEvent(EntityUid User, string? Message, bool Cancelled = false, bool ThrowItems = false);
+public record struct AttemptShootEvent(EntityUid User, string? Message, bool Cancelled = false, bool ThrowItems = false,
+    EntityCoordinates FromCoordinates = default, EntityCoordinates? ToCoordinates = null, bool ResetCooldown = false);
+// WOLFGATE END
 
 /// <summary>
 ///     Raised directed on the gun after firing.

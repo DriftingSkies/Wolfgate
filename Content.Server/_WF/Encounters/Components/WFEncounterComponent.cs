@@ -178,6 +178,10 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public bool Lurking;
 
+    /// <summary>Whether it flies unlabelled for good and keeps its encounter off the sector markers.</summary>
+    [DataField]
+    public bool Stealth;
+
     [DataField]
     public float WarnRange;
 
@@ -190,6 +194,10 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public WFEncounterZoneTargets ZoneTargets;
 
+    /// <summary>Companies its zones and hunt leave alone: never warned, fired on or boarded, though a shot at it is still answered.</summary>
+    [DataField]
+    public List<string> NeutralCompanies = new();
+
     /// <summary>Since when no player has been near it, while resolved.</summary>
     public TimeSpan? Quiet;
 
@@ -200,6 +208,29 @@ public sealed partial class WFEncounterShipState
     /// <summary>The ship it is trying to dock with.</summary>
     [DataField]
     public EntityUid? Prey;
+
+    /// <summary>Set on an extorter: where it is in its round of tolls.</summary>
+    public WFExtortState? Extort;
+
+    /// <summary>Whether it answers an attack by turning on the attacker.</summary>
+    [DataField]
+    public bool Evades = true;
+
+    /// <summary>How near a player ship may come before it runs; zero for never.</summary>
+    [DataField]
+    public float Flees;
+
+    /// <summary>Whether it is flying a run from a player ship, not its own route.</summary>
+    public bool Fleeing;
+
+    /// <summary>The direction of the run it is on.</summary>
+    public System.Numerics.Vector2 FleeHeading;
+
+    /// <summary>Where the run ends.</summary>
+    public System.Numerics.Vector2 FleeGoal;
+
+    /// <summary>The ship was taken out of the encounter by cleanup or an admin, not destroyed.</summary>
+    public bool Removed;
 
     /// <summary>Whether it calls for help when adrift.</summary>
     [DataField]

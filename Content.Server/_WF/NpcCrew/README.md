@@ -37,7 +37,10 @@ Crewmen carry no radiation receiver, so standing by a reactor costs them nothing
 Posts keep to breathable deck where a hull has any. A helm or gunnery console with no air beside it (an open
 cockpit), or a hull with no air at all, is manned from open deck instead, and a crewman whose post has no safe air is
 spawned in a void kit (`WFCrewVoidKit`, gear `WFCrewVoidKitGear`): a pressure suit, helmet and mask over whatever
-his loadout wore there, and a tank that is topped up for as long as he wears it.
+his loadout wore there, and a tank that is topped up for as long as he wears it. Crew with `WFCrewSuitUp` (the pirate
+profile) get the same kit when they first stand on a tile with bad air, and the pirate profile is also immune to
+pressure and breathing. `WFCrewEvaSystem.IsImmune` treats such crew as always ready for EVA: they never shout "air",
+drop a job over an empty tank, or sleep-wake for bad air.
 
 An attacking ship presents its guns. Every 30 s `WFPilotDutySystem.GunBearings` counts, for 16 bearings round the
 hull, the guns with a clear line of fire past their own ship (fire control's own test); inside 1.5 times its attack
@@ -84,6 +87,8 @@ proximity-following order and does not join this defensive alliance. Weapon lock
 Circle Grid slowly orbits the destination's bounds center. Default cruise, circle and attack limits are 10, 4 and
 6 m/s; attack defaults to at least 350 m. Pilots use gentle thrust and turning, full braking, hull clearance and
 stopping distance. Hold retains a fixed anchor and brakes small drift instead of continually steering around it.
+A pilot with `FaceThreats` (a mission setting) turns a holding hull in place so its best armed side faces the ship that
+attacked it, or else the nearest zone intruder the crew was told of; it never flies at them.
 Flight tuning in creation/live settings exposes 37 speed, handling, clearance and docking values. Reusable
 `wfCrewNavigation` profiles supply scenario defaults; each mission gets an independent copy. Changes apply to
 the current pilot without restarting the queue. See `Docs/_WF/NpcCrew/navigation.md` for scenario configuration.
@@ -226,6 +231,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSecurityComponent.cs`](Components/WFCrewSecurityComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewShipFireComponent.cs`](Components/WFCrewShipFireComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSpawnPointComponent.cs`](Components/WFCrewSpawnPointComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFCrewSuitUpComponent.cs`](Components/WFCrewSuitUpComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewVoidKitComponent.cs`](Components/WFCrewVoidKitComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewWeaponComponent.cs`](Components/WFCrewWeaponComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFGunnerDutyComponent.cs`](Components/WFGunnerDutyComponent.cs)
@@ -332,9 +338,11 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FireAndRepair.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FireAndRepair.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PirateAir.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PirateAir.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Routines.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Routines.cs)
@@ -355,6 +363,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Stations.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Stations.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.TargetLifetime.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.TargetLifetime.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Work.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Work.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Wreck.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Wreck.cs)
 
 ### Unit tests
 

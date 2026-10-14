@@ -888,6 +888,13 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
                 var charName = FoundOrganics(child, mobQuery, xformQuery);
                 if (charName != null)
                     return charName;
+
+                // WOLFGATE(Vehicles) START: people inside a parked vehicle stand on its interior map, not under the hull.
+                var interiorSearch = new Content.Server._WF.Vehicles.Safety.ShipyardOrganicsSearchEvent();
+                RaiseLocalEvent(child, ref interiorSearch);
+                if (interiorSearch.Name != null)
+                    return interiorSearch.Name;
+                // WOLFGATE END
             }
         }
 

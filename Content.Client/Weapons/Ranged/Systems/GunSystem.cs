@@ -11,6 +11,7 @@ using Content.Shared.Damage;
 using Content.Shared.Hands.Components;
 using Content.Shared._Mono.FireControl;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
+using GunUseGunOriginComponent = Content.Shared._WF.Vehicles.Weapons.GunUseGunOriginComponent; // WOLFGATE(Vehicles)
 using Content.Shared.Mech.Components;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Hitscan.Components;
@@ -237,7 +238,11 @@ public sealed partial class GunSystem : SharedGunSystem
         }
 
         // Define target coordinates relative to gun entity, so that network latency on moving grids doesn't fuck up the target location.
-        var coordinates = TransformSystem.ToCoordinates(entity, mousePos);
+        // WOLFGATE(Vehicles) START: an operator on another map aims relative to the grid under the gun, which is on the map the cursor is over
+        // upstream original, kept for merges:
+        // var coordinates = TransformSystem.ToCoordinates(entity, mousePos);
+        var coordinates = GetAimCoordinates(gunUid, entity, mousePos);
+        // WOLFGATE END
 
         NetEntity? target = null;
         if (_state.CurrentState is GameplayStateBase screen)
@@ -388,6 +393,15 @@ public sealed partial class GunSystem : SharedGunSystem
         var ent = Spawn(message.Prototype, coordinates);
         TransformSystem.SetWorldRotationNoLerp(ent, message.Angle);
 
+        // WOLFGATE(Vehicles) START: a mounted gun's flash follows the gun at its muzzle, not an operator on another map
+        Vector2? mountedFlashOffset = null;
+        if (HasComp<GunUseGunOriginComponent>(gunUid))
+        {
+            user = gunUid;
+            mountedFlashOffset = GetMountedFlashOffset(gunUid, gunXform, message.Angle);
+        }
+        // WOLFGATE END
+
         // Don't track muzzle flash to user if this is a fire control console weapon (ship artillery)
         // Note: FireControllableComponent is server-only, so we can't check it on client
         // The server will handle this check
@@ -395,7 +409,7 @@ public sealed partial class GunSystem : SharedGunSystem
         {
             var track = EnsureComp<TrackUserComponent>(ent);
             track.User = user;
-            track.Offset = Vector2.UnitX / 2f;
+            track.Offset = mountedFlashOffset ?? Vector2.UnitX / 2f; // WOLFGATE(Vehicles): at the muzzle of a mounted gun
         }
 
         var lifetime = 0.4f;

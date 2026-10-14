@@ -35,7 +35,7 @@
         layer:
         - MachineLayer
   - type: Gun
-    damageModifier: 2
+    damageModifier: 1 # WOLFGATE: CYREXA 2->1, its shells one-shot any hardpoint or wall
     projectileSpeed: 380
     minAngle: 0
     maxAngle: 1

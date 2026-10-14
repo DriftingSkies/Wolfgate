@@ -93,7 +93,8 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true
+    redemptionsLeft: 1
     cooldown: 5100 # hour and 25 minutes
     consoleType: Security
     companyName: TSF
@@ -118,7 +119,8 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true
+    redemptionsLeft: 1
     cooldown: 5100 # hour and 25 minutes
     consoleType: Security
     companyName: TSF
@@ -143,7 +145,8 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true
+    redemptionsLeft: 1
     cooldown: 7200 # 2 hours
     consoleType: Security
     companyName: TSF

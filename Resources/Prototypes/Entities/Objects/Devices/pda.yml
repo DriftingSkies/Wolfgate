@@ -879,6 +879,7 @@
     state: pda-hos
   - type: CartridgeLoader
     preinstalled:
+    - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NewsReaderCartridge
@@ -947,6 +948,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NewsReaderCartridge
@@ -978,6 +980,7 @@
     uiKey: enum.PdaUiKey.Key
     notificationsEnabled: false
     preinstalled:
+      - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NewsReaderCartridge
@@ -1128,6 +1131,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NewsReaderCartridge
@@ -1310,6 +1314,7 @@
     state: pda-detective
   - type: CartridgeLoader
     preinstalled:
+    - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NewsReaderCartridge
@@ -1337,6 +1342,7 @@
     state: pda-brigmedic
   - type: CartridgeLoader
     preinstalled:
+    - BountyContractsCartridge # WOLFGATE(Encounters): warrants reach every PDA
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NewsReaderCartridge

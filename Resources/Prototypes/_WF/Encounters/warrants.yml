@@ -1,0 +1,14 @@
+# The sector's warrants: the bounties encounters post on the PDA bounty program. Everyone can read them. Posting and
+# deleting need an access level only central command holds (an empty list would let anyone), so only the sector itself
+# fills it. Order 0 puts it ahead of Command and Public; orders must be unique across collections.
+- type: bountyContractCollection
+  id: WFWarrants
+  order: 0
+  notificationType: PDA
+  name: bounty-contract-collection-name-warrants
+  writeAccess:
+  - CentralCommand
+  deleteAccess:
+  - CentralCommand
+  categories:
+  - Criminal

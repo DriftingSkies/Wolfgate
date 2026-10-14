@@ -1,0 +1,12 @@
+# Gunner actions. One is granted per selectable mounted weapon to whoever sits in a weapons seat.
+# The name and description are in Resources/Locale/en-US/_WF/Vehicles/weapon-seats.ftl.
+
+- type: entity
+  id: ActionVehicleSelectHardpoint
+  categories: [ WFVehicles ]
+  components:
+  - type: InstantAction
+    event: !type:VehicleHardpointSelectActionEvent
+    raiseOnUser: true
+    autoPopulate: false
+    itemIconStyle: BigItem

@@ -296,7 +296,7 @@ public sealed partial class WFEncounterTest : InteractionTest
                 {
                     var hidden = SEntMan.TryGetComponent<Content.Shared.Shuttles.Components.IFFComponent>(ship.Grid, out var iff)
                                  && (iff.Flags & Content.Shared.Shuttles.Components.IFFFlags.HideLabel) != 0;
-                    Assert.That(hidden, Is.EqualTo(ship.Lurking), $"{id}: only a ship lying in wait flies with its IFF off");
+                    Assert.That(hidden, Is.EqualTo(ship.Lurking || ship.Stealth), $"{id}: only a ship lying in wait or a stealth ship flies with its IFF off");
 
                     // A hulk has squatters, not a crew.
                     if (ship.Derelict)

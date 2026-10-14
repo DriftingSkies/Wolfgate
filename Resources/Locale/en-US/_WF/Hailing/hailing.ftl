@@ -16,10 +16,12 @@ hail-key-no-answer = NO ANSWER
 hail-key-busy = BUSY
 hail-key-lost = LOST
 hail-key-no-link = NO LINK
+hail-key-reply = REPLY
 
 hail-strip-incoming = INCOMING: { $ship }
 hail-strip-calling = HAILING: { $ship }
 hail-strip-open = OPEN: { $ship }
+hail-strip-reply = REPLY: { $ship }
 hail-strip-hail = HAIL
 hail-strip-answer = ANSWER
 hail-strip-decline = DECLINE
@@ -74,12 +76,18 @@ hail-admin-no-console = That ship has no powered shuttle console free to ring.
 hail-test-ship-name = Hail Test Vessel
 hail-test-greeting = This is a test vessel. Anything you send comes straight back.
 hail-test-reply = Receiving you: "{ $text }"
+hail-test-options-prompt = Test vessel here. Pick an answer.
+hail-test-option-a = Option A
+hail-test-option-b = Option B
+hail-test-option-c = Option C
+hail-test-picked = You picked "{ $choice }". Go on, type something.
 
-cmd-hailtest-desc = Brings in a test ship near the one you are on and has its pilot hail you. It also answers your hails, echoes what you send and removes itself after a few idle minutes.
-cmd-hailtest-help = Usage: hailtest [clear]
+cmd-hailtest-desc = Brings in a test ship near the one you are on and has its pilot hail you. It also answers your hails, echoes what you send and removes itself after a few idle minutes. With "options" the pilot offers three answers to pick from before it echoes.
+cmd-hailtest-help = Usage: hailtest [options|clear]
 cmd-hailtest-no-grid = Stand on the ship you want hailed.
 cmd-hailtest-no-console = This ship has no powered shuttle console free to ring.
 cmd-hailtest-started = A test ship is hailing { $ship }. You can hail it back from the HAIL list.
+cmd-hailtest-started-options = A test ship is hailing { $ship } and will offer you three answers. You can hail it back from the HAIL list.
 cmd-hailtest-cleared = Removed { $count } test { $count ->
     [one] ship
    *[other] ships

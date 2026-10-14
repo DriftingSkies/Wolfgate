@@ -1,0 +1,92 @@
+# The unarmed parts of the SPP APC and tank. Their slots take only SPP parts (HardpointCompatibilitySPPAPC and
+# HardpointCompatibilitySPPTank). The SPP weapons are in spp_weapons.yml.
+
+- type: entity
+  parent: BaseItem
+  id: VehicleSPPAPCHardpointBase
+  categories: [ WFVehicles ]
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/sppapc.rsi
+  - type: Item
+    size: Large
+
+- type: entity
+  parent: VehicleSPPAPCHardpointBase
+  id: VehicleSPPAPCWheel
+  name: SPP APC wheel
+  description: A reinforced APC wheel produced for SPP vehicles.
+  components:
+  - type: Sprite
+    state: spp_tires
+  - type: HardpointItem
+    hardpointType: HardpointTypeWheel
+    vehicleFamily: HardpointVehicleFamilyAPC
+    slotType: HardpointSlotTypeWheel
+    compatibilityId: HardpointCompatibilitySPPAPC
+    damageMultiplier: 0.15
+    repairRate: 0.0165
+  - type: HardpointIntegrity
+    maxIntegrity: 500
+  - type: VehicleWheelItem
+
+- type: entity
+  parent: VehicleTankArmorBallistic
+  id: VehicleSPPTankReactiveArmor
+  name: reactive armor plating
+  description: Reactive armor plating for an SPP tank.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/spptank.rsi
+    state: reactive_armor
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: reactive_armor_0
+    damagedVehicleState: reactive_armor_1
+
+- type: entity
+  parent: VehicleTankWarningArray
+  id: VehicleSPPTankWarningArray
+  name: SPP warning array
+  description: An integrated weapons sensor array for SPP tank support slots.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/spptank.rsi
+    state: warray_0
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: warray_0
+    damagedVehicleState: warray_1
+
+- type: entity
+  parent: VehicleTankOverdriveEnhancer
+  id: VehicleSPPTankOverdriveEnhancer
+  name: SPP overdrive enhancer
+  description: An overdrive enhancer support attachment for an SPP tank.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/spptank.rsi
+    state: odrive_enhancer_0
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: odrive_enhancer_0
+    damagedVehicleState: odrive_enhancer_1
+
+- type: entity
+  parent: VehicleTankArtilleryModule
+  id: VehicleSPPTankArtilleryModule
+  name: SPP artillery module
+  description: An artillery support module for an SPP tank.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/spptank.rsi
+    state: artillerymod_0
+  - type: HardpointItem
+    compatibilityId: HardpointCompatibilitySPPTank
+  - type: HardpointVisual
+    vehicleState: artillerymod_0
+    damagedVehicleState: artillerymod_1

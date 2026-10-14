@@ -1,0 +1,235 @@
+# The Bison remote cargo carrier from Colonial Marines Universe. It has no interior and no hardpoints: it is its own
+# operator, and whoever holds its paired controller drives it by visiting it. Names and descriptions are in
+# Resources/Locale/en-US/_WF/Vehicles/bison.ftl.
+- type: entity
+  id: CMUCargoCarrier
+  categories: [ WFVehicles ]
+  # A saved carrier would point at a controller and a session that are gone on load.
+  save: false
+  components:
+  # A vehicle outlives its owner's grid: no cleanup, no smashing by an arriving ship.
+  - type: CleanupImmune
+  - type: FTLSmashImmune
+  # Placeholder price, for the owner to set.
+  - type: StaticPrice
+    price: 5000
+  - type: ContainerContainer
+    containers:
+      cmu-cargo-crate: !type:ContainerSlot
+        ent: null
+        showEnts: False
+        occludes: True
+  - type: RMCVehicle
+    movementKind: Grid
+  - type: LagCompensation
+  - type: Clickable
+  - type: Physics
+    bodyType: Dynamic
+  - type: Fixtures
+    fixtures:
+      world:
+        shape:
+          !type:PhysShapeAabb
+          bounds: -0.45,-0.95,0.45,0.95
+        density: 1000
+        mask:
+        - Impassable
+        - HighImpassable
+        - LowImpassable
+        - LargeMobLayer
+        - Vehicle
+        layer:
+        - LargeMobLayer
+        - Vehicle
+      mob:
+        shape:
+          !type:PhysShapeAabb
+          bounds: -0.45,-0.95,0.45,0.95
+        density: 1000
+        mask:
+        - MidImpassable
+        - LargeMobLayer
+        layer:
+        - LargeMobLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: VehicleFrameCLFVan
+  - type: InteractionOutline
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Vehicles/CMU/cargo_carrier.rsi
+    layers:
+    - map: [ base ]
+      state: cargo_closed
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.CMUCargoVehicleVisuals.BayOpen:
+        base:
+          True: { state: cargo_open }
+          False: { state: cargo_closed }
+  # The hit sound is the carrier's own (CMUCargoVehicle.collisionSound), which has a minimum speed; this one is the thud
+  # a run-over mob gets.
+  - type: VehicleSound
+    runningSound:
+      path: /Audio/_WF/Vehicles/box_van_driving.ogg
+      params:
+        volume: -7
+        pitch: 1.15
+    runningSoundCooldown: 2.3
+    hornSound: /Audio/Effects/double_beep.ogg
+    hornCooldown: 1
+    mobCollisionSound:
+      path: /Audio/Effects/metal_thud1.ogg
+      params:
+        volume: -2
+    collisionSoundCooldown: 1.5
+  - type: DoAfter
+  - type: InputMover
+  # The pilot's keys are the grid mover's alone. With walking speeds the mob mover would also shove the body towards
+  # the held key every tick, which is not the way a steered carrier is heading.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0
+    baseSprintSpeed: 0
+  # The pilot's session is attached to the carrier. Without a context the client falls back to "common", which has no
+  # use-item key, so the horn (bound to it) could not be sounded.
+  - type: Input
+    context: "human"
+  - type: GridVehicleMover
+    freeSteering: true
+    maxRotationSpeedDegrees: 90
+    rotationAccelerationDegrees: 180
+    rotationDecelerationDegrees: 180
+    maxSpeed: 9
+    acceleration: 6
+    deceleration: 12
+    maxReverseSpeed: 5
+    reverseAcceleration: 4
+    turnDelay: 0
+    turnInPlace: true
+    canPushVehicles: false
+  # Falls through z-levels like every vehicle (Docs/_WF/Vehicles/falling.md). It has no frame, so a landing hurts its
+  # Damageable: a share of bodyHealth, the damage at which it arms itself (CMUCargoVehicle.automaticArmDamage).
+  - type: VehicleFall
+    bodyHealth: 300
+  - type: CMUCargoVehicle
+    automaticArmDamage: 300
+    cargoDelay: 2
+    detonationDelay: 5
+    beepInterval: 1
+    crateParents:
+    - CrateGeneric
+    beepSound:
+      path: /Audio/_WF/Vehicles/effects/reset_key_shortbeep.ogg
+      params:
+        volume: -5
+    rampSound:
+      path: /Audio/_WF/Vehicles/effects/hydraulics_1.ogg
+      params:
+        volume: -3
+    collisionSound:
+      path: /Audio/Effects/metal_thud1.ogg
+      params:
+        volume: -2
+    collisionSoundCooldown: 1.5
+    collisionSoundMinSpeed: 4
+  - type: ExplodeOnTrigger
+  # FireBomb burns and hurts but breaks no floor and does no structural damage, so a carrier blowing up on a ship deck
+  # cannot hole the hull. Intensity numbers are CMU's.
+  - type: Explosive
+    explosionType: FireBomb
+    totalIntensity: 160
+    intensitySlope: 6
+    maxIntensity: 16
+    canCreateVacuum: false
+
+- type: entity
+  parent: BaseItem
+  id: CMUCargoCarrierController
+  categories: [ WFVehicles ]
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Objects/command_tablet.rsi
+    state: cotablet
+  - type: Item
+    size: Small
+  - type: CMUCargoVehicleController
+
+- type: entity
+  parent: BaseStructureDynamic
+  id: CMUCargoCarrierWreck
+  categories: [ HideSpawnMenu, WFVehicles ]
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Vehicles/CMU/cargo_carrier.rsi
+    state: cargo_closed
+    color: "#555555"
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: -0.45,-0.95,0.45,0.95
+        density: 1000
+        mask:
+        - Impassable
+        - HighImpassable
+        - LowImpassable
+        - LargeMobLayer
+        layer:
+        - LargeMobLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  # The blast that made the wreck must not unmake it.
+  - type: ExplosionResistance
+    damageCoefficient: 0
+
+- type: entity
+  parent: BaseItem
+  id: CMUCargoCarrierDebris
+  categories: [ HideSpawnMenu, WFVehicles ]
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/CMU/cargo_carrier.rsi
+    state: cargo_debris_1
+  - type: Item
+    size: Tiny
+  - type: Tag
+    tags:
+    - Trash
+
+- type: entity
+  parent: CMUCargoCarrierDebris
+  id: CMUCargoCarrierDebrisSide
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: cargo_debris_2
+
+- type: entity
+  parent: CMUCargoCarrierDebris
+  id: CMUCargoCarrierDebrisHood
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: cargo_debris_3
+
+- type: entity
+  parent: CMUCargoCarrierDebris
+  id: CMUCargoCarrierDebrisBumper
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: cargo_debris_4

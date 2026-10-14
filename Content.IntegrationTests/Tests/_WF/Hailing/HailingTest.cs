@@ -12,6 +12,7 @@ using Content.Server._WF.ShipPa;
 using Content.Server.Power.Components;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
+using Content.Shared._Mono.Detection;
 using Content.Shared._WF.Hailing;
 using Content.Shared._WF.ShipPa;
 using Content.Shared.Buckle;
@@ -37,7 +38,7 @@ namespace Content.IntegrationTests.Tests._WF.Hailing;
 /// Ship-to-ship hailing: one console rings another ship's, an answer opens a channel with the other
 /// pilot sent to each client, and every way out of a hail leaves both consoles idle.
 /// </summary>
-public sealed class HailingTest : InteractionTest
+public sealed partial class HailingTest : InteractionTest
 {
     // The cockpit needs a pilot who can buckle in and has the usual HUD parts.
     [TestPrototypes]
@@ -345,6 +346,12 @@ public sealed class HailingTest : InteractionTest
             Assert.That(targets, Has.Count.EqualTo(1));
             Assert.That(targets[0].Name, Is.EqualTo(Loc.GetString("hail-unknown-vessel")),
                 "A ship hiding its label should stay unnamed on the list.");
+
+            shuttles.RemoveIFFFlag(_otherGrid, IFFFlags.HideLabelAlways);
+            shuttles.AddIFFFlag(_otherGrid, IFFFlags.HideLabel);
+            SEntMan.EnsureComponent<DetectionRangeMultiplierComponent>(_console).AlwaysDetect = true;
+            Assert.That(hailing.GetTargets(_console)[0].Name, Is.EqualTo(Loc.GetString("hail-unknown-vessel")),
+                "A ship with its IFF label off should stay unnamed even when detected.");
 
             // And it is told who is calling only as far as its own radar knows.
             shuttles.AddIFFFlag(MapData.Grid, IFFFlags.HideLabelAlways);

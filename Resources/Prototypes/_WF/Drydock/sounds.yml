@@ -1,0 +1,63 @@
+# Drydock work sounds, one collection per kind of work. Repeated files weight the pick.
+
+# Hull tiles.
+- type: soundCollection
+  id: WFDrydockHullWork
+  files:
+  - /Audio/Items/welder.ogg
+  - /Audio/Items/welder2.ogg
+  - /Audio/Effects/saw.ogg
+  - /Audio/Effects/metal_scrape1.ogg
+  - /Audio/Effects/metal_scrape2.ogg
+  - /Audio/Items/welder.ogg
+
+# Missing parts.
+- type: soundCollection
+  id: WFDrydockPartWork
+  files:
+  - /Audio/Items/drill_use.ogg
+  - /Audio/Items/drill_hit.ogg
+  - /Audio/Items/ratchet.ogg
+  - /Audio/Items/welder2.ogg
+  - /Audio/Items/ratchet.ogg
+  - /Audio/Items/drill_use.ogg
+
+# Damage repair.
+- type: soundCollection
+  id: WFDrydockDamageWork
+  files:
+  - /Audio/Items/welder.ogg
+  - /Audio/Effects/saw.ogg
+  - /Audio/Effects/metal_scrape3.ogg
+  - /Audio/Effects/metal_thud1.ogg
+  - /Audio/Items/welder2.ogg
+
+# Refits.
+- type: soundCollection
+  id: WFDrydockRefitWork
+  files:
+  - /Audio/Items/drill_use.ogg
+  - /Audio/Items/ratchet.ogg
+  - /Audio/Items/screwdriver.ogg
+  - /Audio/Items/screwdriver2.ogg
+  - /Audio/Items/drill_hit.ogg
+  - /Audio/Machines/screwdriveropen.ogg
+
+# Random spots on the ship during a job.
+- type: soundCollection
+  id: WFDrydockIndustry
+  files:
+  - /Audio/Effects/metal_thud1.ogg
+  - /Audio/Effects/metal_thud2.ogg
+  - /Audio/Effects/metal_thud3.ogg
+  - /Audio/Effects/metal_slam1.ogg
+  - /Audio/Effects/metal_slam2.ogg
+  - /Audio/Effects/saw.ogg
+  - /Audio/Items/drill_use.ogg
+  - /Audio/Items/ratchet.ogg
+
+# Crane hydraulics when it starts moving.
+- type: soundCollection
+  id: WFDrydockCraneMove
+  files:
+  - /Audio/Mecha/sound_mecha_hydraulic.ogg

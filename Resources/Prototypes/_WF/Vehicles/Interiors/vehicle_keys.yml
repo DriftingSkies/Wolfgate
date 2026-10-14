@@ -1,0 +1,36 @@
+# A vehicle's key is spawned at its driver seat when the interior first loads. Blank keys imprint to the vehicle they are
+# used on, duplicator keys copy another key.
+
+- type: entity
+  parent: BaseItem
+  id: RMCVehicleKeyBase
+  categories: [ WFVehicles ]
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Objects/vehicle_key.rsi
+    state: key
+  - type: Item
+    size: Tiny
+  - type: VehicleKey
+
+- type: entity
+  parent: RMCVehicleKeyBase
+  id: RMCVehicleKey
+  components:
+  - type: VehicleKey
+    mode: Normal
+
+- type: entity
+  parent: RMCVehicleKeyBase
+  id: RMCVehicleKeyBlank
+  components:
+  - type: VehicleKey
+    mode: Blank
+
+- type: entity
+  parent: RMCVehicleKeyBase
+  id: RMCVehicleKeyDuplicator
+  components:
+  - type: VehicleKey
+    mode: Duplicator

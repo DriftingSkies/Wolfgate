@@ -1,0 +1,16 @@
+# The drawn part of a turret. The turret system spawns one per turret with an overlay, and the client points its sprite
+# at the turret's overlay state.
+- type: entity
+  id: VehicleTurretVisual
+  categories: [ HideSpawnMenu, WFVehicles ]
+  components:
+  - type: Tag
+    tags:
+    - HideContextMenu
+  - type: Sprite
+    drawdepth: OverMobs
+    sprite: _WF/Vehicles/hardpoints/humvee.rsi
+    layers:
+    - state: humveeturret
+      visible: false
+  - type: VehicleTurretVisual

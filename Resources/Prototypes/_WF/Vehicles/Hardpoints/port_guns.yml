@@ -1,0 +1,74 @@
+# The two port guns of the APC, from RMC's APC hardpoint file. They sit in the APC's locked port-gun-north and port-gun-south
+# slots and are worked from a port gun seat (see Docs/_WF/Vehicles/ammo.md). RMC's M56 FPW takes a smart-gun magazine, which
+# Wolfgate has no match for, so they take the L6 SAW's box magazine; WFVehicleMagazine762x39mmBox is that magazine with
+# rounds that leave no casing. The guns do not eject an emptied magazine on their own.
+
+- type: entity
+  parent: BaseItem
+  id: VehicleAPCM56FPWPortGunBase
+  categories: [ WFVehicles ]
+  abstract: true
+  name: APC port gun
+  description: A mounted M56 FPW port gun.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Interiors/apc.rsi
+    state: m56_FPW
+  - type: Item
+    size: Huge
+  - type: HardpointIntegrity
+    maxIntegrity: 100
+  - type: VehiclePortGun
+  - type: GunUseGunOrigin
+  - type: GunIgnoreContainerOwnerCollision
+  - type: Gun
+    projectileSpeed: 53
+    recoil: 0
+    fireRate: 5
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+    soundGunshot: /Audio/_WF/Vehicles/guns/gun_ml66a_2.ogg
+    cameraRecoilScalar: 0
+  - type: MagazineAmmoProvider
+  - type: ContainerContainer
+    containers:
+      gun_magazine: !type:ContainerSlot
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: WFVehicleMagazine762x39mmBox
+        insertSound: /Audio/_WF/Vehicles/guns/gun_sg_reload.ogg
+        ejectSound: /Audio/_WF/Vehicles/guns/gun_sg_unload.ogg
+        whitelist:
+          tags:
+          - Magazine762x39mmBox
+
+- type: entity
+  parent: VehicleAPCM56FPWPortGunBase
+  id: VehicleAPCM56FPWPortGunRight
+  name: APC port gun (starboard)
+  components:
+  - type: GunFireArc
+    arc: 90
+    angleOffset: 90
+  - type: GunMuzzleOffset
+    offset: "0.62,-1"
+    muzzleOffset: "0,0"
+    angleOffset: 90
+    useAimDirection: true
+
+- type: entity
+  parent: VehicleAPCM56FPWPortGunBase
+  id: VehicleAPCM56FPWPortGunLeft
+  name: APC port gun (port)
+  components:
+  - type: GunFireArc
+    arc: 90
+    angleOffset: -90
+  - type: GunMuzzleOffset
+    offset: "-0.62,-1"
+    muzzleOffset: "0,0"
+    angleOffset: -90
+    useAimDirection: true

@@ -130,6 +130,18 @@
         removeKeyOnFinish: false
     - !type:HTNPrimitiveTask
       operator: !type:WFTakeHelmOperator
+  # No way to the square helm (a sealed cabin, a blocked passage): fly from the nearest one rather than not at all.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WFPickHelmOperator
+        anyHelm: true
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WFCrewHelmCoords
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WFTakeHelmOperator
   - tasks:
     - !type:HTNCompoundTask
       task: WFCrewIdleCompound

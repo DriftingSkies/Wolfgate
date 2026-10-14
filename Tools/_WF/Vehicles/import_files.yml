@@ -1,0 +1,1019 @@
+# The explicit file list and rewrite rules for Tools/_WF/Vehicles/import_rmc.py (the Vehicles port; see
+# Docs/_WF/Vehicles/design.md). A file is imported only if it is listed here under its work package.
+#
+# A group copies files from `from` (a folder in the source repo) to `to` (a folder in this repo). An entry in `files`
+# is a path relative to both folders, or `{source path: destination path}` to rename or flatten the copy. Anything
+# that is not .cs or .xaml is copied byte for byte. The script never overwrites a file that exists unless told to.
+
+# `dir` is the folder of a source checkout; source_paths.py finds it beside this checkout (or WOLFGATE_RMC_PATH,
+# WOLFGATE_CMU_PATH, WOLFGATE_ENGINE_PATH, or the tools' --rmc, --cmu, --engine options) and fills in `path`.
+sources:
+  rmc:
+    dir: RMC-14
+    commit: e4627aee9e5bbd2d3841ddaa6c25593529a0638a
+    date: 2026-10-09
+    licence: MIT
+    copyright: Copyright (c) 2023-2026 RMC-14
+  cmu:
+    dir: ColonialMarinesUniverse
+    commit: b3cac1a18a631ad5669e0255eaa4a0a4b3add0f6
+    date: 2026-10-10
+    licence: AGPL-3.0
+    copyright: Colonial Marines Universe contributors
+  engine:
+    dir: RMC-14/RobustToolbox
+    commit: ea09bdafbf0f55919b237960c4d7ed534daed9f8
+    date: 2025-09-06
+    licence: MIT
+    copyright: Space Wizards Federation (RobustToolbox 264.0.2, RMC-14's fork)
+
+# Rewrites applied to every imported .cs and .xaml file, in this order. They map the source namespaces onto the flat
+# module namespace; a real import then runs fix_namespaces.py, which moves each file into the namespace of its folder
+# (AGENTS.md: namespaces follow the folder) and repairs the usings that named it.
+rewrite:
+  # Fully qualified names that must change before the namespaces do.
+  qualified:
+    Content.Shared.Vehicle.VehicleSystem: Content.Shared._WF.Vehicles.RMCVehicleSystem
+    Content.Shared.Vehicle.Components.VehicleComponent: Content.Shared._WF.Vehicles.RMCVehicleComponent
+    Content.Shared.Vehicle.Components.VehicleOperatorComponent: Content.Shared._WF.Vehicles.RMCVehicleOperatorComponent
+
+  # A namespace and everything below it. Longest first is not needed; the script sorts.
+  prefix:
+    Content.Shared.Vehicle.Components: Content.Shared._WF.Vehicles
+    Content.Shared.Vehicle: Content.Shared._WF.Vehicles
+    Content.Shared._RMC14.Vehicle: Content.Shared._WF.Vehicles
+    Content.Server._RMC14.Vehicle: Content.Server._WF.Vehicles
+    Content.Client._RMC14.Vehicle: Content.Client._WF.Vehicles
+
+  # Only a `using` or `namespace` line that names exactly this namespace. The RMC namespaces below also hold types
+  # Wolfgate has under other names, so sub-namespaces are left alone.
+  exact:
+    Content.Shared._RMC14.UserInterface: Content.Shared._WF.Vehicles
+    Content.Shared._RMC14.Teleporter: Content.Shared._WF.Vehicles
+    Content.Shared._RMC14.Weapons.Ranged: Content.Shared._WF.Vehicles
+    Content.Shared._RMC14.Weapons.Ranged.Ammo.BulletBox: Content.Shared._WF.Vehicles
+    Content.Server._RMC14.Trigger: Content.Server._WF.Vehicles
+    Content.Shared.CMU14.Vehicle: Content.Shared._WF.Vehicles
+    Content.Shared.CMU14.CargoVehicle: Content.Shared._WF.Vehicles
+    Content.Server.CMU14.CargoVehicle: Content.Server._WF.Vehicles
+
+  # Whole-word type renames.
+  types:
+    VehicleComponent: RMCVehicleComponent
+    VehicleOperatorComponent: RMCVehicleOperatorComponent
+    VehicleVisuals: RMCVehicleVisuals
+    RMCUserInterfaceSystem: VehicleUserInterfaceSystem
+    SharedRMCTeleporterSystem: VehiclePullingSystem
+    # `VehicleSystem` is decided per file: RMCVehicleSystem in files that come from Content.Shared/Vehicle, otherwise
+    # VehicleInteriorSystem (RMC's interior system). See import_rmc.py.
+
+  # Plain call rewrites (regex to replacement).
+  calls:
+    '\b_physics\.IsHardCollidable\(': 'VehicleHardCollision.IsHardCollidable('
+
+# Tokens that mark RMC systems the game does not have; the report counts them per file so the strip pass is easy.
+strip_hints:
+  - Xeno
+  - Skill
+  - PowerLoader
+  - Flamer
+  - IFF
+  - TacticalMap
+  - RMCSizes
+  - Areas
+  - Squad
+  - Marine
+  - Requisition
+  - Dropship
+  - Barricade
+
+# Files written by hand that derive from a source file. They are not copied; they only appear in the port manifest
+# when they exist. `src` is relative to the source repo.
+derived:
+  # WP13A: CMU's civilian vehicles, their interiors and the emergency lights (the two C# files are in the WP13 group below).
+  - dest: Resources/Prototypes/_WF/Vehicles/CMU/civilian_vehicles.yml
+    source: cmu
+    src: Content.CMU/Resources/Prototypes/CMU14/Vehicles/Paddywagons/vehicles.yml
+    note: the 17 civilian vehicles (also CivTruck/vehicles.yml) as thin children of the van and box van bases, translated with translate_cmu_yaml.py and trimmed by hand; the repeated doorways are fixed
+  - dest: Resources/Prototypes/_WF/Vehicles/CMU/emergency_lights.yml
+    source: cmu
+    src: Content.CMU/Resources/Prototypes/CMU14/Vehicles/EmergencyLights/emergency_lights.yml
+    note: the lightbars as they are; the action in Wolfgate's single-component InstantAction form
+  - dest: Resources/Locale/en-US/_WF/Vehicles/cmu-civilian.ftl
+    source: cmu
+    src: Content.CMU/Resources/Locale/en-US/CMU14/vehicle/emergency-lights.ftl
+    note: the lights popup, plus the action and lightbar names
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/cmu_ambulance.yml
+    source: cmu
+    src: Content.CMU/Resources/Maps/CMU14/Vehicles/Interiors/Ambulance.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/cmu_copmonosupron.yml
+    source: cmu
+    src: Content.CMU/Resources/Maps/CMU14/Vehicles/Interiors/CopMonoSupron.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/cmu_paddywagonvanempty.yml
+    source: cmu
+    src: Content.CMU/Resources/Maps/CMU14/Vehicles/Interiors/PaddyWagonVanEmpty.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/cmu_truck_interior.yml
+    source: cmu
+    src: Content.CMU/Resources/Maps/CMU14/Vehicles/Interiors/truck_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/cmu_van_interior.yml
+    source: cmu
+    src: Content.CMU/Resources/Maps/CMU14/Vehicles/Interiors/van_interior.yml
+    note: converted by convert_interior_map.py
+  # WP13B: CMU's military vehicles, their unarmed parts and the AEV's interior (no guns; they are in military_weapons.yml).
+  - dest: Resources/Prototypes/_WF/Vehicles/CMU/military_vehicles.yml
+    source: cmu
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/vehicles.yml
+    note: the PMC tank, TWE tank and AEV, and the PMC APC from APC/vehicles.yml, as thin children of the family bases (the AEV on the unarmed root), translated with translate_cmu_yaml.py and trimmed by hand; no CMU handling numbers
+  - dest: Resources/Prototypes/_WF/Vehicles/CMU/military_hardpoints.yml
+    source: cmu
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_base.yml
+    note: the PMC and TWE turret bodies, TWE treads, and from hardpoints_support.yml the TWE snowplow and artillery module and the mounted flag (damaged state fixed), as children of the RMC tank parts, plus HardpointCompatibilityTWETank
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/cmu_arv.yml
+    source: cmu
+    src: Content.CMU/Resources/Maps/CMU14/Vehicles/Interiors/arv.yml
+    note: converted by convert_interior_map.py (the driver seat is the plain armored driver seat through map_prototypes)
+  # WP13C: CMU's five tank guns, the last part of the military package.
+  - dest: Resources/Prototypes/_WF/Vehicles/CMU/military_weapons.yml
+    source: cmu
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_cannon.yml
+    note: the FV150 autocannon and electrolaser, and from hardpoints_launcher.yml the hull machine gun and the RE700, and from hardpoints_support.yml the smoke discharger, translated with translate_cmu_yaml.py and trimmed by hand; the electrolaser round from Entities/Objects/Weapons/Guns/Ammunition/Cartridges/vehicle_tank.yml on Wolfgate's laser bolt, CMU's flak damage on a copy of the RMC flak, CMU's sentry round (Projectiles/sentry.yml) for the hull machine gun and the RE700, and a crate for the electrolaser that CMU does not have
+  - dest: Content.Shared/_WF/Vehicles/Compat/IRefreshableBui.cs
+    source: rmc
+    src: Content.Shared/_RMC14/UserInterface/IRefreshableBui.cs
+    note: namespace only
+  - dest: Content.Shared/_WF/Vehicles/Compat/VehicleUserInterfaceSystem.cs
+    source: rmc
+    src: Content.Shared/_RMC14/UserInterface/RMCUserInterfaceSystem.cs
+    note: RefreshUIs and its Update loop only, renamed
+  - dest: Content.Shared/_WF/Vehicles/Compat/VehiclePullingSystem.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Teleporter/SharedRMCTeleporterSystem.cs
+    note: HandlePulling only, in its own system
+  - dest: Content.Shared/_WF/Vehicles/Compat/VehicleHardCollision.cs
+    source: engine
+    src: Robust.Shared/Physics/Systems/SharedPhysicsSystem.Fixtures.cs
+    note: the per-fixture-pair IsHardCollidable loop, as a static helper
+  - dest: Resources/Prototypes/_WF/Vehicles/Damage/vehicle_modifier_sets.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Damage/marine_modifier_sets.yml
+    note: the eight Vehicle* modifier sets, values unchanged
+  - dest: Content.Shared/_WF/Vehicles/Turret/VehicleTurretComponent.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Vehicle/Weapons/VehicleWeaponsComponents.cs
+    note: VehicleTurretComponent only, kept in its own file; it is not declared in the imported VehicleWeaponsComponents.cs, and its Access attribute is back
+  - dest: Content.Shared/_WF/Vehicles/Weapons/GunIgnoreContainerOwnerCollisionSystem.cs
+    source: rmc
+    src: Content.Shared/Projectiles/SharedProjectileSystem.cs
+    note: the container-owner tail of PreventCollision, as a handler on the vehicle instead of an edit in the projectile system
+  - dest: Content.Shared/_WF/Vehicles/Weapons/GunMuzzleOffsetSystem.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Weapons/Ranged/GunMuzzleOffsetSystem.cs
+    note: imported, then trimmed; the muzzle flash offset is left out, offsets are applied in the grid's frame, and a turret gun starts from the turret's pose
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/bases.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_base.yml
+    note: the abstract item bases of the humvee, APC and tank (also from Humvee and APC hardpoints.yml); sprite paths moved
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/wheels.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_base.yml
+    note: the wheel and tread items of the van, humvee, APC and tank (also from Van, Humvee and APC hardpoints.yml); sprite paths moved
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/armor.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_armor.yml
+    note: the tank armour plating and snowplow; sprite paths moved
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/support.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_support.yml
+    note: the unarmed support modules, plus the humvee snowplow and hatch and the APC freight storage; the comms relay sensor and overlight are left out
+  - dest: Resources/Locale/en-US/_WF/Vehicles/hardpoints.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/vehicle.ftl
+    note: the rmc-hardpoint and turret lines the hardpoint code uses, plus new wf-vehicles-hardpoint lines for the strings that were literals
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/overlight.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Humvee/hardpoints.yml
+    note: VehicleHumveeOverlight only, the one part that carries VehicleSpotlightModifier; sprite paths moved
+  - dest: Resources/Locale/en-US/_WF/Vehicles/core.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/vehicle.ftl
+    note: the rmc-hardpoint-ui lines the hardpoint window uses, plus new wf-vehicles-hardpoint-ui lines for its literals, the overcharge action name and the hardpoint overlay command
+  - dest: Resources/Prototypes/_WF/Vehicles/Tiles/vehicle_interior.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Tiles/vehicle_interior.yml
+    note: the 114 interior floors and RMCVoid on Wolfgate's tile fields, ids kept, textures moved under _WF/Vehicles
+  - dest: Resources/Prototypes/_WF/Vehicles/Actions/vehicle_actions.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Actions/vehicle_actions.yml
+    note: the toggle-view and lock actions in the single-component InstantAction form, names moved to interiors.ftl (deploy is deferred, select-hardpoint is in Actions/weapon_actions.yml)
+  - dest: Resources/Prototypes/_WF/Vehicles/Interiors/vehicle_keys.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Objects/Misc/vehicle_keys.yml
+    note: the three vehicle keys; sprite path moved, names moved to interiors.ftl
+  - dest: Resources/Prototypes/_WF/Vehicles/Interiors/markers.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Markers/rmc_vehicle_blocker.yml
+    note: VehicleExitArea and VehiclePeekAnchor, the vehicle blocker and the two invisible wall blockers (from Entities/Structures/Base/base_structure.yml); RMCIgnoreGhostInteractionLimits is dropped and Vehicle is RMCVehicle
+  - dest: Resources/Prototypes/_WF/Vehicles/Seats/seats.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/Dropships/vehicle_seats.yml
+    note: the driver seat and the passenger, van, armored and humvee seats on Wolfgate's SeatBase with no skills; the gunner seats are plain seats until the weapons package
+  - dest: Resources/Locale/en-US/_WF/Vehicles/interiors.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/vehicle.ftl
+    note: the enter, exit, lock and key lines (xeno, power loader and job pool lines dropped), plus the entity names and the doorway overlay command
+  - dest: Content.Client/_WF/Vehicles/Overlays/VehicleEntryPointsOverlay.cs
+    source: rmc
+    src: Content.Client/_RMC14/Vehicle/GridVehicleMoverOverlay.cs
+    note: DrawEntryPoints and DrawExitPoints as an overlay of their own with its own command, because the mover overlay is the mover rewrite's file
+  # WP5 and WP6B: the crash effect, the shared ejection routine and the demolition content.
+  - dest: Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Crash.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Vehicle/Core/VehicleSystem.cs
+    note: DoInteriorCrashEffect and PlayCrashSound as a partial that handles VehicleCollisionEvent; RMC's camera shake is a camera kick and the xeno set is gone
+  - dest: Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Eject.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Vehicle/Core/VehicleSystem.Demolition.cs
+    note: EjectAllOccupants made public and reused by the safety system when a vehicle is deleted; it also takes mobs, ghosts and loose items on the interior map
+  - dest: Resources/Prototypes/_WF/Vehicles/Demolition/demolition.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/explosions.yml
+    note: RMCVehicleWreckExplosion as WFVehicleWreckExplosion on Wolfgate's FireBomb explosion type, plus a demolition charge on C4 in place of RMC's plastic explosives
+  - dest: Resources/Locale/en-US/_WF/Vehicles/safety.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/vehicle.ftl
+    note: the demolition lines (the skill line is dropped), plus the safety system's own and the entity names
+  # WP7: the base, the shared interior pieces, the vans and the humvees.
+  - dest: Resources/Prototypes/_WF/Vehicles/Base/base_vehicle.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/base_vehicle.yml
+    note: RMCVehicleBase on RMCVehicle with the Wolfgate defaults (save false, CleanupImmune, FTLSmashImmune, StaticPrice); the xeno, night vision, corrosion and projectile-target parts, the weapons and demolition components are left out
+  - dest: Resources/Prototypes/_WF/Vehicles/Interiors/common_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Common/general_interiors.yml
+    note: the shared interior pieces on Wolfgate bases; vendors, wall phones and the camera network are gone, the NanoMed and cameras are props, the ammo loaders carry the loader component and window
+  - dest: Resources/Prototypes/_WF/Vehicles/Interiors/viewports.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Common/viewports.yml
+    note: the van and humvee viewports; RemoveComponents became an empty Tag and a disabled InteractionTransparency
+  - dest: Resources/Prototypes/_WF/Vehicles/Van/vehicles.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Van/vehicles.yml
+    note: the van family on RMCVehicle; wheels fitted at spawn, the armed van's turret left for the armed roster
+  - dest: Resources/Prototypes/_WF/Vehicles/Van/van_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Van/Interiors/interiors.yml
+    note: van interior pieces; RMCSpriteFade is SpriteFade, roofs are Clickable
+  - dest: Resources/Prototypes/_WF/Vehicles/Van/box_van_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Van/Interiors/box_interiors.yml
+    note: box van interior pieces
+  - dest: Resources/Prototypes/_WF/Vehicles/Van/pizza_van_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Van/Interiors/pizza_interiors.yml
+    note: pizza van interior pieces
+  - dest: Resources/Prototypes/_WF/Vehicles/Van/spp_van_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Van/Interiors/spp_interiors.yml
+    note: SPP van interior pieces, plus VehicleSPPTankSmallLockerAlt from Vehicles/Tank/spp_interiors.yml
+  - dest: Resources/Prototypes/_WF/Vehicles/Humvee/vehicles.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Humvee/vehicles.yml
+    note: the humvee family; the turret slot is empty and the ARC has no deploy turret
+  - dest: Resources/Prototypes/_WF/Vehicles/Humvee/humvee_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Humvee/interiors.yml
+    note: humvee interior pieces; the blood vendor props are gone and the medical locker holds nothing
+  - dest: Content.Shared/_WF/Vehicles/Compat/InteractionTransparencyComponent.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Interaction/InteractionTransparencyComponent.cs
+    note: gains an Enabled field so a clickable piece can opt out
+  - dest: Content.Client/_WF/Vehicles/Interaction/InteractionTransparencySystem.cs
+    source: rmc
+    src: Content.Client/_RMC14/Interaction/RMCClientInteractionSystem.cs
+    note: renamed; checks the Enabled field
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/van_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/van_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/box_van_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/box_van_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/pizza_van_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/pizza_van_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_van_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_van_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_van_armed_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_van_armed_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_van_medical_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_van_medical_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_van_prisoner_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_van_prisoner_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_van_logistics_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_van_logistics_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/humvee_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/humvee_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/humvee_medical_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/humvee_medical_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/humvee_transport_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/humvee_transport_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/humvee_arc_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/humvee_arc_interior.yml
+    note: converted by convert_interior_map.py
+  # WP8: the APCs and tanks, unarmed.
+  - dest: Resources/Prototypes/_WF/Vehicles/APC/vehicles.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/APC/vehicles.yml
+    note: the APC family on RMCVehicle with the wheels fitted at spawn; the tactical map tracker, job pools, xeno caps and the port gun slots are gone, the weapon slots start empty
+  - dest: Resources/Prototypes/_WF/Vehicles/APC/apc_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/APC/interiors.yml
+    note: APC interior pieces; RMCSpriteFade is SpriteFade, RemoveComponents became a disabled InteractionTransparency or an empty Tag, the port gun mounts are props
+  - dest: Resources/Prototypes/_WF/Vehicles/APC/spp_apc_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/APC/spp_interiors.yml
+    note: SPP APC interior pieces
+  - dest: Resources/Prototypes/_WF/Vehicles/Tank/vehicles.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/vehicles.yml
+    note: the tank family with the treads and turret fitted at spawn; the roof riding surface, tactical map tracker, job pools and xeno caps are gone and the debug autodrive tank is not ported
+  - dest: Resources/Prototypes/_WF/Vehicles/Tank/tank_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/interiors.yml
+    note: tank interior pieces; the exit hatch is rebuilt without the wall's body instead of removing its fixtures
+  - dest: Resources/Prototypes/_WF/Vehicles/Tank/spp_tank_interiors.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/spp_interiors.yml
+    note: SPP tank interior pieces except the alt small locker, which Van/spp_van_interiors.yml defines
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/turrets.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_base.yml
+    note: the tank turret, plus the SPP tank turret (Tank/Hardpoints/spp_hardpoints.yml) and the SPP APC turret (APC/spp_hardpoints.yml) without their guns and the power loader grab
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/spp_hardpoints.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/APC/spp_hardpoints.yml
+    note: the SPP APC base and wheel, plus the unarmed SPP tank armour and support parts from Tank/Hardpoints/spp_hardpoints.yml
+  - dest: Resources/Prototypes/_WF/Vehicles/Seats/armored_seats.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/Dropships/vehicle_seats.yml
+    note: the tank driver, gunner and commander seats and the port gun seat on RMCSeatArmoredBase, with no skills; the port gun seat is a plain seat until the port guns
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/apc_transport_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/apc_transport_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/apc_medical_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/apc_medical_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/apc_command_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/apc_command_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_apc_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_apc_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/tank_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/tank_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_tank_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_tank_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Maps/_WF/Vehicles/Interiors/spp_tank_command_interior.yml
+    source: rmc
+    src: Resources/Maps/_RMC14/Vehicles/spp_tank_command_interior.yml
+    note: converted by convert_interior_map.py
+  - dest: Resources/Prototypes/_WF/Vehicles/Actions/weapon_actions.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Actions/vehicle_actions.yml
+    note: ActionVehicleSelectHardpoint in the single-component InstantAction form, name moved to weapon-seats.ftl
+  - dest: Resources/Prototypes/_WF/Vehicles/Weapons/turret_visual.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Common/turret_visuals.yml
+    note: VehicleTurretVisual on the humvee turret sprite; RMCNightVisionVisible dropped
+  - dest: Resources/Locale/en-US/_WF/Vehicles/weapon-seats.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/vehicle.ftl
+    note: the weapons window and hull lines the weapon seats use, plus the select-action and turret visual names (auto turret, port gun and skill lines dropped)
+  # WP2C: crushing. VehicleSmashable stays a component; these give Wolfgate's own prototypes the same settings.
+  - dest: Content.Shared/_WF/Vehicles/Crushing/VehicleSmashRulePrototype.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Vehicle/Core/VehicleSmashableComponent.cs
+    note: the same settings as a vehicleSmashRule prototype with selectors, so Wolfgate's own prototypes need no component
+  - dest: Resources/Prototypes/_WF/Vehicles/Crushing/smash_rules.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/Storage/lockers.yml
+    note: the VehicleSmashable settings of RMC's 29 prototype files, mapped onto Wolfgate's bases; see Docs/_WF/Vehicles/crushing.md
+  # Scenery vehicles: RMC's static props, converted by hand (sprite paths, three components Wolfgate lacks or does not want).
+  - dest: Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/prop_vehicles.yml
+    note: Corrodible, RequireProjectileTarget and DeleteOnExplosion dropped, so shots hit them and blasts leave them
+  - dest: Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles2.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/prop_vehicles2.yml
+    note: sprite paths only
+  - dest: Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles3.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/prop_vehicles3.yml
+    note: sprite paths only
+  - dest: Resources/Prototypes/_WF/Vehicles/Props/tyrargo.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Structures/vehicles_tyrargo.yml
+    note: sprite paths; the abstract base pointed at an RSI RMC does not have, so it names the APC's
+  # The plow, from CMU. CMU's ramming model is not ported; these carry its plow rules onto this module's crushing.
+  - dest: Content.Shared/_WF/Vehicles/Core/VehiclePlowComponents.cs
+    source: cmu
+    src: Content.Shared/_RMC14/Vehicle/Core/VehiclePlowComponent.cs
+    note: the plow and plow chassis components with the fields this module uses
+  - dest: Content.Shared/_WF/Vehicles/Grid/GridVehicleMoveSystem.Plow.cs
+    source: cmu
+    src: Content.Shared/_RMC14/Vehicle/Grid/GridVehicleMoveSystem.Collision.cs
+    note: the front-face rule, the ram and powered demolition numbers and the contact tracking, applied only to what VehicleSmashRuleSystem.IsPlowable allows
+  # Car-style steering, from CMU's mover. The drive step itself sits in the RMC-imported mover files; see the manifest's Sources.
+  - dest: Content.Client/_WF/Vehicles/Visuals/VehicleSteeredSpriteSystem.cs
+    source: cmu
+    src: Content.Client/_RMC14/Vehicle/VehicleExactCardinalDirectionSystem.cs
+    note: the four-way sprite turned by what is left of the angle; applied to freely steered vehicles and to turret visuals
+  - dest: Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleSteeringTest.cs
+    source: cmu
+    src: Content.IntegrationTests/_RMC14/GridVehicleMotionSimulatorTest.cs
+    note: the steering cases rewritten as driving tests on this module's test chassis
+  # WP14: the Bison. The files in the wp 14 groups below were hand-adapted after the copy; the rest are written from CMU's.
+  - dest: Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Control.cs
+    source: cmu
+    src: Content.CMU/Server/CargoVehicle/CMUCargoVehicleSystem.cs
+    note: the remote-control session, split out of the system; ends on a map change and on the pilot's body being deleted, and the Wolfgate SSD indicator
+  - dest: Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Cargo.cs
+    source: cmu
+    src: Content.CMU/Server/CargoVehicle/CMUCargoVehicleSystem.cs
+    note: the cargo bay, split out of the system; the crate rule is a prototype-parent check in place of PowerLoaderGrabbable
+  - dest: Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Destruct.cs
+    source: cmu
+    src: Content.CMU/Server/CargoVehicle/CMUCargoVehicleSystem.cs
+    note: the self-destruct, split out of the system; Wolfgate's trigger and tile fire in place of RMC's explosion event and fire diamond
+  - dest: Resources/Prototypes/_WF/Vehicles/Bison/cargo_vehicle.yml
+    source: cmu
+    src: Content.CMU/Resources/Prototypes/CMU14/Vehicles/CargoVehicle/cargo_vehicle.yml
+    note: the CMU-only mover, vehicle and z-level fields and RMC components dropped; the Wolfgate vehicle spawn defaults added; FireBomb explosion
+  - dest: Resources/Prototypes/_WF/Vehicles/Bison/cargo_vehicle_actions.yml
+    source: cmu
+    src: Content.CMU/Resources/Prototypes/CMU14/Entities/Actions/Vehicles/cargo_vehicle.yml
+    note: the three actions in the old InstantAction form
+  - dest: Resources/Locale/en-US/_WF/Vehicles/bison.ftl
+    source: cmu
+    src: Content.CMU/Resources/Locale/en-US/CMU14/cargo-vehicle.ftl
+    note: CMU's keys, the deployment crate line dropped, one key added for the map change
+  - dest: Content.IntegrationTests/Tests/_WF/Vehicles/CMUCargoVehicleTest.cs
+    source: cmu
+    src: Content.IntegrationTests/_CMU14/CargoVehicle/CMUCargoVehicleTest.cs
+    note: the link, load, unload and self-destruct cases rewritten for this module, with the return-to-body, moving ship and deck edge cases added
+  # WP12: the armed roster. The pre-armed vehicle variants (Tank, APC and Humvee armed.yml) have no source.
+  - dest: Content.Shared/_WF/Vehicles/Weapons/ShootAtFixedPointComponent.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Weapons/Ranged/ShootAtFixedPointComponent.cs
+    note: the same three settings; not networked, since the ammo event it serves is raised on the server only
+  - dest: Content.Shared/_WF/Vehicles/Weapons/ProjectileFixedDistanceComponent.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Weapons/Ranged/ProjectileFixedDistanceComponent.cs
+    note: with the stop event and a ProjectileMaxFixedRange component for the round's own range cap (RMC's Projectile.maxFixedRange), so ProjectileComponent gains no field
+  - dest: Content.Shared/_WF/Vehicles/Weapons/ShootAtFixedPointSystem.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Weapons/Ranged/CMGunSystem.cs
+    note: the fixed point shot, the arc collision check, the sleep stop and the Update loop of CMGunSystem; no client-side delete; a round also stops at the first wall, door, window or hull on its way, found by a sweep of each step's travel in the map's frame, the distance is clamped and a stopped round is spent (Wolfgate's own, after the second and third reviews; ShootAtFixedPointSystem.Sweep.cs and GunAimGuardSystem.cs are Wolfgate's own too)
+  - dest: Content.Shared/_WF/Vehicles/Weapons/VehicleTriggerComponents.cs
+    source: rmc
+    src: Content.Server/_RMC14/Trigger/OnShootTriggerAmmoTimerComponent.cs
+    note: OnShootTriggerAmmoTimer and TriggerOnFixedDistanceStop, in Shared so the client reads the prototypes; the on-hit-ground timer mode is left out
+  - dest: Content.Server/_WF/Vehicles/Weapons/VehicleTriggerSystem.cs
+    source: rmc
+    src: Content.Server/_RMC14/Trigger/RMCTriggerSystem.cs
+    note: the shot timer and the fixed distance stop trigger; the thrown ammo timer is left out
+  - dest: Content.Shared/_WF/Vehicles/Weapons/GunSpinupComponent.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Weapons/Ranged/GunSpinupComponent.cs
+    note: sound paths moved under _WF/Vehicles
+  - dest: Content.Shared/_WF/Vehicles/Weapons/GunSpinupSystem.cs
+    source: rmc
+    src: Content.Shared/_RMC14/Weapons/Ranged/GunSpinupSystem.cs
+    note: namespace only, and the stop sound is the server's alone so the shooter does not hear it twice
+  - dest: Resources/Prototypes/_WF/Vehicles/Weapons/ammo.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Common/ammo.yml
+    note: the ten vehicle ammo crates of the guns that are ported; the flamer tank is left out and the RMCAmmoBox tag is gone
+  - dest: Resources/Prototypes/_WF/Vehicles/Weapons/projectiles.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Entities/Objects/Weapons/Guns/Ammunition/Cartridges/vehicle_tank.yml
+    note: the cartridges and rounds of the vehicle guns on Wolfgate's bullet, cartridge and rocket bases, also from Vehicles/Common/ammo.yml and Projectiles/vehicle.yml; accuracy, armour piercing, falloff, area damage and shrapnel are left out and the grenade, smoke, flare and port gun rounds are Wolfgate's own
+  - dest: Resources/Prototypes/_WF/Vehicles/Weapons/explosions.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/explosion.yml
+    note: the RMC and RMCLTBCannon explosion types with RMC's damage per intensity and tile break numbers; their sounds and fire are Wolfgate's
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/tank_weapons.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/hardpoints_cannon.yml
+    note: the tank cannons and launchers (also hardpoints_launcher.yml and hardpoints_support.yml) without accuracy, IFF and the flamers
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/apc_weapons.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/APC/hardpoints.yml
+    note: the dual cannon, frontal cannon and flare launcher
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/port_guns.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/APC/hardpoints.yml
+    note: the two M56 FPW port guns on the L6 SAW's box magazine in place of a smart-gun magazine, with no chamber component
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/humvee_weapons.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Humvee/hardpoints.yml
+    note: the humvee turret bodies, cannons and launcher; the smoke launcher has no fuse
+  - dest: Resources/Prototypes/_WF/Vehicles/Hardpoints/spp_weapons.yml
+    source: rmc
+    src: Resources/Prototypes/_RMC14/Vehicles/Tank/Hardpoints/spp_hardpoints.yml
+    note: the SPP tank guns (also APC/spp_hardpoints.yml and Van/spp_hardpoints.yml for the SPP APC and van weapons)
+  - dest: Resources/Locale/en-US/_WF/Vehicles/ammo.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/bullet-box.ftl
+    note: the bullet box lines as they are, plus the loader and port gun lines of _RMC14/vehicle.ftl
+  - dest: Resources/Locale/en-US/_WF/Vehicles/weapons.ftl
+    source: rmc
+    src: Resources/Locale/en-US/_RMC14/weapons/guns.ftl
+    note: the firing arc refusal line
+  - dest: Resources/Locale/en-US/_WF/Vehicles/vehicles.ftl
+    source: rmc
+    src: Content.Client/_RMC14/Vehicle/VehicleOverlayCommands.cs
+    note: the admin-only and enabled or disabled texts of the overlay commands, moved to Fluent; the entity names are Wolfgate's
+  - dest: Content.Client/_WF/Vehicles/Overlays/VehicleEntryPointsCommand.cs
+    source: rmc
+    src: Content.Client/_RMC14/Vehicle/VehicleOverlayCommands.cs
+    note: the shape of its toggle commands for the doorway overlay, which is split out of the mover's overlay
+
+# The work packages' files. Wiring and trimming happen by hand after the copy; the script only does the mechanical part.
+groups:
+  # WP1: base operator layer, grid mover, the small components the mover reads, client mover and debug commands.
+  - wp: 1
+    source: rmc
+    from: Content.Shared/Vehicle
+    to: Content.Shared/_WF/Vehicles/Base
+    files:
+      - Components/VehicleComponent.cs: RMCVehicleComponent.cs
+      - Components/VehicleOperatorComponent.cs: RMCVehicleOperatorComponent.cs
+      - VehicleSystem.cs: RMCVehicleSystem.cs
+    # Not imported: StrapVehicle, ContainerVehicle, GenericKeyedVehicle, VehicleSystem.Key.cs, VehicleSystem.Operator.cs.
+  - wp: 1
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle
+    to: Content.Shared/_WF/Vehicles/Base
+    files:
+      - VehicleWatchingComponent.cs
+  - wp: 1
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Grid
+    to: Content.Shared/_WF/Vehicles/Grid
+    files:
+      - Components/GridVehicleMoverComponent.cs
+      - Components/GridVehicleOperatorComponent.cs
+      - GridVehicleMotionSimulator.cs
+      - GridVehicleMoveSystem.cs
+      - GridVehicleMoveSystem.Movement.cs
+      - GridVehicleMoveSystem.Collision.cs
+      # What is left of RMC's Push file once the xeno pusher is gone: the driver's input.
+      - GridVehicleMoveSystem.Push.cs: GridVehicleMoveSystem.Input.cs
+    # Not imported: ToxicWater, SqueezeUnder, RideSurface (all deferred), the autopilot component.
+    # Hand-trimmed after the copy: the xeno, barricade, weeds, water, push and bypass code is gone, and the wheel and
+    # crash calls became VehicleCollisionEvent (Grid/VehicleCollisionEvent.cs, new). See design.md.
+    # WP2 then reworked the movement and collision files by hand, so do not re-import over them: the narrowphase is in
+    # the grid's frame, the floor check is GridVehicleMoveSystem.Floor.cs (new, with GridVehicleGeometry.cs and
+    # VehicleOpenTileAttemptEvent.cs), every smash read is TryGetSmashable (VehicleSmashSettings.cs, new), and the
+    # mover keeps its speed and re-reads its facing when the grid changes. See the Hardening section of design.md.
+  - wp: 1
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Core
+    to: Content.Shared/_WF/Vehicles/Core
+    files:
+      - VehicleSoundComponent.cs
+      - VehicleSmashableComponent.cs
+      - VehicleRunoverComponent.cs
+      - VehicleRunoverSystem.cs
+      - VehicleOverchargeComponent.cs
+  - wp: 1
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Hardpoint
+    to: Content.Shared/_WF/Vehicles/Hardpoint
+    files:
+      # Speed and acceleration modifiers (the mover reads them), and the gunner view and weapon support parts. Weapon accuracy
+      # is stripped, so the two AccuracyMultiplier fields on the weapon support components were removed after the copy.
+      - VehicleSupportModifierComponents.cs
+  - wp: 1
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle
+    to: Content.Client/_WF/Vehicles/Grid
+    files:
+      # Hand-trimmed: no hardpoint overlay (WP6 adds it and its console command back) and no entry or exit point
+      # drawing (WP4 adds it back; the removed methods are DrawEntryAndExitPoints, FindFirstGrid, DrawEntryPoints and
+      # DrawExitPoints in the source overlay). Ride surfaces are not drawn.
+      - GridVehicleMoverSystem.cs
+      - GridVehicleMoverOverlay.cs
+  - wp: 1
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle
+    to: Content.Client/_WF/Vehicles/Overlays
+    files:
+      # Hand-trimmed: rmc_vehicle_hardpoint comes back with the overlay in WP6. Strings are Fluent keys in
+      # Resources/Locale/en-US/_WF/Vehicles/vehicles.ftl.
+      - VehicleOverlayCommands.cs
+
+  # WP3: hardpoint framework, wheels, topology, integrity and repair.
+  - wp: 3
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Hardpoint
+    to: Content.Shared/_WF/Vehicles/Hardpoint
+    files:
+      - HardpointComponents.cs
+      - HardpointSystem.cs
+      - HardpointSystem.Slots.cs
+      - HardpointSlotSystem.cs
+      - HardpointUi.cs
+      - HardpointTypePrototype.cs
+      - HardpointCompatibilityPrototype.cs
+      - HardpointVehicleFamilyPrototype.cs
+      - HardpointSlotTypePrototype.cs
+      - HardpointVisualComponent.cs
+      - VehicleArmorHardpointComponent.cs
+      - VehicleHardpointVisualsComponent.cs
+      - VehicleTurretSlotIds.cs
+      # Its GunRefreshModifiersEvent subscription moves onto HardpointItem and the accuracy handler goes.
+      - VehicleWeaponSupportSystem.cs
+  - wp: 3
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle
+    to: Content.Shared/_WF/Vehicles/Hardpoint
+    files:
+      - VehicleDamageMultiplierComponent.cs
+  - wp: 3
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Core
+    to: Content.Shared/_WF/Vehicles/Core
+    files:
+      - VehicleTopologySystem.cs
+      - VehicleWheelSystem.cs
+      - VehicleWheelSlotsComponent.cs
+      - VehicleFrameDamageVisuals.cs
+      # Not imported: VehicleCorrosiveTileComponent (only toxic water reads it, and that is deferred).
+  - wp: 3
+    source: rmc
+    from: Content.Server/_RMC14/Vehicle
+    to: Content.Server/_WF/Vehicles/Hardpoint
+    files:
+      - VehicleHardpointVisualsSystem.cs
+  # Data that the hardpoint and topology systems read (VehicleTurretComponent, declared in Weapons/VehicleWeaponsComponents.cs,
+  # is under `derived`).
+  - wp: 3
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Turret
+    to: Content.Shared/_WF/Vehicles/Turret
+    files:
+      - VehicleTurretAttachmentComponent.cs
+  - wp: 3
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Hardpoint
+    to: Content.Shared/_WF/Vehicles/Hardpoint
+    files:
+      - VehicleHardpointAmmoComponent.cs
+  - wp: 3
+    source: rmc
+    from: Content.Shared/_RMC14/Weapons/Ranged/Ammo/BulletBox
+    to: Content.Shared/_WF/Vehicles/Weapons/BulletBox
+    files:
+      - RefillableByBulletBoxComponent.cs
+  # The hardpoint taxonomy: marker entities that the hardpoint components reference by EntProtoId.
+  - wp: 3
+    source: rmc
+    from: Resources/Prototypes/_RMC14
+    to: Resources/Prototypes/_WF/Vehicles/Hardpoints
+    files:
+      - vehicle_hardpoint_types.yml: hardpoint_types.yml
+  # The item sprites of the unarmed hardpoints. The RSIs are copied whole, so the armed items' states come with them.
+  - wp: 3
+    source: rmc
+    from: Resources/Textures/_RMC14/Structures/Vehicles/hardpoints
+    to: Resources/Textures/_WF/Vehicles/hardpoints
+    files:
+      - van.rsi/meta.json
+      - van.rsi/tires.png
+      - humvee.rsi/humveecannon.png
+      - humvee.rsi/humveehatch.png
+      - humvee.rsi/humveelauncher.png
+      - humvee.rsi/humveelauncher_installed.png
+      - humvee.rsi/humveeturret.png
+      - humvee.rsi/meta.json
+      - humvee.rsi/overlight.png
+      - humvee.rsi/snowplow.png
+      - humvee.rsi/tires.png
+      - apc.rsi/comms_relay.png
+      - apc.rsi/dual_cannon.png
+      - apc.rsi/dual_cannon_wy.png
+      - apc.rsi/flare_launcher.png
+      - apc.rsi/flare_launcher_installed.png
+      - apc.rsi/freighter_storage.png
+      - apc.rsi/front_cannon.png
+      - apc.rsi/front_cannon_wy.png
+      - apc.rsi/laser_targetter.png
+      - apc.rsi/m56_FPW.png
+      - apc.rsi/meta.json
+      - apc.rsi/tires.png
+      - apc.rsi/tires_wy.png
+      - tank.rsi/ace_autocannon.png
+      - tank.rsi/artillery.png
+      - tank.rsi/ballistic_armor.png
+      - tank.rsi/caustic_armor.png
+      - tank.rsi/concussive_armor.png
+      - tank.rsi/drgn_flamer.png
+      - tank.rsi/flamer.png
+      - tank.rsi/glauncher.png
+      - tank.rsi/ltaaap_minigun.png
+      - tank.rsi/ltb_cannon.png
+      - tank.rsi/m56_cupola.png
+      - tank.rsi/meta.json
+      - tank.rsi/odrive_enhancer.png
+      - tank.rsi/paladin_armor.png
+      - tank.rsi/slauncher_0.png
+      - tank.rsi/slauncher_1.png
+      - tank.rsi/snowplow.png
+      - tank.rsi/tires.png
+      - tank.rsi/tow_launcher.png
+      - tank.rsi/treads.png
+      - tank.rsi/warray.png
+
+  # WP4: interiors, enter and exit, driver seat, locks, views. Hand-trimmed after the copy: no xeno set, MaxXenos or job pools
+  # (one occupant set and MaxPassengers), the driver seat's skills are the VehicleSeatAttemptEvent, no pry-open path for
+  # xenos, no area power or construction handlers, no crash effect or demolition (WP6), VehicleInteriorLoadedEvent and the
+  # grid check in EnsureInterior added, actions on the old Actions API.
+  - wp: 4
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Core
+    to: Content.Shared/_WF/Vehicles/Core
+    files:
+      - VehicleSystem.cs: VehicleInteriorSystem.cs
+      - VehicleEnterComponent.cs
+      - VehicleInteriorComponents.cs
+      - VehicleLockSystem.cs
+      - VehicleLockComponents.cs
+      - VehicleViewToggleSystem.cs
+      - VehicleViewToggleComponents.cs
+  - wp: 4
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Viewport
+    to: Content.Shared/_WF/Vehicles/Viewport
+    files:
+      - VehicleViewportComponent.cs
+  - wp: 4
+    source: rmc
+    from: Content.Server/_RMC14/Vehicle
+    to: Content.Server/_WF/Vehicles/Core
+    files:
+      - VehicleEntranceItemSystem.cs
+  - wp: 4
+    source: rmc
+    from: Content.Server/_RMC14/Vehicle/Viewport
+    to: Content.Server/_WF/Vehicles/Viewport
+    files:
+      - VehicleViewportSystem.cs
+  - wp: 4
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle/Viewport
+    to: Content.Client/_WF/Vehicles/Visuals
+    files:
+      - VehicleViewportSystem.cs
+
+  # WP6A: horn, spotlight, overcharge, and the client hardpoint UI and visualizers. WP6B (demolition) is below.
+  - wp: 6
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Core
+    to: Content.Shared/_WF/Vehicles/Core
+    files:
+      # The key binds resolve the vehicle through RMCVehicleOperator (the interior fallback comes with WP4). The
+      # spotlight also listens to VehicleHardpointsRefreshEvent, and its F bind only swallows the key for an operator.
+      - VehicleHornSystem.cs
+      - VehicleSpotlightSystem.cs
+      - VehicleSpotlightComponent.cs
+      - VehicleSpotlightModifierComponent.cs
+      # Rewritten: an InstantAction given to the operator replaces the CMUniqueAction key bind.
+      - VehicleOverchargeSystem.cs
+  # WP6B: demolition and the interior crash effect (needs the interior system, so it follows WP4).
+  - wp: 6
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Core
+    to: Content.Shared/_WF/Vehicles/Core
+    files:
+      # A partial of the interior system.
+      - VehicleSystem.Demolition.cs: VehicleInteriorSystem.Demolition.cs
+      - VehicleDemolitionComponent.cs
+      - VehicleDemolitionChargeComponent.cs
+  - wp: 6
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle/Ui
+    to: Content.Client/_WF/Vehicles/Ui
+    files:
+      # Hand-edited: the menu takes its literals from core.ftl and gets its entity manager injected.
+      - HardpointBoundUserInterface.cs
+      - HardpointMenu.cs
+      - HardpointMenu.xaml
+      # Not imported: HardPointButton.cs and HardpointButton.xaml. Only the supply console used the button, and the
+      # console is not ported.
+      # The supply console handler goes.
+      - VehicleBoundUiRefreshSystem.cs
+  - wp: 6
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle
+    to: Content.Client/_WF/Vehicles/Visuals
+    files:
+      # Hand-edited: the sprite calls go through SpriteSystem.
+      - VehicleFrameDamageVisualizerSystem.cs
+      - VehicleHardpointVisualizerSystem.cs
+      - VehicleWheelVisualizerSystem.cs
+  - wp: 6
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle
+    to: Content.Client/_WF/Vehicles/Overlays
+    files:
+      # Hand-adapted: the gun muzzle, fire arc and rendered-pose drawing read GunMuzzleOffset, GunFireArc and the turret
+      # systems. The overlay and its rmc_vehicle_hardpoint command live in Overlays/VehicleOverlayCommands.cs, not in the
+      # Grid folder.
+      - VehicleHardpointDebugOverlay.cs
+
+  # WP9: gun origin and muzzle add-ons (the AttemptShootEvent edits in SharedGunSystem are marked edits, by hand).
+  - wp: 9
+    source: rmc
+    from: Content.Shared/_RMC14/Weapons/Ranged
+    to: Content.Shared/_WF/Vehicles/Weapons
+    files:
+      - GunUseGunOriginComponent.cs
+      - GunMuzzleOffsetComponent.cs
+      - GunMuzzleOffsetSystem.cs
+      - GunFireArcComponent.cs
+      - GunFireArcSystem.cs
+      - GunIgnoreContainerOwnerCollisionComponent.cs
+  # The muzzle offset system reads the render-aligned facing, so this turret helper comes in with it.
+  - wp: 9
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Turret
+    to: Content.Shared/_WF/Vehicles/Turret
+    files:
+      - VehicleTurretDirectionHelpers.cs
+
+  # WP10: turret, weapon seats, gunner view, client turret input and the weapons window.
+  - wp: 10
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Turret
+    to: Content.Shared/_WF/Vehicles/Turret
+    files:
+      - VehicleTurretSystem.cs
+      - VehicleTurretMuzzleSystem.cs
+      - VehicleTurretMuzzleComponent.cs
+      # VehicleTurretDirectionHelpers.cs comes in with WP9, which needs it for the muzzle offset system.
+      # VehicleTurretAttachmentComponent.cs and VehicleTurretComponent come in with WP3, as data.
+      - VehicleTurretVisualComponent.cs
+  - wp: 10
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Hardpoint
+    to: Content.Shared/_WF/Vehicles/Hardpoint
+    files:
+      - VehicleGunnerViewSystem.cs
+  - wp: 10
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Weapons
+    to: Content.Shared/_WF/Vehicles/Weapons
+    files:
+      - VehicleWeaponsSystem.cs
+      - VehicleWeaponsSystem.Actions.cs
+      - VehicleWeaponsSystem.Ui.cs
+      - VehicleWeaponsComponents.cs
+      - VehicleWeaponsActions.cs
+      - VehicleWeaponsUi.cs
+  - wp: 10
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle
+    to: Content.Client/_WF/Vehicles/Turret
+    files:
+      - VehicleTurretInputSystem.cs
+      - VehicleTurretVisualSystem.cs
+      # Hand-trimmed: only the gun pose queries stay. The tracked muzzle flash (VehicleTurretTrackedMuzzleFlashComponent)
+      # and the shot origin handler need RMC's BeforeAttemptShootEvent and muzzle flash hooks and are not ported.
+      - VehicleTurretMuzzleOffsetSystem.cs
+      - Hardpoint/VehicleGunnerCursorOffsetSystem.cs: VehicleGunnerCursorOffsetSystem.cs
+  - wp: 10
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle/Ui
+    to: Content.Client/_WF/Vehicles/Ui
+    files:
+      - VehicleWeaponsBoundUserInterface.cs
+      - VehicleWeaponsMenu.cs
+      - VehicleWeaponsMenu.xaml
+
+  # WP11: hardpoint ammo, the ammo loader and its menu, port guns, bullet boxes. Edited by hand after the import:
+  # VehicleAmmoLoaderSystem lost its flamer tank and xeno branches and gets hand changes through a VehicleAmmoLoaderUser
+  # marker (VehicleAmmoLoaderComponent.cs) instead of subscribing to every HandsComponent; VehiclePortGunSystem asks
+  # VehicleSeatAttemptEvent in place of the skill check and answers MannedTurretGetGunEvent; the menu title is Fluent.
+  - wp: 11
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Hardpoint
+    to: Content.Shared/_WF/Vehicles/Hardpoint
+    files:
+      # VehicleHardpointAmmoComponent.cs comes in with WP3, as data.
+      - VehicleHardpointAmmoSystem.cs
+  - wp: 11
+    source: rmc
+    from: Content.Shared/_RMC14/Vehicle/Weapons
+    to: Content.Shared/_WF/Vehicles/Weapons
+    files:
+      - VehicleAmmoLoaderSystem.cs
+      - VehicleAmmoLoaderComponent.cs
+      - VehicleAmmoLoaderUi.cs
+      - VehiclePortGunSystem.cs
+      - VehiclePortGunComponents.cs
+    # Not imported: VehicleFlamerTankSlotsComponent (flamers are deferred).
+  - wp: 11
+    source: rmc
+    from: Content.Shared/_RMC14/Weapons/Ranged/Ammo/BulletBox
+    to: Content.Shared/_WF/Vehicles/Weapons/BulletBox
+    files:
+      - BulletBoxComponent.cs
+      - BulletBoxSystem.cs
+      - BulletBoxTransferDoAfterEvent.cs
+      - BulletBoxVisuals.cs
+      # RefillableByBulletBoxComponent.cs comes in with WP3, as data.
+  - wp: 11
+    source: rmc
+    from: Content.Client/_RMC14/Vehicle/Ui
+    to: Content.Client/_WF/Vehicles/Ui
+    files:
+      - VehicleAmmoLoaderBoundUserInterface.cs
+      - VehicleAmmoLoaderMenu.cs
+      - VehicleAmmoLoaderMenu.xaml
+
+  # WP12: trimmed copies of the launcher and cannon logic; the wiring in CMGunSystem is extracted by hand.
+  - wp: 12
+    source: rmc
+    from: Content.Shared/_RMC14/Weapons/Ranged
+    to: Content.Shared/_WF/Vehicles/Weapons
+    files:
+      - ShootAtFixedPointComponent.cs
+      - ProjectileFixedDistanceComponent.cs
+      - GunSpinupComponent.cs
+      - GunSpinupSystem.cs
+  - wp: 12
+    source: rmc
+    from: Content.Server/_RMC14/Trigger
+    to: Content.Server/_WF/Vehicles/Core
+    files:
+      - OnShootTriggerAmmoTimerComponent.cs
+
+  # WP13: CMU emergency lights.
+  - wp: 13
+    source: cmu
+    from: Content.CMU/Shared/Vehicle
+    to: Content.Shared/_WF/Vehicles/Core
+    files:
+      - CMUEmergencyLightsComponent.cs
+      - CMUEmergencyLightsSystem.cs
+
+  # WP14: CMU Bison remote cargo carrier. Hand-adapted after the copy (usings, the Wolfgate base, a crate rule, Wolfgate's
+  # trigger and tile fire, the session safeguards); do not re-import over them. See Docs/_WF/Vehicles/bison.md.
+  - wp: 14
+    source: cmu
+    from: Content.CMU/Shared/CargoVehicle
+    to: Content.Shared/_WF/Vehicles/Bison
+    files:
+      - CMUCargoVehicleComponents.cs
+      - CMUCargoVehicleEvents.cs
+      - SharedCMUCargoVehicleSystem.cs
+  - wp: 14
+    source: cmu
+    from: Content.CMU/Server/CargoVehicle
+    to: Content.Server/_WF/Vehicles/Bison
+    files:
+      - CMUCargoVehicleSystem.cs

@@ -105,7 +105,7 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true # WOLFGATE(Drydock): single use, so a drydock repair undercuts printing another card
     cooldown: 1800 # 30 minutes
     consoleType: Security
     companyName: TSF
@@ -129,7 +129,7 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true # WOLFGATE(Drydock): single use, so a drydock repair undercuts printing another card
     cooldown: 3600 # one hour
     consoleType: Security
     companyName: TSF
@@ -163,7 +163,8 @@
   - type: Item
     heldPrefix: tsf
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true # WOLFGATE(Drydock): single use, so a drydock repair undercuts printing another card
+    redemptionsLeft: 1 # WOLFGATE(Drydock)
     cooldown: 5100 # hour and 25 minutes
     consoleType: Security
     companyName: TSF
@@ -188,7 +189,8 @@
   - type: Item
     heldPrefix: tsf
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true # WOLFGATE(Drydock): single use, so a drydock repair undercuts printing another card
+    redemptionsLeft: 1 # WOLFGATE(Drydock)
     consoleType: Security
     companyName: TSF
     cooldown: 14400 # two hour
@@ -216,6 +218,7 @@
     heldPrefix: tsf
   - type: ShipyardVoucher
     destroyOnEmpty: true
+    redemptionsLeft: 1 # WOLFGATE(Drydock): single use, so a drydock repair undercuts printing another card
     consoleType: Custom
     companyName: TSF
     vessels:

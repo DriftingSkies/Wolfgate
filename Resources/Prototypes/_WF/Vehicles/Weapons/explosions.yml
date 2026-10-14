@@ -1,0 +1,43 @@
+# RMC's two explosion types for the vehicle rounds, under their RMC ids with RMC's damage per intensity and tile break numbers
+# (RMC-14 Resources/Prototypes/_RMC14/explosion.yml). Their sounds and fire are Wolfgate's: RMC's sound collections and its
+# transparent fire are not ported.
+#
+# RMCLTBCannon is the LTB cannon shell's blast (and the SPP railgun's). Its Structural 400 per intensity is twenty times the
+# default explosion's: see armed.md for what that does to a ship's walls, windows and airlocks.
+
+- type: explosion
+  id: RMC
+  damagePerIntensity:
+    types:
+      Blunt: 5
+      Heat: 5
+  tileBreakChance: [0, 0.5, 1]
+  tileBreakIntensity: [0, 10, 30]
+  tileBreakRerollReduction: 20
+
+- type: explosion
+  id: RMCLTBCannon
+  damagePerIntensity:
+    types:
+      Blunt: 20
+      Heat: 20
+      Structural: 400
+  tileBreakChance: [0, 0.5, 1]
+  tileBreakIntensity: [0, 8, 20]
+  tileBreakRerollReduction: 20
+
+# The burst of a flamer's jet: the fire bomb's fire with heat for its only damage, so it burns what it reaches and does
+# not shatter the glass and plating round it.
+- type: explosion
+  id: WFVehicleFlame
+  damagePerIntensity:
+    types:
+      Heat: 4
+  lightColor: Orange
+  texturePath: /Textures/Effects/fire.rsi
+  fireStates: 6
+  fireStacks: 2
+  temperature: 1500
+  fireChance: 0.8
+  minFireLevel: 1
+  maxFireLevel: 3

@@ -1,0 +1,78 @@
+# Hammer Ironstrike, dwarf dockmaster. Answers hails and books berths and work.
+
+- type: humanoidProfile
+  id: WFDrydockDockmasterProfile
+  profile:
+    name: Hammer Ironstrike
+    species: Dwarf
+    age: 97
+    sex: Male
+    gender: Male
+    appearance:
+      hair: HumanHairBalding
+      hairColor: "#8A3B1C"
+      facialHair: HumanFacialHairDwarf
+      facialHairColor: "#8A3B1C"
+      eyeColor: "#4A5D7A"
+      skinColor: "#C9926B"
+
+- type: startingGear
+  id: WFDrydockDockmasterGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitChiefEngineer
+    outerClothing: ClothingOuterVestHazard
+    head: ClothingHeadHatHardhatOrange
+    ears: ClothingHeadsetEngineering
+    shoes: ClothingShoesBootsWork
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: traderDialogue
+  id: WFDrydockDockmasterDialogue
+  greeting: drydock-dockmaster-greeting
+  farewell: drydock-dockmaster-farewell
+  options:
+  - prompt: drydock-dockmaster-prompt-how
+    response: drydock-dockmaster-response-how
+  - prompt: drydock-dockmaster-prompt-hail
+    response: drydock-dockmaster-response-hail
+  - prompt: drydock-dockmaster-prompt-who
+    response: drydock-dockmaster-response-who
+
+- type: entity
+  id: WFDrydockDockmaster
+  parent: WFBaseTrader
+  name: Hammer Ironstrike
+  description: The drydock's dwarf dockmaster, beard tucked into his hazard vest.
+  suffix: Drydock, Dockmaster
+  components:
+  - type: HumanoidAppearance
+    species: Dwarf
+    initial: WFDrydockDockmasterProfile
+  # Dwarf parts over the human trader base, as in BaseMobDwarf.
+  - type: Body
+    prototype: Dwarf
+  - type: Sprite
+    scale: 1, 0.8
+  - type: Vocal
+    sounds:
+      Male: UnisexDwarf
+      Female: FemaleDwarf
+      Unsexed: UnisexDwarf
+  - type: Speech
+    speechSounds: Bass
+  - type: ReplacementAccent
+    accent: dwarf
+  - type: Loadout
+    prototypes: [ WFDrydockDockmasterGear ]
+  - type: Trader
+    dialogue: WFDrydockDockmasterDialogue
+  - type: HailResponder
+    greetings:
+    - drydock-hail-greeting-1
+    - drydock-hail-greeting-2
+    - drydock-hail-greeting-3
+  - type: WFDrydockOperator
+  - type: HailService
+    name: drydock-hail-service
+    key: enum.WFDrydockConsoleUiKey.Key
+    perCaller: true

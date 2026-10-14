@@ -1,0 +1,476 @@
+# Interior pieces shared by every vehicle. Everything here is decoration or furniture: the interior grid has no power, so
+# nothing needs an APC.
+
+- type: entity
+  abstract: true
+  id: VehicleInteriorGeneralBase
+  categories: [ WFVehicles ]
+  name: vehicle interior piece
+  description: A decorative vehicle interior fixture.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Tag
+    tags:
+    - HideContextMenu
+  - type: Sprite
+    sprite: _WF/Vehicles/Interiors/general.rsi
+    drawdepth: Overdoors
+  - type: InteractionOutline
+  - type: Clickable
+  - type: InteractionTransparency
+
+- type: entity
+  abstract: true
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorWallMountedBase
+  name: vehicle interior wall mount
+  description: A wall-mounted vehicle interior fixture.
+  placement:
+    mode: PlaceFree
+  components:
+  - type: WallMount
+    arc: 360
+
+- type: entity
+  parent: VehicleInteriorWallMountedBase
+  id: VehicleAmmoLoader
+  name: vehicle ammo loader
+  description: A loader for vehicle hardpoint ammunition.
+  components:
+  - type: Sprite
+    state: weapons_loader
+  - type: Tag
+    tags: []
+  - type: InteractionTransparency
+    enabled: false
+  - type: VehicleAmmoLoader
+  - type: UserInterface
+    interfaces:
+      enum.VehicleAmmoLoaderUiKey.Key:
+        type: VehicleAmmoLoaderBoundUserInterface
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorArmorChairOld
+  name: armor chair (old)
+  components:
+  - type: Sprite
+    state: armor_chair_old
+  - type: Strap
+    position: Stand
+    buckleOffset: "0,-0.05"
+  - type: Tag
+    tags: []
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorArmorChairUnfold
+  name: armor chair (unfolded)
+  components:
+  - type: Sprite
+    state: armor_chair_unfold
+  - type: Strap
+    position: Stand
+    buckleOffset: "0,-0.05"
+  - type: Tag
+    tags: []
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorArmorChair
+  name: armor chair
+  components:
+  - type: Sprite
+    state: armor_chair
+  - type: Strap
+    position: Stand
+    buckleOffset: "0,-0.05"
+  - type: Tag
+    tags: []
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorArmorChairBuckled
+  name: armor chair (buckled)
+  components:
+  - type: Sprite
+    state: armor_chair_buckled
+  - type: Strap
+    position: Stand
+    buckleOffset: "0,-0.05"
+  - type: Tag
+    tags: []
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorVehicleSeat
+  name: vehicle seat
+  components:
+  - type: Sprite
+    state: vehicle_seat
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorVehicleSeatBuckled
+  name: vehicle seat (buckled)
+  components:
+  - type: Sprite
+    state: vehicle_seat_buckled
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorVehicleBars
+  name: vehicle bars
+  components:
+  - type: Sprite
+    state: vehicle_bars
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInteriorVehicleSeatDestroyed
+  name: vehicle seat (destroyed)
+  components:
+  - type: Sprite
+    state: vehicle_seat_destroyed
+
+# Lockers are steel closets pinned to the wall. They are not anchored, so nobody can wrench them off. A child's sprite
+# layers replace its parent's, so each locker base (here and in the family files) lists ClosetBase's weld and paper label
+# layers again, with their own RSIs: ClosetBase's visualizers still map them, and the interior RSIs have neither state.
+- type: entity
+  abstract: true
+  parent: ClosetBase
+  id: VehicleInteriorLockerBase
+  categories: [ WFVehicles ]
+  name: vehicle interior locker
+  description: A storage locker for vehicle interiors.
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+  - type: WallMount
+    arc: 360
+  - type: Sprite
+    sprite: _WF/Vehicles/Interiors/general.rsi
+    drawdepth: Overdoors
+    layers:
+    - state: locker
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: locker
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      sprite: Structures/Storage/closet.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      visible: false
+      sprite: Structures/Storage/closet_labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: EntityStorageVisuals
+    stateBaseClosed: locker
+    stateBaseOpen: locker_open
+    stateDoorClosed:
+    stateDoorOpen:
+
+- type: entity
+  parent: VehicleInteriorLockerBase
+  id: VehicleInteriorLockerOpen
+  name: interior locker (open)
+  components:
+  - type: EntityStorageVisuals
+    stateBaseClosed: locker_open
+    stateBaseOpen: locker_open
+
+- type: entity
+  parent: VehicleInteriorLockerBase
+  id: VehicleInteriorLocker
+  name: interior locker
+
+- type: entity
+  parent: VehicleInteriorLockerBase
+  id: VehicleInteriorLockerMedical
+  name: interior locker (medical)
+  components:
+  - type: Sprite
+    layers:
+    - state: locker_med
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: locker_med
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      sprite: Structures/Storage/closet.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      visible: false
+      sprite: Structures/Storage/closet_labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: EntityStorageVisuals
+    stateBaseClosed: locker_med
+    stateBaseOpen: locker_open
+
+# Extinguisher cabinets: Wolfgate's wall cabinet with RMC's sprite. Not anchored, like the lockers.
+- type: entity
+  abstract: true
+  parent: ExtinguisherCabinet
+  id: VehicleInteriorExtinguisherCabinetBase
+  categories: [ WFVehicles ]
+  name: interior extinguisher cabinet
+  description: A wall-mounted fire extinguisher cabinet for vehicle interiors.
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Transform
+    anchored: false
+  # No fixtures, so the engine turns collision off at init; saying so keeps the save equal to the prototype.
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Sprite
+    sprite: _WF/Vehicles/Interiors/general.rsi
+    drawdepth: Overdoors
+    offset: 0,0
+    layers:
+    - state: extinguisher
+    - state: extinguisher_full
+      map: ["enum.ItemCabinetVisuals.Layer"]
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.ItemCabinetVisuals.ContainsItem:
+        enum.ItemCabinetVisuals.Layer:
+          True: { state: extinguisher_full }
+          False: { state: extinguisher_empty }
+      enum.OpenableVisuals.Opened:
+        enum.ItemCabinetVisuals.Layer:
+          True: { visible: true }
+          False: { visible: false }
+
+- type: entity
+  parent: VehicleInteriorExtinguisherCabinetBase
+  id: VehicleInteriorExtinguisher
+  name: interior extinguisher
+  components:
+  - type: ContainerFill
+    containers:
+      ItemCabinet:
+      - FireExtinguisher
+
+- type: entity
+  parent: VehicleInteriorExtinguisherCabinetBase
+  id: VehicleInteriorExtinguisherClosed
+  name: interior extinguisher (closed)
+  components:
+  - type: ContainerFill
+    containers:
+      ItemCabinet:
+      - FireExtinguisher
+
+- type: entity
+  parent: VehicleInteriorExtinguisherCabinetBase
+  id: VehicleInteriorExtinguisherFull
+  name: interior extinguisher (full)
+  components:
+  - type: Openable
+    opened: true
+  - type: ContainerFill
+    containers:
+      ItemCabinet:
+      - FireExtinguisher
+
+- type: entity
+  parent: VehicleInteriorExtinguisherCabinetBase
+  id: VehicleInteriorExtinguisherMini
+  name: interior extinguisher (mini)
+  components:
+  - type: Openable
+    opened: true
+  - type: ContainerFill
+    containers:
+      ItemCabinet:
+      - FireExtinguisherMini
+  - type: Sprite
+    layers:
+    - state: extinguisher
+    - state: extinguisher_mini
+      map: ["enum.ItemCabinetVisuals.Layer"]
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.ItemCabinetVisuals.ContainsItem:
+        enum.ItemCabinetVisuals.Layer:
+          True: { state: extinguisher_mini }
+          False: { state: extinguisher_empty }
+      enum.OpenableVisuals.Opened:
+        enum.ItemCabinetVisuals.Layer:
+          True: { visible: true }
+          False: { visible: false }
+
+- type: entity
+  parent: VehicleInteriorExtinguisherCabinetBase
+  id: VehicleInteriorExtinguisherEmpty
+  name: interior extinguisher (empty)
+  components:
+  - type: Openable
+    opened: true
+
+# The NanoMed is Wolfgate's wall NanoMed in the cabin's own sprite. The cabin has no power, so it needs none, and it
+# stays where the interior puts it: it cannot be unfastened, and it blocks nobody in a cabin this small.
+- type: entity
+  parent: [ VendingMachineWallMedical, BaseStructureDisableAnchoring ]
+  id: VehicleInteriorNanomed
+  name: NanoMed
+  categories: [ WFVehicles ]
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Tag
+    tags:
+    - HideContextMenu
+  - type: VendingMachine
+    pack: NanoMedInventory
+    offState: nanomed
+    brokenState: nanomed
+    normalState: nanomed
+    denyState: nanomed_deny
+    ejectState: nanomed_vend
+  - type: Sprite
+    sprite: _WF/Vehicles/Interiors/general.rsi
+    drawdepth: Overdoors
+    layers:
+    - state: nanomed
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: nanomed
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - texture: Structures/Machines/VendingMachines/maintenance_panel.png
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: WallMount
+    arc: 360
+
+# The vend and deny frames as plain props, for mappers.
+- type: entity
+  parent: VehicleInteriorWallMountedBase
+  id: VehicleInteriorNanomedVend
+  name: NanoMed (vend)
+  description: A wall-mounted medical dispenser.
+  components:
+  - type: Sprite
+    state: nanomed_vend
+
+- type: entity
+  parent: VehicleInteriorWallMountedBase
+  id: VehicleInteriorNanomedDeny
+  name: NanoMed (deny)
+  description: A wall-mounted medical dispenser.
+  components:
+  - type: Sprite
+    state: nanomed_deny
+
+# Cameras are props too: the interior has no camera network.
+- type: entity
+  parent: VehicleInteriorWallMountedBase
+  id: VehicleInteriorCamera
+  name: vehicle camera
+  description: A camera bolted to the wall. It does not look switched on.
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Wallmounts/camera.rsi
+    state: camera
+  # The interior maps save empty fixtures for it (RMC's camera had a body); a client given fixtures with no body logs an error.
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+
+- type: entity
+  parent: VehicleInteriorCamera
+  id: VehicleInteriorCameraEMP
+  name: vehicle camera (EMP)
+  components:
+  - type: Sprite
+    state: cameraemp
+
+# The prisoner van's cell doors. The interior grid has no power and a windoor that needs it can only be pried open, which
+# would shut anyone who walks in at the back into the cell.
+- type: entity
+  parent: Windoor
+  id: WFVehicleWindoor
+  categories: [ WFVehicles ]
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false
+
+# Invisible walls for the mapper; the second one lets light and vision through.
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInvisibleWall
+  name: invisible wall (blocks vision)
+  description: An invisible blocking wall for vehicle interiors.
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Marker
+  - type: Physics
+    bodyType: Static
+    canCollide: true
+  - type: Occluder
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,0.49"
+        density: 20000
+        hard: true
+        mask:
+        - FullTileMask
+        layer:
+        - HighImpassable
+        - MidImpassable
+        - LowImpassable
+        - Opaque
+  - type: Sprite
+    sprite: _WF/Vehicles/Markers/landmarks.rsi
+    state: invisible_wall
+    drawdepth: Overdoors
+
+- type: entity
+  parent: VehicleInteriorGeneralBase
+  id: VehicleInvisibleWallNoVision
+  name: invisible wall (no vision block)
+  description: An invisible blocking wall for vehicle interiors that does not block vision or light.
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Marker
+  - type: Physics
+    bodyType: Static
+    canCollide: true
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,0.49"
+        density: 20000
+        hard: true
+        mask:
+        - FullTileMask
+        layer:
+        - HighImpassable
+        - MidImpassable
+        - LowImpassable
+  - type: Sprite
+    sprite: _WF/Vehicles/Markers/landmarks.rsi
+    state: invisible_wall
+    drawdepth: Overdoors

@@ -40,6 +40,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private AdminVesselSpawnSystem _vessels = default!;
+    [Dependency] private WFEncounterSchedulerSystem _scheduler = default!;
     [Dependency] private WFCrewSetupSystem _setup = default!;
     [Dependency] private WFCrewWorkSystem _work = default!;
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
@@ -75,6 +76,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     private static readonly TimeSpan PowerInterval = TimeSpan.FromMinutes(2);
 
     private TimeSpan _nextPoll;
+    private TimeSpan _heldAt;
     private float _cleanupRange;
     private TimeSpan _cleanupDelay;
     private TimeSpan _cleanupLinger;
@@ -93,6 +95,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         // DamageChangedEvent then has no origin.
         SubscribeLocalEvent<WFEncounterPassengerComponent, BeforeDamageChangedEvent>(OnPassengerDamaged,
             before: [typeof(Content.Shared._Onyx.Wounds.WoundDamageRoutingSystem)]);
+        InitializeExtort();
     }
 
     /// <summary>A hidden encounter shows itself once one of its crews raises the alarm.</summary>
@@ -179,10 +182,16 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Puts a hidden encounter on the sector markers and lets it make its announcement.</summary>
-    public void Reveal(Entity<WFEncounterComponent?> encounter)
+    /// <summary>
+    /// Puts a hidden encounter on the sector markers and lets it make its announcement. One with a stealth ship stays
+    /// hidden unless <paramref name="force"/> is set.
+    /// </summary>
+    public void Reveal(Entity<WFEncounterComponent?> encounter, bool force = false)
     {
         if (!Resolve(encounter, ref encounter.Comp, false) || !encounter.Comp.Hidden)
+            return;
+
+        if (!force && encounter.Comp.Ships.Values.Any(ship => ship.Stealth))
             return;
 
         encounter.Comp.Hidden = false;
@@ -292,7 +301,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     /// nothing behind, when a ship cannot be loaded or crewed or its orders are invalid.
     /// </summary>
     public bool TrySpawn(WFEncounterPrototype prototype, MapCoordinates origin, out EntityUid encounter, EntityUid? spawner = null,
-        IReadOnlyList<EntityUid>? stops = null, bool pinned = false)
+        IReadOnlyList<EntityUid>? stops = null, bool pinned = false, bool offBudget = false)
     {
         encounter = default;
         if (origin.MapId == MapId.Nullspace || prototype.Ships.Count == 0 || !_mapSystem.TryGetMap(origin.MapId, out var map))
@@ -314,6 +323,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         comp.Cost = prototype.Cost;
         comp.Lifetime = prototype.Lifetime;
         comp.OffBudget = prototype.Lifetime == WFEncounterLifetime.Persistent || prototype.Start == WFEncounterStart.RoundStart;
+        comp.OffBudget |= offBudget;
         // A pinned encounter is the admin's to end: no clock, no slot under the cap, and its ships stay however it goes.
         comp.Pinned = pinned;
         if (comp.Pinned)
@@ -382,7 +392,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
     {
         foreach (var ship in prototype.Ships)
         {
-            if (!comp.Ships.TryGetValue(ship.Key, out var state) || TerminatingOrDeleted(state.Grid) || IsStranded(state))
+            // An extorter flies its wander legs as its own roaming, not as orders that can be flown out.
+            if (!comp.Ships.TryGetValue(ship.Key, out var state) || TerminatingOrDeleted(state.Grid) || IsStranded(state)
+                || state.Extort != null)
                 continue;
 
             if (!IssueShipOrders(comp, prototype, ship, state))
@@ -406,6 +418,18 @@ public sealed partial class WFEncounterSystem : EntitySystem
             return true;
 
         if (!_objectives.SetQueue(state.Grid, state.Group, queue))
+            return false;
+
+        state.HasOrders = true;
+        state.Flown = false;
+        return true;
+    }
+
+    /// <summary>Gives one ship of a running encounter a new queue as its own orders; false if the encounter, ship or queue is invalid.</summary>
+    public bool SetOrders(Entity<WFEncounterComponent?> encounter, string key, List<WFCrewObjective> queue)
+    {
+        if (!Resolve(encounter, ref encounter.Comp, false) || !encounter.Comp.Ships.TryGetValue(key, out var state)
+            || TerminatingOrDeleted(state.Grid) || queue.Count == 0 || !_objectives.SetQueue(state.Grid, state.Group, queue))
             return false;
 
         state.HasOrders = true;
@@ -487,8 +511,12 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
-    /// <summary>The orders a ship's prototype gives it. <paramref name="grid"/> is the ship's own, for @player.</summary>
-    private List<WFCrewObjective> BuildQueue(WFEncounterComponent comp, WFEncounterShip ship, EntityUid grid)
+    /// <summary>
+    /// The orders a ship's prototype gives it. <paramref name="grid"/> is the ship's own, for @player; its wander legs
+    /// are flown about <paramref name="around"/>, the encounter's origin if none.
+    /// </summary>
+    private List<WFCrewObjective> BuildQueue(WFEncounterComponent comp, WFEncounterShip ship, EntityUid grid,
+        System.Numerics.Vector2? around = null)
     {
         var queue = new List<WFCrewObjective>();
         // Meandering: one random point after another around where it arrived.
@@ -497,7 +525,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             queue.Add(new WFCrewObjective
             {
                 Kind = WFCrewObjectiveKind.GoTo,
-                Position = comp.Origin.Position + _random.NextAngle().ToVec() * _random.NextFloat(ship.WanderRadius * 0.3f, ship.WanderRadius),
+                Position = (around ?? comp.Origin.Position) + _random.NextAngle().ToVec() * _random.NextFloat(ship.WanderRadius * 0.3f, ship.WanderRadius),
                 Range = 200f,
             });
             if (ship.WanderPause > 0f)
@@ -588,14 +616,24 @@ public sealed partial class WFEncounterSystem : EntitySystem
             ZoneLines = ship.ZoneLines,
             ZoneTargets = ship.ZoneTargets,
             Icon = ship.Icon,
-            Hunt = ship.Hunt,
+            Hunt = ship.Hunt || ship.Extort != null,
+            Extort = ship.Extort is { } extort ? NewExtort(extort) : null,
             Distress = ship.Distress,
+            Evades = ship.Evades,
+            Flees = ship.Flees,
+            Stealth = ship.Stealth,
             Passengers = ship.Passengers.Count > 0,
         };
         encounter.Comp.Ships.Add(ship.Key, state);
-        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only.
-        if (ship.Hunt)
+        // Boarders come for the ship, not to shoot it up: their guns answer ship guns only. Docked, their clamps hold it.
+        if (state.Hunt)
+        {
             EnsureComp<WFHoldFireComponent>(grid);
+            EnsureComp<WFDockingClampComponent>(grid);
+        }
+
+        if (state.Stealth)
+            _shuttles.AddIFFFlag(grid, Content.Shared.Shuttles.Components.IFFFlags.HideLabel);
 
         // Cargo goes aboard first, so the crew are posted around it and not on it.
         if (manifest != null && manifest.Crates.Count > 0)
@@ -623,6 +661,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             BoardingResponse = ship.Boarding,
             DockingResponse = ship.Docking,
             HeaveTo = ship.Evades,
+            FaceThreats = ship.Platform,
             CallsForHelp = ship.Distress && ship.Passengers.Count == 0,
             Disengage = ship.Disengage,
             DisengageRange = ship.DisengageRange,
@@ -743,6 +782,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
         encounter.Comp.Resolution = resolution;
         encounter.Comp.ResolvedAt = _timing.CurTime;
+        EndExtortCalls(encounter.Comp);
         if (resolution is WFEncounterResolution.Completed or WFEncounterResolution.Expired
             && encounter.Comp.Lifetime == WFEncounterLifetime.Transient && !encounter.Comp.Pinned)
             encounter.Comp.JumpAt = _timing.CurTime + JumpDelay;
@@ -779,6 +819,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     private void RemoveShip(WFEncounterShipState ship)
     {
+        ship.Removed = true;
         if (TerminatingOrDeleted(ship.Grid))
             return;
 
@@ -787,9 +828,39 @@ public sealed partial class WFEncounterSystem : EntitySystem
         _lifecycle.UnparentPlayersFromGrid(ship.Grid, true);
     }
 
+    /// <summary>Pushes an encounter's expiry and jump-out time forward by a span the event runner sat paused, so paused time does not count against it.</summary>
+    public void Hold(Entity<WFEncounterComponent> encounter, TimeSpan span)
+    {
+        encounter.Comp.Expires += span;
+        encounter.Comp.JumpAt += span;
+    }
+
+    /// <summary>While the event runner is paused, holds the timers of every encounter by the time since the last frame.</summary>
+    private void HoldTimers()
+    {
+        if (!_scheduler.Paused)
+        {
+            _heldAt = TimeSpan.Zero;
+            return;
+        }
+
+        var now = _timing.CurTime;
+        var span = _heldAt == TimeSpan.Zero ? TimeSpan.Zero : now - _heldAt;
+        _heldAt = now;
+        if (span <= TimeSpan.Zero)
+            return;
+
+        var query = EntityQueryEnumerator<WFEncounterComponent>();
+        while (query.MoveNext(out var uid, out var encounter))
+        {
+            Hold((uid, encounter), span);
+        }
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        HoldTimers();
         if (_timing.CurTime < _nextPoll)
             return;
 
@@ -836,7 +907,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         var crews = _objectives.Snapshot();
         foreach (var (uid, encounter) in _running)
         {
-            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(encounter, crews) is { } resolution)
+            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(uid, encounter, crews) is { } resolution)
                 Resolve((uid, encounter), resolution);
         }
 
@@ -926,7 +997,11 @@ public sealed partial class WFEncounterSystem : EntitySystem
             if (TerminatingOrDeleted(ship.Grid))
                 continue;
 
-            if (ship.Hunt && encounter.Comp.Begun)
+            if (ship.Flees > 0f && encounter.Comp.Begun)
+                Flee(encounter, key, ship);
+            if (ship.Extort != null && encounter.Comp.Begun)
+                Extort(encounter, key, ship, ship.Extort);
+            else if (ship.Hunt && encounter.Comp.Begun)
                 Hunt(ship);
             else if (encounter.Comp.Leash > 0f && ship.HasOrders)
                 Recall(encounter.Comp, ship);
@@ -1002,9 +1077,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
     }
 
     /// <summary>
-    /// Whether a ship is still in the fight: its hull is there and not disabled, and any of its crew live, aboard or
-    /// not. A stranded ship waiting for rescue is not out of it for being unable to move or shoot. A side is in the
-    /// fight while any of its ships is.
+    /// Whether a ship is still in the fight: its hull is there and not disabled or wrecked, any of its crew live,
+    /// aboard or not, and its helm has not gone unmanned for two minutes. A stranded ship waiting for rescue is not
+    /// out of it for being unable to move or shoot. A side is in the fight while any of its ships is.
     /// </summary>
     public bool InFight(WFEncounterShipState ship)
     {
@@ -1017,8 +1092,21 @@ public sealed partial class WFEncounterSystem : EntitySystem
             && (ship.NoPilotSince is not { } since || _timing.CurTime - since < NoPilotGrace);
     }
 
-    /// <summary>How long a ship with orders may have nobody left to fly it before it is out of the encounter.</summary>
-    private static readonly TimeSpan NoPilotGrace = TimeSpan.FromSeconds(60);
+    /// <summary>Whether a ship is out of the fight only because nobody has manned its helm for two minutes: hull sound and crew alive.</summary>
+    public bool OutForWantOfPilot(WFEncounterShipState ship)
+    {
+        return !ship.Derelict && !TerminatingOrDeleted(ship.Grid) && (IsStranded(ship) || !_status.IsDisabled(ship.Grid))
+            && HasLivingCrew(ship, anywhere: true) && !InFight(ship);
+    }
+
+    /// <summary>How long a ship with orders may have nobody at its helm before it is out of the encounter.</summary>
+    private static readonly TimeSpan NoPilotGrace = TimeSpan.FromMinutes(2);
+
+    /// <summary>Whether a queue's status says its ship has no pilot to fly it: none alive, none aboard or none at the helm.</summary>
+    private static bool Unpiloted(string? status)
+    {
+        return status is "no-pilot" or "pilot-away" or "awaiting-helm";
+    }
 
     /// <summary>A task that never finishes by itself: a hold, loiter, circle, follow or escort with no duration.</summary>
     private static bool Endless(WFCrewObjective objective)
@@ -1044,9 +1132,10 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     /// <summary>
     /// How the encounter has ended, if it has. Its orders are done once every ship with orders that can finish has
-    /// flown them or is gone; a ship left on an endless task, such as an escort, doesn't hold the rest up.
+    /// flown them or is gone; a ship left on an endless task, such as an escort, doesn't hold the rest up. Its time
+    /// does not run out while players are on its open warrant.
     /// </summary>
-    private WFEncounterResolution? Judge(WFEncounterComponent encounter, List<WFCrewSetupCrew> crews)
+    private WFEncounterResolution? Judge(EntityUid uid, WFEncounterComponent encounter, List<WFCrewSetupCrew> crews)
     {
         var sides = new HashSet<string>();
         var fighting = new HashSet<string>();
@@ -1055,9 +1144,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
         foreach (var ship in encounter.Ships.Values)
         {
             sides.Add(ship.Side);
-            // The crew hand the helm on when a pilot falls; "no-pilot" means nobody left can fly it.
+            // The crew hand the helm on when a pilot falls; a ship none can fly, or whose helm none reaches, ages out.
             if (ship.HasOrders && !TerminatingOrDeleted(ship.Grid)
-                && _objectives.QueueStatus(ship.Grid, ship.Group) == "no-pilot")
+                && Unpiloted(_objectives.QueueStatus(ship.Grid, ship.Group)))
                 ship.NoPilotSince ??= _timing.CurTime;
             else
                 ship.NoPilotSince = null;
@@ -1094,9 +1183,38 @@ public sealed partial class WFEncounterSystem : EntitySystem
             return null;
         if (ordered > 0 && done == ordered)
             return WFEncounterResolution.Completed;
-        if (encounter.Expires is { } expires && _timing.CurTime >= expires)
+        if (encounter.Expires is { } expires && _timing.CurTime >= expires && !WarrantContested(uid, encounter))
             return WFEncounterResolution.Expired;
         return null;
+    }
+
+    /// <summary>
+    /// Whether players are on an encounter's open warrant: one of its ships is alerted, or has a living player aboard,
+    /// docked with it or within the warrant's paying range.
+    /// </summary>
+    private bool WarrantContested(EntityUid uid, WFEncounterComponent encounter)
+    {
+        if (_bounties.Pool(uid) == null)
+            return false;
+
+        foreach (var ship in encounter.Ships.Values)
+        {
+            if (TerminatingOrDeleted(ship.Grid))
+                continue;
+
+            if (_alerts.IsAlerted(ship.Grid, ship.Group) || PlayersAboard(ship.Grid))
+                return true;
+
+            var here = _transform.GetMapCoordinates(ship.Grid);
+            foreach (var player in _players)
+            {
+                if (player.MapId == here.MapId
+                    && (player.Position - here.Position).LengthSquared() <= WFEncounterBountySystem.PayRange * WFEncounterBountySystem.PayRange)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     private void FindPlayers()

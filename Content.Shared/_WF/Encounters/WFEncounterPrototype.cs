@@ -50,6 +50,10 @@ public sealed partial class WFEncounterPrototype : IPrototype
     [DataField]
     public List<WFEncounterReward> Rewards = new();
 
+    /// <summary>A warrant posted on the sector bounty board while the encounter runs, paid to whoever takes its target down.</summary>
+    [DataField]
+    public WFEncounterBounty? Bounty;
+
     /// <summary>Has the ship's radio officer make the announcement on the common channel, not sector control.</summary>
     [DataField]
     public bool AnnounceOnRadio;
@@ -188,6 +192,13 @@ public sealed partial class WFEncounterShip
     [DataField]
     public bool Hunt;
 
+    /// <summary>
+    /// Set, the ship is an extorter: it roams on its wander legs, now and then runs down a player ship and hails it
+    /// for a toll, and boards a ship that refuses or will not answer as a hunting ship does.
+    /// </summary>
+    [DataField]
+    public WFEncounterExtort? Extort;
+
     /// <summary>Only these roles of the planned crew are spawned. Empty spawns the whole plan.</summary>
     [DataField]
     public List<ProtoId<WFCrewRolePrototype>> Roles = new();
@@ -279,6 +290,25 @@ public sealed partial class WFEncounterShip
     [DataField]
     public bool Evades = true;
 
+    /// <summary>
+    /// Runs from player ships: while one with a player aboard is within this many metres, the ship flies directly away
+    /// from it; with none near it goes back to its wander. Zero stands its ground. Unlike <see cref="Evades"/>, which is
+    /// how it answers an attack, this is how it keeps clear of people who have not attacked.
+    /// </summary>
+    [DataField]
+    public float Flees;
+
+    /// <summary>
+    /// Flies with its IFF label off for good, an unknown contact on every scope, and never brings its encounter onto
+    /// the sector markers, whatever its crew get into.
+    /// </summary>
+    [DataField]
+    public bool Stealth;
+
+    /// <summary>Whether the ship holds its station and turns its guns on threats, without ever flying at them.</summary>
+    [DataField]
+    public bool Platform;
+
     /// <summary>Flight limits; none uses the cautious defaults.</summary>
     [DataField]
     public ProtoId<WFCrewNavigationProfilePrototype>? Navigation;
@@ -311,6 +341,75 @@ public sealed partial class WFEncounterShip
     /// <summary>Set, the hull arrives a hulk: no crew and no fuel, squatters aboard, and it can be claimed.</summary>
     [DataField]
     public WFEncounterDerelict? Derelict;
+}
+
+/// <summary>How an extorter picks its marks and what it asks of them.</summary>
+[DataDefinition]
+public sealed partial class WFEncounterExtort
+{
+    /// <summary>Spesos it demands of a ship. Every toll paid is added to the encounter's warrant.</summary>
+    [DataField]
+    public int Toll = 10000;
+
+    /// <summary>How far off a player ship may be for it to go after it.</summary>
+    [DataField]
+    public float Reach = 4000f;
+
+    /// <summary>How near its mark it closes before it hails, and keeps station while it waits.</summary>
+    [DataField]
+    public float Standoff = 300f;
+
+    /// <summary>Seconds between one toll run and the next, picked between the two each time.</summary>
+    [DataField]
+    public float MarkMin = 300f;
+
+    [DataField]
+    public float MarkMax = 720f;
+
+    /// <summary>
+    /// Fluent prefix of what it says: "-demand-", "-paid-", "-short-", "-refused-", "-timeout-", "-dead-" and
+    /// "-silent-" with 1 to 3 appended, and "-option-pay" and "-option-refuse" for the answers.
+    /// </summary>
+    [DataField]
+    public string Lines = "wf-encounter-extort";
+}
+
+/// <summary>A warrant for an encounter's target, posted on the sector bounty board when it starts.</summary>
+[DataDefinition]
+public sealed partial class WFEncounterBounty
+{
+    /// <summary>Key of the ship the warrant is for.</summary>
+    [DataField(required: true)]
+    public string Ship = string.Empty;
+
+    [DataField]
+    public WFEncounterBountyTarget Target = WFEncounterBountyTarget.Captain;
+
+    /// <summary>Spesos the warrant starts at; it can grow while the encounter runs.</summary>
+    [DataField]
+    public int Spesos;
+
+    /// <summary>What the payout line calls the warrant.</summary>
+    [DataField(required: true)]
+    public LocId Title;
+
+    /// <summary>The board entry's text; takes $name, the wanted name, and $ship.</summary>
+    [DataField(required: true)]
+    public LocId Description;
+
+    /// <summary>Read out to the whole sector when the warrant is posted; takes $name, $ship and $reward. None keeps it to the board.</summary>
+    [DataField]
+    public LocId? Broadcast;
+}
+
+/// <summary>Who a warrant is for.</summary>
+public enum WFEncounterBountyTarget : byte
+{
+    /// <summary>One named crewman, the ship's captain: paid when he is dead.</summary>
+    Captain,
+
+    /// <summary>The ship itself: paid when every hand aboard is dead or the ship is gone.</summary>
+    Crew,
 }
 
 /// <summary>What lives in a hulk and what it takes to own it.</summary>

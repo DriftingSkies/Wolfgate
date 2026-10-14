@@ -1,0 +1,131 @@
+# Extorters: Ashfall Reaver ships that roam the sector for as long as they live. Now and then one runs down a player
+# ship, keeps station a few hundred metres off and hails it for a toll. A ship that pays is left alone for half an hour
+# and its toll is added to the warrant on the extorter. A ship that refuses, cannot pay, or lets three hails ring out is
+# boarded as the pirate boarders board: guards hold the port, hands loot, and the ship casts off. Its guns answer ship
+# guns only. Three tiers by hull, crew and skill; the scheduler keeps at most one of each alive.
+
+# A scrap shuttle with a green crew. A small toll and a small price on it.
+- type: wfEncounter
+  id: WFEncounterExtorterLight
+  name: wf-encounter-name-extorter-light
+  start: Scheduled
+  lifetime: Persistent
+  hidden: true
+  category: Threat
+  icon: Skull
+  weight: 0.6
+  minPlayers: 3
+  cooldown: 3600
+  minDistance: 3000
+  maxDistance: 5000
+  stationClearance: 3000
+  bounty:
+    ship: extorter
+    target: Crew
+    spesos: 15000
+    title: wf-bounty-title-extorter-light
+    description: wf-bounty-desc-extorter-light
+  ships:
+  - key: extorter
+    stealth: true
+    navigation: WFCrewNavigationRaider
+    vessels: [ Hazel ]
+    side: pirates
+    faction: PirateNF
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    captain: false
+    deckhands: 2
+    guards: 1
+    skill: Green
+    evades: false
+    wander: 6
+    wanderRadius: 4000
+    wanderPause: 30
+    extort:
+      toll: 6000
+      reach: 4000
+
+# An armed corvette with a steady crew and a captain to do the talking.
+- type: wfEncounter
+  id: WFEncounterExtorterMedium
+  name: wf-encounter-name-extorter-medium
+  start: Scheduled
+  lifetime: Persistent
+  hidden: true
+  category: Threat
+  icon: Skull
+  weight: 0.4
+  minPlayers: 5
+  cooldown: 4500
+  minDistance: 3000
+  maxDistance: 5000
+  stationClearance: 3000
+  bounty:
+    ship: extorter
+    target: Crew
+    spesos: 40000
+    title: wf-bounty-title-extorter-medium
+    description: wf-bounty-desc-extorter-medium
+  ships:
+  - key: extorter
+    stealth: true
+    navigation: WFCrewNavigationRaider
+    vessels: [ Metis, Mudskipper ]
+    side: pirates
+    faction: PirateNF
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    deckhands: 2
+    guards: 2
+    skill: Regular
+    evades: false
+    wander: 6
+    wanderRadius: 4500
+    wanderPause: 30
+    extort:
+      toll: 15000
+      reach: 4500
+
+# A gunship with a veteran crew and a full boarding party. It turns on a ship that fires on it.
+- type: wfEncounter
+  id: WFEncounterExtorterHeavy
+  name: wf-encounter-name-extorter-heavy
+  start: Scheduled
+  lifetime: Persistent
+  hidden: true
+  category: Threat
+  icon: Skull
+  weight: 0.25
+  minPlayers: 8
+  cooldown: 5400
+  minDistance: 3500
+  maxDistance: 5500
+  stationClearance: 3500
+  bounty:
+    ship: extorter
+    target: Crew
+    spesos: 90000
+    title: wf-bounty-title-extorter-heavy
+    description: wf-bounty-desc-extorter-heavy
+  ships:
+  - key: extorter
+    stealth: true
+    navigation: WFCrewNavigationRaider
+    vessels: [ Kalisto, Scallywag ]
+    side: pirates
+    faction: PirateNF
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    deckhands: 3
+    guards: 4
+    skill: Veteran
+    wander: 6
+    wanderRadius: 5000
+    wanderPause: 30
+    extort:
+      toll: 40000
+      reach: 5000

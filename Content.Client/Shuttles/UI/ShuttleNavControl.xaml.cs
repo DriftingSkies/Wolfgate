@@ -630,6 +630,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         DrawStarSystem(handle, worldToShuttle, shuttleToView, xform.MapUid); // Far Horizons
         DrawWfTerrain(handle, worldToView, xform.MapUid); // WOLFGATE(Planets): cached planetary terrain beneath radar contacts.
+        DrawSectorBorders(handle, worldToView, xform.MapID); // WOLFGATE(SectorControl): faction territory borders beneath radar contacts.
         DrawDroneRings(handle, worldToView, xform.MapUid); // WOLFGATE(DroneRings): draw rings where drones start to spawn.
 
         _grids.Clear();

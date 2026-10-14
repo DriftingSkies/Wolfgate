@@ -1,0 +1,32 @@
+- type: entity
+  parent: BaseItem
+  id: VehicleHumveeHardpointBase
+  categories: [ WFVehicles ]
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/humvee.rsi
+  - type: Item
+    size: Large
+
+- type: entity
+  parent: BaseItem
+  id: RMCAPCHardpointBase
+  categories: [ WFVehicles ]
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/apc.rsi
+  - type: Item
+    size: Large
+
+- type: entity
+  parent: BaseItem
+  id: VehicleTankHardpointBase
+  categories: [ WFVehicles ]
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/hardpoints/tank.rsi
+  - type: Item
+    size: Large

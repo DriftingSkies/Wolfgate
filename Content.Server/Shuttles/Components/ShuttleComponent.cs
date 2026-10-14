@@ -22,7 +22,7 @@ namespace Content.Server.Shuttles.Components
         /// Not advised to exceed 30 when manually setting this for a shuttle.
         /// </summary>
         [ViewVariables(VVAccess.ReadWrite)]
-        public float BaseMaxLinearVelocity = 20f;
+        public float BaseMaxLinearVelocity = 30f; // WOLFGATE: PDV pack, partial revert of Monolith speed cap (50->20)
 
         public const float MaxAngularVelocity = 4f;
 

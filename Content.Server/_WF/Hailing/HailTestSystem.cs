@@ -7,7 +7,6 @@ using Content.Shared.Humanoid;
 using Content.Shared.Maps;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
-using Content.Shared.Shuttles.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -19,7 +18,8 @@ namespace Content.Server._WF.Hailing;
 
 /// <summary>
 /// The far end for trying hailing alone: a small ship whose pilot hails on command, answers any hail and
-/// sends back whatever is said to them. It removes itself after a few idle minutes.
+/// sends back whatever is said to them, or offers answers to pick from. The pilot runs the console as an
+/// automated end, with no UI open. It removes itself after a few idle minutes.
 /// </summary>
 public sealed class HailTestSystem : EntitySystem
 {
@@ -30,7 +30,6 @@ public sealed class HailTestSystem : EntitySystem
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private MetaDataSystem _meta = default!;
-    [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private SharedGodmodeSystem _godmode = default!;
     [Dependency] private SharedHumanoidAppearanceSystem _humanoid = default!;
     [Dependency] private HailingSystem _hailing = default!;
@@ -61,10 +60,44 @@ public sealed class HailTestSystem : EntitySystem
     private TimeSpan _nextUpdate;
     private List<Entity<MapGridComponent>> _grids = new();
 
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<HailOptionChosenEvent>(OnChosen);
+        SubscribeLocalEvent<HailAnsweredEvent>(OnAnswered);
+        SubscribeLocalEvent<HailCallEndedEvent>(OnEnded);
+    }
+
+    private void OnAnswered(ref HailAnsweredEvent args)
+    {
+        if (Own(args.Grid, args.Console) is { } ship)
+            ship.Answered++;
+    }
+
+    private void OnEnded(ref HailCallEndedEvent args)
+    {
+        if (Own(args.Grid, args.Console) is not { } ship)
+            return;
+
+        ship.Ended++;
+        ship.LastEnd = args.Reason;
+        ship.LastEndConnected = args.Connected;
+    }
+
+    /// <summary>The test ship that owns a console, if it is one.</summary>
+    private HailTestShipComponent? Own(EntityUid? grid, EntityUid console)
+    {
+        return grid is { } uid && TryComp<HailTestShipComponent>(uid, out var ship) && ship.Console == console
+            ? ship
+            : null;
+    }
+
     /// <summary>
-    /// Has a test ship hail the given ship, bringing one in nearby if none is around. Returns the test ship.
+    /// Has a test ship hail the given ship, bringing one in nearby if none is around. With
+    /// <paramref name="options"/> its pilot offers answers to pick from. Returns the test ship.
     /// </summary>
-    public EntityUid Hail(EntityUid target)
+    public EntityUid Hail(EntityUid target, bool options = false)
     {
         var now = _timing.CurTime;
         var map = Transform(target).MapID;
@@ -86,11 +119,13 @@ public sealed class HailTestSystem : EntitySystem
             }
 
             _hailing.End(existing.Console);
+            existing.Options = options;
             Aim(existing, target, now);
             return uid;
         }
 
         var ship = Build(map, position, reach);
+        ship.Comp.Options = options;
         Aim(ship.Comp, target, now + PowerUpDelay);
         return ship;
     }
@@ -136,9 +171,6 @@ public sealed class HailTestSystem : EntitySystem
                 continue;
             }
 
-            // A call only lasts while its operator has the console open, and this one never leaves the helm.
-            _ui.OpenUi(ship.Console, ShuttleConsoleUiKey.Key, ship.Operator);
-
             if (!TryComp<HailConsoleComponent>(ship.Console, out var hail))
                 Idle(uid, ship, now);
             else
@@ -151,6 +183,8 @@ public sealed class HailTestSystem : EntitySystem
         ship.Greeted = false;
         ship.NextLine = 0;
         ship.ReplyAt = null;
+        ship.Picked = null;
+        ship.SkipLine = false;
 
         if (ship.Target is not { } target)
         {
@@ -165,7 +199,7 @@ public sealed class HailTestSystem : EntitySystem
         if (now < ship.HailAt)
             return;
 
-        if (_hailing.TryHail(ship.Console, ship.Operator, target) || now >= ship.GiveUpAt)
+        if (_hailing.TryHailAutomated(ship.Console, ship.Operator, target) || now >= ship.GiveUpAt)
             ship.Target = null;
     }
 
@@ -177,7 +211,7 @@ public sealed class HailTestSystem : EntitySystem
         {
             case HailState.Ringing:
                 if (now >= hail.StateTime + AnswerDelay)
-                    _hailing.Answer(ship.Console, ship.Operator, true);
+                    _hailing.AnswerAutomated(ship.Console, ship.Operator, true);
 
                 break;
 
@@ -185,7 +219,21 @@ public sealed class HailTestSystem : EntitySystem
                 if (!ship.Greeted)
                 {
                     ship.Greeted = true;
-                    _hailing.Say(ship.Console, ship.Operator, Loc.GetString("hail-test-greeting"));
+
+                    if (ship.Options)
+                    {
+                        _hailing.Say(ship.Console, ship.Operator, Loc.GetString("hail-test-options-prompt"));
+                        _hailing.Offer(ship.Console, ship.Operator, new List<HailOption>
+                        {
+                            new("a", Loc.GetString("hail-test-option-a")),
+                            new("b", Loc.GetString("hail-test-option-b")),
+                            new("c", Loc.GetString("hail-test-option-c")),
+                        });
+                    }
+                    else
+                    {
+                        _hailing.Say(ship.Console, ship.Operator, Loc.GetString("hail-test-greeting"));
+                    }
                 }
 
                 foreach (var line in hail.Log)
@@ -198,6 +246,13 @@ public sealed class HailTestSystem : EntitySystem
                     if (line.Own)
                         continue;
 
+                    // The picked answer is not free text, so it is not echoed.
+                    if (ship.SkipLine)
+                    {
+                        ship.SkipLine = false;
+                        continue;
+                    }
+
                     ship.Heard = line.Text;
                     ship.ReplyAt = now + ReplyDelay;
                 }
@@ -208,8 +263,26 @@ public sealed class HailTestSystem : EntitySystem
                     _hailing.Say(ship.Console, ship.Operator, Loc.GetString("hail-test-reply", ("text", ship.Heard)));
                 }
 
+                if (ship.Picked is { } id && now >= ship.PickedAt)
+                {
+                    ship.Picked = null;
+                    _hailing.Say(ship.Console, ship.Operator,
+                        Loc.GetString("hail-test-picked", ("choice", Loc.GetString($"hail-test-option-{id}"))));
+                }
+
                 break;
         }
+    }
+
+    private void OnChosen(ref HailOptionChosenEvent args)
+    {
+        if (Own(args.OffererGrid, args.Offerer) is not { } ship)
+            return;
+
+        ship.Chosen++;
+        ship.SkipLine = true;
+        ship.Picked = args.Id;
+        ship.PickedAt = _timing.CurTime + ReplyDelay;
     }
 
     private void Aim(HailTestShipComponent ship, EntityUid target, TimeSpan at)

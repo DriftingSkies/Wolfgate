@@ -21,6 +21,7 @@ public sealed partial class WFCrewSleepSystem : EntitySystem
     [Dependency] private WFCrewAlertSystem _alerts = default!;
     [Dependency] private WFCrewSecuritySystem _security = default!;
     [Dependency] private WFCrewWorkSystem _work = default!;
+    [Dependency] private WFCrewEvaSystem _eva = default!;
     [Dependency] private AtmosphereSystem _atmos = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -62,8 +63,8 @@ public sealed partial class WFCrewSleepSystem : EntitySystem
         if (TryComp<NPCRetaliationComponent>(uid, out var retaliation) && retaliation.AttackMemories.Count > 0)
             return true;
 
-        // Bad air has to be walked out of, except by a crewman kitted out to stand in it.
-        if (HasComp<WFCrewVoidKitComponent>(uid))
+        // Bad air has to be walked out of, except by a crewman kitted out or immune to stand in it.
+        if (HasComp<WFCrewVoidKitComponent>(uid) || _eva.IsImmune(uid))
             return false;
         if (!TryComp<MapGridComponent>(home, out var grid))
             return true;
