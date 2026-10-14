@@ -11,6 +11,7 @@ using Content.Server.Salvage;
 using Content.Server.Station.Systems;
 using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Planets;
+using Content.Shared.CCVar;
 using Content.Shared.Maps;
 using Content.Shared.Salvage.Expeditions;
 using Robust.Shared.GameObjects;
@@ -81,6 +82,8 @@ public sealed class PlanetExpeditionTest
             server.CfgMan.SetCVar(PlanetCVars.PreloadBudget, 1000f);
             server.CfgMan.SetCVar(PlanetCVars.PoiTable, "WFPoisExpeditionTest");
             server.CfgMan.SetCVar(PlanetCVars.PlanetExpeditions, true);
+            // The site's mobs would fight each other, and Frontier's catcher unit trips a gun debug assert when it fires.
+            server.CfgMan.SetCVar(CCVars.NPCEnabled, false);
         });
 
         var layers = new List<EntityUid>();
