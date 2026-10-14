@@ -1,0 +1,48 @@
+# Vehicle purchase terminals. Each sells its catalogue onto the nearest delivery pad on its grid, within 16 metres.
+
+- type: entity
+  parent: [ BaseStructureDisableToolUse, BaseStructureIndestructible, BaseComputer ]
+  id: WFComputerVehicleShopExpeditionary
+  name: expeditionary vehicle terminal
+  description: Sells ground vehicles for expedition work, delivered to the pad nearby. Park one on the pad to sell it back.
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: shipyard_expedition
+    - map: [ "computerLayerKeys" ]
+      state: telesci_key
+  - type: WFVehicleShop
+    catalog: WFVehicleCatalogExpeditionary
+  - type: ActivatableUI
+    key: enum.WFVehicleShopUiKey.Key
+    singleUser: true
+  - type: UserInterface
+    interfaces:
+      enum.WFVehicleShopUiKey.Key:
+        type: WFVehicleShopBoundUserInterface
+  - type: Computer
+    board: Null
+
+# Where a terminal's vehicles arrive and are sold. Keep a five-metre square round it clear.
+- type: entity
+  id: WFVehicleDeliveryPad
+  name: vehicle delivery pad
+  description: Vehicles bought at a terminal nearby arrive here. Park one here to sell it.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/cargo_telepad.rsi
+    state: display
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: InteractionOutline
+  - type: WFVehicleDeliveryPad

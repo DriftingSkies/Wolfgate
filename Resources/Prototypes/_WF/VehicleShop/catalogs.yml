@@ -1,0 +1,20 @@
+# What each vehicle purchase terminal sells. Prices sit about a fifth over each vehicle's appraised value, so a vehicle
+# bought here and sold with a ship, or back at the pad (75% of the lower of the two), never makes money.
+
+- type: wfVehicleCatalog
+  id: WFVehicleCatalogExpeditionary
+  vehicles:
+  - vehicle: AU14VehicleCivturquiseCargo
+    price: 12000
+  - vehicle: AU14VehicleCivBlueCargoTruck
+    price: 12500
+  - vehicle: VehicleBoxVan
+    price: 18000
+  - vehicle: VehiclePizzaVan
+    price: 18000
+  - vehicle: AU14VehicleCivEMSAmbulance
+    price: 21500
+  - vehicle: VehicleHumveeTransport
+    price: 30000
+  - vehicle: VehicleHumveeMedical
+    price: 32000

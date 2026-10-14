@@ -1,0 +1,15 @@
+wf-vehicle-shop-balance = Balance: { $balance }
+wf-vehicle-shop-no-account = No bank account
+wf-vehicle-shop-buy = Buy
+wf-vehicle-shop-sell = Sell for { $price }
+wf-vehicle-shop-pad-missing = No delivery pad in reach.
+wf-vehicle-shop-pad-clear = Delivery pad clear.
+wf-vehicle-shop-pad-blocked = Something is in the way on the delivery pad.
+wf-vehicle-shop-pad-vehicle = On the pad: { $vehicle }
+wf-vehicle-shop-pad-occupied = On the pad: { $vehicle }. Someone or something is still inside.
+wf-vehicle-shop-no-pad = There is no delivery pad in reach.
+wf-vehicle-shop-pad-busy = The delivery pad isn't clear.
+wf-vehicle-shop-no-funds = Not enough money in your account.
+wf-vehicle-shop-delivered = { $vehicle } delivered to the pad.
+wf-vehicle-shop-sold = { $vehicle } sold for { $price }.
+wf-vehicle-shop-occupied = Empty the vehicle first.
