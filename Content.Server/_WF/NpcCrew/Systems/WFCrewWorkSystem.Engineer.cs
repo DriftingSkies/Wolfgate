@@ -636,7 +636,7 @@ public sealed partial class WFCrewWorkSystem
                     have++;
             }
 
-            var missing = have < StoresPerMachine ? StoresPerMachine * count - have : 0;
+            var missing = Math.Max(0, StoresPerMachine * count - have);
             for (var i = 0; i < missing; i++)
             {
                 var stack = Spawn(stackId, Transform(stores).Coordinates);
@@ -655,7 +655,7 @@ public sealed partial class WFCrewWorkSystem
                     have++;
             }
 
-            var missing = have < StoresPerMachine ? StoresPerMachine * jars - have : 0;
+            var missing = Math.Max(0, StoresPerMachine * jars - have);
             for (var i = 0; i < missing; i++)
             {
                 Stow(Spawn(Jar, Transform(stores).Coordinates), stores);

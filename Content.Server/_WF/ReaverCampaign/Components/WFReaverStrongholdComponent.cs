@@ -70,6 +70,10 @@ public sealed partial class WFReaverStrongholdComponent : Component
     [ViewVariables]
     public bool Starved;
 
+    /// <summary>When the hub was first found out of power this spell; past the grace it is broken like any other.</summary>
+    [ViewVariables]
+    public TimeSpan StarvedSince;
+
     /// <summary>Whether its reinforcements have broken away to fight an attacker and not yet come back.</summary>
     [ViewVariables]
     public bool Scattered;

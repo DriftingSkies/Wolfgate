@@ -428,13 +428,19 @@ public sealed partial class WFEncounterSystem
             if (dock.Comp.DockedWith is not { } other || Transform(other).GridUid is not { } alongside || alongside == grid)
                 continue;
 
-            if (HasComp<Content.Shared.Station.Components.StationMemberComponent>(alongside)
-                && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(alongside)
-                || HasComp<Content.Server.Station.Components.BecomesStationComponent>(alongside))
+            if (IsStationGrid(alongside))
                 return true;
         }
 
         return false;
+    }
+
+    /// <summary>Whether a grid is a station: a station member without a deed, or a grid that becomes one; a ship flying the flag is not.</summary>
+    private bool IsStationGrid(EntityUid grid)
+    {
+        return HasComp<Content.Shared.Station.Components.StationMemberComponent>(grid)
+               && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(grid)
+               || HasComp<Content.Server.Station.Components.BecomesStationComponent>(grid);
     }
 
     /// <summary>
@@ -492,10 +498,7 @@ public sealed partial class WFEncounterSystem
             if (xform.GridUid != grid || dock.DockedWith is not { } other || Transform(other).GridUid is not { } alongside)
                 continue;
 
-            // A station is a station member without a deed, or a grid that becomes one; a ship flying the flag is not.
-            var station = HasComp<Content.Shared.Station.Components.StationMemberComponent>(alongside)
-                          && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(alongside)
-                          || HasComp<Content.Server.Station.Components.BecomesStationComponent>(alongside);
+            var station = IsStationGrid(alongside);
             var flag = WFCompanyFamily.Of(CompOrNull<CompanyComponent>(alongside)?.CompanyName.Id);
             if (station && flag.Length > 0 && neutral.Any(company => WFCompanyFamily.Of(company) == flag))
                 return true;

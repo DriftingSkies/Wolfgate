@@ -40,6 +40,8 @@ public sealed partial class WFReaverCampaignSystem
                 comp.NextSortie += span;
             if (comp.Hits > 0)
                 comp.LastHit += span;
+            if (comp.Starved)
+                comp.StarvedSince += span;
         }
 
         foreach (var (_, comp, _) in Reinforcements())

@@ -1,5 +1,6 @@
 using Content.Server._Mono.FireControl;
 using Content.Server._WF.NpcCrew.Components;
+using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WF.NpcCrew;
@@ -108,12 +109,40 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
 
     /// <summary>
     /// Whether a ship is out of the fight only for want of power: its guns or thrust have gone dead for the whole
-    /// delay while its hull is whole and its people are aboard.
+    /// delay while its hull is whole and its people are aboard, and a ship weapon, gunnery server or thruster still
+    /// aboard is unpowered. Guns torn out or pulled apart by hand leave no such evidence and count as a kill.
     /// </summary>
     public bool IsStarved(EntityUid grid)
     {
         var reading = Read(grid);
-        return (reading.Disarmed || reading.Crippled) && !reading.Wrecked && !reading.Abandoned;
+        return (reading.Disarmed || reading.Crippled) && !reading.Wrecked && !reading.Abandoned && HasUnpowered(grid);
+    }
+
+    /// <summary>Whether a ship weapon, gunnery server or thruster aboard takes power and has none.</summary>
+    private bool HasUnpowered(EntityUid grid)
+    {
+        var weapons = EntityQueryEnumerator<FireControllableComponent, ApcPowerReceiverComponent, TransformComponent>();
+        while (weapons.MoveNext(out _, out _, out var receiver, out var xform))
+        {
+            if (xform.GridUid == grid && !receiver.Powered)
+                return true;
+        }
+
+        var servers = EntityQueryEnumerator<FireControlServerComponent, ApcPowerReceiverComponent, TransformComponent>();
+        while (servers.MoveNext(out _, out _, out var receiver, out var xform))
+        {
+            if (xform.GridUid == grid && !receiver.Powered)
+                return true;
+        }
+
+        var thrusters = EntityQueryEnumerator<ThrusterComponent, ApcPowerReceiverComponent, TransformComponent>();
+        while (thrusters.MoveNext(out _, out _, out var receiver, out var xform))
+        {
+            if (xform.GridUid == grid && !receiver.Powered)
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>Whether a ship has no working thruster at all right now.</summary>

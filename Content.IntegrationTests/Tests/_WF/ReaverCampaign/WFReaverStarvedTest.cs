@@ -9,28 +9,33 @@ using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.ReaverCampaign.Systems;
+using Content.Server.Power.Components;
+using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WF.Encounters;
 using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests._WF.ReaverCampaign;
 
-/// <summary>A hub that goes dark with nobody attacking it is not broken; one that is shot at and goes dark is.</summary>
+/// <summary>A hub that goes dark with nobody attacking it is not broken, within a grace; one that is shot at and goes dark, or has its guns torn out, is.</summary>
 [TestOf(typeof(WFReaverCampaignSystem))]
 public sealed class WFReaverStarvedTest : WFReaverTestBase
 {
+    /// <summary>A ship gun that takes mains power.</summary>
+    private const string PoweredGun = "ShuttleGunKinetic";
+
     private int Ticks(double seconds) => (int) Math.Ceiling(seconds * STiming.TickRate);
 
     private EntityUid Lead(EntityUid encounter) => SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["lead"].Grid;
 
-    /// <summary>Takes the guns off a hull after the status system has seen them, so it counts as out of power once the delay passes.</summary>
-    private async Task Starve(EntityUid grid)
+    /// <summary>The ship weapons aboard a hull, after the status system has seen it armed.</summary>
+    private async Task<List<EntityUid>> Guns(EntityUid grid)
     {
         await RunTicks(Ticks(2));
+        var weapons = new List<EntityUid>();
         await Server.WaitAssertion(() =>
         {
             Assert.That(Server.System<WFCrewShipStatusSystem>().IsDisabled(grid), Is.False, "Armed, it is judged and passes.");
-            var weapons = new List<EntityUid>();
             var query = SEntMan.EntityQueryEnumerator<FireControllableComponent, TransformComponent>();
             while (query.MoveNext(out var uid, out _, out var xform))
             {
@@ -39,10 +44,44 @@ public sealed class WFReaverStarvedTest : WFReaverTestBase
             }
 
             Assert.That(weapons, Is.Not.Empty, "The hull has guns to lose.");
+        });
+        return weapons;
+    }
+
+    /// <summary>
+    /// Swaps every gun aboard for one that takes mains power, spawned with none, so the hull counts as out of power
+    /// once the delay passes: its guns are there, dead for want of power.
+    /// </summary>
+    private async Task Starve(EntityUid grid)
+    {
+        var weapons = await Guns(grid);
+        await Server.WaitAssertion(() =>
+        {
+            var power = Server.System<PowerReceiverSystem>();
+            foreach (var uid in weapons)
+            {
+                var coordinates = SEntMan.GetComponent<TransformComponent>(uid).Coordinates;
+                SEntMan.DeleteEntity(uid);
+                // Switched off at the breaker, so the hub's own mains never bring it up.
+                var gun = SEntMan.SpawnEntity(PoweredGun, coordinates);
+                power.TogglePower(gun, false);
+                Assert.That(SEntMan.GetComponent<ApcPowerReceiverComponent>(gun).Powered, Is.False, "Spawned with no power.");
+            }
+        });
+        var status = Server.System<WFCrewShipStatusSystem>();
+        await WaitUntilServer(() => status.IsStarved(grid), Ticks(30));
+    }
+
+    /// <summary>Tears every gun out of a hull, as a boarding party with tools would, leaving no power to restore.</summary>
+    private async Task TearOutGuns(EntityUid grid)
+    {
+        var weapons = await Guns(grid);
+        await Server.WaitAssertion(() =>
+        {
             foreach (var uid in weapons)
                 SEntMan.DeleteEntity(uid);
         });
-        await WaitUntilServer(() => Server.System<WFCrewShipStatusSystem>().IsStarved(grid), Ticks(30));
+        await WaitUntilServer(() => Server.System<WFCrewShipStatusSystem>().IsDisabled(grid), Ticks(30));
     }
 
     /// <summary>No hits on the hub: out of power it is left standing and flagged.</summary>
@@ -65,6 +104,46 @@ public sealed class WFReaverStarvedTest : WFReaverTestBase
             Assert.That(campaign.Strongholds(), Has.Count.EqualTo(1));
             Assert.That(SEntMan.GetComponent<WFReaverStrongholdComponent>(stronghold).Starved, Is.True);
             Assert.That(campaign.State()!.Broken, Is.Zero);
+        });
+    }
+
+    /// <summary>Guns torn out leave nothing to power back up: the hub is beaten, no ship hit needed.</summary>
+    [Test]
+    public async Task HubWithItsGunsTornOutIsBroken()
+    {
+        await StartCampaign();
+        EntityUid stronghold = default;
+        await Server.WaitAssertion(() => stronghold = FoundAt(Home));
+        await TearOutGuns(Lead(stronghold));
+        await RunTicks(Ticks(5));
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(Server.System<WFCrewShipStatusSystem>().IsStarved(Lead(stronghold)), Is.False, "Nothing unpowered is left aboard.");
+            Server.System<WFReaverCampaignSystem>().CheckStrongholds();
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(stronghold).Resolution, Is.EqualTo(WFEncounterResolution.Destroyed));
+        });
+    }
+
+    /// <summary>A hub still dark once the grace runs out is broken like any other.</summary>
+    [Test]
+    public async Task HubDarkPastTheGraceIsBroken()
+    {
+        await StartCampaign();
+        EntityUid stronghold = default;
+        await Server.WaitAssertion(() => stronghold = FoundAt(Home));
+        await Starve(Lead(stronghold));
+        await RunTicks(Ticks(5));
+
+        await Server.WaitAssertion(() =>
+        {
+            var campaign = Server.System<WFReaverCampaignSystem>();
+            campaign.CheckStrongholds();
+            var comp = SEntMan.GetComponent<WFReaverStrongholdComponent>(stronghold);
+            Assert.That(comp.Starved, Is.True, "Left standing for now.");
+            comp.StarvedSince -= WFReaverCampaignSystem.StarvedGrace;
+            campaign.CheckStrongholds();
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(stronghold).Resolution, Is.EqualTo(WFEncounterResolution.Destroyed));
         });
     }
 
