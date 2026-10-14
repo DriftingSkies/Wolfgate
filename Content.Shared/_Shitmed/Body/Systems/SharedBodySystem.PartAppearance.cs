@@ -83,6 +83,18 @@ public partial class SharedBodySystem
                     .Where(m => _markingManager.Markings.TryGetValue(m.MarkingId, out var proto) && proto.BodyPart == layer)
                     .Select(m => new Marking(m.MarkingId, m.MarkingColors.ToList())).ToList();
                 // WOLFGATE END
+
+            // WOLFGATE(Species) START: chassis parts sit in their own category
+            if (bodyAppearance.MarkingSet.Markings.TryGetValue(MarkingCategories.Chassis, out var chassis))
+            {
+                var parts = chassis
+                    .Where(m => _markingManager.Markings.TryGetValue(m.MarkingId, out var proto) && proto.BodyPart == layer)
+                    .Select(m => new Marking(m.MarkingId, m.MarkingColors.ToList()));
+                if (!markingsByLayer.TryGetValue(layer, out var onLayer))
+                    markingsByLayer[layer] = onLayer = new List<Marking>();
+                onLayer.AddRange(parts);
+            }
+            // WOLFGATE END
         }
 
         component.Markings = markingsByLayer;

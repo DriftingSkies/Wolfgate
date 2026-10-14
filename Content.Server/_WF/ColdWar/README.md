@@ -8,8 +8,13 @@ take it back while COLD, offer a ceasefire or take it back while HOT. The level 
 same thing. Each use goes out on the common channel and has a two-minute cooldown per faction. The war level is
 announced a minute into the round, and admins can force it with `setwarlevel`.
 
+The Escalation preset (`WFEscalation`) runs the same cold war for three hours, but `WFEscalationRule` breaks talks down
+30 minutes in, with warnings at 10 minutes and 1 minute out. The level goes HOT and the declarators refuse to offer
+a ceasefire for the rest of the round. Only an admin can set it back.
+
 Entry points: `ManualPortstrikeRuleSystem.WfUseDeclarator`, a partial hooked into Monolith's declarator handler, and
-`WFColdWarComponent` on the `ManualPortstrikeTsfPdv` rule for the cooldown and announcement timings. Encounters reads
+`WFColdWarComponent` on the `ManualPortstrikeTsfPdv` rule for the cooldown and announcement timings, and
+`WFEscalationRuleSystem` for the timed break. Encounters reads
 the same level through `declaredWar` in `wfStanding` and `requiresWar` on its encounters.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -21,13 +26,18 @@ the same level through `declaredWar` in `wfStanding` and `requiresWar` on its en
 
 - [`Content.Server/_WF/ColdWar/ManualPortstrikeRuleSystem.ColdWar.cs`](ManualPortstrikeRuleSystem.ColdWar.cs)
 - [`Content.Server/_WF/ColdWar/WFColdWarComponent.cs`](WFColdWarComponent.cs)
+- [`Content.Server/_WF/ColdWar/WFEscalationRuleComponent.cs`](WFEscalationRuleComponent.cs)
+- [`Content.Server/_WF/ColdWar/WFEscalationRuleSystem.cs`](WFEscalationRuleSystem.cs)
 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/ColdWar/ColdWarDeclaratorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ColdWar/ColdWarDeclaratorTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ColdWar/EscalationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ColdWar/EscalationTest.cs)
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WF/ColdWar/game_presets.yml`](../../../Resources/Prototypes/_WF/ColdWar/game_presets.yml)
+- [`Resources/Prototypes/_WF/ColdWar/game_rules.yml`](../../../Resources/Prototypes/_WF/ColdWar/game_rules.yml)
 - [`Resources/Prototypes/_WF/ColdWar/guidebook.yml`](../../../Resources/Prototypes/_WF/ColdWar/guidebook.yml)
 
 ### Localization

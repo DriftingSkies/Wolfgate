@@ -139,6 +139,8 @@ convoy out announces the ending; see `WFSectorCellClearingEvent` in the SectorCo
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPauseTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPauseTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverReinforcementTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverReinforcementTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverSanctuaryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverSanctuaryTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStarvedTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStarvedTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStrongholdTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverStrongholdTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverTestBase.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverTestBase.cs)
 

@@ -32,6 +32,9 @@ overspeeds, down while it runs slow, halved when it stalls), its flow rate set a
 100 L/s per gas channel plus 200. No
 stores, or no living engineer, and the ship goes dark; a ship stranded for fuel gets neither. A fighter whose roles
 leave no room for an engineer tops its own generators up whenever they run low, as long as any of its crew live.
+A persistent ship (a Reaver hub) is stocked to its prototype's `fuelStores` jars and stacks a generator (12 for the
+hubs: about eight hours of an AME at 0.6 units a second), and every five minutes `RestockFuel` tops its crate back up to
+two while its engineer lives. With no living engineer left it is refuelled like a fighter.
 Crewmen carry no radiation receiver, so standing by a reactor costs them nothing.
 
 Posts keep to breathable deck where a hull has any. A helm or gunnery console with no air beside it (an open
@@ -91,7 +94,9 @@ A pilot with `FaceThreats` (a mission setting) turns a holding hull in place so 
 attacked it, or else the nearest zone intruder the crew was told of; it never flies at them.
 Flight tuning in creation/live settings exposes 37 speed, handling, clearance and docking values. Reusable
 `wfCrewNavigation` profiles supply scenario defaults; each mission gets an independent copy. Changes apply to
-the current pilot without restarting the queue. See `Docs/_WF/NpcCrew/navigation.md` for scenario configuration.
+the current pilot without restarting the queue. A cruise, follow, attack or near-target speed of 0 sets no limit
+(the `WFCrewNavigationHunter` profile): the pilot flies as fast as the hull's thrust allows, and travel budgets count
+on its `BaseMaxLinearVelocity`. See `Docs/_WF/NpcCrew/navigation.md` for scenario configuration.
 
 Autonomous crew projectiles pass through allies; allied damage is also stopped before wound routing, armor or
 retaliation. Crews holster when no living hostile remains. Forward travel faces the destination, and pilots face
@@ -339,6 +344,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HunterSpeed.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HunterSpeed.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs)

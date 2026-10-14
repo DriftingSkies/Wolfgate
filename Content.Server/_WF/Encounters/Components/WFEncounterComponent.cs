@@ -164,6 +164,9 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public bool AutoRefuel;
 
+    /// <summary>When its fuel stores are next checked, for a persistent ship.</summary>
+    public TimeSpan NextStock;
+
     /// <summary>While stranded: since when it has had thrust without a break.</summary>
     public TimeSpan? UnderwaySince;
 

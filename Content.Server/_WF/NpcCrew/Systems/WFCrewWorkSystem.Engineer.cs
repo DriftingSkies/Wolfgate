@@ -7,6 +7,7 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Server.Power.Generator;
 using Content.Server.Stack;
+using Content.Server.Storage.Components;
 using Content.Server.Storage.EntitySystems;
 using Content.Shared._FarHorizons.Power.Generation.FissionGenerator;
 using Content.Shared._WF.NpcCrew;
@@ -536,8 +537,9 @@ public sealed partial class WFCrewWorkSystem
     /// <summary>
     /// Stows fuel for the trip in a crate in the hold: stacks of each generator's material, a can for a chemical
     /// generator, jars for a reactor. What the engineer feeds the plant from, and what a boarder can carry off.
+    /// <paramref name="stores"/> is the stacks and jars stowed per generator.
     /// </summary>
-    public bool StockFuel(EntityUid grid)
+    public bool StockFuel(EntityUid grid, int stores = StoresPerMachine)
     {
         var tiles = _planner.HoldTiles(grid, 1);
         if (tiles.Count == 0)
@@ -552,7 +554,7 @@ public sealed partial class WFCrewWorkSystem
                 if (!_prototypes.TryIndex<MaterialPrototype>(solid.FuelMaterial, out var material) || material.StackEntity is not { } stackId)
                     continue;
 
-                for (var i = 0; i < StoresPerMachine; i++)
+                for (var i = 0; i < stores; i++)
                 {
                     var stack = Spawn(stackId, tiles[0]);
                     _stacks.SetCount(stack, StackSize);
@@ -567,7 +569,7 @@ public sealed partial class WFCrewWorkSystem
             }
             else if (HasComp<AmeControllerComponent>(machine))
             {
-                for (var i = 0; i < StoresPerMachine; i++)
+                for (var i = 0; i < stores; i++)
                 {
                     Stow(Spawn(Jar, tiles[0]), crate);
                     stocked++;
@@ -589,6 +591,79 @@ public sealed partial class WFCrewWorkSystem
 
         QueueDel(crate);
         return false;
+    }
+
+    /// <summary>
+    /// Tops a ship's stores back up when the stacks or jars in its stores crate have fallen below the usual two for any
+    /// of its generators, or restocks a crate that is gone. For a persistent ship, whose engineer would otherwise
+    /// starve the plant when the first stock ran out. Returns whether anything was added.
+    /// </summary>
+    public bool RestockFuel(EntityUid grid)
+    {
+        EntityUid? crate = null;
+        var crates = EntityQueryEnumerator<EntityStorageComponent, MetaDataComponent, TransformComponent>();
+        while (crates.MoveNext(out var uid, out _, out var meta, out var xform))
+        {
+            if (xform.GridUid == grid && meta.EntityPrototype?.ID == StoresCrate.Id)
+            {
+                crate = uid;
+                break;
+            }
+        }
+
+        if (crate is not { } stores)
+            return StockFuel(grid);
+
+        var contents = Comp<EntityStorageComponent>(stores).Contents.ContainedEntities;
+        var machines = new Dictionary<EntProtoId, int>();
+        var jars = 0;
+        foreach (var machine in Plant(grid))
+        {
+            if (TryComp<SolidFuelGeneratorAdapterComponent>(machine, out var solid)
+                && _prototypes.TryIndex<MaterialPrototype>(solid.FuelMaterial, out var material) && material.StackEntity is { } stackId)
+                machines[stackId] = machines.GetValueOrDefault(stackId) + 1;
+            else if (HasComp<AmeControllerComponent>(machine))
+                jars++;
+        }
+
+        var added = false;
+        foreach (var (stackId, count) in machines)
+        {
+            var have = 0;
+            foreach (var item in contents)
+            {
+                if (MetaData(item).EntityPrototype?.ID == stackId.Id)
+                    have++;
+            }
+
+            var missing = Math.Max(0, StoresPerMachine * count - have);
+            for (var i = 0; i < missing; i++)
+            {
+                var stack = Spawn(stackId, Transform(stores).Coordinates);
+                _stacks.SetCount(stack, StackSize);
+                Stow(stack, stores);
+                added = true;
+            }
+        }
+
+        if (jars > 0)
+        {
+            var have = 0;
+            foreach (var item in contents)
+            {
+                if (TryComp<AmeFuelContainerComponent>(item, out var jar) && jar.FuelAmount >= LowAntimatter)
+                    have++;
+            }
+
+            var missing = Math.Max(0, StoresPerMachine * jars - have);
+            for (var i = 0; i < missing; i++)
+            {
+                Stow(Spawn(Jar, Transform(stores).Coordinates), stores);
+                added = true;
+            }
+        }
+
+        return added;
     }
 
     /// <summary>Puts an item in the stores crate; one that won't go in is left beside it.</summary>

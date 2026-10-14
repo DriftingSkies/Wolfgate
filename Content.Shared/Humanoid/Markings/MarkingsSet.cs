@@ -374,6 +374,14 @@ public sealed partial class MarkingSet
 
         foreach (var (category, points) in Points)
         {
+            // WOLFGATE(Species) START: a chassis is one part on each body part, not a default for each spare point
+            if (category == MarkingCategories.Chassis)
+            {
+                EnsureChassis(skinColor, eyeColor, markingManager);
+                continue;
+            }
+            // WOLFGATE END
+
             if (points.Points <= 0 || points.DefaultMarkings.Count <= 0)
             {
                 continue;

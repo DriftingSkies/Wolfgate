@@ -61,6 +61,22 @@ public sealed partial class WFEncounterSystem
             return true;
 
         var status = _objectives.QueueStatus(ship.Grid, ship.Group);
+        // A prey that berthed at a station is out of reach, and the run at it is called off. Never mid-raid: a party
+        // aboard is not left for the prey to be berthed with.
+        if (ship.Prey is { } berthed && ship.RaidEnds == null && ship.Boarded != berthed && !TerminatingOrDeleted(berthed)
+            && !_docking.AreGridsDocked(ship.Grid, berthed) && DockedAtStation(berthed))
+        {
+            Log.Info($"Encounter ship {ToPrettyString(ship.Grid)} lets {ToPrettyString(berthed)} go: it is berthed at a station.");
+            ship.Prey = null;
+            if (!free)
+                return false;
+
+            HuntRecordFor(ship.Grid).Misses = 0;
+            // The free hunter waits where it is and takes the next look to find other prey.
+            _objectives.SetQueue(ship.Grid, ship.Group, new List<WFCrewObjective> { new() { Kind = WFCrewObjectiveKind.Hold } });
+            status = _objectives.QueueStatus(ship.Grid, ship.Group);
+        }
+
         if (ship.Prey is { } docked && !TerminatingOrDeleted(docked) && _docking.AreGridsDocked(ship.Grid, docked))
         {
             Raid(ship, docked);
@@ -402,8 +418,35 @@ public sealed partial class WFEncounterSystem
     }
 
     /// <summary>
+    /// Whether a ship is docked to a station: a station member without a deed, or a grid that becomes one. A ship
+    /// berthed there is in sanctuary: no hunt, extorter, raid, intercept or zone goes for it.
+    /// </summary>
+    public bool DockedAtStation(EntityUid grid)
+    {
+        foreach (var dock in _docking.GetDocks(grid))
+        {
+            if (dock.Comp.DockedWith is not { } other || Transform(other).GridUid is not { } alongside || alongside == grid)
+                continue;
+
+            if (IsStationGrid(alongside))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>Whether a grid is a station: a station member without a deed, or a grid that becomes one; a ship flying the flag is not.</summary>
+    private bool IsStationGrid(EntityUid grid)
+    {
+        return HasComp<Content.Shared.Station.Components.StationMemberComponent>(grid)
+               && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(grid)
+               || HasComp<Content.Server.Station.Components.BecomesStationComponent>(grid);
+    }
+
+    /// <summary>
     /// The nearest ship on the same map with a living player aboard, within <paramref name="range"/>: not part of an
-    /// encounter, not a station or outpost, not one this hunter has given up on and none of <paramref name="except"/>.
+    /// encounter, not a station or outpost or docked to one, not one this hunter has given up on and none of
+    /// <paramref name="except"/>.
     /// </summary>
     private EntityUid? NearestCrewedShip(EntityUid hunter, float range = float.MaxValue, ICollection<EntityUid>? except = null,
         List<string>? neutral = null)
@@ -419,6 +462,7 @@ public sealed partial class WFEncounterSystem
                 || HasComp<GhostComponent>(uid) || _mobs.IsDead(uid) || HasComp<WFEncounterGridComponent>(grid)
                 || HasComp<Content.Shared.Station.Components.StationMemberComponent>(grid)
                 && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(grid)
+                || DockedAtStation(grid)
                 || shunned != null && shunned.Contains(grid)
                 || except != null && except.Contains(grid)
                 || neutral is { Count: > 0 } && IsNeutralPlayer(uid, grid, neutral))
@@ -454,10 +498,7 @@ public sealed partial class WFEncounterSystem
             if (xform.GridUid != grid || dock.DockedWith is not { } other || Transform(other).GridUid is not { } alongside)
                 continue;
 
-            // A station is a station member without a deed, or a grid that becomes one; a ship flying the flag is not.
-            var station = HasComp<Content.Shared.Station.Components.StationMemberComponent>(alongside)
-                          && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(alongside)
-                          || HasComp<Content.Server.Station.Components.BecomesStationComponent>(alongside);
+            var station = IsStationGrid(alongside);
             var flag = WFCompanyFamily.Of(CompOrNull<CompanyComponent>(alongside)?.CompanyName.Id);
             if (station && flag.Length > 0 && neutral.Any(company => WFCompanyFamily.Of(company) == flag))
                 return true;

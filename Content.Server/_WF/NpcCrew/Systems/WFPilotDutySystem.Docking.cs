@@ -311,7 +311,7 @@ public sealed partial class WFPilotDutySystem
             return budget;
 
         var distance = (_transform.ToMapCoordinates(plan.Standoff).Position - _transform.GetWorldPosition(grid)).Length();
-        return budget + distance / MathF.Max(duty.CruiseSpeed, 1f) * 1.5f;
+        return budget + distance / MathF.Max(TravelSpeed(duty, grid), 1f) * 1.5f;
     }
 
     /// <summary>

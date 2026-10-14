@@ -79,7 +79,8 @@ public sealed class WFCockpitFuelBank : BoxContainer
         };
         ToolTip = status + "\n" + Loc.GetString("wf-cockpit-fuel-help") + "\n" +
             Loc.GetString("wf-cockpit-fuel-low-help", ("low", MathF.Round(ShipFuelSummary.LowThreshold * 100)),
-                ("critical", MathF.Round(ShipFuelSummary.CriticalThreshold * 100)));
+                ("critical", MathF.Round(ShipFuelSummary.CriticalThreshold * 100)),
+                ("emergency", MathF.Round(ShipFuelSummary.EmergencyThreshold * 100)));
         _gauge.ToolTip = ToolTip;
         _lamp.ToolTip = ToolTip;
     }

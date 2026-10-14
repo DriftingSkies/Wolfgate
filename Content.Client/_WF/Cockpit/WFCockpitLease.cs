@@ -32,7 +32,17 @@ public sealed class WFCockpitLease
         {
             root.DisposeAllChildren();
             foreach (var child in children)
-                root.AddChild(child);
+            {
+                // One child failing to come back must not cost the screen the children after it.
+                try
+                {
+                    root.AddChild(child);
+                }
+                catch (Exception e)
+                {
+                    Logger.GetSawmill("wf.cockpit").Error($"Cockpit could not return {child.Name ?? child.GetType().Name}: {e}");
+                }
+            }
         });
     }
 

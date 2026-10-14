@@ -12,6 +12,7 @@ public sealed partial class ManualPortstrikeRuleSystem
 {
     [Dependency] private IGameTiming _wfTiming = default!;
     [Dependency] private SectorServiceSystem _wfSectorService = default!;
+    [Dependency] private WFEscalationRuleSystem _wfEscalation = default!;
 
     protected override void Started(EntityUid uid, ManualPortstrikeRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
@@ -45,6 +46,13 @@ public sealed partial class ManualPortstrikeRuleSystem
         var now = _wfTiming.CurTime;
         // Read once: with two rules for the same factions, the second must not see the level the first has just set.
         var level = _warLevelSystem.GetWarLevel(ent);
+        // Escalation: once talks break down, a war cannot be called off.
+        if (level && _wfEscalation.TalksBroken())
+        {
+            _popup.PopupEntity(Loc.GetString("wf-escalation-declarator-locked"), ent, user);
+            return true;
+        }
+
         var linked = false;
         var announced = false;
         var moved = false;

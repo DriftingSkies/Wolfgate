@@ -259,6 +259,13 @@ public sealed partial class WFEncounterShip
     [DataField]
     public bool Engineer = true;
 
+    /// <summary>
+    /// Stacks of solid fuel and antimatter jars stowed per generator for the engineer. A persistent ship's stores are
+    /// topped up to this whenever they run low while its engineer lives, so it must cover a stretch of the round.
+    /// </summary>
+    [DataField]
+    public int FuelStores = 2;
+
     [DataField]
     public ProtoId<NpcFactionPrototype> Faction = "WFCrew";
 

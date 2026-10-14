@@ -1,0 +1,20 @@
+- type: gamePreset
+  id: WFEscalation
+  alias:
+    - escalation
+  name: wf-escalation-preset-title
+  description: wf-escalation-preset-description
+  showInVote: true
+  rules:
+  - NFAdventure
+  - BasicStationEventScheduler
+  - BluespaceEventScheduler
+  - BluespaceDungeonEventScheduler
+  - BluespaceSalvageEventScheduler
+  - SmugglingEventScheduler
+  - FrontierRoundstartVariation
+  - MonoMonolithicEventsScheduler
+  - ManualPortstrikeTsfPdv
+  - StarSystemKyphrus
+  - WFEscalationRule
+  - RoundEndRuleHour3

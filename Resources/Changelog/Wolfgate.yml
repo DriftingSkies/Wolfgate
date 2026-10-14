@@ -1651,3 +1651,28 @@ Entries:
   id: 100130
   time: '2026-10-14T01:15:10.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/235
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: IPC's have been mostly fixed! Markings and such will work again.
+  id: 100131
+  time: '2026-10-14T01:36:31.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/238
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Cockpit layout has been tweaked slightly.
+    - type: Fix
+      message: Chat systems no longer bug on a failed entry attempt.
+  id: 100132
+  time: '2026-10-14T02:03:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/239
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: NPC encounters no longer harass ships at CC
+    - type: Tweak
+      message: Engineers now actually refuel AMEs
+  id: 100133
+  time: '2026-10-14T02:42:31.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/237

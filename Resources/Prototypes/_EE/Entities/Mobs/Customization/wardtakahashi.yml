@@ -1,7 +1,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiHead
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_monitor.rsi
@@ -10,7 +10,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiHeadAlt
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -19,7 +19,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiHeadAlt1
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_alt1.rsi
@@ -28,7 +28,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiChest
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -37,7 +37,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiLArm
   bodyPart: LArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -46,7 +46,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiLHand
   bodyPart: LHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -55,7 +55,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiLLeg
   bodyPart: LLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -65,7 +65,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiLFoot
   bodyPart: LFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -76,7 +76,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiRArm
   bodyPart: RArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -86,7 +86,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiRHand
   bodyPart: RHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -95,7 +95,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiRLeg
   bodyPart: RLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi
@@ -105,7 +105,7 @@
 - type: marking
   id: CyberLimbsMarkingWardtakahashiRFoot
   bodyPart: RFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/wardtakahashi/wardtakahashi_main.rsi

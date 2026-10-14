@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Content.Client._WF.ChatTabs;
+using Content.Client.UserInterface.Controls;
+using Content.Shared.CCVar;
 using Content.Client.UserInterface.Screens;
 using Content.Client.UserInterface.Systems.Chat;
 using Content.Client.UserInterface.Systems.Chat.Controls;
@@ -474,6 +476,91 @@ public sealed class ChatTabsTest : InteractionTest
                     _box.SetPositionInParent(position);
                 }
             });
+        }
+    }
+
+    /// <summary>
+    /// A line whose markup does not parse stays in the history, so it must not throw: the refill a chat box runs as it
+    /// enters the tree would stop there and leave the input line outside the tree, where it takes no text.
+    /// </summary>
+    [Test]
+    public async Task ALineWithBrokenMarkupDoesNotBreakTheChatBox()
+    {
+        await Prepare();
+
+        ChatBox? plain = null;
+        try
+        {
+            await Client.WaitAssertion(() =>
+            {
+                Say(ChatChannel.Radio, "before");
+                Assert.DoesNotThrow(() => Say(ChatChannel.Radio, "plain [bracket"));
+                Assert.DoesNotThrow(() => Say(ChatChannel.Radio, "[color=red]red [bracket[/color]"));
+                Say(ChatChannel.Radio, "after");
+                Assert.That(_log.EntryCount, Is.EqualTo(4), "the broken lines are shown like any other");
+                Assert.That(_log.GetMessage(1).ToString(), Does.Contain("plain [bracket"));
+                Assert.That(_log.GetMessage(2).ToString(), Does.Contain("bracket"));
+
+                Assert.DoesNotThrow(() => _tabs.Select(Radio), "a tab switch refills past the broken lines");
+                Assert.That(_log.EntryCount, Is.EqualTo(4));
+
+                plain = new ChatBox { SetSize = new Vector2(400, 300) };
+                Assert.DoesNotThrow(() => _ui.WindowRoot.AddChild(plain));
+                Assert.That(plain.FindControl<OutputPanel>("Contents").EntryCount, Is.EqualTo(4));
+                Assert.That(plain.ChatInput.Input.IsInsideTree, "the input line must enter the tree to take text");
+            });
+        }
+        finally
+        {
+            await Client.WaitPost(() =>
+            {
+                if (plain == null)
+                    return;
+
+                plain.Orphan();
+                _chat.UnregisterChat(plain);
+            });
+        }
+    }
+
+    /// <summary>
+    /// The game screen is added to the tree before its controllers set it up: the world view gets its size after that. A chat box
+    /// that threw while entering the tree left a black view with the HUD collapsed in the middle of the window.
+    /// </summary>
+    [Test]
+    public async Task ALineWithBrokenMarkupDoesNotBreakLoadingTheGameScreen()
+    {
+        await Prepare();
+
+        var layout = _cfg.GetCVar(CCVars.UILayout);
+        try
+        {
+            await Client.WaitAssertion(() =>
+            {
+                Say(ChatChannel.OOC, "plain [bracket");
+
+                foreach (var next in new[] { "Separated", "Default" })
+                {
+                    _cfg.SetCVar(CCVars.UILayout, next);
+
+                    var screen = (InGameScreen) _ui.ActiveScreen!;
+                    Assert.That(screen.GetType().Name, Does.StartWith(next), "the layout change loaded its screen");
+                    Assert.That(screen.HorizontalAlignment, Is.EqualTo(Control.HAlignment.Stretch), $"{next}: the screen fills the window");
+                    Assert.That(screen.VerticalAlignment, Is.EqualTo(Control.VAlignment.Stretch));
+                    Assert.That(Descendants(screen).Where(control => !control.IsInsideTree), Is.Empty,
+                        $"{next}: every HUD control entered the tree");
+                    var view = screen.GetWidget<MainViewport>()!.Viewport;
+                    Assert.That(Client.ResolveDependency<Robust.Client.Graphics.IEyeManager>().MainViewport, Is.SameAs(view),
+                        $"{next}: the screen finished loading, so the world view is the one drawn to");
+                    Assert.That(view.ViewportSize.X * view.ViewportSize.Y, Is.GreaterThan(0), $"{next}: the world view has a size");
+                    Assert.That(screen.ChatBox.ChatInput.Input.IsInsideTree, $"{next}: the chat input takes text");
+                    Assert.That(screen.ChatBox.FindControl<OutputPanel>("Contents").EntryCount, Is.EqualTo(1));
+                }
+            });
+        }
+        finally
+        {
+            await Client.WaitPost(() => _cfg.SetCVar(CCVars.UILayout, layout));
         }
     }
 

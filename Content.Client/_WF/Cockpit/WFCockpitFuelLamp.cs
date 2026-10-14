@@ -29,23 +29,26 @@ public sealed class WFCockpitFuelLamp : Control
     /// <summary>Whether reserves are at or under the low threshold; null while the reading is missing or incomplete.</summary>
     public bool? LowFuel => _read() is { Available: true } fuel ? fuel.Low : null;
 
-    /// <summary>Whether reserves are under the critical threshold, which flashes the lamp; null while the reading is missing or incomplete.</summary>
+    /// <summary>Whether reserves are under the critical threshold, which turns the lamp red; null while the reading is missing or incomplete.</summary>
     public bool? CriticalFuel => _read() is { Available: true } fuel ? fuel.Critical : null;
+
+    /// <summary>Whether reserves are under the emergency threshold, which flashes the lamp; null while the reading is missing or incomplete.</summary>
+    public bool? EmergencyFuel => _read() is { Available: true } fuel ? fuel.Emergency : null;
 
     /// <summary>Whether the lens is lit on the current frame.</summary>
     public bool Lit => IsLit(_read(), _timing.RealTime);
 
-    /// <summary>Steady while low, flashing once a second while critical, and dark without a full reading.</summary>
+    /// <summary>Steady while low or critical, flashing once a second in an emergency, and dark without a full reading.</summary>
     public static bool IsLit(ShipFuelSummary? fuel, TimeSpan realTime)
     {
         if (fuel is not { Available: true, Low: true } reading)
             return false;
 
-        return !reading.Critical || realTime.Ticks % FlashTicks < FlashTicks / 2;
+        return !reading.Emergency || realTime.Ticks % FlashTicks < FlashTicks / 2;
     }
 
-    /// <summary>The colour of the lit lens, which is the skin's red in both skins.</summary>
-    public static Color Lens(WolfgateSkin skin) => skin.Danger;
+    /// <summary>The colour of the lit lens: the skin's amber while low, its red once critical.</summary>
+    public static Color Lens(WolfgateSkin skin, ShipFuelSummary? fuel) => fuel is { Critical: true } ? skin.Danger : skin.Caution;
 
     /// <summary>Retains a fixed warning-lamp footprint while the neighbouring fuel gauge expands.</summary>
     public WFCockpitFuelLamp(Func<ShipFuelSummary?> read)
@@ -70,9 +73,11 @@ public sealed class WFCockpitFuelLamp : Control
             _large = cache.GetFont(skin.MenuFonts, 14);
             _fontSkin = skin.Id;
         }
-        var lit = IsLit(_read(), _timing.RealTime);
-        var inner = WFConsoleAnnunciator.Face(handle, PixelSizeBox, UIScale, Lens(skin), lit);
-        var color = lit ? WFInstrumentTheme.Digital ? skin.Danger : skin.Ink : skin.TextMuted;
+        var reading = _read();
+        var lit = IsLit(reading, _timing.RealTime);
+        var lens = Lens(skin, reading);
+        var inner = WFConsoleAnnunciator.Face(handle, PixelSizeBox, UIScale, lens, lit);
+        var color = lit ? WFInstrumentTheme.Digital ? lens : skin.Ink : skin.TextMuted;
         var legend = new UIBox2(inner.TopLeft + new Vector2(3 * UIScale),
             inner.BottomRight - new Vector2(3 * UIScale));
         var split = legend.Top + legend.Height * 0.44f;

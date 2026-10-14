@@ -37,7 +37,7 @@ the Encounters judge waits for every ship. A lead is out of the fight when its c
 (`WFCrewShipStatusSystem`: abandoned, disarmed, crippled, or **wrecked**: under 60% of the hull tiles it was first seen
 with for 10 s, which covers a hull shot to pieces or split into fragments although its crew live), or its helm has been
 unmanned for **two minutes** (the queue's status is `no-pilot`, `pilot-away` or `awaiting-helm`: no living pilot, none
-aboard, or none who reaches a helm). Patrols and raids break the same way when their lead goes, though a wing is left. On `WFEncounterResolvedEvent` with `Destroyed` the campaign pays the
+aboard, or none who reaches a helm). A hub that is out of the fight only because its guns or thrust lost power (a ship weapon or thruster still aboard is unpowered; guns torn out by hand are a kill), with no hit on it and its crew alive, is not broken: it stays, and its engineer and the periodic fuel restock (12 jars stowed at founding, a top-up every five minutes, plain refuelling once its engineer is dead) bring it back. One still dark after **20 minutes** (`StarvedGrace`) is broken all the same. Patrols and raids break the same way when their lead goes, though a wing is left. On `WFEncounterResolvedEvent` with `Destroyed` the campaign pays the
 bounty (`strongholdBounty[tier]` times one plus half the level), ends the stronghold's reinforcements, releases the
 source (freeing every cell it alone supported) and announces. `Ended` (admin or round end) frees
 and pays nothing.

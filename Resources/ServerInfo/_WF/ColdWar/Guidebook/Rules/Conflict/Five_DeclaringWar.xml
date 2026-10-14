@@ -14,6 +14,8 @@
 - Ending a war works the same way: both sides use their declarators again and the war level goes back to [color=cyan][bold]COLD[/bold][/color].
 -- When that happens, stop fighting and stop [textlink="striking outposts" link="MonolithRuleConflictFourPortStriking"].
 
+- In an [bold]Escalation[/bold] round, talks break down 30 minutes in. The war level goes [color=red][bold]HOT[/bold][/color] and the declarators can't end it.
+
 - While COLD, factions can hire contractors for escort, transport and info, but [color=red][bold]not[/bold][/color] to attack the other faction for them.
 
 - No Colonel or Grand Vizier this round? Ahelp if the war level needs to change.

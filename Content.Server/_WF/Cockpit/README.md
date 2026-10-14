@@ -32,10 +32,10 @@ so the chat is the larger panel on any window wide enough for both. The velocity
 actual drift relative to the bow, with forward at the top and starboard on the right, alongside total speed.
 Its direction pointer uses a fixed square-root response against a 100 m/s full scale, making low-speed drift
 more visible without scale jumps, and disappears when nearly stationary.
-A horizontal fuel gauge below HULL shares its row with a FUEL LOW lamp and stays fixed outside the dial scroller.
+A horizontal fuel gauge below HULL shares its row with a FUEL LOW lamp and stays fixed outside the dial scroller. The lamp is amber at 20% or less, red below 10% and flashes red below 5%.
 The instrument housing uses compact padding and gaps while preserving dial sizes. HULL remains the final
 scrolling strip above fuel on short screens. The velocity dial keeps its exact speed in a readout bar under the dial. The MFD fills the right column unless swapped or maximised. Its maps use
-right-mouse panning and compact department labels, with scrolling details kept separate from the larger plots. Numbered approach markers link to readable port actions below the plot. Clicking one of the ship's own ports on the docking plot, or its numbered marker, views that port exactly as picking it from the port list does; the windowed helm's docking page does the same.
+right-mouse panning and compact department labels, with scrolling details kept separate from the larger plots. Numbered approach markers link to readable port actions in the details. A port the viewed port can dock with right now shows a DOCK key on the plot instead of its number; clicking it sends the same request as its list action. Clicking one of the ship's own ports on the docking plot, or its numbered marker, views that port exactly as picking it from the port list does; the windowed helm's docking page does the same.
 Shield arc width stays in the permanent shield control panel. Digital and mechanical instruments share the same large dial footprint, and the
 lower flight bank aligns with communications and shields. Its six status lamps show live autopilot, FTL,
 dampener, parking, docking and shield state; autopilot activity is replicated independently of MFD selection. The FTL lamp lights red when the ship has no powered FTL drive, and the strategic map page shows a danger notice for it above the plot.
@@ -64,7 +64,7 @@ tooltips so the three of them and the caption fit the narrowest MFD header. On t
 its plots take most of the height and the details scroll beneath them. The state lasts one cockpit session and every exit
 restores the world view and the normal HUD, whatever the arrangement. A wide SHP display gives half its width to the hull plot, with two columns of gauges beside it.
 Damage, fire, pressure and power overlays share one row, with department labels and hull fitting below.
-Compact MFDs retain the vertical layout with independently scrolling details. ACCESS keeps its framed door map
+A wide MFD page (maximised, or swapped into the centre) stands the strategic and docking details in a column to the right of the plot, so the plot keeps the full height. Compact MFDs retain the vertical layout with independently scrolling details. ACCESS keeps its framed door map
 as the largest panel, beside the controls when there is room and above them in compact layouts. Its
 details use one scroller without nested scrolling lists, and the bezel matches the selected
 Wolfgate theme. Exit restores the same controls and chat draft without reopening

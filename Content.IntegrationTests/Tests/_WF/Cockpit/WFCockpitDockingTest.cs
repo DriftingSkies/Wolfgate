@@ -310,6 +310,159 @@ public sealed class WFCockpitDockingTest
     }
 
     [Test]
+    public void AWidePageStandsItsDetailsBesideThePlot()
+    {
+        // The normal and the expanded MFD are taller than wide: the plot sits above its details.
+        foreach (var size in new[] { new Vector2(420, 700), new Vector2(640, 700), new Vector2(760, 640) })
+        {
+            Assert.That(WFCockpitMfdSplit.SideBySide(size), Is.False, $"{size}");
+            var (plot, details) = WFCockpitMfdSplit.Boxes(size, 0.7f);
+            Assert.That(plot.Width, Is.EqualTo(size.X));
+            Assert.That(details.Top, Is.GreaterThan(plot.Bottom));
+            Assert.That(details.Bottom, Is.EqualTo(size.Y).Within(0.01f));
+            Assert.That(plot.Height, Is.EqualTo((size.Y - 6) * 0.7f).Within(0.01f));
+        }
+
+        // A maximised or swapped MFD is much wider than tall: the plot keeps the whole height.
+        foreach (var size in new[] { new Vector2(1400, 620), new Vector2(900, 500), new Vector2(700, 300) })
+        {
+            Assert.That(WFCockpitMfdSplit.SideBySide(size), Is.True, $"{size}");
+            var (plot, details) = WFCockpitMfdSplit.Boxes(size, 0.7f);
+            Assert.That(plot.Height, Is.EqualTo(size.Y), $"{size}: the plot must not be a thin strip.");
+            Assert.That(details.Height, Is.EqualTo(size.Y));
+            Assert.That(details.Left, Is.GreaterThan(plot.Right), $"{size}: the controls stand to the right of the plot.");
+            Assert.That(details.Right, Is.EqualTo(size.X).Within(0.01f));
+            Assert.That(details.Width, Is.InRange(240, 340));
+            Assert.That(plot.Width, Is.GreaterThan(details.Width));
+        }
+
+        Assert.That(WFCockpitMfdSplit.SideBySide(new Vector2(600, 300)), Is.False, "A narrow page has no room for a side column.");
+    }
+
+    [Test]
+    public async Task TheStrategicAndDockingPagesFollowThePageShape()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var lease = new WFCockpitLease();
+            using var docking = new DockingScreen();
+            using var map = new MapScreen();
+            docking.WfCockpitDock(lease);
+            map.WfCockpitMap(lease);
+            var pages = new (Control Page, Control Plot, Control Key)[]
+            {
+                (docking, docking.FindControl<ShuttleDockControl>("DockingControl"), docking.FindControl<Button>("UndockAllButton")),
+                (map, map.FindControl<ShuttleMapControl>("MapRadar"), map.FindControl<Button>("MapFTLButton")),
+            };
+            foreach (var (page, plot, key) in pages)
+            {
+                page.Visible = true;
+                ui.WindowRoot.AddChild(page);
+                var name = page.GetType().Name;
+
+                var wide = new Vector2(1400, 620);
+                page.Measure(wide);
+                page.Arrange(UIBox2.FromDimensions(Vector2.Zero, wide));
+                Assert.That(plot.Height, Is.GreaterThan(wide.Y * 0.75f), $"{name}: a maximised page keeps a tall plot.");
+                Assert.That(key.GlobalPosition.X, Is.GreaterThanOrEqualTo(plot.GlobalPosition.X + plot.Width),
+                    $"{name}: its controls stand to the right of the plot.");
+                Assert.That(key.GlobalPosition.X + key.Width, Is.LessThanOrEqualTo(page.GlobalPosition.X + wide.X + 0.5f), name);
+
+                var tall = new Vector2(420, 700);
+                page.Measure(tall);
+                page.Arrange(UIBox2.FromDimensions(Vector2.Zero, tall));
+                Assert.That(key.GlobalPosition.Y, Is.GreaterThanOrEqualTo(plot.GlobalPosition.Y + plot.Height),
+                    $"{name}: on the normal MFD the controls stay below the plot.");
+                Assert.That(plot.Height, Is.GreaterThan(tall.Y * 0.5f), name);
+                page.Orphan();
+            }
+
+            var caption = Tree(docking).OfType<Label>().Single(label => label.Name == "CockpitDockFtlLockLabel");
+            Assert.That(caption.Text, Is.EqualTo(Loc.GetString("wf-cockpit-dock-ftl-lock")));
+            var lockRow = docking.FindControl<Button>("FTLLockEnabledButton").Parent!;
+            Assert.That(caption.Parent, Is.SameAs(lockRow.Parent), "The FTL lock keys carry their caption.");
+            Assert.That(caption.GetPositionInParent(), Is.EqualTo(lockRow.GetPositionInParent() - 1));
+            lease.Restore();
+            Assert.That(Tree(docking).OfType<Label>().Any(label => label.Name == "CockpitDockFtlLockLabel"), Is.False,
+                "The windowed docking page keeps its own FTL lock heading.");
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ADockOnOfferHasAKeyOnThePlot()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+            var entities = pair.Client.ResolveDependency<IEntityManager>();
+            var owner = entities.SpawnEntity(null, MapCoordinates.Nullspace);
+            var grid = entities.GetNetEntity(owner);
+            var visitorGrid = new NetEntity(902);
+            var alpha = Port(new NetEntity(730), grid, "Alpha", Vector2.Zero);
+            var visitor = Port(new NetEntity(731), visitorGrid, "Visitor", new Vector2(0, -4));
+            var lease = new WFCockpitLease();
+            using var screen = new DockingScreen();
+            screen.WfCockpitDock(lease);
+            screen.Visible = true;
+            ui.WindowRoot.AddChild(screen);
+            screen.UpdateState(owner, new DockingInterfaceState(new Dictionary<NetEntity, List<DockingPortState>>
+            {
+                [grid] = new() { alpha },
+                [visitorGrid] = new() { visitor },
+            }));
+            var size = new Vector2(640, 700);
+            screen.Measure(size);
+            screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+            var plot = screen.FindControl<ShuttleDockControl>("DockingControl");
+            Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity));
+            var requests = new List<(NetEntity From, NetEntity To)>();
+            plot.DockRequest += (from, to) => requests.Add((from, to));
+            var action = Tree(screen).OfType<Button>().Single(button => button.Text == Loc.GetString("shuttle-console-dock"));
+            Assert.That(action.Disabled, Is.True, "Nothing is in reach yet.");
+
+            // The plot draws the key and records where; a headless client draws nothing, so the test places it.
+            var offers = (Dictionary<NetEntity, UIBox2>) typeof(ShuttleDockControl)
+                .GetField("_wfCockpitDockOffers", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(plot)!;
+            var key = UIBox2.FromDimensions(new Vector2(40, 40), new Vector2(70, 26));
+            var empty = new Vector2(plot.PixelWidth - 24, plot.PixelHeight - 24);
+            offers[visitor.Entity] = key;
+
+            Click(ui, plot, key.Center);
+            Assert.That(requests, Is.Empty, "A key left over from a dock that is no longer on offer sends nothing.");
+
+            action.Disabled = false;
+            MoveMouse(ui, plot, key.Center);
+            Assert.That(plot.HighlightedDock, Is.EqualTo(visitor.Entity), "Hovering the key highlights its port.");
+            Assert.That(plot.DefaultCursorShape, Is.EqualTo(Control.CursorShape.Hand));
+            Click(ui, plot, key.Center, empty);
+            Assert.That(requests, Is.Empty, "Releasing away from the key cancels the click.");
+            Click(ui, plot, empty, key.Center);
+            Assert.That(requests, Is.Empty, "A press that began on empty plot cannot dock.");
+            Click(ui, plot, key.Center, function: EngineKeyFunctions.UseSecondary);
+            Assert.That(requests, Is.Empty, "The right button pans and never docks.");
+
+            Click(ui, plot, key.Center);
+            Assert.That(requests, Is.EqualTo(new[] { (alpha.Entity, visitor.Entity) }),
+                "The key on the plot sends the request the port's list action sends.");
+            Assert.That(plot.ViewedDock, Is.EqualTo(alpha.Entity));
+
+            offers.Clear();
+            Click(ui, plot, key.Center);
+            Assert.That(requests, Has.Count.EqualTo(1), "With the key gone the same spot is plain plot again.");
+
+            ui.SetHovered(null);
+            lease.Restore();
+            screen.Orphan();
+            entities.DeleteEntity(owner);
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task VelocityDialHelpReachesTheMouse()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });

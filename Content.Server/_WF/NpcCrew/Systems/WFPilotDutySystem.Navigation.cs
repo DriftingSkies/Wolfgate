@@ -47,6 +47,21 @@ public sealed partial class WFPilotDutySystem
         return true;
     }
 
+    /// <summary>A speed setting as a limit: 0 sets none.</summary>
+    private static float SpeedLimit(float setting) => setting > 0f ? setting : float.PositiveInfinity;
+
+    /// <summary>The cruise speed a travel estimate may count on: the setting, or with none the hull's own top speed.</summary>
+    public float TravelSpeed(WFPilotDutyComponent duty, EntityUid grid)
+    {
+        if (duty.CruiseSpeed > 0f)
+            return duty.CruiseSpeed;
+
+        return TryComp<ShuttleComponent>(grid, out var shuttle) ? MathF.Max(shuttle.BaseMaxLinearVelocity, 1f) : DefaultHullSpeed;
+    }
+
+    /// <summary>The top speed assumed for a grid with no shuttle component.</summary>
+    private const float DefaultHullSpeed = 30f;
+
     private static void UpdateOrbitLimits(WFPilotDutyComponent duty)
     {
         duty.LoiterRadius = duty.OrbitKind == WFCrewObjectiveKind.Attack
@@ -166,7 +181,7 @@ public sealed partial class WFPilotDutySystem
         // What can be shed over the run left before the alignment range, with margin for a hull that brakes unevenly.
         var run = MathF.Max(0f, toWaypoint.Length() - limits.DockAlignmentRange * 1.5f);
         var reachable = MathF.Sqrt(duty.DockApproachSpeed * duty.DockApproachSpeed + 2f * braking * DockBrakingMargin * run);
-        return MathF.Min(duty.CruiseSpeed, reachable);
+        return MathF.Min(SpeedLimit(duty.CruiseSpeed), reachable);
     }
 
     /// <summary>The share of a hull's braking the docking curve counts on.</summary>
@@ -265,6 +280,8 @@ public sealed partial class WFPilotDutySystem
             WFPilotOrder.Follow => limits.FollowSpeed,
             _ => duty.CruiseSpeed,
         };
+        // A speed of 0 sets no limit: the hull's thrust and its soft velocity cap are all that hold it back.
+        speed = SpeedLimit(speed);
         var target = duty.Orders switch
         {
             WFPilotOrder.Follow => duty.FollowTarget,
@@ -293,7 +310,7 @@ public sealed partial class WFPilotDutySystem
                 var stoppingDistance = brakeAcceleration > 0f ? closing * closing / (2f * brakeAcceleration) : float.PositiveInfinity;
                 if (gap < limits.NavigationClearance + stoppingDistance + MathF.Max(closing, 0f) * limits.BrakingLookahead && closing > limits.SpeedTolerance)
                     input = new ShuttleInput(Vector2.Zero, 0f, 1f);
-                if (gap < limits.NavigationClearance * 2f)
+                if (gap < limits.NavigationClearance * 2f && limits.NearTargetSpeed > 0f)
                     speed = MathF.Min(speed, limits.NearTargetSpeed);
             }
         }
@@ -302,7 +319,7 @@ public sealed partial class WFPilotDutySystem
         var maximumSpeed = speed + targetVelocity.Length();
         if (body.LinearVelocity.Length() > maximumSpeed + limits.SpeedTolerance)
             input = new ShuttleInput(Vector2.Zero, input.Rotation, 1f);
-        args.SetMaxVelocity = maximumSpeed;
+        args.SetMaxVelocity = float.IsFinite(maximumSpeed) ? maximumSpeed : null;
         var handling = WFCrewSkills.Of(CompOrNull<WFCrewComponent>(ent)?.Skill ?? WFCrewSkill.Veteran).Handling;
         args.AccelMul *= input.Brakes > 0f ? 1f : limits.ThrustMultiplier * handling;
         args.AngularMul *= input.Brakes > 0f ? 1f : limits.AngularThrustMultiplier * handling;

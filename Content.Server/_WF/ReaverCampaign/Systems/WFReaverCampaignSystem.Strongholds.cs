@@ -32,6 +32,9 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>How long after its founding a stronghold may send its first patrol.</summary>
     private static readonly TimeSpan FirstPatrolDelay = TimeSpan.FromMinutes(2);
 
+    /// <summary>How long a hub may sit out of power unattacked before it is broken anyway: four restocks' worth.</summary>
+    public static readonly TimeSpan StarvedGrace = TimeSpan.FromMinutes(20);
+
     /// <summary>Founds the first stronghold or a regrouped one far out, or sends a convoy from a standing one to found a later one; one founding at a time.</summary>
     private void TickFounding(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state)
     {
@@ -278,10 +281,28 @@ public sealed partial class WFReaverCampaignSystem
             var (uid, comp, encounter) = stronghold;
             if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
             {
+                // A hub that went dark with nobody shooting at it has not been beaten: its engineer and the restock
+                // bring the power back. One that stays dark past the grace is broken all the same.
+                if (lead != null && encounter.ShipHits.Count == 0 && _encounters.OutForWantOfPower(lead))
+                {
+                    if (!comp.Starved)
+                    {
+                        Log.Info($"Reaver stronghold {ToPrettyString(uid)} is out of power with no attack on it and is left standing.");
+                        comp.StarvedSince = _timing.CurTime;
+                    }
+
+                    comp.Starved = true;
+                    if (_timing.CurTime - comp.StarvedSince < StarvedGrace)
+                        continue;
+
+                    Log.Info($"Reaver stronghold {ToPrettyString(uid)} has been out of power past the grace and is broken.");
+                }
+
                 _encounters.Resolve(uid, LostResolution(encounter, comp.Lead));
                 continue;
             }
 
+            comp.Starved = false;
             var hits = encounter.ShipHits.Values.Sum();
             if (hits > comp.Hits)
             {
