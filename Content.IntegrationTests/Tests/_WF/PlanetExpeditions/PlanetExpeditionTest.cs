@@ -181,13 +181,19 @@ public sealed class PlanetExpeditionTest
                 Assert.That(active.Arrived, Is.False, "The clock started before anyone reached the site.");
             });
 
-            var middle = new Vector2((site.Bounds.Left + site.Bounds.Right) / 2f, (site.Bounds.Bottom + site.Bounds.Top) / 2f);
-            await PlanetFixture.AttachViewer(pair, ground, middle);
+            // The ship sets down at the site. (Attaching the pair's player there instead races the client's game
+            // state on so big a world.)
+            await server.WaitPost(() =>
+            {
+                var middle = new Vector2((site.Bounds.Left + site.Bounds.Right) / 2f, (site.Bounds.Bottom + site.Bounds.Top) / 2f);
+                var hull = entMan.GetComponent<TransformComponent>(console).GridUid!.Value;
+                server.System<SharedTransformSystem>().SetCoordinates(hull, new EntityCoordinates(ground, middle));
+            });
             await pair.RunTicksSync(pair.SecondsToTicks(1.5f));
             await server.WaitPost(() =>
             {
                 var active = entMan.GetComponent<WFPlanetExpeditionComponent>(station).Active!;
-                Assert.That(active.Arrived, Is.True, "Someone standing at the site did not start the clock.");
+                Assert.That(active.Arrived, Is.True, "The ship setting down at the site did not start the clock.");
                 Assert.That(active.EndTime - server.Timing.CurTime, Is.GreaterThan(active.Mission.Duration - TimeSpan.FromSeconds(5)),
                     "The clock did not start from the arrival.");
             });
