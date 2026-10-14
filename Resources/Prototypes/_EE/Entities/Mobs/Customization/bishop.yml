@@ -1,7 +1,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopHead
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_monitor.rsi
@@ -12,7 +12,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopHeadAlt
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -21,7 +21,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopHeadAlt1
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_alt1.rsi
@@ -30,7 +30,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopChest
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -41,7 +41,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopLArm
   bodyPart: LArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -54,7 +54,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopLHand
   bodyPart: LHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -63,7 +63,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopLLeg
   bodyPart: LLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -75,7 +75,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopLFoot
   bodyPart: LFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -86,7 +86,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopRArm
   bodyPart: RArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -100,7 +100,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopRHand
   bodyPart: RHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -109,7 +109,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopRLeg
   bodyPart: RLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
@@ -121,7 +121,7 @@
 - type: marking
   id: CyberLimbsMarkingBishopRFoot
   bodyPart: RFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi

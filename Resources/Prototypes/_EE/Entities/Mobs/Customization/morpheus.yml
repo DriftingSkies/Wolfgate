@@ -1,7 +1,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusHead
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -15,7 +15,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusHeadAlt
   bodyPart: Head
-  markingCategory: Head
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -29,7 +29,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusChest
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -43,7 +43,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusLArm
   bodyPart: LArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -57,7 +57,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusLHand
   bodyPart: LHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -71,7 +71,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusLLeg
   bodyPart: LLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -86,7 +86,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusLFoot
   bodyPart: LFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -102,7 +102,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusRArm
   bodyPart: RArm
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -117,7 +117,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusRHand
   bodyPart: RHand
-  markingCategory: Arms
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -131,7 +131,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusRLeg
   bodyPart: RLeg
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
@@ -146,7 +146,7 @@
 - type: marking
   id: CyberLimbsMarkingMorpheusRFoot
   bodyPart: RFoot
-  markingCategory: Legs
+  markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
   speciesRestriction: [IPC]
   coloring:
     default:
