@@ -19,23 +19,26 @@ public sealed class WolfgateMarkingIconTest
     public async Task UsesCallingClientTest()
     {
         await using var first = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
-        await using var second = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
-
-        foreach (var client in new[] { first.Client, second.Client })
+        // Each pair is disposed right after its return; a later dispose could kill the pair once another test took it.
+        await using (var second = await PoolManager.GetServerClient(new PoolSettings { Connected = true }))
         {
-            await client.WaitAssertion(() =>
+            foreach (var client in new[] { first.Client, second.Client })
             {
-                var sprite = client.ResolveDependency<MarkingManager>().Markings.Values
-                    .SelectMany(marking => marking.Sprites)
-                    .OfType<SpriteSpecifier.Rsi>()
-                    .First();
-                var own = client.System<SpriteSystem>().RsiStateLike(sprite).TextureFor(Direction.South);
+                await client.WaitAssertion(() =>
+                {
+                    var sprite = client.ResolveDependency<MarkingManager>().Markings.Values
+                        .SelectMany(marking => marking.Sprites)
+                        .OfType<SpriteSpecifier.Rsi>()
+                        .First();
+                    var own = client.System<SpriteSystem>().RsiStateLike(sprite).TextureFor(Direction.South);
 
-                Assert.That(WolfgateMarkingIcon.FrameFor(sprite, Direction.South), Is.SameAs(own));
-            });
+                    Assert.That(WolfgateMarkingIcon.FrameFor(sprite, Direction.South), Is.SameAs(own));
+                });
+            }
+
+            await second.CleanReturnAsync();
         }
 
         await first.CleanReturnAsync();
-        await second.CleanReturnAsync();
     }
 }

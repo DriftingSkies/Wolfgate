@@ -119,7 +119,8 @@ public sealed class WFReaverSanctuaryTest : WFReaverTestBase
             Berth(ship, station);
         });
 
-        await RunTicks(Ticks(3));
+        // Past one 5 s encounter poll, so the boarders take their look at the berthed prey.
+        await RunTicks(Ticks(6));
         await Server.WaitAssertion(() =>
         {
             var comp = SEntMan.GetComponent<WFReaverRaidComponent>(raid);
