@@ -1,4 +1,5 @@
-# The orbit-layer marker over a point of interest; renamed at spawn and again once identified.
+# The orbit-layer marker over a point of interest; renamed at spawn and again once identified. Radars draw sites from
+# the world's signal list (_WF/PlanetSignals), on every layer, not from this marker.
 
 - type: entity
   id: WFPoiSignal
@@ -8,5 +9,3 @@
     - type: WarpPoint
       adminOnly: true
     - type: FTLSmashImmune
-    - type: IFF
-      color: '#ffb347'

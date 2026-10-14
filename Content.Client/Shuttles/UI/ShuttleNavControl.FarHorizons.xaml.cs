@@ -86,6 +86,7 @@ public partial class ShuttleNavControl
 
             var labelOffset = new Vector2(blipSize, -handle.GetDimensions(Font, mainLabel, 0.9f).Y * 0.5f);
             handle.DrawString(Font, (uiPosition + labelOffset) * UIScale, mainLabel, UIScale * 0.9f, color);
+            WfDrawPlanetSignalTag(handle, uid, uiPosition, labelOffset, mainLabel); // WOLFGATE(PlanetSignals): what a world holds, over its name.
 
             if (!ShowIFFDetailed)
                 continue;
