@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client.Shuttles.UI;
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Screens;
@@ -90,7 +91,14 @@ public sealed partial class WFCockpitUIController : UIController
         }
         catch
         {
+            // A view that reached the screen comes off first: the screen then forgets the HUD widgets inside it,
+            // and they can be added back.
+            var failed = screen.Children.OfType<WFCockpitView>().ToArray();
+            foreach (var view in failed)
+                screen.RemoveChild(view);
             lease.Restore();
+            foreach (var view in failed)
+                view.Dispose();
             if (console.WfCockpitActive)
                 console.WfSetCockpitActive(false);
             _console = null;

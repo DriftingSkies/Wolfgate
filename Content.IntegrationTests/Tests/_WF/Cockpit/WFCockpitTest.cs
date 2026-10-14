@@ -890,6 +890,63 @@ public sealed class WFCockpitTest : InteractionTest
         });
     }
 
+    /// <summary>
+    /// A build that fails after its view reached the screen must hand every HUD widget back, in the tree and known
+    /// to the screen, and the next entry must work.
+    /// </summary>
+    [Test]
+    public async Task ACockpitBuildThatFailsOnTheScreenGivesTheWholeHudBack()
+    {
+        var (console, chair) = await SpawnHelm();
+        await MakePilot(console);
+        await Buckle(chair);
+        await RunTicks(10);
+        var settings = Client.ResolveDependency<IConfigurationManager>();
+        var originalLayout = settings.GetCVar(CCVars.UILayout);
+        await Client.WaitAssertion(() => settings.SetCVar(CCVars.UILayout, "Default"));
+        await RunTicks(3);
+        await Client.WaitAssertion(() =>
+        {
+            var ui = Client.ResolveDependency<IUserInterfaceManager>();
+            var controller = ui.GetUIController<WFCockpitUIController>();
+            var screen = (InGameScreen) ui.ActiveScreen!;
+            var hud = screen.Children.ToArray();
+            var chat = screen.ChatBox;
+            var window = OpenHelm(console);
+            try
+            {
+                // The first gunnery message goes out after the view is on the screen.
+                var fail = true;
+                window.WfCockpitGunneryCommand += _ =>
+                {
+                    if (!fail)
+                        return;
+                    fail = false;
+                    throw new InvalidOperationException("probe");
+                };
+                Assert.Throws<InvalidOperationException>(() => controller.Enter(window));
+                Assert.That(controller.Active, Is.False);
+                Assert.That(screen.Children.ToArray(), Is.EqualTo(hud), "Every HUD child must be back, in order, and nothing else.");
+                Assert.That(hud.All(child => child.IsInsideTree), Is.True);
+                Assert.That(chat.ChatInput.Input.IsInsideTree, Is.True, "The chat input must be in the tree to take text.");
+                Assert.That(screen.GetWidget<ResizableChatBox>(), Is.SameAs(chat));
+                Assert.That(screen.GetWidget<AlertsUI>()?.IsInsideTree, Is.True);
+                Assert.That(screen.GetWidget<MainViewport>()?.IsInsideTree, Is.True);
+                Assert.That(window.Visible, Is.True, "The helm window returns when the cockpit cannot be built.");
+
+                Assert.That(controller.Enter(window), Is.True, "The next entry must work.");
+                controller.Exit();
+                Assert.That(screen.Children.ToArray(), Is.EqualTo(hud));
+            }
+            finally
+            {
+                controller.Exit();
+                window.Dispose();
+                settings.SetCVar(CCVars.UILayout, originalLayout);
+            }
+        });
+    }
+
     [Test]
     public async Task APoppedOutChatLogFollowsTheChatIntoTheCockpitAndBack()
     {

@@ -477,6 +477,50 @@ public sealed class ChatTabsTest : InteractionTest
         }
     }
 
+    /// <summary>
+    /// A line whose markup does not parse stays in the history, so it must not throw: the refill a chat box runs as it
+    /// enters the tree would stop there and leave the input line outside the tree, where it takes no text.
+    /// </summary>
+    [Test]
+    public async Task ALineWithBrokenMarkupDoesNotBreakTheChatBox()
+    {
+        await Prepare();
+
+        ChatBox? plain = null;
+        try
+        {
+            await Client.WaitAssertion(() =>
+            {
+                Say(ChatChannel.Radio, "before");
+                Assert.DoesNotThrow(() => Say(ChatChannel.Radio, "plain [bracket"));
+                Assert.DoesNotThrow(() => Say(ChatChannel.Radio, "[color=red]red [bracket[/color]"));
+                Say(ChatChannel.Radio, "after");
+                Assert.That(_log.EntryCount, Is.EqualTo(4), "the broken lines are shown like any other");
+                Assert.That(_log.GetMessage(1).ToString(), Does.Contain("plain [bracket"));
+                Assert.That(_log.GetMessage(2).ToString(), Does.Contain("bracket"));
+
+                Assert.DoesNotThrow(() => _tabs.Select(Radio), "a tab switch refills past the broken lines");
+                Assert.That(_log.EntryCount, Is.EqualTo(4));
+
+                plain = new ChatBox { SetSize = new Vector2(400, 300) };
+                Assert.DoesNotThrow(() => _ui.WindowRoot.AddChild(plain));
+                Assert.That(plain.FindControl<OutputPanel>("Contents").EntryCount, Is.EqualTo(4));
+                Assert.That(plain.ChatInput.Input.IsInsideTree, "the input line must enter the tree to take text");
+            });
+        }
+        finally
+        {
+            await Client.WaitPost(() =>
+            {
+                if (plain == null)
+                    return;
+
+                plain.Orphan();
+                _chat.UnregisterChat(plain);
+            });
+        }
+    }
+
     /// <summary>A chat box that isn't the floating one (lobby, separated layout) keeps its size and shows a notice.</summary>
     [Test]
     public async Task DockedChatBoxShowsANotice()
