@@ -1,8 +1,8 @@
 # What stands on the roads of the worlds that have them built properly. RMC's civilian vehicles are drawn from the
 # side only, so the sound ones go on roads running east to west, where they sit along a lane; wrecks go on any road,
 # slewed across a lane where it runs north to south. The army vehicles of road_props.yml are drawn from every side and
-# point along any road. `per100` is per hundred tiles of straight road; pieces that block are kept apart, so a road is
-# never shut.
+# point along any road. Vehicles stand in the lane against the kerb; a wreck across a road takes the outer two.
+# `per100` is per hundred tiles of straight road; pieces that block are kept apart, so a road is never shut.
 
 # Asclepiu: a lived-in colony, a little run down.
 - type: wfRoadDressing
@@ -42,6 +42,7 @@
       RMCPropVehicleMonoSupronRedFlipped, RMCPropVehicleMonoSupronTaxi,
       RMCPropVehicleMonoSupronTaxiFlipped, RMCPropVehicleMonoSupronTurquoise,
       RMCPropVehicleMonoSupronTurquoiseFlipped ]
+    where: Kerb
     axis: EastWest
     per100: 1.6
   - prototypes: [ RMCPropVehicleAmbulance, RMCPropVehicleAmbulanceF, RMCPropVehicleBoxVanBlueGrey,
@@ -49,15 +50,18 @@
       RMCPropVehicleBoxVanPizza, RMCPropVehicleBoxVanPizzaF, RMCPropVehicleSmallTruckBlue,
       RMCPropVehicleSmallTruckBlueF, RMCPropVehicleSmallTruckGarbage, RMCPropVehicleSmallTruckGarbageF,
       RMCPropVehicleSmallTruckGreen, RMCPropVehicleSmallTruckGreenF ]
+    where: Kerb
     axis: EastWest
     per100: 0.6
   - prototypes: [ RMCPropVehicleTruck, RMCPropVehicleTruckCargo, RMCPropVehicleVan, RMCPropVehicleVanCandy,
       RMCPropVehicleTractor ]
+    where: Kerb
     axis: EastWest
     align: true
     per100: 0.8
   # An army patrol, now and then.
   - prototypes: [ WFRoadPropArmyTruck, WFRoadPropArmyTruckAlt, WFRoadPropHumvee ]
+    where: Kerb
     align: true
     per100: 0.5
   # Wrecks.
@@ -81,12 +85,15 @@
       RMCPropVehicleMonoSupronRedDamaged3, RMCPropVehicleMonoSupronRedDamaged3Flipped,
       RMCPropVehicleMonoSupronRedDamaged5, RMCPropVehicleMonoSupronRedDamaged5Flipped,
       RMCPropVehicleMonoSupronRedDestroyed, RMCPropVehicleMonoSupronRedDestroyedFlipped ]
+    where: Kerb
     per100: 0.6
   - prototypes: [ RMCPropVehicleTruckBroken, RMCPropVehicleVanDamaged, RMCPropVehicleTractorDamaged ]
+    where: Kerb
     axis: EastWest
     align: true
     per100: 0.3
   - prototypes: [ WFRoadPropArmyTruckBroken, WFRoadPropHumveeDestroyed ]
+    where: Kerb
     align: true
     per100: 0.15
   # Roadworks.
@@ -177,11 +184,13 @@
       RMCPropVehicleLoaderTruckTealFilled, RMCPropVehicleLoaderTruckTealFilledF,
       RMCPropVehicleBoxVanMining, RMCPropVehicleBoxVanMiningF, RMCPropVehicleLongTruckBrown,
       RMCPropVehicleLongTruckBrownF, RMCPropVehicleLongTruckMining, RMCPropVehicleLongTruckMiningF ]
+    where: Kerb
     axis: EastWest
     per100: 1.2
   - prototypes: [ RMCPropVehicleTruckMining, RMCPropVehicleTruckCargo, RMCPropVehicleCrawler,
       RMCPropVehicleCrawlerCovered, RMCPropVehicleCrawlerCrate, RMCPropVehicleCrawlerFuel,
       RMCPropVehicleCrawlerMining, RMCPropVehicleTractor ]
+    where: Kerb
     axis: EastWest
     align: true
     per100: 1.0
@@ -189,10 +198,12 @@
       RMCPropVehicleMonoSupronBlue, RMCPropVehicleMonoSupronBlueFlipped, RMCPropVehicleMonoSupronBrown,
       RMCPropVehicleMonoSupronBrownFlipped, RMCPropVehicleMonoSupronDesatBlue,
       RMCPropVehicleMonoSupronDesatBlueFlipped ]
+    where: Kerb
     axis: EastWest
     per100: 0.4
   # Convoy escorts.
   - prototypes: [ WFRoadPropArmyTruck, WFRoadPropArmyTruckAlt, WFRoadPropHumvee ]
+    where: Kerb
     align: true
     per100: 0.8
   # Wrecks.
@@ -216,12 +227,15 @@
       RMCPropVehicleMonoSupronRedDamaged3, RMCPropVehicleMonoSupronRedDamaged3Flipped,
       RMCPropVehicleMonoSupronRedDamaged5, RMCPropVehicleMonoSupronRedDamaged5Flipped,
       RMCPropVehicleMonoSupronRedDestroyed, RMCPropVehicleMonoSupronRedDestroyedFlipped ]
+    where: Kerb
     per100: 0.9
   - prototypes: [ RMCPropVehicleTruckBroken, RMCPropVehicleVanDamaged, RMCPropVehicleTractorDamaged ]
+    where: Kerb
     axis: EastWest
     align: true
     per100: 0.6
   - prototypes: [ WFRoadPropArmyTruckBroken, WFRoadPropHumveeDestroyed ]
+    where: Kerb
     align: true
     per100: 0.4
   # Checkpoints and roadworks.

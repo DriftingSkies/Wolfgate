@@ -143,7 +143,8 @@ generated network only, never inside a site's footprint, so a site furnishes its
   `lineEvery` tiles.
 - `light` stands on the shoulder every `lightSpacing` tiles on alternating sides; `brokenLight` replaces it
   `brokenLightChance` of the time. `junctionLight` stands on two corners where three or more roads meet.
-- `scatter` rules drop pieces along the straight stretches: `where` is `Lane` or `Shoulder`, `per100` is how many
+- `scatter` rules drop pieces along the straight stretches: `where` is `Lane`, `Kerb` (the lane against the kerb, for
+  vehicles) or `Shoulder`, `per100` is how many
   per hundred tiles of road, `axis` limits a rule to roads running `NorthSouth` or `EastWest`, and `align` turns the
   piece to point along the road. The tiles a piece covers come from its fixtures.
 - `decals` rules scatter marks the same way.

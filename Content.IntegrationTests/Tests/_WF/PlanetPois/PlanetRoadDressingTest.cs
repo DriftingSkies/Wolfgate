@@ -65,14 +65,20 @@ public sealed class PlanetRoadDressingTest
   lightSpacing: 6
   junctionLight: RMCTrafficLight
   scatter:
-  - prototypes: [ RMCPropVehicleMonoSupronRed, RMCPropVehicleMonoSupronBlueDestroyed ]
+  - prototypes: [ RMCPropVehicleMonoSupronRed ]
+    where: Kerb
     axis: EastWest
     per100: 6
+  - prototypes: [ RMCPropVehicleMonoSupronBlueDestroyed ]
+    where: Kerb
+    per100: 4
   - prototypes: [ RMCPropVehicleTruck, RMCPropVehicleVanDamaged ]
+    where: Kerb
     axis: EastWest
     align: true
     per100: 4
   - prototypes: [ WFRoadPropArmyTruck, WFRoadPropHumveeDestroyed ]
+    where: Kerb
     align: true
     per100: 5
   - prototypes: [ RMCBarricadeHybrisaPlasticRoadBarrier ]
@@ -193,7 +199,10 @@ public sealed class PlanetRoadDressingTest
             tile.X >= site.Bounds.Left && tile.X < site.Bounds.Right && tile.Y >= site.Bounds.Bottom && tile.Y < site.Bounds.Top);
 
         var lights = 0;
+        var parked = 0;
         var blocked = new HashSet<Vector2i>();
+        var kerbside = dressing.Scatter.Where(rule => rule.Where == WFRoadSpot.Kerb).SelectMany(rule => rule.Prototypes)
+            .Select(id => id.Id).ToHashSet();
 
         Assert.Multiple(() =>
         {
@@ -232,7 +241,15 @@ public sealed class PlanetRoadDressingTest
 
                 // What it covers must be road or shoulder, and never the middle of the road.
                 var box = lookup.GetAABBNoContainer(uid, xform.LocalPosition, xform.LocalRotation);
-                foreach (var covered in WFRoadDressingPlanner.Footprint(box.Translated(-new Vector2(tile.X + 0.5f, tile.Y + 0.5f)), tile))
+                var footprint = WFRoadDressingPlanner.Footprint(box.Translated(-new Vector2(tile.X + 0.5f, tile.Y + 0.5f)), tile).ToList();
+                if (kerbside.Contains(id))
+                {
+                    parked++;
+                    Assert.That(footprint.Any(covered => new[] { Vector2i.Up, Vector2i.Down, Vector2i.Left, Vector2i.Right }
+                        .Any(step => record.ShoulderTiles.Contains(covered + step))), Is.True, $"{id} at {tile} is not against the kerb.");
+                }
+
+                foreach (var covered in footprint)
                 {
                     blocked.Add(covered);
                     Assert.That(record.RoadTiles.Contains(covered) || record.ShoulderTiles.Contains(covered), Is.True,
@@ -243,6 +260,7 @@ public sealed class PlanetRoadDressingTest
 
             Assert.That(lights, Is.GreaterThan(3), "The roads have almost no street lights.");
             Assert.That(record.Furniture.Count, Is.GreaterThan(lights), "Only lights were placed; nothing was scattered.");
+            Assert.That(parked, Is.GreaterThan(0), "No vehicle was parked at the kerb.");
 
             // The road is open from end to end: its middle is one piece and nothing stands on it.
             var reached = new HashSet<Vector2i>();

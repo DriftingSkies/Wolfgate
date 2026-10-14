@@ -114,15 +114,35 @@ public sealed partial class WFPlanetPoiSystem
                 if (rule.Axis != WFRoadAxis.Any && rule.Axis != axis)
                     continue;
 
-                var offset = rule.Where == WFRoadSpot.Lane ? random.Next(1, half + 1) : half + random.Next(1, roads.ShoulderWidth + 1);
-                var origin = centre + WFRoadDressingPlanner.Across(axis) * (random.Next(2) == 0 ? offset : -offset);
+                var side = random.Next(2) == 0 ? 1 : -1;
                 var angle = !rule.Align ? Angle.Zero
                     : Angle.FromDegrees((axis == WFRoadAxis.NorthSouth ? 0 : 90) + (random.Next(2) == 0 ? 0 : 180));
                 var proto = rule.Prototypes[random.Next(rule.Prototypes.Count)];
-                var tiles = WFRoadDressingPlanner.Footprint(BoundsOf(proto, angle), origin).ToList();
-                var allowed = rule.Where == WFRoadSpot.Lane ? plan.RoadTiles : plan.ShoulderTiles;
+                var bounds = BoundsOf(proto, angle);
+                var allowed = rule.Where == WFRoadSpot.Shoulder ? plan.ShoulderTiles : plan.RoadTiles;
 
-                if (tiles.Any(tile => !allowed.Contains(tile) || centreline.Contains(tile) || occupied.Contains(tile) || InSite(tile))
+                // Against the kerb means the outermost lane it fits in: a piece two lanes wide takes the outer two.
+                var first = rule.Where switch
+                {
+                    WFRoadSpot.Lane => random.Next(1, half + 1),
+                    WFRoadSpot.Kerb => half,
+                    _ => half + random.Next(1, roads.ShoulderWidth + 1),
+                };
+                var last = rule.Where == WFRoadSpot.Kerb ? 1 : first;
+                Vector2i? found = null;
+                List<Vector2i>? tiles = null;
+                for (var offset = first; offset >= last && found == null; offset--)
+                {
+                    var spot = centre + WFRoadDressingPlanner.Across(axis) * (side * offset);
+                    var covered = WFRoadDressingPlanner.Footprint(bounds, spot).ToList();
+                    if (covered.Any(tile => !allowed.Contains(tile) || centreline.Contains(tile) || occupied.Contains(tile) || InSite(tile)))
+                        continue;
+
+                    found = spot;
+                    tiles = covered;
+                }
+
+                if (found is not { } origin || tiles == null
                     || rule.Blocks && blockers.Any(other => Math.Max(Math.Abs(other.X - centre.X), Math.Abs(other.Y - centre.Y)) < BlockerGap))
                     continue;
 
@@ -147,10 +167,14 @@ public sealed partial class WFPlanetPoiSystem
                 if (rule.Axis != WFRoadAxis.Any && rule.Axis != axis)
                     continue;
 
-                var offset = rule.Where == WFRoadSpot.Lane ? random.Next(-half, half + 1)
-                    : (half + random.Next(1, roads.ShoulderWidth + 1)) * (random.Next(2) == 0 ? 1 : -1);
+                var offset = rule.Where switch
+                {
+                    WFRoadSpot.Lane => random.Next(-half, half + 1),
+                    WFRoadSpot.Kerb => half * (random.Next(2) == 0 ? 1 : -1),
+                    _ => (half + random.Next(1, roads.ShoulderWidth + 1)) * (random.Next(2) == 0 ? 1 : -1),
+                };
                 var tile = centre + WFRoadDressingPlanner.Across(axis) * offset;
-                var allowed = rule.Where == WFRoadSpot.Lane ? plan.RoadTiles : plan.ShoulderTiles;
+                var allowed = rule.Where == WFRoadSpot.Shoulder ? plan.ShoulderTiles : plan.RoadTiles;
                 if (!allowed.Contains(tile) || InSite(tile))
                     continue;
 

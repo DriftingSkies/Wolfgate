@@ -62,8 +62,11 @@ public enum WFRoadKerb : byte
     InnerNorthEast, InnerNorthWest, InnerSouthEast, InnerSouthWest,
 }
 
-/// <summary>Part of the road a piece goes on: a lane, never the middle one, or the shoulder.</summary>
-public enum WFRoadSpot : byte { Lane, Shoulder }
+/// <summary>
+/// Part of the road a piece goes on: any lane but the middle one, the lane against the kerb, or the shoulder. A piece
+/// too wide for the kerb lane alone takes it and as many lanes inward as it needs.
+/// </summary>
+public enum WFRoadSpot : byte { Lane, Kerb, Shoulder }
 
 /// <summary>The way a stretch of road runs.</summary>
 public enum WFRoadAxis : byte { Any, NorthSouth, EastWest }
@@ -103,7 +106,7 @@ public sealed partial class WFRoadDecalScatter
     [DataField(required: true)]
     public List<ProtoId<DecalPrototype>> Decals = new();
 
-    /// <summary>Lane here takes in the whole carriageway, the middle too.</summary>
+    /// <summary>Lane here takes in the whole carriageway, the middle too; Kerb is the gutter, the lane's outer edge.</summary>
     [DataField]
     public WFRoadSpot Where = WFRoadSpot.Lane;
 
