@@ -1,3 +1,4 @@
+using System.Numerics; // WOLFGATE: Vector2 for the space-wind NaN guard
 using Content.Server.Atmos.Components;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
@@ -237,7 +238,16 @@ namespace Content.Server.Atmos.EntitySystems
                     // TODO: Technically these directions won't be correct but uhh I'm just here for optimisations buddy not to fix my old bugs.
                     if (throwTarget != EntityCoordinates.Invalid)
                     {
-                        var pos = ((_transformSystem.ToMapCoordinates(throwTarget).Position - _transformSystem.GetWorldPosition(xform)).Normalized() + dirVec).Normalized();
+                        // WOLFGATE START: a zero vector here normalises to NaN, which the impulse writes into the mob's position
+                        // upstream original, kept for merges:
+                        // var pos = ((_transformSystem.ToMapCoordinates(throwTarget).Position - _transformSystem.GetWorldPosition(xform)).Normalized() + dirVec).Normalized();
+                        var toTarget = _transformSystem.ToMapCoordinates(throwTarget).Position - _transformSystem.GetWorldPosition(xform);
+                        toTarget.Normalize();
+                        var pos = toTarget + dirVec;
+                        pos.Normalize();
+                        if (!float.IsFinite(pos.X) || !float.IsFinite(pos.Y))
+                            pos = Vector2.Zero;
+                        // WOLFGATE END
                         _physics.ApplyLinearImpulse(uid, pos * moveForce, body: physics);
                     }
                     else
