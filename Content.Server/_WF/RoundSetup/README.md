@@ -2,7 +2,7 @@
 
 Round Setup lets players organize a Normal, Crashlanded or Ship crew start together before the round, or launch a new start mid-round. Hosts control public access, private requests, codes, direct invitations and whether survivors may join after launch. Each member chooses their own character through the existing character selector and selects their own permitted job.
 
-The lobby screen has a live, vertically scrollable list of horizontal crew rows beneath Leave Server. Join opens Join Normally or Join a lobby without changing readiness. Normal joining uses saved character/job preferences before the round and the ordinary job picker mid-round. Lobby creation uses one explicit scenario action, then a wide workspace with ordered tabs and matching next actions. Readiness and launch controls stay visible.
+The lobby screen has a dedicated, scrollable crew panel beside the menu. Join opens normal entry or crew browsing without changing readiness; existing crew members return directly to their preparation screen. Normal joining uses saved character/job preferences before the round and the ordinary job picker mid-round. Scenario briefs lead to personal preparation, with separate ship, crew and access sections. Selectors and buttons wrap long text, pages scroll at smaller sizes, and readiness, purchase consent and launch controls stay visible.
 
 Open Round Setup from the lobby or the in-round game menu. Ready up before round start; a pregame group launches only when its host is ready. Mid-round hosts launch their waiting group explicitly. A disconnected host keeps ownership; a host can transfer ownership to another member or leave to pass it to the next member. Round restart clears all lobbies and invitation codes.
 
@@ -52,6 +52,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Client/_WF/RoundSetup/WFCrashCountdownHudSystem.cs`](../../../Content.Client/_WF/RoundSetup/WFCrashCountdownHudSystem.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupClientSystem.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupClientSystem.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupLobbyPanel.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupLobbyPanel.cs)
+- [`Content.Client/_WF/RoundSetup/WFRoundSetupOptionButton.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupOptionButton.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupUIController.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupUIController.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs)
@@ -99,17 +100,20 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 
 - [`Content.Client/Lobby/LobbyState.cs`](../../../Content.Client/Lobby/LobbyState.cs)
   - the normal jobs picker is opened from Round Setup
+  - keep room for the crew browser at 720p
   - opening Join must not change pregame readiness
   - Join has no readiness toggle subscription
   - Join chooses normal entry or a player lobby in either round phase
   - one primary Join action and no separate mid-round setup button
 - [`Content.Client/Lobby/UI/LobbyGui.xaml`](../../../Content.Client/Lobby/UI/LobbyGui.xaml)
   - roundSetup namespace mounts the live player lobby browser
-  - reduced menu padding leaves room for the lobby list at 720p
+  - reserve room for a dedicated crew panel beside the menu
+  - constrain the server heading to the menu width
   - compact header gap keeps Join and the lobby list visible
   - open group setup while keeping the pregame ready button
-  - a scrollable lobby list aligned with the menu below Leave Server
+  - scroll character and round information above the reserved crew browser
   - round information uses the space below the character beside the lobby list
+  - keep crew listings accessible independently of the character preview
 - [`Content.Client/Lobby/UI/LobbyGui.xaml.cs`](../../../Content.Client/Lobby/UI/LobbyGui.xaml.cs)
   - expose group setup before the round starts
   - Join no longer toggles, but character edits still clear pregame readiness

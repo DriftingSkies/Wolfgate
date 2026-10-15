@@ -54,12 +54,10 @@ public sealed partial class WFRoundSetupWindow
             return;
         }
 
-        var selector = new OptionButton
+        var selector = new WFRoundSetupOptionButton
         {
             Name = "RoundSetupShipSelector",
             HorizontalExpand = true,
-            MaxWidth = ChoiceWidth,
-            RectClipContent = true,
             Filterable = true,
         };
         selector.AddItem(Text("ship-placeholder"), -1);

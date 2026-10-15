@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Client.GameTicking.Managers;
 using Content.Client._NF.LateJoin.Windows;
 using Content.Shared._WF.RoundSetup;
+using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Console;
@@ -11,36 +12,33 @@ namespace Content.Client._WF.RoundSetup;
 public sealed partial class WFRoundSetupWindow
 {
     private enum SetupView : byte { Join, Browse, Create, MyLobby }
-    private enum LobbyPage : byte { Overview, Ship, Admission, Roles, Character }
+    private enum LobbyPage : byte { Overview, Ship, Admission, Roles }
 
-    private readonly BoxContainer _navigation = Row();
+    private readonly ScenarioColumns _navigation = new() { HorizontalExpand = true };
     private readonly BoxContainer _sidebar = Column(8);
     private readonly BoxContainer _footer = Column(8);
-    private readonly ScrollContainer _sidebarScroll = new() { HScrollEnabled = false, VerticalExpand = true, SetWidth = 260 };
+    private readonly ScrollContainer _sidebarScroll = new() { HScrollEnabled = false, VerticalExpand = true, SetWidth = 210 };
     private readonly ScrollContainer _pageScroll = new() { HScrollEnabled = false, VerticalExpand = true, HorizontalExpand = true };
     private SetupView _view;
     private LobbyPage _lobbyPage;
     private int? _focusedLobby;
     private bool _pendingLobbyFocus;
-    private bool _creatingLobby;
     private bool _initialViewResolved;
     private bool _manualNavigation;
     private bool _compact;
     private bool _rendering;
-    private float _lastLayoutWidth = 1600;
+    private float _lastLayoutWidth = 1120;
     private bool _layoutRefreshPending;
 
-    private float ChoiceWidth => Math.Max(180, _lastLayoutWidth - (_compact ? 80 : 380));
-
-    /// <summary>Starts the primary join flow without choosing a scenario or changing readiness.</summary>
+    /// <summary>Opens the player's crew or the available ways to join.</summary>
     public void ShowJoin()
     {
         _manualNavigation = true;
         _pendingLobbyFocus = false;
-        Navigate(SetupView.Join);
+        Navigate(_state?.OwnLobby == null ? SetupView.Join : SetupView.MyLobby);
     }
 
-    /// <summary>Opens a lobby directly from the game's lobby list.</summary>
+    /// <summary>Opens crew details without changing membership.</summary>
     public void ShowLobby(int lobbyId)
     {
         _manualNavigation = true;
@@ -48,12 +46,14 @@ public sealed partial class WFRoundSetupWindow
         _pendingLobbyFocus = true;
         _view = _state?.OwnLobby == lobbyId ? SetupView.MyLobby : SetupView.Browse;
         _lobbyPage = LobbyPage.Overview;
+        _pageScroll.VScroll = 0;
         Redraw();
     }
 
-    /// <summary>Shows the available starts; only an explicit Create action opens a lobby.</summary>
+    /// <summary>Shows scenarios before an explicit creation action.</summary>
     public void OpenCreate() => Navigate(SetupView.Create);
 
+    /// <summary>Opens the scenario selection screen.</summary>
     public void ShowScenarios() => OpenCreate();
 
     private void InitializeLayout()
@@ -64,7 +64,12 @@ public sealed partial class WFRoundSetupWindow
         _footer.Name = "RoundSetupFooter";
         _pageScroll.Name = "RoundSetupPageScroll";
         var layout = Column(12);
-        Contents.AddChild(layout);
+        layout.Margin = new Thickness(8);
+        Contents.AddChild(new PanelContainer
+        {
+            PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#111A21") },
+            Children = { layout },
+        });
         layout.AddChild(_navigation);
         layout.AddChild(_message);
         _sidebarScroll.AddChild(_sidebar);
@@ -78,7 +83,7 @@ public sealed partial class WFRoundSetupWindow
     protected override void Resized()
     {
         base.Resized();
-        var compact = Width < 900;
+        var compact = Width < 820;
         if (_compact == compact && Math.Abs(_lastLayoutWidth - Width) < 1)
             return;
         _compact = compact;
@@ -108,7 +113,7 @@ public sealed partial class WFRoundSetupWindow
         Redraw();
     }
 
-    /// <summary>Shows one task at a time while retaining unsaved form values.</summary>
+    /// <summary>Rebuilds the active task while retaining local form drafts.</summary>
     private void RenderState(WFRoundSetupState state)
     {
         if (_rendering)
@@ -138,18 +143,11 @@ public sealed partial class WFRoundSetupWindow
             _sidebar.RemoveAllChildren();
             _footer.RemoveAllChildren();
             _sidebarScroll.Visible = false;
-            if (_view != SetupView.Join)
-            {
-                _navigation.AddChild(Button("join-home", ShowJoin));
-                _navigation.AddChild(NavigationButton("flow-browse", () => Navigate(SetupView.Browse), _view == SetupView.Browse));
-                if (own != null)
-                    _navigation.AddChild(NavigationButton("flow-my-lobby", () => Navigate(SetupView.MyLobby), _view == SetupView.MyLobby));
-                _navigation.AddChild(new Control { HorizontalExpand = true });
-                if (_view == SetupView.Browse && own == null)
-                    _navigation.AddChild(Button("flow-create", OpenCreate, !state.CanJoin));
-                if (_view == SetupView.Browse)
-                    _navigation.AddChild(Button("refresh", () => Send(WFRoundSetupAction.Refresh)));
-            }
+            _navigation.AddChild(NavigationButton("join-home", () => Navigate(SetupView.Join), _view == SetupView.Join));
+            _navigation.AddChild(NavigationButton("flow-browse", () => Navigate(SetupView.Browse), _view == SetupView.Browse));
+            _navigation.AddChild(own == null
+                ? NavigationButton("flow-create", OpenCreate, _view == SetupView.Create, !state.CanJoin)
+                : NavigationButton("flow-my-lobby", () => Navigate(SetupView.MyLobby), _view == SetupView.MyLobby));
             switch (_view)
             {
                 case SetupView.Join: BuildJoin(state); break;
@@ -169,13 +167,13 @@ public sealed partial class WFRoundSetupWindow
         var button = Button(key, action, disabled);
         button.ToggleMode = true;
         button.Pressed = selected;
-        button.MinHeight = 40;
+        button.HorizontalExpand = true;
         return button;
     }
 
-    private BoxContainer FlowRow(params Control[] controls)
+    private Container FlowRow(params Control[] controls)
     {
-        var row = _compact ? Column(10) : Row();
+        Container row = _compact ? Column(8) : new ScenarioColumns { HorizontalExpand = true };
         foreach (var control in controls)
             row.AddChild(control);
         return row;
@@ -184,29 +182,40 @@ public sealed partial class WFRoundSetupWindow
     private void BuildJoin(WFRoundSetupState state)
     {
         _body.AddChild(Heading("join-heading"));
-        var normal = Column(16);
+        _body.AddChild(Description("subtitle"));
+        var normal = Column(12);
         normal.AddChild(Heading("join-normal"));
         normal.AddChild(Description(state.InRound ? "join-normal-round" : "join-normal-pregame"));
+        if (_preferences.Preferences?.SelectedCharacter is { } character)
+            normal.AddChild(PlainDescription(Text("selected-character", ("name", character.Name))));
         var normalButton = Button("join-normal", JoinNormally, !state.CanJoin || state.OwnLobby != null);
         normalButton.Name = "RoundSetupJoinNormally";
-        normalButton.MinHeight = 64;
         normal.AddChild(normalButton);
-        var groups = Column(16);
+        var groups = Column(12);
         groups.AddChild(Heading("join-lobby"));
         groups.AddChild(Description("join-lobby-help"));
         var browse = Button("join-lobby", () => Navigate(SetupView.Browse));
         browse.Name = "RoundSetupJoinLobby";
-        browse.MinHeight = 64;
         groups.AddChild(browse);
+        groups.AddChild(Button("flow-create", OpenCreate, !state.CanJoin || state.OwnLobby != null));
         _body.AddChild(FlowRow(Panel(normal), Panel(groups)));
+        if (state.Invitations.Length > 0)
+        {
+            _body.AddChild(Heading("invitations"));
+            foreach (var lobby in state.Invitations)
+                _body.AddChild(LobbyListing(lobby, true));
+        }
         if (state.OwnLobby is { } own)
             _footer.AddChild(Button("flow-my-lobby", () => ShowLobby(own)));
         else if (!state.InRound && _entities.System<ClientGameTicker>().AreWeReady)
-            _footer.AddChild(FlowRow(Description("normal-ready"), Button("normal-unready", () =>
+        {
+            _footer.AddChild(Description("normal-ready"));
+            _footer.AddChild(Button("normal-unready", () =>
             {
                 IoCManager.Resolve<IConsoleHost>().ExecuteCommand("toggleready false");
                 Close();
-            })));
+            }));
+        }
     }
 
     private void JoinNormally()
@@ -222,70 +231,62 @@ public sealed partial class WFRoundSetupWindow
         }
     }
 
-    /// <summary>Lists crews beside a single selected lobby's admission controls.</summary>
+    /// <summary>Lists crews first, then opens a focused briefing and role selection.</summary>
     private void BuildBrowser(WFRoundSetupState state)
     {
-        var lobbies = state.Lobbies.Where(lobby => lobby.Id != state.OwnLobby)
-            .OrderByDescending(lobby => state.Invitations.Any(invitation => invitation.Id == lobby.Id)).ToArray();
-        var selected = lobbies.FirstOrDefault(lobby => lobby.Id == _focusedLobby) ?? lobbies.FirstOrDefault();
         _body.AddChild(Heading("browse"));
-        if (selected == null)
+        var lobbies = state.Lobbies.Where(lobby => lobby.Id != state.OwnLobby)
+            .OrderByDescending(lobby => state.Invitations.Any(invitation => invitation.Id == lobby.Id))
+            .ThenBy(lobby => lobby.Started).ToArray();
+        var selected = lobbies.FirstOrDefault(lobby => lobby.Id == _focusedLobby);
+        if (selected != null)
         {
-            _body.AddChild(Description("empty"));
-            return;
-        }
-        _focusedLobby = selected.Id;
-        if (_compact)
-        {
-            var picker = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true };
-            foreach (var lobby in lobbies)
-                picker.AddItem(lobby.HostName, lobby.Id);
-            picker.SelectId(selected.Id);
-            picker.OnItemSelected += args => ShowLobby(args.Id);
-            _body.AddChild(picker);
+            _body.AddChild(Button("back-lobbies", () => { _focusedLobby = null; Redraw(); }));
+            _body.AddChild(LobbyCard(state, selected, state.Invitations.Any(invitation => invitation.Id == selected.Id)));
         }
         else
         {
-            _sidebarScroll.Visible = true;
+            _focusedLobby = null;
+            _body.AddChild(Description(lobbies.Length == 0 ? "empty" : "browse-help"));
             foreach (var lobby in lobbies)
-            {
-                var button = new Button { Text = lobby.HostName, ToggleMode = true, Pressed = lobby.Id == selected.Id, HorizontalExpand = true, MinHeight = 44 };
-                button.OnPressed += _ => ShowLobby(lobby.Id);
-                var listing = Column(6);
-                listing.AddChild(button);
-                listing.AddChild(PlainDescription(ScenarioName(lobby.Scenario)));
-                _sidebar.AddChild(Panel(listing));
-            }
+                _body.AddChild(LobbyListing(lobby, state.Invitations.Any(invitation => invitation.Id == lobby.Id)));
         }
-        _body.AddChild(LobbyCard(state, selected, state.Invitations.Any(invitation => invitation.Id == selected.Id)));
+        _footer.AddChild(Button("refresh", () => Send(WFRoundSetupAction.Refresh)));
     }
 
-    /// <summary>Creates the chosen start directly, without a second explanation or confirmation page.</summary>
+    private Control LobbyListing(WFRoundSetupLobby lobby, bool invited)
+    {
+        var content = Column(6);
+        content.AddChild(PlainDescription(Text("lobby-title", ("host", lobby.HostName), ("scenario", ScenarioName(lobby.Scenario)))));
+        content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
+            ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
+        content.AddChild(Button(invited ? "view-invitation" : "view-lobby", () => ShowLobby(lobby.Id)));
+        return Panel(content);
+    }
+
+    /// <summary>Shows full-width scenario briefs with one explicit create action per scenario.</summary>
     private void BuildScenarios(WFRoundSetupState state)
     {
         _body.AddChild(Heading("choose-scenario"));
-        Container cards = _compact ? Column(12) : new ScenarioColumns { HorizontalExpand = true };
-        foreach (var scenario in new[] { WFRoundScenario.Normal, WFRoundScenario.Crashlanded, WFRoundScenario.Ship })
+        _body.AddChild(Description("create-help"));
+        foreach (var scenario in new[] { WFRoundScenario.Normal, WFRoundScenario.Ship, WFRoundScenario.Crashlanded })
         {
-            var card = Column(16);
-            card.MinHeight = 220;
-            card.AddChild(PlainDescription(ScenarioName(scenario)));
+            var card = Column(8);
+            var title = PlainDescription(ScenarioName(scenario));
+            title.StyleClasses.Add("LabelHeading");
+            card.AddChild(title);
             card.AddChild(Description(ScenarioDescription(scenario)));
-            card.AddChild(new Control { VerticalExpand = true });
             var unavailable = scenario == WFRoundScenario.Crashlanded && !state.CrashlandedAvailable;
             if (unavailable)
                 card.AddChild(Description("crash-unavailable"));
-            var create = Button("create", () =>
+            var create = Button("create", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Create)
             {
-                _creatingLobby = true;
-                SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = scenario });
-            }, unavailable || !state.CanJoin);
+                Scenario = scenario,
+            }), unavailable || !state.CanJoin);
             create.Name = "RoundSetupCreate" + scenario;
-            create.MinHeight = 48;
             card.AddChild(create);
-            cards.AddChild(Panel(card));
+            _body.AddChild(Panel(card));
         }
-        _body.AddChild(cards);
     }
 
     private void OpenStandardJobs()
@@ -294,7 +295,7 @@ public sealed partial class WFRoundSetupWindow
         Close();
     }
 
-    /// <summary>Uses the same section order for navigation and the next action.</summary>
+    /// <summary>Separates personal preparation from the host's crew and access tools.</summary>
     private void BuildOwnLobby(WFRoundSetupState state, WFRoundSetupLobby lobby)
     {
         var user = _players.LocalSession?.UserId;
@@ -303,54 +304,49 @@ public sealed partial class WFRoundSetupWindow
         var pages = new List<(LobbyPage Page, string Label)> { (LobbyPage.Overview, "flow-overview") };
         if (lobby.Scenario == WFRoundScenario.Ship)
             pages.Add((LobbyPage.Ship, "ship"));
+        pages.Add((LobbyPage.Roles, "crew-section"));
         if (host)
             pages.Add((LobbyPage.Admission, "admission"));
-        pages.Add((LobbyPage.Roles, "roles"));
-        pages.Add((LobbyPage.Character, "your-character"));
         if (!pages.Any(page => page.Page == _lobbyPage))
             _lobbyPage = LobbyPage.Overview;
-        var sections = _compact ? Column(6) : Row();
+        Container sections = _compact ? new ScenarioColumns { HorizontalExpand = true } : Column(6);
         sections.Name = "RoundSetupSections";
         foreach (var (page, label) in pages)
+            sections.AddChild(NavigationButton(label, () => NavigateLobby(page), _lobbyPage == page));
+        if (_compact)
+            _body.AddChild(sections);
+        else
         {
-            var tab = NavigationButton(label, () => NavigateLobby(page), _lobbyPage == page);
-            tab.HorizontalExpand = true;
-            sections.AddChild(tab);
+            _sidebarScroll.Visible = true;
+            _sidebar.AddChild(Heading("flow-my-lobby"));
+            _sidebar.AddChild(PlainDescription(ScenarioName(lobby.Scenario)));
+            _sidebar.AddChild(sections);
         }
-        _body.AddChild(sections);
+        _body.AddChild(Heading("your-lobby", ("scenario", ScenarioName(lobby.Scenario))));
+        _body.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
+            ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
         switch (_lobbyPage)
         {
-            case LobbyPage.Character:
+            case LobbyPage.Ship: BuildShipSettings(state, lobby, host); break;
+            case LobbyPage.Roles:
+                BuildCrewRoster(lobby, host);
+                if (host)
+                    BuildRoleEditor(state, lobby);
+                break;
+            case LobbyPage.Admission: BuildHostSettings(lobby, state); break;
+            default:
+                _body.AddChild(Description(ScenarioDescription(lobby.Scenario)));
                 if (member is { Spawned: false } && state.CanJoin)
                     BuildMemberSetup(state, lobby, member);
                 else
                     _body.AddChild(Description("already-playing"));
-                break;
-            case LobbyPage.Ship: BuildShipSettings(state, lobby, host); break;
-            case LobbyPage.Roles:
-                if (host)
-                    BuildRoleEditor(state, lobby);
-                else
+                if (lobby.Scenario == WFRoundScenario.Ship)
                 {
-                    _body.AddChild(Heading("roles"));
-                    foreach (var role in lobby.Roles)
-                        _body.AddChild(Panel(PlainDescription(RoleChoice(role))));
+                    _body.AddChild(VesselSummary(state, lobby));
+                    _body.AddChild(Button("ship", () => NavigateLobby(LobbyPage.Ship)));
                 }
+                _body.AddChild(Description(state.InRound ? "ready-round-help" : "ready-pregame-help"));
                 break;
-            case LobbyPage.Admission: BuildHostSettings(lobby, state); break;
-            default:
-                _body.AddChild(PlainDescription(Text("your-lobby", ("scenario", ScenarioName(lobby.Scenario)))));
-                _body.AddChild(PlainDescription(Text("flow-current-access", ("access", AccessName(lobby.Access)))));
-                BuildCrewRoster(lobby, host);
-                break;
-        }
-        var index = pages.FindIndex(page => page.Page == _lobbyPage);
-        if (index + 1 < pages.Count)
-        {
-            var next = pages[index + 1];
-            var nextButton = new Button { Name = "RoundSetupNext", Text = Text("next-section", ("section", Text(next.Label))), MinHeight = 40 };
-            nextButton.OnPressed += _ => NavigateLobby(next.Page);
-            _footer.AddChild(nextButton);
         }
         BuildMemberFooter(state, lobby, member);
     }
@@ -361,22 +357,21 @@ public sealed partial class WFRoundSetupWindow
         foreach (var player in lobby.Members)
         {
             var status = !player.Connected ? "member-disconnected" : player.Spawned ? "member-playing" : player.Ready ? "member-ready" : "member-not-ready";
-            var labels = Column(2);
-            labels.HorizontalExpand = true;
-            labels.AddChild(PlainDescription(player.Name));
-            labels.AddChild(PlainDescription(Text("member-info", ("job", MemberRoleName(lobby, player)), ("status", Text(status)))));
-            var row = Row(labels);
+            var content = Column(6);
+            content.AddChild(PlainDescription(player.Name));
+            content.AddChild(PlainDescription(Text("member-info", ("job", MemberRoleName(lobby, player)), ("status", Text(status)))));
             if (host && player.UserId != lobby.Host)
             {
-                row.AddChild(Button("transfer", () => SendTarget(WFRoundSetupAction.TransferHost, lobby.Id, player.UserId)));
+                var actions = FlowRow(Button("transfer", () => SendTarget(WFRoundSetupAction.TransferHost, lobby.Id, player.UserId)));
                 if (!player.Spawned)
-                    row.AddChild(Button("kick", () => SendTarget(WFRoundSetupAction.Kick, lobby.Id, player.UserId)));
+                    actions.AddChild(Button("kick", () => SendTarget(WFRoundSetupAction.Kick, lobby.Id, player.UserId)));
+                content.AddChild(actions);
             }
-            _body.AddChild(Panel(row));
+            _body.AddChild(Panel(content));
         }
     }
 
-    /// <summary>Keeps readiness and any purchase authorization visible without repeating setup instructions.</summary>
+    /// <summary>Keeps readiness, purchase consent and launch actions outside the scrolling page.</summary>
     private void BuildMemberFooter(WFRoundSetupState state, WFRoundSetupLobby lobby, WFRoundSetupMember? member)
     {
         if (member is not { Spawned: false } || !state.CanJoin)
@@ -390,20 +385,28 @@ public sealed partial class WFRoundSetupWindow
             ? state.Jobs.Any(job => job.Id == member.Job && (member.Station == null || job.Station == member.Station))
             : lobby.Roles.Any(role => role.Id == member.RoleId && role.CanSelect);
         var canPurchase = !purchase || vessel != null && state.HostBalance is { } balance && balance >= vessel.Price;
+        var content = Column(8);
+        content.AddChild(Description(!eligible ? "ready-needs-job" : !canPurchase
+            ? vessel == null ? "ship-unselected" : "ship-insufficient-help"
+            : member.Ready ? "ready-confirmed" : "ready-prompt"));
+        if (purchase && vessel != null)
+            content.AddChild(PlainDescription(Text("purchase-summary", ("price", Price(vessel.Price)), ("ship", vessel.Name))));
         var ready = new CheckBox
         {
             Name = "RoundSetupReady",
-            Text = purchase && vessel != null ? Text("flow-ready-purchase-short", ("price", Price(vessel.Price))) : Text("ready"),
+            Text = Text(purchase ? "ready-buy" : "ready"),
             Pressed = member.Ready,
             Disabled = !member.Ready && (!eligible || !canPurchase),
-            HorizontalExpand = true,
+            MinHeight = 40,
         };
         ready.OnToggled += args => SetReady(lobby.Id, args.Pressed);
-        var actions = FlowRow(ready);
+        var actions = new ScenarioColumns { HorizontalExpand = true };
+        actions.AddChild(ready);
         if (state.InRound && (lobby.Started || lobby.Host == member.UserId))
             actions.AddChild(Button(lobby.Started ? "join-round" : purchase ? "purchase-launch" : "launch",
                 () => Send(WFRoundSetupAction.Launch, lobby.Id), !member.Ready || !eligible || !canPurchase));
         actions.AddChild(Button("leave", () => Send(WFRoundSetupAction.Leave, lobby.Id)));
-        _footer.AddChild(Panel(actions));
+        content.AddChild(actions);
+        _footer.AddChild(Panel(content));
     }
 }

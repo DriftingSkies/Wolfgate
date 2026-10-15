@@ -162,11 +162,12 @@
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True"
                                   SeparationOverride="0">
                         <!-- Menu column -->
-                        <!-- WOLFGATE(RoundSetup): reduced menu padding leaves room for the lobby list at 720p -->
-                        <BoxContainer Orientation="Vertical" MinWidth="300" Margin="40 16 16 16" SeparationOverride="0">
+                        <!-- WOLFGATE(RoundSetup): reserve room for a dedicated crew panel beside the menu -->
+                        <BoxContainer Orientation="Vertical" SetWidth="304" Margin="24 16 12 16" SeparationOverride="0">
                             <!-- Fixed width so a long server name wraps instead of widening the menu column -->
+                            <!-- WOLFGATE(RoundSetup): constrain the server heading to the menu width -->
                             <BoxContainer Name="HeaderContainer" Access="Public" Orientation="Vertical"
-                                          SeparationOverride="0" SetWidth="440">
+                                          SeparationOverride="0" SetWidth="268">
                                 <RichTextLabel Name="ServerName" Access="Public" StyleClasses="LobbyTitle" />
                                 <PanelContainer StyleClasses="LobbyTitleRule" MinHeight="4" Margin="0 2 0 4" />
                                 <Label Name="StartTime" Access="Public" StyleClasses="LobbyStatus" />
@@ -190,22 +191,26 @@
                                     Text="{Loc 'ui-lobby-ahelp-nav-button'}" StyleClasses="LobbyNav" />
                             <Button Name="LeaveButton" Access="Public" TextAlign="Left"
                                     Text="{Loc 'ui-lobby-leave-nav-button'}" StyleClasses="LobbyNav" />
-                            <!-- WOLFGATE(RoundSetup): a scrollable lobby list aligned with the menu below Leave Server -->
-                            <roundSetup:WFRoundSetupLobbyPanel Name="RoundSetupLobbies" HorizontalExpand="True" SetWidth="440" Margin="0 12 0 0" />
                             <Control VerticalExpand="True" />
 
                         </BoxContainer>
                         <!-- Votes and character hero -->
                         <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True"
                                       Margin="16 40 16 24" SeparationOverride="8">
+                            <!-- WOLFGATE(RoundSetup): scroll character and round information above the reserved crew browser -->
+                            <ScrollContainer HScrollEnabled="False" VerticalExpand="True" HorizontalExpand="True">
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="8">
                             <BoxContainer Name="VoteContainer" Access="Public" Orientation="Vertical" SeparationOverride="4"
                                           HorizontalAlignment="Center" VerticalAlignment="Top" />
                             <Control VerticalExpand="True" />
                             <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public"
                                                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <Control VerticalExpand="True" />
                             <!-- WOLFGATE(RoundSetup): round information uses the space below the character beside the lobby list -->
                             <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" MaxWidth="440" />
+                            <!-- WOLFGATE(RoundSetup): keep crew listings accessible independently of the character preview -->
+                            </BoxContainer>
+                            </ScrollContainer>
+                            <roundSetup:WFRoundSetupLobbyPanel Name="RoundSetupLobbies" HorizontalExpand="True" SetHeight="220" Margin="0 12 0 0" />
                         </BoxContainer>
                     </BoxContainer>
                 </Control>

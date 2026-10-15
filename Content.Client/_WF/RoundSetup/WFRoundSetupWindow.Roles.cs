@@ -9,7 +9,6 @@ public sealed partial class WFRoundSetupWindow
     private readonly Dictionary<int, int?> _browsedRoles = new();
     private readonly Dictionary<int, RoleDraft> _roleDrafts = new();
     private int? _editingRole;
-    private WFRoundSetupJob? _selectedPersonalJob;
 
     /// <summary>Preserves host input while unrelated lobby snapshots arrive.</summary>
     private sealed class RoleDraft
@@ -22,7 +21,7 @@ public sealed partial class WFRoundSetupWindow
 
     private string RoleName(WFRoundSetupRole role) => string.IsNullOrEmpty(role.Name) ? JobName(role.Job) : role.Name;
 
-    private string RoleChoice(WFRoundSetupRole role) => Text("role-choice", ("role", RoleName(role)),
+    private string RoleChoice(WFRoundSetupRole role) => Text(string.IsNullOrEmpty(role.Name) ? "role-choice" : "role-choice-job", ("role", RoleName(role)),
         ("job", JobName(role.Job)), ("open", Math.Max(0, role.Capacity - role.Occupied)), ("capacity", role.Capacity));
 
     private string MemberRoleName(WFRoundSetupLobby lobby, WFRoundSetupMember member)
@@ -40,41 +39,34 @@ public sealed partial class WFRoundSetupWindow
             return;
         }
         var jobs = state.Jobs;
-        var selected = Array.FindIndex(jobs, job => job == _selectedPersonalJob);
-        if (selected < 0)
-            selected = Math.Max(0, Array.FindIndex(jobs, job => job.Id == member.Job && job.Station == member.Station));
-        var picker = new OptionButton
+        var selected = Array.FindIndex(jobs, job => job.Id == member.Job && job.Station == member.Station);
+        var picker = new WFRoundSetupOptionButton
         {
             Name = "RoundSetupPersonalJob",
             HorizontalExpand = true,
-            MaxWidth = ChoiceWidth,
             Disabled = member.Ready,
             Filterable = true,
         };
+        picker.AddItem(Text("job-unselected"), -1);
+        picker.SetItemDisabled(0, true);
         for (var i = 0; i < jobs.Length; i++)
             picker.AddItem(JobChoice(jobs[i]), i);
         picker.SelectId(selected);
-        var caption = PlainDescription(JobChoice(jobs[selected]));
         picker.OnItemSelected += args =>
         {
             picker.SelectId(args.Id);
-            _selectedPersonalJob = jobs[args.Id];
-            caption.SetMessage(Robust.Shared.Utility.FormattedMessage.FromUnformatted(JobChoice(jobs[args.Id])));
-        };
-        var select = Button("select-job", () =>
-        {
-            var job = jobs[picker.SelectedId];
-            _selectedPersonalJob = null;
+            if (args.Id < 0)
+                return;
+            var job = jobs[args.Id];
             SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectJob)
             {
                 LobbyId = lobby.Id,
                 Job = job.Id,
                 Station = job.Station,
             });
-        }, member.Ready);
+        };
         _body.AddChild(Heading("personal-job"));
-        _body.AddChild(FlowRow(picker, select));
-        _body.AddChild(caption);
+        _body.AddChild(picker);
     }
 
     private string JobChoice(WFRoundSetupJob job) => string.IsNullOrEmpty(job.StationName)
@@ -85,7 +77,9 @@ public sealed partial class WFRoundSetupWindow
     {
         var openings = lobby.Roles.Select(role => Text("role-opening", ("role", RoleName(role)),
             ("open", Math.Max(0, role.Capacity - role.Occupied))));
-        content.AddChild(PlainDescription(Text("role-openings", ("roles", string.Join(" · ", openings)))));
+        content.AddChild(Heading("roles"));
+        foreach (var opening in openings)
+            content.AddChild(PlainDescription(opening));
         var choices = lobby.Roles.Where(role => role.CanSelect).ToArray();
         if (choices.Length == 0)
         {
@@ -95,7 +89,7 @@ public sealed partial class WFRoundSetupWindow
         }
         if (!available)
             return true;
-        var selector = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true };
+        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true };
         foreach (var role in choices)
             selector.AddItem(RoleChoice(role), role.Id);
         var selected = _browsedRoles.GetValueOrDefault(lobby.Id) ?? choices[0].Id;
@@ -126,67 +120,49 @@ public sealed partial class WFRoundSetupWindow
             _body.AddChild(Description("no-roles"));
             return;
         }
-        var selector = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true, Disabled = member.Ready };
+        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Disabled = member.Ready };
         foreach (var role in choices)
             selector.AddItem(RoleChoice(role), role.Id);
-        var selected = choices.FirstOrDefault(role => role.Id == _selectedRole)
-            ?? choices.FirstOrDefault(role => role.Id == member.RoleId) ?? choices[0];
-        selector.SelectId(selected.Id);
-        var select = Button("select-role", () =>
-        {
-            _selectedRole = null;
-            SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectRole)
-            {
-                LobbyId = lobby.Id,
-                RoleId = selector.SelectedId,
-            });
-        }, member.Ready || !selected.CanSelect);
+        selector.SelectId(member.RoleId ?? choices[0].Id);
         selector.OnItemSelected += args =>
         {
             selector.SelectId(args.Id);
-            _selectedRole = args.Id;
-            select.Disabled = member.Ready || !choices.First(role => role.Id == args.Id).CanSelect;
+            SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectRole)
+            {
+                LobbyId = lobby.Id,
+                RoleId = args.Id,
+            });
         };
-        _body.AddChild(FlowRow(selector, select));
+        _body.AddChild(Heading("roles"));
+        _body.AddChild(selector);
     }
 
     /// <summary>Lets hosts name openings, choose their underlying job and set reserved slot capacity.</summary>
     private void BuildRoleEditor(WFRoundSetupState state, WFRoundSetupLobby lobby)
     {
-        var section = Column(8);
-        section.AddChild(Heading("roles"));
+        _body.AddChild(Heading("roles"));
+        _body.AddChild(Description(lobby.Roles.Length == 0 ? "roles-empty-host" : "roles-help"));
         var canAdd = lobby.Roles.Length < WFRoundSetupPolicy.MaximumRoles && state.Jobs.Length > 0;
         var selected = lobby.Roles.FirstOrDefault(role => role.Id == _editingRole);
-        var adding = _editingRole == 0 && canAdd;
-        if (lobby.Roles.Length == 0 && !adding)
+        if (selected != null || _editingRole == 0 && canAdd)
         {
-            section.AddChild(Description("roles-empty-host"));
-            section.AddChild(Button("role-new", () => { _editingRole = 0; Redraw(); }, !canAdd));
-            _body.AddChild(Panel(section));
+            _body.AddChild(RoleEditor(state, lobby, selected));
+            _body.AddChild(Button("role-cancel", () =>
+            {
+                _roleDrafts.Remove(_editingRole ?? 0);
+                _editingRole = null;
+                Redraw();
+            }));
             return;
         }
-        section.AddChild(Description("roles-help"));
-        if (!adding && selected == null)
-            selected = lobby.Roles.FirstOrDefault();
-        var picker = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true };
         foreach (var role in lobby.Roles)
-            picker.AddItem(RoleChoice(role), role.Id);
-        if (canAdd)
-            picker.AddItem(Text("role-new"), 0);
-        if (selected != null || canAdd)
         {
-            picker.SelectId(adding || selected == null ? 0 : selected.Id);
-            picker.OnItemSelected += args =>
-            {
-                _editingRole = args.Id;
-                Redraw();
-            };
-            section.AddChild(picker);
-            section.AddChild(RoleEditor(state, lobby, adding ? null : selected));
+            var card = Column(8);
+            card.AddChild(PlainDescription(RoleChoice(role)));
+            card.AddChild(Button("role-edit", () => { _editingRole = role.Id; Redraw(); }));
+            _body.AddChild(Panel(card));
         }
-        else
-            section.AddChild(Description("no-roles"));
-        _body.AddChild(Panel(section));
+        _body.AddChild(Button("role-new", () => { _editingRole = 0; Redraw(); }, !canAdd));
     }
 
     private PanelContainer RoleEditor(WFRoundSetupState state, WFRoundSetupLobby lobby, WFRoundSetupRole? role)
@@ -218,11 +194,12 @@ public sealed partial class WFRoundSetupWindow
             IsValid = value => value.Length <= WFRoundSetupPolicy.MaximumRoleNameLength,
         };
         name.OnTextChanged += _ => { draft.Name = name.Text; draft.Dirty = true; };
+        content.AddChild(Heading("role-name"));
         content.AddChild(name);
         var jobs = new List<WFRoundSetupJob>(state.Jobs);
         if (draft.Job is { } current && !jobs.Contains(current))
             jobs.Add(current);
-        var selector = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true, Disabled = occupied > 0 || jobs.Count == 0 };
+        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Disabled = occupied > 0 || jobs.Count == 0 };
         for (var i = 0; i < jobs.Count; i++)
         {
             var job = jobs[i];
@@ -240,7 +217,8 @@ public sealed partial class WFRoundSetupWindow
             draft.Job = jobs[args.Id];
             draft.Dirty = true;
         };
-        content.AddChild(Row(new Label { Text = Text("role-job") }, selector));
+        content.AddChild(Heading("role-job"));
+        content.AddChild(selector);
         var capacity = new SpinBox
         {
             IsValid = value => value >= Math.Max(1, occupied) && value <= WFRoundSetupPolicy.MaximumMembers,
@@ -253,6 +231,7 @@ public sealed partial class WFRoundSetupWindow
             if (draft.Job is not { } job)
                 return;
             _roleDrafts.Remove(draftId);
+            _editingRole = null;
             SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.UpsertRole)
             {
                 LobbyId = lobby.Id,

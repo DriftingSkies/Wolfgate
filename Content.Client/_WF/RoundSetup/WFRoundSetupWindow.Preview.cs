@@ -26,7 +26,7 @@ public sealed partial class WFRoundSetupWindow
     private void AddShipPreviewLayout(BoxContainer details, RoundSetupShipPreview preview)
     {
         var info = Panel(details);
-        if (_compact)
+        if (_lastLayoutWidth < 1100)
         {
             var stack = Column(10);
             stack.AddChild(info);
@@ -68,7 +68,7 @@ public sealed partial class WFRoundSetupWindow
     private sealed class RoundSetupShipPreview : BoxContainer
     {
         private readonly ShipPreviewControl _preview;
-        private readonly Label _info;
+        private readonly RichTextLabel _info;
         private VesselPrototype? _vessel;
         private bool _released = true;
 
@@ -88,7 +88,7 @@ public sealed partial class WFRoundSetupWindow
             var viewport = Panel(_preview);
             viewport.VerticalExpand = true;
             AddChild(viewport);
-            _info = new Label { ClipText = true };
+            _info = PlainDescription(string.Empty);
             AddChild(_info);
             var reset = new Button
             {
@@ -108,7 +108,7 @@ public sealed partial class WFRoundSetupWindow
             _released = false;
             _preview.SetVessel(vessel);
             if (changed)
-                _info.Text = string.Empty;
+                _info.SetMessage(string.Empty);
             else
                 UpdateInfo();
         }
@@ -125,10 +125,10 @@ public sealed partial class WFRoundSetupWindow
 
         private void UpdateInfo()
         {
-            _info.Text = _preview.HasPreview
+            _info.SetMessage(_preview.HasPreview
                 ? Loc.GetString("wf-ship-preview-info", ("width", _preview.GridSize.X),
                     ("height", _preview.GridSize.Y), ("count", _preview.TileCount))
-                : string.Empty;
+                : string.Empty);
         }
 
         [Obsolete("Controls should only be removed from UI tree instead of being disposed")]

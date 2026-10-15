@@ -58,9 +58,9 @@ public sealed class RoundSetupUiTest
             screen.Measure(new Vector2(1280, 720));
             screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(1280, 720)));
             var leave = screen.LeaveButton;
-            Assert.That(panel.GlobalPosition.Y, Is.GreaterThanOrEqualTo(leave.GlobalPosition.Y + leave.Size.Y));
-            Assert.That(panel.GlobalPosition.X, Is.EqualTo(leave.GlobalPosition.X).Within(1));
-            Assert.That(panel.Width, Is.EqualTo(leave.Width).Within(1));
+            Assert.That(panel.GlobalPosition.X, Is.GreaterThan(leave.GlobalPosition.X + leave.Size.X),
+                "Crews have their own column beside the menu.");
+            Assert.That(panel.Height, Is.GreaterThanOrEqualTo(180));
             Assert.That(panel.GlobalPosition.Y + panel.Height, Is.LessThanOrEqualTo(720), "Lobby list must remain on-screen at 720p.");
             var scroll = Descendants(panel).OfType<ScrollContainer>().Single();
             Assert.That(scroll.VScrollEnabled, Is.True);
@@ -91,7 +91,8 @@ public sealed class RoundSetupUiTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Opening Join is inert; creation is one action and every setup page fits without scrolling.</summary>
+    /// <summary>Opening Join is inert; preparation is first and fixed actions remain accessible at every size.</summary>
+    [TestCase(800, 600)]
     [TestCase(1280, 720)]
     [TestCase(1920, 1080)]
     public async Task SetupFlowFitsViewportAndBrowsingDoesNotCreate(int width, int height)
@@ -113,7 +114,7 @@ public sealed class RoundSetupUiTest
         await pair.Client.WaitAssertion(() =>
         {
             AssertFits(window, viewport);
-            Assert.That(window.Size.X, Is.EqualTo(Math.Min(1600, width - 32)));
+            Assert.That(window.Size.X, Is.EqualTo(Math.Min(1120, width - 32)));
             Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.False);
             Assert.That(Named<Button>(window, "RoundSetupJoinNormally").Disabled, Is.False);
             button = Named<Button>(window, "RoundSetupJoinLobby");
@@ -137,33 +138,30 @@ public sealed class RoundSetupUiTest
         Assert.That(lobby.Members.Length, Is.EqualTo(1));
         await pair.Client.WaitPost(() => window.ShowLobby(lobbyId));
         await pair.RunTicksSync(2);
-        foreach (var key in new[] { "admission", "roles", "your-character" })
-        {
-            await pair.Client.WaitAssertion(() =>
-            {
-                AssertFits(window, viewport);
-                button = Named<Button>(window, "RoundSetupNext");
-                Assert.That(button.Text, Is.EqualTo(Loc.GetString("wf-round-setup-next-section",
-                    ("section", Loc.GetString($"wf-round-setup-{key}")))));
-            });
-            await Click(pair, button);
-        }
         await pair.Client.WaitAssertion(() =>
         {
             AssertFits(window, viewport);
-            Assert.That(Buttons(window, "select-job").Count(), Is.EqualTo(1));
+            Assert.That(Descendants(window).OfType<OptionButton>().Any(control => control.Name == "RoundSetupPersonalJob"), Is.True);
             Assert.That(Buttons(window, "select-role"), Is.Empty);
             Assert.That(Named<CheckBox>(window, "RoundSetupReady").Disabled, Is.True);
             Assert.That(Descendants(window).Any(control => control.Name == "RoundSetupNext"), Is.False);
-            button = Buttons(window, "select-job").Single();
         });
+        OptionButton jobPicker = null!;
+        await pair.Client.WaitAssertion(() =>
+        {
+            jobPicker = Named<OptionButton>(window, "RoundSetupPersonalJob");
+            Assert.That(jobPicker.IsItemDisabled(0), Is.True, "The placeholder cannot replace a committed job visually.");
+        });
+        await Click(pair, jobPicker);
+        await pair.Client.WaitPost(() => button = Descendants(jobPicker.OptionsScroll).OfType<Button>().First(option =>
+            option.Text != Loc.GetString("wf-round-setup-job-unselected")));
         await Click(pair, button);
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
         Assert.That(state.Lobbies.Single(entry => entry.Id == lobbyId).Members.Single().Job, Is.Not.Null);
         await pair.Client.WaitAssertion(() =>
         {
             Assert.That(Named<CheckBox>(window, "RoundSetupReady").Disabled, Is.False);
-            button = Buttons(Named<Control>(window, "RoundSetupSections"), "roles").Single();
+            button = Buttons(Named<Control>(window, "RoundSetupSections"), "crew-section").Single();
         });
         await Click(pair, button);
         await pair.Client.WaitAssertion(() =>
@@ -178,6 +176,19 @@ public sealed class RoundSetupUiTest
         {
             AssertFits(window, viewport);
             Assert.That(Descendants(window).OfType<SpinBox>().Single().Value, Is.EqualTo(1));
+            button = Buttons(window, "role-cancel").Single();
+        });
+        await Click(pair, button);
+        await pair.Client.WaitAssertion(() =>
+        {
+            Assert.That(Descendants(window).OfType<SpinBox>(), Is.Empty);
+            button = Buttons(Named<Control>(window, "RoundSetupSections"), "admission").Single();
+        });
+        await Click(pair, button);
+        await pair.Client.WaitAssertion(() =>
+        {
+            AssertFits(window, viewport);
+            Assert.That(Buttons(window, "save-settings").Count(), Is.EqualTo(1));
             window.Close();
         });
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = lobbyId });
@@ -352,6 +363,35 @@ public sealed class RoundSetupUiTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Long selected values and popup choices wrap instead of widening or clipping the control.</summary>
+    [Test]
+    public async Task LongSelectorTextRemainsReadable()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            const string longText = "Expedition medical officer aboard a very long named civilian research station";
+            var selector = new WFRoundSetupOptionButton();
+            pair.Client.ResolveDependency<IUserInterfaceManager>().RootControl.AddChild(selector);
+            selector.AddItem(longText, 1);
+            selector.SelectId(1);
+            selector.Measure(new Vector2(240, 500));
+            selector.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(240, selector.DesiredSize.Y)));
+            Assert.That(selector.Width, Is.EqualTo(240));
+            var caption = Descendants(selector).OfType<RichTextLabel>().Single();
+            Assert.That(caption.GetFormattedMessage()!.ToString(), Is.EqualTo(longText));
+            Assert.That(caption.Height, Is.GreaterThan(25), "Long selected text must wrap onto more than one line.");
+            Assert.That(caption.Size.X, Is.LessThanOrEqualTo(selector.Width));
+            selector.OptionsScroll.Measure(new Vector2(240, 500));
+            selector.OptionsScroll.Arrange(UIBox2.FromDimensions(Vector2.Zero, selector.OptionsScroll.DesiredSize));
+            var option = Descendants(selector.OptionsScroll).OfType<Button>().Single();
+            Assert.That(option.Label.Visible, Is.False);
+            Assert.That(Descendants(option).OfType<RichTextLabel>().Single().Height, Is.GreaterThan(25));
+            selector.Orphan();
+        });
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>The countdown's live readout fits its compact banner and never intercepts game input.</summary>
     [Test]
     public async Task CrashCountdownBannerFitsItsReadout()
@@ -397,10 +437,13 @@ public sealed class RoundSetupUiTest
         var size = window.Size;
         var page = Named<Control>(window, "RoundSetupPage");
         var scroll = Named<ScrollContainer>(window, "RoundSetupPageScroll");
-        Assert.That(page.DesiredSize.Y, Is.LessThanOrEqualTo(scroll.Height + 1), "Core setup pages should not need vertical scrolling.");
+        Assert.That(scroll.HScrollEnabled, Is.False);
+        Assert.That(scroll.Height, Is.GreaterThan(100), "Leave usable space for the scrolling page.");
+        Assert.That(page.Width, Is.LessThanOrEqualTo(scroll.Width + 1));
         Assert.That(size.X, Is.LessThanOrEqualTo(viewport.X - 32 + 1));
         Assert.That(size.Y, Is.LessThanOrEqualTo(viewport.Y - 32 + 1));
-        foreach (var button in Descendants(window).OfType<BaseButton>().Where(button => button.VisibleInTree))
+        foreach (var button in Descendants(window).Where(control => control.VisibleInTree &&
+                     (control is BaseButton || control is RichTextLabel)))
         {
             var position = button.GlobalPosition - window.GlobalPosition;
             var end = position + button.Size;

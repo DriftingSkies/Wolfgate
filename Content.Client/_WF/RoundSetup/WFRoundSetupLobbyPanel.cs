@@ -2,10 +2,11 @@ using System.Linq;
 using Content.Shared._WF.RoundSetup;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Utility;
 
 namespace Content.Client._WF.RoundSetup;
 
-/// <summary>Shows live player lobbies below the main lobby menu.</summary>
+/// <summary>Shows live crews in a dedicated, scrollable lobby panel.</summary>
 public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
 {
     [Dependency] private IEntityManager _entities = default!;
@@ -13,7 +14,7 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
     private WFRoundSetupClientSystem? _system;
     private readonly BoxContainer _cards;
     private readonly ScrollContainer _scroll;
-    private readonly Label _empty;
+    private readonly RichTextLabel _empty;
     private Listing[] _shown = Array.Empty<Listing>();
     private bool _listening;
 
@@ -26,7 +27,7 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
     {
         IoCManager.InjectDependencies(this);
         HorizontalExpand = true;
-        SetHeight = 120;
+        MinHeight = 180;
         StyleClasses.Add("LobbyChatPanel");
         var content = new BoxContainer
         {
@@ -40,20 +41,14 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             Orientation = BoxContainer.LayoutOrientation.Horizontal,
             SeparationOverride = 6,
         };
-        header.AddChild(new Label { Text = Text("title"), HorizontalExpand = true, ClipText = true });
+        header.AddChild(Wrapped(Text("title")));
         var refresh = new Button { Text = Text("refresh"), ToolTip = Text("refresh-help") };
         refresh.OnPressed += _ => Refresh();
         header.AddChild(refresh);
         content.AddChild(header);
 
-        _empty = new Label
-        {
-            Text = Text("loading"),
-            ToolTip = Text("empty-help"),
-            ClipText = true,
-            VerticalExpand = true,
-            VerticalAlignment = VAlignment.Center,
-        };
+        _empty = Wrapped(Text("loading"));
+        _empty.ToolTip = Text("empty-help");
         content.AddChild(_empty);
         _cards = new BoxContainer
         {
@@ -125,7 +120,7 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             .Select(lobby => new Listing(lobby.Id, lobby.HostName, lobby.Scenario, lobby.Access,
                 lobby.MemberCount, lobby.Started, lobby.AllowLateJoin, lobby.Id == state.OwnLobby))
             .ToArray();
-        _empty.Text = Text("empty");
+        _empty.SetMessage(FormattedMessage.FromUnformatted(Text("empty")));
         _empty.Visible = listings.Length == 0;
         _scroll.Visible = listings.Length != 0;
         if (_shown.SequenceEqual(listings))
@@ -152,8 +147,8 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             status = Text("own-status", ("status", status));
         var content = new BoxContainer
         {
-            Orientation = BoxContainer.LayoutOrientation.Horizontal,
-            SeparationOverride = 12,
+            Orientation = BoxContainer.LayoutOrientation.Vertical,
+            SeparationOverride = 6,
             Margin = new Thickness(8),
             MouseFilter = MouseFilterMode.Ignore,
         };
@@ -176,9 +171,8 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             VerticalAlignment = VAlignment.Center,
             MouseFilter = MouseFilterMode.Ignore,
         };
-        details.AddChild(new Label { Text = access, MouseFilter = MouseFilterMode.Ignore });
-        details.AddChild(new Label { Text = Text("count", ("count", listing.Members)), MouseFilter = MouseFilterMode.Ignore });
-        details.AddChild(new Label { Text = status, MouseFilter = MouseFilterMode.Ignore });
+        details.AddChild(Wrapped(Text("members", ("count", listing.Members), ("access", access))));
+        details.AddChild(Wrapped(status));
         content.AddChild(details);
         var button = new Button
         {
@@ -186,8 +180,16 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             ToolTip = Text("open-help", ("host", listing.Host)),
             Children = { content },
         };
+        button.Label.Visible = false;
         button.OnPressed += _ => UserInterfaceManager.GetUIController<WFRoundSetupUIController>().OpenLobby(listing.Id);
         return button;
+    }
+
+    private static RichTextLabel Wrapped(string text)
+    {
+        var label = new RichTextLabel { HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore };
+        label.SetMessage(FormattedMessage.FromUnformatted(text));
+        return label;
     }
 
     private static string Text(string key, params (string, object)[] args) => Loc.GetString($"wf-round-setup-panel-{key}", args);

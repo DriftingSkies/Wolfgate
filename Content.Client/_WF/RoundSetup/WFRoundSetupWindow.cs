@@ -26,7 +26,6 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private readonly RichTextLabel _message = new() { HorizontalExpand = true, Visible = false };
     private readonly Dictionary<int, string> _enteredCodes = new();
     private WFRoundSetupState? _state;
-    private int? _selectedRole;
     private Robust.Shared.Network.NetUserId? _inviteTarget;
     private int? _settingsLobby;
     private bool _settingsDirty;
@@ -40,7 +39,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         IoCManager.InjectDependencies(this);
         Title = Text("title");
         MinSize = new Vector2(480, 360);
-        SetSize = new Vector2(1600, 1000);
+        SetSize = new Vector2(1120, 780);
         _system = _entities.System<WFRoundSetupClientSystem>();
 
         InitializeLayout();
@@ -64,8 +63,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     {
         var available = Vector2.Max(Vector2.One, viewport - new Vector2(32));
         MinSize = Vector2.Min(new Vector2(480, 360), available);
-        SetSize = Vector2.Min(new Vector2(1600, 1000), available);
-        _compact = SetSize.X < 900;
+        SetSize = Vector2.Min(new Vector2(1120, 780), available);
+        _compact = SetSize.X < 820;
         _lastLayoutWidth = SetSize.X;
         _layoutRefreshPending = false;
         Redraw();
@@ -87,8 +86,6 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         _state = state;
         if (previous?.OwnLobby != state.OwnLobby)
         {
-            _selectedRole = null;
-            _selectedPersonalJob = null;
             _selectedVessel = null;
             _roleDrafts.Clear();
             _inviteTarget = null;
@@ -97,17 +94,11 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             if (previous != null && state.OwnLobby != null)
             {
                 _view = SetupView.MyLobby;
-                var created = state.Lobbies.FirstOrDefault(lobby => lobby.Id == state.OwnLobby);
-                _lobbyPage = _creatingLobby
-                    ? created?.Scenario == WFRoundScenario.Ship ? LobbyPage.Ship : LobbyPage.Character
-                    : LobbyPage.Character;
-                _creatingLobby = false;
+                _lobbyPage = LobbyPage.Overview;
             }
         }
         if (!string.IsNullOrEmpty(state.Message))
         {
-            if (state.OwnLobby == null)
-                _creatingLobby = false;
             _message.SetMessage(FormattedMessage.FromUnformatted(state.Message));
             _message.ToolTip = state.Message;
             _message.Visible = true;
@@ -122,11 +113,12 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     /// <summary>Displays a lobby with the admission action its host permits.</summary>
     private Control LobbyCard(WFRoundSetupState state, WFRoundSetupLobby lobby, bool invitation)
     {
-        var content = Column(5);
+        var content = Column(12);
         content.AddChild(PlainDescription(Text("lobby-title", ("host", lobby.HostName), ("scenario", ScenarioName(lobby.Scenario)))));
         content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
 
+        content.AddChild(Description(ScenarioDescription(lobby.Scenario)));
         if (lobby.Scenario == WFRoundScenario.Ship)
             content.AddChild(VesselSummary(state, lobby));
         var available = state.CanJoin && state.OwnLobby == null && lobby.MemberCount < WFRoundSetupPolicy.MaximumMembers &&
@@ -134,7 +126,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         available &= BuildBrowseRoles(content, lobby, available);
         if (invitation)
         {
-            content.AddChild(Row(Button("accept-invite", () => JoinLobby(WFRoundSetupAction.AcceptInvite, lobby.Id), !available),
+            content.AddChild(FlowRow(Button("accept-invite", () => JoinLobby(WFRoundSetupAction.AcceptInvite, lobby.Id), !available),
                 Button("decline", () => Send(WFRoundSetupAction.DeclineInvite, lobby.Id))));
         }
         else if (lobby.Access == WFLobbyAccess.Code)
@@ -147,7 +139,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 Editable = available,
             };
             code.OnTextChanged += _ => _enteredCodes[lobby.Id] = code.Text;
-            content.AddChild(Row(code, Button("join-code", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Join)
+            content.AddChild(FlowRow(code, Button("join-code", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Join)
             {
                 LobbyId = lobby.Id,
                 Code = code.Text.Trim(),
@@ -179,7 +171,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         }
         var settings = Column(6);
         settings.AddChild(Heading("admission"));
-        var access = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true };
+        var access = new WFRoundSetupOptionButton { HorizontalExpand = true };
         foreach (var option in Enum.GetValues<WFLobbyAccess>())
             access.AddItem(AccessName(option), (int) option);
         access.SelectId((int) _draftAccess);
@@ -195,6 +187,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             _draftLateJoin = args.Pressed;
             _settingsDirty = true;
         };
+        settings.AddChild(Description("admission-help"));
         settings.AddChild(access);
         settings.AddChild(lateJoin);
 
@@ -211,7 +204,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         if (lobby.Code != null)
         {
             var code = new LineEdit { Text = lobby.Code, Editable = false, HorizontalExpand = true };
-            settings.AddChild(Row(new Label { Text = Text("share-code") }, code,
+            settings.AddChild(Heading("share-code"));
+            settings.AddChild(FlowRow(code,
                 Button("rotate-code", () => Send(WFRoundSetupAction.RegenerateCode, lobby.Id))));
         }
         _body.AddChild(Panel(settings));
@@ -224,7 +218,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 var role = lobby.Roles.FirstOrDefault(choice => choice.Id == request.RoleId);
                 var label = Text("request-role", ("name", request.Name),
                     ("role", role == null ? Text("job-unselected") : RoleName(role)));
-                _body.AddChild(Row(PlainDescription(label),
+                _body.AddChild(PlainDescription(label));
+                _body.AddChild(FlowRow(
                     Button("accept", () => SendTarget(WFRoundSetupAction.AcceptRequest, lobby.Id, request.UserId)),
                     Button("reject", () => SendTarget(WFRoundSetupAction.RejectRequest, lobby.Id, request.UserId))));
             }
@@ -232,7 +227,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         if (state.InviteTargets.Length == 0)
             return;
 
-        var target = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true };
+        var target = new WFRoundSetupOptionButton { HorizontalExpand = true };
         for (var i = 0; i < state.InviteTargets.Length; i++)
             target.AddItem(state.InviteTargets[i].Name, i);
         target.SelectId(Math.Max(0, Array.FindIndex(state.InviteTargets, player => player.UserId == _inviteTarget)));
@@ -241,6 +236,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             target.SelectId(args.Id);
             _inviteTarget = state.InviteTargets[args.Id].UserId;
         };
+        _body.AddChild(Heading("invite"));
         _body.AddChild(FlowRow(target, Button("invite", () => SendTarget(WFRoundSetupAction.Invite,
             lobby.Id, state.InviteTargets[target.SelectedId].UserId))));
     }
@@ -251,7 +247,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         _body.AddChild(Heading("your-character"));
         if (_preferences.Preferences is { } preferences)
         {
-            var characters = new OptionButton { HorizontalExpand = true, MaxWidth = ChoiceWidth, RectClipContent = true, Disabled = member.Ready, ToolTip = Text("unready-edit") };
+            var characters = new WFRoundSetupOptionButton { HorizontalExpand = true, Disabled = member.Ready, ToolTip = Text("unready-edit") };
             foreach (var (slot, profile) in preferences.Characters.OrderBy(pair => pair.Key))
                 characters.AddItem(profile.Name, slot);
             characters.SelectId(preferences.SelectedCharacterIndex);
@@ -351,7 +347,12 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         return row;
     }
 
-    private static Label Heading(string key) => new() { Text = Text(key), StyleClasses = { "LabelHeading" } };
+    private static RichTextLabel Heading(string key, params (string, object)[] args)
+    {
+        var heading = PlainDescription(Text(key, args));
+        heading.StyleClasses.Add("LabelHeading");
+        return heading;
+    }
 
     private static RichTextLabel Description(string key) => PlainDescription(Text(key));
 
@@ -364,18 +365,27 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
 
     private static Button Button(string key, Action pressed, bool disabled = false)
     {
-        var button = new Button { Text = Text(key), Disabled = disabled, MinHeight = 36 };
+        var button = new Button { Text = Text(key), Disabled = disabled, MinHeight = 40, HorizontalExpand = true };
+        button.Label.Visible = false;
+        var caption = PlainDescription(button.Text);
+        caption.MouseFilter = MouseFilterMode.Ignore;
+        button.AddChild(caption);
         button.OnPressed += _ => pressed();
         return button;
     }
 
     private static PanelContainer Panel(Control content)
     {
-        content.Margin = new Thickness(10);
+        content.Margin = new Thickness(14);
         return new PanelContainer
         {
             HorizontalExpand = true,
-            PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#202A32") },
+            PanelOverride = new StyleBoxFlat
+            {
+                BackgroundColor = Color.FromHex("#19242C"),
+                BorderColor = Color.FromHex("#3C505B"),
+                BorderThickness = new Thickness(1),
+            },
             Children = { content },
         };
     }

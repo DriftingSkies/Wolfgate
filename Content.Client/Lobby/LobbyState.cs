@@ -72,7 +72,8 @@ namespace Content.Client.Lobby
 
             var width = _cfg.GetCVar(CCVars.ServerLobbyRightPanelWidth);
             // WOLFGATE(Stylesheets): the game-menu lobby keeps the chat as a dock, at most 30% of the window
-            Lobby.RightSide.SetWidth = Math.Min(width, Math.Max(500f, _userInterfaceManager.RootControl.Width * 0.3f));
+            // WOLFGATE(RoundSetup): keep room for the crew browser at 720p
+            Lobby.RightSide.SetWidth = Math.Min(width, Math.Max(340f, _userInterfaceManager.RootControl.Width * 0.28f));
 
             UpdateLobbyUi();
 
