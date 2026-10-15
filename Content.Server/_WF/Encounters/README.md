@@ -19,7 +19,8 @@ last half minute, so a stray round in a melee is not an attack. `WFEncounterMark
 encounter to all players, each with its side and colour; the radar draws them, with their zones, sector-wide, and
 ghosts find them on the Encounters tab of the orbit menu.
 A ship's stores are stowed at spawn (`fuelStores` jars and stacks a generator, two by default). A persistent ship's crate
-is checked every five minutes and topped up while its engineer lives, it is refuelled like a fighter once he is dead, and
+is checked every five minutes and topped up while its engineer lives, it is refuelled like a fighter once he is dead or a
+machine of its plant has burned dry, and
 `Judge` does not destroy a persistent encounter whose ships are out of the fight only for want of power with no hit on them.
 
 Ships can arrive stranded (`stranded: Fuel | Thrusters | Random`) and pay their side's reward to whoever gets them

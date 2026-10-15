@@ -424,6 +424,19 @@ public sealed partial class WFCrewWorkSystem
         }
     }
 
+    /// <summary>Whether any of a ship's plant has burned dry: a generator out of fuel, or an antimatter engine with an empty jar or none.</summary>
+    public bool PlantDry(EntityUid grid)
+    {
+        foreach (var machine in Plant(grid))
+        {
+            if (HasComp<FuelGeneratorComponent>(machine) && _generators.GetFuel(machine) <= 0f
+                || TryComp<AmeControllerComponent>(machine, out var controller) && Antimatter(controller) <= 0)
+                return true;
+        }
+
+        return false;
+    }
+
     /// <summary>Whether a grid has a plant an engineer could tend: a fuel generator, an antimatter engine or a fission reactor.</summary>
     public bool HasPlant(EntityUid grid) => Plant(grid).Count > 0;
 

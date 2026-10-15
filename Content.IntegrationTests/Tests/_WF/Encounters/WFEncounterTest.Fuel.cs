@@ -155,6 +155,43 @@ public sealed partial class WFEncounterTest
         await RunTicks(10);
     }
 
+    /// <summary>A persistent ship whose engineer lets the reactor burn dry has its jar swapped by the crew all the same.</summary>
+    [Test]
+    public async Task PersistentShipWithADryPlantRefuelsItself()
+    {
+        EntityUid hub = default, ame = default;
+        await Server.WaitAssertion(() =>
+        {
+            hub = SpawnEncounter(Hub, new Vector2(-47000, -47000));
+            var state = SEntMan.GetComponent<WFEncounterComponent>(hub).Ships["hub"];
+            var ship = state.Grid;
+            Assert.That(Server.System<WFEncounterSystem>().HasLivingEngineer(state), Is.True);
+
+            // No jars for the engineer to fetch and no restock coming: only the backstop can refuel it.
+            state.NextStock = TimeSpan.MaxValue;
+            foreach (var item in Stored(FuelCrate(ship)!.Value))
+                SEntMan.DeleteEntity(item);
+
+            ame = AmeOn(ship);
+            var jar = SEntMan.GetComponent<AmeControllerComponent>(ame).FuelSlot.Item;
+            SEntMan.GetComponent<AmeFuelContainerComponent>(jar!.Value).FuelAmount = 0;
+        });
+
+        var fresh = false;
+        for (var i = 0; i < 8 && !fresh; i++)
+        {
+            await RunTicks(60);
+            await Server.WaitAssertion(() => fresh = InjectingFresh(ame));
+        }
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(fresh, Is.True, "A dry reactor is refuelled though the engineer lives.");
+            Server.System<WFEncounterSystem>().End(hub);
+        });
+        await RunTicks(10);
+    }
+
     /// <summary>A persistent ship that lost its engineer swaps its spent jar itself, the way a fighter's crew does.</summary>
     [Test]
     public async Task PersistentShipWithoutAnEngineerRefuelsItself()
