@@ -268,3 +268,5 @@ wf-crew-coward-cry-2 = Don't shoot! Please, don't shoot!
 wf-crew-coward-cry-3 = I'm just a deckhand!
 wf-crew-coward-cry-4 = Take what you want, just leave me be!
 wf-crew-coward-cry-5 = Somebody, anybody, help us!
+
+wf-crew-shove = {CAPITALIZE(THE($user))} shoves {THE($crate)} aside.

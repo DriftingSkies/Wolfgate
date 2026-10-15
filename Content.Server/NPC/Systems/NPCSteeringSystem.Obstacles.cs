@@ -40,6 +40,10 @@ public sealed partial class NPCSteeringSystem
     private SteeringObstacleStatus TryHandleFlags(EntityUid uid, NPCSteeringComponent component, PathPoly poly)
     {
         DebugTools.Assert(!poly.Data.IsFreeSpace);
+
+        // WOLFGATE(NpcCrew): crew shove a loose crate off their path
+        if (TryShoveCrewObstacle(uid, component, poly) is { } shove)
+            return shove;
         // TODO: Store PathFlags on the steering comp
         // and be able to re-check it.
 

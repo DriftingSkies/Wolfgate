@@ -74,6 +74,12 @@ public sealed partial class PathfindingSystem
             {
                 modifier += 10f;
             }
+            // WOLFGATE(NpcCrew) START: a loose crate costs a shove, so crew go round it when they can.
+            else if ((end.Data.Flags & PathfindingBreadcrumbFlag.Movable) != 0x0 && (request.Flags & PathFlags.Shoving) != 0x0)
+            {
+                modifier += 4f;
+            }
+            // WOLFGATE END
             else if ((request.Flags & PathFlags.Smashing) != 0x0 && end.Data.Damage > 0f)
             {
                 modifier += 10f + end.Data.Damage / 100f;

@@ -477,6 +477,7 @@ public sealed class WFCrewSystem : EntitySystem
         if (TryComp<HTNComponent>(uid, out var htn))
         {
             _npc.SetBlackboard(uid, "NavAccess", true, htn);
+            _npc.SetBlackboard(uid, "NavShove", true, htn);
             _npc.SetBlackboard(uid, DutyKey, crew.Duty, htn);
             _npc.SetBlackboard(uid, PostRangeKey, crew.PostRange, htn);
             if (crew.Post is { } post)

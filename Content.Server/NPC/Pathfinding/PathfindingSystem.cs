@@ -457,6 +457,11 @@ namespace Content.Server.NPC.Pathfinding
                 flags |= PathFlags.Access;
             // WOLFGATE END
 
+            // WOLFGATE(NpcCrew) START: opt-in NPCs shove loose crates off their path.
+            if (blackboard.TryGetValue<bool>("NavShove", out var shove, EntityManager) && shove)
+                flags |= PathFlags.Shoving;
+            // WOLFGATE END
+
             if (blackboard.TryGetValue<bool>(NPCBlackboard.NavPry, out var pry, EntityManager) && pry)
             {
                 flags |= PathFlags.Prying;

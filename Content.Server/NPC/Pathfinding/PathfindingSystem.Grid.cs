@@ -489,6 +489,8 @@ public sealed partial class PathfindingSystem
                         var collisionMask = 0x0;
                         var collisionLayer = 0x0;
                         var damage = 0f;
+                        // WOLFGATE(NpcCrew): whether only loose crates block this point
+                        var movable = (bool?) null;
 
                         // WOLFGATE(Performance) START: wizden#44340, iterate the cached hard fixtures
                         // foreach (var ent in tileEntities)
@@ -545,6 +547,9 @@ public sealed partial class PathfindingSystem
                             if (!colliding)
                                 continue;
 
+                            // WOLFGATE(NpcCrew): one solid thing that is not a loose crate rules out shoving
+                            movable = (movable ?? true) && IsShovable(ent, xform);
+
                             if (_accessQuery.HasComponent(ent))
                             {
                                 flags |= PathfindingBreadcrumbFlag.Access;
@@ -574,10 +579,16 @@ public sealed partial class PathfindingSystem
                         }
                         */
 
+                        // WOLFGATE(NpcCrew) START: mark points held only by loose crates; flags carry over between points, this must not
+                        var pointFlags = movable == true ? flags | PathfindingBreadcrumbFlag.Movable : flags;
+                        // WOLFGATE END
+
                         var crumb = new PathfindingBreadcrumb()
                         {
                             Coordinates = new Vector2i(xOffset, yOffset),
-                            Data = new PathfindingData(flags, collisionLayer, collisionMask, damage),
+                            // WOLFGATE(NpcCrew): per-point flags
+                            // Data = new PathfindingData(flags, collisionLayer, collisionMask, damage),
+                            Data = new PathfindingData(pointFlags, collisionLayer, collisionMask, damage),
                         };
 
                         points[xOffset, yOffset] = crumb;

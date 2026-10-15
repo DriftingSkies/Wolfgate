@@ -120,4 +120,7 @@ public enum PathfindingBreadcrumbFlag : ushort
     /// Is there climbing involved
     /// </summary>
     Climb = 1 << 4,
+
+    // WOLFGATE(NpcCrew): nothing blocks it but loose crates that can be shoved aside.
+    Movable = 1 << 5,
 }

@@ -29,4 +29,7 @@ public enum PathFlags : byte
     /// Can we open stuff that requires interaction (e.g. click-open doors).
     /// </summary>
     Interact = 1 << 4,
+
+    // WOLFGATE(NpcCrew): can we shove a loose crate out of the way.
+    Shoving = 1 << 5,
 }

@@ -56,6 +56,10 @@ public sealed partial class NPCSteeringSystem
             return true;
         }
 
+        // WOLFGATE(NpcCrew): a loose crate on the node is shoved, not walked into
+        if (IsCrewShoveBlocked(uid, steering, node))
+            return false;
+
         // TODO: Ideally for "FreeSpace" we check all entities on the tile and build flags dynamically (pathfinder refactor in future).
         var ents = _entSetPool.Get();
         _lookup.GetLocalEntitiesIntersecting(node.GraphUid, node.Box.Enlarged(-0.04f), ents, flags: LookupFlags.Static);
