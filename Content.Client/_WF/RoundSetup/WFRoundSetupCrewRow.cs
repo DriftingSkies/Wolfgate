@@ -41,7 +41,7 @@ public sealed class WFRoundSetupCrewRow : Button
     /// <summary>Uses the job's existing status sprite for roles and crew identities.</summary>
     public static TextureRect JobIcon(string? job)
     {
-        var icon = new TextureRect { SetSize = new Vector2(20), VerticalAlignment = VAlignment.Center, MouseFilter = MouseFilterMode.Ignore };
+        var icon = new TextureRect { SetSize = new Vector2(24), Stretch = TextureRect.StretchMode.Scale, VerticalAlignment = VAlignment.Center, MouseFilter = MouseFilterMode.Ignore };
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
         if (prototypes.TryIndex<JobPrototype>(job ?? "Contractor", out var prototype) && prototypes.TryIndex<JobIconPrototype>(prototype.Icon, out var status))
             icon.Texture = IoCManager.Resolve<IEntityManager>().System<SpriteSystem>().Frame0(status.Icon);

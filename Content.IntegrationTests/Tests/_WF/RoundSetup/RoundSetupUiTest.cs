@@ -85,7 +85,7 @@ public sealed class RoundSetupUiTest
         {
             var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
             Assert.That(window.Title, Is.EqualTo("Mercy medical crew"));
-            Assert.That(Descendants(window).OfType<SpriteView>().Any(), Is.True);
+            Assert.That(Descendants(row).OfType<TextureRect>().Any(icon => icon.Stretch == TextureRect.StretchMode.Scale && icon.Width >= 24), Is.True);
             Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.False);
             var snapshot = pair.Client.System<WFRoundSetupClientSystem>().State!;
             Assert.That(snapshot.OwnLobby, Is.EqualTo(id));
@@ -515,15 +515,9 @@ public sealed class RoundSetupUiTest
             Assert.That(maps.GetAllMapIds().Except(originalMaps).Count(), Is.EqualTo(1));
         });
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
-        Assert.That(state.Lobbies.Single(lobby => lobby.Id == lobbyId).Vessel, Is.Null,
-            "Previewing a ship must leave the server's selection unchanged.");
-        Assert.That(state.HostBalance, Is.EqualTo(balance));
-        Button select = null!;
-        await pair.Client.WaitPost(() => select = Named<Button>(window, "RoundSetupSelectShip"));
-        await Click(pair, select);
-        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
-        Assert.That(state.Lobbies.Single(lobby => lobby.Id == lobbyId).Vessel, Is.EqualTo(vessel.Id));
-        Assert.That(state.HostBalance, Is.EqualTo(balance), "Selecting the previewed ship must not charge before launch.");
+        Assert.That(state.Lobbies.Single(lobby => lobby.Id == lobbyId).Vessel, Is.EqualTo(vessel.Id),
+            "Choosing from the dropdown commits the ship immediately.");
+        Assert.That(state.HostBalance, Is.EqualTo(balance), "Selecting a ship must not charge before Finish.");
 
         Button overview = null!;
         await pair.Client.WaitPost(() => overview = Buttons(Named<Control>(window, "RoundSetupSections"), "flow-overview").Single());
@@ -546,6 +540,86 @@ public sealed class RoundSetupUiTest
             Assert.That(maps.GetAllMapIds(), Is.EquivalentTo(originalMaps), "Closing setup must release the preview map immediately.");
         });
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = lobbyId });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>The ship wizard fits without scrolling and finishes with explicit readiness and purchase consent.</summary>
+    [TestCase(800, 600)]
+    [TestCase(1280, 720)]
+    [TestCase(1920, 1080)]
+    public async Task ShipWizardUsesNextAndFinish(int width, int height)
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Ship });
+        var id = state.OwnLobby!.Value;
+        WFRoundSetupWindow window = null!;
+        Button next = null!;
+        await pair.Client.WaitPost(() =>
+        {
+            window = new WFRoundSetupWindow();
+            window.FitTo(new Vector2(width, height));
+            window.OpenCentered();
+            window.ShowLobby(id);
+        });
+        await pair.RunTicksSync(2);
+        await pair.Client.WaitAssertion(() =>
+        {
+            AssertFits(window, new Vector2(width, height));
+            var scroll = Named<ScrollContainer>(window, "RoundSetupPageScroll");
+            var body = Named<Control>(window, "RoundSetupPage");
+            Assert.That(scroll.VScrollEnabled, Is.False);
+            Assert.That(body.DesiredSize.Y, Is.LessThanOrEqualTo(scroll.Height + 1), "Preparation must fit, not clip.");
+            next = Named<Button>(window, "RoundSetupNext");
+            Assert.That(next.Disabled, Is.True);
+            Assert.That(next.ToolTip, Is.EqualTo(Loc.GetString("wf-round-setup-ready-needs-job")));
+            Assert.That(Descendants(window).Any(control => control.Name == "RoundSetupReady"), Is.False);
+            var picker = Named<OptionButton>(window, "RoundSetupPersonalJob");
+            Assert.That(picker.ItemCount, Is.EqualTo(state.RoleJobs.Length + 1));
+            Assert.That(Descendants(picker.OptionsScroll).OfType<Button>().Where(button => button.Disabled)
+                .All(button => !string.IsNullOrWhiteSpace(button.ToolTip)), Is.True);
+        });
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectJob) { LobbyId = id, Job = "Contractor" });
+        await pair.Client.WaitPost(() =>
+        {
+            var title = Named<LineEdit>(window, "RoundSetupPersonalTitle");
+            title.SetText("Captain", invokeEvent: true);
+            next = Named<Button>(window, "RoundSetupNext");
+        });
+        await Click(pair, next);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Members.Single().Title, Is.EqualTo("Captain"));
+        await pair.Client.WaitAssertion(() => Assert.That(Named<Control>(window, "RoundSetupShipPage").Visible, Is.True));
+        var vessel = state.Vessels.OrderBy(entry => entry.Price).First();
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectVessel) { LobbyId = id, Vessel = vessel.Id });
+        await pair.Client.WaitPost(() => next = Named<Button>(window, "RoundSetupNext"));
+        await Click(pair, next);
+        await pair.Client.WaitAssertion(() =>
+        {
+            Assert.That(Labels(window), Does.Contain(Loc.GetString("wf-round-setup-roles-empty-host")));
+            next = Named<Button>(window, "RoundSetupNext");
+        });
+        await Click(pair, next);
+        await pair.Client.WaitAssertion(() =>
+        {
+            var finish = Named<Button>(window, "RoundSetupReady");
+            Assert.That(finish.Text, Is.EqualTo(Loc.GetString("wf-round-setup-finish-ready")));
+            Assert.That(Named<Button>(window, "RoundSetupSave").Disabled, Is.True);
+            Assert.That(Named<Button>(window, "RoundSetupSave").ToolTip, Is.Not.Empty);
+            AssertFits(window, new Vector2(width, height));
+            Named<LineEdit>(window, "RoundSetupSaveName").SetText("Wizard preset", invokeEvent: true);
+            next = Named<Button>(window, "RoundSetupSave");
+        });
+        await Click(pair, next);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        Assert.That(state.SavedSetups.Single().JobTitle, Is.EqualTo("Captain"));
+        var savedId = state.SavedSetups.Single().Id;
+        await pair.Client.WaitPost(() => next = Named<Button>(window, "RoundSetupReady"));
+        await Click(pair, next);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Members.Single().Ready, Is.True);
+        await pair.Client.WaitAssertion(() => Assert.That(window.IsOpen, Is.False));
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.DeleteSetup) { SavedId = savedId });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
         await pair.CleanReturnAsync();
     }
 

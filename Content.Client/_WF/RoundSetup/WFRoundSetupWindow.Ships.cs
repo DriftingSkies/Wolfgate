@@ -8,8 +8,6 @@ namespace Content.Client._WF.RoundSetup;
 
 public sealed partial class WFRoundSetupWindow
 {
-    private string? _selectedVessel;
-
     private static string Price(int amount) => BankSystemExtensions.ToSpesoString(amount);
 
     private RichTextLabel VesselSummary(WFRoundSetupState state, WFRoundSetupLobby lobby)
@@ -51,36 +49,27 @@ public sealed partial class WFRoundSetupWindow
             Filterable = true,
         };
         selector.AddItem(Text("ship-placeholder"), -1);
+        selector.DisableItem(0, Text("ship-unselected"));
         for (var i = 0; i < state.Vessels.Length; i++)
         {
             var vessel = state.Vessels[i];
             selector.AddItem(Text("ship-option", ("ship", vessel.Name), ("price", Price(vessel.Price))), i);
         }
-        var selected = Array.FindIndex(state.Vessels, vessel => vessel.Id == (_selectedVessel ?? lobby.Vessel));
+        var selected = Array.FindIndex(state.Vessels, vessel => vessel.Id == lobby.Vessel);
         selector.SelectId(selected);
         var choice = selected >= 0 ? state.Vessels[selected] : null;
         selector.ToolTip = choice?.Description;
         preview.SetVessel(PreviewVessel(choice?.Id));
         preview.ToolTip = choice?.Description;
-        var select = Button("select-ship", () =>
-        {
-            if (selector.SelectedId < 0)
-                return;
-            var vessel = state.Vessels[selector.SelectedId];
-            _selectedVessel = null;
-            SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectVessel) { LobbyId = lobby.Id, Vessel = vessel.Id });
-        }, selected < 0);
-        select.Name = "RoundSetupSelectShip";
-        select.ToolTip = Text("ship-purchase-help");
         selector.OnItemSelected += args =>
         {
             selector.SelectId(args.Id);
             var vessel = args.Id < 0 ? null : state.Vessels[args.Id];
-            _selectedVessel = vessel?.Id;
             selector.ToolTip = vessel?.Description;
             preview.ToolTip = vessel?.Description;
             preview.SetVessel(PreviewVessel(vessel?.Id));
-            select.Disabled = vessel == null;
+            if (vessel != null)
+                SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectVessel) { LobbyId = lobby.Id, Vessel = vessel.Id });
         };
         section.AddChild(selector);
         section.AddChild(PlainDescription(state.HostBalance is { } balance
@@ -99,7 +88,7 @@ public sealed partial class WFRoundSetupWindow
             ShipStart = (WFShipStartLocation) args.Id,
         });
         section.AddChild(location);
-        section.AddChild(select);
+
         AddShipPreviewLayout(section, preview);
     }
 

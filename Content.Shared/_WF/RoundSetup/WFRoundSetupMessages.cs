@@ -23,7 +23,7 @@ public enum WFRoundSetupAction : byte
 {
     Refresh, Create, Configure, Join, Leave, AcceptRequest, RejectRequest,
     Invite, AcceptInvite, DeclineInvite, SelectJob, SetReady, Launch, RegenerateCode, Kick, TransferHost,
-    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart, ApplyRoster,
+    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart, ApplyRoster, SetTitle, SaveSetup, LoadSetup, DeleteSetup,
 }
 
 /// <summary>A request whose actor is always taken from its network session.</summary>
@@ -47,6 +47,8 @@ public sealed class WFRoundSetupRequest : EntityEventArgs
     public string? Title;
     public int Capacity = 1;
     public WFCrewRoster Roster;
+    public int SavedId;
+    public string? SaveName;
 
     public WFRoundSetupRequest(WFRoundSetupAction action) { Action = action; }
 }
@@ -57,7 +59,7 @@ public sealed record WFRoundSetupPlayer(NetUserId UserId, string Name, int? Role
 
 /// <summary>A member's own job and readiness, with no character profile data.</summary>
 [Serializable, NetSerializable]
-public sealed record WFRoundSetupMember(NetUserId UserId, string Name, string? Job, NetEntity? Station, bool Ready, bool Spawned, bool Connected, int? RoleId = null);
+public sealed record WFRoundSetupMember(NetUserId UserId, string Name, string? Job, NetEntity? Station, bool Ready, bool Spawned, bool Connected, int? RoleId = null, string Title = "");
 
 /// <summary>A job choice offered by the server for this player's scenario.</summary>
 [Serializable, NetSerializable]
@@ -112,6 +114,7 @@ public sealed class WFRoundSetupState : EntityEventArgs
     public WFRoundSetupPlayer[] InviteTargets = Array.Empty<WFRoundSetupPlayer>();
     public WFRoundSetupJob[] Jobs = Array.Empty<WFRoundSetupJob>();
     public WFRoundSetupJob[] RoleJobs = Array.Empty<WFRoundSetupJob>();
+    public WFSavedSetup[] SavedSetups = Array.Empty<WFSavedSetup>();
     public WFRoundSetupVessel[] Vessels = Array.Empty<WFRoundSetupVessel>();
     public int? HostBalance;
     public string? Message;

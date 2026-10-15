@@ -12,6 +12,7 @@ public sealed class WFRoundSetupOptionButton : OptionButton
     private readonly Label _source;
     private readonly RichTextLabel _caption;
     private string? _shown;
+    private readonly List<Button> _choices = new();
 
     /// <summary>Keeps the dropdown indicator separate from the wrapping selection caption.</summary>
     public WFRoundSetupOptionButton()
@@ -57,9 +58,17 @@ public sealed class WFRoundSetupOptionButton : OptionButton
         _caption.SetMessage(FormattedMessage.FromUnformatted((_shown ?? string.Empty).Trim()));
     }
 
+    /// <summary>Explains why a popup choice cannot currently be selected.</summary>
+    public void DisableItem(int index, string reason)
+    {
+        SetItemDisabled(index, true);
+        _choices[index].ToolTip = reason;
+    }
+
     /// <summary>Uses wrapping text for each searchable popup choice.</summary>
     public override void ButtonOverride(Button button)
     {
+        _choices.Add(button);
         button.Label.Visible = false;
         var caption = new RichTextLabel { HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore };
         caption.SetMessage(FormattedMessage.FromUnformatted(button.Text ?? string.Empty));

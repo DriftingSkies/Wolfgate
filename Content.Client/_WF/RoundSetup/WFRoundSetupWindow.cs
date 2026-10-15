@@ -92,16 +92,28 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         }
         if (state.Message != null)
             _confirmingJoin = false;
+        if (_pendingPage is { } page)
+        {
+            var own = state.Lobbies.FirstOrDefault(lobby => lobby.Id == state.OwnLobby);
+            var me = own?.Members.FirstOrDefault(member => member.UserId == _players.LocalSession?.UserId);
+            if (state.Message != null)
+                _pendingPage = null;
+            else if (me?.Title == _personalTitle.Trim())
+            {
+                _personalTitleDirty = false;
+                _pendingPage = null;
+                _lobbyPage = page;
+            }
+        }
         var previous = _state;
         _state = state;
-        var previousOwn = previous?.Lobbies.FirstOrDefault(lobby => lobby.Id == previous.OwnLobby);
-        var currentOwn = state.Lobbies.FirstOrDefault(lobby => lobby.Id == state.OwnLobby);
-        if (previousOwn?.Scenario != currentOwn?.Scenario)
-            _selectedVessel = null;
         if (previous?.OwnLobby != state.OwnLobby)
         {
-            _selectedVessel = null;
             _roleDrafts.Clear();
+            _personalTitleDirty = false;
+            _pendingPage = null;
+            _saveName = string.Empty;
+            _settingsDirty = false;
             _inviteTarget = null;
             _pageScroll.VScroll = 0;
             _editingRole = null;
@@ -141,9 +153,12 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         var available = state.CanJoin && state.OwnLobby == null && lobby.MemberCount < WFRoundSetupPolicy.MaximumMembers &&
                         (!lobby.Started || lobby.AllowLateJoin);
         available &= BuildBrowseRoles(content, lobby, available);
+        var disabledReason = !state.CanJoin ? "disabled-join" : state.OwnLobby != null ? "disabled-own-crew" :
+            lobby.MemberCount >= WFRoundSetupPolicy.MaximumMembers ? "disabled-full" :
+            lobby.Started && !lobby.AllowLateJoin ? "latejoin-closed" : "no-roles";
         if (invitation)
         {
-            content.AddChild(FlowRow(Button("accept-invite", () => JoinLobby(WFRoundSetupAction.AcceptInvite, lobby.Id), !available),
+            content.AddChild(FlowRow(Button("accept-invite", () => JoinLobby(WFRoundSetupAction.AcceptInvite, lobby.Id), !available, disabledReason),
                 Button("decline", () => Send(WFRoundSetupAction.DeclineInvite, lobby.Id))));
         }
         else if (lobby.Access == WFLobbyAccess.Code)
@@ -154,6 +169,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 Text = _enteredCodes.GetValueOrDefault(lobby.Id, string.Empty),
                 HorizontalExpand = true,
                 Editable = available,
+                ToolTip = available ? null : Text(disabledReason),
             };
             code.OnTextChanged += _ => _enteredCodes[lobby.Id] = code.Text;
             content.AddChild(FlowRow(code, Button("join-code", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Join)
@@ -161,12 +177,12 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 LobbyId = lobby.Id,
                 Code = code.Text.Trim(),
                 RoleId = _browsedRoles.GetValueOrDefault(lobby.Id),
-            }), !available)));
+            }), !available, disabledReason)));
         }
         else if (lobby.Access is WFLobbyAccess.Public or WFLobbyAccess.Requests)
         {
             content.AddChild(Button(lobby.Access == WFLobbyAccess.Requests ? "request-join" : "join",
-                () => JoinLobby(WFRoundSetupAction.Join, lobby.Id), !available));
+                () => JoinLobby(WFRoundSetupAction.Join, lobby.Id), !available, disabledReason));
         }
         else
             content.AddChild(Description(lobby.Access == WFLobbyAccess.Invite ? "invite-only" : "closed-help"));
@@ -192,7 +208,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         var title = new LineEdit { Text = _draftTitle, PlaceHolder = Text("crew-title-placeholder"), HorizontalExpand = true };
         title.OnTextChanged += _ => { _draftTitle = title.Text; _settingsDirty = true; };
         settings.AddChild(title);
-        settings.AddChild(Description("crew-title-help"));
+        title.ToolTip = Text("crew-title-help");
         settings.AddChild(Heading("admission"));
         var access = new WFRoundSetupOptionButton { HorizontalExpand = true };
         foreach (var option in Enum.GetValues<WFLobbyAccess>())
@@ -214,7 +230,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         settings.AddChild(access);
         settings.AddChild(lateJoin);
 
-        settings.AddChild(Button("save-settings", () =>
+        if (lobby.Started || lobby.Scenario != WFRoundScenario.Ship)
+            settings.AddChild(Button("save-settings", () =>
         {
             _settingsDirty = false;
             SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Configure)
@@ -233,6 +250,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 Button("rotate-code", () => Send(WFRoundSetupAction.RegenerateCode, lobby.Id))));
         }
         _body.AddChild(Panel(settings));
+        BuildSaveSetup(lobby, state);
 
         if (lobby.Requests.Length > 0)
         {
@@ -285,13 +303,12 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             _body.AddChild(characters);
         }
 
-        if (lobby.Host == member.UserId)
-            BuildHostRoleChoice(lobby, member);
-        if (member.RoleId == null)
+        if (lobby.Host == member.UserId || member.RoleId == null)
             BuildPersonalJobSetup(state, lobby, member);
         else if (lobby.Host != member.UserId)
             BuildMemberRoles(lobby, member);
-
+        if (lobby.Host == member.UserId)
+            BuildPersonalTitle(member);
     }
 
     /// <summary>Keeps unchanged periodic snapshots from interrupting text entry and open selectors.</summary>
@@ -299,7 +316,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     {
         return first.InRound == second.InRound && first.CanJoin == second.CanJoin && first.OwnLobby == second.OwnLobby &&
                first.CrashlandedAvailable == second.CrashlandedAvailable && first.HostBalance == second.HostBalance &&
-               first.Vessels.SequenceEqual(second.Vessels) &&
+               SameSavedSetups(first.SavedSetups, second.SavedSetups) && first.Vessels.SequenceEqual(second.Vessels) &&
                first.Jobs.SequenceEqual(second.Jobs) && first.RoleJobs.SequenceEqual(second.RoleJobs) && first.InviteTargets.SequenceEqual(second.InviteTargets) &&
                first.Lobbies.Length == second.Lobbies.Length && first.Invitations.Length == second.Invitations.Length &&
                first.Lobbies.Zip(second.Lobbies).All(pair => SameLobby(pair.First, pair.Second)) &&
@@ -392,9 +409,10 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         return label;
     }
 
-    private static Button Button(string key, Action pressed, bool disabled = false)
+    private static Button Button(string key, Action pressed, bool disabled = false, string? disabledReason = null)
     {
-        var button = new Button { Text = Text(key), Disabled = disabled, MinHeight = 40, HorizontalExpand = true };
+        var button = new Button { Text = Text(key), Disabled = disabled, MinHeight = 40, HorizontalExpand = true,
+            ToolTip = disabled ? Text(disabledReason ?? "disabled-join") : null };
         if (key == "leave")
             button.AddStyleClass("ButtonColorRed");
         button.Label.Visible = false;

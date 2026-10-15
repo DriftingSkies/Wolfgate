@@ -11,6 +11,8 @@ public enum WFLobbyJoinDecision : byte
 /// <summary>Membership limits and access rules shared by scenario lobby operations.</summary>
 public static class WFRoundSetupPolicy
 {
+    /// <summary>The maximum reusable setups stored for one account on this server.</summary>
+    public const int MaximumSavedSetups = 20;
     /// <summary>The maximum number of members in one player lobby.</summary>
     public const int MaximumMembers = 16;
     /// <summary>The maximum number of distinct roles offered by one lobby.</summary>

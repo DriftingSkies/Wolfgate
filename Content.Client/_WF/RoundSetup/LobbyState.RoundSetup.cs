@@ -60,6 +60,10 @@ public sealed partial class LobbyState
         Lobby.SetRoundSetupJoinText(Loc.GetString($"wf-round-setup-home-{action}"), Loc.GetString($"wf-round-setup-home-{help}"));
         Lobby.RoundSetupButton.Visible = true;
         Lobby.RoundSetupButton.Disabled = !own && _roundSetup?.State is not { CanJoin: true };
+        if (Lobby.ReadyButton.Disabled)
+            Lobby.ReadyButton.ToolTip = Loc.GetString("wf-round-setup-disabled-join");
+        Lobby.RoundSetupButton.ToolTip = Lobby.RoundSetupButton.Disabled ? Loc.GetString("wf-round-setup-disabled-join") :
+            Loc.GetString("wf-round-setup-home-member-help");
         Lobby.RoundSetupButton.Text = Loc.GetString(_gameTicker.IsGameStarted
             ? "wf-round-setup-home-join-crew"
             : "wf-round-setup-home-setup");

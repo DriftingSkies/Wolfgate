@@ -280,6 +280,7 @@ public sealed partial class WFRoundSetupSystem
                 return false;
             }
             completed = true;
+            ApplyCrewTitle(lobby, member, session);
             UpdatePortrait(session.UserId, member);
             member.Spawned = true;
             member.Ready = false;

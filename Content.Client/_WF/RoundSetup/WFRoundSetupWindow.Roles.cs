@@ -1,4 +1,7 @@
 using System.Linq;
+using Content.Client.Players.PlayTimeTracking;
+using Content.Shared.Preferences;
+using Content.Shared.Roles;
 using Content.Shared._WF.RoundSetup;
 using Robust.Client.UserInterface.Controls;
 
@@ -26,6 +29,8 @@ public sealed partial class WFRoundSetupWindow
 
     private string MemberRoleName(WFRoundSetupLobby lobby, WFRoundSetupMember member)
     {
+        if (!string.IsNullOrEmpty(member.Title))
+            return member.Title;
         var role = lobby.Roles.FirstOrDefault(choice => choice.Id == member.RoleId);
         return role == null ? JobName(member.Job) : RoleName(role);
     }
@@ -33,24 +38,36 @@ public sealed partial class WFRoundSetupWindow
     /// <summary>Chooses the host's own job independently of advertised guest openings.</summary>
     private void BuildPersonalJobSetup(WFRoundSetupState state, WFRoundSetupLobby lobby, WFRoundSetupMember member)
     {
-        if (state.Jobs.Length == 0)
+        if (state.RoleJobs.Length == 0 && state.Jobs.Length == 0)
         {
             _body.AddChild(Description("no-jobs"));
             return;
         }
-        var jobs = state.Jobs;
+        var jobs = lobby.Host == member.UserId ? state.RoleJobs : state.Jobs;
         var selected = Array.FindIndex(jobs, job => job.Id == member.Job && job.Station == member.Station);
         var picker = new WFRoundSetupOptionButton
         {
             Name = "RoundSetupPersonalJob",
             HorizontalExpand = true,
             Disabled = member.Ready,
+            ToolTip = member.Ready ? Text("unready-edit") : Text("personal-job-help"),
             Filterable = true,
         };
         picker.AddItem(Text("job-unselected"), -1);
-        picker.SetItemDisabled(0, true);
+        picker.DisableItem(0, Text("ready-needs-job"));
         for (var i = 0; i < jobs.Length; i++)
+        {
             picker.AddItem(JobChoice(jobs[i]), i);
+            if (!state.Jobs.Any(job => job.Id == jobs[i].Id && job.Station == jobs[i].Station))
+            {
+                var reason = Text("job-restricted");
+                if (_prototypes.TryIndex<JobPrototype>(jobs[i].Id, out var prototype) &&
+                    !IoCManager.Resolve<JobRequirementsManager>().IsAllowed(prototype,
+                        _preferences.Preferences?.SelectedCharacter as HumanoidCharacterProfile, out var requirement))
+                    reason = requirement.ToString();
+                picker.DisableItem(i + 1, reason);
+            }
+        }
         picker.SelectId(selected);
         picker.OnItemSelected += args =>
         {
@@ -67,24 +84,6 @@ public sealed partial class WFRoundSetupWindow
         };
         _body.AddChild(Heading("personal-job"));
         _body.AddChild(picker);
-    }
-
-    /// <summary>Lets the host occupy an advertised captain or specialist slot without privileged job substitution.</summary>
-    private void BuildHostRoleChoice(WFRoundSetupLobby lobby, WFRoundSetupMember member)
-    {
-        if (lobby.Roles.Length == 0)
-            return;
-        var selector = new WFRoundSetupOptionButton { Name = "RoundSetupHostRole", HorizontalExpand = true, Disabled = member.Ready };
-        selector.AddItem(Text("host-independent-job"), -1);
-        foreach (var role in lobby.Roles.Where(role => role.CanSelect || role.Id == member.RoleId))
-            selector.AddItem(RoleChoice(role), role.Id);
-        selector.SelectId(member.RoleId ?? -1);
-        selector.OnItemSelected += args => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectRole)
-        {
-            LobbyId = lobby.Id, RoleId = args.Id < 0 ? null : args.Id,
-        });
-        _body.AddChild(Heading("host-position"));
-        _body.AddChild(selector);
     }
 
     private string JobChoice(WFRoundSetupJob job) => string.IsNullOrEmpty(job.StationName)
@@ -136,7 +135,7 @@ public sealed partial class WFRoundSetupWindow
             _body.AddChild(Description("no-roles"));
             return;
         }
-        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Disabled = member.Ready };
+        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Disabled = member.Ready, ToolTip = member.Ready ? Text("unready-edit") : null };
         foreach (var role in choices)
             selector.AddItem(RoleChoice(role), role.Id);
         selector.SelectId(member.RoleId ?? choices[0].Id);
@@ -192,7 +191,7 @@ public sealed partial class WFRoundSetupWindow
             entry.OnPressed += _ => { _editingRole = role.Id; Redraw(); };
             _body.AddChild(entry);
         }
-        _body.AddChild(Button("role-new", () => { _editingRole = 0; Redraw(); }, !canAdd));
+        _body.AddChild(Button("role-new", () => { _editingRole = 0; Redraw(); }, !canAdd, state.RoleJobs.Length == 0 ? "no-jobs" : "role-limit"));
     }
 
     private PanelContainer RoleEditor(WFRoundSetupState state, WFRoundSetupLobby lobby, WFRoundSetupRole? role)
@@ -221,6 +220,7 @@ public sealed partial class WFRoundSetupWindow
             PlaceHolder = Text("role-name-placeholder"),
             HorizontalExpand = true,
             Editable = !spawned,
+            ToolTip = spawned ? Text("role-spawned-help") : null,
             IsValid = value => value.Length <= WFRoundSetupPolicy.MaximumRoleNameLength,
         };
         name.OnTextChanged += _ => { draft.Name = name.Text; draft.Dirty = true; };
@@ -229,7 +229,8 @@ public sealed partial class WFRoundSetupWindow
         var jobs = new List<WFRoundSetupJob>(state.RoleJobs);
         if (draft.Job is { } current && !jobs.Contains(current))
             jobs.Add(current);
-        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Filterable = true, Disabled = occupied > 0 || jobs.Count == 0 };
+        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Filterable = true, Disabled = occupied > 0 || jobs.Count == 0,
+            ToolTip = occupied > 0 ? Text("role-occupied-help") : jobs.Count == 0 ? Text("no-jobs") : null };
         for (var i = 0; i < jobs.Count; i++)
         {
             var job = jobs[i];
@@ -271,14 +272,14 @@ public sealed partial class WFRoundSetupWindow
                 Station = job.Station,
                 Capacity = capacity.Value,
             });
-        }, jobs.Count == 0);
+        }, jobs.Count == 0, "no-jobs");
         var actions = FlowRow(new Label { Text = Text("role-capacity") }, capacity, save);
         if (role != null)
             actions.AddChild(Button("role-remove", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.RemoveRole)
             {
                 LobbyId = lobby.Id,
                 RoleId = role.Id,
-            }), occupied > 0));
+            }), occupied > 0, "role-occupied-help"));
         content.AddChild(actions);
         if (occupied > 0)
             content.AddChild(Description(spawned ? "role-spawned-help" : "role-occupied-help"));

@@ -14,7 +14,11 @@ Crashlanded requires the existing `wf.planet_networks` server setting and a sect
 
 Ship crew lets the host select an unrestricted civilian shipyard design and inspect it with the embedded Wolfgate ship previewer, including pan, zoom and fit controls. Selecting a ship is free; readying up inside Round Setup authorizes its listed price from the host's selected character at launch. The server rechecks price, funds, Ironman restrictions and active ship limits. Failed launches refund the same character; accepted crew and later arrivals pay nothing. Hosts choose random clear sector space or a compatible dock at CC; the central station is identified by its existing sector-service host component. Docking uses the existing collision checks and refuses launch without charging if no berth fits. Changing location clears readiness and purchase consent. The ship appears at the selected location and uses normal deeds, repair data, ownership and crew door access. Join Normally never authorizes a ship purchase.
 
-New lobbies contain only the host, with an independent personal job choice and no advertised crew roles. New openings default to one slot. Ship hosts can advertise civilian and medical jobs independently of their own eligibility, including the existing Emergency Responder job (MdMedic). Medical, salvage and service rosters add editable openings without overwriting occupied roles. Hosts can reserve their own Captain slot; this crew title does not grant station command privileges. Job bans and qualifications still apply to each recruit. Hosts can edit vacancies and capacities after launch; existing spawned identities remain unchanged. Hosts can name crew roles, choose an underlying job and set 1ï¿½16 slots per role (up to 16 roles). Joining or accepting a request reserves a role; disconnected and spawned members retain their slots. Occupied roles cannot change jobs or be removed. Labels appear only in Round Setup: Contractor/Vagrant is called Drifter there, while existing saved jobs, equipment and custom in-world titles remain unchanged.
+New lobbies contain only the host, with an independent personal job choice and no advertised crew roles. New openings default to one slot. Ship hosts can advertise civilian and medical jobs independently of their own eligibility, including the existing Emergency Responder job (MdMedic). Medical, salvage and service rosters add editable openings without overwriting occupied roles. Hosts choose from the same job catalog on Prepare and can give themselves a custom title such as Captain; the title does not grant station command privileges. Job bans and qualifications still apply to each recruit. Hosts can edit vacancies and capacities after launch; existing spawned identities remain unchanged. Hosts can name crew roles, choose an underlying job and set 1ï¿½16 slots per role (up to 16 roles). Joining or accepting a request reserves a role; disconnected and spawned members retain their slots. Occupied roles cannot change jobs or be removed. Contractor/Vagrant is called Drifter in Round Setup. Personal and advertised crew titles appear on the spawned ID, mind and station record while the underlying job still determines equipment and access. Public names always come from the selected character, never the account identifier.
+
+Ship preparation follows Prepare, Your ship, Crew and Who can join, with a fixed Next action on the first three pages and Finish on the last. Prepare fits without a scrollbar; ship selection commits directly from its dropdown. Finish saves admission settings and confirms readiness or purchase and launch, while a ready member can reopen setup to revoke consent. Disabled actions and locked job choices explain their requirements on hover. Job sprites scale to a readable 24-pixel size.
+
+Hosts can save up to 20 named scenarios from Who can join and load or delete them from Create. Saves belong to the server account and persist in versioned files under the server user-data `round-setups` directory. They contain scenario, vessel, departure, personal job/title, recruitment roles and admission settings, without members, invite codes or purchase authorization. Loading validates the current catalog and creates a new unready crew; a personal job the character no longer qualifies for is left unselected. Saving under an existing name replaces it. Writes retain a backup, and unreadable saves are protected from automatic overwrite.
 
 Pregame lasts six minutes by default, including the Monolith server preset. For local playtests, the default-off `wf.round_setup.demo_enabled` setting seeds a public Crashlanded lobby when the real player named by `wf.round_setup.demo_host` connects. It has a ready host and three explicit Drifter openings. See `Tools/_WF/RoundSetup/README.md` for the headless host launcher. Normal servers never create demo lobbies.
 
@@ -38,7 +42,9 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.cs`](WFRoundSetupSystem.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Demo.cs`](WFRoundSetupSystem.Demo.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Roles.cs`](WFRoundSetupSystem.Roles.cs)
+- [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Saved.cs`](WFRoundSetupSystem.Saved.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Spawning.cs`](WFRoundSetupSystem.Spawning.cs)
+- [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Titles.cs`](WFRoundSetupSystem.Titles.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioComponent.cs`](WFShipScenarioComponent.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.cs`](WFShipScenarioSystem.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.Docking.cs`](WFShipScenarioSystem.Docking.cs)
@@ -50,6 +56,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupCVars.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupCVars.cs)
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupMessages.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupMessages.cs)
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupPolicy.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupPolicy.cs)
+- [`Content.Shared/_WF/RoundSetup/WFSavedSetup.cs`](../../../Content.Shared/_WF/RoundSetup/WFSavedSetup.cs)
 - [`Content.Shared/_WF/RoundSetup/WFShipCrewJobs.cs`](../../../Content.Shared/_WF/RoundSetup/WFShipCrewJobs.cs)
 
 ### Client
@@ -71,6 +78,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Preview.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Preview.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Roles.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Roles.cs)
+- [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Saved.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Saved.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.ScenarioColumns.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.ScenarioColumns.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Ships.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Ships.cs)
 
@@ -106,6 +114,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/server.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/server.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/ship.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/ship.ftl)
+- [`Resources/Locale/en-US/_WF/RoundSetup/wizard.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/wizard.ftl)
 
 ### Tools
 
