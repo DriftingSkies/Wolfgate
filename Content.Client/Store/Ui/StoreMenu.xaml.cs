@@ -206,7 +206,7 @@ public sealed partial class StoreMenu : DefaultWindow
                 var currentDiscountMessage = Loc.GetString(
                     "store-ui-discount-display-with-currency",
                     ("amount", amount.ToString("P0")),
-                    ("currency", Loc.GetString(currencyPrototype.DisplayName))
+                    ("currency", Loc.GetString(currencyPrototype.DisplayName, ("amount", 2))) // WOLFGATE(Currency): plural currency names need an amount
                 );
                 sb.Append(currentDiscountMessage);
             }

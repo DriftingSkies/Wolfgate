@@ -480,7 +480,7 @@ public sealed class WFReaverFightTest : WFReaverTestBase
 
         await RunTicks(30);
         var lines = ChatSince(since);
-        Assert.That(lines.Any(line => line.Contains("retaken from the Reavers") && line.Contains($"Bounty {RetakeBounties[2]} spesos paid")), Is.True,
+        Assert.That(lines.Any(line => line.Contains("retaken from the Reavers") && line.Contains($"Bounty {RetakeBounties[2]} thalers paid")), Is.True,
             "The announcement says the bounty was paid.");
         Assert.That(lines.Any(line => line.Contains("retaken from the Reavers") && line.Contains("No bounty was claimed")), Is.True);
     }

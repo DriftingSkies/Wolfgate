@@ -19,6 +19,7 @@ the number itself, not a preformatted string.
 
 ## Non-modular edits
 
+- [`Content.Client/Store/Ui/StoreMenu.xaml.cs`](../../../Content.Client/Store/Ui/StoreMenu.xaml.cs): plural currency names need an amount
 - [`Resources/Locale/en-US/_DV/cartridge-loader/cartridges.ftl`](../../../Resources/Locale/en-US/_DV/cartridge-loader/cartridges.ftl): the currency is thalers
 - [`Resources/Locale/en-US/_Goobstation/round-end/round-end-summary-window.ftl`](../../../Resources/Locale/en-US/_Goobstation/round-end/round-end-summary-window.ftl): the currency is thalers
 - [`Resources/Locale/en-US/_Mono/cargo/mmc-bounties.ftl`](../../../Resources/Locale/en-US/_Mono/cargo/mmc-bounties.ftl): the currency is thalers
@@ -44,6 +45,7 @@ the number itself, not a preformatted string.
 - [`Resources/Prototypes/_NF/Entities/Objects/Specific/Hydroponics/seeds.yml`](../../../Resources/Prototypes/_NF/Entities/Objects/Specific/Hydroponics/seeds.yml): the currency is thalers
 - [`Resources/Prototypes/Catalog/Fills/Items/briefcases.yml`](../../../Resources/Prototypes/Catalog/Fills/Items/briefcases.yml): the currency is thalers
 - [`Resources/Prototypes/Catalog/Fills/Lockers/wardrobe_job.yml`](../../../Resources/Prototypes/Catalog/Fills/Lockers/wardrobe_job.yml): the currency is thalers
+- [`Resources/Prototypes/Datasets/ion_storm.yml`](../../../Resources/Prototypes/Datasets/ion_storm.yml): the currency is thalers
 - [`Resources/Prototypes/Entities/Objects/Misc/space_cash.yml`](../../../Resources/Prototypes/Entities/Objects/Misc/space_cash.yml): the currency is thalers
 - [`Resources/Prototypes/Entities/Structures/Wallmounts/Signs/bar_sign.yml`](../../../Resources/Prototypes/Entities/Structures/Wallmounts/Signs/bar_sign.yml): the currency is thalers
 - [`Resources/ServerInfo/_Mono/Guidebook/BeginnerGuide.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/BeginnerGuide.xml): the currency is thalers

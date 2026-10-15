@@ -1,4 +1,4 @@
-# Display names for the Speso and Spesso currency prototypes, which Frontier left without strings
+# Display names for the Speso currency and its counterfeit, which Frontier left without strings
 bank-currency-display-spesos = { $amount ->
         [one] thaler
        *[other] thalers

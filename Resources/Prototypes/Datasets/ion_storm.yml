@@ -895,7 +895,8 @@
   - PARCELS
   - PRIZE TICKETS
   - SCRAP
-  - SPESSOS
+  # WOLFGATE(Currency): the currency is thalers
+  - THALERS
   # End Frontier
 
 # Requires are basically all dumb internet memes.
