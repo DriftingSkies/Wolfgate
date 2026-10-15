@@ -54,6 +54,17 @@
         HorizontalExpand="True"
         AppendStyleClass="{x:Static style:StyleBase.ButtonSquare}"
         />
+    <!-- WOLFGATE(RoundSetup) START: open crew setup from the gameplay toolbar -->
+    <ui:MenuButton
+        Name="CrewSetupButton"
+        Access="Internal"
+        Icon="{xe:Tex '/Textures/Interface/VerbIcons/group.svg.192dpi.png'}"
+        ToolTip="{Loc 'wf-round-setup-toolbar-tooltip'}"
+        MinSize="42 64"
+        HorizontalExpand="True"
+        AppendStyleClass="{x:Static style:StyleBase.ButtonSquare}"
+        />
+    <!-- WOLFGATE END -->
     <ui:MenuButton
         Name="EmotesButton"
         Access="Internal"

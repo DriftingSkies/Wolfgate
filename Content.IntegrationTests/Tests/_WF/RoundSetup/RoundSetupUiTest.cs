@@ -13,6 +13,9 @@ using Content.IntegrationTests.Pair;
 using Content.Shared._NF.Bank;
 using Content.Shared._WF.CCVar;
 using Content.Client.Voting;
+using Content.Client.UserInterface.Controls;
+using Content.Client.UserInterface.Systems.MenuBar.Widgets;
+using Content.Shared.CCVar;
 using Content.Client.Voting.UI;
 using Content.Shared._WF.RoundSetup;
 using Robust.Client.ResourceManagement;
@@ -56,6 +59,60 @@ public sealed class RoundSetupUiTest
             Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
             window.Close();
         });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>The toolbar toggles crew setup, follows window closure and survives HUD layout changes.</summary>
+    [Test]
+    public async Task GameplayToolbarTogglesCrewSetup()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+        var originalLayout = pair.Client.CfgMan.GetCVar(CCVars.UILayout);
+        await pair.Server.WaitPost(() =>
+        {
+            var ticker = pair.Server.System<GameTicker>();
+            ticker.StartRound(force: true);
+            ticker.JoinAsObserver(pair.Player!);
+        });
+        await pair.RunTicksSync(pair.SecondsToTicks(3));
+        await PoolManager.WaitUntil(pair.Client, () => ui.GetActiveUIWidgetOrNull<GameTopMenuBar>() != null, maxTicks: 180);
+        MenuButton button = null!;
+        foreach (var layout in new[] { "Default", "Separated" })
+        {
+            await pair.Client.WaitPost(() => pair.Client.CfgMan.SetCVar(CCVars.UILayout, layout));
+            await pair.RunTicksSync(2);
+            await pair.Client.WaitAssertion(() =>
+            {
+                button = Named<MenuButton>(ui.ActiveScreen!, "CrewSetupButton");
+                Assert.That(button.VisibleInTree, Is.True);
+                Assert.That(button.Icon, Is.Not.Null);
+                Assert.That(Descendants(button).OfType<TextureRect>().Single().TextureScale, Is.EqualTo(Vector2.One));
+                Assert.That(button.ToolTip, Does.StartWith("Crew Setup"));
+                Assert.That(Content.Client.UserInterface.BoundKeyHelper.ShortKeyName(button.BoundKey), Is.EqualTo(" "));
+                Assert.That(button.Pressed, Is.False);
+            });
+            await Click(pair, button);
+            await pair.Client.WaitAssertion(() =>
+            {
+                var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
+                Assert.That(window.Title, Is.EqualTo("Crew Setup"));
+                Assert.That(button.Pressed, Is.True);
+                window.Close();
+                Assert.That(button.Pressed, Is.False);
+            });
+            await pair.Client.WaitPost(() => ui.GetUIController<WFRoundSetupUIController>().OpenWindow());
+            await pair.Client.WaitAssertion(() => Assert.That(button.Pressed, Is.True));
+            await Click(pair, button);
+            await pair.Client.WaitAssertion(() =>
+            {
+                Assert.That(Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>(), Is.Empty);
+                Assert.That(button.Pressed, Is.False);
+            });
+        }
+        await pair.Client.WaitPost(() => pair.Client.CfgMan.SetCVar(CCVars.UILayout, originalLayout));
+        await pair.Server.WaitPost(() => pair.Server.System<GameTicker>().RestartRound());
+        await pair.RunTicksSync(2);
         await pair.CleanReturnAsync();
     }
 

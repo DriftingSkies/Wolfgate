@@ -21,3 +21,4 @@ wf-round-setup-home-briefing-vote = Active vote
 wf-round-setup-home-setup = Crew Setup
 wf-round-setup-home-join-crew = Join Crew
 wf-round-setup-home-waiting-help = Your place in the crew is confirmed. You will join when the host launches. Open Join Round and choose Crew to review or cancel.
+wf-round-setup-toolbar-tooltip = Crew Setup — view your crew, manage recruitment or browse crew starts.
