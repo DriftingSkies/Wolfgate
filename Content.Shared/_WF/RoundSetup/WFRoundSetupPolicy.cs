@@ -11,6 +11,29 @@ public enum WFLobbyJoinDecision : byte
 /// <summary>Membership limits and access rules shared by scenario lobby operations.</summary>
 public static class WFRoundSetupPolicy
 {
+    /// <summary>The longest public crew description.</summary>
+    public const int MaximumDescriptionLength = 512;
+
+    /// <summary>Accepts bounded plain text with paragraphs, without control characters.</summary>
+    public static bool TryNormalizeDescription(string? input, out string description)
+    {
+        description = string.Empty;
+        if (input == null)
+            return true;
+        if (input.Length > MaximumDescriptionLength * 2)
+            return false;
+        var normalized = input.Replace("\r\n", "\n").Replace('\r', '\n').Trim();
+        if (normalized.Length > MaximumDescriptionLength)
+            return false;
+        foreach (var character in normalized)
+        {
+            if (char.IsControl(character) && character != '\n')
+                return false;
+        }
+        description = normalized;
+        return true;
+    }
+
     /// <summary>The maximum reusable setups stored for one account on this server.</summary>
     public const int MaximumSavedSetups = 20;
     /// <summary>The maximum number of members in one player lobby.</summary>

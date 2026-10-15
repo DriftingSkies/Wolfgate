@@ -512,9 +512,10 @@ public sealed partial class StationJobsSystem : EntitySystem
 
         while (query.MoveNext(out var station, out var comp))
         {
-            // WOLFGATE(RoundSetup) START: scenario admission is controlled by its host
-            if (HasComp<Content.Server._WF.RoundSetup.WFCrashScenarioStationComponent>(station) ||
-                HasComp<Content.Server._WF.RoundSetup.WFShipScenarioStationComponent>(station))
+            // WOLFGATE(RoundSetup) START: crew admission uses scenario setup instead of legacy ship recruitment
+            // if (HasComp<Content.Server._WF.RoundSetup.WFCrashScenarioStationComponent>(station) ||
+            //     HasComp<Content.Server._WF.RoundSetup.WFShipScenarioStationComponent>(station))
+            if (!EntityManager.System<Content.Server._WF.RoundSetup.WFRoundSetupSystem>().IsStandardStation(station))
                 continue;
             // WOLFGATE END
             var stationNetEntity = GetNetEntity(station);

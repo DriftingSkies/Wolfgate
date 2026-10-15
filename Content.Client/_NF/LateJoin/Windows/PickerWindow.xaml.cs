@@ -51,6 +51,7 @@ public sealed partial class PickerWindow : FancyWindow
             UpdateUi(_gameTicker.StationJobInformationList);
         };
 
+        InitializeStationOnly(); // WOLFGATE(RoundSetup): the old picker only serves standard station joining
         UpdateUi(_gameTicker.StationJobInformationList);
     }
 
@@ -61,7 +62,10 @@ public sealed partial class PickerWindow : FancyWindow
         // This is the place to change the default tab.
         if (_currentTab == null)
         {
-            SetCurrentTab(PickerType.StationOrCrewLarge);
+            // WOLFGATE(RoundSetup) START: open standard jobs directly without the retired crew chooser
+            // SetCurrentTab(PickerType.StationOrCrewLarge);
+            SetCurrentTab(PickerType.Station);
+            // WOLFGATE END
         }
     }
 
@@ -101,6 +105,7 @@ public sealed partial class PickerWindow : FancyWindow
 
     private void SetCurrentTab(PickerType pickerType)
     {
+        pickerType = PickerType.Station; // WOLFGATE(RoundSetup): prevent legacy crew controls from reopening
         // Don't do anything when switching to same tab.
         if (_currentTab != null && _currentTab.Type == pickerType)
         {

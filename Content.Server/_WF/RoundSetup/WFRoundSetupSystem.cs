@@ -60,6 +60,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         public bool Started;
         public string Code = string.Empty;
         public string Title = string.Empty;
+        public string Description = string.Empty;
         public string? Vessel;
         public int NextRoleId;
         public readonly Dictionary<int, LobbyRole> Roles = new();
@@ -172,7 +173,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             case WFRoundSetupAction.SaveSetup when own != null && own.Id == msg.LobbyId && own.Host == user:
                 error = "wf-round-setup-save-failed";
                 success = (msg.Title == null || HostRequest(own, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
-                    { Title = msg.Title, Access = msg.Access, AllowLateJoin = msg.AllowLateJoin }, session)) && SaveSetup(own, session, msg.SaveName);
+                    { Title = msg.Title, Description = msg.Description, Access = msg.Access, AllowLateJoin = msg.AllowLateJoin }, session)) && SaveSetup(own, session, msg.SaveName);
                 if (success)
                 {
                     SendState(session, "wf-round-setup-save-success");
@@ -193,7 +194,12 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                     error = "wf-round-setup-error-title";
                     break;
                 }
-                var created = new Lobby { Id = ++_nextId, Host = user, Scenario = msg.Scenario, Code = NewCode(), Title = title };
+                if (!WFRoundSetupPolicy.TryNormalizeDescription(msg.Description, out var description))
+                {
+                    error = "wf-round-setup-error-description";
+                    break;
+                }
+                var created = new Lobby { Id = ++_nextId, Host = user, Scenario = msg.Scenario, Code = NewCode(), Title = title, Description = description };
                 _lobbies.Add(created.Id, created);
                 RegisterMember(created, session, new Member { Name = session.Name });
                 success = true;
@@ -247,7 +253,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 break;
             case WFRoundSetupAction.ConfirmJoin when own != null && msg.LobbyId == own.Id && !own.Members[user].Spawned && CanEnter(session):
                 if (own.Host == user && msg.Title != null && !HostRequest(own, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
-                    { Title = msg.Title, Access = msg.Access, AllowLateJoin = msg.AllowLateJoin }, session))
+                    { Title = msg.Title, Description = msg.Description, Access = msg.Access, AllowLateJoin = msg.AllowLateJoin }, session))
                     break;
                 if (own.Host == user && msg.RoleName != null && !SetPersonalTitle(own, user, msg.RoleName))
                     break;
@@ -315,7 +321,8 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         switch (msg.Action)
         {
             case WFRoundSetupAction.Configure:
-                if (!Enum.IsDefined(msg.Access) || !WFRoundSetupPolicy.TryNormalizeTitle(msg.Title ?? lobby.Title, out var title))
+                if (!Enum.IsDefined(msg.Access) || !WFRoundSetupPolicy.TryNormalizeTitle(msg.Title ?? lobby.Title, out var title) ||
+                    !WFRoundSetupPolicy.TryNormalizeDescription(msg.Description ?? lobby.Description, out var description))
                     return false;
                 if (lobby.Access != msg.Access)
                 {
@@ -323,6 +330,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                     lobby.Requests.Clear();
                 }
                 lobby.Title = title;
+                lobby.Description = description;
                 lobby.Access = msg.Access;
                 lobby.AllowLateJoin = msg.AllowLateJoin;
                 return true;
@@ -494,7 +502,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         var host = lobby.Host == user;
         return new WFRoundSetupLobby
         {
-            Id = lobby.Id, Host = lobby.Host, HostName = lobby.Members[lobby.Host].Name, Title = lobby.Title,
+            Id = lobby.Id, Host = lobby.Host, HostName = lobby.Members[lobby.Host].Name, Title = lobby.Title, Description = lobby.Description,
             HostJob = lobby.Members[lobby.Host].Job, Portrait = lobby.Members[lobby.Host].Portrait,
             Scenario = lobby.Scenario, Access = lobby.Access, AllowLateJoin = lobby.AllowLateJoin,
             Started = lobby.Started, MemberCount = lobby.Members.Count, Vessel = lobby.Vessel, ShipStart = lobby.ShipStart,

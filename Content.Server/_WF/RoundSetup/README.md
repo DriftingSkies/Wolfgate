@@ -2,13 +2,13 @@
 
 Round Setup lets players organize a Crashlanded or Ship crew start together before the round, or launch a new start mid-round. Hosts control public access, private requests, codes, direct invitations and whether survivors may join after launch. Each member chooses their own character through the existing character selector and selects their own permitted job.
 
-The lobby retains the repository's menu column, character hero, docked chat and bottom information strip. Crew Setup sits directly above an equally sized red/green READY button; mid-round these become Join Crew and Join Round. Crew setup uses a distinct accent colour. The hero yields space to the menu at narrow widths, and secondary options remain accessible by scrolling. The footer measures its link text, including Changelog (new), instead of clipping it to a fixed height. Lobby and crew preparation panels are translucent, while text stays opaque and the full-screen background remains clear.
+The lobby retains the repository's menu column, character hero, docked chat and bottom information strip. Crew Setup sits directly above an equally sized red/green READY button before the round. Mid-round there is one Join Round button, offering Crew (Default) for scenario setup or Standard (Legacy) for station jobs. Crew setup uses a distinct accent colour. The hero yields space to the menu at narrow widths, and secondary options remain accessible by scrolling. The footer measures its link text, including Changelog (new), instead of clipping it to a fixed height. Lobby and crew preparation panels are translucent, while text stays opaque and the full-screen background remains clear.
 
-Compact crew rows appear below Leave Server and open full details when clicked; the welcome information is pinned below the scrolling menu. The setup browser uses the same rows, with Crews and Create tabs. Leader portraits show only public appearance, with existing job icons used throughout. Hosts can name their crew and switch between Ship and Crashlanded before launch without recreating it. Changing type clears the vessel choice and readiness while retaining members, roles and admission settings. Editing a character clears both normal and crew readiness. Once a player belongs to a crew, its preparation, ship, crew and access sections replace the browsing navigation across the top. The ship page places selection and departure controls beside a flexible preview without a page scrollbar; ship descriptions and preview controls have tooltips. Selectors and buttons wrap long text, pages scroll at smaller sizes, and confirmation and red Leave Crew buttons stay visible. Confirmation closes setup after the server accepts readiness or a mid-round join, including explicit ship purchase consent.
+Compact crew rows appear below Leave Server and open full details when clicked; the welcome information is pinned below the scrolling menu. The setup browser uses the same rows, with Crews and Create tabs. Leader portraits show only public appearance, with existing job icons used throughout. Hosts can name their crew, write a plain-text description of up to 512 characters and switch between Ship and Crashlanded before launch without recreating it. Descriptions appear in crew details and can be edited in Who can join, including after launch. Changing type clears the vessel choice and readiness while retaining members, roles and admission settings. Editing a character clears both normal and crew readiness. Once a player belongs to a crew, its preparation, ship, crew and access sections replace the browsing navigation across the top. The ship page places selection and departure controls beside a flexible preview without a page scrollbar; ship descriptions and preview controls have tooltips. Selectors and buttons wrap long text, pages scroll at smaller sizes, and confirmation and red Leave Crew buttons stay visible. Confirmation closes setup after the server accepts readiness or a mid-round join, including explicit ship purchase consent.
 
 Open Round Setup from the lobby or the in-round game menu. Ready up before round start; a pregame group launches only when its host is ready. Mid-round hosts launch their waiting group explicitly. A disconnected host keeps ownership; a host can transfer ownership to another member or leave to pass it to the next member. Respawning leaves the previous crew and releases its reserved slot; remaining members retain their crew and an existing ship stays in the world. Round restart clears all lobbies and invitation codes.
 
-The server owns membership and validates every request. Scenario job slots remain available when a helm is disabled or unpowered; ordinary shuttle power rules do not override crew admission. Normal joining remains the default ready/join path without creating a scenario crew; only Ship and Crashlanded can create one. The existing join picker retains both regular station and crew jobs. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning. The countdown never increases during client clock corrections. Survivors receive an emergency EVA suit, breath mask and a survival kit with species-appropriate gas, medicine, rations and signalling tools; existing clothing is preserved. Later survivors spawn on a surviving floor in that group's wreck.
+The server owns membership and validates every request. Scenario job slots remain available when a helm is disabled or unpowered; ordinary shuttle power rules do not override crew admission. Normal pregame readiness and Standard joining do not create a scenario crew; only Ship and Crashlanded can create one. Standard opens the existing picker directly to station jobs. Its old Crew tab is hidden, and legacy ship recruitment is excluded from job advertisements and rejected by server spawn validation. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning. The countdown never increases during client clock corrections. Survivors receive an emergency EVA suit, breath mask and a survival kit with species-appropriate gas, medicine, rations and signalling tools; existing clothing is preserved. Later survivors spawn on a surviving floor in that group's wreck.
 
 Crashlanded requires the existing `wf.planet_networks` server setting and a sector containing registered planets. Its card is disabled when planet networks are off. Closing late admission prevents new members; players already accepted retain their place until the host removes them.
 
@@ -18,7 +18,7 @@ New lobbies contain only the host, with an independent personal job choice and n
 
 Ship preparation follows Prepare, Your ship, Crew and Who can join, with a fixed Next action on the first three pages and Finish on the last. Prepare fits without a scrollbar; ship selection commits directly from its dropdown. Finish saves admission settings and confirms readiness or purchase and launch, while a ready member can reopen setup to revoke consent. Disabled actions and locked job choices explain their requirements on hover. Job sprites scale to a readable 24-pixel size.
 
-Hosts can save up to 20 named scenarios from Who can join and load or delete them from Create. Saves belong to the server account and persist in versioned files under the server user-data `round-setups` directory. They contain scenario, vessel, departure, personal job/title, recruitment roles and admission settings, without members, invite codes or purchase authorization. Loading validates the current catalog and creates a new unready crew; a personal job the character no longer qualifies for is left unselected. Saving under an existing name replaces it. Writes retain a backup, and unreadable saves are protected from automatic overwrite.
+Hosts can save up to 20 named scenarios from Who can join. Create has a Load Saved Scenario button; its compact rows open full details with load and delete actions. Saves belong to the server account and persist in versioned files under the server user-data `round-setups` directory. They contain the crew name and description, scenario, vessel, departure, personal job/title, recruitment roles and admission settings, without members, invite codes or purchase authorization. Loading validates the current catalog and creates a new unready crew; a personal job the character no longer qualifies for is left unselected. Saving under an existing name replaces it. Writes retain a backup, and unreadable saves are protected from automatic overwrite.
 
 Pregame lasts six minutes by default, including the Monolith server preset. For local playtests, the default-off `wf.round_setup.demo_enabled` setting seeds a public Crashlanded lobby when the real player named by `wf.round_setup.demo_host` connects. It has a ready host and three explicit Drifter openings. See `Tools/_WF/RoundSetup/README.md` for the headless host launcher. Normal servers never create demo lobbies.
 
@@ -68,12 +68,14 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Client/_WF/RoundSetup/WFCrashCountdownHud.cs`](../../../Content.Client/_WF/RoundSetup/WFCrashCountdownHud.cs)
 - [`Content.Client/_WF/RoundSetup/WFCrashCountdownHudSystem.cs`](../../../Content.Client/_WF/RoundSetup/WFCrashCountdownHudSystem.cs)
 - [`Content.Client/_WF/RoundSetup/WFLobbyLayout.cs`](../../../Content.Client/_WF/RoundSetup/WFLobbyLayout.cs)
+- [`Content.Client/_WF/RoundSetup/WFRoundJoinChoiceWindow.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundJoinChoiceWindow.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupClientSystem.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupClientSystem.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupCrewRow.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupCrewRow.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupLobbyPanel.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupLobbyPanel.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupOptionButton.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupOptionButton.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupUIController.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupUIController.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.cs)
+- [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Descriptions.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Descriptions.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Identity.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Identity.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Preview.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Preview.cs)
@@ -109,6 +111,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Resources/Locale/en-US/_WF/RoundSetup/crash.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/crash.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/flow.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/flow.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/home.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/home.ftl)
+- [`Resources/Locale/en-US/_WF/RoundSetup/join-flow.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/join-flow.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/lobby-panel.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/lobby-panel.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/preview.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/preview.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl)
@@ -123,6 +126,10 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 
 ## Non-modular edits
 
+- [`Content.Client/_NF/LateJoin/Windows/PickerWindow.xaml.cs`](../../../Content.Client/_NF/LateJoin/Windows/PickerWindow.xaml.cs)
+  - the old picker only serves standard station joining
+  - open standard jobs directly without the retired crew chooser
+  - prevent legacy crew controls from reopening
 - [`Content.Client/Lobby/LobbyState.cs`](../../../Content.Client/Lobby/LobbyState.cs)
   - the normal jobs picker is managed by the Round Setup lobby partial
   - the preparation header supplies its own lobby context
@@ -145,14 +152,14 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Client/Options/UI/EscapeMenu.xaml`](../../../Content.Client/Options/UI/EscapeMenu.xaml): hosts can manage admission and survivors after spawning
 - [`Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs`](../../../Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs): manage the player lobby during the round
 - [`Content.Server/GameTicking/GameTicker.Spawning.cs`](../../GameTicking/GameTicker.Spawning.cs)
-  - private scenario stations are never ordinary job destinations
+  - ordinary joining excludes scenario stations and legacy ship recruitment
   - explicit Normal choices share the regular job allocation
   - authorize the assigned group member while preserving the saved profile
   - require authenticated scenario membership on every spawn path
 - [`Content.Server/Shuttles/Systems/ShuttleConsoleSystem.cs`](../../Shuttles/Systems/ShuttleConsoleSystem.cs)
   - failed scenario helms reject pilots until the crash is complete.
   - scenario crew admission is independent of helm power
-- [`Content.Server/Station/Systems/StationJobsSystem.cs`](../../Station/Systems/StationJobsSystem.cs): scenario admission is controlled by its host
+- [`Content.Server/Station/Systems/StationJobsSystem.cs`](../../Station/Systems/StationJobsSystem.cs): crew admission uses scenario setup instead of legacy ship recruitment
 - [`Content.Shared/CCVar/CCVars.Game.cs`](../../../Content.Shared/CCVar/CCVars.Game.cs): give players six minutes to configure and join scenario lobbies.
 - [`Resources/ConfigPresets/_Mono/monolithCore.toml`](../../../Resources/ConfigPresets/_Mono/monolithCore.toml): keep the Monolith preset's pregame setup window at six minutes.
 

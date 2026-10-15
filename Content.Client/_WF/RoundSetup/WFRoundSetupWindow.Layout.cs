@@ -7,7 +7,7 @@ namespace Content.Client._WF.RoundSetup;
 
 public sealed partial class WFRoundSetupWindow
 {
-    private enum SetupView : byte { Browse, Create, MyLobby }
+    private enum SetupView : byte { Browse, Create, Saved, MyLobby }
     private enum LobbyPage : byte { Overview, Ship, Admission, Roles }
 
     private readonly ScenarioColumns _navigation = new() { HorizontalExpand = true };
@@ -146,6 +146,7 @@ public sealed partial class WFRoundSetupWindow
                 _view = SetupView.Browse;
             if (own != null && (_view != SetupView.Browse || _focusedLobby == null || _focusedLobby == own.Id))
                 _view = SetupView.MyLobby;
+            _descriptionChecks.Clear();
             _body.RemoveAllChildren();
             _navigation.RemoveAllChildren();
             _shipPage.RemoveAllChildren();
@@ -158,11 +159,12 @@ public sealed partial class WFRoundSetupWindow
             if (own == null)
             {
                 _navigation.AddChild(NavigationButton("flow-browse", () => Navigate(SetupView.Browse), _view == SetupView.Browse));
-                _navigation.AddChild(NavigationButton("flow-create", OpenCreate, _view == SetupView.Create, !state.CanJoin));
+                _navigation.AddChild(NavigationButton("flow-create", OpenCreate, _view is SetupView.Create or SetupView.Saved, !state.CanJoin));
             }
             switch (_view)
             {
                 case SetupView.Create: BuildScenarios(state); break;
+                case SetupView.Saved: BuildSavedSetups(state); break;
                 case SetupView.MyLobby when own != null: BuildOwnLobby(state, own); break;
                 default: BuildBrowser(state); break;
             }
@@ -219,14 +221,18 @@ public sealed partial class WFRoundSetupWindow
     /// <summary>Shows full-width scenario briefs with one explicit create action per scenario.</summary>
     private void BuildScenarios(WFRoundSetupState state)
     {
-        BuildSavedSetups(state);
+        var load = Button("load-saved-scenario", () => { _selectedSavedId = null; Navigate(SetupView.Saved); },
+            state.SavedSetups.Length == 0, "saved-empty-help");
+        load.Name = "RoundSetupLoadSaved";
+        _body.AddChild(load);
         _body.AddChild(Heading("choose-scenario"));
         _body.AddChild(Description("create-help"));
         _body.AddChild(Heading("crew-title"));
         var crewName = new LineEdit { Text = _newTitle, PlaceHolder = Text("crew-title-placeholder"), HorizontalExpand = true };
         crewName.OnTextChanged += _ => _newTitle = crewName.Text;
         _body.AddChild(crewName);
-        _body.AddChild(Description("crew-title-help"));
+        crewName.ToolTip = Text("crew-title-help");
+        _body.AddChild(DescriptionEditor(_newDescription, value => _newDescription = value));
         foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Crashlanded })
         {
             var card = Column(8);
@@ -241,8 +247,10 @@ public sealed partial class WFRoundSetupWindow
             {
                 Scenario = scenario,
                 Title = _newTitle,
+                Description = _newDescription,
             }), unavailable || !state.CanJoin);
             create.ToolTip = create.Disabled ? Text(unavailable ? "crash-unavailable" : "disabled-join") : null;
+            CheckDescription(create, () => _newDescription);
             create.Name = "RoundSetupCreate" + scenario;
             card.AddChild(create);
             _body.AddChild(Panel(card));
@@ -281,6 +289,8 @@ public sealed partial class WFRoundSetupWindow
         {
             case LobbyPage.Ship: BuildShipSettings(state, lobby, host); break;
             case LobbyPage.Roles:
+                if (!string.IsNullOrEmpty(lobby.Description))
+                    _body.AddChild(PlainDescription(lobby.Description));
                 BuildCrewRoster(lobby, host);
                 if (host)
                     BuildRoleEditor(state, lobby);
@@ -400,6 +410,7 @@ public sealed partial class WFRoundSetupWindow
                 {
                     LobbyId = lobby.Id,
                     Title = lobby.Host == member.UserId && _settingsDirty ? _draftTitle : null,
+                    Description = lobby.Host == member.UserId && _settingsDirty ? _draftDescription : null,
                     Access = _draftAccess,
                     AllowLateJoin = _draftLateJoin,
                     RoleName = lobby.Host == member.UserId && _personalTitleDirty ? _personalTitle : null,
@@ -407,6 +418,8 @@ public sealed partial class WFRoundSetupWindow
             }
         }, !member.Ready && (!eligible || !canPurchase), !eligible ? "ready-needs-job" :
             vessel == null ? "ship-unselected" : state.HostBalance == null ? "ship-bank-help" : "ship-insufficient-help");
+        if (!member.Ready && lobby.Host == member.UserId && _lobbyPage == LobbyPage.Admission)
+            CheckDescription(ready, () => _draftDescription);
         ready.Name = "RoundSetupReady";
         ready.AddStyleClass(member.Ready ? "ButtonColorGreen" : "ButtonAccept");
         var actions = new ScenarioColumns { HorizontalExpand = true };

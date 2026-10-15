@@ -248,9 +248,9 @@ public sealed class RoundSetupUiTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Late join opens the existing join picker directly while keeping crew creation discoverable.</summary>
+    /// <summary>Late join offers crews first and opens legacy joining directly to stations.</summary>
     [Test]
-    public async Task MidroundHomeOpensNormalJobsDirectly()
+    public async Task MidroundHomeOffersCrewAndStandard()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
         var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
@@ -267,17 +267,38 @@ public sealed class RoundSetupUiTest
         await pair.Client.WaitAssertion(() =>
         {
             var lobby = (LobbyGui) ui.ActiveScreen!;
-            Assert.That(lobby.RoundSetupButton.Visible, Is.True);
+            Assert.That(lobby.RoundSetupButton.Visible, Is.False);
             Assert.That(lobby.ReadyButton.ToggleMode, Is.False);
             join = lobby.ReadyButton;
         });
         await Click(pair, join);
+        Button choice = null!;
+        await pair.Client.WaitAssertion(() =>
+        {
+            var chooser = Descendants(ui.WindowRoot).OfType<WFRoundJoinChoiceWindow>().Single();
+            choice = Named<Button>(chooser, "RoundJoinCrew");
+            Assert.That(choice.HasStyleClass("ButtonAccept"), Is.True);
+            Assert.That(Descendants(ui.WindowRoot).OfType<PickerWindow>(), Is.Empty);
+        });
+        await Click(pair, choice);
+        await pair.Client.WaitAssertion(() =>
+        {
+            var crews = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
+            Assert.That(Descendants(ui.WindowRoot).OfType<WFRoundJoinChoiceWindow>(), Is.Empty);
+            Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
+            crews.Close();
+        });
+        await Click(pair, join);
+        await pair.Client.WaitPost(() => choice = Named<Button>(ui.WindowRoot, "RoundJoinStandard"));
+        await Click(pair, choice);
         await pair.Client.WaitAssertion(() =>
         {
             var picker = Descendants(ui.WindowRoot).OfType<PickerWindow>().Single();
-            Assert.That(Descendants(picker).OfType<StationOrCrewLargeControl>().Count(), Is.EqualTo(1));
+            Assert.That(Descendants(picker).OfType<StationPickerControl>().Count(), Is.EqualTo(1));
+            Assert.That(Descendants(picker).OfType<CrewPickerControl>(), Is.Empty);
+            Assert.That(Descendants(picker).OfType<StationOrCrewLargeControl>(), Is.Empty);
+            Assert.That(Named<Button>(picker, "CrewTabButton").Visible, Is.False);
             Assert.That(Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>(), Is.Empty);
-            Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
             picker.Close();
         });
         await pair.Server.WaitPost(() => pair.Server.System<GameTicker>().RestartRound());
@@ -618,6 +639,69 @@ public sealed class RoundSetupUiTest
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
         Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Members.Single().Ready, Is.True);
         await pair.Client.WaitAssertion(() => Assert.That(window.IsOpen, Is.False));
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.DeleteSetup) { SavedId = savedId });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Saved scenarios stay behind an explicit action and open compact rows into full details.</summary>
+    [Test]
+    public async Task SavedBrowserAndDescriptionFlow()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
+        {
+            Scenario = WFRoundScenario.Ship, Title = "Mercy", Description = "Medical rescue crew.",
+        });
+        var id = state.OwnLobby!.Value;
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SaveSetup) { LobbyId = id, SaveName = "Rescue template" });
+        var savedId = state.SavedSetups.Single().Id;
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
+        WFRoundSetupWindow window = null!;
+        Button button = null!;
+        await pair.Client.WaitPost(() =>
+        {
+            window = new WFRoundSetupWindow();
+            window.FitTo(new Vector2(800, 600));
+            window.OpenCentered();
+            window.OpenCreate();
+        });
+        await pair.RunTicksSync(2);
+        await pair.Client.WaitAssertion(() =>
+        {
+            Assert.That(Labels(window), Does.Not.Contain("Rescue template"));
+            button = Named<Button>(window, "RoundSetupLoadSaved");
+        });
+        await Click(pair, button);
+        await pair.Client.WaitAssertion(() =>
+        {
+            button = Named<Button>(window, "RoundSetupSavedRow" + savedId);
+            Assert.That(button.Height, Is.EqualTo(40));
+            Assert.That(Labels(window), Does.Not.Contain("Medical rescue crew."));
+        });
+        await Click(pair, button);
+        await pair.Client.WaitAssertion(() =>
+        {
+            Assert.That(Labels(window), Does.Contain("Medical rescue crew."));
+            button = Buttons(window, "load-setup").Single();
+        });
+        await Click(pair, button);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        id = state.OwnLobby!.Value;
+        Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Description, Is.EqualTo("Medical rescue crew."));
+        await pair.Client.WaitPost(() => button = Buttons(Named<Control>(window, "RoundSetupSections"), "admission").Single());
+        await Click(pair, button);
+        await pair.Client.WaitPost(() =>
+        {
+            Named<LineEdit>(window, "RoundSetupSaveName").SetText("Rescue template", invokeEvent: true);
+            Named<TextEdit>(window, "RoundSetupDescription").InsertAtCursor(new string('X', 513));
+        });
+        await pair.Client.WaitAssertion(() =>
+        {
+            Assert.That(Named<Button>(window, "RoundSetupSave").Disabled, Is.True);
+            Assert.That(Named<Button>(window, "RoundSetupSave").ToolTip, Does.Contain("512"));
+            window.Close();
+        });
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.DeleteSetup) { SavedId = savedId });
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
         await pair.CleanReturnAsync();

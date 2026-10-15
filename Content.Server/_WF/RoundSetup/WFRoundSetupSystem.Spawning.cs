@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._NF.Station.Components;
 using Content.Server.Administration.Managers;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
@@ -43,8 +44,11 @@ public sealed partial class WFRoundSetupSystem
     {
         if (_pendingSpawns.TryGetValue(session.UserId, out var pending))
             return pending.Station == station;
-        return !IsScenarioStation(station) && FindLobby(session.UserId) == null;
+        return IsStandardStation(station) && FindLobby(session.UserId) == null;
     }
+
+    /// <summary>Ordinary joining excludes both scenario stations and the retired ship recruitment route.</summary>
+    public bool IsStandardStation(EntityUid station) => !IsScenarioStation(station) && !HasComp<ExtraShuttleInformationComponent>(station);
 
     /// <summary>Private scenario stations never enter the ordinary station picker.</summary>
     private bool IsScenarioStation(EntityUid station) =>
@@ -97,7 +101,7 @@ public sealed partial class WFRoundSetupSystem
         var query = EntityQueryEnumerator<StationJobsComponent, StationSpawningComponent>();
         while (query.MoveNext(out var station, out _, out _))
         {
-            if (IsScenarioStation(station))
+            if (!IsStandardStation(station))
                 continue;
             foreach (var job in _jobs.GetAvailableJobs(station))
             {
@@ -312,7 +316,7 @@ public sealed partial class WFRoundSetupSystem
         if (member.Station is { } net)
         {
             if (!TryGetEntity(net, out var selected) || selected == null ||
-                !HasComp<StationSpawningComponent>(selected.Value) || IsScenarioStation(selected.Value) ||
+                !HasComp<StationSpawningComponent>(selected.Value) || !IsStandardStation(selected.Value) ||
                 !_jobs.TryGetJobSlot(selected.Value, member.Job, out var slots) || slots == 0)
                 return false;
             station = selected.Value;
@@ -321,7 +325,7 @@ public sealed partial class WFRoundSetupSystem
         var query = EntityQueryEnumerator<StationJobsComponent, StationSpawningComponent>();
         while (query.MoveNext(out var candidate, out _, out _))
         {
-            if (!IsScenarioStation(candidate) &&
+            if (IsStandardStation(candidate) &&
                 _jobs.TryGetJobSlot(candidate, member.Job, out var slots) && slots != 0)
             {
                 station = candidate;

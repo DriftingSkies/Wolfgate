@@ -1,0 +1,16 @@
+wf-round-setup-crew-description = Crew description (optional)
+wf-round-setup-description-placeholder = What is your crew setting out to do? What should recruits know?
+wf-round-setup-description-count = { $count } / { $max } characters · Visible in crew details
+wf-round-setup-error-description = Keep the description within 512 characters and remove unsupported control characters.
+wf-round-setup-load-saved-scenario = Load Saved Scenario
+wf-round-setup-saved-empty-help = Save a scenario from Who can join before loading one here.
+wf-round-setup-saved-open-help = Open this scenario to review its description, ship and crew roles.
+wf-round-setup-back-create = Back to create crew
+wf-round-setup-back-saved = Back to saved scenarios
+wf-round-setup-saved-personal-job = Your job: { $job } · { $title }
+wf-round-setup-saved-role = { $role } · { $job } · { $count } slots
+wf-round-setup-join-crew-default = Crew (Default)
+wf-round-setup-join-crew-help = Find a crew, create a scenario, or return to your current crew setup.
+wf-round-setup-join-standard-legacy = Standard (Legacy)
+wf-round-setup-join-standard-help = Choose an available station job through the original Join Game menu.
+wf-round-setup-standard-stations-help = Choose a station and an available job below. Crew starts are managed through Crew setup.

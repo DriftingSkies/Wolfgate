@@ -32,6 +32,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private bool _draftLateJoin;
     private string _draftTitle = string.Empty;
     private string _newTitle = string.Empty;
+    private string _newDescription = string.Empty;
+    private string _draftDescription = string.Empty;
     private bool _confirmingJoin;
     private bool _refreshAfterRequest;
 
@@ -141,6 +143,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     {
         var content = Column(12);
         content.AddChild(CrewIdentity(lobby));
+        if (!string.IsNullOrEmpty(lobby.Description))
+            content.AddChild(PlainDescription(lobby.Description));
         content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
 
@@ -202,6 +206,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             _draftAccess = lobby.Access;
             _draftLateJoin = lobby.AllowLateJoin;
             _draftTitle = lobby.Title;
+            _draftDescription = lobby.Description;
         }
         var settings = Column(6);
         settings.AddChild(Heading("crew-title"));
@@ -209,6 +214,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         title.OnTextChanged += _ => { _draftTitle = title.Text; _settingsDirty = true; };
         settings.AddChild(title);
         title.ToolTip = Text("crew-title-help");
+        settings.AddChild(DescriptionEditor(_draftDescription, value => { _draftDescription = value; _settingsDirty = true; }));
         settings.AddChild(Heading("admission"));
         var access = new WFRoundSetupOptionButton { HorizontalExpand = true };
         foreach (var option in Enum.GetValues<WFLobbyAccess>())
@@ -231,17 +237,22 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         settings.AddChild(lateJoin);
 
         if (lobby.Started || lobby.Scenario != WFRoundScenario.Ship)
-            settings.AddChild(Button("save-settings", () =>
         {
-            _settingsDirty = false;
-            SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+            var saveSettings = Button("save-settings", () =>
             {
-                LobbyId = lobby.Id,
-                Access = _draftAccess,
-                AllowLateJoin = _draftLateJoin,
-                Title = _draftTitle,
+                _settingsDirty = false;
+                SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+                {
+                    LobbyId = lobby.Id,
+                    Access = _draftAccess,
+                    AllowLateJoin = _draftLateJoin,
+                    Title = _draftTitle,
+                    Description = _draftDescription,
+                });
             });
-        }));
+            CheckDescription(saveSettings, () => _draftDescription);
+            settings.AddChild(saveSettings);
+        }
         if (lobby.Code != null)
         {
             var code = new LineEdit { Text = lobby.Code, Editable = false, HorizontalExpand = true };
@@ -325,7 +336,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
 
     private static bool SameLobby(WFRoundSetupLobby first, WFRoundSetupLobby second)
     {
-        return first.Id == second.Id && first.Host == second.Host && first.HostJob == second.HostJob && Equals(first.Portrait, second.Portrait) && first.HostName == second.HostName && first.Title == second.Title &&
+        return first.Id == second.Id && first.Host == second.Host && first.HostJob == second.HostJob && Equals(first.Portrait, second.Portrait) && first.HostName == second.HostName && first.Title == second.Title && first.Description == second.Description &&
                first.Scenario == second.Scenario && first.ShipStart == second.ShipStart && first.Access == second.Access && first.AllowLateJoin == second.AllowLateJoin &&
                first.Started == second.Started && first.MemberCount == second.MemberCount && first.Code == second.Code &&
                first.Vessel == second.Vessel && first.Roles.SequenceEqual(second.Roles) &&

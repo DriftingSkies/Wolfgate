@@ -45,6 +45,7 @@ public sealed class WFRoundSetupRequest : EntityEventArgs
     public int? RoleId;
     public string? RoleName;
     public string? Title;
+    public string? Description;
     public int Capacity = 1;
     public WFCrewRoster Roster;
     public int SavedId;
@@ -87,6 +88,7 @@ public sealed class WFRoundSetupLobby
     public string? HostJob;
     public WFCrewPortrait? Portrait;
     public string Title = string.Empty;
+    public string Description = string.Empty;
     public WFRoundScenario Scenario;
     public WFShipStartLocation ShipStart;
     public WFLobbyAccess Access;

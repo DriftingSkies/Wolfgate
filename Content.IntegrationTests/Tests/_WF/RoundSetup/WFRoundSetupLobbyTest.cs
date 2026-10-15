@@ -3,6 +3,8 @@ using System.Linq;
 using Content.Client._WF.RoundSetup;
 using Content.IntegrationTests.Pair;
 using Content.Server._NF.SectorServices;
+using Content.Server._NF.Station.Components;
+using Content.Client.GameTicking.Managers;
 using Content.Server._WF.RoundSetup;
 using Content.Server.GameTicking;
 using Content.Server.Preferences.Managers;
@@ -895,7 +897,7 @@ public sealed class WFRoundSetupLobbyTest
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
         {
-            Scenario = WFRoundScenario.Ship, Title = "Mercy",
+            Scenario = WFRoundScenario.Ship, Title = "Mercy", Description = "Rescue and recovery.\nMedical crew welcome.",
         });
         var id = OwnLobby(state).Id;
         var balance = state.HostBalance;
@@ -917,6 +919,7 @@ public sealed class WFRoundSetupLobbyTest
         var saved = state.SavedSetups.Single();
         var code = OwnLobby(state).Code;
         Assert.That(saved.JobTitle, Is.EqualTo("Captain"));
+        Assert.That(saved.Description, Is.EqualTo("Rescue and recovery.\nMedical crew welcome."));
         Assert.That(saved.Roles.Length, Is.EqualTo(4));
         Assert.That(state.HostBalance, Is.EqualTo(balance));
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SaveSetup)
@@ -939,6 +942,7 @@ public sealed class WFRoundSetupLobbyTest
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.LoadSetup) { SavedId = saved.Id });
         var loaded = OwnLobby(state);
         Assert.That(loaded.Title, Is.EqualTo("Mercy"));
+        Assert.That(loaded.Description, Is.EqualTo(saved.Description));
         Assert.That(loaded.Code, Is.Not.EqualTo(code));
         Assert.That(loaded.Vessel, Is.EqualTo(vessel));
         Assert.That(loaded.ShipStart, Is.EqualTo(WFShipStartLocation.CentralDock));
@@ -963,6 +967,73 @@ public sealed class WFRoundSetupLobbyTest
             await pair.Client.WaitPost(() => net.ClientConnect(null!, 0, name));
             await pair.RunTicksSync(180);
         }
+    }
+
+    /// <summary>Descriptions are bounded plain text, remain editable and reject malformed changes atomically.</summary>
+    [Test]
+    public async Task CrewDescriptionsValidateAndUpdate()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
+        {
+            Scenario = WFRoundScenario.Ship, Title = "Rescue", Description = "  Rescue team.\r\nAll welcome!  ",
+        });
+        var id = OwnLobby(state).Id;
+        Assert.That(OwnLobby(state).Description, Is.EqualTo("Rescue team.\nAll welcome!"));
+        foreach (var invalid in new[] { new string('x', 513), "control\0character" })
+        {
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+            {
+                LobbyId = id, Title = "Should not apply", Description = invalid, Access = WFLobbyAccess.Public,
+            });
+            Assert.That(OwnLobby(state).Title, Is.EqualTo("Rescue"));
+            Assert.That(OwnLobby(state).Description, Is.EqualTo("Rescue team.\nAll welcome!"));
+        }
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+        {
+            LobbyId = id, Description = new string('x', 512),
+        });
+        Assert.That(OwnLobby(state).Description.Length, Is.EqualTo(512));
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure) { LobbyId = id, Description = "" });
+        Assert.That(OwnLobby(state).Description, Is.Empty);
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Legacy player ships disappear from job advertisements and reject direct ordinary joins.</summary>
+    [Test]
+    public async Task LegacyShipRecruitmentIsDisabled()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var server = pair.Server;
+        var legacy = EntityUid.Invalid;
+        var station = EntityUid.Invalid;
+        await server.WaitAssertion(() =>
+        {
+            server.System<GameTicker>().StartRound(force: true);
+            station = server.EntMan.SpawnEntity("WFRoundSetupQuotaTestStation", MapCoordinates.Nullspace);
+            legacy = server.EntMan.SpawnEntity("WFRoundSetupQuotaTestStation", MapCoordinates.Nullspace);
+            server.EntMan.AddComponent<ExtraShuttleInformationComponent>(legacy);
+            var setup = server.System<WFRoundSetupSystem>();
+            Assert.That(setup.CanSpawnOnStation(pair.Player!, station), Is.True);
+            Assert.That(setup.CanSpawnOnStation(pair.Player!, legacy), Is.False);
+            server.System<StationJobsSystem>().UpdateJobsAvailable();
+            server.System<GameTicker>().MakeJoinGame(pair.Player!, legacy, "Contractor");
+            Assert.That(pair.Player!.AttachedEntity, Is.Null);
+        });
+        await pair.RunTicksSync(pair.SecondsToTicks(3));
+        NetEntity stationNet = default;
+        NetEntity legacyNet = default;
+        await server.WaitPost(() => { stationNet = server.EntMan.GetNetEntity(station); legacyNet = server.EntMan.GetNetEntity(legacy); });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var jobs = pair.Client.System<ClientGameTicker>().StationJobInformationList;
+            Assert.That(jobs.ContainsKey(stationNet), Is.True);
+            Assert.That(jobs.ContainsKey(legacyNet), Is.False);
+        });
+        await server.WaitPost(() => server.System<GameTicker>().RestartRound());
+        await pair.RunTicksSync(2);
+        await pair.CleanReturnAsync();
     }
 
     /// <summary>Finds the caller's lobby in its personalized snapshot.</summary>

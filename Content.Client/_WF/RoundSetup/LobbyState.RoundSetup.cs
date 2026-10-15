@@ -9,6 +9,7 @@ public sealed partial class LobbyState
 {
     private WFRoundSetupClientSystem? _roundSetup;
     private PickerWindow? _normalJobs;
+    private WFRoundJoinChoiceWindow? _joinChoice;
 
     private void InitializeRoundSetupHome()
     {
@@ -23,6 +24,8 @@ public sealed partial class LobbyState
             _roundSetup.Received -= RoundSetupChanged;
         _roundSetup = null;
         _openNormalJobsAfterLeaving = false;
+        _joinChoice?.Close();
+        _joinChoice = null;
         _normalJobs?.Close();
         _normalJobs = null;
     }
@@ -58,7 +61,7 @@ public sealed partial class LobbyState
         Lobby.ReadyButton.RemoveStyleClass("ButtonColorRed");
         Lobby.ReadyButton.AddStyleClass(ready || _gameTicker.IsGameStarted ? "ButtonColorGreen" : "ButtonColorRed");
         Lobby.SetRoundSetupJoinText(Loc.GetString($"wf-round-setup-home-{action}"), Loc.GetString($"wf-round-setup-home-{help}"));
-        Lobby.RoundSetupButton.Visible = true;
+        Lobby.RoundSetupButton.Visible = !_gameTicker.IsGameStarted;
         Lobby.RoundSetupButton.Disabled = !own && _roundSetup?.State is not { CanJoin: true };
         if (Lobby.ReadyButton.Disabled)
             Lobby.ReadyButton.ToolTip = Loc.GetString("wf-round-setup-disabled-join");
@@ -85,6 +88,20 @@ public sealed partial class LobbyState
                 SetReady(!_gameTicker.AreWeReady);
             return;
         }
+        if (_joinChoice is { IsOpen: true })
+        {
+            _joinChoice.MoveToFront();
+            return;
+        }
+        _joinChoice = new WFRoundJoinChoiceWindow(
+            () => _userInterfaceManager.GetUIController<WFRoundSetupUIController>().OpenCrews(), JoinStandard);
+        _joinChoice.OpenCentered();
+    }
+
+    private void JoinStandard()
+    {
+        if (_gameTicker.DisallowedLateJoin)
+            return;
         // The normal picker must not inherit a crew's spawn restrictions.
         if (_roundSetup?.State?.OwnLobby is { } crew)
         {

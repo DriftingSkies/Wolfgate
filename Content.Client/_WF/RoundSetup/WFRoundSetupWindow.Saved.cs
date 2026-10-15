@@ -11,6 +11,7 @@ public sealed partial class WFRoundSetupWindow
     private bool _personalTitleDirty;
     private LobbyPage? _pendingPage;
     private string _saveName = string.Empty;
+    private int? _selectedSavedId;
 
     /// <summary>Edits the host's displayed title without changing the underlying job.</summary>
     private void BuildPersonalTitle(WFRoundSetupMember member)
@@ -32,28 +33,59 @@ public sealed partial class WFRoundSetupWindow
     /// <summary>Loads reusable choices into a new crew without restoring membership or consent.</summary>
     private void BuildSavedSetups(WFRoundSetupState state)
     {
-        if (state.SavedSetups.Length == 0)
-            return;
+        _body.AddChild(Button("back-create", OpenCreate));
         _body.AddChild(Heading("saved-setups"));
         _body.AddChild(Description("saved-help"));
-        foreach (var saved in state.SavedSetups.OrderBy(entry => entry.Name))
+        var selected = state.SavedSetups.FirstOrDefault(saved => saved.Id == _selectedSavedId);
+        if (selected == null)
         {
-            var row = Column(4);
-            row.AddChild(PlainDescription(saved.Name));
-            row.AddChild(PlainDescription(Text("saved-summary", ("scenario", ScenarioName(saved.Scenario)),
-                ("count", saved.Roles.Sum(role => role.Capacity)))));
-            var delete = new ConfirmButton
+            _selectedSavedId = null;
+            if (state.SavedSetups.Length == 0)
+                _body.AddChild(Description("saved-empty-help"));
+            foreach (var saved in state.SavedSetups.OrderBy(entry => entry.Name))
             {
-                Text = Text("delete-setup"), ConfirmationText = Text("delete-confirm"), MinHeight = 40, HorizontalExpand = true,
-                ToolTip = Text("delete-saved-confirm", ("name", saved.Name)),
-            };
-            delete.OnPressed += _ => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.DeleteSetup) { SavedId = saved.Id });
-            row.AddChild(Row(Button("load-setup", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.LoadSetup)
-            {
-                SavedId = saved.Id,
-            }), !state.CanJoin, "disabled-join"), delete));
-            _body.AddChild(Panel(row));
+                var row = new Button { Name = "RoundSetupSavedRow" + saved.Id, HorizontalExpand = true, MinHeight = 40,
+                    ToolTip = Text("saved-open-help") };
+                row.Label.Visible = false;
+                var contents = Row(WFRoundSetupCrewRow.JobIcon(saved.Job),
+                    new Label { Text = saved.Name, ClipText = true, HorizontalExpand = true },
+                    new Label { Text = ScenarioName(saved.Scenario) });
+                contents.MouseFilter = MouseFilterMode.Ignore;
+                foreach (var child in contents.Children)
+                    child.MouseFilter = MouseFilterMode.Ignore;
+                row.AddChild(contents);
+                row.OnPressed += _ => { _selectedSavedId = saved.Id; _pageScroll.VScroll = 0; Redraw(); };
+                _body.AddChild(row);
+            }
+            return;
         }
+        _body.AddChild(Button("back-saved", () => { _selectedSavedId = null; _pageScroll.VScroll = 0; Redraw(); }));
+        _body.AddChild(PlainDescription(selected.Name));
+        if (selected.Title.Length > 0)
+            _body.AddChild(PlainDescription(selected.Title));
+        if (selected.Description.Length > 0)
+            _body.AddChild(PlainDescription(selected.Description));
+        _body.AddChild(PlainDescription(Text("saved-summary", ("scenario", ScenarioName(selected.Scenario)),
+            ("count", selected.Roles.Sum(role => role.Capacity)))));
+        if (selected.Scenario == WFRoundScenario.Ship)
+        {
+            _body.AddChild(VesselSummary(state, new WFRoundSetupLobby { Vessel = selected.Vessel }));
+            _body.AddChild(Description(selected.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central" : "ship-start-random"));
+        }
+        _body.AddChild(PlainDescription(Text("saved-personal-job", ("job", JobName(selected.Job)), ("title", selected.JobTitle))));
+        foreach (var role in selected.Roles)
+            _body.AddChild(Row(WFRoundSetupCrewRow.JobIcon(role.Job), PlainDescription(Text("saved-role",
+                ("role", role.Name.Length == 0 ? JobName(role.Job) : role.Name), ("job", JobName(role.Job)), ("count", role.Capacity)))));
+        var delete = new ConfirmButton
+        {
+            Text = Text("delete-setup"), ConfirmationText = Text("delete-confirm"), MinHeight = 40, HorizontalExpand = true,
+            ToolTip = Text("delete-saved-confirm", ("name", selected.Name)),
+        };
+        delete.OnPressed += _ => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.DeleteSetup) { SavedId = selected.Id });
+        _footer.AddChild(Row(Button("load-setup", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.LoadSetup)
+        {
+            SavedId = selected.Id,
+        }), !state.CanJoin, "disabled-join"), delete));
     }
 
     /// <summary>Saves committed job and ship choices together with the current admission form.</summary>
@@ -71,7 +103,7 @@ public sealed partial class WFRoundSetupWindow
         {
             SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SaveSetup)
             {
-                LobbyId = lobby.Id, SaveName = name.Text, Title = _draftTitle,
+                LobbyId = lobby.Id, SaveName = name.Text, Title = _draftTitle, Description = _draftDescription,
                 Access = _draftAccess, AllowLateJoin = _draftLateJoin,
             });
         });
@@ -80,10 +112,17 @@ public sealed partial class WFRoundSetupWindow
         {
             var exists = state.SavedSetups.Any(entry => entry.Name.Equals(name.Text.Trim(), StringComparison.OrdinalIgnoreCase));
             var limit = state.SavedSetups.Length >= WFRoundSetupPolicy.MaximumSavedSetups && !exists;
+            if (!WFRoundSetupPolicy.TryNormalizeDescription(_draftDescription, out _))
+            {
+                save.Disabled = true;
+                save.ToolTip = Text("error-description", ("max", WFRoundSetupPolicy.MaximumDescriptionLength));
+                return;
+            }
             save.Disabled = string.IsNullOrWhiteSpace(name.Text) || limit;
             save.ToolTip = Text(limit ? "save-limit" : string.IsNullOrWhiteSpace(name.Text) ? "save-needs-name" : exists ? "save-replace-help" : "save-help");
         }
         name.OnTextChanged += _ => { _saveName = name.Text; UpdateSave(); };
+        _descriptionChecks.Add(UpdateSave);
         UpdateSave();
         content.AddChild(Row(name, save));
         _body.AddChild(Panel(content));
@@ -91,7 +130,7 @@ public sealed partial class WFRoundSetupWindow
 
     private static bool SameSavedSetups(WFSavedSetup[] first, WFSavedSetup[] second) =>
         first.Length == second.Length && first.Zip(second).All(pair =>
-            pair.First.Id == pair.Second.Id && pair.First.Name == pair.Second.Name && pair.First.Title == pair.Second.Title &&
+            pair.First.Id == pair.Second.Id && pair.First.Name == pair.Second.Name && pair.First.Title == pair.Second.Title && pair.First.Description == pair.Second.Description &&
             pair.First.Scenario == pair.Second.Scenario && pair.First.ShipStart == pair.Second.ShipStart &&
             pair.First.Vessel == pair.Second.Vessel && pair.First.Access == pair.Second.Access &&
             pair.First.AllowLateJoin == pair.Second.AllowLateJoin && pair.First.Job == pair.Second.Job &&

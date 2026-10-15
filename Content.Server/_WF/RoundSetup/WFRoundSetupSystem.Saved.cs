@@ -40,7 +40,7 @@ public sealed partial class WFRoundSetupSystem
             if (_resources.UserData.Exists(path))
             {
                 using var stream = _resources.UserData.OpenRead(path);
-                if (stream.Length > 131072)
+                if (stream.Length > 524288)
                     throw new IOException("Saved setup file exceeds its size limit.");
                 var document = JsonSerializer.Deserialize<SavedDocument>(stream);
                 if (document is not { Version: 1, Setups: not null } || document.Setups.Length > WFRoundSetupPolicy.MaximumSavedSetups ||
@@ -106,7 +106,7 @@ public sealed partial class WFRoundSetupSystem
         var snapshot = new WFSavedSetup
         {
             Id = existing?.Id ?? Enumerable.Range(1, WFRoundSetupPolicy.MaximumSavedSetups).First(id => saved.All(entry => entry.Id != id)),
-            Name = name, Title = lobby.Title, Scenario = lobby.Scenario, ShipStart = lobby.ShipStart, Vessel = lobby.Vessel,
+            Name = name, Title = lobby.Title, Description = lobby.Description, Scenario = lobby.Scenario, ShipStart = lobby.ShipStart, Vessel = lobby.Vessel,
             Job = member.Job, JobTitle = title, Access = lobby.Access, AllowLateJoin = lobby.AllowLateJoin,
             Roles = lobby.Roles.Values.Select(entry => new WFSavedRole(entry.Name, entry.Job, entry.Capacity)).ToArray(),
         };
@@ -133,7 +133,7 @@ public sealed partial class WFRoundSetupSystem
             return false;
         var lobby = new Lobby
         {
-            Id = ++_nextId, Host = host.UserId, Title = saved.Title, Scenario = saved.Scenario, ShipStart = saved.ShipStart,
+            Id = ++_nextId, Host = host.UserId, Title = saved.Title, Description = saved.Description, Scenario = saved.Scenario, ShipStart = saved.ShipStart,
             Vessel = saved.Vessel, Access = saved.Access, AllowLateJoin = saved.AllowLateJoin, Code = NewCode(),
         };
         foreach (var entry in saved.Roles)
@@ -149,7 +149,8 @@ public sealed partial class WFRoundSetupSystem
     private static bool ValidSavedSetup(WFSavedSetup saved) =>
         saved.Id is >= 1 and <= WFRoundSetupPolicy.MaximumSavedSetups &&
         saved.Scenario is WFRoundScenario.Ship or WFRoundScenario.Crashlanded && Enum.IsDefined(saved.ShipStart) && Enum.IsDefined(saved.Access) &&
-        saved.Name != null && saved.Title != null && saved.JobTitle != null &&
+        saved.Name != null && saved.Title != null && saved.JobTitle != null && saved.Description != null &&
+        WFRoundSetupPolicy.TryNormalizeDescription(saved.Description, out _) &&
         WFRoundSetupPolicy.TryNormalizeTitle(saved.Name, out var name) && !string.IsNullOrWhiteSpace(name) &&
         WFRoundSetupPolicy.TryNormalizeTitle(saved.Title, out _) && WFRoundSetupPolicy.TryNormalizeRoleName(saved.JobTitle, out _) &&
         saved.Roles != null && saved.Roles.Length <= WFRoundSetupPolicy.MaximumRoles &&
