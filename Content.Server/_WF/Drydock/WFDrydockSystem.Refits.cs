@@ -28,11 +28,14 @@ public sealed partial class WFDrydockSystem
                     continue;
 
                 var materials = new Dictionary<string, int>();
-                var cost = _refits.Price(refit, owned.Tier, lacking, ref left, comp.RefitRepairShare, materials);
+                var full = new int[lacking.Length];
+                var cost = _refits.Price(refit, owned.Tier, lacking, ref left, comp.RefitRepairShare, materials, full);
                 rebuild.Cost += cost;
                 rebuild.RefitCost += cost;
                 rebuild.RefitMaterials ??= new Dictionary<string, int>();
                 AddBill(rebuild.RefitMaterials, materials);
+                rebuild.RefitUnits ??= new List<WFDrydockRefitUnits>();
+                rebuild.RefitUnits.Add(new WFDrydockRefitUnits(refit.ID, owned.Tier, full));
             }
 
             foreach (var target in survey.Below)
@@ -71,7 +74,8 @@ public sealed partial class WFDrydockSystem
     private WFDrydockWorkItem RefitItem(WFShipRefitPrototype refit, int owned, WFRefitTarget target, ref int left, WFDrydockConsoleComponent comp)
     {
         var materials = new Dictionary<string, int>();
-        var cost = _refits.Price(refit, owned, target.Lacking, ref left, comp.RefitRepairShare, materials);
+        var full = new int[target.Lacking.Length];
+        var cost = _refits.Price(refit, owned, target.Lacking, ref left, comp.RefitRepairShare, materials, full);
         return new WFDrydockWorkItem
         {
             Kind = WFDrydockWorkKind.Upgrade,
@@ -81,13 +85,17 @@ public sealed partial class WFDrydockSystem
             Cost = cost,
             RefitCost = cost,
             RefitMaterials = materials,
+            RefitUnits = new List<WFDrydockRefitUnits> { new(refit.ID, target.Lacking.Length, full) },
             LocalPos = target.LocalPos,
         };
     }
 
-    /// <summary>One refit line for the console: the tier the ship owns, its units, and the price of the next tier.</summary>
+    /// <summary>
+    /// One refit line for the console: the tier the ship owns, its units, and the price of the next tier, with the
+    /// parts the cranes would take for it.
+    /// </summary>
     private WFDrydockUpgradeEntry BuildRefitEntry(WFShipRefitPrototype refit, EntityUid? ship, WFDrydockConsoleComponent comp,
-        WFDrydockMaterialPaymentComponent? pay, bool scan)
+        WFDrydockMaterialPaymentComponent? pay, List<EntityUid> cranes, bool scan)
     {
         var entry = new WFDrydockUpgradeEntry
         {
@@ -115,14 +123,24 @@ public sealed partial class WFDrydockSystem
             return entry;
 
         var left = _refits.CoverageLeft(shipUid, refit, survey);
-        var materials = new Dictionary<string, int>();
+        var items = new List<WFDrydockWorkItem>();
         foreach (var target in survey.Below)
         {
-            entry.NextPrice += _refits.Price(refit, owned, target.Lacking, ref left, comp.RefitRepairShare, materials);
+            items.Add(RefitItem(refit, owned, target, ref left, comp));
         }
 
+        entry.NextPrice = items.Sum(i => i.Cost);
         if (pay != null)
-            entry.NextMaterials = materials;
+        {
+            foreach (var item in items)
+            {
+                item.Materials = RefitBill(pay, item);
+            }
+
+            AssignParts(cranes, items);
+            entry.NextMaterials = SumBills(items);
+            entry.NextParts = SumParts(items);
+        }
 
         return entry;
     }

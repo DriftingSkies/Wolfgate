@@ -991,7 +991,7 @@ public sealed class DrydockTest
                 LocalPos = em.GetComponent<TransformComponent>(thruster).LocalPosition,
             }).ToList();
 
-            Assert.That(items.Count * comp.UpgradeWorkTime / 2, Is.GreaterThan(maxDuration * 5),
+            Assert.That(items.Count * comp.UpgradeWorkTime / 2, Is.GreaterThan(maxDuration * 3),
                 "The unpaced refit should run far past the cap.");
             start = timing.CurTime;
             drydock.StartJob(console, comp, ship, null, items, 0);
@@ -1033,7 +1033,9 @@ public sealed class DrydockTest
             (_, console, _) = LoadDrydock(pair, map.MapId);
             ship = CreateDamagedShip(pair, map.MapId);
 
+            // Slow work, so the item is still in progress after the drift below.
             var comp = em.GetComponent<WFDrydockConsoleComponent>(console);
+            comp.TileWorkTime = comp.EntityWorkTime = comp.HealWorkTime = 20f;
             var items = drydock.BuildRepairItems(ship, comp);
             drydock.StartJob(console, comp, ship, null, items, 0);
         });

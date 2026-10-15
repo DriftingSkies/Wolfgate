@@ -59,7 +59,7 @@
 
 - type: cargoBounty
   id: MMCBountyPlastitanium
-  reward: 500
+  reward: 125 # WOLFGATE(Mining): plastitanium no longer prints MIC, 500 -> 125 (2.5 MIC per sheet)
   rewardSuffix: MIC
   rewardProto: MMCIndustrialCredit
   description: mmc-bounty-desc-generic

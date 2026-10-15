@@ -1,5 +1,6 @@
 using System.Numerics;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Maths;
 using Robust.Shared.ViewVariables;
 
 namespace Content.Server._WF.Drydock;
@@ -89,6 +90,9 @@ public sealed partial class WFDrydockJobComponent : Component
     /// <summary>Materials returned for skipped items of a material job.</summary>
     public Dictionary<string, int> SkippedMaterials = new();
 
+    /// <summary>Parts returned for skipped items of a material job.</summary>
+    public Dictionary<string, int> SkippedParts = new();
+
     /// <summary>Time the cranes finish deploying over the ship and work starts.</summary>
     [ViewVariables]
     public TimeSpan WorkStarts;
@@ -125,4 +129,28 @@ public sealed partial class WFDrydockJobComponent : Component
 
     /// <summary>Ship-local tile centers for ambient sparks and machinery sounds.</summary>
     public List<Vector2> SparkTiles = new();
+
+    /// <summary>Whether the job breaks the ship up instead of repairing it.</summary>
+    [ViewVariables]
+    public bool Break;
+
+    /// <summary>Ship's name, kept for the notice once a broken hull is gone.</summary>
+    public string ShipName = string.Empty;
+
+    /// <summary>Grid the drydock works from, reported as attacking a ship it breaks.</summary>
+    public EntityUid? Attacker;
+
+    /// <summary>Materials a break job has recovered so far, before its caps.</summary>
+    public Dictionary<string, int> Recovered = new();
+
+    /// <summary>Tiles a break job has lifted, which set its caps.</summary>
+    [ViewVariables]
+    public int Lifted;
+
+    /// <summary>Materials a break job has credited to its cranes so far.</summary>
+    public Dictionary<string, int> Yield = new();
+
+    /// <summary>Whether a break job lifted the ship's last tile.</summary>
+    [ViewVariables]
+    public bool HullGone;
 }

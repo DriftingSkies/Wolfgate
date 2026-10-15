@@ -235,7 +235,9 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
                 // WOLFGATE END
                 var hitPos = _transformSystem.ToCoordinates(hitMapCoord);
                 // if we somehow hit something not directly parented to space or a grid
-                if (hitXform.Coordinates.EntityId != hitXform.GridUid && hitXform.GridUid != null)
+                // WOLFGATE(Weapons): hold every hit on the struck grid, so an impact blast moves with the ship it hit.
+                // if (hitXform.Coordinates.EntityId != hitXform.GridUid && hitXform.GridUid != null)
+                if (hitXform.GridUid != null)
                     hitPos = _transformSystem.WithEntityId(hitPos, hitXform.GridUid.Value);
 
                 if (projectileComp.RaycastResetVelocity == null)

@@ -10,17 +10,18 @@ public sealed partial class WFDrydockSystem
 {
     [Dependency] private SharedOreSiloSystem _oreSilo = default!;
 
-    /// <summary>Sets each item's material bill for a console that pays in materials, within the ship's limits.</summary>
-    private void AssignMaterials(EntityUid ship, WFDrydockConsoleComponent comp, WFDrydockMaterialPaymentComponent pay, List<WFDrydockWorkItem> items)
+    /// <summary>
+    /// Sets each item's material bill for a console that pays in materials, within the ship's limits, then pays what
+    /// refit units it can with parts from the cranes' parts silos.
+    /// </summary>
+    private void AssignMaterials(EntityUid ship, WFDrydockConsoleComponent comp, WFDrydockMaterialPaymentComponent pay,
+        List<WFDrydockWorkItem> items, List<EntityUid> cranes)
     {
         foreach (var item in items)
         {
-            // A refit item pays its tiers' own materials, or the rates on its cost when they list none.
             if (item.Kind == WFDrydockWorkKind.Upgrade)
             {
-                item.Materials = item.RefitMaterials is { Count: > 0 } refit
-                    ? new Dictionary<string, int>(refit)
-                    : ItemBill(pay, item.Cost);
+                item.Materials = RefitBill(pay, item);
                 continue;
             }
 
@@ -31,12 +32,29 @@ public sealed partial class WFDrydockSystem
 
         LimitBill(pay, items, BillScale(ship, comp, pay));
 
+        // Rebuilding what a break stripped costs its full materials, outside the limits, so breaking it again never pays.
+        foreach (var item in items)
+        {
+            if (item.Broken)
+                BillBroken(pay, item);
+        }
+
         // A rebuild restoring a refit pays the refit's materials too, outside the limits.
         foreach (var item in items)
         {
             if (item.Kind != WFDrydockWorkKind.Upgrade && item.RefitMaterials != null && item.Materials != null)
                 AddBill(item.Materials, item.RefitMaterials);
         }
+
+        AssignParts(cranes, items);
+    }
+
+    /// <summary>A refit item's bill: its tiers' own materials, or the rates on its cost when they list none.</summary>
+    private static Dictionary<string, int> RefitBill(WFDrydockMaterialPaymentComponent pay, WFDrydockWorkItem item)
+    {
+        return item.RefitMaterials is { Count: > 0 } refit
+            ? new Dictionary<string, int>(refit)
+            : ItemBill(pay, item.Cost);
     }
 
     /// <summary>
@@ -218,10 +236,14 @@ public sealed partial class WFDrydockSystem
         return _materials.TryChangeMaterialAmount((uid, storage), change, localOnly: true);
     }
 
-    /// <summary>Takes the items' bill from the console's silos, then its cranes, all or nothing; denies with the shortfall.</summary>
+    /// <summary>
+    /// Takes the items' bill from the console's silos, then its cranes, and their parts from the parts silos, all or
+    /// nothing; denies with the shortfall.
+    /// </summary>
     private bool TryPayMaterials(EntityUid console, WFDrydockConsoleComponent comp, EntityUid actor, List<WFDrydockWorkItem> items)
     {
         var bill = SumBills(items);
+        var parts = SumParts(items);
         var cranes = WorkingCranes(console, comp);
         var silos = SourceSilos(cranes);
 
@@ -251,8 +273,9 @@ public sealed partial class WFDrydockSystem
                 missing[id] = left;
         }
 
-        if (missing.Count > 0)
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-insufficient-materials", ("missing", FormatMaterials(missing))));
+        var missingParts = MissingParts(cranes, parts);
+        if (missing.Count > 0 || missingParts.Count > 0)
+            return Deny(console, comp, actor, Loc.GetString("drydock-console-insufficient-materials", ("missing", FormatBill(missing, missingParts))));
 
         var applied = new List<(EntityUid Uid, Dictionary<string, int> Draw)>();
         foreach (var (source, draw) in draws)
@@ -268,21 +291,28 @@ public sealed partial class WFDrydockSystem
             applied.Add((source, draw));
         }
 
+        TakeParts(console, cranes, parts);
         return true;
     }
 
-    /// <summary>Returns the items' bill to the first crane with storage, or to its linked silo, and gives the bill.</summary>
-    private Dictionary<string, int> ReturnMaterials(EntityUid console, List<EntityUid> cranes, List<WFDrydockWorkItem> items)
+    /// <summary>
+    /// Returns the items' bill to the first crane with storage, or to its linked silo, and their parts to a parts silo;
+    /// gives both.
+    /// </summary>
+    private (Dictionary<string, int> Materials, Dictionary<string, int> Parts) ReturnMaterials(EntityUid console,
+        List<EntityUid> cranes, List<WFDrydockWorkItem> items)
     {
         var bill = SumBills(items);
+        var parts = SumParts(items);
+        ReturnParts(cranes, parts);
         if (bill.Count == 0)
-            return bill;
+            return (bill, parts);
 
         var crane = cranes.FirstOrDefault(c => HasComp<MaterialStorageComponent>(c));
         if (!crane.Valid || !TryChangeLocal(CraneSilo(crane) ?? crane, bill))
             Log.Warning($"Could not return drydock materials to {ToPrettyString(console)}; its cranes or silo are gone or full.");
 
-        return bill;
+        return (bill, parts);
     }
 
     /// <summary>Lists a material bill as localized names and sheet amounts, comma separated.</summary>

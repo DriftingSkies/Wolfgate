@@ -28,7 +28,7 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
 
     private readonly Dictionary<EntityUid, CraneLayers> _cranes = new();
 
-    /// <summary>Cranes whose sprites are rebuilt after this frame's loop: mirrored, or their rig was deleted.</summary>
+    /// <summary>Cranes whose sprites are rebuilt after this frame's loop: mirrored, upgraded to a new reach, or their rig was deleted.</summary>
     private readonly List<EntityUid> _rebuild = new();
 
     public override void Initialize()
@@ -60,7 +60,8 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
             if (!_cranes.TryGetValue(uid, out var layers))
                 continue;
 
-            if (layers.Mirrored != crane.Mirrored || !TryComp(layers.Rig, out SpriteComponent? rigSprite))
+            if (layers.Mirrored != crane.Mirrored || layers.Reach != (crane.MaxArm, crane.Sections, crane.SectionLength) ||
+                !TryComp(layers.Rig, out SpriteComponent? rigSprite))
             {
                 _rebuild.Add(uid);
                 continue;
@@ -113,14 +114,14 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
         return shown;
     }
 
-    /// <summary>Moves the visual arm, boom, trolley and carriage toward the crane's targets, slowed by its power.</summary>
+    /// <summary>Moves the visual arm, boom, trolley and carriage toward the crane's targets at its speed, slowed by its power.</summary>
     private void Ease(WFDrydockCraneComponent crane, float frameTime, bool folded)
     {
         var extension = Math.Clamp(crane.Extension, crane.SectionLength, crane.MaxExtension);
 
         // Every axis slows with the crane's power, and a stalled crane does not move at all.
         var power = crane.PowerRatio < WFDrydockCraneComponent.StallRatio ? 0f : crane.PowerRatio;
-        var step = frameTime * power;
+        var step = frameTime * power * crane.SpeedMultiplier;
 
         if (crane.Arm > crane.VisualArm || folded)
             crane.VisualArm = Approach(crane.VisualArm, crane.Arm, crane.ArmSpeed * step);
@@ -277,7 +278,7 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
         var rigSprite = AddComp<SpriteComponent>(rigUid);
         _sprite.SetDrawDepth((rigUid, rigSprite), sprite.DrawDepth);
         var rig = (rigUid, rigSprite);
-        var layers = new CraneLayers { Rig = rigUid, Mirrored = comp.Mirrored };
+        var layers = new CraneLayers { Rig = rigUid, Mirrored = comp.Mirrored, Reach = (comp.MaxArm, comp.Sections, comp.SectionLength) };
 
         // The arm is one segment per tile, each centred on its tile; the end cap sits at the arm's head.
         for (var i = 0; i < MathF.Ceiling(comp.MaxArm); i++)
@@ -361,6 +362,7 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
     {
         public EntityUid Rig;
         public bool Mirrored;
+        public (float MaxArm, int Sections, int SectionLength) Reach;
         public readonly List<int> Arm = new();
         public readonly List<(int Layer, int Section, int Tile)> Boom = new();
         public int ArmEnd;

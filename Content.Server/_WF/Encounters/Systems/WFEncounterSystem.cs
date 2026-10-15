@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._WF.Administration.Systems;
+using Content.Server._WF.Drydock;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.NpcCrew;
 using Content.Server._WF.NpcCrew.Components;
@@ -74,6 +75,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     /// <summary>How often a living crew top up their ship's batteries. Encounter ships don't burn fuel.</summary>
     private static readonly TimeSpan PowerInterval = TimeSpan.FromMinutes(2);
+
+    /// <summary>How long a hull stays after a drydock last broke part of it.</summary>
+    private static readonly TimeSpan HulkLinger = TimeSpan.FromSeconds(300);
 
     /// <summary>How often a persistent ship's fuel stores are checked.</summary>
     private static readonly TimeSpan StockInterval = TimeSpan.FromMinutes(5);
@@ -1314,6 +1318,13 @@ public sealed partial class WFEncounterSystem : EntitySystem
                         remaining = true;
                 }
 
+                continue;
+            }
+
+            // A hull a drydock is breaking stays until its cranes have left it alone a while.
+            if (TryComp<WFHulkComponent>(ship.Grid, out var hulk) && now - hulk.LastWork < HulkLinger)
+            {
+                remaining = true;
                 continue;
             }
 

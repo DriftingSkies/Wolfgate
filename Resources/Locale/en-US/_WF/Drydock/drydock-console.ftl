@@ -43,3 +43,21 @@ drydock-console-aborted-materials = Ship left the berth. Unfinished work's mater
 drydock-console-aborted-power-materials = The cranes lost power. Unfinished work's materials returned: { $refund }.
 
 drydock-berth-lights-no-berth = No berth to light up.
+
+drydock-console-break-unavailable = This console can't break hulls.
+drydock-console-break-station = Stations and outposts can't be broken.
+drydock-console-nothing-to-break = Nothing to break.
+drydock-console-break-started = Breaking up { $ship }: { $count } { $count ->
+    [one] tile
+   *[other] tiles
+}.
+drydock-console-break-finished = { $ship } is broken up. Recovered: { $yield }.
+drydock-console-break-finished-skipped = Finished breaking { $ship }. { $count } { $count ->
+    [one] tile
+   *[other] tiles
+} left standing. Recovered: { $yield }.
+drydock-console-break-aborted = Ship left the berth. Breaking stopped. Recovered: { $yield }.
+drydock-console-break-aborted-power = The cranes lost power. Breaking stopped. Recovered: { $yield }.
+
+drydock-salvaged-flatpack-name = salvaged { $name } flatpack
+drydock-salvaged-flatpack-description = { CAPITALIZE(INDEFINITE($name)) } { $name } stripped off a broken hull. It unpacks damaged.

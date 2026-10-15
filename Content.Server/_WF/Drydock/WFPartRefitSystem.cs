@@ -26,6 +26,9 @@ public sealed class WFPartRefitSystem : EntitySystem
     /// <summary>Replacement part prototype for a (part type, rating) pair.</summary>
     private readonly Dictionary<(string Part, int Rating), EntProtoId> _replacements = new();
 
+    /// <summary>Replacement part prototypes at a rating some refit tier installs.</summary>
+    private readonly HashSet<string> _replacementIds = new();
+
     /// <summary>Part pairs already reported as missing a replacement, so each is logged once.</summary>
     private readonly HashSet<(string Part, int Rating)> _warned = new();
 
@@ -50,24 +53,20 @@ public sealed class WFPartRefitSystem : EntitySystem
         GetMachines(survey.Ship, args.Effect, machines);
         foreach (var uid in machines)
         {
-            var machine = Comp<MachineComponent>(uid);
             WFRefitTarget? target = null;
-            foreach (var part in machine.PartContainer.ContainedEntities)
+            foreach (var (type, partRating, count) in InstalledParts(Comp<MachineComponent>(uid)))
             {
-                if (!TryComp<MachinePartComponent>(part, out var partComp))
-                    continue;
-
-                if (partComp.Rating >= rating)
+                if (partRating >= rating)
                 {
-                    survey.UnitsAtTier += PartCount(part);
+                    survey.UnitsAtTier += count;
                     continue;
                 }
 
-                if (!_replacements.ContainsKey((partComp.PartType.Id, rating)))
+                if (!_replacements.ContainsKey((type, rating)))
                     continue;
 
                 target ??= new WFRefitTarget(uid, Transform(uid).LocalPosition, survey.Tier);
-                target.Lacking[TierOf(args.Effect, partComp.Rating)] += PartCount(part);
+                target.Lacking[TierOf(args.Effect, partRating)] += count;
             }
 
             if (target != null)
@@ -79,28 +78,77 @@ public sealed class WFPartRefitSystem : EntitySystem
     private void OnProspect(WFRefitProspectEvent<WFPartRatingRefit> args)
     {
         var prospect = args.Prospect;
-        if (!_prototype.TryIndex(prospect.Prototype, out var proto) || !Covers(proto, args.Effect) ||
+        var rating = args.Effect.Ratings[prospect.Lacking.Length - 1];
+        foreach (var (type, partRating, count) in StockParts(prospect.Prototype, args.Effect))
+        {
+            if (partRating < rating && _replacements.ContainsKey((type, rating)))
+                prospect.Lacking[TierOf(args.Effect, partRating)] += count;
+        }
+    }
+
+    /// <summary>
+    /// The parts a refit to a tier replaces, on a machine or on a stock rebuild of a prototype, by part type and the
+    /// tier each reaches. Empty for other refit kinds or machines the line doesn't cover.
+    /// </summary>
+    public List<WFRefitPart> PartsBelow(WFShipRefitPrototype refit, int tier, EntityUid? machine, EntProtoId? prototype)
+    {
+        var result = new List<WFRefitPart>();
+        if (refit.Effect is not WFPartRatingRefit effect || tier < 1 || tier > effect.Ratings.Count)
+            return result;
+
+        IEnumerable<(string, int, int)> parts;
+        if (machine is { } uid)
+            parts = IsCovered(uid, effect) ? InstalledParts(Comp<MachineComponent>(uid)) : [];
+        else if (prototype is { } proto)
+            parts = StockParts(proto, effect);
+        else
+            return result;
+
+        var rating = effect.Ratings[tier - 1];
+        foreach (var (type, partRating, count) in parts)
+        {
+            if (partRating < rating && _replacements.TryGetValue((type, rating), out var replacement))
+                result.Add(new WFRefitPart(replacement, TierOf(effect, partRating), count));
+        }
+
+        return result;
+    }
+
+    /// <summary>Whether a prototype is the part some refit tier installs.</summary>
+    public bool IsReplacement(string prototype)
+    {
+        return _replacementIds.Contains(prototype);
+    }
+
+    /// <summary>A machine's installed parts as (type, rating, count).</summary>
+    private IEnumerable<(string Type, int Rating, int Count)> InstalledParts(MachineComponent machine)
+    {
+        foreach (var part in machine.PartContainer.ContainedEntities)
+        {
+            if (TryComp<MachinePartComponent>(part, out var partComp))
+                yield return (partComp.PartType.Id, partComp.Rating, PartCount(part));
+        }
+    }
+
+    /// <summary>A covered machine prototype's stock parts, from its board, as (type, rating, count).</summary>
+    private IEnumerable<(string Type, int Rating, int Count)> StockParts(EntProtoId prototype, WFPartRatingRefit effect)
+    {
+        if (!_prototype.TryIndex(prototype, out var proto) || !Covers(proto, effect) ||
             !proto.TryGetComponent<MachineComponent>(out var machine, Factory) || machine.Board is not { } boardId ||
             !_prototype.TryIndex<EntityPrototype>(boardId.Id, out var boardProto) ||
             !boardProto.TryGetComponent<MachineBoardComponent>(out var board, Factory))
         {
-            return;
+            yield break;
         }
 
-        var rating = args.Effect.Ratings[prospect.Lacking.Length - 1];
         foreach (var (partType, amount) in board.Requirements)
         {
             var stock = machine.PartOverrides.TryGetValue(partType, out var overridden)
                 ? overridden
                 : _prototype.Index<MachinePartPrototype>(partType).StockPartPrototype;
-            if (!_prototype.TryIndex(stock, out var stockProto) ||
-                !stockProto.TryGetComponent<MachinePartComponent>(out var part, Factory) ||
-                part.Rating >= rating || !_replacements.ContainsKey((partType.Id, rating)))
-            {
-                continue;
-            }
-
-            prospect.Lacking[TierOf(args.Effect, part.Rating)] += amount;
+            if (_prototype.TryIndex(stock, out var stockProto) &&
+                stockProto.TryGetComponent<MachinePartComponent>(out var part, Factory))
+                yield return (partType.Id, part.Rating, amount);
         }
     }
 
@@ -224,7 +272,7 @@ public sealed class WFPartRefitSystem : EntitySystem
 
     private void OnPrototypesReloaded(PrototypesReloadedEventArgs args)
     {
-        if (args.WasModified<EntityPrototype>())
+        if (args.WasModified<EntityPrototype>() || args.WasModified<WFShipRefitPrototype>())
             RebuildReplacements();
     }
 
@@ -243,6 +291,20 @@ public sealed class WFPartRefitSystem : EntitySystem
             var key = (part.PartType.Id, part.Rating);
             if (!_replacements.TryGetValue(key, out var existing) || PrefersOver(proto.ID, existing.Id))
                 _replacements[key] = proto.ID;
+        }
+
+        var ratings = new HashSet<int>();
+        foreach (var refit in _prototype.EnumeratePrototypes<WFShipRefitPrototype>())
+        {
+            if (refit.Effect is WFPartRatingRefit effect)
+                ratings.UnionWith(effect.Ratings);
+        }
+
+        _replacementIds.Clear();
+        foreach (var ((_, rating), id) in _replacements)
+        {
+            if (ratings.Contains(rating))
+                _replacementIds.Add(id);
         }
     }
 
@@ -273,3 +335,6 @@ public sealed class WFPartRefitSystem : EntitySystem
         return false;
     }
 }
+
+/// <summary>Parts of one type a refit replaces: the part it installs, the tier they reach now, and how many.</summary>
+public readonly record struct WFRefitPart(EntProtoId Replacement, int Reached, int Count);

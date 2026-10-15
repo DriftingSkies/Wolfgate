@@ -34,4 +34,30 @@ public sealed partial class WFDrydockMaterialPaymentComponent : Component
     /// <summary>Most units one repair may bill of a material <see cref="MaxBill"/> doesn't list.</summary>
     [DataField]
     public int DefaultMaxBill = 500;
+
+    /// <summary>
+    /// Share of every construction material a hull break recovers from what it strips, unless <see cref="BreakYield"/>
+    /// lists the material. With neither set, the console can't break hulls.
+    /// </summary>
+    [DataField]
+    public float BreakDefaultYield;
+
+    /// <summary>Share a hull break recovers of particular construction materials, in place of the default.</summary>
+    [DataField]
+    public Dictionary<ProtoId<MaterialPrototype>, float> BreakYield = new();
+
+    /// <summary>Material units a hull break recovers from each tile it lifts.</summary>
+    [DataField]
+    public Dictionary<ProtoId<MaterialPrototype>, int> BreakTileYield = new();
+
+    /// <summary>Material units a hull break pays per tile it lifts on top of the hull's own, such as scrap; rebuilding the tile never bills them.</summary>
+    [DataField]
+    public Dictionary<ProtoId<MaterialPrototype>, int> BreakTileSalvage = new();
+
+    /// <summary>
+    /// Most units of each material a hull break may pay per tile it lifts. Yield past the caps of the tiles lifted so far
+    /// waits for later tiles, so a hull broken whole or in parts pays the same. A material not listed has no cap.
+    /// </summary>
+    [DataField]
+    public Dictionary<ProtoId<MaterialPrototype>, float> BreakCap = new();
 }

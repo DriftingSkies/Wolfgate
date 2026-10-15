@@ -21,6 +21,7 @@ public sealed class WFDrydockConsoleBoundUserInterface : BoundUserInterface
 
         _window = this.CreateWindow<WFDrydockConsoleWindow>();
         _window.OnRepairPressed += OnRepairPressed;
+        _window.OnBreakPressed += () => SendMessage(new WFDrydockBreakMessage());
         _window.OnUpgradePressed += OnUpgradePressed;
         _window.OnCancelBookingPressed += OnCancelBookingPressed;
         _window.OnBerthLightsPressed += OnBerthLightsPressed;

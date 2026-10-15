@@ -111,6 +111,21 @@ public sealed partial class FabricationSiloSystem : SharedFabricationSiloSystem
     }
 
     /// <summary>
+    /// Puts a part into a machine's linked parts silo if the silo accepts it and has room.
+    /// </summary>
+    public bool ReturnPart(EntityUid client, EntityUid part)
+    {
+        if (GetLinkedSilo(client, FabricationSiloKind.Parts) is not { Comp.Parts: { } parts } silo ||
+            !IsAcceptedPart(part) ||
+            parts.ContainedEntities.Count >= silo.Comp.MaxParts ||
+            !_containers.Insert(part, parts))
+            return false;
+
+        RefreshClients(silo.Comp);
+        return true;
+    }
+
+    /// <summary>
     /// Splits a reagent, whatever its data, from a machine's linked chemical silo; takes none if there is not enough.
     /// </summary>
     public bool ConsumeReagent(EntityUid client, ProtoId<ReagentPrototype> reagent, FixedPoint2 amount)

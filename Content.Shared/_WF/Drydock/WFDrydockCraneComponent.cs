@@ -22,7 +22,7 @@ public sealed partial class WFDrydockCraneComponent : Component
     public EntityUid? LinkedConsole;
 
     /// <summary>Longest arm, in tiles.</summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float MaxArm = 36f;
 
     /// <summary>Tiles of arm between the root and the start of the berth, so the work area stands clear of the machine.</summary>
@@ -42,8 +42,12 @@ public sealed partial class WFDrydockCraneComponent : Component
     public float IdleLoad = 500f;
 
     /// <summary>Power drawn while working, in watts.</summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float WorkingLoad = 15000f;
+
+    /// <summary>Multiplier on how fast the crane works and moves, before power; raised by part upgrades.</summary>
+    [DataField, AutoNetworkedField]
+    public float SpeedMultiplier = 1f;
 
     /// <summary>Share of the working power received, 0 to 1; scales how fast the crane works and moves.</summary>
     [DataField, AutoNetworkedField]
@@ -65,11 +69,11 @@ public sealed partial class WFDrydockCraneComponent : Component
     public float ArmRoot = -0.5f;
 
     /// <summary>Number of nested boom sections.</summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public int Sections = 4;
 
     /// <summary>Length of one boom section, which is also the retracted boom length, in tiles.</summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public int SectionLength = 5;
 
     /// <summary>Boom angle in degrees while parked; 90 folds it along the arm.</summary>

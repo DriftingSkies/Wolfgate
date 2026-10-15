@@ -80,12 +80,12 @@ public sealed partial class WFDrydockSystem
     private JobEnd TickJob(EntityUid console, WFDrydockConsoleComponent comp, WFDrydockJobComponent job, TimeSpan curTime, float frameTime)
     {
         if (TerminatingOrDeleted(job.Ship))
-            return JobEnd.Aborted;
+            return job.HullGone ? JobEnd.Finished : JobEnd.Aborted;
 
         if (curTime >= job.NextBerthCheck)
         {
             job.NextBerthCheck = curTime + BerthCheckInterval;
-            if (GetBerthedShip(console, comp) != job.Ship)
+            if (!StillBerthed(console, comp, job))
                 return JobEnd.Aborted;
         }
 
@@ -119,7 +119,19 @@ public sealed partial class WFDrydockSystem
 
         var changed = false;
         foreach (var slot in job.Slots)
+        {
             changed |= TickSlot(console, comp, job, slot, curTime);
+            // A break that lifted the last tile took the hull with it.
+            if (TerminatingOrDeleted(job.Ship))
+                return job.HullGone ? JobEnd.Finished : JobEnd.Aborted;
+        }
+
+        // No crane took a tile, so those left would split the hull if lifted; they stay.
+        if (job.Break && job.Pending.Count > 0 && job.Slots.All(s => s.Item == null))
+        {
+            LeaveStanding(job);
+            changed = true;
+        }
 
         if (changed)
         {
@@ -159,7 +171,10 @@ public sealed partial class WFDrydockSystem
         var changed = false;
         if (slot.Item is { } finished && curTime >= slot.Ends)
         {
-            ApplyItem(job.Ship, finished);
+            if (finished.Kind == WFDrydockWorkKind.Break)
+                ApplyBreak(console, job, slot, finished);
+            else
+                ApplyItem(job.Ship, finished);
             job.Done++;
             slot.Item = null;
             changed = true;
@@ -289,7 +304,7 @@ public sealed partial class WFDrydockSystem
     {
         return kind switch
         {
-            WFDrydockWorkKind.Tile => comp.HullWorkSound,
+            WFDrydockWorkKind.Tile or WFDrydockWorkKind.Break => comp.HullWorkSound,
             WFDrydockWorkKind.Entity => comp.PartWorkSound,
             WFDrydockWorkKind.Heal => comp.DamageWorkSound,
             _ => comp.RefitWorkSound,
@@ -313,7 +328,7 @@ public sealed partial class WFDrydockSystem
         slot.GiveUpAt = curTime + TimeSpan.FromSeconds(comp.ReachTimeout);
         slot.WorkFrom = curTime + TimeSpan.FromSeconds(travel);
         // An unreachable item is never finished; the slot gives it up at GiveUpAt instead.
-        slot.Ends = reachable ? slot.WorkFrom + TimeSpan.FromSeconds(PacedWorkTime(job, item, travel, curTime)) : TimeSpan.MaxValue;
+        slot.Ends = reachable ? slot.WorkFrom + TimeSpan.FromSeconds(PacedWorkTime(job, item, travel, curTime, SlotSpeed(slot))) : TimeSpan.MaxValue;
         slot.NextSpark = slot.WorkFrom;
         slot.NextSound = slot.WorkFrom;
     }
@@ -342,7 +357,9 @@ public sealed partial class WFDrydockSystem
         job.Skipped += returned.Count;
         if (job.PaidInMaterials)
         {
-            AddBill(job.SkippedMaterials, ReturnMaterials(console, JobCranes(job), returned));
+            var (materials, parts) = ReturnMaterials(console, JobCranes(job), returned);
+            AddBill(job.SkippedMaterials, materials);
+            AddBill(job.SkippedParts, parts);
         }
         else
         {
@@ -360,6 +377,9 @@ public sealed partial class WFDrydockSystem
     /// </summary>
     private WFDrydockWorkItem? TakeNearest(WFDrydockConsoleComponent comp, WFDrydockJobComponent job, WFDrydockJobSlot slot)
     {
+        if (job.Break)
+            return TakeBreakTile(comp, job, slot);
+
         var rank = job.Pending.Min(Rank);
         var reach = -1;
         var reachDistance = float.MaxValue;
@@ -398,14 +418,22 @@ public sealed partial class WFDrydockSystem
     }
 
     /// <summary>
-    /// An item's work time, shortened when crane travel has put its slot behind the job's deadline: the time left is
-    /// shared between this item and the slot's share of the queue, each with a trip as long as this one.
+    /// An item's work time at its crane's speed, shortened when crane travel has put its slot behind the job's deadline:
+    /// the time left is shared between this item and the slot's share of the queue, each with a trip as long as this one.
     /// </summary>
-    private static float PacedWorkTime(WFDrydockJobComponent job, WFDrydockWorkItem item, float travel, TimeSpan curTime)
+    private static float PacedWorkTime(WFDrydockJobComponent job, WFDrydockWorkItem item, float travel, TimeSpan curTime, float speed)
     {
         var share = 1f + (float) job.Pending.Count / job.Slots.Count;
         var paced = (float) (job.Deadline - curTime).TotalSeconds / share - travel;
-        return Math.Min(item.WorkTime, Math.Max(MinWorkTime, paced));
+        return Math.Min(item.WorkTime / speed, Math.Max(MinWorkTime, paced));
+    }
+
+    /// <summary>Speed multiplier of a slot's crane; 1 for a slot without one.</summary>
+    private float SlotSpeed(WFDrydockJobSlot slot)
+    {
+        return slot.Crane is { } crane && TryComp<WFDrydockCraneComponent>(crane, out var comp)
+            ? Math.Max(0.01f, comp.SpeedMultiplier)
+            : 1f;
     }
 
     /// <summary>Order in which work is taken: by kind, with guns that mount on hardpoints after the other parts.</summary>
@@ -446,7 +474,7 @@ public sealed partial class WFDrydockSystem
     private void UpdateEstimate(WFDrydockJobComponent job, TimeSpan curTime)
     {
         var remaining = 0d;
-        var speed = Math.Max(WFDrydockCraneComponent.StallRatio, job.Power);
+        var speed = Math.Max(WFDrydockCraneComponent.StallRatio, job.Power) * job.Slots.Average(SlotSpeed);
         foreach (var item in job.Pending)
         {
             remaining += item.WorkTime / speed;
@@ -559,7 +587,7 @@ public sealed partial class WFDrydockSystem
         var headTime = Math.Max(
             Math.Max(Math.Abs(target.Position - crane.Position) / crane.Speed, Math.Abs(target.Trolley - crane.TrolleyPosition) / crane.TrolleySpeed),
             Math.Max(Math.Abs(target.Extension - ClampExtension(crane, crane.Extension)) / crane.ExtendSpeed, Math.Abs(target.Angle - crane.Angle) / crane.SlewSpeed));
-        var time = armTime + headTime;
+        var time = (armTime + headTime) / Math.Max(0.01f, crane.SpeedMultiplier);
 
         // Hydraulics at the arm root whenever the crane gets going; aim corrections only when they are slow.
         if (time > (correction ? 0.5f : 0.25f))
@@ -655,12 +683,14 @@ public sealed partial class WFDrydockSystem
     /// </summary>
     private void EndJob(EntityUid console, WFDrydockConsoleComponent comp, WFDrydockJobComponent job, JobEnd end)
     {
-        if (end == JobEnd.Finished)
+        if (job.Break)
+            EndBreak(console, comp, job, end);
+        else if (end == JobEnd.Finished)
         {
             Notify(console, comp, job, job.Skipped == 0
                 ? Loc.GetString("drydock-console-finished", ("ship", Name(job.Ship)))
                 : job.PaidInMaterials
-                    ? Loc.GetString("drydock-console-finished-skipped-materials", ("ship", Name(job.Ship)), ("count", job.Skipped), ("refund", FormatMaterials(job.SkippedMaterials)))
+                    ? Loc.GetString("drydock-console-finished-skipped-materials", ("ship", Name(job.Ship)), ("count", job.Skipped), ("refund", FormatBill(job.SkippedMaterials, job.SkippedParts)))
                     : Loc.GetString("drydock-console-finished-skipped", ("ship", Name(job.Ship)), ("count", job.Skipped), ("refund", job.SkippedRefund)));
             _audio.PlayPvs(comp.ConfirmSound, console);
         }
@@ -670,9 +700,9 @@ public sealed partial class WFDrydockSystem
             var powerLost = end == JobEnd.Unpowered;
             if (job.PaidInMaterials)
             {
-                var returned = ReturnMaterials(console, JobCranes(job), unfinished);
+                var (materials, parts) = ReturnMaterials(console, JobCranes(job), unfinished);
                 Notify(console, comp, job, Loc.GetString(powerLost ? "drydock-console-aborted-power-materials" : "drydock-console-aborted-materials",
-                    ("refund", FormatMaterials(returned))));
+                    ("refund", FormatBill(materials, parts))));
             }
             else
             {
@@ -683,7 +713,9 @@ public sealed partial class WFDrydockSystem
             _audio.PlayPvs(comp.DenySound, console);
         }
 
-        RecordRefits(job, end);
+        if (!job.Break)
+            RecordRefits(job, end);
+
         RemComp<WFDrydockJobComponent>(console);
         ParkCranes(console, comp);
         UpdateUi(console, comp);

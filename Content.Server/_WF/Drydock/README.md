@@ -14,7 +14,9 @@ console deck).
 
 A berth is the set of cranes linked to a `WFComputerDrydock` with a multitool, from its sender port to their receiver
 ports (`ports.yml`). A crane serves one console, so linking it elsewhere moves it. The work area is the union of the
-cranes' reach, starting `BerthGap` tiles down each arm, and ships approach from the arms' direction.
+cranes' reach, starting `BerthGap` tiles down each arm, and ships approach from the arms' direction. The ship in a
+berth is the one with the most tiles in its area, so a hull bigger than the berth still counts; a booked ship has to
+come in until the centre of its bounds is in the area.
 
 Cranes come in three sizes, `WFDrydockCrane` (36-tile arm), `WFDrydockCraneLarge` (60) and `WFDrydockCraneHuge` (80,
 the station's), each with a `Mirrored` variant. They are 2x2 HV machines whose speed scales with the power they get.
@@ -37,9 +39,10 @@ sell work on the ship in their berth directly, and their berth lights button sho
 
 A job restores missing hull tiles and entities and heals damage, from the ship's repair snapshot
 (`ShipRepairDataComponent`). Cranes take the nearest item and skip any they can't reach within 10 s, refunding it. At
-full power a repair takes at most 10 minutes (`maxDuration`) and a refit 3 (`maxRefitDuration`), crane deploy and
+full power a repair takes at most 6 minutes (`maxDuration`) and a refit 2 (`maxRefitDuration`), crane deploy and
 travel included; longer work is sped up to fit, and lost power adds the time it costs. When a job ends, the console
-announces it on its radio channel (`noticeChannel`, Common), at the console, and to a payer elsewhere.
+announces it at the console and to a payer elsewhere; it can also use a radio channel (`noticeChannel`), which no
+console sets.
 
 ## Pricing
 
@@ -80,7 +83,7 @@ an edge pointer with its range. Open consoles refresh once a second.
 ## Mobile drydock
 
 `WFComputerMobileDrydock` (board `WFComputerMobileDrydockCircuitboard`) and `WFMobileDrydockCrane` (board
-`WFMobileDrydockCraneMachineCircuitboard`, MV power, a 26-tile berth starting 3 tiles past the machine, 13 tiles
+`WFMobileDrydockCraneMachineCircuitboard`, MV power, at stock parts a 26-tile berth starting 3 tiles past the machine, 13 tiles
 across). Both boards print at the circuit imprinter after Shuttlecraft research. To mirror a mobile crane, unbolt it,
 open its panel and cut with wirecutters for 2 s (`WFDrydockCraneMirrorSystem`). It works walk-in only and never on its
 own grid.
@@ -92,6 +95,69 @@ plastitanium sheets for a 150k to 500k ship): 25k cr of work takes about 14 stee
 at about 60% of the voucher for a 250k ship, scaled by ship price. A rebuild also takes 1% of any construction material
 the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refunds go back into the job's first crane.
 
+A mobile crane also links a parts silo and a chemical silo (Lathe module), from the silo's window like a lathe, and
+parts silos then take any machine part (`parts` on its `FabricationSiloClient`). A refit unit billed in full takes the
+stock part it installs from the parts silo, if there is one, instead of its tier materials
+(`WFDrydockSystem.Supplies.cs`). Only that exact prototype counts, so trade goods that are machine parts, such as
+`CapacitorEconomy2`, are never spent. Units restored at the repair share pay in materials, so a spare part isn't spent
+on a 20% bill. Unfinished work's parts go back to the silo, or onto the nearest free floor beside the crane. The console
+lists everything the parts silos hold and the chemicals in the chemical silos; nothing uses chemicals yet. Bills (the
+repair quote, the salvage preview and each refit's cost) list one row per material, red where the cranes hold too
+little.
+
+### Hull breaking
+
+A mobile console also breaks up the ship in its berth for materials (`WFDrydockSystem.Break.cs`), behind a confirm on
+its Break hull key. Anything but a station can be broken: outposts and POIs (station members with no `ShuttleDeed`) and
+the drydock's own grid are refused, while player ships, encounter and event ships are fair game. Breaking a crewed
+ship is an attack on it, reported on start and with every tile through `WFCrewAlertSystem.ReportBreaking`, so its
+crew, escorts and allies respond. Nobody aboard stops the job.
+
+The hull is peeled tile by tile from its edges inward: each crane takes the nearest tile it reaches that has an open
+side and whose loss leaves the hull in one piece, so the grid never splits. Tiles out of reach are skipped, and only
+tiles that are the last link between parts out of reach are left with them. A hull being broken only has to overlap
+the berth, since peeling moves its centre. A crane strips everything anchored on the tile, 0.45 s per repairable entity plus 0.1 s for the tile,
+divided by crane speed and capped at 10 minutes (`maxBreakDuration`), so a Caracara is about 3 crane-minutes of work. People and loose things drift off as their tiles
+go, mobs are taken out of stripped containers, and anything still aboard is set adrift before the last tile, which
+takes the grid with it.
+
+Each finished tile credits the slot's crane silo or crane (`breakDefaultYield`, `breakYield` and `breakTileYield` on
+the payment component): 25% of every material in what it strips, but only 5% of the plastitanium and composite, plus 25
+steel units per tile, and 2 chunks of scrap per tile (`breakTileSalvage`, uncapped, and never billed to rebuild the
+tile). An abort pays nothing more. The caps grow with each tile the job lifts (`breakCap`: 1 plastitanium or composite
+sheet per 20 tiles, plasteel per 2, steel per tile), and yield past them waits for later tiles, so the outer walls that
+come off first are paid as the peel goes on. A hull broken whole or in parts, aborted and restarted, pays the same.
+
+A stripped machine's board and parts, and a computer's board, go to the crane's parts silo, or onto the nearest free
+floor beside the crane when the silo doesn't take them. Guns on hardpoints come off whole as a `WFSalvagedFlatpack`, put
+in the parts silo or left at the crane the same way. It unpacks at half the damage that would destroy the gun and sells
+for a quarter of its price.
+
+The hull keeps its repair snapshot, so a repair can rebuild what was broken, but `WFHulkComponent` records the broken
+tiles and rebuilding a tile or part on one bills its full materials, outside the repair's limits: a part's construction
+materials and a tile's plating. Breaking returns at most a share of that, so break and rebuild never pays. An encounter
+leaves a hull alone for 5 minutes after its last broken tile.
+
+### Crane upgrades
+
+A mobile crane takes machine part upgrades (`WFDrydockCraneUpgradesComponent`, applied in `WFDrydockSystem.Upgrades.cs`
+on `RefreshPartsEvent`). Each part type sets one axis by its tier, as the drydock refits count them (Mk I stock, Mk II at
+rating 3, Mk III at 4, Mk IV at 6): manipulators set speed, matter bins set reach and capacitors trim the draw. Speed
+scales crane travel and work time and adds to power; a crane at half power still works at half its upgraded speed.
+
+| Tier | Speed | Berth (length x width) | Speed and reach draw | Capacitor | Full set |
+|---|---|---|---|---|---|
+| Mk I | 1x | 26 x 13 | 1x each | 1x | 6 kW |
+| Mk II | 1.5x | 34 x 17 | 1.9x each | 0.9x | 19.5 kW |
+| Mk III | 2.25x | 44 x 21 | 3.1x each | 0.85x | 49 kW |
+| Mk IV | 3x | 60 x 26 | 5x each | 0.8x | 120 kW |
+
+The draw is pegged to ship generation. Small ships run one Super PACMAN (30 kW) and medium ships two PACMANs, a
+CR-Pinch or a one-core AME (60 to 120 kW), so a pair of Mk II cranes browns out a small ship and a Mk III pair strains
+most medium ones. A Mk IV pair (240 kW) needs a two-core AME or better and a second substation, since a substation passes
+150 kW; a Mk IV crane without its Mk IV capacitor draws that much on its own. Mixed parts only pay for the axes upgraded:
+Mk IV manipulators on stock bins draw 30 kW.
+
 <!-- WOLFGATE-GENERATED START -->
 <!-- Generated by python Tools/_WF/Ci/modules.py --write. Don't edit by hand. -->
 
@@ -101,24 +167,31 @@ the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refu
 
 - [`Content.Server/_WF/Drydock/WFDrydockBerth.cs`](WFDrydockBerth.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockBookingComponent.cs`](WFDrydockBookingComponent.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockCraneUpgradesComponent.cs`](WFDrydockCraneUpgradesComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockJobComponent.cs`](WFDrydockJobComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.BerthLights.cs`](WFDrydockSystem.BerthLights.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Blockers.cs`](WFDrydockSystem.Blockers.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Booking.cs`](WFDrydockSystem.Booking.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockSystem.Break.cs`](WFDrydockSystem.Break.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Construction.cs`](WFDrydockSystem.Construction.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.cs`](WFDrydockSystem.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Job.cs`](WFDrydockSystem.Job.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Linking.cs`](WFDrydockSystem.Linking.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Materials.cs`](WFDrydockSystem.Materials.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Refits.cs`](WFDrydockSystem.Refits.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockSystem.Supplies.cs`](WFDrydockSystem.Supplies.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockSystem.Upgrades.cs`](WFDrydockSystem.Upgrades.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockWorkItem.cs`](WFDrydockWorkItem.cs)
+- [`Content.Server/_WF/Drydock/WFHulkComponent.cs`](WFHulkComponent.cs)
 - [`Content.Server/_WF/Drydock/WFLandingThrusterRefitSystem.cs`](WFLandingThrusterRefitSystem.cs)
 - [`Content.Server/_WF/Drydock/WFPartRefitSystem.cs`](WFPartRefitSystem.cs)
+- [`Content.Server/_WF/Drydock/WFSalvagedHardwareComponent.cs`](WFSalvagedHardwareComponent.cs)
 - [`Content.Server/_WF/Drydock/WFShipRefitsComponent.cs`](WFShipRefitsComponent.cs)
 - [`Content.Server/_WF/Drydock/WFShipRefitSystem.cs`](WFShipRefitSystem.cs)
 
 ### Shared
 
+- [`Content.Shared/_WF/Drydock/SharedFlatpackSystem.Salvage.cs`](../../../Content.Shared/_WF/Drydock/SharedFlatpackSystem.Salvage.cs)
 - [`Content.Shared/_WF/Drydock/WFDrydockConsoleComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockConsoleComponent.cs)
 - [`Content.Shared/_WF/Drydock/WFDrydockConsoleUi.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockConsoleUi.cs)
 - [`Content.Shared/_WF/Drydock/WFDrydockCraneComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockCraneComponent.cs)
@@ -128,6 +201,7 @@ the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refu
 - [`Content.Shared/_WF/Drydock/WFDrydockGuideComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockGuideComponent.cs)
 - [`Content.Shared/_WF/Drydock/WFDrydockMaterialPaymentComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockMaterialPaymentComponent.cs)
 - [`Content.Shared/_WF/Drydock/WFDrydockOperatorComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockOperatorComponent.cs)
+- [`Content.Shared/_WF/Drydock/WFFlatpackUnpackedEvent.cs`](../../../Content.Shared/_WF/Drydock/WFFlatpackUnpackedEvent.cs)
 - [`Content.Shared/_WF/Drydock/WFLandingThrusterRefit.cs`](../../../Content.Shared/_WF/Drydock/WFLandingThrusterRefit.cs)
 - [`Content.Shared/_WF/Drydock/WFPartRatingRefit.cs`](../../../Content.Shared/_WF/Drydock/WFPartRatingRefit.cs)
 - [`Content.Shared/_WF/Drydock/WFShipRefitEffect.cs`](../../../Content.Shared/_WF/Drydock/WFShipRefitEffect.cs)
@@ -150,8 +224,11 @@ the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refu
 - [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockHailTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockHailTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBerthTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBerthTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBreakTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBreakTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockClientTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockClientTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockSiloTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockSiloTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockUpgradeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockUpgradeTest.cs)
 
 ### Prototypes
 
@@ -163,6 +240,7 @@ the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refu
 - [`Resources/Prototypes/_WF/Drydock/poi.yml`](../../../Resources/Prototypes/_WF/Drydock/poi.yml)
 - [`Resources/Prototypes/_WF/Drydock/ports.yml`](../../../Resources/Prototypes/_WF/Drydock/ports.yml)
 - [`Resources/Prototypes/_WF/Drydock/refits.yml`](../../../Resources/Prototypes/_WF/Drydock/refits.yml)
+- [`Resources/Prototypes/_WF/Drydock/salvage.yml`](../../../Resources/Prototypes/_WF/Drydock/salvage.yml)
 - [`Resources/Prototypes/_WF/Drydock/sounds.yml`](../../../Resources/Prototypes/_WF/Drydock/sounds.yml)
 
 ### Localization
@@ -184,6 +262,7 @@ the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refu
 
 ## Non-modular edits
 
+- [`Content.Shared/Construction/SharedFlatpackSystem.cs`](../../../Content.Shared/Construction/SharedFlatpackSystem.cs): salvaged hardware unpacks damaged
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml): single use, so a drydock repair undercuts printing another card
 - [`Resources/Prototypes/Recipes/Lathes/Packs/science.yml`](../../../Resources/Prototypes/Recipes/Lathes/Packs/science.yml): mobile drydock boards
 - [`Resources/Prototypes/Research/industrial.yml`](../../../Resources/Prototypes/Research/industrial.yml): mobile drydock boards

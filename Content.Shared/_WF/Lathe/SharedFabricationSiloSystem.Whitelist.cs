@@ -71,7 +71,10 @@ public abstract partial class SharedFabricationSiloSystem
             BuildWhitelist();
     }
 
-    /// <summary>Collects the parts and reagents of every recipe a silo-linkable machine can make.</summary>
+    /// <summary>
+    /// Collects the parts and reagents of every recipe a silo-linkable machine can make, and the parts any of them
+    /// lists as its own.
+    /// </summary>
     private void BuildWhitelist()
     {
         _acceptedParts.Clear();
@@ -79,11 +82,17 @@ public abstract partial class SharedFabricationSiloSystem
 
         var recipes = new HashSet<ProtoId<LatheRecipePrototype>>();
         var blueprintWhitelists = new List<EntityWhitelist>();
+        var partWhitelists = new List<EntityWhitelist>();
         foreach (var proto in _prototype.EnumeratePrototypes<EntityPrototype>())
         {
             if (proto.Abstract ||
-                !proto.HasComponent<FabricationSiloClientComponent>(_factory) ||
-                !proto.TryGetComponent<LatheComponent>(out var lathe, _factory))
+                !proto.TryGetComponent<FabricationSiloClientComponent>(out var client, _factory))
+                continue;
+
+            if (client.Parts != null)
+                partWhitelists.Add(client.Parts);
+
+            if (!proto.TryGetComponent<LatheComponent>(out var lathe, _factory))
                 continue;
 
             AddPackRecipes(recipes, lathe.StaticPacks);
@@ -98,14 +107,19 @@ public abstract partial class SharedFabricationSiloSystem
                 blueprintWhitelists.Add(receiver.Whitelist);
         }
 
-        if (blueprintWhitelists.Count > 0)
+        if (blueprintWhitelists.Count > 0 || partWhitelists.Count > 0)
         {
             foreach (var proto in _prototype.EnumeratePrototypes<EntityPrototype>())
             {
-                if (!proto.Abstract &&
-                    proto.TryGetComponent<BlueprintComponent>(out var blueprint, _factory) &&
+                if (proto.Abstract)
+                    continue;
+
+                if (proto.TryGetComponent<BlueprintComponent>(out var blueprint, _factory) &&
                     blueprintWhitelists.Any(whitelist => PassesWhitelist(proto, whitelist)))
                     recipes.UnionWith(blueprint.ProvidedRecipes);
+
+                if (partWhitelists.Any(whitelist => PassesWhitelist(proto, whitelist)))
+                    _acceptedParts.Add(proto.ID);
             }
         }
 

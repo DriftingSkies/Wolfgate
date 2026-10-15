@@ -315,7 +315,13 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
 
         var mapPos = _transformSystem.GetMapCoordinates(pos);
 
-        var posFound = _transformSystem.TryGetMapOrGridCoordinates(uid, out var gridPos, pos);
+        // WOLFGATE(Weapons) START: an entity held on a grid keeps that grid's frame even just off its tiles.
+        // A shell detonating on a hull's outer face is off the tiles, so the lookup below gave map coordinates, and a
+        // ship closing faster than a wall's width per tick had moved past them by the time the blast spawned.
+        // var posFound = _transformSystem.TryGetMapOrGridCoordinates(uid, out var gridPos, pos);
+        EntityCoordinates? gridPos = HasComp<MapGridComponent>(pos.ParentUid) ? pos.Coordinates : null;
+        var posFound = gridPos != null || _transformSystem.TryGetMapOrGridCoordinates(uid, out gridPos, pos);
+        // WOLFGATE END
         if (!posFound)
             return;
 

@@ -64,12 +64,12 @@
   tier: 3
   cost: 150000
   recipeUnlocks:
-  - ShipVoucherLudaRecipe
+# - ShipVoucherLudaRecipe # WOLFGATE(Mining): Luda moves to WFTsfCapitalVouchers
   - ShipVoucherPolarisRecipe
   # WOLFGATE(OldVessels) START: classic ship LPCs
   - AltairVoucherTSF
   - WFAndromedaVoucherTSF
-  - FlyssaVoucherTSF
+# - FlyssaVoucherTSF # WOLFGATE(Mining): Flyssa moves to WFTsfCapitalVouchers
   # WOLFGATE END
   technologyPrerequisites:
   - TsfTierTwoVouchers

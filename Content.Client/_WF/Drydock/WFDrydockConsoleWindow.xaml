@@ -8,6 +8,7 @@
         <drydock:WFDrydockBerthPlot Name="Plot"/>
         <Label Name="NoticeLabel" ClipText="True" HorizontalExpand="True"/>
         <Button Name="RepairButton" HorizontalExpand="True" MinSize="0 38"/>
+        <controls:ConfirmButton Name="BreakButton" HorizontalExpand="True" MinSize="0 38"/>
         <BoxContainer Name="RefitContainer" Orientation="Vertical" SeparationOverride="10"/>
         <Button Name="BerthLightsButton" ToggleMode="True" HorizontalExpand="True"/>
         <Label Name="BookedLabel" ClipText="True" HorizontalExpand="True"/>

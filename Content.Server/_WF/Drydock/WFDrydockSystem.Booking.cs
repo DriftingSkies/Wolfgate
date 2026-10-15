@@ -459,7 +459,9 @@ public sealed partial class WFDrydockSystem
                 continue;
             }
 
-            var settled = GetBerthedShip(console, comp) == booking.Ship && IsHeldStill(console, comp, booking.Ship);
+            // A booked ship has to come all the way in, not just reach into the berth.
+            var settled = GetBerthedShip(console, comp) == booking.Ship && CentredInBerth(console, comp, booking.Ship) &&
+                          IsHeldStill(console, comp, booking.Ship);
             if (!settled)
             {
                 booking.StillSince = null;

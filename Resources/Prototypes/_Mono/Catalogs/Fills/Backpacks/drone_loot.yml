@@ -17,8 +17,8 @@
     - id: ScrapOre100
       amount: 1
     # Material
-    - id: SheetPlastitanium10
-      amount: 1 # WOLFGATE: PDV pack, halve drone plastitanium
+    - id: SheetPlastitanium1 # WOLFGATE(Mining): drone plastitanium 10 -> 4 sheets
+      amount: 4 # WOLFGATE(Mining)
     # Parts
     - id: SuperCapacitorStockPart
       prob: 0.8
@@ -74,8 +74,8 @@
     - id: ScrapOre100
       amount: 3
     # Material
-    - id: SheetPlastitanium10
-      amount: 2 # WOLFGATE: PDV pack, halve drone plastitanium
+    - id: SheetPlastitanium1 # WOLFGATE(Mining): drone plastitanium 20 -> 8 sheets
+      amount: 8 # WOLFGATE(Mining)
     # Parts
     - id: SuperCapacitorStockPart
       amount: 3
@@ -123,8 +123,8 @@
     - id: ScrapOre100
       amount: 6
     # Material
-    - id: SheetPlastitanium10
-      amount: 4 # WOLFGATE: PDV pack, halve drone plastitanium
+    - id: SheetPlastitanium1 # WOLFGATE(Mining): drone plastitanium 40 -> 16 sheets
+      amount: 16 # WOLFGATE(Mining)
     # Parts
     - id: SuperCapacitorStockPart
       amount: 6

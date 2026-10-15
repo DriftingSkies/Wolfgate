@@ -121,10 +121,11 @@ public sealed class WFShipRefitSystem : EntitySystem
     /// <summary>
     /// Prices bringing units up to a tier, by the tier each reaches (<paramref name="lacking"/>). A unit within
     /// <paramref name="coverageLeft"/> pays <paramref name="repairShare"/> for the tiers the ship owns; every other tier
-    /// is paid in full. Adds the material bill to <paramref name="materials"/>.
+    /// is paid in full. Adds the material bill to <paramref name="materials"/>, and the units paid in full, by the tier each
+    /// reaches, to <paramref name="full"/>.
     /// </summary>
     public int Price(WFShipRefitPrototype refit, int owned, int[] lacking, ref int coverageLeft, float repairShare,
-        Dictionary<string, int> materials)
+        Dictionary<string, int> materials, int[] full)
     {
         var price = 0d;
         var bill = new Dictionary<string, double>();
@@ -133,6 +134,7 @@ public sealed class WFShipRefitSystem : EntitySystem
             var count = lacking[reached];
             var covered = reached < owned ? Math.Min(count, coverageLeft) : 0;
             coverageLeft -= covered;
+            full[reached] = count - covered;
 
             for (var tier = reached; tier < lacking.Length && tier < refit.Tiers.Count; tier++)
             {
@@ -151,6 +153,21 @@ public sealed class WFShipRefitSystem : EntitySystem
         }
 
         return (int) Math.Ceiling(price);
+    }
+
+    /// <summary>Material units to bring one unit from a tier it reaches to a tier, in full.</summary>
+    public static Dictionary<string, int> UnitMaterials(WFShipRefitPrototype refit, int reached, int tier)
+    {
+        var bill = new Dictionary<string, int>();
+        for (var t = reached; t < tier && t < refit.Tiers.Count; t++)
+        {
+            foreach (var (material, amount) in refit.Tiers[t].Materials)
+            {
+                bill[material.Id] = bill.GetValueOrDefault(material.Id) + amount;
+            }
+        }
+
+        return bill;
     }
 
     private WFShipRefit? Find(EntityUid ship, string refit)

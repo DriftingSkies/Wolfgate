@@ -39,7 +39,7 @@
   recipeUnlocks:
   - ShipVoucherKortikT3Recipe
   - ShipVoucherEuropaT3Recipe
-  - ShipVoucherSaturnRecipe
+# - ShipVoucherSaturnRecipe # WOLFGATE(Mining): Saturn moves to WFPdvCapitalVouchers
   technologyPrerequisites:
   - PdvTierTwoVouchers
   - UniversalMaterialResearchT3

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared.FixedPoint;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._WF.Drydock;
@@ -75,8 +76,29 @@ public sealed class WFDrydockConsoleState : BoundUserInterfaceState
     /// <summary>Bill of the next repair when paying with materials.</summary>
     public Dictionary<string, int> RepairMaterials = new();
 
+    /// <summary>Parts the next repair takes from the parts silos in place of materials, by prototype.</summary>
+    public Dictionary<string, int> RepairParts = new();
+
     /// <summary>Materials the working cranes and their silos hold.</summary>
     public Dictionary<string, int> StoredMaterials = new();
+
+    /// <summary>Everything the working cranes' parts silos hold.</summary>
+    public List<WFDrydockStoredPart> StoredParts = new();
+
+    /// <summary>Reagents the working cranes' chemical silos hold, by prototype.</summary>
+    public Dictionary<string, FixedPoint2> StoredChemicals = new();
+
+    /// <summary>Whether this console breaks hulls.</summary>
+    public bool CanBreak;
+
+    /// <summary>Whether the ship in the berth may be broken here.</summary>
+    public bool Breakable;
+
+    /// <summary>Whether the running job breaks the ship.</summary>
+    public bool Breaking;
+
+    /// <summary>Materials breaking the ship would recover, within what is left of its caps.</summary>
+    public Dictionary<string, int> BreakYield = new();
 
     /// <summary>Whether the console's berth lights are on.</summary>
     public bool BerthLightsOn;
@@ -105,6 +127,10 @@ public sealed class WFDrydockConsoleState : BoundUserInterfaceState
     /// <summary>Most work marks sent to the berth plot.</summary>
     public const int MaxMarks = 512;
 }
+
+/// <summary>How many of one item the parts silos hold, by prototype and name, since salvaged flatpacks differ only by name.</summary>
+[Serializable, NetSerializable]
+public readonly record struct WFDrydockStoredPart(string Prototype, string Name, int Count);
 
 /// <summary>What a berth plot mark shows.</summary>
 [Serializable, NetSerializable]
@@ -155,6 +181,9 @@ public sealed class WFDrydockUpgradeEntry
 
     /// <summary>Bill of the next refit when paying with materials.</summary>
     public Dictionary<string, int> NextMaterials = new();
+
+    /// <summary>Parts the next refit takes from the parts silos in place of materials, by prototype.</summary>
+    public Dictionary<string, int> NextParts = new();
 }
 
 /// <summary>
@@ -162,6 +191,12 @@ public sealed class WFDrydockUpgradeEntry
 /// </summary>
 [Serializable, NetSerializable]
 public sealed class WFDrydockRepairMessage : BoundUserInterfaceMessage;
+
+/// <summary>
+/// Starts breaking up the berthed ship.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class WFDrydockBreakMessage : BoundUserInterfaceMessage;
 
 /// <summary>
 /// Turns the console's berth lights on or off.

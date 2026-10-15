@@ -83,10 +83,15 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         InitializeBerthLights();
         InitializeBooking();
+        InitializeBreak();
         InitializeLinking();
+        InitializeUpgrades();
     }
 
-    /// <summary>The largest ship grid whose center lies in the console's berth area, or null.</summary>
+    /// <summary>
+    /// The ship grid with the most tiles in the console's berth area, or null. Any tile counts, so a hull bigger than the
+    /// berth, or with its centre out of the cranes' reach, is still found.
+    /// </summary>
     public EntityUid? GetBerthedShip(EntityUid console, WFDrydockConsoleComponent comp)
     {
         if (!TryGetBerth(console, comp, out var berth))
@@ -94,29 +99,38 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         var stationXform = Transform(berth.Grid);
         var worldAabb = _transform.GetWorldMatrix(stationXform).TransformBox(berth.Area);
-        var invStation = _transform.GetInvWorldMatrix(stationXform);
+        var (stationPos, stationRot) = _transform.GetWorldPositionRotation(stationXform);
+        var worldArea = new Box2Rotated(berth.Area.Translated(stationPos), stationRot, stationPos);
 
         _grids.Clear();
         _mapManager.FindGridsIntersecting(stationXform.MapID, worldAabb, ref _grids);
 
         EntityUid? best = null;
-        var bestSize = 0f;
+        var bestTiles = 0;
         foreach (var grid in _grids)
         {
             if (grid.Owner == berth.Grid || !HasComp<ShuttleComponent>(grid) || HasComp<MapComponent>(grid))
                 continue;
 
-            var bounds = grid.Comp.LocalAABB;
-            var center = Vector2.Transform(Vector2.Transform(bounds.Center, _transform.GetWorldMatrix(grid)), invStation);
-            var size = bounds.Width * bounds.Height;
-            if (!berth.Area.Contains(center) || (best != null && size <= bestSize))
+            var tiles = _map.GetTilesIntersecting(grid, grid.Comp, worldArea).Count();
+            if (tiles <= bestTiles)
                 continue;
 
             best = grid;
-            bestSize = size;
+            bestTiles = tiles;
         }
 
         return best;
+    }
+
+    /// <summary>Whether the centre of a ship's bounds lies in the console's berth area.</summary>
+    private bool CentredInBerth(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship)
+    {
+        if (!TryGetBerth(console, comp, out var berth) || !TryComp<MapGridComponent>(ship, out var grid))
+            return false;
+
+        var world = Vector2.Transform(grid.LocalAABB.Center, _transform.GetWorldMatrix(ship));
+        return berth.Area.Contains(Vector2.Transform(world, _transform.GetInvWorldMatrix(berth.Grid)));
     }
 
     /// <summary>Resolves a console's berth from its linked cranes: the area covering their reach.</summary>
@@ -200,6 +214,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         AddMissingTiles(ship, grid, data, comp, items);
         AddMissingEntities(ship, data, comp, items);
+        MarkBroken(ship, items);
         AddHeals(ship, grid, comp, items);
         AddRefitRepairs(ship, comp, items);
         CapRepair(ship, comp, items);
@@ -292,6 +307,18 @@ public sealed partial class WFDrydockSystem : EntitySystem
                     LocalPos = new Vector2(index.X + 0.5f, index.Y + 0.5f),
                 });
             }
+        }
+    }
+
+    /// <summary>Marks the tiles and rebuilds that restore what a hull break stripped.</summary>
+    private void MarkBroken(EntityUid ship, List<WFDrydockWorkItem> items)
+    {
+        if (!TryComp<WFHulkComponent>(ship, out var hulk) || hulk.Broken.Count == 0)
+            return;
+
+        foreach (var item in items)
+        {
+            item.Broken = hulk.Broken.Contains(item.Kind == WFDrydockWorkKind.Tile ? item.TileIndex : item.LocalPos.Floored());
         }
     }
 
@@ -461,6 +488,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         // During a job, report its ship even if it drifted, and count the queue instead of scanning the grid.
         var ship = job?.Ship ?? GetBerthedShip(console, comp);
+        if (ship is { } shown && TerminatingOrDeleted(shown))
+            ship = null;
+
         var state = BuildState(console, ship, comp, job);
         state.BerthLightsOn = comp.BerthLightsUntil != null;
 
@@ -498,13 +528,18 @@ public sealed partial class WFDrydockSystem : EntitySystem
             $"{s.MissingTiles}/{s.MissingParts}/{s.DamagedParts}/{s.RepairPrice}",
             $"{s.Working}/{s.PowerRatio}/{s.CraneCount}/{s.BlockedCranes}/{s.Deploying}/{s.Progress}/{s.RemainingSeconds}",
             $"{s.Booking}/{s.BookedBerth}/{s.BookingSeconds}/{s.Notice}/{s.PaysWithMaterials}/{s.BerthLightsOn}",
+            $"{s.CanBreak}/{s.Breakable}/{s.Breaking}",
+            DictKey(s.BreakYield),
             $"{s.Station}/{s.BerthConsole}/{s.BerthLabel}/{s.BerthArea}/{s.Approach}/{s.Ship}/{s.Marks.Count}",
             DictKey(s.RepairMaterials),
+            DictKey(s.RepairParts),
             DictKey(s.StoredMaterials),
+            string.Join(",", s.StoredParts.OrderBy(p => p.Name).Select(p => $"{p.Prototype}:{p.Name}={p.Count}")),
+            string.Join(",", s.StoredChemicals.OrderBy(kv => kv.Key).Select(kv => $"{kv.Key}={kv.Value}")),
         };
         foreach (var u in s.Upgrades)
         {
-            parts.Add($"{u.Id}:{u.Name}:{u.Units}:{u.Tier}:{u.MaxTier}:{u.NextTier}:{u.NextPrice}:{DictKey(u.NextMaterials)}");
+            parts.Add($"{u.Id}:{u.Name}:{u.Units}:{u.Tier}:{u.MaxTier}:{u.NextTier}:{u.NextPrice}:{DictKey(u.NextMaterials)}:{DictKey(u.NextParts)}");
         }
 
         return string.Join("|", parts);
@@ -544,6 +579,8 @@ public sealed partial class WFDrydockSystem : EntitySystem
             state.PaysWithMaterials = true;
             // Same stock the job's charge draws from: the cranes' storage and their linked silos.
             state.StoredMaterials = Availability(working);
+            state.StoredParts = SiloContents(working);
+            state.StoredChemicals = StoredChemicals(working);
         }
 
         if (ship is { } berthed)
@@ -559,8 +596,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
             {
                 if (pay != null)
                 {
-                    AssignMaterials(berthed, comp, pay, items);
+                    AssignMaterials(berthed, comp, pay, items, working);
                     state.RepairMaterials = SumBills(items);
+                    state.RepairParts = SumParts(items);
                 }
                 else
                 {
@@ -569,9 +607,20 @@ public sealed partial class WFDrydockSystem : EntitySystem
             }
         }
 
+        if (CanBreak(console, out var breaker))
+        {
+            state.CanBreak = true;
+            if (job == null && ship is { } target && BreakRefusal(console, comp, target) == null)
+            {
+                state.Breakable = true;
+                state.BreakYield = BreakPreview(target, breaker);
+            }
+        }
+
         if (job != null)
         {
             state.Working = true;
+            state.Breaking = job.Break;
             state.Deploying = _timing.CurTime < job.WorkStarts;
             state.Progress = job.Total == 0 ? 0f : (float) job.Done / job.Total;
             state.RemainingSeconds = (float) Math.Max(0d, (job.EstimatedEnd - _timing.CurTime).TotalSeconds);
@@ -580,7 +629,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
         foreach (var id in comp.Refits)
         {
             if (_prototype.TryIndex(id, out var proto))
-                state.Upgrades.Add(BuildRefitEntry(proto, ship, comp, pay, scan: job == null));
+                state.Upgrades.Add(BuildRefitEntry(proto, ship, comp, pay, working, scan: job == null));
         }
 
         return state;
@@ -594,6 +643,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
             switch (item.Kind)
             {
                 case WFDrydockWorkKind.Tile:
+                case WFDrydockWorkKind.Break:
                     state.MissingTiles++;
                     break;
                 case WFDrydockWorkKind.Entity:
@@ -616,7 +666,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
             var kind = item.Kind switch
             {
-                WFDrydockWorkKind.Tile => WFDrydockMarkKind.Tile,
+                WFDrydockWorkKind.Tile or WFDrydockWorkKind.Break => WFDrydockMarkKind.Tile,
                 WFDrydockWorkKind.Entity => WFDrydockMarkKind.Part,
                 WFDrydockWorkKind.Heal => WFDrydockMarkKind.Damage,
                 _ => WFDrydockMarkKind.Refit,
@@ -655,23 +705,14 @@ public sealed partial class WFDrydockSystem : EntitySystem
         if (BuildWork(ship, comp, upgrade, out var items) is { } denial)
             return Deny(console, comp, actor, denial);
 
-        RefreshCranes(console);
-        var cranes = WorkingCranes(console, comp);
-        if (cranes.Count == 0 && LinkedCranes(console).Count > 0)
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-cranes-blocked"));
-
-        // Every working crane needs half its power to start.
-        if (cranes.Any(c => CranePower(c) < 0.5f))
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-no-power"));
-
-        if (cranes.Any(c => CraneBusyElsewhere(console, c)))
-            return Deny(console, comp, actor, Loc.GetString("drydock-console-crane-busy"));
+        if (!CranesReady(console, comp, actor, out var cranes))
+            return false;
 
         // Booked jobs are always paid in credits; walk-in material consoles pay from their cranes.
         var pay = booked ? null : CompOrNull<WFDrydockMaterialPaymentComponent>(console);
         if (pay != null)
         {
-            AssignMaterials(ship, comp, pay, items);
+            AssignMaterials(ship, comp, pay, items, cranes);
             if (!TryPayMaterials(console, comp, actor, items))
                 return false;
 
@@ -685,6 +726,24 @@ public sealed partial class WFDrydockSystem : EntitySystem
             return false;
 
         StartJob(console, comp, ship, actor, items, price);
+        return true;
+    }
+
+    /// <summary>Checks the console's working cranes can start a job: unblocked, at half power and free. Denies if not.</summary>
+    private bool CranesReady(EntityUid console, WFDrydockConsoleComponent comp, EntityUid actor, out List<EntityUid> cranes)
+    {
+        RefreshCranes(console);
+        cranes = WorkingCranes(console, comp);
+        if (cranes.Count == 0 && LinkedCranes(console).Count > 0)
+            return Deny(console, comp, actor, Loc.GetString("drydock-console-cranes-blocked"));
+
+        // Every working crane needs half its power to start.
+        if (cranes.Any(c => CranePower(c) < 0.5f))
+            return Deny(console, comp, actor, Loc.GetString("drydock-console-no-power"));
+
+        if (cranes.Any(c => CraneBusyElsewhere(console, c)))
+            return Deny(console, comp, actor, Loc.GetString("drydock-console-crane-busy"));
+
         return true;
     }
 
@@ -775,6 +834,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
         job.Payer = payer;
         job.PaidInMaterials = paidInMaterials;
         job.Total = items.Count;
+        job.Break = items[0].Kind == WFDrydockWorkKind.Break;
+        job.ShipName = Name(ship);
+        job.Attacker = Transform(console).GridUid;
 
         AddSlots(console, comp, job);
         CollectSparkTiles(ship, job);
@@ -784,7 +846,12 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         var curTime = _timing.CurTime;
         var deploy = DeployCranes(comp, job);
-        var maxDuration = items[0].Kind == WFDrydockWorkKind.Upgrade ? comp.MaxRefitDuration : comp.MaxDuration;
+        var maxDuration = items[0].Kind switch
+        {
+            WFDrydockWorkKind.Upgrade => comp.MaxRefitDuration,
+            WFDrydockWorkKind.Break => comp.MaxBreakDuration,
+            _ => comp.MaxDuration,
+        };
         job.WorkStarts = curTime + TimeSpan.FromSeconds(deploy);
         job.Deadline = curTime + TimeSpan.FromSeconds(maxDuration);
         QueueItems(comp, job, items, maxDuration - deploy);
@@ -800,9 +867,12 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         if (payer is { } payerUid)
         {
-            var message = items[0].Kind == WFDrydockWorkKind.Upgrade
-                ? Loc.GetString("drydock-console-refit-started", ("count", items.Count))
-                : Loc.GetString("drydock-console-started", ("count", items.Count), ("price", price.ToString("N0")));
+            var message = items[0].Kind switch
+            {
+                WFDrydockWorkKind.Upgrade => Loc.GetString("drydock-console-refit-started", ("count", items.Count)),
+                WFDrydockWorkKind.Break => Loc.GetString("drydock-console-break-started", ("ship", job.ShipName), ("count", items.Count)),
+                _ => Loc.GetString("drydock-console-started", ("count", items.Count), ("price", price.ToString("N0"))),
+            };
             _popup.PopupCursor(message, payerUid);
         }
 
@@ -834,6 +904,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
                 WFDrydockWorkKind.Tile => comp.TileWorkTime,
                 WFDrydockWorkKind.Entity => comp.EntityWorkTime,
                 WFDrydockWorkKind.Heal => comp.HealWorkTime,
+                WFDrydockWorkKind.Break => item.WorkTime,
                 _ => comp.UpgradeWorkTime,
             };
             workTotal += item.WorkTime;

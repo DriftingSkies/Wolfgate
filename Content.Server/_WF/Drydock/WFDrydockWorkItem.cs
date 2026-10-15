@@ -12,10 +12,11 @@ public enum WFDrydockWorkKind : byte
     Entity,
     Heal,
     Upgrade,
+    Break,
 }
 
 /// <summary>
-/// One unit of drydock work: a hull tile, a missing entity, a heal or a refit tier.
+/// One unit of drydock work: a hull tile, a missing entity, a heal, a refit tier, or a hull tile to break.
 /// </summary>
 public sealed class WFDrydockWorkItem
 {
@@ -46,6 +47,9 @@ public sealed class WFDrydockWorkItem
     /// <summary>Prototype a rebuild or heal works on, for its construction materials.</summary>
     public EntProtoId? Prototype;
 
+    /// <summary>Whether a tile or rebuild restores what a hull break stripped, so it costs its full materials.</summary>
+    public bool Broken;
+
     /// <summary>Whether a rebuild mounts on a hardpoint, so it is built after the other parts.</summary>
     public bool Mounted;
 
@@ -64,9 +68,18 @@ public sealed class WFDrydockWorkItem
     /// <summary>Tier materials of that refit share, for a console that pays in materials.</summary>
     public Dictionary<string, int>? RefitMaterials;
 
+    /// <summary>Refit units this item pays for in full, which parts from a parts silo can pay for instead of materials.</summary>
+    public List<WFDrydockRefitUnits>? RefitUnits;
+
     /// <summary>Material bill when quoted by a console that pays in materials, or null.</summary>
     public Dictionary<string, int>? Materials;
+
+    /// <summary>Parts taken from a parts silo in place of materials, by prototype, or null.</summary>
+    public Dictionary<string, int>? Parts;
 
     /// <summary>Seconds one crane spends on this item, set when the job starts.</summary>
     public float WorkTime;
 }
+
+/// <summary>Units of a refit line an item brings to a tier, paid in full, by the tier each reaches now.</summary>
+public sealed record WFDrydockRefitUnits(string Refit, int Tier, int[] Full);

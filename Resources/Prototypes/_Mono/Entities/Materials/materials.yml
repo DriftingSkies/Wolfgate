@@ -211,7 +211,7 @@
   unit: materials-unit-sheet
   icon: { sprite: /Textures/_Mono/Objects/Materials/fissiles.rsi, state: uranium }
   color: "#8a8568"
-  price: 250 # 25000/sheet
+  price: 100 # 10000/sheet # WOLFGATE(Mining): fissile 25000 -> 10000 per sheet, so the centrifuge isn't the best credit faucet
   properties: # FH edit
     electrical: 4
     thermal: 3
@@ -311,7 +311,7 @@
   unit: materials-unit-sheet
   icon: { sprite: /Textures/_Mono/Objects/Materials/fissiles.rsi, state: depleted }
   color: "#14211d"
-  price: 20 # 250/sheet
+  price: 2.5 # 250/sheet # WOLFGATE(Mining): depleted uranium priced as its comment says, 20 -> 2.5
   properties: # FH edit
     electrical: 4
     thermal: 3
@@ -410,6 +410,7 @@
     tags:
     - Sheet
     - SafetyDepositBlacklist # lmao no
+    - WFPdvComposite # WOLFGATE(Mining): the Hokkaido composite bounty matches it
   - type: Item
     sprite: Objects/Materials/Sheets/glass.rsi
     heldPrefix: adamantite

@@ -1,9 +1,10 @@
+using Content.Shared.Whitelist;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared._WF.Lathe;
 
 /// <summary>
-/// Links a lathe to one parts silo and one chemical silo, apart from its material silo.
+/// Links a machine, such as a lathe, to one parts silo and one chemical silo, apart from its material silo.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 [Access(typeof(SharedFabricationSiloSystem))]
@@ -20,4 +21,11 @@ public sealed partial class FabricationSiloClientComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public EntityUid? ChemicalSilo;
+
+    /// <summary>
+    /// Extra parts parts silos accept for this machine, beyond its lathe recipes. Matched on prototype components and
+    /// tags only.
+    /// </summary>
+    [DataField]
+    public EntityWhitelist? Parts;
 }

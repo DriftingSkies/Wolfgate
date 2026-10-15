@@ -81,33 +81,45 @@ public sealed partial class WFDrydockConsoleComponent : Component
 
     /// <summary>Seconds one crane needs to restore a hull tile.</summary>
     [DataField]
-    public float TileWorkTime = 4f;
+    public float TileWorkTime = 2f;
 
     /// <summary>Seconds one crane needs to restore a missing entity.</summary>
     [DataField]
-    public float EntityWorkTime = 15f;
+    public float EntityWorkTime = 8f;
 
     /// <summary>Seconds one crane needs to heal a damaged part.</summary>
     [DataField]
-    public float HealWorkTime = 6f;
+    public float HealWorkTime = 3f;
 
     /// <summary>Seconds one crane needs to refit a part by one tier.</summary>
     [DataField]
-    public float UpgradeWorkTime = 60f;
+    public float UpgradeWorkTime = 30f;
 
     /// <summary>
     /// Longest repair in seconds at full power, crane deploy and travel included; longer work is sped up to fit.
     /// </summary>
     [DataField]
-    public float MaxDuration = 600f;
+    public float MaxDuration = 360f;
 
     /// <summary>Longest refit in seconds at full power, as <see cref="MaxDuration"/> is for repairs.</summary>
     [DataField]
-    public float MaxRefitDuration = 180f;
+    public float MaxRefitDuration = 120f;
 
-    /// <summary>Radio channel a finished or aborted job is announced on, so a crew can leave and come back. Null for none.</summary>
+    /// <summary>Longest hull break in seconds at full power, as <see cref="MaxDuration"/> is for repairs.</summary>
     [DataField]
-    public ProtoId<RadioChannelPrototype>? NoticeChannel = "Common";
+    public float MaxBreakDuration = 600f;
+
+    /// <summary>Seconds one crane needs to strip an entity off a hull it breaks.</summary>
+    [DataField]
+    public float BreakEntityWorkTime = 0.45f;
+
+    /// <summary>Seconds one crane needs to lift a stripped hull tile.</summary>
+    [DataField]
+    public float BreakTileWorkTime = 0.1f;
+
+    /// <summary>Radio channel a finished or aborted job is announced on, or null for none.</summary>
+    [DataField]
+    public ProtoId<RadioChannelPrototype>? NoticeChannel;
 
     /// <summary>Seconds every berth crane may stay unpowered during a job before it is aborted and refunded.</summary>
     [DataField]

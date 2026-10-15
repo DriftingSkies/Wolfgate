@@ -3,8 +3,10 @@
 Fabrication silos and a supply-aware lathe queue. A parts silo stores recipe components and a chemical silo stores up
 to 1500u of chemicals that never react; each accepts only what some linkable machine's recipes use. A lathe draws from
 its own storage first, then from the parts and chemical silo linked to it. Players link machines from the silo's
-window, under the ore silo's power, grid and range rules. The circuit imprinter prints both boards once the material
-silo technology is researched, and the Wolfgate Vending Machine sells them as flatpacks.
+window, under the ore silo's power, grid and range rules. Other machines with `FabricationSiloClient` link too, such as
+the mobile drydock crane (Drydock module), and a client's `parts` whitelist widens what parts silos accept. The circuit
+imprinter prints both boards once the material silo technology is researched, and the Wolfgate Vending Machine sells
+them as flatpacks.
 
 In the lathe menu, a batch that lacks supplies waits in the queue instead of being dropped, queued totals can be
 edited, and each recipe and batch shows its readiness and what it is missing.
@@ -65,6 +67,11 @@ use, editing queued totals), `FabricationSiloMenu` and `LatheMenu.Wolfgate`.
 
 - [`Resources/Locale/en-US/_WF/Lathe/fabrication-silo.ftl`](../../../Resources/Locale/en-US/_WF/Lathe/fabrication-silo.ftl)
 - [`Resources/Locale/en-US/_WF/Lathe/lathe-menu.ftl`](../../../Resources/Locale/en-US/_WF/Lathe/lathe-menu.ftl)
+
+### Textures
+
+- [`Resources/Textures/_WF/Lathe/chemical_silo.rsi/`](../../../Resources/Textures/_WF/Lathe/chemical_silo.rsi/)
+- [`Resources/Textures/_WF/Lathe/parts_silo.rsi/`](../../../Resources/Textures/_WF/Lathe/parts_silo.rsi/)
 
 ## Non-modular edits
 
