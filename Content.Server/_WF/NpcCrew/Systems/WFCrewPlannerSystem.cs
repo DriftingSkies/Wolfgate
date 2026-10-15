@@ -269,7 +269,8 @@ public sealed class WFCrewPlannerSystem : EntitySystem
                 if (tiles.Count >= count)
                     return tiles;
 
-                if (!walkable.Contains(tile) || !(open ? ClearAround(tile, walkable) : Harmless(grid, gridComp, tile, walkable, doors)))
+                if (!walkable.Contains(tile) || NearDoor(tile, doors)
+                    || !(open ? ClearAround(tile, walkable) : Harmless(grid, gridComp, tile, walkable)))
                     continue;
 
                 walkable.Remove(tile);
@@ -278,6 +279,21 @@ public sealed class WFCrewPlannerSystem : EntitySystem
         }
 
         return tiles;
+    }
+
+    /// <summary>Whether a tile is a door or one of the eight round it.</summary>
+    private static bool NearDoor(Vector2i tile, HashSet<Vector2i> doors)
+    {
+        for (var x = -1; x <= 1; x++)
+        {
+            for (var y = -1; y <= 1; y++)
+            {
+                if (doors.Contains(new Vector2i(tile.X + x, tile.Y + y)))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>Whether all eight tiles round a tile are deck: a crate there can be walked round on every side.</summary>
@@ -296,20 +312,11 @@ public sealed class WFCrewPlannerSystem : EntitySystem
     }
 
     /// <summary>
-    /// Whether a crate on a tile hemmed in by something leaves no door beside it, no machine against it and the deck
-    /// on its sides still joined to each other.
+    /// Whether a crate on a tile hemmed in by something leaves no machine against it and the deck on its sides still
+    /// joined to each other.
     /// </summary>
-    private bool Harmless(EntityUid grid, MapGridComponent gridComp, Vector2i tile, HashSet<Vector2i> walkable, HashSet<Vector2i> doors)
+    private bool Harmless(EntityUid grid, MapGridComponent gridComp, Vector2i tile, HashSet<Vector2i> walkable)
     {
-        for (var x = -1; x <= 1; x++)
-        {
-            for (var y = -1; y <= 1; y++)
-            {
-                if (doors.Contains(new Vector2i(tile.X + x, tile.Y + y)))
-                    return false;
-            }
-        }
-
         var sides = new List<Vector2i>();
         foreach (var offset in Neighbours)
         {

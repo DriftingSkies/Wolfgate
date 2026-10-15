@@ -61,6 +61,13 @@ public sealed partial class NPCSteeringSystem
         var now = _timing.CurTime;
         if (!_shoveStarted.TryGetValue(uid, out var started) || now - started > ShoveForgotten)
         {
+            // Braces left off by NPCs that died, repathed or stopped shoving are dropped as new ones start.
+            foreach (var (other, since) in _shoveStarted)
+            {
+                if (now - since > ShoveForgotten)
+                    _shoveStarted.Remove(other);
+            }
+
             _shoveStarted[uid] = now;
             return SteeringObstacleStatus.Continuing;
         }

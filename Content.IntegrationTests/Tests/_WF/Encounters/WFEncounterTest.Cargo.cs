@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Content.Server._WF.Encounters.Components;
@@ -91,9 +92,20 @@ public sealed partial class WFEncounterTest
             var cargo = Server.System<WFCrewPlannerSystem>().CargoTiles(grid, 40);
             Assert.That(cargo, Is.Not.Empty, "The hull takes some cargo.");
 
+            var doorTiles = new List<Vector2i>();
+            var doors = SEntMan.EntityQueryEnumerator<DoorComponent, TransformComponent>();
+            while (doors.MoveNext(out _, out _, out var xform))
+            {
+                if (xform.GridUid == grid && xform.Anchored)
+                    doorTiles.Add(maps.TileIndicesFor(grid, gridComp, xform.Coordinates));
+            }
+
             foreach (var at in cargo)
             {
-                walkable.Remove(maps.TileIndicesFor(grid, gridComp, at));
+                var tile = maps.TileIndicesFor(grid, gridComp, at);
+                Assert.That(doorTiles.TrueForAll(door => Math.Max(Math.Abs(door.X - tile.X), Math.Abs(door.Y - tile.Y)) > 1),
+                    $"Crate at {tile} stands beside a door.");
+                walkable.Remove(tile);
             }
 
             Assert.That(Regions(walkable), Is.EqualTo(regions), $"{cargo.Count} crates leave the deck joined up.");
