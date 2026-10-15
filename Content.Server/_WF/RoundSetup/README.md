@@ -1,12 +1,12 @@
 # RoundSetup
 
-Round Setup lets players organize a Normal, Crashlanded or Ship crew start together before the round, or launch a new start mid-round. Hosts control public access, private requests, codes, direct invitations and whether survivors may join after launch. Each member chooses their own character through the existing character selector and selects their own permitted job.
+Round Setup lets players organize a Crashlanded or Ship crew start together before the round, or launch a new start mid-round. Hosts control public access, private requests, codes, direct invitations and whether survivors may join after launch. Each member chooses their own character through the existing character selector and selects their own permitted job.
 
-The lobby screen has a dedicated, scrollable crew panel beside the menu. Join opens normal entry or crew browsing without changing readiness; existing crew members return directly to their preparation screen. Normal joining uses saved character/job preferences before the round and the ordinary job picker mid-round. Scenario briefs lead to personal preparation, with separate ship, crew and access sections. Selectors and buttons wrap long text, pages scroll at smaller sizes, and readiness, purchase consent and launch controls stay visible.
+The lobby is a preparation screen with a character card, live crew discovery and a communication dock that moves below preparation on narrow displays. Normal readiness and the existing mid-round join picker open directly from the character card; existing crew members return to their preparation screen. Editing a character clears both normal and crew readiness. Chat and round briefing remain available alongside preparation, with incoming votes automatically opening the briefing tab. Secondary actions sit in a compact bottom bar. Scenario briefs lead to personal preparation, with separate ship, crew and access sections. Selectors and buttons wrap long text, pages scroll at smaller sizes, and readiness, purchase consent and launch controls stay visible.
 
 Open Round Setup from the lobby or the in-round game menu. Ready up before round start; a pregame group launches only when its host is ready. Mid-round hosts launch their waiting group explicitly. A disconnected host keeps ownership; a host can transfer ownership to another member or leave to pass it to the next member. Round restart clears all lobbies and invitation codes.
 
-The server owns membership and validates every request. Normal starts use existing station jobs. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning. Later survivors spawn on a surviving floor in that group's wreck.
+The server owns membership and validates every request. Normal joining remains the default ready/join path without creating a scenario crew; only Ship and Crashlanded can create one. The existing join picker retains both regular station and crew jobs. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning. Later survivors spawn on a surviving floor in that group's wreck.
 
 Crashlanded requires the existing `wf.planet_networks` server setting and a sector containing registered planets. Its card is disabled when planet networks are off. Closing late admission prevents new members; players already accepted retain their place until the host removes them.
 
@@ -47,9 +47,13 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 
 ### Client
 
+- [`Content.Client/_WF/RoundSetup/LobbyCharacterPreviewPanel.RoundSetup.cs`](../../../Content.Client/_WF/RoundSetup/LobbyCharacterPreviewPanel.RoundSetup.cs)
+- [`Content.Client/_WF/RoundSetup/LobbyGui.RoundSetup.cs`](../../../Content.Client/_WF/RoundSetup/LobbyGui.RoundSetup.cs)
+- [`Content.Client/_WF/RoundSetup/LobbyState.RoundSetup.cs`](../../../Content.Client/_WF/RoundSetup/LobbyState.RoundSetup.cs)
 - [`Content.Client/_WF/RoundSetup/PickerWindow.RoundSetup.cs`](../../../Content.Client/_WF/RoundSetup/PickerWindow.RoundSetup.cs)
 - [`Content.Client/_WF/RoundSetup/WFCrashCountdownHud.cs`](../../../Content.Client/_WF/RoundSetup/WFCrashCountdownHud.cs)
 - [`Content.Client/_WF/RoundSetup/WFCrashCountdownHudSystem.cs`](../../../Content.Client/_WF/RoundSetup/WFCrashCountdownHudSystem.cs)
+- [`Content.Client/_WF/RoundSetup/WFLobbyLayout.cs`](../../../Content.Client/_WF/RoundSetup/WFLobbyLayout.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupClientSystem.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupClientSystem.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupLobbyPanel.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupLobbyPanel.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupOptionButton.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupOptionButton.cs)
@@ -85,6 +89,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Resources/Locale/en-US/_WF/RoundSetup/countdown-hud.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/countdown-hud.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/crash.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/crash.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/flow.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/flow.ftl)
+- [`Resources/Locale/en-US/_WF/RoundSetup/home.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/home.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/lobby-panel.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/lobby-panel.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/preview.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/preview.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl)
@@ -99,23 +104,23 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 ## Non-modular edits
 
 - [`Content.Client/Lobby/LobbyState.cs`](../../../Content.Client/Lobby/LobbyState.cs)
-  - the normal jobs picker is opened from Round Setup
+  - the normal jobs picker is managed by the Round Setup lobby partial
+  - the preparation header supplies its own lobby context
   - keep room for the crew browser at 720p
-  - opening Join must not change pregame readiness
-  - Join has no readiness toggle subscription
-  - Join chooses normal entry or a player lobby in either round phase
-  - one primary Join action and no separate mid-round setup button
+  - the responsive layout owns the dock size
+  - the primary action handles readiness and crew membership together
+  - the primary action owns readiness instead of a toggle subscription
+  - release live crew updates and the normal job picker
+  - the lobby directly handles normal joining or opens the player's crew
+  - keep crew management available while normal late join is disabled
+  - synchronize direct joining and crew membership with lobby readiness
 - [`Content.Client/Lobby/UI/LobbyGui.xaml`](../../../Content.Client/Lobby/UI/LobbyGui.xaml)
   - roundSetup namespace mounts the live player lobby browser
-  - reserve room for a dedicated crew panel beside the menu
-  - constrain the server heading to the menu width
-  - compact header gap keeps Join and the lobby list visible
-  - open group setup while keeping the pregame ready button
-  - scroll character and round information above the reserved crew browser
-  - round information uses the space below the character beside the lobby list
-  - keep crew listings accessible independently of the character preview
+  - a unified preparation screen with character, crew and communication areas
 - [`Content.Client/Lobby/UI/LobbyGui.xaml.cs`](../../../Content.Client/Lobby/UI/LobbyGui.xaml.cs)
+  - unify character and crew preparation controls
   - expose group setup before the round starts
+  - character editing clears crew readiness too
   - Join no longer toggles, but character edits still clear pregame readiness
 - [`Content.Client/Options/UI/EscapeMenu.xaml`](../../../Content.Client/Options/UI/EscapeMenu.xaml): hosts can manage admission and survivors after spawning
 - [`Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs`](../../../Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs): manage the player lobby during the round

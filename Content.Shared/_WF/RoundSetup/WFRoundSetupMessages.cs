@@ -3,7 +3,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._WF.RoundSetup;
 
-/// <summary>The starting conditions selected by a player lobby.</summary>
+/// <summary>The crew starting conditions; Normal is reserved and cannot create a scenario lobby.</summary>
 [Serializable, NetSerializable]
 public enum WFRoundScenario : byte { Normal, Crashlanded, Ship }
 

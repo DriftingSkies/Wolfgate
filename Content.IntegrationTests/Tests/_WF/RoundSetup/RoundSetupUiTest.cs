@@ -10,6 +10,9 @@ using Content.Server.GameTicking;
 using Content.Client.GameTicking.Managers;
 using Content.IntegrationTests.Pair;
 using Content.Shared._NF.Bank;
+using Content.Shared._WF.CCVar;
+using Content.Client.Voting;
+using Content.Client.Voting.UI;
 using Content.Shared._WF.RoundSetup;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
@@ -44,22 +47,23 @@ public sealed class RoundSetupUiTest
             Assert.That(Labels(panel), Does.Contain(Loc.GetString("wf-round-setup-panel-empty")));
         });
 
-        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Normal });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Ship });
         Assert.That(state.OwnLobby, Is.Not.Null);
         var lobby = state.Lobbies.Single(entry => entry.Id == state.OwnLobby);
         Button card = null!;
         await pair.Client.WaitAssertion(() =>
         {
             Assert.That(Labels(panel), Does.Contain(Loc.GetString("wf-round-setup-panel-host", ("host", lobby.HostName))));
-            Assert.That(Labels(panel), Does.Contain(Loc.GetString("wf-round-setup-scenario-normal")));
+            Assert.That(Labels(panel), Does.Contain(Loc.GetString("wf-round-setup-scenario-ship")));
             card = Descendants(panel).OfType<Button>().Single(button => button.ToolTip ==
                 Loc.GetString("wf-round-setup-panel-open-help", ("host", lobby.HostName)));
             var screen = (LobbyGui) ui.ActiveScreen!;
             screen.Measure(new Vector2(1280, 720));
             screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, new Vector2(1280, 720)));
             var leave = screen.LeaveButton;
-            Assert.That(panel.GlobalPosition.X, Is.GreaterThan(leave.GlobalPosition.X + leave.Size.X),
-                "Crews have their own column beside the menu.");
+            var character = Named<Control>(screen, "CharacterCard");
+            Assert.That(panel.GlobalPosition.X, Is.GreaterThan(character.GlobalPosition.X + character.Size.X),
+                "Crews sit beside character preparation.");
             Assert.That(panel.Height, Is.GreaterThanOrEqualTo(180));
             Assert.That(panel.GlobalPosition.Y + panel.Height, Is.LessThanOrEqualTo(720), "Lobby list must remain on-screen at 720p.");
             var scroll = Descendants(panel).OfType<ScrollContainer>().Single();
@@ -72,7 +76,7 @@ public sealed class RoundSetupUiTest
             var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
             Assert.That(window.IsOpen, Is.True);
             Assert.That(Labels(window), Does.Contain(Loc.GetString("wf-round-setup-your-lobby",
-                ("scenario", Loc.GetString("wf-round-setup-scenario-normal")))));
+                ("scenario", Loc.GetString("wf-round-setup-scenario-ship")))));
             window.Close();
             panel.Visible = false;
         });
@@ -98,6 +102,7 @@ public sealed class RoundSetupUiTest
     public async Task SetupFlowFitsViewportAndBrowsingDoesNotCreate(int width, int height)
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var originalNetworks = await EnableCrashlanded(pair);
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
         Assert.That(state.OwnLobby, Is.Null);
         var viewport = new Vector2(width, height);
@@ -126,9 +131,10 @@ public sealed class RoundSetupUiTest
         {
             AssertFits(window, viewport);
             Assert.That(Labels(window), Does.Contain(Loc.GetString("wf-round-setup-choose-scenario")));
-            Assert.That(Descendants(window).OfType<Button>().Count(control => control.Name?.StartsWith("RoundSetupCreate") == true), Is.EqualTo(3));
+            Assert.That(Descendants(window).OfType<Button>().Count(control => control.Name?.StartsWith("RoundSetupCreate") == true), Is.EqualTo(2));
+            Assert.That(Descendants(window).Any(control => control.Name == "RoundSetupCreateNormal"), Is.False);
             Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
-            button = Named<Button>(window, "RoundSetupCreateNormal");
+            button = Named<Button>(window, "RoundSetupCreateCrashlanded");
         });
         await Click(pair, button);
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
@@ -192,10 +198,11 @@ public sealed class RoundSetupUiTest
             window.Close();
         });
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = lobbyId });
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, originalNetworks));
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>The main Join action opens choices; only Join Normally changes pregame readiness.</summary>
+    /// <summary>The normal join action readies and unreadies directly without creating a crew or an extra dialog.</summary>
     [Test]
     public async Task JoinNormallyReadiesWithoutCreatingLobby()
     {
@@ -211,28 +218,23 @@ public sealed class RoundSetupUiTest
             join = lobby.ReadyButton;
         });
         await Click(pair, join);
-        await pair.Client.WaitAssertion(() =>
-        {
-            Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.False);
-            var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
-            join = Named<Button>(window, "RoundSetupJoinNormally");
-        });
-        await Click(pair, join);
         await pair.RunTicksSync(pair.SecondsToTicks(0.5f));
         await pair.Client.WaitAssertion(() =>
         {
             Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.True);
             Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
             Assert.That(Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>(), Is.Empty);
-            pair.Client.ResolveDependency<Robust.Shared.Console.IConsoleHost>().ExecuteCommand("toggleready false");
+            Assert.That(join.Text, Is.EqualTo(Loc.GetString("wf-round-setup-home-unready")));
         });
+        await Click(pair, join);
         await pair.RunTicksSync(pair.SecondsToTicks(0.5f));
+        await pair.Client.WaitAssertion(() => Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.False));
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Late join hides the extra setup button and opens the ordinary station jobs directly.</summary>
+    /// <summary>Late join opens the existing join picker directly while keeping crew creation discoverable.</summary>
     [Test]
-    public async Task MidroundJoinOpensChoicesThenNormalJobs()
+    public async Task MidroundHomeOpensNormalJobsDirectly()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
         var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
@@ -249,27 +251,119 @@ public sealed class RoundSetupUiTest
         await pair.Client.WaitAssertion(() =>
         {
             var lobby = (LobbyGui) ui.ActiveScreen!;
-            Assert.That(lobby.RoundSetupButton.Visible, Is.False);
+            Assert.That(lobby.RoundSetupButton.Visible, Is.True);
             Assert.That(lobby.ReadyButton.ToggleMode, Is.False);
             join = lobby.ReadyButton;
-        });
-        await Click(pair, join);
-        await pair.Client.WaitPost(() =>
-        {
-            var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
-            join = Named<Button>(window, "RoundSetupJoinNormally");
         });
         await Click(pair, join);
         await pair.Client.WaitAssertion(() =>
         {
             var picker = Descendants(ui.WindowRoot).OfType<PickerWindow>().Single();
-            Assert.That(Descendants(picker).OfType<StationPickerControl>().Count(), Is.EqualTo(1));
+            Assert.That(Descendants(picker).OfType<StationOrCrewLargeControl>().Count(), Is.EqualTo(1));
             Assert.That(Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>(), Is.Empty);
             Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
             picker.Close();
         });
         await pair.Server.WaitPost(() => pair.Server.System<GameTicker>().RestartRound());
         await pair.RunTicksSync(2);
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Preparation, discovery and chat remain bounded when the communication dock moves below the cards.</summary>
+    [TestCase(800, 600)]
+    [TestCase(1024, 768)]
+    [TestCase(1090, 720)]
+    [TestCase(1280, 720)]
+    [TestCase(1920, 1080)]
+    public async Task HomeLayoutKeepsPrimaryActionsReachable(int width, int height)
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        await pair.Client.WaitAssertion(() =>
+        {
+            var screen = (LobbyGui) pair.Client.ResolveDependency<IUserInterfaceManager>().ActiveScreen!;
+            var viewport = new Vector2(width, height);
+            var tabs = Named<TabContainer>(screen, "LobbyInformationTabs");
+            tabs.CurrentTab = 0;
+            screen.Measure(viewport);
+            screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, viewport));
+            foreach (var control in new Control[] { screen.ReadyButton, screen.CustomizeButton,
+                         screen.RoundSetupButton, screen.RoundSetupLobbies, screen.RightSide, screen.Chat, screen.LeaveButton })
+            {
+                Assert.That(control.VisibleInTree, Is.True, control.Name);
+                Assert.That(control.Size.X, Is.GreaterThan(40), control.Name);
+                Assert.That(control.Size.Y, Is.GreaterThan(20), control.Name);
+                Assert.That(control.GlobalPosition.X, Is.GreaterThanOrEqualTo(0), control.Name);
+                Assert.That(control.GlobalPosition.Y, Is.GreaterThanOrEqualTo(0), control.Name);
+                Assert.That(control.GlobalPosition.X + control.Width, Is.LessThanOrEqualTo(width + 1), control.Name);
+                Assert.That(control.GlobalPosition.Y + control.Height, Is.LessThanOrEqualTo(height + 1), control.Name);
+            }
+            if (width < 1090)
+                Assert.That(screen.RightSide.GlobalPosition.Y, Is.GreaterThan(screen.ReadyButton.GlobalPosition.Y));
+            else
+                Assert.That(screen.RightSide.GlobalPosition.X, Is.GreaterThan(screen.RoundSetupLobbies.GlobalPosition.X));
+            Assert.That(screen.CharacterPreview.CharacterSetupButton.Visible, Is.False, "Only one character edit action is shown.");
+            var vote = new VotePopup(new VoteManager.ActiveVote(1)
+            {
+                Title = "Continue this round?",
+                Initiator = "Test voter",
+                EndTime = TimeSpan.FromHours(1),
+                Entries = new[] { new VoteManager.VoteEntry("Continue"), new VoteManager.VoteEntry("Restart") },
+            });
+            vote.UpdateData();
+            screen.VoteContainer.AddChild(vote);
+            screen.Measure(viewport);
+            screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, viewport));
+            Assert.That(vote.VisibleInTree, Is.True, "An incoming vote opens its tab.");
+            Assert.That(vote.GlobalPosition.X + vote.Width, Is.LessThanOrEqualTo(width + 1), "Votes fit the communication dock.");
+            screen.VoteContainer.RemoveChild(vote);
+            vote.Dispose();
+            if (screen.VoteContainer.ChildCount == 0)
+                Assert.That(screen.Chat.VisibleInTree, Is.True, "Chat returns when the last vote ends.");
+            tabs.CurrentTab = 0;
+        });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Members return to their crew and character editing clears the crew's ready state.</summary>
+    [Test]
+    public async Task HomeReturnsToCrewAndCharacterEditingClearsReadiness()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var originalNetworks = await EnableCrashlanded(pair);
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Crashlanded });
+        var id = state.OwnLobby!.Value;
+        var job = state.Jobs.First();
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectJob) { LobbyId = id, Job = job.Id, Station = job.Station });
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SetReady) { LobbyId = id, Ready = true });
+        Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Members.Single().Ready, Is.True);
+        var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+        LobbyGui screen = null!;
+        await pair.Client.WaitAssertion(() =>
+        {
+            screen = (LobbyGui) ui.ActiveScreen!;
+            Assert.That(screen.ReadyButton.Text, Is.EqualTo(Loc.GetString("wf-round-setup-home-manage")));
+            Assert.That(screen.RoundSetupButton.Disabled, Is.True);
+        });
+        await Click(pair, screen.ReadyButton);
+        await pair.Client.WaitAssertion(() =>
+        {
+            var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
+            Assert.That(Named<CheckBox>(window, "RoundSetupReady").Pressed, Is.True);
+            window.Close();
+        });
+        await Click(pair, screen.CustomizeButton);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Members.Single().Ready, Is.False);
+        await pair.Client.WaitAssertion(() =>
+        {
+            Assert.That(screen.CharacterSetupState.Visible, Is.True);
+            Assert.That(screen.RightSide.Visible, Is.False);
+            screen.SwitchState(LobbyGui.LobbyGuiState.Default);
+            Assert.That(screen.RightSide.Visible, Is.True);
+        });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, originalNetworks));
         await pair.CleanReturnAsync();
     }
 
@@ -427,6 +521,17 @@ public sealed class RoundSetupUiTest
     }
 
     /// <summary>Measures real controls and rejects horizontal overflow or inaccessible fixed navigation and footer actions.</summary>
+    private static async Task<bool> EnableCrashlanded(TestPair pair)
+    {
+        var previous = false;
+        await pair.Server.WaitPost(() =>
+        {
+            previous = pair.Server.CfgMan.GetCVar(PlanetCVars.PlanetNetworks);
+            pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, true);
+        });
+        return previous;
+    }
+
     private static void AssertFits(WFRoundSetupWindow window, Vector2 viewport)
     {
         for (var i = 0; i < 2; i++)

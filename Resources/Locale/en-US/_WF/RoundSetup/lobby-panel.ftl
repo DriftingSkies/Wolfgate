@@ -1,20 +1,23 @@
-wf-round-setup-panel-title = Player lobbies
+wf-round-setup-panel-title = Available crews
 wf-round-setup-panel-setup = Set up lobby
 wf-round-setup-panel-mine = My lobby
 wf-round-setup-panel-refresh = Refresh
 wf-round-setup-panel-refresh-help = Refresh the player lobby list.
 wf-round-setup-panel-loading = Loading player lobbies…
-wf-round-setup-panel-empty = No lobbies yet. Start one with Set up lobby.
-wf-round-setup-panel-empty-help = Choose Set up lobby to pick a scenario and welcome a crew.
+wf-round-setup-panel-empty = No crews yet. Create a crew to choose a scenario and invite others.
+wf-round-setup-panel-empty-help = Create a crew above, then choose a scenario and add openings.
 wf-round-setup-panel-host = Host: { $host }
 wf-round-setup-panel-members = { $count } / 16 players · { $access }
 wf-round-setup-panel-waiting = Preparing for launch
 wf-round-setup-panel-started-open = In progress · Joining allowed
 wf-round-setup-panel-started-closed = In progress · Joining closed
-wf-round-setup-panel-own-status = Your lobby · { $status }
+wf-round-setup-panel-own-status = Your crew · { $status }
 wf-round-setup-panel-access-public = Public
 wf-round-setup-panel-access-requests = Join requests
 wf-round-setup-panel-access-closed = Private
 wf-round-setup-panel-access-code = Code
 wf-round-setup-panel-access-invite = Invite only
 wf-round-setup-panel-open-help = View { $host }'s lobby and available crew roles.
+
+wf-round-setup-panel-openings = { $count } open crew slots
+wf-round-setup-panel-invited = You are invited — open this crew to respond.

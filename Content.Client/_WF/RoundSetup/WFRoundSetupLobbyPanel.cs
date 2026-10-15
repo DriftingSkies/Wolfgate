@@ -20,15 +20,15 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
 
     /// <summary>Stores only the public fields displayed on a lobby card.</summary>
     private sealed record Listing(int Id, string Host, WFRoundScenario Scenario, WFLobbyAccess Access,
-        int Members, bool Started, bool AllowLateJoin, bool Own);
+        int Members, int Openings, bool Started, bool AllowLateJoin, bool Own, bool Invited);
 
-    /// <summary>Builds a scrollable list of horizontal lobby rows.</summary>
+    /// <summary>Builds a live crew list with wrapped identities and available openings.</summary>
     public WFRoundSetupLobbyPanel()
     {
         IoCManager.InjectDependencies(this);
         HorizontalExpand = true;
-        MinHeight = 180;
-        StyleClasses.Add("LobbyChatPanel");
+        MinHeight = 96;
+        StyleClasses.Add("WFRoundSetupInset");
         var content = new BoxContainer
         {
             Orientation = BoxContainer.LayoutOrientation.Vertical,
@@ -118,7 +118,9 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             .ThenBy(lobby => lobby.Started)
             .ThenBy(lobby => lobby.Id)
             .Select(lobby => new Listing(lobby.Id, lobby.HostName, lobby.Scenario, lobby.Access,
-                lobby.MemberCount, lobby.Started, lobby.AllowLateJoin, lobby.Id == state.OwnLobby))
+                lobby.MemberCount, lobby.Roles.Sum(role => Math.Max(0, role.Capacity - role.Occupied)),
+                lobby.Started, lobby.AllowLateJoin, lobby.Id == state.OwnLobby,
+                state.Invitations.Any(invitation => invitation.Id == lobby.Id)))
             .ToArray();
         _empty.SetMessage(FormattedMessage.FromUnformatted(Text("empty")));
         _empty.Visible = listings.Length == 0;
@@ -158,10 +160,12 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             HorizontalExpand = true,
             MouseFilter = MouseFilterMode.Ignore,
         };
-        foreach (var text in new[] { host, scenario })
+        foreach (var text in new[] { scenario, host })
         {
             var label = new RichTextLabel { HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore };
-            label.SetMessage(Robust.Shared.Utility.FormattedMessage.FromUnformatted(text));
+            if (text == scenario)
+                label.StyleClasses.Add("WFRoundSetupHeading");
+            label.SetMessage(FormattedMessage.FromUnformatted(text));
             identity.AddChild(label);
         }
         content.AddChild(identity);
@@ -172,7 +176,10 @@ public sealed partial class WFRoundSetupLobbyPanel : PanelContainer
             MouseFilter = MouseFilterMode.Ignore,
         };
         details.AddChild(Wrapped(Text("members", ("count", listing.Members), ("access", access))));
+        details.AddChild(Wrapped(Text("openings", ("count", listing.Openings))));
         details.AddChild(Wrapped(status));
+        if (listing.Invited)
+            details.AddChild(Wrapped(Text("invited")));
         content.AddChild(details);
         var button = new Button
         {

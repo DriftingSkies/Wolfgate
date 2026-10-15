@@ -2,7 +2,6 @@ using System.Linq;
 using Content.Client.GameTicking.Managers;
 using Content.Client._NF.LateJoin.Windows;
 using Content.Shared._WF.RoundSetup;
-using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Console;
@@ -67,7 +66,7 @@ public sealed partial class WFRoundSetupWindow
         layout.Margin = new Thickness(8);
         Contents.AddChild(new PanelContainer
         {
-            PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#111A21") },
+            StyleClasses = { "WFRoundSetupSurface" },
             Children = { layout },
         });
         layout.AddChild(_navigation);
@@ -269,11 +268,11 @@ public sealed partial class WFRoundSetupWindow
     {
         _body.AddChild(Heading("choose-scenario"));
         _body.AddChild(Description("create-help"));
-        foreach (var scenario in new[] { WFRoundScenario.Normal, WFRoundScenario.Ship, WFRoundScenario.Crashlanded })
+        foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Crashlanded })
         {
             var card = Column(8);
             var title = PlainDescription(ScenarioName(scenario));
-            title.StyleClasses.Add("LabelHeading");
+            title.StyleClasses.Add("WFRoundSetupHeading");
             card.AddChild(title);
             card.AddChild(Description(ScenarioDescription(scenario)));
             var unavailable = scenario == WFRoundScenario.Crashlanded && !state.CrashlandedAvailable;

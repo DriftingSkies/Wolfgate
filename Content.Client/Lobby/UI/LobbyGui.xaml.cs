@@ -21,6 +21,7 @@ namespace Content.Client.Lobby.UI
             SetAnchorPreset(MainContainer, LayoutPreset.Wide);
             SetAnchorPreset(Background, LayoutPreset.Wide);
             SetAnchorPreset(SkinScanlines, LayoutPreset.Wide); // WOLFGATE(Stylesheets): skin scanlines cover the whole screen
+            InitializeRoundSetupHome(); // WOLFGATE(RoundSetup): unify character and crew preparation controls
 
             LobbySong.SetMarkup(Loc.GetString("lobby-state-song-no-song-text"));
 
@@ -33,6 +34,7 @@ namespace Content.Client.Lobby.UI
             // WOLFGATE(Stylesheets) START: menu entry for character setup; un-readies first like LobbyState.OnSetupPressed
             CustomizeButton.OnPressed += _ =>
             {
+                ClearRoundSetupReadiness(); // WOLFGATE(RoundSetup): character editing clears crew readiness too
             // WOLFGATE END
                 // WOLFGATE(RoundSetup) START: Join no longer toggles, but character edits still clear pregame readiness
                 // if (ReadyButton.ToggleMode)

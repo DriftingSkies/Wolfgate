@@ -142,7 +142,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         switch (msg.Action)
         {
             case WFRoundSetupAction.Create when own == null && CanEnter(session):
-                if (!Enum.IsDefined(msg.Scenario) || _lobbies.Count >= 64 ||
+                if (msg.Scenario is not (WFRoundScenario.Ship or WFRoundScenario.Crashlanded) || _lobbies.Count >= 64 ||
                     msg.Scenario == WFRoundScenario.Crashlanded && !_crash.IsAvailable)
                     break;
                 var created = new Lobby { Id = ++_nextId, Host = user, Scenario = msg.Scenario, Code = NewCode() };

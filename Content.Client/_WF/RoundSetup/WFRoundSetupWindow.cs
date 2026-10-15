@@ -3,7 +3,6 @@ using System.Numerics;
 using Content.Client.Lobby;
 using Content.Shared._WF.RoundSetup;
 using Content.Shared.Roles;
-using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
@@ -350,7 +349,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private static RichTextLabel Heading(string key, params (string, object)[] args)
     {
         var heading = PlainDescription(Text(key, args));
-        heading.StyleClasses.Add("LabelHeading");
+        heading.StyleClasses.Add("WFRoundSetupHeading");
         return heading;
     }
 
@@ -380,12 +379,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         return new PanelContainer
         {
             HorizontalExpand = true,
-            PanelOverride = new StyleBoxFlat
-            {
-                BackgroundColor = Color.FromHex("#19242C"),
-                BorderColor = Color.FromHex("#3C505B"),
-                BorderThickness = new Thickness(1),
-            },
+            StyleClasses = { "WFRoundSetupCard" },
             Children = { content },
         };
     }

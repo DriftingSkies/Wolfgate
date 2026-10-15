@@ -149,7 +149,7 @@ public sealed class WFRoundSetupLobbyTest
         });
         Assert.That(OwnLobby(state).Host, Is.EqualTo(player), "Ownership cannot transfer to a nonmember.");
 
-        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Normal });
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Ship });
         Assert.That(state.OwnLobby, Is.EqualTo(lobbyId), "A player cannot own two lobbies.");
         Assert.That(state.Lobbies.Count(entry => entry.Host == player), Is.EqualTo(1));
 
@@ -178,14 +178,10 @@ public sealed class WFRoundSetupLobbyTest
             pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, true);
         });
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Normal });
-        var lobbyId = OwnLobby(state).Id;
-        Assert.That(state.Jobs.Select(job => job.Id), Does.Contain("Contractor"));
-        Assert.That(state.Jobs.All(job => job.Id is "Contractor" or "Passenger"), Is.True, "Normal pregame choices come from the Empty test map.");
-        Assert.That(state.Jobs.All(job => job.Station == null && !string.IsNullOrWhiteSpace(job.StationName)), Is.True);
-        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = lobbyId });
+        Assert.That(state.OwnLobby, Is.Null, "Normal joining must never create a scenario crew.");
 
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Crashlanded });
-        lobbyId = OwnLobby(state).Id;
+        var lobbyId = OwnLobby(state).Id;
         Assert.That(state.Jobs.Select(job => job.Id), Does.Contain("Contractor"));
         Assert.That(state.Jobs.All(job => WFCrashScenarioSystem.AllowedJobs.Contains(job.Id)), Is.True);
         Assert.That(state.Jobs.All(job => job.Station == null && job.StationName == string.Empty), Is.True);
@@ -240,9 +236,15 @@ public sealed class WFRoundSetupLobbyTest
     public async Task RoleReservationsRejectInvalidChanges()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var originalNetworks = false;
+        await pair.Server.WaitPost(() =>
+        {
+            originalNetworks = pair.Server.CfgMan.GetCVar(PlanetCVars.PlanetNetworks);
+            pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, true);
+        });
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
         {
-            Scenario = WFRoundScenario.Normal, Job = "Contractor", RoleId = 1, Capacity = 16,
+            Scenario = WFRoundScenario.Crashlanded, Job = "Contractor", RoleId = 1, Capacity = 16,
         });
         var lobby = OwnLobby(state);
         var lobbyId = lobby.Id;
@@ -360,6 +362,7 @@ public sealed class WFRoundSetupLobbyTest
         });
         Assert.That(OwnLobby(state).Roles, Is.Empty);
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = lobbyId });
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, originalNetworks));
         await pair.CleanReturnAsync();
     }
     /// <summary>Opening Ship setup does not pick or buy a vessel and each selection requires fresh readiness.</summary>
@@ -516,22 +519,15 @@ public sealed class WFRoundSetupLobbyTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Scenario choices share ordinary job quotas and cannot silently become an overflow job.</summary>
+    /// <summary>Normal joining creates no scenario and preserves the saved profile used by ordinary allocation.</summary>
     [Test]
-    public async Task NormalScenarioSharesRoundStartQuotaWithoutChangingCharacterPreferences()
+    public async Task NormalJoiningDoesNotCreateScenarioOrChangePreferences()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
         var player = pair.Client.User!.Value;
-        var ordinary = new NetUserId(Guid.NewGuid());
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Normal });
-        var lobbyId = OwnLobby(state).Id;
-        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectJob)
-        {
-            LobbyId = lobbyId,
-            Job = "Contractor",
-        });
-        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SetReady) { LobbyId = lobbyId, Ready = true });
-
+        Assert.That(state.OwnLobby, Is.Null);
+        Assert.That(state.Lobbies, Is.Empty);
         await pair.Server.WaitAssertion(() =>
         {
             var original = HumanoidCharacterProfile.DefaultWithSpecies()
@@ -541,50 +537,12 @@ public sealed class WFRoundSetupLobbyTest
                     ["Contractor"] = JobPriority.Low,
                 })
                 .WithPreferenceUnavailable(PreferenceUnavailableMode.SpawnAsOverflow);
-            var ordinaryProfile = original.WithJobPriorities(new Dictionary<ProtoId<JobPrototype>, JobPriority>
-            {
-                ["Contractor"] = JobPriority.High,
-            });
-            var profiles = new Dictionary<NetUserId, HumanoidCharacterProfile>
-            {
-                [player] = original,
-                [ordinary] = ordinaryProfile,
-            };
+            var profiles = new Dictionary<NetUserId, HumanoidCharacterProfile> { [player] = original };
             var choices = pair.Server.System<WFRoundSetupSystem>().GetRoundStartProfiles(profiles);
-            Assert.Multiple(() =>
-            {
-                Assert.That(choices[player], Is.Not.SameAs(original));
-                Assert.That(choices[player].JobPriorities.Count, Is.EqualTo(1));
-                Assert.That(choices[player].JobPriorities[new ProtoId<JobPrototype>("Contractor")], Is.EqualTo(JobPriority.High));
-                Assert.That(choices[player].PreferenceUnavailable, Is.EqualTo(PreferenceUnavailableMode.StayInLobby));
-                Assert.That(choices[ordinary], Is.SameAs(ordinaryProfile));
-                Assert.That(profiles[player], Is.SameAs(original));
-                Assert.That(original.JobPriorities[new ProtoId<JobPrototype>("Pilot")], Is.EqualTo(JobPriority.High));
-                Assert.That(original.JobPriorities[new ProtoId<JobPrototype>("Contractor")], Is.EqualTo(JobPriority.Low));
-                Assert.That(original.PreferenceUnavailable, Is.EqualTo(PreferenceUnavailableMode.SpawnAsOverflow));
-            });
-
-            var em = pair.Server.EntMan;
-            var station = em.SpawnEntity("WFRoundSetupQuotaTestStation", MapCoordinates.Nullspace);
-            try
-            {
-                var jobs = pair.Server.System<StationJobsSystem>();
-                var stations = new[] { station };
-                var assignments = jobs.AssignJobs(choices, stations);
-                Assert.That(assignments.Values.Count(assignment => assignment.Item1?.Id == "Contractor"), Is.EqualTo(1),
-                    "The scenario and ordinary candidate must compete for the same single slot.");
-                jobs.AssignOverflowJobs(ref assignments, choices.Keys, choices, stations);
-                Assert.That(assignments[player].Item1?.Id, Is.Null.Or.EqualTo("Contractor"),
-                    "A full selected job must leave the scenario member in the lobby instead of taking an overflow job.");
-                Assert.That(assignments.Values.Count(assignment => assignment.Item1?.Id == "Contractor"), Is.EqualTo(1));
-            }
-            finally
-            {
-                em.DeleteEntity(station);
-            }
+            Assert.That(choices[player], Is.SameAs(original));
+            Assert.That(choices[player].JobPriorities[new ProtoId<JobPrototype>("Pilot")], Is.EqualTo(JobPriority.High));
+            Assert.That(choices[player].PreferenceUnavailable, Is.EqualTo(PreferenceUnavailableMode.SpawnAsOverflow));
         });
-
-        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = lobbyId });
         await pair.CleanReturnAsync();
     }
     /// <summary>Sends each mutation after the server's rate limit and allows a network round trip.</summary>

@@ -570,6 +570,6 @@ public sealed partial class StyleWolfgate
                 .Prop(Control.StylePropertyModulateSelf, ContextPressed),
         };
 
-        return rules.Concat(LobbyRules()).Concat(CreatorRules()).Concat(LoadoutRules()).ToArray();
+        return rules.Concat(RoundSetupRules()).Concat(LobbyRules()).Concat(CreatorRules()).Concat(LoadoutRules()).ToArray();
     }
 }
