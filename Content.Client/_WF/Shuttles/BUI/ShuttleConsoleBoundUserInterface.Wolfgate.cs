@@ -18,6 +18,7 @@ public sealed partial class ShuttleConsoleBoundUserInterface
 
         _window.ShipCodeRequested += code => SendMessage(new ShipAlertCodeRequestMessage(code));
         _window.ShipGeneralQuartersRequested += active => SendMessage(new ShipGeneralQuartersRequestMessage(active));
+        _window.ShipDistressRequested += active => SendMessage(new ShipDistressRequestMessage(active));
         _window.ShipAnnounceRequested += text => SendMessage(new ShipPaAnnounceRequestMessage(text));
         _window.ShipSoundRequested += url => SendMessage(new ShipPaInternetSoundRequestMessage(url));
         _window.ShipSoundStopRequested += () => SendMessage(new ShipPaInternetSoundStopMessage());

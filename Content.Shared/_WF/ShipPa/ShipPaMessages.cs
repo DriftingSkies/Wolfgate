@@ -26,6 +26,18 @@ public sealed class ShipGeneralQuartersRequestMessage : BoundUserInterfaceMessag
     }
 }
 
+/// <summary>Pilot sent or cancelled the ship's distress call.</summary>
+[Serializable, NetSerializable]
+public sealed class ShipDistressRequestMessage : BoundUserInterfaceMessage
+{
+    public bool Active;
+
+    public ShipDistressRequestMessage(bool active)
+    {
+        Active = active;
+    }
+}
+
 /// <summary>Pilot typed a free-text announcement.</summary>
 [Serializable, NetSerializable]
 public sealed class ShipPaAnnounceRequestMessage : BoundUserInterfaceMessage

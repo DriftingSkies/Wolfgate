@@ -126,7 +126,7 @@ as its own orders. `WFEncounterRewardSystem.PayBounty` pays a beaten encounter's
 were paid, and its optional `extraCredits` are further rewards of which only the faction credits are handed out, so one
 bounty can pay several navies; `GetHelpers` is
 the helper rule it shares with the Decided payout. The scheduler's `IsClearSpace` and `Stations` give placement checks, and
-the broadcast by-ref `WFEncounterWeightEvent` (change a candidate's weight) and `WFEncounterStationsEvent` (drop stations
+the broadcast by-ref `WFEncounterCollectMarkersEvent` (add markers of your own, as the ShipPa SOS does), `WFEncounterWeightEvent` (change a candidate's weight) and `WFEncounterStationsEvent` (drop stations
 from a map's list) let other modules shape what it picks and where.
 
 `Docs/_WF/Encounters/design.md` is the original design. Not built: mass scanner contacts and lazy loading (ships

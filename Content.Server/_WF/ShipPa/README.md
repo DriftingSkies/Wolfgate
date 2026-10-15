@@ -15,6 +15,13 @@ and the queue moves on. The queue waits while no speaker works or the server is 
 Tracks run on the PA timeline whatever else is playing, so an alarm masks the music and the queue keeps its
 schedule, as it does for a single track. There is a gap between tracks while the next one is fetched.
 
+SEND SOS on the panel is the ship's distress call (`ShipAlertSystem.Distress.cs`). It says a mayday with the ship's
+name and position on the common radio, heard sector-wide without a telecom server, tells the crew over the PA and
+marks the ship with the orange distress cross on every radar, the sector map and the FTL map, through the encounter
+markers (`WFEncounterCollectMarkersEvent`). It stands until CANCEL SOS, which says so on the radio, or until it lapses
+after `DistressDuration` (20 minutes). A new call waits out `DistressCooldown` (one minute) after the last one.
+Other code calls `ShipAlertSystem.SetDistress`.
+
 Entry points: `ShipPaSystem` (speakers, broadcasts, alarms), `ShipAlertSystem` (situation codes, general quarters,
 announcements and the playlist messages from the console), `ShipPaPlaylistSystem` (the queue), `ShipAlarmPanel` (the
 console panel), the client `ShipPaMeshSystem` (plays the ship's programme from real speaker positions), and
@@ -29,6 +36,7 @@ console panel), the client `ShipPaMeshSystem` (plays the ship's programme from r
 
 - [`Content.Server/_WF/ShipPa/Commands/ShipPaCommands.cs`](Commands/ShipPaCommands.cs)
 - [`Content.Server/_WF/ShipPa/ShipAlertSystem.cs`](ShipAlertSystem.cs)
+- [`Content.Server/_WF/ShipPa/ShipAlertSystem.Distress.cs`](ShipAlertSystem.Distress.cs)
 - [`Content.Server/_WF/ShipPa/ShipPaPlaylistSystem.cs`](ShipPaPlaylistSystem.cs)
 - [`Content.Server/_WF/ShipPa/ShipPaPlaylistText.cs`](ShipPaPlaylistText.cs)
 - [`Content.Server/_WF/ShipPa/ShipPaSystem.Alarms.cs`](ShipPaSystem.Alarms.cs)
@@ -56,6 +64,7 @@ console panel), the client `ShipPaMeshSystem` (plays the ship's programme from r
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipDistressTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipDistressTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaArbitrationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaArbitrationTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaAudienceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaAudienceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaFallbackTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaFallbackTest.cs)

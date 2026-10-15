@@ -19,3 +19,7 @@ public record struct WFEncounterWeightEvent(WFEncounterPrototype Prototype, floa
 /// <summary>Raised, by ref and broadcast, with the stations of a map before they are used; a subscriber may remove entries.</summary>
 [ByRefEvent]
 public readonly record struct WFEncounterStationsEvent(MapId Map, List<Entity<MapGridComponent>> Stations);
+
+/// <summary>Raised, by ref and broadcast, before each marker update goes out; a subscriber may add markers of its own.</summary>
+[ByRefEvent]
+public readonly record struct WFEncounterCollectMarkersEvent(List<WFEncounterMarker> Markers);

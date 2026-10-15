@@ -27,6 +27,7 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     private static readonly Color ReadoutColor = Color.FromHex("#00ff2a");
     private static readonly Color OfflineColor = Color.FromHex("#ff4040");
     private static readonly Color AlarmColor = Color.FromHex("#ff8080");
+    private static readonly Color DistressColor = Color.FromHex("#ffb060");
 
     private readonly Dictionary<string, Button> _codeButtons = new();
 
@@ -38,6 +39,7 @@ public sealed partial class ShipAlarmPanel : BoxContainer
 
     private EntityUid? _grid;
     private bool _generalQuarters;
+    private bool _distress;
     private bool _collisionAlertOff;
     private float _pollAccumulator;
 
@@ -50,6 +52,7 @@ public sealed partial class ShipAlarmPanel : BoxContainer
 
         GeneralQuartersButton.OnPressed += _ => GeneralQuartersRequested?.Invoke(!_generalQuarters);
         CollisionAlertButton.OnPressed += _ => CollisionAlertRequested?.Invoke(_collisionAlertOff);
+        DistressButton.OnPressed += _ => DistressRequested?.Invoke(!_distress);
         AnnounceButton.OnPressed += _ => Announce();
         AnnounceEdit.OnTextEntered += _ => Announce();
         AnnounceEdit.OnTextChanged += args => AnnounceButton.Disabled = string.IsNullOrWhiteSpace(args.Text);
@@ -76,6 +79,11 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     /// The pilot sounded or secured general quarters.
     /// </summary>
     public event Action<bool>? GeneralQuartersRequested;
+
+    /// <summary>
+    /// The pilot sent or cancelled the ship's distress call.
+    /// </summary>
+    public event Action<bool>? DistressRequested;
 
     /// <summary>
     /// The pilot wants a line read out over the PA.
@@ -215,6 +223,12 @@ public sealed partial class ShipAlarmPanel : BoxContainer
             ? "shuttle-console-ship-general-quarters-secure"
             : "shuttle-console-ship-general-quarters-sound");
         GeneralQuartersButton.Modulate = _generalQuarters ? AlarmColor : Color.White;
+
+        _distress = alert?.Distress ?? false;
+        DistressButton.Text = Loc.GetString(_distress
+            ? "shuttle-console-ship-distress-cancel"
+            : "shuttle-console-ship-distress-send");
+        DistressButton.Modulate = _distress ? DistressColor : Color.White;
 
         SpeakersCaption.Text = Loc.GetString(alert is { SpeakersFallback: true }
             ? "shuttle-console-ship-speakers-fallback"

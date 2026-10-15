@@ -47,6 +47,7 @@ public sealed partial class ShipAlarmPanel
             CodeContainer.AddChild(row);
         }
         WfCompactAlarmButton(GeneralQuartersButton);
+        WfCompactAlarmButton(DistressButton);
         WfCompactAlarmButton(CollisionAlertButton);
         WfCompactAlarmButton(AnnounceButton);
         WfCompactAlarmButton(SoundButton);
@@ -66,7 +67,7 @@ public sealed partial class ShipAlarmPanel
         var sound = Row(SoundEdit, SoundButton, SoundStopButton);
         announce.SeparationOverride = sound.SeparationOverride = 4;
         WfRefitPlaylist();
-        var body = Column(readouts, CodeContainer, GeneralQuartersButton, CollisionAlertButton, announce, sound, PlaylistBox);
+        var body = Column(readouts, CodeContainer, GeneralQuartersButton, DistressButton, CollisionAlertButton, announce, sound, PlaylistBox);
         body.SeparationOverride = 6;
         DisposeAllChildren();
         Margin = new Thickness(0);

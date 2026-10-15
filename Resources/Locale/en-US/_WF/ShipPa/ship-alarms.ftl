@@ -26,3 +26,7 @@ shuttle-console-ship-playlist-remove = X
 shuttle-console-ship-playlist-remove-tooltip = Take this out of the queue.
 shuttle-console-ship-collision-alert-on = Collision alert: on
 shuttle-console-ship-collision-alert-off = Collision alert: OFF
+
+shuttle-console-ship-distress-send = SEND SOS
+shuttle-console-ship-distress-cancel = CANCEL SOS
+shuttle-console-ship-distress-tooltip = Call for help on the common radio and mark this ship on every radar and the sector map.

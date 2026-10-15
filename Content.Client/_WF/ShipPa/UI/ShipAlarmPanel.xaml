@@ -36,6 +36,12 @@
             StyleClasses="ButtonSquare"
             MinSize="0 40"
             Margin="4 8 4 4"/>
+    <Button Name="DistressButton"
+            Text="{Loc 'shuttle-console-ship-distress-send'}"
+            ToolTip="{Loc 'shuttle-console-ship-distress-tooltip'}"
+            StyleClasses="ButtonSquare"
+            MinSize="0 40"
+            Margin="4 0 4 4"/>
     <Button Name="CollisionAlertButton"
             Text="{Loc 'shuttle-console-ship-collision-alert-off'}"
             StyleClasses="ButtonSquare"

@@ -50,7 +50,10 @@ public sealed partial class ShipAlertSystem : EntitySystem
             subs.Event<ShipPaInternetSoundRequestMessage>(OnInternetSoundRequest);
             subs.Event<ShipPaInternetSoundStopMessage>(OnInternetSoundStop);
             subs.Event<ShipPaPlaylistRequestMessage>(OnPlaylistRequest);
+            subs.Event<ShipDistressRequestMessage>(OnDistressRequest);
         });
+
+        InitializeDistress();
     }
 
     /// <summary>Moves a grid saved before the WF id prefix onto the renamed code.</summary>

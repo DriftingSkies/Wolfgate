@@ -78,6 +78,9 @@ public sealed partial class WFEncounterMarkerSystem : EntitySystem
             }
         }
 
+        var collect = new WFEncounterCollectMarkersEvent(ev.Markers);
+        RaiseLocalEvent(ref collect);
+
         // One empty update after the last marker goes, then silence.
         if (ev.Markers.Count == 0 && !_sentAny)
             return;

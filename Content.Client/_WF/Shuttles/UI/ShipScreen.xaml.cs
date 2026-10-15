@@ -42,6 +42,7 @@ public sealed partial class ShipScreen : BoxContainer
 
         AlarmPanel.CodeRequested += code => CodeRequested?.Invoke(code);
         AlarmPanel.GeneralQuartersRequested += active => GeneralQuartersRequested?.Invoke(active);
+        AlarmPanel.DistressRequested += active => DistressRequested?.Invoke(active);
         AlarmPanel.AnnounceRequested += text => AnnounceRequested?.Invoke(text);
         AlarmPanel.SoundRequested += url => SoundRequested?.Invoke(url);
         AlarmPanel.SoundStopRequested += () => SoundStopRequested?.Invoke();
@@ -73,6 +74,11 @@ public sealed partial class ShipScreen : BoxContainer
     /// The pilot sounded or secured general quarters.
     /// </summary>
     public event Action<bool>? GeneralQuartersRequested;
+
+    /// <summary>
+    /// The pilot sent or cancelled the ship's distress call.
+    /// </summary>
+    public event Action<bool>? DistressRequested;
 
     /// <summary>
     /// The pilot wants a line read out over the PA.

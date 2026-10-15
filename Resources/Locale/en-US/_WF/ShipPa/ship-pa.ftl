@@ -70,3 +70,11 @@ ship-pa-playlist-added = Added to the queue, number {$position}.
 ship-pa-playlist-full = The queue is full. Wait for a track to end or take one out.
 
 ship-pa-subtitle-title = {$ship} · PA
+
+ship-distress-radio = MAYDAY, MAYDAY, MAYDAY. This is {$ship}, requesting immediate assistance at {$x}, {$y}.
+ship-distress-radio-cancel = This is {$ship}. Cancel our distress call.
+ship-distress-announcement = Distress call sent. This ship is marked on every radar.
+ship-distress-announcement-cancel = Distress call cancelled.
+ship-distress-announcement-lapsed = Distress call lapsed. Send another if you still need help.
+ship-distress-cooldown = Wait {$seconds} seconds before sending another distress call.
+ship-distress-marker = SOS: {$ship}

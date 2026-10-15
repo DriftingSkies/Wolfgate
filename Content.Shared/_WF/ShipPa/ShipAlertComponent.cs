@@ -1,3 +1,4 @@
+using Content.Shared.Radio;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -53,4 +54,24 @@ public sealed partial class ShipAlertComponent : Component
 
     /// <summary>Server only. When this ship may next queue an internet sound from its console.</summary>
     [ViewVariables] public TimeSpan NextInternetSound;
+
+    /// <summary>True while the ship's distress call stands: it is marked on every radar and the sector map.</summary>
+    [DataField, AutoNetworkedField] public bool Distress;
+
+    /// <summary>How long a distress call stands before it lapses on its own.</summary>
+    [DataField] public TimeSpan DistressDuration = TimeSpan.FromMinutes(20);
+
+    /// <summary>Shortest time between two distress calls, so the button can't spam the radio.</summary>
+    [DataField] public TimeSpan DistressCooldown = TimeSpan.FromSeconds(60);
+
+    /// <summary>The radio channel the call goes out on.</summary>
+    [DataField] public ProtoId<RadioChannelPrototype> DistressChannel = "Common";
+
+    [DataField] public Color DistressColor = Color.FromHex("#ff8c1a");
+
+    /// <summary>Server only. When the standing call lapses.</summary>
+    [ViewVariables] public TimeSpan DistressEnds;
+
+    /// <summary>Server only. When this ship may next send a distress call.</summary>
+    [ViewVariables] public TimeSpan NextDistress;
 }

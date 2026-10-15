@@ -22,6 +22,11 @@ public sealed partial class ShuttleConsoleWindow
     public event Action<bool>? ShipGeneralQuartersRequested;
 
     /// <summary>
+    /// The pilot sent or cancelled the ship's distress call.
+    /// </summary>
+    public event Action<bool>? ShipDistressRequested;
+
+    /// <summary>
     /// The pilot wants a line read out over the PA.
     /// </summary>
     public event Action<string>? ShipAnnounceRequested;
@@ -61,6 +66,7 @@ public sealed partial class ShuttleConsoleWindow
     {
         ShipContainer.CodeRequested += code => ShipCodeRequested?.Invoke(code);
         ShipContainer.GeneralQuartersRequested += active => ShipGeneralQuartersRequested?.Invoke(active);
+        ShipContainer.DistressRequested += active => ShipDistressRequested?.Invoke(active);
         ShipContainer.AnnounceRequested += text => ShipAnnounceRequested?.Invoke(text);
         ShipContainer.SoundRequested += url => ShipSoundRequested?.Invoke(url);
         ShipContainer.SoundStopRequested += () => ShipSoundStopRequested?.Invoke();
