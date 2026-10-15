@@ -3,13 +3,16 @@ using System.Numerics;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
+using Content.Shared.Doors.Components;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared._Mono.FireControl;
 using Content.Shared.Maps;
 using Content.Shared.Physics;
+using Content.Shared.Tag;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
@@ -43,6 +46,10 @@ public sealed class WFCrewPlannerSystem : EntitySystem
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private AtmosphereSystem _atmos = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private TagSystem _tags = default!;
+
+    private static readonly ProtoId<TagPrototype> WallTag = "Wall";
+    private static readonly ProtoId<TagPrototype> WindowTag = "Window";
 
     private static readonly TimeSpan DeckPostCacheTime = TimeSpan.FromMinutes(5);
     private readonly Dictionary<EntityUid, (TimeSpan Until, List<WFCrewPost> Posts)> _deckPosts = new();
@@ -225,6 +232,132 @@ public sealed class WFCrewPlannerSystem : EntitySystem
         }
 
         return tiles;
+    }
+
+    /// <summary>
+    /// Tiles in the hold for crates, picked so none walls off a route: open deck all round first, else a tile that
+    /// leaves the deck around it joined up and blocks no door or machine. Fewer than asked when the deck is too tight.
+    /// </summary>
+    public List<EntityCoordinates> CargoTiles(EntityUid grid, int count)
+    {
+        var tiles = new List<EntityCoordinates>();
+        if (count <= 0 || !TryComp<MapGridComponent>(grid, out var gridComp))
+            return tiles;
+
+        var free = FreeTiles(grid, gridComp);
+        var hold = free.Where(tile => HasSafeAir(grid, tile)).ToHashSet();
+        if (hold.Count == 0)
+            return tiles;
+
+        // Doors count as deck: a crate must not cut the way to one.
+        var walkable = new HashSet<Vector2i>(free);
+        var doors = new HashSet<Vector2i>();
+        var query = EntityQueryEnumerator<DoorComponent, TransformComponent>();
+        while (query.MoveNext(out _, out _, out var xform))
+        {
+            if (xform.GridUid == grid && xform.Anchored)
+                doors.Add(_map.TileIndicesFor(grid, gridComp, xform.Coordinates));
+        }
+
+        walkable.UnionWith(doors);
+        var centre = hold.OrderByDescending(tile => Openness(tile, hold)).ThenBy(tile => tile.X).ThenBy(tile => tile.Y).First();
+        var order = hold.OrderBy(tile => Chebyshev(tile, centre)).ThenBy(tile => tile.X).ThenBy(tile => tile.Y).ToList();
+        foreach (var open in new[] { true, false })
+        {
+            foreach (var tile in order)
+            {
+                if (tiles.Count >= count)
+                    return tiles;
+
+                if (!walkable.Contains(tile) || !(open ? ClearAround(tile, walkable) : Harmless(grid, gridComp, tile, walkable, doors)))
+                    continue;
+
+                walkable.Remove(tile);
+                tiles.Add(_map.GridTileToLocal(grid, gridComp, tile));
+            }
+        }
+
+        return tiles;
+    }
+
+    /// <summary>Whether all eight tiles round a tile are deck: a crate there can be walked round on every side.</summary>
+    private static bool ClearAround(Vector2i tile, HashSet<Vector2i> walkable)
+    {
+        for (var x = -1; x <= 1; x++)
+        {
+            for (var y = -1; y <= 1; y++)
+            {
+                if ((x != 0 || y != 0) && !walkable.Contains(new Vector2i(tile.X + x, tile.Y + y)))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Whether a crate on a tile hemmed in by something leaves no door beside it, no machine against it and the deck
+    /// on its sides still joined to each other.
+    /// </summary>
+    private bool Harmless(EntityUid grid, MapGridComponent gridComp, Vector2i tile, HashSet<Vector2i> walkable, HashSet<Vector2i> doors)
+    {
+        for (var x = -1; x <= 1; x++)
+        {
+            for (var y = -1; y <= 1; y++)
+            {
+                if (doors.Contains(new Vector2i(tile.X + x, tile.Y + y)))
+                    return false;
+            }
+        }
+
+        var sides = new List<Vector2i>();
+        foreach (var offset in Neighbours)
+        {
+            var side = tile + offset;
+            if (walkable.Contains(side))
+                sides.Add(side);
+            else if (HasMachine(grid, gridComp, side))
+                return false;
+        }
+
+        if (sides.Count <= 1)
+            return sides.Count == 1;
+
+        // Every side must still reach the first without crossing the tile.
+        var reached = new HashSet<Vector2i> { sides[0] };
+        var frontier = new Queue<Vector2i>();
+        frontier.Enqueue(sides[0]);
+        while (frontier.Count > 0 && !sides.TrueForAll(reached.Contains))
+        {
+            var at = frontier.Dequeue();
+            foreach (var offset in Neighbours)
+            {
+                var next = at + offset;
+                if (next != tile && walkable.Contains(next) && reached.Add(next))
+                    frontier.Enqueue(next);
+            }
+        }
+
+        return sides.TrueForAll(reached.Contains);
+    }
+
+    /// <summary>Whether a tile holds something anchored and solid that is not a wall or window: a console, a machine, a locker.</summary>
+    private bool HasMachine(EntityUid grid, MapGridComponent gridComp, Vector2i tile)
+    {
+        var anchored = _map.GetAnchoredEntitiesEnumerator(grid, gridComp, tile);
+        while (anchored.MoveNext(out var uid))
+        {
+            if (_tags.HasAnyTag(uid.Value, WallTag, WindowTag) || !TryComp<FixturesComponent>(uid, out var fixtures))
+                continue;
+
+            foreach (var fixture in fixtures.Fixtures.Values)
+            {
+                if (fixture.Hard && (fixture.CollisionLayer & (int) CollisionGroup.MobMask) != 0)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>Tiles a mob can stand on, whatever the air over them.</summary>

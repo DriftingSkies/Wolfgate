@@ -193,6 +193,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Battle.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Bounty.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Bounty.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Cargo.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Cargo.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Clamps.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Clamps.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs)

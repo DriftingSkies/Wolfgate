@@ -816,7 +816,7 @@ public sealed partial class WFCrewWorkSystem : EntitySystem
             ports.Add(_maps.TileIndicesFor(grid, map, Transform(dock).Coordinates));
         }
 
-        foreach (var tile in _planner.HoldTiles(grid, LootLimit))
+        foreach (var tile in _planner.CargoTiles(grid, LootLimit))
         {
             var at = _maps.TileIndicesFor(grid, map, tile);
             if (ports.TrueForAll(port => Chebyshev(port, at) >= StashClearance))

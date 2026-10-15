@@ -638,10 +638,10 @@ public sealed partial class WFEncounterSystem : EntitySystem
         if (state.Stealth)
             _shuttles.AddIFFFlag(grid, Content.Shared.Shuttles.Components.IFFFlags.HideLabel);
 
-        // Cargo goes aboard first, so the crew are posted around it and not on it.
+        // Cargo goes aboard first, so the crew are posted around it and not on it, and where it walls off no route.
         if (manifest != null && manifest.Crates.Count > 0)
         {
-            foreach (var tile in _planner.HoldTiles(grid, ship.Cargo))
+            foreach (var tile in _planner.CargoTiles(grid, ship.Cargo))
             {
                 Spawn(_random.Pick(manifest.Crates), tile);
             }
