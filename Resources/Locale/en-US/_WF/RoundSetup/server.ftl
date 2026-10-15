@@ -1,0 +1,9 @@
+wf-round-setup-error-denied = This action is no longer available. Refresh the lobby and try again.
+wf-round-setup-error-round-ended = Round Setup is unavailable while the round is ending.
+wf-round-setup-error-job = Choose an available job for your current character before joining. Job restrictions and open slots still apply.
+wf-round-setup-error-host-not-ready = The host must be ready before this group can launch.
+wf-round-setup-error-latejoin = The host has closed this scenario to late arrivals.
+wf-round-setup-error-wreck = No surviving floor is available on this group's wreck. You have stayed in the lobby.
+wf-round-setup-request-sent = Your join request has been sent to the host.
+wf-round-setup-invited = You have been invited to a Round Setup lobby.
+wf-round-setup-error-round-mode = This round mode controls its own spawns and cannot support a crash start.

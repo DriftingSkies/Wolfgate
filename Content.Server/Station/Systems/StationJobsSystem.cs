@@ -512,6 +512,11 @@ public sealed partial class StationJobsSystem : EntitySystem
 
         while (query.MoveNext(out var station, out var comp))
         {
+            // WOLFGATE(RoundSetup) START: scenario admission is controlled by its host
+            if (HasComp<Content.Server._WF.RoundSetup.WFCrashScenarioStationComponent>(station) ||
+                HasComp<Content.Server._WF.RoundSetup.WFShipScenarioStationComponent>(station))
+                continue;
+            // WOLFGATE END
             var stationNetEntity = GetNetEntity(station);
             var list = comp.JobList.ToDictionary(x => x.Key, x => x.Value);
 

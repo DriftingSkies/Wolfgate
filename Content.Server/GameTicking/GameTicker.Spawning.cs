@@ -56,6 +56,11 @@ namespace Content.Server.GameTicking
             var query = EntityQueryEnumerator<StationJobsComponent, StationSpawningComponent>();
             while (query.MoveNext(out var uid, out _, out _))
             {
+                // WOLFGATE(RoundSetup) START: private scenario stations are never ordinary job destinations
+                if (HasComp<Content.Server._WF.RoundSetup.WFCrashScenarioStationComponent>(uid) ||
+                    HasComp<Content.Server._WF.RoundSetup.WFShipScenarioStationComponent>(uid))
+                    continue;
+                // WOLFGATE END
                 spawnableStations.Add(uid);
             }
 
@@ -92,9 +97,11 @@ namespace Content.Server.GameTicking
             }
 
             var spawnableStations = GetSpawnableStations();
-            var assignedJobs = _stationJobs.AssignJobs(profiles, spawnableStations);
-
-            _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, profiles, spawnableStations);
+            // WOLFGATE(RoundSetup) START: explicit Normal choices share the regular job allocation
+            // var assignedJobs = _stationJobs.AssignJobs(profiles, spawnableStations);
+            // _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, profiles, spawnableStations);
+            var assignedJobs = WFAssignRoundSetupJobs(profiles, spawnableStations, playerNetIds);
+            // WOLFGATE END
 
             // Calculate extended access for stations.
             var stationJobCounts = spawnableStations.ToDictionary(e => e, _ => 0);
@@ -119,7 +126,10 @@ namespace Content.Server.GameTicking
                 if (job == null)
                     continue;
 
-                SpawnPlayer(_playerManager.GetSessionById(player), profiles[player], station, job, false);
+                // WOLFGATE(RoundSetup) START: authorize the assigned group member while preserving the saved profile
+                // SpawnPlayer(_playerManager.GetSessionById(player), profiles[player], station, job, false);
+                WFSpawnAssignedPlayer(_playerManager.GetSessionById(player), profiles[player], station, job);
+                // WOLFGATE END
             }
 
             RefreshLateJoinAllowed();
@@ -174,6 +184,11 @@ namespace Content.Server.GameTicking
                 else
                     station = stations[0];
             }
+
+            // WOLFGATE(RoundSetup) START: require authenticated scenario membership on every spawn path
+            if (!EntityManager.System<Content.Server._WF.RoundSetup.WFRoundSetupSystem>().CanSpawnOnStation(player, station))
+                return;
+            // WOLFGATE END
 
             if (lateJoin && DisallowLateJoin)
             {

@@ -1,0 +1,16 @@
+- type: entity
+  id: WFCrashScenarioStation
+  parent:
+  - BaseStation
+  - BaseStationJobsSpawning
+  - BaseStationRecords
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WFCrashScenarioStation
+  - type: StationJobs
+    availableJobs:
+      Contractor: [ -1, -1 ]
+      Pilot: [ -1, -1 ]
+      Mercenary: [ -1, -1 ]
+      StationEngineer: [ -1, -1 ]
+      MedicalDoctor: [ -1, -1 ]

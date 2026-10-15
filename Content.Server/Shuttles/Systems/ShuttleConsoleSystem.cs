@@ -215,6 +215,10 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
 
     private bool TryPilot(EntityUid user, EntityUid uid)
     {
+        // WOLFGATE(RoundSetup): failed scenario helms reject pilots until the crash is complete.
+        if (!WfCrashAllowsPilot(uid))
+            return false;
+
         if (!_tags.HasTag(user, CanPilotTag) ||
             !TryComp<ShuttleConsoleComponent>(uid, out var component) ||
             !this.IsPowered(uid, EntityManager) ||

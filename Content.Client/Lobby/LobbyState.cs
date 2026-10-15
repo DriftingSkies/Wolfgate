@@ -1,4 +1,5 @@
 using Content.Client._NF.LateJoin;
+using Content.Client._WF.RoundSetup; // WOLFGATE(RoundSetup)
 using Content.Client.Audio;
 using Content.Client.Eui;
 using Content.Client.GameTicking.Managers;
@@ -37,7 +38,9 @@ namespace Content.Client.Lobby
         public LobbyGui? Lobby;
 
         // Frontier - save pickerwindow so it opens only once
-        private PickerWindow? _pickerWindow = null;
+        // WOLFGATE(RoundSetup) START: the normal jobs picker is opened from Round Setup
+        // private PickerWindow? _pickerWindow = null;
+        // WOLFGATE END
 
         protected override void Startup()
         {
@@ -75,7 +78,8 @@ namespace Content.Client.Lobby
 
             Lobby.CharacterPreview.CharacterSetupButton.OnPressed += OnSetupPressed;
             Lobby.ReadyButton.OnPressed += OnReadyPressed;
-            Lobby.ReadyButton.OnToggled += OnReadyToggled;
+            // WOLFGATE(RoundSetup): opening Join must not change pregame readiness
+            // Lobby.ReadyButton.OnToggled += OnReadyToggled;
 
             _gameTicker.InfoBlobUpdated += UpdateLobbyUi;
             _gameTicker.LobbyStatusUpdated += LobbyStatusUpdated;
@@ -95,7 +99,8 @@ namespace Content.Client.Lobby
 
             Lobby!.CharacterPreview.CharacterSetupButton.OnPressed -= OnSetupPressed;
             Lobby!.ReadyButton.OnPressed -= OnReadyPressed;
-            Lobby!.ReadyButton.OnToggled -= OnReadyToggled;
+            // WOLFGATE(RoundSetup): Join has no readiness toggle subscription
+            // Lobby!.ReadyButton.OnToggled -= OnReadyToggled;
 
             Lobby = null;
         }
@@ -114,14 +119,13 @@ namespace Content.Client.Lobby
 
         private void OnReadyPressed(BaseButton.ButtonEventArgs args)
         {
-            if (!_gameTicker.IsGameStarted)
-            {
-                return;
-            }
-            // Frontier to downstream: if you want to skip the first window and go straight to station picker,
-            // simply change the enum to station or crew in the PickerWindow constructor.
-            _pickerWindow ??= new PickerWindow();
-            _pickerWindow.OpenCentered();
+            // WOLFGATE(RoundSetup) START: Join chooses normal entry or a player lobby in either round phase
+            // if (!_gameTicker.IsGameStarted)
+            //     return;
+            // _pickerWindow ??= new PickerWindow();
+            // _pickerWindow.OpenCentered();
+            _userInterfaceManager.GetUIController<WFRoundSetupUIController>().OpenJoin();
+            // WOLFGATE END
         }
 
         private void OnReadyToggled(BaseButton.ButtonToggledEventArgs args)
@@ -201,6 +205,13 @@ namespace Content.Client.Lobby
                 Lobby!.ReadyButton.Pressed = _gameTicker.AreWeReady;
                 Lobby!.ObserveButton.Disabled = true;
             }
+
+            // WOLFGATE(RoundSetup) START: one primary Join action and no separate mid-round setup button
+            Lobby!.ReadyButton.ToggleMode = false;
+            Lobby.ReadyButton.Pressed = false;
+            Lobby.ReadyButton.Text = Loc.GetString("lobby-state-ready-button-join-state");
+            Lobby.RoundSetupButton.Visible = !_gameTicker.IsGameStarted;
+            // WOLFGATE END
 
             if (_gameTicker.ServerInfoBlob != null)
             {

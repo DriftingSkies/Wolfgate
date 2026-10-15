@@ -1,3 +1,4 @@
+<!-- WOLFGATE(RoundSetup): roundSetup namespace mounts the live player lobby browser -->
 <lobbyUi:LobbyGui
     xmlns="https://spacestation14.io"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,6 +8,7 @@
     xmlns:vote="clr-namespace:Content.Client.Voting.UI"
     xmlns:style="clr-namespace:Content.Client.Stylesheets"
     xmlns:lobbyUi="clr-namespace:Content.Client.Lobby.UI"
+    xmlns:roundSetup="clr-namespace:Content.Client._WF.RoundSetup"
     xmlns:info="clr-namespace:Content.Client.Info"
     xmlns:widgets="clr-namespace:Content.Client.UserInterface.Systems.Chat.Widgets"
     xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client">
@@ -160,7 +162,8 @@
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True"
                                   SeparationOverride="0">
                         <!-- Menu column -->
-                        <BoxContainer Orientation="Vertical" MinWidth="300" Margin="40 40 16 24" SeparationOverride="0">
+                        <!-- WOLFGATE(RoundSetup): reduced menu padding leaves room for the lobby list at 720p -->
+                        <BoxContainer Orientation="Vertical" MinWidth="300" Margin="40 16 16 16" SeparationOverride="0">
                             <!-- Fixed width so a long server name wraps instead of widening the menu column -->
                             <BoxContainer Name="HeaderContainer" Access="Public" Orientation="Vertical"
                                           SeparationOverride="0" SetWidth="440">
@@ -168,9 +171,13 @@
                                 <PanelContainer StyleClasses="LobbyTitleRule" MinHeight="4" Margin="0 2 0 4" />
                                 <Label Name="StartTime" Access="Public" StyleClasses="LobbyStatus" />
                             </BoxContainer>
-                            <Control MinHeight="28" />
+                            <!-- WOLFGATE(RoundSetup): compact header gap keeps Join and the lobby list visible -->
+                            <Control MinHeight="14" />
                             <Button Name="ReadyButton" Access="Public" ToggleMode="True" TextAlign="Left"
                                     Text="{Loc 'ui-lobby-ready-up-button'}" StyleClasses="LobbyNavPrimary" />
+                            <!-- WOLFGATE(RoundSetup): open group setup while keeping the pregame ready button -->
+                            <Button Name="RoundSetupButton" Access="Public" TextAlign="Left"
+                                    Text="{Loc 'wf-round-setup-button'}" StyleClasses="LobbyNav" />
                             <Button Name="CustomizeButton" Access="Public" TextAlign="Left"
                                     Text="{Loc 'ui-lobby-customize-nav-button'}" StyleClasses="LobbyNav" />
                             <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public" TextAlign="Left"
@@ -183,9 +190,10 @@
                                     Text="{Loc 'ui-lobby-ahelp-nav-button'}" StyleClasses="LobbyNav" />
                             <Button Name="LeaveButton" Access="Public" TextAlign="Left"
                                     Text="{Loc 'ui-lobby-leave-nav-button'}" StyleClasses="LobbyNav" />
+                            <!-- WOLFGATE(RoundSetup): a scrollable lobby list aligned with the menu below Leave Server -->
+                            <roundSetup:WFRoundSetupLobbyPanel Name="RoundSetupLobbies" HorizontalExpand="True" SetWidth="440" Margin="0 12 0 0" />
                             <Control VerticalExpand="True" />
-                            <!-- Round info from the server: round number, player and ready counts, game mode -->
-                            <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" SetWidth="440" />
+
                         </BoxContainer>
                         <!-- Votes and character hero -->
                         <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True"
@@ -196,6 +204,8 @@
                             <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public"
                                                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
                             <Control VerticalExpand="True" />
+                            <!-- WOLFGATE(RoundSetup): round information uses the space below the character beside the lobby list -->
+                            <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" MaxWidth="440" />
                         </BoxContainer>
                     </BoxContainer>
                 </Control>

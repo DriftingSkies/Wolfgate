@@ -4,7 +4,7 @@ A client-only viewport that shows a vessel prototype's grid inside a window. Eac
 own client-side map, so nothing reaches the server or the player's own view and two open previews don't interfere.
 Drag to pan, wheel to zoom.
 
-Used by the admin vessel spawner and the shipyard console's Preview button; `wf_shippreview <vesselId>` opens one on
+Used by the admin vessel spawner, Round Setup's ship options and the shipyard console's Preview button; `wf_shippreview <vesselId>` opens one on
 its own. Entry points: `ShipPreviewSystem` (loads grids onto preview maps), `ShipPreviewControl` (draws one) and
 `ShipPreviewWindow`. `ShipPreviewMigrationSystem` applies the entity migration files (`/migration.yml`,
 `/nf_migration.yml`, `/mono_migration.yml`) the way the server's `MapMigrationSystem` does; without it a grid that

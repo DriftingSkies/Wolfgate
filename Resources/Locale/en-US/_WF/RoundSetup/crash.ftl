@@ -1,0 +1,9 @@
+wf-round-setup-crash-no-planet = No planet is available for a crash start. Try again after the sector has loaded, or choose Normal.
+wf-round-setup-crash-no-ship = A crash ship could not be prepared. Choose another scenario or try again later.
+wf-round-setup-crash-station = Crash survivors — { $ship }
+wf-round-setup-crash-warning = Your ship is falling toward { $planet }. Atmospheric entry in { $seconds } seconds. Flight controls do not respond. Gather supplies, find a seat, and brace for impact!
+wf-round-setup-crash-descending = Your ship is descending toward { $planet }. Find a seat and brace for impact!
+wf-round-setup-crash-survivor = You regain consciousness aboard your group's wreck on { $planet }. Find the other survivors.
+wf-round-setup-crash-controls = The flight controls do not respond. Brace for impact!
+wf-round-setup-crash-entry = Atmospheric entry! All hands, brace for impact!
+wf-round-setup-crash-no-wreck = This group no longer has a surviving wreck to join.

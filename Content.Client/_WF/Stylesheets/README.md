@@ -249,6 +249,7 @@ who never picked a style does not get the Retro skin with the Futurist HUD; a HU
 - [`Content.Client/Lobby/UI/LobbyGui.xaml.cs`](../../Lobby/UI/LobbyGui.xaml.cs)
   - skin scanlines cover the whole screen
   - menu entry for character setup; un-readies first like LobbyState.OnSetupPressed
+  - open the existing character setup screen after clearing readiness
   - the creator takes the whole screen, so the chat dock always hides
 - [`Content.Client/Stylesheets/StylesheetManager.cs`](../../Stylesheets/StylesheetManager.cs)
   - the active skin comes from a CVar and is swapped live when it changes

@@ -33,11 +33,14 @@ public sealed partial class CCVars
     public static readonly CVarDef<bool>
         GameLobbyEnabled = CVarDef.Create("game.lobbyenabled", true, CVar.ARCHIVE);
 
+    // WOLFGATE(RoundSetup) START: give players six minutes to configure and join scenario lobbies.
     /// <summary>
-    ///     Controls the duration of the lobby timer in seconds. Defaults to 2 minutes and 30 seconds.
+    ///     Controls the duration of the lobby timer in seconds. Defaults to six minutes.
     /// </summary>
     public static readonly CVarDef<int>
-        GameLobbyDuration = CVarDef.Create("game.lobbyduration", 180, CVar.ARCHIVE); // Frontier: 150<180
+        // GameLobbyDuration = CVarDef.Create("game.lobbyduration", 180, CVar.ARCHIVE); // Frontier: 150<180
+        GameLobbyDuration = CVarDef.Create("game.lobbyduration", 360, CVar.ARCHIVE);
+    // WOLFGATE END
 
     /// <summary>
     ///     Controls if players can latejoin at all.

@@ -1,4 +1,5 @@
 ﻿using Content.Client.Gameplay;
+using Content.Client._WF.RoundSetup; // WOLFGATE(RoundSetup)
 using Content.Client.Lobby; // WOLFGATE(InRoundCreator)
 using Content.Client._WF.Roadmap; // WOLFGATE(Roadmap)
 using Content.Client._WF.SectorControl; // WOLFGATE(SectorControl)
@@ -93,6 +94,14 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         {
             CloseEscapeWindow();
             UIManager.GetUIController<LobbyUIController>().OpenInRoundCharacterSetup();
+        };
+        // WOLFGATE END
+
+        // WOLFGATE(RoundSetup) START: manage the player lobby during the round
+        _escapeWindow.RoundSetupButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            UIManager.GetUIController<WFRoundSetupUIController>().OpenWindow();
         };
         // WOLFGATE END
 
