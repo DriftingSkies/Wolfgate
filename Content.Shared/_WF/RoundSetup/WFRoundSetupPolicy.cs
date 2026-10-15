@@ -82,6 +82,9 @@ public static class WFRoundSetupPolicy
         name = cleaned;
         return true;
     }
+    /// <summary>Uses the same bounded plain-text rules for a crew's optional public title.</summary>
+    public static bool TryNormalizeTitle(string? input, out string title) => TryNormalizeRoleName(input, out title);
+
     /// <summary>Normalizes ASCII codes while rejecting ambiguous characters and malformed input.</summary>
     public static bool TryNormalizeCode(string? input, out string code)
     {

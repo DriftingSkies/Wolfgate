@@ -30,6 +30,21 @@ public sealed partial class WFRoundSetupWindow
         var section = Column(8);
         section.AddChild(Heading("ship"));
         section.AddChild(VesselSummary(state, lobby));
+        section.AddChild(Heading("ship-start"));
+        if (host && !lobby.Started)
+        {
+            var location = new WFRoundSetupOptionButton { Name = "RoundSetupShipStart", HorizontalExpand = true };
+            location.AddItem(Text("ship-start-random"), (int) WFShipStartLocation.RandomSpace);
+            location.AddItem(Text("ship-start-central"), (int) WFShipStartLocation.CentralDock);
+            location.SelectId((int) lobby.ShipStart);
+            location.OnItemSelected += args => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectShipStart)
+            {
+                LobbyId = lobby.Id,
+                ShipStart = (WFShipStartLocation) args.Id,
+            });
+            section.AddChild(location);
+        }
+        section.AddChild(Description(lobby.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central-help" : "ship-start-random-help"));
         var preview = GetShipPreview();
         if (!host || lobby.Started)
         {

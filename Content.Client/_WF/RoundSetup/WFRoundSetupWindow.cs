@@ -30,6 +30,9 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private bool _settingsDirty;
     private WFLobbyAccess _draftAccess;
     private bool _draftLateJoin;
+    private string _draftTitle = string.Empty;
+    private string _newTitle = string.Empty;
+    private bool _confirmingJoin;
     private bool _refreshAfterRequest;
 
     /// <summary>Builds the browser and subscribes while its window is open.</summary>
@@ -81,8 +84,20 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     /// <summary>Updates the browser from the recipient-specific server snapshot.</summary>
     private void Receive(WFRoundSetupState state)
     {
+        if (_confirmingJoin && state.JoinConfirmed)
+        {
+            _confirmingJoin = false;
+            Close();
+            return;
+        }
+        if (state.Message != null)
+            _confirmingJoin = false;
         var previous = _state;
         _state = state;
+        var previousOwn = previous?.Lobbies.FirstOrDefault(lobby => lobby.Id == previous.OwnLobby);
+        var currentOwn = state.Lobbies.FirstOrDefault(lobby => lobby.Id == state.OwnLobby);
+        if (previousOwn?.Scenario != currentOwn?.Scenario)
+            _selectedVessel = null;
         if (previous?.OwnLobby != state.OwnLobby)
         {
             _selectedVessel = null;
@@ -113,13 +128,16 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private Control LobbyCard(WFRoundSetupState state, WFRoundSetupLobby lobby, bool invitation)
     {
         var content = Column(12);
-        content.AddChild(PlainDescription(Text("lobby-title", ("host", lobby.HostName), ("scenario", ScenarioName(lobby.Scenario)))));
+        content.AddChild(PlainDescription(LobbyTitle(lobby)));
         content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
 
         content.AddChild(Description(ScenarioDescription(lobby.Scenario)));
         if (lobby.Scenario == WFRoundScenario.Ship)
+        {
             content.AddChild(VesselSummary(state, lobby));
+            content.AddChild(Description(lobby.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central" : "ship-start-random"));
+        }
         var available = state.CanJoin && state.OwnLobby == null && lobby.MemberCount < WFRoundSetupPolicy.MaximumMembers &&
                         (!lobby.Started || lobby.AllowLateJoin);
         available &= BuildBrowseRoles(content, lobby, available);
@@ -167,8 +185,14 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             _settingsDirty = false;
             _draftAccess = lobby.Access;
             _draftLateJoin = lobby.AllowLateJoin;
+            _draftTitle = lobby.Title;
         }
         var settings = Column(6);
+        settings.AddChild(Heading("crew-title"));
+        var title = new LineEdit { Text = _draftTitle, PlaceHolder = Text("crew-title-placeholder"), HorizontalExpand = true };
+        title.OnTextChanged += _ => { _draftTitle = title.Text; _settingsDirty = true; };
+        settings.AddChild(title);
+        settings.AddChild(Description("crew-title-help"));
         settings.AddChild(Heading("admission"));
         var access = new WFRoundSetupOptionButton { HorizontalExpand = true };
         foreach (var option in Enum.GetValues<WFLobbyAccess>())
@@ -198,6 +222,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 LobbyId = lobby.Id,
                 Access = _draftAccess,
                 AllowLateJoin = _draftLateJoin,
+                Title = _draftTitle,
             });
         }));
         if (lobby.Code != null)
@@ -281,8 +306,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
 
     private static bool SameLobby(WFRoundSetupLobby first, WFRoundSetupLobby second)
     {
-        return first.Id == second.Id && first.Host == second.Host && first.HostName == second.HostName &&
-               first.Scenario == second.Scenario && first.Access == second.Access && first.AllowLateJoin == second.AllowLateJoin &&
+        return first.Id == second.Id && first.Host == second.Host && first.HostName == second.HostName && first.Title == second.Title &&
+               first.Scenario == second.Scenario && first.ShipStart == second.ShipStart && first.Access == second.Access && first.AllowLateJoin == second.AllowLateJoin &&
                first.Started == second.Started && first.MemberCount == second.MemberCount && first.Code == second.Code &&
                first.Vessel == second.Vessel && first.Roles.SequenceEqual(second.Roles) &&
                first.Members.SequenceEqual(second.Members) && first.Requests.SequenceEqual(second.Requests);
@@ -317,6 +342,9 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         return id != null && _prototypes.TryIndex<JobPrototype>(id, out var prototype)
             ? prototype.LocalizedName : Text("job-unselected");
     }
+
+    private static string LobbyTitle(WFRoundSetupLobby lobby) => string.IsNullOrEmpty(lobby.Title)
+        ? Text("lobby-title", ("host", lobby.HostName), ("scenario", ScenarioName(lobby.Scenario))) : lobby.Title;
 
     private static string ScenarioName(WFRoundScenario scenario) => Text(scenario switch
     {
@@ -365,6 +393,8 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private static Button Button(string key, Action pressed, bool disabled = false)
     {
         var button = new Button { Text = Text(key), Disabled = disabled, MinHeight = 40, HorizontalExpand = true };
+        if (key == "leave")
+            button.AddStyleClass("ButtonColorRed");
         button.Label.Visible = false;
         var caption = PlainDescription(button.Text);
         caption.MouseFilter = MouseFilterMode.Ignore;

@@ -1,4 +1,10 @@
 using System.Linq;
+using System.Numerics;
+using Content.Server.Shuttles.Systems;
+using Content.Server.Station.Systems;
+using Content.Shared._WF.RoundSetup;
+using Content.Shared.Station.Components;
+using Robust.Shared.EntitySerialization.Systems;
 using Content.Client.Lobby;
 using Content.IntegrationTests.Pair;
 using Content.Server._NF.SectorServices;
@@ -319,6 +325,56 @@ public sealed class ShipScenarioTest
         });
         await SetProfile(pair, slot, original);
         await pair.RunTicksSync(2);
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A docked start attaches to the central station, rejects missing berths and never charges for preparation.</summary>
+    [Test]
+    public async Task CentralStartDocksAndRejectsMissingBerthsBeforePayment()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        await StartEmptyRound(pair, initializeServices: false);
+        var server = pair.Server;
+        await server.WaitAssertion(() =>
+        {
+            var em = server.EntMan;
+            var ships = server.System<WFShipScenarioSystem>();
+            var docks = server.System<DockingSystem>();
+            var ticker = server.System<GameTicker>();
+            var balance = ships.GetBalance(pair.Player!);
+            Assert.That(ships.TryPrepare(19120, Vessel, out _, out var reason, WFShipStartLocation.CentralDock), Is.False);
+            Assert.That(reason, Is.EqualTo("wf-round-setup-ship-no-dock"));
+            Assert.That(ships.TryGetSpawn(19120, out _), Is.False);
+            Assert.That(ships.GetBalance(pair.Player!), Is.EqualTo(balance));
+
+            var vessel = server.ResolveDependency<IPrototypeManager>().Index<VesselPrototype>(Vessel);
+            Assert.That(server.System<MapLoaderSystem>().TryLoadGrid(ticker.DefaultMap, vessel.ShuttlePath,
+                out var loaded, offset: new Vector2(800, 800)), Is.True);
+            var central = loaded!.Value.Owner;
+            var station = em.SpawnEntity(null, MapCoordinates.Nullspace);
+            em.EnsureComponent<StationDataComponent>(station);
+            em.EnsureComponent<StationSectorServiceHostComponent>(station);
+            server.System<StationSystem>().AddGridToStation(station, central);
+            Assert.That(ships.TryPrepare(19120, Vessel, out _, out reason, WFShipStartLocation.CentralDock), Is.True, reason);
+            Assert.That(ships.TryGetSpawn(19120, out var spawn), Is.True);
+            var hull = spawn.EntityId;
+            Assert.That(docks.GetDocks(hull).Any(dock => dock.Comp.DockedWith is { } other &&
+                em.GetComponent<TransformComponent>(other).GridUid == central), Is.True, "The ship must actually be attached to CC.");
+            Assert.That(ships.GetBalance(pair.Player!), Is.EqualTo(balance), "Docking preparation cannot charge the player.");
+            ships.Rollback(19120);
+            foreach (var dock in docks.GetDocks(central).ToArray())
+                em.DeleteEntity(dock.Owner);
+            Assert.That(ships.TryPrepare(19121, Vessel, out _, out reason, WFShipStartLocation.CentralDock), Is.False);
+            Assert.That(reason, Is.EqualTo("wf-round-setup-ship-no-dock"));
+            Assert.That(ships.TryGetSpawn(19121, out _), Is.False);
+            Assert.That(ships.TryPrepare(19121, Vessel, out _, out reason, WFShipStartLocation.RandomSpace), Is.True, reason);
+            Assert.That(ships.TryGetSpawn(19121, out spawn), Is.True);
+            Assert.That(docks.GetDocks(spawn.EntityId).All(dock => !dock.Comp.Docked), Is.True);
+            ships.Rollback(19121);
+            em.DeleteEntity(central);
+            em.DeleteEntity(station);
+        });
+        await ReturnToLobby(pair);
         await pair.CleanReturnAsync();
     }
 

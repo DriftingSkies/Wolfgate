@@ -2,15 +2,15 @@
 
 Round Setup lets players organize a Crashlanded or Ship crew start together before the round, or launch a new start mid-round. Hosts control public access, private requests, codes, direct invitations and whether survivors may join after launch. Each member chooses their own character through the existing character selector and selects their own permitted job.
 
-The lobby is a preparation screen with a character card, live crew discovery and a communication dock that moves below preparation on narrow displays. Normal readiness and the existing mid-round join picker open directly from the character card; existing crew members return to their preparation screen. Editing a character clears both normal and crew readiness. Chat and round briefing remain available alongside preparation, with incoming votes automatically opening the briefing tab. Secondary actions sit in a compact bottom bar. Scenario briefs lead to personal preparation, with separate ship, crew and access sections. Selectors and buttons wrap long text, pages scroll at smaller sizes, and readiness, purchase consent and launch controls stay visible.
+The lobby keeps character preparation in a 280-pixel card on the left, with Crew Setup above a large red/green READY button before the round. Mid-round, Join Round opens the standard job picker and Join Crew opens crew browsing. Crew discovery appears only when requested. Hosts can give their crew a public name and switch between Ship and Crashlanded before launch without recreating the crew. Changing type clears the vessel choice and readiness while retaining members, roles and admission settings. Editing a character clears both normal and crew readiness. Chat and round briefing/votes share two always-visible halves of the communication dock. Secondary actions sit in a compact bottom bar. Scenario briefs lead to personal preparation, with separate ship, crew and access sections. Selectors and buttons wrap long text, pages scroll at smaller sizes, and confirmation and red Leave Crew buttons stay visible. Confirmation closes setup after the server accepts readiness or a mid-round join, including explicit ship purchase consent.
 
-Open Round Setup from the lobby or the in-round game menu. Ready up before round start; a pregame group launches only when its host is ready. Mid-round hosts launch their waiting group explicitly. A disconnected host keeps ownership; a host can transfer ownership to another member or leave to pass it to the next member. Round restart clears all lobbies and invitation codes.
+Open Round Setup from the lobby or the in-round game menu. Ready up before round start; a pregame group launches only when its host is ready. Mid-round hosts launch their waiting group explicitly. A disconnected host keeps ownership; a host can transfer ownership to another member or leave to pass it to the next member. Respawning leaves the previous crew and releases its reserved slot; remaining members retain their crew and an existing ship stays in the world. Round restart clears all lobbies and invitation codes.
 
-The server owns membership and validates every request. Normal joining remains the default ready/join path without creating a scenario crew; only Ship and Crashlanded can create one. The existing join picker retains both regular station and crew jobs. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning. Later survivors spawn on a surviving floor in that group's wreck.
+The server owns membership and validates every request. Normal joining remains the default ready/join path without creating a scenario crew; only Ship and Crashlanded can create one. The existing join picker retains both regular station and crew jobs. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning. The countdown never increases during client clock corrections. Survivors receive an emergency EVA suit, breath mask and a survival kit with species-appropriate gas, medicine, rations and signalling tools; existing clothing is preserved. Later survivors spawn on a surviving floor in that group's wreck.
 
 Crashlanded requires the existing `wf.planet_networks` server setting and a sector containing registered planets. Its card is disabled when planet networks are off. Closing late admission prevents new members; players already accepted retain their place until the host removes them.
 
-Ship crew lets the host select an unrestricted civilian shipyard design and inspect it with the embedded Wolfgate ship previewer, including pan, zoom and fit controls. Selecting a ship is free; readying up inside Round Setup authorizes its listed price from the host's selected character at launch. The server rechecks price, funds, Ironman restrictions and active ship limits. Failed launches refund the same character; accepted crew and later arrivals pay nothing. The ship appears in clear sector space and uses normal deeds, repair data, ownership and crew door access. Join Normally never authorizes a ship purchase.
+Ship crew lets the host select an unrestricted civilian shipyard design and inspect it with the embedded Wolfgate ship previewer, including pan, zoom and fit controls. Selecting a ship is free; readying up inside Round Setup authorizes its listed price from the host's selected character at launch. The server rechecks price, funds, Ironman restrictions and active ship limits. Failed launches refund the same character; accepted crew and later arrivals pay nothing. Hosts choose random clear sector space or a compatible dock at CC; the central station is identified by its existing sector-service host component. Docking uses the existing collision checks and refuses launch without charging if no berth fits. Changing location clears readiness and purchase consent. The ship appears at the selected location and uses normal deeds, repair data, ownership and crew door access. Join Normally never authorizes a ship purchase.
 
 New lobbies contain only the host, with an independent personal job choice and no advertised crew roles. New openings default to one slot. Hosts can name crew roles, choose an eligible underlying job and set 1�16 slots per role (up to 16 roles). Joining or accepting a request reserves a role; disconnected and spawned members retain their slots. Occupied roles cannot change jobs or be removed. Labels appear only in Round Setup: Contractor/Vagrant is called Drifter there, while existing saved jobs, equipment and custom in-world titles remain unchanged.
 
@@ -30,6 +30,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioMachinerySystem.cs`](WFCrashScenarioMachinerySystem.cs)
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Countdown.cs`](WFCrashScenarioSystem.Countdown.cs)
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.cs`](WFCrashScenarioSystem.cs)
+- [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Equipment.cs`](WFCrashScenarioSystem.Equipment.cs)
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Flight.cs`](WFCrashScenarioSystem.Flight.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.cs`](WFRoundSetupSystem.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Demo.cs`](WFRoundSetupSystem.Demo.cs)
@@ -37,9 +38,11 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Spawning.cs`](WFRoundSetupSystem.Spawning.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioComponent.cs`](WFShipScenarioComponent.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.cs`](WFShipScenarioSystem.cs)
+- [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.Docking.cs`](WFShipScenarioSystem.Docking.cs)
 
 ### Shared
 
+- [`Content.Shared/_WF/RoundSetup/WFCrashCountdownClock.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashCountdownClock.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrashCountdownEvent.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashCountdownEvent.cs)
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupCVars.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupCVars.cs)
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupMessages.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupMessages.cs)
@@ -68,6 +71,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashCountdownTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashCountdownTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashEquipmentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashEquipmentTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashScenarioTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashScenarioTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupDemoTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupDemoTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupUiTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupUiTest.cs)
@@ -76,6 +80,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 
 ### Unit tests
 
+- [`Content.Tests/_WF/RoundSetup/WFCrashCountdownClockTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFCrashCountdownClockTest.cs)
 - [`Content.Tests/_WF/RoundSetup/WFRoundSetupPolicyTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFRoundSetupPolicyTest.cs)
 - [`Content.Tests/_WF/RoundSetup/WFRoundSetupRolePolicyTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFRoundSetupRolePolicyTest.cs)
 

@@ -36,6 +36,13 @@ public sealed class WFRoundSetupUIController : UIController, IOnStateExited<Lobb
         _window?.ShowJoin();
     }
 
+    /// <summary>Opens crew browsing or the player's existing crew only when requested.</summary>
+    public void OpenCrews()
+    {
+        OpenWindow();
+        _window?.ShowCrews();
+    }
+
     /// <summary>Opens the scenario chooser from the main lobby's setup action.</summary>
     public void OpenCreate()
     {

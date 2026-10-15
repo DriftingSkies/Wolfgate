@@ -37,6 +37,9 @@ public sealed partial class WFRoundSetupWindow
         Navigate(_state?.OwnLobby == null ? SetupView.Join : SetupView.MyLobby);
     }
 
+    /// <summary>Opens available crews or the player's current setup.</summary>
+    public void ShowCrews() => Navigate(_state?.OwnLobby == null ? SetupView.Browse : SetupView.MyLobby);
+
     /// <summary>Opens crew details without changing membership.</summary>
     public void ShowLobby(int lobbyId)
     {
@@ -256,7 +259,7 @@ public sealed partial class WFRoundSetupWindow
     private Control LobbyListing(WFRoundSetupLobby lobby, bool invited)
     {
         var content = Column(6);
-        content.AddChild(PlainDescription(Text("lobby-title", ("host", lobby.HostName), ("scenario", ScenarioName(lobby.Scenario)))));
+        content.AddChild(PlainDescription(LobbyTitle(lobby)));
         content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
         content.AddChild(Button(invited ? "view-invitation" : "view-lobby", () => ShowLobby(lobby.Id)));
@@ -268,6 +271,11 @@ public sealed partial class WFRoundSetupWindow
     {
         _body.AddChild(Heading("choose-scenario"));
         _body.AddChild(Description("create-help"));
+        _body.AddChild(Heading("crew-title"));
+        var crewName = new LineEdit { Text = _newTitle, PlaceHolder = Text("crew-title-placeholder"), HorizontalExpand = true };
+        crewName.OnTextChanged += _ => _newTitle = crewName.Text;
+        _body.AddChild(crewName);
+        _body.AddChild(Description("crew-title-help"));
         foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Crashlanded })
         {
             var card = Column(8);
@@ -281,6 +289,7 @@ public sealed partial class WFRoundSetupWindow
             var create = Button("create", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Create)
             {
                 Scenario = scenario,
+                Title = _newTitle,
             }), unavailable || !state.CanJoin);
             create.Name = "RoundSetupCreate" + scenario;
             card.AddChild(create);
@@ -321,7 +330,9 @@ public sealed partial class WFRoundSetupWindow
             _sidebar.AddChild(PlainDescription(ScenarioName(lobby.Scenario)));
             _sidebar.AddChild(sections);
         }
-        _body.AddChild(Heading("your-lobby", ("scenario", ScenarioName(lobby.Scenario))));
+        var heading = PlainDescription(LobbyTitle(lobby));
+        heading.AddStyleClass("WFRoundSetupHeading");
+        _body.AddChild(heading);
         _body.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
         switch (_lobbyPage)
@@ -334,6 +345,8 @@ public sealed partial class WFRoundSetupWindow
                 break;
             case LobbyPage.Admission: BuildHostSettings(lobby, state); break;
             default:
+                if (host && !lobby.Started)
+                    BuildScenarioSelector(state, lobby);
                 _body.AddChild(Description(ScenarioDescription(lobby.Scenario)));
                 if (member is { Spawned: false } && state.CanJoin)
                     BuildMemberSetup(state, lobby, member);
@@ -342,12 +355,31 @@ public sealed partial class WFRoundSetupWindow
                 if (lobby.Scenario == WFRoundScenario.Ship)
                 {
                     _body.AddChild(VesselSummary(state, lobby));
+                    _body.AddChild(Description(lobby.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central" : "ship-start-random"));
                     _body.AddChild(Button("ship", () => NavigateLobby(LobbyPage.Ship)));
                 }
                 _body.AddChild(Description(state.InRound ? "ready-round-help" : "ready-pregame-help"));
                 break;
         }
         BuildMemberFooter(state, lobby, member);
+    }
+
+    /// <summary>Changes the starting scenario without discarding the existing crew or their roles.</summary>
+    private void BuildScenarioSelector(WFRoundSetupState state, WFRoundSetupLobby lobby)
+    {
+        _body.AddChild(Heading("crew-type"));
+        var selector = new WFRoundSetupOptionButton { Name = "RoundSetupCrewType", HorizontalExpand = true };
+        selector.AddItem(ScenarioName(WFRoundScenario.Ship), (int) WFRoundScenario.Ship);
+        selector.AddItem(ScenarioName(WFRoundScenario.Crashlanded), (int) WFRoundScenario.Crashlanded);
+        selector.SetItemDisabled(1, !state.CrashlandedAvailable);
+        selector.SelectId((int) lobby.Scenario);
+        selector.OnItemSelected += args => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.ChangeScenario)
+        {
+            LobbyId = lobby.Id,
+            Scenario = (WFRoundScenario) args.Id,
+        });
+        _body.AddChild(selector);
+        _body.AddChild(Description("crew-type-help"));
     }
 
     private void BuildCrewRoster(WFRoundSetupLobby lobby, bool host)
@@ -387,23 +419,26 @@ public sealed partial class WFRoundSetupWindow
         var content = Column(8);
         content.AddChild(Description(!eligible ? "ready-needs-job" : !canPurchase
             ? vessel == null ? "ship-unselected" : "ship-insufficient-help"
-            : member.Ready ? "ready-confirmed" : "ready-prompt"));
+            : member.Ready ? state.InRound ? "join-waiting" : "ready-confirmed" : "ready-prompt"));
         if (purchase && vessel != null)
             content.AddChild(PlainDescription(Text("purchase-summary", ("price", Price(vessel.Price)), ("ship", vessel.Name))));
-        var ready = new CheckBox
+        var caption = member.Ready ? state.InRound ? "cancel-join" : "change-setup"
+            : state.InRound ? purchase ? "purchase-launch" : "join-round"
+            : purchase ? "ready-buy" : "ready";
+        var ready = Button(caption, () =>
         {
-            Name = "RoundSetupReady",
-            Text = Text(purchase ? "ready-buy" : "ready"),
-            Pressed = member.Ready,
-            Disabled = !member.Ready && (!eligible || !canPurchase),
-            MinHeight = 40,
-        };
-        ready.OnToggled += args => SetReady(lobby.Id, args.Pressed);
+            if (member.Ready)
+                SetReady(lobby.Id, false);
+            else
+            {
+                _confirmingJoin = true;
+                Send(WFRoundSetupAction.ConfirmJoin, lobby.Id);
+            }
+        }, !member.Ready && (!eligible || !canPurchase));
+        ready.Name = "RoundSetupReady";
+        ready.AddStyleClass(member.Ready ? "ButtonColorGreen" : "ButtonAccept");
         var actions = new ScenarioColumns { HorizontalExpand = true };
         actions.AddChild(ready);
-        if (state.InRound && (lobby.Started || lobby.Host == member.UserId))
-            actions.AddChild(Button(lobby.Started ? "join-round" : purchase ? "purchase-launch" : "launch",
-                () => Send(WFRoundSetupAction.Launch, lobby.Id), !member.Ready || !eligible || !canPurchase));
         actions.AddChild(Button("leave", () => Send(WFRoundSetupAction.Leave, lobby.Id)));
         content.AddChild(actions);
         _footer.AddChild(Panel(content));

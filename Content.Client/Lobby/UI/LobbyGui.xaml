@@ -161,36 +161,25 @@
                         <RichTextLabel Name="ServerName" Access="Public" StyleClasses="WFRoundSetupTitle" HorizontalExpand="True" />
                         <Label Name="StartTime" Access="Public" StyleClasses="WFRoundSetupMuted" />
                     </BoxContainer>
-                    <roundSetup:WFLobbyLayout Name="PreparationColumns" HorizontalExpand="True" VerticalExpand="True">
-                        <PanelContainer Name="CharacterCard" StyleClasses="WFRoundSetupCard" HorizontalExpand="True" VerticalExpand="True">
-                            <BoxContainer Orientation="Vertical" Margin="16" SeparationOverride="10">
-                                <Label Text="{Loc 'wf-round-setup-home-character'}" StyleClasses="WFRoundSetupEyebrow" />
-                                <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
-                                    <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public" HorizontalExpand="True" />
-                                </ScrollContainer>
-                                <Button Name="CustomizeButton" Access="Public" Text="{Loc 'wf-round-setup-home-customize'}" MinHeight="36" />
-                                <RichTextLabel Name="NormalJoinHelp" Access="Public" StyleClasses="WFRoundSetupMuted" HorizontalExpand="True" />
-                                <Button Name="ReadyButton" Access="Public" Text="{Loc 'wf-round-setup-home-ready'}"
-                                        StyleClasses="ButtonColorGreen" MinHeight="44" />
-                            </BoxContainer>
-                        </PanelContainer>
-                        <PanelContainer StyleClasses="WFRoundSetupCard" HorizontalExpand="True" VerticalExpand="True">
-                            <BoxContainer Orientation="Vertical" Margin="16" SeparationOverride="10">
-                                <Label Text="{Loc 'wf-round-setup-home-crews'}" StyleClasses="WFRoundSetupEyebrow" />
-                                <RichTextLabel Text="{Loc 'wf-round-setup-home-crew-heading'}" StyleClasses="WFRoundSetupHeading" HorizontalExpand="True" />
-                                <RichTextLabel Text="{Loc 'wf-round-setup-home-crew-help'}" StyleClasses="WFRoundSetupMuted" HorizontalExpand="True" />
-                                <Button Name="RoundSetupButton" Access="Public" Text="{Loc 'wf-round-setup-home-create'}" MinHeight="40" />
-                                <roundSetup:WFRoundSetupLobbyPanel Name="RoundSetupLobbies" Access="Public" HorizontalExpand="True" VerticalExpand="True" />
-                            </BoxContainer>
-                        </PanelContainer>
-                    </roundSetup:WFLobbyLayout>
+                    <PanelContainer Name="CharacterCard" StyleClasses="WFRoundSetupCard" SetWidth="280" HorizontalAlignment="Left" VerticalExpand="True">
+                        <BoxContainer Orientation="Vertical" Margin="16" SeparationOverride="10" HorizontalExpand="True">
+                            <Label Text="{Loc 'wf-round-setup-home-character'}" StyleClasses="WFRoundSetupEyebrow" />
+                            <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
+                                <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public" HorizontalExpand="True" />
+                            </ScrollContainer>
+                            <Button Name="CustomizeButton" Access="Public" Text="{Loc 'wf-round-setup-home-customize'}" MinHeight="36" />
+                            <RichTextLabel Name="NormalJoinHelp" Access="Public" StyleClasses="WFRoundSetupMuted" HorizontalExpand="True" />
+                            <Button Name="RoundSetupButton" Access="Public" Text="{Loc 'wf-round-setup-home-setup'}" MinHeight="40" />
+                            <Button Name="ReadyButton" Access="Public" Text="{Loc 'wf-round-setup-home-ready'}" MinHeight="64" />
+                        </BoxContainer>
+                    </PanelContainer>
                 </BoxContainer>
                 <Control Name="CharacterSetupState" Access="Public" Visible="False" HorizontalExpand="True" VerticalExpand="True" />
             </BoxContainer>
             <PanelContainer Name="RightSide" Access="Public" StyleClasses="WFRoundSetupCard" HorizontalExpand="True" VerticalExpand="True">
                 <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="8">
                     <Label Text="{Loc 'wf-round-setup-home-comms'}" StyleClasses="WFRoundSetupEyebrow" />
-                    <TabContainer Name="LobbyInformationTabs" HorizontalExpand="True" VerticalExpand="True">
+                    <roundSetup:WFLobbyLayout Name="LobbyInformationSplit" VerticalSplit="True" HorizontalExpand="True" VerticalExpand="True">
                         <widgets:ChatBox Name="Chat" Access="Public" HorizontalExpand="True" VerticalExpand="True" MinSize="0 50" />
                         <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
                             <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="12">
@@ -199,7 +188,7 @@
                                 <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" />
                             </BoxContainer>
                         </ScrollContainer>
-                    </TabContainer>
+                    </roundSetup:WFLobbyLayout>
                 </BoxContainer>
             </PanelContainer>
         </roundSetup:WFLobbyLayout>

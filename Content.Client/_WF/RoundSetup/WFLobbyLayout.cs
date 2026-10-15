@@ -13,6 +13,9 @@ public sealed class WFLobbyLayout : Container
     /// <summary>Uses a responsive communication dock instead of a fixed character column.</summary>
     public bool DockChat { get; set; }
 
+    /// <summary>Splits the available height equally between two always-visible panes.</summary>
+    public bool VerticalSplit { get; set; }
+
     protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         Layout(availableSize, false);
@@ -35,10 +38,10 @@ public sealed class WFLobbyLayout : Container
             Place(children[0], Vector2.Zero, size, arrange);
             return;
         }
-        var vertical = DockChat ? size.X < 1050 : size.X < 520;
+        var vertical = VerticalSplit || (DockChat ? size.X < 740 : size.X < 520);
         if (vertical)
         {
-            var secondHeight = DockChat ? Math.Clamp(size.Y * 0.3f, 140, 220) : size.Y * 0.5f;
+            var secondHeight = !VerticalSplit && DockChat ? Math.Clamp(size.Y * 0.3f, 140, 220) : Math.Max(0, size.Y - Gap) * 0.5f;
             secondHeight = Math.Min(secondHeight, Math.Max(0, size.Y - Gap));
             var firstHeight = Math.Max(0, size.Y - secondHeight - Gap);
             Place(children[0], Vector2.Zero, new Vector2(size.X, firstHeight), arrange);

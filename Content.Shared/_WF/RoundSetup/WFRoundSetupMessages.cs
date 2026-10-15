@@ -7,6 +7,10 @@ namespace Content.Shared._WF.RoundSetup;
 [Serializable, NetSerializable]
 public enum WFRoundScenario : byte { Normal, Crashlanded, Ship }
 
+/// <summary>Where a purchased crew ship begins its journey.</summary>
+[Serializable, NetSerializable]
+public enum WFShipStartLocation : byte { RandomSpace, CentralDock }
+
 /// <summary>How a player can enter a scenario lobby.</summary>
 [Serializable, NetSerializable]
 public enum WFLobbyAccess : byte { Public, Requests, Closed, Code, Invite }
@@ -17,7 +21,7 @@ public enum WFRoundSetupAction : byte
 {
     Refresh, Create, Configure, Join, Leave, AcceptRequest, RejectRequest,
     Invite, AcceptInvite, DeclineInvite, SelectJob, SetReady, Launch, RegenerateCode, Kick, TransferHost,
-    SelectVessel, UpsertRole, RemoveRole, SelectRole,
+    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart,
 }
 
 /// <summary>A request whose actor is always taken from its network session.</summary>
@@ -27,6 +31,7 @@ public sealed class WFRoundSetupRequest : EntityEventArgs
     public WFRoundSetupAction Action;
     public int LobbyId;
     public WFRoundScenario Scenario;
+    public WFShipStartLocation ShipStart;
     public WFLobbyAccess Access = WFLobbyAccess.Requests;
     public bool AllowLateJoin;
     public bool Ready;
@@ -37,6 +42,7 @@ public sealed class WFRoundSetupRequest : EntityEventArgs
     public string? Vessel;
     public int? RoleId;
     public string? RoleName;
+    public string? Title;
     public int Capacity = 1;
 
     public WFRoundSetupRequest(WFRoundSetupAction action) { Action = action; }
@@ -69,7 +75,9 @@ public sealed class WFRoundSetupLobby
     public int Id;
     public NetUserId Host;
     public string HostName = string.Empty;
+    public string Title = string.Empty;
     public WFRoundScenario Scenario;
+    public WFShipStartLocation ShipStart;
     public WFLobbyAccess Access;
     public bool AllowLateJoin;
     public bool Started;
@@ -86,6 +94,7 @@ public sealed class WFRoundSetupLobby
 public sealed class WFRoundSetupState : EntityEventArgs
 {
     public bool InRound;
+    public bool JoinConfirmed;
     public bool CanJoin;
     public bool CrashlandedAvailable;
     public int? OwnLobby;

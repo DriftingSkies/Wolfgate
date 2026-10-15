@@ -462,8 +462,11 @@ public sealed class WFRoundSetupLobbyTest
                 LobbyId = lobbyId, Job = "Contractor",
             });
             Assert.That(OwnLobby(state).Roles, Is.Empty);
-            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SetReady) { LobbyId = lobbyId, Ready = true });
-            Assert.That(OwnLobby(state).Members.Single().Ready, Is.True);
+            if (pregame)
+            {
+                state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ConfirmJoin) { LobbyId = lobbyId });
+                Assert.That(OwnLobby(state).Members.Single().Ready, Is.True);
+            }
             if (pregame)
             {
                 await server.WaitAssertion(() =>
@@ -475,7 +478,7 @@ public sealed class WFRoundSetupLobbyTest
                 state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
             }
             else
-                state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Launch) { LobbyId = lobbyId });
+                state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ConfirmJoin) { LobbyId = lobbyId });
             Assert.That(OwnLobby(state).Started, Is.True);
             Assert.That(OwnLobby(state).Members.Single().Spawned, Is.True);
             Assert.That(state.HostBalance, Is.EqualTo(10000));
@@ -509,6 +512,27 @@ public sealed class WFRoundSetupLobbyTest
                 Assert.That(((HumanoidCharacterProfile) preferences.GetPreferences(player.UserId).Characters[slot]).BankBalance,
                     Is.EqualTo(10000), "A duplicate launch must neither replace the body nor charge for another ship.");
             });
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ChangeScenario)
+            {
+                LobbyId = lobbyId, Scenario = WFRoundScenario.Crashlanded,
+            });
+            Assert.That(OwnLobby(state).Scenario, Is.EqualTo(WFRoundScenario.Ship), "A launched crew cannot replace its scenario.");
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectShipStart)
+            {
+                LobbyId = lobbyId, ShipStart = WFShipStartLocation.CentralDock,
+            });
+            Assert.That(OwnLobby(state).ShipStart, Is.EqualTo(WFShipStartLocation.RandomSpace));
+            await server.WaitPost(() => server.System<GameTicker>().Respawn(player));
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+            Assert.That(state.OwnLobby, Is.Null, "Respawning must leave the previous crew.");
+            Assert.That(state.CanJoin, Is.True);
+            Assert.That(state.Lobbies.Any(lobby => lobby.Id == lobbyId), Is.False, "An empty crew is removed.");
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Ship });
+            Assert.That(state.OwnLobby, Is.Not.Null, "The respawned player can start a fresh setup.");
+            Assert.That(state.OwnLobby, Is.Not.EqualTo(lobbyId));
+            Assert.That(OwnLobby(state).Members.Single().Spawned, Is.False);
+            await server.WaitAssertion(() => Assert.That(server.EntMan.EntityExists(hull), Is.True,
+                "Leaving the crew must preserve the already-purchased ship."));
         }
         finally
         {
@@ -516,6 +540,106 @@ public sealed class WFRoundSetupLobbyTest
             await server.WaitPost(() => server.System<GameTicker>().RestartRound());
             await pair.RunTicksSync(2);
         }
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Hosts can change the start without recreating their crew, and each change revokes readiness.</summary>
+    [Test]
+    public async Task ChangingCrewTypeAndLocationPreservesCrewAndResetsConsent()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var enabled = false;
+        await pair.Server.WaitPost(() =>
+        {
+            enabled = pair.Server.CfgMan.GetCVar(PlanetCVars.PlanetNetworks);
+            pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, true);
+        });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
+        {
+            Scenario = WFRoundScenario.Ship, Title = "The Wayfarers",
+        });
+        var id = state.OwnLobby!.Value;
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectJob) { LobbyId = id, Job = "Contractor" });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.UpsertRole)
+        {
+            LobbyId = id, Job = "Contractor", RoleName = "Engineer", Capacity = 2,
+        });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectVessel) { LobbyId = id, Vessel = "Guppy" });
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ConfirmJoin) { LobbyId = id });
+        Assert.That(OwnLobby(state).Members.Single().Ready, Is.True);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectShipStart)
+        {
+            LobbyId = id, ShipStart = WFShipStartLocation.CentralDock,
+        });
+        Assert.That(OwnLobby(state).ShipStart, Is.EqualTo(WFShipStartLocation.CentralDock));
+        Assert.That(OwnLobby(state).Members.Single().Ready, Is.False);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectShipStart)
+        {
+            LobbyId = id, ShipStart = (WFShipStartLocation) byte.MaxValue,
+        });
+        Assert.That(OwnLobby(state).ShipStart, Is.EqualTo(WFShipStartLocation.CentralDock));
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ConfirmJoin) { LobbyId = id });
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ChangeScenario)
+        {
+            LobbyId = id, Scenario = WFRoundScenario.Crashlanded,
+        });
+        var lobby = OwnLobby(state);
+        Assert.Multiple(() =>
+        {
+            Assert.That(lobby.Id, Is.EqualTo(id));
+            Assert.That(lobby.Title, Is.EqualTo("The Wayfarers"));
+            Assert.That(lobby.Scenario, Is.EqualTo(WFRoundScenario.Crashlanded));
+            Assert.That(lobby.Vessel, Is.Null);
+            Assert.That(lobby.ShipStart, Is.EqualTo(WFShipStartLocation.RandomSpace));
+            Assert.That(lobby.Roles.Single().Name, Is.EqualTo("Engineer"));
+            Assert.That(lobby.Roles.Single().Capacity, Is.EqualTo(2));
+            Assert.That(lobby.Members.Single().Job, Is.EqualTo("Contractor"));
+            Assert.That(lobby.Members.Single().Ready, Is.False);
+        });
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ChangeScenario)
+        {
+            LobbyId = id, Scenario = WFRoundScenario.Normal,
+        });
+        Assert.That(OwnLobby(state).Scenario, Is.EqualTo(WFRoundScenario.Crashlanded));
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ChangeScenario)
+        {
+            LobbyId = id, Scenario = WFRoundScenario.Ship,
+        });
+        Assert.That(OwnLobby(state).Scenario, Is.EqualTo(WFRoundScenario.Ship));
+        Assert.That(OwnLobby(state).Vessel, Is.Null);
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(PlanetCVars.PlanetNetworks, enabled));
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Public crew titles are normalized and malformed updates leave existing settings intact.</summary>
+    [Test]
+    public async Task CrewNamesAreValidatedAndEditable()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
+        {
+            Scenario = WFRoundScenario.Ship, Title = "  The   Wayfarers  ",
+        });
+        var id = state.OwnLobby!.Value;
+        Assert.That(OwnLobby(state).Title, Is.EqualTo("The Wayfarers"));
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+        {
+            LobbyId = id, Title = "[color=red]Bad", Access = WFLobbyAccess.Public,
+        });
+        Assert.That(OwnLobby(state).Title, Is.EqualTo("The Wayfarers"));
+        Assert.That(OwnLobby(state).Access, Is.EqualTo(WFLobbyAccess.Requests));
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+        {
+            LobbyId = id, Title = "Salvage & Rescue", Access = WFLobbyAccess.Public,
+        });
+        Assert.That(OwnLobby(state).Title, Is.EqualTo("Salvage & Rescue"));
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+        {
+            LobbyId = id, Title = " ",
+        });
+        Assert.That(OwnLobby(state).Title, Is.Empty);
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
         await pair.CleanReturnAsync();
     }
 
@@ -559,6 +683,39 @@ public sealed class WFRoundSetupLobbyTest
             state = system.State;
         });
         return state;
+    }
+
+    /// <summary>A reconnect restores crew choices after the new session has loaded its database state.</summary>
+    [Test]
+    public async Task ReconnectingHostRetainsCrewAndCanReopenSetup()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
+        {
+            Scenario = WFRoundScenario.Ship, Title = "Reconnect crew",
+        });
+        var id = OwnLobby(state).Id;
+        var net = pair.Client.ResolveDependency<IClientNetManager>();
+        var userName = pair.Player!.Name;
+        var userId = pair.Player.UserId;
+        var players = pair.Server.ResolveDependency<Robust.Server.Player.IPlayerManager>();
+        await pair.Client.WaitPost(() => net.ClientDisconnect("Reconnect regression test"));
+        await pair.RunTicksSync(10);
+        await pair.Server.WaitAssertion(() => Assert.That(players.Sessions, Is.Empty));
+        pair.Client.SetConnectTarget(pair.Server);
+        await pair.Client.WaitPost(() => net.ClientConnect(null!, 0, userName));
+        await pair.RunTicksSync(180);
+        state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        Assert.Multiple(() =>
+        {
+            Assert.That(state.CanJoin, Is.True);
+            Assert.That(pair.Client.User, Is.EqualTo(userId));
+            Assert.That(state.OwnLobby, Is.EqualTo(id));
+            Assert.That(OwnLobby(state).Title, Is.EqualTo("Reconnect crew"));
+            Assert.That(OwnLobby(state).Members.Single().Connected, Is.True);
+        });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
+        await pair.CleanReturnAsync();
     }
 
     /// <summary>Finds the caller's lobby in its personalized snapshot.</summary>

@@ -249,7 +249,7 @@ public sealed partial class WFRoundSetupSystem
                 error = "wf-round-setup-error-ship-consent";
                 return false;
             }
-            if (!_ships.TryPrepare(lobby.Id, lobby.Vessel, out station, out error))
+            if (!_ships.TryPrepare(lobby.Id, lobby.Vessel, out station, out error, lobby.ShipStart))
                 return false;
             if (!_ships.TryGetSpawn(lobby.Id, out var spawn))
             {
@@ -284,7 +284,11 @@ public sealed partial class WFRoundSetupSystem
             member.Ready = false;
             lobby.Started = true;
             if (lobby.Scenario == WFRoundScenario.Crashlanded)
+            {
+                if (session.AttachedEntity is { } survivor)
+                    _crash.GiveEmergencyEquipment(survivor);
                 _crash.NotifyArrival(lobby.Id, session);
+            }
             else if (lobby.Scenario == WFRoundScenario.Ship)
                 _ships.NotifyArrival(lobby.Id, session);
             return true;

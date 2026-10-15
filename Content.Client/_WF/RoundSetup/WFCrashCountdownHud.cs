@@ -65,7 +65,9 @@ public sealed class WFCrashCountdownHud : PanelContainer
         copy.AddChild(MakeLabel(Loc.GetString("wf-round-setup-countdown-entry"), small, Color.White));
         copy.AddChild(MakeLabel(Loc.GetString("wf-round-setup-countdown-controls"), small, Color.FromHex("#BEADA0")));
         _clock = MakeLabel(string.Empty, large, Amber);
-        _clock.MinWidth = 96;
+        _clock.SetWidth = 140;
+        _clock.ClipText = false;
+        _clock.Name = "CrashCountdownClock";
         _clock.VerticalAlignment = VAlignment.Center;
         _clock.Align = Label.AlignMode.Right;
         row.AddChild(copy);

@@ -26,7 +26,7 @@ namespace Content.Client.Lobby.UI
             LobbySong.SetMarkup(Loc.GetString("lobby-state-song-no-song-text"));
 
             // WOLFGATE(RoundSetup): expose group setup before the round starts
-            RoundSetupButton.OnPressed += _ => UserInterfaceManager.GetUIController<WFRoundSetupUIController>().OpenCreate();
+            RoundSetupButton.OnPressed += _ => UserInterfaceManager.GetUIController<WFRoundSetupUIController>().OpenCrews();
 
             LeaveButton.OnPressed += _ => _consoleHost.ExecuteCommand("disconnect");
             OptionsButton.OnPressed += _ => UserInterfaceManager.GetUIController<OptionsUIController>().ToggleWindow();

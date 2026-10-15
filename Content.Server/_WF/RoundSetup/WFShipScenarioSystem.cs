@@ -57,11 +57,12 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
     private readonly Dictionary<int, Scenario> _scenarios = new();
 
     /// <summary>Holds the original purchase receipt until launch has finished or been refunded.</summary>
-    private sealed class Scenario(EntityUid hull, EntityUid station, string vessel)
+    private sealed class Scenario(EntityUid hull, EntityUid station, string vessel, WFShipStartLocation location)
     {
         public readonly EntityUid Hull = hull;
         public readonly EntityUid Station = station;
         public readonly string Vessel = vessel;
+        public readonly WFShipStartLocation Location = location;
         public readonly HashSet<EntityUid> Grids = new() { hull };
         public ICommonSession? Buyer;
         public int CharacterSlot;
@@ -96,15 +97,16 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
         !profile.TraitPreferences.Contains("Ironman") ? profile.BankBalance : null;
 
     /// <summary>Loads a selected ship on a clear part of the sector before any money is withdrawn.</summary>
-    public bool TryPrepare(int lobbyId, string? vesselId, out EntityUid station, out string reason)
+    public bool TryPrepare(int lobbyId, string? vesselId, out EntityUid station, out string reason,
+        WFShipStartLocation location = WFShipStartLocation.RandomSpace)
     {
         station = EntityUid.Invalid;
         reason = "wf-round-setup-ship-invalid";
-        if (!IsVesselAvailable(vesselId))
+        if (!IsVesselAvailable(vesselId) || !Enum.IsDefined(location))
             return false;
         if (_scenarios.TryGetValue(lobbyId, out var existing))
         {
-            if (existing.Vessel == vesselId && !TerminatingOrDeleted(existing.Station) && TryGetSpawn(lobbyId, out _))
+            if (existing.Vessel == vesselId && existing.Location == location && !TerminatingOrDeleted(existing.Station) && TryGetSpawn(lobbyId, out _))
             {
                 station = existing.Station;
                 return true;
@@ -128,8 +130,16 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
             return false;
         var hull = loaded.Value.Owner;
         EntityManager.AddComponents(hull, vessel.AddComponents);
-        if (!HasComp<ShuttleComponent>(hull) || !TryFindFloor(hull, out _) || !FindClearPosition(hull, loaded.Value.Comp, mapEntity.Value, mapId))
+        if (!HasComp<ShuttleComponent>(hull) || !TryFindFloor(hull, out _))
         {
+            Del(hull);
+            return false;
+        }
+        var positioned = location == WFShipStartLocation.CentralDock
+            ? TryDockAtCentral(hull) : FindClearPosition(hull, loaded.Value.Comp, mapEntity.Value, mapId);
+        if (!positioned)
+        {
+            reason = location == WFShipStartLocation.CentralDock ? "wf-round-setup-ship-no-dock" : reason;
             Del(hull);
             return false;
         }
@@ -140,7 +150,7 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
         }, new[] { hull }, vessel.Name);
         EnsureComp<WFShipScenarioStationComponent>(station).LobbyId = lobbyId;
         EnsureComp<WFShipScenarioComponent>(hull).LobbyId = lobbyId;
-        _scenarios.Add(lobbyId, new Scenario(hull, station, vessel.ID));
+        _scenarios.Add(lobbyId, new Scenario(hull, station, vessel.ID, location));
         return true;
     }
 

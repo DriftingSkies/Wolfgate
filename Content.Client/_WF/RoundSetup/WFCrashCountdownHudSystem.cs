@@ -28,6 +28,7 @@ public sealed partial class WFCrashCountdownHudSystem : EntitySystem
 
     private WFCrashCountdownHud _hud = default!;
     private float _untilRefresh;
+    private readonly WFCrashCountdownClock _clock = new();
 
     /// <summary>The synchronized game-time deadline supplied by the server.</summary>
     public TimeSpan? DescendAt { get; private set; }
@@ -77,6 +78,8 @@ public sealed partial class WFCrashCountdownHudSystem : EntitySystem
 
     private void OnCountdown(WFCrashCountdownEvent args)
     {
+        if (DescendAt != args.DescendAt || Body != args.Body)
+            _clock.Reset(args.DescendAt);
         DescendAt = args.DescendAt;
         Body = args.Body;
         RefreshHud();
@@ -92,6 +95,7 @@ public sealed partial class WFCrashCountdownHudSystem : EntitySystem
 
     private void Clear()
     {
+        _clock.Reset(null);
         DescendAt = null;
         Body = null;
         _hud.Visible = false;
@@ -108,7 +112,7 @@ public sealed partial class WFCrashCountdownHudSystem : EntitySystem
             _hud.Visible = false;
             return;
         }
-        var seconds = (int) Math.Ceiling((deadline - _timing.CurTime).TotalSeconds);
+        var seconds = _clock.Remaining(_timing.CurTime);
         _hud.SetRemaining(seconds);
         var width = MathF.Min(WFCrashCountdownHud.PanelWidth, MathF.Max(0, _ui.PopupRoot.Width - 24));
         _hud.SetWidth = width;
