@@ -11,17 +11,32 @@ wf-bounty-desc-extorter-medium = {$ship} is an armed Reaver cutter with a steady
 wf-bounty-desc-extorter-heavy = {$ship} is a Reaver gunship with a veteran crew. It stops ships for a toll and boards those that don't pay. Every toll paid is added here. Paid when its crew is dead or the ship is gone.
 
 # Said down the hail channel once the ship answers. $ship is the ship being stopped.
-wf-encounter-extort-demand-1 = {$ship}, this is a Reaver toll. {$toll} spesos and you fly on.
-wf-encounter-extort-demand-2 = {$ship}. You are in our space. Pay {$toll} spesos or we board you.
-wf-encounter-extort-demand-3 = Heave to, {$ship}. The toll is {$toll} spesos. Pay it or we come aboard.
-wf-encounter-extort-option-pay = Pay {$toll} spesos
+wf-encounter-extort-demand-1 = {$ship}, this is a Reaver toll. {$toll} { $toll ->
+        [one] thaler
+       *[other] thalers
+    } and you fly on.
+wf-encounter-extort-demand-2 = {$ship}. You are in our space. Pay {$toll} { $toll ->
+        [one] thaler
+       *[other] thalers
+    } or we board you.
+wf-encounter-extort-demand-3 = Heave to, {$ship}. The toll is {$toll} { $toll ->
+        [one] thaler
+       *[other] thalers
+    }. Pay it or we come aboard.
+wf-encounter-extort-option-pay = Pay {$toll} { $toll ->
+        [one] thaler
+       *[other] thalers
+    }
 wf-encounter-extort-option-refuse = Refuse
 
 wf-encounter-extort-paid-1 = Paid. You are clear. Fly on.
 wf-encounter-extort-paid-2 = Good. We are done with you.
 wf-encounter-extort-paid-3 = Smart. Stay out of our way.
 
-wf-encounter-extort-short-1 = You don't have {$toll} spesos. Then we take it out of your hold.
+wf-encounter-extort-short-1 = You don't have {$toll} { $toll ->
+        [one] thaler
+       *[other] thalers
+    }. Then we take it out of your hold.
 wf-encounter-extort-short-2 = Your account is short. We are coming aboard.
 wf-encounter-extort-short-3 = No money, no pass. Stand by to be boarded.
 

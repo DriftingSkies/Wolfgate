@@ -116,10 +116,12 @@ uplink-pirate-chameleon-backpack-desc = A backpack with integrated chameleon tec
 uplink-pirate-dna-scrambler-name = DNA Scrambler Implanter
 uplink-pirate-dna-scrambler-desc = A relatively rare implant that allows you to completely change your identity once.
 
-uplink-pirate-cash10000-name = 10,000 credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-pirate-cash10000-name = 10,000 thalers
 uplink-pirate-cash10000-desc = That's my boy, you made my day.
 
-uplink-pirate-cash100000-name = 100,000 credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-pirate-cash100000-name = 100,000 thalers
 uplink-pirate-cash100000-desc = That's my boy, you really made my day.
 
 uplink-pirate-telecrystal-25-name = 25 Telecrystals

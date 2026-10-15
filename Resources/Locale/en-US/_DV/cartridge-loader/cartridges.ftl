@@ -6,7 +6,8 @@ mail-metrics-damaged = Losses (Damaged)
 mail-metrics-tampered = Losses (Tampered)
 mail-metrics-unopened = Unopened
 mail-metrics-count-header = Packages
-mail-metrics-money-header = Credits
+# WOLFGATE(Currency): the currency is thalers
+mail-metrics-money-header = Thalers
 mail-metrics-total = Total
 mail-metrics-progress = {$opened} out of {$total} packages opened!
 mail-metrics-progress-percent = Success rate: {$successRate}%

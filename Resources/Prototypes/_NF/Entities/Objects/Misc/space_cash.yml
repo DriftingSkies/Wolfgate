@@ -35,8 +35,9 @@
 - type: entity
   parent: BaseItem
   id: SpaceCashCounterfeit
-  name: creditts
-  description: Valerian Standard C- What the hell...? THESE ARE LOUSY FAKES!!!
+  # WOLFGATE(Currency): the currency is thalers
+  name: thallers
+  description: Valerian Standard Th- What the hell...? THESE ARE LOUSY FAKES!!!
   components:
   - type: Item
     shape:
@@ -97,7 +98,7 @@
 
 - type: material
   id: CreditCounterfeit
-  name: creditt
+  name: thaller # WOLFGATE(Currency): the currency is thalers
   unit: materials-unit-bill
   stackEntity: SpaceCashCounterfeit
   icon: { sprite: _NF/Objects/Economy/counterfeit_cash.rsi, state: cash }
@@ -105,7 +106,7 @@
 
 - type: stack
   id: CreditCounterfeit
-  name: creditt
+  name: thallers # WOLFGATE(Currency): the currency is thalers
   icon: { sprite: _NF/Objects/Economy/counterfeit_cash.rsi, state: cash }
   spawn: SpaceCashCounterfeit
 

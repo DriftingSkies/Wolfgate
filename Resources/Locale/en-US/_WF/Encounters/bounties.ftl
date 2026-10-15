@@ -1,6 +1,9 @@
 bounty-contract-collection-name-warrants = Warrants
 wf-encounter-bounty-author = Sector Warrant Office
-wf-encounter-bounty-paid = Warrant on {$name} ({$title}) claimed. {$amount} spesos have been paid into your account.
+wf-encounter-bounty-paid = Warrant on {$name} ({$title}) claimed. {$amount} { $amount ->
+        [one] thaler has
+       *[other] thalers have
+    } been paid into your account.
 
 wf-crew-navigation-fugitive = Fugitive
 
@@ -19,7 +22,10 @@ wf-bounty-desc-fugitive-wanted = {$name} is wanted for armed robbery and is runn
 wf-bounty-desc-fugitive-dangerous = {$name} is wanted for murder and is running in {$ship}, a gunship with a hard crew. Runs from ships and hits back hard. Paid when {$name} is dead.
 wf-bounty-desc-fugitive-most-wanted = {$name} is the most wanted outlaw in the sector, flying {$ship}, a warship with a full crew. Runs until fired on, then fights. Paid when {$name} is dead.
 
-wf-bounty-broadcast-fugitive = All vessels: a warrant is out on {$name}, last seen aboard {$ship}. {$reward} spesos, dead. Details on the Warrants board.
+wf-bounty-broadcast-fugitive = All vessels: a warrant is out on {$name}, last seen aboard {$ship}. {$reward} { $reward ->
+        [one] thaler
+       *[other] thalers
+    }, dead. Details on the Warrants board.
 
 # Docking clamps
 wf-clamps-sender = Docking control

@@ -1,4 +1,5 @@
-advertisement-mailvend-1 = Speso for your thoughts? Why not?
+# WOLFGATE(Currency): the currency is thalers
+advertisement-mailvend-1 = Thaler for your thoughts? Why not?
 advertisement-mailvend-2 = Envelopes! Paper! Pens!
 advertisement-mailvend-3 = When's the last time you wrote home?
 advertisement-mailvend-4 = Who needs telecomms? Writing is in!

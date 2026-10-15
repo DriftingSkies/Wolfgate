@@ -34,7 +34,8 @@ mmc-bounty-name-optics-t2 = Precision Optical Sensors
 mmc-bounty-name-camera-t1 = Photonic Flash Cameras
 mmc-bounty-name-motor-t1 = Industrial Motors
 
-mmc-bounty-name-credits = Credits
+# WOLFGATE(Currency): the currency is thalers
+mmc-bounty-name-credits = Thalers
 
 mmc-bounty-name-iridite = Iridite Sheets
 mmc-bounty-name-plastitanium = Plastitanium Sheets

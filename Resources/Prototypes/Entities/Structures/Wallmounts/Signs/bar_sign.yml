@@ -274,7 +274,8 @@
   parent: BaseBarSign
   id: BarSignSpacebucks
   name: Spacebucks
-  description: You can't get away from them, even in space, and even after we started calling them 'credits' instead.
+  # WOLFGATE(Currency): the currency is thalers
+  description: You can't get away from them, even in space, and even after we started calling them 'thalers' instead.
   components:
   - type: BarSign
     current: Spacebucks

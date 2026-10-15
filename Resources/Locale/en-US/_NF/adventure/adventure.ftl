@@ -22,7 +22,8 @@ nf-adventure-description = Join a ship crew or buy your own and explore, researc
 nf-pirate-title = Arms Race
 nf-pirate-description = The PDV threatens TSF expansion into the sector. A tense cold war between the TSF and USSP also takes place.
 
-currency = Credits
+# WOLFGATE(Currency): the currency is thalers
+currency = Thalers
 
 shipyard-rules-default1 =
     Thank you for your interest in TSF Security Forces.

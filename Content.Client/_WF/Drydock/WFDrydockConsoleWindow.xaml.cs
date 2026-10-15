@@ -250,7 +250,7 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
         }
         else
         {
-            _quote.Value = Loc.GetString("drydock-ui-credits", ("price", state.RepairPrice.ToString("N0", CultureInfo.InvariantCulture)));
+            _quote.Value = Loc.GetString("drydock-ui-thalers", ("price", state.RepairPrice.ToString("N0", CultureInfo.InvariantCulture)), ("count", state.RepairPrice));
             _quote.Lit = state.RepairPrice > 0;
             _quote.Tint = null;
             RepairButton.Disabled = state.ShipName is null || state.Working || state.RepairPrice <= 0 || blocked;

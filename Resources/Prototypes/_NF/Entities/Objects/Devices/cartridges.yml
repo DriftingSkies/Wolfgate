@@ -48,7 +48,8 @@
 - type: entity
   parent: NFBasePDACartridge
   id: LedgerCartridge
-  name: SpesoFlow Lite cartridge
+  # WOLFGATE(Currency): the currency is thalers
+  name: ThalerFlow Lite cartridge
   description: A program for keeping track of sector bank accounts.
   components:
     - type: Sprite

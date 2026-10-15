@@ -23,7 +23,7 @@ In order to safely transport the bodies, [bold]before the bounty can be redeemed
 
 Once the bountied asset is stable, they'll likely remain in a catatonic state. Don't worry, this is normal, and you will not be held liable for malpractice.
 
-When you are ready to redeem the bounty, return the asset to the nearest [color=#469bbd]body retrieval unit[/color]. Simply insert the revived asset into the unit. [color=#d40606]Both lights[/color] should be on. Open the panel on the unit and hit the "Redeem" button, and enjoy the hard-earned spesos.
+<!-- WOLFGATE(Currency): the currency is thalers -->When you are ready to redeem the bounty, return the asset to the nearest [color=#469bbd]body retrieval unit[/color]. Simply insert the revived asset into the unit. [color=#d40606]Both lights[/color] should be on. Open the panel on the unit and hit the "Redeem" button, and enjoy the hard-earned thalers.
 
 <Box>
 <GuideEntityEmbed Entity="MachineMedicalBountyRedemption"/>

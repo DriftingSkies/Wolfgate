@@ -1,7 +1,8 @@
 - type: entity
   parent: BaseItem
   id: SpaceCashExpedition
-  name: credits
+  # WOLFGATE(Currency): the currency is thalers
+  name: thalers
   description: A briefcase full of bills fresh from the digital mint. Smells like success and unpaid taxes.
   abstract: true
   categories: [ HideSpawnMenu ]
@@ -18,7 +19,8 @@
 - type: entity
   parent: SpaceCashExpedition
   id: SpaceCashExpeditionT1
-  name: credits (5,000)
+  # WOLFGATE(Currency): the currency is thalers
+  name: thalers (5,000)
   categories: [ HideSpawnMenu ]
   components:
   - type: SpawnItemsOnUse
@@ -32,7 +34,8 @@
 - type: entity
   parent: SpaceCashExpedition
   id: SpaceCashExpeditionT2
-  name: credits (10,000)
+  # WOLFGATE(Currency): the currency is thalers
+  name: thalers (10,000)
   categories: [ HideSpawnMenu ]
   components:
   - type: SpawnItemsOnUse
@@ -46,7 +49,8 @@
 - type: entity
   parent: SpaceCashExpedition
   id: SpaceCashExpeditionT3
-  name: credits (20,000)
+  # WOLFGATE(Currency): the currency is thalers
+  name: thalers (20,000)
   categories: [ HideSpawnMenu ]
   components:
   - type: SpawnItemsOnUse
@@ -60,7 +64,8 @@
 - type: entity
   parent: SpaceCashExpedition
   id: SpaceCashExpeditionT4
-  name: credits (40,000)
+  # WOLFGATE(Currency): the currency is thalers
+  name: thalers (40,000)
   categories: [ HideSpawnMenu ]
   components:
   - type: SpawnItemsOnUse
@@ -75,7 +80,8 @@
 - type: entity
   parent: SpaceCashExpedition
   id: SpaceCashExpeditionT5
-  name: credits (70,000)
+  # WOLFGATE(Currency): the currency is thalers
+  name: thalers (70,000)
   categories: [ HideSpawnMenu ]
   components:
   - type: SpawnItemsOnUse

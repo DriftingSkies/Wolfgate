@@ -4,7 +4,8 @@ cargo-console-menu-account-name-label = Account name:{" "}
 cargo-console-menu-account-name-none-text = None
 cargo-console-menu-shuttle-name-label = Shuttle name:{" "}
 cargo-console-menu-shuttle-name-none-text = None
-cargo-console-menu-points-label = Credits:{" "}
+# WOLFGATE(Currency): the currency is thalers
+cargo-console-menu-points-label = Thalers:{" "}
 cargo-console-menu-shuttle-status-label = Shuttle status:{" "}
 cargo-console-menu-shuttle-status-away-text = Away
 cargo-console-menu-order-capacity-label = Order capacity:{" "}

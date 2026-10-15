@@ -31,7 +31,8 @@
 - type: entity
   id: BriefcaseSyndieLobbyingBundleFilled
   parent: BriefcaseSyndie
-  suffix: Syndicate, Spesos
+  # WOLFGATE(Currency): the currency is thalers
+  suffix: Syndicate, Thalers
   components:
   - type: StorageFill
     contents:
@@ -50,7 +51,8 @@
 - type: entity
   id: BriefcaseThiefBribingBundleFilled
   parent: BriefcaseSyndie
-  suffix: Thief, Spesos
+  # WOLFGATE(Currency): the currency is thalers
+  suffix: Thief, Thalers
   components:
   - type: StorageFill
     contents:

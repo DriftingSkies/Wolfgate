@@ -99,9 +99,11 @@ accent-caveman-replaced-24 = you're
 accent-caveman-replacement-24 = you
 accent-caveman-replaced-25 = their
 accent-caveman-replacement-25 = they
-accent-caveman-replaced-26 = credit
+# WOLFGATE(Currency): the currency is thalers
+accent-caveman-replaced-26 = thaler
 accent-caveman-replacement-26 = shiny
-accent-caveman-replaced-27 = credits
+# WOLFGATE(Currency): the currency is thalers
+accent-caveman-replaced-27 = thalers
 accent-caveman-replacement-27 = shiny
 accent-caveman-replaced-28 = money
 accent-caveman-replacement-28 = shiny

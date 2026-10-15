@@ -28,36 +28,60 @@ wf-reaver-tier-rising = Reaver threat is rising: {$tier}. { $strongholds ->
     }, { $cells ->
         [one] {$cells} cell
        *[other] {$cells} cells
-    } held. Stronghold bounty is {$bounty} spesos.
+    } held. Stronghold bounty is {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        }.
 wf-reaver-tier-falling = Reaver threat is falling: {$tier}. { $strongholds ->
         [one] {$strongholds} stronghold
        *[other] {$strongholds} strongholds
     }, { $cells ->
         [one] {$cells} cell
        *[other] {$cells} cells
-    } held. Stronghold bounty is {$bounty} spesos.
+    } held. Stronghold bounty is {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        }.
 
 # $station is the nearest station, $bearing and $range are from it
-wf-reaver-founded = Reavers have built a stronghold at {$callsign}, {$range} km bearing {$bearing} from {$station}. Bounty {$bounty} spesos.
-wf-reaver-regrouped = Reavers have regrouped and built a new stronghold at {$callsign}, {$range} km bearing {$bearing} from {$station}. Bounty {$bounty} spesos.
+wf-reaver-founded = Reavers have built a stronghold at {$callsign}, {$range} km bearing {$bearing} from {$station}. Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        }.
+wf-reaver-regrouped = Reavers have regrouped and built a new stronghold at {$callsign}, {$range} km bearing {$bearing} from {$station}. Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        }.
 wf-reaver-broken = The Reaver stronghold at {$callsign}, {$range} km bearing {$bearing} from {$station}, is broken. { $cells ->
         [one] {$cells} cell is free.
        *[other] {$cells} cells are free.
     } { $paid ->
         [0] No bounty was claimed.
-       *[other] Bounty {$bounty} spesos paid.
+       *[other] Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        } paid.
     }
 wf-reaver-patrol-destroyed = Reaver patrol destroyed at {$callsign}. The cell is clear. { $paid ->
         [0] No bounty was claimed.
-       *[other] Bounty {$bounty} spesos paid.
+       *[other] Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        } paid.
     }
 wf-reaver-patrol-destroyed-held = Reaver patrol destroyed at {$callsign}. { $paid ->
         [0] No bounty was claimed.
-       *[other] Bounty {$bounty} spesos paid.
+       *[other] Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        } paid.
     }
 wf-reaver-retaken = {$callsign} retaken from the Reavers. { $paid ->
         [0] No bounty was claimed.
-       *[other] Bounty {$bounty} spesos paid.
+       *[other] Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        } paid.
     }
 # $cells is a list of callsigns
 wf-reaver-clearing = Reaver space at {$cells} is clearing. Drone activity returns in { $minutes ->
@@ -72,7 +96,10 @@ wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. T
 wf-reaver-convoy-launched = A Reaver convoy is under way to {$callsign}, {$range} km bearing {$bearing} from {$station}. Stop it before it digs in.
 wf-reaver-convoy-destroyed = The Reaver convoy bound for {$callsign} is destroyed. { $paid ->
         [0] No bounty was claimed.
-       *[other] Bounty {$bounty} spesos paid.
+       *[other] Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        } paid.
     }
 
 # A hub gaining a level; $minutes is the reinforcement's reckoned flight
@@ -80,7 +107,10 @@ wf-reaver-reinforcement-launched = Reaver reinforcements are inbound to {$callsi
 wf-reaver-grown = The Reaver stronghold at {$callsign} has grown to level {$level}.
 wf-reaver-reinforcement-destroyed = Reaver reinforcements bound for {$callsign} are destroyed. { $paid ->
         [0] No bounty was claimed.
-       *[other] Bounty {$bounty} spesos paid.
+       *[other] Bounty {$bounty} { $bounty ->
+            [one] thaler
+           *[other] thalers
+        } paid.
     }
 
 wf-reaver-raid-warning-pa = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.

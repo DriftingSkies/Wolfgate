@@ -32,7 +32,10 @@ drydock-ui-quote = Quote
 drydock-ui-stock = Stock
 drydock-ui-eta = Time left
 drydock-ui-expires = Expires
-drydock-ui-credits = { $price } cr
+drydock-ui-thalers = { $price } { $count ->
+        [one] thaler
+       *[other] thalers
+    }
 drydock-ui-clock = { $minutes }:{ $seconds }
 drydock-ui-berth-lights = Berth lights
 drydock-ui-repair-key = Repair

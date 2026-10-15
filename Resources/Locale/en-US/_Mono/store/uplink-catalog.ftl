@@ -1,10 +1,12 @@
 uplink-hardsuit-syndie-medic-name = Bloody Medic Hardsuit
 uplink-hardsuit-syndie-medic-desc = A medical hardsuit painted an ominous shade of blood-red. More agile than the classic blood red and comes with a built-in medical HUD.
 
-uplink-Cash10000-name = 10,000 Credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-Cash10000-name = 10,000 Thalers
 uplink-Cash10000-desc = Liquidate some crystals.
 
-uplink-Cash100000-name = 100,000 Credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-Cash100000-name = 100,000 Thalers
 uplink-Cash100000-desc = Liquidate a lot of crystals.
 
 uplink-faction-server-name = Faction R&D Server

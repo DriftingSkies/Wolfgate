@@ -19,10 +19,12 @@ uplink-security-syringe-case-desc = A pocket case filled with medipens for most 
 uplink-security-compact-defibrillator-name = Compact Defibrillator
 uplink-security-compact-defibrillator-desc = A portable defibrillator made for field revivals.
 
-uplink-security-cash7500-name = 7,500 Credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-security-cash7500-name = 7,500 Thalers
 uplink-security-cash7500-desc = Cold, hard cash.
 
-uplink-security-cash10000-name = 10,000 Credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-security-cash10000-name = 10,000 Thalers
 uplink-security-cash10000-desc = Cold, hard cash.
 
 uplink-security-thrusterkit-name = Thruster Upgrade Kit
@@ -61,10 +63,12 @@ uplink-security-68x52mm-box-desc = Used to refill magazines for the Lecter. Cont
 uplink-security-portable-recharger-name = Portable Recharger
 uplink-security-portable-recharger-desc = An experimental portable recharger equipped with an inbuilt microreactor.
 
-uplink-security-cash75000-name = 75,000 Credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-security-cash75000-name = 75,000 Thalers
 uplink-security-cash75000-desc = Cold, hard cash, in bulk.
 
-uplink-security-cash100000-name = 100,000 Credits
+# WOLFGATE(Currency): the currency is thalers
+uplink-security-cash100000-name = 100,000 Thalers
 uplink-security-cash100000-desc = Cold, hard cash, in bulk.
 
 uplink-security-surgery-duffel-name = Advanced Surgery Kit

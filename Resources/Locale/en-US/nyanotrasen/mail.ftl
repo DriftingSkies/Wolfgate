@@ -9,10 +9,23 @@ mail-desc-priority = The anti-tamper lock's [color=yellow]yellow priority tape[/
 mail-desc-priority-inactive = The anti-tamper lock's [color=#886600]yellow priority tape[/color] is inactive.
 mail-unlocked = Anti-tamper system unlocked.
 mail-unlocked-by-emag = Anti-tamper system *BZZT*.
-mail-unlocked-reward = Anti-tamper system unlocked. {$bounty} credits have been added to Frontier account.
-mail-penalty-lock = ANTI-TAMPER LOCK BROKEN. STATION BANK ACCOUNT PENALIZED BY {$credits} CREDITS.
-mail-penalty-fragile = INTEGRITY COMPROMISED. STATION BANK ACCOUNT PENALIZED BY {$credits} CREDITS.
-mail-penalty-expired = DELIVERY PAST DUE. STATION BANK ACCOUNT PENALIZED BY {$credits} CREDITS.
+# WOLFGATE(Currency): the currency is thalers
+mail-unlocked-reward = Anti-tamper system unlocked. {$bounty} { $bounty ->
+        [one] thaler has
+       *[other] thalers have
+    } been added to Frontier account.
+mail-penalty-lock = ANTI-TAMPER LOCK BROKEN. STATION BANK ACCOUNT PENALIZED BY {$credits} { $credits ->
+        [one] THALER
+       *[other] THALERS
+    }.
+mail-penalty-fragile = INTEGRITY COMPROMISED. STATION BANK ACCOUNT PENALIZED BY {$credits} { $credits ->
+        [one] THALER
+       *[other] THALERS
+    }.
+mail-penalty-expired = DELIVERY PAST DUE. STATION BANK ACCOUNT PENALIZED BY {$credits} { $credits ->
+        [one] THALER
+       *[other] THALERS
+    }.
 mail-item-name-unaddressed = mail
 mail-item-name-addressed = mail ({$recipient})
 

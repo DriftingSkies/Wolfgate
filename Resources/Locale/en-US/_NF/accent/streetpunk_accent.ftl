@@ -290,7 +290,8 @@ accent-streetpunk-replaced-282 = snack
 accent-streetpunk-replaced-283 = some more
 accent-streetpunk-replaced-284 = something
 accent-streetpunk-replaced-285 = sort of
-accent-streetpunk-replaced-286 = credits
+# WOLFGATE(Currency): the currency is thalers
+accent-streetpunk-replaced-286 = thalers
 accent-streetpunk-replaced-287 = steal
 accent-streetpunk-replaced-288 = stealing
 accent-streetpunk-replaced-289 = steals

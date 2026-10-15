@@ -32,9 +32,9 @@
 
   Every character has their own bank account. This is split into two pools: Your regular bank (which can be used to purchase anything) and your savings account (which is prioritized for loadout costs and other meta items, like safety deposit boxes).
   New characters start with 75k in their regular bank account.
-  Credits can be acquired in many ways, usually by selling items on sellpads or by asking for payment from whoever employs you.
-  Credit items can then be taken to an ATM (found on most stations), inserted, and then deposited through the ATM UI.
-  As your regular bank account fills up, more of your deposits transfer instead to your saving account. This usually softcaps your regular bank from having billions of credits, but you don't usually need more than a million credits to access all in-game content.
+  <!-- WOLFGATE(Currency): the currency is thalers -->Thalers can be acquired in many ways, usually by selling items on sellpads or by asking for payment from whoever employs you.
+  <!-- WOLFGATE(Currency): the currency is thalers -->Thaler bills can then be taken to an ATM (found on most stations), inserted, and then deposited through the ATM UI.
+  <!-- WOLFGATE(Currency): the currency is thalers -->As your regular bank account fills up, more of your deposits transfer instead to your saving account. This usually softcaps your regular bank from having billions of thalers, but you don't usually need more than a million thalers to access all in-game content.
 
   ## Spawning In
 
@@ -66,11 +66,11 @@
   - While manual mining is cheaper, watch out for rock golems, crabs and other anomalies that can occasionally appear. Always mine armed.
   - Ship-based mining is a lot faster than manual mining, but requires more equipment to get started. Ask another miner for advice, or join their crew!
 
-  Using your acquired credits, buy better equipment, mine more, or experiment with other roles!
+  <!-- WOLFGATE(Currency): the currency is thalers -->Using your acquired thalers, buy better equipment, mine more, or experiment with other roles!
 
   ## Round End
 
-  Before entering cryosleep or otherwise disconnecting after a run, make sure to dock your ship to a station with a shipyard console and sell it. This will give back roughly 75% of the value on the ship. Additionally, make sure to deposit all your credits at an ATM
+  <!-- WOLFGATE(Currency): the currency is thalers -->Before entering cryosleep or otherwise disconnecting after a run, make sure to dock your ship to a station with a shipyard console and sell it. This will give back roughly 75% of the value on the ship. Additionally, make sure to deposit all your thalers at an ATM
   so that they aren't lost!
 
 </Document>

@@ -40,8 +40,14 @@ wf-encounter-name-boarders = Pirate boarders {$designation}
 wf-encounter-name-trader = Wandering trader {$designation}
 wf-encounter-name-backup = TSF patrol {$designation} under attack
 wf-encounter-announce-backup = Any vessel, any vessel, this is {$name}. We are engaged by pirate raiders and outgunned. Requesting immediate backup. The Federation pays its debts.
-wf-encounter-reward-paid = For your help with {$name}, {$amount} spesos have been paid into your account.
-wf-encounter-reward-paid-credits = For your help with {$name}, {$amount} spesos have been paid into your account and you have been issued {$credits} military credits.
+wf-encounter-reward-paid = For your help with {$name}, {$amount} { $amount ->
+        [one] thaler has
+       *[other] thalers have
+    } been paid into your account.
+wf-encounter-reward-paid-credits = For your help with {$name}, {$amount} { $amount ->
+        [one] thaler has
+       *[other] thalers have
+    } been paid into your account and you have been issued {$credits} military credits.
 wf-encounter-reward-thanks-tsf = All vessels that answered our call: the Federation thanks you. Payment has been made.
 wf-encounter-reward-thanks-hauler = Whoever that was, thank you. We've sent what we can spare.
 wf-encounter-announce-trader = {$name} is passing through the sector, open for business to anyone who comes alongside. Small stock, low prices, no refunds.
