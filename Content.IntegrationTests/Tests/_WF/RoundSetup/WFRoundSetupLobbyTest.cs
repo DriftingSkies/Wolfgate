@@ -6,6 +6,8 @@ using Content.Server._NF.SectorServices;
 using Content.Server._WF.RoundSetup;
 using Content.Server.GameTicking;
 using Content.Server.Preferences.Managers;
+using Content.Server.Power.Components;
+using Content.Server.Shuttles.Components;
 using Content.Server.Station.Systems;
 using Content.Shared._Mono.Ships.Components;
 using Content.Shared._NF.Shipyard.Components;
@@ -14,11 +16,14 @@ using Content.Shared._WF.RoundSetup;
 using Content.Shared.Access.Systems;
 using Content.Shared.GameTicking;
 using Content.Shared.Preferences;
+using Content.Shared.Power;
 using Content.Shared.Roles;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Network;
+using Robust.Shared.Timing;
+using static Content.IntegrationTests.Tests._WF.Planets.PlanetFixture;
 
 namespace Content.IntegrationTests.Tests._WF.RoundSetup;
 
@@ -716,6 +721,104 @@ public sealed class WFRoundSetupLobbyTest
         });
         await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
         await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Guest reservations can be reused before and during descent, including with unpowered helms.</summary>
+    [TestCase(false)]
+    [TestCase(true)]
+    public async Task CrashGuestCanRespawnAndRejoinExistingCrew(bool descend)
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var server = pair.Server;
+        var ticker = server.System<GameTicker>();
+        var originalName = pair.Player!.Name;
+        var net = pair.Client.ResolveDependency<IClientNetManager>();
+        await EnableFeature(pair);
+        var (layers, _, _) = await BuildOwnedStack(pair);
+        try
+        {
+            var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Crashlanded });
+            var id = OwnLobby(state).Id;
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.UpsertRole)
+            {
+                LobbyId = id, Job = "Contractor", Capacity = 3,
+            });
+            var role = OwnLobby(state).Roles.Single().Id;
+            await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure)
+            {
+                LobbyId = id, Access = WFLobbyAccess.Public, AllowLateJoin = true,
+            });
+            await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.SelectJob) { LobbyId = id, Job = "Contractor" });
+            await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ConfirmJoin) { LobbyId = id });
+            await server.WaitPost(() => ticker.StartRound(force: true));
+            state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+            Assert.That(OwnLobby(state).Members.Single().Spawned, Is.True);
+            await server.WaitAssertion(() =>
+            {
+                var crash = server.System<WFCrashScenarioSystem>();
+                Assert.That(crash.TryGetSpawn(id, out var spawn), Is.True);
+                Assert.That(crash.TryGetStation(id, out var station), Is.True);
+                var helms = Children(server.EntMan, spawn.EntityId).Where(server.EntMan.HasComponent<ShuttleConsoleComponent>).ToArray();
+                Assert.That(helms, Is.Not.Empty);
+                foreach (var helm in helms)
+                {
+                    var receiver = server.EntMan.GetComponent<ApcPowerReceiverComponent>(helm);
+                    receiver.PowerDisabled = true;
+                    receiver.Powered = false;
+                }
+                foreach (var helm in helms)
+                {
+                    var power = new PowerChangedEvent(false, 0);
+                    server.EntMan.EventBus.RaiseLocalEvent(helm, ref power);
+                }
+                Assert.That(server.System<StationJobsSystem>().TryGetJobSlot(station, "Contractor", out var slots), Is.True);
+                Assert.That(slots, Is.Null, "Losing every helm must not close the crew's advertised jobs.");
+            });
+            await ConnectAs("WFCrashRejoinGuest");
+            for (var attempt = 0; attempt < 2; attempt++)
+            {
+                state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Join) { LobbyId = id, RoleId = role });
+                var member = OwnLobby(state).Members.Single(entry => entry.UserId == pair.Client.User);
+                Assert.That(member.Job, Is.EqualTo("Contractor"));
+                Assert.That(OwnLobby(state).Roles.Single().CanSelect, Is.True);
+                state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.ConfirmJoin) { LobbyId = id });
+                Assert.That(state.Message, Is.Null, $"Guest spawn {attempt + 1}: {state.Message}");
+                Assert.That(OwnLobby(state).Members.Single(entry => entry.UserId == pair.Client.User).Spawned, Is.True);
+                await server.WaitAssertion(() => Assert.That(pair.Player!.AttachedEntity, Is.Not.Null));
+                if (attempt == 0 && descend)
+                {
+                    await server.WaitAssertion(() =>
+                    {
+                        var crash = server.System<WFCrashScenarioSystem>();
+                        Assert.That(crash.TryGetSpawn(id, out var spawn), Is.True);
+                        server.EntMan.GetComponent<WFCrashScenarioComponent>(spawn.EntityId).DescendAt =
+                            server.ResolveDependency<IGameTiming>().CurTime;
+                    });
+                    await pair.RunTicksSync(pair.SecondsToTicks(2f));
+                }
+                await server.WaitPost(() => ticker.Respawn(pair.Player!));
+                state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+                Assert.That(state.OwnLobby, Is.Null);
+                Assert.That(state.Lobbies.Single(lobby => lobby.Id == id).Roles.Single().Occupied, Is.Zero);
+            }
+        }
+        finally
+        {
+            await Teardown(pair, layers);
+            await server.WaitPost(() => ticker.RestartRound());
+            await pair.RunTicksSync(2);
+            await ConnectAs(originalName);
+        }
+        await pair.CleanReturnAsync();
+
+        async Task ConnectAs(string name)
+        {
+            await pair.Client.WaitPost(() => net.ClientDisconnect("Switch regression-test player"));
+            await pair.RunTicksSync(10);
+            pair.Client.SetConnectTarget(server);
+            await pair.Client.WaitPost(() => net.ClientConnect(null!, 0, name));
+            await pair.RunTicksSync(180);
+        }
     }
 
     /// <summary>Finds the caller's lobby in its personalized snapshot.</summary>

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Client._WF.RoundSetup;
@@ -36,13 +37,24 @@ public sealed class WFRoundSetupOptionButton : OptionButton
 
     protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
-        if (_shown != _source.Text)
-        {
-            _shown = _source.Text;
-            _caption.SetMessage(FormattedMessage.FromUnformatted((_shown ?? string.Empty).Trim()));
-        }
+        UpdateCaption();
         OptionsScroll.MaxWidth = Math.Max(160, availableSize.X);
         return base.MeasureOverride(availableSize);
+    }
+
+    protected override void FrameUpdate(FrameEventArgs args)
+    {
+        base.FrameUpdate(args);
+        // The hidden source label does not invalidate its parent's layout when selection changes.
+        UpdateCaption();
+    }
+
+    private void UpdateCaption()
+    {
+        if (_shown == _source.Text)
+            return;
+        _shown = _source.Text;
+        _caption.SetMessage(FormattedMessage.FromUnformatted((_shown ?? string.Empty).Trim()));
     }
 
     /// <summary>Uses wrapping text for each searchable popup choice.</summary>

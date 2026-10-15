@@ -25,16 +25,7 @@ public sealed partial class WFRoundSetupWindow
 
     private void AddShipPreviewLayout(BoxContainer details, RoundSetupShipPreview preview)
     {
-        var info = Panel(details);
-        if (_lastLayoutWidth < 1100)
-        {
-            var stack = Column(10);
-            stack.AddChild(info);
-            stack.AddChild(preview);
-            _body.AddChild(stack);
-        }
-        else
-            _body.AddChild(new ShipPreviewColumns(info, preview));
+        _shipPage.AddChild(new ShipPreviewColumns(Panel(details), preview) { VerticalExpand = true });
     }
 
     private void ReleaseShipPreview() => _shipPreviewPanel?.Release();
@@ -83,21 +74,23 @@ public sealed partial class WFRoundSetupWindow
                 Name = "RoundSetupShipPreview",
                 HorizontalExpand = true,
                 VerticalExpand = true,
-                MinHeight = 240,
+                MinHeight = 120,
+                ToolTip = Loc.GetString("wf-ship-preview-hint"),
             };
             var viewport = Panel(_preview);
             viewport.VerticalExpand = true;
             AddChild(viewport);
             _info = PlainDescription(string.Empty);
-            AddChild(_info);
+            _info.HorizontalExpand = true;
             var reset = new Button
             {
                 Name = "RoundSetupPreviewReset",
                 Text = Loc.GetString("wf-ship-preview-reset-view"),
+                ToolTip = Loc.GetString("wf-ship-preview-hint"),
+                MinHeight = 32,
             };
             reset.OnPressed += _ => _preview.FitToGrid();
-            AddChild(reset);
-            AddChild(PlainDescription(Loc.GetString("wf-ship-preview-hint")));
+            AddChild(Row(_info, reset));
             _preview.PreviewUpdated += UpdateInfo;
         }
 
@@ -164,7 +157,7 @@ public sealed partial class WFRoundSetupWindow
             var width = Math.Max(0, availableSize.X - Gap);
             _details.Measure(new Vector2(width * 0.45f, availableSize.Y));
             _preview.Measure(new Vector2(width * 0.55f, availableSize.Y));
-            return new Vector2(availableSize.X, Math.Max(_details.DesiredSize.Y, _preview.DesiredSize.Y));
+            return Vector2.Zero;
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

@@ -14,9 +14,8 @@ public sealed partial class WFRoundSetupWindow
     private enum LobbyPage : byte { Overview, Ship, Admission, Roles }
 
     private readonly ScenarioColumns _navigation = new() { HorizontalExpand = true };
-    private readonly BoxContainer _sidebar = Column(8);
+    private readonly BoxContainer _shipPage = Column(8);
     private readonly BoxContainer _footer = Column(8);
-    private readonly ScrollContainer _sidebarScroll = new() { HScrollEnabled = false, VerticalExpand = true, SetWidth = 210 };
     private readonly ScrollContainer _pageScroll = new() { HScrollEnabled = false, VerticalExpand = true, HorizontalExpand = true };
     private SetupView _view;
     private LobbyPage _lobbyPage;
@@ -61,7 +60,10 @@ public sealed partial class WFRoundSetupWindow
     private void InitializeLayout()
     {
         _navigation.Name = "RoundSetupNavigation";
-        _sidebar.Name = "RoundSetupSidebar";
+        _shipPage.Name = "RoundSetupShipPage";
+        _shipPage.VerticalExpand = true;
+        _shipPage.HorizontalExpand = true;
+        _shipPage.Visible = false;
         _body.Name = "RoundSetupPage";
         _footer.Name = "RoundSetupFooter";
         _pageScroll.Name = "RoundSetupPageScroll";
@@ -74,11 +76,9 @@ public sealed partial class WFRoundSetupWindow
         });
         layout.AddChild(_navigation);
         layout.AddChild(_message);
-        _sidebarScroll.AddChild(_sidebar);
         _pageScroll.AddChild(_body);
-        var workspace = Row(_sidebarScroll, _pageScroll);
-        workspace.VerticalExpand = true;
-        layout.AddChild(workspace);
+        layout.AddChild(_pageScroll);
+        layout.AddChild(_shipPage);
         layout.AddChild(_footer);
     }
 
@@ -138,18 +138,21 @@ public sealed partial class WFRoundSetupWindow
             }
             if (_view == SetupView.MyLobby && own == null)
                 _view = SetupView.Join;
-            if (_view == SetupView.Create && own != null)
+            if (own != null)
                 _view = SetupView.MyLobby;
             _body.RemoveAllChildren();
             _navigation.RemoveAllChildren();
-            _sidebar.RemoveAllChildren();
+            _shipPage.RemoveAllChildren();
+            _shipPage.Visible = false;
+            _pageScroll.Visible = true;
+            Title = own == null ? Text("title") : LobbyTitle(own);
             _footer.RemoveAllChildren();
-            _sidebarScroll.Visible = false;
-            _navigation.AddChild(NavigationButton("join-home", () => Navigate(SetupView.Join), _view == SetupView.Join));
-            _navigation.AddChild(NavigationButton("flow-browse", () => Navigate(SetupView.Browse), _view == SetupView.Browse));
-            _navigation.AddChild(own == null
-                ? NavigationButton("flow-create", OpenCreate, _view == SetupView.Create, !state.CanJoin)
-                : NavigationButton("flow-my-lobby", () => Navigate(SetupView.MyLobby), _view == SetupView.MyLobby));
+            if (own == null)
+            {
+                _navigation.AddChild(NavigationButton("join-home", () => Navigate(SetupView.Join), _view == SetupView.Join));
+                _navigation.AddChild(NavigationButton("flow-browse", () => Navigate(SetupView.Browse), _view == SetupView.Browse));
+                _navigation.AddChild(NavigationButton("flow-create", OpenCreate, _view == SetupView.Create, !state.CanJoin));
+            }
             switch (_view)
             {
                 case SetupView.Join: BuildJoin(state); break;
@@ -317,24 +320,20 @@ public sealed partial class WFRoundSetupWindow
             pages.Add((LobbyPage.Admission, "admission"));
         if (!pages.Any(page => page.Page == _lobbyPage))
             _lobbyPage = LobbyPage.Overview;
-        Container sections = _compact ? new ScenarioColumns { HorizontalExpand = true } : Column(6);
-        sections.Name = "RoundSetupSections";
+        var sections = new ScenarioColumns { Name = "RoundSetupSections", HorizontalExpand = true };
         foreach (var (page, label) in pages)
             sections.AddChild(NavigationButton(label, () => NavigateLobby(page), _lobbyPage == page));
-        if (_compact)
-            _body.AddChild(sections);
+        _navigation.AddChild(sections);
+        if (_lobbyPage == LobbyPage.Ship)
+        {
+            _pageScroll.Visible = false;
+            _shipPage.Visible = true;
+        }
         else
         {
-            _sidebarScroll.Visible = true;
-            _sidebar.AddChild(Heading("flow-my-lobby"));
-            _sidebar.AddChild(PlainDescription(ScenarioName(lobby.Scenario)));
-            _sidebar.AddChild(sections);
+            _body.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
+                ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
         }
-        var heading = PlainDescription(LobbyTitle(lobby));
-        heading.AddStyleClass("WFRoundSetupHeading");
-        _body.AddChild(heading);
-        _body.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
-            ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
         switch (_lobbyPage)
         {
             case LobbyPage.Ship: BuildShipSettings(state, lobby, host); break;

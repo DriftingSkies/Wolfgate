@@ -150,7 +150,6 @@
     -->
     <!-- WOLFGATE END -->
     <!-- WOLFGATE(RoundSetup) START: a unified preparation screen with character, crew and communication areas -->
-    <PanelContainer Name="HomeBackdrop" StyleClasses="WFRoundSetupBackdrop" HorizontalExpand="True" VerticalExpand="True" />
     <BoxContainer Name="MainContainer" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True"
                   Margin="20 16" SeparationOverride="12">
         <roundSetup:WFLobbyLayout Name="LobbyWorkspace" DockChat="True" HorizontalExpand="True" VerticalExpand="True">
@@ -169,7 +168,7 @@
                             </ScrollContainer>
                             <Button Name="CustomizeButton" Access="Public" Text="{Loc 'wf-round-setup-home-customize'}" MinHeight="36" />
                             <RichTextLabel Name="NormalJoinHelp" Access="Public" StyleClasses="WFRoundSetupMuted" HorizontalExpand="True" />
-                            <Button Name="RoundSetupButton" Access="Public" Text="{Loc 'wf-round-setup-home-setup'}" MinHeight="40" />
+                            <Button Name="RoundSetupButton" Access="Public" Text="{Loc 'wf-round-setup-home-setup'}" MinHeight="64" />
                             <Button Name="ReadyButton" Access="Public" Text="{Loc 'wf-round-setup-home-ready'}" MinHeight="64" />
                         </BoxContainer>
                     </PanelContainer>
@@ -213,6 +212,6 @@
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>
-    <PanelContainer Name="SkinScanlines" StyleClasses="LobbyScanlines" MouseFilter="Ignore" />
+    <PanelContainer Name="SkinScanlines" StyleClasses="LobbyScanlines" MouseFilter="Ignore" Visible="False" />
     <!-- WOLFGATE END -->
 </lobbyUi:LobbyGui>

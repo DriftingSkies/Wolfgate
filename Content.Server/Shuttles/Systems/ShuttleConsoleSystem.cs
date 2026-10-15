@@ -644,6 +644,11 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
         if (owningStation == null)
             return;
 
+        // WOLFGATE(RoundSetup) START: scenario crew admission is independent of helm power
+        if (WFHasCrewAdmission(owningStation.Value))
+            return;
+        // WOLFGATE END
+
         // Check if the grid has any powered shuttle consoles
         var hasPoweredConsole = HasPoweredShuttleConsole(gridUid);
 

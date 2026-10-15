@@ -24,47 +24,22 @@ public sealed partial class WFRoundSetupWindow
             : Description("ship-selection-unavailable");
     }
 
-    /// <summary>Previews an explicit ship selection while reserving payment for confirmed launch.</summary>
+    /// <summary>Keeps vessel selection, departure and the preview together in the available page.</summary>
     private void BuildShipSettings(WFRoundSetupState state, WFRoundSetupLobby lobby, bool host)
     {
         var section = Column(8);
-        section.AddChild(Heading("ship"));
-        section.AddChild(VesselSummary(state, lobby));
-        section.AddChild(Heading("ship-start"));
-        if (host && !lobby.Started)
-        {
-            var location = new WFRoundSetupOptionButton { Name = "RoundSetupShipStart", HorizontalExpand = true };
-            location.AddItem(Text("ship-start-random"), (int) WFShipStartLocation.RandomSpace);
-            location.AddItem(Text("ship-start-central"), (int) WFShipStartLocation.CentralDock);
-            location.SelectId((int) lobby.ShipStart);
-            location.OnItemSelected += args => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectShipStart)
-            {
-                LobbyId = lobby.Id,
-                ShipStart = (WFShipStartLocation) args.Id,
-            });
-            section.AddChild(location);
-        }
-        section.AddChild(Description(lobby.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central-help" : "ship-start-random-help"));
         var preview = GetShipPreview();
+        section.AddChild(Heading("ship"));
         if (!host || lobby.Started)
         {
             var vessel = PreviewVessel(lobby.Vessel);
+            var summary = VesselSummary(state, lobby);
+            summary.ToolTip = vessel?.Description;
+            section.AddChild(summary);
+            section.AddChild(Heading("ship-start"));
+            section.AddChild(Description(lobby.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central" : "ship-start-random"));
             preview.SetVessel(vessel);
-            if (vessel != null)
-                section.AddChild(PlainDescription(vessel.Description));
-            AddShipPreviewLayout(section, preview);
-            return;
-        }
-        section.AddChild(PlainDescription(state.HostBalance is { } balance
-            ? Text("ship-balance", ("balance", Price(balance))) : Text("ship-bank-help")));
-        var purchased = state.Vessels.FirstOrDefault(choice => choice.Id == lobby.Vessel);
-        if (purchased != null && state.HostBalance is { } funds && funds < purchased.Price)
-            section.AddChild(Description("ship-insufficient-help"));
-        section.AddChild(Description("ship-purchase-help"));
-        if (state.Vessels.Length == 0)
-        {
-            section.AddChild(Description("ship-empty"));
-            preview.SetVessel(PreviewVessel(lobby.Vessel));
+            preview.ToolTip = vessel?.Description;
             AddShipPreviewLayout(section, preview);
             return;
         }
@@ -84,10 +59,9 @@ public sealed partial class WFRoundSetupWindow
         var selected = Array.FindIndex(state.Vessels, vessel => vessel.Id == (_selectedVessel ?? lobby.Vessel));
         selector.SelectId(selected);
         var choice = selected >= 0 ? state.Vessels[selected] : null;
-        var choiceLabel = PlainDescription(choice == null ? Text("ship-select-help") :
-            Text("preview-choice", ("ship", choice.Name), ("price", Price(choice.Price))));
-        var detail = PlainDescription(choice?.Description ?? string.Empty);
+        selector.ToolTip = choice?.Description;
         preview.SetVessel(PreviewVessel(choice?.Id));
+        preview.ToolTip = choice?.Description;
         var select = Button("select-ship", () =>
         {
             if (selector.SelectedId < 0)
@@ -97,20 +71,34 @@ public sealed partial class WFRoundSetupWindow
             SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectVessel) { LobbyId = lobby.Id, Vessel = vessel.Id });
         }, selected < 0);
         select.Name = "RoundSetupSelectShip";
+        select.ToolTip = Text("ship-purchase-help");
         selector.OnItemSelected += args =>
         {
             selector.SelectId(args.Id);
             var vessel = args.Id < 0 ? null : state.Vessels[args.Id];
             _selectedVessel = vessel?.Id;
-            choiceLabel.SetMessage(Robust.Shared.Utility.FormattedMessage.FromUnformatted(vessel == null
-                ? Text("ship-select-help") : Text("preview-choice", ("ship", vessel.Name), ("price", Price(vessel.Price)))));
-            detail.SetMessage(Robust.Shared.Utility.FormattedMessage.FromUnformatted(vessel?.Description ?? string.Empty));
+            selector.ToolTip = vessel?.Description;
+            preview.ToolTip = vessel?.Description;
             preview.SetVessel(PreviewVessel(vessel?.Id));
             select.Disabled = vessel == null;
         };
         section.AddChild(selector);
-        section.AddChild(choiceLabel);
-        section.AddChild(detail);
+        section.AddChild(PlainDescription(state.HostBalance is { } balance
+            ? Text("ship-balance", ("balance", Price(balance))) : Text("ship-bank-help")));
+        if (state.Vessels.Length == 0)
+            section.AddChild(Description("ship-empty"));
+        section.AddChild(Heading("ship-start"));
+        var location = new WFRoundSetupOptionButton { Name = "RoundSetupShipStart", HorizontalExpand = true };
+        location.AddItem(Text("ship-start-random"), (int) WFShipStartLocation.RandomSpace);
+        location.AddItem(Text("ship-start-central"), (int) WFShipStartLocation.CentralDock);
+        location.SelectId((int) lobby.ShipStart);
+        location.ToolTip = Text(lobby.ShipStart == WFShipStartLocation.CentralDock ? "ship-start-central-help" : "ship-start-random-help");
+        location.OnItemSelected += args => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectShipStart)
+        {
+            LobbyId = lobby.Id,
+            ShipStart = (WFShipStartLocation) args.Id,
+        });
+        section.AddChild(location);
         section.AddChild(select);
         AddShipPreviewLayout(section, preview);
     }

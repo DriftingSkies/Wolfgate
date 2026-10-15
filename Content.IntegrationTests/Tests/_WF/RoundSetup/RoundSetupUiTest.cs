@@ -273,6 +273,9 @@ public sealed class RoundSetupUiTest
             foreach (var button in new[] { screen.ReadyButton, screen.RoundSetupButton, screen.CustomizeButton })
                 Assert.That(button.Label.Align, Is.EqualTo(Label.AlignMode.Center));
             Assert.That(Named<Control>(screen, "CharacterCard").Width, Is.EqualTo(280), "Character preparation keeps its original width.");
+            Assert.That(screen.RoundSetupButton.Height, Is.EqualTo(screen.ReadyButton.Height));
+            Assert.That(Descendants(screen).Any(control => control.Name == "HomeBackdrop"), Is.False);
+            Assert.That(Named<Control>(screen, "SkinScanlines").Visible, Is.False);
             Assert.That(screen.CharacterPreview.CharacterSetupButton.Visible, Is.False, "Only one character edit action is shown.");
             var vote = new VotePopup(new VoteManager.ActiveVote(1)
             {
@@ -381,8 +384,11 @@ public sealed class RoundSetupUiTest
     }
 
     /// <summary>Ship browsing loads the real preview without selecting or buying, and releases its map when leaving.</summary>
-    [Test]
-    public async Task ShipPreviewLoadsBeforeSelectionAndReleasesAfterNavigation()
+    [TestCase(800, 600)]
+    [TestCase(1090, 720)]
+    [TestCase(1280, 720)]
+    [TestCase(1920, 1080)]
+    public async Task ShipPreviewLoadsBeforeSelectionAndReleasesAfterNavigation(int width, int height)
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Ship });
@@ -397,14 +403,14 @@ public sealed class RoundSetupUiTest
         {
             originalMaps = maps.GetAllMapIds().ToHashSet();
             window = new WFRoundSetupWindow();
-            window.FitTo(new Vector2(1280, 720));
+            window.FitTo(new Vector2(width, height));
             window.OpenCentered();
             window.ShowLobby(lobbyId);
         });
         await pair.RunTicksSync(2);
         await pair.Client.WaitAssertion(() =>
         {
-            AssertFits(window, new Vector2(1280, 720));
+            AssertFits(window, new Vector2(width, height));
             shipPage = Buttons(Named<Control>(window, "RoundSetupSections"), "ship").Single();
         });
         await Click(pair, shipPage);
@@ -412,10 +418,17 @@ public sealed class RoundSetupUiTest
         OptionButton selector = null!;
         await pair.Client.WaitAssertion(() =>
         {
-            AssertFits(window, new Vector2(1280, 720));
+            AssertFits(window, new Vector2(width, height));
             preview = Named<ShipPreviewControl>(window, "RoundSetupShipPreview");
             selector = Named<OptionButton>(window, "RoundSetupShipSelector");
             Assert.That(preview.HasPreview, Is.False, "Opening ship options must not choose a vessel implicitly.");
+            Assert.That(Named<ScrollContainer>(window, "RoundSetupPageScroll").Visible, Is.False);
+            Assert.That(Descendants(Named<Control>(window, "RoundSetupShipPage")).OfType<ScrollContainer>(), Is.Empty);
+            var navigation = Named<Control>(window, "RoundSetupNavigation");
+            Assert.That(Buttons(navigation, "join-home"), Is.Empty);
+            Assert.That(Buttons(navigation, "flow-browse"), Is.Empty);
+            Assert.That(Buttons(navigation, "flow-create"), Is.Empty);
+            Assert.That(Named<Control>(window, "RoundSetupSections").GlobalPosition.Y, Is.LessThan(preview.GlobalPosition.Y));
         });
         await Click(pair, selector);
         Button option = null!;
@@ -428,6 +441,8 @@ public sealed class RoundSetupUiTest
         });
         await Click(pair, option);
         await PoolManager.WaitUntil(pair.Client, () => preview.HasPreview, maxTicks: 30);
+        await PoolManager.WaitUntil(pair.Client, () => Descendants(selector).OfType<RichTextLabel>()
+            .Any(label => label.GetFormattedMessage()?.ToString().Contains(vessel.Name) == true), maxTicks: 30);
         await pair.Client.WaitAssertion(() =>
         {
             Assert.That(preview.TileCount, Is.Positive, "The ship preview must load actual grid tiles.");
@@ -559,8 +574,11 @@ public sealed class RoundSetupUiTest
         var page = Named<Control>(window, "RoundSetupPage");
         var scroll = Named<ScrollContainer>(window, "RoundSetupPageScroll");
         Assert.That(scroll.HScrollEnabled, Is.False);
-        Assert.That(scroll.Height, Is.GreaterThan(100), "Leave usable space for the scrolling page.");
-        Assert.That(page.Width, Is.LessThanOrEqualTo(scroll.Width + 1));
+        if (scroll.Visible)
+        {
+            Assert.That(scroll.Height, Is.GreaterThan(100), "Leave usable space for the scrolling page.");
+            Assert.That(page.Width, Is.LessThanOrEqualTo(scroll.Width + 1));
+        }
         Assert.That(size.X, Is.LessThanOrEqualTo(viewport.X - 32 + 1));
         Assert.That(size.Y, Is.LessThanOrEqualTo(viewport.Y - 32 + 1));
         foreach (var button in Descendants(window).Where(control => control.VisibleInTree &&

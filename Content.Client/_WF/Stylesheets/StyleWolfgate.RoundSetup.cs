@@ -26,8 +26,6 @@ public sealed partial class StyleWolfgate
         };
         return new StyleRule[]
         {
-            Element<PanelContainer>().Class("WFRoundSetupBackdrop")
-                .Prop(PanelContainer.StylePropertyPanel, new StyleBoxFlat { BackgroundColor = Ink.WithAlpha(0.78f) }),
             Element<PanelContainer>().Class("WFRoundSetupSurface")
                 .Prop(PanelContainer.StylePropertyPanel, surface),
             Element<PanelContainer>().Class("WFRoundSetupCard")

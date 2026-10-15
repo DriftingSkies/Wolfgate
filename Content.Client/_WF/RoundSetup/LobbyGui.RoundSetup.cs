@@ -10,7 +10,6 @@ public sealed partial class LobbyGui
     /// <summary>Fits character preparation and centers its primary actions.</summary>
     private void InitializeRoundSetupHome()
     {
-        SetAnchorPreset(HomeBackdrop, LayoutPreset.Wide);
         CharacterPreview.UseRoundSetupCard();
         foreach (var button in new[] { ReadyButton, RoundSetupButton, CustomizeButton })
         {
