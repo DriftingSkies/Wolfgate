@@ -43,7 +43,7 @@ public sealed class RoundSetupUiTest
         await pair.Client.WaitAssertion(() =>
         {
             var screen = (LobbyGui) ui.ActiveScreen!;
-            Assert.That(Descendants(screen).OfType<WFRoundSetupLobbyPanel>(), Is.Empty);
+            Assert.That(Descendants(screen).OfType<WFRoundSetupLobbyPanel>().Count(), Is.EqualTo(1));
             Assert.That(Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>(), Is.Empty);
             crew = screen.RoundSetupButton;
         });
@@ -56,6 +56,52 @@ public sealed class RoundSetupUiTest
             Assert.That(pair.Client.System<WFRoundSetupClientSystem>().State!.OwnLobby, Is.Null);
             window.Close();
         });
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Compact rows open crew details without changing membership or readiness.</summary>
+    [Test]
+    public async Task CompactCrewRowOpensDetailsAndKeepsWelcomeAtBottom()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create)
+        {
+            Scenario = WFRoundScenario.Ship, Title = "Mercy medical crew",
+        });
+        var id = state.OwnLobby!.Value;
+        var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
+        Button row = null!;
+        await pair.Client.WaitAssertion(() =>
+        {
+            var screen = (LobbyGui) ui.ActiveScreen!;
+            row = Named<WFRoundSetupCrewRow>(screen, "RoundSetupCrewRow" + id);
+            Assert.That(row.Height, Is.EqualTo(34));
+            Assert.That(Labels(row), Does.Contain("Mercy medical crew"));
+            Assert.That(screen.ServerInfo.Parent!.Parent!.Height -
+                (screen.ServerInfo.Parent.Position.Y + screen.ServerInfo.Parent.Height), Is.LessThanOrEqualTo(1));
+        });
+        await Click(pair, row);
+        await pair.Client.WaitAssertion(() =>
+        {
+            var window = Descendants(ui.WindowRoot).OfType<WFRoundSetupWindow>().Single();
+            Assert.That(window.Title, Is.EqualTo("Mercy medical crew"));
+            Assert.That(Descendants(window).OfType<SpriteView>().Any(), Is.True);
+            Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.False);
+            var snapshot = pair.Client.System<WFRoundSetupClientSystem>().State!;
+            Assert.That(snapshot.OwnLobby, Is.EqualTo(id));
+            var original = snapshot.Lobbies;
+            snapshot.Lobbies = original.Append(new WFRoundSetupLobby
+            {
+                Id = id + 1000, Title = "Visiting crew", Scenario = WFRoundScenario.Ship, Access = WFLobbyAccess.Public,
+            }).ToArray();
+            window.ShowLobby(id + 1000);
+            Assert.That(Labels(window), Does.Contain("Visiting crew"), "An existing member can inspect other crews without leaving.");
+            Assert.That(Buttons(window, "join").Single().Disabled, Is.True);
+            Assert.That(snapshot.OwnLobby, Is.EqualTo(id));
+            snapshot.Lobbies = original;
+            window.Close();
+        });
+        await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Leave) { LobbyId = id });
         await pair.CleanReturnAsync();
     }
 
@@ -85,11 +131,10 @@ public sealed class RoundSetupUiTest
             AssertFits(window, viewport);
             Assert.That(window.Size.X, Is.EqualTo(Math.Min(1120, width - 32)));
             Assert.That(pair.Client.System<ClientGameTicker>().AreWeReady, Is.False);
-            Assert.That(Named<Button>(window, "RoundSetupJoinNormally").Disabled, Is.False);
-            button = Named<Button>(window, "RoundSetupJoinLobby");
+            Assert.That(Buttons(window, "join-home"), Is.Empty);
+            Assert.That(Descendants(Named<Control>(window, "RoundSetupNavigation")).OfType<Button>().Count(), Is.EqualTo(2));
+            button = Buttons(window, "flow-create").Single();
         });
-        await Click(pair, button);
-        await pair.Client.WaitPost(() => button = Buttons(window, "flow-create").Single());
         await Click(pair, button);
         await pair.Client.WaitAssertion(() =>
         {
@@ -270,6 +315,9 @@ public sealed class RoundSetupUiTest
             }
             Assert.That(screen.RightSide.GlobalPosition.X, Is.GreaterThan(screen.ReadyButton.GlobalPosition.X));
             Assert.That(screen.ServerInfo.VisibleInTree, Is.True);
+            Assert.That(screen.ServerInfo.GlobalPosition.Y, Is.GreaterThan(screen.RoundSetupButton.GlobalPosition.Y));
+            Assert.That(Named<Control>(screen, "ActiveCrews").GlobalPosition.Y,
+                Is.GreaterThanOrEqualTo(screen.LeaveButton.GlobalPosition.Y + screen.LeaveButton.Height));
             Assert.That(screen.ServerInfo.GlobalPosition.X, Is.LessThan(screen.Chat.GlobalPosition.X));
             foreach (var button in new[] { screen.ReadyButton, screen.RoundSetupButton, screen.CustomizeButton })
                 Assert.That(button.Label.Align, Is.EqualTo(Label.AlignMode.Left));

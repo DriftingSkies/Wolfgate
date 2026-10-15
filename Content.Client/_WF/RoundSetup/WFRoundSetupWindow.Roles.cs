@@ -21,7 +21,7 @@ public sealed partial class WFRoundSetupWindow
 
     private string RoleName(WFRoundSetupRole role) => string.IsNullOrEmpty(role.Name) ? JobName(role.Job) : role.Name;
 
-    private string RoleChoice(WFRoundSetupRole role) => Text(string.IsNullOrEmpty(role.Name) ? "role-choice" : "role-choice-job", ("role", RoleName(role)),
+    private string RoleChoice(WFRoundSetupRole role) => Text(string.IsNullOrEmpty(role.Name) || role.Name == JobName(role.Job) ? "role-choice" : "role-choice-job", ("role", RoleName(role)),
         ("job", JobName(role.Job)), ("open", Math.Max(0, role.Capacity - role.Occupied)), ("capacity", role.Capacity));
 
     private string MemberRoleName(WFRoundSetupLobby lobby, WFRoundSetupMember member)
@@ -69,17 +69,33 @@ public sealed partial class WFRoundSetupWindow
         _body.AddChild(picker);
     }
 
+    /// <summary>Lets the host occupy an advertised captain or specialist slot without privileged job substitution.</summary>
+    private void BuildHostRoleChoice(WFRoundSetupLobby lobby, WFRoundSetupMember member)
+    {
+        if (lobby.Roles.Length == 0)
+            return;
+        var selector = new WFRoundSetupOptionButton { Name = "RoundSetupHostRole", HorizontalExpand = true, Disabled = member.Ready };
+        selector.AddItem(Text("host-independent-job"), -1);
+        foreach (var role in lobby.Roles.Where(role => role.CanSelect || role.Id == member.RoleId))
+            selector.AddItem(RoleChoice(role), role.Id);
+        selector.SelectId(member.RoleId ?? -1);
+        selector.OnItemSelected += args => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.SelectRole)
+        {
+            LobbyId = lobby.Id, RoleId = args.Id < 0 ? null : args.Id,
+        });
+        _body.AddChild(Heading("host-position"));
+        _body.AddChild(selector);
+    }
+
     private string JobChoice(WFRoundSetupJob job) => string.IsNullOrEmpty(job.StationName)
         ? JobName(job.Id) : Text("job-station", ("job", JobName(job.Id)), ("station", job.StationName));
 
     /// <summary>Shows advertised slots and remembers the visitor's requested role.</summary>
     private bool BuildBrowseRoles(BoxContainer content, WFRoundSetupLobby lobby, bool available)
     {
-        var openings = lobby.Roles.Select(role => Text("role-opening", ("role", RoleName(role)),
-            ("open", Math.Max(0, role.Capacity - role.Occupied))));
         content.AddChild(Heading("roles"));
-        foreach (var opening in openings)
-            content.AddChild(PlainDescription(opening));
+        foreach (var role in lobby.Roles)
+            content.AddChild(Row(WFRoundSetupCrewRow.JobIcon(role.Job), PlainDescription(RoleChoice(role))));
         var choices = lobby.Roles.Where(role => role.CanSelect).ToArray();
         if (choices.Length == 0)
         {
@@ -142,7 +158,16 @@ public sealed partial class WFRoundSetupWindow
     {
         _body.AddChild(Heading("roles"));
         _body.AddChild(Description(lobby.Roles.Length == 0 ? "roles-empty-host" : "roles-help"));
-        var canAdd = lobby.Roles.Length < WFRoundSetupPolicy.MaximumRoles && state.Jobs.Length > 0;
+        if (lobby.Scenario == WFRoundScenario.Ship)
+        {
+            _body.AddChild(Description("ship-roster-help"));
+            _body.AddChild(FlowRow(Enum.GetValues<WFCrewRoster>().Select(roster =>
+                Button("roster-" + roster.ToString().ToLowerInvariant(), () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.ApplyRoster)
+                {
+                    LobbyId = lobby.Id, Roster = roster,
+                }))).ToArray()));
+        }
+        var canAdd = lobby.Roles.Length < WFRoundSetupPolicy.MaximumRoles && state.RoleJobs.Length > 0;
         var selected = lobby.Roles.FirstOrDefault(role => role.Id == _editingRole);
         if (selected != null || _editingRole == 0 && canAdd)
         {
@@ -157,10 +182,15 @@ public sealed partial class WFRoundSetupWindow
         }
         foreach (var role in lobby.Roles)
         {
-            var card = Column(8);
-            card.AddChild(PlainDescription(RoleChoice(role)));
-            card.AddChild(Button("role-edit", () => { _editingRole = role.Id; Redraw(); }));
-            _body.AddChild(Panel(card));
+            var entry = new Button { HorizontalExpand = true, MinHeight = 40, ToolTip = Text("role-edit") };
+            entry.Label.Visible = false;
+            var content = Row(WFRoundSetupCrewRow.JobIcon(role.Job), PlainDescription(RoleChoice(role)));
+            content.MouseFilter = MouseFilterMode.Ignore;
+            foreach (var child in content.Children)
+                child.MouseFilter = MouseFilterMode.Ignore;
+            entry.AddChild(content);
+            entry.OnPressed += _ => { _editingRole = role.Id; Redraw(); };
+            _body.AddChild(entry);
         }
         _body.AddChild(Button("role-new", () => { _editingRole = 0; Redraw(); }, !canAdd));
     }
@@ -174,8 +204,8 @@ public sealed partial class WFRoundSetupWindow
             {
                 Name = role?.Name ?? string.Empty,
                 Capacity = role?.Capacity ?? 1,
-                Job = role == null ? state.Jobs.FirstOrDefault() :
-                    state.Jobs.FirstOrDefault(job => job.Id == role.Job && job.Station == role.Station)
+                Job = role == null ? state.RoleJobs.FirstOrDefault() :
+                    state.RoleJobs.FirstOrDefault(job => job.Id == role.Job && job.Station == role.Station)
                     ?? new WFRoundSetupJob(role.Job, role.Station, string.Empty),
             };
             _roleDrafts[draftId] = draft;
@@ -196,10 +226,10 @@ public sealed partial class WFRoundSetupWindow
         name.OnTextChanged += _ => { draft.Name = name.Text; draft.Dirty = true; };
         content.AddChild(Heading("role-name"));
         content.AddChild(name);
-        var jobs = new List<WFRoundSetupJob>(state.Jobs);
+        var jobs = new List<WFRoundSetupJob>(state.RoleJobs);
         if (draft.Job is { } current && !jobs.Contains(current))
             jobs.Add(current);
-        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Disabled = occupied > 0 || jobs.Count == 0 };
+        var selector = new WFRoundSetupOptionButton { HorizontalExpand = true, Filterable = true, Disabled = occupied > 0 || jobs.Count == 0 };
         for (var i = 0; i < jobs.Count; i++)
         {
             var job = jobs[i];

@@ -37,6 +37,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
     private sealed class Member
     {
         public string Name = string.Empty;
+        public WFCrewPortrait? Portrait;
         public string? Job;
         public NetEntity? Station;
         public int? RoleId;
@@ -325,6 +326,8 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 lobby.Vessel = msg.Vessel;
                 UnreadyMembers(lobby);
                 return true;
+            case WFRoundSetupAction.ApplyRoster:
+                return ApplyRoster(lobby, msg.Roster);
             case WFRoundSetupAction.UpsertRole:
                 return UpsertRole(lobby, session, msg);
             case WFRoundSetupAction.RemoveRole:
@@ -376,6 +379,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
     /// <summary>Registers validated membership and resets any competing admission or readiness state.</summary>
     private void RegisterMember(Lobby lobby, ICommonSession session, Member member)
     {
+        UpdatePortrait(session.UserId, member);
         lobby.Members.Add(session.UserId, member);
         foreach (var other in _lobbies.Values)
         {
@@ -421,14 +425,23 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         ? _ticker.PlayerGameStatuses.GetValueOrDefault(user) == PlayerGameStatus.ReadyToPlay
         : member.Ready;
 
+    /// <summary>Snapshots visible appearance without sending preferences, traits or account data.</summary>
+    private void UpdatePortrait(NetUserId user, Member member)
+    {
+        if (!member.Spawned && _preferences.GetPreferencesOrNull(user)?.SelectedCharacter is Content.Shared.Preferences.HumanoidCharacterProfile profile)
+            member.Portrait = new WFCrewPortrait(profile.Name, profile.Species.Id, profile.Sex, profile.Appearance.Clone());
+    }
+
     /// <summary>Includes private member and admission details only for authorized recipients.</summary>
     private WFRoundSetupLobby Snapshot(Lobby lobby, NetUserId user)
     {
+        UpdatePortrait(lobby.Host, lobby.Members[lobby.Host]);
         var member = lobby.Members.ContainsKey(user);
         var host = lobby.Host == user;
         return new WFRoundSetupLobby
         {
             Id = lobby.Id, Host = lobby.Host, HostName = lobby.Members[lobby.Host].Name, Title = lobby.Title,
+            HostJob = lobby.Members[lobby.Host].Job, Portrait = lobby.Members[lobby.Host].Portrait,
             Scenario = lobby.Scenario, Access = lobby.Access, AllowLateJoin = lobby.AllowLateJoin,
             Started = lobby.Started, MemberCount = lobby.Members.Count, Vessel = lobby.Vessel, ShipStart = lobby.ShipStart,
             Roles = SnapshotRoles(lobby, user),
@@ -459,6 +472,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             InviteTargets = own?.Host == session.UserId ? _players.Sessions.Where(s => CanEnter(s) && FindLobby(s.UserId) == null)
                 .Select(s => new WFRoundSetupPlayer(s.UserId, s.Name)).ToArray() : Array.Empty<WFRoundSetupPlayer>(),
             Jobs = own != null && (CanEnter(session) || own.Host == session.UserId) ? GetJobs(session, own).ToArray() : Array.Empty<WFRoundSetupJob>(),
+            RoleJobs = own?.Host == session.UserId ? GetRoleJobs(session, own).ToArray() : Array.Empty<WFRoundSetupJob>(),
             Vessels = shipHost ? _ships.GetVessels().ToArray() : Array.Empty<WFRoundSetupVessel>(),
             HostBalance = shipHost ? _ships.GetBalance(session) : null,
             Message = message == null ? null : Loc.GetString(message),

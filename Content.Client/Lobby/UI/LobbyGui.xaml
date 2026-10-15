@@ -182,8 +182,11 @@
                                         Text="{Loc 'ui-lobby-ahelp-nav-button'}" StyleClasses="LobbyNav" />
                                 <Button Name="LeaveButton" Access="Public" TextAlign="Left"
                                         Text="{Loc 'ui-lobby-leave-nav-button'}" StyleClasses="LobbyNav" />
-                                <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" Margin="0 20 0 0" />
+                                <roundSetup:WFRoundSetupLobbyPanel Name="ActiveCrews" Margin="0 12 0 0" />
                             </BoxContainer>
+                        </ScrollContainer>
+                        <ScrollContainer HScrollEnabled="False" ReturnMeasure="True" MaxHeight="120" Margin="0 12 0 0">
+                            <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" />
                         </ScrollContainer>
                     </BoxContainer>
                     <BoxContainer Name="CharacterHero" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="0 16" SeparationOverride="8">

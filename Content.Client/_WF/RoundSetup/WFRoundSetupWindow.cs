@@ -128,7 +128,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private Control LobbyCard(WFRoundSetupState state, WFRoundSetupLobby lobby, bool invitation)
     {
         var content = Column(12);
-        content.AddChild(PlainDescription(LobbyTitle(lobby)));
+        content.AddChild(CrewIdentity(lobby));
         content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
 
@@ -285,9 +285,11 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             _body.AddChild(characters);
         }
 
+        if (lobby.Host == member.UserId)
+            BuildHostRoleChoice(lobby, member);
         if (member.RoleId == null)
             BuildPersonalJobSetup(state, lobby, member);
-        else
+        else if (lobby.Host != member.UserId)
             BuildMemberRoles(lobby, member);
 
     }
@@ -298,7 +300,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         return first.InRound == second.InRound && first.CanJoin == second.CanJoin && first.OwnLobby == second.OwnLobby &&
                first.CrashlandedAvailable == second.CrashlandedAvailable && first.HostBalance == second.HostBalance &&
                first.Vessels.SequenceEqual(second.Vessels) &&
-               first.Jobs.SequenceEqual(second.Jobs) && first.InviteTargets.SequenceEqual(second.InviteTargets) &&
+               first.Jobs.SequenceEqual(second.Jobs) && first.RoleJobs.SequenceEqual(second.RoleJobs) && first.InviteTargets.SequenceEqual(second.InviteTargets) &&
                first.Lobbies.Length == second.Lobbies.Length && first.Invitations.Length == second.Invitations.Length &&
                first.Lobbies.Zip(second.Lobbies).All(pair => SameLobby(pair.First, pair.Second)) &&
                first.Invitations.Zip(second.Invitations).All(pair => SameLobby(pair.First, pair.Second));
@@ -306,7 +308,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
 
     private static bool SameLobby(WFRoundSetupLobby first, WFRoundSetupLobby second)
     {
-        return first.Id == second.Id && first.Host == second.Host && first.HostName == second.HostName && first.Title == second.Title &&
+        return first.Id == second.Id && first.Host == second.Host && first.HostJob == second.HostJob && Equals(first.Portrait, second.Portrait) && first.HostName == second.HostName && first.Title == second.Title &&
                first.Scenario == second.Scenario && first.ShipStart == second.ShipStart && first.Access == second.Access && first.AllowLateJoin == second.AllowLateJoin &&
                first.Started == second.Started && first.MemberCount == second.MemberCount && first.Code == second.Code &&
                first.Vessel == second.Vessel && first.Roles.SequenceEqual(second.Roles) &&
@@ -344,7 +346,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     }
 
     private static string LobbyTitle(WFRoundSetupLobby lobby) => string.IsNullOrEmpty(lobby.Title)
-        ? Text("lobby-title", ("host", lobby.HostName), ("scenario", ScenarioName(lobby.Scenario))) : lobby.Title;
+        ? Text("lobby-title", ("host", lobby.Portrait?.Name ?? lobby.HostName), ("scenario", ScenarioName(lobby.Scenario))) : lobby.Title;
 
     private static string ScenarioName(WFRoundScenario scenario) => Text(scenario switch
     {

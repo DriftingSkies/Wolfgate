@@ -80,6 +80,12 @@ public sealed partial class WFRoundSetupSystem
     /// <summary>Updates a member's own reservation without changing anybody else's selected role.</summary>
     private bool SelectRole(Lobby lobby, ICommonSession session, int? roleId)
     {
+        if (roleId == null && lobby.Host == session.UserId && lobby.Members.TryGetValue(session.UserId, out var host) && !host.Spawned)
+        {
+            host.RoleId = null;
+            UnreadyMember(session.UserId, host);
+            return true;
+        }
         if (roleId == null || !lobby.Members.TryGetValue(session.UserId, out var member) || member.Spawned ||
             !TryGetRole(lobby, session, roleId, out var role))
             return false;
@@ -113,6 +119,31 @@ public sealed partial class WFRoundSetupSystem
         return false;
     }
 
+    /// <summary>Recruiters may advertise ship professions they cannot personally play.</summary>
+    private List<WFRoundSetupJob> GetRoleJobs(ICommonSession host, Lobby lobby) => lobby.Scenario == WFRoundScenario.Ship
+        ? WFShipCrewJobs.Jobs.Where(job => _prototypes.HasIndex<Content.Shared.Roles.JobPrototype>(job))
+            .Select(job => new WFRoundSetupJob(job, null, string.Empty)).ToList()
+        : GetJobs(host, lobby);
+
+    /// <summary>Adds missing preset openings without changing occupied roles or existing recruitment choices.</summary>
+    private bool ApplyRoster(Lobby lobby, WFCrewRoster roster)
+    {
+        if (lobby.Scenario != WFRoundScenario.Ship || !Enum.IsDefined(roster))
+            return false;
+        var additions = WFShipCrewJobs.Roster(roster)
+            .Select(role => (Name: Loc.GetString("wf-round-setup-roster-role-" + role.Name), role.Job, role.Capacity))
+            .Where(role => !lobby.Roles.Values.Any(existing => existing.Name == role.Name && existing.Job == role.Job)).ToArray();
+        if (lobby.Roles.Count + additions.Length > WFRoundSetupPolicy.MaximumRoles ||
+            additions.Any(role => !_prototypes.HasIndex<Content.Shared.Roles.JobPrototype>(role.Job)))
+            return false;
+        foreach (var role in additions)
+        {
+            var id = ++lobby.NextRoleId;
+            lobby.Roles.Add(id, new LobbyRole { Id = id, Name = role.Name, Job = role.Job, Capacity = role.Capacity });
+        }
+        return true;
+    }
+
     /// <summary>Allows bounded host edits without changing occupied jobs or spawned identities.</summary>
     private bool UpsertRole(Lobby lobby, ICommonSession host, WFRoundSetupRequest msg)
     {
@@ -122,7 +153,7 @@ public sealed partial class WFRoundSetupSystem
         if (msg.RoleId is not { } roleId)
         {
             if (lobby.Roles.Count >= WFRoundSetupPolicy.MaximumRoles ||
-                !GetJobs(host, lobby).Any(job => job.Id == msg.Job && job.Station == msg.Station))
+                !GetRoleJobs(host, lobby).Any(job => job.Id == msg.Job && job.Station == msg.Station))
                 return false;
             var role = new LobbyRole
             {
@@ -140,7 +171,7 @@ public sealed partial class WFRoundSetupSystem
         if (changedJob && occupants.Length > 0 ||
             (changedJob || existing.Name != name) && occupants.Any(member => member.Spawned))
             return false;
-        if (changedJob && !GetJobs(host, lobby).Any(job => job.Id == msg.Job && job.Station == msg.Station))
+        if (changedJob && !GetRoleJobs(host, lobby).Any(job => job.Id == msg.Job && job.Station == msg.Station))
             return false;
         existing.Name = name;
         existing.Job = msg.Job;

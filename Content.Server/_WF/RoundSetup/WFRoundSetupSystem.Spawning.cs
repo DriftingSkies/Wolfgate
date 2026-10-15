@@ -71,7 +71,7 @@ public sealed partial class WFRoundSetupSystem
             return choices;
         if (lobby.Scenario != WFRoundScenario.Normal)
         {
-            foreach (var job in WFCrashScenarioSystem.AllowedJobs)
+            foreach (var job in lobby.Scenario == WFRoundScenario.Ship ? WFShipCrewJobs.Jobs : WFCrashScenarioSystem.AllowedJobs)
             {
                 if (IsJobAllowed(session, job))
                     choices.Add(new WFRoundSetupJob(job, null, string.Empty));
@@ -228,7 +228,7 @@ public sealed partial class WFRoundSetupSystem
                 error = "wf-round-setup-error-round-mode";
                 return false;
             }
-            if (!WFCrashScenarioSystem.AllowedJobs.Contains(member.Job))
+            if (!(lobby.Scenario == WFRoundScenario.Ship ? WFShipCrewJobs.Jobs : WFCrashScenarioSystem.AllowedJobs).Contains(member.Job))
                 return false;
         }
         if (lobby.Scenario == WFRoundScenario.Crashlanded)
@@ -280,6 +280,7 @@ public sealed partial class WFRoundSetupSystem
                 return false;
             }
             completed = true;
+            UpdatePortrait(session.UserId, member);
             member.Spawned = true;
             member.Ready = false;
             lobby.Started = true;

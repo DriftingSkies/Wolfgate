@@ -1,16 +1,13 @@
 using System.Linq;
-using Content.Client.GameTicking.Managers;
-using Content.Client._NF.LateJoin.Windows;
 using Content.Shared._WF.RoundSetup;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
-using Robust.Shared.Console;
 
 namespace Content.Client._WF.RoundSetup;
 
 public sealed partial class WFRoundSetupWindow
 {
-    private enum SetupView : byte { Join, Browse, Create, MyLobby }
+    private enum SetupView : byte { Browse, Create, MyLobby }
     private enum LobbyPage : byte { Overview, Ship, Admission, Roles }
 
     private readonly ScenarioColumns _navigation = new() { HorizontalExpand = true };
@@ -28,12 +25,12 @@ public sealed partial class WFRoundSetupWindow
     private float _lastLayoutWidth = 1120;
     private bool _layoutRefreshPending;
 
-    /// <summary>Opens the player's crew or the available ways to join.</summary>
+    /// <summary>Opens the player's crew or the crew browser.</summary>
     public void ShowJoin()
     {
         _manualNavigation = true;
         _pendingLobbyFocus = false;
-        Navigate(_state?.OwnLobby == null ? SetupView.Join : SetupView.MyLobby);
+        Navigate(_state?.OwnLobby == null ? SetupView.Browse : SetupView.MyLobby);
     }
 
     /// <summary>Opens available crews or the player's current setup.</summary>
@@ -128,7 +125,7 @@ public sealed partial class WFRoundSetupWindow
             {
                 _initialViewResolved = true;
                 if (!_manualNavigation)
-                    _view = own == null ? SetupView.Join : SetupView.MyLobby;
+                    _view = own == null ? SetupView.Browse : SetupView.MyLobby;
             }
             if (_pendingLobbyFocus)
             {
@@ -137,25 +134,23 @@ public sealed partial class WFRoundSetupWindow
                 _lobbyPage = LobbyPage.Overview;
             }
             if (_view == SetupView.MyLobby && own == null)
-                _view = SetupView.Join;
-            if (own != null)
+                _view = SetupView.Browse;
+            if (own != null && (_view != SetupView.Browse || _focusedLobby == null || _focusedLobby == own.Id))
                 _view = SetupView.MyLobby;
             _body.RemoveAllChildren();
             _navigation.RemoveAllChildren();
             _shipPage.RemoveAllChildren();
             _shipPage.Visible = false;
             _pageScroll.Visible = true;
-            Title = own == null ? Text("title") : LobbyTitle(own);
+            Title = own != null && _view == SetupView.MyLobby ? LobbyTitle(own) : Text("title");
             _footer.RemoveAllChildren();
             if (own == null)
             {
-                _navigation.AddChild(NavigationButton("join-home", () => Navigate(SetupView.Join), _view == SetupView.Join));
                 _navigation.AddChild(NavigationButton("flow-browse", () => Navigate(SetupView.Browse), _view == SetupView.Browse));
                 _navigation.AddChild(NavigationButton("flow-create", OpenCreate, _view == SetupView.Create, !state.CanJoin));
             }
             switch (_view)
             {
-                case SetupView.Join: BuildJoin(state); break;
                 case SetupView.Create: BuildScenarios(state); break;
                 case SetupView.MyLobby when own != null: BuildOwnLobby(state, own); break;
                 default: BuildBrowser(state); break;
@@ -184,58 +179,6 @@ public sealed partial class WFRoundSetupWindow
         return row;
     }
 
-    private void BuildJoin(WFRoundSetupState state)
-    {
-        _body.AddChild(Heading("join-heading"));
-        _body.AddChild(Description("subtitle"));
-        var normal = Column(12);
-        normal.AddChild(Heading("join-normal"));
-        normal.AddChild(Description(state.InRound ? "join-normal-round" : "join-normal-pregame"));
-        if (_preferences.Preferences?.SelectedCharacter is { } character)
-            normal.AddChild(PlainDescription(Text("selected-character", ("name", character.Name))));
-        var normalButton = Button("join-normal", JoinNormally, !state.CanJoin || state.OwnLobby != null);
-        normalButton.Name = "RoundSetupJoinNormally";
-        normal.AddChild(normalButton);
-        var groups = Column(12);
-        groups.AddChild(Heading("join-lobby"));
-        groups.AddChild(Description("join-lobby-help"));
-        var browse = Button("join-lobby", () => Navigate(SetupView.Browse));
-        browse.Name = "RoundSetupJoinLobby";
-        groups.AddChild(browse);
-        groups.AddChild(Button("flow-create", OpenCreate, !state.CanJoin || state.OwnLobby != null));
-        _body.AddChild(FlowRow(Panel(normal), Panel(groups)));
-        if (state.Invitations.Length > 0)
-        {
-            _body.AddChild(Heading("invitations"));
-            foreach (var lobby in state.Invitations)
-                _body.AddChild(LobbyListing(lobby, true));
-        }
-        if (state.OwnLobby is { } own)
-            _footer.AddChild(Button("flow-my-lobby", () => ShowLobby(own)));
-        else if (!state.InRound && _entities.System<ClientGameTicker>().AreWeReady)
-        {
-            _footer.AddChild(Description("normal-ready"));
-            _footer.AddChild(Button("normal-unready", () =>
-            {
-                IoCManager.Resolve<IConsoleHost>().ExecuteCommand("toggleready false");
-                Close();
-            }));
-        }
-    }
-
-    private void JoinNormally()
-    {
-        if (_state is not { CanJoin: true, OwnLobby: null })
-            return;
-        if (_entities.System<ClientGameTicker>().IsGameStarted)
-            OpenStandardJobs();
-        else
-        {
-            IoCManager.Resolve<IConsoleHost>().ExecuteCommand("toggleready true");
-            Close();
-        }
-    }
-
     /// <summary>Lists crews first, then opens a focused briefing and role selection.</summary>
     private void BuildBrowser(WFRoundSetupState state)
     {
@@ -246,7 +189,7 @@ public sealed partial class WFRoundSetupWindow
         var selected = lobbies.FirstOrDefault(lobby => lobby.Id == _focusedLobby);
         if (selected != null)
         {
-            _body.AddChild(Button("back-lobbies", () => { _focusedLobby = null; Redraw(); }));
+            _body.AddChild(Button(state.OwnLobby == null ? "back-lobbies" : "flow-my-lobby", () => { _focusedLobby = null; Redraw(); }));
             _body.AddChild(LobbyCard(state, selected, state.Invitations.Any(invitation => invitation.Id == selected.Id)));
         }
         else
@@ -259,15 +202,8 @@ public sealed partial class WFRoundSetupWindow
         _footer.AddChild(Button("refresh", () => Send(WFRoundSetupAction.Refresh)));
     }
 
-    private Control LobbyListing(WFRoundSetupLobby lobby, bool invited)
-    {
-        var content = Column(6);
-        content.AddChild(PlainDescription(LobbyTitle(lobby)));
-        content.AddChild(PlainDescription(Text("lobby-info", ("count", lobby.MemberCount), ("access", AccessName(lobby.Access)),
-            ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
-        content.AddChild(Button(invited ? "view-invitation" : "view-lobby", () => ShowLobby(lobby.Id)));
-        return Panel(content);
-    }
+    private Control LobbyListing(WFRoundSetupLobby lobby, bool invited) =>
+        new WFRoundSetupCrewRow(lobby, invited, () => ShowLobby(lobby.Id));
 
     /// <summary>Shows full-width scenario briefs with one explicit create action per scenario.</summary>
     private void BuildScenarios(WFRoundSetupState state)
@@ -298,12 +234,6 @@ public sealed partial class WFRoundSetupWindow
             card.AddChild(create);
             _body.AddChild(Panel(card));
         }
-    }
-
-    private void OpenStandardJobs()
-    {
-        new PickerWindow().OpenNormalJobs();
-        Close();
     }
 
     /// <summary>Separates personal preparation from the host's crew and access tools.</summary>
@@ -344,6 +274,7 @@ public sealed partial class WFRoundSetupWindow
                 break;
             case LobbyPage.Admission: BuildHostSettings(lobby, state); break;
             default:
+                _body.AddChild(CrewIdentity(lobby));
                 if (host && !lobby.Started)
                     BuildScenarioSelector(state, lobby);
                 _body.AddChild(Description(ScenarioDescription(lobby.Scenario)));
@@ -388,7 +319,7 @@ public sealed partial class WFRoundSetupWindow
         {
             var status = !player.Connected ? "member-disconnected" : player.Spawned ? "member-playing" : player.Ready ? "member-ready" : "member-not-ready";
             var content = Column(6);
-            content.AddChild(PlainDescription(player.Name));
+            content.AddChild(Row(WFRoundSetupCrewRow.JobIcon(player.Job), PlainDescription(player.UserId == lobby.Host && lobby.Portrait != null ? lobby.Portrait.Name : player.Name)));
             content.AddChild(PlainDescription(Text("member-info", ("job", MemberRoleName(lobby, player)), ("status", Text(status)))));
             if (host && player.UserId != lobby.Host)
             {

@@ -1,3 +1,5 @@
+using Content.Shared.Humanoid;
+using Robust.Shared.Enums;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 
@@ -21,7 +23,7 @@ public enum WFRoundSetupAction : byte
 {
     Refresh, Create, Configure, Join, Leave, AcceptRequest, RejectRequest,
     Invite, AcceptInvite, DeclineInvite, SelectJob, SetReady, Launch, RegenerateCode, Kick, TransferHost,
-    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart,
+    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart, ApplyRoster,
 }
 
 /// <summary>A request whose actor is always taken from its network session.</summary>
@@ -44,6 +46,7 @@ public sealed class WFRoundSetupRequest : EntityEventArgs
     public string? RoleName;
     public string? Title;
     public int Capacity = 1;
+    public WFCrewRoster Roster;
 
     public WFRoundSetupRequest(WFRoundSetupAction action) { Action = action; }
 }
@@ -68,6 +71,10 @@ public sealed record WFRoundSetupRole(int Id, string Name, string Job, NetEntity
 [Serializable, NetSerializable]
 public sealed record WFRoundSetupVessel(string Id, string Name, string Description, int Price);
 
+/// <summary>Only the visible character appearance used by a crew leader portrait.</summary>
+[Serializable, NetSerializable]
+public sealed record WFCrewPortrait(string Name, string Species, Sex Sex, HumanoidCharacterAppearance Appearance);
+
 /// <summary>A sanitized player-lobby listing; codes and requests are sent only to its host.</summary>
 [Serializable, NetSerializable]
 public sealed class WFRoundSetupLobby
@@ -75,6 +82,8 @@ public sealed class WFRoundSetupLobby
     public int Id;
     public NetUserId Host;
     public string HostName = string.Empty;
+    public string? HostJob;
+    public WFCrewPortrait? Portrait;
     public string Title = string.Empty;
     public WFRoundScenario Scenario;
     public WFShipStartLocation ShipStart;
@@ -102,6 +111,7 @@ public sealed class WFRoundSetupState : EntityEventArgs
     public WFRoundSetupLobby[] Invitations = Array.Empty<WFRoundSetupLobby>();
     public WFRoundSetupPlayer[] InviteTargets = Array.Empty<WFRoundSetupPlayer>();
     public WFRoundSetupJob[] Jobs = Array.Empty<WFRoundSetupJob>();
+    public WFRoundSetupJob[] RoleJobs = Array.Empty<WFRoundSetupJob>();
     public WFRoundSetupVessel[] Vessels = Array.Empty<WFRoundSetupVessel>();
     public int? HostBalance;
     public string? Message;

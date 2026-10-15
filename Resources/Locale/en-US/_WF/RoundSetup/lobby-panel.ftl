@@ -1,10 +1,10 @@
-wf-round-setup-panel-title = Available crews
+wf-round-setup-panel-title = Active crews
 wf-round-setup-panel-setup = Set up lobby
 wf-round-setup-panel-mine = My lobby
 wf-round-setup-panel-refresh = Refresh
 wf-round-setup-panel-refresh-help = Refresh the player lobby list.
 wf-round-setup-panel-loading = Loading player lobbies…
-wf-round-setup-panel-empty = No crews yet. Create a crew to choose a scenario and invite others.
+wf-round-setup-panel-empty = No crews yet.
 wf-round-setup-panel-empty-help = Create a crew above, then choose a scenario and add openings.
 wf-round-setup-panel-host = Host: { $host }
 wf-round-setup-panel-members = { $count } / 16 players · { $access }
