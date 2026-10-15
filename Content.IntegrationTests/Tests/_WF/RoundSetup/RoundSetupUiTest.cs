@@ -1,3 +1,4 @@
+using Content.Client.Changelog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -239,7 +240,7 @@ public sealed class RoundSetupUiTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Preparation, discovery and chat remain bounded when the communication dock moves below the cards.</summary>
+    /// <summary>The repository lobby keeps joining prominent and footer labels readable at supported sizes.</summary>
     [TestCase(800, 600)]
     [TestCase(1024, 768)]
     [TestCase(1090, 720)]
@@ -257,7 +258,7 @@ public sealed class RoundSetupUiTest
             screen.Measure(viewport);
             screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, viewport));
             foreach (var control in new Control[] { screen.ReadyButton, screen.CustomizeButton,
-                         screen.RoundSetupButton, screen.RightSide, screen.Chat, screen.LeaveButton })
+                         screen.RoundSetupButton, screen.RightSide, screen.Chat })
             {
                 Assert.That(control.VisibleInTree, Is.True, control.Name);
                 Assert.That(control.Size.X, Is.GreaterThan(40), control.Name);
@@ -269,14 +270,29 @@ public sealed class RoundSetupUiTest
             }
             Assert.That(screen.RightSide.GlobalPosition.X, Is.GreaterThan(screen.ReadyButton.GlobalPosition.X));
             Assert.That(screen.ServerInfo.VisibleInTree, Is.True);
-            Assert.That(screen.ServerInfo.GlobalPosition.Y, Is.GreaterThan(screen.Chat.GlobalPosition.Y));
+            Assert.That(screen.ServerInfo.GlobalPosition.X, Is.LessThan(screen.Chat.GlobalPosition.X));
             foreach (var button in new[] { screen.ReadyButton, screen.RoundSetupButton, screen.CustomizeButton })
-                Assert.That(button.Label.Align, Is.EqualTo(Label.AlignMode.Center));
-            Assert.That(Named<Control>(screen, "CharacterCard").Width, Is.EqualTo(280), "Character preparation keeps its original width.");
+                Assert.That(button.Label.Align, Is.EqualTo(Label.AlignMode.Left));
+            Assert.That(screen.ReadyButton.HasStyleClass("LobbyNavPrimary"), Is.True);
+            Assert.That(screen.RoundSetupButton.HasStyleClass("WFLobbyCrewAction"), Is.True);
+            Assert.That(screen.RoundSetupButton.GlobalPosition.Y + screen.RoundSetupButton.Height,
+                Is.LessThanOrEqualTo(screen.ReadyButton.GlobalPosition.Y));
+            Assert.That(Named<Control>(screen, "CharacterHero").Visible, Is.EqualTo(width >= 1090));
+            Assert.That(Named<Control>(screen.CharacterPreview, "Loaded").SetWidth, Is.EqualTo(300));
             Assert.That(screen.RoundSetupButton.Height, Is.EqualTo(screen.ReadyButton.Height));
             Assert.That(Descendants(screen).Any(control => control.Name == "HomeBackdrop"), Is.False);
             Assert.That(Named<Control>(screen, "SkinScanlines").Visible, Is.False);
             Assert.That(screen.CharacterPreview.CharacterSetupButton.Visible, Is.False, "Only one character edit action is shown.");
+            var changelog = Descendants(Named<Control>(screen, "LinkBanner")).OfType<ChangelogButton>().Single();
+            changelog.Text = Loc.GetString("changelog-button-new-entries");
+            screen.Measure(viewport);
+            screen.Arrange(UIBox2.FromDimensions(Vector2.Zero, viewport));
+            Assert.That(changelog.Label.ClipText, Is.False);
+            Assert.That(changelog.Label.Width, Is.GreaterThanOrEqualTo(changelog.Label.DesiredSize.X));
+            Assert.That(changelog.Label.Height, Is.GreaterThanOrEqualTo(changelog.Label.DesiredSize.Y));
+            var footer = Named<Control>(screen, "LobbyUtilities");
+            Assert.That(changelog.GlobalPosition.Y, Is.GreaterThanOrEqualTo(footer.GlobalPosition.Y));
+            Assert.That(changelog.GlobalPosition.Y + changelog.Height, Is.LessThanOrEqualTo(height + 1));
             var vote = new VotePopup(new VoteManager.ActiveVote(1)
             {
                 Title = "Continue this round?",

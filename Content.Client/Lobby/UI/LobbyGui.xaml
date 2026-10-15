@@ -149,67 +149,69 @@
     </BoxContainer>
     -->
     <!-- WOLFGATE END -->
-    <!-- WOLFGATE(RoundSetup) START: a unified preparation screen with character, crew and communication areas -->
-    <BoxContainer Name="MainContainer" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True"
-                  Margin="20 16" SeparationOverride="12">
-        <roundSetup:WFLobbyLayout Name="LobbyWorkspace" DockChat="True" HorizontalExpand="True" VerticalExpand="True">
-            <BoxContainer Name="LeftSide" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
-                <BoxContainer Name="DefaultState" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" SeparationOverride="16">
-                    <BoxContainer Name="HeaderContainer" Access="Public" Orientation="Vertical" SeparationOverride="4">
-                        <Label Text="{Loc 'wf-round-setup-home-eyebrow'}" StyleClasses="WFRoundSetupEyebrow" />
-                        <RichTextLabel Name="ServerName" Access="Public" StyleClasses="WFRoundSetupTitle" HorizontalExpand="True" />
-                        <Label Name="StartTime" Access="Public" StyleClasses="WFRoundSetupMuted" />
-                    </BoxContainer>
-                    <PanelContainer Name="CharacterCard" StyleClasses="WFRoundSetupCard" SetWidth="280" HorizontalAlignment="Left" VerticalExpand="True">
-                        <BoxContainer Orientation="Vertical" Margin="16" SeparationOverride="10" HorizontalExpand="True">
-                            <Label Text="{Loc 'wf-round-setup-home-character'}" StyleClasses="WFRoundSetupEyebrow" />
-                            <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
-                                <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public" HorizontalExpand="True" />
-                            </ScrollContainer>
-                            <Button Name="CustomizeButton" Access="Public" Text="{Loc 'wf-round-setup-home-customize'}" MinHeight="36" />
-                            <RichTextLabel Name="NormalJoinHelp" Access="Public" StyleClasses="WFRoundSetupMuted" HorizontalExpand="True" />
-                            <Button Name="RoundSetupButton" Access="Public" Text="{Loc 'wf-round-setup-home-setup'}" MinHeight="64" />
-                            <Button Name="ReadyButton" Access="Public" Text="{Loc 'wf-round-setup-home-ready'}" MinHeight="64" />
+    <!-- WOLFGATE(RoundSetup) START: retain the repository lobby menu and hero with dedicated crew and ready actions -->
+    <BoxContainer Name="MainContainer" VerticalExpand="True" HorizontalExpand="True" Orientation="Vertical" SeparationOverride="0">
+        <roundSetup:WFLobbyLayout Name="LobbyColumns" DockChat="True" HorizontalExpand="True" VerticalExpand="True" Margin="24 24 24 16">
+            <BoxContainer Name="LeftSide" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" SeparationOverride="0">
+                <roundSetup:WFLobbyLayout Name="DefaultState" HeroLayout="True" HorizontalExpand="True" VerticalExpand="True">
+                    <BoxContainer Name="LobbyMenu" Orientation="Vertical" SeparationOverride="0" Margin="16 8 0 8">
+                        <BoxContainer Name="HeaderContainer" Access="Public" Orientation="Vertical" SeparationOverride="0">
+                            <RichTextLabel Name="ServerName" Access="Public" StyleClasses="LobbyTitle" />
+                            <PanelContainer StyleClasses="LobbyTitleRule" MinHeight="4" Margin="0 2 0 4" />
+                            <Label Name="StartTime" Access="Public" StyleClasses="LobbyStatus" />
                         </BoxContainer>
-                    </PanelContainer>
-                </BoxContainer>
-                <Control Name="CharacterSetupState" Access="Public" Visible="False" HorizontalExpand="True" VerticalExpand="True" />
-            </BoxContainer>
-            <PanelContainer Name="RightSide" Access="Public" StyleClasses="WFRoundSetupCard" HorizontalExpand="True" VerticalExpand="True">
-                <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="8">
-                    <Label Text="{Loc 'wf-round-setup-home-comms'}" StyleClasses="WFRoundSetupEyebrow" />
-                    <roundSetup:WFLobbyLayout Name="LobbyInformationSplit" VerticalSplit="True" HorizontalExpand="True" VerticalExpand="True">
-                        <widgets:ChatBox Name="Chat" Access="Public" HorizontalExpand="True" VerticalExpand="True" MinSize="0 50" />
-                        <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
-                            <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="12">
-                                <BoxContainer Name="VoteContainer" Access="Public" Orientation="Vertical" SeparationOverride="6" />
-                                <Label Text="{Loc 'wf-round-setup-home-briefing'}" StyleClasses="WFRoundSetupHeading" />
-                                <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" />
+                        <Control MinHeight="20" />
+                        <BoxContainer Orientation="Vertical" SeparationOverride="6">
+                            <Button Name="RoundSetupButton" Access="Public" TextAlign="Left" MinHeight="52"
+                                    Text="{Loc 'wf-round-setup-home-setup'}" StyleClasses="WFLobbyCrewAction" />
+                            <Button Name="ReadyButton" Access="Public" TextAlign="Left" MinHeight="52"
+                                    Text="{Loc 'wf-round-setup-home-ready'}" StyleClasses="LobbyNavPrimary" />
+                        </BoxContainer>
+                        <Control MinHeight="12" />
+                        <ScrollContainer Name="LobbyMenuScroll" HScrollEnabled="False" VerticalExpand="True" HorizontalExpand="True">
+                            <BoxContainer Orientation="Vertical" SeparationOverride="0">
+                                <Button Name="CustomizeButton" Access="Public" TextAlign="Left"
+                                        Text="{Loc 'ui-lobby-customize-nav-button'}" StyleClasses="LobbyNav" />
+                                <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public" TextAlign="Left"
+                                                    Text="{Loc 'ui-lobby-observe-button'}" StyleClasses="LobbyNav"
+                                                    WindowType="{x:Type lobbyUi:ObserveWarningWindow}" />
+                                <vote:VoteCallMenuButton Name="CallVoteButton" TextAlign="Left" StyleClasses="LobbyNav" />
+                                <Button Name="OptionsButton" Access="Public" TextAlign="Left"
+                                        Text="{Loc 'ui-lobby-options-button'}" StyleClasses="LobbyNav" />
+                                <Button Name="AHelpButton" Access="Public" TextAlign="Left"
+                                        Text="{Loc 'ui-lobby-ahelp-nav-button'}" StyleClasses="LobbyNav" />
+                                <Button Name="LeaveButton" Access="Public" TextAlign="Left"
+                                        Text="{Loc 'ui-lobby-leave-nav-button'}" StyleClasses="LobbyNav" />
+                                <info:ServerInfo Name="ServerInfo" Access="Public" StyleClasses="LobbyInfo" Margin="0 20 0 0" />
                             </BoxContainer>
                         </ScrollContainer>
-                    </roundSetup:WFLobbyLayout>
+                    </BoxContainer>
+                    <BoxContainer Name="CharacterHero" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="0 16" SeparationOverride="8">
+                        <Control VerticalExpand="True" />
+                        <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Control VerticalExpand="True" />
+                    </BoxContainer>
+                </roundSetup:WFLobbyLayout>
+                <Control Name="CharacterSetupState" Access="Public" Visible="False" HorizontalExpand="True" VerticalExpand="True" />
+            </BoxContainer>
+            <PanelContainer Name="RightSide" Access="Public" StyleClasses="LobbyChatPanel" VerticalExpand="True" RectClipContent="True">
+                <BoxContainer Orientation="Vertical" SeparationOverride="8" Margin="4">
+                    <BoxContainer Name="VoteContainer" Access="Public" Orientation="Vertical" SeparationOverride="4" />
+                    <widgets:ChatBox Name="Chat" Access="Public" VerticalExpand="True" HorizontalExpand="True" MinSize="0 50" />
                 </BoxContainer>
             </PanelContainer>
         </roundSetup:WFLobbyLayout>
-        <PanelContainer Name="LobbyUtilities" StyleClasses="WFRoundSetupCard" HorizontalExpand="True">
-            <BoxContainer Orientation="Vertical" Margin="12 8" SeparationOverride="6">
-                <BoxContainer Orientation="Horizontal" SeparationOverride="8">
-                    <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public" Text="{Loc 'ui-lobby-observe-button'}"
-                                        WindowType="{x:Type lobbyUi:ObserveWarningWindow}" HorizontalExpand="True" MinHeight="34" />
-                    <vote:VoteCallMenuButton Name="CallVoteButton" HorizontalExpand="True" MinHeight="34" />
-                    <Button Name="OptionsButton" Access="Public" Text="{Loc 'ui-lobby-options-button'}" HorizontalExpand="True" MinHeight="34" />
-                    <Button Name="AHelpButton" Access="Public" Text="{Loc 'ui-lobby-ahelp-nav-button'}" HorizontalExpand="True" MinHeight="34" />
-                    <Button Name="LeaveButton" Access="Public" Text="{Loc 'ui-lobby-leave-nav-button'}" HorizontalExpand="True" MinHeight="34" />
+        <PanelContainer Name="LobbyUtilities" StyleClasses="LobbyBar" HorizontalExpand="True">
+            <ScrollContainer Name="LobbyLinksScroll" VScrollEnabled="False" HScrollEnabled="True" HorizontalExpand="True" ReturnMeasure="True" Margin="24 6">
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" SeparationOverride="24">
+                    <info:LinkBanner Name="LinkBanner" StyleClasses="LobbyLinks" VerticalAlignment="Center" />
+                    <info:DevInfoBanner Name="DevInfoBanner" StyleClasses="LobbyLinks" VerticalAlignment="Center" />
+                    <Label Name="StationTime" Access="Public" StyleClasses="LobbyBarText" VAlign="Center" />
+                    <Control HorizontalExpand="True" />
+                    <RichTextLabel Name="LobbySong" Access="Public" StyleClasses="LobbyBarText" VerticalAlignment="Center" MaxWidth="480" />
                 </BoxContainer>
-                <ScrollContainer VScrollEnabled="False" HScrollEnabled="True" SetHeight="28" HorizontalExpand="True">
-                    <BoxContainer Orientation="Horizontal" SeparationOverride="20">
-                        <info:LinkBanner Name="LinkBanner" StyleClasses="LobbyLinks" VerticalAlignment="Center" />
-                        <info:DevInfoBanner Name="DevInfoBanner" StyleClasses="LobbyLinks" VerticalAlignment="Center" />
-                        <Label Name="StationTime" Access="Public" StyleClasses="WFRoundSetupMuted" VAlign="Center" />
-                        <RichTextLabel Name="LobbySong" Access="Public" StyleClasses="WFRoundSetupMuted" VerticalAlignment="Center" MaxWidth="480" />
-                    </BoxContainer>
-                </ScrollContainer>
-            </BoxContainer>
+            </ScrollContainer>
         </PanelContainer>
     </BoxContainer>
     <PanelContainer Name="SkinScanlines" StyleClasses="LobbyScanlines" MouseFilter="Ignore" Visible="False" />

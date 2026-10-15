@@ -47,12 +47,12 @@ public sealed partial class StyleWolfgate
         linkBox.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
 
         var chatPanel = Box("window_panel.png", 9);
-        chatPanel.Modulate = Color.White.WithAlpha(0.9f);
+        chatPanel.Modulate = Color.White.WithAlpha(0.72f);
         var heroPanel = Box("window_panel.png", 9);
-        heroPanel.Modulate = Color.White.WithAlpha(0.75f);
+        heroPanel.Modulate = Color.White.WithAlpha(0.65f);
         var bar = new StyleBoxFlat
         {
-            BackgroundColor = Ink.WithAlpha(0.9f),
+            BackgroundColor = Ink.WithAlpha(0.75f),
             BorderColor = EdgeSoft,
             BorderThickness = new Thickness(0, 1, 0, 0),
         };
@@ -128,10 +128,27 @@ public sealed partial class StyleWolfgate
                 .Prop(Label.StylePropertyFontColor, TextMuted),
         };
 
-        // Menu entries: text only until hovered; the primary (ready) entry keeps a steel bar and lights up when toggled.
+        // Secondary entries are text-only until hover; joining actions keep their state colours.
         // Each entry carries a single class because the XAML loader does not split space-separated StyleClasses.
-        rules.AddRange(NavRules(StyleClassLobbyNav, navBox, Color.Transparent));
+        var secondaryNavBox = new StyleBoxTexture(navBox);
+        secondaryNavBox.SetContentMarginOverride(StyleBox.Margin.Vertical, 3);
+        rules.AddRange(NavRules(StyleClassLobbyNav, secondaryNavBox, Color.Transparent));
         rules.AddRange(NavRules(StyleClassLobbyNavPrimary, navBox, EdgeLight));
+        rules.AddRange(NavRules("WFLobbyCrewAction", navBox, AccentDim));
+        foreach (var (state, color) in new[] { (StyleNano.StyleClassButtonColorRed, Danger), (StyleNano.StyleClassButtonColorGreen, Good) })
+        {
+            rules.AddRange(new StyleRule[]
+            {
+                Element<Button>().Class(StyleClassLobbyNavPrimary, state)
+                    .Prop(Control.StylePropertyModulateSelf, color.WithAlpha(0.8f)),
+                Element<Button>().Class(StyleClassLobbyNavPrimary, state).Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(Control.StylePropertyModulateSelf, color),
+                Element<Button>().Class(StyleClassLobbyNavPrimary, state).Pseudo(ContainerButton.StylePseudoClassDisabled)
+                    .Prop(Control.StylePropertyModulateSelf, color.WithAlpha(0.25f)),
+                Child().Parent(Element<Button>().Class(StyleClassLobbyNavPrimary, state)).Child(Element<Label>())
+                    .Prop(Label.StylePropertyFontColor, Text),
+            });
+        }
         return rules.ToArray();
     }
 

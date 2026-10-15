@@ -1,28 +1,35 @@
 using Content.Client._WF.RoundSetup;
 using Content.Shared._WF.RoundSetup;
 using Robust.Client.UserInterface.Controls;
-using Robust.Shared.Utility;
 
 namespace Content.Client.Lobby.UI;
 
 public sealed partial class LobbyGui
 {
-    /// <summary>Fits character preparation and centers its primary actions.</summary>
+    /// <summary>Keeps the repository hero and menu, with a single character-edit action.</summary>
     private void InitializeRoundSetupHome()
     {
-        CharacterPreview.UseRoundSetupCard();
+        CharacterPreview.CharacterSetupButton.Visible = false;
         foreach (var button in new[] { ReadyButton, RoundSetupButton, CustomizeButton })
-        {
-            button.Label.Align = Label.AlignMode.Center;
             button.Label.ClipText = false;
+        foreach (var banner in new[] { LinkBanner, (BoxContainer) DevInfoBanner })
+        {
+            foreach (var row in banner.Children)
+            {
+                foreach (var child in row.Children)
+                {
+                    if (child is Button button)
+                        button.Label.ClipText = false;
+                }
+            }
         }
     }
 
-    /// <summary>Updates readiness copy together with the primary action.</summary>
+    /// <summary>Explains readiness without adding another panel to the repository lobby.</summary>
     public void SetRoundSetupJoinText(string caption, string help)
     {
         ReadyButton.Text = caption;
-        NormalJoinHelp.SetMessage(FormattedMessage.FromUnformatted(help));
+        ReadyButton.ToolTip = help;
     }
 
     /// <summary>Clears crew readiness before editing the character in the main lobby.</summary>
