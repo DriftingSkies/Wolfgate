@@ -23,7 +23,6 @@ public sealed class WFLoaderAutoFeedSystem : EntitySystem
 
     private void OnShot(EntityUid uid, WFLoaderAutoFeedComponent comp, AmmoShotEvent args)
     {
-        // Deferred so the gun's ammo container isn't changed mid-shot.
         _pending.Add(uid);
     }
 
