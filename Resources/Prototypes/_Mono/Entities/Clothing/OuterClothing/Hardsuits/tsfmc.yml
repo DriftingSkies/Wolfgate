@@ -18,8 +18,9 @@
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.65
-        Slash: 0.65
+        # WOLFGATE(ArmorBalance): sidegrade pass.
+        Blunt: 0.6
+        Slash: 0.6
         Piercing: 0.6
         Heat: 0.7
         Radiation: 0.65
@@ -57,10 +58,12 @@
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.6
-        Slash: 0.5
-        Piercing: 0.7
-        Heat: 0.6
+        # WOLFGATE(ArmorBalance): sidegrade pass.
+        Blunt: 0.7
+        Slash: 0.65
+        Piercing: 0.75
+        Shock: 0.7
+        Heat: 0.4
         Radiation: 0.2
         Caustic: 0.5
   - type: ClothingSpeedModifier
@@ -71,7 +74,7 @@
   parent: [ClothingOuterHardsuitBase, BaseFactionGearTSFT3]
   id: ClothingOuterHardsuitM86
   name: M86 Mk.3(R) hardsuit
-  description: An armored hardsuit, designed to be an upgrade for the now-retired M82 series. The extra general armor gives it significant weight to move around.
+  description: An armored hardsuit, designed to be an upgrade for the M82 series. The extra general armor gives it significant weight to move around.
   components:
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/m86.rsi
@@ -91,7 +94,8 @@
         Slash: 0.5
         Piercing: 0.5
         Shock: 0.8
-        Heat: 0.5
+        # WOLFGATE(ArmorBalance): sidegrade pass.
+        Heat: 0.6
         Radiation: 0.4
         Caustic: 0.6
   - type: StaminaDamageResistance
@@ -137,10 +141,11 @@
   - type: Armor # Mono - Armor Value Changes
     modifiers:
       coefficients:
-        Blunt: 0.4
-        Slash: 0.4
-        Piercing: 0.4
-        Heat: 0.45
+        # WOLFGATE(ArmorBalance): sidegrade pass.
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.65
         Radiation: 0.4
         Caustic: 0.5
   - type: ClothingSpeedModifier # Mono - Armor Value Changes
@@ -152,10 +157,10 @@
     id: ClothingOuterHardsuitTacsuitHighValue
 
 - type: entity
-  parent: [ClothingOuterHardsuitBase, BaseFactionGearTSFT3 ] # Jugger Suit
+  parent: [ClothingOuterHardsuitBaseNoPlateholder, MonoEnergyShieldClothing, BaseFactionGearTSFT3 ] # Jugger Suit
   id: ClothingOuterHardsuitNfsdExperimental
   name: TSFMC M92-X tacsuit
-  description: An experimental modification of the M92 tacsuit for spec-ops units of the TSFMC. Durable, and comes along with numerous gadgets at the cost of general-purpose protection and weight.
+  description: An experimental modification of the M92 tacsuit for spec-ops units of the TSFMC. Durable, and comes with an integrated soft-shield along with numerous gadgets at the cost of insulation and solid armor. # WOLFGATE(SoftShield): soft shield
   components:
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/tsfmc_experimental.rsi # Mono
@@ -182,15 +187,16 @@
   - type: Armor # Mono - Armor Value Changes
     modifiers:
       coefficients:
-        Blunt: 0.6
-        Slash: 0.15
-        Piercing: 0.3
-        Heat: 0.2
+        # WOLFGATE(ArmorBalance): sidegrade pass.
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.6
         Radiation: 0.5
         Caustic: 0.8
   - type: ClothingSpeedModifier # Mono - Armor Value Changes
-    walkModifier: 0.65
-    sprintModifier: 0.65
+    walkModifier: 0.8
+    sprintModifier: 0.8
   - type: HeldSpeedModifier
   - type: FactionClothing
     faction: NanoTrasen
@@ -198,54 +204,58 @@
     coefficient: 0.25
   - type: PirateBountyItem # Mono
     id: ClothingOuterHardsuitTacsuitHighValue
-#  # Mono - Shielding comps
-#  - type: PersonalShield
-#    visuals:
-#      fillLevel: 0.2
-#      hexDensity: 6
-#      pixelGrid: 192
-#      color: "#E0FFFF"
-#      scale: 2.3
-#    shield:
-#      maxCharge: 200
-#      regenRate: 5
-#      spinupTime: 2.5
-#      breakCooldown: 20
-#      powerDraw: 0.5
-#      blockModifier:
-#        coefficients:
-#          Piercing: 0.5
-#          Heat: 1.5
-#          Radiation: 2.5
-#          Shock: 2.5
-#  - type: Battery
-#    maxCharge: 100
-#    startingCharge: 100
-#  - type: BatterySelfRecharger
-#    autoRecharge: true
-#    autoRechargeRate: 5
-#    autoRechargePauseTime: 5
-#  - type: UseDelay
-#    delay: 10
+  - type: WFSoftShield # WOLFGATE(SoftShield): brute damage bleeds through the field dampened.
+  # Mono - Shielding comps
+  - type: PersonalShield
+    visuals:
+      fillLevel: 0.2
+      hexDensity: 6
+      pixelGrid: 192
+      color: "#E0FFFF"
+      scale: 2.3
+    shield:
+      maxCharge: 200
+      regenRate: 5
+      spinupTime: 2.5
+      breakCooldown: 20
+      powerDraw: 0.5
+      blockModifier:
+        coefficients:
+          Piercing: 0.5
+          Heat: 1.5
+          Radiation: 2.5
+          Shock: 2.5
+  - type: Battery
+    maxCharge: 100
+    startingCharge: 100
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 5
+    autoRechargePauseTime: 5
+  - type: UseDelay
+    delay: 10
   - type: FootstepModifier # Mono
     footstepSoundCollection:
       path: /Audio/Mecha/sound_mecha_powerloader_step.ogg
-#  - type: ExtendDescription
-#    descriptionList:
-#    - description: Alt-click or otherwise interact to toggle additional shielding.
-#      color: "#4f94ad"
-#      requireDetailRange: true
-#    - description: The M92-x shield is designed to inhibit the velocity of incoming conventional firearms. However, it struggles against anything involving high-energy particles, such as lasers.
-#      color: "#94768c"
-#      requireDetailRange: true
+  - type: ExtendDescription
+    descriptionList:
+    - description: Alt-click or otherwise interact to toggle additional shielding.
+      color: "#4f94ad"
+      requireDetailRange: true
+    - description: The M92-x soft-shield lets blows and rounds through but bleeds off much of their force, and keeps its wearer from bleeding while it holds. It does nothing against lasers or fire. # WOLFGATE(SoftShield): soft shield
+      color: "#94768c"
+      requireDetailRange: true
 
 # MARSOC only
 
 - type: entity
-  parent: [MonoEnergyShieldClothing, ClothingOuterHardsuitBaseNoPlateholder, BaseFactionGearTSFT3] #WORK ON THIS ONE NEXT POOP POOP
+  # WOLFGATE(ArmorBalance) START: the Mk.4 is the fast T3 suit and drops its hard shield.
+  # parent: [MonoEnergyShieldClothing, ClothingOuterHardsuitBaseNoPlateholder, BaseFactionGearTSFT3] #WORK ON THIS ONE NEXT POOP POOP
+  parent: [ClothingOuterHardsuitBaseNoPlateholder, BaseFactionGearTSFT3]
+  # WOLFGATE END
   id: ClothingOuterHardsuitM86Mk4
   name: M86 Mk.4(B) hardsuit
-  description: A limited-production redesign proposal for the M86 Mk.3(R), outfitted with an inbuilt personal shield generator.
+  description: A limited-production redesign proposal for the M86 Mk.3(R), trading the Mk.3's bulk for lighter plating and a faster stride. # WOLFGATE(ArmorBalance): no shield, faster.
   components:
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/m86_mk4.rsi
@@ -259,18 +269,19 @@
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.55
-        Slash: 0.45
-        Piercing: 0.45
+        # WOLFGATE(ArmorBalance): sidegrade pass.
+        Blunt: 0.65
+        Slash: 0.6
+        Piercing: 0.6
         Shock: 0.95
-        Heat: 0.7
+        Heat: 0.65
         Radiation: 0.5
         Caustic: 0.6
   - type: StaminaDamageResistance
     coefficient: 0.2
   - type: ClothingSpeedModifier
-    walkModifier: 0.9
-    sprintModifier: 0.875
+    walkModifier: 1
+    sprintModifier: 1
   - type: HeldSpeedModifier
   - type: ToggleableClothing # Goobstation - Modsuits change - Mono - this is a solution for helmet attachment/cover to not fit on hardsuits
     requiredSlot: outerclothing
@@ -280,34 +291,38 @@
       head: ClothingHeadHelmetHardsuitM86Mk4
       helmetcover: ClothingHeadHelmetCoverBlock
       helmetattachment: ClothingHeadHelmetAttachmentBlock
-  - type: PersonalShield
-    visuals:
-      fillLevel: 0.15
-      hexDensity: 3
-      pixelGrid: 96
-      color: "#7F00FF"
-      scale: 2.0
-    shield:
-      maxCharge: 250
-      regenRate: 5
-      spinupTime: 0.75
-      breakCooldown: 20
-      powerDraw: 0.5
-      blockModifier:
-        coefficients:
-          Heat: 1.25
-          Radiation: 1.5
-  - type: Battery
-    maxCharge: 100
-    startingCharge: 100
-  - type: BatterySelfRecharger
-    autoRecharge: true
-    autoRechargeRate: 5
-    autoRechargePauseTime: 5
+  # WOLFGATE(ArmorBalance) START: hard shield removed.
+  # - type: PersonalShield
+  #   visuals:
+  #     fillLevel: 0.15
+  #     hexDensity: 3
+  #     pixelGrid: 96
+  #     color: "#7F00FF"
+  #     scale: 2.0
+  #   shield:
+  #     maxCharge: 250
+  #     regenRate: 5
+  #     spinupTime: 0.75
+  #     breakCooldown: 20
+  #     powerDraw: 0.5
+  #     blockModifier:
+  #       coefficients:
+  #         Heat: 1.25
+  #         Radiation: 1.5
+  # - type: Battery
+  #   maxCharge: 100
+  #   startingCharge: 100
+  # - type: BatterySelfRecharger
+  #   autoRecharge: true
+  #   autoRechargeRate: 5
+  #   autoRechargePauseTime: 5
+  # WOLFGATE END
   - type: EmpResistance
     coefficient: 0.0001
-  - type: ExtendDescription
-    descriptionList:
-    - description: Alt-click or otherwise interact to toggle additional shielding.
-      color: "#4f94ad"
-      requireDetailRange: true
+  # WOLFGATE(ArmorBalance) START: hard shield removed.
+  # - type: ExtendDescription
+  #   descriptionList:
+  #   - description: Alt-click or otherwise interact to toggle additional shielding.
+  #     color: "#4f94ad"
+  #     requireDetailRange: true
+  # WOLFGATE END

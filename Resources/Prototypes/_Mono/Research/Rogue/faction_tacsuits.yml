@@ -2,11 +2,12 @@
 - type: technology
   id: RogueBasicEquipment
   name: research-technology-rogue-basic-equipment
-  entityIcon: ClothingOuterVestWeb
+  entityIcon: ClothingOuterHardsuitPirateScaf
   discipline: RogueEquipment
   tier: 1
   cost: 20000
   recipeUnlocks:
+  - ClothingOuterHardsuitPirateScafRogue
   - ClothingOuterVestWebRogue
   - ClothingOuterVestWebEliteRogue
   - MechIFFPDV

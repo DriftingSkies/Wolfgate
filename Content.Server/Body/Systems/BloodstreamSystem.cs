@@ -33,6 +33,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IRobustRandom _robustRandom = default!;
+    [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedBleedGateSystem _wfBleedGate = default!; // WOLFGATE(Wolfmed)
     [Dependency] private AudioSystem _audio = default!;
     [Dependency] private DamageableSystem _damageableSystem = default!;
     [Dependency] private PopupSystem _popupSystem = default!;
@@ -226,6 +227,9 @@ public sealed partial class BloodstreamSystem : EntitySystem
         {
             return;
         }
+
+        if (!_wfBleedGate.CanStartBleeding(ent)) // WOLFGATE(Wolfmed): the body or its gear refused the bleed.
+            return;
 
         // TODO probably cache this or something. humans get hurt a lot
         if (!_prototypeManager.TryIndex<DamageModifierSetPrototype>(ent.Comp.DamageBleedModifiers, out var modifiers))
