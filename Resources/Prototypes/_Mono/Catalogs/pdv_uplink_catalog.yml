@@ -1229,6 +1229,7 @@
       tags:
       - PirateUplink
 
+# WOLFGATE(ArmorBalance): reverts Monolith#4845.
 - type: listing
   id: UplinkPirateHristovBundle
   name: uplink-pirate-hristov-name
@@ -1283,6 +1284,7 @@
 
 #MARK: Equipment
 
+# WOLFGATE(ArmorBalance): reverts Monolith#4845.
 - type: listing
   id: UplinkPirateCombatHardsuit
   name: uplink-pirate-combat-hardsuit-name
@@ -1348,7 +1350,7 @@
 
 - type: listing
   id: UplinkPirateCv32
-  name: uplink-pirate-cv32-hardsuit-name
+  name: uplink-pirate-cv32-hardsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
   description: uplink-pirate-cv32-hardsuit-desc
   productEntity: ClothingOuterHardsuitAshen
   cost:
@@ -1363,7 +1365,7 @@
 
 - type: listing
   id: UplinkPirateCv53
-  name: uplink-pirate-cv53-tacsuit-name
+  name: uplink-pirate-cv53-tacsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
   description: uplink-pirate-cv53-tacsuit-desc
   productEntity: ClothingOuterHardsuitAshenElite
   cost:
@@ -1376,6 +1378,7 @@
       tags:
       - PirateUplink
 
+# WOLFGATE(ArmorBalance): reverts Monolith#4845.
 - type: listing
   id: UplinkPirateCv82
   name: uplink-pirate-cv82-tacsuit-name
@@ -1391,6 +1394,7 @@
       tags:
       - PirateUplink
 
+# WOLFGATE(ArmorBalance): reverts Monolith#4845.
 - type: listing
   id: UplinkPirateJuggernaut
   name: uplink-pirate-juggernaut-hardsuit-name
@@ -1408,7 +1412,7 @@
 
 - type: listing
   id: UplinkPirateStealthSuit
-  name: uplink-pirate-stealth-hardsuit-name
+  name: uplink-pirate-stealth-hardsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
   description: uplink-pirate-stealth-hardsuit-desc
   productEntity: ClothingOuterHardsuitCybersunStealth
   cost:

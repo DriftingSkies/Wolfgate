@@ -105,7 +105,7 @@
   productEntity: WeaponSubMachineGunTypewriter
   cost:
     Telecrystal: 30
-  categories: 
+  categories:
   - UplinkWeaponry
 
 - type: listing
@@ -168,6 +168,7 @@
   categories:
   - UplinkWearables
 
+# WOLFGATE(ArmorBalance): reverts Monolith#4845.
 - type: listing
   id: UplinkUllmanEnforcerMk2
   name: uplink-ullman-enforcer-mk2-name

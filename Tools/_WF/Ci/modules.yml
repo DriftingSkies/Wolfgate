@@ -352,3 +352,51 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
     module: null
     reason: PDV pack, top-left thruster was mapped disabled.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/Maps/_Mono/ShuttleEvent/cinqueda_chimera.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/Maps/_Mono/ShuttleEvent/fracture_chimera.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/calypso.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/cinquedea.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/fujian.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/mercury.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/ocelot.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/paladin.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/polaris.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/qj271.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/seax.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/shiv.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/spekter.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/xiphos.yml
+    module: ArmorBalance
+    reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.

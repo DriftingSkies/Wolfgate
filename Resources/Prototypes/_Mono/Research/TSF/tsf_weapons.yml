@@ -46,11 +46,11 @@
   tier: 3
   cost: 30000
   recipeUnlocks:
-  - WeaponAMRShenzhenTSF
+  - WeaponAMRShenzhenTSF # WOLFGATE(ArmorBalance): reverts Monolith#4845.
   - WeaponDEWSmilodon
   - LargePowerCell400Thz # For smilodon
   - LargePowerCell700Thz # For smilodon
-  - AmmoBoxShenzhenBig
+  - AmmoBoxShenzhenBig # WOLFGATE(ArmorBalance): reverts Monolith#4845.
   technologyPrerequisites:
   - TsfAdvancedWeapons
   - UniversalMaterialResearchT3
