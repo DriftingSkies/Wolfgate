@@ -103,3 +103,5 @@
     proto: CharonSlugAmmo
     soundInsert:
       path: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+  # WOLFGATE(Weapons): refill from linked ammo loaders after each shot
+  - type: WFLoaderAutoFeed
