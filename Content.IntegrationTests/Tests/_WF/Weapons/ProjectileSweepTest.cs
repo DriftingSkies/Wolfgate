@@ -34,7 +34,7 @@ public sealed class ProjectileSweepTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
         var config = server.ResolveDependency<IConfigurationManager>();
         var threshold = config.GetCVar(MonoCVars.ProjectileRaycastSpeedThreshold);
 
@@ -152,7 +152,7 @@ public sealed class ProjectileSweepTest
     }
 
     /// <summary>A free-floating square hull.</summary>
-    private static EntityUid MakeGrid(IEntityManager entities, IMapManager maps, MapId map, int size)
+    private static EntityUid MakeGrid(IEntityManager entities, SharedMapSystem maps, MapId map, int size)
     {
         var grid = maps.CreateGridEntity(map);
         var tiles = new List<(Vector2i GridIndices, Tile Tile)>();

@@ -69,6 +69,9 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
 
         /// <summary>Whether a living player aboard is of no company.</summary>
         public bool Unflagged;
+
+        /// <summary>The flags it flies as exact company ids, so a civilian arm is not taken for its navy.</summary>
+        public readonly HashSet<string> RawFlags = new();
     }
 
     public override void Update(float frameTime)
@@ -200,6 +203,11 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                 company = own;
             if (company.Length > 0 && !crewed.Flags.Contains(company))
                 crewed.Flags.Add(company);
+            var raw = Company(grid);
+            if (raw.Length == 0)
+                raw = Company(uid);
+            if (raw.Length > 0)
+                crewed.RawFlags.Add(raw);
             if (own.Length > 0)
                 crewed.Aboard.Add(own);
             else
@@ -408,6 +416,15 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             // told to show himself and shot across the bows in the warning zone, and fired on in the attack zone. With
             // it on, a patrol only minds its faction's enemies.
             var masked = IffMasked(intruder);
+            // A civilian ship showing its IFF is never a navy patrol's target, whichever navy its faction is at war with.
+            // A zone that warns everyone off, like the USSP remnant's, still does.
+            if (!masked && ship.ZoneTargets == WFEncounterZoneTargets.AtWar && IsCivilian(crewed))
+            {
+                Release(encounter, ship, intruder);
+                _alerts.EndZoneWarning(ship.Grid, intruder);
+                continue;
+            }
+
             // Under the ceasefire the other navy's ships are warned off like any enemy, and fired on only once the
             // ship has had to answer them.
             var ceasefire = !masked && ship.ZoneTargets == WFEncounterZoneTargets.AtWar && !AtWar(company, crewed.Flags)
@@ -587,6 +604,10 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
         return TryComp<WFEncounterGridComponent>(grid, out var marker) && marker.Encounter == encounter.Owner
             && encounter.Ships.TryGetValue(marker.Key, out var other) && other.Side == ship.Side;
     }
+
+    /// <summary>Whether a ship flies only civilian flags: a faction's civilian arm, or no company at all.</summary>
+    private static bool IsCivilian(Crewed crewed) =>
+        crewed.RawFlags.All(company => company.EndsWith("Civilian", StringComparison.Ordinal));
 
     /// <summary>Whether a ship has its IFF switched off, so nobody can tell whose it is.</summary>
     private bool IffMasked(EntityUid grid)

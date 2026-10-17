@@ -1,5 +1,5 @@
 using Content.Shared.Parallax.Biomes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Procedural.Loot;
 

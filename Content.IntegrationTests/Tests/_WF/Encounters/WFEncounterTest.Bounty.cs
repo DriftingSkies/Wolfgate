@@ -96,7 +96,7 @@ public sealed partial class WFEncounterTest
     /// <summary>A small grid in open space with the test player aboard; the caller deletes it.</summary>
     private EntityUid PutPlayerOnGrid(Vector2 at)
     {
-        var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+        var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
         Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
         var transform = Server.System<SharedTransformSystem>();
         transform.SetCoordinates(grid.Owner, new EntityCoordinates(MapData.MapUid, at));

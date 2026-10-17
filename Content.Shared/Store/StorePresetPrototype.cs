@@ -1,6 +1,5 @@
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
+using Content.Shared._WF.EngineCompat;
 using Content.Shared.FixedPoint;
 
 namespace Content.Shared.Store;

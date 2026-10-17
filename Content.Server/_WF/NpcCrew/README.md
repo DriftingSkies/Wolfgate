@@ -378,6 +378,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.TargetLifetime.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.TargetLifetime.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Work.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Work.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Wreck.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Wreck.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFNpcDownedShootingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFNpcDownedShootingTest.cs)
 
 ### Unit tests
 
@@ -444,7 +445,9 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
   - mark points held only by loose crates; flags carry over between points, this must not
   - per-point flags
 - [`Content.Server/NPC/Pathfinding/PathFlags.cs`](../../NPC/Pathfinding/PathFlags.cs): can we shove a loose crate out of the way.
-- [`Content.Server/NPC/Systems/NPCCombatSystem.Ranged.cs`](../../NPC/Systems/NPCCombatSystem.Ranged.cs): Crew miss by their skill level.
+- [`Content.Server/NPC/Systems/NPCCombatSystem.Ranged.cs`](../../NPC/Systems/NPCCombatSystem.Ranged.cs)
+  - no shooting while Downed, crit, stunned or asleep
+  - Crew miss by their skill level.
 - [`Content.Server/NPC/Systems/NPCSteeringSystem.Context.cs`](../../NPC/Systems/NPCSteeringSystem.Context.cs)
   - a loose crate on the node is shoved, not walked into
   - compare both bodies for every NPC; the engine helper reads the first fixtures twice.

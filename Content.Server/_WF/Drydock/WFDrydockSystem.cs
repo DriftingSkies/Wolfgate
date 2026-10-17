@@ -51,7 +51,6 @@ public sealed partial class WFDrydockSystem : EntitySystem
     [Dependency] private WFHullSectionSystem _hull = default!;
     [Dependency] private IServerPreferencesManager _prefs = default!;
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedMaterialStorageSystem _materials = default!;
     [Dependency] private DestructibleSystem _destructible = default!;
@@ -103,7 +102,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
         var worldArea = new Box2Rotated(berth.Area.Translated(stationPos), stationRot, stationPos);
 
         _grids.Clear();
-        _mapManager.FindGridsIntersecting(stationXform.MapID, worldAabb, ref _grids);
+        _map.FindGridsIntersecting(stationXform.MapID, worldAabb, ref _grids);
 
         EntityUid? best = null;
         var bestTiles = 0;

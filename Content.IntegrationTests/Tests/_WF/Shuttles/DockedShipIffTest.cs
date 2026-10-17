@@ -30,7 +30,7 @@ public sealed class DockedShipIffTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entMan = server.ResolveDependency<IEntityManager>();
-        var mapMan = server.ResolveDependency<IMapManager>();
+        var mapMan = server.System<SharedMapSystem>();
         var docking = entMan.System<DockingSystem>();
 
         await server.WaitAssertion(() =>
@@ -69,7 +69,7 @@ public sealed class DockedShipIffTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entMan = server.ResolveDependency<IEntityManager>();
-        var mapMan = server.ResolveDependency<IMapManager>();
+        var mapMan = server.System<SharedMapSystem>();
         var docking = entMan.System<DockingSystem>();
 
         await server.WaitAssertion(() =>
@@ -96,7 +96,7 @@ public sealed class DockedShipIffTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entMan = server.ResolveDependency<IEntityManager>();
-        var mapMan = server.ResolveDependency<IMapManager>();
+        var mapMan = server.System<SharedMapSystem>();
         var docking = entMan.System<DockingSystem>();
 
         await server.WaitAssertion(() =>
@@ -128,7 +128,7 @@ public sealed class DockedShipIffTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entMan = server.ResolveDependency<IEntityManager>();
-        var mapMan = server.ResolveDependency<IMapManager>();
+        var mapMan = server.System<SharedMapSystem>();
         var docking = entMan.System<DockingSystem>();
 
         await server.WaitAssertion(() =>
@@ -156,7 +156,7 @@ public sealed class DockedShipIffTest
     /// <summary>
     /// Makes a grid with a row of docking ports. Grids made earlier get lower entity ids.
     /// </summary>
-    private static Entity<DockingComponent>[] MakeGrid(IEntityManager entMan, IMapManager mapMan, MapId mapId, float y, int ports, out EntityUid gridUid)
+    private static Entity<DockingComponent>[] MakeGrid(IEntityManager entMan, SharedMapSystem mapMan, MapId mapId, float y, int ports, out EntityUid gridUid)
     {
         var grid = mapMan.CreateGridEntity(mapId);
         gridUid = grid.Owner;

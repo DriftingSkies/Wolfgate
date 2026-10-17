@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Chemistry.Reagent;
 using Content.Shared.FixedPoint;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Materials;
 

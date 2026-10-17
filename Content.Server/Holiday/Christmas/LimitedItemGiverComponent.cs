@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Storage;
 using Robust.Shared.Network;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Holiday.Christmas;
 

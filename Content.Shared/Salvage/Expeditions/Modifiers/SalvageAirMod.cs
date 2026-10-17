@@ -1,6 +1,6 @@
 using Content.Shared.Atmos;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Salvage.Expeditions.Modifiers;
 

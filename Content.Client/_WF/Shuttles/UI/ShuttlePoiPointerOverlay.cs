@@ -23,12 +23,12 @@ public sealed partial class ShuttlePoiPointerOverlay : Overlay
 {
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private IEyeManager _eyeManager = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IResourceCache _resCache = default!;
     [Dependency] private IUserInterfaceManager _uiManager = default!;
 
     private readonly DetectionSystem _detection;
+    private readonly SharedMapSystem _map;
     private readonly SharedShuttleSystem _shuttles;
     private readonly SharedTransformSystem _transform;
 
@@ -58,6 +58,7 @@ public sealed partial class ShuttlePoiPointerOverlay : Overlay
         IoCManager.InjectDependencies(this);
 
         _detection = _entManager.System<DetectionSystem>();
+        _map = _entManager.System<SharedMapSystem>();
         _shuttles = _entManager.System<SharedShuttleSystem>();
         _transform = _entManager.System<SharedTransformSystem>();
         _font = new VectorFont(_resCache.GetResource<FontResource>("/Fonts/NotoSans/NotoSans-Regular.ttf"), FontSize);
@@ -101,7 +102,7 @@ public sealed partial class ShuttlePoiPointerOverlay : Overlay
         var half = inner.Size / 2f;
 
         _grids.Clear();
-        _mapManager.FindGridsIntersecting(args.MapId,
+        _map.FindGridsIntersecting(args.MapId,
             Box2.CenteredAround(own, new Vector2(MaxDistance * 2f)),
             ref _grids,
             approx: true,

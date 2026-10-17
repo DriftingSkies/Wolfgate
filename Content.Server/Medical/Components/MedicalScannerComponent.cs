@@ -2,7 +2,7 @@ using Content.Shared.Construction.Prototypes;
 using Content.Shared.DragDrop;
 using Content.Shared.MedicalScanner;
 using Robust.Shared.Containers;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Medical.Components
 {

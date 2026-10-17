@@ -1,5 +1,5 @@
 using Content.Shared.Explosion.EntitySystems;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
+using Content.Shared._WF.EngineCompat;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Explosion.Components;

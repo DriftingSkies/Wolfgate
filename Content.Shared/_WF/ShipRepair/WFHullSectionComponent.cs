@@ -6,7 +6,11 @@ namespace Content.Shared._WF.ShipRepair;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class WFHullSectionComponent : Component
 {
-    /// <summary>The hull holding the repair snapshot; a section keeps the tile indices it had there.</summary>
+    /// <summary>The hull holding the repair snapshot.</summary>
     [DataField, AutoNetworkedField]
     public EntityUid? Hull;
+
+    /// <summary>Added to a tile index on the section, gives the index that tile has on the hull.</summary>
+    [DataField, AutoNetworkedField]
+    public Vector2i Offset;
 }

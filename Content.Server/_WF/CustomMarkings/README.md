@@ -125,6 +125,7 @@ nothing uses is kept, 0 to keep it forever).
 - [`Content.Client/_WF/CustomMarkings/HumanoidProfileEditor.CustomMarkings.cs`](../../../Content.Client/_WF/CustomMarkings/HumanoidProfileEditor.CustomMarkings.cs)
 - [`Content.Client/_WF/CustomMarkings/UI/CustomMarkingBodySampler.cs`](../../../Content.Client/_WF/CustomMarkings/UI/CustomMarkingBodySampler.cs)
 - [`Content.Client/_WF/CustomMarkings/UI/CustomMarkingCanvas.cs`](../../../Content.Client/_WF/CustomMarkings/UI/CustomMarkingCanvas.cs)
+- [`Content.Client/_WF/CustomMarkings/UI/CustomMarkingCloseWindow.cs`](../../../Content.Client/_WF/CustomMarkings/UI/CustomMarkingCloseWindow.cs)
 - [`Content.Client/_WF/CustomMarkings/UI/CustomMarkingEditorWindow.cs`](../../../Content.Client/_WF/CustomMarkings/UI/CustomMarkingEditorWindow.cs)
 - [`Content.Client/_WF/CustomMarkings/UI/CustomMarkingEraseBrush.cs`](../../../Content.Client/_WF/CustomMarkings/UI/CustomMarkingEraseBrush.cs)
 - [`Content.Client/_WF/CustomMarkings/UI/CustomMarkingIconButton.cs`](../../../Content.Client/_WF/CustomMarkings/UI/CustomMarkingIconButton.cs)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Content.Server._CE.ZLevels.Core;
+using Content.Server._WF.EngineCompat;
 using Content.Server._WF.Planets.Flight;
 using Content.Shared.Buckle;
 using Content.Shared.Damage;
@@ -165,11 +166,13 @@ public sealed class StructuralCrashTest
                 var grind = em.GetComponent<AudioComponent>(skid.Loop!.Value);
                 Assert.That(grind.FileName, Is.EqualTo("/Audio/_WF/Planets/Flight/ground_grind_loop.ogg"));
                 Assert.That(grind.Params.MaxDistance, Is.GreaterThanOrEqualTo(80f));
+                // Each section has its own tile frame; this maps it back onto the hull's.
+                Assert.That(server.System<WFGridSplitOriginSystem>().TryGetOffset(uid, hull, out var offset), Is.True);
                 var tiles = server.System<SharedMapSystem>().GetAllTilesEnumerator(uid, grid);
                 while (tiles.MoveNext(out var tile))
                 {
                     remaining++;
-                    Assert.That(ownedTiles.Add(tile.Value.GridIndices), Is.True, "Each original seam cell must belong to exactly one section.");
+                    Assert.That(ownedTiles.Add(tile.Value.GridIndices + offset), Is.True, "Each original seam cell must belong to exactly one section.");
                     if (tile.Value.Tile.TypeId == latticeType) latticeTiles++;
                 }
             }

@@ -1,5 +1,5 @@
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using Content.Server._DV.Weapons.Ranged.Systems;
 
 namespace Content.Server._DV.Weapons.Ranged.Components;

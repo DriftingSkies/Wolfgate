@@ -20,6 +20,7 @@
         - DoorBumpOpener
         - AnomalyHost
         - Avali
+        - Humanoid # WOLFGATE(Chimera): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
     - type: Wagging # Hardlight
       action: ActionToggleAvaliWagging # Hardlight
     - type: HumanoidAppearance

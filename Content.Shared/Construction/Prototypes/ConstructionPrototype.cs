@@ -1,7 +1,7 @@
 using Content.Shared.Construction.Conditions;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Construction.Prototypes;

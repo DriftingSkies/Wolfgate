@@ -69,7 +69,7 @@ public sealed class HullSectionTest
             Assert.That(em.GetComponent<ShipRepairDataComponent>(hull).Chunks, Is.Not.Empty);
             Assert.That(em.HasComponent<ShipRepairDataComponent>(section), Is.False, "The section carries its own copy of the blueprint.");
 
-            Cut(pair, section, Enumerable.Range(SeamColumn + 1, 4).Select(x => new Vector2i(x, 7)));
+            Cut(pair, section, Enumerable.Range(SeamColumn + 1, 4).Select(x => OnSection(pair, section, new Vector2i(x, 7))));
             var sections = SectionsOf(em, hull);
             Assert.That(sections, Has.Count.EqualTo(2), "A piece of the section did not link back to the hull.");
             Assert.That(sections.Any(uid => em.HasComponent<ShipRepairDataComponent>(uid)), Is.False,
@@ -91,7 +91,7 @@ public sealed class HullSectionTest
 
         await server.WaitAssertion(() =>
         {
-            var chunks = em.GetComponent<ShipRepairDataComponent>(hull).Chunks.Count;
+            var blueprint = SnapshotTiles(em.GetComponent<ShipRepairDataComponent>(hull)).Count;
             // The top four rows of the hull's side make a second, smaller section.
             Cut(pair, hull, Enumerable.Range(0, SeamColumn).Select(x => new Vector2i(x, 10)));
             var small = SectionsOf(em, hull).Single(uid => uid != large);
@@ -100,7 +100,7 @@ public sealed class HullSectionTest
 
             Assert.That(em.TryGetComponent<ShipRepairDataComponent>(large, out var inherited), Is.True,
                 "The largest section did not take over the blueprint.");
-            Assert.That(inherited!.Chunks, Has.Count.EqualTo(chunks));
+            Assert.That(SnapshotTiles(inherited!), Has.Count.EqualTo(blueprint));
             Assert.That(em.HasComponent<WFHullSectionComponent>(large), Is.False, "The new hull still links to the old one.");
             Assert.That(em.GetComponent<WFHullSectionComponent>(small).Hull, Is.EqualTo(large), "The other section was not repointed.");
 
@@ -109,6 +109,75 @@ public sealed class HullSectionTest
 
             Assert.That(em.HasComponent<WFHullSectionComponent>(small), Is.False, "A section with no hull left is still linked.");
             Assert.That(em.HasComponent<ShipRepairDataComponent>(small), Is.False, "A scrap section took over the blueprint.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A promoted section's snapshot follows its own tile indices, and the other section still maps onto it.</summary>
+    [Test]
+    public async Task PromotedSnapshotLinesUpWithTheHeir()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var maps = server.System<SharedMapSystem>();
+        var map = await pair.CreateTestMap();
+        var (hull, large) = await BuildSplitHull(pair, map.MapId);
+
+        await server.WaitAssertion(() =>
+        {
+            var original = em.GetComponent<ShipRepairDataComponent>(hull);
+            var hullChunks = original.Chunks.Keys.ToHashSet();
+            var blueprint = SnapshotTiles(original).Count;
+            Cut(pair, hull, Enumerable.Range(0, SeamColumn).Select(x => new Vector2i(x, 10)));
+            var small = SectionsOf(em, hull).Single(uid => uid != large);
+            Assert.That(em.GetComponent<WFHullSectionComponent>(large).Offset, Is.Not.EqualTo(Vector2i.Zero),
+                "The heir kept the hull's tile indices, so this test shows nothing.");
+
+            em.DeleteEntity(hull);
+
+            var data = em.GetComponent<ShipRepairDataComponent>(large);
+            var snapshot = SnapshotTiles(data);
+            Assert.That(snapshot, Has.Count.EqualTo(blueprint), "The handed-on snapshot lost or gained tiles.");
+
+            foreach (var tile in maps.GetAllTiles(large, em.GetComponent<MapGridComponent>(large)).ToList())
+            {
+                Assert.That(snapshot.GetValueOrDefault(tile.GridIndices), Is.EqualTo(tile.Tile.TypeId),
+                    $"The heir's tile {tile.GridIndices} is not where its snapshot has it.");
+            }
+
+            var offset = em.GetComponent<WFHullSectionComponent>(small).Offset;
+            foreach (var tile in maps.GetAllTiles(small, em.GetComponent<MapGridComponent>(small)).ToList())
+            {
+                var place = tile.GridIndices + offset;
+                Assert.That(snapshot.GetValueOrDefault(place), Is.EqualTo(tile.Tile.TypeId),
+                    $"The other section's tile {tile.GridIndices} does not map onto its place in the heir's snapshot.");
+                Assert.That(HasTile(pair, large, place), Is.False, $"The other section's place {place} overlaps the heir.");
+            }
+
+            var fixtures = 0;
+            foreach (var (chunkIndex, chunk) in data.Chunks)
+            {
+                Assert.That(chunk.Entities.Keys.All(id => id < chunk.NextUid), Is.True, $"Chunk {chunkIndex} would reuse an entity id.");
+                foreach (var spec in chunk.Entities.Values)
+                {
+                    if (!em.TryGetEntity(spec.OriginalEntity, out var fixture)
+                        || em.GetComponent<TransformComponent>(fixture.Value).ParentUid != large)
+                        continue;
+
+                    fixtures++;
+                    var local = em.GetComponent<TransformComponent>(fixture.Value).LocalPosition;
+                    Assert.That((spec.LocalPosition - local).Length(), Is.LessThan(0.01f),
+                        $"{em.ToPrettyString(fixture)} is stored at {spec.LocalPosition}, not where it stands at {local}.");
+                    var tile = new Vector2i((int) MathF.Floor(local.X), (int) MathF.Floor(local.Y));
+                    Assert.That(SnapshotChunk(tile, data.ChunkSize), Is.EqualTo(chunkIndex),
+                        $"{em.ToPrettyString(fixture)} is stored in another tile's chunk.");
+                }
+            }
+
+            Assert.That(fixtures, Is.GreaterThan(0), "No fixture aboard the heir was in its snapshot.");
+            Assert.That(data.Chunks.Keys.Any(key => !hullChunks.Contains(key)), Is.True, "The snapshot was not moved onto the heir's indices.");
         });
 
         await pair.CleanReturnAsync();
@@ -417,11 +486,13 @@ public sealed class HullSectionTest
         var (hull, section) = await BuildSplitHull(pair, map.MapId);
         var debris = await BuildDebris(pair, map.MapId, 3, new Vector2(-40f, -40f));
         var home = new Vector2i(SeamColumn + 1, 5);
+        var sectionHome = Vector2i.Zero;
         var start = Vector2.Zero;
 
         await server.WaitPost(() =>
         {
             // Every step but one lets the section back, so each refusal has a single cause.
+            sectionHome = OnSection(pair, section, home);
             Hold(pair, hull, section, debris);
             FillSeam(pair, hull);
             start = xforms.GetWorldPosition(section);
@@ -435,7 +506,7 @@ public sealed class HullSectionTest
         {
             before = em.GetComponent<LimitedChargesComponent>(tool).Charges;
             Assert.That(before, Is.LessThan(em.GetComponent<LimitedChargesComponent>(tool).MaxCharges));
-            Click(em, user, tool, TileCentre(section, home));
+            Click(em, user, tool, TileCentre(section, sectionHome));
         });
         await AssertStillDetached(pair, section, tool, before, "below a full charge");
 
@@ -445,7 +516,7 @@ public sealed class HullSectionTest
             charges.AddCharges(tool, 10000);
             before = em.GetComponent<LimitedChargesComponent>(tool).Charges;
             xforms.SetWorldPosition(section, start + new Vector2(100f, 0f));
-            Click(em, user, tool, TileCentre(section, home));
+            Click(em, user, tool, TileCentre(section, sectionHome));
         });
         await AssertStillDetached(pair, section, tool, before, "out of range");
 
@@ -454,7 +525,7 @@ public sealed class HullSectionTest
         {
             xforms.SetWorldPosition(section, start + new Vector2(3f, 0f));
             Cut(pair, hull, Enumerable.Range(0, 15).Select(y => new Vector2i(SeamColumn, y)));
-            Click(em, user, tool, TileCentre(section, home));
+            Click(em, user, tool, TileCentre(section, sectionHome));
         });
         await AssertStillDetached(pair, section, tool, before, "apart from the hull");
 
@@ -464,7 +535,7 @@ public sealed class HullSectionTest
             FillSeam(pair, hull);
             var grid = em.GetComponent<MapGridComponent>(hull);
             maps.SetTile(hull, grid, home, maps.GetTileRef(hull, grid, new Vector2i(5, 5)).Tile);
-            Click(em, user, tool, TileCentre(section, home));
+            Click(em, user, tool, TileCentre(section, sectionHome));
         });
         await AssertStillDetached(pair, section, tool, before, "onto a hull tile");
 
@@ -474,7 +545,7 @@ public sealed class HullSectionTest
             Cut(pair, hull, new[] { home });
             var spot = Vector2.Transform(new Vector2(12.5f, 8.5f), xforms.GetWorldMatrix(hull));
             xforms.SetWorldPosition(debris, spot - new Vector2(1.5f, 1.5f));
-            Click(em, user, tool, TileCentre(section, home));
+            Click(em, user, tool, TileCentre(section, sectionHome));
         });
         await AssertStillDetached(pair, section, tool, before, "onto another grid");
 
@@ -482,7 +553,7 @@ public sealed class HullSectionTest
         await server.WaitPost(() =>
         {
             xforms.SetWorldPosition(debris, new Vector2(-40f, -40f));
-            Click(em, user, tool, TileCentre(section, home));
+            Click(em, user, tool, TileCentre(section, sectionHome));
         });
         await server.WaitRunTicks(pair.SecondsToTicks(1.5f));
         await server.WaitAssertion(() =>
@@ -542,7 +613,7 @@ public sealed class HullSectionTest
             FillSeam(pair, hull);
             Assert.That(aboard.Keys.All(uid => em.GetComponent<TransformComponent>(uid).ParentUid == section),
                 "Not everything aboard went with the section.");
-            Assert.That(DecalsAt(decals, section, decalSpot), Is.EqualTo(1), "The decal did not go with the section.");
+            Assert.That(DecalsAt(decals, section, OnSection(pair, section, decalSpot)), Is.EqualTo(1), "The decal did not go with the section.");
             // Off its place and turned, clear of the hull.
             xforms.SetWorldPosition(section, xforms.GetWorldPosition(section) + new Vector2(10f, -6f));
             xforms.SetWorldRotation(section, Angle.FromDegrees(30));
@@ -550,7 +621,7 @@ public sealed class HullSectionTest
             // Something held to the section off its tiles, as a sound playing at its centre is.
             stray = em.SpawnEntity(null, MapCoordinates.Nullspace);
             em.GetComponent<TransformComponent>(stray).GridTraversal = false;
-            xforms.SetCoordinates(stray, new EntityCoordinates(section, new Vector2(16.5f, 7.5f)));
+            xforms.SetCoordinates(stray, new EntityCoordinates(section, OnSection(pair, section, new Vector2(16.5f, 7.5f))));
         });
         var (user, tool) = await Worker(pair, () => new EntityCoordinates(hull, new Vector2(5.5f, 9.5f)));
 
@@ -559,7 +630,7 @@ public sealed class HullSectionTest
             Assert.That(em.GetComponent<TransformComponent>(stray).ParentUid, Is.EqualTo(section));
             strayWorld = xforms.GetWorldPosition(stray);
             server.System<SharedChargesSystem>().AddCharges(tool, 10000);
-            Click(em, user, tool, TileCentre(section, new Vector2i(12, 5)));
+            Click(em, user, tool, TileCentre(section, OnSection(pair, section, new Vector2i(12, 5))));
         });
         await server.WaitRunTicks(pair.SecondsToTicks(1.5f));
 
@@ -610,8 +681,8 @@ public sealed class HullSectionTest
             FillSeam(pair, hull);
             var aboard = new[]
             {
-                em.SpawnEntity("MobHuman", new EntityCoordinates(section, new Vector2(13.5f, 10.5f))),
-                em.SpawnEntity("Crowbar", new EntityCoordinates(section, new Vector2(12.3f, 4.7f))),
+                em.SpawnEntity("MobHuman", new EntityCoordinates(section, OnSection(pair, section, new Vector2(13.5f, 10.5f)))),
+                em.SpawnEntity("Crowbar", new EntityCoordinates(section, OnSection(pair, section, new Vector2(12.3f, 4.7f)))),
             };
 
             physics.SetBodyType(section, BodyType.Dynamic);
@@ -689,7 +760,7 @@ public sealed class HullSectionTest
         await server.WaitAssertion(() =>
         {
             var atmos = server.System<AtmosphereSystem>();
-            var mixture = atmos.GetTileMixture(section, null, index, true);
+            var mixture = atmos.GetTileMixture(section, null, OnSection(pair, section, index), true);
             Assert.That(mixture is { Immutable: false }, "The section has no air of its own on the test tile.");
             mixture!.AdjustMoles(Gas.Nitrogen, 100f);
             var moles = mixture.TotalMoles;
@@ -799,7 +870,7 @@ public sealed class HullSectionTest
         var seam = new Vector2i(SeamColumn, 5);
 
         await server.WaitPost(() => Hold(pair, hull, section));
-        var (user, tool) = await Worker(pair, () => new EntityCoordinates(section, new Vector2(12.5f, 9.5f)));
+        var (user, tool) = await Worker(pair, () => new EntityCoordinates(section, OnSection(pair, section, new Vector2(12.5f, 9.5f))));
 
         await server.WaitPost(() =>
         {
@@ -832,6 +903,18 @@ public sealed class HullSectionTest
         });
 
         return (hull, section);
+    }
+
+    /// <summary>Where a hull tile sits on a section; engine v291 gives a split-off grid its own origin.</summary>
+    private static Vector2i OnSection(TestPair pair, EntityUid section, Vector2i hullIndex)
+    {
+        return hullIndex - pair.Server.EntMan.GetComponent<WFHullSectionComponent>(section).Offset;
+    }
+
+    /// <summary>Where a hull-local position sits on a section.</summary>
+    private static Vector2 OnSection(TestPair pair, EntityUid section, Vector2 hullLocal)
+    {
+        return hullLocal - (Vector2) pair.Server.EntMan.GetComponent<WFHullSectionComponent>(section).Offset;
     }
 
     /// <summary>Removes tiles; a cut across the grid splits it.</summary>
@@ -929,6 +1012,29 @@ public sealed class HullSectionTest
                     $"Tile {index} links {direction} but its neighbour does not link back, {when}.");
             }
         }
+    }
+
+    /// <summary>Every stored tile of a repair snapshot, by grid index.</summary>
+    private static Dictionary<Vector2i, int> SnapshotTiles(ShipRepairDataComponent data)
+    {
+        var tiles = new Dictionary<Vector2i, int>();
+        var size = data.ChunkSize;
+        foreach (var (chunkIndex, chunk) in data.Chunks)
+        {
+            for (var i = 0; i < chunk.Tiles.Length; i++)
+            {
+                if (chunk.Tiles[i] != Tile.Empty.TypeId)
+                    tiles[chunkIndex * size + new Vector2i(i % size, i / size)] = chunk.Tiles[i];
+            }
+        }
+
+        return tiles;
+    }
+
+    /// <summary>The snapshot chunk holding a grid tile.</summary>
+    private static Vector2i SnapshotChunk(Vector2i index, int size)
+    {
+        return new Vector2i((int) MathF.Floor(index.X / (float) size), (int) MathF.Floor(index.Y / (float) size));
     }
 
     private static bool HasTile(TestPair pair, EntityUid grid, Vector2i index)

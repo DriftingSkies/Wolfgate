@@ -252,6 +252,10 @@ public sealed partial class WFEncounterShip
     [DataField]
     public bool Captain = true;
 
+    /// <summary>The deed the ship's highest-ranking crewman drops when he dies, or null for none.</summary>
+    [DataField]
+    public EntProtoId? Deed = "WFEncounterShipDeed";
+
     /// <summary>
     /// Whether an engineer is posted by the plant to keep it fuelled from the ship's stores. Only where the roles allow
     /// one; a fighter crewed by a pilot and gunner alone tops its own generator up while its crew live.

@@ -24,7 +24,7 @@ public sealed partial class HeatHazeOverlay : Overlay
 {
     [Dependency] private IClyde _clyde = default!;
     [Dependency] private IEntityManager _entMan = default!;
-    [Dependency] private IMapManager _mapMan = default!;
+    private SharedMapSystem _mapMan => _entMan.System<SharedMapSystem>();
     [Dependency] private IPrototypeManager _proto = default!;
 
     /// <summary>Air temperature, in kelvin, the haze fades in from: the base species' heat damage threshold.</summary>

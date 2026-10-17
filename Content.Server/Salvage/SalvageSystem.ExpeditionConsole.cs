@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Popups;
 using Content.Shared.Station.Components;
 using Content.Shared.Shuttles.Components;
@@ -19,8 +20,7 @@ namespace Content.Server.Salvage;
 
 public sealed partial class SalvageSystem
 {
-    [ValidatePrototypeId<EntityPrototype>]
-    public const string CoordinatesDisk = "CoordinatesDisk";
+    public static readonly EntProtoId CoordinatesDisk = "CoordinatesDisk";
     private const float ShuttleFTLRange = 256f;
     private const float ShuttleFTLMassThreshold = 100f;
 
@@ -115,7 +115,9 @@ public sealed partial class SalvageSystem
                 }
             }
 
-            foreach (var other in _mapManager.FindGridsIntersecting(xform.MapID, bounds))
+            var intersecting = new List<Entity<MapGridComponent>>();
+            _mapSystem.FindGridsIntersecting(xform.MapID, bounds, ref intersecting);
+            foreach (var other in intersecting.Select(g => g.Comp))
             {
                 if (other.Owner == grid ||
                     dockedGrids.Contains(other.Owner) || // Skip grids that are docked to us or to the same parent grid

@@ -39,9 +39,9 @@
         !type:CableDeviceNode
         nodeGroupID: HVPower
   - type: TractorBeamEmitter
-    maxRange: 200
+    maxRange: 240
     rangeStrainAtMaxRange: 0.6
-    maxForce: 10000
+    maxForce: 12000
     idlePower: 5000
     holdingPower: 100000
     maxPower: 2000000
@@ -87,8 +87,8 @@
         !type:CableDeviceNode
         nodeGroupID: MVPower
   - type: TractorBeamEmitter
-    maxRange: 80
-    maxForce: 6000
+    maxRange: 96
+    maxForce: 7200
     idlePower: 10000
     holdingPower: 30000
     maxPower: 150000

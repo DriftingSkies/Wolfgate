@@ -1,7 +1,7 @@
 ﻿using Content.Server.Xenoarchaeology.XenoArtifacts.Effects.Systems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 using Content.Shared.FixedPoint; // Frontier
 
 namespace Content.Server.Xenoarchaeology.XenoArtifacts.Effects.Components;

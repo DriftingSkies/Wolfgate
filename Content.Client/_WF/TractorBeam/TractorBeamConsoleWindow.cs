@@ -10,6 +10,7 @@ namespace Content.Client._WF.TractorBeam;
 public sealed class TractorBeamConsoleWindow : DefaultWindow
 {
     public event Action<NetEntity, NetEntity?, bool, bool, float?>? OnCommand;
+    public event Action<NetEntity, bool>? OnAutoCatch;
 
     private readonly TractorBeamRadarControl _radar;
     private readonly OptionButton _emitters;
@@ -31,6 +32,7 @@ public sealed class TractorBeamConsoleWindow : DefaultWindow
     private readonly Label _distance;
     private readonly Button _lockInPlace;
     private readonly Button _release;
+    private readonly CheckBox _autoCatch;
     private TractorBeamConsoleBoundUserInterfaceState? _state;
     private NetEntity? _selectedEmitter;
     private NetEntity? _selectedTarget;
@@ -86,6 +88,12 @@ public sealed class TractorBeamConsoleWindow : DefaultWindow
         buttons.AddChild(_lock = new Button { Name = "HoldTarget", Text = Loc.GetString("tractor-beam-console-lock"), HorizontalExpand = true });
         buttons.AddChild(_lockInPlace = new Button { Name = "LockInPlace", Text = Loc.GetString("tractor-beam-console-lock-in-place"), HorizontalExpand = true });
         buttons.AddChild(_release = new Button { Name = "Release", Text = Loc.GetString("tractor-beam-console-release"), HorizontalExpand = true });
+        controls.AddChild(_autoCatch = new CheckBox
+        {
+            Name = "AutoCatch",
+            Text = Loc.GetString("tractor-beam-console-auto-catch"),
+            ToolTip = Loc.GetString("tractor-beam-console-auto-catch-help"),
+        });
         var rangeControls = new BoxContainer { SeparationOverride = 8 };
         controls.AddChild(rangeControls);
         rangeControls.AddChild(new Label { Text = Loc.GetString("tractor-beam-console-desired-range") });
@@ -151,6 +159,11 @@ public sealed class TractorBeamConsoleWindow : DefaultWindow
         {
             if (_selectedEmitter is { } emitter)
                 OnCommand?.Invoke(emitter, null, false, false, null);
+        };
+        _autoCatch.OnToggled += args =>
+        {
+            if (_selectedEmitter is { } emitter)
+                OnAutoCatch?.Invoke(emitter, args.Pressed);
         };
         RefreshDetails();
     }
@@ -334,6 +347,8 @@ public sealed class TractorBeamConsoleWindow : DefaultWindow
         _desiredRange.ToolTip = _setRange.ToolTip;
         _rangeLimits.ToolTip = _rangeLimits.Text;
         _release.Disabled = locked == null;
+        _autoCatch.Disabled = !connected || !hasEmitter;
+        _autoCatch.Pressed = emitter?.AutoCatch == true;
         _radar.Selected = _selectedTarget;
         _radar.Locked = locked;
         _radar.Emitter = hasEmitter ? emitter : null;

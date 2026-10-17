@@ -5,7 +5,10 @@ using Robust.Client.UserInterface;
 using Robust.Shared.Input;
 using System.Linq;
 using Content.Client._Mono.Economy;
-using Content.Shared._Mono.Economy.Component; // Mono
+// WOLFGATE(EngineCompat) START: Engine v291 serialization generation cannot use a namespace named Component.
+// using Content.Shared._Mono.Economy.Component; // Mono
+using Content.Shared._Mono.Economy.Components; // Mono
+// WOLFGATE END
 using Robust.Client.GameObjects;
 using Content.Shared._NF.Bank.Components; // Frontier
 using Content.Shared.Containers.ItemSlots; // Frontier

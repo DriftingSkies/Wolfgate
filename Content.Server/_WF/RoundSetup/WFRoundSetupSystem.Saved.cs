@@ -167,7 +167,7 @@ public sealed partial class WFRoundSetupSystem
     private static bool ValidSavedSetup(WFSavedSetup saved) =>
         saved.Id is >= 1 and <= WFRoundSetupPolicy.MaximumSavedSetups &&
         saved.Scenario is WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip &&
-        (saved.Scenario == WFRoundScenario.FactionShip ? saved.Faction is WFCrewFaction.TSF or WFCrewFaction.PDV : saved.Faction == WFCrewFaction.None) &&
+        (saved.Scenario == WFRoundScenario.FactionShip ? WFFactionCrewPolicy.All.Contains(saved.Faction) : saved.Faction == WFCrewFaction.None) &&
         saved.ShipName != null && WFRoundSetupPolicy.TryNormalizeTitle(saved.ShipName, out _) && Enum.IsDefined(saved.ShipStart) && Enum.IsDefined(saved.Access) &&
         saved.Name != null && saved.Title != null && saved.JobTitle != null && saved.Description != null &&
         WFRoundSetupPolicy.TryNormalizeDescription(saved.Description, out _) &&

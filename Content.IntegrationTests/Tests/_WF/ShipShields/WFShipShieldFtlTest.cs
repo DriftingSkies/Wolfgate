@@ -167,7 +167,7 @@ public sealed class WFShipShieldFtlTest
         {
             var entities = pair.Server.EntMan;
             var maps = entities.System<SharedMapSystem>();
-            var partner = pair.Server.ResolveDependency<IMapManager>().CreateGridEntity(source.MapId);
+            var partner = pair.Server.System<SharedMapSystem>().CreateGridEntity(source.MapId);
             maps.SetTile(partner.Owner, partner.Comp, Vector2i.Zero, source.Tile.Tile);
             maps.SetTile(partner.Owner, partner.Comp, new Vector2i(1, 0), source.Tile.Tile);
             entities.System<SharedTransformSystem>().SetLocalPosition(partner.Owner, new Vector2(0f, 10f));

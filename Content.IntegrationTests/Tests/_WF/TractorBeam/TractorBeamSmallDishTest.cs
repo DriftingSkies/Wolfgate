@@ -24,7 +24,7 @@ public sealed class TractorBeamSmallDishTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         await server.WaitAssertion(() =>
         {
@@ -43,15 +43,15 @@ public sealed class TractorBeamSmallDishTest
                 Assert.That(power.Voltage, Is.EqualTo(Voltage.Medium));
                 Assert.That(entities.GetComponent<NodeContainerComponent>(emitter).Nodes["input"].NodeGroupID,
                     Is.EqualTo(NodeGroupID.MVPower), "The small dish must override its parent's HV cable node.");
-                Assert.That(beam.MaxRange, Is.EqualTo(80f));
-                Assert.That(beam.MaxForce, Is.EqualTo(6000f));
+                Assert.That(beam.MaxRange, Is.EqualTo(96f));
+                Assert.That(beam.MaxForce, Is.EqualTo(7200f));
                 Assert.That(beam.IdlePower, Is.EqualTo(10000f));
                 Assert.That(beam.HoldingPower, Is.EqualTo(30000f));
                 Assert.That(beam.MaxPower, Is.EqualTo(150000f));
             });
 
             system.UpdateBeforeSolve(false, 1f / 60f);
-            Assert.That(beam.Active, Is.True, "The small prototype must operate inside its 80 m cone.");
+            Assert.That(beam.Active, Is.True, "The small prototype must operate inside its 96 m cone.");
             Assert.That(beam.Visual, Is.Not.Null);
             var visual = entities.GetComponent<TractorBeamVisualComponent>(beam.Visual!.Value);
             Assert.That(visual.WidthScale, Is.EqualTo(0.5f),
@@ -98,7 +98,7 @@ public sealed class TractorBeamSmallDishTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         await server.WaitAssertion(() =>
         {

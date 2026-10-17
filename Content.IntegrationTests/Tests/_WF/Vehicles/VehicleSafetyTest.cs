@@ -1023,7 +1023,7 @@ public sealed class VehicleSafetyTest
             }
 
             // Another, smaller hull already sitting where it will land, with a vehicle on it.
-            var other = server.ResolveDependency<IMapManager>().CreateGridEntity(target.MapId);
+            var other = server.System<SharedMapSystem>().CreateGridEntity(target.MapId);
             otherHull = other.Owner;
             server.System<SharedTransformSystem>().SetLocalPosition(otherHull, landing);
             for (var x = 0; x < 3; x++)

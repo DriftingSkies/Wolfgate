@@ -2,7 +2,7 @@ using System.Threading;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Storage;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Medical.BiomassReclaimer
 {

@@ -12,7 +12,7 @@
   cost: 1
   replaceable: true
   placement: Station
-  standoff: 500
+  standoff: 3000 # posted on the approaches, clear of docking traffic
   cooldown: 2400
   ships:
   - key: lead
@@ -69,7 +69,7 @@
   cost: 1
   replaceable: true
   placement: Station
-  standoff: 500
+  standoff: 3000 # posted on the approaches, clear of docking traffic
   cooldown: 2400
   ships:
   - key: lead
@@ -353,7 +353,7 @@
   category: Distress
   icon: Skull
   cost: 2
-  startRadius: 1500
+  startRadius: 600
   rewards:
   - side: freight
     spesos: 24000
@@ -403,7 +403,7 @@
   icon: Skull
   cost: 3
   weight: 0.5
-  startRadius: 1800
+  startRadius: 750
   rewards:
   - side: freight
     spesos: 44000
@@ -595,7 +595,7 @@
   minPlayers: 3
   cooldown: 2700
   duration: 2700
-  startRadius: 2000
+  startRadius: 800
   minDistance: 2500
   maxDistance: 4000
   rewards:
@@ -666,7 +666,7 @@
   requiresWar: true
   cooldown: 2700
   duration: 2700
-  startRadius: 2000
+  startRadius: 800
   minDistance: 2500
   maxDistance: 4000
   rewards:
@@ -1170,7 +1170,7 @@
   cost: 2
   weight: 0.75
   minPlayers: 3
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3000
   duration: 1800
   minDistance: 2500
@@ -1276,7 +1276,7 @@
   cost: 2
   weight: 0.5
   minPlayers: 3
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3000
   duration: 1800
   minDistance: 2500
@@ -1356,7 +1356,7 @@
   cost: 2
   weight: 0.5
   minPlayers: 3
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3000
   duration: 1800
   minDistance: 2500
@@ -1440,7 +1440,7 @@
   weight: 0.75
   minPlayers: 3
   requiresWar: true
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3000
   duration: 1800
   minDistance: 2500
@@ -1547,7 +1547,7 @@
   cost: 2
   weight: 0.5
   minPlayers: 3
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3000
   duration: 1800
   minDistance: 2500
@@ -1629,7 +1629,7 @@
   cost: 2
   weight: 0.5
   minPlayers: 5
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3600
   duration: 1800
   minDistance: 2500
@@ -1721,7 +1721,7 @@
   cost: 3
   weight: 0.35
   minPlayers: 6
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3600
   duration: 1800
   minDistance: 2500
@@ -1843,7 +1843,7 @@
   weight: 0.35
   minPlayers: 6
   requiresWar: true
-  startRadius: 1800
+  startRadius: 750
   cooldown: 3600
   duration: 1800
   minDistance: 2500
@@ -2210,7 +2210,7 @@
   minPlayers: 6
   cooldown: 3600
   duration: 3000
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3000
   maxDistance: 4500
   stationClearance: 2500
@@ -2373,7 +2373,7 @@
   requiresWar: true
   cooldown: 3600
   duration: 3000
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3000
   maxDistance: 4500
   stationClearance: 2500
@@ -2528,7 +2528,7 @@
   weight: 0.9
   minPlayers: 3
   placement: Station
-  standoff: 600
+  standoff: 3000 # posted on the approaches, clear of docking traffic
   cooldown: 3600
   duration: 2400
   ships:
@@ -2604,7 +2604,7 @@
   weight: 0.9
   minPlayers: 3
   placement: Station
-  standoff: 600
+  standoff: 3000 # posted on the approaches, clear of docking traffic
   cooldown: 3600
   duration: 2400
   ships:
@@ -3030,7 +3030,7 @@
   minPlayers: 9
   cooldown: 5400
   duration: 3600
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3000
   maxDistance: 5000
   stationClearance: 3000
@@ -3231,7 +3231,7 @@
   requiresWar: true
   cooldown: 5400
   duration: 3600
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3000
   maxDistance: 5000
   stationClearance: 3000
@@ -3426,7 +3426,7 @@
   minPlayers: 0
   cooldown: 5400
   duration: 4200
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3500
   maxDistance: 5500
   stationClearance: 3500
@@ -3683,7 +3683,7 @@
   minPlayers: 0
   cooldown: 5400
   duration: 4200
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3500
   maxDistance: 5500
   stationClearance: 3500
@@ -3942,7 +3942,7 @@
   minPlayers: 0
   cooldown: 5400
   duration: 4800
-  startRadius: 2500
+  startRadius: 1000
   minDistance: 3500
   maxDistance: 5500
   stationClearance: 3500
@@ -4302,7 +4302,7 @@
   weight: 0.4
   minPlayers: 6
   placement: Station
-  standoff: 900
+  standoff: 3000 # posted on the approaches, clear of docking traffic
   cooldown: 5400
   duration: 2400
   ships:
@@ -4381,7 +4381,7 @@
   weight: 0.4
   minPlayers: 6
   placement: Station
-  standoff: 900
+  standoff: 3000 # posted on the approaches, clear of docking traffic
   cooldown: 5400
   duration: 2400
   ships:
@@ -4464,7 +4464,7 @@
   weight: 0.2
   minPlayers: 9
   placement: Station
-  standoff: 900
+  standoff: 4000 # posted on the approaches, clear of docking traffic
   cooldown: 7200
   duration: 2400
   ships:
@@ -4563,7 +4563,7 @@
   weight: 0.2
   minPlayers: 9
   placement: Station
-  standoff: 900
+  standoff: 4000 # posted on the approaches, clear of docking traffic
   cooldown: 7200
   duration: 2400
   ships:
@@ -4667,7 +4667,7 @@
   weight: 0
   minPlayers: 0
   placement: Station
-  standoff: 1200
+  standoff: 4000 # posted on the approaches, clear of docking traffic
   duration: 2400
   ships:
   - key: lead
@@ -4785,7 +4785,7 @@
   weight: 0
   minPlayers: 0
   placement: Station
-  standoff: 1200
+  standoff: 4000 # posted on the approaches, clear of docking traffic
   duration: 2400
   ships:
   - key: lead

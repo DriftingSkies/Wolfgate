@@ -685,7 +685,17 @@ public partial class BaseShuttleControl : MapGridControl
         }
         else
         {
-            handle.DrawPrimitives(DrawPrimitiveTopology.LineList, new Span<Vector2>(_allVertices, gridData.EdgeIndex, edgeCount), color);
+            // WOLFGATE START: batch radar edges so huge grids don't overflow the game thread stack
+            // DrawPrimitives stackallocs every vertex (~32 bytes each).
+            // handle.DrawPrimitives(DrawPrimitiveTopology.LineList, new Span<Vector2>(_allVertices, gridData.EdgeIndex, edgeCount), color);
+            const int EdgeBatchSize = 2 * 4096;
+
+            for (var start = 0; start < edgeCount; start += EdgeBatchSize)
+            {
+                var count = Math.Min(EdgeBatchSize, edgeCount - start);
+                handle.DrawPrimitives(DrawPrimitiveTopology.LineList, new Span<Vector2>(_allVertices, gridData.EdgeIndex + start, count), color);
+            }
+            // WOLFGATE END
         }
     }
 

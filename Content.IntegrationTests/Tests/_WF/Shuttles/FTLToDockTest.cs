@@ -45,7 +45,7 @@ public sealed class FTLToDockTest
         var targetMap = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var mapSystem = entManager.System<SharedMapSystem>();
         var xformSystem = entManager.System<SharedTransformSystem>();
         var shuttleSystem = entManager.System<ShuttleSystem>();

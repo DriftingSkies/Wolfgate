@@ -136,12 +136,15 @@ public sealed partial class EmoteVoiceSystem : EntitySystem
         return voiced;
     }
 
-    private SoundSpecifier CopySound(SoundSpecifier sound, AudioParams? audioParams)
+    /// <summary>A new specifier for the same sound; SoundSpecifier is copied by reference, so CreateCopy would share it.</summary>
+    private static SoundSpecifier CopySound(SoundSpecifier sound, AudioParams? audioParams)
     {
-        var copy = _serialization.CreateCopy(sound, notNullableOverride: true);
-        if (audioParams is { } set)
-            copy.Params = set;
-
-        return copy;
+        var set = audioParams ?? sound.Params;
+        return sound switch
+        {
+            SoundPathSpecifier path => new SoundPathSpecifier(path.Path, set),
+            SoundCollectionSpecifier { Collection: { } collection } => new SoundCollectionSpecifier(collection, set),
+            _ => sound,
+        };
     }
 }

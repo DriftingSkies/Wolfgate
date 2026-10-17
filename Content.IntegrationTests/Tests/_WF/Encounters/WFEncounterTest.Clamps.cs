@@ -39,7 +39,7 @@ public sealed partial class WFEncounterTest
     /// <summary>A bare deck with a port and a helm that needs no power.</summary>
     private (EntityUid Grid, EntityUid Dock, EntityUid Helm) ClampDeck(Vector2 at)
     {
-        var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+        var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
         var tiles = new List<(Vector2i, Tile)>();
         for (var x = 0; x < 3; x++)
         {

@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Systems.Carvers;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Worldgen.Components.Carvers;
 

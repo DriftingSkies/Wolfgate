@@ -22,7 +22,7 @@ public sealed class ShuttleNavMapTest
         var map = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var mapSystem = entManager.System<SharedMapSystem>();
 
         await server.WaitAssertion(() =>

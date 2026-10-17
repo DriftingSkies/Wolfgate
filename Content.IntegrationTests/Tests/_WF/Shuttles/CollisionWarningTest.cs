@@ -33,7 +33,7 @@ public sealed class CollisionWarningTest
         var map = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var cfg = server.ResolveDependency<IConfigurationManager>();
         var mapSystem = entManager.System<SharedMapSystem>();
         var physicsSystem = entManager.System<SharedPhysicsSystem>();
@@ -135,7 +135,7 @@ public sealed class CollisionWarningTest
         var map = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var mapSystem = entManager.System<SharedMapSystem>();
         var physicsSystem = entManager.System<SharedPhysicsSystem>();
         var xformSystem = entManager.System<SharedTransformSystem>();
@@ -215,7 +215,7 @@ public sealed class CollisionWarningTest
         var map = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var mapSystem = entManager.System<SharedMapSystem>();
         var physicsSystem = entManager.System<SharedPhysicsSystem>();
         var xformSystem = entManager.System<SharedTransformSystem>();
@@ -264,7 +264,7 @@ public sealed class CollisionWarningTest
         var map = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var cfg = server.ResolveDependency<IConfigurationManager>();
         var mapSystem = entManager.System<SharedMapSystem>();
         var physicsSystem = entManager.System<SharedPhysicsSystem>();
@@ -320,7 +320,7 @@ public sealed class CollisionWarningTest
         var map = await pair.CreateTestMap();
 
         var entManager = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var mapSystem = entManager.System<SharedMapSystem>();
         var physicsSystem = entManager.System<SharedPhysicsSystem>();
         var xformSystem = entManager.System<SharedTransformSystem>();
@@ -354,7 +354,7 @@ public sealed class CollisionWarningTest
     /// <summary>
     /// A bare four by four grid of plating.
     /// </summary>
-    private static EntityUid MakeGrid(IEntityManager entManager, IMapManager mapManager, SharedMapSystem mapSystem, MapId mapId)
+    private static EntityUid MakeGrid(IEntityManager entManager, SharedMapSystem mapManager, SharedMapSystem mapSystem, MapId mapId)
     {
         var grid = mapManager.CreateGridEntity(mapId);
         var tiles = new List<(Vector2i GridIndices, Tile Tile)>();

@@ -41,6 +41,14 @@ public sealed class TractorBeamConsoleMessage : BoundUserInterfaceMessage
     }
 }
 
+/// <summary>Switches a dish's auto-catch on or off.</summary>
+[Serializable, NetSerializable]
+public sealed class TractorBeamAutoCatchMessage(NetEntity emitter, bool enabled) : BoundUserInterfaceMessage
+{
+    public readonly NetEntity Emitter = emitter;
+    public readonly bool Enabled = enabled;
+}
+
 [Serializable, NetSerializable]
 public sealed class TractorBeamConsoleBoundUserInterfaceState : BoundUserInterfaceState
 {
@@ -86,13 +94,15 @@ public readonly struct TractorBeamEmitterEntry
     public readonly bool Active;
     public readonly TractorBeamPinStatus PinStatus;
     public readonly float CooldownRemaining;
+    public readonly bool AutoCatch;
 
     public TractorBeamEmitterEntry(NetEntity entity, string name, NetEntity? target, bool powered,
         float strain, float requestedPower, float receivedPower, float range, bool pulling = false,
         bool lockedInPlace = false, bool canLockInPlace = false, Vector2 position = default,
         Vector2 direction = default, float coneHalfAngle = TractorBeamOperatingCone.DefaultHalfAngle,
         float currentDistance = 0, float holdDistance = 0, float minimumDistance = 0, float? desiredRange = null,
-        bool active = false, TractorBeamPinStatus pinStatus = TractorBeamPinStatus.NoTarget, float cooldownRemaining = 0)
+        bool active = false, TractorBeamPinStatus pinStatus = TractorBeamPinStatus.NoTarget, float cooldownRemaining = 0,
+        bool autoCatch = false)
     {
         Entity = entity;
         Name = name;
@@ -115,6 +125,7 @@ public readonly struct TractorBeamEmitterEntry
         Active = active;
         PinStatus = pinStatus;
         CooldownRemaining = cooldownRemaining;
+        AutoCatch = autoCatch;
     }
 }
 

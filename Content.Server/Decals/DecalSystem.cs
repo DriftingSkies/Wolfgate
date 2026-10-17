@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
+using Content.Server._WF.EngineCompat;
 using Content.Shared.Administration;
 using Content.Shared.Chunking;
 using Content.Shared.Database;
@@ -37,6 +38,7 @@ namespace Content.Server.Decals
         [Dependency] private SharedMapSystem _mapSystem = default!;
         [Dependency] private SharedTransformSystem _transform = default!;
         [Dependency] private TurfSystem _turf = default!;
+        [Dependency] private WFGridSplitOriginSystem _splitOrigin = default!;
 
         private readonly Dictionary<NetEntity, HashSet<Vector2i>> _dirtyChunks = new();
         private readonly Dictionary<ICommonSession, Dictionary<NetEntity, HashSet<Vector2i>>> _previousSentChunks = new();
@@ -115,16 +117,20 @@ namespace Content.Server.Decals
 
             var oldChunkCollection = oldComp.ChunkCollection.ChunkCollection;
             var chunkCollection = newComp.ChunkCollection.ChunkCollection;
+            // Engine v291 gives the new grid its own origin; a tile here sat at tilePos + offset on the old grid.
+            var offset = (Vector2) _splitOrigin.SplitOffset(ev.OldGrid, ev.Grid);
 
             while (enumerator.MoveNext(out var tile))
             {
                 var tilePos = (Vector2) tile.Value.GridIndices;
                 var chunkIndices = GetChunkIndices(tilePos);
+                var oldTilePos = tilePos + offset;
+                var oldChunkIndices = GetChunkIndices(oldTilePos);
 
-                if (!oldChunkCollection.TryGetValue(chunkIndices, out var oldChunk))
+                if (!oldChunkCollection.TryGetValue(oldChunkIndices, out var oldChunk))
                     continue;
 
-                var bounds = new Box2(tilePos - _boundsMinExpansion, tilePos + _boundsMaxExpansion);
+                var bounds = new Box2(oldTilePos - _boundsMinExpansion, oldTilePos + _boundsMaxExpansion);
                 var toRemove = new RemQueue<uint>();
 
                 foreach (var (oldDecalId, decal) in oldChunk.Decals)
@@ -134,7 +140,7 @@ namespace Content.Server.Decals
 
                     var newDecalId = newComp.ChunkCollection.NextDecalId++;
                     var newChunk = chunkCollection.GetOrNew(chunkIndices);
-                    newChunk.Decals[newDecalId] = decal;
+                    newChunk.Decals[newDecalId] = decal.WithCoordinates(decal.Coordinates - offset);
                     newComp.DecalIndex[newDecalId] = chunkIndices;
                     toRemove.Add(oldDecalId);
                 }
@@ -148,10 +154,10 @@ namespace Content.Server.Decals
                 DirtyChunk(ev.Grid, chunkIndices, chunkCollection.GetOrNew(chunkIndices));
 
                 if (oldChunk.Decals.Count == 0)
-                    oldChunkCollection.Remove(chunkIndices);
+                    oldChunkCollection.Remove(oldChunkIndices);
 
                 if (toRemove.List?.Count > 0)
-                    DirtyChunk(ev.OldGrid, chunkIndices, oldChunk);
+                    DirtyChunk(ev.OldGrid, oldChunkIndices, oldChunk);
             }
         }
 

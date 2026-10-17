@@ -94,6 +94,7 @@ public sealed partial class WFShipAccessServerSystem
     {
         var owners = OwnerKeys(ship);
         _writtenOwners[ship.Owner] = owners;
+        PublishOwnerKeys(ship, owners);
         var children = Transform(ship.Owner).ChildEnumerator;
         while (children.MoveNext(out var child))
             RefreshReader(ship, child, owners);
@@ -409,6 +410,20 @@ public sealed partial class WFShipAccessServerSystem
         }
 
         return keys;
+    }
+
+    /// <summary>Copies the owner keys onto the component, where the client and <see cref="WFShipAccessSystem.IsOwner"/> read them.</summary>
+    private void PublishOwnerKeys(Entity<WFShipAccessComponent> ship, HashSet<StationRecordKey> owners)
+    {
+        var keys = new List<WFShipAccessKey>();
+        foreach (var key in owners)
+            keys.Add(_access.ToKey(key));
+
+        if (keys.Count == ship.Comp.OwnerKeys.Count && keys.TrueForAll(ship.Comp.OwnerKeys.Contains))
+            return;
+
+        ship.Comp.OwnerKeys = keys;
+        Dirty(ship);
     }
 
     /// <summary>Whether the ship can be locked without shutting its owner out: someone's card must carry an owner key.</summary>

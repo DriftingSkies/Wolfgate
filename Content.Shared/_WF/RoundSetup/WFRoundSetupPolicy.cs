@@ -18,7 +18,7 @@ public static class WFRoundSetupPolicy
     public static bool IsShipStartAllowed(WFShipStartLocation location, WFCrewFaction faction) => faction switch
     {
         WFCrewFaction.None => location is WFShipStartLocation.RandomSpace or WFShipStartLocation.CentralDock,
-        WFCrewFaction.TSF or WFCrewFaction.PDV => location is WFShipStartLocation.RandomSpace or WFShipStartLocation.FactionBase,
+        WFCrewFaction.TSF or WFCrewFaction.PDV or WFCrewFaction.VG or WFCrewFaction.USSP or WFCrewFaction.Underground => location is WFShipStartLocation.RandomSpace or WFShipStartLocation.FactionBase,
         _ => false,
     };
 

@@ -95,8 +95,14 @@ public sealed class CustomMarkingWindowsTest
                 Assert.That(Icon(editor, "wf-custom-marking-editor-frame-remove").Disabled, Is.True);
                 Assert.That(Icon(editor, "wf-custom-marking-editor-frame-previous").Disabled, Is.True);
                 Assert.That(Icon(editor, "wf-custom-marking-editor-frame-play").Disabled, Is.True);
-                Assert.That(Descendants(editor).OfType<FloatSpinBox>().Single().Parent!.Visible, Is.False);
+                Assert.That(Descendants(editor).OfType<FloatSpinBox>().Single(box => box.Name != "OpacityValue").Parent!.Visible, Is.False);
             });
+
+            // Opacity can be typed as well as dragged, and the two follow each other.
+            var opacityBox = Descendants(editor).OfType<FloatSpinBox>().Single(box => box.Name == "OpacityValue");
+            var opacitySlider = Descendants(editor).OfType<Slider>().Single(slider => slider.MaxValue == 100);
+            opacitySlider.Value = 40;
+            Assert.That(opacityBox.Value, Is.EqualTo(40f));
 
             // The body's hair can be left out of the picture, to see what is under it; it is there to start with.
             Assert.That(Descendants(editor).OfType<CheckBox>().Count(box => box.Text == Loc.GetString("wf-custom-marking-editor-show-hair")),
@@ -150,7 +156,7 @@ public sealed class CustomMarkingWindowsTest
                     Assert.That(Icon(animated, loc).Disabled, Is.False, loc);
                 }
 
-                var time = Descendants(animated).OfType<FloatSpinBox>().Single();
+                var time = Descendants(animated).OfType<FloatSpinBox>().Single(box => box.Name != "OpacityValue");
                 Assert.That(time.Parent!.Visible, Is.True, "each frame of an animated marking has its time");
                 Assert.That(time.Value, Is.EqualTo(CustomMarkingRules.DefaultFrameTime / 1000f).Within(0.001f), "the first frame's");
                 Assert.That(Descendants(animated).OfType<Label>().Select(label => label.Text),

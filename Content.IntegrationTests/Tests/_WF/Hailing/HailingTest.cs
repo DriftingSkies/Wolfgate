@@ -740,7 +740,7 @@ public sealed partial class HailingTest : InteractionTest
     /// </summary>
     private async Task SetupShips()
     {
-        var maps = Server.ResolveDependency<IMapManager>();
+        var maps = Server.System<SharedMapSystem>();
         var ui = SEntMan.System<SharedUserInterfaceSystem>();
 
         await Server.WaitPost(() =>

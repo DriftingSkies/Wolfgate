@@ -30,7 +30,7 @@ public sealed class TradeChuteTest
         var map = await pair.CreateTestMap();
 
         var entMan = server.EntMan;
-        var mapMan = server.ResolveDependency<IMapManager>();
+        var mapMan = server.System<SharedMapSystem>();
         var mapSys = entMan.System<SharedMapSystem>();
         var xformSys = entMan.System<SharedTransformSystem>();
         var interaction = entMan.System<SharedInteractionSystem>();

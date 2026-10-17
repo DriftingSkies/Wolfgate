@@ -1,5 +1,5 @@
 using Content.Shared.DeviceNetwork;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 

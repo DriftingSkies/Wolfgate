@@ -182,7 +182,7 @@ public sealed class WolfgateColorPopup : Popup
         var text = _hex.Text.Trim();
         if (!text.StartsWith('#'))
             text = "#" + text;
-        if (text.Length != 7 || Color.TryFromHex(text) is not { } color)
+        if (text.Length != 7 || !Color.TryFromHex(text, out var color))
             return;
         var hsv = Color.ToHsv(color);
         SetHsv(hsv.Y > 0.001f && hsv.Z > 0.001f ? hsv.X : _h, hsv.Y, hsv.Z);

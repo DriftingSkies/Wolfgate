@@ -1,3 +1,4 @@
+using Robust.Shared.Map.Components;
 using System.Linq;
 using System.Numerics;
 using System.Transactions;
@@ -15,7 +16,6 @@ public partial class ShipDrillSystem : EntitySystem
     [Dependency] private EntityLookupSystem _look = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
     [Dependency] private SharedMapSystem _map = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private ITileDefinitionManager _tileDef = default!;
     [Dependency] private TileSystem _tile = default!;
     [Dependency] private SharedDecalSystem _decal = default!;
@@ -65,9 +65,10 @@ public partial class ShipDrillSystem : EntitySystem
                 angle,
                 coords.Position);
 
-            var grids = _mapManager.FindGridsIntersecting(_xform.GetMapId(dGrid.Value), worldBox);
+            var grids = new List<Entity<MapGridComponent>>();
+            _map.FindGridsIntersecting(_xform.GetMapId(dGrid.Value), worldBox, ref grids);
 
-            foreach (var grid in grids)
+            foreach (var grid in grids.Select(g => g.Comp))
             {
                 if (grid.Owner == dGrid)
                     continue;

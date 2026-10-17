@@ -3,7 +3,7 @@ using Content.Server.Polymorph.Systems;
 using Content.Shared.EntityEffects;
 using Content.Shared.Polymorph;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.EntityEffects.Effects;
 

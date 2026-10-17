@@ -33,7 +33,7 @@ public sealed partial class ShootAtFixedPointSystem : EntitySystem
 
     [Dependency] private SharedBroadphaseSystem _broadphase = default!;
     [Dependency] private GunAimGuardSystem _aimGuard = default!;
-    [Dependency] private IMapManager _mapManager = default!;
+    [Dependency] private SharedMapSystem _mapManager = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedProjectileSystem _projectiles = default!;

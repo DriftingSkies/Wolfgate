@@ -261,7 +261,9 @@ public sealed class TractorBeamGeometryTest
             Assert.That(TractorBeamGeometry.ContainsPoint(Vector2.Zero, end, invalidPoint, 1.5f), Is.False);
             Assert.That(TractorBeamGeometry.IntersectsBox(invalidPoint, end, new Box2(0f, 0f, 1f, 1f), 1.5f), Is.False);
             Assert.That(TractorBeamGeometry.IntersectsBox(Vector2.Zero, invalidPoint, new Box2(0f, 0f, 1f, 1f), 1.5f), Is.False);
-            Assert.That(TractorBeamGeometry.IntersectsBox(Vector2.Zero, end, new Box2(0f, 0f, invalid, 1f), 1.5f), Is.False);
+            // Box2 rejects an inverted box, so a negative infinite edge can no longer be built.
+            if (!float.IsNegativeInfinity(invalid))
+                Assert.That(TractorBeamGeometry.IntersectsBox(Vector2.Zero, end, new Box2(0f, 0f, invalid, 1f), 1.5f), Is.False);
         }
     }
 }

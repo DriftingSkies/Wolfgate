@@ -1,6 +1,6 @@
 using Content.Shared.Damage;
 using Content.Shared.Tools;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server._EinsteinEngines.Silicon.WeldingHealing
 {

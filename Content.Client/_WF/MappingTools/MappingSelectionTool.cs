@@ -20,7 +20,6 @@ public sealed class MappingSelectionTool
     [Dependency] private IEntityManager _entities = default!;
     [Dependency] private IEyeManager _eye = default!;
     [Dependency] private IInputManager _input = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private IPlayerManager _player = default!;
 
     public enum DragMode
@@ -136,7 +135,7 @@ public sealed class MappingSelectionTool
         }
 
         _pressOnSelection = false;
-        _pressGrid = _mapManager.TryFindGridAt(mapCoords, out var boxGrid, out _) ? boxGrid : GridOf(clicked);
+        _pressGrid = _map.TryFindGridAt(mapCoords, out var boxGrid, out _) ? boxGrid : GridOf(clicked);
         if (_pressGrid is { } pressGrid && TryGetCell(mapCoords, pressGrid, out var start))
             DragStart = start;
 

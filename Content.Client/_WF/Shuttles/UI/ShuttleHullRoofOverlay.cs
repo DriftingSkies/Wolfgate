@@ -35,7 +35,6 @@ public sealed partial class ShuttleHullRoofOverlay : Overlay
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IRobustRandom _random = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private IResourceCache _resCache = default!;
@@ -162,7 +161,7 @@ public sealed partial class ShuttleHullRoofOverlay : Overlay
 
         _grids.Clear();
         _drawn.Clear();
-        _mapManager.FindGridsIntersecting(args.MapId, args.WorldBounds, ref _grids, approx: true, includeMap: false);
+        _map.FindGridsIntersecting(args.MapId, args.WorldBounds, ref _grids, approx: true, includeMap: false);
 
         foreach (var grid in _grids)
         {

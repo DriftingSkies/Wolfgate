@@ -1,14 +1,14 @@
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.DeviceLinking;
 
 /// <summary>
 ///     A prototype for a device port, for use with device linking.
 /// </summary>
-[Serializable, NetSerializable]
-public abstract class DevicePortPrototype
+[Serializable, NetSerializable, ImplicitDataDefinitionForInheritors]
+public abstract partial class DevicePortPrototype
 {
     [IdDataField]
     public string ID { get; private set; } = default!;

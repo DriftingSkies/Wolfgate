@@ -47,6 +47,7 @@ public sealed partial class TractorBeamSystem : VirtualController
         base.Initialize();
         SubscribeLocalEvent<TractorBeamConsoleComponent, BoundUIOpenedEvent>(OnUiOpened);
         SubscribeLocalEvent<TractorBeamConsoleComponent, TractorBeamConsoleMessage>(OnCommand);
+        SubscribeLocalEvent<TractorBeamConsoleComponent, TractorBeamAutoCatchMessage>(OnAutoCatch);
         SubscribeLocalEvent<TractorBeamEmitterComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<GridSplitEvent>(OnGridSplit);
     }
@@ -208,6 +209,8 @@ public sealed partial class TractorBeamSystem : VirtualController
                 _popup.PopupEntity(Loc.GetString("tractor-beam-range-unavailable"), uid, args.Actor);
                 return;
             }
+            // A manual order on an auto-caught target takes over from auto-catch, which would pin it again.
+            beam.AutoCaught = false;
             beam.RequestedDistance = desired;
             beam.Pulling = beam.HoldDistance > desired;
             beam.LockedInPlace = false;
@@ -228,24 +231,40 @@ public sealed partial class TractorBeamSystem : VirtualController
         // Repeated lock commands must not ratchet the rest length or renew a failing lock.
         if (beam.Target == target)
         {
-            if (args.LockInPlace && !beam.LockedInPlace)
-            {
-                beam.LockedSeparation = Center(target) - Center(source);
-                beam.LockedSourceAngle = (float) TransformSystem.GetWorldRotation(source).Theta;
-                beam.LockedAngle = (float) (TransformSystem.GetWorldRotation(target).Theta -
-                    TransformSystem.GetWorldRotation(source).Theta);
-            }
-            beam.LockedInPlace = args.LockInPlace;
-            beam.Pulling = false;
-            beam.RequestedDistance = null;
-            Dirty(emitter, beam);
+            beam.AutoCaught = false;
+            SetLockedInPlace(emitter, beam, source, target, args.LockInPlace);
             UpdateUi(uid, console);
             return;
         }
 
+        Capture(emitter, beam, power, uid, source, target);
+        UpdateUi(uid, console);
+    }
+
+    /// <summary>Holds or releases a captured target's separation and relative angle as they are now.</summary>
+    private void SetLockedInPlace(EntityUid emitter, TractorBeamEmitterComponent beam, EntityUid source, EntityUid target, bool locked)
+    {
+        if (locked && !beam.LockedInPlace)
+        {
+            beam.LockedSeparation = Center(target) - Center(source);
+            beam.LockedSourceAngle = (float) TransformSystem.GetWorldRotation(source).Theta;
+            beam.LockedAngle = (float) (TransformSystem.GetWorldRotation(target).Theta -
+                TransformSystem.GetWorldRotation(source).Theta);
+        }
+        beam.LockedInPlace = locked;
+        beam.Pulling = false;
+        beam.RequestedDistance = null;
+        Dirty(emitter, beam);
+    }
+
+    /// <summary>Starts holding a new target at its current distance, bearing and angle.</summary>
+    private void Capture(EntityUid emitter, TractorBeamEmitterComponent beam, PowerConsumerComponent power,
+        EntityUid controller, EntityUid source, EntityUid target)
+    {
         StopBeamAudio(emitter, beam);
+        beam.AutoCaught = false;
         beam.SourceGrid = source;
-        beam.Controller = uid;
+        beam.Controller = controller;
         beam.Target = target;
         beam.TargetOffset = Comp<PhysicsComponent>(target).LocalCenter;
         beam.HoldDistance = Vector2.Distance(Center(source), Center(target));
@@ -268,7 +287,6 @@ public sealed partial class TractorBeamSystem : VirtualController
         beam.LockedAngle = 0;
         power.DrawRate = beam.RequestedPower;
         Dirty(emitter, beam);
-        UpdateUi(uid, console);
     }
 
     public void Release(EntityUid uid, TractorBeamEmitterComponent beam)
@@ -279,6 +297,7 @@ public sealed partial class TractorBeamSystem : VirtualController
         if (beam.Target != null || beam.Active)
             beam.CooldownRemaining = beam.RestartCooldown;
         beam.Target = null;
+        beam.AutoCaught = false;
         beam.SourceGrid = null;
         beam.Controller = null;
         beam.Active = false;
@@ -420,6 +439,7 @@ public sealed partial class TractorBeamSystem : VirtualController
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        UpdateAutoCatch();
         if (_timing.CurTime < _nextUiUpdate)
             return;
         _nextUiUpdate = _timing.CurTime + TimeSpan.FromSeconds(0.5);
@@ -458,7 +478,7 @@ public sealed partial class TractorBeamSystem : VirtualController
                     beam.HoldDistance,
                     beam.Target is { } rangeTarget && !TerminatingOrDeleted(rangeTarget)
                         ? MinimumGridSeparation(source, rangeTarget, beam.CollectionStandOff) : 0,
-                    beam.RequestedDistance, beam.Active, pinStatus, beam.CooldownRemaining));
+                    beam.RequestedDistance, beam.Active, pinStatus, beam.CooldownRemaining, beam.AutoCatch));
             }
 
             _docked.Clear();

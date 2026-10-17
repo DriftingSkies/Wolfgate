@@ -4,7 +4,7 @@ using Content.Server._WF.Traders;
 using Content.Server.Power.Components;
 using Content.Server.VendingMachines;
 using Content.Shared._Mono.Economy;
-using Content.Shared._Mono.Economy.Component;
+using Content.Shared._Mono.Economy.Components;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Power.EntitySystems;

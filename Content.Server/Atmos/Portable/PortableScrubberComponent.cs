@@ -1,7 +1,7 @@
 using Content.Shared.Atmos;
 using Content.Shared.Guidebook;
 using Content.Shared.Construction.Prototypes; // Frontier
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype; // Frontier
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Atmos.Portable
 {

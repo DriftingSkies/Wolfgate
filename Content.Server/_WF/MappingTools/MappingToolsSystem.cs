@@ -33,7 +33,6 @@ public sealed partial class MappingToolsSystem : EntitySystem
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IAdminManager _admin = default!;
     [Dependency] private IDependencyCollection _dependency = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private ITileDefinitionManager _tileDefs = default!;
     [Dependency] private DecalSystem _decals = default!;
     [Dependency] private MapLoaderSystem _loader = default!;
@@ -387,11 +386,11 @@ public sealed partial class MappingToolsSystem : EntitySystem
             return;
 
         var mapCoords = _transform.ToMapCoordinates(coords);
-        if (!_mapManager.TryFindGridAt(mapCoords, out var gridUid, out var grid) &&
+        if (!_map.TryFindGridAt(mapCoords, out var gridUid, out var grid) &&
             !TryPasteGrid(clip.SourceGrid, mapCoords.MapId, out gridUid, out grid))
         {
             // Off every grid, with the source grid gone: start a new grid under the cursor.
-            var newGrid = _mapManager.CreateGridEntity(mapCoords.MapId);
+            var newGrid = _map.CreateGridEntity(mapCoords.MapId);
             _transform.SetWorldPosition(newGrid.Owner, new Vector2(MathF.Floor(mapCoords.X), MathF.Floor(mapCoords.Y)));
             (gridUid, grid) = (newGrid.Owner, newGrid.Comp);
         }

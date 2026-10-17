@@ -41,6 +41,13 @@ public sealed partial class WFShipAccessComponent : Component
     [ViewVariables, AutoNetworkedField]
     public List<NetUserId> OwnerUsers = new();
 
+    /// <summary>
+    /// The owner record keys the readers were last written with, so an ID card carrying one edits the ship's access
+    /// like the deed holder. Written by the server; round state.
+    /// </summary>
+    [ViewVariables, AutoNetworkedField]
+    public List<WFShipAccessKey> OwnerKeys = new();
+
     /// <summary>The linked scenario crew; round-scoped and server-only.</summary>
     [ViewVariables]
     public int? CrewId;

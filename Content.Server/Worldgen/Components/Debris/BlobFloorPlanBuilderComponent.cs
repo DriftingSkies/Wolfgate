@@ -1,6 +1,6 @@
 ﻿using Content.Server.Worldgen.Systems.Debris;
 using Content.Shared.Maps;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Worldgen.Components.Debris;
 

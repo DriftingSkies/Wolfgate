@@ -1,5 +1,5 @@
 using Content.Shared.Tag;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Shuttles.Components;
 

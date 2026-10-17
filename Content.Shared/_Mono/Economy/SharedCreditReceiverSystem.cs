@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Content.Shared._Mono.Economy.Component;
+// WOLFGATE(EngineCompat) START: Engine v291 serialization generation cannot use a namespace named Component.
+// using Content.Shared._Mono.Economy.Component;
+using Content.Shared._Mono.Economy.Components;
+// WOLFGATE END
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Stacks;
 using Content.Shared.VendingMachines;

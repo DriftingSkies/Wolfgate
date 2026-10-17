@@ -6,7 +6,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Station.Systems;
 using Content.Server.StationRecords;
 using Content.Shared._Mono.Economy;
-using Content.Shared._Mono.Economy.Component;
+using Content.Shared._Mono.Economy.Components;
 using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._NF.Shipyard;

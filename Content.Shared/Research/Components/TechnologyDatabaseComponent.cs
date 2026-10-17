@@ -2,8 +2,7 @@ using Content.Shared.Lathe;
 using Content.Shared.Research.Prototypes;
 using Content.Shared.Research.Systems;
 using Robust.Shared.GameStates;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Research.Components;
 

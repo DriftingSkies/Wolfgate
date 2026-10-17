@@ -10,6 +10,7 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
+using Robust.Shared.ContentPack;
 using Robust.Shared.Graphics.RSI;
 using Robust.Shared.Utility;
 
@@ -27,6 +28,7 @@ public sealed partial class CustomMarkingLibraryWindow : CustomMarkingWindow
     [Dependency] private IEntityManager _entMan = default!;
     [Dependency] private IFileDialogManager _dialog = default!;
     [Dependency] private ILogManager _log = default!;
+    [Dependency] private IResourceManager _res = default!;
 
     private readonly CustomMarkingSystem _system;
     private readonly Func<HumanoidCharacterProfile?> _profile;
@@ -220,7 +222,7 @@ public sealed partial class CustomMarkingLibraryWindow : CustomMarkingWindow
         };
 
         var export = new CustomMarkingIconButton("export", Loc.GetString("wf-custom-marking-library-export")) { Disabled = !loaded };
-        export.OnPressed += _ => Export(entry.Hash);
+        export.OnPressed += _ => Export(entry);
 
         // Deleting takes two presses: the icon turns into a question, which deletes.
         BaseButton delete;
@@ -428,34 +430,47 @@ public sealed partial class CustomMarkingLibraryWindow : CustomMarkingWindow
         }
     }
 
-    private async void Export(string hash)
+    /// <summary>Where exported markings go, under the game's own user data folder.</summary>
+    private static readonly ResPath ExportFolder = new("/CustomMarkings");
+
+    /// <summary>
+    /// Writes the marking to the user data folder as "name.png" and opens that folder. The native save dialog let a
+    /// name be typed without ".png" and wrote it as a file with no extension; the client can't rename what it picked.
+    /// </summary>
+    private void Export(CustomMarkingEntry entry)
     {
-        if (_busy || !_system.TryGetPng(hash, out var png))
+        if (_busy || !_system.TryGetPng(entry.Hash, out var png))
             return;
 
-        _busy = true;
         try
         {
-            var file = await _dialog.SaveFile(new FileDialogFilters(new FileDialogFilters.Group("png")));
-            if (file is not { } saved)
-                return;
+            _res.UserData.CreateDir(ExportFolder);
+            var path = ExportPath(entry.Name);
+            using (var stream = _res.UserData.OpenWrite(path))
+                stream.Write(png);
 
-            await using var stream = saved.fileStream;
-            // A file picked to be replaced still holds its old bytes.
-            if (saved.alreadyExisted && stream.CanSeek)
-                stream.SetLength(0);
-
-            await stream.WriteAsync(png);
+            _status.Text = Loc.GetString("wf-custom-marking-exported", ("file", path.Filename));
+            _status.StyleClasses.Remove("Danger");
+            _res.UserData.OpenOsWindow(ExportFolder);
         }
         catch (Exception e)
         {
             _log.GetSawmill("wf.custom_markings").Error($"Exporting a custom marking failed: {e}");
             SetStatus("wf-custom-marking-error-export", true);
         }
-        finally
-        {
-            _busy = false;
-        }
+    }
+
+    /// <summary>A free "name.png" in the export folder, keeping only characters every file system accepts.</summary>
+    private ResPath ExportPath(string name)
+    {
+        var clean = new string(name.Where(c => char.IsLetterOrDigit(c) || c is ' ' or '-' or '_').ToArray()).Trim();
+        if (clean.Length == 0)
+            clean = Loc.GetString("wf-custom-marking-default-name");
+
+        var path = ExportFolder / $"{clean}.png";
+        for (var copy = 2; _res.UserData.Exists(path); copy++)
+            path = ExportFolder / $"{clean} ({copy}).png";
+        return path;
     }
 
     private void SetStatus(string? loc, bool error)

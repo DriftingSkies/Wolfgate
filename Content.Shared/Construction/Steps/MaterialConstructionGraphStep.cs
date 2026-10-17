@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Examine;
 using Content.Shared.Stacks;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Construction.Steps
 {

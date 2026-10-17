@@ -172,7 +172,7 @@ public sealed partial class WFShipAccessServerSystem
     {
         foreach (var session in _player.Sessions)
         {
-            if (session.AttachedEntity is { } body && (_access.HasDeedFor(body, ship.Owner) || ship.Comp.OwnerUsers.Contains(session.UserId)))
+            if (session.AttachedEntity is { } body && (_access.IsOwner(body, ship.Owner) || ship.Comp.OwnerUsers.Contains(session.UserId)))
                 RaiseNetworkEvent(ev, session.Channel);
         }
     }

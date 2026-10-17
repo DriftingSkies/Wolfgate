@@ -170,10 +170,38 @@ public sealed class WFShipAccessSystem : EntitySystem
                && comp.OwnerUsers.Contains(session.UserId);
     }
 
-    /// <summary>Who may edit the ship's access: the deed holder, or a player an admin tool registered the ship to.</summary>
+    /// <summary>
+    /// Who may edit the ship's access: the deed holder, a player an admin tool registered the ship to, or anyone
+    /// holding or wearing an ID card that carries one of the ship's owner keys.
+    /// </summary>
     public bool IsOwner(EntityUid user, EntityUid grid)
     {
-        return HasDeedFor(user, grid) || TryComp<WFShipAccessComponent>(grid, out var comp) && IsRegisteredTo(user, comp);
+        if (HasDeedFor(user, grid))
+            return true;
+
+        return TryComp<WFShipAccessComponent>(grid, out var comp) && (IsRegisteredTo(user, comp) || HasOwnerCard(user, comp));
+    }
+
+    /// <summary>Whether a held or worn ID card carries one of the ship's owner record keys.</summary>
+    private bool HasOwnerCard(EntityUid user, WFShipAccessComponent comp)
+    {
+        if (comp.OwnerKeys.Count == 0)
+            return false;
+
+        foreach (var item in _hands.EnumerateHeld(user))
+        {
+            if (IsOwnerCard(item, comp))
+                return true;
+        }
+
+        return _inventory.TryGetSlotEntity(user, "id", out var worn) && IsOwnerCard(worn.Value, comp);
+    }
+
+    private bool IsOwnerCard(EntityUid item, WFShipAccessComponent comp)
+    {
+        return _idCard.TryGetIdCard(item, out var card)
+               && TryGetKey(card.Owner, out var key)
+               && comp.OwnerKeys.Contains(key);
     }
 
     /// <summary>The ID card in the user's id slot, directly or in a PDA: their own, as opposed to one they happen to hold.</summary>

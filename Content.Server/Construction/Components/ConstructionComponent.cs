@@ -1,7 +1,7 @@
 using Content.Shared._Goobstation.Construction;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.DoAfter;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Construction.Components
 {

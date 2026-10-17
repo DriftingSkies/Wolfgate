@@ -26,7 +26,7 @@ public sealed class MappingMapsSystem : EntitySystem
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IAdminManager _admin = default!;
     [Dependency] private IConsoleHost _console = default!;
-    [Dependency] private IMapManager _mapManager = default!;
+    [Dependency] private SharedMapSystem _mapManager = default!;
     [Dependency] private IResourceManager _res = default!;
     [Dependency] private MapLoaderSystem _loader = default!;
     [Dependency] private PopupSystem _popup = default!;

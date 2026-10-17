@@ -447,7 +447,7 @@ public sealed partial class GenitalOrganSystem : EntitySystem
         ent.Comp.Undergarments = UndergarmentFlags.None;
 
         // Marked per field: a field delta carries only marked fields, so a plain Dirty beside one organ DirtyField this
-        // tick would drop these. Several fields at once always make a full state.
+        // tick would drop these.
         DirtyFields(ent.Owner, ent.Comp, null,
             nameof(GenitalsComponent.RevealMode),
             nameof(GenitalsComponent.Visibility),

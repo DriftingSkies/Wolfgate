@@ -1,5 +1,5 @@
 using Content.Shared.Damage;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using Content.Shared.Damage.Prototypes;
 
 namespace Content.Server.Destructible.Thresholds.Triggers

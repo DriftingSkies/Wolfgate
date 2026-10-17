@@ -1,6 +1,6 @@
 using Content.Server.Atmos.Piping.Binary.EntitySystems;
 using Content.Shared.DeviceLinking;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Atmos.Piping.Binary.Components;
 

@@ -42,7 +42,7 @@ public sealed class ShipPaListenerTest
             client.ResolveDependency<IEyeManager>().CurrentEye = eye;
             var maps = em.System<SharedMapSystem>();
             map = maps.CreateMap(out mapId);
-            var gridEntity = client.ResolveDependency<IMapManager>().CreateGridEntity(mapId);
+            var gridEntity = client.System<SharedMapSystem>().CreateGridEntity(mapId);
             grid = gridEntity.Owner;
             var xform = em.System<SharedTransformSystem>();
             for (var i = 0; i < 25; i++)
@@ -239,7 +239,7 @@ public sealed class ShipPaListenerTest
         {
             var maps = em.System<SharedMapSystem>();
             maps.CreateMap(out var mapId);
-            var grid = client.ResolveDependency<IMapManager>().CreateGridEntity(mapId);
+            var grid = client.System<SharedMapSystem>().CreateGridEntity(mapId);
             maps.SetTile(grid, Vector2i.Zero, new Tile(1));
             var speaker = em.SpawnEntity(null, new EntityCoordinates(grid.Owner, 0.5f, 0.5f));
             em.AddComponent<ShipPaSpeakerComponent>(speaker).Enabled = true;
@@ -289,7 +289,7 @@ public sealed class ShipPaListenerTest
             var pa = em.System<ShipPaMeshSystem>();
             var maps = em.System<SharedMapSystem>();
             maps.CreateMap(out var mapId);
-            var grid = client.ResolveDependency<IMapManager>().CreateGridEntity(mapId);
+            var grid = client.System<SharedMapSystem>().CreateGridEntity(mapId);
             maps.SetTile(grid, Vector2i.Zero, new Tile(1));
             var eye = new FixedEye { Position = new MapCoordinates(new Vector2(0.5f, 0.5f), mapId) };
             client.ResolveDependency<IEyeManager>().CurrentEye = eye;
@@ -306,7 +306,7 @@ public sealed class ShipPaListenerTest
             pa.FrameUpdate(0.11f);
             Assert.That(label.Text, Does.Contain("Collision imminent"));
 
-            var other = client.ResolveDependency<IMapManager>().CreateGridEntity(mapId);
+            var other = client.System<SharedMapSystem>().CreateGridEntity(mapId);
             em.System<SharedTransformSystem>().SetWorldPosition(other.Owner, new Vector2(20, 0));
             maps.SetTile(other, Vector2i.Zero, new Tile(1));
             em.AddComponent<ShipPaBroadcastComponent>(other.Owner).Broadcasts.Add(new ShipPaBroadcast

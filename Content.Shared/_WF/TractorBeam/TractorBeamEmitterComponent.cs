@@ -8,14 +8,14 @@ namespace Content.Shared._WF.TractorBeam;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class TractorBeamEmitterComponent : Component
 {
-    [DataField] public float MaxRange = 200f;
+    [DataField] public float MaxRange = 240f;
     /// <summary>Visual fan width relative to the target hull; does not change the operating cone.</summary>
     [DataField] public float VisualWidthScale = 1f;
     /// <summary>Electrical strain to sustain a stationary capture at maximum range.</summary>
     [DataField] public float RangeStrainAtMaxRange = 0.6f;
     /// <summary>Forward operating half-angle in radians, measured about the dish's local +Y axis.</summary>
     [DataField] public float ConeHalfAngle = TractorBeamOperatingCone.DefaultHalfAngle;
-    [DataField] public float MaxForce = 10000f;
+    [DataField] public float MaxForce = 12000f;
     [DataField] public float IdlePower = 5000f;
     [DataField] public float HoldingPower = 100000f;
     [DataField] public float MaxPower = 2000000f;
@@ -53,10 +53,16 @@ public sealed partial class TractorBeamEmitterComponent : Component
     [AutoNetworkedField] public bool Active;
     [AutoNetworkedField] public bool Pulling;
     [AutoNetworkedField] public bool LockedInPlace;
+    /// <summary>Captures, then locks in place, the first grid whose center enters the inner zone of the cone.</summary>
+    [AutoNetworkedField] public bool AutoCatch;
 
     // Runtime locks are deliberately not serialized into maps.
     public EntityUid? SourceGrid;
     public EntityUid? Controller;
+    /// <summary>The console that switched auto-catch on; it controls whatever the dish catches.</summary>
+    public EntityUid? AutoCatchConsole;
+    /// <summary>The current target was caught automatically, so it is locked in place once both ships are still.</summary>
+    public bool AutoCaught;
     public EntityUid? Visual;
     public float HoldDistance;
     /// <summary>Requested center-to-center distance for a controlled inward reel; retained on arrival.</summary>

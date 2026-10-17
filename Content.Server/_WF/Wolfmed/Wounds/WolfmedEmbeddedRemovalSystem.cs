@@ -53,11 +53,12 @@ public sealed class WolfmedEmbeddedRemovalSystem : EntitySystem
         if (args.Handled || !args.CanReach || !TryGetTool(args.Used, out var clean))
             return;
 
-        if (!TryComp(args.User, out TargetingComponent? targeting) ||
-            !_targeting.TryResolveExact(body, targeting.Target, out var part))
-            return;
+        EntityUid? aimed = TryComp(args.User, out TargetingComponent? targeting) &&
+                           _targeting.TryResolveExact(body, targeting.Target, out var part)
+            ? part
+            : null;
 
-        if (_embedded.GetEmbeddedWound(part) is not { } wound)
+        if (FindEmbeddedWound(body, aimed, clean) is not { } wound)
             return;
 
         var delay = clean ? wound.Comp.CleanDelay : wound.Comp.SharpDelay;
@@ -82,6 +83,30 @@ public sealed class WolfmedEmbeddedRemovalSystem : EntitySystem
             BreakOnMove = true,
             BreakOnDamage = true,
         });
+    }
+
+    /// <summary>
+    /// The lodged object in the aimed part, else, for a clean tool, the first one anywhere on the body.
+    /// </summary>
+    /// <remarks>
+    /// Synth bug report: forceps only worked with the doll on the exact limb holding the round, and said nothing
+    /// otherwise, so the breach it blocked looked unrepairable. A knife still follows the doll, since it cuts.
+    /// </remarks>
+    public Entity<WolfmedEmbeddedObjectComponent>? FindEmbeddedWound(EntityUid body, EntityUid? aimed, bool clean)
+    {
+        if (aimed is { } part && _embedded.GetEmbeddedWound(part) is { } wound)
+            return wound;
+
+        if (!clean)
+            return null;
+
+        foreach (var (candidate, _) in _body.GetBodyChildren(body))
+        {
+            if (_embedded.GetEmbeddedWound(candidate) is { } found)
+                return found;
+        }
+
+        return null;
     }
 
     private void OnDoAfter(Entity<WoundHostComponent> body, ref WolfmedEmbeddedRemovalDoAfterEvent args)

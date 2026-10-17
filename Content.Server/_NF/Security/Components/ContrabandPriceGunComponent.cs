@@ -1,6 +1,6 @@
 using Content.Shared.Store;
 using Robust.Shared.Audio;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server._NF.Security.Components;
 

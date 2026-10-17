@@ -48,7 +48,6 @@ public sealed partial class VehicleExitSpotSystem : EntitySystem
 
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedMapSystem _map = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 
     [Dependency] private EntityQuery<FixturesComponent> _fixtureQuery = default!;
@@ -240,7 +239,7 @@ public sealed partial class VehicleExitSpotSystem : EntitySystem
     {
         tile = default;
 
-        if (_mapManager.TryFindGridAt(position, out gridUid, out grid) &&
+        if (_map.TryFindGridAt(position, out gridUid, out grid) &&
             _map.TryGetTileRef(gridUid, grid, position.Position, out tile) &&
             !tile.Tile.IsEmpty)
         {

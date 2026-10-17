@@ -667,7 +667,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             Jobs = own != null && (canEnter || own.Host == session.UserId) ? JobsFor(own).ToArray() : Array.Empty<WFRoundSetupJob>(),
             SavedSetups = GetSavedSetups(session.UserId).ToArray(),
             RoleJobs = own?.Host == session.UserId ? (WFRoundSetupPolicy.IsShip(own.Scenario) ? GetRoleJobs(session, own) : JobsFor(own)).ToArray() : Array.Empty<WFRoundSetupJob>(),
-            Factions = new[] { WFCrewFaction.TSF, WFCrewFaction.PDV }.Where(faction => CanCreateFaction(session, faction, eligibility)).ToArray(),
+            Factions = WFFactionCrewPolicy.All.Where(faction => CanCreateFaction(session, faction, eligibility)).ToArray(),
             Vessels = shipHost ? _ships.GetVessels(own!.Faction, EligiblePurchaseJob(own, session)).ToArray() : Array.Empty<WFRoundSetupVessel>(),
             CrewShips = own is { Started: true } && own.Host == session.UserId ? CrewShipChoices(own) : Array.Empty<WFRoundSetupShipChoice>(),
             PendingShip = own != null ? PendingShipFor(own, session.UserId) : null,

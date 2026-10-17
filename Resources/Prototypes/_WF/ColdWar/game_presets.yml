@@ -4,7 +4,7 @@
     - escalation
   name: wf-escalation-preset-title
   description: wf-escalation-preset-description
-  showInVote: true
+  showInVote: false # Disabled for now; admins can still set it.
   rules:
   - NFAdventure
   - BasicStationEventScheduler

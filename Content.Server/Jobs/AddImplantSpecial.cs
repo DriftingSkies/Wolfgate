@@ -2,7 +2,7 @@
 using Content.Shared.Roles;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Jobs;
 

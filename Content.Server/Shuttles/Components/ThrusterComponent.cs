@@ -5,7 +5,7 @@ using Content.Shared.Damage;
 using Content.Shared.DeviceLinking; // Frontier
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Shuttles.Components
 {

@@ -1827,3 +1827,80 @@ Entries:
   id: 100149
   time: '2026-10-16T21:21:52.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/254
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Hemostats now pull lodged rounds and shrapnel out of any limb, not just
+        the one you're aiming at. Synths can repair shot breaches again once the
+        round is out.
+    - type: Tweak
+      message: Crew Setup shows Vagrant instead of Drifter.
+    - type: Tweak
+      message: >-
+        Encounters that wait for players now start when you get within
+        600-1000m, not 1500-2500m.
+    - type: Add
+      message: Viper Group, USSP and Underground faction crews in Crew Setup.
+    - type: Fix
+      message: Chimera claws now inject through armor.
+    - type: Fix
+      message: Avali and Felionoids can be turned by chimera.
+    - type: Tweak
+      message: Chimera no longer die almost instantly when set on fire.
+    - type: Fix
+      message: TSF and PDV patrols no longer attack civilian ships that have IFF on.
+    - type: Tweak
+      message: >-
+        TSF and PDV patrols now sit 3-4km off stations instead of right next to
+        the docks.
+    - type: Add
+      message: Dead players now show on ship radar as a red diamond until revived.
+    - type: Add
+      message: >-
+        Tractor beams have an Auto-catch toggle that grabs and locks anything
+        entering the inner part of the beam, and have a bit more range and
+        strength.
+    - type: Tweak
+      message: >-
+        The custom marking editor has a number box for opacity and asks before
+        closing with unsaved changes.
+    - type: Fix
+      message: >-
+        Exported custom markings are saved as .png files to your CustomMarkings
+        folder.
+    - type: Fix
+      message: Crashlanded ships can be repaired with repair tools.
+    - type: Tweak
+      message: Dead players only show on radar after 5 minutes.
+  id: 100150
+  time: '2026-10-17T01:55:29.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/266
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Ship access is now fully tied to your ID card.
+  id: 100151
+  time: '2026-10-17T09:03:48.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/268
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Encounters now allow you to claim the ships making them never despawn
+  id: 100152
+  time: '2026-10-17T09:03:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/269
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: engine bumped to 291
+  id: 100153
+  time: '2026-10-17T09:38:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/121
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: 'Showers have been added! Check construction menu. '
+  id: 100154
+  time: '2026-10-17T22:38:47.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/271

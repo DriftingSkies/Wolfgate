@@ -3,9 +3,7 @@ using Content.Shared.Parallax.Biomes.Markers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Noise;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Parallax.Biomes;
 

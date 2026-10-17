@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Content.Server.NPC.Queries;
 using Content.Server.NPC.Systems;
 using Robust.Shared.Map;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators;
 

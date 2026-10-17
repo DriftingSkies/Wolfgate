@@ -5,7 +5,7 @@ Crews put a `WFTractorBeamEmitter` (or the small dish) on the arrestor and a `WF
 then pick a radar contact to hold, reel to a set range or lock in place. A captured ship's helm shows who is holding
 it. Admins can spawn the `WFTractorTest` craft from the Wolfgate ship menu; the Roswell vessel ships with a dish.
 
-Entry points: `TractorBeamSystem` and its `.Audio`, `.Collection` and `.Visuals` partials (physics, power and debris
+Entry points: `TractorBeamSystem` and its `.Audio`, `.AutoCatch`, `.Collection` and `.Visuals` partials (physics, power and debris
 collection), `TractorBeamPhysics` (force and power maths), `TractorBeamStationKeepingSystem` and
 `MoverController.TractorPrediction` (the arrestor's braking), `TractorBeamConsoleComponent` with its client window,
 and `TractorCaptureBanner`. The notes below are the player-facing behaviour and tuning.
@@ -29,10 +29,16 @@ and range controls explain the required action in hover tooltips. Pinning requir
 both ships below 0.2 m/s and 0.05 rad/s; its power check tolerates small allocation
 fluctuations, while restraint still uses only the power actually supplied.
 The console board is `WFTractorBeamComputerCircuitboard`.
+
+**Auto-catch** (a checkbox per dish) makes an idle dish catch the nearest movable grid, ship or debris, whose
+center enters the inner zone of its cone, inside the warning band. It is held like **Hold target**, then locked in
+place as soon as both ships are slow enough to pin. Visibility, shield, docking and power rules are the same as for a
+manual capture, and the restart cooldown after a release still applies. The console that switched it on controls the
+catch.
 Unanchor, rotate, and reanchor the dish to change its installed facing.
 
 The dish faces along its local +Y axis (north in its default placement) and operates
-inside a 90-degree forward sector, out to 200 m (80 m for the small dish). Turn the arrestor or mount its dish
+inside a 90-degree forward sector, out to 240 m (96 m for the small dish). Turn the arrestor or mount its dish
 to bring a contact into that sector before capturing it. Captures release when the
 target's center leaves either the angular boundary or the maximum range, including
 when the arrestor turns away. The control display shows the selected dish's sector
@@ -50,7 +56,7 @@ Equal and opposite impulses and reaction torques act on the two ships. Inward, o
 sideways, and rotational resistance all share the same force and power limit.
 Distance adds electrical strain even without resistance: field strain is
 `0.6 × (distance / maxRange)²`, measured from the dish to the target's center.
-It uses 15% strain / 385 kW at 100 m and 60% / 1.24 MW at 200 m for a stationary
+It uses 10% strain / 298 kW at 100 m and 60% / 1.24 MW at 240 m for a stationary
 target. Mechanical strain fills the remaining headroom up to the 2 MW limit.
 The field-maintenance cost is paid before mechanical restraint: insufficient
 power weakens the beam, with no force available below that cost. A powered dish
@@ -96,10 +102,10 @@ lock it, and put loose objects between the dish and target to test collection.
 
 Default per-dish tuning (prototype fields):
 
-- `maxRange`: 200 m, measured from the dish to the target's center of mass.
+- `maxRange`: 240 m, measured from the dish to the target's center of mass.
 - `rangeStrainAtMaxRange`: 0.6, stationary electrical strain at the range limit.
 - `coneHalfAngle`: 0.7853982 radians (45 degrees either side of the dish's facing).
-- `maxForce`: 10,000 force units (50 standard thrusters).
+- `maxForce`: 12,000 force units (60 standard thrusters).
 - `frequency`: 0.7 Hz; `dampingRatio`: 1.
 - `idlePower`: 5 kW; `holdingPower`: 100 kW; `maxPower`: 2 MW.
 - `reelSpeed`: 2 m/s; `collectionAcceleration`: 2 m/s², sustained while in the field.
@@ -145,7 +151,7 @@ views, and clears the warning when the last active beam releases.
 The user-supplied engage, loop, and disengage sounds play across both participating hulls.
 The small dish (`WFTractorBeamEmitterSmall`) uses the same controls, operating cone,
 restraint and collection physics. Its centered three-tile sprite has a 2.8 × 1 tile
-collision footprint at density 300. It reaches 80 m with 6,000 N maximum force,
+collision footprint at density 300. It reaches 96 m with 7,200 N maximum force,
 10 kW idle draw, 30 kW holding draw, and 150 kW maximum draw. It connects to MV cable
 under its center tile; the full-size dish still uses HV. Distance still adds
 strain; at maximum range an unresisted capture draws 102 kW. Its visual fan is half
@@ -181,6 +187,7 @@ piloted thrust/braking, crowded battles and the appearance of long beams.
 - [`Content.Server/_WF/TractorBeam/TractorBeamConsoleComponent.cs`](TractorBeamConsoleComponent.cs)
 - [`Content.Server/_WF/TractorBeam/TractorBeamStationKeepingSystem.cs`](TractorBeamStationKeepingSystem.cs)
 - [`Content.Server/_WF/TractorBeam/TractorBeamSystem.Audio.cs`](TractorBeamSystem.Audio.cs)
+- [`Content.Server/_WF/TractorBeam/TractorBeamSystem.AutoCatch.cs`](TractorBeamSystem.AutoCatch.cs)
 - [`Content.Server/_WF/TractorBeam/TractorBeamSystem.Collection.cs`](TractorBeamSystem.Collection.cs)
 - [`Content.Server/_WF/TractorBeam/TractorBeamSystem.cs`](TractorBeamSystem.cs)
 - [`Content.Server/_WF/TractorBeam/TractorBeamSystem.Visuals.cs`](TractorBeamSystem.Visuals.cs)
@@ -208,6 +215,7 @@ piloted thrust/braking, crowded battles and the appearance of long beams.
 
 - [`Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamArcTest.cs`](../../../Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamArcTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamAudioTest.cs`](../../../Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamAudioTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamAutoCatchTest.cs`](../../../Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamAutoCatchTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamCollectionAccelerationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamCollectionAccelerationTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamCollectionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamCollectionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamConsoleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/TractorBeam/TractorBeamConsoleTest.cs)

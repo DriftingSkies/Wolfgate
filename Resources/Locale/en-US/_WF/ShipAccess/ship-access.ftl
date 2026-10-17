@@ -33,7 +33,7 @@ ship-access-no-record = no record
 ship-access-label-guest = Guest
 
 # Server popups
-ship-access-not-owner = Only the ship's owner can change the ship's access.
+ship-access-not-owner = Your ID is not an owner of this ship.
 ship-access-added = { $name }'s ID card may now open the ship.
 ship-access-add-no-card = They carry no ID card.
 ship-access-add-no-record = Their ID card has no crew record, so no door can be keyed to it.

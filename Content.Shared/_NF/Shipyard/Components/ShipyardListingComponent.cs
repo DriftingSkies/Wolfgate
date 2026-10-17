@@ -1,6 +1,6 @@
 using Content.Shared._Mono.Grid;
 using Content.Shared._NF.Shipyard.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared._NF.Shipyard.Components;
 

@@ -1,7 +1,7 @@
 using Content.Server.Cargo.Systems;
 using Content.Shared.Stacks;
 using Content.Shared.Whitelist;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Cargo.Components;
 

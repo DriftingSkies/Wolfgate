@@ -221,7 +221,7 @@ public sealed partial class WFEncounterTest
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(35000, 35000), MapData.MapId), out encounter), Is.True);
             patrol = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["patrol"].Grid;
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();
@@ -286,7 +286,7 @@ public sealed partial class WFEncounterTest
             patrol = state.Grid;
             group = state.Group;
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();
@@ -335,7 +335,7 @@ public sealed partial class WFEncounterTest
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(31000, 31000), MapData.MapId), out encounter), Is.True);
             warship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["warship"].Grid;
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             visitor = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();

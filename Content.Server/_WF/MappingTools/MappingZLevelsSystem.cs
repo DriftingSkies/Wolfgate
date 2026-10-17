@@ -31,7 +31,6 @@ public sealed class MappingZLevelsSystem : EntitySystem
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IAdminManager _admin = default!;
     [Dependency] private IConsoleHost _console = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private IResourceManager _res = default!;
     [Dependency] private CEZLevelsSystem _zLevels = default!;
     [Dependency] private MapLoaderSystem _loader = default!;
@@ -302,14 +301,14 @@ public sealed class MappingZLevelsSystem : EntitySystem
 
         // The mapping command opens the ground level and sets the mapper up on it, as the Maps window's Open does.
         var id = 1;
-        while (_mapManager.MapExists(new MapId(id)))
+        while (_map.MapExists(new MapId(id)))
         {
             id++;
         }
 
         var groundId = new MapId(id);
         _console.ExecuteCommand(session, $"mapping {id} \"{groundFile}\"");
-        if (!_mapManager.MapExists(groundId))
+        if (!_map.MapExists(groundId))
         {
             _popup.PopupCursor(Loc.GetString("wf-mapping-zlevels-open-failed", ("path", groundFile.ToString())), session);
             return;
@@ -323,7 +322,7 @@ public sealed class MappingZLevelsSystem : EntitySystem
             if (depth == 0)
             {
                 ground = levels.Count;
-                levels.Add(_mapManager.GetMapEntityId(groundId));
+                levels.Add(_map.GetMapOrInvalid(groundId));
                 continue;
             }
 

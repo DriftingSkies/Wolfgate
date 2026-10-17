@@ -25,7 +25,6 @@ public sealed class MappingToolsSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IInputManager _input = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private IOverlayManager _overlays = default!;
     [Dependency] private IPlacementManager _placement = default!;
     [Dependency] private IconSmoothSystem _smooth = default!;
@@ -298,7 +297,7 @@ public sealed class MappingToolsSystem : EntitySystem
         }
 
         var mapCoords = _transform.ToMapCoordinates(coords);
-        if (_mapManager.TryFindGridAt(mapCoords, out var gridUid, out var grid) &&
+        if (_map.TryFindGridAt(mapCoords, out var gridUid, out var grid) &&
             _map.TryGetTileRef(gridUid, grid, coords, out var tile) &&
             !tile.Tile.IsEmpty)
         {

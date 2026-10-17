@@ -77,6 +77,12 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
     private readonly CustomMarkingCanvas[] _facings = new CustomMarkingCanvas[CustomMarkingRules.Facings];
     private readonly WolfgateColorPicker _colour;
     private readonly Slider _opacity;
+    private readonly FloatSpinBox _opacityValue;
+    private readonly string _openedName;
+    private readonly CustomMarkingPlacement _openedPlacement;
+    private CustomMarkingCloseWindow? _closePrompt;
+    // Set once the edits are saved or discarded, so closing no longer asks.
+    private bool _closeConfirmed;
     private readonly LineEdit _name;
     private readonly OptionButton _placement;
     private readonly RichTextLabel _placementHint;
@@ -361,6 +367,18 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         _colour = new WolfgateColorPicker { Color = Color.Black, VerticalAlignment = VAlignment.Center };
         _colour.OnColorChanged += _ => DrawAgain();
         _opacity = new Slider { MinValue = 5, MaxValue = 100, Value = 100, MinWidth = 120, VerticalAlignment = VAlignment.Center };
+        _opacityValue = new FloatSpinBox(1f, 0)
+        {
+            Name = "OpacityValue",
+            MinWidth = 90,
+            VerticalAlignment = VAlignment.Center,
+            IsValid = value => value >= _opacity.MinValue && value <= _opacity.MaxValue,
+            ToolTip = Loc.GetString("wf-custom-marking-editor-opacity-tooltip"),
+        };
+        _opacityValue.Value = _opacity.Value;
+        // Setting the box's value raises nothing, and the slider only reports a change, so the two can't loop.
+        _opacity.OnValueChanged += _ => _opacityValue.Value = MathF.Round(_opacity.Value);
+        _opacityValue.OnValueChanged += args => _opacity.Value = args.Value;
         var colours = new BoxContainer
         {
             Orientation = BoxContainer.LayoutOrientation.Horizontal,
@@ -388,6 +406,7 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         colours.AddChild(new Control { HorizontalExpand = true });
         colours.AddChild(FieldLabel("wf-custom-marking-editor-opacity"));
         colours.AddChild(_opacity);
+        colours.AddChild(_opacityValue);
 
         // Name and placement, with what the placement means under them
         _name = new LineEdit
@@ -405,6 +424,8 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         }
 
         _placement.SelectId((int) (entry?.Placement ?? CustomMarkingPlacement.Skin));
+        _openedName = CustomMarkingRules.CleanName(name);
+        _openedPlacement = Placement;
         _placement.OnItemSelected += args =>
         {
             _placement.SelectId(args.Id);
@@ -484,6 +505,7 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         _system.SaveAnswered += OnSaveAnswered;
         OnClose += () =>
         {
+            _closePrompt?.Close();
             _system.SaveAnswered -= OnSaveAnswered;
             DeleteBody();
             _sampler.Orphan();
@@ -992,7 +1014,48 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
 
         _system.Remember(saved.Hash, Art);
         OnSaved?.Invoke(_entry, saved);
+        _closeConfirmed = true;
         Close();
+    }
+
+    /// <summary>Whether the art, name or placement differ from what the editor opened with.</summary>
+    private bool HasUnsavedChanges => !Art.Same(_opened) || CustomMarkingRules.CleanName(_name.Text) != _openedName ||
+                                      Placement != _openedPlacement;
+
+    /// <summary>Asks before closing over unsaved edits: save, discard, or keep editing.</summary>
+    public override void Close()
+    {
+        if (_closeConfirmed || !HasUnsavedChanges)
+        {
+            base.Close();
+            return;
+        }
+
+        if (_closePrompt is { IsOpen: true })
+        {
+            _closePrompt.MoveToFront();
+            return;
+        }
+
+        var prompt = new CustomMarkingCloseWindow();
+        prompt.OnSave += () =>
+        {
+            prompt.Close();
+            Save();
+        };
+        prompt.OnDiscard += () =>
+        {
+            prompt.Close();
+            _closeConfirmed = true;
+            Close();
+        };
+        prompt.OnClose += () =>
+        {
+            if (_closePrompt == prompt)
+                _closePrompt = null;
+        };
+        _closePrompt = prompt;
+        prompt.OpenCentered();
     }
 
     private void SetStatus(string message, bool error)

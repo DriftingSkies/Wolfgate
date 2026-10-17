@@ -43,7 +43,6 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
     [Dependency] private MarkingManager _markingManager = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
 
-    [ValidatePrototypeId<SpeciesPrototype>]
     public const string DefaultSpecies = "Human";
 
     public override void Initialize()

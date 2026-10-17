@@ -14,6 +14,8 @@ acts only on fleshbeasts that are polymorphs, so ghost-role and mapped fleshbeas
 polymorph from the corpse, which also stops lab Letoferol's revert-on-death and later Mesotaxinide from swapping the
 corpse for the body.
 
+Fleshbeast claws inject Letoferol through armour and suits (`pierceArmor` on both melee injectors), so a few hits turn a victim mid-fight; armour that resisted poison used to block every injection. Avali and felionoids carry the `Humanoid` tag Letoferol requires, so they turn like everyone else. Fire burns a fleshbeast at 3 Heat per stack instead of 20, so burning no longer kills one in under a second.
+
 Chimeras can only growl out loud and talk through the Letoferol hivemind, a Starlight collective mind their lungs grant.
 Whoever takes a fleshbeast is told how in chat (`MindGreetingComponent`): pick Collective Mind in the channel selector
 or start a message with `+`. Marked edits in `ChatSystem` and `SharedChatSystem` make both work: selector text, which
@@ -52,6 +54,7 @@ Entry points: `WFFleshPustuleSystem` (bursting and planting), `WFFleshPustuleTre
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Chimera/ChimeraConversionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Chimera/ChimeraConversionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Chimera/ChimeraHivemindTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Chimera/ChimeraHivemindTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Chimera/DropOriginalBodyOnDeathTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Chimera/DropOriginalBodyOnDeathTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Chimera/FleshPustuleMovementTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Chimera/FleshPustuleMovementTest.cs)
@@ -101,8 +104,12 @@ Entry points: `WFFleshPustuleSystem` (bursting and planting), `WFFleshPustuleTre
 - [`Content.Shared/Chat/SharedChatSystem.cs`](../../../Content.Shared/Chat/SharedChatSystem.cs): with a default mind a key needs a space after it, so "+look" isn't sent as "ook"
 - [`Resources/Prototypes/_Mono/Entities/Mobs/Chimera/chimera.yml`](../../../Resources/Prototypes/_Mono/Entities/Mobs/Chimera/chimera.yml): one-shot flesh tick nest, validated server-side against ChimeraFleshKudzu.
 - [`Resources/Prototypes/_Mono/Entities/Mobs/Chimera/chimera_base.yml`](../../../Resources/Prototypes/_Mono/Entities/Mobs/Chimera/chimera_base.yml)
+  - claws turn armoured victims too; armour used to block every hit
+  - was 20, which with the 1.4 Heat weakness killed a 200 HP fleshbeast in under a second
   - a converted fleshbeast drops the body it was made from when it dies
   - whoever takes a fleshbeast is told how to talk to the hivemind
 - [`Resources/Prototypes/_Mono/Polymorphs/polymorph.yml`](../../../Resources/Prototypes/_Mono/Polymorphs/polymorph.yml): the victim's gear stays on the stored body instead of dropping at conversion
+- [`Resources/Prototypes/_StarLight/Entities/Mobs/Species/avali.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Species/avali.yml): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
+- [`Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
 
 <!-- WOLFGATE-GENERATED END -->

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
+using Content.Server._WF.ChatWebhook; // WOLFGATE(ChatWebhook)
 using Content.Server.Chat.Managers;
 using Content.Server.Discord.DiscordLink;
 using Content.Server.GameTicking;
@@ -858,6 +859,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             player.UserId,
             languageOverride: LanguageSystem.Universal); // Einstein Engines - Language
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"LOOC from {player:Player}: {message}");
+        RaiseLocalEvent(new ChatWebhookEvent(ChatWebhookChannel.Looc, $"{Identity.Name(source, EntityManager)} ({player.Name})", message)); // WOLFGATE(ChatWebhook): one-way Discord webhook copy
     }
 
     private void SendDeadChat(EntityUid source, ICommonSession player, string message, bool hideChat)
@@ -889,6 +891,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         // Format author name as "Character Name (Username)" for Discord
         var discordAuthor = $"{playerName} ({player.Name})";
         _discordLink.SendMessage(message, discordAuthor, ChatChannel.Dead);
+        RaiseLocalEvent(new ChatWebhookEvent(ChatWebhookChannel.Dead, discordAuthor, message)); // WOLFGATE(ChatWebhook): one-way Discord webhook copy
     }
     #endregion
 
@@ -1071,8 +1074,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         return message;
     }
 
-    [ValidatePrototypeId<ReplacementAccentPrototype>]
-    public const string ChatSanitize_Accent = "chatsanitize";
+    public static readonly ProtoId<ReplacementAccentPrototype> ChatSanitize_Accent = "chatsanitize";
 
     public string SanitizeMessageReplaceWords(string message)
     {

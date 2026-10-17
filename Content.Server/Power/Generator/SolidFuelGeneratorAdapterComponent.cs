@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Materials;
 using Content.Shared.Power.Generator;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using Robust.Shared.Prototypes; // Frontier
 
 namespace Content.Server.Power.Generator;

@@ -1,6 +1,6 @@
 using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Systems.GC;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Worldgen.Components.GC;
 

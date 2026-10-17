@@ -3,6 +3,7 @@ using Content.Shared._WF.Audio.InternetSound;
 using Content.Shared._WF.ShipPa;
 using Robust.Client.Replays.Playback;
 using Robust.Client.ResourceManagement;
+using Robust.Shared.Replays;
 using Robust.Shared.Serialization.Markdown.Mapping;
 
 namespace Content.Client._WF.Audio.InternetSound;
@@ -15,6 +16,8 @@ public sealed partial class InternetSoundSystem
     private readonly Dictionary<string, InternetSoundReplayAsset> _replayAssets = new();
     private readonly HashSet<int> _replayMounted = new();
     private readonly HashSet<int> _replayNeeded = new();
+    // Ticks [0, _replayScanned) have been searched for assets.
+    private int _replayScanned;
 
     private void InitializeReplay()
     {
@@ -22,6 +25,7 @@ public sealed partial class InternetSoundSystem
         _replay.BeforeSetTick += ResetReplayPosition;
         _replay.AfterSetTick += UpdateReplayResources;
         _replay.ReplayPlaybackStopped += OnReplayStopped;
+        _replay.HandleReplayMessage += OnReplayMessage;
     }
 
     private void ShutdownReplay()
@@ -30,6 +34,7 @@ public sealed partial class InternetSoundSystem
         _replay.BeforeSetTick -= ResetReplayPosition;
         _replay.AfterSetTick -= UpdateReplayResources;
         _replay.ReplayPlaybackStopped -= OnReplayStopped;
+        _replay.HandleReplayMessage -= OnReplayMessage;
         OnReplayStopped();
     }
 
@@ -38,14 +43,29 @@ public sealed partial class InternetSoundSystem
         OnReplayStopped();
         foreach (var asset in initial.OfType<InternetSoundReplayAsset>())
             _replayAssets[InternetSoundResources.PathFor(asset.Id)] = asset;
-        if (_replay.Replay is not { } replay)
-            return;
-        foreach (var frame in replay.Messages)
+        UpdateReplayResources();
+    }
+
+    private bool OnReplayMessage(object message, bool skipEffects)
+    {
+        if (message is InternetSoundReplayAsset asset)
+            _replayAssets[InternetSoundResources.PathFor(asset.Id)] = asset;
+        return false;
+    }
+
+    /// <summary>Loads assets from ticks skipped by a forward seek; an asset is recorded before its broadcast.</summary>
+    private bool ScanReplayAssets(ReplayData replay)
+    {
+        var last = Math.Min(replay.CurrentIndex, replay.Count - 1);
+        if (last < _replayScanned)
+            return false;
+        for (var i = _replayScanned; i <= last; i++)
         {
-            foreach (var asset in frame.Messages.OfType<InternetSoundReplayAsset>())
+            foreach (var asset in replay.GetMessages(i).Messages.OfType<InternetSoundReplayAsset>())
                 _replayAssets[InternetSoundResources.PathFor(asset.Id)] = asset;
         }
-        UpdateReplayResources();
+        _replayScanned = last + 1;
+        return true;
     }
 
     private void ResetReplayPosition()
@@ -68,11 +88,12 @@ public sealed partial class InternetSoundSystem
         ResetReplayPosition();
         _replayAssets.Clear();
         _replayNeeded.Clear();
+        _replayScanned = 0;
     }
 
     private void UpdateReplayResources()
     {
-        if (_replay.Replay == null)
+        if (_replay.Replay is not { } replay)
             return;
         _replayNeeded.Clear();
         var query = EntityQueryEnumerator<ShipPaBroadcastComponent>();
@@ -80,7 +101,10 @@ public sealed partial class InternetSoundSystem
         {
             foreach (var broadcast in state.Broadcasts)
             {
-                if (!broadcast.IsActive(_timing.CurTime) || !_replayAssets.TryGetValue(broadcast.Path, out var asset))
+                if (!broadcast.IsActive(_timing.CurTime))
+                    continue;
+                if (!_replayAssets.TryGetValue(broadcast.Path, out var asset) &&
+                    (!ScanReplayAssets(replay) || !_replayAssets.TryGetValue(broadcast.Path, out asset)))
                     continue;
                 _replayNeeded.Add(asset.Id);
                 if (!_replayMounted.Add(asset.Id))

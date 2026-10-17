@@ -86,6 +86,8 @@ public sealed class CrashScenarioTest
             Assert.That(em.GetComponent<WFCrashScenarioStationComponent>(station).LobbyId, Is.EqualTo(lobby));
             Assert.That(em.GetComponent<WFCrashScenarioComponent>(hull).Started, Is.False);
             Assert.That(em.HasComponent<ForceAnchorComponent>(hull), Is.True);
+            Assert.That(em.HasComponent<Content.Shared._Mono.ShipRepair.Components.ShipRepairDataComponent>(hull), Is.True,
+                "the crash hull has no repair data to rebuild the wreck from.");
             Assert.That(em.GetComponent<TransformComponent>(hull).MapUid, Is.EqualTo(layers[^1]));
             var turf = server.System<TurfSystem>();
             Assert.That(turf.TryGetTileRef(first, out var tile), Is.True);

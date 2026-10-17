@@ -256,6 +256,62 @@ public sealed class WolfmedWeldingRepairTest : WolfmedGameTest
     }
 
     /// <summary>
+    /// Synth bug report: a round lodged in a limb could only be pulled with the doll on that exact limb, and the
+    /// hemostat said nothing otherwise, so the breach it blocked looked unrepairable. Forceps now find it anywhere;
+    /// a knife still follows the doll.
+    /// </summary>
+    [Test]
+    public async Task HemostatFindsALodgedRoundOffTheDollTest()
+    {
+        var server = Pair.Server;
+        await server.WaitIdleAsync();
+        var entities = server.ResolveDependency<IEntityManager>();
+        var map = await CreateTestMap();
+        EntityUid body = default, leg = default;
+
+        await server.WaitAssertion(() =>
+        {
+            body = entities.SpawnEntity("MobIPC", map.GridCoords);
+            var user = entities.SpawnEntity("MobHuman", map.GridCoords);
+            entities.RemoveComponent<BarotraumaComponent>(body);
+            entities.RemoveComponent<TemperatureComponent>(body);
+            entities.RemoveComponent<BarotraumaComponent>(user);
+            entities.RemoveComponent<TemperatureComponent>(user);
+            var graph = entities.System<SharedBodySystem>();
+            var wounds = entities.System<WoundSystem>();
+            var embedded = entities.System<WolfmedEmbeddedObjectSystem>();
+            leg = graph.GetBodyChildrenOfType(body, BodyPartType.Leg, symmetry: BodyPartSymmetry.Right).Single().Id;
+            var slash = server.ResolveDependency<IPrototypeManager>().Index<DamageTypePrototype>("Slash");
+            Assert.That(entities.System<WoundDamageRoutingSystem>()
+                .TryApplyPartDamage(body, leg, new DamageSpecifier(slash, 15), ignoreResistances: true), Is.True);
+            var breach = wounds.GetWounds(leg).First().Owner;
+            Assert.That(embedded.Add(breach, "WFWolfmedSpentRound", 1, 1), Is.EqualTo(1));
+            entities.GetComponent<TargetingComponent>(user).Target = TargetBodyPart.Torso;
+
+            var knife = entities.SpawnEntity("KitchenKnife", map.GridCoords);
+            Assert.That(entities.System<SharedHandsSystem>().TryPickupAnyHand(user, knife), Is.True);
+            var cut = new AfterInteractUsingEvent(user, knife, body, map.GridCoords, true);
+            entities.EventBus.RaiseLocalEvent(body, cut);
+            Assert.That(cut.Handled, Is.False, "a knife dug into a limb the doll was not on.");
+            entities.DeleteEntity(knife);
+
+            var hemostat = entities.SpawnEntity("Hemostat", map.GridCoords);
+            Assert.That(entities.System<SharedHandsSystem>().TryPickupAnyHand(user, hemostat), Is.True);
+            var pull = new AfterInteractUsingEvent(user, hemostat, body, map.GridCoords, true);
+            entities.EventBus.RaiseLocalEvent(body, pull);
+            Assert.That(pull.Handled, Is.True, "the hemostat ignored a round in a limb the doll was not on.");
+        });
+
+        await Pair.RunSeconds(6);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entities.System<WolfmedEmbeddedObjectSystem>().GetPartCount(leg), Is.Zero,
+                "the round is still in the leg.");
+        });
+    }
+
+    /// <summary>
     /// Playtest 5: "the nanite applicator spams 40 messages in one tick". An admin ghost's do-afters are instant, so a
     /// repair chain re-entered OnWoundRepairFinished from inside its own StartWoundRepair, one pass, one sound and one
     /// line at a time, forty deep for a bad torso. The frame that started the chain now applies the instant passes

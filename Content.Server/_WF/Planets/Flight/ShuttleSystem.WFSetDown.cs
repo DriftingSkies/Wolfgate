@@ -101,6 +101,6 @@ public sealed partial class ShuttleSystem
                 return true;
         }
 
-        return _mapManager.TryFindGridAt(map, centre, out var at, out _) && at != map;
+        return _mapSystem.TryFindGridAt(map, centre, out var at, out _) && at != map;
     }
 }

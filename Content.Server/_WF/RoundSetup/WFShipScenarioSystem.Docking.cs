@@ -21,7 +21,7 @@ public sealed partial class WFShipScenarioSystem
         ? HasComp<StationSectorServiceHostComponent>(station)
         : HasComp<StationSpawningComponent>(station) && !HasComp<ExtraShuttleInformationComponent>(station) &&
           !HasComp<WFShipScenarioStationComponent>(station) &&
-          _stationJobs.TryGetJobSlot(station, faction == WFCrewFaction.TSF ? "Sheriff" : "PirateCaptain", out _);
+          WFFactionCrewPolicy.CommandJob(faction) is { } command && _stationJobs.TryGetJobSlot(station, command, out _);
 
     /// <summary>Docks at the selected station, or finds clear space around it when all compatible berths are occupied.</summary>
     private bool TryStartAtStation(EntityUid hull, MapGridComponent hullGrid, EntityUid map, MapId mapId, WFCrewFaction faction)

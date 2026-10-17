@@ -374,8 +374,6 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
 
     private string JobName(string? id)
     {
-        if (id == "Contractor")
-            return Text("job-drifter");
         return id != null && _prototypes.TryIndex<JobPrototype>(id, out var prototype)
             ? prototype.LocalizedName : Text("job-unselected");
     }

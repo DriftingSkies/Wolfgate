@@ -1,6 +1,6 @@
 using Content.Shared.Humanoid.Prototypes;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Humanoid.Components;
 

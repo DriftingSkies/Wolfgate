@@ -269,7 +269,7 @@ public sealed partial class WFEncounterTest : InteractionTest
         await Server.WaitPost(() =>
         {
             // Stand-ins for the stations that Station and Route placements hand to the orders.
-            var maps = Server.ResolveDependency<IMapManager>();
+            var maps = Server.System<SharedMapSystem>();
             from = maps.CreateGridEntity(MapData.MapId).Owner;
             to = maps.CreateGridEntity(MapData.MapId).Owner;
             var transform = Server.System<SharedTransformSystem>();
@@ -380,7 +380,7 @@ public sealed partial class WFEncounterTest : InteractionTest
             ship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["guarded"].Grid;
 
             // The player's ship: a bare grid with the test player standing on it, 300 m off.
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();
@@ -419,7 +419,7 @@ public sealed partial class WFEncounterTest : InteractionTest
         {
             var prototypes = Server.ResolveDependency<IPrototypeManager>();
             var crew = Server.System<WFCrewSystem>();
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var post = new EntityCoordinates(grid.Owner, new Vector2(0.5f));
             foreach (var profile in prototypes.EnumeratePrototypes<WFCrewProfilePrototype>())
@@ -466,7 +466,7 @@ public sealed partial class WFEncounterTest : InteractionTest
         EntityUid encounter = default, hunter = default, prey = default;
         await Server.WaitAssertion(() =>
         {
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             prey = grid.Owner;
             var tiles = new List<(Vector2i, Tile)>();
             for (var x = 0; x < 5; x++)
@@ -544,7 +544,7 @@ public sealed partial class WFEncounterTest : InteractionTest
     {
         await Server.WaitAssertion(() =>
         {
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var trader = SEntMan.SpawnAtPosition("WFTraderWanderer", new EntityCoordinates(grid.Owner, new Vector2(0.5f)));
             Assert.That(SEntMan.HasComponent<Content.Shared.Damage.Components.GodmodeComponent>(trader), Is.False, "This trader can be killed.");
@@ -584,7 +584,7 @@ public sealed partial class WFEncounterTest : InteractionTest
             var friend = comp.Ships["friend"].Grid;
             var foe = comp.Ships["foe"].Grid;
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();
             transform.SetCoordinates(grid.Owner, new EntityCoordinates(MapData.MapUid, new Vector2(15200, 15300)));
@@ -640,7 +640,7 @@ public sealed partial class WFEncounterTest : InteractionTest
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(17000, 17000), MapData.MapId), out encounter), Is.True);
             patrol = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["patrol"].Grid;
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();
@@ -662,6 +662,15 @@ public sealed partial class WFEncounterTest : InteractionTest
             Assert.That(state.Engaged, Is.Empty, "Under the ceasefire a PDV ship inside the ring is not fired on.");
             Server.System<Content.Server._Mono.AlertLevel.WarLevelSystem>().SetLevel(true);
             Assert.That(Server.System<WFEncounterZoneSystem>().AtWar("PDV", "TSF"), Is.True, "A declared war is mutual.");
+            SEntMan.GetComponent<Content.Shared._Mono.Company.CompanyComponent>(intruder).CompanyName = "PDVCivilian";
+        });
+        await RunTicks(150);
+        await Server.WaitAssertion(() =>
+        {
+            var state = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["patrol"];
+            Assert.That(state.Engaged, Is.Empty, "A PDV civilian ship showing its IFF is not fired on, even at war.");
+            Assert.That(state.Warned.ContainsKey(intruder), Is.False, "Nor is it warned off.");
+            SEntMan.GetComponent<Content.Shared._Mono.Company.CompanyComponent>(intruder).CompanyName = "PDV";
         });
         await RunTicks(150);
         await Server.WaitAssertion(() =>
@@ -683,7 +692,7 @@ public sealed partial class WFEncounterTest : InteractionTest
     {
         await Server.WaitAssertion(() =>
         {
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var shops = Server.System<Content.Server._WF.Traders.TraderShopSystem>();
             foreach (var kind in new[] { "WFTraderSurplus", "WFTraderCurios", "WFTraderMedic" })

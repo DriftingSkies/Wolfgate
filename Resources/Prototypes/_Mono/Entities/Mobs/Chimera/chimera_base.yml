@@ -84,6 +84,8 @@
   - type: MeleeChemicalInjector
     solution: melee
     transferAmount: 5
+    # WOLFGATE(Chimera): claws turn armoured victims too; armour used to block every hit
+    pierceArmor: true
   - type: MovementSpeedModifier
     baseWalkSpeed : 3.5
     baseSprintSpeed : 4.25
@@ -123,7 +125,8 @@
     canResistFire: true
     damage: #per second, scales with number of fire 'stacks'
       types:
-        Heat: 20
+        # WOLFGATE(Chimera): was 20, which with the 1.4 Heat weakness killed a 200 HP fleshbeast in under a second
+        Heat: 3
   - type: Clickable
   - type: ZombieImmune
   - type: Reactive
@@ -219,6 +222,8 @@
   - type: MeleeChemicalInjector
     solution: melee
     transferAmount: 2.5
+    # WOLFGATE(Chimera): claws turn armoured victims too; armour used to block every hit
+    pierceArmor: true
   - type: DoAfter
   - type: Stripping
   - type: Stamina

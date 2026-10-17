@@ -18,7 +18,7 @@ namespace Content.Client.Shuttles.UI;
 public sealed partial class ShuttleDockControl : BaseShuttleControl
 {
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private IMapManager _mapManager = default!;
+    private SharedMapSystem _mapManager => EntManager.System<SharedMapSystem>();
     private readonly DockingSystem _dockSystem;
     private readonly SharedShuttleSystem _shuttles;
     private readonly SharedTransformSystem _xformSystem;
@@ -334,6 +334,27 @@ public sealed partial class ShuttleDockControl : BaseShuttleControl
             }
         }
 
+        // WOLFGATE(EngineCompat) START: Draw rotated dock vertices because UIBox2 clamps inverted bounds.
+        var dockRotation = Matrix3Helpers.CreateRotation(-_angle.Value + MathF.PI);
+        var dockVertices = new Vector2[5];
+        for (var i = 0; i < 2; i++)
+        {
+            var bounds = i == 0
+                ? new Box2(-0.2f, -0.7f, 0.2f, -0.5f)
+                : new Box2(-0.5f, -0.5f, 0.5f, 0.5f);
+            var dockColor = i == 0 ? Color.Pink : _viewedState?.HighlightedRadarColor ?? Color.Magenta;
+            dockVertices[0] = ScalePosition(Vector2.Transform(bounds.BottomLeft, dockRotation));
+            dockVertices[1] = ScalePosition(Vector2.Transform(bounds.BottomRight, dockRotation));
+            dockVertices[2] = ScalePosition(Vector2.Transform(bounds.TopRight, dockRotation));
+            dockVertices[3] = ScalePosition(Vector2.Transform(bounds.TopLeft, dockRotation));
+            // WOLFGATE(Cockpit): pan the pilot's dock marker with the rest of the approach plot.
+            for (var v = 0; v < 4; v++)
+                dockVertices[v] -= WfCockpitDockPan;
+            dockVertices[4] = dockVertices[0];
+            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, dockVertices.AsSpan(0, 4), dockColor.WithAlpha(0.2f));
+            handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, dockVertices, dockColor);
+        }
+        /*
         // Draw the dock's collision
         var invertedPosition = Vector2.Zero;
         invertedPosition.Y = -invertedPosition.Y;
@@ -346,10 +367,6 @@ public sealed partial class ShuttleDockControl : BaseShuttleControl
             ScalePosition(Vector2.Transform(new Vector2(-0.5f, 0.5f), rotation)),
             ScalePosition(Vector2.Transform(new Vector2(0.5f, -0.5f), rotation)));
 
-        // WOLFGATE(Cockpit) START: pan the pilot's dock marker with the rest of the approach plot.
-        ourDockConnection = ourDockConnection.Translated(-WfCockpitDockPan);
-        ourDock = ourDock.Translated(-WfCockpitDockPan);
-        // WOLFGATE END
         var dockColor = _viewedState?.HighlightedRadarColor ?? Color.Magenta; // Frontier - use ViewedState
         var connectionColor = Color.Pink;
 
@@ -359,6 +376,8 @@ public sealed partial class ShuttleDockControl : BaseShuttleControl
         // Draw the dock itself
         handle.DrawRect(ourDock, dockColor.WithAlpha(0.2f));
         handle.DrawRect(ourDock, dockColor, filled: false);
+        */
+        // WOLFGATE END
     }
 
     private void HideDocks()

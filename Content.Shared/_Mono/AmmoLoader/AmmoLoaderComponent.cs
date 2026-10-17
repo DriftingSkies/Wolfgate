@@ -1,7 +1,7 @@
 using Content.Shared.DeviceLinking;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared._Mono.AmmoLoader;
 

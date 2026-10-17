@@ -35,7 +35,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
 
     [Dependency] private IPlayerManager _players = default!;
-    [Dependency] private IMapManager _maps = default!;
+    [Dependency] private SharedMapSystem _maps = default!;
 
     private EntityUid? _subtitleGrid;
     private readonly List<Voice> _voices = new();

@@ -1,0 +1,15 @@
+# Dropped by the highest in command of an encounter ship. Used in hand, it makes the ship permanent.
+- type: entity
+  parent: BaseItem
+  id: WFEncounterShipDeed
+  name: ship's deed
+  description: The deed to a ship, signed by her late commander. Use it to keep her for good.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: paper_words
+    - state: paper_stamp-cap
+  - type: Item
+    size: Small
+  - type: WFEncounterDeed

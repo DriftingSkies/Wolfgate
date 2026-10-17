@@ -90,11 +90,11 @@ public sealed class ShipAccessOwnerTest
         var map = await pair.CreateTestMap();
         var grid = map.Grid.Owner;
 
-        EntityUid door = default, captain = default, stranger = default, voucher = default;
+        EntityUid door = default, captain = default, captainCard = default, stranger = default, voucher = default;
         await server.WaitPost(() =>
         {
             door = entMan.SpawnEntity(DoorProto, map.GridCoords);
-            (captain, _) = ShipAccessTest.SpawnPersonWithCard(entMan, hands, map, "Ada Vance", 1);
+            (captain, captainCard) = ShipAccessTest.SpawnPersonWithCard(entMan, hands, map, "Ada Vance", 1);
             (stranger, _) = ShipAccessTest.SpawnPersonWithCard(entMan, hands, map, "Ben Ortiz", 2);
             voucher = entMan.SpawnEntity(VoucherProto, map.GridCoords);
             ShipAccessTest.GiveDeed(entMan, voucher, grid);
@@ -116,9 +116,14 @@ public sealed class ShipAccessOwnerTest
             Assert.That(hands.TryDrop(captain, voucher), Is.True, "Precondition: the captain puts the voucher down.");
             Assert.Multiple(() =>
             {
-                Assert.That(access.IsOwner(captain, grid), Is.False, "Without the voucher the captain holds no deed.");
+                Assert.That(access.IsOwner(captain, grid), Is.True, "Their card carries an owner key, so they still edit its access.");
                 Assert.That(readers.IsAllowed(captain, door), Is.True, "Their own card still opens the ship they bought.");
             });
+
+            Assert.That(hands.TryDrop(captain, captainCard), Is.True, "Precondition: the captain drops their card.");
+            Assert.That(hands.TryPickupAnyHand(stranger, captainCard), Is.True, "Precondition: the stranger picks it up.");
+            Assert.That(access.IsOwner(stranger, grid), Is.True, "Whoever uses the owner's card is treated as the owner.");
+            Assert.That(access.IsOwner(captain, grid), Is.False, "Without the card or the deed, the captain is not.");
         });
 
         await pair.CleanReturnAsync();

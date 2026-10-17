@@ -22,9 +22,6 @@ public sealed partial class GenitalsSystem
     [Dependency] private GenitalConsentSystem _consent = default!;
     [Dependency] private SharedMindSystem _mind = default!;
 
-    /// <summary>Every networked field of GenitalsComponent; filled on first use.</summary>
-    private string[]? _networkedFields;
-
     /// <summary>Players the filter allowed at their last check; only a newly allowed player causes a resend.</summary>
     private readonly HashSet<NetUserId> _anatomyViewers = new();
 
@@ -84,16 +81,12 @@ public sealed partial class GenitalsSystem
     }
 
     /// <summary>
-    /// Marks every networked field of the body's GenitalsComponent dirty, so a session whose last copy is older gets a
-    /// full state, never a single-field delta it has no base for.
+    /// Dirties the body's GenitalsComponent as a whole, so a session whose last copy is older gets a full state, never
+    /// a field delta it has no base for. Dirtying every field still sends a delta since engine v291.
     /// </summary>
     public void ResendAnatomy(Entity<GenitalsComponent> ent)
     {
-        _networkedFields ??= EntityManager.ComponentFactory.GetRegistration<GenitalsComponent>()
-            .NetworkedFieldLookup.Keys
-            .ToArray();
-
-        DirtyFields(ent.Owner, ent.Comp, null, _networkedFields);
+        Dirty(ent);
     }
 
     /// <summary>Resends every body, paused ones included: a viewer was just allowed and may hold no copy, or stale ones.</summary>

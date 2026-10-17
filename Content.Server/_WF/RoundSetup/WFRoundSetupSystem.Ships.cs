@@ -49,7 +49,7 @@ public sealed partial class WFRoundSetupSystem
             return false;
         error = "wf-round-setup-assign-ship-faction";
         if (lobby.Faction == WFCrewFaction.None ? _shipCredentials.IsFactionGrid(grid, out _) :
-            !TryComp<CompanyComponent>(grid, out var company) || company.CompanyName.Id != lobby.Faction.ToString())
+            !TryComp<CompanyComponent>(grid, out var company) || company.CompanyName.Id != WFFactionCrewPolicy.Company(lobby.Faction))
             return false;
         error = string.Empty;
         return true;

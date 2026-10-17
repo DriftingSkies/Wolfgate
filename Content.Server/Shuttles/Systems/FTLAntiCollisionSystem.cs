@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
@@ -23,7 +24,7 @@ namespace Content.Server.Shuttles.Systems;
 /// </summary>
 public sealed partial class FTLAntiCollisionSystem : EntitySystem
 {
-    [Dependency] private IMapManager _mapManager = default!;
+    [Dependency] private SharedMapSystem _mapManager = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private ShuttleSystem _shuttle = default!;
@@ -99,9 +100,11 @@ public sealed partial class FTLAntiCollisionSystem : EntitySystem
 
         // Find nearby grids
         var nearbyGrids = new List<(EntityUid Entity, float Distance)>();
-        foreach (var otherGrid in _mapManager.FindGridsIntersecting(mapId, new Box2(
+        var grids = new List<Entity<MapGridComponent>>();
+        _mapManager.FindGridsIntersecting(mapId, new Box2(
             shuttlePosition - new Vector2(range, range),
-            shuttlePosition + new Vector2(range, range))))
+            shuttlePosition + new Vector2(range, range)), ref grids);
+        foreach (var otherGrid in grids.Select(g => g.Comp))
         {
             // Skip self
             if (otherGrid.Owner == shuttle)
@@ -216,9 +219,11 @@ public sealed partial class FTLAntiCollisionSystem : EntitySystem
         var checkSize = shipSize + MinimumSafeDistance;
 
         // Check for grids in the area
-        foreach (var otherGrid in _mapManager.FindGridsIntersecting(mapId, new Box2(
+        var grids = new List<Entity<MapGridComponent>>();
+        _mapManager.FindGridsIntersecting(mapId, new Box2(
             position - new Vector2(checkSize, checkSize),
-            position + new Vector2(checkSize, checkSize))))
+            position + new Vector2(checkSize, checkSize)), ref grids);
+        foreach (var otherGrid in grids.Select(g => g.Comp))
         {
             // Skip self
             if (otherGrid.Owner == shuttle)

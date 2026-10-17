@@ -101,7 +101,7 @@ public abstract partial class SharedVehicleFallSystem
         foreach (var offset in SearchOffsets)
         {
             var world = centre + offset;
-            if (!_mapManager.TryFindGridAt(mapComp.MapId, world, out var grid, out _))
+            if (!_map.TryFindGridAt(mapComp.MapId, world, out var grid, out _))
                 continue;
 
             var (gridPosition, gridRotation) = _transform.GetWorldPositionRotation(grid);

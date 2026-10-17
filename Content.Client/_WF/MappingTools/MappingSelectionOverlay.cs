@@ -16,7 +16,6 @@ namespace Content.Client._WF.MappingTools;
 public sealed class MappingSelectionOverlay : Overlay
 {
     [Dependency] private IEntityManager _entities = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
 
     private static readonly Color SelectionColor = Color.FromHex("#4aa3ff");
@@ -178,7 +177,7 @@ public sealed class MappingSelectionOverlay : Overlay
     private bool TryGetPasteGrid(MappingToolsClipboardEvent clip, MapCoordinates mouse, out EntityUid grid,
         [NotNullWhen(true)] out MapGridComponent? gridComp)
     {
-        if (_mapManager.TryFindGridAt(mouse, out grid, out gridComp))
+        if (_map.TryFindGridAt(mouse, out grid, out gridComp))
             return true;
 
         if (!_entities.TryGetEntity(clip.SourceGrid, out var source) ||

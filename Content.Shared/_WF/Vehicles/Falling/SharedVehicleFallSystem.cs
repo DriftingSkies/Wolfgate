@@ -43,7 +43,6 @@ public abstract partial class SharedVehicleFallSystem : EntitySystem
 
     [Dependency] private CESharedZLevelsSystem _zLevels = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -382,7 +381,7 @@ public abstract partial class SharedVehicleFallSystem : EntitySystem
     /// <summary>Floor on any grid at a point, or planet ground that is only unloaded.</summary>
     private bool IsSupportedAt(MapId mapId, Vector2 world, ref bool onUnloadedGround)
     {
-        if (!_mapManager.TryFindGridAt(mapId, world, out var grid, out var gridComp))
+        if (!_map.TryFindGridAt(mapId, world, out var grid, out var gridComp))
             return false;
 
         var tile = _map.WorldToTile(grid, gridComp, world);
@@ -399,7 +398,7 @@ public abstract partial class SharedVehicleFallSystem : EntitySystem
     /// <summary>Floor on any grid at a point.</summary>
     private bool HasFloorAt(MapId mapId, Vector2 world)
     {
-        if (!_mapManager.TryFindGridAt(mapId, world, out var grid, out var gridComp))
+        if (!_map.TryFindGridAt(mapId, world, out var grid, out var gridComp))
             return false;
 
         var tile = _map.WorldToTile(grid, gridComp, world);

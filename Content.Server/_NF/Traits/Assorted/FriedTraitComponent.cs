@@ -1,6 +1,6 @@
 using System.Numerics;
 using Content.Shared.Nyanotrasen.Kitchen.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server._NF.Traits.Assorted;
 

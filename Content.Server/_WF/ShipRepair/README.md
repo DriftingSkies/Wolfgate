@@ -6,7 +6,7 @@ back to it (`WFHullSectionComponent`), so there is one blueprint and nothing reb
 
 Using the SRD on a section reattaches it: it needs a full charge and uses all of it, the section within 32 tiles of
 its place, that place clear and joined to the hull. A do-after of 5 s plus 0.1 s a tile (30 s at most) merges it back
-at its own tile indices with everything aboard, decals, air, engines and guns included; loose things aboard keep
+into its place on the hull with everything aboard, decals, air, engines and guns included; loose things aboard keep
 their motion relative to the deck. The SRD won't rebuild the hull under another grid, where a section within range
 belongs, or (with grid splitting on) on a tile no hull tile joins, so holes fill from their edge. A fixture left
 on one of the hull's own sections, or torn off onto planet ground, is debris: the SRD rebuilds it on the hull and the
@@ -28,6 +28,7 @@ links, hand-on, the merge) and the marked edits in `SharedShipRepairSystem.Tool`
 ### Server
 
 - [`Content.Server/_WF/ShipRepair/AtmosphereSystem.WFReattach.cs`](AtmosphereSystem.WFReattach.cs)
+- [`Content.Server/_WF/ShipRepair/ShipRepairSystem.WFRebase.cs`](ShipRepairSystem.WFRebase.cs)
 - [`Content.Server/_WF/ShipRepair/WFHullSectionServerSystem.cs`](WFHullSectionServerSystem.cs)
 
 ### Shared

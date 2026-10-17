@@ -1,7 +1,6 @@
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Monitor;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Atmos.Monitor.Components;
 

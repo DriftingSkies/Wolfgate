@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._Mono.ShipRepair;
 using Content.Server._NF.Shuttles.Components;
 using Content.Server._WF.Planets;
 using Content.Server._WF.Planets.Flight;
@@ -51,6 +52,7 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
     [Dependency] private StationSystem _stations = default!;
     [Dependency] private ShipPaSystem _pa = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private ShipRepairSystem _repair = default!;
 
     /// <summary>Time to prepare after the first survivor boards.</summary>
     public static readonly TimeSpan PreparationTime = TimeSpan.FromSeconds(WFCrashCountdownEvent.DurationSeconds);
@@ -145,6 +147,8 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
                 continue;
             }
 
+            // Captured while the hull is still whole, so the survivors can repair the wreck back to it.
+            _repair.GenerateRepairData(hull);
             station = _stations.InitializeNewStation(new StationConfig
             {
                 StationPrototype = "WFCrashScenarioStation",

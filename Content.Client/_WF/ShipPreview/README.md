@@ -26,6 +26,7 @@ previews in a dev client. `VesselGridPathTest` checks every vessel.
 - [`Content.Client/_WF/ShipPreview/ShipPreviewControl.cs`](ShipPreviewControl.cs)
 - [`Content.Client/_WF/ShipPreview/ShipPreviewMigrationSystem.cs`](ShipPreviewMigrationSystem.cs)
 - [`Content.Client/_WF/ShipPreview/ShipPreviewSystem.cs`](ShipPreviewSystem.cs)
+- [`Content.Client/_WF/ShipPreview/ShipPreviewSystem.Load.cs`](ShipPreviewSystem.Load.cs)
 - [`Content.Client/_WF/ShipPreview/UI/ShipPreviewWindow.xaml`](UI/ShipPreviewWindow.xaml)
 - [`Content.Client/_WF/ShipPreview/UI/ShipPreviewWindow.xaml.cs`](UI/ShipPreviewWindow.xaml.cs)
 

@@ -71,8 +71,10 @@ public sealed partial class AtmosphereSystem
             if (!TryComp(newGrid, out GridAtmosphereComponent? newGridAtmos))
                 newGridAtmos = AddComp<GridAtmosphereComponent>(newGrid);
 
+            // WOLFGATE(EngineCompat) START: engine v291 gives a split-off grid its own origin; map its tiles back to the old grid.
             // We assume the tiles on the new grid have the same coordinates as they did on the old grid...
             var enumerator = _mapSystem.GetAllTilesEnumerator(newGrid, mapGrid);
+            _wfSplitOrigin.TryGetOffset(newGrid, uid, out var oldOffset);
 
             while (enumerator.MoveNext(out var tile))
             {
@@ -80,13 +82,15 @@ public sealed partial class AtmosphereSystem
 
                 // This split event happens *before* the spaced tiles have been invalidated, therefore we can still
                 // access their gas data. On the next atmos update tick, these tiles will be spaced. Poof!
-                if (!originalGridAtmos.Tiles.TryGetValue(indices, out var tileAtmosphere))
+                if (!originalGridAtmos.Tiles.TryGetValue(indices + oldOffset, out var tileAtmosphere))
                     continue;
 
                 // The new grid atmosphere has been initialized, meaning it has all the needed TileAtmospheres...
-                if (!newGridAtmos.Tiles.TryGetValue(indices, out var newTileAtmosphere))
-                    // Let's be honest, this is really not gonna happen, but just in case...!
-                    continue;
+                // if (!newGridAtmos.Tiles.TryGetValue(indices, out var newTileAtmosphere))
+                //     // Let's be honest, this is really not gonna happen, but just in case...!
+                //     continue;
+                // It was just added and has no tiles yet, so each is made here or nothing is copied.
+                var newTileAtmosphere = GetOrNewTile(newGrid, newGridAtmos, indices);
 
                 // Copy a bunch of data over... Not great, maybe put this in TileAtmosphere?
                 newTileAtmosphere.Air = tileAtmosphere.Air?.Clone();
@@ -101,8 +105,9 @@ public sealed partial class AtmosphereSystem
                 // That looks bad, of course. We want to avoid that! Anyway that's a bit more complicated so out of scope.
 
                 // Invalidate the tile, it's redundant but redundancy is good! Also HashSet so really, no duplicates.
-                originalGridAtmos.InvalidatedCoords.Add(indices);
+                originalGridAtmos.InvalidatedCoords.Add(indices + oldOffset);
                 newGridAtmos.InvalidatedCoords.Add(indices);
+                // WOLFGATE END
             }
         }
     }

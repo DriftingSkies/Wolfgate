@@ -19,6 +19,7 @@ public sealed class TractorBeamConsoleBoundUserInterface : BoundUserInterface
         _window = this.CreateWindow<TractorBeamConsoleWindow>();
         _window.OnCommand += (emitter, target, pulling, lockInPlace, desiredRange) =>
             SendMessage(new TractorBeamConsoleMessage(emitter, target, pulling, lockInPlace, desiredRange));
+        _window.OnAutoCatch += (emitter, enabled) => SendMessage(new TractorBeamAutoCatchMessage(emitter, enabled));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

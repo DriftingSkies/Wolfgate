@@ -1,6 +1,6 @@
 ﻿using Content.Server.Xenoarchaeology.XenoArtifacts.Effects.Systems;
 using Content.Shared.Chemistry.Reagent;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Xenoarchaeology.XenoArtifacts.Effects.Components;
 

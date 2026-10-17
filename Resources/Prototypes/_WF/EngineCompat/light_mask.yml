@@ -1,0 +1,8 @@
+# Frontier's turret beam mask as a light mask prototype (engine v291 replaced PointLight's mask path).
+- type: lightMask
+  id: WFLightMaskBeam
+  maskPath: /Textures/_NF/Effects/LightMasks/beam.png
+  lightCones:
+  - direction: 0
+    innerWidth: 1
+    outerWidth: 2

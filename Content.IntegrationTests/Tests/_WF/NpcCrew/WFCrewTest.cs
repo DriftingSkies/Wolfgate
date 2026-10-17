@@ -753,13 +753,13 @@ public sealed partial class WFCrewTest : InteractionTest
     private async Task<EntityUid> CreateDeck(Vector2 origin, int size, bool gravity)
     {
         var map = Server.System<SharedMapSystem>();
-        var mapManager = Server.ResolveDependency<IMapManager>();
+        var mapManager = Server.System<SharedMapSystem>();
         var tileDefs = Server.ResolveDependency<ITileDefinitionManager>();
 
         EntityUid grid = default;
         await Server.WaitPost(() =>
         {
-            var created = mapManager.CreateGrid(MapData.MapId);
+            var created = mapManager.CreateGridEntity(MapData.MapId);
             grid = created.Owner;
             var plating = new Tile(tileDefs["Plating"].TileId);
             var tiles = new List<(Vector2i, Tile)>();

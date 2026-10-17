@@ -1,7 +1,10 @@
 ﻿using Robust.Shared.GameStates;
 using Content.Shared.Containers.ItemSlots;
 
-namespace Content.Shared._Mono.Economy.Component;
+// WOLFGATE(EngineCompat) START: Engine v291 serialization generation cannot use a namespace named Component.
+// namespace Content.Shared._Mono.Economy.Component;
+namespace Content.Shared._Mono.Economy.Components;
+// WOLFGATE END
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 [Access(typeof(SharedCreditReceiverSystem))]

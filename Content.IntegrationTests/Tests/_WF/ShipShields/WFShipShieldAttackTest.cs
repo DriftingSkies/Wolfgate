@@ -56,7 +56,7 @@ public sealed class WFShipShieldAttackTest
             var shields = entities.System<ShipShieldsSystem>();
             var attacks = entities.System<WFShipShieldAttackObserver>().Attacks;
             attacks.Clear();
-            var attacker = server.ResolveDependency<IMapManager>().CreateGridEntity(map.MapId);
+            var attacker = server.System<SharedMapSystem>().CreateGridEntity(map.MapId);
             transforms.SetWorldPosition(attacker.Owner, new Vector2(-20f, 0f));
             var launch = new EntityCoordinates(attacker.Owner, new Vector2(0.5f, 0.5f));
             entities.System<SharedMapSystem>().SetTile(attacker.Owner, attacker.Comp, launch, map.Tile.Tile);
@@ -174,7 +174,7 @@ public sealed class WFShipShieldAttackTest
             var points = entities.GetComponent<WFShipShieldVisualsComponent>(shield).Contours.SelectMany(contour => contour).ToArray();
             var center = (points.Aggregate(Vector2.Min) + points.Aggregate(Vector2.Max)) * 0.5f;
             var outside = new EntityCoordinates(shield, new Vector2(points.Min(point => point.X) - 10f, center.Y));
-            var attacker = server.ResolveDependency<IMapManager>().CreateGridEntity(map.MapId);
+            var attacker = server.System<SharedMapSystem>().CreateGridEntity(map.MapId);
             transforms.SetWorldPosition(attacker.Owner, transforms.ToMapCoordinates(outside).Position - new Vector2(0.5f, 0.5f));
             var launch = new EntityCoordinates(attacker.Owner, new Vector2(0.5f, 0.5f));
             entities.System<SharedMapSystem>().SetTile(attacker.Owner, attacker.Comp, launch, map.Tile.Tile);

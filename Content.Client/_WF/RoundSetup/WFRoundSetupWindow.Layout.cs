@@ -249,7 +249,7 @@ public sealed partial class WFRoundSetupWindow
             if (scenario == WFRoundScenario.FactionShip)
             {
                 var faction = new WFRoundSetupOptionButton { Name = "RoundSetupFaction", HorizontalExpand = true };
-                foreach (var option in new[] { WFCrewFaction.TSF, WFCrewFaction.PDV })
+                foreach (var option in WFFactionCrewPolicy.All)
                     faction.AddItem(Text("faction-" + option.ToString().ToLowerInvariant()), (int) option);
                 faction.SelectId((int) _newFaction);
                 faction.OnItemSelected += args => { _newFaction = (WFCrewFaction) args.Id; Redraw(); };
@@ -358,7 +358,7 @@ public sealed partial class WFRoundSetupWindow
         selector.AddItem(ScenarioName(WFRoundScenario.Crashlanded), (int) WFRoundScenario.Crashlanded);
         if (!state.CrashlandedAvailable)
             selector.DisableItem(1, Text("crash-unavailable"));
-        foreach (var faction in new[] { WFCrewFaction.TSF, WFCrewFaction.PDV })
+        foreach (var faction in WFFactionCrewPolicy.All)
         {
             selector.AddItem(Text("faction-start", ("faction", Text("faction-" + faction.ToString().ToLowerInvariant()))), 10 + (int) faction);
             if (!state.Factions.Contains(faction))

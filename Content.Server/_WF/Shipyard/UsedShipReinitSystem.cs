@@ -7,7 +7,7 @@ using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Wires;
 using Content.Shared._Crescent.ShipShields;
-using Content.Shared._Mono.Economy.Component;
+using Content.Shared._Mono.Economy.Components;
 using Content.Shared._WF.ShipPa;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.DeviceNetwork.Components;

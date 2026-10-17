@@ -1,6 +1,6 @@
 using Content.Server.Speech.Components;
 using Content.Server.Speech.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server._NF.Speech.Components;
 

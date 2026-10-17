@@ -64,7 +64,7 @@ public sealed partial class CECableVerticalNode : Node
         if (!TryGetNeighbourMap(mapUid, up, entMan, out var neighbourMap))
             return;
 
-        var mapManager = IoCManager.Resolve<IMapManager>();
+        var mapManager = IoCManager.Resolve<IEntityManager>().System<SharedMapSystem>();
         var mapSystem = entMan.System<SharedMapSystem>();
 
         if (!mapManager.TryFindGridAt(neighbourMap, worldPos, out var gridUid, out var gridComp)

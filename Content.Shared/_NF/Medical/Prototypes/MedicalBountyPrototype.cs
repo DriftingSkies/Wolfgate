@@ -2,7 +2,7 @@ using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared._NF.Medical.Prototypes;
 

@@ -2,7 +2,7 @@ namespace Content.Server.Chat;
 
 using Content.Server.Chat.Systems;
 using Content.Shared.Chat.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
+using Content.Shared._WF.EngineCompat;
 
 /// <summary>
 /// Causes an entity to automatically emote at a set interval.

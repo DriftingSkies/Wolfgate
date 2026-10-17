@@ -194,7 +194,7 @@ public abstract partial class SharedSingularitySystem : EntitySystem
     /// <param name="singulo">A singularity.</param>
     /// <returns>The event horizon radius the singularity should have given its state.</returns>
     public float EventHorizonRadius(SingularityComponent singulo)
-        => singulo.Level - 0.5f;
+        => MathF.Max(singulo.Level - 0.5f, 0f);
 
     /// <summary>
     /// Derives whether a singularity should be able to breach containment from its state.

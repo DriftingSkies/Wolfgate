@@ -1,7 +1,7 @@
 ﻿using Content.Server.StationEvents.Events;
 using Content.Shared.Chemistry.Reagent;
 using Robust.Shared.Audio;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.StationEvents.Components;
 

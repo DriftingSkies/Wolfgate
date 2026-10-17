@@ -98,7 +98,7 @@ internal static class VehicleRigs
 
         await server.WaitPost(() =>
         {
-            var mapMan = server.ResolveDependency<IMapManager>();
+            var mapMan = server.System<SharedMapSystem>();
             var maps = server.System<SharedMapSystem>();
             var xforms = server.System<SharedTransformSystem>();
             var plating = server.Resolve<ITileDefinitionManager>()["Plating"].TileId;

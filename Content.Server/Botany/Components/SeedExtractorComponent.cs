@@ -1,7 +1,7 @@
 using Content.Server.Botany.Systems;
 using Content.Server.Construction;
 using Content.Shared.Construction.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Botany.Components;
 

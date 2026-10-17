@@ -4,7 +4,7 @@ using Content.Shared.Item;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using Content.Shared.Kitchen; // Frontier
 using Robust.Shared.Serialization; // Frontier
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;

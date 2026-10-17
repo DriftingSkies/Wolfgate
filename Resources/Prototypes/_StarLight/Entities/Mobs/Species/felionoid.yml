@@ -124,6 +124,7 @@
     - DoorBumpOpener
     - AnomalyHost
     - Felionoid
+    - Humanoid # WOLFGATE(Chimera): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
   - type: Inventory
     speciesId: felionoid
     displacements:

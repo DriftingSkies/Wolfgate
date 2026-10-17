@@ -114,10 +114,11 @@ public sealed class GenitalAnchorLayerTest
                     if (entity.Abstract
                         || pair.IsTestPrototype(entity)
                         || !entity.Components.ContainsKey(humanoidName)
-                        || !entity.Components.TryGetValue(spriteName, out var sprite))
+                        || !entity.Components.ContainsKey(spriteName)
+                        || !proto.TryGetMapping<EntityPrototype>(entity.ID, out var mapping))
                         continue;
 
-                    var keys = ReadLayerKeys(sprite.Mapping);
+                    var keys = ReadLayerKeys(ComponentMapping(mapping, spriteName));
                     if (IndexOf(keys, HumanoidLayer + "Chest") < 0)
                         continue;
 
@@ -840,6 +841,18 @@ public sealed class GenitalAnchorLayerTest
         {
             Assert.That(keys.Count(k => k.Contains(anchor)), Is.EqualTo(1), $"{id}: {anchor} must be mapped exactly once.");
         }
+    }
+
+    /// <summary>The inherited YAML mapping of one component on an entity prototype mapping.</summary>
+    private static MappingDataNode ComponentMapping(MappingDataNode entity, string name)
+    {
+        foreach (var node in entity.Get<SequenceDataNode>("components"))
+        {
+            if (node is MappingDataNode comp && comp.TryGet<ValueDataNode>("type", out var type) && type.Value == name)
+                return comp;
+        }
+
+        return new MappingDataNode();
     }
 
     /// <summary>The map keys of each layer of a Sprite component mapping, in list order.</summary>

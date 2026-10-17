@@ -274,6 +274,1932 @@ unmarked:
   - path: Resources/Textures/Tiles/exoborg.png
     module: Xenoborgs
     reason: Exoborg floor tile redrawn.
+  - path: Content.Client/Administration/UI/SpawnExplosion/SpawnExplosionWindow.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Administration/UI/Tabs/AdminbusTab/LoadBlueprintsWindow.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Atmos/AlignAtmosPipeLayers.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Atmos/Overlays/AtmosDebugOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Atmos/Overlays/GasTileDangerousTemperatureOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Atmos/Overlays/GasTileOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Chemistry/EntitySystems/ChemistryGuideDataSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Construction/UI/FlatpackCreatorMenu.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/CriminalRecords/CriminalRecordsConsoleWindow.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Decals/Overlays/DecalPlacementOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Explosion/ExplosionOverlaySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Gameplay/GameplayStateBase.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Guidebook/Controls/GuideReagentReaction.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/HealthAnalyzer/UI/HealthAnalyzerWindow.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/IconSmoothing/IconSmoothComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Client/Interactable/Components/InteractionOutlineComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Interaction/DragDropSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Light/AmbientOcclusionOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Light/RoofOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Light/SunShadowOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Light/TileEmissionOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Mapping/MappingState.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Maps/GridDraggingSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/MassMedia/Ui/NewsArticleCard.xaml
+    module: EngineCompat
+    reason: Engine v285 XamlX dropped the StyleClasses element syntax; uses the attribute.
+  - path: Content.Client/NPC/PathfindingSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/NetworkConfigurator/Systems/NetworkConfiguratorSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/NodeContainer/NodeGroupSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/NodeContainer/NodeVisualizationOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Outline/TargetOutlineSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Overlays/ShowJobIconsSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Overlays/StencilOverlay.Weather.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Overlays/StencilOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Paper/UI/PaperVisualsComponent.cs
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness.
+  - path: Content.Client/Parallax/BiomeDebugOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Parallax/ParallaxOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Parallax/ParallaxSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Power/Generation/Teg/TegSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/RCD/AlignRCDConstruction.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/RCD/RCDMenu.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 TryIndex no longer takes logError.
+  - path: Content.Client/Sandbox/SandboxSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Shuttles/UI/MapScreen.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Shuttles/UI/ShuttleDockControl.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Shuttles/UI/ShuttleMapControl.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/Silicons/Borgs/BorgSelectTypeMenu.xaml.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/UserInterface/RichText/MonoTag.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/UserInterface/Systems/Chat/ChatUIController.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/UserInterface/Systems/Info/InfoUIController.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Client/Weapons/Misc/TetherGunSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_CE/ZLevels/Core/Overlays/CEZGridConnectorOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_CE/ZLevels/Core/ScalingViewport.CEZLevels.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_Crescent/DroneControl/DroneConsoleWindow.xaml.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_FarHorizons/StarSystem/StarLightOverlay.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_FarHorizons/StarSystem/StarSystemMapSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_Mono/NaniteOverlay/NaniteOverlaySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_Mono/Radar/RadarBlipsSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_Mono/ShipRepair/ShipRepairSystem.Ghosts.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Client/_Mono/ShipRepair/ShipRepairSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Body/LegTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Body/LungTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Body/SaveLoadReparentTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/CargoTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/ContainerOcclusionTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/ContrabandTest.cs
+    module: EngineCompat
+    reason: Engine v289 TryIndex no longer takes logError.
+  - path: Content.IntegrationTests/Tests/Damageable/DamageableTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/DeviceLinking/DeviceLinkingTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/DeviceNetwork/DeviceNetworkTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Doors/AirlockTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/EntityTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Fluids/FluidSpillTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/FollowerSystemTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/GameObjects/Components/ActionBlocking/HandCuffTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/GameRules/NukeOpsTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/GravityGridTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Interaction/Click/InteractionSystemTests.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Interaction/InRangeUnobstructed.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Interaction/InteractionTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Linter/StaticFieldValidationTest.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.IntegrationTests/Tests/MaterialArbitrageTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Networking/SimplePredictReconcileTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/PostMapInitTest.cs
+    module: EngineCompat
+    reason: Engine v289 TryIndex no longer takes logError. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Power/PowerTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/PrototypeSaveTest.cs
+    module: EngineCompat
+    reason: Engine v282 SerializerProvider takes the serialization manager.
+  - path: Content.IntegrationTests/Tests/PrototypeTests/PrototypeTests.cs
+    module: EngineCompat
+    reason: Engine v282 SerializerProvider takes the serialization manager.
+  - path: Content.IntegrationTests/Tests/SaveLoadMapTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/SaveLoadSaveTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/Shuttle/DockTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/ShuttleTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.IntegrationTests/Tests/VendingMachineRestockTest.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.MapRenderer/Painters/GridPainter.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.MapRenderer/Painters/MapPainter.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Abilities/Mime/MimePowersComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Abilities/Mime/MimePowersSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Actions/ActionOnInteractComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Administration/Commands/SetAdminOOC.cs
+    module: EngineCompat
+    reason: Engine Color.TryFromHex returns bool with an out color.
+  - path: Content.Server/Administration/Systems/AdminVerbSystem.Antags.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/AlertLevel/AlertLevelComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Anomaly/AnomalySystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Anomaly/Components/AnomalyGeneratorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Anomaly/Components/ExplosionAnomalyComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Anomaly/Components/ProjectileAnomalyComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Arcade/SpaceVillainGame/SpaceVillainArcadeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Commands/SetMapAtmosCommand.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Atmos/EntitySystems/AtmosDebugOverlaySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Atmos/EntitySystems/AtmosphereSystem.Commands.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Atmos/EntitySystems/AtmosphereSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Atmos/EntitySystems/GasTileOverlaySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Atmos/Monitor/Components/AirAlarmComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Monitor/Components/AtmosAlarmableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Monitor/Components/AtmosMonitorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Piping/Binary/Components/GasRecyclerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Piping/Binary/Components/SignalControlledValveComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Piping/Unary/Components/GasVentPumpComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/Portable/PortableScrubberComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Atmos/TileAtmosphere.cs
+    module: EngineCompat
+    reason: Engine v282 forbids [DataField] outside data definitions; runtime-only field.
+  - path: Content.Server/Audio/ContentAudioSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Bed/Components/StasisBedComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Bible/Components/SummonableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Body/Commands/AddHandCommand.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Botany/Components/LogComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Botany/Components/ProduceComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Botany/Components/SeedComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Botany/Components/SeedExtractorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Botany/SeedPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Cargo/Components/CargoPalletConsoleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Cargo/Components/StationCargoBountyDatabaseComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Cargo/Components/StationCargoOrderDatabaseComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Cargo/Systems/CargoSystem.Bounty.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/CartridgeLoader/Cartridges/CrewManifestCartridgeSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Chat/AutoEmoteComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chat/EmoteOnDamageComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chat/Systems/ChatSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Chemistry/Components/RandomFillSolutionComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chemistry/Components/ReagentDispenserComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chemistry/Components/SolutionPurgeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chemistry/EntitySystems/ChemMasterSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Chemistry/TileReactions/CleanTileReaction.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chemistry/TileReactions/CreateEntityTileReaction.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Chunking/ChunkingSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Construction/Commands/TileWallsCommand.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Construction/Completions/BuildMech.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Construction/Completions/SpawnPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Construction/Components/ComputerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Construction/Components/ConstructionComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Construction/Components/MachineFrameComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Construction/Conditions/ComponentInTile.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Damage/Components/ExaminableDamageComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Destructible/Thresholds/Behaviors/WeightedSpawnEntityBehavior.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Destructible/Thresholds/Triggers/DamageGroupTrigger.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Destructible/Thresholds/Triggers/DamageTypeTrigger.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/DeviceLinking/Components/DoorSignalControlComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/DeviceLinking/Components/Overload/SpawnOnOverloadComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/DeviceLinking/Components/SignallerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Dragon/Components/DragonComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Dragon/Components/DragonRiftComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Drowsiness/DrowsinessSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Electrocution/ElectrocuteCommand.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Electrocution/ElectrocutionSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Emoting/Components/BodyEmotesComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Engineering/Components/DisassembleOnAltVerbComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Engineering/Components/SpawnAfterInteractComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/EffectConditions/HasTagCondition.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/EffectConditions/OrganType.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/Effects/AdjustReagent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/Effects/AreaReactionEffect.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/EntityEffects/Effects/CreateEntityReactionEffect.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/Effects/Emote.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/Effects/ExplosionReactionEffect.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/Effects/Polymorph.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/EntityEffects/Effects/RevertPolymorphs.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Explosion/Components/SpawnOnTriggerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Explosion/Components/TimerStartOnSignalComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Explosion/Components/TriggerOnSignalComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Explosion/EntitySystems/ExplosionSystem.TileFill.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Explosion/EntitySystems/ExplosionSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Explosion/EntitySystems/SmokeOnTriggerSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Fluids/EntitySystems/PuddleDebugDebugOverlaySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Fluids/EntitySystems/PuddleSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Forensics/Components/ForensicScannerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/GameTicking/GameTicker.RoundFlow.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/GameTicking/GameTicker.Spawning.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/GameTicking/GameTicker.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/GameTicking/Presets/GamePresetPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/GameTicking/Rules/Components/DeathMatchRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Gateway/Systems/GatewayGeneratorSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Gravity/GravityGeneratorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Guardian/GuardianCreatorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Holiday/Christmas/LimitedItemGiverComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Holiday/Christmas/RandomGiftComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Holosign/HolosignProjectorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Humanoid/Components/RandomHumanoidAppearanceComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Humanoid/Components/RandomHumanoidSpawnerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Implants/Components/AutoImplantComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Jobs/AddImplantSpecial.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Jobs/GiveItemOnHolidaySpecial.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Kitchen/Components/ReagentGrinderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Kitchen/EntitySystems/MicrowaveSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Labels/Label/LabelSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Mapping/MappingCommand.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Mapping/MappingManager.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Maps/GameMapPoolPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Maps/PlanetCommand.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Mech/Components/MechAssemblyComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Medical/BiomassReclaimer/BiomassReclaimerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Medical/BiomassReclaimer/BiomassReclaimerSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Medical/Components/HealingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Medical/Components/MedicalScannerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Medical/Stethoscope/Components/StethoscopeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Medical/VomitSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Mindshield/MindShieldSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Mobs/DeathgaspComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/NPC/HTN/HTNCompoundTask.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/NPC/HTN/PrimitiveTasks/Operators/UtilityOperator.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/NPC/Queries/Curves/PresetCurve.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/NPC/Queries/UtilityService.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/NPC/Systems/NPCCombatSystem.Ranged.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/NPC/Systems/NPCCombatSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Nuke/NukeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Nutrition/Components/FatExtractorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Nyanotrasen/Abilities/Felinid/FelinidComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Nyanotrasen/Kitchen/Components/DeepFriedComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Nyanotrasen/Kitchen/Components/DeepFryerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Objectives/Components/NotJobRequirementComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Objectives/Components/StealTargetComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; drops their using.
+  - path: Content.Server/Parallax/BiomeSystem.PlanetSetup.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Parallax/BiomeSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Pinpointer/NavMapSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Pointing/EntitySystems/PointingSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Polymorph/Systems/PolymorphSystem.Map.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Polymorph/Systems/PolymorphSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Power/Components/CableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Power/Components/CablePlacerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Power/Generator/ChemicalFuelGeneratorAdapterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Power/Generator/SolidFuelGeneratorAdapterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Procedural/DungeonSystem.Rooms.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Procedural/DungeonSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Radiation/Systems/RadiationSystem.GridCast.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Radiation/Systems/RadiationSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Research/TechnologyDisk/Components/DiskConsoleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Resist/EscapeInventorySystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Revenant/EntitySystems/RevenantSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Rotatable/FlippableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Salvage/Expeditions/SalvageExpeditionComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Salvage/SalvageRulerCommand.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Salvage/SalvageSystem.ExpeditionConsole.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Salvage/SalvageSystem.Expeditions.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Salvage/SalvageSystem.Magnet.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields. Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Salvage/SalvageSystem.Runner.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Salvage/SalvageSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Salvage/SpawnSalvageMissionJob.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Sandbox/Commands/ColorNetworkCommand.cs
+    module: EngineCompat
+    reason: Engine Color.TryFromHex returns bool with an out color.
+  - path: Content.Server/Shuttles/Commands/FTLDiskCommand.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Shuttles/Components/PriorityDockComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Shuttles/Components/ThrusterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Shuttles/Systems/DockingSystem.Shuttle.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Shuttles/Systems/DockingSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Shuttles/Systems/EmergencyShuttleSystem.Console.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Shuttles/Systems/EmergencyShuttleSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Shuttles/Systems/FTLAntiCollisionSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Shuttles/Systems/ShuttleConsoleSystem.FTL.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Shuttles/Systems/ShuttleSystem.GridFill.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Shuttles/Systems/ShuttleSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Silicons/Borgs/BorgSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Silicons/Laws/IonStormSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Silicons/Laws/SiliconLawSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Singularity/EntitySystems/EventHorizonSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Spawners/Components/SpawnOnDespawnComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Speech/Components/AddAccentClothingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Speech/Components/ReplacementAccentComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Speech/EntitySystems/RatvarianLanguageSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Speech/EntitySystems/SlurredSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Spreader/KudzuSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Station/Components/StationJobsComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Station/Systems/StationBiomeSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/StationEvents/Components/AnomalySpawnRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StationEvents/Components/BluespaceArtifactRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StationEvents/Components/ImmovableRodRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StationEvents/Components/RandomEntityStorageSpawnRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StationEvents/Components/RandomSpawnRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StationEvents/Components/SolarFlareRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StationEvents/Components/VentClogRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Storage/EntitySystems/EntityStorageSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Store/Components/CurrencyComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Store/Conditions/BuyerAntagCondition.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Store/Conditions/BuyerDepartmentCondition.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Store/Conditions/BuyerJobCondition.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Store/Conditions/BuyerSpeciesCondition.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/StoreDiscount/Systems/StoreDiscountSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/SurveillanceCamera/Components/SurveillanceCameraRouterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Tabletop/TabletopCheckerSetup.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Tabletop/TabletopChessSetup.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Tabletop/TabletopParchisSetup.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Tabletop/TabletopSetup.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Tabletop/TabletopSystem.Map.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Tabletop/TabletopSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Temperature/Systems/TemperatureSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Traitor/Uplink/UplinkSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Traits/Assorted/NarcolepsySystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Weapons/Melee/Balloon/BalloonPopperComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Weapons/Ranged/Components/RangedDamageSoundComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/BiomeSelectionComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/Carvers/NoiseRangeCarverComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/Debris/BlobFloorPlanBuilderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/Debris/DebrisFeaturePlacerControllerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/Debris/NoiseDrivenDebrisSelectorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/Debris/SimpleFloorPlanPopulatorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/GC/GCAbleObjectComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Components/WorldControllerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Worldgen/Prototypes/NoiseChannelPrototype.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types.
+  - path: Content.Server/Worldgen/Systems/Debris/DebrisFeaturePlacerSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Worldgen/Systems/WorldgenConfigSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/Xenoarchaeology/Equipment/Components/AnalysisConsoleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Xenoarchaeology/Equipment/Components/ArtifactAnalyzerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Xenoarchaeology/Equipment/Components/TraversalDistorterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Xenoarchaeology/XenoArtifacts/ArtifactComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Xenoarchaeology/XenoArtifacts/ArtifactSystem.Actions.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/Xenoarchaeology/XenoArtifacts/Effects/Components/ChemicalPuddleArtifactComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Xenoarchaeology/XenoArtifacts/Effects/Components/FoamArtifactComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/Xenoarchaeology/XenoArtifacts/Triggers/Components/ArtifactDamageTriggerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_CE/Power/Nodes/CECableVerticalNode.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_CE/ZLevels/Core/CEZGridConnectorSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_CE/ZLevels/Gravity/CEAutoGridGravitySystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_CorvaxNext/Silicons/Borgs/AiRemoteControlSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_DV/Weapons/Ranged/Components/EnergyGunComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_EinsteinEngines/Silicon/WeldingHealable/WeldingHealableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_EinsteinEngines/Silicon/WeldingHealing/WeldingHealingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_Funkystation/Atmos/EntitySystems/AdjustAirOnTriggerSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Funkystation/EntityEffects/EffectConditions/BloodReagentThreshold.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_Funkystation/EntityEffects/Effects/AddReagentToBlood.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_Goobstation/MobCaller/MobCallerSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Goobstation/Teleportation/Systems/TeleportSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Mono/Cleanup/CleanupHelperSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Mono/Drill/ShipDrillSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Mono/FireControl/FireControlSystem.Console.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Mono/NPC/HTN/ShipSteeringSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Mono/Persistence/PersistentProfileSystem.Components.cs
+    module: EngineCompat
+    reason: Engine v278 ComponentRegistryEntry no longer holds a mapping.
+  - path: Content.Server/_Mono/Research/PointDiskPrinter/Components/PointDiskConsoleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_Mono/Shipyard/ShipyardDirectionSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Mono/SpaceArtillery/Components/SpaceArtilleryComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_Mono/VendingMachine/VendingMachinePurchaseSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_NF/Cargo/Systems/CargoSystem.PirateBounty.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Server/_NF/Construction/Components/ComputerTabletopBoardComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Construction/Components/ComputerWallmountBoardComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/CrateMachine/CrateMachineSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_NF/CryoSleep/CryoSleepSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_NF/Power/Components/UpgradeBatteryComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Power/Components/UpgradePowerDrawComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Power/Components/UpgradePowerSupplierComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Power/Components/UpgradePowerSupplyRampingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Security/Components/ContrabandPriceGunComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Shipyard/Systems/ShipyardSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_NF/Smuggling/Components/DeadDropComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/Solar/EntitySystems/NFPowerSolarSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_NF/Speech/Components/AddAccentPickupComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/StationEvents/Components/BluespaceCargoRuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_NF/StationEvents/Events/BluespaceErrorRule.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_NF/Traits/Assorted/FriedTraitComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Server/_Starlight/NullSpace/NullSpaceSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Server/_Starlight/Shadekin/ShadekinSystem.cs
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Content.Shared/Access/Components/AccessComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Access/Components/AccessReaderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Atmos/Prototypes/GasPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Atmos/Rotting/RotIntoComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Audio/AmbientMusicPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/BarricadeBlock/BarricadeBlockComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Bed/Cryostorage/SharedCryostorageSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Blocking/Components/BlockingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Cargo/CargoOrderData.cs
+    module: EngineCompat
+    reason: Engine v282 forbids [DataField] outside data definitions; network-only fields.
+  - path: Content.Shared/Cargo/Components/CargoBountyConsoleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Cargo/Components/CargoShuttleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Cargo/Components/SharedCargoTelepadComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Cargo/Prototypes/CargoBountyPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Cargo/Prototypes/CargoProductPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chat/Prototypes/AutoEmotePrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chat/Prototypes/EmoteSoundsPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chat/SharedChatSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Chat/TypingIndicator/SharedTypingIndicatorSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Chemistry/Components/RehydratableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chemistry/Dispenser/ReagentDispenserInventoryPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chemistry/Reaction/ReactionPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chemistry/Reaction/ReactiveComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Chemistry/Reagent/ReagentId.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Cloning/CloningPodComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies. Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Cluwne/CluwneComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/CombatMode/CombatModeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/Components/ComputerBoardComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/Components/MachineBoardComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/ConstructionGraphNode.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/EntitySystems/AnchorableSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Construction/NodeEntities/StaticNodeEntity.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/Prototypes/ConstructionPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/SharedConstructionSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Construction/Steps/MaterialConstructionGraphStep.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/Steps/TemperatureConstructionGraphStep.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Construction/Steps/ToolConstructionGraphStep.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Containers/ContainerFillComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Containers/ItemSlot/ItemSlotsComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Coordinates/Helpers/SnapgridHelper.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Damage/DamageModifierSet.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Damage/DamageSpecifier.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Damage/DamageSpecifierDictionarySerializer.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Damage/Prototypes/DamageContainerPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Damage/Prototypes/DamageGroupPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Decals/PlaceDecalActionEvent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Decals/SharedDecalSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/DeviceLinking/Components/SignalSwitchComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/DeviceLinking/DeviceLinkSinkComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/DeviceLinking/DevicePortPrototype.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types. Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/DeviceNetwork/Components/DeviceNetworkComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Devour/Components/DevourerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Doors/Components/AirlockComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Doors/Systems/SharedDoorSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Drowsiness/DrowsinessSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Drunk/DrunkSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Emag/Components/EmagComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/EntityList/EntityListPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Examine/ExamineSystemShared.cs
+    module: EngineCompat
+    reason: Engine v287 occluders expose LocalBounds instead of BoundingBox.
+  - path: Content.Shared/Explosion/Components/ExplosionResistanceComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Eye/Blinding/Components/EyeClosingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Eye/Blinding/Systems/TemporaryBlindnessSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Fax/Components/FaxMachineComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Fluids/Components/DrainComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/GameTicking/SharedGameTicker.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Glue/GlueComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Guidebook/GuideEntry.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types.
+  - path: Content.Shared/Humanoid/HairStyles.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Humanoid/Markings/MarkingPoints.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Humanoid/Prototypes/RandomHumanoidSettingsPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Humanoid/Prototypes/SpeciesPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Interaction/SharedInteractionSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Inventory/InventoryComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Inventory/InventorySystem.Equip.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Inventory/VirtualItem/SharedVirtualItemSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Kitchen/Components/MicrowaveComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Kitchen/MicrowaveMealRecipePrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Labels/EntitySystems/SharedHandLabelerSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Lathe/EmagLatheComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Light/Components/HandheldLightComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Lightning/Components/SharedLightningComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Lube/LubeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Magic/SharedMagicSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Maps/ContentTileDefinition.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies. Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Maps/TileSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Maps/TurfSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Materials/PhysicalCompositionComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Mech/Equipment/Systems/MechSoundboardSystem.cs
+    module: EngineCompat
+    reason: Engine SoundCollectionSpecifier.Collection is a ProtoId.
+  - path: Content.Shared/Mind/Components/TransferMindOnGibComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Movement/Components/JetpackComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Movement/Systems/SharedMoverController.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/NameIdentifier/NameIdentifierComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/NukeOps/NukeOperativeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Nutrition/EntitySystems/HungerSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Nutrition/EntitySystems/ThirstSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Nyanotrasen/Digging/EarthDiggingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Nyanotrasen/Item/PseudoItem/SharedPseudoItemSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Nyanotrasen/Kitchen/Components/SharedDeepFriedComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/PAI/PAIComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/PDA/PdaComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Parallax/Biomes/BiomeComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Parallax/Biomes/Layers/BiomeDecalLayer.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Parallax/Biomes/Layers/BiomeEntityLayer.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Parallax/Biomes/Layers/BiomeMetaLayer.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Parallax/Biomes/Markers/BiomeMarkerLayerPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Parallax/ParallaxComponent.cs
+    module: EngineCompat
+    reason: Engine removed the Dirty(component) overload.
+  - path: Content.Shared/Physics/Controllers/SharedConveyorController.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Players/PlayTimeTracking/PlayTimeTrackingShared.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/PneumaticCannon/PneumaticCannonComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Procedural/Loot/BiomeMarkerLoot.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Procedural/Loot/BiomeTemplateLoot.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Procedural/Loot/SalvageLootPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Procedural/PostGeneration/CorridorDecalSkirtingDunGen.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Radio/Components/EncryptionKeyComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Radio/Components/EncryptionKeyHolderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Random/RandomFillSolution.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Random/Rules/GridInRange.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Random/WeightedRandomEntityPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Random/WeightedRandomOrePrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Random/WeightedRandomSpeciesPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/RatKing/RatKingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/RatKing/RatKingRummageableComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Research/Components/TechnologyDatabaseComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Respawn/SpecialRespawnComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Revenant/Components/RevenantComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Revenant/Components/RevenantOverloadedLightsComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Roles/JobPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/SSDIndicator/SSDIndicatorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/Modifiers/SalvageAirMod.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/Modifiers/SalvageBiomeMod.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/Modifiers/SalvageDungeonMod.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/Modifiers/SalvageLightMod.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/Modifiers/SalvageTemperatureMod.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/Modifiers/SalvageWeatherMod.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Expeditions/SalvageFactionPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Salvage/Fulton/SharedFultonSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Sericulture/SericultureComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Shuttles/Systems/SharedShuttleSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Silicons/Borgs/BorgTypePrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Silicons/Borgs/Components/ItemBorgModuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Silicons/Borgs/Components/SelectableBorgModuleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Silicons/Borgs/SharedBorgSwitchableTypeSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Silicons/Laws/SiliconLawsetPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Silicons/StationAi/SharedStationAiSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Singularity/Components/ContainmentFieldGeneratorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Singularity/Components/SharedEmitterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Singularity/Components/SingularityGeneratorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Species/Components/ReformComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Speech/Components/MeleeSpeechComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Speech/Components/VocalComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Speech/EntitySystems/SharedStutteringSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Spider/SpiderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/SprayPainter/SharedSprayPainterSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Stacks/StackComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Stacks/StackPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/StationRecords/GeneralStationRecord.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types.
+  - path: Content.Shared/StationRecords/StationRecordKey.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types.
+  - path: Content.Shared/StatusIcon/StatusIconPrototype.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types.
+  - path: Content.Shared/Storage/EntitySpawnEntry.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Storage/EntitySystems/SharedStorageSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/Store/CurrencyPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Store/StorePresetPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/SurveillanceCamera/Components/SurveillanceCameraComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Tabletop/SharedTabletopSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Teleportation/Components/HandTeleporterComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Tiles/FloorTileComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Tiles/FloorTileSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Tools/Systems/SharedToolSystem.Tile.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Tools/Systems/SharedToolSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Tools/ToolQualityPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Vehicle/Components/VehicleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/VendingMachines/VendingMachineComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/VendingMachines/VendingMachineInventoryPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/VendingMachines/VendingMachineRestockComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Wagging/WaggingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Melee/Components/MeleeSoundComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Melee/SharedMeleeWeaponSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Weapons/Ranged/Components/AmmoComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Ranged/Components/BasicEntityAmmoProviderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Ranged/Components/ProjectileBatteryAmmoProviderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Ranged/Components/RevolverAmmoProviderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Ranged/Components/SolutionAmmoProviderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Weather/SharedWeatherSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/Whistle/WhistleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/Zombies/ZombieComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.Movement.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.View.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_CE/ZLevels/Damage/CEZLevelDamageSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_Crescent/Dispenser/DispenserComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Crescent/Hardpoints/HardpointFixedMountComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Crescent/SpaceBiomes/SpaceBiomeSourceComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_DV/Harpy/HarpySingerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_EinsteinEngines/Language/Components/TranslatorImplantComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_EinsteinEngines/Language/Components/Translators/BaseTranslatorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_EinsteinEngines/Language/Systems/SharedLanguageSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/_EstacaoPirata/Cards/Hand/CardHandSystem.cs
+    module: EngineCompat
+    reason: Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
+  - path: Content.Shared/_FarHorizons/Power/Generation/FissionGenerator/NuclearReactorComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_FarHorizons/Power/Generation/FissionGenerator/TurbineComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Funkystation/Atmos/Prototypes/CrystallizerRecipePrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Goobstation/ChronoLegionnaire/Components/StasisBlinkProviderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Goobstation/Factory/RoboticArmSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_Goobstation/Radio/Components/ActiveRadioComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; drops their using.
+  - path: Content.Shared/_Impstation/Thaven/ThavenMoodPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Mono/AmmoLoader/AmmoLoaderComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Mono/BlackFlash/BlackFlashSystem.cs
+    module: EngineCompat
+    reason: Engine v282 forbids [DataField] outside data definitions; system fields.
+  - path: Content.Shared/_Mono/ShipRepair/SharedShipRepairSystem.Tool.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_Mono/ShipRepair/SharedShipRepairSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_Mono/Shipyard/SharedShipyardPreviewSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_Mono/Shipyard/ShipAccessReaderSystem.cs
+    module: EngineCompat
+    reason: Engine v280 removed IMapManager; uses SharedMapSystem.
+  - path: Content.Shared/_NF/Bank/Components/BankATMComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_NF/Bank/Components/StationBankATMComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_NF/Contraband/Components/ContrabandPalletComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_NF/Medical/Prototypes/MedicalBountyPrototype.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_NF/Medical/SharedMedicalGuideDataSystem.cs
+    module: EngineCompat
+    reason: Engine v282 requires data definitions for [DataField] types.
+  - path: Content.Shared/_NF/Pirate/Components/PirateBountyConsoleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_NF/Shipyard/Components/ShipyardListingComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Shitmed/Abilities/Goliath/GoliathTentacleComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Shitmed/Body/Organ/MarkingContainerComponent.cs
+    module: EngineCompat
+    reason: Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+  - path: Content.Shared/_Shitmed/Surgery/SharedSurgerySystem.Steps.cs
+    module: EngineCompat
+    reason: Engine v278 ComponentRegistryEntry is a struct without equality.
+  - path: Content.Shared/_Shitmed/Surgery/Tools/ISurgeryToolComponent.cs
+    module: EngineCompat
+    reason: Engine v282 forbids [DataField] outside data definitions; interface members.
+  - path: Resources/Locale/en-US/replays/replays.ftl
+    module: EngineCompat
+    reason: Engine v291 ships cmd-replay-toggleui-desc; duplicate removed.
+  - path: Resources/Prototypes/Entities/Clothing/Head/base_clothinghead.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Clothing/Head/hardhats.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Clothing/Head/helmets.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Clothing/Head/misc.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Clothing/OuterClothing/armor.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Clothing/OuterClothing/softsuits.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Mobs/NPCs/silicon.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Objects/Devices/forensic_scanner.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/Entities/Objects/Misc/books.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/Entities/Objects/Misc/business_card.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/Entities/Objects/Misc/paper.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/Entities/Objects/Misc/subdermal_implants.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Objects/Specific/Mech/mechs.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Objects/Tools/flashlights.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Objects/Vehicles/buckleable.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Structures/Decoration/decorated_fir_tree.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Structures/Lighting/base_lighting.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes. Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/Entities/Structures/Lighting/ground_lighting.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/Entities/Structures/Lighting/strobe_lighting.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes. Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/Entities/Structures/Machines/Computers/base_structurecomputers.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Structures/Machines/Medical/disease_diagnoser.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/Entities/Structures/Machines/nuke.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Structures/Shuttles/thrusters.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/Entities/Structures/Walls/railing.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_CE/Entities/Structures/Architecture/Ladders/base.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized. Engine v287 occluders dropped boundingBox; the default polygon matches.
+  - path: Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/trauma.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Objects/Devices/nuke.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Attachments/grips_erebus_railmount.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/base_lathe.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/disk_printer.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/frames/frame_2x1.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/frames/frame_2x2.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/frames/frame_3x2.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/frames/frame_3x3.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/heavy_drive.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Machines/nuke.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Wallmounts/addon_armor.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_NF/Entities/Clothing/Head/softsuit-helmets.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_NF/Entities/Mobs/NPCs/mob_hostile_expeditions_explorers.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_NF/Entities/Objects/Misc/paper.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/_NF/Entities/Objects/Misc/subdermal_implants.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_NF/Entities/Objects/Specific/Service/napkin.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; paper margins are Thickness, values reordered.
+  - path: Resources/Prototypes/_NF/Entities/Objects/Vehicles/vehicles.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/base_turret.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_NF/Entities/Structures/Machines/material_reclaimer.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/_NF/Entities/Structures/Machines/shredder.yml
+    module: EngineCompat
+    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
+  - path: Resources/Prototypes/light_mask.yml
+    module: EngineCompat
+    reason: Engine v291 light mask prototypes, copied verbatim from space-wizards/space-station-14.
+  - path: Content.Shared/Singularity/EntitySystems/SharedSingularitySystem.cs
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects negative sizes; a level-0 event horizon radius is clamped to zero.
+  - path: Content.IntegrationTests/Tests/Fluids/PuddleTest.cs
+    module: EngineCompat
+    reason: Engine v288 GetAllTiles enumerates lazily; tiles are collected before clearing.
+  - path: Content.Server/Decals/DecalSystem.cs
+    module: EngineCompat
+    reason: Engine v291 gives a split-off grid its own origin; decals move by the split offset.
+  - path: Resources/Prototypes/_Mono/Entities/Structures/Storage/reagents.yml
+    module: EngineCompat
+    reason: Engine v291 replaced Occluder boundingBox with a polygon.
+  - path: Resources/Prototypes/_Nuclear14/Entities/Structures/Furniture/shelf.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
+  - path: Resources/Prototypes/_Nuclear14/Entities/Structures/Walls/tall_obstacles.yml
+    module: EngineCompat
+    reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized.
   - path: Resources/Textures/_Onyx/
     module: Wolfmed
     reason: Space Onyx wound-system sprites (wound and fracture states, alerts, medical items) ported with Wolfmed.

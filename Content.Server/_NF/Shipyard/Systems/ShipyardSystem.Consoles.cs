@@ -60,7 +60,10 @@ using Content.Shared.Tag;
 using Robust.Shared.Timing;
 using Content.Server._Mono.Detection;
 using Content.Shared._Mono.Economy; // Mono
-using Content.Shared._Mono.Economy.Component; // Mono
+// WOLFGATE(EngineCompat) START: Engine v291 serialization generation cannot use a namespace named Component.
+// using Content.Shared._Mono.Economy.Component; // Mono
+using Content.Shared._Mono.Economy.Components; // Mono
+// WOLFGATE END
 
 namespace Content.Server._NF.Shipyard.Systems;
 

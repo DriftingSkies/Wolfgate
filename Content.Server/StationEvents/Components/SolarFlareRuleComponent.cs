@@ -1,7 +1,6 @@
 using Content.Server.StationEvents.Events;
 using Content.Shared.Radio;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.StationEvents.Components;
 

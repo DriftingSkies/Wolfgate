@@ -2,7 +2,7 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Stacks;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared._NF.Bank.Components;
 

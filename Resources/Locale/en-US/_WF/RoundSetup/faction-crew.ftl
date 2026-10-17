@@ -1,7 +1,10 @@
 wf-round-setup-scenario-faction = Faction crew
-wf-round-setup-faction-description = Deploy together aboard a TSF or PDV ship. Choose a faction job you qualify for, a T0 or T1 vessel, and openings at or below your own command rank. Normal faction job limits, equipment and population balancing still apply.
+wf-round-setup-faction-description = Deploy together aboard a faction ship. Choose a faction job you qualify for, a vessel from its shipyard (T0 or T1 for TSF and PDV), and openings at or below your own command rank. Normal faction job limits, equipment and TSF/PDV population balancing still apply.
 wf-round-setup-faction-tsf = TSF Marine Corps
 wf-round-setup-faction-pdv = Phaethon Dynasty Vanguard
+wf-round-setup-faction-vg = Viper Group
+wf-round-setup-faction-ussp = USSP
+wf-round-setup-faction-underground = The Underground
 wf-round-setup-faction-start = Faction crew — { $faction }
 wf-round-setup-faction-unavailable = Select a character eligible for an available job in this faction. This map must offer faction jobs; job bans, qualifications and open station slots still apply.
 wf-round-setup-faction-rank-help = Your selected job sets the recruitment ceiling. Each recruit must qualify for their own job. Existing faction slots are used when you deploy, and official faction job titles are retained.

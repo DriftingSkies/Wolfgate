@@ -24,7 +24,6 @@ public sealed partial class WFCavernClimbSystem : SharedWFCavernClimbSystem
 {
     [Dependency] private CESharedZLevelsSystem _zLevels = default!;
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private PullingSystem _pulling = default!;
     [Dependency] private SharedContainerSystem _container = default!;
     [Dependency] private SharedMapSystem _map = default!;
@@ -295,7 +294,7 @@ public sealed partial class WFCavernClimbSystem : SharedWFCavernClimbSystem
         var box = Box2.CenteredAround(centre, new Vector2(0.9f, 0.9f));
 
         var grids = new List<Entity<MapGridComponent>>();
-        _mapManager.FindGridsIntersecting(mapId, box, ref grids, approx: false, includeMap: false);
+        _map.FindGridsIntersecting(mapId, box, ref grids, approx: false, includeMap: false);
         return grids.Count > 0;
     }
 

@@ -11,6 +11,8 @@ None.
 
 ## Non-modular edits
 
+- [`Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml): the restored PDV suit research needs a lathe that prints it
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml): the pack the restored PDV suit research unlocks
 - [`Resources/Prototypes/_Mono/Research/Rogue/faction_tacsuits.yml`](../../../Resources/Prototypes/_Mono/Research/Rogue/faction_tacsuits.yml): Brigs back pdv suits into their research tree.
 
 <!-- WOLFGATE-GENERATED END -->

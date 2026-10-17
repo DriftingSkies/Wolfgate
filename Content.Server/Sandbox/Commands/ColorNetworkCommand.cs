@@ -58,7 +58,7 @@ namespace Content.Server.Sandbox.Commands
                 return;
             }
 
-            var color = Color.TryFromHex(args[2]);
+            Color? color = Color.TryFromHex(args[2], out var parsed) ? parsed : null;
             if (!color.HasValue)
             {
                 shell.WriteError(Loc.GetString("shell-invalid-color-hex"));

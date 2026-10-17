@@ -63,7 +63,7 @@ public sealed partial class ShuttleSystem
             .Enlarged(FTLBufferRange);
 
         var found = new List<Entity<MapGridComponent>>();
-        _mapManager.FindGridsIntersecting(map.MapId, bounds, ref found);
+        _mapSystem.FindGridsIntersecting(map.MapId, bounds, ref found);
 
         foreach (var other in found)
         {

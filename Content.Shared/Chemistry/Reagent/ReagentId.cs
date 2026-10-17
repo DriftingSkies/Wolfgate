@@ -1,6 +1,6 @@
 using Content.Shared.FixedPoint;
 using Robust.Shared.Serialization;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using System.Linq;
 
 namespace Content.Shared.Chemistry.Reagent;

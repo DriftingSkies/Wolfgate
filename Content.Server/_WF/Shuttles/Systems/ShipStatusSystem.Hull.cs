@@ -1,6 +1,7 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Construction;
 using Content.Server.Construction.Completions;
+using Content.Server._WF.EngineCompat;
 using Content.Server.Destructible;
 using Content.Shared._WF.Shuttles;
 using Content.Shared.Damage;
@@ -13,6 +14,8 @@ namespace Content.Server._WF.Shuttles.Systems;
 
 public sealed partial class ShipStatusSystem
 {
+    [Dependency] private WFGridSplitOriginSystem _splitOrigin = default!;
+
     private readonly Dictionary<EntityUid, Dictionary<Vector2i, float>> _hullBaselines = new();
     private readonly HashSet<EntityUid> _sharedHullBaselines = new();
     private readonly Dictionary<EntityUid, Dictionary<Vector2i, (float Capacity, float Remaining)>> _hullStructures = new();
@@ -128,7 +131,7 @@ public sealed partial class ShipStatusSystem
         }
     }
 
-    /// <summary>Split grids retain their original coordinate frame and inherit the whole surveyed hull.</summary>
+    /// <summary>Split grids inherit the whole surveyed hull, moved into their own tile frame.</summary>
     private void OnHullSplit(ref GridSplitEvent args)
     {
         if (!_hullBaselines.TryGetValue(args.Grid, out var baseline))
@@ -137,15 +140,27 @@ public sealed partial class ShipStatusSystem
         _sharedHullBaselines.Add(args.Grid);
         foreach (var grid in args.NewGrids)
         {
-            _hullBaselines[grid] = baseline;
-            _sharedHullBaselines.Add(grid);
+            // Engine v291 gives a split-off grid its own origin, so a shifted fragment gets its own shifted copy.
+            _splitOrigin.TryGetOffset(grid, args.Grid, out var offset);
+            if (offset == Vector2i.Zero)
+            {
+                _hullBaselines[grid] = baseline;
+                _sharedHullBaselines.Add(grid);
+            }
+            else
+            {
+                var shifted = new Dictionary<Vector2i, float>(baseline.Count);
+                foreach (var (index, capacity) in baseline)
+                    shifted[index - offset] = capacity;
+                _hullBaselines[grid] = shifted;
+            }
 
             // Only the fragment's own children can have moved, so the whole survey is never walked.
             var children = Transform(grid).ChildEnumerator;
             while (children.MoveNext(out var child))
             {
                 if (_surveyedHull.TryGetValue(child, out var structure) && structure.Grid == args.Grid)
-                    _surveyedHull[child] = structure with { Grid = grid };
+                    _surveyedHull[child] = structure with { Grid = grid, Index = structure.Index - offset };
             }
         }
     }

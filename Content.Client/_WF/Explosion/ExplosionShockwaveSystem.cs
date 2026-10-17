@@ -18,7 +18,7 @@ namespace Content.Client._WF.Explosion;
 public sealed class ExplosionShockwaveSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
-    [Dependency] private IMapManager _mapMan = default!;
+    [Dependency] private SharedMapSystem _mapMan = default!;
     [Dependency] private IOverlayManager _overlayMan = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
 

@@ -1,8 +1,11 @@
 using System.Numerics;
 using Content.Server._Mono.FireControl;
+using Content.Server._Mono.ShipRepair;
+using Content.Server._WF.EngineCompat;
 using Content.Server._WF.Shipyard;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Decals;
+using Content.Shared.Atmos;
 using Content.Shared._Mono.ShipRepair.Components;
 using Content.Shared._WF.ShipRepair;
 using Robust.Server.Physics;
@@ -24,6 +27,8 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ShipRepairSystem _repair = default!;
+    [Dependency] private WFGridSplitOriginSystem _splitOrigin = default!;
     [Dependency] private WFHullSectionSystem _sections = default!;
 
     /// <summary>The share of the blueprint's tiles a section needs to take over from a deleted hull; smaller pieces are scrap.</summary>
@@ -50,13 +55,17 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
         if (hull is not { } owner || TerminatingOrDeleted(owner))
             return;
 
+        // A piece split off a section sits where that section would on the hull, plus its own shift.
+        var parentOffset = args.Grid == owner ? Vector2i.Zero : _sections.OffsetOf(args.Grid);
         foreach (var grid in args.NewGrids)
         {
             if (TerminatingOrDeleted(grid))
                 continue;
 
+            _splitOrigin.TryGetOffset(grid, args.Grid, out var offset);
             var section = EnsureComp<WFHullSectionComponent>(grid);
             section.Hull = owner;
+            section.Offset = parentOffset + offset;
             Dirty(grid, section);
         }
     }
@@ -121,9 +130,11 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
             heirTiles = tiles;
         }
 
+        // The heir's tile indices become the hull's, so every other section shifts by where the heir sat.
+        var heirOffset = heir is { } heirGrid ? _sections.OffsetOf(heirGrid) : Vector2i.Zero;
         if (heir is { } next)
         {
-            CopySnapshot(ent.Comp, next);
+            CopySnapshot(ent.Comp, next, -heirOffset);
             if (TryComp<ShipRepairRestrictComponent>(ent, out var restrict))
                 EnsureComp<ShipRepairRestrictComponent>(next).ToolWhitelist = restrict.ToolWhitelist;
         }
@@ -137,6 +148,7 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
             }
 
             section.Comp.Hull = successor.Owner;
+            section.Comp.Offset -= heirOffset;
             Dirty(section);
         }
     }
@@ -157,8 +169,8 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
         return count;
     }
 
-    /// <summary>Gives a grid its own copy of a repair snapshot.</summary>
-    private void CopySnapshot(ShipRepairDataComponent source, EntityUid target)
+    /// <summary>Gives a grid its own copy of a repair snapshot, moved by <paramref name="shift"/> tiles onto its indices.</summary>
+    private void CopySnapshot(ShipRepairDataComponent source, Entity<MapGridComponent> target, Vector2i shift)
     {
         var copy = EnsureComp<ShipRepairDataComponent>(target);
         copy.ChunkSize = source.ChunkSize;
@@ -187,6 +199,7 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
             copy.Chunks[index] = chunkCopy;
         }
 
+        _repair.WfShiftSnapshot(copy, shift, target.Comp.TileSize);
         Dirty(target, copy);
     }
 
@@ -195,7 +208,7 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
         Reattach(args.Hull, ent.Owner);
     }
 
-    /// <summary>Merges a section into its hull at its own tile indices, with everything aboard.</summary>
+    /// <summary>Merges a section into its hull at its place there, with everything aboard.</summary>
     public void Reattach(EntityUid hull, EntityUid section)
     {
         if (!TryComp<MapGridComponent>(hull, out var hullGrid) || !TryComp<MapGridComponent>(section, out var sectionGrid))
@@ -204,17 +217,24 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
         // The engine merge moves tiles, anchored entities and whatever stands on a tile, and engines change banks as
         // they re-anchor; the rest is carried here.
         ReleaseStrays((section, sectionGrid));
+        var offset = _sections.OffsetOf(section);
+        var shift = (Vector2) offset * sectionGrid.TileSize;
         var decals = _decals.GetDecalsIntersecting(section, sectionGrid.LocalAABB.Enlarged(1f));
-        var air = _atmos.WfCopyGridAir(section);
+        var air = new Dictionary<Vector2i, GasMixture>();
+        foreach (var (index, mixture) in _atmos.WfCopyGridAir(section))
+        {
+            air[index + offset] = mixture;
+        }
+
         var motion = CarriedMotion(section);
 
-        // A section keeps the hull's tile indices, so the identity puts every tile back where it was. Splitting waits
-        // until the merge is done, or a section not yet joined would be torn off halfway through.
+        // The section's offset puts every tile back where it was on the hull. Splitting waits until the merge is done,
+        // or a section not yet joined would be torn off halfway through.
         var canSplit = hullGrid.CanSplit;
         hullGrid.CanSplit = false;
         try
         {
-            _fixtures.Merge(hull, section, Matrix3x2.Identity, hullGrid, sectionGrid);
+            _fixtures.Merge(hull, section, offset, Angle.Zero, hullGrid, sectionGrid);
         }
         finally
         {
@@ -223,7 +243,8 @@ public sealed partial class WFHullSectionServerSystem : EntitySystem
 
         foreach (var (_, decal) in decals)
         {
-            _decals.TryAddDecal(decal, new EntityCoordinates(hull, decal.Coordinates), out _);
+            var moved = decal.WithCoordinates(decal.Coordinates + shift);
+            _decals.TryAddDecal(moved, new EntityCoordinates(hull, moved.Coordinates), out _);
         }
 
         _atmos.WfSeedGridAir(hull, air);

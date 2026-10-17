@@ -5,7 +5,7 @@ using Content.Shared.Atmos;
 using Robust.Shared.Prototypes;
 using Content.Shared.Materials;
 using Content.Shared.DeviceLinking;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 using Robust.Shared.Serialization;
 using System.Numerics;
 

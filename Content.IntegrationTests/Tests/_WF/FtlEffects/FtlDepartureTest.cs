@@ -221,7 +221,7 @@ public sealed class FtlDepartureTest
         var source = await pair.CreateTestMap();
         var target = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var mapManager = server.ResolveDependency<IMapManager>();
+        var mapManager = server.System<SharedMapSystem>();
         var maps = entities.System<SharedMapSystem>();
         var shuttles = entities.System<ShuttleSystem>();
         var lead = source.Grid.Owner;

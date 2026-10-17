@@ -117,7 +117,7 @@ public sealed partial class WFEncounterTest
         {
             if (board)
                 scene.Board = EnsureBoard();
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             scene.PlayerShip = grid.Owner;
             var tiles = new List<(Vector2i, Tile)>();
             for (var x = 0; x < 3; x++)

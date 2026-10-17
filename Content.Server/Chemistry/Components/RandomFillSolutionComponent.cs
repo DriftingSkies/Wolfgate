@@ -1,6 +1,6 @@
 using Content.Server.Chemistry.EntitySystems;
 using Content.Shared.Random;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Server.Chemistry.Components;
 

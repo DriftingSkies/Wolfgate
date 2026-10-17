@@ -20,7 +20,6 @@ public sealed partial class WFHullSectionSystem : EntitySystem
 {
     [Dependency] private EntityWhitelistSystem _whitelist = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
-    [Dependency] private IMapManager _mapMan = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedChargesSystem _charges = default!;
@@ -62,7 +61,7 @@ public sealed partial class WFHullSectionSystem : EntitySystem
     public Entity<MapGridComponent>? PickTarget(TransformComponent toolXform, Vector2 clickWorld)
     {
         var grids = new List<Entity<MapGridComponent>>();
-        _mapMan.FindGridsIntersecting(toolXform.MapID, Box2.CenteredAround(clickWorld, new Vector2(0.1f, 0.1f)), ref grids, true, false);
+        _map.FindGridsIntersecting(toolXform.MapID, Box2.CenteredAround(clickWorld, new Vector2(0.1f, 0.1f)), ref grids, true, false);
 
         Entity<MapGridComponent>? section = null, hull = null, other = null;
         foreach (var grid in grids)
@@ -90,7 +89,7 @@ public sealed partial class WFHullSectionSystem : EntitySystem
             return ship;
 
         grids.Clear();
-        _mapMan.FindGridsIntersecting(toolXform.MapID, Box2.CenteredAround(clickWorld, new Vector2(1.5f, 1.5f)), ref grids, false, false);
+        _map.FindGridsIntersecting(toolXform.MapID, Box2.CenteredAround(clickWorld, new Vector2(1.5f, 1.5f)), ref grids, false, false);
 
         Entity<MapGridComponent>? near = null;
         foreach (var grid in grids)
@@ -211,7 +210,7 @@ public sealed partial class WFHullSectionSystem : EntitySystem
         var xform = Transform(hull);
         var centre = Vector2.Transform(_map.TileCenterToVector(hull, index), _transform.GetWorldMatrix(xform));
         var grids = new List<Entity<MapGridComponent>>();
-        _mapMan.FindGridsIntersecting(xform.MapID, Box2.CenteredAround(centre, new Vector2(OccupancyHalfExtent * 2)), ref grids, false, false);
+        _map.FindGridsIntersecting(xform.MapID, Box2.CenteredAround(centre, new Vector2(OccupancyHalfExtent * 2)), ref grids, false, false);
 
         foreach (var grid in grids)
         {
@@ -222,6 +221,12 @@ public sealed partial class WFHullSectionSystem : EntitySystem
         return false;
     }
 
+    /// <summary>Added to a tile index on a section, gives its index on the hull.</summary>
+    public Vector2i OffsetOf(EntityUid section)
+    {
+        return CompOrNull<WFHullSectionComponent>(section)?.Offset ?? Vector2i.Zero;
+    }
+
     /// <summary>Whether a hull tile is the place of a linked section on the same map and within reattach range.</summary>
     public bool IsReserved(EntityUid hull, Vector2i index)
     {
@@ -229,7 +234,7 @@ public sealed partial class WFHullSectionSystem : EntitySystem
         while (query.MoveNext(out var uid, out var section, out var grid))
         {
             if (section.Hull == hull
-                && !_map.GetTileRef(uid, grid, index).Tile.IsEmpty
+                && !_map.GetTileRef(uid, grid, index - section.Offset).Tile.IsEmpty
                 && InReattachRange(hull, (uid, grid)))
                 return true;
         }
@@ -251,7 +256,7 @@ public sealed partial class WFHullSectionSystem : EntitySystem
     public float HomeOffset(EntityUid hull, Entity<MapGridComponent> section)
     {
         var centre = section.Comp.LocalAABB.Center;
-        var home = Vector2.Transform(centre, _transform.GetWorldMatrix(hull));
+        var home = Vector2.Transform(centre + (Vector2) OffsetOf(section) * section.Comp.TileSize, _transform.GetWorldMatrix(hull));
         var actual = Vector2.Transform(centre, _transform.GetWorldMatrix(section));
         return Vector2.Distance(home, actual);
     }
@@ -261,15 +266,16 @@ public sealed partial class WFHullSectionSystem : EntitySystem
     {
         // One broad query first; tiles are only tested one by one when another grid is near the section's place.
         var xform = Transform(hull);
-        var home = _transform.GetWorldMatrix(xform).TransformBox(section.Comp.LocalAABB);
+        var offset = OffsetOf(section);
+        var home = _transform.GetWorldMatrix(xform).TransformBox(section.Comp.LocalAABB.Translated((Vector2) offset * section.Comp.TileSize));
         var grids = new List<Entity<MapGridComponent>>();
-        _mapMan.FindGridsIntersecting(xform.MapID, home, ref grids, true, false);
+        _map.FindGridsIntersecting(xform.MapID, home, ref grids, true, false);
         var crowded = grids.Any(grid => grid.Owner != hull.Owner && grid.Owner != section.Owner && !IsGround(grid));
 
         var tiles = _map.GetAllTilesEnumerator(section, section.Comp);
         while (tiles.MoveNext(out var tile))
         {
-            var index = tile.Value.GridIndices;
+            var index = tile.Value.GridIndices + offset;
             if (!_map.GetTileRef(hull, index).Tile.IsEmpty || crowded && IsOccupied(hull, index, section))
                 return false;
         }
@@ -283,12 +289,13 @@ public sealed partial class WFHullSectionSystem : EntitySystem
     /// </summary>
     public bool TouchesHull(Entity<MapGridComponent> hull, Entity<MapGridComponent> section)
     {
+        var home = OffsetOf(section);
         var tiles = _map.GetAllTilesEnumerator(section, section.Comp);
         while (tiles.MoveNext(out var tile))
         {
             foreach (var offset in EdgeNeighbours)
             {
-                if (!_map.GetTileRef(hull, tile.Value.GridIndices + offset).Tile.IsEmpty)
+                if (!_map.GetTileRef(hull, tile.Value.GridIndices + home + offset).Tile.IsEmpty)
                     return true;
             }
         }

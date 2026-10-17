@@ -1,7 +1,7 @@
 using Content.Shared.Damage.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom; // goob change
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Damage
 {

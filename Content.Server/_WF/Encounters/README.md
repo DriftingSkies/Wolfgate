@@ -29,6 +29,12 @@ thruster's nudge. Ships can lie in wait (`lurks`) until a player is within the s
 `@player`. `announcer` names the ship that voices a radio announcement. With two or more sides each gets a radar
 colour (`iffColor`, or `WFEncounterSystem.SideColors`).
 
+Every crewed ship's highest in command (captain, then pilot, radio operator, gunner, engineer, marine, deckhand)
+carries its deed (`deed`, `WFEncounterShipDeed` by default; null for none) and drops it when he dies.
+`WFEncounterDeedSystem`: used in hand, the deed calls `WFEncounterSystem.Free`, which takes the ship out of its
+encounter, cancels its crew's orders, frees its passengers, opens its clamps and makes it immune to cleanup, so it
+never despawns. It gives no ownership; the encounter completes once it has no ships left.
+
 The encounter pirates fly as the Ashfall Reavers (`WFAshfallReavers`, a company nobody can pick, at war with both
 navies in `standing.yml`) on scrapyard and black-market hulls, in pirate slops. The prototypes cover freight runs, TSF and Phaethon Dynasty patrols (one of each at round start, kept to different
 stations and away from the other's home ports with `avoidStations`) and transports, wandering traders (with exotic dealers under mercenary escort), pirate raiders
@@ -144,6 +150,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Server/_WF/Encounters/Components/WFDockingClampComponent.cs`](Components/WFDockingClampComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterBountyComponent.cs`](Components/WFEncounterBountyComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterComponent.cs`](Components/WFEncounterComponent.cs)
+- [`Content.Server/_WF/Encounters/Components/WFEncounterDeedComponent.cs`](Components/WFEncounterDeedComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterGridComponent.cs`](Components/WFEncounterGridComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFExtortState.cs`](Components/WFExtortState.cs)
 - [`Content.Server/_WF/Encounters/Components/WFSalvageClaimComponent.cs`](Components/WFSalvageClaimComponent.cs)
@@ -152,11 +159,13 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Server/_WF/Encounters/Systems/WFDockingClampSystem.cs`](Systems/WFDockingClampSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterAdminSystem.cs`](Systems/WFEncounterAdminSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterBountySystem.cs`](Systems/WFEncounterBountySystem.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterDeedSystem.cs`](Systems/WFEncounterDeedSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterMarkerSystem.cs`](Systems/WFEncounterMarkerSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterRewardSystem.cs`](Systems/WFEncounterRewardSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSchedulerSystem.cs`](Systems/WFEncounterSchedulerSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Battle.cs`](Systems/WFEncounterSystem.Battle.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.cs`](Systems/WFEncounterSystem.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Deed.cs`](Systems/WFEncounterSystem.Deed.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Derelict.cs`](Systems/WFEncounterSystem.Derelict.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Extort.cs`](Systems/WFEncounterSystem.Extort.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Fugitive.cs`](Systems/WFEncounterSystem.Fugitive.cs)
@@ -196,6 +205,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Cargo.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Cargo.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Clamps.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Clamps.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Deed.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Deed.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Fuel.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Fuel.cs)
@@ -205,10 +215,12 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterVehicleInteriorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterVehicleInteriorTest.cs)
 
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/Encounters/crates.yml`](../../../Resources/Prototypes/_WF/Encounters/crates.yml)
+- [`Resources/Prototypes/_WF/Encounters/deed.yml`](../../../Resources/Prototypes/_WF/Encounters/deed.yml)
 - [`Resources/Prototypes/_WF/Encounters/dwellers.yml`](../../../Resources/Prototypes/_WF/Encounters/dwellers.yml)
 - [`Resources/Prototypes/_WF/Encounters/encounters.yml`](../../../Resources/Prototypes/_WF/Encounters/encounters.yml)
 - [`Resources/Prototypes/_WF/Encounters/extorters.yml`](../../../Resources/Prototypes/_WF/Encounters/extorters.yml)

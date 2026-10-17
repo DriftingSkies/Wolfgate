@@ -70,7 +70,6 @@ wf-round-setup-leave = Leave crew
 wf-round-setup-crash-unavailable = Planetary travel is disabled on this server.
 wf-round-setup-scenario-ship = Ship crew
 wf-round-setup-ship-description = Pick a ship and start in space. Its price comes from your character’s bank account at launch.
-wf-round-setup-job-drifter = Drifter
 wf-round-setup-ship = Your ship
 wf-round-setup-ship-unselected = No ship selected yet.
 wf-round-setup-ship-selected = { $ship } · { $price }

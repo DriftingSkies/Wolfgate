@@ -97,7 +97,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         var overlap = footprint.Intersect(GridVehicleGeometry.GetTileBox(tile, tileSize));
         var sample = PhysicsTransform.Mul(gridTransform, overlap.Center);
 
-        return _mapManager.TryFindGridAt(mapId, sample, out var other, out var otherComp) &&
+        return _map.TryFindGridAt(mapId, sample, out var other, out var otherComp) &&
                other != grid &&
                IsFloorAt(other, otherComp, sample);
     }
@@ -123,7 +123,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         var position = _transform.GetWorldPosition(xform);
 
-        if (_mapManager.TryFindGridAt(xform.MapID, position, out var found, out var foundComp))
+        if (_map.TryFindGridAt(xform.MapID, position, out var found, out var foundComp))
         {
             if (found == xform.GridUid)
                 return;

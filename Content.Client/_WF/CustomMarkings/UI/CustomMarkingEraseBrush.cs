@@ -84,15 +84,15 @@ internal sealed class CustomMarkingEraseBrush : IDisposable
 
         shader = _prototype.InstanceUnique();
 
-        // The mask's place in its texture for the corners of the sprite: first the top left, then the bottom
-        // right, as a control's quad runs. A texture's rows count from the bottom.
+        // The mask's place in its texture for the corners of the sprite: first the bottom left, then the top
+        // right, as a control's quad runs since engine v291. A texture's rows count from the bottom.
         var overX = (size.X - Frame) / 2f;
         var overY = (size.Y - Frame) / 2f;
         shader.SetParameter(CustomMarkingSystem.EraseUVParameter, new Vector4(
             (Rim - overX) / Side,
-            (Side - Rim + overY) / Side,
+            (Rim - overY) / Side,
             (Side - Rim + overX) / Side,
-            (Rim - overY) / Side));
+            (Side - Rim + overY) / Side));
 
         if (_texture != null)
             shader.SetParameter(CustomMarkingSystem.EraseMaskParameter, _texture);

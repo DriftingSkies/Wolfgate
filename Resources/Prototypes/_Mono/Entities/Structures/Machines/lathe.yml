@@ -37,6 +37,7 @@
     - MonoRogueMiscDynamic
     - MonoRogueGearDynamic
     #- MonoRogueGearProDynamic
+    - MonoRogueGearProDynamic # WOLFGATE(MonoReverts): the restored PDV suit research needs a lathe that prints it
     # TSF start
     - MonoTSFWeaponsDynamicMelee
     - MonoTSFWeaponsDynamicRanged
@@ -563,7 +564,7 @@
       fix1:
         shape:
           !type:PhysShapeAabb
-          bounds: "1.4,0.4,-0.4,-0.4"
+          bounds: "-0.4,-0.4,1.4,0.4"
         density: 190
         mask:
         - MachineMask
@@ -628,7 +629,7 @@
       fix1:
         shape:
           !type:PhysShapeAabb
-          bounds: "0.5,0.5,-0.5,-0.5"
+          bounds: "-0.5,-0.5,0.5,0.5"
         density: 190
         mask:
         - MachineMask
@@ -703,7 +704,7 @@
       fix1:
         shape:
           !type:PhysShapeAabb
-          bounds: "1.4,0.4,-0.4,-0.4"
+          bounds: "-0.4,-0.4,1.4,0.4"
         density: 190
         mask:
         - MachineMask
@@ -764,7 +765,7 @@
       fix1:
         shape:
           !type:PhysShapeAabb
-          bounds: "0.5,0.5,-0.5,-0.5"
+          bounds: "-0.5,-0.5,0.5,0.5"
         density: 190
         mask:
         - MachineMask

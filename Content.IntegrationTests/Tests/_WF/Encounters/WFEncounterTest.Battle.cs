@@ -85,7 +85,7 @@ public sealed partial class WFEncounterTest
             Assert.That(comp.JumpAt, Is.Null, "The victor stays on the field.");
 
             // A stranger's ship comes into the victor's attack zone.
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();

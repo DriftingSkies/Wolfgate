@@ -85,7 +85,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid grid = default, turret = default, user = default;
 
@@ -138,7 +138,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid gridA = default, gridB = default, turret = default, user = default;
 
@@ -228,7 +228,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid gridA = default, gridB = default, turret = default, user = default, harpoon = default;
 
@@ -289,7 +289,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid gridA = default, gridB = default, turret = default, user = default, harpoon = default;
         var turn = Angle.FromDegrees(degrees);
@@ -342,7 +342,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid grid = default, user = default, spent = default;
 
@@ -397,7 +397,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
         var config = server.ResolveDependency<IConfigurationManager>();
         var threshold = config.GetCVar(MonoCVars.ProjectileRaycastSpeedThreshold);
 
@@ -474,7 +474,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid grid = default, harpoon = default;
 
@@ -522,7 +522,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid gridA = default, gridB = default, turret = default, user = default;
 
@@ -582,7 +582,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
         var config = server.ResolveDependency<IConfigurationManager>();
         var threshold = config.GetCVar(MonoCVars.ProjectileRaycastSpeedThreshold);
 
@@ -661,7 +661,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         EntityUid grid = default, user = default, turret = default;
 
@@ -741,7 +741,7 @@ public sealed class HarpoonTest
         var server = pair.Server;
         var map = await pair.CreateTestMap();
         var entities = server.ResolveDependency<IEntityManager>();
-        var maps = server.ResolveDependency<IMapManager>();
+        var maps = server.System<SharedMapSystem>();
 
         await server.WaitAssertion(() =>
         {
@@ -794,7 +794,7 @@ public sealed class HarpoonTest
     }
 
     /// <summary>A free-floating rectangular hull.</summary>
-    private static EntityUid MakeGrid(IEntityManager entities, IMapManager maps, MapId map, Vector2 position, int width, int height = 0)
+    private static EntityUid MakeGrid(IEntityManager entities, SharedMapSystem maps, MapId map, Vector2 position, int width, int height = 0)
     {
         var mapSystem = entities.System<SharedMapSystem>();
         var physics = entities.System<SharedPhysicsSystem>();

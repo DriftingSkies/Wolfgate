@@ -1,7 +1,7 @@
 using Robust.Shared.Audio;
 using Content.Shared.Chat.Prototypes;
 using Robust.Shared.GameStates;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Cluwne;
 

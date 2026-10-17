@@ -84,7 +84,7 @@ public abstract class WFSectorTestBase : InteractionTest
     /// <summary>A one-tile grid on the test map, in a place; a ship or station for the sector systems to find.</summary>
     protected EntityUid SpawnGrid(Vector2 position, string? name = null)
     {
-        var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+        var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
         Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
         Server.System<SharedTransformSystem>().SetCoordinates(grid.Owner, new EntityCoordinates(MapData.MapUid, position));
         if (name != null)

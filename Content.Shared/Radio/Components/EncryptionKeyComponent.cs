@@ -1,6 +1,5 @@
 using Content.Shared.Chat;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
+using Content.Shared._WF.EngineCompat;
 
 namespace Content.Shared.Radio.Components;
 

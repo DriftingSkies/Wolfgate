@@ -59,7 +59,7 @@ public sealed partial class WFEncounterTest
             var prototype = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestAuditZoneGuarded");
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(21000, 21000), MapData.MapId), out encounter), Is.True);
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();
@@ -98,7 +98,7 @@ public sealed partial class WFEncounterTest
             var prototype = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestAuditZoneGuarded");
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(22000, 22000), MapData.MapId), out encounter), Is.True);
 
-            var grid = Server.ResolveDependency<IMapManager>().CreateGridEntity(MapData.MapId);
+            var grid = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId);
             intruder = grid.Owner;
             Server.System<SharedMapSystem>().SetTile(grid, Vector2i.Zero, new Tile(1));
             var transform = Server.System<SharedTransformSystem>();

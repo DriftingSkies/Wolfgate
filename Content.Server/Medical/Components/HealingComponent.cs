@@ -2,8 +2,8 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): HOOK 7, TreatmentCapability.
 using Robust.Shared.Audio;
+using Content.Shared._WF.EngineCompat;
 using Robust.Shared.Prototypes; // WOLFGATE(Wolfmed): W0, ProtoId for TreatedDamageTypes.
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
 
 namespace Content.Server.Medical.Components
 {
