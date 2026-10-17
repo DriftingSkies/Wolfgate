@@ -48,9 +48,11 @@ console sets.
 
 A hull tile costs 120 cr. Rebuilding an entity costs 60 cr labor plus the more of twice its estimated price and 35% of
 its construction materials' value (`WFDrydockSystem.Construction.cs`), so a plastitanium wall, priced low but built
-from four 600 cr sheets, comes to about 960 cr. Healing costs the rebuild price times the share of health lost. Work
-is capped at 50% of the ship's shipyard price (`VesselComponent`), or 40% of its full rebuild price for ships not
-bought at one. A fee of 2.5% of that value (at least 1,500 cr) comes on top and is never refunded.
+from four 600 cr sheets, comes to about 960 cr. A machine's construction materials include its board's sheets, and a
+structure with no recipe can have a build-cost graph in `construction.yml`, as the Z-pinch reactor and IRE controller
+do; IRE shielding's cost is an edge on its own graph. Healing
+costs the rebuild price times the share of health lost. Work is capped at 50% of the ship's shipyard price
+(`VesselComponent`), or 40% of its full rebuild price for ships not bought at one. A fee of 2.5% of that value (at least 1,500 cr) comes on top and is never refunded.
 
 ## Refits
 
@@ -89,11 +91,12 @@ open its panel and cut with wirecutters for 2 s (`WFDrydockCraneMirrorSystem`). 
 own grid.
 
 The mobile console charges no fee and pays in materials (`WFDrydockMaterialPaymentComponent`), from its cranes' own
-storage or their linked material silo. Work is billed at material units per credit; refits use their tier's
-`materials` per part instead. Rates are pegged to a T2 ship voucher (100 steel, 50 plasteel, 50 glass and 10
-plastitanium sheets for a 150k to 500k ship): 25k cr of work takes about 14 steel sheets, and `maxBill` caps a repair
-at about 60% of the voucher for a 250k ship, scaled by ship price. A rebuild also takes 1% of any construction material
-the rates don't cover, so a plastitanium wall adds 4 units of plastitanium. Refunds go back into the job's first crane.
+storage or their linked material silo, with no work cap (`capFraction` 0). A wall (the `Wall` tag) or hull tile bills
+`structureRepairFactor` (1.3) times what breaking it pays: 2.6% of the wall's construction materials, 3 steel units
+a tile. Anything else bills `repairShare` (100%) of its construction materials, a heal that times the share of health
+lost, a refit its tier's `materials`, and work with no construction materials, such as a gun, its price times `rates`.
+Refunds go back into the job's first crane. A repair short of materials does what the stock covers, in work order; once a tile
+is left out, so are the parts. A refit is all or nothing.
 
 A mobile crane also links a parts silo and a chemical silo (Lathe module), from the silo's window like a lathe, and
 parts silos then take any machine part (`parts` on its `FabricationSiloClient`). A refit unit billed in full takes the
@@ -109,7 +112,8 @@ little.
 
 A mobile console also breaks up the ship in its berth for materials (`WFDrydockSystem.Break.cs`), behind a confirm on
 its Break hull key. Anything but a station can be broken: outposts and POIs (station members with no `ShuttleDeed`) and
-the drydock's own grid are refused, while player ships, encounter and event ships are fair game. Breaking a crewed
+the drydock's own grid are refused, and so is a grid with an indestructible wall, window or door, such as a vault or
+monolith fragment. Player ships, encounter and event ships are fair game. Breaking a crewed
 ship is an attack on it, reported on start and with every tile through `WFCrewAlertSystem.ReportBreaking`, so its
 crew, escorts and allies respond. Nobody aboard stops the job.
 
@@ -122,21 +126,17 @@ go, mobs are taken out of stripped containers, and anything still aboard is set 
 takes the grid with it.
 
 Each finished tile credits the slot's crane silo or crane (`breakDefaultYield`, `breakYield` and `breakTileYield` on
-the payment component): 25% of every material in what it strips, but only 5% of the plastitanium and composite, plus 25
-steel units per tile, and 2 chunks of scrap per tile (`breakTileSalvage`, uncapped, and never billed to rebuild the
-tile). An abort pays nothing more. The caps grow with each tile the job lifts (`breakCap`: 1 plastitanium or composite
-sheet per 20 tiles, plasteel per 2, steel per tile), and yield past them waits for later tiles, so the outer walls that
-come off first are paid as the peel goes on. A hull broken whole or in parts, aborted and restarted, pays the same.
+the payment component): 50% of the materials in the parts it strips (5% of plastitanium and composite), 2% of a
+wall's (`structureYield`), and per tile 2 steel and 2 scrap chunks (`breakTileSalvage`). An abort pays nothing more.
 
 A stripped machine's board and parts, and a computer's board, go to the crane's parts silo, or onto the nearest free
-floor beside the crane when the silo doesn't take them. Guns on hardpoints come off whole as a `WFSalvagedFlatpack`, put
+floor beside the crane when the silo doesn't take them; its board's sheets are paid in the yield. Guns on hardpoints
+come off whole as a `WFSalvagedFlatpack`, put
 in the parts silo or left at the crane the same way. It unpacks at half the damage that would destroy the gun and sells
 for a quarter of its price.
 
-The hull keeps its repair snapshot, so a repair can rebuild what was broken, but `WFHulkComponent` records the broken
-tiles and rebuilding a tile or part on one bills its full materials, outside the repair's limits: a part's construction
-materials and a tile's plating. Breaking returns at most a share of that, so break and rebuild never pays. An encounter
-leaves a hull alone for 5 minutes after its last broken tile.
+The hull keeps its repair snapshot, so a repair can rebuild what was broken. An encounter leaves a hull alone for 5
+minutes after its last broken tile (`WFHulkComponent`).
 
 ### Crane upgrades
 
@@ -233,6 +233,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/Drydock/consoles.yml`](../../../Resources/Prototypes/_WF/Drydock/consoles.yml)
+- [`Resources/Prototypes/_WF/Drydock/construction.yml`](../../../Resources/Prototypes/_WF/Drydock/construction.yml)
 - [`Resources/Prototypes/_WF/Drydock/cranes.yml`](../../../Resources/Prototypes/_WF/Drydock/cranes.yml)
 - [`Resources/Prototypes/_WF/Drydock/dockmaster.yml`](../../../Resources/Prototypes/_WF/Drydock/dockmaster.yml)
 - [`Resources/Prototypes/_WF/Drydock/lathe_recipes.yml`](../../../Resources/Prototypes/_WF/Drydock/lathe_recipes.yml)
@@ -264,6 +265,10 @@ Mk IV manipulators on stock bins draw 30 kW.
 
 - [`Content.Shared/Construction/SharedFlatpackSystem.cs`](../../../Content.Shared/Construction/SharedFlatpackSystem.cs): salvaged hardware unpacks damaged
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml): single use, so a drydock repair undercuts printing another card
+- [`Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml): build cost the drydock prices the reactor's rebuild and salvage from
+- [`Resources/Prototypes/Catalog/Cargo/cargo_engines.yml`](../../../Resources/Prototypes/Catalog/Cargo/cargo_engines.yml): above the ~10k a drydock break pays for the controller, mostly its fissile; was 6000
+- [`Resources/Prototypes/Entities/Structures/Power/Generation/ame.yml`](../../../Resources/Prototypes/Entities/Structures/Power/Generation/ame.yml): build cost the drydock prices the controller's rebuild and salvage from
+- [`Resources/Prototypes/Recipes/Construction/Graphs/utilities/ame_shielding.yml`](../../../Resources/Prototypes/Recipes/Construction/Graphs/utilities/ame_shielding.yml): build cost the drydock prices the shielding's rebuild and salvage from; no recipe uses it
 - [`Resources/Prototypes/Recipes/Lathes/Packs/science.yml`](../../../Resources/Prototypes/Recipes/Lathes/Packs/science.yml): mobile drydock boards
 - [`Resources/Prototypes/Research/industrial.yml`](../../../Resources/Prototypes/Research/industrial.yml): mobile drydock boards
 

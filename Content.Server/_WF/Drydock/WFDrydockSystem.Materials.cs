@@ -11,11 +11,10 @@ public sealed partial class WFDrydockSystem
     [Dependency] private SharedOreSiloSystem _oreSilo = default!;
 
     /// <summary>
-    /// Sets each item's material bill for a console that pays in materials, within the ship's limits, then pays what
+    /// Sets each item's material bill for a console that pays in materials, then pays what
     /// refit units it can with parts from the cranes' parts silos.
     /// </summary>
-    private void AssignMaterials(EntityUid ship, WFDrydockConsoleComponent comp, WFDrydockMaterialPaymentComponent pay,
-        List<WFDrydockWorkItem> items, List<EntityUid> cranes)
+    private void AssignMaterials(WFDrydockMaterialPaymentComponent pay, List<WFDrydockWorkItem> items, List<EntityUid> cranes)
     {
         foreach (var item in items)
         {
@@ -25,21 +24,23 @@ public sealed partial class WFDrydockSystem
                 continue;
             }
 
-            item.Materials = item.Prototype is { } protoId && _prototype.TryIndex(protoId, out var entityProto)
-                ? InKindBill(pay, item, ConstructionMaterials(entityProto))
-                : ItemBill(pay, item.Cost);
+            if (item.Kind == WFDrydockWorkKind.Tile)
+            {
+                item.Materials = pay.BreakTileYield.ToDictionary(t => t.Key.Id, t => (int) Math.Ceiling(t.Value * pay.StructureRepairFactor));
+                continue;
+            }
+
+            if (item.Prototype is { } protoId && _prototype.TryIndex(protoId, out var proto) && ConstructionMaterials(proto) is { Count: > 0 } construction)
+            {
+                var share = IsWall(proto) ? pay.StructureYield * pay.StructureRepairFactor : pay.RepairShare;
+                item.Materials = ShareBill(construction, share * item.Share);
+                continue;
+            }
+
+            item.Materials = ItemBill(pay, item.Cost - item.RefitCost);
         }
 
-        LimitBill(pay, items, BillScale(ship, comp, pay));
-
-        // Rebuilding what a break stripped costs its full materials, outside the limits, so breaking it again never pays.
-        foreach (var item in items)
-        {
-            if (item.Broken)
-                BillBroken(pay, item);
-        }
-
-        // A rebuild restoring a refit pays the refit's materials too, outside the limits.
+        // A rebuild restoring a refit pays the refit's materials too.
         foreach (var item in items)
         {
             if (item.Kind != WFDrydockWorkKind.Upgrade && item.RefitMaterials != null && item.Materials != null)
@@ -57,70 +58,15 @@ public sealed partial class WFDrydockSystem
             : ItemBill(pay, item.Cost);
     }
 
-    /// <summary>
-    /// How the material limits scale for a ship: its shipyard price over the reference price. A ship not bought at a
-    /// shipyard uses its full rebuild price, brought to a shipyard price by the ratio of the two repair caps.
-    /// </summary>
-    private double BillScale(EntityUid ship, WFDrydockConsoleComponent comp, WFDrydockMaterialPaymentComponent pay)
+    /// <summary>A share of a set of construction materials, rounded up.</summary>
+    private static Dictionary<string, int> ShareBill(Dictionary<string, int> construction, float share)
     {
-        var (value, vessel) = ShipValue(ship, comp);
-        if (value <= 0 || pay.ReferenceValue <= 0)
-            return 1;
-
-        var price = vessel ? value : value * comp.SnapshotCapFraction / comp.CapFraction;
-        return price / pay.ReferenceValue;
-    }
-
-    /// <summary>Scales each repair item's share of a material down so the repair bills no more of it than its limit.</summary>
-    private static void LimitBill(WFDrydockMaterialPaymentComponent pay, List<WFDrydockWorkItem> items, double limitScale)
-    {
-        var totals = new Dictionary<string, long>();
-        foreach (var item in items)
-        {
-            if (item.Kind == WFDrydockWorkKind.Upgrade || item.Materials == null)
-                continue;
-
-            foreach (var (id, amount) in item.Materials)
-                totals[id] = totals.GetValueOrDefault(id) + amount;
-        }
-
-        foreach (var (id, total) in totals)
-        {
-            var limit = (long) ((pay.MaxBill.TryGetValue(id, out var max) ? max : pay.DefaultMaxBill) * limitScale);
-            if (total <= limit)
-                continue;
-
-            var scale = (double) limit / total;
-            foreach (var item in items)
-            {
-                if (item.Kind == WFDrydockWorkKind.Upgrade || item.Materials == null || !item.Materials.TryGetValue(id, out var amount))
-                    continue;
-
-                // Rounded down, so the scaled shares never add up past the limit.
-                var scaled = (int) (amount * scale);
-                if (scaled > 0)
-                    item.Materials[id] = scaled;
-                else
-                    item.Materials.Remove(id);
-            }
-        }
-    }
-
-    /// <summary>
-    /// A rebuild or heal's bill: the rates on its cost, plus a little of each construction material the rates don't
-    /// charge, such as a plastitanium wall's plastitanium.
-    /// </summary>
-    private static Dictionary<string, int> InKindBill(WFDrydockMaterialPaymentComponent pay, WFDrydockWorkItem item, Dictionary<string, int> construction)
-    {
-        var bill = ItemBill(pay, item.Cost - item.RefitCost);
+        var bill = new Dictionary<string, int>();
         foreach (var (id, amount) in construction)
         {
-            if (pay.Rates.ContainsKey(id))
-                continue;
-
-            var units = (int) Math.Ceiling(amount * pay.InKindFactor * item.Share);
+            var units = (int) Math.Ceiling(amount * share);
             if (units > 0)
-                bill[id] = bill.GetValueOrDefault(id) + units;
+                bill[id] = units;
         }
 
         return bill;
@@ -234,6 +180,33 @@ public sealed partial class WFDrydockSystem
             return false;
 
         return _materials.TryChangeMaterialAmount((uid, storage), change, localOnly: true);
+    }
+
+    /// <summary>
+    /// The items a stock of materials pays for, in work order. Once a tile is left out so are the parts, which might
+    /// stand on it.
+    /// </summary>
+    private static List<WFDrydockWorkItem> Affordable(List<WFDrydockWorkItem> items, Dictionary<string, int> stock)
+    {
+        var left = new Dictionary<string, int>(stock);
+        var tileLeftOut = false;
+        var affordable = new List<WFDrydockWorkItem>();
+        foreach (var item in items.OrderBy(Rank))
+        {
+            var bill = item.Materials ?? new Dictionary<string, int>();
+            if ((tileLeftOut && item.Kind == WFDrydockWorkKind.Entity) || bill.Any(m => left.GetValueOrDefault(m.Key) < m.Value))
+            {
+                tileLeftOut |= item.Kind == WFDrydockWorkKind.Tile;
+                continue;
+            }
+
+            foreach (var (id, amount) in bill)
+                left[id] = left.GetValueOrDefault(id) - amount;
+
+            affordable.Add(item);
+        }
+
+        return affordable;
     }
 
     /// <summary>

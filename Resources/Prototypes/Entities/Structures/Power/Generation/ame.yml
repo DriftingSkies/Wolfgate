@@ -115,6 +115,10 @@
   - type: ShipRepairable
     repairTime: 15
     repairCost: 50
+  # WOLFGATE(Drydock): build cost the drydock prices the controller's rebuild and salvage from
+  - type: Construction
+    graph: WFAmeController
+    node: controller
   - type: RadarBlip
     visibleFromOtherGrids: true
     radarColor: "#fcba03"

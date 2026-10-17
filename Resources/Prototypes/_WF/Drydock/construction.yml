@@ -1,0 +1,48 @@
+# Build costs for structures with no recipe, so the drydock prices their rebuild and salvage. There is no construction
+# recipe for them, so players still can't build them by hand.
+
+- type: constructionGraph
+  id: WFZPinchReactor
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: reactor
+      steps:
+      - material: Steel
+        amount: 20
+      - material: Plasteel
+        amount: 15
+      - material: Plasma
+        amount: 10
+      - material: Gold
+        amount: 5
+      - material: Silver
+        amount: 5
+      - material: UraniumFissile
+        amount: 1
+
+  - node: reactor
+    entity: GeneratorCRPinch
+
+- type: constructionGraph
+  id: WFAmeController
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: controller
+      steps:
+      - material: Steel
+        amount: 15
+      - material: Plasteel
+        amount: 10
+      - material: Glass
+        amount: 5
+      - material: Gold
+        amount: 5
+      - material: UraniumFissile
+        amount: 2
+
+  - node: controller
+    entity: AmeController

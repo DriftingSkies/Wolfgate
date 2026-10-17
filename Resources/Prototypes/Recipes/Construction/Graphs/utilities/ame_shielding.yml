@@ -2,7 +2,17 @@
   id: AmeShielding
   start: start
   graph:
+    # WOLFGATE(Drydock): build cost the drydock prices the shielding's rebuild and salvage from; no recipe uses it
     - node: start
+      edges:
+        - to: ameShielding
+          steps:
+            - material: Plasteel
+              amount: 10
+            - material: Steel
+              amount: 5
+            - material: Plasma
+              amount: 2
     - node: startBroken
 
     - node: ameShielding

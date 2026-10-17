@@ -14,6 +14,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Maths;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.Drydock;
 
@@ -58,7 +59,7 @@ public sealed class MobileDrydockBreakTest
     }
 
     /// <summary>
-    /// A break peels the whole hull, pays plastitanium and steel into the crane within the hull's caps, and casts a
+    /// A break peels the whole hull, pays plastitanium and steel into the crane, and casts a
     /// person standing aboard into space instead of deleting them with the grid. Its gun goes to the parts silo as a
     /// salvaged flatpack, its autolathe's parts go there too and its board to the crane, and its window pays glass.
     /// </summary>
@@ -104,10 +105,10 @@ public sealed class MobileDrydockBreakTest
                 Assert.That(em.Deleted(aboard), Is.False, "The person aboard should not be deleted with the hull.");
                 Assert.That(em.GetComponent<TransformComponent>(aboard).MapID, Is.EqualTo(map.MapId),
                     "The person aboard should be adrift on the map.");
-                Assert.That(Stored(pair, crane, "Plastitanium"), Is.InRange(1, tiles * 5),
-                    "The crane should get plastitanium, within a sheet per 20 tiles.");
-                Assert.That(Stored(pair, crane, "Steel"), Is.InRange(tiles * 25, tiles * 100),
-                    "The crane should get steel for every tile, within a sheet per tile.");
+                Assert.That(Stored(pair, crane, "Plastitanium"), Is.EqualTo(16),
+                    "The crane should get 2% of each plastitanium wall's 4 sheets.");
+                Assert.That(Stored(pair, crane, "Steel"), Is.InRange(tiles * 2, tiles * 100),
+                    "The crane should get steel for every tile.");
                 Assert.That(Stored(pair, crane, "RawScrap"), Is.EqualTo(tiles * 200),
                     "The crane should get two scrap chunks for every tile.");
 
@@ -132,6 +133,52 @@ public sealed class MobileDrydockBreakTest
                 Assert.That(boards, Has.Count.EqualTo(1), "The autolathe's board should come to the crane.");
                 Assert.That(Stored(pair, crane, "ReinforcedGlass"), Is.GreaterThan(0), "The window should pay reinforced glass.");
             });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A jump drive's board sheets, its fissile uranium among them, count as its construction materials: they price its
+    /// rebuild, and a break previews and pays half of them.
+    /// </summary>
+    [Test]
+    public async Task MachineSheetsCountAsConstruction()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true });
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var drydock = server.System<WFDrydockSystem>();
+
+        EntityUid console = default, crane = default, ship = default, actor = default;
+        await server.WaitAssertion(() =>
+        {
+            (console, crane, ship, actor) = SetUpBreak(pair, map.MapId);
+            DrydockTest.SpawnAnchored(pair, ship, "MachineFTLDrive25S", new Vector2i(1, 2));
+        });
+
+        await MobileDrydockTest.WaitForCranePower(pair, crane);
+
+        await server.WaitAssertion(() =>
+        {
+            drydock.UpdateUi(console, force: true);
+            Assert.That(server.System<SharedUserInterfaceSystem>().TryGetUiState<WFDrydockConsoleState>(console,
+                WFDrydockConsoleUiKey.Key, out var state), Is.True, "The console should have a state.");
+            Assert.That(state!.BreakYield.GetValueOrDefault("UraniumFissile"), Is.EqualTo(100),
+                "The salvage preview should list half of the drive's fissile.");
+            Assert.That(drydock.RebuildPrice(new WFDrydockConsoleComponent(), server.ProtoMan.Index<EntityPrototype>("MachineFTLDrive25S")),
+                Is.AtLeast(7000), "Rebuilding the drive should be priced on its fissile.");
+
+            var comp = em.GetComponent<WFDrydockConsoleComponent>(console);
+            Assert.That(drydock.TryStartBreak(console, comp, ship, actor), Is.True, "The break should start.");
+        });
+
+        await RunBreak(pair, console);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(Stored(pair, crane, "UraniumFissile"), Is.EqualTo(100), "Half of the drive's fissile should be stored.");
         });
 
         await pair.CleanReturnAsync();
@@ -273,111 +320,32 @@ public sealed class MobileDrydockBreakTest
     }
 
     /// <summary>
-    /// A hull walled in plastitanium all round holds more than its caps. Towed out mid-break, it pays only for the tiles
-    /// lifted, and a repair quotes its broken tiles and walls at their full materials; broken again, the two parts
-    /// together pay no more than the whole.
+    /// A hull with an indestructible wall or monolith tenebris is refused; one with a gaslock, which takes no damage at
+    /// all, is not.
     /// </summary>
     [Test]
-    public async Task PartsPayNoMoreThanWhole()
+    public async Task BreakRefusesIndestructibleHulls()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true });
         var server = pair.Server;
         var em = server.EntMan;
         var map = await pair.CreateTestMap();
         var drydock = server.System<WFDrydockSystem>();
-        var xforms = server.System<SharedTransformSystem>();
-        var maps = server.System<SharedMapSystem>();
-        const int tiles = HullSize * HullSize;
-        const int perTile = 5;
 
-        EntityUid console = default, crane = default, ship = default, actor = default;
         await server.WaitAssertion(() =>
         {
-            (console, crane, ship, actor) = SetUpBreak(pair, map.MapId);
-            for (var x = 0; x < HullSize; x++)
-            for (var y = 0; y < HullSize; y++)
+            var (console, _, ship, _) = SetUpBreak(pair, map.MapId);
+            var comp = em.GetComponent<WFDrydockConsoleComponent>(console);
+            var gaslock = DrydockTest.SpawnAnchored(pair, ship, "Gaslock", new Vector2i(1, 1));
+            Assert.That(drydock.BreakRefusal(console, comp, ship), Is.Null, "A gaslock should not protect a hull.");
+            em.DeleteEntity(gaslock);
+
+            foreach (var wall in new[] { "WallPlastitaniumIndestructible", "WallReinforcedChitinMonolithic" })
             {
-                var edge = x == 0 || y == 0 || x == HullSize - 1 || y == HullSize - 1;
-                if (edge && !(x == 0 && y == 0) && !(x == 3 && y == 3))
-                    DrydockTest.SpawnAnchored(pair, ship, "WallPlastitanium", new Vector2i(x, y));
+                var uid = DrydockTest.SpawnAnchored(pair, ship, wall, new Vector2i(1, 1));
+                Assert.That(drydock.BreakRefusal(console, comp, ship), Is.Not.Null, $"A hull with {wall} should be refused.");
+                em.DeleteEntity(uid);
             }
-
-            server.System<ShipRepairSystem>().GenerateRepairData(ship);
-        });
-
-        await MobileDrydockTest.WaitForCranePower(pair, crane);
-
-        await server.WaitAssertion(() =>
-        {
-            var comp = em.GetComponent<WFDrydockConsoleComponent>(console);
-            Assert.That(drydock.TryStartBreak(console, comp, ship, actor), Is.True, "The break should start.");
-        });
-
-        // Let a few tiles go, then tow the hull out of the berth.
-        await DrydockTest.RunUntil(pair, 200, 10,
-            () => em.TryGetComponent(console, out WFDrydockJobComponent running) && running.Done >= 3);
-
-        Vector2 berthed = default;
-        await server.WaitAssertion(() =>
-        {
-            Assert.That(em.GetComponent<WFDrydockJobComponent>(console).Done, Is.GreaterThanOrEqualTo(3), "Some tiles should be lifted.");
-            berthed = xforms.GetWorldPosition(ship);
-            xforms.SetWorldPosition(ship, new Vector2(500f, 500f));
-        });
-
-        await RunBreak(pair, console);
-
-        var firstPart = 0;
-        await server.WaitAssertion(() =>
-        {
-            var comp = em.GetComponent<WFDrydockConsoleComponent>(console);
-            var lifted = tiles - maps.GetAllTiles(ship, em.GetComponent<MapGridComponent>(ship)).Count();
-            firstPart = Stored(pair, crane, "Plastitanium");
-            Assert.Multiple(() =>
-            {
-                Assert.That(em.Deleted(ship), Is.False, "The towed hull should survive the abort.");
-                Assert.That(lifted, Is.InRange(1, tiles - 1), "The hull should be partly broken.");
-                Assert.That(firstPart, Is.InRange(1, lifted * perTile), "The abort should pay only for the tiles lifted.");
-                Assert.That(drydock.BuildRepairItems(ship, comp).Count(i => i.Kind == WFDrydockWorkKind.Tile && i.Broken),
-                    Is.EqualTo(lifted), "A repair should rebuild the broken tiles.");
-            });
-
-            xforms.SetWorldPosition(ship, berthed);
-        });
-
-        await DrydockTest.RunUntil(pair, 20, 10, () => false);
-
-        await server.WaitAssertion(() =>
-        {
-            var lifted = tiles - maps.GetAllTiles(ship, em.GetComponent<MapGridComponent>(ship)).Count();
-            drydock.UpdateUi(console, force: true);
-            Assert.That(server.System<SharedUserInterfaceSystem>().TryGetUiState<WFDrydockConsoleState>(console,
-                WFDrydockConsoleUiKey.Key, out var state), Is.True, "The console should have a state.");
-            Assert.Multiple(() =>
-            {
-                Assert.That(state!.RepairMaterials.GetValueOrDefault("Steel"), Is.AtLeast(lifted * 100),
-                    "Each broken tile should bill its full plating.");
-                Assert.That(state.RepairMaterials.GetValueOrDefault("Plastitanium"), Is.AtLeast(lifted * 200),
-                    "Each broken wall should bill its full plastitanium.");
-            });
-        });
-
-        await server.WaitAssertion(() =>
-        {
-            var comp = em.GetComponent<WFDrydockConsoleComponent>(console);
-            Assert.That(drydock.TryStartBreak(console, comp, ship, actor), Is.True, "The rest of the hull should break.");
-        });
-
-        await RunBreak(pair, console);
-
-        await server.WaitAssertion(() =>
-        {
-            Assert.Multiple(() =>
-            {
-                Assert.That(em.Deleted(ship), Is.True, "The rest of the hull should be gone.");
-                Assert.That(Stored(pair, crane, "Plastitanium"), Is.InRange(firstPart + 1, tiles * perTile),
-                    "Both parts together should pay no more than the whole hull's cap.");
-            });
         });
 
         await pair.CleanReturnAsync();

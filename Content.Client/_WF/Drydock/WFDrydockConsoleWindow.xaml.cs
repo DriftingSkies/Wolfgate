@@ -271,9 +271,8 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
             var billed = state.RepairMaterials.Count > 0 || state.RepairParts.Count > 0;
             _quote.SetRows(BillRows(state.RepairMaterials, state.RepairParts, state.StoredMaterials));
             _quote.Lit = billed;
-            var covered = Covers(state.RepairMaterials, state.StoredMaterials);
             _quote.Tint = null;
-            RepairButton.Disabled = state.ShipName is null || state.Working || !billed || !covered || blocked;
+            RepairButton.Disabled = state.ShipName is null || state.Working || !billed || blocked;
         }
         else
         {

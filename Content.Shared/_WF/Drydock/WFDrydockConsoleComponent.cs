@@ -68,13 +68,13 @@ public sealed partial class WFDrydockConsoleComponent : Component
     [DataField]
     public float DamagePrice = 1f;
 
-    /// <summary>Most a repair's work may cost, as a share of the ship's shipyard price; the fee comes on top.</summary>
+    /// <summary>Most a repair's work may cost, as a share of the ship's shipyard price; 0 for no cap.</summary>
     [DataField]
     public float CapFraction = 0.5f;
 
     /// <summary>
     /// Most a repair's work may cost, as a share of its full rebuild price, for ships not bought at a shipyard. A full
-    /// rebuild runs about 1.3 to 1.9 times a ship's shipyard price.
+    /// rebuild runs about 1.3 to 1.9 times a ship's shipyard price. 0 for no cap.
     /// </summary>
     [DataField]
     public float SnapshotCapFraction = 0.4f;

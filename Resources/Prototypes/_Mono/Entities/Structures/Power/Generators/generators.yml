@@ -232,6 +232,10 @@
   - type: ShipRepairable
     repairTime: 30
     repairCost: 100 # expensive
+  # WOLFGATE(Drydock): build cost the drydock prices the reactor's rebuild and salvage from
+  - type: Construction
+    graph: WFZPinchReactor
+    node: reactor
   - type: RadarBlip
     visibleFromOtherGrids: true
     radarColor: "#fcba03"

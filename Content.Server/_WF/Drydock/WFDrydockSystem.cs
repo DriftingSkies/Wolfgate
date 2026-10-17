@@ -214,7 +214,6 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         AddMissingTiles(ship, grid, data, comp, items);
         AddMissingEntities(ship, data, comp, items);
-        MarkBroken(ship, items);
         AddHeals(ship, grid, comp, items);
         AddRefitRepairs(ship, comp, items);
         CapRepair(ship, comp, items);
@@ -307,18 +306,6 @@ public sealed partial class WFDrydockSystem : EntitySystem
                     LocalPos = new Vector2(index.X + 0.5f, index.Y + 0.5f),
                 });
             }
-        }
-    }
-
-    /// <summary>Marks the tiles and rebuilds that restore what a hull break stripped.</summary>
-    private void MarkBroken(EntityUid ship, List<WFDrydockWorkItem> items)
-    {
-        if (!TryComp<WFHulkComponent>(ship, out var hulk) || hulk.Broken.Count == 0)
-            return;
-
-        foreach (var item in items)
-        {
-            item.Broken = hulk.Broken.Contains(item.Kind == WFDrydockWorkKind.Tile ? item.TileIndex : item.LocalPos.Floored());
         }
     }
 
@@ -596,7 +583,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
             {
                 if (pay != null)
                 {
-                    AssignMaterials(berthed, comp, pay, items, working);
+                    AssignMaterials(pay, items, working);
                     state.RepairMaterials = SumBills(items);
                     state.RepairParts = SumParts(items);
                 }
@@ -712,7 +699,12 @@ public sealed partial class WFDrydockSystem : EntitySystem
         var pay = booked ? null : CompOrNull<WFDrydockMaterialPaymentComponent>(console);
         if (pay != null)
         {
-            AssignMaterials(ship, comp, pay, items, cranes);
+            AssignMaterials(pay, items, cranes);
+
+            // A short repair does what the stock covers; a refit is all or nothing.
+            if (upgrade == null && Affordable(items, Availability(cranes)) is { Count: > 0 } doable)
+                items = doable;
+
             if (!TryPayMaterials(console, comp, actor, items))
                 return false;
 

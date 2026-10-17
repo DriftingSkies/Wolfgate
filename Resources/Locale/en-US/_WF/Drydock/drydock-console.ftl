@@ -46,6 +46,7 @@ drydock-berth-lights-no-berth = No berth to light up.
 
 drydock-console-break-unavailable = This console can't break hulls.
 drydock-console-break-station = Stations and outposts can't be broken.
+drydock-console-break-indestructible = This hull is too tough for the cranes to break.
 drydock-console-nothing-to-break = Nothing to break.
 drydock-console-break-started = Breaking up { $ship }: { $count } { $count ->
     [one] tile

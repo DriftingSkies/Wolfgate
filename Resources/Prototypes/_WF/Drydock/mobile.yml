@@ -17,40 +17,35 @@
   - type: Rotatable
     rotateWhileAnchored: false
   - type: WiresPanel
-  # No fee.
+  # No fee, and no cap on a repair's work, so its bill is never scaled below what breaking the same work pays.
   - type: WFDrydockConsole
     minFee: 0
     feeFraction: 0
-  # Rates and limits are pegged to a T2 ship voucher; see the Drydock README.
+    capFraction: 0
+    snapshotCapFraction: 0
+  # Walls and hull tiles break for little (structureYield, breakTileYield) and rebuild for 1.3 times that; other parts
+  # rebuild at their full construction materials. Work with no materials, such as a hardpoint gun, bills the rates on
+  # its price. See the Drydock README.
   - type: WFDrydockMaterialPayment
+    repairShare: 1
+    structureYield: 0.02
+    structureRepairFactor: 1.3
     rates:
       Steel: 0.055
       Plasteel: 0.025
       Glass: 0.025
       Plastic: 0.01
-    maxBill:
-      Steel: 6000
-      Plasteel: 3000
-      Glass: 3000
-      Plastic: 1500
-      Plastitanium: 600
-    # Breaking a hull pays a quarter of every material the cranes strip, plastitanium and composite only 5%, plus steel
-    # and 2 scrap chunks per tile lifted, within caps per hull tile: plastitanium and composite 1 sheet per 20 tiles,
-    # plasteel 1 per 2, steel 1 per tile. Materials breakCap doesn't list are uncapped. Machines and computers also give
-    # up their boards and parts. See the Drydock README.
-    breakDefaultYield: 0.25
+    # Breaking a hull pays half of every material in the parts the cranes strip (plastitanium and composite only
+    # 5%), 2% of walls, and 2 steel and 2 scrap chunks per tile lifted. Machines and computers also give up their boards
+    # and parts. See the Drydock README.
+    breakDefaultYield: 0.5
     breakYield:
       Plastitanium: 0.05
       PdvComposite: 0.05
     breakTileYield:
-      Steel: 25
+      Steel: 2
     breakTileSalvage:
       RawScrap: 200
-    breakCap:
-      Plastitanium: 5
-      PdvComposite: 5
-      Plasteel: 50
-      Steel: 100
 
 - type: entity
   parent: BaseComputerCircuitboard

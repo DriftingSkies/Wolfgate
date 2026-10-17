@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.NpcCrew.Systems;
+using Content.Server.Atmos.Components;
 using Content.Server.Cargo.Systems;
 using Content.Server.Construction;
 using Content.Server.Construction.Components;
@@ -25,7 +26,7 @@ namespace Content.Server._WF.Drydock;
 
 /// <summary>
 /// Hull breaking at a mobile drydock: the cranes peel a ship tile by tile from its edges inward, and pay out a share
-/// of what it was built from, within caps set by its size.
+/// of what it was built from.
 /// </summary>
 public sealed partial class WFDrydockSystem
 {
@@ -42,6 +43,9 @@ public sealed partial class WFDrydockSystem
 
     /// <summary>Damage type salvaged hardware unpacks with.</summary>
     private static readonly ProtoId<DamageTypePrototype> SalvageDamage = "Blunt";
+
+    /// <summary>Damage past which a barrier counts as indestructible, such as monolith tenebris.</summary>
+    private const float IndestructibleDamage = 50000;
 
     private static readonly Vector2i[] Neighbours = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1) };
 
@@ -94,7 +98,7 @@ public sealed partial class WFDrydockSystem
         return true;
     }
 
-    /// <summary>Why a ship can't be broken at a console, or null. Stations, outposts and the drydock's own grid are refused.</summary>
+    /// <summary>Why a ship can't be broken at a console, or null.</summary>
     public string? BreakRefusal(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship)
     {
         if (IsShipyardGrid(console, comp, ship))
@@ -104,7 +108,21 @@ public sealed partial class WFDrydockSystem
         if (HasComp<StationMemberComponent>(ship) && !HasComp<ShuttleDeedComponent>(ship))
             return Loc.GetString("drydock-console-break-station");
 
+        if (HasIndestructibleBarrier(ship))
+            return Loc.GetString("drydock-console-break-indestructible");
+
         return null;
+    }
+
+    /// <summary>Whether a grid has a damageable wall, window or door that can't be destroyed, such as a vault's.</summary>
+    private bool HasIndestructibleBarrier(EntityUid ship)
+    {
+        if (!TryComp<MapGridComponent>(ship, out var grid))
+            return false;
+
+        var barriers = new HashSet<Entity<AirtightComponent>>();
+        _lookup.GetLocalEntitiesIntersecting(ship, grid.LocalAABB, barriers);
+        return barriers.Any(b => HasComp<DamageableComponent>(b) && _destructible.DestroyedAt(b).Float() >= IndestructibleDamage);
     }
 
     /// <summary>Lists a break item per hull tile, timed by the entities its crane strips off it.</summary>
@@ -259,37 +277,20 @@ public sealed partial class WFDrydockSystem
         return berthArea.Intersects(_transform.GetWorldMatrix(job.Ship).TransformBox(grid.LocalAABB));
     }
 
-    /// <summary>What breaking the whole ship would pay now, within its caps.</summary>
+    /// <summary>What breaking the whole ship would pay now.</summary>
     private Dictionary<string, int> BreakPreview(EntityUid ship, WFDrydockMaterialPaymentComponent pay)
     {
         var total = new Dictionary<string, int>();
         if (!TryComp<MapGridComponent>(ship, out var grid))
             return total;
 
-        var count = 0;
         var tiles = _map.GetAllTilesEnumerator(ship, grid);
         while (tiles.MoveNext(out var tile))
         {
-            count++;
             AddTileYield(ship, grid, tile.Value.GridIndices, pay, total);
         }
 
-        var caps = BreakCaps(pay, count);
-        var preview = new Dictionary<string, int>();
-        foreach (var (id, amount) in total)
-        {
-            var capped = caps.TryGetValue(id, out var cap) ? Math.Min(amount, cap) : amount;
-            if (capped > 0)
-                preview[id] = capped;
-        }
-
-        return preview;
-    }
-
-    /// <summary>Most of each capped material breaking so many tiles may pay.</summary>
-    private static Dictionary<string, int> BreakCaps(WFDrydockMaterialPaymentComponent pay, int tiles)
-    {
-        return pay.BreakCap.ToDictionary(c => c.Key.Id, c => (int) (c.Value * tiles));
+        return total;
     }
 
     /// <summary>
@@ -303,7 +304,7 @@ public sealed partial class WFDrydockSystem
         while (anchored.MoveNext(out var uid))
         {
             if (!IsSalvagedWhole(uid.Value) && MetaData(uid.Value).EntityPrototype is { } proto)
-                AddBreakYield(pay, ConstructionMaterials(proto), yield);
+                AddBreakYield(pay, proto, yield);
         }
 
         AddPerTileYield(pay, yield);
@@ -318,12 +319,13 @@ public sealed partial class WFDrydockSystem
         }
     }
 
-    /// <summary>Adds the share of a set of materials a break recovers.</summary>
-    private static void AddBreakYield(WFDrydockMaterialPaymentComponent pay, Dictionary<string, int> materials, Dictionary<string, int> yield)
+    /// <summary>Adds the share of an entity's construction materials a break recovers.</summary>
+    private void AddBreakYield(WFDrydockMaterialPaymentComponent pay, EntityPrototype proto, Dictionary<string, int> yield)
     {
-        foreach (var (id, amount) in materials)
+        var wall = IsWall(proto);
+        foreach (var (id, amount) in ConstructionMaterials(proto))
         {
-            var units = (int) (amount * BreakShare(pay, id));
+            var units = (int) (amount * (wall ? pay.StructureYield : BreakShare(pay, id)));
             if (units > 0)
                 yield[id] = yield.GetValueOrDefault(id) + units;
         }
@@ -343,8 +345,8 @@ public sealed partial class WFDrydockSystem
 
     /// <summary>
     /// Breaks one tile: packs its hardware for the crane, strips everything else anchored on it, credits the yield to
-    /// the crane within the caps of the tiles lifted so far, reports the attack, then lifts the tile. Everyone and everything still aboard
-    /// is set adrift before the last tile goes, so nothing is deleted with the hull.
+    /// the crane, reports the attack, then lifts the tile. Everyone and everything still aboard is set adrift before the
+    /// last tile goes, so nothing is deleted with the hull.
     /// </summary>
     private void ApplyBreak(EntityUid console, WFDrydockJobComponent job, WFDrydockJobSlot slot, WFDrydockWorkItem item)
     {
@@ -377,7 +379,7 @@ public sealed partial class WFDrydockSystem
             {
                 SalvageParts(uid, crane, drop);
                 if (pay != null && MetaData(uid).EntityPrototype is { } proto)
-                    AddBreakYield(pay, ConstructionMaterials(proto), yield);
+                    AddBreakYield(pay, proto, yield);
             }
 
             QueueDel(uid);
@@ -386,12 +388,11 @@ public sealed partial class WFDrydockSystem
         if (pay != null)
             AddPerTileYield(pay, yield);
 
-        EnsureComp<WFHulkComponent>(ship).Broken.Add(item.TileIndex);
-        var credit = CreditBreak(ship, job, pay, yield);
-        if (credit.Count > 0)
+        EnsureComp<WFHulkComponent>(ship).LastWork = _timing.CurTime;
+        if (yield.Count > 0)
         {
-            DepositYield(crane, drop, credit);
-            AddBill(job.Yield, credit);
+            DepositYield(crane, drop, yield);
+            AddBill(job.Yield, yield);
         }
 
         if (job.Attacker is { } attacker && !TerminatingOrDeleted(attacker))
@@ -410,36 +411,6 @@ public sealed partial class WFDrydockSystem
             QueueDel(ship);
     }
 
-    /// <summary>
-    /// Raises a broken item's bill to its full materials: a rebuild's construction materials, or a tile's own yield
-    /// grossed up by the share a break recovers of it.
-    /// </summary>
-    private void BillBroken(WFDrydockMaterialPaymentComponent pay, WFDrydockWorkItem item)
-    {
-        if (item.Materials == null)
-            return;
-
-        var full = new Dictionary<string, int>();
-        if (item.Kind == WFDrydockWorkKind.Tile)
-        {
-            foreach (var (id, amount) in pay.BreakTileYield)
-            {
-                var recovered = BreakShare(pay, id.Id);
-                var share = recovered > 0 ? recovered : 1f;
-                full[id.Id] = (int) Math.Ceiling(amount / share);
-            }
-        }
-        else if (item.Prototype is { } protoId && _prototype.TryIndex(protoId, out var proto))
-        {
-            full = ConstructionMaterials(proto);
-        }
-
-        foreach (var (id, amount) in full)
-        {
-            item.Materials[id] = Math.Max(item.Materials.GetValueOrDefault(id), amount);
-        }
-    }
-
     /// <summary>Whether a grid has one tile left, or none.</summary>
     private bool IsLastTile(EntityUid ship, MapGridComponent grid)
     {
@@ -451,31 +422,6 @@ public sealed partial class WFDrydockSystem
         }
 
         return count <= 1;
-    }
-
-    /// <summary>
-    /// Adds a lifted tile's yield to the job and returns what it now owes: the yield so far, held to the caps of the
-    /// tiles lifted so far. Yield past them waits for later tiles, so a whole hull pays its full caps, and each part of
-    /// one broken in its own job pays only for its own tiles.
-    /// </summary>
-    private Dictionary<string, int> CreditBreak(EntityUid ship, WFDrydockJobComponent job,
-        WFDrydockMaterialPaymentComponent? pay, Dictionary<string, int> yield)
-    {
-        EnsureComp<WFHulkComponent>(ship).LastWork = _timing.CurTime;
-        job.Lifted++;
-        AddBill(job.Recovered, yield);
-
-        var caps = pay != null ? BreakCaps(pay, job.Lifted) : new Dictionary<string, int>();
-        var credit = new Dictionary<string, int>();
-        foreach (var (id, recovered) in job.Recovered)
-        {
-            var owed = caps.TryGetValue(id, out var cap) ? Math.Min(recovered, cap) : recovered;
-            var take = owed - job.Yield.GetValueOrDefault(id);
-            if (take > 0)
-                credit[id] = take;
-        }
-
-        return credit;
     }
 
     /// <summary>Puts materials in a crane's silo or its own storage, or drops them as sheets at it when neither takes them.</summary>
@@ -541,6 +487,10 @@ public sealed partial class WFDrydockSystem
         {
             foreach (var part in container.ContainedEntities.ToList())
             {
+                // Sheets are paid in the yield.
+                if (HasComp<MaterialComponent>(part))
+                    continue;
+
                 if (_container.Remove(part, container, destination: drop) && crane.Valid)
                     _fabricationSilo.ReturnPart(crane, part);
             }

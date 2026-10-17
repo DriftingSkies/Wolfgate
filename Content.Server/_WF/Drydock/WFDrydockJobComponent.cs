@@ -140,13 +140,6 @@ public sealed partial class WFDrydockJobComponent : Component
     /// <summary>Grid the drydock works from, reported as attacking a ship it breaks.</summary>
     public EntityUid? Attacker;
 
-    /// <summary>Materials a break job has recovered so far, before its caps.</summary>
-    public Dictionary<string, int> Recovered = new();
-
-    /// <summary>Tiles a break job has lifted, which set its caps.</summary>
-    [ViewVariables]
-    public int Lifted;
-
     /// <summary>Materials a break job has credited to its cranes so far.</summary>
     public Dictionary<string, int> Yield = new();
 

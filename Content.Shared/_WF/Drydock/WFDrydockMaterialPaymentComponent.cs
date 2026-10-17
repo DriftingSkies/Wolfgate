@@ -13,27 +13,17 @@ public sealed partial class WFDrydockMaterialPaymentComponent : Component
     [DataField]
     public Dictionary<ProtoId<MaterialPrototype>, float> Rates = new();
 
-    /// <summary>
-    /// Share of each construction material the rates don't charge, billed in kind on top of the rates to rebuild an
-    /// entity (and that share of it to patch one), so a plastitanium wall takes a little plastitanium.
-    /// </summary>
+    /// <summary>Share of its construction materials rebuilding anything but a wall bills.</summary>
     [DataField]
-    public float InKindFactor = 0.01f;
+    public float RepairShare = 1f;
 
-    /// <summary>
-    /// Most units of each material one repair of a <see cref="ReferenceValue"/> ship may bill, scaled by the ship's
-    /// price. Refits are not limited.
-    /// </summary>
+    /// <summary>Share of a wall's construction materials a hull break recovers.</summary>
     [DataField]
-    public Dictionary<ProtoId<MaterialPrototype>, int> MaxBill = new();
+    public float StructureYield = 0.02f;
 
-    /// <summary>Ship price the <see cref="MaxBill"/> limits are set for.</summary>
+    /// <summary>Rebuilding a wall or tile bills this many times what breaking it recovers.</summary>
     [DataField]
-    public int ReferenceValue = 250000;
-
-    /// <summary>Most units one repair may bill of a material <see cref="MaxBill"/> doesn't list.</summary>
-    [DataField]
-    public int DefaultMaxBill = 500;
+    public float StructureRepairFactor = 1.3f;
 
     /// <summary>
     /// Share of every construction material a hull break recovers from what it strips, unless <see cref="BreakYield"/>
@@ -53,11 +43,4 @@ public sealed partial class WFDrydockMaterialPaymentComponent : Component
     /// <summary>Material units a hull break pays per tile it lifts on top of the hull's own, such as scrap; rebuilding the tile never bills them.</summary>
     [DataField]
     public Dictionary<ProtoId<MaterialPrototype>, int> BreakTileSalvage = new();
-
-    /// <summary>
-    /// Most units of each material a hull break may pay per tile it lifts. Yield past the caps of the tiles lifted so far
-    /// waits for later tiles, so a hull broken whole or in parts pays the same. A material not listed has no cap.
-    /// </summary>
-    [DataField]
-    public Dictionary<ProtoId<MaterialPrototype>, float> BreakCap = new();
 }

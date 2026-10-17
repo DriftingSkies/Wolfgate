@@ -25,7 +25,8 @@
     sprite: Structures/Power/Generation/ame.rsi
     state: control
   product: CrateEngineeringAMEControl
-  cost: 6000 # Frontier - Up the price
+  # WOLFGATE(Drydock): above the ~10k a drydock break pays for the controller, mostly its fissile; was 6000
+  cost: 12000 # Frontier - Up the price
   category: cargoproduct-category-name-engineering
   group: market
 

@@ -47,9 +47,6 @@ public sealed class WFDrydockWorkItem
     /// <summary>Prototype a rebuild or heal works on, for its construction materials.</summary>
     public EntProtoId? Prototype;
 
-    /// <summary>Whether a tile or rebuild restores what a hull break stripped, so it costs its full materials.</summary>
-    public bool Broken;
-
     /// <summary>Whether a rebuild mounts on a hardpoint, so it is built after the other parts.</summary>
     public bool Mounted;
 
