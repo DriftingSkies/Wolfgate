@@ -77,6 +77,16 @@ public sealed class WFSoftShieldTest
                 Assert.That(entities.GetComponent<BodyPartComponent>(wound.HoldingPart).Body, Is.Not.EqualTo(human),
                     "No bleed opens under an active soft shield.");
             }
+
+            shield.Runtime.Charge = 2f;
+            var last = new DamageSpecifier();
+            last.DamageDict["Piercing"] = FixedPoint2.New(20);
+            var through = damageable.TryChangeDamage(human, last, origin: human);
+            // Full soak lets 8 of 20 through; a 2-charge field lets 18 through, both before the suit's armour.
+            Assert.That(through!.DamageDict.GetValueOrDefault("Piercing"),
+                Is.GreaterThan(applied.DamageDict.GetValueOrDefault("Piercing") * 2f),
+                "A nearly empty field soaks only the charge it has left.");
+            Assert.That(shield.IsUp, Is.False, "The field breaks when its charge runs out.");
         });
 
         await pair.CleanReturnAsync();

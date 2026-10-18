@@ -1144,7 +1144,7 @@ Skipped ("dirty-disposed").
   - M3: an impaired heart regenerates at its band's factor (plan §8); 1 everywhere else.
   - CONSC: blood volume is a consciousness input and the bloodstream raises no event
   - GUARD E, wound hosts get their bleeding from WoundBleedingSystem instead.
-  - the body or its gear refused the bleed.
+  - the body or its gear refused the bleed; cautery still works.
   - GUARD E2 — Onyx's HealthExaminable covers pallor per-part for wound hosts
   - GUARD E3, a wound host's bleed amount is written only through the wound projection.
   - GUARD E3

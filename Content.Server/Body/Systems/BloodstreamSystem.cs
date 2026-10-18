@@ -228,9 +228,6 @@ public sealed partial class BloodstreamSystem : EntitySystem
             return;
         }
 
-        if (!_wfBleedGate.CanStartBleeding(ent)) // WOLFGATE(Wolfmed): the body or its gear refused the bleed.
-            return;
-
         // TODO probably cache this or something. humans get hurt a lot
         if (!_prototypeManager.TryIndex<DamageModifierSetPrototype>(ent.Comp.DamageBleedModifiers, out var modifiers))
             return;
@@ -244,6 +241,9 @@ public sealed partial class BloodstreamSystem : EntitySystem
         var oldBleedAmount = ent.Comp.BleedAmount;
         var total = bloodloss.GetTotal();
         var totalFloat = total.Float();
+        if (totalFloat > 0 && !_wfBleedGate.CanStartBleeding(ent)) // WOLFGATE(Wolfmed): the body or its gear refused the bleed; cautery still works.
+            return;
+
         TryModifyBleedAmount(ent, totalFloat, ent);
 
         /// <summary>

@@ -2,6 +2,7 @@ using Content.Shared._Mono.PersonalShield;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WF.Wolfmed.Armor;
 using Content.Shared._WF.Wolfmed.Wounds;
+using Content.Shared.Armor;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Examine;
@@ -26,7 +27,8 @@ public sealed class WFSoftShieldSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<WFSoftShieldComponent, InventoryRelayedEvent<DamageModifyEvent>>(OnDamageModify);
+        SubscribeLocalEvent<WFSoftShieldComponent, InventoryRelayedEvent<DamageModifyEvent>>(OnDamageModify,
+            before: [typeof(SharedArmorSystem)]);
         SubscribeLocalEvent<WFSoftShieldComponent, InventoryRelayedEvent<PartDamageModifyEvent>>(OnPartDamageModify,
             before: [typeof(WolfmedPartArmorSystem)]);
         SubscribeLocalEvent<WFSoftShieldComponent, InventoryRelayedEvent<WolfmedBleedAttemptEvent>>(OnBleedAttempt);
@@ -77,13 +79,25 @@ public sealed class WFSoftShieldSystem : EntitySystem
     {
         var group = _prototypes.Index(ent.Comp.DamageGroup);
         var result = new DamageSpecifier(damage);
+        var requested = FixedPoint2.Zero;
+        foreach (var type in group.DamageTypes)
+        {
+            if (result.DamageDict.TryGetValue(type, out var amount) && amount > 0)
+                requested += amount * ent.Comp.Reduction;
+        }
+
+        // A field with less charge left than the hit asks for soaks only what it has.
+        var share = requested.Float() > shield.Runtime.Charge
+            ? ent.Comp.Reduction * shield.Runtime.Charge / requested.Float()
+            : ent.Comp.Reduction;
+
         var absorbed = FixedPoint2.Zero;
         foreach (var type in group.DamageTypes)
         {
             if (!result.DamageDict.TryGetValue(type, out var amount) || amount <= 0)
                 continue;
 
-            var soaked = amount * ent.Comp.Reduction;
+            var soaked = amount * share;
             result.DamageDict[type] = amount - soaked;
             absorbed += soaked;
         }
