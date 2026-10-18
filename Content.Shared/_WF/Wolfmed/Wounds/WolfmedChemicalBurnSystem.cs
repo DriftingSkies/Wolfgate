@@ -38,6 +38,10 @@ public sealed class WolfmedChemicalBurnSystem : EntitySystem
             !prototype.TryGetBehavior(args.Severity, out WolfmedCausticResidueBehavior _))
             return;
 
+        // Fresh acid on a rinsed burn puts residue back; the burn healing or the residue's own bite does not.
+        if (args.Kind == WolfmedWoundLifecycle.Changed && args.Severity > args.OldSeverity && ResidueTarget == null)
+            RemComp<WolfmedChemicalBurnWashedComponent>(args.Wound);
+
         Refresh(args.Part);
     }
 
@@ -138,6 +142,10 @@ public sealed class WolfmedChemicalBurnSystem : EntitySystem
             if (!HasComp<WolfmedChemicalBurnComponent>(part))
                 continue;
 
+            // Marked on the wound so a later severity change cannot re-arm it through Refresh.
+            foreach (var wound in _wounds.GetWounds(part))
+                EnsureComp<WolfmedChemicalBurnWashedComponent>(wound);
+
             RemComp<WolfmedChemicalBurnComponent>(part);
             washed++;
         }
@@ -159,6 +167,7 @@ public sealed class WolfmedChemicalBurnSystem : EntitySystem
         foreach (var wound in _wounds.GetWounds(part))
         {
             if (wound.Comp.State is WoundState.Healed or WoundState.Scarred ||
+                HasComp<WolfmedChemicalBurnWashedComponent>(wound) ||
                 !_prototypes.TryIndex(wound.Comp.Prototype, out var prototype) ||
                 !prototype.TryGetBehavior(wound.Comp.Severity, out WolfmedCausticResidueBehavior behavior))
                 continue;

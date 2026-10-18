@@ -1904,3 +1904,21 @@ Entries:
   id: 100154
   time: '2026-10-17T22:38:47.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/271
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Washing a chemical burn with water now stops the acid for good. It no
+        longer starts burning again while the wound heals.
+    - type: Fix
+      message: You no longer vomit while dead or with a stopped heart.
+    - type: Fix
+      message: Unconscious characters no longer scream from pain shock.
+    - type: Fix
+      message: >-
+        Default markings that aren't required (synth tail, antenna and visor,
+        oni ears, harpy wings) can now be removed. Existing characters that
+        never picked one need to add it back.
+  id: 100155
+  time: '2026-10-17T23:57:09.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/270

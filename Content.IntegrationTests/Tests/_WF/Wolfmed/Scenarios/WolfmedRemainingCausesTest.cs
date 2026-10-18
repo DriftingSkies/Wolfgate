@@ -93,6 +93,15 @@ public sealed class WolfmedRemainingCausesTest : WolfmedGameTest
         Assert.That(solutions.TryAddReagent(chemicals!.Value, reagent, FixedPoint2.New(units)), Is.True);
     }
 
+    private float Chemical(EntityUid body, string reagent)
+    {
+        var solutions = SEntMan.System<SharedSolutionContainerSystem>();
+        var bloodstream = SEntMan.GetComponent<BloodstreamComponent>(body);
+        return solutions.TryGetSolution(body, bloodstream.ChemicalSolutionName, out _, out var chemicals)
+            ? chemicals.GetTotalPrototypeQuantity(reagent).Float()
+            : 0f;
+    }
+
     private static void InBand(float actual, float derived, string what) =>
         Assert.That(actual, Is.InRange(derived * (1f - Band), derived * (1f + Band)),
             $"{what}: {actual} against {derived} derived.");
@@ -350,6 +359,9 @@ public sealed class WolfmedRemainingCausesTest : WolfmedGameTest
             {
                 if (Radiation.GetRadiation(failing) < 40f)
                     under = now;
+                // Hyronalin's own ChemVomit roll can empty the chem stream; put the dose back so the roll can't fail the test.
+                else if (Chemical(failing, "Hyronalin") < 1f)
+                    Inject(failing, "Hyronalin", 15);
             });
         }
 

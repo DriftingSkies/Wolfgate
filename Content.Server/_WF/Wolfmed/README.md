@@ -98,6 +98,7 @@ Skipped ("dirty-disposed").
 - [`Content.Server/_WF/Wolfmed/Life/WolfmedToxinSystem.cs`](Life/WolfmedToxinSystem.cs)
 - [`Content.Server/_WF/Wolfmed/Life/WolfmedVacuumComponent.cs`](Life/WolfmedVacuumComponent.cs)
 - [`Content.Server/_WF/Wolfmed/Life/WolfmedVacuumSystem.cs`](Life/WolfmedVacuumSystem.cs)
+- [`Content.Server/_WF/Wolfmed/Life/WolfmedVomitGateSystem.cs`](Life/WolfmedVomitGateSystem.cs)
 - [`Content.Server/_WF/Wolfmed/Medical/HealingSystem.Wolfmed.cs`](Medical/HealingSystem.Wolfmed.cs)
 - [`Content.Server/_WF/Wolfmed/Medical/HealthAnalyzerSystem.Autodoc.cs`](Medical/HealthAnalyzerSystem.Autodoc.cs)
 - [`Content.Server/_WF/Wolfmed/Medical/HealthAnalyzerSystem.Vitals.cs`](Medical/HealthAnalyzerSystem.Vitals.cs)
@@ -1215,6 +1216,7 @@ Skipped ("dirty-disposed").
   - W0, on a wound host the refusal is about the selected part, not the whole patient.
   - HOOK 8, the do-after carries the part the heal resolved.
 - [`Content.Server/Medical/HealthAnalyzerSystem.cs`](../../Medical/HealthAnalyzerSystem.cs): HOOK 23
+- [`Content.Server/Medical/VomitSystem.cs`](../../Medical/VomitSystem.cs): no vomiting while dead or in cardiac arrest.
 - [`Content.Server/NPC/Systems/NPCUtilitySystem.cs`](../../NPC/Systems/NPCUtilitySystem.cs): animals leave severed limbs alone so they can be reattached
 - [`Content.Server/Nutrition/EntitySystems/FoodSystem.cs`](../../Nutrition/EntitySystems/FoodSystem.cs)
   - using a severed limb in hand does not eat it
@@ -1325,6 +1327,7 @@ Skipped ("dirty-disposed").
   - playtest 5, a floor that has not risen for a while settles toward wolfmed.pain_floor_rest
   - playtest 4, the share of the pain no open wound backs (Value over WoundPain) fades at
   - M1a: CVar
+  - an unconscious body does not scream.
   - BRAIN: a shock on a body that has already bled out stops the heart.
   - P2-D8: Wolfgate's PainNumbness trait grants the legacy PainNumbnessComponent
   - M1a: OD5, adrenaline leaves pain alone; it speeds the crawl instead (WolfmedBodyPainSystem).

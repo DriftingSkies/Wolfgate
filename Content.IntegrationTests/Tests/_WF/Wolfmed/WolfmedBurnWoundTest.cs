@@ -316,6 +316,20 @@ public sealed class WolfmedBurnWoundTest : WolfmedGameTest
                     "the burn itself stays and heals like any other.");
                 Assert.That(residue.Wash(body), Is.Zero);
             });
+
+            // The burn healing changes its severity; that must not put the residue back.
+            wounds.ChangeSeverity(FindWound(entities, wounds, torso, "WFWolfmedChemicalBurnWound"), -2);
+            residue.Update(5f);
+            Assert.Multiple(() =>
+            {
+                Assert.That(entities.HasComponent<WolfmedChemicalBurnComponent>(torso), Is.False,
+                    "a healing burn stays rinsed.");
+                Assert.That(Damage(entities, torso, "Caustic"), Is.LessThanOrEqualTo(washed));
+            });
+
+            Damage(entities, body, TargetBodyPart.Torso, "Caustic", 20);
+            Assert.That(entities.HasComponent<WolfmedChemicalBurnComponent>(torso), Is.True,
+                "fresh acid on a rinsed burn is residue again.");
         });
     }
 

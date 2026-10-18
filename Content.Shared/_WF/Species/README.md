@@ -60,6 +60,7 @@ and its own sprite.
 - [`Content.Shared/_WF/Species/HumanoidAppearanceComponent.MismatchedParts.cs`](HumanoidAppearanceComponent.MismatchedParts.cs)
 - [`Content.Shared/_WF/Species/HumanoidCharacterProfile.MismatchedParts.cs`](HumanoidCharacterProfile.MismatchedParts.cs)
 - [`Content.Shared/_WF/Species/MarkingSet.Chassis.cs`](MarkingSet.Chassis.cs)
+- [`Content.Shared/_WF/Species/MarkingSet.Defaults.cs`](MarkingSet.Defaults.cs)
 - [`Content.Shared/_WF/Species/MarkingSet.MismatchedParts.cs`](MarkingSet.MismatchedParts.cs)
 - [`Content.Shared/_WF/Species/MismatchedPartsRules.cs`](MismatchedPartsRules.cs)
 - [`Content.Shared/_WF/Species/SharedHumanoidAppearanceSystem.MismatchedParts.cs`](SharedHumanoidAppearanceSystem.MismatchedParts.cs)
@@ -78,6 +79,7 @@ and its own sprite.
 - [`Content.IntegrationTests/Tests/_WF/Species/HairColourTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/HairColourTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsBodyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsBodyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/MismatchedPartsTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Species/OptionalDefaultMarkingsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/OptionalDefaultMarkingsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/ShadekinNightVisionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/ShadekinNightVisionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/SpeciesLoadoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/SpeciesLoadoutTest.cs)
 
@@ -179,6 +181,7 @@ and its own sprite.
 - [`Content.Client/Humanoid/HumanoidAppearanceSystem.cs`](../../../Content.Client/Humanoid/HumanoidAppearanceSystem.cs)
   - one point for each category the species has none for
   - keeps other species' markings
+  - optional defaults live in the profile
   - hair and beards the species can't wear
   - mismatched parts draw without a species layer
   - mismatched parts are coloured without a species layer
@@ -186,6 +189,7 @@ and its own sprite.
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
   - the first style the option allows
   - ported from HardLight, unrestricted skin colour
+  - the new species' defaults are saved into the profile, so they can be removed
   - the styles the option allows
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): saves the Mismatched parts option (every species' markings, hair and facial hair)
 - [`Content.Server/_DV/Abilities/CrawlUnderObjectsSystem.cs`](../../../Content.Server/_DV/Abilities/CrawlUnderObjectsSystem.cs)
@@ -278,6 +282,8 @@ and its own sprite.
 - [`Content.Shared/Damage/Systems/DamageableSystem.cs`](../../Damage/Systems/DamageableSystem.cs): heal modifiers, ported from HardLight
 - [`Content.Shared/Eye/VisibilityFlags.cs`](../../Eye/VisibilityFlags.cs): ported from HardLight/Starlight, for Shadekin dark phasing
 - [`Content.Shared/Humanoid/HumanoidCharacterAppearance.cs`](../../Humanoid/HumanoidCharacterAppearance.cs)
+  - optional defaults start saved, so they can be removed
+  - optional defaults start saved
   - mismatchedParts lets the hair check accept the styles the option opens
   - was new MarkingSet(...), opens the species' closed categories
   - per-species eye colour, ported from HardLight/Starlight
@@ -286,7 +292,10 @@ and its own sprite.
   - eye markings get their own points instead of sharing the head's
   - IPC body parts get their own points instead of filling the body categories
   - eye markings get their own category
-- [`Content.Shared/Humanoid/Markings/MarkingsSet.cs`](../../Humanoid/Markings/MarkingsSet.cs): a chassis is one part on each body part, not a default for each spare point
+- [`Content.Shared/Humanoid/Markings/MarkingsSet.cs`](../../Humanoid/Markings/MarkingsSet.cs)
+  - profile loads skip optional defaults so they can be removed
+  - a chassis is one part on each body part, not a default for each spare point
+  - optional defaults are saved into new profiles instead
 - [`Content.Shared/Humanoid/Prototypes/SpeciesPrototype.cs`](../../Humanoid/Prototypes/SpeciesPrototype.cs)
   - subspecies
   - ported from HardLight/Starlight, per-species eye colour
@@ -297,6 +306,7 @@ and its own sprite.
   - one point for each category the species has none for
   - keeps other species' markings
   - hair and beards the species can't wear
+  - optional defaults live in the profile
 - [`Content.Shared/Humanoid/SkinColor.cs`](../../Humanoid/SkinColor.cs)
   - ported from HardLight
   - ported from HardLight, unrestricted skin colour

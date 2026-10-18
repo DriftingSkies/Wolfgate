@@ -535,7 +535,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
         {
             return;
         }
-        humanoid.MarkingSet.EnsureDefault(humanoid.SkinColor, humanoid.EyeColor, _markingManager);
+        humanoid.MarkingSet.EnsureDefault(humanoid.SkinColor, humanoid.EyeColor, _markingManager, requiredOnly: true); // WOLFGATE(Species): optional defaults live in the profile
     }
 
     /// <summary>

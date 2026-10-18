@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WF.RoundSetup;
 using Content.Server.Shuttles.Events;
+using Content.Server.Atmos.Components;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Damage;
 using Content.Shared.Explosion.Components;
@@ -42,6 +43,8 @@ public sealed class CrashEffectsTest
             Assert.That(system.TryGetSpawn(lobby, out var at), Is.True);
             hull = at.EntityId;
             actor = em.SpawnEntity("MobHuman", at);
+            // The hull is airless; vacuum damage would mask what the bursts do.
+            em.RemoveComponent<BarotraumaComponent>(actor);
             var split = new GridSplitEvent(new[] { fragment }, hull);
             em.EventBus.RaiseEvent(EventSource.Local, ref split);
         });

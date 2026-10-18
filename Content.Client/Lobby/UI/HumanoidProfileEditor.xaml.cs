@@ -2001,6 +2001,15 @@ namespace Content.Client.Lobby.UI
                 SpeciesButton.SelectId(speciesIndex);
             // WOLFGATE END
             OnSkinColorOnValueChanged(); // Species may have special color prefs, make sure to update it.
+            // WOLFGATE(Species) START: the new species' defaults are saved into the profile, so they can be removed
+            if (Profile != null)
+            {
+                Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithMarkings(MarkingSet.WithSpeciesDefaults(
+                    Profile.Appearance.Markings.ToList(), newSpecies, Profile.MismatchedParts,
+                    Profile.Appearance.SkinColor, Profile.Appearance.EyeColor)));
+                UpdateMarkings();
+            }
+            // WOLFGATE END
             Markings.SetSpecies(newSpecies); // Repopulate the markings tab as well.
             EnforceSpeciesTraitRestrictions();
             // In case there's job restrictions for the species

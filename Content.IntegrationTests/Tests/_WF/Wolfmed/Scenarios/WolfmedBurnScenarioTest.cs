@@ -370,6 +370,11 @@ public sealed class WolfmedBurnScenarioTest : WolfmedGameTest
                 Assert.That(s.Blood(b), Is.GreaterThanOrEqualTo(bloodB540 - 0.005f), "the treated patient's blood is still falling.");
             });
 
+            // The fire's organ hits can leave the brain under its Downed line, which only surgery lifts; this step is
+            // about what the opiate does to the burns' pain, so the brain is put back first.
+            if (s.Life.GetBrainOrgan(b) is { } brain)
+                SEntMan.System<Content.Shared._Onyx.Body.Systems.OrganHealthSystem>().SetHealth(brain, brain.Comp.MaxHealth);
+
             SEntMan.System<BloodstreamSystem>().TryAddToChemicals(b, new Solution("WFWolfmedOpiate", FixedPoint2.New(5)));
         });
 
@@ -380,7 +385,18 @@ public sealed class WolfmedBurnScenarioTest : WolfmedGameTest
             await Server.WaitPost(() => stood = s.State(b) == WolfmedConsciousness.Up);
         }
 
-        Assert.That(stood, Is.True, "an opiate did not stand the treated burn patient up.");
+        var why = "";
+        await Server.WaitPost(() =>
+        {
+            var vitals = s.Vitals(b);
+            var chem = SEntMan.System<Content.Shared.Chemistry.EntitySystems.SharedSolutionContainerSystem>();
+            var stream = SEntMan.GetComponent<BloodstreamComponent>(b);
+            var opiate = chem.TryGetSolution(b, stream.ChemicalSolutionName, out _, out var sol)
+                ? sol.GetTotalPrototypeQuantity("WFWolfmedOpiate").Float() : -1f;
+            why = $" state {vitals.State}, cause {vitals.Cause}/{vitals.CauseSource}, opiate left {opiate:0.0} u, " +
+                  $"vomits {SEntMan.GetComponentOrNull<Content.Server._WF.Wolfmed.Life.WolfmedConditionEmoteComponent>(b)?.VomitCount ?? 0}";
+        });
+        Assert.That(stood, Is.True, "an opiate did not stand the treated burn patient up." + why);
     }
 
     /// <summary>

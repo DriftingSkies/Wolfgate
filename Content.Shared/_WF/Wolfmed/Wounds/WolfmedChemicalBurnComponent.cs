@@ -20,3 +20,7 @@ public sealed partial class WolfmedChemicalBurnComponent : Component
     [ViewVariables]
     public float Interval = 4f;
 }
+
+/// <summary>On a chemical burn wound that has been rinsed. Its residue stays off until fresh acid deepens it.</summary>
+[RegisterComponent]
+public sealed partial class WolfmedChemicalBurnWashedComponent : Component;

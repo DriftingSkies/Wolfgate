@@ -306,6 +306,7 @@ public sealed partial class PainSystem : EntitySystem
         shockTarget.Armed = false;
         Dirty(entity.Owner, shockTarget);
 
+        if (mobState.CurrentState == MobState.Alive) // WOLFGATE(Wolfmed): an unconscious body does not scream.
         _chat.TryEmoteWithChat(entity, "Scream", ChatTransmitRange.HideChat,
             ignoreActionBlocker: true, forceEmote: true);
         _jitter.DoJitter(entity, PainShockStunTime, true, 20f, 7f);

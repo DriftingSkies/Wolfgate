@@ -25,6 +25,11 @@ public sealed partial class FloorOcclusionSystem : SharedFloorOcclusionSystem
 
     private void OnOcclusionAuto(Entity<FloorOcclusionComponent> ent, ref AfterAutoHandleStateEvent args)
     {
+        // WOLFGATE(Planets) START: a new entity's state lands before its sprite initialises; startup sets the shader.
+        if (LifeStage(ent) < EntityLifeStage.Initialized)
+            return;
+        // WOLFGATE END
+
         SetShader(ent.Owner, ent.Comp.Enabled);
     }
 

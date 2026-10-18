@@ -368,7 +368,8 @@ public sealed partial class MarkingSet
     /// <param name="eyeColor">Eye color for marking coloring.</param>
     /// <param name="hairColor">Hair color for marking coloring.</param>
     /// <param name="markingManager">Marking manager.</param>
-    public void EnsureDefault(Color? skinColor = null, Color? eyeColor = null, MarkingManager? markingManager = null)
+    public void EnsureDefault(Color? skinColor = null, Color? eyeColor = null, MarkingManager? markingManager = null,
+        bool requiredOnly = false) // WOLFGATE(Species): profile loads skip optional defaults so they can be removed
     {
         IoCManager.Resolve(ref markingManager);
 
@@ -386,6 +387,9 @@ public sealed partial class MarkingSet
             {
                 continue;
             }
+
+            if (requiredOnly && !points.Required) // WOLFGATE(Species): optional defaults are saved into new profiles instead
+                continue;
 
             var index = 0;
             while (points.Points > 0 && index < points.DefaultMarkings.Count) // Mono: Change || to &&

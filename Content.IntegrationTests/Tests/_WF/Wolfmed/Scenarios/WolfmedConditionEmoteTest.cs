@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Server._WF.Wolfmed.Life;
+using Content.Server.Medical;
+using Content.Shared.Nutrition.Components;
+using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared._Onyx.Body.Systems;
 using Content.Shared._WF.Wolfmed.Body;
 using Content.Shared._WF.Wolfmed.CCVar;
@@ -218,5 +221,49 @@ public sealed class WolfmedConditionEmoteTest : WolfmedGameTest
         var seen = (await Watch(24, new[] { body }))[body];
         TestContext.Out.WriteLine($"InfectedChestShiversTest: {string.Join(", ", seen)}");
         Assert.That(seen, Does.Contain(WolfmedConditionEmoteSystem.Shiver.Id), "a spreading torso never shivered.");
+    }
+
+    /// <summary>
+    /// <c>ArrestedStaysQuietTest</c>: a body in cardiac arrest neither shows a condition nor vomits; an unconscious
+    /// one still does both, and a dead mouse does not vomit either. Vomiting goes through <c>VomitSystem.Vomit</c>
+    /// and is read off the hunger it costs.
+    /// </summary>
+    [Test]
+    public async Task ArrestedStaysQuietTest()
+    {
+        var map = await CreateTestMap();
+        await Server.WaitAssertion(() =>
+        {
+            var emotes = SEntMan.System<WolfmedConditionEmoteSystem>();
+            var awake = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            var arrested = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            var unconscious = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            var mouse = SEntMan.SpawnEntity("MobMouse", map.GridCoords);
+            SEntMan.EnsureComponent<Content.Shared._WF.Wolfmed.Life.WolfmedCardiacArrestComponent>(arrested);
+            SEntMan.System<MobStateSystem>().ChangeMobState(unconscious, Content.Shared.Mobs.MobState.Critical);
+            SEntMan.System<MobStateSystem>().ChangeMobState(mouse, Content.Shared.Mobs.MobState.Dead);
+
+            bool Vomits(EntityUid body)
+            {
+                var hunger = SEntMan.System<HungerSystem>();
+                var comp = SEntMan.GetComponent<HungerComponent>(body);
+                hunger.SetHunger(body, 100f, comp);
+                var before = hunger.GetHunger(comp);
+                SEntMan.System<VomitSystem>().Vomit(body);
+                return hunger.GetHunger(comp) < before;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(emotes.CanShow(awake), Is.True);
+                Assert.That(Vomits(awake), Is.True);
+                Assert.That(emotes.CanShow(arrested), Is.False, "a stopped heart emoted.");
+                Assert.That(Vomits(arrested), Is.False, "a stopped heart vomited.");
+                Assert.That(emotes.CanShow(unconscious), Is.True, "an unconscious body cannot cough or retch.");
+                Assert.That(Vomits(unconscious), Is.True, "an unconscious body cannot vomit.");
+                Assert.That(SEntMan.System<MobStateSystem>().IsDead(mouse), Is.True, "the mouse did not die.");
+                Assert.That(Vomits(mouse), Is.False, "a dead mouse vomited.");
+            });
+        });
     }
 }

@@ -206,7 +206,8 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         markings.EnsureDefault(
             profile.Appearance.SkinColor,
             profile.Appearance.EyeColor,
-            _markingManager);
+            _markingManager,
+            requiredOnly: true); // WOLFGATE(Species): optional defaults live in the profile
         AddMismatchedHair(humanoid, markings, profile, hair, facialHair); // WOLFGATE(Species): hair and beards the species can't wear
 
         DebugTools.Assert(IsClientSide(uid));
