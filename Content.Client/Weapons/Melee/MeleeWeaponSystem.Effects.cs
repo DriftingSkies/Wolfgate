@@ -219,6 +219,9 @@ public sealed partial class MeleeWeaponSystem
             if (arcComponent.User == null)
                 continue;
 
+            if (!Exists(arcComponent.User)) // WOLFGATE(Fighters): a muzzle flash outlives a fighter destroyed mid-burst
+                continue;
+
             Vector2 targetPos = TransformSystem.GetWorldPosition(arcComponent.User.Value);
 
             if (arcComponent.Offset != Vector2.Zero)

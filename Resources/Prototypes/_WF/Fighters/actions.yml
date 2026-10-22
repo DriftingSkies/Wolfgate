@@ -1,0 +1,40 @@
+- type: entity
+  id: WFActionFighterExit
+  name: Leave fighter
+  description: Climb out of the cockpit.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_eject
+    event: !type:FighterExitActionEvent
+
+- type: entity
+  id: WFActionFighterFollowCursor
+  name: Follow cursor
+  description: Toggle turning the fighter to face your cursor. While off, turn with the shuttle rotate keys.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_defense_mode_off
+    iconOn:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_defense_mode_on
+    event: !type:FighterFollowCursorActionEvent
+    useDelay: 0.3
+
+- type: entity
+  id: WFActionFighterCockpit
+  name: Fighter cockpit
+  description: Open or close the fighter's flight deck.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: Objects/Tools/handheld_mass_scanner.rsi
+      state: icon
+    event: !type:FighterCockpitActionEvent
+    useDelay: 0.5

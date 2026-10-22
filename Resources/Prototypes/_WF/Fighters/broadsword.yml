@@ -1,0 +1,147 @@
+- type: entity
+  id: WFBaseFighter
+  abstract: true
+  components:
+  - type: Fighter
+    pilotWhitelist:
+      components:
+      - HumanoidAppearance
+      - BorgChassis
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
+    linearDamping: 0
+    angularDamping: 0
+  - type: GravityAffected
+  # The fighter does its own slowing (drive, park, brake); no hidden drag on top.
+  - type: TileFrictionModifier
+    modifier: 0
+  - type: ContainerContainer
+    containers:
+      fighter-pilot-slot: !type:ContainerSlot
+  - type: Appearance
+  - type: UserInterface
+    interfaces:
+      enum.FighterUiKey.Cockpit:
+        type: FighterCockpitBoundUserInterface
+  - type: RadarConsole
+    followEntity: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: MechArmorHeavy
+  - type: Repairable
+    fuelCost: 40
+    doAfterDelay: 20
+
+- type: entity
+  id: WFFighterBroadsword
+  parent: WFBaseFighter
+  name: Broadsword heavy fighter
+  description: A heavily armoured single-seat strike fighter with a pressurised cockpit and a nose-mounted chaingun firing the AC-35's AP rounds.
+  components:
+  # Burns sit under the hull so the nozzles cover their roots.
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fighters/broadsword.rsi
+    layers:
+    - state: burn-main
+      map: [ "enum.FighterVisuals.MainBurn" ]
+      visible: false
+      shader: unshaded
+    - state: burn-retro
+      map: [ "enum.FighterVisuals.RetroBurn" ]
+      visible: false
+      shader: unshaded
+    - state: burn-port
+      map: [ "enum.FighterVisuals.PortBurn" ]
+      visible: false
+      shader: unshaded
+    - state: burn-starboard
+      map: [ "enum.FighterVisuals.StarboardBurn" ]
+      visible: false
+      shader: unshaded
+    - state: broadsword
+  - type: GenericVisualizer
+    visuals:
+      enum.FighterVisuals.MainBurn:
+        enum.FighterVisuals.MainBurn:
+          True: { visible: true }
+          False: { visible: false }
+      enum.FighterVisuals.RetroBurn:
+        enum.FighterVisuals.RetroBurn:
+          True: { visible: true }
+          False: { visible: false }
+      enum.FighterVisuals.PortBurn:
+        enum.FighterVisuals.PortBurn:
+          True: { visible: true }
+          False: { visible: false }
+      enum.FighterVisuals.StarboardBurn:
+        enum.FighterVisuals.StarboardBurn:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.7
+        density: 300
+        restitution: 0.1
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+        - MachineLayer
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 3
+            max: 6
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  # The AC-35 chaingun's round, rate of fire, velocity and spread. The cell holds a 2 s burst (28 rounds at 14/s),
+  # charges nothing until a quarter second after the last round, then refills in about 4 s (self-recharge steps once a
+  # second); emptied, the gun locks until full.
+  # Shots leave from the fighter, not from the pilot sat inside it.
+  - type: GunUseGunOrigin
+  - type: Gun
+    fireRate: 14
+    projectileSpeed: 390
+    minAngle: 0
+    maxAngle: 2
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+    soundGunshot:
+      path: /Audio/_Mono/Weapons/Guns/Gunshots/needler.ogg
+    soundEmpty:
+      path: /Audio/Weapons/Guns/Empty/lmg_empty.ogg
+  - type: Battery
+    maxCharge: 140
+    startingCharge: 140
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 35
+    autoRechargePause: true
+    autoRechargePauseTime: 0.25
+  - type: ProjectileBatteryAmmoProvider
+    proto: 35mmBulletAP
+    fireCost: 5
+  - type: RadarBlip
+    radarColor: "#E3E3E3"
+    scale: 2
+    requireNoGrid: true
+    shape: triangle
+  - type: StaticPrice
+    price: 3000

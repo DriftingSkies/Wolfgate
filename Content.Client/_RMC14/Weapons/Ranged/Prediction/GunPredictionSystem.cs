@@ -97,7 +97,8 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
             if (_timing.IsFirstTimePredicted)
                 continue;
 
-            if (predicted.Coordinates is { } coordinates)
+            if (predicted.Coordinates is { } coordinates
+                && coordinates.EntityId != uid && Exists(coordinates.EntityId)) // WOLFGATE(Weapons): the grid under a predicted round can be deleted mid-flight
                 _transform.SetCoordinates(uid, coordinates);
 
             predicted.Coordinates = null;

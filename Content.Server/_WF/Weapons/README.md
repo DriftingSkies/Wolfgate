@@ -136,6 +136,7 @@ the CHARON keeps firing without a click in the loader window per slug. `WFLoader
   - collisions that arrived outside a first-time tick, handled on the next one
   - SharedGunSystem.OnShootRequest replays RequestShootEvent when repredicting instead
   - sweep copies fired this tick before physics moves them
+  - the grid under a predicted round can be deleted mid-flight
   - moved to SharedGunSystem.OnShootRequest, which now replays RequestShootEvent when repredicting
   - hits go through Hit, filtered like the server and deferred off first-time ticks
   - same filter as SharedProjectileSystem.OnStartCollide, which skips predicted copies
