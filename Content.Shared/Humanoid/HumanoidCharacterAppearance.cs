@@ -244,10 +244,17 @@ public sealed partial class HumanoidCharacterAppearance : ICharacterAppearance, 
             markingSet = MarkingSet.ForProfile(appearance.Markings, speciesProto.MarkingPoints, mismatchedParts, markingManager, proto); // WOLFGATE(Species): was new MarkingSet(...), opens the species' closed categories
             markingSet.EnsureValid(markingManager);
 
-            if (!Humanoid.SkinColor.VerifySkinColor(speciesProto.SkinColoration, skinColor))
+            // WOLFGATE(Species) START: Mismatched parts lets the skin take any colour
+            // if (!Humanoid.SkinColor.VerifySkinColor(speciesProto.SkinColoration, skinColor))
+            // {
+            //     skinColor = Humanoid.SkinColor.ValidSkinTone(speciesProto.SkinColoration, skinColor);
+            // }
+            var skinColoration = MismatchedPartsRules.SkinColoration(speciesProto.SkinColoration, mismatchedParts);
+            if (!Humanoid.SkinColor.VerifySkinColor(skinColoration, skinColor))
             {
-                skinColor = Humanoid.SkinColor.ValidSkinTone(speciesProto.SkinColoration, skinColor);
+                skinColor = Humanoid.SkinColor.ValidSkinTone(skinColoration, skinColor);
             }
+            // WOLFGATE END
 
             // WOLFGATE(Species) START: per-species eye colour, ported from HardLight/Starlight
             if (!Humanoid.EyeColor.VerifyEyeColor(speciesProto.EyeColoration, eyeColor))

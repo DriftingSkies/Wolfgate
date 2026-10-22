@@ -1,0 +1,236 @@
+- type: entity
+  parent: BaseLamp
+  id: AuroraFlashlightLampBox
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamp_box.rsi
+    layers:
+    - state: boxlamp
+      map: [ base ]
+    - state: boxlamp-on
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: BubberFlashlightLampBananalamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamp_bananalamp.rsi
+    layers:
+    - state: bananalamp
+      map: [ base ]
+    - state: bananalamp-on
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: GoonLightLampBlack
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamp_black.rsi
+    layers:
+    - state: lamp1
+      map: [ base ]
+    - state: lamp1
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: TgFlashlightLampGreen
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamp_green.rsi
+    layers:
+    - state: lampgreen
+      map: [ base ]
+    - state: lampgreen-on
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: GoonDeviceLightLavaLamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamps_goonstation.rsi
+    layers:
+    - state: lava_lamp-blue0
+      map: [ base ]
+    - state: lava_lamp-blue0
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: GoonLantern
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamps_goonstation.rsi
+    layers:
+    - state: lantern
+      map: [ base ]
+    - state: lantern
+      shader: unshaded
+      visible: false
+      map: [ light ]
+    snapCardinals: false
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: TgFlashlightLampSpaceBubble
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamp_space_bubble.rsi
+    layers:
+    - state: space_lamp
+      map: [ base ]
+    - state: space_lamp-on
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: GoonDecorationRegallamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamps_goonstation.rsi
+    layers:
+    - state: lamp_regal_unlit
+      map: [ base ]
+    - state: lamp_regal_unlit
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: GoonDecorationRegallampWalp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamps_goonstation.rsi
+    layers:
+    - state: lamp_walp_unlit
+      map: [ base ]
+    - state: lamp_walp_unlit
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: CMFlashlightLampTripod
+  suffix: flashlight
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamp_tripod.rsi
+    layers:
+    - state: tripod_lamp
+      map: [ base ]
+    - state: tripod_lamp-on
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: CMLampTripodGrey
+  suffix: grey
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/tripod_grey.rsi
+    layers:
+    - state: tripod_lamp_grey
+      map: [ base ]
+    - state: tripod_lamp_grey-on
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: BaseLamp
+  id: GoonLightFlamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/light_flamp_goonstation.rsi
+    layers:
+    - state: flamp1
+      map: [ base ]
+    - state: flamp1
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+    size: Huge
+
+- type: entity
+  parent: Poweredlight
+  id: NebulaLightFlamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/light_flamp_nebula.rsi
+    offset: "0,0"
+
+- type: entity
+  parent: Poweredlight
+  id: PolarisLightFlamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/light_flamp_polaris.rsi
+    offset: "0,0"
+
+- type: entity
+  parent: BaseLamp
+  id: GoonStoneLamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/lamps_32x64_goonstation.rsi
+    layers:
+    - state: lamp1
+      map: [ base ]
+    - state: lamp1
+      shader: unshaded
+      visible: false
+      map: [ light ]
+  - type: Item
+    sprite: Objects/Misc/Lights/lamp.rsi
+
+- type: entity
+  parent: Poweredlight
+  id: VoreLightBigfloorlamp
+  suffix: bigfloorlamp
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/light_bigfloorlamp.rsi
+    offset: "0,0"

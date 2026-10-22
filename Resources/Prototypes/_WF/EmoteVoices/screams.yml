@@ -203,72 +203,6 @@
   sound:
     collection: VoxScreams
 
-- type: emoteVoice
-  id: WFScreamProtoHumie
-  emote: Scream
-  name: emote-voice-name-proto-humie
-  sound:
-    collection: ProtoHumanMScreams
-  sexSounds:
-    Female:
-      collection: ProtoHumanFScreams
-
-- type: emoteVoice
-  id: WFScreamProtoHumieMasculine
-  emote: Scream
-  name: emote-voice-name-proto-humie-masculine
-  sound:
-    collection: ProtoHumanMScreams
-
-- type: emoteVoice
-  id: WFScreamProtoHumieFeminine
-  emote: Scream
-  name: emote-voice-name-proto-humie-feminine
-  sound:
-    collection: ProtoHumanFScreams
-
-- type: emoteVoice
-  id: WFScreamProtoArachnid
-  emote: Scream
-  name: emote-voice-name-proto-arachnid
-  sound:
-    collection: ProtoArachnidScreams
-
-- type: emoteVoice
-  id: WFScreamProtoAvali
-  emote: Scream
-  name: emote-voice-name-proto-avali
-  sound:
-    collection: ProtoAvaliScreams
-
-- type: emoteVoice
-  id: WFScreamProtoFeline
-  emote: Scream
-  name: emote-voice-name-proto-feline
-  sound:
-    collection: ProtoFelionoidScreams
-
-- type: emoteVoice
-  id: WFScreamProtoMoth
-  emote: Scream
-  name: emote-voice-name-proto-moth
-  sound:
-    collection: ProtoMothScreams
-
-- type: emoteVoice
-  id: WFScreamProtoVox
-  emote: Scream
-  name: emote-voice-name-proto-vox
-  sound:
-    collection: ProtoVoxScreams
-
-- type: emoteVoice
-  id: WFScreamProtoVulpkanin
-  emote: Scream
-  name: emote-voice-name-proto-vulpkanin
-  sound:
-    collection: ProtoVulpScreams
-
 # Nova Sector
 
 - type: emoteVoice
@@ -406,3 +340,71 @@
   name: emote-voice-name-plasmaman
   sound:
     collection: WFScreamsPlasmaman
+
+# The robotic voice packs ported from HardLight (Far Horizons): any character may pick them, synthetic ones most of all.
+
+- type: emoteVoice
+  id: WFScreamProtoHumie
+  emote: Scream
+  name: emote-voice-name-proto-humie
+  sound:
+    collection: ProtoHumanMScreams
+  sexSounds:
+    Female:
+      collection: ProtoHumanFScreams
+
+- type: emoteVoice
+  id: WFScreamProtoHumieMasculine
+  emote: Scream
+  name: emote-voice-name-proto-humie-masculine
+  sound:
+    collection: ProtoHumanMScreams
+
+- type: emoteVoice
+  id: WFScreamProtoHumieFeminine
+  emote: Scream
+  name: emote-voice-name-proto-humie-feminine
+  sound:
+    collection: ProtoHumanFScreams
+
+- type: emoteVoice
+  id: WFScreamProtoArachnid
+  emote: Scream
+  name: emote-voice-name-proto-arachnid
+  sound:
+    collection: ProtoArachnidScreams
+
+- type: emoteVoice
+  id: WFScreamProtoAvali
+  emote: Scream
+  name: emote-voice-name-proto-avali
+  sound:
+    collection: ProtoAvaliScreams
+
+- type: emoteVoice
+  id: WFScreamProtoFeline
+  emote: Scream
+  name: emote-voice-name-proto-feline
+  sound:
+    collection: ProtoFelionoidScreams
+
+- type: emoteVoice
+  id: WFScreamProtoMoth
+  emote: Scream
+  name: emote-voice-name-proto-moth
+  sound:
+    collection: ProtoMothScreams
+
+- type: emoteVoice
+  id: WFScreamProtoVox
+  emote: Scream
+  name: emote-voice-name-proto-vox
+  sound:
+    collection: ProtoVoxScreams
+
+- type: emoteVoice
+  id: WFScreamProtoVulpkanin
+  emote: Scream
+  name: emote-voice-name-proto-vulpkanin
+  sound:
+    collection: ProtoVulpScreams

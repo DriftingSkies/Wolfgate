@@ -9,6 +9,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): sharp xeno claws break a plastitanium window in eight hits; its 3500 health would otherwise take hundreds
+  - type: ReceiverXenoClaws
+    maxHealth: 3500
+    hitsToDestroy: 8
+    minimumClawStrength: Sharp
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:

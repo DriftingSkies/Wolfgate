@@ -123,6 +123,12 @@ public static class MismatchedPartsRules
         return styles.Count > 0 ? styles : null;
     }
 
+    /// <summary>How a character's skin colour is limited: any colour with the option on, otherwise as the species says.</summary>
+    public static HumanoidSkinColor SkinColoration(HumanoidSkinColor species, bool mismatchedParts)
+    {
+        return mismatchedParts ? HumanoidSkinColor.AnyColour : species;
+    }
+
     private static HumanoidVisualLayers? Layer(MarkingCategories category)
     {
         return category switch

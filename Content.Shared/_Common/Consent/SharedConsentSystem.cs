@@ -14,6 +14,7 @@ public abstract partial class SharedConsentSystem : EntitySystem
 {
     [Dependency] protected readonly SharedMindSystem _mindSystem = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
+    [Dependency] private IPrototypeManager _prototype = default!; // WOLFGATE(CorticalBorer): toggle defaults
 
     protected virtual bool ConsentTextUpdatedSinceLastRead(Entity<ConsentComponent> targetEnt, EntityUid readerUid)
     {
@@ -42,7 +43,12 @@ public abstract partial class SharedConsentSystem : EntitySystem
             return true;
         }
 
-        return ent.Comp.ConsentSettings.Toggles.TryGetValue(consentId, out var val) && val == "on";
+        // WOLFGATE(CorticalBorer) START: an unset toggle takes its default
+        if (ent.Comp.ConsentSettings.Toggles.TryGetValue(consentId, out var val))
+            return val == "on";
+
+        return _prototype.TryIndex(consentId, out var proto) && proto.DefaultOn;
+        // WOLFGATE END
     }
 
     private void OnGetExamineVerbs(Entity<ConsentComponent> ent, ref GetVerbsEvent<ExamineVerb> args)

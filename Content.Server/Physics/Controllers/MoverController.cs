@@ -8,6 +8,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
 using Content.Shared.Ghost; // Frontier
+using Content.Shared._WF.MappingMode; // WOLFGATE(MappingMode)
 using Prometheus;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
@@ -34,6 +35,7 @@ public sealed partial class MoverController : SharedMoverController
     [Dependency] private EntityQuery<DroneConsoleComponent> _droneQuery = default!;
     [Dependency] private EntityQuery<ShuttleComponent> _shuttleQuery = default!;
     [Dependency] private EntityQuery<GhostComponent> _ghostQuery = default!;
+    [Dependency] private EntityQuery<WFMappingObserverComponent> _wfMapperQuery = default!; // WOLFGATE(MappingMode)
 
     // Not needed for persistence; just used to save an alloc
     private readonly HashSet<EntityUid> _seenMovers = [];
@@ -197,7 +199,10 @@ public sealed partial class MoverController : SharedMoverController
         var inputQueryEnumerator = AllEntityQuery<ActiveInputMoverComponent, InputMoverComponent>();
         while (inputQueryEnumerator.MoveNext(out var uid, out var activeComp, out var moverComp))
         {
-            if (IsPaused(uid) && !_ghostQuery.HasComp(uid)) // Frontier: Skip processing paused entities. Ghosts are excepted for mapping reasons
+            // WOLFGATE(MappingMode) START: mapping observers move on their paused session maps like admin ghosts
+            // if (IsPaused(uid) && !_ghostQuery.HasComp(uid)) // Frontier: Skip processing paused entities. Ghosts are excepted for mapping reasons
+            if (IsPaused(uid) && !_ghostQuery.HasComp(uid) && !_wfMapperQuery.HasComp(uid))
+            // WOLFGATE END
                 continue; // Frontier
 
             _seenRelayMovers.Clear(); // O(1) if already empty

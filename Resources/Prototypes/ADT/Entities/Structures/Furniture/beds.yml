@@ -1,0 +1,32 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: Bed
+  id: ADTDeckChair
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/deckchair.rsi
+    noRot: false
+    state: deckchair
+  - type: Construction
+    graph: DecorBuildADTDeckChair
+    node: built
+  - type: Strap
+    position: Down
+    rotation: -90
+    buckleOffset: "0,-0.15"
+  - type: Icon
+    sprite: ADT/Structures/Furniture/deckchair.rsi
+    state: deckchair
+
+- type: entity
+  parent: Bed
+  id: ADTCarBed
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/carbed.rsi
+    noRot: false
+    state: carbed
+  - type: Icon
+    sprite: ADT/Structures/Furniture/carbed.rsi
+    state: carbed
+# WOLFGATE END

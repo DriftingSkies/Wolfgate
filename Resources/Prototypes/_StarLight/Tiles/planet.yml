@@ -1,0 +1,25 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: decal
+  id: AbyssBushOne
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: /Textures/_Starlight/Decals/Abyss/bushes.rsi
+    state: bush1
+
+- type: decal
+  id: AbyssBushTwo
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: /Textures/_Starlight/Decals/Abyss/bushes.rsi
+    state: bush2
+
+- type: decal
+  id: AbyssBushThree
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: /Textures/_Starlight/Decals/Abyss/bushes.rsi
+    state: bush3
+# WOLFGATE END

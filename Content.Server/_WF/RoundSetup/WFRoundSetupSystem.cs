@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Content.Server.Database;
 using Content.Server.GameTicking;
 using Content.Server.Preferences.Managers;
+using Content.Shared._WF.MappingMode;
 using Content.Shared._WF.RoundSetup;
 using Content.Shared._WF.ShipAccess;
 using Content.Shared.GameTicking;
@@ -153,6 +154,10 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
     /// <summary>Authenticates and rate-limits each membership or setup operation.</summary>
     private void OnRequest(WFRoundSetupRequest msg, EntitySessionEventArgs args)
     {
+        // Mapping mode has no rounds to set up.
+        if (_demoConfig.GetCVar(WFMappingModeCVars.Enabled))
+            return;
+
         var session = args.SenderSession;
         var user = session.UserId;
         // A keep-alive only extends the viewer's lease, so it skips the rate limit and sends nothing back.

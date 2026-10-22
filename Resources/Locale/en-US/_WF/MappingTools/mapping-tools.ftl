@@ -147,3 +147,76 @@ wf-mapping-tools-edit-place = place
 wf-mapping-tools-edit-erase = erase
 wf-mapping-tools-edit-tile = tile placement
 wf-mapping-tools-edit-decal = decal edit
+wf-mapping-tools-edit-draw-tiles = tile drawing
+wf-mapping-tools-edit-draw-entities = entity drawing
+wf-mapping-tools-edit-erase-decals = decal erase
+wf-mapping-tools-edit-erase-entities = entity erase
+wf-mapping-tools-edit-draw-pipes = pipe laying
+wf-mapping-tools-edit-paint-pipes = pipe painting
+wf-mapping-tools-edit-place-pipe-device = atmos device placement
+
+wf-mapping-tools-draw-too-many = That covers too many tiles; the most is {$max}.
+wf-mapping-tools-draw-bad = That shape can't be drawn.
+wf-mapping-tools-draw-bad-tile = That tile doesn't exist.
+wf-mapping-tools-draw-bad-prototype = That can't be placed.
+wf-mapping-tools-draw-not-allowed = You can't use the mapping tools right now.
+wf-mapping-tools-draw-nothing = Nothing there to change.
+wf-mapping-tools-protected = Players, ghosts and observers can't be erased.
+wf-mapping-tools-draw-needs-grid = Entities need a floor. Draw tiles there first.
+wf-mapping-tools-draw-no-tiles = None of those cells has a floor to put that on.
+wf-mapping-tools-draw-skipped = Skipped {$count} {$count ->
+    [one] cell
+   *[other] cells
+} with no floor.
+wf-mapping-tools-pipes-no-floor = Pipes need a floor, and {$count} {$count ->
+    [one] cell has
+   *[other] cells have
+} none.
+wf-mapping-tools-pipes-nothing = Nothing to change: the pipes there already connect that way and are that colour.
+wf-mapping-tools-pipes-paint-nothing = That network is already that colour.
+wf-mapping-tools-pipes-all-skipped = {$skipped ->
+    [one] That cell already has a pipe.
+   *[other] Those {$skipped} cells already have pipes.
+} Turn on Replace to rebuild them.
+wf-mapping-tools-pipes-all-blocked = {$blocked ->
+    [one] A device or a stack of pipes is in the way there.
+   *[other] Devices or stacks of pipes are in the way on those {$blocked} cells.
+} They're never rebuilt.
+wf-mapping-tools-pipes-all-skipped-blocked = Nothing laid: {$skipped} {$skipped ->
+    [one] cell already has a pipe
+   *[other] cells already have pipes
+} (turn on Replace to rebuild them) and {$blocked} {$blocked ->
+    [one] cell holds a device
+   *[other] cells hold devices
+}.
+wf-mapping-tools-pipes-laid-skipped = Laid {$laid} {$laid ->
+    [one] pipe
+   *[other] pipes
+}; {$skipped} {$skipped ->
+    [one] cell already had a pipe
+   *[other] cells already had pipes
+} (turn on Replace to rebuild them).
+wf-mapping-tools-pipes-laid-blocked = Laid {$laid} {$laid ->
+    [one] pipe
+   *[other] pipes
+}; {$blocked} {$blocked ->
+    [one] cell holds a device and was
+   *[other] cells hold devices and were
+} left alone.
+wf-mapping-tools-pipes-laid-skipped-blocked = Laid {$laid} {$laid ->
+    [one] pipe
+   *[other] pipes
+}; {$skipped} {$skipped ->
+    [one] cell already had a pipe
+   *[other] cells already had pipes
+} (turn on Replace to rebuild them) and {$blocked} {$blocked ->
+    [one] cell holds a device
+   *[other] cells hold devices
+}.
+wf-mapping-tools-pipes-device-bad = That isn't one of the atmos devices.
+wf-mapping-tools-pipes-device-no-layer = The {$device} only goes on layer 1, not layer {$layer}.
+wf-mapping-tools-pipes-device-no-floor = Devices need a floor. Draw tiles there first.
+wf-mapping-tools-pipes-device-blocked = A device or a stack of pipes is already there.
+wf-mapping-tools-pipes-device-occupied = A pipe is already there. Turn on Replace to swap it for the device.
+wf-mapping-tools-pipes-needs-color = Pick a colour to paint with first.
+wf-mapping-tools-pipes-no-pipe = There's no pipe there.

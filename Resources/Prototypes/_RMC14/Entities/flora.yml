@@ -1,0 +1,21 @@
+# WOLFGATE(DecorImport) START: ported from Einstein Engines
+- type: entity
+  parent: BaseTree
+  id: RMCFloraTreePalm02
+  components:
+  - type: Sprite
+    state: palm2
+    sprite: _RMC14/Objects/Flora/palm.rsi
+    offset: "0,0.7"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.1,-0.3,0.1,0.3"
+        density: 4000
+        layer: [ WallLayer ]
+  - type: Icon
+    sprite: _RMC14/Objects/Flora/palm.rsi
+    state: palm2
+# WOLFGATE END

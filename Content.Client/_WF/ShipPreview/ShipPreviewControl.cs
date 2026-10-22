@@ -7,6 +7,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Graphics;
 using Robust.Shared.Input;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -20,6 +21,7 @@ public sealed partial class ShipPreviewControl : Control
 {
     [Dependency] private IClyde _clyde = default!;
     [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private IPrototypeManager _protoMan = default!;
 
     /// <summary>Fraction of the control the fitted grid leaves free on each axis.</summary>
     private const float FitMargin = 1.1f;
@@ -76,6 +78,9 @@ public sealed partial class ShipPreviewControl : Control
 
     /// <summary>Bounding box of the previewed grid, in tiles.</summary>
     public Vector2i GridSize { get; private set; }
+
+    /// <summary>Estimated strongest planet gravity, in g, the grid lifts off in; see <see cref="ShipPreviewLift"/>.</summary>
+    public float MaxLiftGravity { get; private set; }
 
     /// <summary>Whether a grid is currently loaded and drawn.</summary>
     public bool HasPreview => _hasGrid;
@@ -245,6 +250,7 @@ public sealed partial class ShipPreviewControl : Control
         _hasGrid = true;
         TileCount = preview.TileCount;
         GridSize = preview.SizeInTiles;
+        MaxLiftGravity = ShipPreviewLift.MaxLiftGravity(_entMan, _protoMan, _grid, TileCount);
 
         _status.Visible = false;
         _eye.Position = new MapCoordinates(_bounds.Center, _handle.PreviewMap);
@@ -266,6 +272,7 @@ public sealed partial class ShipPreviewControl : Control
         _dragging = false;
         TileCount = 0;
         GridSize = Vector2i.Zero;
+        MaxLiftGravity = 0f;
         SetStatus(status);
     }
 

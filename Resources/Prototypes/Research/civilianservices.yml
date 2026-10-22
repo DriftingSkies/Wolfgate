@@ -180,13 +180,13 @@
   - AdvancedRetractor
   - BorgModuleAdvancedSurgery
   - DefibrillatorCompact # Mono
-  # WOLFGATE(Wolfmed) START: AUTODOC: the program disks and modules the medical lathe lists, behind the same research as the rest of surgery.
-  - WFAutodocProgramDiskTransplant
-  - WFAutodocProgramDiskLimb
-  - WFAutodocProgramDiskNeuro
-  - WFAutodocProgramDiskCavity
-  - WFAutodocDefibModule
-  - WFAutodocAutofixModule
+  # WOLFGATE(Wolfmed) START: AUTODOC: the program disks moved to High-End Surgery with the pod
+  # - WFAutodocProgramDiskTransplant
+  # - WFAutodocProgramDiskLimb
+  # - WFAutodocProgramDiskNeuro
+  # - WFAutodocProgramDiskCavity
+  # - WFAutodocDefibModule
+  # - WFAutodocAutofixModule
   # WOLFGATE END
   technologyPrerequisites:
   - SuperParts

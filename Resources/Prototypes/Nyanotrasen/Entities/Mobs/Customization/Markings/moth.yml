@@ -4,7 +4,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -19,7 +19,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -34,7 +34,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -49,7 +49,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -64,7 +64,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -79,7 +79,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -94,7 +94,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -109,7 +109,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -124,7 +124,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -139,7 +139,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -154,7 +154,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -169,7 +169,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -184,7 +184,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -199,7 +199,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -214,7 +214,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -229,7 +229,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -244,7 +244,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -259,7 +259,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -274,7 +274,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -289,7 +289,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -304,7 +304,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -319,7 +319,7 @@
   bodyPart: HeadTop
   markingCategory: HeadTop
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -335,7 +335,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -360,7 +360,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -385,7 +385,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -410,7 +410,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -435,7 +435,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -460,7 +460,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -485,7 +485,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -510,7 +510,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -535,7 +535,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -560,7 +560,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -585,7 +585,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -610,7 +610,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -635,7 +635,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -660,7 +660,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -685,7 +685,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -710,7 +710,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -735,7 +735,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -760,7 +760,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -785,7 +785,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -810,7 +810,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -835,7 +835,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -860,7 +860,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -885,7 +885,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -910,7 +910,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -935,7 +935,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -962,7 +962,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -977,7 +977,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -992,7 +992,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1007,7 +1007,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1022,7 +1022,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1037,7 +1037,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1054,7 +1054,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1069,7 +1069,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1084,7 +1084,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1099,7 +1099,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1114,7 +1114,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1129,7 +1129,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1145,7 +1145,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1160,7 +1160,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1175,7 +1175,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1190,7 +1190,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1205,7 +1205,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1220,7 +1220,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1236,7 +1236,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1251,7 +1251,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1266,7 +1266,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1281,7 +1281,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1296,7 +1296,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1311,7 +1311,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1327,7 +1327,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1342,7 +1342,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1357,7 +1357,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1372,7 +1372,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1387,7 +1387,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1402,7 +1402,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1418,7 +1418,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1433,7 +1433,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1448,7 +1448,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1463,7 +1463,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1478,7 +1478,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1493,7 +1493,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1509,7 +1509,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1524,7 +1524,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1539,7 +1539,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1554,7 +1554,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1569,7 +1569,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1584,7 +1584,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1600,7 +1600,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1615,7 +1615,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1630,7 +1630,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1645,7 +1645,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1660,7 +1660,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1675,7 +1675,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1691,7 +1691,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1706,7 +1706,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1721,7 +1721,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1736,7 +1736,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1751,7 +1751,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1766,7 +1766,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1782,7 +1782,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1797,7 +1797,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1812,7 +1812,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1827,7 +1827,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1842,7 +1842,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1857,7 +1857,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1873,7 +1873,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1888,7 +1888,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1903,7 +1903,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1918,7 +1918,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1933,7 +1933,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1948,7 +1948,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1964,7 +1964,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1979,7 +1979,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -1994,7 +1994,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2009,7 +2009,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2024,7 +2024,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2039,7 +2039,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2055,7 +2055,7 @@
   bodyPart: Head
   markingCategory: Head
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2070,7 +2070,7 @@
   bodyPart: Chest
   markingCategory: Chest
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2085,7 +2085,7 @@
   bodyPart: LArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2100,7 +2100,7 @@
   bodyPart: RArm
   markingCategory: Arms
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2115,7 +2115,7 @@
   bodyPart: LLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:
@@ -2130,7 +2130,7 @@
   bodyPart: RLeg
   markingCategory: Legs
   forcedColoring: true
-  speciesRestriction: [Moth, ProtoMoth] # WOLFGATE(Species): was [Moth]
+  speciesRestriction: [Moth]
   coloring:
     default:
       type:

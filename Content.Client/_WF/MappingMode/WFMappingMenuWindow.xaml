@@ -1,0 +1,120 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:mapping="clr-namespace:Content.Client._WF.MappingMode"
+                      Title="{Loc 'wf-mapping-mode-menu-title'}"
+                      MinSize="460 420"
+                      SetSize="560 640">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <TabContainer Name="Tabs" Access="Public" VerticalExpand="True">
+            <!-- Session -->
+            <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                    <BoxContainer Name="NoSessionBox" Access="Public" Orientation="Vertical" SeparationOverride="6">
+                        <Label Text="{Loc 'wf-mapping-mode-menu-no-session'}" />
+                        <Button Name="ReturnButton" Access="Public" Text="{Loc 'wf-mapping-mode-menu-return'}"
+                                ToolTip="{Loc 'wf-mapping-mode-menu-return-tooltip'}" TooltipDelay="0" />
+                    </BoxContainer>
+
+                    <BoxContainer Name="SessionBox" Access="Public" Orientation="Vertical" SeparationOverride="6">
+                        <Label Name="SessionNameLabel" Access="Public" StyleClasses="LabelHeading" ClipText="True" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <Label Name="CodeLabel" Access="Public" HorizontalExpand="True" VAlign="Center" />
+                            <Button Name="CopyCodeButton" Access="Public" Text="{Loc 'wf-mapping-mode-menu-copy'}" />
+                            <controls:ConfirmButton Name="NewCodeButton" Access="Public"
+                                                    Text="{Loc 'wf-mapping-mode-menu-new-code'}"
+                                                    ToolTip="{Loc 'wf-mapping-mode-menu-new-code-tooltip'}"
+                                                    TooltipDelay="0" />
+                        </BoxContainer>
+                        <Label Name="StatusLabel" Access="Public" StyleClasses="LabelSubText" ClipText="True" />
+
+                        <Label Text="{Loc 'wf-mapping-mode-menu-members'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+                        <BoxContainer Name="MemberList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+
+                        <Label Text="{Loc 'wf-mapping-mode-menu-autosave'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <OptionButton Name="AutosaveOption" Access="Public" MinWidth="160" />
+                            <Label Name="AutosaveHint" Access="Public" StyleClasses="LabelSubText" VAlign="Center"
+                                   HorizontalExpand="True" ClipText="True" />
+                        </BoxContainer>
+
+                        <Label Text="{Loc 'wf-mapping-mode-menu-grids'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <Label Name="GridsHint" Access="Public" StyleClasses="LabelSubText" VAlign="Center"
+                                   HorizontalExpand="True" ClipText="True" />
+                            <Button Name="NextGridButton" Access="Public" Text="{Loc 'wf-mapping-ship-menu-next-grid'}"
+                                    ToolTip="{Loc 'wf-mapping-ship-menu-next-grid-tooltip'}" TooltipDelay="0" />
+                            <Button Name="GridsRefreshButton" Access="Public" Text="{Loc 'wf-mapping-mode-lobby-refresh'}" />
+                        </BoxContainer>
+                        <BoxContainer Name="GridList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+                        <controls:ConfirmButton Name="DeleteGridButton" Access="Public"
+                                                Text="{Loc 'wf-mapping-mode-menu-delete-grid'}"
+                                                ToolTip="{Loc 'wf-mapping-mode-menu-delete-grid-tooltip'}"
+                                                TooltipDelay="0" />
+
+                        <Label Text="{Loc 'wf-mapping-mode-menu-reference'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+                        <Button Name="ReferenceButton" Access="Public" ToggleMode="True"
+                                Text="{Loc 'wf-mapping-mode-menu-reference-load'}" />
+                        <BoxContainer Name="ReferenceBox" Access="Public" Orientation="Vertical" SeparationOverride="4"
+                                      Visible="False">
+                            <Label Text="{Loc 'wf-mapping-mode-menu-reference-hint'}" StyleClasses="LabelSubText" />
+                            <LineEdit Name="ReferenceSearch" Access="Public"
+                                      PlaceHolder="{Loc 'wf-mapping-mode-menu-reference-search'}" />
+                            <ItemList Name="ReferenceList" Access="Public" SelectMode="Single" MinHeight="220" />
+                            <Button Name="ReferencePlaceButton" Access="Public" Disabled="True"
+                                    Text="{Loc 'wf-mapping-mode-menu-reference-place'}" />
+                        </BoxContainer>
+
+                        <Label Text="{Loc 'wf-mapping-modebar-menu-screen'}" StyleClasses="LabelHeading"
+                               Margin="0 6 0 0" />
+                        <Button Name="ResetLayoutButton" Access="Public" HorizontalAlignment="Left"
+                                Text="{Loc 'wf-mapping-modebar-menu-reset'}"
+                                ToolTip="{Loc 'wf-mapping-modebar-menu-reset-tooltip'}" TooltipDelay="0" />
+
+                        <controls:ConfirmButton Name="LeaveButton" Access="Public" Margin="0 12 0 0"
+                                                Text="{Loc 'wf-mapping-mode-menu-leave'}"
+                                                ToolTip="{Loc 'wf-mapping-mode-menu-leave-tooltip'}"
+                                                TooltipDelay="0" />
+                    </BoxContainer>
+                </BoxContainer>
+            </ScrollContainer>
+
+            <!-- Save -->
+            <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                <Label Text="{Loc 'wf-mapping-mode-menu-save-name'}" StyleClasses="LabelHeading" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <LineEdit Name="SaveNameEdit" Access="Public" HorizontalExpand="True" />
+                    <Button Name="SaveButton" Access="Public" Text="{Loc 'wf-mapping-mode-menu-save-now'}" />
+                </BoxContainer>
+                <Label Text="{Loc 'wf-mapping-mode-menu-save-hint'}" StyleClasses="LabelSubText" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8" Margin="0 8 0 0">
+                    <Button Name="ShipDownloadButton" Access="Public"
+                            Text="{Loc 'wf-mapping-ship-menu-download'}"
+                            ToolTip="{Loc 'wf-mapping-ship-menu-download-tooltip'}" TooltipDelay="0" />
+                    <mapping:WFMappingDownloadTargetPicker Name="SaveDownloadTarget" Access="Public" />
+                </BoxContainer>
+                <mapping:WFMappingDownloadRow Name="SaveDownloadRow" Access="Public" />
+                <Label Name="LastSavedLabel" Access="Public" Margin="0 8 0 0" />
+                <Label Name="NextAutosaveLabel" Access="Public" />
+                <Label Name="DirtyLabel" Access="Public" StyleClasses="LabelSubText" />
+            </BoxContainer>
+
+            <!-- Library -->
+            <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                    <Label Name="LibraryUsage" Access="Public" StyleClasses="LabelSubText" HorizontalExpand="True"
+                           VAlign="Center" />
+                    <Button Name="LibraryUploadButton" Access="Public" Text="{Loc 'wf-mapping-mode-upload-button'}"
+                            ToolTip="{Loc 'wf-mapping-mode-upload-button-tooltip'}" TooltipDelay="0" />
+                    <Button Name="LibraryRefreshButton" Access="Public" Text="{Loc 'wf-mapping-mode-lobby-refresh'}" />
+                </BoxContainer>
+                <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                    <mapping:WFMappingLibraryList Name="LibraryList" Access="Public" />
+                </ScrollContainer>
+                <mapping:WFMappingDownloadTargetPicker Name="DownloadTarget" Access="Public" />
+                <mapping:WFMappingDownloadRow Name="DownloadRow" Access="Public" />
+                <mapping:WFMappingUploadRow Name="UploadRow" Access="Public" />
+            </BoxContainer>
+        </TabContainer>
+        <Label Name="ResultLabel" Access="Public" ClipText="True" />
+    </BoxContainer>
+</controls:FancyWindow>

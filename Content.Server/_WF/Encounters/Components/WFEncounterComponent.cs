@@ -103,6 +103,9 @@ public sealed partial class WFEncounterComponent : Component
     /// <summary>The same count per attacking ship.</summary>
     public Dictionary<(EntityUid Attacker, string Side), int> ShipHits = new();
 
+    /// <summary>Crewmen of each side each player downed in person, kills and assists.</summary>
+    public Dictionary<Robust.Shared.Network.NetUserId, Dictionary<string, int>> Kills = new();
+
     /// <summary>Player ships a side has taken as allies for the encounter.</summary>
     public List<(EntityUid Ship, EntityUid Ally)> Allies = new();
 
@@ -114,6 +117,9 @@ public sealed partial class WFEncounterComponent : Component
 
     /// <summary>The vessels each side has called its guns onto, and when it may call each again.</summary>
     public Dictionary<(string Side, EntityUid Intruder), TimeSpan> Called = new();
+
+    /// <summary>The vessels its interrogating ships have asked, and when each may be asked again.</summary>
+    public Dictionary<EntityUid, TimeSpan> Interrogated = new();
 
     /// <summary>When its ships jump out, whoever is near.</summary>
     [DataField]
@@ -197,12 +203,23 @@ public sealed partial class WFEncounterShipState
     [DataField]
     public WFEncounterZoneTargets ZoneTargets;
 
+    /// <summary>Whether its zones leave player ships with hidden or unlabelled IFF alone until they fire.</summary>
+    [DataField]
+    public bool KnownThreatsOnly;
+
+    /// <summary>Whether its zones take on only NPC ships, leaving every player ship alone until it fires.</summary>
+    [DataField]
+    public bool NpcTargetsOnly;
+
     /// <summary>Companies its zones and hunt leave alone: never warned, fired on or boarded, though a shot at it is still answered.</summary>
     [DataField]
     public List<string> NeutralCompanies = new();
 
     /// <summary>Since when no player has been near it, while resolved.</summary>
     public TimeSpan? Quiet;
+
+    /// <summary>When players were last aboard it or docked with it, while resolved.</summary>
+    public TimeSpan? LastVisited;
 
     /// <summary>Whether it hunts player ships to dock with and board.</summary>
     [DataField]
@@ -267,6 +284,9 @@ public sealed partial class WFEncounterShipState
     /// <summary>Whether its orders are paused while players are aboard or docked with it.</summary>
     public bool Serving;
 
+    /// <summary>Until when it holds position for a ship that hailed it to stop, so that ship can come alongside.</summary>
+    public TimeSpan? HeldUntil;
+
     /// <summary>The ship a hunter's raid went aboard.</summary>
     public EntityUid? Boarded;
 
@@ -278,6 +298,12 @@ public sealed partial class WFEncounterShipState
 
     /// <summary>Intruders inside the attack zone that have been told so.</summary>
     public HashSet<EntityUid> Engaged = new();
+
+    /// <summary>Vessels that answered its interrogation as a threat: an interrogating zone fires on them for the encounter's life.</summary>
+    public HashSet<EntityUid> Declared = new();
+
+    /// <summary>Vessels in its warning zone that an interrogating zone has no cause to fire on, as of its last look: those it asks.</summary>
+    public HashSet<EntityUid> Strangers = new();
 }
 
 /// <summary>Marks a passenger an encounter put aboard one of its ships.</summary>

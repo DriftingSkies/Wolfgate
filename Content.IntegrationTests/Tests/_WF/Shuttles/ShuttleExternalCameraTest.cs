@@ -620,8 +620,18 @@ public sealed class ShuttleExternalCameraTest : InteractionTest
             Assert.That(Key(Keyboard.Key.MouseLeft, KeyEventType.Down, pointer).Handled, Is.False);
             Assert.That(Key(Keyboard.Key.MouseRight, KeyEventType.Down, outside).Handled, Is.False,
                 "A right click on another HUD control must retain its normal action.");
+            foreach (var held in new[] { Keyboard.Key.Shift, Keyboard.Key.Control, Keyboard.Key.Alt })
+            {
+                input.KeyDown(new KeyEventArgs(held, false, false, false, false, false, 0));
+                Assert.That(Key(Keyboard.Key.MouseRight, KeyEventType.Down, pointer).Handled, Is.False, $"{held} held leaves the press to other handlers.");
+                input.KeyUp(new KeyEventArgs(held, false, false, false, false, false, 0));
+            }
             foreach (var modifier in new[] { 1, 2, 3 })
-                Assert.That(Key(Keyboard.Key.MouseRight, KeyEventType.Down, pointer, modifier: modifier).Handled, Is.False);
+            {
+                Assert.That(Key(Keyboard.Key.MouseRight, KeyEventType.Down, pointer, modifier: modifier).Handled, Is.True,
+                    "A modifier the window reports but the engine never saw pressed must not block panning.");
+                system.WfEndCockpitInput();
+            }
             Assert.That(Key(Keyboard.Key.MouseRight, KeyEventType.Repeat, pointer).Handled, Is.False);
             Assert.That(Dragging(), Is.False);
 
@@ -660,8 +670,9 @@ public sealed class ShuttleExternalCameraTest : InteractionTest
             Assert.That(Dragging(), Is.False, "A released drag cannot resume on pointer return.");
 
             Key(Keyboard.Key.MouseRight, KeyEventType.Down, pointer);
-            Tick(pointer, false);
+            Focus(false);
             Assert.That(Dragging(), Is.False, "Focus loss cancels capture.");
+            Focus(true);
             Tick(pointer);
             Assert.That(Key(Keyboard.Key.MouseRight, KeyEventType.Repeat, pointer).Handled, Is.False);
             Assert.That(Dragging(), Is.False, "Refocusing while the button is held requires a fresh press.");
@@ -694,10 +705,13 @@ public sealed class ShuttleExternalCameraTest : InteractionTest
                     .Invoke(system, new object[] { args, type, mouse });
                 return args;
             }
-            void Tick(ScreenCoordinates mouse, bool focused = true) =>
+            void Tick(ScreenCoordinates mouse) =>
                 typeof(ShuttleExternalCameraSystem).GetMethod("UpdateDrag", BindingFlags.Instance | BindingFlags.NonPublic,
-                    null, new[] { typeof(EntityUid), typeof(ScreenCoordinates), typeof(bool) }, null)!
-                    .Invoke(system, new object[] { ToClient(_grid.Owner), mouse, focused });
+                    null, new[] { typeof(EntityUid), typeof(ScreenCoordinates) }, null)!
+                    .Invoke(system, new object[] { ToClient(_grid.Owner), mouse });
+            void Focus(bool focused) =>
+                typeof(ShuttleExternalCameraSystem).GetMethod("OnWindowFocused", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(system, new object[] { new WindowFocusedEventArgs(focused, Client.ResolveDependency<IClyde>().MainWindow) });
             bool Dragging() => (bool) typeof(ShuttleExternalCameraSystem)
                 .GetField("_dragging", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(system)!;
             Vector2? LastMouse() => (Vector2?) typeof(ShuttleExternalCameraSystem)

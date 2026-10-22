@@ -1,0 +1,343 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  id: RoundTableSteel
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_generic
+    snapCardinals: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 35
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Construction
+    graph: DecorBuildRoundTableSteel
+    node: built
+  - type: Anchorable
+  - type: Transform
+  - type: PlaceableSurface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Climbable
+  - type: Clickable
+  - type: Bonkable
+    bonkDamage:
+      types:
+        Blunt: 3
+  - type: StaticPrice
+    price: 22
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_generic
+
+- type: entity
+  id: RoundTableWood
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_wood
+    snapCardinals: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Construction
+    graph: DecorBuildRoundTableWood
+    node: built
+  - type: Anchorable
+  - type: Transform
+  - type: PlaceableSurface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Climbable
+  - type: Clickable
+  - type: Bonkable
+    bonkDamage:
+      types:
+        Blunt: 3
+  - type: StaticPrice
+    price: 30
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_wood
+
+- type: entity
+  id: RoundTableCarpet
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_carpet
+    snapCardinals: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Construction
+    graph: DecorBuildRoundTableCarpet
+    node: built
+  - type: Anchorable
+  - type: Transform
+  - type: PlaceableSurface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Climbable
+  - type: Clickable
+  - type: Bonkable
+    bonkDamage:
+      types:
+        Blunt: 3
+  - type: StaticPrice
+    price: 30
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_carpet
+
+- type: entity
+  id: RoundTablePlastic
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_plastic
+    snapCardinals: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Construction
+    graph: DecorBuildRoundTablePlastic
+    node: built
+  - type: Anchorable
+  - type: Transform
+  - type: PlaceableSurface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Climbable
+  - type: Clickable
+  - type: Bonkable
+    bonkDamage:
+      types:
+        Blunt: 3
+  - type: StaticPrice
+    price: 30
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_plastic
+
+- type: entity
+  id: RoundTableGlass
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_glass
+    snapCardinals: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Construction
+    graph: DecorBuildRoundTableGlass
+    node: built
+  - type: Anchorable
+  - type: Transform
+  - type: PlaceableSurface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Climbable
+  - type: Clickable
+  - type: Bonkable
+    bonkDamage:
+      types:
+        Blunt: 3
+  - type: StaticPrice
+    price: 25
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_glass
+
+- type: entity
+  id: RoundTablePlasma
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_plasma
+    snapCardinals: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 35
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Construction
+    graph: DecorBuildRoundTablePlasma
+    node: built
+  - type: Anchorable
+  - type: Transform
+  - type: PlaceableSurface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Climbable
+  - type: Clickable
+  - type: Bonkable
+    bonkDamage:
+      types:
+        Blunt: 3
+  - type: StaticPrice
+    price: 54
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/roundtable.rsi
+    state: round_plasma
+# WOLFGATE END

@@ -1,0 +1,205 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: PottedPlantBase
+  id: RMCGrassDesert1
+  components:
+  - type: Sprite
+    state: lightgrass_2
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Grass/desert_lightgrass.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Grass/desert_lightgrass.rsi
+    state: lightgrass_2
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCGrassDesert7
+  components:
+  - type: Sprite
+    state: lightgrass_8
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Grass/desert_lightgrass.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Grass/desert_lightgrass.rsi
+    state: lightgrass_8
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCGrassDesert11
+  components:
+  - type: Sprite
+    state: lightgrass_12
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Grass/desert_lightgrass.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Grass/desert_lightgrass.rsi
+    state: lightgrass_12
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCGrassDesertHeavy1
+  components:
+  - type: Sprite
+    state: heavygrass_2
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Grass/desert_heavygrass.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Grass/desert_heavygrass.rsi
+    state: heavygrass_2
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCGrassDesertHeavy3
+  components:
+  - type: Sprite
+    state: heavygrass_4
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Grass/desert_heavygrass.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Grass/desert_heavygrass.rsi
+    state: heavygrass_4
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCGrassDesertHeavy7
+  components:
+  - type: Sprite
+    state: heavygrass_8
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Grass/desert_heavygrass.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Grass/desert_heavygrass.rsi
+    state: heavygrass_8
+# WOLFGATE END

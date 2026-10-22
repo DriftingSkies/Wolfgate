@@ -11,11 +11,20 @@ membership where available, otherwise a shared NPC faction. A crew's ordered doc
 for that approach. Incoming ships do not cause the stationary crew to announce that it is docking. Radio officers
 announce their own approach and completed docking, and warn unauthorized arrivals.
 
+`WFCrewSparedSystem` marks player vessels a crew takes for its own side: a hull showing the crew's faction on its IFF,
+or, running dark or under another flag, one with a living, uncuffed player of that faction aboard. They are never
+warned, hunted or zoned, and their fire is answered only past `OwnFactionStrayHits` (40) hits in 30 s.
+
 A profile can name datasets its crews' first and last names come from (`firstNames`, `lastNames`) and components every
 crewman gets (`components`), so a faction's people sound like one: Union crews carry Russian names and a Russian accent,
 Federation and Dynasty crews their own names, pirates nicknames and a pirate's drawl. Each navy's loadouts wear its own
 headset, with the faction channel's key, and its own service ID cards (TSFMC, PDV and USSP ranks; pirate and mercenary
 cards for those crews); every crew card carries the crewman's name and role title.
+A profile can give its roles titles of its own (`titles`, by role: the ADS calls its pilot a Helm Unit, not a First
+Officer), used on the crewman's name and card in place of the role's. A profile can also swap hull parts out (`hullSwaps`): the encounter system applies them to a ship's grid before anything
+goes aboard, so pirates never fly adamantite (the black-market hulls' plating becomes plain plastitanium in place,
+anchored and turned as it was). Every profile that kits its crew as pirates (the Reavers, corsairs and fugitives) must
+swap all of it; `PirateProfilesNeverFlyAdamantite` checks this.
 
 An engineer (`WFCrewEngineer`) is posted beside the plant on every encounter ship whose roles allow one. The ship
 arrives commissioned (generators full and lit, antimatter engine jarred and injecting, fission reactor fuelled with
@@ -49,6 +58,17 @@ An attacking ship presents its guns. Every 30 s `WFPilotDutySystem.GunBearings` 
 hull, the guns with a clear line of fire past their own ship (fire control's own test); inside 1.5 times its attack
 orbit the pilot holds the best armed bearing on the target, taking the nearer of equal sides, instead of flying nose
 along the orbit. A hull whose guns bear equally all round flies as before.
+
+Conduct aboard (`WFCrewConductSystem`): a crew that does not already fight strangers and is not in a fight tells a
+player it sees with a gun in hand to put it away, and turns on him if it is still out after 10 s; holstered in time,
+nothing comes of it. Items aboard when an encounter ship is set up are marked `WFCrewPropertyComponent`; a player
+seen by one of its fighters picking one up is fought at once. A pilot with `FleeAttackers` (traders) runs directly
+away from the nearest attacking ship instead of circling it.
+
+Stealth (`WFCrewStealthSystem`): crews do not see a mob whose stealth field is up (a stealth suit) or a ship whose
+IFF is hidden (a cloak). `WFCrewWeaponSystem.CanSee` drops the mob, and the alert ship lists, zones, hunts and extort
+marks drop the ship. A hostile act shows either to every crew for a while: a mob that attacks, strips or robs a crew
+or fires a gun is seen for 60 s, and a ship reported attacking for 120 s. A theft in plain view is still noticed.
 
 A Warn crew gives a stranger it notices aboard `WarnTime` (30 s) to leave; if he stays, or strikes any crewman, the
 crew's fighters (on-sight crew, marines, the captain and radio officer; not the helm or the guns) take him on as
@@ -102,6 +122,9 @@ Autonomous crew projectiles pass through allies; allied damage is also stopped b
 retaliation. Crews holster when no living hostile remains. Forward travel faces the destination, and pilots face
 their console when taking the helm. Spawned crew register ordinary, revocable ID credentials even on map-loaded
 ships that do not yet have ship access management.
+A gunner's guns hold fire while any ship its crew does not count as hostile lies between them and the aim point
+(`WFGunnerDutySystem.LineOfFire.cs`, a ray per gun every half second), so bystanders and friends are not shot through;
+a company whose `wfStanding` has `recklessFire` (the Reavers) fires through anything.
 Crew-operated cannon rounds also protect allies and allied hulls, retaining their firing origin after a gunner dies
 or a player takes over. Explicit Attack orders, incoming fire and hostile docking permit retaliation against
 the targeted ship, including a normally friendly company; escorts in the same formation remain protected. Before a
@@ -236,10 +259,13 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Components/WFCaptainComponent.cs`](Components/WFCaptainComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewComponent.cs`](Components/WFCrewComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewEngineerComponent.cs`](Components/WFCrewEngineerComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFCrewOnSightComponent.cs`](Components/WFCrewOnSightComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFCrewPropertyComponent.cs`](Components/WFCrewPropertyComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewRadioComponent.cs`](Components/WFCrewRadioComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewRepairComponent.cs`](Components/WFCrewRepairComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSecurityComponent.cs`](Components/WFCrewSecurityComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewShipFireComponent.cs`](Components/WFCrewShipFireComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFCrewShipProfileComponent.cs`](Components/WFCrewShipProfileComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSpawnPointComponent.cs`](Components/WFCrewSpawnPointComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSuitUpComponent.cs`](Components/WFCrewSuitUpComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewVoidKitComponent.cs`](Components/WFCrewVoidKitComponent.cs)
@@ -271,7 +297,9 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Systems/WFCaptainSystem.cs`](Systems/WFCaptainSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewAccessSystem.cs`](Systems/WFCrewAccessSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewAlertSystem.cs`](Systems/WFCrewAlertSystem.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFCrewAlertSystem.Mechs.cs`](Systems/WFCrewAlertSystem.Mechs.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewCommsSystem.cs`](Systems/WFCrewCommsSystem.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFCrewConductSystem.cs`](Systems/WFCrewConductSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewEscortSystem.cs`](Systems/WFCrewEscortSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewEvaSystem.cs`](Systems/WFCrewEvaSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewFriendlyFireSystem.cs`](Systems/WFCrewFriendlyFireSystem.cs)
@@ -285,7 +313,9 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewShieldProtectionSystem.cs`](Systems/WFCrewShieldProtectionSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewShipStatusSystem.cs`](Systems/WFCrewShipStatusSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewSleepSystem.cs`](Systems/WFCrewSleepSystem.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFCrewSparedSystem.cs`](Systems/WFCrewSparedSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewSpeechSystem.cs`](Systems/WFCrewSpeechSystem.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFCrewStealthSystem.cs`](Systems/WFCrewStealthSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewSystem.cs`](Systems/WFCrewSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewUiDiagnosticsSystem.cs`](Systems/WFCrewUiDiagnosticsSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewWeaponSystem.cs`](Systems/WFCrewWeaponSystem.cs)
@@ -294,6 +324,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewWorkSystem.Engineer.cs`](Systems/WFCrewWorkSystem.Engineer.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewWorkSystem.Repair.cs`](Systems/WFCrewWorkSystem.Repair.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFGunnerDutySystem.cs`](Systems/WFGunnerDutySystem.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFGunnerDutySystem.LineOfFire.cs`](Systems/WFGunnerDutySystem.LineOfFire.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.cs`](Systems/WFPilotDutySystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.Docking.cs`](Systems/WFPilotDutySystem.Docking.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFPilotDutySystem.Navigation.cs`](Systems/WFPilotDutySystem.Navigation.cs)
@@ -351,10 +382,14 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Flight.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.FlightFixes.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HoldFacing.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HullSwaps.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HullSwaps.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HunterSpeed.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.HunterSpeed.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.LineOfFire.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.LineOfFire.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Navigation.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.NavigationSettings.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Objectives.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OnSight.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OnSight.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OwnKind.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OwnKind.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PirateAir.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PirateAir.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs)
@@ -374,8 +409,10 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Shove.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Shove.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Skill.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Skill.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Sleep.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Sleep.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Spared.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Spared.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Stations.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Stations.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.TargetLifetime.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.TargetLifetime.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Titles.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Titles.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Work.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Work.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Wreck.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Wreck.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFNpcDownedShootingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFNpcDownedShootingTest.cs)

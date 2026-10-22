@@ -1,0 +1,23 @@
+# WOLFGATE(DecorImport) START: ported from White Dream
+- type: entity
+  parent: BaseTreeLarge
+  id: FloraTreeSpringPinkLarge01
+  components:
+  - type: Sprite
+    sprite: _White/Objects/Decoration/Flora/spring_treeslarge.rsi
+    state: pinklarge01
+  - type: Icon
+    sprite: _White/Objects/Decoration/Flora/spring_treeslarge.rsi
+    state: pinklarge01
+
+- type: entity
+  parent: BaseTreeLarge
+  id: FloraTreeSpringPinkLarge03
+  components:
+  - type: Sprite
+    sprite: _White/Objects/Decoration/Flora/spring_treeslarge.rsi
+    state: pinklarge03
+  - type: Icon
+    sprite: _White/Objects/Decoration/Flora/spring_treeslarge.rsi
+    state: pinklarge03
+# WOLFGATE END

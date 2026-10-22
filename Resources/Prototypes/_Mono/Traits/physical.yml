@@ -15,9 +15,11 @@
   cost: 6
   mutuallyExclusiveTraits:
   - Lethargy
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
   speciesBlacklist:
   - Oni
-  - IPC
+  biotypeBlacklist:
+  - Synthetic
   components:
   - type: Vigor
 
@@ -46,8 +48,9 @@
   cost: -2
   mutuallyExclusiveTraits:
   - Tenacity
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   components:
   - type: GlassJaw
 
@@ -60,8 +63,9 @@
   mutuallyExclusiveTraits:
   - GlassJaw
   - OsteogenesisImperfecta
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   components:
   - type: Tenacity
 
@@ -74,8 +78,9 @@
   mutuallyExclusiveTraits:
   - WillToDie
   - Redshirt
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -90,8 +95,9 @@
   cost: -1
   mutuallyExclusiveTraits:
   - WillToLive
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -129,8 +135,9 @@
   cost: -6
   mutuallyExclusiveTraits:
   - Tenacity
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -144,8 +151,9 @@
   description: trait-hemophilia-desc
   category: Physical
   cost: -4
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -158,8 +166,9 @@
   description: trait-voracious-desc
   category: Physical
   cost: 1
-  speciesBlacklist:
-    - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -173,9 +182,11 @@
   description: trait-bionic-spinarette-desc
   category: Physical
   cost: 2
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
   speciesBlacklist:
-    - IPC
     - Arachnid
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -233,9 +244,11 @@
   cost: 6
   mutuallyExclusiveTraits:
   - AlcoholTolerance
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
   speciesBlacklist:
-  - IPC
   - Dwarf
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -250,8 +263,9 @@
   cost: -8
   mutuallyExclusiveTraits:
   - WillToLive
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -315,8 +329,9 @@
   description: trait-hardened-lymphocytes-desc
   category: Physical
   cost: 4
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -357,9 +372,11 @@
   mutuallyExclusiveTraits:
   - LightweightDrunk
   - LiquorLifeline
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
   speciesBlacklist:
   - Dwarf
-  - IPC
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis
@@ -375,8 +392,9 @@
   cost: 6
   mutuallyExclusiveTraits:
   - Hemophilia
-  speciesBlacklist:
-  - IPC
+# WOLFGATE(Biotype): synthetic bodies can't take this, whatever the species
+  biotypeBlacklist:
+  - Synthetic
   blacklist:
     components:
     - BorgChassis

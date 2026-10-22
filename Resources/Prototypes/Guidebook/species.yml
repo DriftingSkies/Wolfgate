@@ -82,23 +82,6 @@
   id: Protogen
   name: species-name-protogen
   text: "/ServerInfo/Guidebook/Mobs/Protogen.xml"
-  # WOLFGATE(Species) START: the 14 subspecies ported from HardLight
-  children:
-  - ProtoVulp
-  - ProtoVox
-  - ProtoThaven
-  - ProtoSlimePerson
-  - ProtoKin
-  - ProtoResomi
-  - ProtoReptile
-  - ProtoMoth
-  - ProtoHumie
-  - ProtoFeline
-  - ProtoDawi
-  - ProtoDionae
-  - ProtoAvali
-  - ProtoArachnid
-  # WOLFGATE END
 
 - type: guideEntry
   id: IPC

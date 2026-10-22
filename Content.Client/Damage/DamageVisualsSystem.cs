@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): HOOK 20
+using Content.Shared._WF.Biotype; // WOLFGATE(Biotype)
 using Content.Shared.Body.Part; // WOLFGATE(Wolfmed): HOOK 20 (Option B)
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -156,6 +157,15 @@ public sealed partial class DamageVisualsSystem : VisualizerSystem<DamageVisuals
         if (damageComponent.DamageContainerID != null
             && _prototypeManager.TryIndex<DamageContainerPrototype>(damageComponent.DamageContainerID, out var damageContainer))
         {
+            // WOLFGATE(Biotype) START: a converted body keeps its species' visuals, so groups its new container lacks are dropped
+            if (damageVisComp.DamageOverlayGroups is { } wfGroups &&
+                TryComp(entity, out WFBiotypeComponent? wfBiotype) && wfBiotype.Applied != null)
+            {
+                foreach (var group in wfGroups.Keys.Where(g => !damageContainer.SupportedGroups.Contains(g)).ToList())
+                    wfGroups.Remove(group);
+            }
+            // WOLFGATE END
+
             // Are we using damage overlay sprites by group?
             // Check if the container matches the supported groups,
             // and start caching the last threshold.

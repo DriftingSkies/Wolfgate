@@ -1,0 +1,103 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTBenchChurchLeftSide
+  parent: SeatBase
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/bench_church.rsi
+    state: bench_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTBenchChurchLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/bench_church.rsi
+    state: bench_left
+
+- type: entity
+  id: ADTBenchChurchMiddle
+  parent: SeatBase
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/bench_church.rsi
+    state: bench_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTBenchChurchMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/bench_church.rsi
+    state: bench_middle
+
+- type: entity
+  id: ADTBenchChurchRightSide
+  parent: SeatBase
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/bench_church.rsi
+    state: bench_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTBenchChurchRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/bench_church.rsi
+    state: bench_right
+# WOLFGATE END

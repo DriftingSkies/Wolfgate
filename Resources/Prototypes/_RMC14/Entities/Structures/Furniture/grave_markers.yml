@@ -1,0 +1,30 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  id: RMCGravestone1
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/gravestone.rsi
+    state: gravestone1
+    noRot: true
+  - type: Appearance
+  - type: Clickable
+
+- type: entity
+  parent: RMCGravestone1
+  id: RMCGravestone2
+  components:
+  - type: Sprite
+    state: gravestone2
+
+- type: entity
+  parent: RMCGravestone1
+  id: RMCGravestone3
+  components:
+  - type: Sprite
+    state: gravestone3
+# WOLFGATE END

@@ -1,0 +1,67 @@
+# WOLFGATE(DecorImport) START: ported from Corvax
+- type: entity
+  id: PottedPlantAlt1
+  parent: PottedPlantBase
+  components:
+  - type: Sprite
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-1
+  - type: Icon
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-1
+
+- type: entity
+  id: PottedPlantAlt2
+  parent: PottedPlantBase
+  components:
+  - type: Sprite
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-2
+  - type: Icon
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-2
+
+- type: entity
+  id: PottedPlantAlt3
+  parent: PottedPlantBase
+  components:
+  - type: Sprite
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-3
+  - type: Icon
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-3
+
+- type: entity
+  id: PottedPlantAlt4
+  parent: PottedPlantBase
+  components:
+  - type: Sprite
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-4
+  - type: Icon
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-4
+
+- type: entity
+  id: PottedPlantAlt5
+  parent: PottedPlantBase
+  components:
+  - type: Sprite
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-5
+  - type: Icon
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-5
+
+- type: entity
+  id: PottedPlantAlt7
+  parent: PottedPlantBase
+  components:
+  - type: Sprite
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-7
+  - type: Icon
+    sprite: Corvax/Structures/Furniture/potted_plants.rsi
+    state: plant-7
+# WOLFGATE END

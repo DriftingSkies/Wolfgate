@@ -8,6 +8,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): xeno claws break a window in two hits, as in CM
+  - type: ReceiverXenoClaws
+    maxHealth: 50
+    hitsToDestroy: 2
+    minimumClawStrength: Normal
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
@@ -164,6 +169,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): xeno claws break a directional window in two hits, as in CM
+  - type: ReceiverXenoClaws
+    maxHealth: 25
+    hitsToDestroy: 2
+    minimumClawStrength: Normal
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:

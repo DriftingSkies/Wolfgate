@@ -5,6 +5,11 @@ had before the conversion falls out of it and takes back their mind, so they can
 The fleshbeast's corpse and anything it carried stay behind, renamed back to "chimera fleshbeast". The dropped body is
 purged of both kinds of Letoferol so it doesn't turn again; it keeps the damage it had when it turned.
 
+The dropped body can't be turned again for 3 minutes (`turnCooldown` on `DropOriginalBodyOnDeath`), so other
+fleshbeasts can't claw a downed chimera straight back to life. The player is told the delay in chat when they drop, and
+examining the body shows the time left. Letoferol's polymorph effects check it through the `ChimeraTurnReady`
+condition; Letoferol injected meanwhile stays in the body and can still turn it once the cooldown is over.
+
 The body also keeps its gear: the Letoferol polymorphs no longer drop the victim's items at conversion, so they stay on
 the stored body and come back with it. Because of that a cure (Mesotaxinide reverting a living fleshbeast) would delete
 whatever the fleshbeast carried, so its slots, hands and internal storage are dropped to the floor first.
@@ -36,6 +41,8 @@ Entry points: `WFFleshPustuleSystem` (bursting and planting), `WFFleshPustuleTre
 
 ### Server
 
+- [`Content.Server/_WF/Chimera/ChimeraTurnCooldownComponent.cs`](ChimeraTurnCooldownComponent.cs)
+- [`Content.Server/_WF/Chimera/ChimeraTurnReady.cs`](ChimeraTurnReady.cs)
 - [`Content.Server/_WF/Chimera/DropOriginalBodyOnDeathComponent.cs`](DropOriginalBodyOnDeathComponent.cs)
 - [`Content.Server/_WF/Chimera/DropOriginalBodyOnDeathSystem.cs`](DropOriginalBodyOnDeathSystem.cs)
 - [`Content.Server/_WF/Chimera/FleshPustuleComponent.cs`](FleshPustuleComponent.cs)
@@ -109,6 +116,7 @@ Entry points: `WFFleshPustuleSystem` (bursting and planting), `WFFleshPustuleTre
   - a converted fleshbeast drops the body it was made from when it dies
   - whoever takes a fleshbeast is told how to talk to the hivemind
 - [`Resources/Prototypes/_Mono/Polymorphs/polymorph.yml`](../../../Resources/Prototypes/_Mono/Polymorphs/polymorph.yml): the victim's gear stays on the stored body instead of dropping at conversion
+- [`Resources/Prototypes/_Mono/Reagents/letoferol.yml`](../../../Resources/Prototypes/_Mono/Reagents/letoferol.yml): a body that just fell out of a dead fleshbeast can't be turned straight back
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Species/avali.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Species/avali.yml): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
 

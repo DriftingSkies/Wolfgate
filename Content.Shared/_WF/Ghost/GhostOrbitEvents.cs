@@ -15,6 +15,7 @@ public enum GhostOrbitCategory : byte
     Antagonist,
     Critical,
     Alive,
+    Xenonid,
     Disconnected,
     Dead,
     Ghost,
@@ -53,6 +54,9 @@ public record struct GhostOrbitTarget
 
     /// <summary>Only listed because the viewer is an admin (admin warp points, admin ghosts).</summary>
     public bool AdminOnly;
+
+    /// <summary>Sort rank inside the section, lowest first. Only the Xenonids section uses it.</summary>
+    public int Order;
 }
 
 /// <summary>
@@ -88,9 +92,12 @@ public record struct GhostOrbitEncounterShip
 public sealed class GhostOrbitRequestEvent : EntityEventArgs;
 
 [Serializable, NetSerializable]
-public sealed class GhostOrbitTargetsEvent(List<GhostOrbitTarget> targets, List<GhostOrbitEncounterShip>? encounters = null) : EntityEventArgs
+public sealed class GhostOrbitTargetsEvent(List<GhostOrbitTarget> targets, List<GhostOrbitEncounterShip>? encounters = null, int burrowedLarva = 0) : EntityEventArgs
 {
     public List<GhostOrbitTarget> Targets = targets;
+
+    /// <summary>Burrowed larva waiting across all hives.</summary>
+    public int BurrowedLarva = burrowedLarva;
 
     /// <summary>The ships of every unresolved encounter, hidden ones included.</summary>
     public List<GhostOrbitEncounterShip> Encounters = encounters ?? new List<GhostOrbitEncounterShip>();

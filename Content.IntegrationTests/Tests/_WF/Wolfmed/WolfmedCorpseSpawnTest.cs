@@ -167,7 +167,7 @@ public sealed class WolfmedCorpseSpawnTest : WolfmedGameTest
             var unfit = new List<string>();
             foreach (var species in SProtoMan.EnumeratePrototypes<SpeciesPrototype>())
             {
-                if (!species.RoundStart || species.SubspeciesOf != null)
+                if (!species.RoundStart)
                     continue;
 
                 var fitting = 0;
@@ -243,7 +243,7 @@ public sealed class WolfmedCorpseSpawnTest : WolfmedGameTest
             new WolfmedScenario(SEntMan).SetAir(map.MapUid, true);
             foreach (var species in SProtoMan.EnumeratePrototypes<SpeciesPrototype>())
             {
-                if (!species.RoundStart || species.SubspeciesOf != null)
+                if (!species.RoundStart)
                     continue;
 
                 var reference = SEntMan.SpawnEntity(species.Prototype, map.GridCoords);

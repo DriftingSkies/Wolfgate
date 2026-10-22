@@ -75,9 +75,9 @@ public sealed class LiftoffTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>A grounded ascend key is consumed; it neither starts the spool nor creates a latch.</summary>
+    /// <summary>A grounded ascend key engages liftoff like the console button.</summary>
     [Test]
-    public async Task GroundedAscendKeyDoesNotStartLiftoff()
+    public async Task GroundedAscendKeyEngagesLiftoff()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -92,18 +92,11 @@ public sealed class LiftoffTest
         await MapInitHull(pair, hull);
         await AddLandingThrusters(pair, hull, 3);
         await HoldVertical(pair, hull, ShuttleButtons.AscendZ);
-        await server.WaitRunTicks(pair.SecondsToTicks(3f));
+        await server.WaitRunTicks(2);
 
         await server.WaitAssertion(() =>
-        {
-            using (Assert.EnterMultipleScope())
-            {
-                Assert.That(entMan.GetComponent<TransformComponent>(hull).MapUid, Is.EqualTo(ground),
-                    "Grounded R bypassed the Liftoff button.");
-                Assert.That(entMan.HasComponent<WFLiftoffComponent>(hull), Is.False,
-                    "Manual ascend created a liftoff latch.");
-            }
-        });
+            Assert.That(entMan.HasComponent<WFLiftoffComponent>(hull), Is.True,
+                "Grounded ascend did not engage liftoff."));
 
         await Teardown(pair, layers);
         await pair.CleanReturnAsync();

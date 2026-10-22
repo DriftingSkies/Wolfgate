@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client._WF.Cockpit;
+using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.UserInterface;
 using Robust.Shared.Timing;
@@ -37,12 +38,13 @@ public partial class MapGridControl
     {
         base.EnteredTree();
         _wfCockpitInput.FirstChanceOnKeyEvent += WfCockpitPanKey;
+        DisplayManager.OnWindowFocused += WfCockpitWindowFocused;
     }
 
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
-        WfUpdateCockpitPan(_wfCockpitInput.MouseScreenPosition, DisplayManager.IsFocused);
+        WfUpdateCockpitPan(_wfCockpitInput.MouseScreenPosition);
     }
 
     protected override void VisibilityChanged(bool newVisible)
@@ -55,6 +57,7 @@ public partial class MapGridControl
     protected override void ExitedTree()
     {
         _wfCockpitInput.FirstChanceOnKeyEvent -= WfCockpitPanKey;
+        DisplayManager.OnWindowFocused -= WfCockpitWindowFocused;
         base.ExitedTree();
         if (WfCockpitControls)
             WfEndCockpitPan();
@@ -62,6 +65,13 @@ public partial class MapGridControl
 
     private void WfCockpitPanKey(KeyEventArgs args, KeyEventType type) =>
         WfCockpitPanKey(args, type, _wfCockpitInput.MouseScreenPosition);
+
+    /// <summary>Ends a pan when its window loses focus; the focus flag itself never gates a press.</summary>
+    private void WfCockpitWindowFocused(WindowFocusedEventArgs args)
+    {
+        if (!args.Focused && WfCockpitControls)
+            WfEndCockpitPan();
+    }
 
     /// <summary>Captures only a fresh right-button press on this plot before context menus can open.</summary>
     private void WfCockpitPanKey(KeyEventArgs args, KeyEventType type, ScreenCoordinates mouse)
@@ -75,20 +85,31 @@ public partial class MapGridControl
                 WfEndCockpitPan();
             return;
         }
-        if (args.Handled || type != KeyEventType.Down || args.IsRepeat || !WfCockpitControls ||
-            !VisibleInTree || !DisplayManager.IsFocused || !mouse.IsValid || args.Shift || args.Control || args.Alt ||
-            UserInterfaceManager.MouseGetControl(mouse) != this)
+        if (type != KeyEventType.Down || args.IsRepeat || !WfCockpitControls || !VisibleInTree || !mouse.IsValid ||
+            mouse.Window != Window?.Id || !GlobalPixelRect.Contains((Vector2i) mouse.Position))
+            return;
+        // Window focus and the window's modifier flags were dropped as gates: either can go stale and silently
+        // refuse every press. Modifiers come from the engine's own key state instead.
+        var diagnostics = EntManager.System<WFCockpitPanDiagnosticSystem>();
+        var source = Loc.GetString("wf-cockpit-pan-source-plot", ("plot", GetType().Name));
+        var hit = UserInterfaceManager.MouseGetControl(mouse);
+        var refusal = args.Handled ? "wf-cockpit-pan-already-taken"
+            : WFCockpitPanDiagnosticSystem.ModifierHeld(_wfCockpitInput) ? "wf-cockpit-pan-modifier"
+            : hit != this ? "wf-cockpit-pan-covered"
+            : null;
+        diagnostics.Record(args, mouse, source, refusal ?? "wf-cockpit-pan-started");
+        if (refusal != null)
             return;
         args.Handle();
         _wfCockpitPanDown = _wfCockpitPanning = true;
         _wfCockpitMouse = mouse.Position;
     }
 
-    private void WfUpdateCockpitPan(ScreenCoordinates mouse, bool focused)
+    private void WfUpdateCockpitPan(ScreenCoordinates mouse)
     {
         if (!WfCockpitControls)
             return;
-        if (!VisibleInTree || !focused || !_wfCockpitPanDown)
+        if (!VisibleInTree || !_wfCockpitPanDown)
         {
             WfEndCockpitPan();
             return;

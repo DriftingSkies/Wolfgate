@@ -1,0 +1,67 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14GatherableBlueAmanita
+  parent: BaseStructure
+  suffix: Gatherable
+  components:
+  - type: Sprite
+    drawdepth: FloorTiles
+    sprite: _CP14/Structures/Flora/Wild/blue_amanita.rsi
+    layers:
+    - state: world1
+      map: [ random ]
+    snapCardinals: true
+  - type: RandomSprite
+    available:
+    - random:
+        world1: ""
+        world2: ""
+        world3: ""
+        world4: ""
+        world5: ""
+  - type: PlacementReplacement
+    key: CP14Plant
+  - type: Transform
+  - type: InteractionOutline
+  - type: Physics
+    canCollide: false
+    bodyType: Static
+  - type: Damageable
+    damageContainer: Biological
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Cellular
+        damage: 1
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 60
+        mask: [ HalfWallLayer ]
+        layer: [ MidImpassable, LowImpassable ]
+      fix2:
+        hard: true
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        mask: [ FullTileMask ]
+        layer: [ Opaque ]
+  - type: Appearance
+  - type: Icon
+    sprite: _CP14/Structures/Flora/Wild/blue_amanita.rsi
+    state: world1
+# WOLFGATE END

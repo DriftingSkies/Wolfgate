@@ -962,10 +962,23 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("integer")
                         .HasColumnName("bank_balance");
 
+                    b.Property<int>("Biotype")
+                        .HasColumnType("integer")
+                        .HasColumnName("biotype");
+
+                    b.Property<string>("BloodColor")
+                        .HasColumnType("text")
+                        .HasColumnName("blood_color");
+
                     b.Property<string>("CharacterName")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("char_name");
+
+                    b.Property<string>("ChatFont")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("chat_font");
 
                     b.Property<string>("Company")
                         .IsRequired()
@@ -1049,6 +1062,11 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("jsonb")
                         .HasColumnName("markings");
 
+                    b.Property<string>("MessageSound")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("message_sound");
+
                     b.Property<bool>("MismatchedParts")
                         .HasColumnType("boolean")
                         .HasColumnName("mismatched_parts");
@@ -1088,6 +1106,10 @@ namespace Content.Server.Database.Migrations.Postgres
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("species");
+
+                    b.Property<string>("TypingIndicator")
+                        .HasColumnType("text")
+                        .HasColumnName("typing_indicator");
 
                     b.Property<float>("Width")
                         .HasColumnType("real")
@@ -1848,6 +1870,126 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.HasIndex("UploaderUserId", "UploadedAt");
 
                     b.ToTable("wolfgate_custom_marking_art", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.WolfgateFeedbackReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_feedback_report_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BuildVersion")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("build_version");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("category");
+
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("context");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Expected")
+                        .HasColumnType("text")
+                        .HasColumnName("expected");
+
+                    b.Property<string>("Frustrations")
+                        .HasColumnType("text")
+                        .HasColumnName("frustrations");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("kind");
+
+                    b.Property<bool>("NotifyPlayer")
+                        .HasColumnType("boolean")
+                        .HasColumnName("notify_player");
+
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("player_name");
+
+                    b.Property<Guid>("PlayerUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("player_user_id");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("integer")
+                        .HasColumnName("rating");
+
+                    b.Property<int>("RoundId")
+                        .HasColumnType("integer")
+                        .HasColumnName("round_id");
+
+                    b.Property<byte[]>("Screenshot")
+                        .HasColumnType("bytea")
+                        .HasColumnName("screenshot");
+
+                    b.Property<string>("ServerName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("server_name");
+
+                    b.Property<string>("Severity")
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("severity");
+
+                    b.Property<string>("StaffMessage")
+                        .HasColumnType("text")
+                        .HasColumnName("staff_message");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime?>("StatusChangedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("status_changed_at");
+
+                    b.Property<string>("Steps")
+                        .HasColumnType("text")
+                        .HasColumnName("steps");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_feedback_report");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("PlayerUserId", "CreatedAt");
+
+                    b.ToTable("wolfgate_feedback_report", (string)null);
                 });
 
             modelBuilder.Entity("PlayerRound", b =>

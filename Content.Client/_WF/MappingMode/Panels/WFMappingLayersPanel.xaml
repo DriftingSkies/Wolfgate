@@ -1,0 +1,11 @@
+<panels:WFMappingLayersPanel xmlns="https://spacestation14.io"
+                             xmlns:panels="clr-namespace:Content.Client._WF.MappingMode.Panels"
+                             Orientation="Vertical"
+                             SeparationOverride="4"
+                             Margin="6"
+                             HorizontalExpand="True"
+                             VerticalExpand="True">
+    <Label Text="{Loc 'wf-mapping-screen-section-layers'}" StyleClasses="LabelHeading" />
+    <BoxContainer Name="LayerList" Orientation="Vertical" SeparationOverride="2" />
+    <Label Text="{Loc 'wf-mapping-screen-layers-note'}" StyleClasses="LabelSubText" />
+</panels:WFMappingLayersPanel>

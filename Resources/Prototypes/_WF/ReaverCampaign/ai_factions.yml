@@ -1,0 +1,18 @@
+# The Reaver campaign's crews: hostile to every faction that is not friendly or neutral to them, players of every navy
+# included. The Underground are their allies.
+- type: npcFaction
+  id: WFAshfallReavers
+  friendly:
+  - WFUnderground
+  neutral:
+  - Cat
+  - PetsNT
+  - SimpleNeutral
+  - Mouse
+  defaultHostile: true
+
+# Carried by the Underground's people beside their usual faction, so the Reavers' crews leave them be.
+- type: npcFaction
+  id: WFUnderground
+  friendly:
+  - WFAshfallReavers

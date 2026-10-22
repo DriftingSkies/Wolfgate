@@ -5,10 +5,11 @@
   setPreference: false
   objective: roles-antag-initial-infected-objective
   requirements:
-  - !type:SpeciesRequirement
+# WOLFGATE(Biotype): synthetic bodies can't be infected, whatever the species
+  - !type:WFBiotypeRequirement
     inverted: true
-    species:
-    - IPC
+    biotypes:
+    - Synthetic
   # guides: [ Zombies ] # Frontier: removed, irrelevant
 
 - type: antag
@@ -18,8 +19,9 @@
   setPreference: false
   objective: roles-antag-zombie-objective
   requirements:
-  - !type:SpeciesRequirement
+# WOLFGATE(Biotype): synthetic bodies can't be infected, whatever the species
+  - !type:WFBiotypeRequirement
     inverted: true
-    species:
-    - IPC
+    biotypes:
+    - Synthetic
   # guides: [ Zombies ] # Frontier: removed, irrelevant

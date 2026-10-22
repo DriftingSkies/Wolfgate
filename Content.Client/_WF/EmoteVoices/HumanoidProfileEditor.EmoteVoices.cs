@@ -1,13 +1,14 @@
 using Content.Client._WF.EmoteVoices;
 using Content.Shared._WF.EmoteVoices;
 using Content.Shared.Chat.Prototypes;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 
 namespace Content.Client.Lobby.UI;
 
-/// <summary>The Voice card: the scream and laugh a character uses in place of their species' own.</summary>
+/// <summary>The Voice card: the message sound, scream and laugh a character uses in place of their species' own.</summary>
 public sealed partial class HumanoidProfileEditor
 {
     private EmoteVoicePicker _emoteVoicePicker = default!;
@@ -20,6 +21,8 @@ public sealed partial class HumanoidProfileEditor
         _emoteVoicePicker = new EmoteVoicePicker();
         _emoteVoicePicker.OnVoiceSelected += SetEmoteVoice;
         _emoteVoicePicker.OnPlayPressed += PlayEmoteVoice;
+        _emoteVoicePicker.OnMessageSoundSelected += SetMessageSound;
+        _emoteVoicePicker.OnMessageSoundPlayPressed += PlayMessageSound;
         EmoteVoiceContainer.AddChild(_emoteVoicePicker);
     }
 
@@ -29,6 +32,33 @@ public sealed partial class HumanoidProfileEditor
         StopEmoteVoicePreview();
         _emoteVoicePicker.SetVoice(EmoteVoiceRules.Scream, Profile?.ScreamVoice);
         _emoteVoicePicker.SetVoice(EmoteVoiceRules.Laugh, Profile?.LaughVoice);
+        _emoteVoicePicker.SetMessageSound(Profile?.MessageSound);
+    }
+
+    private void SetMessageSound(ProtoId<MessageSoundPrototype>? sound)
+    {
+        if (Profile == null)
+            return;
+
+        Profile = Profile.WithMessageSound(sound);
+        SetDirty();
+        PlayMessageSound();
+    }
+
+    /// <summary>Plays what the edited character sounds like when they speak: their pick, or their species' own.</summary>
+    private void PlayMessageSound()
+    {
+        if (Profile == null)
+            return;
+
+        StopEmoteVoicePreview();
+
+        var sounds = MessageSoundRules.Resolve(Profile.Species, Profile.MessageSound, _prototypeManager, _entManager.ComponentFactory);
+        if (sounds == null || !_prototypeManager.TryIndex(sounds, out var proto))
+            return;
+
+        _emoteVoicePreview = _entManager.System<SharedAudioSystem>()
+            .PlayGlobal(proto.SaySound, Filter.Local(), false, AudioParams.Default.WithVolume(-2f))?.Entity;
     }
 
     private void SetEmoteVoice(ProtoId<EmotePrototype> emote, ProtoId<EmoteVoicePrototype>? voice)

@@ -26,4 +26,6 @@ public sealed class DockingPortState
     public bool ReceiveOnly;
     public DockType DockType;
     // End Frontier
+
+    public NetEntity? WfClampedBy; // WOLFGATE(Encounters): the raider grid whose docking clamps hold this port's joint.
 }

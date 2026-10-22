@@ -55,6 +55,8 @@
   - SurgeryRemoveStomach
   - SurgeryInsertStomach
   - SurgeryInsertPump
+  - WFSurgeryAlienEmbryoRemoval
+  - WFSurgeryBurstChestRepair
 
 - type: autodocCategory
   id: WFWolfmedAutodocCategoryNeuro

@@ -4,6 +4,10 @@ A categorised entity spawn menu in place of the engine's flat spawn panel, for a
 the left, a virtualised grid of results with favourites, and the engine's placement controls along the bottom.
 Placement works exactly as in the stock panel.
 
+The menu's body is `WolfgateSpawnPanel`, a plain control: `WolfgateSpawnWindow` holds one and passes its events and
+setters through, and MappingMode's palette docks a second one on the mapping screen with the replace, erase and
+placement mode row hidden (`PlacementControlsVisible`). Each panel keeps its own recent list.
+
 Entry points: `WolfgateSpawnUIController` (opens `WolfgateSpawnWindow` and drives placement),
 `WolfgateSpawnClassifier` (sorts prototypes into the categories in `WolfgateSpawnCategories`) and
 `WolfgateSpawnCatalog`. Favourites are kept in `wf.spawn_favourites`.
@@ -20,6 +24,8 @@ Entry points: `WolfgateSpawnUIController` (opens `WolfgateSpawnWindow` and drive
 - [`Content.Client/_WF/Spawning/WolfgateSpawnClassifier.cs`](WolfgateSpawnClassifier.cs)
 - [`Content.Client/_WF/Spawning/WolfgateSpawnGrid.cs`](WolfgateSpawnGrid.cs)
 - [`Content.Client/_WF/Spawning/WolfgateSpawnNodeButton.cs`](WolfgateSpawnNodeButton.cs)
+- [`Content.Client/_WF/Spawning/WolfgateSpawnPanel.xaml`](WolfgateSpawnPanel.xaml)
+- [`Content.Client/_WF/Spawning/WolfgateSpawnPanel.xaml.cs`](WolfgateSpawnPanel.xaml.cs)
 - [`Content.Client/_WF/Spawning/WolfgateSpawnTile.cs`](WolfgateSpawnTile.cs)
 - [`Content.Client/_WF/Spawning/WolfgateSpawnUIController.cs`](WolfgateSpawnUIController.cs)
 - [`Content.Client/_WF/Spawning/WolfgateSpawnWindow.xaml`](WolfgateSpawnWindow.xaml)

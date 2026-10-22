@@ -1,5 +1,6 @@
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WF.Wolfmed.Damage;
+using Content.Shared._WF.BloodColour;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
@@ -464,6 +465,8 @@ public sealed partial class DamageVisualsSystem
 
     // --- Option B: severed-limb wound rendering (P3-D18) ---
 
+    private static readonly Color DetachedBruteColour = Color.FromHex("#FF0000");
+
     /// <summary>Adds/updates the detached-part wound layers for one part and hides them once it is reattached.</summary>
     private void UpdateDetachedPartDamage(EntityUid uid, PartDamageVisualsComponent damage)
     {
@@ -504,9 +507,11 @@ public sealed partial class DamageVisualsSystem
                 new ResPath($"_Onyx/Wounds/{group.ToLowerInvariant()}_damage.rsi"),
                 $"{prefix}_{group}_10"));
             SpriteSystem.LayerMapSet((uid, sprite), key, index);
-            if (group == "Brute")
-                SpriteSystem.LayerSetColor((uid, sprite), index, Color.FromHex("#FF0000"));
         }
+
+        // Brute is tinted the body's blood colour; set every update so a colour that arrives later still takes.
+        if (group == "Brute")
+            SpriteSystem.LayerSetColor((uid, sprite), index, CompOrNull<WFBloodColourComponent>(uid)?.Color ?? DetachedBruteColour);
 
         var visible = detached && threshold > 0;
         SpriteSystem.LayerSetVisible((uid, sprite), index, visible);

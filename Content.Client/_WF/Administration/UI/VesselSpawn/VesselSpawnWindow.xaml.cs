@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Client.Administration.Managers;
 using Content.Client._WF.OldVessels;
 using Content.Shared._NF.Bank;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
 using Content.Shared._WF.Administration;
 using JetBrains.Annotations;
@@ -63,6 +64,7 @@ public sealed partial class VesselSpawnWindow : DefaultWindow
         OwnerSelect.OnItemSelected += args => OwnerSelect.SelectId(args.Id);
         ResetViewButton.OnPressed += _ => Preview.FitToGrid();
         SpawnButton.OnPressed += _ => OnSpawnPressed();
+        ShipNameEdit.IsValid = text => text.Length <= ShuttleDeedComponent.MaxNameLength;
         Preview.PreviewUpdated += UpdateGridInfo;
 
         // Keep the owner picker in step with players joining and leaving.
@@ -332,7 +334,10 @@ public sealed partial class VesselSpawnWindow : DefaultWindow
         if (_selected == null)
             return;
 
-        var owner = OwnerSelect.SelectedId == 0 ? string.Empty : $" \"{_owners[OwnerSelect.SelectedId - 1]}\"";
-        _consoleHost.ExecuteCommand($"{WolfgateAdminCommands.SpawnVessel} \"{_selected.ID}\"{owner}");
+        // The command takes "-" for no owner, so a name can follow either way.
+        var name = ShipNameEdit.Text.Replace("\"", string.Empty).Trim();
+        var owner = OwnerSelect.SelectedId == 0 ? (name.Length > 0 ? " -" : string.Empty) : $" \"{_owners[OwnerSelect.SelectedId - 1]}\"";
+        var nameArg = name.Length > 0 ? $" \"{name}\"" : string.Empty;
+        _consoleHost.ExecuteCommand($"{WolfgateAdminCommands.SpawnVessel} \"{_selected.ID}\"{owner}{nameArg}");
     }
 }

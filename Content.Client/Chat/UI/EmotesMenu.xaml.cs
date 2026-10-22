@@ -64,7 +64,7 @@ public sealed partial class EmotesMenu : RadialMenu
 
             // Was testing the whitelist before AllowedEmotes, the opposite of the server. Every
             // emote a species is granted through its Speech component while the emote's own whitelist
-            // rejects it - Synth and all fourteen Protogen chassis with Beep, Ping, Buzz, Chime, Honk,
+            // rejects it - Synth and Protogen with Beep, Ping, Buzz, Chime, Honk,
             // Whirr - was typeable but never appeared here.
             if (player is not { Valid: true } playerUid || !CanUseEmote(playerUid, emote, whitelistSystem))
                 continue;

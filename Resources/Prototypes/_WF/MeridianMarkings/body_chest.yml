@@ -2,7 +2,7 @@
   id: WFMeridianMarkingAkulaChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -18,7 +18,7 @@
   id: WFMeridianMarkingAkulaHighlightChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -34,7 +34,7 @@
   id: WFMeridianMarkingAkulaHighlightChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -51,7 +51,7 @@
   id: WFMeridianMarkingBackStripeChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: back_stripe_chest
@@ -60,7 +60,7 @@
   id: WFMeridianMarkingBatChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -76,7 +76,7 @@
   id: WFMeridianMarkingBatChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -93,7 +93,7 @@
   id: WFMeridianMarkingBatMarkChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -109,7 +109,7 @@
   id: WFMeridianMarkingBatMarkChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -126,7 +126,7 @@
   id: WFMeridianMarkingBeeChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -142,7 +142,7 @@
   id: WFMeridianMarkingBellyOutlineChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -158,7 +158,7 @@
   id: WFMeridianMarkingBellySlimAltTonageChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -172,7 +172,7 @@
   id: WFMeridianMarkingBellySlimChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -188,7 +188,7 @@
   id: WFMeridianMarkingBodyTonageChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -202,7 +202,7 @@
   id: WFMeridianMarkingBodyWeightChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: body_weight_chest
@@ -211,7 +211,7 @@
   id: WFMeridianMarkingBodyWeightChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
@@ -221,7 +221,7 @@
   id: WFMeridianMarkingBovineChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -237,7 +237,7 @@
   id: WFMeridianMarkingBurntOffGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -251,7 +251,7 @@
   id: WFMeridianMarkingButtChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -267,7 +267,7 @@
   id: WFMeridianMarkingChitinChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: chitin_chest
@@ -276,7 +276,7 @@
   id: WFMeridianMarkingColorBandsChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: color_bands_chest
@@ -285,7 +285,7 @@
   id: WFMeridianMarkingCorgiChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -301,7 +301,7 @@
   id: WFMeridianMarkingCorvidChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -318,7 +318,7 @@
   id: WFMeridianMarkingDalmatianChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -334,7 +334,7 @@
   id: WFMeridianMarkingDatasharkChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -350,7 +350,7 @@
   id: WFMeridianMarkingDeerChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -366,7 +366,7 @@
   id: WFMeridianMarkingDogChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -382,7 +382,7 @@
   id: WFMeridianMarkingDogSpotChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -398,7 +398,7 @@
   id: WFMeridianMarkingDrakeBoneChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -412,7 +412,7 @@
   id: WFMeridianMarkingEeveeChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -428,7 +428,7 @@
   id: WFMeridianMarkingFennecChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -444,7 +444,7 @@
   id: WFMeridianMarkingFennecChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -461,7 +461,7 @@
   id: WFMeridianMarkingFloofChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -477,7 +477,7 @@
   id: WFMeridianMarkingFoxChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -493,7 +493,7 @@
   id: WFMeridianMarkingFoxChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -510,7 +510,7 @@
   id: WFMeridianMarkingGothicGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -524,7 +524,7 @@
   id: WFMeridianMarkingGuilmonChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -540,7 +540,7 @@
   id: WFMeridianMarkingGuilmonMarkChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -556,7 +556,7 @@
   id: WFMeridianMarkingHarlequinChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -572,7 +572,7 @@
   id: WFMeridianMarkingHarlequinChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -589,7 +589,7 @@
   id: WFMeridianMarkingHarlequinReversedChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -605,7 +605,7 @@
   id: WFMeridianMarkingHarlequinReversedChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -622,7 +622,7 @@
   id: WFMeridianMarkingHawkChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -638,7 +638,7 @@
   id: WFMeridianMarkingHyenaChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -654,7 +654,7 @@
   id: WFMeridianMarkingHyenaChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -671,7 +671,7 @@
   id: WFMeridianMarkingHyenaSideChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -687,7 +687,7 @@
   id: WFMeridianMarkingInsectoidChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -701,7 +701,7 @@
   id: WFMeridianMarkingInsectoidTrimChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -717,7 +717,7 @@
   id: WFMeridianMarkingJackalBackFurChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: jackal_back_fur_chest
@@ -726,7 +726,7 @@
   id: WFMeridianMarkingJackalBackFurAccentsChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: jackal_back_fur_accents_chest
@@ -735,7 +735,7 @@
   id: WFMeridianMarkingJungleGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -749,7 +749,7 @@
   id: WFMeridianMarkingLeopardAltChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -765,7 +765,7 @@
   id: WFMeridianMarkingLeopardChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -781,7 +781,7 @@
   id: WFMeridianMarkingLightBellyChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -797,7 +797,7 @@
   id: WFMeridianMarkingLightbearerChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -811,7 +811,7 @@
   id: WFMeridianMarkingMoonflyGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -825,7 +825,7 @@
   id: WFMeridianMarkingOakwormGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -839,7 +839,7 @@
   id: WFMeridianMarkingOtieChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -855,7 +855,7 @@
   id: WFMeridianMarkingOtieChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -872,7 +872,7 @@
   id: WFMeridianMarkingOtieSpotChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -888,7 +888,7 @@
   id: WFMeridianMarkingOtieSpotChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -905,7 +905,7 @@
   id: WFMeridianMarkingPantherChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -921,7 +921,7 @@
   id: WFMeridianMarkingPossumChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -937,7 +937,7 @@
   id: WFMeridianMarkingProtogenChestChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: protogen_chest_chest
@@ -946,7 +946,7 @@
   id: WFMeridianMarkingRaccoonChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -962,7 +962,7 @@
   id: WFMeridianMarkingRaggedGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -976,7 +976,7 @@
   id: WFMeridianMarkingRatSpotChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -992,7 +992,7 @@
   id: WFMeridianMarkingRatSpotChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -1009,7 +1009,7 @@
   id: WFMeridianMarkingRedPandaChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1025,7 +1025,7 @@
   id: WFMeridianMarkingReddishGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1039,7 +1039,7 @@
   id: WFMeridianMarkingSabresuneChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1055,7 +1055,7 @@
   id: WFMeridianMarkingScolipedeChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1071,7 +1071,7 @@
   id: WFMeridianMarkingScolipedeSpikesChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1087,7 +1087,7 @@
   id: WFMeridianMarkingSergalChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1103,7 +1103,7 @@
   id: WFMeridianMarkingSergalChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -1120,7 +1120,7 @@
   id: WFMeridianMarkingSharkChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1136,7 +1136,7 @@
   id: WFMeridianMarkingShepherdChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1152,7 +1152,7 @@
   id: WFMeridianMarkingShepherdSpotChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1168,7 +1168,7 @@
   id: WFMeridianMarkingSimpleLightBellyChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: simple_light_belly_chest
@@ -1177,7 +1177,7 @@
   id: WFMeridianMarkingSimpleLightBellyChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
@@ -1187,7 +1187,7 @@
   id: WFMeridianMarkingSixNipsChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: six_nips_chest
@@ -1196,7 +1196,7 @@
   id: WFMeridianMarkingSkunkChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1212,7 +1212,7 @@
   id: WFMeridianMarkingSplotchesChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: splotches_chest
@@ -1221,7 +1221,7 @@
   id: WFMeridianMarkingSynthCollarLightsChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1237,7 +1237,7 @@
   id: WFMeridianMarkingSynthLightsChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1253,7 +1253,7 @@
   id: WFMeridianMarkingSynthPecsChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -1270,7 +1270,7 @@
   id: WFMeridianMarkingSynthScutesChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -1287,7 +1287,7 @@
   id: WFMeridianMarkingTattooButterflyChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1301,7 +1301,7 @@
   id: WFMeridianMarkingTattooHeartChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1315,7 +1315,7 @@
   id: WFMeridianMarkingTattooHeartGroinChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1329,7 +1329,7 @@
   id: WFMeridianMarkingTattooInfinityChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1343,7 +1343,7 @@
   id: WFMeridianMarkingTattooTigerChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1357,7 +1357,7 @@
   id: WFMeridianMarkingTattooTigerGroinChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1371,7 +1371,7 @@
   id: WFMeridianMarkingTigerSpotChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -1388,7 +1388,7 @@
   id: WFMeridianMarkingTigerStripeChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1404,7 +1404,7 @@
   id: WFMeridianMarkingTigerStripeChestFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoVulp, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Vulpkanin, WFCanine, Yowie]
   sexRestriction: [Female]
   coloring:
     default:
@@ -1421,7 +1421,7 @@
   id: WFMeridianMarkingTopSurgeryScarsChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: top_surgery_scars_chest
@@ -1430,7 +1430,7 @@
   id: WFMeridianMarkingWhiteflyGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1444,7 +1444,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1458,7 +1458,7 @@
   id: WFMeridianMarkingWolfChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1474,7 +1474,7 @@
   id: WFMeridianMarkingWolfSpotChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1490,7 +1490,7 @@
   id: WFMeridianMarkingXenoChest
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, ProtoDawi, ProtoHumie, ProtoMoth, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:

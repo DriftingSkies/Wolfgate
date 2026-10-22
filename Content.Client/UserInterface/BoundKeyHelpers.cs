@@ -26,6 +26,14 @@ public static class BoundKeyHelper
 
     public static bool TryGetShortKeyName(BoundKeyFunction keyFunction, [NotNullWhen(true)] out string? name)
     {
+        // WOLFGATE(RoundSetup) START: a menu button with no key, such as crew setup, has no function to look up
+        if (keyFunction.FunctionName == null)
+        {
+            name = null;
+            return false;
+        }
+        // WOLFGATE END
+
         if (IoCManager.Resolve<IInputManager>().TryGetKeyBinding(keyFunction, out var binding))
         {
             // can't possibly fit a modifier key in the top button, so omit it

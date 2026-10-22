@@ -77,6 +77,7 @@
   - EmergencyOxygen
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: GroupEVATank
@@ -478,6 +479,7 @@
   - EmergencyOxygenClown
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: MimeHead
@@ -535,6 +537,7 @@
   - EmergencyOxygenMime
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: MusicianJumpsuit
@@ -821,6 +824,7 @@
   - EmergencyOxygenExtended
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 # Science
 - type: loadoutGroup
@@ -1103,6 +1107,7 @@
   - EmergencyOxygenSecurity
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: SecurityStar
@@ -1293,6 +1298,7 @@
   - EmergencyOxygenMedical
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 # Wildcards
 - type: loadoutGroup
@@ -1336,6 +1342,7 @@
   - EmergencyOxygenSyndicate
   - LoadoutSpeciesVoxNitrogen
   - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WFEmergencySynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: GroupSpeciesBreathTool

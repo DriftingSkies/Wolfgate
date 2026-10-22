@@ -1,0 +1,54 @@
+<Document>
+  # Placing things
+
+  ## Palette
+
+  The palette on the left has three tabs: [bold]Entities[/bold], [bold]Tiles[/bold] and [bold]Decals[/bold]. Type in the search box to filter. Click an entry to hold it; you switch to Place.
+
+  - Tiles and Decals have [bold]All[/bold], [bold]Favourites[/bold] and [bold]Recent[/bold] filters. Right click an entry to favourite it.
+  - Entities use the spawn menu's own favourite star.
+  - The [bold]Recent[/bold] strip holds the last 12 things you picked from any tab.
+  - Right click any entry for [bold]Add to quick select[/bold].
+
+  Properties shows what you hold. Its [bold]★[/bold] button adds it to the quick-select bar.
+
+  ## Entities
+
+  Hold an entity and left click to place it. R or Ctrl+wheel turns it before you place it. Entities go on a grid; lay floor first.
+
+  ## Tiles
+
+  Hold a tile and left click. A tile in space starts a new grid. A tile next to a grid joins it. For whole floors use Shape or Fill.
+
+  ## Decals
+
+  The Decals tab has the decal placer's settings under the list:
+
+  - [bold]Custom Color[/bold] and the sliders set the colour. [bold]Palette[/bold] picks a colour set; click a swatch to use that colour.
+  - [bold]Snap To Tile[/bold] lines the decal up with the tile grid.
+  - [bold]Rotation[/bold], [bold]Draw Depth[/bold] and [bold]Cleanable[/bold] work as in the decal placer. [bold]Use Automatic Settings[/bold] takes the decal's own defaults.
+
+  Left click places. Right click erases decals. R or Ctrl+wheel turns it 90 degrees. A tile holds 16 decals at most.
+
+  ## Quick-select bar
+
+  The bar along the bottom holds pages of ten slots. Click a slot to hold its entry.
+
+  - Drag a slot onto another to swap them.
+  - Right click a slot to rename it, remove it or move it to another page.
+  - The number tabs are pages. [bold]+[/bold] adds a page. Right click a page tab to delete it.
+  - The set menu switches between sets. [bold]+[/bold] makes a set, [bold]✎[/bold] renames it, [bold]×[/bold] deletes it.
+  - [bold]Add picks[/bold] puts everything you eyedrop onto the shown page.
+
+  The first set starts with the game's default mapping entries. The bar is saved on your computer.
+
+  ## Eyedropper
+
+  Middle click in Place mode, press 6 for Pick mode, or press [bold]Eyedropper[/bold] in the Tools tab. Click an entity to hold it at the same rotation, or bare floor to hold that tile.
+
+  ## Mobs need spawners
+
+  Mobs never save into a map file. You can place one and see it, but it is gone from the saved and downloaded map. Maps use spawner markers, named [bold]SpawnMob...[/bold], which make the mob when a round starts.
+
+  The first time you place a mob, a warning names its spawner. The palette marks such entries with an amber [bold]![/bold]. Use [bold]Use spawner instead[/bold] in its right-click menu, or [bold]Use spawner[/bold] in Properties. Some mobs have no spawner yet; the warning says so.
+</Document>

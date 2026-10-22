@@ -3,7 +3,7 @@
   bodyPart: Tail
   markingCategory: Tail
   # WOLFGATE(Genitals) START: split tail, south frame on TailBehind, front on TailOversuit
-  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoResomi, ProtoThaven, ProtoVox, ProtoVulp]
+  speciesRestriction: [Protogen]
   layering:
     tail_protogen_FRONT: TailOversuit
     tail_protogen_BEHIND: TailBehind
@@ -21,7 +21,7 @@
   bodyPart: Tail
   markingCategory: Tail
   # WOLFGATE(Genitals) START: split tail, south frame on TailBehind, front on TailOversuit
-  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoResomi, ProtoThaven, ProtoVox, ProtoVulp]
+  speciesRestriction: [Protogen]
   layering:
     bushy_tail_protogen_FRONT: TailOversuit
     bushy_tail_protogen_BEHIND: TailBehind
@@ -39,7 +39,7 @@
   bodyPart: Tail
   markingCategory: Tail
   # WOLFGATE(Genitals) START: split tail, south frame on TailBehind, front on TailOversuit
-  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoResomi, ProtoThaven, ProtoVox, ProtoVulp]
+  speciesRestriction: [Protogen]
   layering:
     shark_tail_protogen_FRONT: TailOversuit
     shark_tail_protogen_BEHIND: TailBehind
@@ -56,7 +56,7 @@
   id: ProtogenEars
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoThaven, ProtoVox, ProtoVulp]  # WOLFGATE(Species): was [Protogen]
+  speciesRestriction: [Protogen]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: ears_protogen
@@ -65,7 +65,7 @@
   id: TwoProtogenEars
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoThaven, ProtoVox, ProtoVulp]  # WOLFGATE(Species): was [Protogen]
+  speciesRestriction: [Protogen]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: two_ears_protogen
@@ -74,7 +74,7 @@
   id: ProtogenVisor
   bodyPart: Snout
   markingCategory: Snout
-  speciesRestriction: [Protogen, ProtoDawi, ProtoHumie]  # WOLFGATE(Species): was [Protogen]
+  speciesRestriction: [Protogen]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: visor_protogen

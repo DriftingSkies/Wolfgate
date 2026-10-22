@@ -156,8 +156,9 @@ public sealed partial class WolfgateConsentTab : Control
 
         foreach (var toggle in _toggles)
         {
-            // The server only stores toggles that are on, so anything absent is off.
-            toggle.SetState(consent.Toggles.TryGetValue(toggle.ConsentToggleProtoId, out var state) ? state : "off");
+            // The server only stores toggles that differ from their default.
+            var fallback = _prototypeManager.TryIndex(toggle.ConsentToggleProtoId, out var proto) ? proto.DefaultState : "off";
+            toggle.SetState(consent.Toggles.TryGetValue(toggle.ConsentToggleProtoId, out var state) ? state : fallback);
         }
 
         UpdateRequirements();

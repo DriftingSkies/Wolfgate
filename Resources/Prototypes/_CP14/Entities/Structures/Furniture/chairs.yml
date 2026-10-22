@@ -1,0 +1,150 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14ChairWooden
+  parent: UnanchoredChairBase
+  components:
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: wooden
+    snapCardinals: false
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 20
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Icon
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: wooden
+
+- type: entity
+  id: CP14ChairWoodenBirch
+  parent: CP14ChairWooden
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: birch
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 20
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Icon
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: birch
+
+- type: entity
+  id: CP14StoolWooden
+  parent: CP14ChairWooden
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: stoolWooden
+  - type: Rotatable
+    rotateWhileAnchored: true
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 20
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Icon
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: stoolWooden
+
+- type: entity
+  id: CP14StoolBirch
+  parent: CP14StoolWooden
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: stoolBirch
+  - type: Rotatable
+    rotateWhileAnchored: true
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 20
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Icon
+    sprite: _CP14/Structures/Furniture/chairs.rsi
+    state: stoolBirch
+# WOLFGATE END

@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: decal
+  id: RMCDecalStrataMud5
+  sprite:
+    sprite: _RMC14/Decals/strata.rsi
+    state: soro_mud_5
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalStrataMud6
+  sprite:
+    sprite: _RMC14/Decals/strata.rsi
+    state: soro_mud_6
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalStrataMud7
+  sprite:
+    sprite: _RMC14/Decals/strata.rsi
+    state: soro_mud_7
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalStrataMud8
+  sprite:
+    sprite: _RMC14/Decals/strata.rsi
+    state: soro_mud_8
+  tags: [ station ]
+# WOLFGATE END

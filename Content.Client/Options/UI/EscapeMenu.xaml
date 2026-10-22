@@ -11,11 +11,15 @@
         <Button Access="Public" Name="RoadmapButton" Text="{Loc 'wf-roadmap-button'}" />
         <!-- WOLFGATE(SectorControl): sector map entry under the roadmap -->
         <Button Access="Public" Name="SectorMapButton" Text="{Loc 'wf-sector-map-button'}" />
+        <!-- WOLFGATE(Feedback): bug report and suggestion entry, green so players find it -->
+        <Button Access="Public" Name="FeedbackButton" Text="{Loc 'wf-feedback-button'}" StyleClasses="ButtonColorGreen" />
         <ui:VoteCallMenuButton />
         <!-- WOLFGATE(InRoundCreator): opens the character creator over the round -->
         <Button Access="Public" Name="CharacterButton" Text="{Loc 'wf-escape-character-creator'}" ToolTip="{Loc 'wf-escape-character-creator-tooltip'}" />
         <!-- WOLFGATE(RoundSetup): hosts can manage admission and survivors after spawning -->
         <Button Access="Public" Name="RoundSetupButton" Text="{Loc 'wf-round-setup-title'}" />
+        <!-- WOLFGATE(MappingMode): session, save and library window while mapping -->
+        <Button Access="Public" Name="MappingButton" Text="{Loc 'wf-mapping-mode-escape-button'}" Visible="False" />
         <Button Access="Public" Name="OptionsButton" Text="{Loc 'ui-escape-options'}" />
         <Button Access="Public" Name="RulesButton" Text="{Loc 'ui-escape-rules'}" />
         <Button Access="Public" Name="GuidebookButton" Text="{Loc 'ui-escape-guidebook'}" />

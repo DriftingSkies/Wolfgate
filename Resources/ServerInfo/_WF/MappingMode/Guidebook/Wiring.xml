@@ -1,0 +1,51 @@
+<Document>
+  # Wiring
+
+  <Box>
+    <GuideEntityEmbed Entity="SignalButton" Caption="Signal button"/>
+    <GuideEntityEmbed Entity="AirAlarm" Caption="Air alarm"/>
+  </Box>
+
+  You have no hands, so the multitool and network configurator are out. Link mode does their job by clicking, and what you set is saved with the map.
+
+  Press 9 for Link mode. It has three tools. Pick one in Properties or press Tab to cycle them. Escape drops the source or list you have selected. Every change is one undo step.
+
+  ## Signals
+
+  For buttons, levers and sensors driving doors, lights and machines.
+
+  - Click the source, such as a button.
+  - Click the sink, such as a door. The [bold]Signal links[/bold] window opens with the source's ports down the side and the sink's across the top.
+  - Tick the pairs you want. [bold]Link defaults[/bold] ticks the game's usual pairs. [bold]Unlink all[/bold] clears them.
+  - Press [bold]Apply[/bold]. Exactly the ticked pairs are linked.
+
+  Right click a sink to unlink it from the selected source. Click the source again to drop it. The source's links are drawn while it is selected. The source's range still applies; too far apart and it says so.
+
+  Doors are sources and sinks. To start from a door with a source already selected, press Escape first.
+
+  ## Devices
+
+  For air alarms, fire alarms and sensor consoles, and the vents, scrubbers, sensors and firelocks they watch.
+
+  - Click the air alarm or other device list.
+  - Click a device to add it. Click it again, or right click it, to take it out.
+  - Drag a box to add every device in it.
+
+  Devices must be on the same map as the list. A list holds 32 devices. Lines run from the list to its devices.
+
+  ## Access
+
+  For doors, lockers and anything else with an access reader.
+
+  - Click the door. The [bold]Access[/bold] window lists access levels by group.
+  - Tick the levels that open it. Anyone with one of them gets in. None ticked opens it to everyone.
+  - Press [bold]Apply[/bold].
+
+  [bold]Apply to selection[/bold] sets every door and reader in your current selection from Select mode. [bold]Copy from last[/bold] ticks what you applied last. [bold]Clear[/bold] unticks everything.
+
+  An airlock keeps its access in its electronics, which only appear when the map is used in a round. Until then the door holds the setting and passes it on.
+
+  ## Seeing links
+
+  Turn on [bold]Links (signals, device lists)[/bold] in the Layers tab to see every link on your level. Signal links are amber, device lists blue.
+</Document>

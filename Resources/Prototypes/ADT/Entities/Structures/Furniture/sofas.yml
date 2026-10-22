@@ -1,0 +1,2161 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTSofaBlackLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/black_sofa.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlackLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/black_sofa.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaBlackMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/black_sofa.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlackMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/black_sofa.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaBlackRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/black_sofa.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlackRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/black_sofa.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaRedLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/red_sofa.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaRedLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/red_sofa.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaRedMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/red_sofa.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaRedMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/red_sofa.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaRedRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/red_sofa.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaRedRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/red_sofa.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaVioletLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/violet_sofa.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaVioletLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/violet_sofa.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaVioletMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/violet_sofa.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaVioletMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/violet_sofa.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaVioletRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/violet_sofa.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaVioletRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/violet_sofa.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaLeatherLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/leather_sofa.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaLeatherLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/leather_sofa.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaLeatherMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/leather_sofa.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaLeatherMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/leather_sofa.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaLeatherRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/leather_sofa.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaLeatherRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/leather_sofa.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaWhiteLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_left
+
+- type: entity
+  id: ADTSofaWhiteRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_right
+
+- type: entity
+  id: ADTSofaWhiteLeftSide2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_left_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteLeftSide2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_left_02
+
+- type: entity
+  id: ADTSofaWhiteRightSide2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_right_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteRightSide2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_right_02
+
+- type: entity
+  id: ADTSofaWhiteMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_middle
+
+- type: entity
+  id: ADTSofaWhiteRightCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_rightcorner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteRightCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_rightcorner
+
+- type: entity
+  id: ADTSofaWhiteLeftCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_leftcorner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaWhiteLeftCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_white.rsi
+    state: whitesofa_leftcorner
+
+- type: entity
+  id: ADTSofaBlueLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_left
+
+- type: entity
+  id: ADTSofaBlueRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_right
+
+- type: entity
+  id: ADTSofaBlueLeftSide2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_left_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueLeftSide2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_left_02
+
+- type: entity
+  id: ADTSofaBlueRightSide2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_right_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueRightSide2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_right_02
+
+- type: entity
+  id: ADTSofaBlueMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_middle
+
+- type: entity
+  id: ADTSofaBlueRightCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_rightcorner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueRightCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_rightcorner
+
+- type: entity
+  id: ADTSofaBlueLeftCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_leftcorner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBlueLeftCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_blue.rsi
+    state: bluesofa_leftcorner
+
+- type: entity
+  id: ADTSofaBrownLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_left
+
+- type: entity
+  id: ADTSofaBrownRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_right
+
+- type: entity
+  id: ADTSofaBrownLeftSide2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_left_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownLeftSide2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_left_02
+
+- type: entity
+  id: ADTSofaBrownRightSide2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_right_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownRightSide2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_right_02
+
+- type: entity
+  id: ADTSofaBrownMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_middle
+
+- type: entity
+  id: ADTSofaBrownRightCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_rightcorner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownRightCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_rightcorner
+
+- type: entity
+  id: ADTSofaBrownLeftCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_leftcorner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaBrownLeftCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_brown.rsi
+    state: brownsofa_leftcorner
+
+- type: entity
+  id: ADTSofaCutBlackLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutBlackLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaCutBlackMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutBlackMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaCutBlackRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutBlackRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaCutBlackLeftCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_corner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutBlackLeftCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_black_cut.rsi
+    state: sofa_corner
+
+- type: entity
+  id: ADTSofaCutComfyLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutComfyLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaCutComfyMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutComfyMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaCutComfyRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutComfyRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaCutComfyLeftCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_corner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutComfyLeftCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_comfy_cut.rsi
+    state: sofa_corner
+
+- type: entity
+  id: ADTSofaCutDainerLeftSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_left
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutDainerLeftSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_left
+
+- type: entity
+  id: ADTSofaCutDainerMiddle
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_middle
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutDainerMiddle
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_middle
+
+- type: entity
+  id: ADTSofaCutDainerRightSide
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_right
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutDainerRightSide
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_right
+
+- type: entity
+  id: ADTSofaCutDainerLeftCorner
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_corner
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTSofaCutDainerLeftCorner
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: StaticPrice
+    price: 50.0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Sofas/sofa_dainer_cut.rsi
+    state: sofa_corner
+# WOLFGATE END

@@ -43,5 +43,7 @@ public sealed partial class GridSpawnerSystem : EntitySystem
 
             EntityManager.AddComponents(grid.Value, ent.Comp.AddComponents);
         }
+
+        QueueDel(ent.Owner); // WOLFGATE(EngineCompat): since v283 the spent marker left on the map rides off on the first grid to move over it
     }
 }

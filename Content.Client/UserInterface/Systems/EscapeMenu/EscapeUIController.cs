@@ -1,5 +1,7 @@
 ﻿using Content.Client.Gameplay;
+using Content.Client._WF.Feedback; // WOLFGATE(Feedback)
 using Content.Client._WF.RoundSetup; // WOLFGATE(RoundSetup)
+using Content.Client._WF.MappingMode; // WOLFGATE(MappingMode)
 using Content.Client.Lobby; // WOLFGATE(InRoundCreator)
 using Content.Client._WF.Roadmap; // WOLFGATE(Roadmap)
 using Content.Client._WF.SectorControl; // WOLFGATE(SectorControl)
@@ -81,6 +83,14 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         };
         // WOLFGATE END
 
+        // WOLFGATE(Feedback) START: bug report and suggestion entry in the game menu
+        _escapeWindow.FeedbackButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            UIManager.GetUIController<FeedbackUIController>().ToggleWindow();
+        };
+        // WOLFGATE END
+
         // WOLFGATE(SectorControl) START: sector map entry in the game menu
         _escapeWindow.SectorMapButton.OnPressed += _ =>
         {
@@ -105,6 +115,26 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         };
         // WOLFGATE END
 
+        // WOLFGATE(MappingMode) START: mapping session window; crew and character entries hidden while mapping
+        _escapeWindow.MappingButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            UIManager.GetUIController<WFMappingMenuUIController>().OpenWindow();
+        };
+
+        _escapeWindow.OnOpen += () =>
+        {
+            if (_escapeWindow is not { } window)
+                return;
+
+            var mapping = UIManager.GetUIController<WFMappingMenuUIController>();
+            window.MappingButton.Visible = mapping.Available;
+            window.CharacterButton.Visible = !mapping.ModeEnabled;
+            window.RoundSetupButton.Visible = !mapping.ModeEnabled;
+            window.SectorMapButton.Visible = !mapping.ModeEnabled;
+        };
+        // WOLFGATE END
+
         _escapeWindow.RulesButton.OnPressed += _ =>
         {
             CloseEscapeWindow();
@@ -114,6 +144,10 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         _escapeWindow.DisconnectButton.OnPressed += _ =>
         {
             CloseEscapeWindow();
+            // WOLFGATE(Feedback) START: offer the end of shift survey before leaving
+            if (UIManager.GetUIController<FeedbackUIController>().TryOfferSurveyBeforeLeaving(() => _console.ExecuteCommand("disconnect")))
+                return;
+            // WOLFGATE END
             _console.ExecuteCommand("disconnect");
         };
 
@@ -126,6 +160,10 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         _escapeWindow.QuitButton.OnPressed += _ =>
         {
             CloseEscapeWindow();
+            // WOLFGATE(Feedback) START: offer the end of shift survey before quitting
+            if (UIManager.GetUIController<FeedbackUIController>().TryOfferSurveyBeforeLeaving(() => _console.ExecuteCommand("quit")))
+                return;
+            // WOLFGATE END
             _console.ExecuteCommand("quit");
         };
 

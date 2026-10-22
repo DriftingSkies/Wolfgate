@@ -119,7 +119,7 @@ public sealed class WolfgateSlotMarkingPicker : BoxContainer
 
         _grid = new GridContainer { Columns = 5, HSeparationOverride = 4, VSeparationOverride = 4 };
         // Capped height: past it the grid scrolls inside its box
-        AddChild(new ScrollContainer { HScrollEnabled = false, ReturnMeasure = true, MaxHeight = 320, HorizontalExpand = true, Children = { _grid } });
+        AddChild(new WolfgateNestedScrollContainer { ReturnMeasure = true, MaxHeight = 320, HorizontalExpand = true, Children = { _grid } });
 
         _colors = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 6 };
         AddChild(_colors);

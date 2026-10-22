@@ -1,0 +1,23 @@
+<Document>
+  # Z-levels
+
+  A map can have floors above and below the ground level. Each level is its own map stacked on the others. The level below shows through empty space, as in a round.
+
+  ## Adding and moving
+
+  The Z-levels section of the Tools tab lists your levels. Level 0 is the ground.
+
+  - [bold]Add above[/bold] and [bold]Add below[/bold] put an empty level next to the one you're on.
+  - Click a level in the list to go there. [bold]Up[/bold] and [bold]Down[/bold], or Page Up and Page Down, move one level. Properties has Up and Down too.
+  - [bold]Remove[/bold] deletes your level and everything on it. It asks for a second click and can't be undone.
+
+  A session has at most 3 levels. Adding or removing levels isn't in the undo history.
+
+  Your PNG template shows only on the level you loaded it on.
+
+  ## Saving and downloading
+
+  Every level saves with the map. A download of a map with several levels gives one file per level, named after the map with _z and the level number, so level 0 ends in _z0.
+
+  A ship download needs exactly one grid across every level.
+</Document>

@@ -51,10 +51,10 @@
     WFWolfmedIvDripFlatpack: 3
     WFWolfmedVentilatorFlatpack: 3
     # The autodoc as a flatpack, for a ship without a medical lathe (its board is printed there), and its consumables.
-    WFMachineAutodocFlatpack: 2
-    WFAutodocProgramDiskTransplant: 2
-    WFAutodocProgramDiskLimb: 2
-    WFAutodocProgramDiskNeuro: 2
-    WFAutodocProgramDiskCavity: 2
-    WFAutodocDefibModule: 2
-    WFAutodocAutofixModule: 2
+    WFMachineAutodocFlatpack: 1
+    WFAutodocProgramDiskTransplant: 1
+    WFAutodocProgramDiskLimb: 1
+    WFAutodocProgramDiskNeuro: 1
+    WFAutodocProgramDiskCavity: 1
+    WFAutodocDefibModule: 1
+    WFAutodocAutofixModule: 1

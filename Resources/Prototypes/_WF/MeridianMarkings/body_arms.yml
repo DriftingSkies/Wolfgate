@@ -2,7 +2,7 @@
   id: WFMeridianMarkingAkulaLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -18,7 +18,7 @@
   id: WFMeridianMarkingAkulaRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -34,7 +34,7 @@
   id: WFMeridianMarkingAkulaHighlightLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -50,7 +50,7 @@
   id: WFMeridianMarkingAkulaHighlightRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -66,7 +66,7 @@
   id: WFMeridianMarkingBandsAndStripesAltLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -82,7 +82,7 @@
   id: WFMeridianMarkingBandsAndStripesAltRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -98,7 +98,7 @@
   id: WFMeridianMarkingBandsAndStripesLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: bands_and_stripes_l_arm
@@ -107,7 +107,7 @@
   id: WFMeridianMarkingBandsAndStripesLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: bands_and_stripes_l_hand
@@ -116,7 +116,7 @@
   id: WFMeridianMarkingBandsAndStripesRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: bands_and_stripes_r_arm
@@ -125,7 +125,7 @@
   id: WFMeridianMarkingBandsAndStripesRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: bands_and_stripes_r_hand
@@ -134,7 +134,7 @@
   id: WFMeridianMarkingBeeLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -150,7 +150,7 @@
   id: WFMeridianMarkingBeeRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -166,7 +166,7 @@
   id: WFMeridianMarkingBovineLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -182,7 +182,7 @@
   id: WFMeridianMarkingBovineRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -198,7 +198,7 @@
   id: WFMeridianMarkingBurntOffGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -212,7 +212,7 @@
   id: WFMeridianMarkingBurntOffGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -226,7 +226,7 @@
   id: WFMeridianMarkingChitinLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: chitin_l_arm
@@ -235,7 +235,7 @@
   id: WFMeridianMarkingChitinLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: chitin_l_hand
@@ -244,7 +244,7 @@
   id: WFMeridianMarkingChitinRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: chitin_r_arm
@@ -253,7 +253,7 @@
   id: WFMeridianMarkingChitinRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: chitin_r_hand
@@ -262,7 +262,7 @@
   id: WFMeridianMarkingClawTipsLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: claw_tips_l_hand
@@ -271,7 +271,7 @@
   id: WFMeridianMarkingClawTipsRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: claw_tips_r_hand
@@ -280,7 +280,7 @@
   id: WFMeridianMarkingColorBandsLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: color_bands_l_arm
@@ -289,7 +289,7 @@
   id: WFMeridianMarkingColorBandsLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: color_bands_l_hand
@@ -298,7 +298,7 @@
   id: WFMeridianMarkingColorBandsRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: color_bands_r_arm
@@ -307,7 +307,7 @@
   id: WFMeridianMarkingColorBandsRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: color_bands_r_hand
@@ -316,7 +316,7 @@
   id: WFMeridianMarkingDalmatianLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -332,7 +332,7 @@
   id: WFMeridianMarkingDalmatianLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -348,7 +348,7 @@
   id: WFMeridianMarkingDalmatianRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -364,7 +364,7 @@
   id: WFMeridianMarkingDalmatianRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -380,7 +380,7 @@
   id: WFMeridianMarkingDatasharkLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -396,7 +396,7 @@
   id: WFMeridianMarkingDatasharkRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -412,7 +412,7 @@
   id: WFMeridianMarkingDogLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -428,7 +428,7 @@
   id: WFMeridianMarkingDogRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -444,7 +444,7 @@
   id: WFMeridianMarkingDogSpotLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -460,7 +460,7 @@
   id: WFMeridianMarkingDogSpotRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -476,7 +476,7 @@
   id: WFMeridianMarkingDrakeBoneLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -490,7 +490,7 @@
   id: WFMeridianMarkingDrakeBoneRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -504,7 +504,7 @@
   id: WFMeridianMarkingFennecLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -520,7 +520,7 @@
   id: WFMeridianMarkingFennecRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -536,7 +536,7 @@
   id: WFMeridianMarkingFlooferSockLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -552,7 +552,7 @@
   id: WFMeridianMarkingFlooferSockRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -568,7 +568,7 @@
   id: WFMeridianMarkingGothicGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -582,7 +582,7 @@
   id: WFMeridianMarkingGothicGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -596,7 +596,7 @@
   id: WFMeridianMarkingGuilmonLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -612,7 +612,7 @@
   id: WFMeridianMarkingGuilmonLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -628,7 +628,7 @@
   id: WFMeridianMarkingGuilmonRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -644,7 +644,7 @@
   id: WFMeridianMarkingGuilmonRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -660,7 +660,7 @@
   id: WFMeridianMarkingGuilmonMarkLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -676,7 +676,7 @@
   id: WFMeridianMarkingGuilmonMarkLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -692,7 +692,7 @@
   id: WFMeridianMarkingGuilmonMarkRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -708,7 +708,7 @@
   id: WFMeridianMarkingGuilmonMarkRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -724,7 +724,7 @@
   id: WFMeridianMarkingHuskyLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -740,7 +740,7 @@
   id: WFMeridianMarkingHuskyRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -756,7 +756,7 @@
   id: WFMeridianMarkingHyenaLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -772,7 +772,7 @@
   id: WFMeridianMarkingHyenaRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -788,7 +788,7 @@
   id: WFMeridianMarkingInsectoidTrimLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -804,7 +804,7 @@
   id: WFMeridianMarkingInsectoidTrimRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -820,7 +820,7 @@
   id: WFMeridianMarkingJackalBackFurLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: jackal_back_fur_l_arm
@@ -829,7 +829,7 @@
   id: WFMeridianMarkingJackalBackFurRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: jackal_back_fur_r_arm
@@ -838,7 +838,7 @@
   id: WFMeridianMarkingJackalBackFurAccentsLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: jackal_back_fur_accents_l_arm
@@ -847,7 +847,7 @@
   id: WFMeridianMarkingJackalBackFurAccentsRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: jackal_back_fur_accents_r_arm
@@ -856,7 +856,7 @@
   id: WFMeridianMarkingLeopardLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -872,7 +872,7 @@
   id: WFMeridianMarkingLeopardLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -888,7 +888,7 @@
   id: WFMeridianMarkingLeopardRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -904,7 +904,7 @@
   id: WFMeridianMarkingLeopardRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -920,7 +920,7 @@
   id: WFMeridianMarkingLoversGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -934,7 +934,7 @@
   id: WFMeridianMarkingLoversGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -948,7 +948,7 @@
   id: WFMeridianMarkingLowerLimbLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -964,7 +964,7 @@
   id: WFMeridianMarkingLowerLimbRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -980,7 +980,7 @@
   id: WFMeridianMarkingOakwormGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -994,7 +994,7 @@
   id: WFMeridianMarkingOakwormGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1008,7 +1008,7 @@
   id: WFMeridianMarkingOtieLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1024,7 +1024,7 @@
   id: WFMeridianMarkingOtieRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1040,7 +1040,7 @@
   id: WFMeridianMarkingPantherLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1056,7 +1056,7 @@
   id: WFMeridianMarkingPantherLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1072,7 +1072,7 @@
   id: WFMeridianMarkingPantherRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1088,7 +1088,7 @@
   id: WFMeridianMarkingPantherRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1104,7 +1104,7 @@
   id: WFMeridianMarkingPilotLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1118,7 +1118,7 @@
   id: WFMeridianMarkingPilotRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1132,7 +1132,7 @@
   id: WFMeridianMarkingPossumSockLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1148,7 +1148,7 @@
   id: WFMeridianMarkingPossumSockRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1164,7 +1164,7 @@
   id: WFMeridianMarkingProtogenArmLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: protogen_arm_l_arm
@@ -1173,7 +1173,7 @@
   id: WFMeridianMarkingProtogenArmRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: protogen_arm_r_arm
@@ -1182,7 +1182,7 @@
   id: WFMeridianMarkingRaccoonLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1198,7 +1198,7 @@
   id: WFMeridianMarkingRaccoonRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1214,7 +1214,7 @@
   id: WFMeridianMarkingRaggedGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1228,7 +1228,7 @@
   id: WFMeridianMarkingRaggedGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1242,7 +1242,7 @@
   id: WFMeridianMarkingRatPawLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1258,7 +1258,7 @@
   id: WFMeridianMarkingRatPawRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1274,7 +1274,7 @@
   id: WFMeridianMarkingRatSpotLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1290,7 +1290,7 @@
   id: WFMeridianMarkingRatSpotRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1306,7 +1306,7 @@
   id: WFMeridianMarkingRedPandaLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1322,7 +1322,7 @@
   id: WFMeridianMarkingRedPandaRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1338,7 +1338,7 @@
   id: WFMeridianMarkingReddishGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1352,7 +1352,7 @@
   id: WFMeridianMarkingReddishGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1366,7 +1366,7 @@
   id: WFMeridianMarkingSabresuneLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1382,7 +1382,7 @@
   id: WFMeridianMarkingSabresuneLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1398,7 +1398,7 @@
   id: WFMeridianMarkingSabresuneRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1414,7 +1414,7 @@
   id: WFMeridianMarkingSabresuneRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1430,7 +1430,7 @@
   id: WFMeridianMarkingShepherdLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1446,7 +1446,7 @@
   id: WFMeridianMarkingShepherdRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1462,7 +1462,7 @@
   id: WFMeridianMarkingSplotchesLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: splotches_l_arm
@@ -1471,7 +1471,7 @@
   id: WFMeridianMarkingSplotchesLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: splotches_l_hand
@@ -1480,7 +1480,7 @@
   id: WFMeridianMarkingSplotchesRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: splotches_r_arm
@@ -1489,7 +1489,7 @@
   id: WFMeridianMarkingSplotchesRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_arms.rsi
     state: splotches_r_hand
@@ -1498,7 +1498,7 @@
   id: WFMeridianMarkingSynthCollarLightsLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1514,7 +1514,7 @@
   id: WFMeridianMarkingSynthCollarLightsRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1530,7 +1530,7 @@
   id: WFMeridianMarkingTattooHeartLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1544,7 +1544,7 @@
   id: WFMeridianMarkingTattooHeartRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1558,7 +1558,7 @@
   id: WFMeridianMarkingTattooInfinityLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1572,7 +1572,7 @@
   id: WFMeridianMarkingTattooInfinityRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1586,7 +1586,7 @@
   id: WFMeridianMarkingTattooTigerLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1600,7 +1600,7 @@
   id: WFMeridianMarkingTattooTigerLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1614,7 +1614,7 @@
   id: WFMeridianMarkingTattooTigerRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1628,7 +1628,7 @@
   id: WFMeridianMarkingTattooTigerRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1642,7 +1642,7 @@
   id: WFMeridianMarkingTigerStripeLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1658,7 +1658,7 @@
   id: WFMeridianMarkingTigerStripeLHand
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1674,7 +1674,7 @@
   id: WFMeridianMarkingTigerStripeRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1690,7 +1690,7 @@
   id: WFMeridianMarkingTigerStripeRHand
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoVulp, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, Skeleton, Skrell, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1706,7 +1706,7 @@
   id: WFMeridianMarkingUpperLimbLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1722,7 +1722,7 @@
   id: WFMeridianMarkingUpperLimbRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1738,7 +1738,7 @@
   id: WFMeridianMarkingWhiteflyGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1752,7 +1752,7 @@
   id: WFMeridianMarkingWhiteflyGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1766,7 +1766,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1780,7 +1780,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1794,7 +1794,7 @@
   id: WFMeridianMarkingWolfSpotLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1810,7 +1810,7 @@
   id: WFMeridianMarkingWolfSpotRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1826,7 +1826,7 @@
   id: WFMeridianMarkingXenoLArm
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1842,7 +1842,7 @@
   id: WFMeridianMarkingXenoRArm
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, ProtoVulp, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:

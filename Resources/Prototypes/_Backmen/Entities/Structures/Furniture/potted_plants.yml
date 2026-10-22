@@ -1,0 +1,33 @@
+# WOLFGATE(DecorImport) START: ported from Backmen
+- type: entity
+  parent: PottedPlantBase
+  id: PottedPlantPlasmaPlant
+  components:
+  - type: Sprite
+    sprite: Backmen/Structures/Furniture/potted_plants.rsi
+    state: plasma_plant
+  - type: AlwaysHot # Funny
+  - type: PointLight
+    radius: 2
+    color: "#8A2BE2"
+  - type: Icon
+    sprite: Backmen/Structures/Furniture/potted_plants.rsi
+    state: plasma_plant
+
+- type: entity
+  parent: PottedPlantBase
+  id: Hedge
+  components:
+  - type: Sprite
+    sprite: Backmen/Structures/Furniture/potted_plants.rsi
+    offset: "0.0,0.0"
+    state: hedge
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: Backmen/Structures/Furniture/potted_plants.rsi
+    state: hedge
+# WOLFGATE END

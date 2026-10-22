@@ -657,7 +657,7 @@ public sealed class UndergarmentStripTest : InteractionTest
 public sealed class UndergarmentOptionsTest
 {
     /// <summary>Species whose bodies no undergarment art fits; the creator warns them.</summary>
-    private static readonly string[] Exceptions = { "Resomi", "ProtoResomi" };
+    private static readonly string[] Exceptions = { "Resomi" };
 
     private static readonly MarkingCategories[] Categories = { MarkingCategories.UndergarmentTop, MarkingCategories.UndergarmentBottom };
 

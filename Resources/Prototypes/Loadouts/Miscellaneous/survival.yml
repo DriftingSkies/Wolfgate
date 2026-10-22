@@ -6,6 +6,10 @@
     species:
     - SlimePerson
     - Vox
+# WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
+  - !type:WFBiotypeLoadoutEffect
+    biotypes:
+    - Organic
 
 - type: loadoutEffectGroup
   id: OxygenBreather
@@ -23,6 +27,10 @@
     - Tajaran # Goobstation
     - Felionoid # WOLFGATE(Species): ported from HardLight/Starlight
     - Avali # WOLFGATE(Species): ported from HardLight/Starlight
+# WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
+  - !type:WFBiotypeLoadoutEffect
+    biotypes:
+    - Organic
 
 - type: loadoutEffectGroup
   id: EffectSpeciesVox

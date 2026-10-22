@@ -8,6 +8,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._WF.Encounters;
+using Content.Shared.Alert;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -111,6 +112,71 @@ public sealed partial class WFEncounterTest
             SEntMan.DeleteEntity(prey.Grid);
         });
         await RunTicks(5);
+    }
+
+    /// <summary>
+    /// Everyone aboard a held ship carries the clamped alert, which clears when the clamps let go or they step off it,
+    /// and the held ship's helm says who holds it.
+    /// </summary>
+    [Test]
+    public async Task DockingClampsAlertEveryoneAboard()
+    {
+        (EntityUid Grid, EntityUid Dock, EntityUid Helm) raider = default, prey = default;
+        EntityCoordinates home = default;
+        var alerts = Server.System<AlertsSystem>();
+        var xforms = Server.System<SharedTransformSystem>();
+        var clampSystem = Server.System<WFDockingClampSystem>();
+        await Server.WaitAssertion(() =>
+        {
+            raider = ClampDeck(new Vector2(52000, -52100));
+            prey = ClampDeck(new Vector2(52040, -52100));
+            SEntMan.AddComponent<WFDockingClampComponent>(raider.Grid);
+            SEntMan.EnsureComponent<AlertsComponent>(SPlayer);
+            home = SEntMan.GetComponent<TransformComponent>(SPlayer).Coordinates;
+            xforms.SetCoordinates(SPlayer, new EntityCoordinates(prey.Grid, new Vector2(1.5f, 0.5f)));
+        });
+        await RunTicks(20);
+        await Server.WaitAssertion(() =>
+        {
+            Server.System<DockingSystem>().Dock((raider.Dock, SEntMan.GetComponent<DockingComponent>(raider.Dock)),
+                (prey.Dock, SEntMan.GetComponent<DockingComponent>(prey.Dock)));
+            Assert.That(clampSystem.HeldBy(prey.Grid), Is.EqualTo(raider.Grid));
+            Assert.That(ClampedBy(prey.Dock), Is.EqualTo(SEntMan.GetNetEntity(raider.Grid)), "The docking screen flags the held port.");
+            Assert.That(ClampedBy(raider.Dock), Is.EqualTo(SEntMan.GetNetEntity(raider.Grid)), "And the raider's.");
+        });
+        await RunTicks(5);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(alerts.IsShowingAlert(SPlayer, "WFDockingClamped"), Is.True, "Aboard a held ship, the alert shows.");
+            clampSystem.Release((raider.Grid, SEntMan.GetComponent<WFDockingClampComponent>(raider.Grid)), SPlayer);
+        });
+        await RunTicks(5);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(alerts.IsShowingAlert(SPlayer, "WFDockingClamped"), Is.False, "Released, the alert clears.");
+            Assert.That(ClampedBy(prey.Dock), Is.Null, "Released, the docking screen clears.");
+            xforms.SetCoordinates(SPlayer, home);
+            Server.System<DockingSystem>().Undock((prey.Dock, SEntMan.GetComponent<DockingComponent>(prey.Dock)));
+            SEntMan.DeleteEntity(raider.Grid);
+            SEntMan.DeleteEntity(prey.Grid);
+        });
+        await RunTicks(5);
+    }
+
+    /// <summary>The raider the docking screen says holds a port's joint.</summary>
+    private NetEntity? ClampedBy(EntityUid dock)
+    {
+        var net = SEntMan.GetNetEntity(dock);
+        foreach (var ports in Server.System<ShuttleConsoleSystem>().GetAllDocks().Values)
+        {
+            foreach (var port in ports)
+            {
+                if (port.Entity == net)
+                    return port.WfClampedBy;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

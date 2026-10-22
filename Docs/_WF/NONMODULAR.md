@@ -22,8 +22,17 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Client/Lobby/UI/CharacterSetupGui.xaml.cs`](../../Content.Client/Lobby/UI/CharacterSetupGui.xaml.cs)
   - logs characters that can't be previewed
   - a character this build cannot preview is skipped instead of aborting the loop
-- [`Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs`](../../Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs): batch radar edges so huge grids don't overflow the game thread stack
+- [`Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs`](../../Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs)
+  - v291 Box2 asserts on inverted corners in debug builds; order them
+  - batch radar edges so huge grids don't overflow the game thread stack
+- [`Content.Client/UserInterface/Systems/Admin/AdminUIController.cs`](../../Content.Client/UserInterface/Systems/Admin/AdminUIController.cs): a HUD layout swap rebuilds the button visible
 - [`Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs`](../../Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs): Replay seeks and filter changes rebuild the output from scratch.
+- [`Content.Client/UserInterface/Systems/Sandbox/SandboxUIController.cs`](../../Content.Client/UserInterface/Systems/Sandbox/SandboxUIController.cs): a HUD layout swap rebuilds the button visible
+- [`Content.Client/VendingMachines/VendingMachineBoundUserInterface.cs`](../../Content.Client/VendingMachines/VendingMachineBoundUserInterface.cs): skip updates queued before Open(), _uiSystem is still null and the NRE crashes state handling
+- [`Content.Client/Wires/UI/WiresMenu.cs`](../../Content.Client/Wires/UI/WiresMenu.cs)
+  - engine 291 UIBox2 clamps inverted boxes to zero, so flip with a transform (upstream fix)
+  - flip/mirror wires via transform after engine 291
+  - restore transform after flipped wire draw
 - [`Content.IntegrationTests/Fixtures/GameTest.cs`](../../Content.IntegrationTests/Fixtures/GameTest.cs)
   - keeps the failure readable once the dirty dispose's warning replaces it.
   - a fixture object outlives its test, so it must not keep its pair.
@@ -64,12 +73,21 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - a failed save is logged with its slot
   - sanitized here like FinishLoad does on login
 - [`Content.Server/Radio/EntitySystems/RadioDeviceSystem.cs`](../../Content.Server/Radio/EntitySystems/RadioDeviceSystem.cs): keep the speaker's own output type and the admin-safe ghost range the radio host port dropped
+- [`Content.Server/Sandbox/Commands/ColorNetworkCommand.cs`](../../Content.Server/Sandbox/Commands/ColorNetworkCommand.cs): missing return after the no-access error
 - [`Content.Server/Shuttles/Components/ShuttleComponent.cs`](../../Content.Server/Shuttles/Components/ShuttleComponent.cs): PDV pack, partial revert of Monolith speed cap (50->20)
 - [`Content.Server/Shuttles/Components/ThrusterComponent.cs`](../../Content.Server/Shuttles/Components/ThrusterComponent.cs): PDV pack, partial revert of Monolith thrust nerf (200->100)
+- [`Content.Server/Shuttles/Systems/DockingSystem.cs`](../../Content.Server/Shuttles/Systems/DockingSystem.cs)
+  - copy of the dock set in UndockDocks and RedockDocks
+  - undock handlers call GetDocks, which refills _dockingSet mid-loop; iterate a copy.
 - [`Content.Server/Shuttles/Systems/FTLAntiCollisionSystem.cs`](../../Content.Server/Shuttles/Systems/FTLAntiCollisionSystem.cs): a docking jump ends on a free dock at its target, so don't push the shuttle off it
+- [`Content.Server/Shuttles/Systems/ShuttleConsoleSystem.cs`](../../Content.Server/Shuttles/Systems/ShuttleConsoleSystem.cs): an entry RemovePilot can't take out (no PilotComponent, or one for another console) hung the server
 - [`Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs`](../../Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs)
   - start a real jump, as an ensured FTLComponent stayed Available and was removed
   - pick the dock without teleporting the shuttle there before the jump
+- [`Content.Server/Solar/EntitySystems/PowerSolarControlConsoleSystem.cs`](../../Content.Server/Solar/EntitySystems/PowerSolarControlConsoleSystem.cs)
+  - closed UIs skip updates, so refresh on open
+  - refresh the state on open; the update loop skips closed UIs
+  - skip closed UIs; each update re-sent the whole UI component, a large radar state on admin ghosts
 - [`Content.Server/VendingMachines/VendingMachineSystem.cs`](../../Content.Server/VendingMachines/VendingMachineSystem.cs): a free vend skips the cash payment, which logs a zero amount as invalid
 - [`Content.Shared/_FinalHorizon/Guns/AlternateGun/AlternateGunSystem.cs`](../../Content.Shared/_FinalHorizon/Guns/AlternateGun/AlternateGunSystem.cs): the client picks the gun to fire from this
 - [`Content.Shared/_Goobstation/StationRadio/Systems/StationRadioReceiverSystem.cs`](../../Content.Shared/_Goobstation/StationRadio/Systems/StationRadioReceiverSystem.cs)
@@ -90,6 +108,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - bodiless giblets are skipped when flung.
   - bodiless dropped contents are skipped instead of flung.
 - [`Content.Shared/Maps/ContentTileDefinition.cs`](../../Content.Shared/Maps/ContentTileDefinition.cs): Monolith#4804 made this true, which draws weather inside ships and buildings
+- [`Content.Shared/Pinpointer/SharedNavMapSystem.cs`](../../Content.Shared/Pinpointer/SharedNavMapSystem.cs): compare region seeds by content; the reference compare dirtied every nav map each second
 - [`Content.Shared/Preferences/HumanoidCharacterProfile.cs`](../../Content.Shared/Preferences/HumanoidCharacterProfile.cs)
   - the company is passed through the constructor
   - copies keep the company
@@ -107,6 +126,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - keeps [bold]; upstream's [color=bold] tag is unbalanced
   - the map has one UndergroundVend, not four
 - [`Resources/Locale/en-US/_Mono/prototypes/access/accesses.ftl`](../../Resources/Locale/en-US/_Mono/prototypes/access/accesses.ftl): Monolith#4816 shipped the Underground access levels without names
+- [`Resources/Maps/_Mono/Bluespace/prefracture.yml`](../../Resources/Maps/_Mono/Bluespace/prefracture.yml): Hardpoints mapped under the Unidentified Vessel's Scythe, Sunder and Flayer guns so gunnery links them.
+- [`Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml`](../../Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml): Hardpoint mapped under the asteroid ship's AK570 so gunnery links it.
 - [`Resources/migration.yml`](../../Resources/migration.yml): Monolith#4816 renamed the WL-01 suit and helmet without a migration
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml): the camera bounty asked for optical sensors (OpticsEconomy1)
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml): MMC cash bounties pay 0.9x their value so cash-to-MIC-to-cash can't loop for profit

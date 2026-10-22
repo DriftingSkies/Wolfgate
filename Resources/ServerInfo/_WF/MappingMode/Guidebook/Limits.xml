@@ -1,0 +1,64 @@
+<Document>
+  # Limits and rules
+
+  The server enforces these limits. The numbers below are the defaults; the host can change them. The Session tab's status line shows your session's live grid, entity and area limits.
+
+  ## Your map
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Map area[/bold]</Box>
+    <Box HorizontalAlignment="Left">256 by 256 tiles, centred on the map's origin. A border marks it.</Box>
+    <Box HorizontalAlignment="Left">[bold]Grids[/bold]</Box>
+    <Box HorizontalAlignment="Left">2 per member, 8 per session at most.</Box>
+    <Box HorizontalAlignment="Left">[bold]Entities[/bold]</Box>
+    <Box HorizontalAlignment="Left">25000 across all your session's levels, 30 on one tile.</Box>
+    <Box HorizontalAlignment="Left">[bold]Decals[/bold]</Box>
+    <Box HorizontalAlignment="Left">16 on one tile.</Box>
+    <Box HorizontalAlignment="Left">[bold]Z-levels[/bold]</Box>
+    <Box HorizontalAlignment="Left">3 per session.</Box>
+    <Box HorizontalAlignment="Left">[bold]Members[/bold]</Box>
+    <Box HorizontalAlignment="Left">8 per session.</Box>
+  </Table>
+
+  ## One edit
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Area[/bold]</Box>
+    <Box HorizontalAlignment="Left">4096 tiles for a selection, shape, fill or erase.</Box>
+    <Box HorizontalAlignment="Left">[bold]Entities[/bold]</Box>
+    <Box HorizontalAlignment="Left">2000, contents included, for a copy, paste, delete, erase or undo.</Box>
+    <Box HorizontalAlignment="Left">[bold]Decals[/bold]</Box>
+    <Box HorizontalAlignment="Left">4096 for a copy or paste.</Box>
+    <Box HorizontalAlignment="Left">[bold]Speed[/bold]</Box>
+    <Box HorizontalAlignment="Left">60 placements, tiles, erases and decals a second. Past that they're dropped.</Box>
+    <Box HorizontalAlignment="Left">[bold]Undo[/bold]</Box>
+    <Box HorizontalAlignment="Left">30 steps per mapper.</Box>
+  </Table>
+
+  ## Your library
+
+  50 maps, 256 MiB in all, 25 versions per map. Uploads and reference files up to 1.5 MiB. Templates up to 16 MiB, 8 MiB to share.
+
+  ## When you hit one
+
+  You get a popup at the cursor, and the Mapping window or lobby shows a line naming the limit. A placement past a limit is reverted. A paste, reference or upload that would go past one is refused whole.
+
+  ## Things you can't place
+
+  Anything that reaches past your own map is refused at placement and paste, and stripped from references, uploads and opened maps with a count:
+
+  - Singularities, tesla balls, event horizons and gravity wells.
+  - Ghost roles and ghost role spawners.
+  - Game rules and station events.
+  - Things that announce themselves to the server when they spawn.
+  - Radios that hear every channel.
+  - Things players can warp to and follow, such as the nuke, the disk and Nar'Sie.
+
+  Hidden and abstract prototypes are refused too. Entities need a grid; lay floor first.
+
+  Mobs can be placed but don't save. Use their spawners. See Placing things.
+
+  ## Problems
+
+  If something breaks, or someone is wrecking your map, press [bold]AHelp[/bold] on the menu bar.
+</Document>

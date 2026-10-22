@@ -28,6 +28,11 @@ public abstract partial class SharedInstrumentComponent : Component
     [DataField("respectMidiLimits"), ViewVariables(VVAccess.ReadWrite)]
     public bool RespectMidiLimits { get; set; } = true;
 
+    // WOLFGATE(Instruments) START: wizden#41272 MIDI min volume.
+    [DataField]
+    public byte MinVolume { get; set; }
+    // WOLFGATE END
+
     [ViewVariables(VVAccess.ReadWrite)]
     public EntityUid? Master { get; set; } = null;
 
@@ -63,10 +68,28 @@ public sealed class InstrumentComponentState : ComponentState
     public bool RespectMidiLimits;
 
     public NetEntity? Master;
+    public byte MinVolume; // WOLFGATE(Instruments): wizden#41272
 
     public BitArray FilteredChannels = default!;
 }
 
+// WOLFGATE(Instruments) START: wizden#41272 MIDI min volume.
+/// <summary>
+///     This message is sent to the client to update midi min volume.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class InstrumentSetMidiMinVolumeEvent : EntityEventArgs
+{
+    public NetEntity Uid { get; }
+    public byte MinVolume { get; set; }
+
+    public InstrumentSetMidiMinVolumeEvent(NetEntity uid, byte minVolume)
+    {
+        Uid = uid;
+        MinVolume = minVolume;
+    }
+}
+// WOLFGATE END
 
 /// <summary>
 ///     This message is sent to the client to completely stop midi input and midi playback.

@@ -143,6 +143,7 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShipHullConstructionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShipHullConstructionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShipStatusTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShipStatusTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleCameraTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleCameraTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleConsoleClearPilotsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleConsoleClearPilotsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleExternalCameraTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleExternalCameraTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleNavMapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/ShuttleNavMapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Shuttles/WFFtlDriveTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Shuttles/WFFtlDriveTest.cs)

@@ -7,7 +7,7 @@
   id: Pregnant-1
   bodyPart: Chest
   markingCategory: Overlay # WOLFGATE(Genitals): was Chest, which used up the Chest marking point
-  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, WFCanine]
+  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
       state: belly_pregnant-1
@@ -16,7 +16,7 @@
   id: Pregnant-2
   bodyPart: Chest
   markingCategory: Overlay # WOLFGATE(Genitals): was Chest, which used up the Chest marking point
-  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, WFCanine]
+  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
       state: belly_pregnant-2
@@ -25,7 +25,7 @@
   id: Pregnant-3
   bodyPart: Chest
   markingCategory: Overlay # WOLFGATE(Genitals): was Chest, which used up the Chest marking point
-  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, WFCanine]
+  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
       state: belly_pregnant-3
@@ -34,7 +34,7 @@
   id: Pregnant-4
   bodyPart: Chest
   markingCategory: Overlay # WOLFGATE(Genitals): was Chest, which used up the Chest marking point
-  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, WFCanine]
+  speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
       state: belly_pregnant-4

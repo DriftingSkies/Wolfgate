@@ -3,7 +3,7 @@
   id: FelionoidTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Felionoid, ProtoFeline] # WOLFGATE(Species): was [], which stripped it from every species including Felionoid
+  speciesRestriction: [Felionoid] # WOLFGATE(Species): was [], which stripped it from every species including Felionoid
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_wagging_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour

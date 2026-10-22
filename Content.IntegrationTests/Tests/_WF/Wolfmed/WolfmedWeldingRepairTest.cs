@@ -312,6 +312,111 @@ public sealed class WolfmedWeldingRepairTest : WolfmedGameTest
     }
 
     /// <summary>
+    /// Bug report 50: an IPC shot by a teammate pulled the round with a hemostat, then no welder, self or other,
+    /// on a table or not, closed the leak. The whole real path: a bullet's hit, the hemostat's pull, the welder.
+    /// <paramref name="damageGone"/> is the report's state: the part's damage already gone and the breach still
+    /// open, which the welder could not touch because it only closed wounds by the damage it removed.
+    /// </summary>
+    [TestCase(false, TargetBodyPart.Torso, 25, 1)]
+    [TestCase(true, TargetBodyPart.Torso, 25, 1)]
+    [TestCase(false, TargetBodyPart.Torso, 12, 3)]
+    [TestCase(false, TargetBodyPart.LeftLeg, 12, 1)]
+    [TestCase(false, TargetBodyPart.LeftLeg, 12, 3)]
+    [TestCase(true, TargetBodyPart.LeftLeg, 20, 2)]
+    [TestCase(false, TargetBodyPart.Torso, 25, 1, true)]
+    public async Task ShotChassisIsWeldedShutAfterTheRoundIsPulledTest(bool self, TargetBodyPart aim, int damage, int hits,
+        bool damageGone = false)
+    {
+        var server = Pair.Server;
+        await server.WaitIdleAsync();
+        var entities = server.ResolveDependency<IEntityManager>();
+        var map = await CreateTestMap();
+        var rules = entities.System<WolfmedWoundRuleSystem>();
+        EntityUid body = default, user = default, torso = default;
+        var report = "";
+
+        string Describe() =>
+            string.Join(", ", entities.System<WoundSystem>().GetWounds(torso).Select(wound =>
+                $"{wound.Comp.Prototype} sev={wound.Comp.Severity} embedded={entities.System<WolfmedEmbeddedObjectSystem>().GetPartCount(torso)}")) +
+            $"; bleed={entities.GetComponent<BloodstreamComponent>(body).BleedAmount}; damage={entities.GetComponent<DamageableComponent>(torso).TotalDamage}";
+
+        await server.WaitAssertion(() =>
+        {
+            body = entities.SpawnEntity("MobIPC", map.GridCoords);
+            user = self ? body : entities.SpawnEntity("MobHuman", map.GridCoords);
+            entities.RemoveComponent<BarotraumaComponent>(body);
+            entities.RemoveComponent<TemperatureComponent>(body);
+            entities.RemoveComponent<BarotraumaComponent>(user);
+            entities.RemoveComponent<TemperatureComponent>(user);
+            var (type, symmetry) = entities.System<SharedBodySystem>().ConvertTargetBodyPart(aim);
+            torso = entities.System<SharedBodySystem>().GetBodyChildrenOfType(body, type, symmetry: symmetry).Single().Id;
+
+            rules.ForcedRoll = 0f;
+            var piercing = server.ResolveDependency<IPrototypeManager>().Index<DamageTypePrototype>("Piercing");
+            for (var i = 0; i < hits; i++)
+            {
+                var bullet = entities.SpawnEntity("BulletMinigun", map.GridCoords);
+                entities.System<DamageableSystem>().TryChangeDamage(body, new DamageSpecifier(piercing, damage),
+                    origin: null, targetPart: aim, tool: bullet);
+            }
+            rules.ForcedRoll = null;
+            Assert.That(entities.System<WolfmedEmbeddedObjectSystem>().GetPartCount(torso), Is.GreaterThan(0),
+                $"Precondition: the round did not lodge. {Describe()}");
+
+            var hemostat = entities.SpawnEntity("Hemostat", map.GridCoords);
+            Assert.That(entities.System<SharedHandsSystem>().TryPickupAnyHand(user, hemostat), Is.True);
+            entities.GetComponent<TargetingComponent>(user).Target = aim;
+        });
+
+        // One pull per lodged round, as a player clicks again after each.
+        for (var pulls = 0; pulls < hits + 1; pulls++)
+        {
+            var more = false;
+            await server.WaitAssertion(() =>
+            {
+                if (entities.System<WolfmedEmbeddedObjectSystem>().GetPartCount(torso) == 0)
+                    return;
+                more = true;
+                var hemostat = entities.System<SharedHandsSystem>().GetActiveItem(user)!.Value;
+                var pull = new AfterInteractUsingEvent(user, hemostat, body, map.GridCoords, true);
+                entities.EventBus.RaiseLocalEvent(body, pull);
+                Assert.That(pull.Handled, Is.True, "the hemostat did not start.");
+            });
+            if (!more)
+                break;
+            await Pair.RunSeconds(self ? 20 : 8);
+        }
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entities.System<WolfmedEmbeddedObjectSystem>().GetPartCount(torso), Is.Zero,
+                $"the round is still in. {Describe()}");
+            if (damageGone)
+                entities.System<DamageableSystem>().SetAllDamage(torso, entities.GetComponent<DamageableComponent>(torso), 0);
+            report = $"after the pull: {Describe()}";
+
+            var hands = entities.System<SharedHandsSystem>();
+            hands.TryDrop(user, hands.GetActiveItem(user)!.Value);
+            var tool = entities.SpawnEntity("Welder", map.GridCoords);
+            Assert.That(hands.TryPickupAnyHand(user, tool), Is.True);
+            Assert.That(entities.System<ItemToggleSystem>().TryActivate(tool, user), Is.True);
+            var interact = new InteractUsingEvent(user, tool, body, map.GridCoords);
+            entities.EventBus.RaiseLocalEvent(body, interact);
+            Assert.That(interact.Handled, Is.True, $"the welder did not start. {report}");
+            Assert.That(entities.GetComponent<DoAfterComponent>(user).DoAfters.Values.Any(pass => !pass.Completed && !pass.Cancelled),
+                Is.True, $"the welder queued no repair pass. {report}");
+        });
+
+        await Pair.RunSeconds(self ? 40 : 15);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entities.GetComponent<BloodstreamComponent>(body).BleedAmount, Is.Zero,
+                $"the leak did not stop. {report}; now: {Describe()}");
+        });
+    }
+
+    /// <summary>
     /// Playtest 5: "the nanite applicator spams 40 messages in one tick". An admin ghost's do-afters are instant, so a
     /// repair chain re-entered OnWoundRepairFinished from inside its own StartWoundRepair, one pass, one sound and one
     /// line at a time, forty deep for a bad torso. The frame that started the chain now applies the instant passes

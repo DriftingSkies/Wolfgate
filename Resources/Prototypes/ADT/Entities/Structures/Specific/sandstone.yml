@@ -1,0 +1,17 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: Bed
+  id: ADTSandstoneBed
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/sandstone_bed.rsi
+    state: bed
+    noRot: false
+    snapCardinals: false
+  - type: Damageable
+    damageModifierSet: Rock
+  - type: Destructible
+  - type: Icon
+    sprite: ADT/Structures/Furniture/sandstone_bed.rsi
+    state: bed
+# WOLFGATE END

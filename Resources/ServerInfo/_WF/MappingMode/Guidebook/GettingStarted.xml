@@ -1,0 +1,54 @@
+<Document>
+  # Getting started
+
+  ## Lobby
+
+  The lobby shows the [bold]Mapping workshop[/bold] panel in place of the ready button.
+
+  - [bold]New map[/bold]: type a name, press [bold]Create[/bold]. Names are 1 to 48 letters, digits, spaces, dashes or underscores. You get an empty map and a six character join code.
+  - [bold]Join a session[/bold]: type someone's join code, press [bold]Join[/bold].
+  - [bold]Your sessions[/bold]: sessions you are still a member of. Press [bold]Rejoin[/bold] after a disconnect.
+  - [bold]My maps[/bold]: your library. [bold]Open[/bold] starts a session from a saved map. See Saving, library and downloads.
+
+  You are in one session at a time. Creating, joining or opening a map takes you out of the one you were in.
+
+  ## What you are
+
+  In a session you are a mapping observer. You fly through walls and build with the mapping tools. You can't pick things up, use machines, attack, emote or speak in local chat. Other mappers can't erase, select or move you.
+
+  Move with your movement keys. The mouse wheel zooms when the current mode doesn't use it.
+
+  A new map is empty space. Pick a floor in the Tiles tab and click in space to start a grid, or draw a rectangle of floor in Shape mode.
+
+  ## The screen
+
+  - [bold]Left[/bold]: the palette, with Entities, Tiles and Decals tabs.
+  - [bold]Middle[/bold]: the view. The mode bar starts bottom left. The quick-select bar runs along the bottom with the cursor readout beside it.
+  - [bold]Right[/bold]: the Properties, Tools, Layers, Template and Keys tabs, with chat under them.
+  - [bold]Top[/bold]: the menu bar. [bold]Mapping[/bold] (map icon) opens the Mapping window. [bold]Quicksave[/bold] (floppy icon, Ctrl+S) saves to your library. Guidebook, AHelp and bug report stay. Gameplay buttons are hidden.
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Properties[/bold]</Box>
+    <Box HorizontalAlignment="Left">What you hold, the current mode's options, z-levels and the session.</Box>
+    <Box HorizontalAlignment="Left">[bold]Tools[/bold]</Box>
+    <Box HorizontalAlignment="Left">Selection, eyedropper, clipboard, undo, Hide walls and z-levels.</Box>
+    <Box HorizontalAlignment="Left">[bold]Layers[/bold]</Box>
+    <Box HorizontalAlignment="Left">Show or hide walls, subfloor, decals, markers, lighting and links. Only you see this.</Box>
+    <Box HorizontalAlignment="Left">[bold]Template[/bold]</Box>
+    <Box HorizontalAlignment="Left">The PNG you trace over.</Box>
+    <Box HorizontalAlignment="Left">[bold]Keys[/bold]</Box>
+    <Box HorizontalAlignment="Left">Every mapping key with your current bindings.</Box>
+  </Table>
+
+  The cursor readout names the tile, grid, floor and entity under the cursor and what the current mode will do.
+
+  The Mapping window has three tabs. [bold]Session[/bold] holds the join code, members, autosave, grids, reference grids and Leave session. [bold]Save[/bold] saves and downloads. [bold]Library[/bold] lists your maps. The escape menu's [bold]Mapping[/bold] entry opens it too.
+
+  ## Moving panels
+
+  Every docked panel has an [bold]Undock[/bold] button that puts it in its own window. Close the window or press [bold]Dock it back[/bold] to return it. The window's pop-out button moves it onto another monitor.
+
+  Undock every panel on one side and that side closes, giving the view its width. If the right side closes, chat floats at the top right of the view.
+
+  Drag the mode bar by its grab handle. Let go near an edge and it snaps there. [bold]Reset layout[/bold] in the Session tab puts it back.
+</Document>

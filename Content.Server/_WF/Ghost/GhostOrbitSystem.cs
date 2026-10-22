@@ -10,6 +10,9 @@ using Content.Server.Tesla.Components;
 using Content.Server.Warps;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Ghost;
+using Content.Shared._WF.Xenonids;
+using Content.Shared._WF.Xenonids.Evolution;
+using Content.Shared._WF.Xenonids.Hive;
 using Content.Shared.Anomaly.Components;
 using Content.Shared.Chat;
 using Content.Shared.Damage;
@@ -50,7 +53,9 @@ public sealed class GhostOrbitSystem : EntitySystem
     [Dependency] private WFEncounterMarkerSystem _markers = default!;
     [Dependency] private MobThresholdSystem _thresholds = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private SharedRoleSystem _roles = default!;
+    [Dependency] private SharedXenoHiveSystem _hives = default!;
     [Dependency] private TransformSystem _transform = default!;
 
     private EntityQuery<GhostComponent> _ghostQuery;
@@ -71,6 +76,20 @@ public sealed class GhostOrbitSystem : EntitySystem
             return;
 
         var isAdmin = _admin.IsAdmin(viewer);
+        var targets = BuildTargets(viewer, isAdmin);
+
+        var encounters = new List<GhostOrbitEncounterShip>();
+        AddEncounters(encounters, isAdmin);
+
+        EntityManager.System<Content.Server._WF.NpcCrew.Systems.WFCrewUiDiagnosticsSystem>().Reply("ghost", args.SenderSession, targets.Count);
+        RaiseNetworkEvent(new GhostOrbitTargetsEvent(targets, encounters, _hives.GetBurrowedLarva()), args.SenderSession.Channel);
+    }
+
+    /// <summary>
+    /// Everything the viewer can orbit except encounter ships.
+    /// </summary>
+    public List<GhostOrbitTarget> BuildTargets(EntityUid viewer, bool isAdmin)
+    {
         var targets = new List<GhostOrbitTarget>();
         var seen = new HashSet<EntityUid> { viewer };
 
@@ -78,12 +97,7 @@ public sealed class GhostOrbitSystem : EntitySystem
         AddMobs(targets, seen, isAdmin);
         AddSessions(targets, seen, isAdmin);
         AddWarpPoints(targets, seen, isAdmin);
-
-        var encounters = new List<GhostOrbitEncounterShip>();
-        AddEncounters(encounters, isAdmin);
-
-        EntityManager.System<Content.Server._WF.NpcCrew.Systems.WFCrewUiDiagnosticsSystem>().Reply("ghost", args.SenderSession, targets.Count);
-        RaiseNetworkEvent(new GhostOrbitTargetsEvent(targets, encounters), args.SenderSession.Channel);
+        return targets;
     }
 
     private void OnWarp(GhostOrbitWarpEvent msg, EntitySessionEventArgs args)
@@ -169,7 +183,7 @@ public sealed class GhostOrbitSystem : EntitySystem
     }
 
     /// <summary>
-    /// Every mob, sorted by who is driving it: players, SSD players, dead players and NPCs.
+    /// Every mob, sorted by who is driving it: players, xenos, SSD players, dead players and NPCs.
     /// </summary>
     private void AddMobs(List<GhostOrbitTarget> targets, HashSet<EntityUid> seen, bool isAdmin)
     {
@@ -189,9 +203,15 @@ public sealed class GhostOrbitSystem : EntitySystem
             if (dead && !playerOwned && !hasClient)
                 continue;
 
+            // Player-driven xenos get a section of their own; mindless ones stay with the NPCs.
+            TryComp<XenoComponent>(uid, out var xeno);
+            var isXeno = xeno != null && playerOwned;
+
             GhostOrbitCategory category;
             if (dead)
                 category = GhostOrbitCategory.Dead;
+            else if (isXeno)
+                category = GhostOrbitCategory.Xenonid;
             else if (isAdmin && _roles.MindIsAntagonist(mindId))
                 category = GhostOrbitCategory.Antagonist;
             else if (!hasClient)
@@ -203,7 +223,17 @@ public sealed class GhostOrbitSystem : EntitySystem
 
             string? detail = null;
             ProtoId<JobIconPrototype>? icon = null;
-            if (_jobs.MindTryGetJob(mindId, out var job))
+            var order = 0;
+            if (!dead && xeno != null && playerOwned && _proto.TryIndex(xeno.Role, out var caste))
+            {
+                detail = caste.LocalizedName;
+                icon = caste.Icon;
+
+                // Queen and king first, then the highest tier down, with larvae and other tier 0 last.
+                var tier = xeno.Tier;
+                order = HasComp<XenoEvolutionGranterComponent>(uid) ? 0 : tier > 0 ? 4 - Math.Min(tier, 3) : 4;
+            }
+            else if (_jobs.MindTryGetJob(mindId, out var job))
             {
                 detail = job.LocalizedName;
                 icon = job.Icon;
@@ -221,6 +251,7 @@ public sealed class GhostOrbitSystem : EntitySystem
                 Damage = dead ? 1f : GetDamage(uid),
                 Followers = CountFollowers(uid, isAdmin),
                 Disconnected = playerOwned && !hasClient && !dead,
+                Order = order,
             });
         }
     }

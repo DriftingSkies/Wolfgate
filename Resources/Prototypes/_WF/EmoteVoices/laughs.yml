@@ -173,6 +173,55 @@
   sound:
     path: /Audio/Voice/Vox/vox_laugh.ogg
 
+# Nova Sector
+
+- type: emoteVoice
+  id: WFLaughHumanAlt
+  emote: Laugh
+  name: emote-voice-name-human-alt
+  sound:
+    collection: MaleLaugh
+  sexSounds:
+    Female:
+      collection: WFLaughsHumanFemaleAlt
+
+- type: emoteVoice
+  id: WFLaughHumanAltFeminine
+  emote: Laugh
+  name: emote-voice-name-human-alt-feminine
+  sound:
+    collection: WFLaughsHumanFemaleAlt
+
+- type: emoteVoice
+  id: WFLaughFelinid
+  emote: Laugh
+  name: emote-voice-name-felinid
+  sound:
+    collection: WFLaughsFelinid
+
+- type: emoteVoice
+  id: WFLaughSkrell
+  emote: Laugh
+  name: emote-voice-name-skrell
+  sound:
+    collection: WFLaughsSkrell
+
+- type: emoteVoice
+  id: WFLaughSlugcat
+  emote: Laugh
+  name: emote-voice-name-slugcat
+  sound:
+    path: /Audio/_WF/EmoteVoices/Laugh/scuglaugh_1.ogg
+
+- type: emoteVoice
+  id: WFLaughClown
+  emote: Laugh
+  name: emote-voice-name-clown
+  sound:
+    collection: WFLaughsClown
+
+# The robotic voice packs ported from HardLight (Far Horizons): any character may pick them, synthetic ones most of all.
+
 - type: emoteVoice
   id: WFLaughProtoHumie
   emote: Laugh
@@ -238,50 +287,3 @@
   name: emote-voice-name-proto-vox
   sound:
     collection: ProtoVoxLaugh
-
-# Nova Sector
-
-- type: emoteVoice
-  id: WFLaughHumanAlt
-  emote: Laugh
-  name: emote-voice-name-human-alt
-  sound:
-    collection: MaleLaugh
-  sexSounds:
-    Female:
-      collection: WFLaughsHumanFemaleAlt
-
-- type: emoteVoice
-  id: WFLaughHumanAltFeminine
-  emote: Laugh
-  name: emote-voice-name-human-alt-feminine
-  sound:
-    collection: WFLaughsHumanFemaleAlt
-
-- type: emoteVoice
-  id: WFLaughFelinid
-  emote: Laugh
-  name: emote-voice-name-felinid
-  sound:
-    collection: WFLaughsFelinid
-
-- type: emoteVoice
-  id: WFLaughSkrell
-  emote: Laugh
-  name: emote-voice-name-skrell
-  sound:
-    collection: WFLaughsSkrell
-
-- type: emoteVoice
-  id: WFLaughSlugcat
-  emote: Laugh
-  name: emote-voice-name-slugcat
-  sound:
-    path: /Audio/_WF/EmoteVoices/Laugh/scuglaugh_1.ogg
-
-- type: emoteVoice
-  id: WFLaughClown
-  emote: Laugh
-  name: emote-voice-name-clown
-  sound:
-    collection: WFLaughsClown

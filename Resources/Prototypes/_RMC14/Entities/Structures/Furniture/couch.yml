@@ -1,0 +1,244 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: SeatBase
+  id: RMCCouchMidRed
+  suffix: Mid
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/red_couch.rsi
+    state: couch_mid
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/red_couch.rsi
+    state: couch_mid
+
+- type: entity
+  parent: RMCCouchMidRed
+  id: RMCCouchEndLowerRed
+  suffix: End, Lower
+  components:
+  - type: Sprite
+    state: couch_end_lower
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/red_couch.rsi
+    state: couch_end_lower
+
+- type: entity
+  parent: RMCCouchMidRed
+  id: RMCCouchEndUpperRed
+  suffix: End, Upper
+  components:
+  - type: Sprite
+    state: couch_end_upper
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/red_couch.rsi
+    state: couch_end_upper
+
+- type: entity
+  parent: SeatBase
+  id: RMCCouchMidBlack
+  suffix: Mid
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/black_couch.rsi
+    state: couch_mid
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/black_couch.rsi
+    state: couch_mid
+
+- type: entity
+  parent: RMCCouchMidBlack
+  id: RMCCouchEndLowerBlack
+  suffix: End, Lower
+  components:
+  - type: Sprite
+    state: couch_end_lower
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/black_couch.rsi
+    state: couch_end_lower
+
+- type: entity
+  parent: RMCCouchMidBlack
+  id: RMCCouchEndUpperBlack
+  suffix: End, Upper
+  components:
+  - type: Sprite
+    state: couch_end_upper
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/black_couch.rsi
+    state: couch_end_upper
+
+- type: entity
+  parent: SeatBase
+  id: RMCCouchMidBrown
+  suffix: Mid
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch.rsi
+    state: couch_mid
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch.rsi
+    state: couch_mid
+
+- type: entity
+  parent: RMCCouchMidBrown
+  id: RMCCouchEndLowerBrown
+  suffix: End, Lower
+  components:
+  - type: Sprite
+    state: couch_end_lower
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch.rsi
+    state: couch_end_lower
+
+- type: entity
+  parent: RMCCouchMidBrown
+  id: RMCCouchEndUpperBrown
+  suffix: End, Upper
+  components:
+  - type: Sprite
+    state: couch_end_upper
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch.rsi
+    state: couch_end_upper
+
+- type: entity
+  parent: RMCCouchMidBrown
+  id: RMCCouchMidBrownAlt
+  suffix: Mid, Alt
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch_alt.rsi
+    state: couch_mid
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch_alt.rsi
+    state: couch_mid
+
+- type: entity
+  parent: RMCCouchMidBrownAlt
+  id: RMCCouchEndLowerBrownAlt
+  suffix: End, Lower, Alt
+  components:
+  - type: Sprite
+    state: couch_end_lower
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch_alt.rsi
+    state: couch_end_lower
+
+- type: entity
+  parent: RMCCouchMidBrownAlt
+  id: RMCCouchEndUpperBrownAlt
+  suffix: End, Upper, Alt
+  components:
+  - type: Sprite
+    state: couch_end_upper
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/brown_couch_alt.rsi
+    state: couch_end_upper
+
+- type: entity
+  parent: SeatBase
+  id: RMCCouchLeftBar
+  suffix: Left
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/couch_bar.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: couch_left
+      renderingStrategy: Default
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/couch_bar.rsi
+    state: couch_left
+
+- type: entity
+  parent: RMCCouchLeftBar
+  id: RMCCouchRightBar
+  suffix: Right
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/couch_bar.rsi
+    layers:
+    - state: couch_right
+      renderingStrategy: Default
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/couch_bar.rsi
+    state: couch_right
+# WOLFGATE END

@@ -956,10 +956,12 @@
   - ContractorBoxSurvivalNFOxygenExtended
   - ContractorBoxSurvivalNFNitrogenExtended
   - ContractorBoxSurvivalNFVaporExtended
+  - WFContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
   fallbacks:
   - ContractorBoxSurvivalNFOxygenExtended
   - ContractorBoxSurvivalNFNitrogenExtended
   - ContractorBoxSurvivalNFVaporExtended
+  - WFContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: ContractorEncryptionKey

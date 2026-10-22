@@ -1,0 +1,56 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: PottedPlantBase
+  id: RMCBushJungle1
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Flora/bush.rsi
+    offset: "0.1, 0.35"
+    drawdepth: Overdoors
+    state: bush1
+    noRot: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/bush.rsi
+    state: bush1
+
+- type: entity
+  parent: RMCBushJungle1
+  id: RMCBushJungle2
+  components:
+  - type: Sprite
+    state: bush2
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/bush.rsi
+    state: bush2
+
+- type: entity
+  parent: RMCBushJungle1
+  id: RMCBushJungle3
+  components:
+  - type: Sprite
+    state: bush3
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/bush.rsi
+    state: bush3
+# WOLFGATE END

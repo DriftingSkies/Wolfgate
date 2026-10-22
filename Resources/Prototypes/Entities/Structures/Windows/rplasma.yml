@@ -3,6 +3,11 @@
   name: reinforced plasma window
   parent: WindowRCDResistant
   components:
+  # WOLFGATE(Xenonids): sharp xeno claws break a reinforced plasma window in six hits
+  - type: ReceiverXenoClaws
+    maxHealth: 750
+    hitsToDestroy: 6
+    minimumClawStrength: Sharp
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/reinforced_plasma_window.rsi
@@ -87,6 +92,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): sharp xeno claws break a reinforced plasma directional window in four hits
+  - type: ReceiverXenoClaws
+    maxHealth: 350
+    hitsToDestroy: 4
+    minimumClawStrength: Sharp
   - type: Sprite
     sprite: Structures/Windows/directional.rsi
     state: plasma_reinforced_window

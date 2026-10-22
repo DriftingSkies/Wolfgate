@@ -24,7 +24,7 @@
   id: LizardShoutEasternDragon
   bodyPart: Snout
   markingCategory: Snout
-  speciesRestriction: [Reptilian, ProtoReptile] # WOLFGATE(Species): added ProtoReptile
+  speciesRestriction: [Reptilian]
   sprites:
   - sprite: _White/Mobs/Customization/snouts.rsi
     state: eastern_dragon
@@ -35,7 +35,7 @@
   id: LizardShoutEasternDragonUsiki
   bodyPart: Snout
   markingCategory: Snout
-  speciesRestriction: [Reptilian, ProtoReptile] # WOLFGATE(Species): added ProtoReptile
+  speciesRestriction: [Reptilian]
   sprites:
   - sprite: _White/Mobs/Customization/snouts.rsi
     state: eastern_dragon

@@ -32,19 +32,5 @@ species-summary-thaven = Bound by Moods you have to play out. Their hits drain s
 species-summary-vox = Breathes nitrogen. Oxygen is poison. Lives on internals.
 species-summary-vulpkanin = Sharp nose, dog colour vision. Burns a little easier.
 
-# Protogen chassis. All of them take extra shock.
+# Protogen chassis. Takes extra shock.
 species-summary-protogen = The standard chassis. Armoured against blows, but shock and radiation bite.
-species-summary-protoarachnid = Arachnid frame. Armoured, but shock and radiation hurt. Ignores webs.
-species-summary-protoavali = Avali frame. Shrugs off cold, burns fast. Can shell up to heal.
-species-summary-protodawi = Dwarf frame. Armoured, but shock and radiation hurt.
-species-summary-protodionae = Plant frame. Tough against blows, catches fire easily. Splits into nymphs.
-species-summary-protofeline = Feline frame. Good in cold, weak to heat and shock.
-species-summary-protohumie = Closest to a plain protogen chassis. Mild cold resistance.
-species-summary-protokin = Shadekin frame. Does not breathe. Bleeds badly, repairs with tools.
-species-summary-protomoth = Moth frame. Good in cold, burns faster.
-species-summary-protoreptile = Reptile frame. Takes heat well, suffers in cold.
-species-summary-protoresomi = Small resomi frame. Built for cold, overheats. Can jump gaps.
-species-summary-protoslimeperson = Slime frame. Shrugs off blows, splits under blades. Cold is dangerous.
-species-summary-protothaven = Bound by Moods you have to play out. Their hits drain stamina.
-species-summary-protovox = Vox frame without the nitrogen problem. Good in cold, weak to heat and shock.
-species-summary-protovulp = Vulp frame. Good in cold, weak to heat and shock. Can jump gaps.

@@ -488,7 +488,7 @@
     densityNoiseChannel: DensityHigh
   - type: SimpleDebrisSelector
     debrisTable:
-    # WOLFGATE(Mining) START: rich rocks (andesite, sand, chromite) leave the 9 km ring; sand and chromite move to the Wilds
+    # WOLFGATE(Mining) START: andesite leaves the 9 km ring; sand and chromite stay at half weight and also spawn in the Wilds
     # Extra Enormous
     - id: NFAsteroidDebrisExtraEnormous
       prob: 0.3
@@ -502,12 +502,12 @@
     - id: NFAsteroidBasaltDebrisExtraEnormous
       prob: 0.3
       orGroup: debris
-#   - id: NFAsteroidSandDebrisExtraEnormous
-#     prob: 0.3
-#     orGroup: debris
-#   - id: NFAsteroidChromiteDebrisExtraEnormous
-#     prob: 0.3
-#     orGroup: debris
+    - id: NFAsteroidSandDebrisExtraEnormous
+      prob: 0.15
+      orGroup: debris
+    - id: NFAsteroidChromiteDebrisExtraEnormous
+      prob: 0.15
+      orGroup: debris
     - id: NFAsteroidRockDebrisExtraEnormous
       prob: 0.3
       orGroup: debris
@@ -527,12 +527,12 @@
     - id: NFAsteroidBasaltDebrisMassive
       prob: 0.6
       orGroup: debris
-#   - id: NFAsteroidSandDebrisMassive
-#     prob: 0.6
-#     orGroup: debris
-#   - id: NFAsteroidChromiteDebrisMassive
-#     prob: 0.6
-#     orGroup: debris
+    - id: NFAsteroidSandDebrisMassive
+      prob: 0.3
+      orGroup: debris
+    - id: NFAsteroidChromiteDebrisMassive
+      prob: 0.3
+      orGroup: debris
     - id: NFAsteroidRockDebrisMassive
       prob: 0.6
       orGroup: debris
@@ -549,12 +549,12 @@
     - id: NFAsteroidBasaltDebrisExtraMassive
       prob: 1
       orGroup: debris
-#   - id: NFAsteroidSandDebrisExtraMassive
-#     prob: 1
-#     orGroup: debris
-#   - id: NFAsteroidChromiteDebrisExtraMassive
-#     prob: 1
-#     orGroup: debris
+    - id: NFAsteroidSandDebrisExtraMassive
+      prob: 0.5
+      orGroup: debris
+    - id: NFAsteroidChromiteDebrisExtraMassive
+      prob: 0.5
+      orGroup: debris
     - id: NFAsteroidRockDebrisExtraMassive
       prob: 1
       orGroup: debris
@@ -571,12 +571,12 @@
     - id: NFAsteroidBasaltDebrisGigantic
       prob: 0.6
       orGroup: debris
-#   - id: NFAsteroidSandDebrisGigantic
-#     prob: 0.6
-#     orGroup: debris
-#   - id: NFAsteroidChromiteDebrisGigantic
-#     prob: 0.6
-#     orGroup: debris
+    - id: NFAsteroidSandDebrisGigantic
+      prob: 0.3
+      orGroup: debris
+    - id: NFAsteroidChromiteDebrisGigantic
+      prob: 0.3
+      orGroup: debris
     - id: NFAsteroidRockDebrisGigantic
       prob: 0.6
       orGroup: debris
@@ -593,12 +593,12 @@
     - id: NFAsteroidBasaltDebrisExtraGigantic
       prob: 0.3
       orGroup: debris
-#   - id: NFAsteroidSandDebrisExtraGigantic
-#     prob: 0.3
-#     orGroup: debris
-#   - id: NFAsteroidChromiteDebrisExtraGigantic
-#     prob: 0.3
-#     orGroup: debris
+    - id: NFAsteroidSandDebrisExtraGigantic
+      prob: 0.15
+      orGroup: debris
+    - id: NFAsteroidChromiteDebrisExtraGigantic
+      prob: 0.15
+      orGroup: debris
     - id: NFAsteroidRockDebrisExtraGigantic
       prob: 0.3
       orGroup: debris

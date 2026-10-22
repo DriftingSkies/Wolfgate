@@ -10,6 +10,8 @@ using Content.Shared.Station.Components;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
+using Robust.Shared.Maths;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Collision.Shapes;
 
@@ -84,6 +86,30 @@ public sealed class EngineV291RegressionTest
             window.UpdateState(new SalvageExpeditionConsoleState(TimeSpan.Zero, false, false, false, 0, missions));
             Assert.That(window.FindControl<BoxContainer>("Container").ChildCount, Is.EqualTo(missions.Count));
             window.Dispose();
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A drone's grid spawner marker is deleted once the grid loads, so it can't ride off on a passing grid.</summary>
+    [Test]
+    public async Task GridSpawnerMarkerIsDeletedAfterLoading()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        EntityUid marker = default;
+        var position = new Vector2(500f, 500f);
+
+        await server.WaitPost(() => marker = server.EntMan.SpawnEntity("SpawnDroneBasicSmall", new MapCoordinates(position, map.MapId)));
+        await server.WaitRunTicks(5);
+
+        await server.WaitAssertion(() =>
+        {
+            var grids = new List<Entity<MapGridComponent>>();
+            server.System<SharedMapSystem>().FindGridsIntersecting(map.MapId, Box2.CenteredAround(position, new Vector2(64f, 64f)), ref grids);
+            Assert.That(grids.Any(grid => grid.Owner != map.Grid.Owner), Is.True, "The drone grid never loaded.");
+            Assert.That(server.EntMan.EntityExists(marker), Is.False, "The spent marker was left on the map.");
         });
 
         await pair.CleanReturnAsync();

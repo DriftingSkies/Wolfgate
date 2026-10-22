@@ -2,7 +2,7 @@
   id: WFMeridianMarkingAkulaLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -18,7 +18,7 @@
   id: WFMeridianMarkingAkulaLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -34,7 +34,7 @@
   id: WFMeridianMarkingAkulaRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -50,7 +50,7 @@
   id: WFMeridianMarkingAkulaRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -66,7 +66,7 @@
   id: WFMeridianMarkingAkulaHighlightLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -82,7 +82,7 @@
   id: WFMeridianMarkingAkulaHighlightRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -98,7 +98,7 @@
   id: WFMeridianMarkingAnkletLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: anklet_l_leg
@@ -107,7 +107,7 @@
   id: WFMeridianMarkingAnkletRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: anklet_r_leg
@@ -116,7 +116,7 @@
   id: WFMeridianMarkingBandsAndStripesAltLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -132,7 +132,7 @@
   id: WFMeridianMarkingBandsAndStripesAltLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -148,7 +148,7 @@
   id: WFMeridianMarkingBandsAndStripesAltRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -164,7 +164,7 @@
   id: WFMeridianMarkingBandsAndStripesAltRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -180,7 +180,7 @@
   id: WFMeridianMarkingBandsAndStripesLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: bands_and_stripes_l_foot
@@ -189,7 +189,7 @@
   id: WFMeridianMarkingBandsAndStripesLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: bands_and_stripes_l_leg
@@ -198,7 +198,7 @@
   id: WFMeridianMarkingBandsAndStripesRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: bands_and_stripes_r_foot
@@ -207,7 +207,7 @@
   id: WFMeridianMarkingBandsAndStripesRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: bands_and_stripes_r_leg
@@ -216,7 +216,7 @@
   id: WFMeridianMarkingBeeLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -232,7 +232,7 @@
   id: WFMeridianMarkingBeeRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -248,7 +248,7 @@
   id: WFMeridianMarkingBovineLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -264,7 +264,7 @@
   id: WFMeridianMarkingBovineLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -280,7 +280,7 @@
   id: WFMeridianMarkingBovineRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -296,7 +296,7 @@
   id: WFMeridianMarkingBovineRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -312,7 +312,7 @@
   id: WFMeridianMarkingBovineSpotLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -328,7 +328,7 @@
   id: WFMeridianMarkingBovineSpotRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -344,7 +344,7 @@
   id: WFMeridianMarkingBurntOffGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -358,7 +358,7 @@
   id: WFMeridianMarkingBurntOffGrayscaleRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -372,7 +372,7 @@
   id: WFMeridianMarkingChitinLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: chitin_l_foot
@@ -381,7 +381,7 @@
   id: WFMeridianMarkingChitinLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: chitin_l_leg
@@ -390,7 +390,7 @@
   id: WFMeridianMarkingChitinRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: chitin_r_foot
@@ -399,7 +399,7 @@
   id: WFMeridianMarkingChitinRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: chitin_r_leg
@@ -408,7 +408,7 @@
   id: WFMeridianMarkingClawTipsLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: claw_tips_l_foot
@@ -417,7 +417,7 @@
   id: WFMeridianMarkingClawTipsRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: claw_tips_r_foot
@@ -426,7 +426,7 @@
   id: WFMeridianMarkingColorBandsFootLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: color_bands_foot_l_foot
@@ -435,7 +435,7 @@
   id: WFMeridianMarkingColorBandsFootRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: color_bands_foot_r_foot
@@ -444,7 +444,7 @@
   id: WFMeridianMarkingColorBandsLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: color_bands_l_leg
@@ -453,7 +453,7 @@
   id: WFMeridianMarkingColorBandsRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: color_bands_r_leg
@@ -462,7 +462,7 @@
   id: WFMeridianMarkingCorvidLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -478,7 +478,7 @@
   id: WFMeridianMarkingCorvidRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -494,7 +494,7 @@
   id: WFMeridianMarkingDalmatianLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -510,7 +510,7 @@
   id: WFMeridianMarkingDalmatianLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -526,7 +526,7 @@
   id: WFMeridianMarkingDalmatianRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -542,7 +542,7 @@
   id: WFMeridianMarkingDalmatianRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -558,7 +558,7 @@
   id: WFMeridianMarkingDatasharkLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -574,7 +574,7 @@
   id: WFMeridianMarkingDatasharkLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -590,7 +590,7 @@
   id: WFMeridianMarkingDatasharkRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -606,7 +606,7 @@
   id: WFMeridianMarkingDatasharkRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -622,7 +622,7 @@
   id: WFMeridianMarkingDogSpotLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -638,7 +638,7 @@
   id: WFMeridianMarkingDogSpotRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -654,7 +654,7 @@
   id: WFMeridianMarkingFennecLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -670,7 +670,7 @@
   id: WFMeridianMarkingFennecRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -686,7 +686,7 @@
   id: WFMeridianMarkingFoxLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -702,7 +702,7 @@
   id: WFMeridianMarkingFoxRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -718,7 +718,7 @@
   id: WFMeridianMarkingGothicGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -732,7 +732,7 @@
   id: WFMeridianMarkingGothicGrayscaleRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -746,7 +746,7 @@
   id: WFMeridianMarkingGuilmonMarkLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -762,7 +762,7 @@
   id: WFMeridianMarkingGuilmonMarkLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -778,7 +778,7 @@
   id: WFMeridianMarkingGuilmonMarkRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -794,7 +794,7 @@
   id: WFMeridianMarkingGuilmonMarkRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -810,7 +810,7 @@
   id: WFMeridianMarkingHarpyClawsLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_claws_l_foot
@@ -819,7 +819,7 @@
   id: WFMeridianMarkingHarpyClawsLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_claws_l_leg
@@ -828,7 +828,7 @@
   id: WFMeridianMarkingHarpyClawsRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_claws_r_foot
@@ -837,7 +837,7 @@
   id: WFMeridianMarkingHarpyClawsRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_claws_r_leg
@@ -846,7 +846,7 @@
   id: WFMeridianMarkingHarpyLowerLegsLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -860,7 +860,7 @@
   id: WFMeridianMarkingHarpyLowerLegsLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_lower_legs_l_leg
@@ -869,7 +869,7 @@
   id: WFMeridianMarkingHarpyLowerLegsRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -883,7 +883,7 @@
   id: WFMeridianMarkingHarpyLowerLegsRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_lower_legs_r_leg
@@ -892,7 +892,7 @@
   id: WFMeridianMarkingHarpyUpperLegsLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_upper_legs_l_leg
@@ -901,7 +901,7 @@
   id: WFMeridianMarkingHarpyUpperLegsRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: harpy_upper_legs_r_leg
@@ -910,7 +910,7 @@
   id: WFMeridianMarkingHawkLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -926,7 +926,7 @@
   id: WFMeridianMarkingHawkRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -942,7 +942,7 @@
   id: WFMeridianMarkingHawkTalonLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -958,7 +958,7 @@
   id: WFMeridianMarkingHuskyLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -974,7 +974,7 @@
   id: WFMeridianMarkingHyenaLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -990,7 +990,7 @@
   id: WFMeridianMarkingHyenaLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1006,7 +1006,7 @@
   id: WFMeridianMarkingHyenaRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1022,7 +1022,7 @@
   id: WFMeridianMarkingHyenaRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1038,7 +1038,7 @@
   id: WFMeridianMarkingLegBandLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: leg_band_l_leg
@@ -1047,7 +1047,7 @@
   id: WFMeridianMarkingLegBandRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: leg_band_r_leg
@@ -1056,7 +1056,7 @@
   id: WFMeridianMarkingLoversGrayscaleLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1070,7 +1070,7 @@
   id: WFMeridianMarkingLoversGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1084,7 +1084,7 @@
   id: WFMeridianMarkingLowerLimbRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1100,7 +1100,7 @@
   id: WFMeridianMarkingOtieLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1116,7 +1116,7 @@
   id: WFMeridianMarkingOtieRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1132,7 +1132,7 @@
   id: WFMeridianMarkingOtieSpotLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1148,7 +1148,7 @@
   id: WFMeridianMarkingOtieSpotRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1164,7 +1164,7 @@
   id: WFMeridianMarkingPantherLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1180,7 +1180,7 @@
   id: WFMeridianMarkingPantherLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1196,7 +1196,7 @@
   id: WFMeridianMarkingPantherRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1212,7 +1212,7 @@
   id: WFMeridianMarkingPantherRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1228,7 +1228,7 @@
   id: WFMeridianMarkingPossumSockLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1244,7 +1244,7 @@
   id: WFMeridianMarkingPossumSockRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1260,7 +1260,7 @@
   id: WFMeridianMarkingRaccoonLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1276,7 +1276,7 @@
   id: WFMeridianMarkingRaccoonRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1292,7 +1292,7 @@
   id: WFMeridianMarkingRaggedGrayscaleLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1306,7 +1306,7 @@
   id: WFMeridianMarkingRaggedGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1320,7 +1320,7 @@
   id: WFMeridianMarkingRaggedGrayscaleRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1334,7 +1334,7 @@
   id: WFMeridianMarkingRaggedGrayscaleRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1348,7 +1348,7 @@
   id: WFMeridianMarkingRatSpotLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1364,7 +1364,7 @@
   id: WFMeridianMarkingRatSpotRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1380,7 +1380,7 @@
   id: WFMeridianMarkingRedPandaLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1396,7 +1396,7 @@
   id: WFMeridianMarkingRedPandaRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1412,7 +1412,7 @@
   id: WFMeridianMarkingReddishGrayscaleLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1426,7 +1426,7 @@
   id: WFMeridianMarkingReddishGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1440,7 +1440,7 @@
   id: WFMeridianMarkingReddishGrayscaleRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1454,7 +1454,7 @@
   id: WFMeridianMarkingReddishGrayscaleRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1468,7 +1468,7 @@
   id: WFMeridianMarkingSabresuneLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1484,7 +1484,7 @@
   id: WFMeridianMarkingSabresuneLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1500,7 +1500,7 @@
   id: WFMeridianMarkingSabresuneRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1516,7 +1516,7 @@
   id: WFMeridianMarkingSabresuneRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1532,7 +1532,7 @@
   id: WFMeridianMarkingScolipedeLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1548,7 +1548,7 @@
   id: WFMeridianMarkingScolipedeRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1564,7 +1564,7 @@
   id: WFMeridianMarkingShepherdLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1580,7 +1580,7 @@
   id: WFMeridianMarkingShepherdRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1596,7 +1596,7 @@
   id: WFMeridianMarkingSkunkLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1612,7 +1612,7 @@
   id: WFMeridianMarkingSkunkRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1628,7 +1628,7 @@
   id: WFMeridianMarkingSplotchesLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: splotches_l_foot
@@ -1637,7 +1637,7 @@
   id: WFMeridianMarkingSplotchesLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: splotches_l_leg
@@ -1646,7 +1646,7 @@
   id: WFMeridianMarkingSplotchesRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: splotches_r_foot
@@ -1655,7 +1655,7 @@
   id: WFMeridianMarkingSplotchesRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: splotches_r_leg
@@ -1664,7 +1664,7 @@
   id: WFMeridianMarkingTattooInfinityLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1678,7 +1678,7 @@
   id: WFMeridianMarkingTattooInfinityRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1692,7 +1692,7 @@
   id: WFMeridianMarkingTattooTigerFootLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1706,7 +1706,7 @@
   id: WFMeridianMarkingTattooTigerFootRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1720,7 +1720,7 @@
   id: WFMeridianMarkingTattooTigerLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1734,7 +1734,7 @@
   id: WFMeridianMarkingTattooTigerRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1748,7 +1748,7 @@
   id: WFMeridianMarkingTigerSpotLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1764,7 +1764,7 @@
   id: WFMeridianMarkingTigerSpotRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1780,7 +1780,7 @@
   id: WFMeridianMarkingTigerStripeLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1796,7 +1796,7 @@
   id: WFMeridianMarkingTigerStripeLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1812,7 +1812,7 @@
   id: WFMeridianMarkingTigerStripeRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1828,7 +1828,7 @@
   id: WFMeridianMarkingTigerStripeRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1844,7 +1844,7 @@
   id: WFMeridianMarkingUpperLimbLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1860,7 +1860,7 @@
   id: WFMeridianMarkingUpperLimbRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1876,7 +1876,7 @@
   id: WFMeridianMarkingWhiteflyGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1890,7 +1890,7 @@
   id: WFMeridianMarkingWhiteflyGrayscaleRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1904,7 +1904,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleLFoot
   bodyPart: LFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1918,7 +1918,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1932,7 +1932,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleRFoot
   bodyPart: RFoot
   markingCategory: Legs
-  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoArachnid, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, ProtoThaven, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1946,7 +1946,7 @@
   id: WFMeridianMarkingWitchwingGrayscaleRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1960,7 +1960,7 @@
   id: WFMeridianMarkingWolfSpotLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1976,7 +1976,7 @@
   id: WFMeridianMarkingWolfSpotRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -1992,7 +1992,7 @@
   id: WFMeridianMarkingXenoLLeg
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:
@@ -2008,7 +2008,7 @@
   id: WFMeridianMarkingXenoRLeg
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, ProtoDawi, ProtoHumie, ProtoReptile, ProtoSlimePerson, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
   coloring:
     default:
       type:

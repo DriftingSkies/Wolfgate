@@ -99,7 +99,8 @@ public sealed partial class TourniquetSystem : EntitySystem
             _damage.TryApplyPartDamage(body, part, tourniquet.Comp.Damage, args.Args.User);
         _audio.PlayPredicted(tourniquet.Comp.EndSound, body, args.Args.User);
         _popup.PopupEntity(Loc.GetString("tourniquet-applied"), body, args.Args.User);
-        QueueDel(tourniquet); // WOLFGATE(Wolfmed): D13 — class is now Content.Server-only, so Onyx's "if (_net.IsServer)" guard is always true; dropped with the INetManager dependency
+        if (tourniquet.Comp.Consumed) // WOLFGATE(Wolfmed): a borg's tourniquet stays in its hand
+            QueueDel(tourniquet); // WOLFGATE(Wolfmed): D13 — class is now Content.Server-only, so Onyx's "if (_net.IsServer)" guard is always true; dropped with the INetManager dependency
     }
 
     public bool Apply(EntityUid body, EntityUid part)

@@ -6,6 +6,7 @@ namespace Content.Shared._WF.Administration;
 public static class WolfgateAdminCommands
 {
     public const string SpawnVessel = "spawnvessel";
+    public const string RenameVessel = "renamevessel";
     public const string SpawnOutfit = "spawnoutfit";
     public const string SpawnOutfitUi = "spawnoutfitui";
     public const string SpawnOutfitGhost = "spawnoutfitghost";

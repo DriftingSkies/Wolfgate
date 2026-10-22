@@ -4801,7 +4801,6 @@ No marked C# edits (plan §12 M4: "Marked code edits: none"). Marked upstream YA
 | `Resources/Prototypes/_HL/Body/Parts/synth.yml:5` | upstream YAML | WOLFGATE (M4): OD16. `PartSynth` parents `WolfmedPartIpc` first: the IPC chassis wound profile. |
 | `Resources/Prototypes/_HL/Entities/Mobs/Species/synth.yml:259-266` | upstream YAML | WOLFGATE (M4): OD16. `BaseMobSynth` gets `WoundHost`, `PainShockTarget` and `DeadStartupButton`. |
 | `Resources/Prototypes/_StarLight/Entities/Mobs/Species/shadekin.yml:19-22, 94-108` | upstream YAML | WOLFGATE (M4): OD16, group D. `WoundHost`, `PainShockTarget`; passive regeneration neutralised (D29); Blunt gib 400 → 1500 (D22); the body-level Heat 1500 ash trigger removed (OD12). |
-| `Resources/Prototypes/_HL/Entities/Mobs/Species/protogen_subspecies.yml:630-634, 729-741` | upstream YAML | WOLFGATE (M4): OD16, group D. `BaseMobProtoKin` gets `WoundHost`, `PainShockTarget`, `LayingDown`; passive regeneration neutralised, Blunt gib 1500, no Heat ash, as the Shadekin. |
 
 ## M5 (2026-09-23)
 
@@ -4833,7 +4832,7 @@ Files:
 | `Content.Client/_WF/Wolfmed/Overlays/WolfmedDyingEffectsSystem.cs` | modified | The collapse banner. |
 | `Content.Shared/_WF/Wolfmed/Body/WolfmedSpeciesExceptionPrototype.cs` | new | `wolfmedSpeciesException` and `WolfmedSpeciesCheck`. |
 | `Content.Shared/_WF/Wolfmed/CCVar/WolfmedCVars.cs` | modified | M4 block at the end. |
-| `Resources/Prototypes/_WF/Wolfmed/Body/species_exceptions.yml` | new | IPC, Synth, Diona, ProtoDionae, SlimePerson, ProtoSlimePerson. |
+| `Resources/Prototypes/_WF/Wolfmed/Body/species_exceptions.yml` | new | IPC, Synth, Diona, SlimePerson. |
 | `Resources/Prototypes/_WF/Wolfmed/Body/organs.yml` | modified | The pump's `impairedCoolingFactor` 0.5. |
 | `Resources/Prototypes/_WF/Wolfmed/Consciousness/species_causes.yml`, `Alerts/species_alerts.yml` | new | CoreHeat and CirculatoryCollapse causes and alerts. |
 | `Resources/Prototypes/_WF/Wolfmed/Hud/synthetic_hud.yml` | modified | CORE TEMP CRITICAL line (M4 block at the end). |

@@ -1,0 +1,13 @@
+# WOLFGATE(DecorImport) START: ported from Goob Station
+- type: entity
+  id: AbductorOperatingTable
+  parent: OperatingTable
+  components:
+  - type: Sprite
+    sprite: _Shitmed/Structures/Furniture/Tables/abductor_optable.rsi
+    state: operating_table
+    noRot: false
+  - type: Icon
+    sprite: _Shitmed/Structures/Furniture/Tables/abductor_optable.rsi
+    state: operating_table
+# WOLFGATE END

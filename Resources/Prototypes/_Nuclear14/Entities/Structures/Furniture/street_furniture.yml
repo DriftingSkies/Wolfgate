@@ -1,0 +1,376 @@
+# WOLFGATE(DecorImport) START: ported from Nuclear 14
+- type: entity
+  parent: BaseStructure
+  id: N14SignStreetBase
+  abstract: true
+  components:
+  - type: Sprite
+    snapCardinals: false
+    noRot: true
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/streetsigns.rsi
+    drawdepth: Overdoors
+    enableOverrideDir: true
+    overrideDir: South
+  - type: SpriteFade
+  - type: Physics
+    canCollide: false
+  - type: InteractionOutline
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Damageable
+    damageModifierSet: Metallic
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetInterstate
+  components:
+  - type: Sprite
+    state: interstate
+
+- type: entity
+  parent: N14SignStreetInterstate
+  id: N14SignStreetInterstate2
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetInterstate
+  id: N14SignStreetInterstate3
+  components:
+  - type: Sprite
+    overrideDir: East
+
+- type: entity
+  parent: N14SignStreetInterstate
+  id: N14SignStreetInterstate4
+  components:
+  - type: Sprite
+    overrideDir: West
+
+- type: entity
+  parent: N14SignStreetInterstate
+  id: N14SignStreetInterstate5
+  components:
+  - type: Sprite
+    overrideDir: SouthEast
+
+- type: entity
+  parent: N14SignStreetInterstate
+  id: N14SignStreetInterstate6
+  components:
+  - type: Sprite
+    overrideDir: SouthWest
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetInterstateShot
+  suffix: shot
+  components:
+  - type: Sprite
+    state: interstate80_shot
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetStop
+  components:
+  - type: Sprite
+    state: stop
+
+- type: entity
+  parent: N14SignStreetStop
+  id: N14SignStreetNoEntry
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetStop
+  id: N14SignStreetAllWay
+  components:
+  - type: Sprite
+    overrideDir: East
+
+- type: entity
+  parent: N14SignStreetStop
+  id: N14SignStreetWrongWay
+  components:
+  - type: Sprite
+    overrideDir: West
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetNoturning
+  components:
+  - type: Sprite
+    state: noturn
+
+- type: entity
+  parent: N14SignStreetNoturning
+  id: N14SignStreetNoturning2
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetNoturning
+  id: N14SignStreetNoturning3
+  components:
+  - type: Sprite
+    overrideDir: East
+
+- type: entity
+  parent: N14SignStreetNoturning
+  id: N14SignStreetNoturning4
+  components:
+  - type: Sprite
+    overrideDir: West
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetNoparking
+  components:
+  - type: Sprite
+    state: noparking
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetSign
+  components:
+  - type: Sprite
+    state: street
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetOneway
+  components:
+  - type: Sprite
+    state: direction
+
+- type: entity
+  parent: N14SignStreetOneway
+  id: N14SignStreetOneway2
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetBusstop
+  components:
+  - type: Sprite
+    state: busstop
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetRailcrossing
+  components:
+  - type: Sprite
+    state: railcrossing
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetSpeedlimit
+  suffix: "20"
+  components:
+  - type: Sprite
+    state: speed
+
+- type: entity
+  parent: N14SignStreetSpeedlimit
+  id: N14SignStreetSpeedlimit40
+  suffix: "40"
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetSpeedlimit
+  id: N14SignStreetSpeedlimit30
+  suffix: "30"
+  components:
+  - type: Sprite
+    overrideDir: East
+
+- type: entity
+  parent: N14SignStreetSpeedlimit
+  id: N14SignStreetSpeedlimit50
+  suffix: "50"
+  components:
+  - type: Sprite
+    overrideDir: West
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetWarning
+  components:
+  - type: Sprite
+    state: warnings
+
+- type: entity
+  parent: N14SignStreetWarning
+  id: N14SignStreetWarningDeer
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetWarning
+  id: N14SignStreetWarningPedestrian
+  components:
+  - type: Sprite
+    overrideDir: East
+
+- type: entity
+  parent: N14SignStreetWarning
+  id: N14SignStreetWarningRoundabout
+  components:
+  - type: Sprite
+    overrideDir: West
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetTurn
+  components:
+  - type: Sprite
+    state: turn
+
+- type: entity
+  parent: N14SignStreetTurn
+  id: N14SignStreetTurn2
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetTurn
+  id: N14SignStreetTurn3
+  components:
+  - type: Sprite
+    overrideDir: East
+
+- type: entity
+  parent: N14SignStreetTurn
+  id: N14SignStreetTurn4
+  components:
+  - type: Sprite
+    overrideDir: West
+
+- type: entity
+  parent: N14SignStreetTurn
+  id: N14SignStreetTurn5
+  components:
+  - type: Sprite
+    overrideDir: SouthEast
+
+- type: entity
+  parent: N14SignStreetTurn
+  id: N14SignStreetTurn6
+  components:
+  - type: Sprite
+    overrideDir: SouthWest
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetExit
+  components:
+  - type: Sprite
+    snapCardinals: false
+    state: exit
+
+- type: entity
+  parent: N14SignStreetExit
+  id: N14SignStreetExit2
+  components:
+  - type: Sprite
+    overrideDir: North
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetNopedestrians
+  components:
+  - type: Sprite
+    state: nopedestrian
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetMerge
+  components:
+  - type: Sprite
+    state: merge
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14SignStreetSnake
+  components:
+  - type: Sprite
+    state: snake
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14StreetPowerPoleRight
+  suffix: right
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/powerpole.rsi
+    state: powerpole1
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14LightStreetLampPostRaiderPoweredEmptyRight
+  suffix: Empty, Right
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/streetlight1_raider_right.rsi
+    state: "off"
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14LightStreetLampPostRaiderPoweredEmptyLeft
+  suffix: Empty, Left
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/streetlight1_raider_left.rsi
+    state: "off"
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14LightStreetLampPostAlwaysPoweredLeft2
+  suffix: Always Powered, Left
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/streetlight2_left.rsi
+    layers:
+    - state: "off"
+    - state: "on"
+      shader: unshaded
+  - type: PointLight
+    radius: 7
+    energy: 0.6
+    softness: 0.4
+    offset: "0, -0.5"
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14LightStreetLampPostRaiderPoweredEmptyRight2
+  suffix: Empty, Right
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/streetlight2_raider_right.rsi
+    state: "off"
+
+- type: entity
+  parent: N14SignStreetBase
+  id: N14LightStreetLampPostRaiderPoweredEmptyLeft2
+  suffix: Empty, Left
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/Street_Furniture/streetlight2_raider_left.rsi
+    state: "off"
+# WOLFGATE END

@@ -322,7 +322,7 @@
   id: TailShadekinBigTwoColored
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Shadekin, ProtoKin]
+  speciesRestriction: [Shadekin]
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     shadekin_dual_color_primary_BEHIND: TailBehind
     shadekin_dual_color_secondary_BEHIND: TailBehind
@@ -345,7 +345,7 @@
   id: EarsShadekinDualColor
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Shadekin, ProtoKin]
+  speciesRestriction: [Shadekin]
   sprites:
     - sprite: _HL/Mobs/Customization/Shadekin/shadekinears.rsi
       state: dual_color_primary
@@ -358,7 +358,7 @@
   id: ShadekinHairShort
   bodyPart: Hair
   markingCategory: Hair
-  speciesRestriction: [Shadekin, ProtoKin]
+  speciesRestriction: [Shadekin]
   sprites:
     - sprite: _HL/Mobs/Customization/Shadekin/shadekinhair.rsi
       state: shadekin_short

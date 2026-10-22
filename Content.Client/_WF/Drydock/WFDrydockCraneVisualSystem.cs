@@ -248,7 +248,8 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
 
     private void OnShutdown(Entity<WFDrydockCraneComponent> ent, ref ComponentShutdown args)
     {
-        if (_cranes.Remove(ent.Owner, out var layers))
+        // A client state reset can delete the client-side rig before the crane.
+        if (_cranes.Remove(ent.Owner, out var layers) && !TerminatingOrDeleted(layers.Rig))
             QueueDel(layers.Rig);
     }
 
@@ -261,7 +262,7 @@ public sealed partial class WFDrydockCraneVisualSystem : EntitySystem
         if (!TryComp(ent.Owner, out SpriteComponent? sprite))
             return;
 
-        if (_cranes.Remove(ent.Owner, out var old))
+        if (_cranes.Remove(ent.Owner, out var old) && !TerminatingOrDeleted(old.Rig))
             QueueDel(old.Rig);
 
         // Drop the prototype's placeholder layers, or the previous build's body.

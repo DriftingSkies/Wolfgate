@@ -36,6 +36,10 @@ public sealed partial class WFPilotDutyComponent : Component
     [DataField]
     public bool ReactToAttacks = true;
 
+    /// <summary>Evading means running: flies directly away from the nearest attacking ship instead of circling it.</summary>
+    [DataField]
+    public bool FleeAttackers;
+
     /// <summary>Hold: turns the hull in place to put its guns on attackers or zone intruders; never chases.</summary>
     [DataField]
     public bool FaceThreats;

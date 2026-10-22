@@ -1,0 +1,108 @@
+<panels:WFMappingPropertiesPanel xmlns="https://spacestation14.io"
+                                 xmlns:panels="clr-namespace:Content.Client._WF.MappingMode.Panels"
+                                 Orientation="Vertical"
+                                 HorizontalExpand="True"
+                                 VerticalExpand="True">
+    <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" SeparationOverride="4" Margin="6">
+            <Label Text="{Loc 'wf-mapping-screen-section-selected'}" StyleClasses="LabelHeading" />
+            <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                <TextureRect Name="EntryIcon" SetSize="32 32" Stretch="KeepAspectCentered" VerticalAlignment="Center" />
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalAlignment="Center">
+                    <Label Name="EntryName" ClipText="True" />
+                    <Label Name="EntryId" ClipText="True" StyleClasses="LabelSubText" />
+                </BoxContainer>
+                <Button Name="QuickSelectButton" Disabled="True" Text="{Loc 'wf-mapping-screen-quick-select-star'}"
+                        ToolTip="{Loc 'wf-mapping-screen-add-quick-select'}" TooltipDelay="0" />
+            </BoxContainer>
+            <BoxContainer Name="UnsavedRow" Orientation="Horizontal" SeparationOverride="4" Visible="False">
+                <Label Name="UnsavedLabel" ClipText="True" HorizontalExpand="True" VerticalAlignment="Center"
+                       StyleClasses="LabelSubText" />
+                <Button Name="UnsavedButton" Text="{Loc 'wf-mapping-screen-unsaved-use'}" />
+            </BoxContainer>
+            <Label Name="RotationLabel" />
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <OptionButton Name="PlacementModeMenu" HorizontalExpand="True"
+                              ToolTip="{Loc 'entity-spawn-window-override-menu-tooltip'}" />
+                <Button Name="ReplaceButton" ToggleMode="True"
+                        Text="{Loc 'entity-spawn-window-replace-button-text'}" />
+            </BoxContainer>
+
+            <Label Text="{Loc 'wf-mapping-screen-section-mode'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+            <Label Name="ModeLabel" />
+            <BoxContainer Name="EraseRow" Orientation="Horizontal" SeparationOverride="4">
+                <Label Text="{Loc 'wf-mapping-screen-erase-target'}" />
+                <OptionButton Name="EraseTargetMenu" HorizontalExpand="True" />
+            </BoxContainer>
+            <BoxContainer Name="ShapeRow" Orientation="Horizontal" SeparationOverride="4">
+                <Label Text="{Loc 'wf-mapping-screen-shape-kind'}" />
+                <OptionButton Name="ShapeKindMenu" HorizontalExpand="True" />
+            </BoxContainer>
+            <BoxContainer Name="ShapeFillRow" Orientation="Horizontal" SeparationOverride="0">
+                <Label Text="{Loc 'wf-mapping-screen-shape-fill'}" Margin="0 0 4 0" />
+                <Button Name="ShapeFillButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenRight"
+                        Text="{Loc 'wf-mapping-screen-shape-fill-fill'}" />
+                <Button Name="ShapeBorderButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenLeft"
+                        Text="{Loc 'wf-mapping-screen-shape-fill-border'}"
+                        ToolTip="{Loc 'wf-mapping-screen-shape-fill-tooltip'}" />
+            </BoxContainer>
+            <BoxContainer Name="PipeBox" Orientation="Vertical" SeparationOverride="4">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Label Text="{Loc 'wf-mapping-screen-pipe-colour'}" />
+                    <OptionButton Name="PipeColorMenu" HorizontalExpand="True" />
+                    <PanelContainer Name="PipeSwatch" SetSize="20 20" VerticalAlignment="Center" />
+                </BoxContainer>
+                <BoxContainer Name="PipeCustomRow" Orientation="Horizontal" SeparationOverride="4">
+                    <Label Text="{Loc 'wf-mapping-screen-pipe-custom'}" />
+                    <LineEdit Name="PipeCustomEdit" HorizontalExpand="True"
+                              PlaceHolder="{Loc 'wf-mapping-screen-pipe-custom-placeholder'}" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Label Text="{Loc 'wf-mapping-screen-pipe-layer'}" />
+                    <OptionButton Name="PipeLayerMenu" HorizontalExpand="True" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Button Name="PipeJoinButton" ToggleMode="True" HorizontalExpand="True"
+                            Text="{Loc 'wf-mapping-screen-pipe-join'}"
+                            ToolTip="{Loc 'wf-mapping-screen-pipe-join-tooltip'}" />
+                    <Button Name="PipeReplaceButton" ToggleMode="True" HorizontalExpand="True"
+                            Text="{Loc 'wf-mapping-screen-pipe-replace'}"
+                            ToolTip="{Loc 'wf-mapping-screen-pipe-replace-tooltip'}" />
+                </BoxContainer>
+                <Button Name="PipePaintButton" ToggleMode="True" Text="{Loc 'wf-mapping-screen-pipe-paint'}"
+                        ToolTip="{Loc 'wf-mapping-screen-pipe-paint-tooltip'}" />
+                <Label Name="PipeFacingLabel" StyleClasses="LabelSubText" />
+                <Label Text="{Loc 'wf-mapping-screen-pipe-devices'}" Margin="0 4 0 0"
+                       ToolTip="{Loc 'wf-mapping-screen-pipe-devices-hint'}" />
+                <GridContainer Name="PipeDeviceGrid" Columns="6" HSeparationOverride="2" VSeparationOverride="2" />
+                <Label Name="PipeDeviceLabel" ClipText="True" StyleClasses="LabelSubText" />
+            </BoxContainer>
+            <BoxContainer Name="LinkBox" Orientation="Vertical" SeparationOverride="4">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="0">
+                    <Button Name="LinkSignalsButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenRight"
+                            Text="{Loc 'wf-mapping-link-tool-signals'}"
+                            ToolTip="{Loc 'wf-mapping-link-tool-signals-tooltip'}" />
+                    <Button Name="LinkDevicesButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenBoth"
+                            Text="{Loc 'wf-mapping-link-tool-devices'}"
+                            ToolTip="{Loc 'wf-mapping-link-tool-devices-tooltip'}" />
+                    <Button Name="LinkAccessButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenLeft"
+                            Text="{Loc 'wf-mapping-link-tool-access'}"
+                            ToolTip="{Loc 'wf-mapping-link-tool-access-tooltip'}" />
+                </BoxContainer>
+                <Label Name="LinkSelectedLabel" ClipText="True" />
+                <Button Name="LinkClearButton" Text="{Loc 'wf-mapping-link-clear'}" />
+            </BoxContainer>
+
+            <Label Text="{Loc 'wf-mapping-screen-section-levels'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+            <BoxContainer Name="LevelList" Orientation="Vertical" SeparationOverride="2" />
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <Button Name="LevelUpButton" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-level-up'}" />
+                <Button Name="LevelDownButton" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-level-down'}" />
+            </BoxContainer>
+
+            <Label Text="{Loc 'wf-mapping-screen-section-session'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+            <Label Name="SessionLabel" ClipText="True" />
+            <Label Name="LimitsLabel" StyleClasses="LabelSubText" />
+        </BoxContainer>
+    </ScrollContainer>
+</panels:WFMappingPropertiesPanel>

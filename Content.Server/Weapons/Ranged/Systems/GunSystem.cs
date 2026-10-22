@@ -226,7 +226,10 @@ public sealed partial class GunSystem : SharedGunSystem
                 shotProjectiles.Add(ammoEnt);
             }
             MuzzleFlash(gunUid, muzzle, mapDirection.ToAngle(), user);
-            Audio.PlayPredicted(sound ?? gun.SoundGunshotModified, gunUid, user);
+            // WOLFGATE(Weapons) START: cap networked gunshot audio for guns above 5 shots/s
+            // Audio.PlayPredicted(sound ?? gun.SoundGunshotModified, gunUid, user);
+            WfPlayGunshot(gunUid, gun, sound ?? gun.SoundGunshotModified, user);
+            // WOLFGATE END
         }
     }
 

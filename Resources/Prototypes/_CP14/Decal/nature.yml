@@ -1,0 +1,28 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: decal
+  id: CP14GrassBushes1
+  snapCardinals: true
+  defaultSnap: true
+  showMenu: true
+  sprite:
+    sprite: /Textures/_CP14/Decals/Flora/Grass.rsi
+    state: grass_bushes1
+
+- type: decal
+  id: CP14GrassBushes3
+  snapCardinals: true
+  defaultSnap: true
+  showMenu: true
+  sprite:
+    sprite: /Textures/_CP14/Decals/Flora/Grass.rsi
+    state: grass_bushes3
+
+- type: decal
+  id: CP14FloraGrass8
+  snapCardinals: true
+  defaultSnap: true
+  showMenu: true
+  sprite:
+    sprite: /Textures/_CP14/Decals/Flora/Grass.rsi
+    state: grass_short8
+# WOLFGATE END

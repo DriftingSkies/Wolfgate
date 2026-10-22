@@ -63,7 +63,7 @@ internal static class WFCombatSnapshotEquality
                 if (a.Name != b.Name || !a.Coordinates.Equals(b.Coordinates) || !a.Angle.Equals(b.Angle) ||
                     a.Entity != b.Entity || a.GridDockedWith != b.GridDockedWith || a.LabelName != b.LabelName ||
                     a.RadarColor != b.RadarColor || a.HighlightedRadarColor != b.HighlightedRadarColor ||
-                    a.ReceiveOnly != b.ReceiveOnly || a.DockType != b.DockType)
+                    a.ReceiveOnly != b.ReceiveOnly || a.DockType != b.DockType || a.WfClampedBy != b.WfClampedBy)
                     return false;
             }
         }

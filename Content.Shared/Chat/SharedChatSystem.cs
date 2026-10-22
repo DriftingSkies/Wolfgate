@@ -23,6 +23,7 @@ public abstract partial class SharedChatSystem : EntitySystem
     public const char EmotesPrefix = '@';
     public const char EmotesAltPrefix = '*';
     public const char AdminPrefix = ']';
+    public const char EventPrefix = '{'; // WOLFGATE(EventStaff): event staff chat
     public const char WhisperPrefix = ',';
     public const char CollectiveMindPrefix = '+';
     public const char DefaultChannelKey = 'h';
@@ -161,6 +162,10 @@ public abstract partial class SharedChatSystem : EntitySystem
         }
 
         if (!(input.StartsWith(RadioChannelPrefix) || input.StartsWith(RadioChannelAltPrefix)))
+            return false;
+
+        // WOLFGATE(Emotes): "..." is a wordless reply, not a radio key
+        if (input.StartsWith($"{RadioChannelAltPrefix}{RadioChannelAltPrefix}"))
             return false;
 
         if (input.Length < 2 || char.IsWhiteSpace(input[1]))

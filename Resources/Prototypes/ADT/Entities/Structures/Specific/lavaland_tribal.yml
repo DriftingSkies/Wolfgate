@@ -1,0 +1,15 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTWoodenStool
+  parent: Stool
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/wooden_stool.rsi
+    state: stool
+  - type: Icon
+    sprite: ADT/Structures/Furniture/wooden_stool.rsi
+    state: stool
+  - type: Construction
+    graph: DecorBuildADTWoodenStool
+    node: built
+# WOLFGATE END

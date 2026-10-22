@@ -56,6 +56,13 @@ namespace Content.Shared.Chat
         /// </summary>
         Admin = ChatChannel.AdminChat,
 
+        // WOLFGATE(EventStaff) START: event staff chat
+        /// <summary>
+        ///     Event staff chat
+        /// </summary>
+        Event = ChatChannel.EventChat,
+        // WOLFGATE END
+
         Console = ChatChannel.Unspecified
     }
 }

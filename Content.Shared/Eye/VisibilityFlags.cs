@@ -12,5 +12,6 @@ namespace Content.Shared.Eye
         Subfloor = 1 << 2, // Pipes, disposal chutes, cables etc. while hidden under tiles. Can be revealed with a t-ray.
         Admin = 1 << 3, // Reserved for admins in stealth mode and admin tools.
         NullSpace = 1 << 4, // WOLFGATE(Species): ported from HardLight/Starlight, for Shadekin dark phasing
+        Xeno = 1 << 5, // WOLFGATE(Xenonids): things only xenos see
     }
 }

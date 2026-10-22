@@ -1,0 +1,110 @@
+# The flag of Caelestinus Central's judge patrols. Nobody can pick it at character setup.
+- type: company
+  id: WFJudges
+  name: Caelestinus Judges
+  description: wf-company-judges-description
+  color: "#37946e"
+  disabled: true
+
+# The judges keep the station's approaches clear of the sector's threats and leave every captain alone.
+- type: wfStanding
+  id: WFJudges
+  atWar: [ WFAshfallReavers, WFAds, RedSailCorsairs ]
+
+# Judges in station guard blues and robes, sidearms only, guards with a rifle. No ID: a dead judge's card would open the station.
+- type: startingGear
+  id: WFCrewJudge
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSecGuard
+    outerClothing: ClothingOuterRobesJudge
+    shoes: ClothingShoesBootsCombat
+    belt: WeaponPistolMk58
+    pocket1: Magazine45_ACPPistolFMJ
+    pocket2: Magazine45_ACPPistolFMJ
+    ears: WFCrewHeadset
+
+- type: startingGear
+  id: WFCrewJudgeGuard
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSecGuard
+    outerClothing: ClothingOuterArmorBulletproof
+    head: ClothingHeadHelmetBasic
+    shoes: ClothingShoesBootsCombat
+    gloves: ClothingHandsGlovesColorBlack
+    back: WeaponRifleLecter
+    belt: WeaponPistolMk58
+    pocket1: Magazine68x52mmCaseless
+    pocket2: Magazine45_ACPPistolFMJ
+    ears: WFCrewHeadset
+
+# Caelestinus Central's judges. They take a great deal of stray fire from captains before they turn on one.
+- type: wfCrewProfile
+  id: WFCrewProfileJudge
+  bodies:
+  - WFMobCrewBodyHuman
+  - WFMobCrewBodyHuman
+  - WFMobCrewBodyHuman
+  - WFMobCrewBodyReptilian
+  - WFMobCrewBodyDwarf
+  - WFMobCrewBodyVulpkanin
+  - WFMobCrewBodyTajaran
+  skills: [ Elite ]
+  forgivesOwn: true
+  strayHits: 40
+  loadouts:
+    WFCrewDeckhand: [ WFCrewJudge ]
+    WFCrewEngineer: [ WFCrewJudge ]
+    WFCrewPilot: [ WFCrewJudge ]
+    WFCrewRadioOperator: [ WFCrewJudge ]
+    WFCrewCaptain: [ WFCrewJudge ]
+    WFCrewGunner: [ WFCrewJudge ]
+    WFCrewMarine: [ WFCrewJudgeGuard ]
+
+# One judge ship circling Caelestinus Central. The station patrol below keeps two of them on the orbit, opposite each
+# other, and replaces one 20 minutes after it is lost. Neutral to every captain: it fires only on the Reavers, the ADS
+# and the corsairs, on sight inside 1500 m, and on hostile drones within 6000 m of the station, and drives them off
+# rather than chasing them down. Only known threats: a player hull with its IFF hidden or unlabelled is left alone until
+# it fires, where other patrols warn it off and fire on it as an unknown.
+- type: wfEncounter
+  id: WFEncounterJudgePatrol
+  name: wf-encounter-name-judge-patrol
+  start: Manual
+  lifetime: Persistent
+  category: Patrol
+  icon: Shield
+  cost: 0
+  placement: Station
+  ships:
+  - key: judge
+    navigation: WFCrewNavigationWarship
+    vessels: [ Hornet, Lightning, Petra, WFRoswell ]
+    deckhands: 0
+    guards: 2
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner, WFCrewDeckhand ]
+    side: judges
+    faction: WFCrew
+    company: WFJudges
+    profile: WFCrewProfileJudge
+    boarding: Warn
+    docking: Warn
+    distress: false
+    disengage: Deter
+    disengageRange: 2500
+    warnRange: 1500
+    attackRange: 400
+    zoneTargets: AtWar
+    knownThreatsOnly: true # player hulls running dark are left alone until they fire
+    npcTargetsOnly: true # no player ship is a target until its fire runs past the judges' 40 stray hits
+    objectives:
+    - kind: Circle
+      target: "@origin"
+      range: 2000
+
+- type: wfStationPatrol
+  id: WFStationPatrolCaelestinus
+  stations: [ Caelestinus ]
+  encounter: WFEncounterJudgePatrol
+  count: 2
+  droneRange: 6000 # Caelestinus deletes drones inside 4000 m of itself; the judges take on those loitering beyond
+  respawn: 1200

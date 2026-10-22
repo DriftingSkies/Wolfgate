@@ -77,7 +77,7 @@ public sealed class WolfmedSpeciesTest : WolfmedGameTest
         var mobState = SEntMan.System<MobStateSystem>();
         var graph = SEntMan.System<SharedBodySystem>();
         EntityUid moth = default, skrell = default, diona = default, dionaBled = default, slime = default,
-            slimeBled = default, shadekin = default, protoKin = default;
+            slimeBled = default, shadekin = default;
 
         await Server.WaitPost(() =>
         {
@@ -89,7 +89,6 @@ public sealed class WolfmedSpeciesTest : WolfmedGameTest
             slime = SEntMan.SpawnEntity("MobSlimePerson", map.GridCoords);
             slimeBled = SEntMan.SpawnEntity("MobSlimePerson", map.GridCoords);
             shadekin = SEntMan.SpawnEntity("MobShadekin", map.GridCoords);
-            protoKin = SEntMan.SpawnEntity("MobProtoKin", map.GridCoords);
         });
         await RunSeconds(2);
 
@@ -148,18 +147,16 @@ public sealed class WolfmedSpeciesTest : WolfmedGameTest
             Assert.That(s.Life.InArrest(slimeBled), Is.True, "a slime at 29% blood did not collapse.");
             Assert.That(Consc(slimeBled).Heartless, Is.True);
 
-            // Group D: a shadekin and a proto-kin are wound hosts, and 29% blood arrests them.
-            foreach (var kin in new[] { shadekin, protoKin })
-            {
-                Assert.That(SEntMan.HasComponent<WoundHostComponent>(kin), Is.True, "group D is still not a wound host.");
-                Assert.That(s.Life.GetBrain(kin), Is.Not.Null, "group D runs no brain clock.");
-                s.SetBlood(kin, 0.29f);
-                s.Advance(kin, 1);
-                Assert.That(s.Life.InArrest(kin), Is.True, $"{SEntMan.GetComponent<MetaDataComponent>(kin).EntityPrototype?.ID} at 29% blood did not arrest.");
-                // No lungs and no respirator by design: the chest reads as breathing, not as failed lungs.
-                Assert.That(SEntMan.System<WolfmedBreathingSystem>().Assess(shadekin).Breathing,
-                    Is.Not.EqualTo(WolfmedBreathing.Laboured));
-            }
+            // Group D: a shadekin is a wound host, and 29% blood arrests it.
+            var kin = shadekin;
+            Assert.That(SEntMan.HasComponent<WoundHostComponent>(kin), Is.True, "group D is still not a wound host.");
+            Assert.That(s.Life.GetBrain(kin), Is.Not.Null, "group D runs no brain clock.");
+            s.SetBlood(kin, 0.29f);
+            s.Advance(kin, 1);
+            Assert.That(s.Life.InArrest(kin), Is.True, $"{SEntMan.GetComponent<MetaDataComponent>(kin).EntityPrototype?.ID} at 29% blood did not arrest.");
+            // No lungs and no respirator by design: the chest reads as breathing, not as failed lungs.
+            Assert.That(SEntMan.System<WolfmedBreathingSystem>().Assess(shadekin).Breathing,
+                Is.Not.EqualTo(WolfmedBreathing.Laboured));
         });
 
         // The slime is still alive a few seconds on, with its head on the floor.
@@ -169,8 +166,8 @@ public sealed class WolfmedSpeciesTest : WolfmedGameTest
     }
 
     /// <summary>
-    /// <c>SynthBranchTest</c> (plan §12 M4, OD16: the mechanical branch). An empty SynthBattery shuts the synth down with
-    /// reason Power, on its own readout too, and nothing kills it over 30 minutes; the battery back brings it up.
+    /// <c>SynthBranchTest</c> (plan §12 M4, OD16: the mechanical branch). An empty SynthBattery puts the synth on low power
+    /// (Synthetics), still up, on its own readout too, and nothing kills it over 30 minutes; the battery back ends it.
     /// Taking the core out is core failure; a destroyed core is repaired on the head and the restart brings the same
     /// mind back.
     /// </summary>
@@ -224,15 +221,15 @@ public sealed class WolfmedSpeciesTest : WolfmedGameTest
             var comp = Consc(synth);
             Assert.Multiple(() =>
             {
-                Assert.That(comp.State, Is.EqualTo(WolfmedConsciousness.Unconscious), "an empty battery left the synth up.");
-                Assert.That(comp.Cause, Is.EqualTo(WolfmedCause.Shutdown));
-                Assert.That(comp.CauseSource, Is.EqualTo(WolfmedCauseSource.Power));
-                Assert.That(s.AnalyzerLines(synth)[0], Is.EqualTo("SHUTDOWN: no power"));
+                Assert.That(comp.State, Is.EqualTo(WolfmedConsciousness.Up), "an empty battery took the synth down.");
+                Assert.That(shutdown.IsShutDown(synth), Is.False, "an empty battery shut the synth down.");
+                Assert.That(SEntMan.HasComponent<Content.Shared._WF.Synthetics.WFLowPowerComponent>(synth), Is.True,
+                    "an empty battery did not put the synth on low power.");
                 Assert.That(SEntMan.GetComponent<WolfmedSyntheticHudComponent>(synth).CauseLine,
-                    Is.EqualTo("wolfmed-synthetic-cause-shutdown"));
+                    Is.EqualTo("wolfmed-synthetic-cause-low-power"));
             });
 
-            // Thirty minutes on the life and core-heat ticks: nothing runs out on a shut-down synth.
+            // Thirty minutes on the life and core-heat ticks: nothing runs out on a synth with no power.
             s.Advance(synth, 1800);
             for (var second = 0; second < 1800; second += 30)
                 SEntMan.System<WolfmedOverheatSystem>().Tick(synth, 30f);
@@ -248,7 +245,8 @@ public sealed class WolfmedSpeciesTest : WolfmedGameTest
         });
         await RunSeconds(3);
         await Server.WaitAssertion(() =>
-            Assert.That(Consc(synth).State, Is.EqualTo(WolfmedConsciousness.Up), "a charged battery did not bring the synth up."));
+            Assert.That(SEntMan.HasComponent<Content.Shared._WF.Synthetics.WFLowPowerComponent>(synth), Is.False,
+                "a charged battery left the synth on low power."));
 
         await Server.WaitAssertion(() =>
         {

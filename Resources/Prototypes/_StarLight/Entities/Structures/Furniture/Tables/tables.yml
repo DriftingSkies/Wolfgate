@@ -1,0 +1,197 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  id: TableCounterRetroWood
+  parent: CounterBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/wood_counter.rsi
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/wood_counter.rsi
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialWoodPlank1:
+            min: 0
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: counterretrowood
+    base: state_
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepWood
+
+- type: entity
+  id: TableCounterRetroKitchen
+  parent: CounterBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/kitchen_counter.rsi
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/kitchen_counter.rsi
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -6
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 0
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: counterretrokitchen
+    base: state_
+
+- type: entity
+  id: TableCounterRetroWhiteOrange
+  parent: CounterBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/retro_counter_wo.rsi
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/retro_counter_wo.rsi
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -6
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 0
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: counterretrowhiteorange
+    base: state_
+
+- type: entity
+  id: TableCounterRetroWhiteTeal
+  parent: CounterBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/retro_counter_wt.rsi
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/retro_counter_wt.rsi
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -6
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 0
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: counterretrowhiteteal
+    base: state_
+
+- type: entity
+  id: TableCounterRetroDiner
+  parent: CounterBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Tables/diner_counter.rsi
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Tables/diner_counter.rsi
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -6
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 0
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: counterretrodiner
+    base: state_
+# WOLFGATE END

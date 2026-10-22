@@ -14,6 +14,10 @@ Offer Second Chance (right-click Admin verb on a body or a player's ghost, or `s
 body's player, wherever they are now, whether they want to come back. Yes puts them back in the body and rejuvenates
 it; no or closing the prompt leaves them as they are. Admins are told the answer.
 
+`spawnvessel <vessel> [owner or -] [name]` (or the Spawn Vessel window) gives the ship its late-join station and job
+slots, as a shipyard purchase would, so players can join it as its jobs and get their faction specials. A later deed
+reuses that station. `renamevessel <grid> <name>` renames a ship's grid, station and any deeds.
+
 A vessel spawned for an owner, and an ERT's ship, are registered to the players' accounts through ShipAccess, so
 their access stays with the player in any body, a ghost included. The owner's living body's ID card also gets
 the deed when it has none; ERT responders aboard a ship get a crew record so their cards can key its doors, and a plain ID card when their outfit has none.
@@ -42,10 +46,12 @@ Audio.
 - [`Content.Server/_WF/Administration/Commands/GridPowerCommand.cs`](Commands/GridPowerCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/InternetSoundCommands.cs`](Commands/InternetSoundCommands.cs)
 - [`Content.Server/_WF/Administration/Commands/OfferToGhostsCommand.cs`](Commands/OfferToGhostsCommand.cs)
+- [`Content.Server/_WF/Administration/Commands/RenameVesselCommand.cs`](Commands/RenameVesselCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SecondChanceCommand.cs`](Commands/SecondChanceCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SpawnOutfitCommand.cs`](Commands/SpawnOutfitCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SpawnOutfitGhostCommand.cs`](Commands/SpawnOutfitGhostCommand.cs)
 - [`Content.Server/_WF/Administration/Commands/SpawnVesselCommand.cs`](Commands/SpawnVesselCommand.cs)
+- [`Content.Server/_WF/Administration/Systems/AdminFollowSystem.cs`](Systems/AdminFollowSystem.cs)
 - [`Content.Server/_WF/Administration/Systems/AdminRadarSystem.cs`](Systems/AdminRadarSystem.cs)
 - [`Content.Server/_WF/Administration/Systems/AdminVesselSpawnSystem.cs`](Systems/AdminVesselSpawnSystem.cs)
 - [`Content.Server/_WF/Administration/Systems/ErtSystem.cs`](Systems/ErtSystem.cs)
@@ -112,10 +118,12 @@ Audio.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Administration/AdminFollowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/AdminFollowTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/SetOutfitPickerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SetOutfitPickerTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Administration/VesselSpawnStationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/VesselSpawnStationTest.cs)
 
 ### Prototypes
 
@@ -140,5 +148,7 @@ Audio.
 - [`Content.Client/Shuttles/BUI/RadarConsoleBoundUserInterface.cs`](../../../Content.Client/Shuttles/BUI/RadarConsoleBoundUserInterface.cs)
   - the scanner window an admin in a ghost gets instead
   - an admin in a ghost gets the resizable, far-zooming scanner
+- [`Content.Server/Administration/Commands/FollowCommand.cs`](../../Administration/Commands/FollowCommand.cs): aghost before orbiting
+- [`Content.Server/Administration/UI/AdminCameraEui.cs`](../../Administration/UI/AdminCameraEui.cs): aghost before orbiting
 
 <!-- WOLFGATE-GENERATED END -->

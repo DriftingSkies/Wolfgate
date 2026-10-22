@@ -3,7 +3,10 @@
 Anvilhold Drydock is a POI station (`WFDrydock`, `Resources/Maps/_WF/Drydock/drydock.yml`) that repairs and refits
 ships parked in its four berths, North, East, South and West. A pilot either pulls up to a berth console or hails the
 dockmaster from their helm (Hailing module) and books a berth. Any ship can also build a mobile drydock, which pays in
-materials instead of credits.
+materials instead of credits. A `WFDrydockRepairVoucher` on the payer, in hand or a worn slot, pays for one whole
+repair at a console that takes credits; it is used up when the work starts and handed back if the job aborts
+(`WFDrydockSystem.Vouchers.cs`). `IssueShipVouchers` (used by Reaver bounties) binds one to each helping ship, which it
+alone can repair, and skips a ship that still holds an unused one.
 
 Entry points: `WFDrydockSystem` (berths, quotes, payment; `.Job.cs` for jobs and cranes, `.Booking.cs` for the hail
 service, bookings and guides, `.Materials.cs` for material bills), `WFShipRefitSystem` and `WFPartRefitSystem` (refit
@@ -86,7 +89,9 @@ an edge pointer with its range. Open consoles refresh once a second.
 
 `WFComputerMobileDrydock` (board `WFComputerMobileDrydockCircuitboard`) and `WFMobileDrydockCrane` (board
 `WFMobileDrydockCraneMachineCircuitboard`, MV power, at stock parts a 26-tile berth starting 3 tiles past the machine, 13 tiles
-across). Both boards print at the circuit imprinter after Shuttlecraft research. To mirror a mobile crane, unbolt it,
+across). Both boards print at the circuit imprinter after Shuttlecraft research. The crane builds in a 2x2 machine
+frame, from 20 steel, 10 plasteel, 10 MV cable, 4 motors and 4 armor plates on top of its parts, and can be pulled
+while unbolted. To mirror a mobile crane, unbolt it,
 open its panel and cut with wirecutters for 2 s (`WFDrydockCraneMirrorSystem`). It works walk-in only and never on its
 own grid.
 
@@ -99,11 +104,11 @@ Refunds go back into the job's first crane. A repair short of materials does wha
 is left out, so are the parts. A refit is all or nothing.
 
 A mobile crane also links a parts silo and a chemical silo (Lathe module), from the silo's window like a lathe, and
-parts silos then take any machine part (`parts` on its `FabricationSiloClient`). A refit unit billed in full takes the
+parts silos then take any machine part and machine or computer board (`parts` on its `FabricationSiloClient`). A refit unit billed in full takes the
 stock part it installs from the parts silo, if there is one, instead of its tier materials
 (`WFDrydockSystem.Supplies.cs`). Only that exact prototype counts, so trade goods that are machine parts, such as
 `CapacitorEconomy2`, are never spent. Units restored at the repair share pay in materials, so a spare part isn't spent
-on a 20% bill. Unfinished work's parts go back to the silo, or onto the nearest free floor beside the crane. The console
+on a 20% bill. Unfinished work's parts go back to the silo, or onto the nearest free floor beside the crane, never past a wall. The console
 lists everything the parts silos hold and the chemicals in the chemical silos; nothing uses chemicals yet. Bills (the
 repair quote, the salvage preview and each refit's cost) list one row per material, red where the cranes hold too
 little.
@@ -169,6 +174,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.Server/_WF/Drydock/WFDrydockBookingComponent.cs`](WFDrydockBookingComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockCraneUpgradesComponent.cs`](WFDrydockCraneUpgradesComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockJobComponent.cs`](WFDrydockJobComponent.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockRepairVoucherComponent.cs`](WFDrydockRepairVoucherComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.BerthLights.cs`](WFDrydockSystem.BerthLights.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Blockers.cs`](WFDrydockSystem.Blockers.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Booking.cs`](WFDrydockSystem.Booking.cs)
@@ -181,6 +187,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Refits.cs`](WFDrydockSystem.Refits.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Supplies.cs`](WFDrydockSystem.Supplies.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Upgrades.cs`](WFDrydockSystem.Upgrades.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockSystem.Vouchers.cs`](WFDrydockSystem.Vouchers.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockWorkItem.cs`](WFDrydockWorkItem.cs)
 - [`Content.Server/_WF/Drydock/WFHulkComponent.cs`](WFHulkComponent.cs)
 - [`Content.Server/_WF/Drydock/WFLandingThrusterRefitSystem.cs`](WFLandingThrusterRefitSystem.cs)
@@ -243,6 +250,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Resources/Prototypes/_WF/Drydock/refits.yml`](../../../Resources/Prototypes/_WF/Drydock/refits.yml)
 - [`Resources/Prototypes/_WF/Drydock/salvage.yml`](../../../Resources/Prototypes/_WF/Drydock/salvage.yml)
 - [`Resources/Prototypes/_WF/Drydock/sounds.yml`](../../../Resources/Prototypes/_WF/Drydock/sounds.yml)
+- [`Resources/Prototypes/_WF/Drydock/vouchers.yml`](../../../Resources/Prototypes/_WF/Drydock/vouchers.yml)
 
 ### Localization
 

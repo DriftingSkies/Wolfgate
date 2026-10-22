@@ -265,3 +265,12 @@ wf-encounter-name-supercapital-patrol = TSF supercapital patrol {$designation}
 wf-encounter-announce-supercapital-patrol = Traffic control to all vessels: {$name}. The Federation supercapital Chengdu and her fighter wing are holding station off {$destination}. Dynasty traffic is advised to keep well clear.
 wf-encounter-name-pdv-supercapital-patrol = Dynasty supercapital patrol {$designation}
 wf-encounter-announce-pdv-supercapital-patrol = Traffic control to all vessels: {$name}. The Vanguard supercapital Jupiter and her fighter wing are holding station off {$destination}. Federation traffic is advised to keep well clear.
+
+# Traders answering a hail; the caller can ask them to hold position so they can dock.
+wf-encounter-trader-hail-greet = Trader here, under way. What can we do for you?
+wf-encounter-trader-hail-holding = Trader here. We're holding position, come alongside when you're ready.
+wf-encounter-trader-hail-stop = Hold position, we're coming to dock.
+wf-encounter-trader-hail-leave = Never mind.
+wf-encounter-trader-hail-stopping = Understood. Holding position for {$minutes} minutes. Dock when ready.
+wf-encounter-trader-hail-cannot = Sorry, we can't stop here.
+wf-encounter-trader-hail-farewell = Safe travels.

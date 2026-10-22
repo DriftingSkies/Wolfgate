@@ -67,7 +67,7 @@ public sealed partial class AdminCameraEui : BaseEui
             case AdminCameraFollowMessage:
                 if (!_admin.HasAdminFlag(Player, AdminFlags.Admin) || Player.AttachedEntity == null)
                     return;
-                _follower.StartFollowingEntity(Player.AttachedEntity.Value, _target);
+                _entityManager.System<Content.Server._WF.Administration.Systems.AdminFollowSystem>().Follow(Player, _target); // WOLFGATE(Administration): aghost before orbiting
                 break;
             default:
                 break;

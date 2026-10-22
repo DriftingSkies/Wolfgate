@@ -8,6 +8,8 @@
   markingLimits: MobSynthMarkingLimits
   dollPrototype: MobSynthDummy
   skinColoration: Hues
+  # WOLFGATE(Biotype): a machine by default
+  biotype: Synthetic
 
 - type: speciesBaseSprites
   id: MobSynthSprites

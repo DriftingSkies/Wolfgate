@@ -64,64 +64,6 @@
       LFoot: 0, -1
       RFoot: 0, -1
     Oni: {}
-    ProtoArachnid:
-      Chest: 0, 1
-      LArm: 0, 1
-      RArm: 0, 1
-      LLeg: 0, 1
-      RLeg: 0, 1
-    ProtoAvali:
-      LHand: 0, -1
-      RHand: 0, -1
-    ProtoDawi: {}
-    ProtoDionae:
-      Chest: 0, 1
-      LArm: 0, -3
-      RArm: 0, -3
-      LLeg: 0, 1
-      RLeg: 0, 1
-      LFoot: 0, 1
-      RFoot: 0, 1
-    ProtoFeline:
-      LArm: 0, -1
-      RArm: 0, -1
-      LHand: 0, -2
-      RHand: 0, -2
-      LLeg: 0, 1
-      RLeg: 0, 1
-    ProtoHumie: {}
-    ProtoKin:
-      LArm: 0, -1
-      RArm: 0, -1
-      LLeg: 0, 1
-      RLeg: 0, 1
-    ProtoMoth:
-      LHand: 0, 1
-      RHand: 0, 1
-      LFoot: 0, -1
-      RFoot: 0, -1
-    ProtoReptile: {}
-    ProtoResomi:
-      Head: 0, -3
-      Chest: 0, -3
-      LArm: 0, -3
-      RArm: 0, -3
-      LHand: 0, -2
-      RHand: 0, -2
-      LFoot: 0, 1
-      RFoot: 0, 1
-    ProtoSlimePerson: {}
-    ProtoThaven:
-      Head: 0, 2
-      Chest: 0, 1
-    ProtoVox:
-      LArm: 0, -1
-      RArm: 0, -1
-      LHand: 0, -2
-      RHand: 0, -2
-      LLeg: 0, 1
-      RLeg: 0, 1
-    ProtoVulp: {}
     Protogen: {}
     Reptilian:
       LLeg: 0, 1

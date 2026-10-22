@@ -10,3 +10,6 @@
     - type: FTLSmashImmune
     - type: IFF
       color: '#7FFFD4'
+    # A hull moving over the marker would otherwise reparent it and carry it off.
+    - type: Transform
+      gridTraversal: false

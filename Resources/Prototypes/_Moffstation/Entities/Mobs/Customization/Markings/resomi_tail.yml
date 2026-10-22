@@ -14,7 +14,7 @@
   id: ResomiTail
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Resomi, ProtoResomi]  # WOLFGATE(Species): was [Resomi]
+  speciesRestriction: [Resomi]
   sprites:
   - sprite: _Moffstation/Mobs/Customization/Resomi/resomi_tail_markings.rsi
     state: tail
@@ -94,7 +94,7 @@
   id: ResomiTailFeathers # Same as default tail but you can change the colors.
   bodyPart: Tail
   markingCategory: TailExtras
-  speciesRestriction: [Resomi, ProtoResomi]  # WOLFGATE(Species): was [Resomi]
+  speciesRestriction: [Resomi]
   sprites:
   - sprite: _Moffstation/Mobs/Customization/Resomi/resomi_tail_markings.rsi
     state: tail_feathers

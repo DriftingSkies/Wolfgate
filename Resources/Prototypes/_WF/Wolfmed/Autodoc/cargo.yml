@@ -22,70 +22,91 @@
     sprite: Objects/Specific/Research/researchdisk.rsi
     state: icon
   product: WFCrateAutodocPrograms
-  cost: 3000 # above the 2880 its contents sell for, or cargo can be milked
+  cost: 12000 # above the ~10,080 its contents sell for, or cargo can be milked
   category: cargoproduct-category-name-medical
   group: market
 
 # Lathe recipes. The board sits with the other medical machine boards; the disks are ordinary medical prints.
 
 - type: latheRecipe
-  parent: BaseCircuitboardRecipe
   id: WFAutodocMachineCircuitboard
   result: WFAutodocMachineCircuitboard
+  completetime: 30
+  materials:
+    Steel: 500
+    Glass: 1000
+    Gold: 500
+    Silver: 500
+    Plasma: 500
+    Diamond: 200
 
 - type: latheRecipe
   id: WFAutodocProgramDiskTransplant
   result: WFAutodocProgramDiskTransplant
-  completetime: 4
+  completetime: 15
   materials:
-    Steel: 100
-    Glass: 100
-    Gold: 20
+    Steel: 200
+    Glass: 300
+    Gold: 100
+    Silver: 100
+    Plasma: 100
 
 - type: latheRecipe
   id: WFAutodocProgramDiskLimb
   result: WFAutodocProgramDiskLimb
-  completetime: 4
+  completetime: 15
   materials:
-    Steel: 100
-    Glass: 100
-    Gold: 20
+    Steel: 200
+    Glass: 300
+    Gold: 100
+    Silver: 100
+    Plasma: 100
 
 - type: latheRecipe
   id: WFAutodocProgramDiskNeuro
   result: WFAutodocProgramDiskNeuro
-  completetime: 4
+  completetime: 15
   materials:
-    Steel: 100
-    Glass: 100
-    Gold: 40
+    Steel: 200
+    Glass: 300
+    Gold: 200
+    Silver: 100
+    Plasma: 100
 
 - type: latheRecipe
   id: WFAutodocProgramDiskCavity
   result: WFAutodocProgramDiskCavity
-  completetime: 4
+  completetime: 15
   materials:
-    Steel: 100
-    Glass: 100
-    Gold: 20
+    Steel: 200
+    Glass: 300
+    Gold: 100
+    Silver: 100
+    Plasma: 100
 
 - type: latheRecipe
   id: WFAutodocDefibModule
   result: WFAutodocDefibModule
-  completetime: 4
+  completetime: 15
   materials:
-    Steel: 150
-    Glass: 100
-    Gold: 40
+    Steel: 300
+    Glass: 300
+    Gold: 200
+    Silver: 150
+    Plasma: 150
+    Diamond: 50
 
 - type: latheRecipe
   id: WFAutodocAutofixModule
   result: WFAutodocAutofixModule
-  completetime: 4
+  completetime: 15
   materials:
-    Steel: 150
-    Glass: 100
-    Gold: 40
+    Steel: 300
+    Glass: 300
+    Gold: 200
+    Silver: 150
+    Plasma: 150
+    Diamond: 50
 
 - type: latheRecipePack
   id: WFWolfmedAutodocPrograms

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Content.IntegrationTests.Pair;
 using Content.Server._WF.Drydock;
+using Content.Server._WF.GridSettle;
 using Content.Shared._WF.Drydock;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -58,7 +59,9 @@ public sealed class MobileDrydockBerthTest
         track.Parents.Add(em.GetComponent<TransformComponent>(uid).ParentUid);
         if (em.TryGetComponent(uid, out MapGridComponent grid))
             track.GridTicks.Add(grid.LastModifiedTick.Value);
-        track.ComponentSets.Add(string.Join(",", em.GetComponents(uid).Select(c => c.GetType().Name).OrderBy(n => n)));
+        // The grid settle marker is server-only and comes and goes on its own once-a-second scan.
+        track.ComponentSets.Add(string.Join(",", em.GetComponents(uid).Where(c => c is not WFGridSettleComponent)
+            .Select(c => c.GetType().Name).OrderBy(n => n)));
     }
 
     /// <summary>The largest distance any sample sits from the first one.</summary>

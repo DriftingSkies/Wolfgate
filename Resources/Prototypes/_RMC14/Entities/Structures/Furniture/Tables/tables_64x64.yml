@@ -1,0 +1,152 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: BaseStructure
+  id: RMCTableCardsRed
+  suffix: Red
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: table_cards2
+    offset: "0.5, 0.5"
+  - type: Transform
+    anchored: false
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -4
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: PlaceableSurface
+  - type: Climbable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "0.0,-0.4,1.2,0.4"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: table_cards2
+
+- type: entity
+  parent: BaseStructure
+  id: RMCTablePoolTableBlack
+  suffix: black
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: table_pool2
+    offset: "0.5, 0.5"
+  - type: Transform
+    anchored: false
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -4
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: PlaceableSurface
+  - type: Climbable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "0.0,-0.4,1.2,0.4"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: table_pool2
+
+- type: entity
+  parent: BaseStructure
+  id: RMCTableLargeMetalTableComputer
+  suffix: Computer
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: blackmetaltable_computer
+    offset: "0.5, 0.5"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,1.5,0.5"
+        density: 55
+        mask: [ TableMask ]
+        layer: [ TableLayer ]
+  - type: Transform
+    anchored: false
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -4
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: PlaceableSurface
+  - type: Climbable
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: blackmetaltable_computer
+
+- type: entity
+  parent: RMCTableLargeMetalTableComputer
+  id: RMCTableLargeMetalTable
+  suffix: RMC
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: blackmetaltable
+    offset: 0.5, 0.5
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Tables/tables_64x64.rsi
+    state: blackmetaltable
+# WOLFGATE END

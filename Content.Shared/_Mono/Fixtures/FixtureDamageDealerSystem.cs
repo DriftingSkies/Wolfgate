@@ -49,7 +49,11 @@ public sealed partial class FixtureDamageDealerSystem : EntitySystem
             if (TryComp<ShipShieldEmitterComponent>(ent, out var shield) && shield.Shield != null)
                 bodyEnt = shield.Shield.Value;
 
-            var query = _physic.GetEntitiesIntersectingBody(bodyEnt, ent.Comp.CollisionMask);
+            // WOLFGATE(ShipShields) START: hull shields are thin edge fixtures, so test the area inside the outline
+            // var query = _physic.GetEntitiesIntersectingBody(bodyEnt, ent.Comp.CollisionMask);
+            var query = GetWolfgateShieldTargets(bodyEnt, ent.Comp.CollisionMask)
+                ?? _physic.GetEntitiesIntersectingBody(bodyEnt, ent.Comp.CollisionMask);
+            // WOLFGATE END
 
             foreach (var queryEnt in query)
             {

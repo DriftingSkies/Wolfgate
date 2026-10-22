@@ -1,0 +1,45 @@
+<controls:FeedbackWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._WF.Feedback"
+    SetSize="560 700"
+    MinSize="460 540"
+    Title="{Loc 'wf-feedback-window-title'}">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <BoxContainer Orientation="Horizontal">
+            <Button Name="BugTab" Text="{Loc 'wf-feedback-tab-bug'}" ToggleMode="True" Pressed="True"
+                    StyleClasses="OpenRight" HorizontalExpand="True" />
+            <Button Name="SuggestionTab" Text="{Loc 'wf-feedback-tab-suggestion'}" ToggleMode="True"
+                    StyleClasses="OpenBoth" HorizontalExpand="True" />
+            <Button Name="HistoryTab" Text="{Loc 'wf-feedback-tab-history'}" ToggleMode="True"
+                    StyleClasses="OpenLeft" HorizontalExpand="True" />
+        </BoxContainer>
+        <BoxContainer Name="FormBox" Orientation="Vertical" SeparationOverride="6" VerticalExpand="True">
+            <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                <Label Text="{Loc 'wf-feedback-category'}" />
+                <OptionButton Name="CategoryOption" HorizontalExpand="True" />
+                <Label Name="SeverityLabel" Text="{Loc 'wf-feedback-severity'}" />
+                <OptionButton Name="SeverityOption" />
+            </BoxContainer>
+            <Label Text="{Loc 'wf-feedback-title'}" />
+            <LineEdit Name="TitleEdit" />
+            <Label Name="DescriptionLabel" />
+            <TextEdit Name="DescriptionEdit" MinSize="0 110" VerticalExpand="True" />
+            <BoxContainer Name="BugFields" Orientation="Vertical" SeparationOverride="6" VerticalExpand="True">
+                <Label Text="{Loc 'wf-feedback-steps'}" />
+                <TextEdit Name="StepsEdit" MinSize="0 80" VerticalExpand="True" />
+                <Label Text="{Loc 'wf-feedback-expected'}" />
+                <TextEdit Name="ExpectedEdit" MinSize="0 50" VerticalExpand="True" />
+            </BoxContainer>
+            <CheckBox Name="ScreenshotCheck" Text="{Loc 'wf-feedback-screenshot'}" Pressed="True" Visible="False" />
+            <RichTextLabel Name="AttachedNote" />
+            <RichTextLabel Name="StatusLabel" />
+            <Button Name="SubmitButton" Text="{Loc 'wf-feedback-submit'}" />
+        </BoxContainer>
+        <BoxContainer Name="HistoryBox" Orientation="Vertical" VerticalExpand="True" Visible="False">
+            <Label Name="HistoryNote" Text="{Loc 'wf-feedback-history-loading'}" />
+            <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                <BoxContainer Name="HistoryList" Orientation="Vertical" HorizontalExpand="True" />
+            </ScrollContainer>
+        </BoxContainer>
+    </BoxContainer>
+</controls:FeedbackWindow>

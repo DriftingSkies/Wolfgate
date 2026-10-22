@@ -124,6 +124,13 @@ namespace Content.Shared.Administration
         /// </summary>
         NameColor = 1 << 21,
 
+        // WOLFGATE(EventStaff) START: event staff flag
+        /// <summary>
+        ///     Event staff: event chat and gameplay-issue ahelps.
+        /// </summary>
+        Event = 1 << 22,
+        // WOLFGATE END
+
         /// <summary>
         ///     DeltaV - The ability to whitelist people. Either this permission or +BAN is required for remove.
         /// </summary>

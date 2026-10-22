@@ -1530,4 +1530,85 @@ public sealed class DrydockTest
 
         await pair.CleanReturnAsync();
     }
+
+    /// <summary>A repair voucher on the payer pays for a whole repair in place of credits and is used up.</summary>
+    [Test]
+    public async Task RepairVoucherPaysForARepair()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var drydock = server.System<WFDrydockSystem>();
+
+        Shipyard yard = default;
+        EntityUid ship = default, payer = default, voucher = default;
+        await server.WaitAssertion(() =>
+        {
+            yard = SpawnShipyard(pair, map.MapId, powered: false);
+            PowerHostAside(pair, yard.Grid);
+            ship = CreateDamagedShip(pair, map.MapId);
+            payer = CreatePayer(pair, map.MapId);
+            var comp = em.GetComponent<WFDrydockConsoleComponent>(yard.Console);
+            Assert.That(drydock.TryGetBerth(yard.Console, comp, out var berth), "The host's crane should make a berth.");
+            PlaceOver(pair, ship, yard.Grid, berth.Area.Center);
+
+            voucher = em.SpawnEntity("WFDrydockRepairVoucher", em.GetComponent<TransformComponent>(payer).Coordinates);
+            Assert.That(server.System<Content.Shared.Hands.EntitySystems.SharedHandsSystem>().TryPickupAnyHand(payer, voucher), "The payer should hold the voucher.");
+        });
+
+        await MobileDrydockTest.WaitForCranePower(pair, yard.Crane);
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = em.GetComponent<WFDrydockConsoleComponent>(yard.Console);
+            var balance = em.GetComponent<BankAccountComponent>(payer).Balance;
+
+            Assert.That(drydock.TryStartRepair(yard.Console, comp, ship, payer), Is.True, "The voucher should pay for the repair.");
+            var job = em.GetComponent<WFDrydockJobComponent>(yard.Console);
+            Assert.That(job.Voucher, Is.EqualTo("WFDrydockRepairVoucher"), "The job should know it was paid by voucher.");
+            Assert.That(em.GetComponent<BankAccountComponent>(payer).Balance, Is.EqualTo(balance), "No credits should be taken.");
+            Assert.That(em.Deleted(voucher) || em.IsQueuedForDeletion(voucher), Is.True, "The voucher should be used up.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A ship gets one voucher bound to it, however many of its crew helped, and no second while it holds one.</summary>
+    [Test]
+    public async Task ShipVouchersAreOnePerShipAndBound()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var drydock = server.System<WFDrydockSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var ship = CreateShip(pair, map.MapId);
+            em.EnsureComponent<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(ship);
+            var loose = CreateShip(pair, map.MapId, new Vector2(200f, 0f));
+            SetFloor(pair, ship, 2);
+            SetFloor(pair, loose, 2);
+            var coords = new EntityCoordinates(ship, new Vector2(0.5f));
+            var crew = new List<EntityUid>
+            {
+                em.SpawnEntity("MobHuman", coords),
+                em.SpawnEntity("MobHuman", coords),
+                em.SpawnEntity("MobHuman", new EntityCoordinates(loose, new Vector2(0.5f))),
+            };
+
+            Assert.That(drydock.IssueShipVouchers("WFDrydockRepairVoucher", crew), Is.EqualTo(1), "One voucher for the deeded ship, none for a ship with no deed.");
+            Assert.That(drydock.HasVoucher(ship), Is.True);
+            var voucher = em.EntityQuery<WFDrydockRepairVoucherComponent>().Single();
+            Assert.That(voucher.Ship, Is.EqualTo(ship), "The voucher is bound to the ship.");
+            Assert.That(drydock.IssueShipVouchers("WFDrydockRepairVoucher", crew), Is.EqualTo(0), "No second voucher while the first is unused.");
+
+            em.DeleteEntity(voucher.Owner);
+            Assert.That(drydock.IssueShipVouchers("WFDrydockRepairVoucher", crew), Is.EqualTo(1), "Once it is spent the ship can earn another.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
 }

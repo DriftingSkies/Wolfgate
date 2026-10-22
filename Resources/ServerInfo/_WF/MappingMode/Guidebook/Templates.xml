@@ -1,0 +1,68 @@
+<Document>
+  # Templates and references
+
+  ## PNG template
+
+  A template is a picture you trace over, such as a floor plan or a sprite of a ship. It's drawn under the map or over it at the size, angle and opacity you set.
+
+  Open the Template tab and press [bold]Load PNG[/bold]. The image lands centred on your view. A new load replaces the old one.
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Show[/bold]</Box>
+    <Box HorizontalAlignment="Left">Hide or show it.</Box>
+    <Box HorizontalAlignment="Left">[bold]Lock[/bold]</Box>
+    <Box HorizontalAlignment="Left">Dragging, the wheel and the arrows leave it alone.</Box>
+    <Box HorizontalAlignment="Left">[bold]Layer[/bold]</Box>
+    <Box HorizontalAlignment="Left">Under the map or Over the map.</Box>
+    <Box HorizontalAlignment="Left">[bold]Centre (tiles)[/bold]</Box>
+    <Box HorizontalAlignment="Left">Where its middle sits.</Box>
+    <Box HorizontalAlignment="Left">[bold]Scale[/bold]</Box>
+    <Box HorizontalAlignment="Left">X and Y. [bold]Keep proportions[/bold] changes both together.</Box>
+    <Box HorizontalAlignment="Left">[bold]Pixels per tile[/bold]</Box>
+    <Box HorizontalAlignment="Left">Size at scale 1. 32 matches a game sprite.</Box>
+    <Box HorizontalAlignment="Left">[bold]Rotation[/bold]</Box>
+    <Box HorizontalAlignment="Left">In degrees.</Box>
+    <Box HorizontalAlignment="Left">[bold]Opacity[/bold]</Box>
+    <Box HorizontalAlignment="Left">How see-through it is.</Box>
+    <Box HorizontalAlignment="Left">[bold]Reset[/bold]</Box>
+    <Box HorizontalAlignment="Left">Default scale, rotation and opacity, centred on your view.</Box>
+    <Box HorizontalAlignment="Left">[bold]Clear[/bold]</Box>
+    <Box HorizontalAlignment="Left">Remove your template and its saved copy.</Box>
+  </Table>
+
+  Press 7 for Template mode to move it with the mouse:
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Drag[/bold]</Box>
+    <Box HorizontalAlignment="Left">Move</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+drag[/bold]</Box>
+    <Box HorizontalAlignment="Left">Scale</Box>
+    <Box HorizontalAlignment="Left">[bold]Shift+drag[/bold]</Box>
+    <Box HorizontalAlignment="Left">Rotate</Box>
+    <Box HorizontalAlignment="Left">[bold]Wheel[/bold]</Box>
+    <Box HorizontalAlignment="Left">Scale</Box>
+    <Box HorizontalAlignment="Left">[bold]Arrow keys[/bold]</Box>
+    <Box HorizontalAlignment="Left">Nudge one pixel. Shift nudges eight.</Box>
+    <Box HorizontalAlignment="Left">[bold]Right click[/bold], [bold]Escape[/bold]</Box>
+    <Box HorizontalAlignment="Left">Drop the drag and put it back</Box>
+  </Table>
+
+  The template shows only on the level you loaded it on. It's kept on your computer under the session's name and comes back whenever you enter a session of that name. A PNG can be up to 16 MiB and 8192 pixels a side.
+
+  ## Sharing a template
+
+  Your template is yours alone until you press [bold]Share with session[/bold]. Then every member sees it, and anyone can move, scale or turn it for everyone. Opacity, Show and Lock stay your own. A new share replaces the last one. [bold]Unshare[/bold] takes it away for everyone.
+
+  A shared template is saved with the map and comes back when the version is opened. Downloads and uploads leave it out. Shares are up to 8 MiB.
+
+  ## Reference grids
+
+  A reference is a copy of a game ship, a game map or a level of one of your own maps, dropped onto your map to look at or copy from.
+
+  - Open the Mapping window's Session tab and press [bold]Load reference[/bold].
+  - Pick a source: [bold]My library[/bold], [bold]Ship grids[/bold] or [bold]Maps[/bold]. Search narrows the list.
+  - Pick a file and press [bold]Place[/bold].
+  - An outline follows the cursor. R turns it. Click to put it down. Escape or right click drops it.
+
+  You have 60 seconds to place it. One reference loads at a time across the server; if another is loading, try again in a moment. Files over 1.5 MiB are refused, which lets every ship through and keeps stations out. A reference is ordinary map content and counts against your limits. Delete it when you're done with it.
+</Document>

@@ -4,6 +4,7 @@
   - SimpleHostile
   - Zombie
   - Chimera
+  - Xeno # WOLFGATE(Xenonids): station turrets shoot xenos
 
 - type: npcFaction
   id: TSFMC

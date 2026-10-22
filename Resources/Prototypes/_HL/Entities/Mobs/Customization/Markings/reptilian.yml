@@ -3,7 +3,7 @@
   id: ReptilianChestUnderbellyFeminine
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian]
   sprites:
   - sprite: _HL/Mobs/Customization/Reptilian/underbellyfemale.rsi
     state: body_underbelly
@@ -12,7 +12,7 @@
   id: ReptilianChestFemaleAlternate
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _HL/Mobs/Customization/Reptilian/chest_female_alternate.rsi
     state: chest
@@ -26,7 +26,7 @@
   id: ReptilianTailNaga
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, Human, ProtoReptile, IPC, Oni]
+  speciesRestriction: [Skrell, Reptilian, Human, IPC, Oni]
   sprites:
     - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
       state: naga_primary
@@ -38,7 +38,7 @@
   id: ReptilianTailNagaStriped
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, Human, ProtoReptile, IPC, Oni]
+  speciesRestriction: [Skrell, Reptilian, Human, IPC, Oni]
   sprites:
     - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
       state: naga_striped_primary
@@ -52,7 +52,7 @@
   id: ReptilianTailNagaRattlesnake
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, Human, ProtoReptile, IPC, Oni]
+  speciesRestriction: [Skrell, Reptilian, Human, IPC, Oni]
   sprites:
     - sprite: _HL/Mobs/Customization/Reptilian/naga.rsi
       state: naga_rattlesnake_primary
@@ -67,7 +67,7 @@
   id: XenoSpineGorjira
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _HL/Mobs/Customization/Reptilian/xeno_spines.rsi
     state: xeno_gorjira
@@ -76,7 +76,7 @@
   id: XenoSpineOsteospines
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _HL/Mobs/Customization/Reptilian/xeno_spines.rsi
     state: xeno_osteospines
@@ -85,7 +85,7 @@
   id: XenoSpineSpinosaurus
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _HL/Mobs/Customization/Reptilian/xeno_spines.rsi
     state: xeno_spinosaurus
@@ -94,7 +94,7 @@
   id: XenoSpineXenomorph
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _HL/Mobs/Customization/Reptilian/xeno_spines.rsi
     state: xeno_xenomorph
@@ -105,7 +105,7 @@
   id: XenoTailCurl
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     xeno_curl_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
@@ -120,7 +120,7 @@
   id: XenoTailSpike
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     xeno_spike_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
@@ -135,7 +135,7 @@
   id: XenoTailSpined
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Reptilian, ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     xeno_spined_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour

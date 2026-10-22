@@ -285,12 +285,30 @@
                                     <Label Text="{Loc 'humanoid-profile-editor-skin-color-label'}" StyleClasses="CreatorFieldLabel" Margin="0 6 0 0" />
                                     <Slider HorizontalExpand="True" Name="Skin" MinValue="0" MaxValue="100" Value="20" />
                                     <BoxContainer Name="RgbSkinColorContainer" Visible="False" Orientation="Vertical" HorizontalExpand="True" />
+                                    <!-- WOLFGATE(Biotype): organic or synthetic body, a two-way switch (HumanoidProfileEditor.Biotype.cs) -->
+                                    <BoxContainer HorizontalExpand="True" SeparationOverride="6" Margin="0 6 0 0">
+                                        <Label Text="{Loc 'wf-biotype-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                                        <Control HorizontalExpand="True" />
+                                        <BoxContainer Name="BiotypeSwitch" MinWidth="240" ToolTip="{Loc 'wf-biotype-tooltip'}" />
+                                    </BoxContainer>
+                                    <!-- WOLFGATE(ChatFont): the font the character's speech is shown in (HumanoidProfileEditor.ChatFont.cs) -->
+                                    <BoxContainer HorizontalExpand="True" SeparationOverride="6">
+                                        <Label Text="{Loc 'wf-chat-font-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                                        <Control HorizontalExpand="True" />
+                                        <OptionButton Name="ChatFontButton" MinWidth="180" ToolTip="{Loc 'wf-chat-font-tooltip'}" />
+                                    </BoxContainer>
+                                    <RichTextLabel Name="ChatFontPreview" HorizontalExpand="True" />
+                                    <!-- WOLFGATE(TypingBubble): the bubble shown over the character while they type (HumanoidProfileEditor.TypingBubble.cs) -->
+                                    <Label Text="{Loc 'wf-typing-bubble-label'}" StyleClasses="CreatorFieldLabel" Margin="0 6 0 0" />
+                                    <GridContainer Name="TypingBubbleGrid" Columns="8" HSeparationOverride="2" VSeparationOverride="2" />
                                     <!-- WOLFGATE(Species): lets any species wear every species' markings (HumanoidProfileEditor.MismatchedParts.cs) -->
                                     <CheckBox Name="MismatchedPartsCheckBox" Text="{Loc 'wf-mismatched-parts-toggle'}"
                                               ToolTip="{Loc 'wf-mismatched-parts-tooltip'}" Margin="0 6 0 0" />
                                     <!-- WOLFGATE(LegStyle): digitigrade or plantigrade legs, for species with both (HumanoidProfileEditor.LegStyle.cs) -->
                                     <CheckBox Name="DigitigradeLegsCheckBox" Text="{Loc 'wf-leg-style-digitigrade-toggle'}"
                                               ToolTip="{Loc 'wf-leg-style-digitigrade-tooltip'}" Visible="False" />
+                                    <!-- WOLFGATE(BloodColour): blood colour toggle and picker, filled in by HumanoidProfileEditor.BloodColour.cs -->
+                                    <BoxContainer Name="BloodColourContainer" Orientation="Vertical" HorizontalExpand="True" />
                                 </BoxContainer>
                             </PanelContainer>
                         </BoxContainer>

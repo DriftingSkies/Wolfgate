@@ -216,7 +216,8 @@ public abstract partial class SharedMoverController : VirtualController
         var weightless = _gravity.IsWeightless(uid);
         var inAirHelpless = false;
 
-        if (physicsComponent.BodyStatus != BodyStatus.OnGround && !CanMoveInAirQuery.HasComponent(uid))
+        // WOLFGATE(Planets): every species can move in air for z-levels, so a thrown mob (a jump) must not, or ground friction stops it.
+        if (physicsComponent.BodyStatus != BodyStatus.OnGround && (!CanMoveInAirQuery.HasComponent(uid) || HasComp<Content.Shared.Throwing.ThrownItemComponent>(uid)))
         {
             if (!weightless)
             {

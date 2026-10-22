@@ -35,6 +35,7 @@ using System.Linq;
 using Content.Shared.NameIdentifier; // Frontier
 using Content.Server._EinsteinEngines.Silicon.IPC;
 using Content.Shared.Radio.Components; // Goobstation
+using Content.Server._WF.Biotype; // WOLFGATE(Biotype)
 
 namespace Content.Server.Station.Systems;
 
@@ -58,6 +59,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private IDependencyCollection _dependencyCollection = default!; // Frontier
     [Dependency] private IServerPreferencesManager _preferences = default!; // Frontier
     [Dependency] private InternalEncryptionKeySpawner _internalEncryption = default!; // Goobstation
+    [Dependency] private WFBiotypeSystem _biotype = default!; // WOLFGATE(Biotype)
 
     [Dependency] private BankSystem _bank = default!; // Frontier
     [Dependency] private MonoCoinsManager _coins = default!; // Mono
@@ -184,6 +186,10 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         {
             profile = HumanoidCharacterProfile.RandomWithSpecies(speciesId);
         }
+
+        // WOLFGATE(Biotype): converts the body before the loadout is equipped on it
+        if (profile != null)
+            _biotype.Apply(entity.Value, profile);
 
 
 

@@ -1,4 +1,5 @@
 using Content.Client.Administration.Managers;
+using Content.Client.Audio.Midi; // WOLFGATE(Instruments)
 using Content.Client.Changelog;
 using Content.Client._Common.Consent; // WOLFGATE(Genitals)
 using Content.Client.Chat.Managers;
@@ -66,6 +67,7 @@ namespace Content.Client.IoC
             collection.Register<TitleWindowManager>();
             collection.Register<CompanyManager>(); // Mono
             collection.Register<MonoCoinsManager>(); // Mono
+            collection.Register<MidiFileCollectionManager>(); // WOLFGATE(Instruments): wizden#44469 MIDI file collection.
         }
     }
 }

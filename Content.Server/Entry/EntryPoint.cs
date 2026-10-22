@@ -180,6 +180,7 @@ namespace Content.Server.Entry
                 {
                     _euiManager.SendUpdates();
                     _voteManager.Update();
+                    _sysMan?.GetEntitySystem<_WF.StateRecovery.WFGridDeletionHistorySystem>().Dedupe(); // WOLFGATE(StateRecovery): before game states are built
                     break;
                 }
 

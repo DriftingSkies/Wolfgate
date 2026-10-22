@@ -4,7 +4,7 @@
   id: LizardTailSnake
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian]
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_primary_BEHIND: TailBehind
     tail_snake_secondary_BEHIND: TailBehind
@@ -25,7 +25,7 @@
   id: LizardTailSnakeStripe
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_primary_BEHIND: TailBehind
     tail_snake_secondary_BEHIND: TailBehind
@@ -46,7 +46,7 @@
   id: LizardTailSnakeUnder
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_primary_BEHIND: TailBehind
     tail_snake_secondary_BEHIND: TailBehind
@@ -67,7 +67,7 @@
   id: LizardTailSnakeDual
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_primary_BEHIND: TailBehind
     tail_snake_secondary_BEHIND: TailBehind
@@ -90,7 +90,7 @@
   id: LizardTailSnakeAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_wag_primary_BEHIND: TailBehind
     tail_snake_wag_secondary_BEHIND: TailBehind
@@ -111,7 +111,7 @@
   id: LizardTailSnakeStripeAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_wag_primary_BEHIND: TailBehind
     tail_snake_wag_secondary_BEHIND: TailBehind
@@ -132,7 +132,7 @@
   id: LizardTailSnakeUnderAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_wag_primary_BEHIND: TailBehind
     tail_snake_wag_secondary_BEHIND: TailBehind
@@ -153,7 +153,7 @@
   id: LizardTailSnakeDualAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Reptilian, ProtoReptile]
+  speciesRestriction: [Skrell, Reptilian] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_snake_wag_primary_BEHIND: TailBehind
     tail_snake_wag_secondary_BEHIND: TailBehind

@@ -1,0 +1,23 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14BarrelAgaricMushroom
+  parent: BaseStructure
+  suffix: Agaric mushroom
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/Barrels/barrel.rsi
+    state: barrel_open
+    noRot: true
+    drawdepth: Mobs
+  - type: InteractionOutline
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Damageable
+    damageModifierSet: Wood
+# WOLFGATE END

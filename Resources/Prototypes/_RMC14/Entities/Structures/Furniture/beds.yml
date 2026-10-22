@@ -1,0 +1,225 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: Bed
+  id: RMCBedPsych
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    noRot: false
+    state: psychbed
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: psychbed
+
+- type: entity
+  parent: Bed
+  id: RMCBedBunk
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_black
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_black
+
+- type: entity
+  parent: Bed
+  id: RMCBedBunkBlue
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_blue
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_blue
+
+- type: entity
+  parent: Bed
+  id: RMCBedBunkGreen
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_green
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_green
+
+- type: entity
+  parent: Bed
+  id: RMCBedBunkRed
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_red
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_red
+
+- type: entity
+  parent: Bed
+  id: RMCBedBunkNoSheets
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: prisonbed
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: prisonbed
+
+- type: entity
+  parent: Bed
+  id: RMCBedBunkBrown
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_brown
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: HealOnBuckle
+    damage: {}
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bed.rsi
+    state: bunk_brown
+# WOLFGATE END

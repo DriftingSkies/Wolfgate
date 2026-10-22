@@ -1,0 +1,87 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14StatueGobRuinedVines
+  parent: BaseStructure
+  suffix: Ruined. Overgrown.
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Decoration/statue_gob.rsi
+    state: gob_ruined_vines
+    noRot: true
+    drawdepth: Mobs
+    offset: "0.0,0.5"
+  - type: InteractionOutline
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Damageable
+    damageModifierSet: Rock
+
+- type: entity
+  id: CP14StatueAngelLimestone
+  parent: BaseStructure
+  suffix: Limestone
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Decoration/angel_statue.rsi
+    state: statue3
+    noRot: true
+    drawdepth: Mobs
+    offset: "0.0,0.5"
+  - type: InteractionOutline
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Damageable
+    damageModifierSet: Rock
+
+- type: entity
+  id: CP14StatueStoneHeadHigh
+  parent: BaseStructure
+  suffix: High
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _CP14/Structures/Decoration/stone_head_high.rsi
+    layers:
+    - state: statue_head_h
+    drawdepth: Mobs
+    offset: "0.0,0.5"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Rock
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -4
+# WOLFGATE END

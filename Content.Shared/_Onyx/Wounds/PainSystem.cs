@@ -415,6 +415,10 @@ public sealed partial class PainSystem : EntitySystem
 
     public bool CanFeelPain(EntityUid part)
     {
+        // WOLFGATE(Synthetics): a chassis part isolated from the panel has its damage sensors off.
+        if (HasComp<Content.Shared._WF.Synthetics.WFIsolatedPartComponent>(part))
+            return false;
+
         return !TryComp(part, out WoundableComponent? woundable) ||
                !_prototypes.TryIndex(woundable.Profile, out var profile) ||
                profile.CanFeelPain;

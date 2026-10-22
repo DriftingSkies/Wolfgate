@@ -14,8 +14,7 @@ namespace Content.Client._WF.Humanoid;
 
 /// <summary>
 /// Species browser: a grid of cards, each with a full-body preview of a default character of that species,
-/// its name, a short summary and a link to its guidebook page. Species that vary another species are grouped
-/// on their own translucent panel under the species they vary.
+/// its name, a short summary and a link to its guidebook page.
 /// </summary>
 public sealed class WolfgateSpeciesPicker : BoxContainer
 {
@@ -86,51 +85,16 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
 
         var all = _prototypeManager.EnumeratePrototypes<SpeciesPrototype>().Where(s => s.RoundStart).ToList();
 
-        // Species that vary another one get their own panel under its name; everything else shares a panel,
-        // because 25 panels of one card each reads worse than one panel of 25.
-        var families = all.Where(s => s.SubspeciesOf != null)
-            .GroupBy(s => s.SubspeciesOf!.Value.Id)
-            .OrderBy(g => GroupName(g.Key, g))
-            .ToList();
-
-        var parented = families.Select(g => g.Key).ToHashSet();
-
-        // A species that has variants heads its own panel rather than sitting in the general list.
-        var standalone = all
-            .Where(s => s.SubspeciesOf == null && !parented.Contains(s.ID))
-            .OrderBy(DisplayName)
-            .ToList();
-        if (standalone.Count > 0)
-            AddChild(Group(null, standalone));
-
-        foreach (var family in families)
-        {
-            var members = family.OrderBy(DisplayName).ToList();
-
-            // The parent first, when it is playable itself.
-            if (_prototypeManager.TryIndex<SpeciesPrototype>(family.Key, out var parent) && parent.RoundStart)
-                members.Insert(0, parent);
-
-            AddChild(Group(GroupName(family.Key, family), members));
-        }
+        AddChild(Group(all.OrderBy(DisplayName).ToList()));
 
         if (_selected != null)
             SetSelected(_selected);
     }
 
-    /// <summary>A translucent panel holding an optional heading and a grid of cards.</summary>
-    private Control Group(string? heading, List<SpeciesPrototype> members)
+    /// <summary>A translucent panel holding a grid of cards.</summary>
+    private Control Group(List<SpeciesPrototype> members)
     {
         var content = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 6 };
-
-        if (heading != null)
-        {
-            content.AddChild(new Label
-            {
-                Text = heading,
-                StyleClasses = { StyleWolfgate.StyleClassCreatorHeading },
-            });
-        }
 
         var grid = new GridContainer { Columns = Columns(), HSeparationOverride = 6, VSeparationOverride = 6 };
         foreach (var species in members)
@@ -145,14 +109,6 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
             HorizontalExpand = true,
             Children = { content },
         };
-    }
-
-    /// <summary>Name a family panel is headed by: the species it varies, playable here or not.</summary>
-    private string GroupName(string id, IEnumerable<SpeciesPrototype> members)
-    {
-        return _prototypeManager.TryIndex<SpeciesPrototype>(id, out var proto)
-            ? DisplayName(proto)
-            : DisplayName(members.First());
     }
 
     private string DisplayName(SpeciesPrototype species) => Loc.GetString(species.Name);

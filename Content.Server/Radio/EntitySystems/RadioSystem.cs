@@ -5,6 +5,7 @@ using Content.Server._EinsteinEngines.Language;
 using Content.Server.Power.Components;
 using Content.Shared.Radio.Components;
 using Content.Shared._Mono.Radio;
+using Content.Shared._WF.ChatFont; // WOLFGATE(ChatFont)
 using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared._EinsteinEngines.Language;
@@ -291,7 +292,7 @@ public sealed partial class RadioSystem : EntitySystem
         return Loc.GetString(speech.Bold ? "chat-radio-message-wrap-bold" : "chat-radio-message-wrap",
             ("color", channel.Color),
             ("languageColor", languageColor),
-            ("fontType", language.SpeechOverride.FontId ?? speech.FontId),
+            ("fontType", language.SpeechOverride.FontId ?? CompOrNull<WFChatFontComponent>(source)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the speaker's picked font, under a language's own
             ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("channel", $"\\[{WFCrewChannelName(source, channel)}\\]"), // WOLFGATE(RoundSetup): show the private crew channel name

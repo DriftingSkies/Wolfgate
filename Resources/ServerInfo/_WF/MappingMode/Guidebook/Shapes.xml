@@ -1,0 +1,57 @@
+<Document>
+  # Shapes, fill and erase
+
+  ## Shape (5)
+
+  Pick a tile or an entity in the palette, then press 5. Decals can't be drawn as shapes.
+
+  Pick the shape in Properties under [bold]Shape[/bold]: Line, Rectangle or Circle. Under [bold]Draw[/bold], [bold]Fill[/bold] makes it solid and [bold]Border[/bold] draws only its edge.
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Drag[/bold]</Box>
+    <Box HorizontalAlignment="Left">Draw it. A preview shows until you let go.</Box>
+    <Box HorizontalAlignment="Left">[bold]Shift[/bold] while dragging</Box>
+    <Box HorizontalAlignment="Left">Square rectangle, round circle</Box>
+    <Box HorizontalAlignment="Left">[bold]Right click[/bold]</Box>
+    <Box HorizontalAlignment="Left">Switch Fill and Border, or drop a drag</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+wheel[/bold]</Box>
+    <Box HorizontalAlignment="Left">Turn the entities you draw</Box>
+  </Table>
+
+  A circle is the ellipse that fits the dragged box. One shape covers at most 4096 tiles.
+
+  ## Which grid it lands on
+
+  The shape goes on the grid under the start of the drag, else the grid under its end, else a grid it touches. The preview snaps to that grid's tiles.
+
+  - Floor drawn past a grid's edge makes the grid bigger.
+  - Floor drawn with no grid near makes a new grid. It counts against the grid limit.
+  - Entities need a grid. Cells with no floor are skipped and the popup says how many. Lay the floor first.
+
+  ## Fill (4)
+
+  Hold a tile and click a tile on a grid. Every tile of the clicked type connected to it becomes your tile. Click empty space inside a grid to fill the connected empty cells, up to the grid's outer edge. The fill stops at 4096 tiles and says so.
+
+  ## Erase (2)
+
+  Set the target in Properties under [bold]Erase[/bold]:
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Everything[/bold]</Box>
+    <Box HorizontalAlignment="Left">Entities, then decals, then the floor. The default.</Box>
+    <Box HorizontalAlignment="Left">[bold]Entities[/bold]</Box>
+    <Box HorizontalAlignment="Left">Only entities.</Box>
+    <Box HorizontalAlignment="Left">[bold]Tiles[/bold]</Box>
+    <Box HorizontalAlignment="Left">Only the floor.</Box>
+    <Box HorizontalAlignment="Left">[bold]Decals[/bold]</Box>
+    <Box HorizontalAlignment="Left">Only decals.</Box>
+  </Table>
+
+  - [bold]Click[/bold]: removes one thing. Big sprites, such as a 2x2 machine, can be clicked anywhere on them.
+  - [bold]Drag[/bold]: removes everything of that kind in the box, up to 4096 tiles. A drag can start in space to clear loose things floating off a grid.
+  - [bold]Right click[/bold]: opens [bold]Delete under cursor[/bold], a list of everything under the cursor by name and prototype. Pick one to remove it. Where sprites overlap and the click hits none exactly, the list opens by itself.
+
+  Everything removes its entities, decals and floor as separate steps, so undo brings them back one at a time.
+
+  Players, ghosts and other mappers are never erased.
+</Document>

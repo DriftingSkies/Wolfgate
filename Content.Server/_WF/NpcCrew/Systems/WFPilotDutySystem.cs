@@ -158,6 +158,19 @@ public sealed partial class WFPilotDutySystem : EntitySystem
         SetOrders((ent, ent.Comp), WFPilotOrder.Loiter);
     }
 
+    /// <summary>Paces a circling pilot without restarting his orbit: a speed, or null for his profile's own.</summary>
+    public void SetCircleSpeed(Entity<WFPilotDutyComponent?> ent, float? speed)
+    {
+        if (!Resolve(ent, ref ent.Comp) || ent.Comp.Orders != WFPilotOrder.Loiter || ent.Comp.OrbitKind != WFCrewObjectiveKind.Circle
+            || ent.Comp.LoiterSpeedOverride == speed)
+            return;
+
+        ent.Comp.LoiterSpeedOverride = speed;
+        UpdateOrbitLimits(ent.Comp);
+        if (ent.Comp.AtHelm)
+            Steer((ent, ent.Comp));
+    }
+
     /// <summary>Keep within range of another grid.</summary>
     public void Follow(Entity<WFPilotDutyComponent?> ent, EntityUid grid, float range)
     {

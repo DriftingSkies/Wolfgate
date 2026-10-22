@@ -39,6 +39,7 @@ public sealed partial class GhostOrbitWindow : FancyWindow
     private readonly List<Section> _sections = new();
     private List<GhostOrbitTarget> _targets = new();
     private List<GhostOrbitEncounterShip> _encounters = new();
+    private int _burrowedLarva;
     private string _search = string.Empty;
     private TimeSpan _nextRefresh;
 
@@ -104,11 +105,12 @@ public sealed partial class GhostOrbitWindow : FancyWindow
     {
         _entMan.System<Content.Client._WF.NpcCrew.WFCrewUiDiagnosticsSystem>().DisplayGhost(ev.Targets.Count, IsOpen);
         // Live refresh would otherwise rebuild every tile and drop the hovered tooltip for nothing.
-        if (_targets.SequenceEqual(ev.Targets) && _encounters.SequenceEqual(ev.Encounters))
+        if (_burrowedLarva == ev.BurrowedLarva && _targets.SequenceEqual(ev.Targets) && _encounters.SequenceEqual(ev.Encounters))
             return;
 
         _targets = ev.Targets;
         _encounters = ev.Encounters;
+        _burrowedLarva = ev.BurrowedLarva;
         Rebuild();
     }
 
@@ -143,12 +145,20 @@ public sealed partial class GhostOrbitWindow : FancyWindow
         {
             var accent = CategoryColor(group.Key, skin);
             var section = new Section(group.Key, accent, skin);
+            if (group.Key == GhostOrbitCategory.Xenonid && _burrowedLarva > 0)
+                section.Note = Loc.GetString("wf-ghost-orbit-xenonid-larva", ("count", _burrowedLarva));
             section.Header.OnPressed += _ => ToggleSection(section);
 
             // Encounter ships keep the order they were given: by encounter, then by ship.
-            var ordered = group.Key == GhostOrbitCategory.Encounter
-                ? group.AsEnumerable()
-                : group.OrderBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase);
+            // Xenos go queen first, then by tier and caste.
+            var ordered = group.Key switch
+            {
+                GhostOrbitCategory.Encounter => group.AsEnumerable(),
+                GhostOrbitCategory.Xenonid => group.OrderBy(t => t.Order)
+                    .ThenBy(t => t.Detail, StringComparer.CurrentCultureIgnoreCase)
+                    .ThenBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase),
+                _ => group.OrderBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase),
+            };
             foreach (var target in ordered)
             {
                 var color = group.Key == GhostOrbitCategory.Encounter && colors.TryGetValue(target.Entity, out var side) ? side : accent;
@@ -183,7 +193,8 @@ public sealed partial class GhostOrbitWindow : FancyWindow
             var expanded = searching || !Collapsed.Contains(section.Category);
             section.Root.Visible = !searching || matches > 0;
             section.Body.Visible = expanded;
-            section.SetHeader(expanded, searching ? $"{matches}/{section.Tiles.Count}" : $"{section.Tiles.Count}");
+            var count = searching ? $"{matches}/{section.Tiles.Count}" : $"{section.Tiles.Count}";
+            section.SetHeader(expanded, section.Note is { } note ? $"{count} · {note}" : count);
         }
     }
 
@@ -223,7 +234,7 @@ public sealed partial class GhostOrbitWindow : FancyWindow
         int Count(GhostOrbitCategory category) => _targets.Count(t => t.Category == category);
 
         SummaryLabel.Text = Loc.GetString("wf-ghost-orbit-summary",
-            ("players", Count(GhostOrbitCategory.Alive) + Count(GhostOrbitCategory.Critical) + Count(GhostOrbitCategory.Antagonist)),
+            ("players", Count(GhostOrbitCategory.Alive) + Count(GhostOrbitCategory.Critical) + Count(GhostOrbitCategory.Antagonist) + Count(GhostOrbitCategory.Xenonid)),
             ("ssd", Count(GhostOrbitCategory.Disconnected)),
             ("dead", Count(GhostOrbitCategory.Dead)),
             ("ghosts", Count(GhostOrbitCategory.Ghost)),
@@ -257,6 +268,7 @@ public sealed partial class GhostOrbitWindow : FancyWindow
             GhostOrbitCategory.Antagonist => skin.Danger,
             GhostOrbitCategory.Critical => Color.FromHex("#FF8A3D"),
             GhostOrbitCategory.Alive => skin.Good,
+            GhostOrbitCategory.Xenonid => Color.FromHex("#3CCFCF"),
             GhostOrbitCategory.Disconnected => Color.FromHex("#A98BFF"),
             GhostOrbitCategory.Dead => skin.TextMuted,
             GhostOrbitCategory.Ghost => Color.FromHex("#BFD3FF"),
@@ -278,6 +290,9 @@ public sealed partial class GhostOrbitWindow : FancyWindow
         public readonly ContainerButton Header;
         public readonly WrapContainer Body;
         public readonly List<GhostOrbitTile> Tiles = new();
+
+        /// <summary>Extra line after the count in the header.</summary>
+        public string? Note;
 
         private readonly Label _title;
         private readonly Label _count;

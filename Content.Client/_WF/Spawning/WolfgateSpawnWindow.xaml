@@ -4,44 +4,5 @@
                       Title="{Loc 'wf-spawn-title'}"
                       MinSize="640 420"
                       SetSize="960 660">
-    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <LineEdit Name="SearchBar" HorizontalExpand="True" PlaceHolder="{Loc 'wf-spawn-search'}" />
-            <Button Name="ClearButton" Text="{Loc 'wf-spawn-clear'}" Disabled="True" />
-        </BoxContainer>
-
-        <BoxContainer Orientation="Horizontal" VerticalExpand="True" SeparationOverride="8">
-            <ScrollContainer Name="NodeScroll" MinWidth="198" HScrollEnabled="False" VerticalExpand="True">
-                <BoxContainer Name="NodeList" Orientation="Vertical" SeparationOverride="1" Margin="0 0 4 0" />
-            </ScrollContainer>
-
-            <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="4">
-                <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-                    <Label Name="HeadingLabel" HorizontalExpand="True" StyleClasses="LabelHeading" />
-                    <Label Name="CountLabel" StyleClasses="LabelSubText" VerticalAlignment="Center" />
-                </BoxContainer>
-                <ScrollContainer Name="GridScroll" HScrollEnabled="False" VerticalExpand="True">
-                    <spawning:WolfgateSpawnGrid Name="Grid" />
-                </ScrollContainer>
-                <Label Name="EmptyLabel" Visible="False" Align="Center" StyleClasses="LabelSubText" />
-            </BoxContainer>
-        </BoxContainer>
-
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <TextureRect Name="SelectionIcon" SetSize="32 32" VerticalAlignment="Center" />
-            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalAlignment="Center">
-                <Label Name="SelectionName" ClipText="True" />
-                <Label Name="SelectionId" ClipText="True" StyleClasses="LabelSubText" />
-            </BoxContainer>
-            <Button Name="FavouriteButton" Text="{Loc 'wf-spawn-favourite'}" Disabled="True" />
-        </BoxContainer>
-
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <Button Name="ReplaceButton" ToggleMode="True" Text="{Loc 'entity-spawn-window-replace-button-text'}" />
-            <Button Name="EraseButton" ToggleMode="True" Text="{Loc 'window-erase-button-text'}" />
-            <OptionButton Name="OverrideMenu" HorizontalExpand="True"
-                          ToolTip="{Loc 'entity-spawn-window-override-menu-tooltip'}" />
-            <Label Name="RotationLabel" VerticalAlignment="Center" />
-        </BoxContainer>
-    </BoxContainer>
+    <spawning:WolfgateSpawnPanel Name="Panel" Access="Public" />
 </controls:FancyWindow>

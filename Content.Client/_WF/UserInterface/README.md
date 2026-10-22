@@ -5,6 +5,8 @@ Client controls other Wolfgate UI is built from.
 - `WolfgateColorPicker`: an inline colour input (current colour, swatches and a Custom button that opens
   `WolfgateColorPopup`, with a saturation/value box, a hue bar and RGB, HSV and hex fields) with the same surface as
   `ColorSelectorSliders`, so it can replace it.
+- `WolfgateNestedScrollContainer`: a vertical scroll box for use inside a scrolling page. It hands the wheel back to
+  the page when it is at its top or bottom, so the page never gets stuck behind it (the marking pickers use it).
 - Window pop-out: `WindowPopoutUIController` puts a button next to the close button of every in-game window, and
   `WolfgatePopoutButton` moves the window into a `WolfgatePopoutWindow`, its own OS window, so players can put it on
   another monitor. No window has to opt in; `wf.ui_window_popout` switches it off.
@@ -19,9 +21,14 @@ Client controls other Wolfgate UI is built from.
 - [`Content.Client/_WF/UserInterface/Alerts/WFAlertsWrapUIController.cs`](Alerts/WFAlertsWrapUIController.cs)
 - [`Content.Client/_WF/UserInterface/Controls/WolfgateColorPicker.cs`](Controls/WolfgateColorPicker.cs)
 - [`Content.Client/_WF/UserInterface/Controls/WolfgateColorPopup.cs`](Controls/WolfgateColorPopup.cs)
+- [`Content.Client/_WF/UserInterface/Controls/WolfgateNestedScrollContainer.cs`](Controls/WolfgateNestedScrollContainer.cs)
 - [`Content.Client/_WF/UserInterface/WindowPopout/WindowPopoutUIController.cs`](WindowPopout/WindowPopoutUIController.cs)
 - [`Content.Client/_WF/UserInterface/WindowPopout/WolfgatePopoutButton.cs`](WindowPopout/WolfgatePopoutButton.cs)
 - [`Content.Client/_WF/UserInterface/WindowPopout/WolfgatePopoutWindow.cs`](WindowPopout/WolfgatePopoutWindow.cs)
+
+### Integration tests
+
+- [`Content.IntegrationTests/Tests/_WF/UserInterface/WolfgateNestedScrollContainerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/UserInterface/WolfgateNestedScrollContainerTest.cs)
 
 ### Localization
 

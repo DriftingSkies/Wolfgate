@@ -169,7 +169,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                 _parts,
                 _search,
                 // Capped height: past it the grid scrolls inside its box
-                new ScrollContainer { HScrollEnabled = false, ReturnMeasure = true, MaxHeight = 420, HorizontalExpand = true, Children = { _grid } },
+                new WolfgateNestedScrollContainer { ReturnMeasure = true, MaxHeight = 420, HorizontalExpand = true, Children = { _grid } },
             },
         }));
         _appliedCard = Card(new BoxContainer

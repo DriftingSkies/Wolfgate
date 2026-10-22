@@ -6,8 +6,10 @@
     species:
     - SlimePerson
     - Vox
-    # WOLFGATE(Species): uses the Slime body
-    - ProtoSlimePerson
+# WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
+  - !type:WFBiotypeLoadoutEffect
+    biotypes:
+    - Organic
 
 - type: loadoutEffectGroup
   id: OxygenBreatherNF
@@ -34,20 +36,7 @@
     - Yowie # Goob
     - Tajaran # Goob
     - Hydrakin # Mono
-    # WOLFGATE(Species) START: Protogen subspecies + the six species the earlier port missed
-    - ProtoVulp
-    - ProtoVox
-    - ProtoThaven
-    - ProtoKin
-    - ProtoResomi
-    - ProtoReptile
-    - ProtoMoth
-    - ProtoHumie
-    - ProtoFeline
-    - ProtoDawi
-    - ProtoDionae
-    - ProtoAvali
-    - ProtoArachnid
+    # WOLFGATE(Species) START: the six species the earlier port missed
     - Felionoid
     - Avali
     - Skrell
@@ -55,6 +44,10 @@
     - Thaven
     - Synth
     # WOLFGATE END
+# WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
+  - !type:WFBiotypeLoadoutEffect
+    biotypes:
+    - Organic
 
 - type: loadoutEffectGroup
   id: ShoesCapableNF
@@ -83,20 +76,7 @@
     - Diona # Mono
     - Hydrakin # Mono
     - Feroxi # Mono/DV
-    # WOLFGATE(Species) START: Protogen subspecies (not ProtoDionae - no shoes slot) + the six the earlier port missed
-    - ProtoVulp
-    - ProtoVox
-    - ProtoThaven
-    - ProtoSlimePerson
-    - ProtoKin
-    - ProtoResomi
-    - ProtoReptile
-    - ProtoMoth
-    - ProtoHumie
-    - ProtoFeline
-    - ProtoDawi
-    - ProtoAvali
-    - ProtoArachnid
+    # WOLFGATE(Species) START: the six species the earlier port missed
     - Felionoid
     - Avali
     - Skrell

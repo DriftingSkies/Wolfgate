@@ -14,6 +14,12 @@ public sealed partial class HumanoidAppearanceComponent : Component
 {
     public MarkingSet ClientOldMarkings = new();
 
+    // WOLFGATE(Species) START: every marking layer the client drew, so a rebuild removes all of them
+    /// <summary>Client only: layer keys of the marking layers currently on the sprite.</summary>
+    [ViewVariables]
+    public HashSet<string> ClientMarkingLayers = new();
+    // WOLFGATE END
+
     [DataField, AutoNetworkedField]
     public MarkingSet MarkingSet = new();
 

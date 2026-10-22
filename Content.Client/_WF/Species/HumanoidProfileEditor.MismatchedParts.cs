@@ -32,10 +32,12 @@ public sealed partial class HumanoidProfileEditor
         }
 
         Markings.MismatchedParts = enabled;
+        UpdateSkinColor();
         UpdateHairPickers();
         UpdateCMarkingsHair();
         UpdateCMarkingsFacialHair();
         UpdateMarkings();
+        SetDirty();
         ReloadPreview();
     }
 

@@ -5,7 +5,7 @@
 - type: genitalPreset
   id: WFGenitalPresetDefault
   fallback: true
-  explicitFallback: [ Human, Dwarf, Goblin, Oni, Diona, SlimePerson, Synth, Protogen, ProtoHumie, ProtoKin, ProtoDawi, ProtoDionae, ProtoSlimePerson, ProtoThaven, Thaven, Shadekin ]
+  explicitFallback: [ Human, Dwarf, Goblin, Oni, Diona, SlimePerson, Synth, Protogen, Thaven, Shadekin ]
   male:
     penis: { shape: WFGenitalShapePenisHuman, lengthCm: 15 }
     testicles: { type: External, size: 2 }
@@ -16,7 +16,7 @@
 
 - type: genitalPreset
   id: WFGenitalPresetCanine
-  species: [ Vulpkanin, WFCanine, ProtoVulp ]
+  species: [ Vulpkanin, WFCanine ]
   male:
     penis: { shape: WFGenitalShapePenisKnotted, lengthCm: 15, sheath: Sheath }
     testicles: { type: External, size: 2 }
@@ -27,7 +27,7 @@
 
 - type: genitalPreset
   id: WFGenitalPresetFeline
-  species: [ Felinid, Tajaran, Felionoid, ProtoFeline ]
+  species: [ Felinid, Tajaran, Felionoid ]
   male:
     penis: { shape: WFGenitalShapePenisBarbKnot, lengthCm: 13, sheath: Sheath }
     testicles: { type: External, size: 2 }
@@ -38,7 +38,7 @@
 
 - type: genitalPreset
   id: WFGenitalPresetReptile
-  species: [ Reptilian, Hydrakin, ProtoReptile ]
+  species: [ Reptilian, Hydrakin ]
   male:
     penis: { shape: WFGenitalShapePenisHemi, lengthCm: 15, sheath: Slit }
     testicles: { type: Internal }
@@ -68,7 +68,7 @@
 
 - type: genitalPreset
   id: WFGenitalPresetAvian
-  species: [ Avali, Harpy, ProtoAvali, Vox, Resomi, ProtoVox, ProtoResomi ]
+  species: [ Avali, Harpy, Vox, Resomi ]
   male:
     penis: { shape: WFGenitalShapePenisNondescript, lengthCm: 10, sheath: Slit }
     testicles: { type: Internal }
@@ -78,7 +78,7 @@
 
 - type: genitalPreset
   id: WFGenitalPresetArthropod
-  species: [ Arachnid, Moth, Chitinid, ProtoMoth, ProtoArachnid ]
+  species: [ Arachnid, Moth, Chitinid ]
   male:
     penis: { shape: WFGenitalShapePenisNondescript, lengthCm: 12, sheath: Slit }
     testicles: { type: Internal }

@@ -91,12 +91,19 @@ namespace Content.Shared.Chat
         /// </summary>
         Unspecified = 1 << 15,
 
+        // WOLFGATE(EventStaff) START: event staff chat
+        /// <summary>
+        ///     Event staff chat
+        /// </summary>
+        EventChat = 1 << 16,
+        // WOLFGATE END
+
         /// <summary>
         ///     Channels considered to be IC.
         /// </summary>
         IC = Local | Whisper | Radio | Dead | Emotes | Damage | Visual | CollectiveMind | Notifications,
 
-        AdminRelated = Admin | AdminAlert | AdminChat,
+        AdminRelated = Admin | AdminAlert | AdminChat | EventChat, // WOLFGATE(EventStaff): keep event chat out of replays
     }
 
     /// <summary>
@@ -115,6 +122,7 @@ namespace Content.Shared.Chat
                 ChatChannel.OOC => Loc.GetString("chat-channel-humanized-ooc"),
                 ChatChannel.AdminChat => Loc.GetString("chat-channel-humanized-admin"),
                 ChatChannel.Dead => Loc.GetString("chat-channel-humanized-dead"),
+                ChatChannel.EventChat => Loc.GetString("wf-chat-channel-humanized-event"), // WOLFGATE(EventStaff)
                 _ => throw new ArgumentOutOfRangeException(nameof(channel), channel, null)
             };
         }

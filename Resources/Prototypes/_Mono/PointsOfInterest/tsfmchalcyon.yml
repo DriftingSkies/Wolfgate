@@ -16,8 +16,8 @@
   name: 'TSFMC Flagship Halcyon'
   minimumDistance: 2500 # Mono
   maximumDistance: 3500 # Mono
-  # WOLFGATE(ReaverCampaign): the Ashfall game mode spawns the same sector as Standard
-  spawnGamePreset: [ NFAdventure, NFPirate, MonoStandard, MonoAshfall, MonoRogueTSF, MonoTSFUSSP, MonoADS, MonoChimera, MonoMixed, MonoAllAtOnce, MonoChimeraTsf ]
+  # WOLFGATE(ReaverCampaign): the Contested Sector game mode spawns the same sector as Standard
+  spawnGamePreset: [ NFAdventure, NFPirate, MonoStandard, WFContestedSector, MonoRogueTSF, MonoTSFUSSP, MonoADS, MonoChimera, MonoMixed, MonoAllAtOnce, MonoChimeraTsf ]
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/tsfmchalcyon.yml
   addComponents:

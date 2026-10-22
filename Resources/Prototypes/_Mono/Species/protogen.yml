@@ -1,7 +1,7 @@
 - type: species
   id: Protogen
   name: species-name-protogen
-  roundStart: true # WOLFGATE(Species): was false, so only the subspecies were playable
+  roundStart: true # WOLFGATE(Species): was false, so the base species is selectable in the creator
   prototype: MobProtogen
   sprites: MobProtogenSprites
   defaultSkinTone: "#ffda93"

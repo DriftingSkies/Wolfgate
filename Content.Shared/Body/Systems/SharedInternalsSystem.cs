@@ -255,6 +255,10 @@ public abstract partial class SharedInternalsSystem : EntitySystem
             return (backEntity.Value, backGasTank);
         }
 
+        // WOLFGATE(SuitTank): a tank in the worn suit's storage comes next
+        if (FindSuitStorageTank(user) is { } suitTank)
+            return suitTank;
+
         if (_inventory.TryGetSlotEntity(user, "suitstorage", out var entity, user.Comp2, user.Comp3) &&
             TryComp<GasTankComponent>(entity, out var gasTank) &&
             _gasTank.CanConnectToInternals((entity.Value, gasTank)))

@@ -115,6 +115,16 @@ public sealed class WFCrewFriendlyFireSystem : EntitySystem
         ScaleBySkill(ent, ref args);
         if (args.Tool is { } beam && HasComp<HitscanBasicDamageComponent>(beam))
             ReportBeamHit(ent.Owner, origin);
+        ReportMechHit(ent.Owner, origin);
+    }
+
+    /// <summary>Reports a free-flying mech's hit on a ship or anyone aboard as that ship coming under attack.</summary>
+    private void ReportMechHit(EntityUid target, EntityUid origin)
+    {
+        if (Transform(target).GridUid is not { } grid || _alerts.FreeMechOf(origin) is not { } mech)
+            return;
+        var ev = new WFCrewHullHitEvent(grid, mech);
+        RaiseLocalEvent(grid, ref ev, true);
     }
 
     /// <summary>

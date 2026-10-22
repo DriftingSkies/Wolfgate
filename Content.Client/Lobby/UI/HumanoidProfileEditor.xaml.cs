@@ -7,6 +7,8 @@ using Content.Client._WF.Genitals.UI; // WOLFGATE(Genitals)
 using Content.Client._WF.Humanoid; // WOLFGATE(Humanoid)
 using Content.Shared._WF.Genitals; // WOLFGATE(Genitals)
 using Content.Shared._WF.Genitals.Profile; // WOLFGATE(Genitals)
+using Content.Shared._WF.Biotype; // WOLFGATE(Biotype)
+using Content.Shared._WF.Species; // WOLFGATE(Species)
 using Content.Client.Lobby.UI.Loadouts;
 using Content.Client.Lobby.UI.Roles;
 using Content.Client.Message;
@@ -258,6 +260,7 @@ namespace Content.Client.Lobby.UI
             // WOLFGATE END
 
             InitializeEmoteVoices(); // WOLFGATE(EmoteVoices)
+            InitializeBloodColour(); // WOLFGATE(BloodColour)
 
             #endregion Sex
 
@@ -615,6 +618,9 @@ namespace Content.Client.Lobby.UI
             InitializeHeadshot(); // WOLFGATE(Headshot)
             InitializeCustomMarkings(); // WOLFGATE(CustomMarkings)
             InitializeMismatchedParts(); // WOLFGATE(Species)
+            InitializeBiotype(); // WOLFGATE(Biotype)
+            InitializeChatFont(); // WOLFGATE(ChatFont)
+            InitializeTypingBubble(); // WOLFGATE(TypingBubble)
             InitializeLegStyle(); // WOLFGATE(LegStyle)
 
             #region Dummy
@@ -842,6 +848,11 @@ namespace Content.Client.Lobby.UI
                             if (names.Count > 0)
                                 tooltipParts.Add($"You must not be: {string.Join(", ", names)}");
                         }
+
+                        // WOLFGATE(Biotype) START: the biotypes a trait can't be taken by
+                        if (BiotypeBlacklistTooltip(trait) is { } biotypeTooltip)
+                            tooltipParts.Add(biotypeTooltip);
+                        // WOLFGATE END
 
                         if (tooltipParts.Count > 0)
                             selector.SetTooltip(string.Join("\n", tooltipParts));
@@ -1085,6 +1096,10 @@ namespace Content.Client.Lobby.UI
                     }
                 }
 
+                // WOLFGATE(Biotype): a biotype the trait lists hides it like a listed species
+                if (!hide && Profile != null && WFBiotypeGates.TraitBlocked(thisProto, Profile, _prototypeManager))
+                    hide = true;
+
                 if (!hide)
                 {
                     foreach (var sel in selected)
@@ -1316,7 +1331,10 @@ namespace Content.Client.Lobby.UI
             UpdateHeadshot(); // WOLFGATE(Headshot)
             UpdateCustomMarkings(); // WOLFGATE(CustomMarkings)
             UpdateMismatchedParts(); // WOLFGATE(Species)
+            UpdateBiotype(); // WOLFGATE(Biotype)
             UpdateLegStyle(); // WOLFGATE(LegStyle)
+            UpdateChatFont(); // WOLFGATE(ChatFont)
+            UpdateTypingBubble(); // WOLFGATE(TypingBubble)
             UpdateSexControls();
             UpdateGenderControls();
             UpdateSkinColor();
@@ -1326,6 +1344,7 @@ namespace Content.Client.Lobby.UI
             UpdateAgeEdit();
             UpdateEyePickers();
             UpdateEmoteVoiceControls(); // WOLFGATE(EmoteVoices)
+            UpdateBloodColour(); // WOLFGATE(BloodColour)
             UpdateSaveButton();
             UpdateMarkings();
             // WOLFGATE(Genitals) START: sync the anatomy tab and doll with the loaded profile
@@ -1817,7 +1836,7 @@ namespace Content.Client.Lobby.UI
         {
             if (Profile is null) return;
 
-            var skin = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).SkinColoration;
+            var skin = MismatchedPartsRules.SkinColoration(_prototypeManager.Index<SpeciesPrototype>(Profile.Species).SkinColoration, Profile.MismatchedParts); // WOLFGATE(Species): any colour with Mismatched parts
 
             switch (skin)
             {
@@ -1992,7 +2011,10 @@ namespace Content.Client.Lobby.UI
         private void SetSpecies(string newSpecies)
         {
             Profile = Profile?.WithSpecies(newSpecies);
+            Profile = Profile?.WithBiotype(WFBiotype.Default); // WOLFGATE(Biotype): a new species starts on its own biotype
+            UpdateBiotype(); // WOLFGATE(Biotype)
             UpdateLegStyle(); // WOLFGATE(LegStyle): legs the new species lacks fall back to its own
+            UpdateTypingBubble(); // WOLFGATE(TypingBubble): the species' own bubble changes with it
             // WOLFGATE(Humanoid) START: keep the species picker and dropdown in step, drop hair the new species lacks
             EnforceSpeciesHair();
             SpeciesPicker.SetSelected(newSpecies);
@@ -2066,7 +2088,7 @@ namespace Content.Client.Lobby.UI
                 if (!_prototypeManager.TryIndex(traitId, out TraitPrototype? trait))
                     continue;
 
-                if (trait.SpeciesBlacklist.Contains(species))
+                if (trait.SpeciesBlacklist.Contains(species) || WFBiotypeGates.TraitBlocked(trait, Profile, _prototypeManager)) // WOLFGATE(Biotype): a listed biotype drops the trait like a listed species
                     toRemove.Add(traitId);
             }
 
@@ -2232,7 +2254,7 @@ namespace Content.Client.Lobby.UI
             if (Profile == null)
                 return;
 
-            var skin = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).SkinColoration;
+            var skin = MismatchedPartsRules.SkinColoration(_prototypeManager.Index<SpeciesPrototype>(Profile.Species).SkinColoration, Profile.MismatchedParts); // WOLFGATE(Species): any colour with Mismatched parts
 
             switch (skin)
             {

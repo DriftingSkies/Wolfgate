@@ -89,6 +89,11 @@ public sealed class MappingSelectionOverlay : Overlay
         if (_tool.Area is { } area)
             DrawBox(handle, area, SelectionColor);
 
+        foreach (var cell in _tool.Cells)
+        {
+            DrawBox(handle, new Box2i(cell, cell + Vector2i.One), SelectionColor);
+        }
+
         foreach (var uid in _tool.PickedEntities())
         {
             var pos = _entities.GetComponent<TransformComponent>(uid).LocalPosition;
@@ -120,6 +125,12 @@ public sealed class MappingSelectionOverlay : Overlay
             }
 
             DrawBox(handle, MappingToolsMath.TransformBox(area, extent, offset, turns), MoveColor);
+        }
+
+        foreach (var cell in _tool.Cells)
+        {
+            var dest = MappingToolsMath.TransformCell(cell, extent, offset, turns);
+            DrawBox(handle, new Box2i(dest, dest + Vector2i.One), MoveColor);
         }
 
         foreach (var uid in _tool.SelectedEntities())

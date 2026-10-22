@@ -3,6 +3,11 @@
   name: plasma window
   parent: WindowRCDResistant
   components:
+  # WOLFGATE(Xenonids): xeno claws break a plasma window in four hits
+  - type: ReceiverXenoClaws
+    maxHealth: 300
+    hitsToDestroy: 4
+    minimumClawStrength: Normal
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/plasma_window.rsi
@@ -73,6 +78,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): xeno claws break a plasma directional window in three hits
+  - type: ReceiverXenoClaws
+    maxHealth: 150
+    hitsToDestroy: 3
+    minimumClawStrength: Normal
   - type: Sprite
     sprite: Structures/Windows/directional.rsi
     state: plasma_window

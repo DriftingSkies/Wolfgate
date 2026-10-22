@@ -1,5 +1,6 @@
 using Content.Shared._Mono.Weapons.Hitscan.Components;
 using Content.Shared._RMC14.Random;
+using Content.Shared._WF.Weapons.Ranged.Events;
 using Content.Shared.Item;
 using Content.Shared.Weapons.Hitscan.Components;
 using Content.Shared.Mech.Components;
@@ -55,7 +56,30 @@ public abstract partial class SharedGunSystem
             PredictedShotContext = null;
         }
 
+        RefuseUnfiredPredictions(predictedShot);
+
         return predictedShot.Slots.Exists(id => id != 0) ? predictedShot.Slots : null;
+    }
+
+    /// <summary>
+    /// Server: tells the shooter which of their predicted rounds this request didn't fire, so their client drops
+    /// them instead of letting a round nobody fired fly on. Covers any disagreement over when the gun could fire,
+    /// such as a burst the server carried on by itself or a late request that let the server catch up a round.
+    /// </summary>
+    private void RefuseUnfiredPredictions(PredictedShot shot)
+    {
+        if (!_netManager.IsServer || shot.ClientIds is not { } ids || shot.Next >= ids.Count)
+            return;
+
+        var refused = new List<int>();
+        for (var i = shot.Next; i < ids.Count; i++)
+        {
+            if (ids[i] != 0)
+                refused.Add(ids[i]);
+        }
+
+        if (refused.Count > 0)
+            RaiseNetworkEvent(new WFPredictedShotsRefusedEvent(refused), shot.Shooter);
     }
 
     /// <summary>

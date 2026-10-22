@@ -45,6 +45,7 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private WFPlanetRegistrySystem _planets = default!;
     [Dependency] private WFPlanetNetworkSystem _networks = default!;
+    [Dependency] private WFShipScenarioSystem _ships = default!;
     [Dependency] private WFOrbitEntrySystem _orbit = default!;
     [Dependency] private ShuttleSystem _shuttle = default!;
     [Dependency] private ShuttleConsoleSystem _consoles = default!;
@@ -155,6 +156,7 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
                 StationComponentOverrides = new ComponentRegistry(),
             }, new[] { hull }, Loc.GetString("wf-round-setup-crash-station", ("ship", vessel.Name)));
             EnsureComp<WFCrashScenarioStationComponent>(station).LobbyId = lobbyId;
+            _ships.AddVesselExpeditions(station, vessel);
             var scenario = new Scenario(station, planetName)
             {
                 NextBurstRemaining = PreparationTime - TimeSpan.FromSeconds(_random.Next(40, 56)),

@@ -3,6 +3,8 @@ wf-ship-preview-no-vessel = No vessel selected
 wf-ship-preview-loading = Loading…
 wf-ship-preview-failed = Failed to load this vessel
 wf-ship-preview-info = {$width} x {$height} tiles, {$count} tiles filled
+wf-ship-preview-planet-lift = Planet flight: lifts off in up to {$gravity} g (estimate)
+wf-ship-preview-planet-none = Planet flight: no thrusters to lift off with
 wf-ship-preview-reset-view = Reset view
 wf-ship-preview-hint = Drag to pan, scroll to zoom
 

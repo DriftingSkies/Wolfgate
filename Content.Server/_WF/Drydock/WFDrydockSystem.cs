@@ -68,6 +68,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+        InitializeVouchers();
 
         SubscribeLocalEvent<WFDrydockConsoleComponent, BoundUIOpenedEvent>(OnUiOpened);
         SubscribeLocalEvent<WFDrydockConsoleComponent, WFDrydockRepairMessage>(OnRepair);
@@ -712,6 +713,10 @@ public sealed partial class WFDrydockSystem : EntitySystem
             return true;
         }
 
+        // A repair voucher pays for a whole repair in place of credits.
+        if (upgrade == null && TryStartVoucherRepair(console, comp, ship, actor, items))
+            return true;
+
         var price = WorkPrice(ship, comp, upgrade, items);
         if (!TryCharge(console, comp, actor, price))
             return false;
@@ -811,7 +816,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     }
 
     /// <summary>Starts a paid job: queues its items, then deploys the cranes over the ship.</summary>
-    public void StartJob(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid? payer, List<WFDrydockWorkItem> items, int price, bool paidInMaterials = false)
+    public void StartJob(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid? payer, List<WFDrydockWorkItem> items, int price, bool paidInMaterials = false, string? voucher = null)
     {
         if (IsShipyardGrid(console, comp, ship))
         {
@@ -824,6 +829,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
         job.Ship = ship;
         job.Payer = payer;
         job.PaidInMaterials = paidInMaterials;
+        job.Voucher = voucher;
         job.Total = items.Count;
         job.Break = items[0].Kind == WFDrydockWorkKind.Break;
         job.ShipName = Name(ship);
@@ -862,7 +868,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
             {
                 WFDrydockWorkKind.Upgrade => Loc.GetString("drydock-console-refit-started", ("count", items.Count)),
                 WFDrydockWorkKind.Break => Loc.GetString("drydock-console-break-started", ("ship", job.ShipName), ("count", items.Count)),
-                _ => Loc.GetString("drydock-console-started", ("count", items.Count), ("price", price.ToString("N0"))),
+                _ => voucher != null
+                    ? Loc.GetString("drydock-console-voucher-used", ("count", items.Count))
+                    : Loc.GetString("drydock-console-started", ("count", items.Count), ("price", price.ToString("N0"))),
             };
             _popup.PopupCursor(message, payerUid);
         }

@@ -34,6 +34,9 @@ public sealed class MappingSelectionTool
     /// </summary>
     private const float DragThreshold = 0.35f;
 
+    /// <summary>Largest area a Shift+click breaks into single cells to take one out of it.</summary>
+    private const int MaxSplitCells = 4096;
+
     private readonly Func<bool> _isActive;
 
     private SharedMapSystem _map = default!;
@@ -49,6 +52,12 @@ public sealed class MappingSelectionTool
     /// Entities selected by clicking, on top of those inside <see cref="Area"/>.
     /// </summary>
     public readonly HashSet<NetEntity> Picked = new();
+
+    /// <summary>
+    /// Tile cells selected one at a time with Shift+click, on top of <see cref="Area"/>; each holds its tile and
+    /// everything on it.
+    /// </summary>
+    public readonly HashSet<Vector2i> Cells = new();
 
     public DragMode Drag { get; private set; }
     public Vector2i DragStart { get; private set; }
@@ -89,13 +98,14 @@ public sealed class MappingSelectionTool
         Clear();
     }
 
-    public bool HasSelection => Grid != null && (Area != null || Picked.Count > 0);
+    public bool HasSelection => Grid != null && (Area != null || Cells.Count > 0 || Picked.Count > 0);
 
     public void Clear()
     {
         Grid = null;
         Area = null;
         Picked.Clear();
+        Cells.Clear();
         Drag = DragMode.None;
         _pressed = false;
         Pasting = false;
@@ -126,7 +136,7 @@ public sealed class MappingSelectionTool
 
         // A press on the selection can drag it; anywhere else it can draw a box.
         if (Grid is { } grid && TryGetCell(mapCoords, grid, out var cell) &&
-            (Area is { } area && MappingToolsMath.Contains(area, cell) || IsPicked(clicked)))
+            (Area is { } area && MappingToolsMath.Contains(area, cell) || Cells.Contains(cell) || IsPicked(clicked)))
         {
             _pressOnSelection = true;
             _pressGrid = grid;
@@ -143,16 +153,26 @@ public sealed class MappingSelectionTool
     }
 
     /// <summary>
-    /// Turns a held press into a drag once the mouse has moved far enough.
+    /// Turns a held press into a drag once the mouse, or the release at <paramref name="at"/>, has moved far
+    /// enough. A box started in space takes the first grid the mouse reaches.
     /// </summary>
-    public void UpdateDrag()
+    public void UpdateDrag(MapCoordinates? at = null)
     {
-        if (!_pressed || Drag != DragMode.None || _pressGrid == null)
+        if (!_pressed || Drag != DragMode.None)
             return;
 
-        var mouse = MouseMapPosition;
+        var mouse = at ?? MouseMapPosition;
         if (mouse.MapId != _pressPosition.MapId || (mouse.Position - _pressPosition.Position).Length() < DragThreshold)
             return;
+
+        if (_pressGrid == null)
+        {
+            if (!_map.TryFindGridAt(mouse, out var reached, out _) || !TryGetCell(_pressPosition, reached, out var start))
+                return;
+
+            _pressGrid = reached;
+            DragStart = start;
+        }
 
         Drag = _pressOnSelection ? DragMode.Move : DragMode.Box;
     }
@@ -162,7 +182,8 @@ public sealed class MappingSelectionTool
         if (!_pressed)
             return false;
 
-        UpdateDrag();
+        var release = coords.IsValid(_entities) ? _transform.ToMapCoordinates(coords) : MouseMapPosition;
+        UpdateDrag(release);
         _pressed = false;
         var mode = Drag;
         Drag = DragMode.None;
@@ -203,12 +224,19 @@ public sealed class MappingSelectionTool
     }
 
     /// <summary>
-    /// A click selects the entity under the cursor, or with shift adds or removes it; a click on nothing clears.
+    /// A click selects the entity under the cursor, or with shift adds or removes it. With no entity there it does
+    /// the same with the tile cell under the cursor; a click on nothing clears.
     /// </summary>
     private void Click(EntityUid clicked, bool shift)
     {
         if (GridOf(clicked) is not { } parent)
         {
+            if (TryGetTileCell(_pressPosition, out var tileGrid, out var tileCell))
+            {
+                ClickCell(tileGrid, tileCell, shift);
+                return;
+            }
+
             if (!shift)
                 Clear();
             return;
@@ -225,6 +253,63 @@ public sealed class MappingSelectionTool
         Clear();
         Grid = parent;
         Picked.Add(net);
+    }
+
+    /// <summary>
+    /// Selects one tile cell, or with shift adds it to the selection or takes it out.
+    /// </summary>
+    private void ClickCell(EntityUid grid, Vector2i cell, bool shift)
+    {
+        if (!shift || Grid != grid)
+        {
+            Clear();
+            Grid = grid;
+            Area = new Box2i(cell, cell + Vector2i.One);
+            return;
+        }
+
+        if (Cells.Remove(cell))
+            return;
+
+        if (Area is not { } area || !MappingToolsMath.Contains(area, cell))
+        {
+            Cells.Add(cell);
+            return;
+        }
+
+        // A box can't have a hole, so a cell leaving it turns the box into single cells first.
+        if ((long) area.Width * area.Height > MaxSplitCells)
+            return;
+
+        for (var x = area.Left; x < area.Right; x++)
+        {
+            for (var y = area.Bottom; y < area.Top; y++)
+            {
+                Cells.Add(new Vector2i(x, y));
+            }
+        }
+
+        Area = null;
+        Cells.Remove(cell);
+    }
+
+    /// <summary>The grid with a tile under a map position, and that tile's cell.</summary>
+    private bool TryGetTileCell(MapCoordinates position, out EntityUid grid, out Vector2i cell)
+    {
+        grid = default;
+        cell = default;
+        if (position.MapId == MapId.Nullspace ||
+            !_map.TryFindGridAt(position, out var uid, out var gridComp))
+        {
+            return false;
+        }
+
+        cell = _map.TileIndicesFor(uid, gridComp, position);
+        if (!_map.TryGetTileRef(uid, gridComp, cell, out var tile) || tile.Tile.IsEmpty)
+            return false;
+
+        grid = uid;
+        return true;
     }
 
     /// <summary>
@@ -293,6 +378,26 @@ public sealed class MappingSelectionTool
             return false;
 
         _system.Send(new MappingToolsMirrorEvent(selection, vertical));
+
+        // Single cells and an area smaller than the extent land mirrored across it.
+        if (GetExtent() is { } extent)
+        {
+            if (Area is { } area)
+            {
+                Area = MappingToolsMath.FromCorners(MappingToolsMath.MirrorCell(area.BottomLeft, extent, vertical),
+                    MappingToolsMath.MirrorCell(area.TopRight - Vector2i.One, extent, vertical));
+            }
+
+            var mirrored = new List<Vector2i>(Cells.Count);
+            foreach (var cell in Cells)
+            {
+                mirrored.Add(MappingToolsMath.MirrorCell(cell, extent, vertical));
+            }
+
+            Cells.Clear();
+            Cells.UnionWith(mirrored);
+        }
+
         return true;
     }
 
@@ -339,6 +444,15 @@ public sealed class MappingSelectionTool
         // The selection follows what it moved; picked entities keep their ids.
         if (Area is { } area)
             Area = MappingToolsMath.TransformBox(area, extent, offset, turns);
+
+        var moved = new List<Vector2i>(Cells.Count);
+        foreach (var cell in Cells)
+        {
+            moved.Add(MappingToolsMath.TransformCell(cell, extent, offset, turns));
+        }
+
+        Cells.Clear();
+        Cells.UnionWith(moved);
     }
 
     private MappingSelection? BuildSelection()
@@ -351,6 +465,7 @@ public sealed class MappingSelectionTool
             Grid = _entities.GetNetEntity(grid),
             Area = Area,
         };
+        selection.Cells.AddRange(Cells);
         selection.Entities.AddRange(Picked);
         return selection;
     }
@@ -360,15 +475,21 @@ public sealed class MappingSelectionTool
         Clear();
         Grid = _entities.GetEntity(selection.Grid);
         Area = selection.Area;
+        Cells.UnionWith(selection.Cells);
         Picked.UnionWith(selection.Entities);
     }
 
     /// <summary>
-    /// The box the server turns the selection around: the area plus every picked entity's cell.
+    /// The box the server turns the selection around: the area plus every picked cell and entity's cell.
     /// </summary>
     public Box2i? GetExtent()
     {
         var extent = Area;
+        foreach (var cell in Cells)
+        {
+            extent = MappingToolsMath.Include(extent, cell);
+        }
+
         foreach (var uid in PickedEntities())
         {
             extent = MappingToolsMath.Include(extent, CellOf(uid));
@@ -401,12 +522,12 @@ public sealed class MappingSelectionTool
         if (Grid is not { } grid || !_entities.TryGetComponent(grid, out TransformComponent? gridXform))
             yield break;
 
-        if (Area is { } area)
+        if (Area != null || Cells.Count > 0)
         {
             var children = gridXform.ChildEnumerator;
             while (children.MoveNext(out var child))
             {
-                if (IsSelectable(child) && MappingToolsMath.Contains(area, CellOf(child)))
+                if (IsSelectable(child) && InCells(CellOf(child)))
                 {
                     yield return child;
                 }
@@ -415,7 +536,7 @@ public sealed class MappingSelectionTool
 
         foreach (var uid in PickedEntities())
         {
-            if (Area is not { } a || !MappingToolsMath.Contains(a, CellOf(uid)))
+            if (!InCells(CellOf(uid)))
             {
                 yield return uid;
             }
@@ -443,6 +564,12 @@ public sealed class MappingSelectionTool
 
         cell = _map.TileIndicesFor(grid, gridComp, coords);
         return true;
+    }
+
+    /// <summary>Whether a cell is in the area or one of the single cells.</summary>
+    public bool InCells(Vector2i cell)
+    {
+        return Area is { } area && MappingToolsMath.Contains(area, cell) || Cells.Contains(cell);
     }
 
     private Vector2i CellOf(EntityUid uid)

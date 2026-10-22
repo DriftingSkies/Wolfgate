@@ -1,0 +1,62 @@
+# WOLFGATE(DecorImport) START: ported from Impstation
+- type: entity
+  id: ImpstationPoweredFloorLight
+  suffix: ""
+  parent: StarlightPoweredFloorLightEmpty
+  components:
+  - type: Sprite
+    sprite: _Impstation/Structures/Lighting/floorlights.rsi
+    layers:
+    - map: [ "enum.PoweredLightLayers.Base" ]
+      state: base
+    - map: [ "enum.PoweredLightLayers.Glow" ]
+      state: baseGlow
+      shader: unshaded
+  - type: PoweredLightVisuals
+    blinkingSound:
+      path: "/Audio/Machines/light_tube_on.ogg"
+    spriteStateMap:
+      off: base
+      on: base
+      broken: broken
+      burned: burned
+  - type: PointLight
+    enabled: true
+  - type: PoweredLight
+    hasLampOnSpawn: LightTube
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -15
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/light_hum.ogg
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors: #excess damage, don't spawn entities.
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+  - type: DamageOnInteract
+    damage:
+      types:
+        Heat: 2
+    popupText: powered-light-component-burn-hand
+  - type: Icon
+    sprite: _Impstation/Structures/Lighting/floorlights.rsi
+    state: base
+# WOLFGATE END

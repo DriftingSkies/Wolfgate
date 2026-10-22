@@ -221,6 +221,13 @@ public sealed partial class WeldingHealableSystem
         _woundRouting.WithTreatmentCapabilities(body, RepairCapabilities, () =>
             _woundRouting.TryApplyPartDamage(body, part, healing.Damage, user,
                 ignoreResistances: true, healWounds: true));
+
+        // Bug report 50: a part's wounds can outlast its damage (a hit leaves more severity than damage), and routed
+        // healing only closes wounds by the damage it removes. With none left the breach stayed open and leaking for
+        // good, so the tool works on the wounds themselves.
+        if (RepairSignature(part) == before)
+            _repairWounds.TryHealWounds(part, healing.Damage);
+
         if (RepairSignature(part) == before)
             return false;
 

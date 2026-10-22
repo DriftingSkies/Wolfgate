@@ -1,0 +1,721 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeSnow
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Flora/tree_snow.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+    offset: "0,0.9"
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+        tree03: ""
+        tree04: ""
+        tree05: ""
+        tree06: ""
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_snow.rsi
+    state: tree01
+
+- type: entity
+  parent: BaseTree
+  id: CP14FloraTreeRed
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: "0,1.1"
+    sprite: _CP14/Structures/Flora/tree_vampire.rsi
+    layers:
+    - state: "2"
+    state: "2"
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeDead
+  components:
+  - type: Sprite
+    offset: "0,1.1"
+    sprite: _CP14/Structures/Flora/tree_died.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+        tree03: ""
+        tree04: ""
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_died.rsi
+    state: tree01
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeDeadSmall
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Flora/tree_died_small.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+    offset: "0,0.9"
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+        tree03: ""
+        tree04: ""
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_died_small.rsi
+    state: tree01
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeBirchSmall
+  suffix: Small
+  components:
+  - type: Sprite
+    offset: "0,1.3"
+    sprite: _CP14/Structures/Flora/tree_birch_small.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_birch_small.rsi
+    state: tree01
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeBirchLarge
+  suffix: Large
+  components:
+  - type: Sprite
+    offset: "0,2.6"
+    sprite: _CP14/Structures/Flora/tree_birch_big.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_birch_big.rsi
+    state: tree01
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeSpruceSmall
+  suffix: Small
+  components:
+  - type: Sprite
+    offset: "0,1"
+    sprite: _CP14/Structures/Flora/tree_spruce_small.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+        tree03: ""
+        tree04: ""
+        tree05: ""
+        tree06: ""
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_spruce_small.rsi
+    state: tree01
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeSpruceMedium
+  suffix: Medium
+  components:
+  - type: Sprite
+    offset: "0,1.6"
+    sprite: _CP14/Structures/Flora/tree_spruce_medium.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+        tree03: ""
+        tree04: ""
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_spruce_medium.rsi
+    state: tree01
+
+- type: entity
+  parent: PottedPlantBase
+  id: CP14FloraTreeSpruceLarge
+  suffix: Large
+  components:
+  - type: Sprite
+    offset: "0,1.9"
+    sprite: _CP14/Structures/Flora/tree_spruce_big.rsi
+    layers:
+    - state: tree01
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available:
+    - random:
+        tree01: ""
+        tree02: ""
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_spruce_big.rsi
+    state: tree01
+# WOLFGATE END

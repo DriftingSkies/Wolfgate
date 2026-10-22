@@ -21,6 +21,10 @@ public sealed partial class TourniquetComponent : Component
 
     [DataField]
     public SoundSpecifier? EndSound;
+
+    // WOLFGATE(Wolfmed): a borg's tourniquet stays in its hand
+    [DataField]
+    public bool Consumed = true;
 }
 
 [Serializable, NetSerializable]

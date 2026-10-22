@@ -243,6 +243,10 @@ public sealed partial class NavScreen : BoxContainer
             }
         }
 
+        // WOLFGATE(Planets): the flight panel's phase replaces the coarse status over a planet.
+        if (WfOrbitButton.PhaseText is { } wfPhase)
+            state = wfPhase;
+
         var onZNetwork = altitude != null;
         GridAltitudeCaption.Visible = onZNetwork;
         GridAltitude.Visible = onZNetwork;

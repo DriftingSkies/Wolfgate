@@ -12,10 +12,11 @@
   - type: Sprite
     layers:
     - state: medical_lathe
-  # Above what the unpacked pod appraises at: its 2500 plus the board, parts and the tools it spawns with, about
-  # 3,140. Under that, buying one and selling the pod pays.
+  # Sells above what the unpacked pod appraises at (its 2500 plus the board, parts and tools, under 4,000),
+  # so selling the pod never pays. Buying one from John Wolfgate or a vendor costs what skipping tier 3 research is worth.
   - type: StaticPrice
-    price: 3200
+    price: 4500
+    vendPrice: 150000
 
 - type: entity
   parent: BaseNFFlatpack

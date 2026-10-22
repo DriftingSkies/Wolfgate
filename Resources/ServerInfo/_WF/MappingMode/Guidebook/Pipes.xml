@@ -1,0 +1,62 @@
+<Document>
+  # Atmos and pipes
+
+  <Box>
+    <GuideEntityEmbed Entity="GasVentPump" Caption="Air vent"/>
+    <GuideEntityEmbed Entity="GasVentScrubber" Caption="Air scrubber"/>
+  </Box>
+
+  Press 8 for Pipe mode. You don't need to hold anything; Pipe mode picks the right pipe pieces itself.
+
+  ## Drawing
+
+  Drag along the floor. Pipes are laid along the path with halves at loose ends and straights, bends, T pieces and four-ways where it meets itself or other pipes.
+
+  - Drag back over the path to shorten it.
+  - A closed loop takes two drags.
+  - A single click lays a half. It points at a pipe beside it with Auto-join on, else along the facing. R or Ctrl+wheel turns the facing; it starts north.
+  - Pipes need floor. A path over a cell with no floor is refused whole.
+
+  ## Options in Properties
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Colour[/bold]</Box>
+    <Box HorizontalAlignment="Left">Distro, Waste (scrubbers), Air, Mix, Custom or Auto.</Box>
+    <Box HorizontalAlignment="Left">[bold]Layer[/bold]</Box>
+    <Box HorizontalAlignment="Left">1 (primary), 2 (secondary) or 3 (tertiary). Pipes on different layers share a tile without connecting.</Box>
+    <Box HorizontalAlignment="Left">[bold]Auto-join[/bold]</Box>
+    <Box HorizontalAlignment="Left">Connect to pipes pointing at the path, and turn the pipe past either end into a T or four-way.</Box>
+    <Box HorizontalAlignment="Left">[bold]Replace[/bold]</Box>
+    <Box HorizontalAlignment="Left">Rebuild a plain pipe on the path with the new connections. Off leaves it as it is.</Box>
+  </Table>
+
+  Colours:
+
+  - [bold]Distro[/bold] (blue, #0055CC): the supply line that feeds the vents.
+  - [bold]Waste (scrubbers)[/bold] (red, #990000): the line the scrubbers feed.
+  - [bold]Air[/bold] (cyan, #03FCD3) and [bold]Mix[/bold] (gold, #947507): the spray painter's air and mix colours.
+  - [bold]Custom[/bold]: type a hex colour in [bold]Hex[/bold].
+  - [bold]Auto[/bold]: take the colour of the first pipe the path joins.
+
+  Use Pipe mode for layers 2 and 3. Place mode refuses pipes on those layers.
+
+  A draw that skips cells says how many and why: pipes left alone with Replace off, or devices in the way. Devices are never rebuilt.
+
+  ## Painting a network
+
+  Middle click a pipe, or press [bold]Paint a network[/bold] and left click one. That pipe and everything connected to it on its layer takes the current colour. Auto can't paint; pick a colour. Pumps, valves and filters split networks, so paint stops at them.
+
+  ## Atmos devices
+
+  The [bold]Atmos devices[/bold] box in Properties has vents, scrubbers, ports, injectors, pumps, valves, filters, mixers, thermomachines, heat exchangers, pipe sensors and the half pipe, which works as a cap.
+
+  - Pick one, then left click a cell. It goes on the current layer in the current colour.
+  - With Auto-join on it turns so its ports meet the pipes around it. Off, it faces the facing.
+  - A plain pipe beside it gains the side it needs.
+  - With Replace on it swaps out a plain pipe on that cell.
+  - Right click or Escape goes back to drawing pipes.
+
+  Some devices only fit layer 1; the popup says so. Other variants are in the Entities tab.
+
+  Every draw, paint or device is one undo step. Pipes are subfloor; the Layers tab hides or shows them.
+</Document>

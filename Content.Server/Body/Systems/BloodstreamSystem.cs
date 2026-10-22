@@ -17,6 +17,8 @@ using Content.Shared.Forensics.Components;
 using Content.Shared.HealthExaminable;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): Wolfmed wound hosts own their own bleeding.
 using Content.Server._WF.Wolfmed.Consciousness; // WOLFGATE(Wolfmed): CONSC
+using Content.Server._WF.BloodColour; // WOLFGATE(BloodColour)
+using Content.Shared._WF.BloodColour; // WOLFGATE(BloodColour)
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Rejuvenate;
@@ -45,6 +47,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
     [Dependency] private AlertsSystem _alertsSystem = default!;
     [Dependency] private ForensicsSystem _forensicsSystem = default!;
     [Dependency] private WolfmedConsciousnessSystem _wolfmedConsciousness = default!; // WOLFGATE(Wolfmed): CONSC
+    [Dependency] private WFBloodColourSystem _wfBloodColour = default!; // WOLFGATE(BloodColour)
     [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedLifeSystem _wolfmedLife = default!; // WOLFGATE(Wolfmed): M3
 
     public override void Initialize()
@@ -522,7 +525,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
             foreach (var reagent in bloodSolution.Contents)
             {
                 List<ReagentData> reagentData = reagent.Reagent.EnsureReagentData();
-                reagentData.RemoveAll(x => x is DnaData);
+                reagentData.RemoveAll(x => x is DnaData || x is WFBloodColourData); // WOLFGATE(BloodColour): was x is DnaData, both are re-added below
                 reagentData.AddRange(GetEntityBloodData(entity.Owner));
             }
         }
@@ -545,6 +548,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
         }
 
         bloodData.Add(dnaData);
+        _wfBloodColour.AddBloodData(uid, bloodData); // WOLFGATE(BloodColour): the profile's blood colour rides on the blood
 
         return bloodData;
     }

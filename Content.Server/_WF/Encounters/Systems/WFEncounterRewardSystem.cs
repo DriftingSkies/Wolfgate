@@ -7,6 +7,7 @@ using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.ShipShields;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
+using Content.Server.KillTracking;
 using Content.Server.Stack;
 using Content.Shared._Mono.Company;
 using Content.Shared._WF.CCVar;
@@ -68,6 +69,37 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         SubscribeLocalEvent<WFShipShieldAttackedEvent>(OnShieldHit, after: [typeof(WFCrewAlertSystem)]);
         SubscribeLocalEvent<WFEncounterResolvedEvent>(OnResolved);
         SubscribeLocalEvent<WFCrewFriendlyFireQueryEvent>(OnFriendlyFireQuery);
+        SubscribeLocalEvent<KillReportedEvent>(OnKillReported);
+    }
+
+    /// <summary>Counts a crewman downed by a player, or with a player's assist, toward that player's share of the encounter.</summary>
+    private void OnKillReported(ref KillReportedEvent args)
+    {
+        if (args.Suicide || !TryComp<WFCrewComponent>(args.Entity, out var member) || member.Group.Length == 0)
+            return;
+
+        var query = EntityQueryEnumerator<WFEncounterComponent>();
+        while (query.MoveNext(out _, out var encounter))
+        {
+            if (encounter.Resolution != null
+                || encounter.Ships.Values.FirstOrDefault(ship => ship.Group == member.Group) is not { } ship)
+                continue;
+
+            RecordKill(encounter, args.Primary, ship.Side);
+            if (args.Assist is { } assist && assist != args.Primary)
+                RecordKill(encounter, assist, ship.Side);
+            return;
+        }
+    }
+
+    private static void RecordKill(WFEncounterComponent encounter, KillSource source, string side)
+    {
+        if (source is not KillPlayerSource player)
+            return;
+
+        if (!encounter.Kills.TryGetValue(player.PlayerId, out var bySide))
+            encounter.Kills[player.PlayerId] = bySide = new Dictionary<string, int>();
+        bySide[side] = bySide.GetValueOrDefault(side) + 1;
     }
 
     private void OnHullHit(ref WFCrewHullHitEvent args)
@@ -265,7 +297,10 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         }
     }
 
-    /// <summary>The living players who hit the losing sides at least <see cref="MinimumHits"/> times, hit no other side and are not of a loser's company.</summary>
+    /// <summary>
+    /// The living players who hit the losing sides at least <see cref="MinimumHits"/> times or downed one of their
+    /// crewmen in person, hit or downed nobody of another side and are not of a loser's company.
+    /// </summary>
     public List<(ICommonSession Session, EntityUid Mob)> GetHelpers(WFEncounterComponent encounter, IReadOnlyCollection<string> losingSides)
     {
         _prototypes.TryIndex(encounter.Prototype, out var prototype);
@@ -285,10 +320,15 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         }
 
         var helpers = new List<(ICommonSession Session, EntityUid Mob)>();
-        foreach (var (user, bySide) in encounter.Hits)
+        var empty = new Dictionary<string, int>();
+        foreach (var user in encounter.Hits.Keys.Union(encounter.Kills.Keys))
         {
-            var against = bySide.Where(pair => losingSides.Contains(pair.Key)).Sum(pair => pair.Value);
-            if (against < MinimumHits || bySide.Any(pair => pair.Value > 0 && !losingSides.Contains(pair.Key))
+            var hits = encounter.Hits.GetValueOrDefault(user) ?? empty;
+            var kills = encounter.Kills.GetValueOrDefault(user) ?? empty;
+            var against = hits.Where(pair => losingSides.Contains(pair.Key)).Sum(pair => pair.Value);
+            var downed = kills.Where(pair => losingSides.Contains(pair.Key)).Sum(pair => pair.Value);
+            if (against < MinimumHits && downed == 0
+                || hits.Concat(kills).Any(pair => pair.Value > 0 && !losingSides.Contains(pair.Key))
                 || !_playerManager.TryGetSessionById(user, out var session) || session.AttachedEntity is not { } mob
                 || HasComp<GhostComponent>(mob) || _mobs.IsDead(mob))
                 continue;
@@ -305,10 +345,12 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
     /// <summary>
     /// Pays a bounty on a beaten encounter to its helpers, and a fifth to living players aboard supporters; returns how many were paid.
-    /// <paramref name="extraCredits"/> are further rewards of which only the faction credits are handed out.
+    /// <paramref name="extraCredits"/> are further rewards of which only the faction credits are handed out. Every
+    /// player the bounty is shared among is added to <paramref name="helperMobs"/>, paid or capped.
     /// </summary>
     public int PayBounty(Entity<WFEncounterComponent?> encounter, WFEncounterReward reward, string deed,
-        IReadOnlyList<EntityUid>? supporters = null, IReadOnlyList<WFEncounterReward>? extraCredits = null)
+        IReadOnlyList<EntityUid>? supporters = null, IReadOnlyList<WFEncounterReward>? extraCredits = null,
+        List<EntityUid>? helperMobs = null)
     {
         if (!Resolve(encounter, ref encounter.Comp, false))
             return 0;
@@ -352,6 +394,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         }
 
         helpers.AddRange(aids);
+        helperMobs?.AddRange(helpers.Select(helper => helper.Mob));
         return Pay(encounter, comp, reward, helpers, deed, shares, extraCredits);
     }
 

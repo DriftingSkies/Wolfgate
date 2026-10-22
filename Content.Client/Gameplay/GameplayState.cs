@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.MappingMode.Screen; // WOLFGATE(MappingMode)
 using Content.Client.Changelog;
 using Content.Client.Hands;
 using Content.Client.UserInterface.Controls;
@@ -113,6 +114,15 @@ namespace Content.Client.Gameplay
 
         private void LoadMainScreen()
         {
+            // WOLFGATE(MappingMode) START: mapping observers get the mapping screen
+            if (_uiManager.GetUIController<WFMappingScreenUIController>().WantsMappingScreen)
+            {
+                _uiManager.LoadScreen<WFMappingScreen>();
+                _loadController.LoadScreen();
+                return;
+            }
+            // WOLFGATE END
+
             var screenTypeString = _configurationManager.GetCVar(CCVars.UILayout);
             if (!Enum.TryParse(screenTypeString, out ScreenType screenType))
             {

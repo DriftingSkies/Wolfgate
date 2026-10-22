@@ -9,6 +9,10 @@ Keeps upstream content building on a newer RobustToolbox (v291) than upstream Mo
 - `WFGridSplitOriginSystem`: v291 gives a grid split off another its own origin near its tiles, where it used to keep
   the old grid's tile indices. Each split-off grid gets a `WFGridSplitOriginComponent` with the grid it came from and
   the tile offset back to it; hull sections, ship status baselines and upstream `DecalSystem` use it to map tiles.
+- Grid traversal: since v283 a grid that moves over an unanchored entity without physics parented to a map takes it
+  along. Long-lived map markers opt out with `GridTraversal = false` (`WFOrbitBeacon`, the encounter root, the
+  campaign sector-watch radios; the sector's stars and planets are pinned with `ForceParent`), and Mono's
+  `GridSpawnerSystem` deletes its drone marker once the grid is loaded.
 - `light_mask.yml`: a light mask for Frontier's turret beam; v291 replaced PointLight `mask` paths with
   `lightMask` prototypes. The upstream masks are in `Resources/Prototypes/light_mask.yml`, copied verbatim from
   space-wizards so a later upstream merge adds an identical file.
@@ -171,6 +175,7 @@ listed under `unmarked` in `Tools/_WF/Ci/modules.yml` with the engine change it 
 - [`Content.Server/_Mono/Research/PointDiskPrinter/Components/PointDiskConsoleComponent.cs`](../../_Mono/Research/PointDiskPrinter/Components/PointDiskConsoleComponent.cs): Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
 - [`Content.Server/_Mono/Shipyard/ShipyardDirectionSystem.cs`](../../_Mono/Shipyard/ShipyardDirectionSystem.cs): Engine v280 removed IMapManager; uses SharedMapSystem.
 - [`Content.Server/_Mono/SpaceArtillery/Components/SpaceArtilleryComponent.cs`](../../_Mono/SpaceArtillery/Components/SpaceArtilleryComponent.cs): Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.
+- [`Content.Server/_Mono/Spawning/GridSpawnerSystem.cs`](../../_Mono/Spawning/GridSpawnerSystem.cs): since v283 the spent marker left on the map rides off on the first grid to move over it
 - [`Content.Server/_Mono/VendingMachine/VendingMachinePurchaseSystem.cs`](../../_Mono/VendingMachine/VendingMachinePurchaseSystem.cs): Engine v280 removed IMapManager; uses SharedMapSystem.
 - [`Content.Server/_NF/Cargo/Systems/CargoSystem.PirateBounty.cs`](../../_NF/Cargo/Systems/CargoSystem.PirateBounty.cs): Engine v289 removed [ValidatePrototypeId]; its constants became ProtoId fields.
 - [`Content.Server/_NF/Construction/Components/ComputerTabletopBoardComponent.cs`](../../_NF/Construction/Components/ComputerTabletopBoardComponent.cs): Engine v289 removed the PrototypeId serializers; uses the EngineCompat copies.

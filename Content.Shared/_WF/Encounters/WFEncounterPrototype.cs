@@ -226,6 +226,20 @@ public sealed partial class WFEncounterShip
     [DataField]
     public WFEncounterZoneTargets ZoneTargets = WFEncounterZoneTargets.Everyone;
 
+    /// <summary>
+    /// Takes on only known threats: a player ship running with its IFF hidden or unlabelled is not warned or fired on
+    /// as an unknown, only answered once it fires.
+    /// </summary>
+    [DataField]
+    public bool KnownThreatsOnly;
+
+    /// <summary>
+    /// Takes on only NPC ships: no player ship is warned or fired on by its zones, only answered once its fire runs
+    /// past the crew's stray allowance.
+    /// </summary>
+    [DataField]
+    public bool NpcTargetsOnly;
+
     /// <summary>Player ships of another company inside this range are told over the radio to turn away.</summary>
     [DataField]
     public float WarnRange;
@@ -473,7 +487,6 @@ public sealed partial class WFEncounterReward
 
     [DataField]
     public List<string> CreditCompanies = new();
-
     /// <summary>What the winning ship says on the common channel; takes $count, the number of helpers.</summary>
     [DataField]
     public LocId? Thanks;

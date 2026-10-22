@@ -10,6 +10,8 @@ using Content.Client.Lobby.UI;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.MenuBar.Widgets;
+using Content.Client._WF.EventStaff; // WOLFGATE(EventStaff)
+using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Input;
@@ -165,7 +167,7 @@ public sealed partial class AHelpUIController: UIController, IOnSystemChanged<Bw
 
     public void EnsureUIHelper()
     {
-        var isAdmin = _adminManager.HasFlag(AdminFlags.Adminhelp);
+        var isAdmin = _adminManager.HasFlag(AdminFlags.Adminhelp) || _adminManager.HasFlag(AdminFlags.Event); // WOLFGATE(EventStaff): event staff get the staff window
 
         if (UIHelper != null && UIHelper.IsAdmin == isAdmin)
             return;
@@ -175,7 +177,7 @@ public sealed partial class AHelpUIController: UIController, IOnSystemChanged<Bw
         UIHelper = isAdmin ? new AdminAHelpUIHandler(ownerUserId) : new UserAHelpUIHandler(ownerUserId);
         UIHelper.DiscordRelayChanged(_discordRelayActive);
 
-        UIHelper.SendMessageAction = (userId, textMessage, playSound, adminOnly) => _bwoinkSystem?.Send(userId, textMessage, playSound, adminOnly);
+        UIHelper.SendMessageAction = (userId, textMessage, playSound, adminOnly) => _bwoinkSystem?.Send(userId, textMessage, playSound, adminOnly, (UIHelper as UserAHelpUIHandler)?.Category ?? AHelpCategory.Player); // WOLFGATE(EventStaff): send the picked category
         UIHelper.InputTextChanged += (channel, text) => _bwoinkSystem?.SendInputTextUpdated(channel, text.Length > 0);
         UIHelper.OnClose += () => { SetAHelpPressed(false); };
         UIHelper.OnOpen +=  () => { SetAHelpPressed(true); };
@@ -499,6 +501,10 @@ public sealed class UserAHelpUIHandler : IAHelpUIHandler
     public bool IsOpen => _window is { Disposed: false, IsOpen: true };
     private DefaultWindow? _window;
     private BwoinkPanel? _chatPanel;
+    // WOLFGATE(EventStaff) START: ahelp category picker
+    private AHelpCategorySelector? _categorySelector;
+    public AHelpCategory Category => _categorySelector?.Category ?? AHelpCategory.Player;
+    // WOLFGATE END
     private bool _discordRelayActive;
 
     public void Receive(SharedBwoinkSystem.BwoinkTextMessage message)
@@ -573,7 +579,15 @@ public sealed class UserAHelpUIHandler : IAHelpUIHandler
         };
         _window.OnClose += () => { OnClose?.Invoke(); };
         _window.OnOpen += () => { OnOpen?.Invoke(); };
-        _window.Contents.AddChild(_chatPanel);
+        // WOLFGATE(EventStaff) START: ahelp category picker above the chat
+        _categorySelector = new AHelpCategorySelector();
+        _chatPanel.VerticalExpand = true;
+        var layout = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical };
+        layout.AddChild(_categorySelector);
+        layout.AddChild(_chatPanel);
+        _window.Contents.AddChild(layout);
+        // _window.Contents.AddChild(_chatPanel);
+        // WOLFGATE END
 
         var introText = Loc.GetString("bwoink-system-introductory-message");
         var introMessage = new SharedBwoinkSystem.BwoinkTextMessage( _ownerId, SharedBwoinkSystem.SystemUserId, introText);
@@ -585,5 +599,6 @@ public sealed class UserAHelpUIHandler : IAHelpUIHandler
         _window?.Dispose();
         _window = null;
         _chatPanel = null;
+        _categorySelector = null; // WOLFGATE(EventStaff)
     }
 }

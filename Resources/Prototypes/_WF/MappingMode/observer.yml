@@ -1,0 +1,28 @@
+# A mapper in a mapping-mode session: moves freely through walls, sees and is seen by the other members, and
+# can't interact with anything. Not an AdminObserver or MobObserverBase, which bring consoles, access, global radio
+# and unrestricted examine.
+- type: entity
+  parent: [ Incorporeal, BaseMob ]
+  id: WFMappingObserver
+  name: mapper
+  description: A mapper in a mapping session.
+  save: false
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Mobs/Ghosts/ghost_human.rsi
+    color: "#fff8"
+    layers:
+    - state: animated
+      shader: unshaded
+  - type: ContentEye
+    maxZoom: 8.916104, 8.916104
+  - type: Eye
+    drawFov: false
+  - type: Input
+    context: "aghost"
+  - type: Physics
+    ignorePaused: true
+    bodyType: Kinematic
+  - type: Examiner
+  - type: WFMappingObserver

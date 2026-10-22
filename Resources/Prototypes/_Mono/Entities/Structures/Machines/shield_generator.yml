@@ -262,6 +262,9 @@
     whitelist:
       tags:
         - Chimera
+      # WOLFGATE(Xenonids): the biodome excites xenonid DNA too
+      components:
+        - Xeno
 
 - type: entity
   id: ShieldGeneratorPOIBioTsf

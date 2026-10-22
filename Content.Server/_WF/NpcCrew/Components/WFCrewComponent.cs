@@ -33,6 +33,10 @@ public sealed partial class WFCrewComponent : Component
     [DataField]
     public ProtoId<WFCrewRolePrototype>? Role;
 
+    /// <summary>The crew profile the crewman was spawned with, for the titles it gives its roles.</summary>
+    [DataField]
+    public ProtoId<WFCrewProfilePrototype>? Profile;
+
     /// <summary>Duty branch of the crew HTN root worked when not fighting.</summary>
     [DataField]
     public string Duty = WFCrewDuties.Guard;

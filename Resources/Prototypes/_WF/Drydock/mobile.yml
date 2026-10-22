@@ -73,6 +73,8 @@
     - Unanchorable
   - type: Rotatable
     rotateWhileAnchored: false
+  # Dragged into place while unbolted, like a 2x2 frame.
+  - type: Pullable
   # 26 tiles of berth after a 3-tile gap; 4 sections of 4 reach 13 tiles across.
   - type: WFDrydockCrane
     maxArm: 29
@@ -130,11 +132,13 @@
       - Ingot
   - type: OreSiloClient
   # Links a parts silo, whose machine parts stand in for refit materials, and a chemical silo the console lists. Parts
-  # silos then accept every machine part and salvaged hardware flatpack.
+  # silos then accept every machine part, board and salvaged hardware flatpack, so a break stores what it strips.
   - type: FabricationSiloClient
     parts:
       components:
       - MachinePart
+      - MachineBoard
+      - ComputerBoard
       tags:
       - WFSalvagedHardware
   # Medium-voltage draw, for a ship's MV network.
@@ -179,10 +183,20 @@
   components:
   - type: MachineBoard
     prototype: WFMobileDrydockCrane
+    frameSize: 2x2
     requirements:
       Manipulator: 2
       MatterBin: 2
       Capacitor: 1
     stackRequirements:
-      Steel: 10
-      Cable: 5
+      Steel: 20
+      Plasteel: 10
+      CableMV: 10
+    # Heavy industrial machine: motors for the arm and boom, plating for the frame.
+    tagRequirements:
+      MotorEconomy1:
+        amount: 4
+        defaultPrototype: MotorEconomy1
+      ArmorPlateEconomy1:
+        amount: 4
+        defaultPrototype: ArmorPlateEconomy1

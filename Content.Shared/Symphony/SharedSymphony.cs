@@ -2,8 +2,8 @@
 
 /// <summary>
 /// The contract between this build and the SSymphony panel. Bump <see cref="ModuleVersion"/> whenever the status
-/// field, the refusal keys, the use of the link ticket table or the /symphony/roles endpoints change; the panel then
-/// says which half is behind.
+/// field, the refusal keys, the use of the link ticket table, the feedback table or the /symphony endpoints change;
+/// the panel then says which half is behind.
 /// </summary>
 public static class SharedSymphony
 {
@@ -16,9 +16,11 @@ public static class SharedSymphony
     /// /symphony/players: who is connected, with character, job, state and ping, which /admin/info does not carry. Version 6 added
     /// symphony_round_duration and symphony_paused in /status: the round clock as the game keeps it, which stops while paused.
     /// Version 7 added /symphony/cvars: every registered CVar with its value, default and flags, and setting one while the
-    /// server runs.
+    /// server runs. Version 8 added player feedback: bug reports and suggestions in wolfgate_feedback_report, a table
+    /// the panel reads, /symphony/feedback/status, which sets a report's status and tells its player in game, and
+    /// /symphony/feedback/refresh, for after the panel has written a status itself.
     /// </summary>
-    public const int ModuleVersion = 7;
+    public const int ModuleVersion = 8;
 
     /// <summary>
     /// Key of the one-time Discord link URL in a whitelist refusal's structured properties.

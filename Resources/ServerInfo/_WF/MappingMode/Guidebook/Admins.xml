@@ -1,0 +1,30 @@
+<Document>
+  # For admins
+
+  The mode is the cvar wf.mapping_mode.enabled. Turning it off autosaves and closes every session and sends everyone to the lobby. The limits are cvars under wf.mapping_mode.
+
+  ## Watching sessions
+
+  Admins see [bold]Observe[/bold] in the lobby. It puts you on a private admin map. From there tpto with a player's name reaches any mapper, or use wf_mappingmode_tp. [bold]Return to lobby[/bold] in the Mapping window brings you back.
+
+  An admin with the Mapping flag can edit any session's map and isn't held to the limits. The mapping command and the Tools tab's [bold]Save / load maps...[/bold] stay admin only.
+
+  ## Commands
+
+  All need the Mapping flag and are admin logged.
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]wf_mappingmode_list[/bold]</Box>
+    <Box HorizontalAlignment="Left">Every session with its code, owner, members, maps, unsaved changes and last save.</Box>
+    <Box HorizontalAlignment="Left">[bold]wf_mappingmode_tp[/bold] code</Box>
+    <Box HorizontalAlignment="Left">Go to a session's ground level.</Box>
+    <Box HorizontalAlignment="Left">[bold]wf_mappingmode_close[/bold] code</Box>
+    <Box HorizontalAlignment="Left">Autosave a session to its owner's library and close it.</Box>
+    <Box HorizontalAlignment="Left">[bold]wf_mappingmode_kick[/bold] player</Box>
+    <Box HorizontalAlignment="Left">Remove a player from their session.</Box>
+    <Box HorizontalAlignment="Left">[bold]wf_mappingmode_save[/bold] code</Box>
+    <Box HorizontalAlignment="Left">Save a session to its owner's library.</Box>
+    <Box HorizontalAlignment="Left">[bold]wf_mappingmode_purge[/bold] code prototype</Box>
+    <Box HorizontalAlignment="Left">Delete every entity of one prototype on a session's maps. For things that slipped past the limits. Players and observers stay.</Box>
+  </Table>
+</Document>

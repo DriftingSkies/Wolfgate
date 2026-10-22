@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using Content.Server.Decals;
 using Content.Shared.Administration;
@@ -19,9 +20,9 @@ public sealed partial class MappingToolsSystem
     [Dependency] private ISharedPlayerManager _players = default!;
 
     /// <summary>
-    /// Edits kept per mapper; the oldest are dropped past this.
+    /// Edits kept per mapper when nothing sets a lower limit; the oldest are dropped past this.
     /// </summary>
-    private const int MaxHistory = 100;
+    private const int DefaultMaxHistory = 100;
 
     private sealed class History
     {
@@ -95,6 +96,87 @@ public sealed partial class MappingToolsSystem
 
         Apply(edit, forward: true);
         Push(session, edit);
+        RaiseEdited(edit);
+        SendLinkSnapshots(session, edit);
+    }
+
+    /// <summary>
+    /// The maps an edit touches.
+    /// </summary>
+    private HashSet<EntityUid> MapsOf(MappingEdit edit)
+    {
+        var maps = new HashSet<EntityUid>();
+
+        void Add(EntityUid uid)
+        {
+            if (Exists(uid) && Transform(uid).MapUid is { } map)
+                maps.Add(map);
+        }
+
+        foreach (var tile in edit.Tiles)
+        {
+            Add(tile.Grid);
+        }
+
+        foreach (var move in edit.Moves)
+        {
+            Add(move.Entity.Uid);
+            Add(move.Old.Parent);
+            Add(move.New.Parent);
+        }
+
+        foreach (var group in edit.Created.Concat(edit.Deleted))
+        {
+            foreach (var root in group.Roots)
+            {
+                Add(root.Entity.Uid);
+                Add(root.Pose.Parent);
+            }
+        }
+
+        foreach (var decal in edit.DecalsRemoved.Concat(edit.DecalsAdded))
+        {
+            Add(decal.Grid);
+        }
+
+        foreach (var change in edit.PipeColors)
+        {
+            Add(change.Entity.Uid);
+        }
+
+        foreach (var change in edit.Links)
+        {
+            Add(change.Source.Uid);
+            Add(change.Sink.Uid);
+        }
+
+        foreach (var change in edit.DeviceLists)
+        {
+            Add(change.Holder.Uid);
+        }
+
+        foreach (var change in edit.Access)
+        {
+            Add(change.Reader.Uid);
+        }
+
+        return maps;
+    }
+
+    private void RaiseEdited(MappingEdit edit)
+    {
+        foreach (var map in MapsOf(edit))
+        {
+            RaiseLocalEvent(new WFMappingEditedEvent(map));
+        }
+    }
+
+    /// <summary>
+    /// Drops a mapper's undo history, so it can't reach maps they no longer work on. The clipboard stays.
+    /// </summary>
+    public void ForgetHistory(ICommonSession session)
+    {
+        _histories.Remove(session);
     }
 
     private void Push(ICommonSession session, MappingEdit edit)
@@ -102,9 +184,44 @@ public sealed partial class MappingToolsSystem
         var history = _histories.GetOrNew(session);
         history.Redo.Clear();
         history.Undo.Add(edit);
+        TrimHistory(session, history);
+    }
 
-        if (history.Undo.Count > MaxHistory)
+    /// <summary>
+    /// Drops a mapper's oldest edits past their step and byte limits, always keeping the newest.
+    /// </summary>
+    private void TrimHistory(ICommonSession session, History history)
+    {
+        var limits = HistoryLimits(session);
+        while (history.Undo.Count > Math.Max(1, limits.MaxSteps))
+        {
             history.Undo.RemoveAt(0);
+        }
+
+        if (limits.MaxBytes == long.MaxValue)
+            return;
+
+        var bytes = history.Undo.Sum(e => e.Bytes()) + history.Redo.Sum(e => e.Bytes());
+        while (bytes > limits.MaxBytes && history.Undo.Count > 1)
+        {
+            bytes -= history.Undo[0].Bytes();
+            history.Undo.RemoveAt(0);
+        }
+    }
+
+    /// <summary>
+    /// A mapper's history limits: what a <see cref="WFMappingCanEditEvent"/> handler sets, or the default for Mapping
+    /// admins and when nothing does.
+    /// </summary>
+    private WFMappingHistoryLimits HistoryLimits(ICommonSession session)
+    {
+        var unlimited = new WFMappingHistoryLimits(DefaultMaxHistory, long.MaxValue);
+        if (_admin.HasAdminFlag(session, AdminFlags.Mapping))
+            return unlimited;
+
+        var ev = new WFMappingCanEditEvent(session, EntityUid.Invalid, WFMappingEditKind.Limits) { Quiet = true };
+        RaiseLocalEvent(ev);
+        return ev.HistoryLimits ?? unlimited;
     }
 
     /// <summary>
@@ -123,6 +240,7 @@ public sealed partial class MappingToolsSystem
             last == tick)
         {
             previous.Merge(edit);
+            TrimHistory(session, history);
             return;
         }
 
@@ -143,12 +261,60 @@ public sealed partial class MappingToolsSystem
 
         var (from, to) = redo ? (history.Redo, history.Undo) : (history.Undo, history.Redo);
         var edit = from[^1];
+        var (added, removed, newGrid) = StepCounts(edit, redo);
+        foreach (var map in MapsOf(edit))
+        {
+            var check = new WFMappingCanEditEvent(session, map, WFMappingEditKind.Edit)
+            {
+                Entities = Math.Max(0, added - removed),
+                TouchedEntities = added + removed + edit.Moves.Count + edit.SettingChanges,
+                NewGrid = newGrid,
+            };
+
+            if (!CanEdit(check))
+                return;
+        }
+
         from.RemoveAt(from.Count - 1);
         Apply(edit, forward: redo);
         to.Add(edit);
+        RaiseEdited(edit);
+        SendLinkSnapshots(session, edit);
 
         _popup.PopupCursor(Loc.GetString(redo ? "wf-mapping-tools-redid" : "wf-mapping-tools-undid",
             ("edit", Loc.GetString(edit.Name))), session);
+    }
+
+    /// <summary>
+    /// What a history step would do: entities it recreates and deletes, contents included, and whether it brings a
+    /// grid back.
+    /// </summary>
+    private (int Added, int Removed, bool NewGrid) StepCounts(MappingEdit edit, bool redo)
+    {
+        var (restoring, removing) = redo ? (edit.Created, edit.Deleted) : (edit.Deleted, edit.Created);
+        var added = 0;
+        var removed = 0;
+        var newGrid = false;
+
+        foreach (var group in restoring)
+        {
+            if (group.Data == null || group.Roots.All(r => !TerminatingOrDeleted(r.Entity.Uid)))
+                continue;
+
+            added += group.EntityCount;
+            newGrid |= group.Roots.Any(r => r.IsGrid && TerminatingOrDeleted(r.Entity.Uid));
+        }
+
+        foreach (var group in removing)
+        {
+            foreach (var root in group.Roots)
+            {
+                if (!TerminatingOrDeleted(root.Entity.Uid))
+                    removed += Tree(root.Entity.Uid).Count;
+            }
+        }
+
+        return (added, removed, newGrid);
     }
 
     private void OnTileChanged(ref TileChangedEvent ev)
@@ -166,6 +332,18 @@ public sealed partial class MappingToolsSystem
             return;
 
         _lastTileChange = null;
+
+        // The engine raises the event for a tile that didn't change too, so the last change may be someone else's.
+        var coords = ev.Coordinates;
+        if (!coords.IsValid(EntityManager) || !TryComp(change.Grid, out MapGridComponent? changed))
+            return;
+
+        var placedOn = HasComp<MapGridComponent>(coords.EntityId)
+            ? coords.EntityId
+            : _map.TryFindGridAt(_transform.ToMapCoordinates(coords), out var found, out _) ? found : EntityUid.Invalid;
+        if (placedOn != change.Grid || _map.TileIndicesFor(change.Grid, changed, coords) != change.Indices)
+            return;
+
         if (!_players.TryGetSessionById(ev.PlacerNetUserId, out var session))
             return;
 
@@ -225,13 +403,20 @@ public sealed partial class MappingToolsSystem
 
     private void OnDecalRemoval(RequestDecalRemovalEvent ev, EntitySessionEventArgs args)
     {
-        // The decal system only removes for Spawn admins.
-        if (!CanUse(args.SenderSession) || !_admin.HasAdminFlag(args.SenderSession, AdminFlags.Spawn))
+        if (!CanUse(args.SenderSession))
             return;
 
         var coords = GetCoordinates(ev.Coordinates);
         if (!coords.IsValid(EntityManager) || _transform.GetGrid(coords) is not { } grid)
             return;
+
+        // The decal system only removes for Spawn admins, and mapping mode for mappers on their own maps.
+        if (!_admin.HasAdminFlag(args.SenderSession, AdminFlags.Spawn) &&
+            (_transform.GetMap(coords) is not { } map ||
+             !CanEdit(new WFMappingCanEditEvent(args.SenderSession, map, WFMappingEditKind.Edit) { Quiet = true })))
+        {
+            return;
+        }
 
         // Mirrors the decal system, which removes every decal in range of the raw position.
         var edit = new MappingEdit("wf-mapping-tools-edit-decal");

@@ -1,0 +1,75 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTAlwaysPoweredShuttleLight
+  suffix: "Always powered"
+  components:
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        collection: GlassSmash
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Construction
+    graph: DecorBuildADTAlwaysPoweredShuttleLight
+    node: built
+  - type: Sprite
+    sprite: ADT/Structures/Wallmounts/Lighting/shuttle_light.rsi
+    drawdepth: WallMountedItems
+    layers:
+    - map: ["enum.PoweredLightLayers.Base"]
+      state: base
+    - map: ["enum.PoweredLightLayers.Glow"]
+      state: glow
+      shader: unshaded
+    state: base
+  - type: PointLight
+    color: "#FAFFFF" # 5000K color temp
+    # rotation: 45
+    autoRot: true
+    energy: 4
+    radius: 9
+    softness: 2.1
+    offset: "0, -0.9"
+  - type: Appearance
+  - type: Damageable
+    damageModifierSet: Metallic
+  - type: RCDDeconstructable
+    cost: 4
+    delay: 2
+    fx: EffectRCDDeconstruct2
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors: #excess damage, don't spawn entities.
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 2
+            max: 2
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+  - type: Icon
+    sprite: ADT/Structures/Wallmounts/Lighting/shuttle_light.rsi
+    state: base
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wallmount
+# WOLFGATE END

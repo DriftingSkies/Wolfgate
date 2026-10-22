@@ -17,6 +17,12 @@
   - WFMobCrewBodyArachnid
   - WFMobCrewBodyMoth
   skills: [ Green, Regular ]
+  # Outlaws fly plastitanium as the Reavers do (WFCrewProfilePirate).
+  hullSwaps:
+    WFWallAdamantite: WallPlastitanium
+    WFWallAdamantiteDiagonal: WallPlastitaniumDiagonal
+    WFWallAdamantiteCapital: WallPlastitanium
+    WFWallAdamantiteDiagonalCapital: WallPlastitaniumDiagonal
   engagement:
     WFCrewDeckhand: WhenAttacked
     WFCrewMarine: WhenAttacked
@@ -40,6 +46,11 @@
   - WFMobCrewBodyVulpkanin
   - WFMobCrewBodyTajaran
   skills: [ Veteran, Elite ]
+  hullSwaps:
+    WFWallAdamantite: WallPlastitanium
+    WFWallAdamantiteDiagonal: WallPlastitaniumDiagonal
+    WFWallAdamantiteCapital: WallPlastitanium
+    WFWallAdamantiteDiagonalCapital: WallPlastitaniumDiagonal
   engagement:
     WFCrewDeckhand: WhenAttacked
     WFCrewMarine: WhenAttacked

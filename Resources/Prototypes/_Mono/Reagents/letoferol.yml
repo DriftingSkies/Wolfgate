@@ -35,6 +35,8 @@
       - !type:Polymorph
         prototype: LetoferolMutation
         conditions:
+        # WOLFGATE(Chimera): a body that just fell out of a dead fleshbeast can't be turned straight back
+        - !type:ChimeraTurnReady
         - !type:ReagentThreshold
           min: 10
         - !type:HasTag
@@ -113,6 +115,8 @@
       - !type:Polymorph
         prototype: LetoferolMutationNatural
         conditions:
+        # WOLFGATE(Chimera): a body that just fell out of a dead fleshbeast can't be turned straight back
+        - !type:ChimeraTurnReady
         - !type:ReagentThreshold
           min: 15
         - !type:HasTag

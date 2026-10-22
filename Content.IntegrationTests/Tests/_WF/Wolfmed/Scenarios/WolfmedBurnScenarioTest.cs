@@ -306,6 +306,14 @@ public sealed class WolfmedBurnScenarioTest : WolfmedGameTest
                     if (MathF.Abs(now - 60f) < 0.1f)
                     {
                         SEntMan.System<FlammableSystem>().Extinguish(b);
+                        // Where the fire's hits pile up on one part, its organs take the overflow; a chest's leaves the lungs
+                        // short of air at random. The treatment checked here is for the burns, so the organs start it whole.
+                        foreach (var (organ, _) in SEntMan.System<SharedBodySystem>().GetBodyOrgans(b))
+                        {
+                            if (SEntMan.TryGetComponent<WolfmedOrganComponent>(organ, out var health))
+                                SEntMan.System<Content.Shared._Onyx.Body.Systems.OrganHealthSystem>().SetHealth((organ, health), health.MaxHealth);
+                        }
+
                         Fluid.Tick(0f);
                         rateBeforeDressing = Fluid.GetRate(b);
                         foreach (var part in Parts(b))
@@ -366,7 +374,8 @@ public sealed class WolfmedBurnScenarioTest : WolfmedGameTest
                 var mob = SEntMan.System<MobStateSystem>();
                 Assert.That(mob.IsDead(b), Is.False, "the treated patient died.");
                 Assert.That(s.Life.InArrest(b), Is.False);
-                Assert.That(s.State(b), Is.AnyOf(WolfmedConsciousness.Up, WolfmedConsciousness.Downed));
+                Assert.That(s.State(b), Is.AnyOf(WolfmedConsciousness.Up, WolfmedConsciousness.Downed),
+                    $"the treated patient is {s.State(b)} from {s.Vitals(b).Cause} ({s.Vitals(b).HypoxiaSource}): oxygenation {s.Life.GetOxygenation(b):0.00}, lungs {s.Life.LungDamageLevel(b):0.00}, blood {s.Blood(b):P0}.");
                 Assert.That(s.Blood(b), Is.GreaterThanOrEqualTo(bloodB540 - 0.005f), "the treated patient's blood is still falling.");
             });
 

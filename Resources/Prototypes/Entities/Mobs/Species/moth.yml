@@ -34,6 +34,7 @@
     accent: zombieMoth
   - type: Speech
     speechVerb: Moth
+    speechSounds: WFMoth # WOLFGATE(EmoteVoices): HardLight's moth chatter as the species' message sound
     allowedEmotes: ['Chitter', 'Squeak']
   - type: LanguageKnowledge # Einstein Engines - Languages
     speaks:

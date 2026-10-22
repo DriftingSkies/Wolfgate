@@ -42,6 +42,7 @@
   id: ClothingOuterHardsuitBaseNoPlateholder
   name: base hardsuit no plateholder
   components:
+  - type: WFSuitTankStorage # WOLFGATE(SuitTank): tanks in its existing 2x2 storage feed internals
   - type: PressureProtection
     highPressureMultiplier: 0.3
     lowPressureMultiplier: 1000

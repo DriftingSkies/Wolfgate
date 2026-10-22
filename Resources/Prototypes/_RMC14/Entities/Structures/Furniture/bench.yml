@@ -1,0 +1,42 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: SeatBase
+  id: RMCBenchLeft
+  suffix: Left
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Strap
+    enabled: false
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bench.rsi
+    state: bench_left
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bench.rsi
+    state: bench_left
+
+- type: entity
+  parent: RMCBenchLeft
+  id: RMCBenchRight
+  suffix: Right
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/bench.rsi
+    state: bench_right
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/bench.rsi
+    state: bench_right
+# WOLFGATE END

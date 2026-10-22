@@ -1,0 +1,36 @@
+# WOLFGATE(DecorImport) START: ported from Backmen
+- type: entity
+  parent: BaseStructure
+  id: StatueSnowmanDecoration
+  components:
+  - type: Sprite
+    state: snowman
+    noRot: true
+    sprite: Backmen/Structures/Decoration/statue.rsi
+    drawdepth: Mobs
+    snapCardinals: false
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: InteractionOutline
+  - type: Damageable
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: StaticPrice
+    price: 200
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: Backmen/Structures/Decoration/statue.rsi
+    state: snowman
+# WOLFGATE END

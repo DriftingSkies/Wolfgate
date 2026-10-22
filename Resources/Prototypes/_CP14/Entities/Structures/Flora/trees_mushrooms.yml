@@ -1,0 +1,130 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  parent: PottedPlantBase
+  id: CP14MushroomTree1
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Flora/tree_mushroom.rsi
+    offset: "0,0.9"
+    layers:
+    - state: "1_log"
+    - state: "1_hat"
+      map: [ random ]
+    noRot: true
+    drawdepth: Mobs
+  - type: RandomSprite
+    available: []
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Transform
+    anchored: true
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Material
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_mushroom.rsi
+    state: "1_log"
+
+- type: entity
+  parent: CP14MushroomTree1
+  id: CP14MushroomTree2
+  components:
+  - type: Sprite
+    layers:
+    - state: 2_log
+    - state: 2_hat
+      map: ["random"]
+  - type: RandomSprite
+    available: []
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_mushroom.rsi
+    state: "2_log"
+
+- type: entity
+  parent: CP14MushroomTree1
+  id: CP14MushroomTree3
+  components:
+  - type: Sprite
+    layers:
+    - state: 3_log
+    - state: 3_hat
+      map: ["random"]
+  - type: RandomSprite
+    available: []
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_mushroom.rsi
+    state: "3_log"
+
+- type: entity
+  parent: CP14MushroomTree1
+  id: CP14MushroomTree4
+  components:
+  - type: Sprite
+    layers:
+    - state: 4_log
+    - state: 4_hat
+      map: ["random"]
+  - type: RandomSprite
+    available: []
+  - type: Icon
+    sprite: _CP14/Structures/Flora/tree_mushroom.rsi
+    state: "4_log"
+# WOLFGATE END

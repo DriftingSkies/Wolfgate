@@ -11,7 +11,7 @@
   id: ThavenEars1
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: true
   followSkinColor: true
   sprites:
@@ -22,7 +22,7 @@
   id: ThavenEars2
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: true
   followSkinColor: true
   sprites:
@@ -33,7 +33,7 @@
   id: ThavenEars3
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: true
   followSkinColor: true
   sprites:
@@ -44,7 +44,7 @@
   id: ThavenEars4
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: true
   followSkinColor: true
   sprites:
@@ -55,7 +55,7 @@
   id: ThavenPiercings
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: false
   coloring:
@@ -71,7 +71,7 @@
   id: ThavenPiercings2
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: false
   coloring:
@@ -87,7 +87,7 @@
   id: ThavenChestTattoo1
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   coloring:
     default:
       type:
@@ -101,7 +101,7 @@
   id: ThavenLArmTattoo1
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   coloring:
     default:
       type:
@@ -115,7 +115,7 @@
   id: ThavenRArmTattoo1
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   coloring:
     default:
       type:
@@ -129,7 +129,7 @@
   id: ThavenREyeGlow
   bodyPart: Eyes
   markingCategory: Eyes # WOLFGATE(Species): eye markings get their own points (was Head)
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   coloring:
     default:
       type:
@@ -144,7 +144,7 @@
   id: ThavenLEyeGlow
   bodyPart: Eyes
   markingCategory: Eyes # WOLFGATE(Species): eye markings get their own points (was Head)
-  speciesRestriction: [Thaven, ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   coloring:
     default:
       type:
@@ -159,7 +159,7 @@
   id: ThavenTailEel
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
@@ -182,7 +182,7 @@
   id: ThavenTailEelOverlay
   bodyPart: Tail
   markingCategory: Overlay
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   coloring:
     default:
       type:
@@ -203,7 +203,7 @@
   id: ThavenTailNurse
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
@@ -226,7 +226,7 @@
   id: ThavenTailStub
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -241,7 +241,7 @@
   id: ThavenArmFinsSmallRight
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -252,7 +252,7 @@
   id: ThavenArmFinsSmallLeft
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -263,7 +263,7 @@
   id: ThavenArmFinsBigRight
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -274,7 +274,7 @@
   id: ThavenArmFinsBigLeft
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -285,7 +285,7 @@
   id: ThavenLegFinsSmallRight
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -296,7 +296,7 @@
   id: ThavenLegFinsSmallLeft
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -307,7 +307,7 @@
   id: ThavenBackFin
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -318,7 +318,7 @@
   id: ThavenTailCarpish
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
@@ -335,7 +335,7 @@
   id: ThavenTailDraconicLong
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
@@ -352,7 +352,7 @@
   id: ThavenTailFish
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
@@ -369,7 +369,7 @@
   id: ThavenHeadFinsFairy
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -380,7 +380,7 @@
   id: ThavenHeadAnglerStem
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:
@@ -391,7 +391,7 @@
   id: ThavenHeadAnglerBulb
   bodyPart: HeadTop
   markingCategory: Overlay
-  speciesRestriction: [ Thaven, ProtoThaven ]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): Wolfgate species in the list
   forcedColoring: false
   followSkinColor: true
   sprites:

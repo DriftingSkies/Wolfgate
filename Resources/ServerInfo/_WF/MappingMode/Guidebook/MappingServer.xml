@@ -1,0 +1,25 @@
+<Document>
+  # Mapping server
+
+  This server is a mapping workshop. Rounds never start. You build maps and ships on your own map with the mapping tools, save them to your library on the server and download them to your computer.
+
+  Others can join your map with its join code and build with you.
+
+  ## Read in this order
+
+  - [bold]Getting started[/bold]: the lobby, what you are and the screen.
+  - [bold]Build modes[/bold]: the nine modes and their clicks.
+  - [bold]Placing things[/bold]: palette, decals, quick-select bar, mobs.
+  - [bold]Selecting and editing[/bold]: move, rotate, mirror, copy, undo.
+  - [bold]Shapes, fill and erase[/bold]: drawing and clearing areas.
+  - [bold]Atmos and pipes[/bold]: Pipe mode and atmos devices.
+  - [bold]Wiring[/bold]: signal links, air alarms and door access.
+  - [bold]Z-levels[/bold]: maps with floors above and below.
+  - [bold]Templates and references[/bold]: tracing a PNG, copying from game ships.
+  - [bold]Saving, library and downloads[/bold]: getting your map out.
+  - [bold]Playing together[/bold]: join codes and members.
+  - [bold]Limits and rules[/bold]: what the server stops you doing.
+  - [bold]For admins[/bold]: observing and the console commands.
+
+  The [bold]Guide[/bold] button in the lobby panel and the Keys tab, and the [bold]?[/bold] on the Mapping window, open this guide.
+</Document>

@@ -1,0 +1,28 @@
+# Wolfgate's own xeno actions.
+- type: entity
+  parent: ActionXenoBase
+  id: WFActionXenoMassScanner
+  name: Mass Scanner
+  description: Sense the ships and masses around you.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/Xenonids/Structures/Xenos/hive_structures.rsi
+      state: recovery
+    useDelay: 1
+    event: !type:XenoMassScannerActionEvent
+
+- type: entity
+  parent: ActionXenoBase
+  id: WFActionXenoNickname
+  name: Name Yourself
+  description: Choose the short tag in your name. Up to four letters or digits, and only once.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/Xenonids/Actions/xeno_actions.rsi
+      state: queen_eye
+    useDelay: 2
+    event: !type:XenoNicknameActionEvent

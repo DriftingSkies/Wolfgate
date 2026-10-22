@@ -339,6 +339,7 @@ public sealed partial class WFCrewObjectiveSystem : EntitySystem
             {
                 navigation = oldDuty.Navigation;
                 duty.ReactToAttacks = oldDuty.ReactToAttacks;
+                duty.FleeAttackers = oldDuty.FleeAttackers;
                 duty.FaceThreats = oldDuty.FaceThreats;
                 duty.AbsentCrewWait = oldDuty.AbsentCrewWait;
                 duty.DockMaxAttempts = oldDuty.DockMaxAttempts;

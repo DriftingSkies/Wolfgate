@@ -15,10 +15,13 @@ public sealed class WolfgateSpawnTile : ContainerButton
 {
     private const string FavouriteGlyph = "★";
 
+    private static readonly Color NoteColor = Color.FromHex("#e0a030");
+
     private readonly PanelContainer _stripe;
     private readonly TextureRect _icon;
     private readonly Label _name;
     private readonly Label _suffix;
+    private readonly Label _note;
     private readonly Button _favourite;
 
     private WolfgateSkin _skin;
@@ -77,6 +80,15 @@ public sealed class WolfgateSpawnTile : ContainerButton
         };
         text.AddChild(_suffix);
 
+        _note = new Label
+        {
+            Text = Loc.GetString("wf-mapping-screen-unsaved-mark"),
+            Visible = false,
+            VerticalAlignment = VAlignment.Center,
+            FontColorOverride = NoteColor,
+        };
+        row.AddChild(_note);
+
         _favourite = new Button
         {
             Text = FavouriteGlyph,
@@ -92,8 +104,12 @@ public sealed class WolfgateSpawnTile : ContainerButton
         row.AddChild(_favourite);
     }
 
-    /// <summary>Points the tile at a different entry, or blanks it when the grid has fewer entries than tiles.</summary>
-    public void SetEntry(WolfgateSpawnEntry? entry, Texture? icon, Color accent, bool favourite, bool selected)
+    /// <summary>
+    /// Points the tile at a different entry, or blanks it when the grid has fewer entries than tiles. A
+    /// <paramref name="note"/> marks the tile with a warning and is added to its tooltip.
+    /// </summary>
+    public void SetEntry(WolfgateSpawnEntry? entry, Texture? icon, Color accent, bool favourite, bool selected,
+        string? note = null)
     {
         Entry = entry;
         Visible = entry != null;
@@ -119,6 +135,10 @@ public sealed class WolfgateSpawnTile : ContainerButton
             ? Loc.GetString("wf-spawn-no-description")
             : entry.Prototype.Description;
         ToolTip = $"{entry.Name}\n{entry.Id}\n{description}";
+
+        _note.Visible = note != null;
+        if (note != null)
+            ToolTip += $"\n\n{note}";
 
         Pressed = selected;
     }

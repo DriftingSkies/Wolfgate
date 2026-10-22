@@ -24,15 +24,15 @@
 # Medium yields
 - type: ore
   id: NFOreGold
-  oreEntity: GoldOre1 # WOLFGATE(Mining): gold drops single ores, GoldOre5 1-3 -> GoldOre1 2-4
-  minOreYield: 2 # WOLFGATE(Mining)
-  maxOreYield: 4 # WOLFGATE(Mining)
+  oreEntity: GoldOre1 # WOLFGATE(Mining): gold drops single ores at two thirds of upstream, GoldOre5 1-3 -> GoldOre1 5-8
+  minOreYield: 5 # WOLFGATE(Mining)
+  maxOreYield: 8 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreSilver
-  oreEntity: SilverOre1 # WOLFGATE(Mining): silver drops single ores, SilverOre5 1-3 -> SilverOre1 2-5
-  minOreYield: 2 # WOLFGATE(Mining)
-  maxOreYield: 5 # WOLFGATE(Mining)
+  oreEntity: SilverOre1 # WOLFGATE(Mining): silver drops single ores at two thirds of upstream, SilverOre5 1-3 -> SilverOre1 5-8
+  minOreYield: 5 # WOLFGATE(Mining)
+  maxOreYield: 8 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreSalt
@@ -43,15 +43,15 @@
 # Low yields
 - type: ore
   id: NFOrePlasma
-  oreEntity: PlasmaOre1 # WOLFGATE(Mining): plasma drops single ores, PlasmaOre5 1-2 -> PlasmaOre1 2-4
-  minOreYield: 2 # WOLFGATE(Mining)
-  maxOreYield: 4 # WOLFGATE(Mining)
+  oreEntity: PlasmaOre1 # WOLFGATE(Mining): plasma drops single ores at two thirds of upstream, PlasmaOre5 1-2 -> PlasmaOre1 4-6
+  minOreYield: 4 # WOLFGATE(Mining)
+  maxOreYield: 6 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreUranium
-  oreEntity: UraniumOre1 # WOLFGATE(Mining): uranium drops single ores, UraniumOre5 1-2 -> UraniumOre1 2-4
-  minOreYield: 2 # WOLFGATE(Mining)
-  maxOreYield: 4 # WOLFGATE(Mining)
+  oreEntity: UraniumOre1 # WOLFGATE(Mining): uranium drops single ores at two thirds of upstream, UraniumOre5 1-2 -> UraniumOre1 4-6
+  minOreYield: 4 # WOLFGATE(Mining)
+  maxOreYield: 6 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreBananium
@@ -89,15 +89,15 @@
 # Medium yields
 - type: ore
   id: NFOreGoldDense
-  oreEntity: GoldOre1 # WOLFGATE(Mining): gold drops single ores, GoldOre5 3-5 -> GoldOre1 6-10
-  minOreYield: 6 # WOLFGATE(Mining)
-  maxOreYield: 10 # WOLFGATE(Mining)
+  oreEntity: GoldOre1 # WOLFGATE(Mining): gold drops single ores at two thirds of upstream, GoldOre5 3-5 -> GoldOre1 11-16
+  minOreYield: 11 # WOLFGATE(Mining)
+  maxOreYield: 16 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreSilverDense
-  oreEntity: SilverOre1 # WOLFGATE(Mining): silver drops single ores, SilverOre5 3-5 -> SilverOre1 6-10
-  minOreYield: 6 # WOLFGATE(Mining)
-  maxOreYield: 10 # WOLFGATE(Mining)
+  oreEntity: SilverOre1 # WOLFGATE(Mining): silver drops single ores at two thirds of upstream, SilverOre5 3-5 -> SilverOre1 11-16
+  minOreYield: 11 # WOLFGATE(Mining)
+  maxOreYield: 16 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreSaltDense
@@ -108,15 +108,15 @@
 # Low yields
 - type: ore
   id: NFOrePlasmaDense
-  oreEntity: PlasmaOre1 # WOLFGATE(Mining): plasma drops single ores, PlasmaOre5 2-4 -> PlasmaOre1 4-8
-  minOreYield: 4 # WOLFGATE(Mining)
-  maxOreYield: 8 # WOLFGATE(Mining)
+  oreEntity: PlasmaOre1 # WOLFGATE(Mining): plasma drops single ores at two thirds of upstream, PlasmaOre5 2-4 -> PlasmaOre1 8-12
+  minOreYield: 8 # WOLFGATE(Mining)
+  maxOreYield: 12 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreUraniumDense
-  oreEntity: UraniumOre1 # WOLFGATE(Mining): uranium drops single ores, UraniumOre5 2-4 -> UraniumOre1 4-8
-  minOreYield: 4 # WOLFGATE(Mining)
-  maxOreYield: 8 # WOLFGATE(Mining)
+  oreEntity: UraniumOre1 # WOLFGATE(Mining): uranium drops single ores at two thirds of upstream, UraniumOre5 2-4 -> UraniumOre1 8-12
+  minOreYield: 8 # WOLFGATE(Mining)
+  maxOreYield: 12 # WOLFGATE(Mining)
 
 - type: ore
   id: NFOreBananiumDense

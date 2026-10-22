@@ -18,7 +18,8 @@
   atWar: [ RedSailCorsairs ]
   declaredWar: [ PDV, PDVCivilian, PDVHighComm ]
 
-# The encounter pirates: at war with both navies and their civilians.
+# The encounter pirates: at war with both navies and their civilians. They fire through whatever is in the way.
 - type: wfStanding
   id: WFAshfallReavers
   atWar: [ TSF, TSFCivilian, TSFHighComm, PDV, PDVCivilian, PDVHighComm ]
+  recklessFire: true

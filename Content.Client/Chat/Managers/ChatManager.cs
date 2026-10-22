@@ -54,6 +54,12 @@ internal sealed partial class ChatManager : IChatManager
                 _consoleHost.ExecuteCommand($"asay \"{CommandParsing.Escape(str)}\"");
                 break;
 
+            // WOLFGATE(EventStaff) START: event staff chat
+            case ChatSelectChannel.Event:
+                _consoleHost.ExecuteCommand($"esay \"{CommandParsing.Escape(str)}\"");
+                break;
+            // WOLFGATE END
+
             case ChatSelectChannel.Emotes:
                 _consoleHost.ExecuteCommand($"me \"{CommandParsing.Escape(str)}\"");
                 break;

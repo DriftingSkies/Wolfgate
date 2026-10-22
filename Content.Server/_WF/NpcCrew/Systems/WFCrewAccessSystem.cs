@@ -16,6 +16,7 @@ namespace Content.Server._WF.NpcCrew.Systems;
 /// <summary>Issues ordinary crew ID cards and enrolls them on the ship where the crew is spawned.</summary>
 public sealed partial class WFCrewAccessSystem : EntitySystem
 {
+    [Dependency] private WFCrewSystem _crew = default!;
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private SharedIdCardSystem _id = default!;
     [Dependency] private WFShipAccessSystem _access = default!;
@@ -60,8 +61,7 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
         }
 
         // The card names him and his post; a loadout's faction card comes blank.
-        var title = TryComp<WFCrewComponent>(uid, out var member) && member.Role is { } roleId
-            && _prototypes.TryIndex(roleId, out var role) ? Loc.GetString(role.Title) : null;
+        var title = TryComp<WFCrewComponent>(uid, out var member) ? _crew.Title((uid, member)) : null;
         var name = Name(uid);
         if (title != null && name.StartsWith(title + " ", StringComparison.Ordinal))
             name = name[(title.Length + 1)..];

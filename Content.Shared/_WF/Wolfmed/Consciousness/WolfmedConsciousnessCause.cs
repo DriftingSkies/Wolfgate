@@ -135,6 +135,9 @@ public enum WolfmedCauseSource : byte
     // Shutdown: why the machine stopped.
     Power = 40,
     Pump = 41,
+
+    /// <summary>Synthetics playtest: too little hydraulic fluid for the pump to move, a chassis's blood-loss arrest.</summary>
+    Fluid = 42,
 }
 
 /// <summary>Helpers for <see cref="WolfmedCause"/>: tie order, flags and prototype ids.</summary>

@@ -1,0 +1,83 @@
+- type: decal
+  id: AuroraDecalFloorDecalFungus
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: fungus
+
+- type: decal
+  id: AuroraDecalFloorDecalDune
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet_64x32.rsi
+    state: drift_dune
+
+- type: decal
+  id: AuroraDecalFloorDecalSnowdrift
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: drift
+
+- type: decal
+  id: AuroraDecalFloorDecalSnowdriftLarge
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet_64x32.rsi
+    state: drift_snowdrift_large
+
+- type: decal
+  id: AuroraDecalFloorDecalSnowrocks
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: rocksmall1
+
+- type: decal
+  id: AuroraDecalFloorDecalSnowCorner
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: snow_corner_aurora
+
+- type: decal
+  id: BeeDecalWeatherSnowCorner
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: snow_corner_beestation
+
+- type: decal
+  id: TgDecalWeatherSnowCorner
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: snow_corner_tgstation
+
+- type: decal
+  id: CMDecalRocksIceIce1
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: icerock
+
+- type: decal
+  id: CMDecalSandOverlaySand1
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: sand1_s
+
+- type: decal
+  id: CMDecalSandOverlaySand2
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: sand2_s
+
+- type: decal
+  id: CoyoteDecalTurfDecalWeatherAutumnleaves
+  tags: [ station ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/flora_planet.rsi
+    state: autumn-overlay1

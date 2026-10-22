@@ -2,9 +2,9 @@
 
 Wolfgate's CVar definitions, kept out of upstream `CCVars`. `WolfgateCVars` holds the general ones (`wf.ui_style`,
 `wf.anatomy_enabled`, `wf.anatomy_notice_seen`, `wf.ui_window_popout`, `wf.spawn_favourites`);
-`CollisionWarningCVars`, `HeatHazeCVars`, `InternetSoundCVars`, `SoundtrackMuteCVars`, `NpcCrewCVars`, `ShipAccessCVars`
-and `ShockwaveCVars` tune the collision warning, heat haze, internet sounds, soundtrack mute, NPC crew docking, ship
-access locking and explosion shockwaves;
+`CollisionWarningCVars`, `FeedbackCVars`, `HeatHazeCVars`, `InternetSoundCVars`, `SoundtrackMuteCVars`, `NpcCrewCVars`,
+`ShipAccessCVars` and `ShockwaveCVars` tune the collision warning, player bug reports and suggestions, heat haze,
+internet sounds, soundtrack mute, NPC crew docking, ship access locking and explosion shockwaves;
 `PlanetCVars` holds the planet network, terrain atmosphere and terrain loading and unloading settings and
 `CavernCVars` the cavern switch.
 
@@ -18,6 +18,7 @@ access locking and explosion shockwaves;
 - [`Content.Shared/_WF/CCVar/CavernCVars.cs`](CavernCVars.cs)
 - [`Content.Shared/_WF/CCVar/CollisionWarningCVars.cs`](CollisionWarningCVars.cs)
 - [`Content.Shared/_WF/CCVar/EncountersCVars.cs`](EncountersCVars.cs)
+- [`Content.Shared/_WF/CCVar/FeedbackCVars.cs`](FeedbackCVars.cs)
 - [`Content.Shared/_WF/CCVar/HeatHazeCVars.cs`](HeatHazeCVars.cs)
 - [`Content.Shared/_WF/CCVar/InternetSoundCVars.cs`](InternetSoundCVars.cs)
 - [`Content.Shared/_WF/CCVar/NpcCrewCVars.cs`](NpcCrewCVars.cs)

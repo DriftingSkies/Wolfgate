@@ -7,6 +7,7 @@ using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.NpcCrew;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
+using Content.Shared._WF.CCVar;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
 using Robust.Shared.GameObjects;
@@ -343,7 +344,8 @@ public sealed partial class WFEncounterTest
             transform.SetCoordinates(visitor, new EntityCoordinates(MapData.MapUid, new Vector2(31150, 31000)));
             transform.SetCoordinates(SEntMan.GetEntity(Player), new EntityCoordinates(visitor, new Vector2(0.5f)));
             SEntMan.EnsureComponent<Content.Shared._Mono.Company.CompanyComponent>(visitor).CompanyName = "TSFCivilian";
-            // With its IFF off: its own faction knows it over the radio all the same.
+            SEntMan.EnsureComponent<Content.Shared._Mono.Company.CompanyComponent>(SEntMan.GetEntity(Player)).CompanyName = "TSFCivilian";
+            // With its IFF off: its own faction knows its crew over the radio all the same.
             Server.System<Content.Server.Shuttles.Systems.ShuttleSystem>().AddIFFFlag(visitor, Content.Shared.Shuttles.Components.IFFFlags.HideLabel);
             var body = SEntMan.EnsureComponent<Robust.Shared.Physics.Components.PhysicsComponent>(visitor);
             var physics = Server.System<Robust.Shared.Physics.Systems.SharedPhysicsSystem>();
@@ -358,6 +360,7 @@ public sealed partial class WFEncounterTest
             Assert.That(state.Engaged, Is.Empty, "A Federation civilian is no intruder to a Federation warship, IFF or no.");
             Assert.That(state.Warned, Is.Empty, "Nor is it warned off.");
             SEntMan.GetComponent<Content.Shared._Mono.Company.CompanyComponent>(visitor).CompanyName = "USSP";
+            SEntMan.GetComponent<Content.Shared._Mono.Company.CompanyComponent>(SEntMan.GetEntity(Player)).CompanyName = "USSP";
             Server.System<SharedTransformSystem>().SetCoordinates(visitor, new EntityCoordinates(MapData.MapUid, new Vector2(31150, 31000)));
             Server.System<Robust.Shared.Physics.Systems.SharedPhysicsSystem>().SetLinearVelocity(visitor, new Vector2(0f, 4f));
         });
@@ -381,8 +384,11 @@ public sealed partial class WFEncounterTest
     public async Task FinishedShipWaitsForPlayersToLeaveAndLoadsNoWorld()
     {
         EntityUid encounter = default, ship = default;
+        var config = Server.ResolveDependency<Robust.Shared.Configuration.IConfigurationManager>();
         await Server.WaitAssertion(() =>
         {
+            // No grace after the player leaves; ResolvedShipWaitsOutTheGraceAfterPlayersLeave covers it.
+            config.SetCVar(EncountersCVars.CleanupGrace, 0f);
             var prototype = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestStoryRival");
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(-31000, -31000), MapData.MapId), out encounter), Is.True);
             ship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["rival"].Grid;
@@ -406,6 +412,7 @@ public sealed partial class WFEncounterTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(SEntMan.EntityExists(ship), Is.False, "Once the player has left, it jumps.");
+            config.SetCVar(EncountersCVars.CleanupGrace, EncountersCVars.CleanupGrace.DefaultValue);
         });
         await RunTicks(10);
     }

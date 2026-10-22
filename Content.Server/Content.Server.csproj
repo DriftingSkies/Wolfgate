@@ -16,6 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.ObjectPool" />
     <!-- WOLFGATE(Headshot): decodes and re-encodes headshot images, as Content.Client already does -->
     <PackageReference Include="SixLabors.ImageSharp" />
+    <!-- WOLFGATE(Feedback): a log handler keeps the latest warnings and errors for bug reports; the engine's interface takes Serilog's event -->
+    <PackageReference Include="Serilog" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Content.Packaging\Content.Packaging.csproj" />

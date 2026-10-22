@@ -307,3 +307,19 @@
   components:
   - type: Sprite
     state: diner_chair
+
+# WOLFGATE(DecorImport) START: ported from Nuclear 14
+- type: entity
+  parent: ChairWood
+  id: N14ChairSchool
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/schoolchair.rsi
+    state: chair
+  - type: Construction
+    graph: DecorBuildN14ChairSchool
+    node: built
+  - type: Icon
+    sprite: _Nuclear14/Structures/Furniture/schoolchair.rsi
+    state: chair
+# WOLFGATE END

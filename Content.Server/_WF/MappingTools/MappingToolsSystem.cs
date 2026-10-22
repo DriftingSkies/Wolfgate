@@ -11,7 +11,6 @@ using Content.Shared.Administration;
 using Content.Shared.Atmos;
 using Content.Shared.Database;
 using Content.Shared.Decals;
-using Content.Shared.Ghost;
 using Content.Shared.Maps;
 using Content.Shared.NodeContainer;
 using Robust.Server.GameObjects;
@@ -40,6 +39,7 @@ public sealed partial class MappingToolsSystem : EntitySystem
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private MappingProtectionSystem _protection = default!;
     [Dependency] private TransformSystem _transform = default!;
 
     /// <summary>
@@ -69,13 +69,71 @@ public sealed partial class MappingToolsSystem : EntitySystem
         SubscribeNetworkEvent<MappingToolsDeleteEvent>(OnDelete);
         SubscribeNetworkEvent<MappingToolsMirrorEvent>(OnMirror);
         SubscribeNetworkEvent<MappingToolsHistoryEvent>(OnHistory);
+        SubscribeNetworkEvent<MappingToolsDrawEvent>(OnDraw);
 
         InitializeHistory();
+        InitializeLinks();
     }
 
-    private bool CanUse(ICommonSession session)
+    /// <summary>
+    /// Whether a player may use the tools: Mapping admins, or whoever a <see cref="WFMappingCanUseEvent"/> handler
+    /// allows. <paramref name="request"/> marks a request the player sent.
+    /// </summary>
+    private bool CanUse(ICommonSession session, bool request = false)
     {
-        return _admin.HasAdminFlag(session, AdminFlags.Mapping);
+        if (_admin.HasAdminFlag(session, AdminFlags.Mapping))
+            return true;
+
+        var ev = new WFMappingCanUseEvent(session, request);
+        RaiseLocalEvent(ev);
+        return ev.Allowed;
+    }
+
+    /// <summary>
+    /// Raises <paramref name="ev"/> and says whether the request may go ahead.
+    /// </summary>
+    private bool CanEdit(WFMappingCanEditEvent ev)
+    {
+        RaiseLocalEvent(ev);
+        return !ev.Cancelled;
+    }
+
+    /// <summary>
+    /// Whether a request may work on a selection's grid, ending up covering <paramref name="cells"/>. A move passes
+    /// where each selected entity lands in <paramref name="entityCells"/>.
+    /// </summary>
+    private bool CanEdit(ICommonSession session, Resolved sel, WFMappingEditKind kind, Box2i cells,
+        List<Vector2i>? entityCells = null, bool wholeGrid = false)
+    {
+        if (Transform(sel.Grid.Owner).MapUid is not { } map)
+            return false;
+
+        return CanEdit(new WFMappingCanEditEvent(session, map, kind)
+        {
+            Grid = sel.Grid.Owner,
+            Cells = cells,
+            Tiles = sel.Tiles.Count,
+            // A whole-grid delete saves the grid as one root, so its cost is the entities, not the area.
+            SelectionCells = wholeGrid ? 0 : sel.AreaCells,
+            TouchedEntities = wholeGrid ? Tree(sel.Grid.Owner).Count : TreeCount(sel.Entities),
+            Decals = sel.Decals.Count,
+            EntityCells = entityCells,
+            Moving = entityCells != null ? sel.Entities : null,
+        });
+    }
+
+    /// <summary>
+    /// Entities in the trees under <paramref name="roots"/>, roots included.
+    /// </summary>
+    private int TreeCount(IEnumerable<EntityUid> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            count += Tree(root).Count;
+        }
+
+        return count;
     }
 
     private MappingEntityRef GetRef(EntityUid uid)
@@ -96,6 +154,9 @@ public sealed partial class MappingToolsSystem : EntitySystem
     {
         public Entity<MapGridComponent> Grid;
         public Box2i Extent;
+
+        /// <summary>Cells in the requested area.</summary>
+        public long AreaCells;
         public readonly List<(Vector2i Cell, Tile Tile)> Tiles = new();
         public readonly List<Decal> Decals = new();
         public readonly HashSet<EntityUid> Entities = new();
@@ -114,6 +175,7 @@ public sealed partial class MappingToolsSystem : EntitySystem
         if (selection.Area is { } area && area.Width > 0 && area.Height > 0 && (long) area.Width * area.Height <= MaxArea)
         {
             extent = area;
+            result.AreaCells = (long) area.Width * area.Height;
 
             for (var x = area.Left; x < area.Right; x++)
             {
@@ -143,6 +205,42 @@ public sealed partial class MappingToolsSystem : EntitySystem
             }
         }
 
+        // Single cells outside the area, each with its tile, entities and decals.
+        var picked = new HashSet<Vector2i>();
+        var resolvedArea = extent;
+        if (selection.Cells.Count <= MaxArea)
+        {
+            foreach (var cell in selection.Cells)
+            {
+                if (resolvedArea is { } areaBox && MappingToolsMath.Contains(areaBox, cell) || !picked.Add(cell))
+                {
+                    continue;
+                }
+
+                result.AreaCells++;
+                extent = MappingToolsMath.Include(extent, cell);
+                if (_map.TryGetTileRef(gridUid, grid, cell, out var tileRef) && !tileRef.Tile.IsEmpty)
+                    result.Tiles.Add((cell, tileRef.Tile));
+
+                var cellBounds = new Box2(cell.X - 1, cell.Y - 1, cell.X + 2, cell.Y + 2);
+                foreach (var (_, decal) in _decals.GetDecalsIntersecting(gridUid, cellBounds))
+                {
+                    if (MappingToolsMath.CellOf(decal.Coordinates + new Vector2(0.5f)) == cell)
+                        result.Decals.Add(decal);
+                }
+            }
+        }
+
+        if (picked.Count > 0)
+        {
+            var children = Transform(gridUid).ChildEnumerator;
+            while (children.MoveNext(out var child))
+            {
+                if (picked.Contains(MappingToolsMath.CellOf(Transform(child).LocalPosition)) && IsSelectable(child))
+                    result.Entities.Add(child);
+            }
+        }
+
         foreach (var netEntity in selection.Entities)
         {
             if (!TryGetEntity(netEntity, out var uid) ||
@@ -165,15 +263,15 @@ public sealed partial class MappingToolsSystem : EntitySystem
     }
 
     /// <summary>
-    /// Whether an entity can be edited: not a grid, map, player or ghost, and not holding a player.
+    /// Whether an entity can be edited: not a grid or map, and neither protected nor holding anything protected
+    /// (<see cref="MappingProtectionSystem"/>).
     /// </summary>
     private bool IsSelectable(EntityUid uid)
     {
         return !TerminatingOrDeleted(uid) &&
                !HasComp<MapGridComponent>(uid) &&
                !HasComp<MapComponent>(uid) &&
-               !HasComp<GhostComponent>(uid) &&
-               !Tree(uid).Any(HasComp<ActorComponent>);
+               _protection.CanTouch(uid);
     }
 
     /// <summary>
@@ -196,37 +294,37 @@ public sealed partial class MappingToolsSystem : EntitySystem
 
     private void OnMove(MappingToolsMoveEvent ev, EntitySessionEventArgs args)
     {
-        if (CanUse(args.SenderSession))
+        if (CanUse(args.SenderSession, request: true))
             Move(args.SenderSession, ev.Selection, ev.Offset, ev.Turns);
     }
 
     private void OnCopy(MappingToolsCopyEvent ev, EntitySessionEventArgs args)
     {
-        if (CanUse(args.SenderSession))
+        if (CanUse(args.SenderSession, request: true))
             Copy(args.SenderSession, ev.Selection, ev.Cut);
     }
 
     private void OnPaste(MappingToolsPasteEvent ev, EntitySessionEventArgs args)
     {
-        if (CanUse(args.SenderSession))
+        if (CanUse(args.SenderSession, request: true))
             Paste(args.SenderSession, GetCoordinates(ev.Target), ev.Turns);
     }
 
     private void OnMirror(MappingToolsMirrorEvent ev, EntitySessionEventArgs args)
     {
-        if (CanUse(args.SenderSession))
+        if (CanUse(args.SenderSession, request: true))
             Mirror(args.SenderSession, ev.Selection, ev.Vertical);
     }
 
     private void OnDelete(MappingToolsDeleteEvent ev, EntitySessionEventArgs args)
     {
-        if (CanUse(args.SenderSession))
+        if (CanUse(args.SenderSession, request: true))
             Delete(args.SenderSession, ev.Selection);
     }
 
     private void OnHistory(MappingToolsHistoryEvent ev, EntitySessionEventArgs args)
     {
-        if (CanUse(args.SenderSession))
+        if (CanUse(args.SenderSession, request: true))
             StepHistory(args.SenderSession, ev.Redo);
     }
 
@@ -241,6 +339,13 @@ public sealed partial class MappingToolsSystem : EntitySystem
         turns = MappingToolsMath.Normalize(turns);
         if (offset == Vector2i.Zero && turns == 0)
             return;
+
+        var landing = LandingCells(sel, p => MappingToolsMath.TransformPoint(p, sel.Extent, offset, turns));
+        if (!CanEdit(session, sel, WFMappingEditKind.Edit, MappingToolsMath.TransformBox(sel.Extent, sel.Extent, offset, turns),
+                landing))
+        {
+            return;
+        }
 
         var edit = TransformEdit(sel,
             turns == 0 ? "wf-mapping-tools-edit-move" : "wf-mapping-tools-edit-rotate",
@@ -261,8 +366,12 @@ public sealed partial class MappingToolsSystem : EntitySystem
     /// </summary>
     public void Mirror(ICommonSession session, MappingSelection selection, bool vertical)
     {
-        if (!TryResolve(selection, out var sel))
+        if (!TryResolve(selection, out var sel) ||
+            !CanEdit(session, sel, WFMappingEditKind.Edit, sel.Extent,
+                LandingCells(sel, p => MappingToolsMath.MirrorPoint(p, sel.Extent, vertical))))
+        {
             return;
+        }
 
         var edit = TransformEdit(sel, "wf-mapping-tools-edit-mirror",
             cell => MappingToolsMath.MirrorCell(cell, sel.Extent, vertical),
@@ -275,6 +384,20 @@ public sealed partial class MappingToolsSystem : EntitySystem
         Commit(session, edit);
         _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"{session:player} used mapping tools to mirror {sel.Entities.Count} entities and {sel.Tiles.Count} tiles on {ToPrettyString(sel.Grid.Owner):grid}");
+    }
+
+    /// <summary>
+    /// The cell each selected entity lands in when its position is mapped by <paramref name="pointMap"/>.
+    /// </summary>
+    private List<Vector2i> LandingCells(Resolved sel, Func<Vector2, Vector2> pointMap)
+    {
+        var cells = new List<Vector2i>(sel.Entities.Count);
+        foreach (var uid in sel.Entities)
+        {
+            cells.Add(MappingToolsMath.CellOf(pointMap(Transform(uid).LocalPosition)));
+        }
+
+        return cells;
     }
 
     /// <summary>
@@ -334,7 +457,14 @@ public sealed partial class MappingToolsSystem : EntitySystem
     /// </summary>
     public void Copy(ICommonSession session, MappingSelection selection, bool cut)
     {
-        if (!TryResolve(selection, out var sel))
+        if (!TryResolve(selection, out var sel) ||
+            !CanEdit(session, sel, cut ? WFMappingEditKind.Edit : WFMappingEditKind.Read, sel.Extent))
+        {
+            return;
+        }
+
+        // A cut over a whole grid deletes the grid, which the copy doesn't take; the delete check applies too.
+        if (cut && CoversGrid(sel) && !CanEdit(session, sel, WFMappingEditKind.Edit, sel.Extent, wholeGrid: true))
             return;
 
         var origin = sel.Extent.BottomLeft;
@@ -351,13 +481,23 @@ public sealed partial class MappingToolsSystem : EntitySystem
         }
 
         var preview = new List<MappingClipEntity>(sel.Entities.Count);
-        if (sel.Entities.Count > 0)
-        {
-            var serializer = new EntitySerializer(_dependency, SnapshotOptions);
-            serializer.SerializeEntityRecursive(sel.Entities);
-            clip.Data = serializer.Write();
+        var serializer = new EntitySerializer(_dependency, SnapshotOptions);
 
-            foreach (var uid in sel.Entities)
+        // Entities that never save (mobs, ghosts) can't be copied; they stay behind, and a cut deletes them.
+        var copied = sel.Entities.Where(uid => serializer.IsSerializable(uid)).ToHashSet();
+        if (copied.Count > 0)
+        {
+            serializer.SerializeEntityRecursive(copied);
+            clip.Data = serializer.Write();
+            clip.EntityCount = serializer.YamlUidMap.Count;
+            clip.Bytes = MappingDataSize.Estimate(clip.Data);
+            foreach (var uid in serializer.YamlUidMap.Keys)
+            {
+                if (MetaData(uid).EntityPrototype is { } prototype)
+                    clip.Prototypes.Add(prototype.ID);
+            }
+
+            foreach (var uid in copied)
             {
                 var pose = PoseOf(uid) with { Parent = EntityUid.Invalid };
                 pose.Position -= origin;
@@ -386,19 +526,51 @@ public sealed partial class MappingToolsSystem : EntitySystem
             return;
 
         var mapCoords = _transform.ToMapCoordinates(coords);
-        if (!_map.TryFindGridAt(mapCoords, out var gridUid, out var grid) &&
-            !TryPasteGrid(clip.SourceGrid, mapCoords.MapId, out gridUid, out grid))
-        {
-            // Off every grid, with the source grid gone: start a new grid under the cursor.
-            var newGrid = _map.CreateGridEntity(mapCoords.MapId);
-            _transform.SetWorldPosition(newGrid.Owner, new Vector2(MathF.Floor(mapCoords.X), MathF.Floor(mapCoords.Y)));
-            (gridUid, grid) = (newGrid.Owner, newGrid.Comp);
-        }
+        Entity<MapGridComponent>? target = null;
+        if (_map.TryFindGridAt(mapCoords, out var foundUid, out var found))
+            target = (foundUid, found);
+        else if (TryPasteGrid(clip.SourceGrid, mapCoords.MapId, out var sourceUid, out var source))
+            target = (sourceUid, source);
+
+        // Off every grid, with the source grid gone, a new grid starts with its origin at the cursor's tile.
+        var newOrigin = new Vector2i((int) MathF.Floor(mapCoords.X), (int) MathF.Floor(mapCoords.Y));
 
         turns = MappingToolsMath.Normalize(turns);
-        var cursor = _map.TileIndicesFor(gridUid, grid, mapCoords);
+        var cursor = target is { } t ? _map.TileIndicesFor(t, t.Comp, mapCoords) : Vector2i.Zero;
         var extent = new Box2i(Vector2i.Zero, clip.Size);
         var offset = MappingToolsMath.PasteOrigin(cursor, clip.Size, turns) - MappingToolsMath.DestinationOrigin(extent, Vector2i.Zero, turns);
+
+        var shift = target == null ? newOrigin : Vector2i.Zero;
+        var box = MappingToolsMath.TransformBox(extent, extent, offset, turns);
+        var half = new Vector2(0.5f);
+        var check = new WFMappingCanEditEvent(session, _map.GetMapOrInvalid(mapCoords.MapId), WFMappingEditKind.Paste)
+        {
+            Grid = target?.Owner,
+            Cells = new Box2i(box.BottomLeft + shift, box.TopRight + shift),
+            Entities = clip.EntityCount,
+            Tiles = clip.Tiles.Count,
+            NewGrid = target == null,
+            EntityCells = clip.Roots.ConvertAll(r =>
+                MappingToolsMath.CellOf(MappingToolsMath.TransformPoint(r.Pose.Position, extent, offset, turns)) + shift),
+            SelectionCells = (long) clip.Size.X * clip.Size.Y,
+            TouchedEntities = clip.EntityCount,
+            Decals = clip.Decals.Count,
+            DecalCells = clip.Decals.ConvertAll(d =>
+                MappingToolsMath.CellOf(MappingToolsMath.TransformPoint(d.Coordinates + half, extent, offset, turns)) + shift),
+            CarriedPrototypes = clip.Prototypes,
+        };
+
+        if (!CanEdit(check))
+            return;
+
+        if (target == null)
+        {
+            var newGrid = _map.CreateGridEntity(mapCoords.MapId);
+            _transform.SetWorldPosition(newGrid.Owner, new Vector2(newOrigin.X, newOrigin.Y));
+            target = newGrid;
+        }
+
+        var (gridUid, grid) = target.Value;
 
         var edit = new MappingEdit("wf-mapping-tools-edit-paste");
         foreach (var (cell, tile) in clip.Tiles)
@@ -414,7 +586,7 @@ public sealed partial class MappingToolsSystem : EntitySystem
             edit.DecalsAdded.Add(new MappingDecal(gridUid, moved));
         }
 
-        var group = new MappingEntityGroup { Data = clip.Data };
+        var group = new MappingEntityGroup { Data = clip.Data, EntityCount = clip.EntityCount, Bytes = clip.Bytes };
         foreach (var (yaml, pose) in clip.Roots)
         {
             var placed = pose with
@@ -455,8 +627,11 @@ public sealed partial class MappingToolsSystem : EntitySystem
     /// </summary>
     public void Delete(ICommonSession session, MappingSelection selection)
     {
-        if (!TryResolve(selection, out var sel))
+        if (!TryResolve(selection, out var sel) ||
+            !CanEdit(session, sel, WFMappingEditKind.Edit, sel.Extent, wholeGrid: CoversGrid(sel)))
+        {
             return;
+        }
 
         Commit(session, DeleteEdit(sel, "wf-mapping-tools-edit-delete"));
         _adminLog.Add(LogType.Action, LogImpact.Medium,
@@ -470,6 +645,16 @@ public sealed partial class MappingToolsSystem : EntitySystem
     {
         var grid = sel.Grid.Owner;
         var edit = new MappingEdit(name);
+
+        // Emptying a grid deletes it, so a selection over all of it takes the whole grid as one root, which undo
+        // brings back with everything on it.
+        if (CoversGrid(sel))
+        {
+            var gridGroup = new MappingEntityGroup();
+            gridGroup.Roots.Add(new MappingGroupRoot(GetRef(grid), -1, PoseOf(grid)));
+            edit.Deleted.Add(gridGroup);
+            return edit;
+        }
 
         foreach (var decal in sel.Decals)
         {
@@ -493,6 +678,26 @@ public sealed partial class MappingToolsSystem : EntitySystem
         }
 
         return edit;
+    }
+
+    /// <summary>
+    /// Whether a selection holds every tile of its grid, on a grid that isn't also a map.
+    /// </summary>
+    private bool CoversGrid(Resolved sel)
+    {
+        var (uid, grid) = sel.Grid;
+        if (sel.Tiles.Count == 0 || HasComp<MapComponent>(uid) || Transform(uid).MapUid is null)
+            return false;
+
+        var count = 0;
+        var tiles = _map.GetAllTiles(uid, grid);
+        while (tiles.MoveNext(out _))
+        {
+            if (++count > sel.Tiles.Count)
+                return false;
+        }
+
+        return count == sel.Tiles.Count;
     }
 
     /// <summary>

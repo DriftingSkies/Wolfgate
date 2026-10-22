@@ -57,6 +57,7 @@ namespace Content.Server.Database
         public DbSet<WolfgateCustomMarkingArt> WolfgateCustomMarkingArt { get; set; } = null!;
         public DbSet<WolfgateCustomMarking> WolfgateCustomMarking { get; set; } = null!;
         // WOLFGATE END
+        public DbSet<WolfgateFeedbackReport> WolfgateFeedbackReport { get; set; } = null!; // WOLFGATE(Feedback): player bug reports and suggestions
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -469,6 +470,14 @@ namespace Content.Server.Database
             modelBuilder.Entity<WolfgateCustomMarkingArt>()
                 .HasIndex(a => new { a.UploaderUserId, a.UploadedAt });
             // WOLFGATE END
+
+            // WOLFGATE(Feedback) START: counted by who sent it and when for the daily limit, and listed by status
+            modelBuilder.Entity<WolfgateFeedbackReport>()
+                .HasIndex(r => new { r.PlayerUserId, r.CreatedAt });
+
+            modelBuilder.Entity<WolfgateFeedbackReport>()
+                .HasIndex(r => r.Status);
+            // WOLFGATE END
         }
 
         public virtual IQueryable<AdminLog> SearchLogs(IQueryable<AdminLog> query, string searchText)
@@ -553,6 +562,21 @@ namespace Content.Server.Database
 
         // WOLFGATE(LegStyle): the legs picked in the creator, 0 for the species' own.
         [Column("leg_stance")] public int LegStance { get; set; }
+
+        // WOLFGATE(Biotype): organic or synthetic body, 0 for the species' own.
+        [Column("biotype")] public int Biotype { get; set; }
+
+        // WOLFGATE(BloodColour): blood and flesh colour as hex, null for the species' own.
+        [Column("blood_color")] public string? BloodColor { get; set; }
+
+        // WOLFGATE(ChatFont): the wfChatFont prototype id, empty for the default.
+        [Column("chat_font")] public string ChatFont { get; set; } = "";
+
+        // WOLFGATE(TypingBubble): the typingIndicator prototype id, null for the species' own.
+        [Column("typing_indicator")] public string? TypingIndicator { get; set; }
+
+        // WOLFGATE(EmoteVoices): the wfMessageSound prototype id, empty for the species' own.
+        [Column("message_sound")] public string MessageSound { get; set; } = "";
 
         public int PreferenceId { get; set; }
         public Preference Preference { get; set; } = null!;
@@ -1716,6 +1740,88 @@ namespace Content.Server.Database
         public int Placement { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Feedback) START: player bug reports and suggestions, read by the SSymphony panel
+    /// <summary>
+    /// A bug report or suggestion a player sent from the game, read by the SSymphony panel. Staff move
+    /// <see cref="Status"/> on, through /symphony/feedback/status or by writing the row, and the game tells the player.
+    /// </summary>
+    public class WolfgateFeedbackReport
+    {
+        [Key]
+        public int Id { get; set; }
+
+        /// <summary>"bug", "suggestion" or "survey" (the end of shift survey).</summary>
+        [Required, MaxLength(16)]
+        public string Kind { get; set; } = null!;
+
+        /// <summary>The area the player filed it under (FeedbackRules.Categories).</summary>
+        [Required, MaxLength(32)]
+        public string Category { get; set; } = null!;
+
+        /// <summary>"minor", "major" or "blocking" as the player rated a bug. Null for a suggestion.</summary>
+        [MaxLength(16)]
+        public string? Severity { get; set; }
+
+        [Required, MaxLength(100)]
+        public string Title { get; set; } = null!;
+
+        [Required]
+        public string Description { get; set; } = null!;
+
+        /// <summary>How to make a bug happen again, when the player said.</summary>
+        public string? Steps { get; set; }
+
+        /// <summary>What the player expected instead, when they said.</summary>
+        public string? Expected { get; set; }
+
+        /// <summary>Surveys: how much the player enjoyed the shift, 1 to 5. Null for other kinds.</summary>
+        public int? Rating { get; set; }
+
+        /// <summary>Surveys: what frustrated the player. Their answer on issues they hit is the description.</summary>
+        public string? Frustrations { get; set; }
+
+        public Guid PlayerUserId { get; set; }
+
+        /// <summary>The player's account name when they sent it.</summary>
+        [Required, MaxLength(64)]
+        public string PlayerName { get; set; } = null!;
+
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>The round it was sent in; 0 before the first round.</summary>
+        public int RoundId { get; set; }
+
+        [Required, MaxLength(128)]
+        public string ServerName { get; set; } = null!;
+
+        /// <summary>build.version of the server: the commit a published build was made from. Empty on a dev build.</summary>
+        [Required, MaxLength(128)]
+        public string BuildVersion { get; set; } = null!;
+
+        /// <summary>Everything the server and client could say about the moment, as JSON (see the module README).</summary>
+        [Required, Column(TypeName = "jsonb")]
+        public string Context { get; set; } = null!;
+
+        /// <summary>A JPEG or PNG of the player's screen, when they attached one.</summary>
+        public byte[]? Screenshot { get; set; }
+
+        /// <summary>"pending" when sent, then "checked", "fixed" or "non_issue" (FeedbackRules.Statuses).</summary>
+        [Required, MaxLength(16)]
+        public string Status { get; set; } = "pending";
+
+        /// <summary>What staff wrote to the player about it, shown with the status.</summary>
+        public string? StaffMessage { get; set; }
+
+        public DateTime? StatusChangedAt { get; set; }
+
+        /// <summary>
+        /// True while the player has yet to be told of the status. Whoever changes the status sets it; the game
+        /// shows the notice, at login if need be, and clears it once the player has closed it.
+        /// </summary>
+        public bool NotifyPlayer { get; set; }
     }
     // WOLFGATE END
 }

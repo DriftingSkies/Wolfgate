@@ -1,0 +1,6 @@
+- type: consentToggle
+  id: WFCorticalBorerEntry
+  name: Cortical borers may enter me
+  description: Lets cortical borers crawl into your head and infest you. Turning it off doesn't remove a borer that's already inside.
+  sortKey: 1-borer-0
+  defaultOn: true

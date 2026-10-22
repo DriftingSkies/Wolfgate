@@ -7,7 +7,8 @@ still govern every flight, camera, access and shield request; cockpit mode only 
 Entry selects EXT while preserving zoom and low-light settings; leaving restores that pilot's prior camera.
 Cockpit camera changes never overwrite the console's shared saved settings, so overlapping pilots and
 ordinary console users retain their own choices. The other camera views remain available. In the External
-view, a right click that does not move opens the entity menu on release, and dragging with the right button pans.
+view, a right click that does not move opens the entity menu on release, and dragging with the right button pans. The client command `wf_cockpitpan` reports how each pan surface answered the last right-click,
+naming any control that sat over it; ask a player who cannot pan to run it.
 Live pressure, internals and buckle alerts, votes, and speech bubbles remain available around the world
 view. Character hotkeys, inventory controls and the menu bar remain hidden; Escape closes other windows
 first and then leaves the cockpit, as the EXIT button does; the helm stays open.
@@ -164,6 +165,8 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 - [`Content.Client/_WF/Cockpit/WFCockpitInstrumentSizing.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitInstrumentSizing.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitLease.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitLease.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitPanCommand.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanCommand.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitPanDiagnosticSystem.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanDiagnosticSystem.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitRadarKeys.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitRadarKeys.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitShipLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitShipLayout.cs)
@@ -208,6 +211,7 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 ### Localization
 
 - [`Resources/Locale/en-US/_WF/Cockpit/cockpit-gunnery-mode.ftl`](../../../Resources/Locale/en-US/_WF/Cockpit/cockpit-gunnery-mode.ftl)
+- [`Resources/Locale/en-US/_WF/Cockpit/cockpit-pan.ftl`](../../../Resources/Locale/en-US/_WF/Cockpit/cockpit-pan.ftl)
 - [`Resources/Locale/en-US/_WF/Cockpit/cockpit-status.ftl`](../../../Resources/Locale/en-US/_WF/Cockpit/cockpit-status.ftl)
 - [`Resources/Locale/en-US/_WF/Cockpit/cockpit.ftl`](../../../Resources/Locale/en-US/_WF/Cockpit/cockpit.ftl)
 - [`Resources/Locale/en-US/_WF/Cockpit/dock-plot.ftl`](../../../Resources/Locale/en-US/_WF/Cockpit/dock-plot.ftl)

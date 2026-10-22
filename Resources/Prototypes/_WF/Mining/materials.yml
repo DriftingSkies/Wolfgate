@@ -1,0 +1,8 @@
+# One crystallizer batch of plastitanium.
+- type: entity
+  parent: SheetPlastitanium
+  id: WFSheetPlastitanium5
+  suffix: 5
+  components:
+  - type: Stack
+    count: 5

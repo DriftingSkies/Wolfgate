@@ -7,7 +7,7 @@
   markingCategory: HeadSide
   followSkinColor: true
   forcedColoring: true
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_parts.rsi
     state: ears_avalibase_primary
@@ -20,7 +20,7 @@
   markingCategory: Tail
   followSkinColor: true
   forcedColoring: true
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_avalibase_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
@@ -37,7 +37,7 @@
   id: AvaliEarsStripeOne
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_parts.rsi
     state: ears_avalibase_primary
@@ -56,7 +56,7 @@
   id: AvaliHeadStripeOne
   bodyPart: Head
   markingCategory: Head
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: head_primary
@@ -67,7 +67,7 @@
   id: AvaliTorsoStripeOne
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: torso_primary
@@ -78,7 +78,7 @@
   id: AvaliLArmStripeOne
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: larm_primary
@@ -89,7 +89,7 @@
   id: AvaliRArmStripeOne
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: rarm_primary
@@ -100,7 +100,7 @@
   id: AvaliLHandStripeOne
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: lhand_primary
@@ -111,7 +111,7 @@
   id: AvaliRHandStripeOne
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: rhand_primary
@@ -122,7 +122,7 @@
   id: AvaliLLegStripeOne
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: lleg
@@ -131,7 +131,7 @@
   id: AvaliRLegStripeOne
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi
     state: rleg
@@ -140,7 +140,7 @@
   id: AvaliTailStripeOne
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_avalibase_BEHIND: TailBehind
     tail_avali_primary_BEHIND: TailBehind
@@ -169,7 +169,7 @@
   id: AvaliEarsTrimOne
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_parts.rsi
     state: ears_avalibase_primary
@@ -188,7 +188,7 @@
   id: AvaliHeadTrimOne
   bodyPart: Head
   markingCategory: Head
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: head_primary
@@ -199,7 +199,7 @@
   id: AvaliTorsoTrimOne
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: torso_primary
@@ -210,7 +210,7 @@
   id: AvaliLArmTrimOne
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: larm_primary
@@ -221,7 +221,7 @@
   id: AvaliRArmTrimOne
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: rarm_primary
@@ -232,7 +232,7 @@
   id: AvaliRHandTrimOne
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: rhand_primary
@@ -243,7 +243,7 @@
   id: AvaliLHandTrimOne
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: lhand_primary
@@ -254,7 +254,7 @@
   id: AvaliLLegTrimOne
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: lleg_primary
@@ -265,7 +265,7 @@
   id: AvaliRLegTrimOne
   bodyPart: RLeg
   markingCategory: Legs
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_one.rsi
     state: rleg_primary
@@ -276,7 +276,7 @@
   id: AvaliTailTrimOne
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_avalibase_BEHIND: TailBehind
     tail_avali_primary_BEHIND: TailBehind
@@ -305,7 +305,7 @@
   id: AvaliEarsTrimTwo
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_parts.rsi
     state: ears_avalibase_primary
@@ -324,7 +324,7 @@
   id: AvaliHeadTrimTwo
   bodyPart: Head
   markingCategory: Head
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_two.rsi
     state: head_primary
@@ -335,7 +335,7 @@
   id: AvaliTorsoTrimTwo
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_two.rsi
     state: torso_primary
@@ -346,7 +346,7 @@
   id: AvaliLArmTrimTwo
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_two.rsi
     state: larm_primary
@@ -357,7 +357,7 @@
   id: AvaliRArmTrimTwo
   bodyPart: RArm
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_two.rsi
     state: rarm_primary
@@ -368,7 +368,7 @@
   id: AvaliLHandTrimTwo
   bodyPart: LHand
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_two.rsi
     state: lhand_primary
@@ -379,7 +379,7 @@
   id: AvaliRHandTrimTwo
   bodyPart: RHand
   markingCategory: Arms
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: _Starlight/Mobs/Customization/Avali/avali_trim_two.rsi
     state: rhand_primary
@@ -390,7 +390,7 @@
   id: AvaliTailTrimTwo
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Avali, ProtoAvali ]
+  speciesRestriction: [Avali] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_avalibase_BEHIND: TailBehind
     tail_avali_primary_BEHIND: TailBehind

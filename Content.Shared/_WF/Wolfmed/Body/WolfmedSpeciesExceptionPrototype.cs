@@ -38,7 +38,7 @@ public enum WolfmedSpeciesCheck : byte
     /// <summary>Mechanical: every coolant pump carries WolfmedOrgan.</summary>
     PumpData,
 
-    /// <summary>Mechanical: pulling the power source shuts the chassis down.</summary>
+    /// <summary>Mechanical: pulling the power source puts the chassis on low power (Synthetics), not down.</summary>
     PowerShutdown,
 
     /// <summary>Mechanical: taking the core out kills.</summary>
@@ -47,18 +47,14 @@ public enum WolfmedSpeciesCheck : byte
 
 /// <summary>
 /// M4 (plan §9.3): a deliberate difference a round-start species has from the reference profile, written down with
-/// its reason. The id is the species id. A species on the machine ladder says so here; any conformance check it is
-/// built to fail is listed, and the test fails on any failure not excused and on any excuse no longer needed.
+/// its reason. The id is the species id. The ladder it runs is its biotype; any conformance check it is built to fail in
+/// its own biotype is listed, and the test fails on any failure not excused and on any excuse no longer needed.
 /// </summary>
 [Prototype("wolfmedSpeciesException")]
 public sealed partial class WolfmedSpeciesExceptionPrototype : IPrototype
 {
     [IdDataField]
     public string ID { get; private set; } = default!;
-
-    /// <summary>The species runs the machine ladder (plan §3.11): core, pump and power instead of brain, heart and blood.</summary>
-    [DataField]
-    public bool Mechanical;
 
     /// <summary>The checks this species is built to fail.</summary>
     [DataField]

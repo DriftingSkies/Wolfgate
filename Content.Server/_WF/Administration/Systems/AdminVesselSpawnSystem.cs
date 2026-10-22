@@ -36,7 +36,8 @@ public sealed partial class AdminVesselSpawnSystem : EntitySystem
     /// <param name="position">World position for the grid origin.</param>
     /// <param name="spawner">Entity credited in the admin log, if any.</param>
     /// <param name="gridUid">The spawned grid.</param>
-    public bool TrySpawnVessel(VesselPrototype vessel, MapId mapId, Vector2 position, EntityUid? spawner, [NotNullWhen(true)] out EntityUid? gridUid)
+    /// <param name="createStation">Give the vessel its late-join station and job slots, as a purchase would.</param>
+    public bool TrySpawnVessel(VesselPrototype vessel, MapId mapId, Vector2 position, EntityUid? spawner, [NotNullWhen(true)] out EntityUid? gridUid, bool createStation = false)
     {
         gridUid = null;
 
@@ -56,8 +57,25 @@ public sealed partial class AdminVesselSpawnSystem : EntitySystem
         // nothing to rebuild the vessel from.
         _shipRepair.GenerateRepairData(gridUid.Value);
 
+        if (createStation && _shipyard.TryCreateVesselStation(gridUid.Value, vessel) is { } station)
+            _metaData.SetEntityName(gridUid.Value, Name(station));
+
         _adminLogger.Add(LogType.EntitySpawn, LogImpact.Medium,
             $"{ToPrettyString(spawner):player} spawned vessel {vessel.ID} as {ToPrettyString(gridUid.Value):grid} on map {mapId}");
+        return true;
+    }
+
+    /// <summary>
+    /// Renames a vessel's grid, its station and any deeds for it.
+    /// </summary>
+    public bool TryRenameVessel(EntityUid gridUid, string newName, EntityUid? renamer)
+    {
+        var oldName = Name(gridUid);
+        if (!_shipyard.TryRenameVessel(gridUid, newName))
+            return false;
+
+        _adminLogger.Add(LogType.EntitySpawn, LogImpact.Low,
+            $"{ToPrettyString(renamer):player} renamed vessel {ToPrettyString(gridUid):grid} from '{oldName}' to '{Name(gridUid)}'");
         return true;
     }
 

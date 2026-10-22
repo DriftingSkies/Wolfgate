@@ -1,0 +1,54 @@
+<mapping:WFMappingLobbyPanel xmlns="https://spacestation14.io"
+                             xmlns:mapping="clr-namespace:Content.Client._WF.MappingMode"
+                             StyleClasses="LobbyChatPanel"
+                             HorizontalExpand="True"
+                             VerticalExpand="True">
+    <BoxContainer Orientation="Vertical" Margin="16" SeparationOverride="8">
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+            <Label Text="{Loc 'wf-mapping-mode-lobby-title'}" StyleClasses="LabelHeading" HorizontalExpand="True"
+                   VAlign="Center" />
+            <Button Name="GuideButton" Access="Public" Text="{Loc 'wf-mapping-guide-button'}"
+                    ToolTip="{Loc 'wf-mapping-guide-button-tooltip'}" TooltipDelay="0" />
+        </BoxContainer>
+        <RichTextLabel Name="IntroLabel" StyleClasses="LabelSubText" />
+
+        <BoxContainer Orientation="Horizontal" SeparationOverride="16" Margin="0 4 0 0">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="4">
+                <Label Text="{Loc 'wf-mapping-mode-lobby-new'}" StyleClasses="LabelHeading" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <LineEdit Name="NewNameEdit" Access="Public" HorizontalExpand="True"
+                              PlaceHolder="{Loc 'wf-mapping-mode-lobby-new-placeholder'}" />
+                    <Button Name="CreateButton" Access="Public" Text="{Loc 'wf-mapping-mode-lobby-create'}" />
+                </BoxContainer>
+            </BoxContainer>
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="4">
+                <Label Text="{Loc 'wf-mapping-mode-lobby-join'}" StyleClasses="LabelHeading" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <LineEdit Name="JoinCodeEdit" Access="Public" HorizontalExpand="True"
+                              PlaceHolder="{Loc 'wf-mapping-mode-lobby-join-placeholder'}" />
+                    <Button Name="JoinButton" Access="Public" Text="{Loc 'wf-mapping-mode-lobby-join-button'}" />
+                </BoxContainer>
+            </BoxContainer>
+        </BoxContainer>
+
+        <Label Text="{Loc 'wf-mapping-mode-lobby-sessions'}" StyleClasses="LabelHeading" Margin="0 4 0 0" />
+        <BoxContainer Name="RejoinList" Access="Public" Orientation="Vertical" SeparationOverride="4" />
+
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8" Margin="0 4 0 0">
+            <Label Text="{Loc 'wf-mapping-mode-lobby-maps'}" StyleClasses="LabelHeading" />
+            <Label Name="LibraryUsage" Access="Public" StyleClasses="LabelSubText" HorizontalExpand="True"
+                   VAlign="Center" />
+            <Button Name="UploadButton" Access="Public" Text="{Loc 'wf-mapping-mode-upload-button'}"
+                    ToolTip="{Loc 'wf-mapping-mode-upload-button-tooltip'}" TooltipDelay="0" />
+            <Button Name="RefreshButton" Access="Public" Text="{Loc 'wf-mapping-mode-lobby-refresh'}" />
+        </BoxContainer>
+        <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+            <mapping:WFMappingLibraryList Name="LibraryList" Access="Public" />
+        </ScrollContainer>
+
+        <mapping:WFMappingDownloadTargetPicker Name="DownloadTarget" Access="Public" />
+        <mapping:WFMappingDownloadRow Name="DownloadRow" Access="Public" />
+        <mapping:WFMappingUploadRow Name="UploadRow" Access="Public" />
+        <Label Name="ResultLabel" Access="Public" ClipText="True" />
+    </BoxContainer>
+</mapping:WFMappingLobbyPanel>

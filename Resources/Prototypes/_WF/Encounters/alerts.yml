@@ -1,0 +1,7 @@
+- type: alert
+  id: WFDockingClamped
+  icons:
+  - sprite: /Textures/Interface/Alerts/ensnared.rsi
+    state: ensnared
+  name: wf-clamps-alert-name
+  description: wf-clamps-alert-desc

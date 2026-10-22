@@ -4,6 +4,11 @@
   name: resin window
   description: Transparent and hardened, yet slightly sticky to the touch. Slightly stronger than a normal reinforced window.
   components:
+  # WOLFGATE(Xenonids): this window has twice a plain window's health, so its claw values are its own
+  - type: ReceiverXenoClaws
+    maxHealth: 100
+    hitsToDestroy: 2
+    minimumClawStrength: Normal
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/xeno_resin.rsi

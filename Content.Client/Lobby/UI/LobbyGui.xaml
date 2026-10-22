@@ -166,6 +166,9 @@
                                     Text="{Loc 'wf-round-setup-home-setup'}" StyleClasses="WFLobbyCrewAction" />
                             <Button Name="ReadyButton" Access="Public" TextAlign="Left" MinHeight="52"
                                     Text="{Loc 'wf-round-setup-home-ready'}" StyleClasses="LobbyNavPrimary" />
+                            <!-- WOLFGATE(Feedback): big green bug report and suggestion entry -->
+                            <Button Name="FeedbackButton" Access="Public" TextAlign="Left" MinHeight="52"
+                                    Text="{Loc 'wf-feedback-button'}" StyleClasses="LobbyNavPrimary ButtonColorGreen" />
                         </BoxContainer>
                         <Control MinHeight="12" />
                         <ScrollContainer Name="LobbyMenuScroll" HScrollEnabled="False" VerticalExpand="True" HorizontalExpand="True">

@@ -62,6 +62,7 @@ public sealed partial class SalvageSystem
         SubscribeLocalEvent<SalvageExpeditionComponent, ComponentGetState>(OnExpeditionGetState);
 
         SubscribeLocalEvent<SalvageStructureComponent, ExaminedEvent>(OnStructureExamine);
+        InitializeWFConsoleRefresh(); // WOLFGATE(Expeditions): refresh the console on open and anchor
 
         Subs.CVar(_cfgManager, CCVars.SalvageExpeditionCooldown, SetCooldownChange, true); // Frontier
         Subs.CVar(_cfgManager, NFCCVars.SalvageExpeditionFailedCooldown, SetFailedCooldownChange, true); // Frontier

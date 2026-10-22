@@ -378,6 +378,7 @@ public sealed partial class ShuttleDockControl : BaseShuttleControl
         handle.DrawRect(ourDock, dockColor, filled: false);
         */
         // WOLFGATE END
+        WfDrawClampBanner(handle); // WOLFGATE(Encounters): flag a ship held by docking clamps on the plot.
     }
 
     private void HideDocks()
@@ -471,6 +472,7 @@ public sealed partial class ShuttleDockControl : BaseShuttleControl
                             _nextDockChange = _timing.CurTime + DockChangeCooldown;
                             UndockRequest?.Invoke(dock.Entity);
                         };
+                        WfMarkClamped(dock, button); // WOLFGATE(Encounters): a clamped port's undock says so.
                     }
                     else
                     {

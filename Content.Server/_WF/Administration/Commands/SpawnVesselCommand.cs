@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server._WF.Administration.Systems;
 using Content.Server.Administration;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
 using Content.Shared._WF.Administration;
 using Content.Shared.Administration;
@@ -23,11 +24,13 @@ public sealed partial class SpawnVesselCommand : LocalizedEntityCommands
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private AdminVesselSpawnSystem _vesselSpawn = default!;
 
+    private const string NoOwner = "-";
+
     public override string Command => WolfgateAdminCommands.SpawnVessel;
 
     public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {
-        if (args.Length is < 1 or > 2)
+        if (args.Length < 1)
         {
             shell.WriteError(Loc.GetString("cmd-spawnvessel-invalid-args"));
             shell.WriteLine(Help);
@@ -53,28 +56,42 @@ public sealed partial class SpawnVesselCommand : LocalizedEntityCommands
             return;
         }
 
-        // Resolve the owner before spawning so a bad owner leaves nothing behind.
+        // Resolve the owner and name before spawning so bad input leaves nothing behind. "-" skips the owner.
         ICommonSession? owner = null;
-        if (args.Length == 2 && !_players.TryGetSessionByUsername(args[1], out owner))
+        if (args.Length >= 2 && args[1] != NoOwner && !_players.TryGetSessionByUsername(args[1], out owner))
         {
             shell.WriteError(Loc.GetString("cmd-spawnvessel-owner-not-found", ("name", args[1])));
             return;
         }
 
-        if (!_vesselSpawn.TrySpawnVessel(vessel, xform.MapID, _transform.GetWorldPosition(xform), player, out var grid))
+        var name = string.Join(' ', args.Skip(2)).Trim();
+        if (name.Length > ShuttleDeedComponent.MaxNameLength)
+        {
+            shell.WriteError(Loc.GetString("cmd-spawnvessel-name-too-long", ("max", ShuttleDeedComponent.MaxNameLength)));
+            return;
+        }
+
+        if (!_vesselSpawn.TrySpawnVessel(vessel, xform.MapID, _transform.GetWorldPosition(xform), player, out var grid, createStation: true))
         {
             shell.WriteError(Loc.GetString("cmd-spawnvessel-failed", ("id", vessel.ID)));
             return;
         }
 
-        shell.WriteLine(Loc.GetString("cmd-spawnvessel-success", ("name", vessel.Name), ("uid", grid.Value)));
+        shell.WriteLine(Loc.GetString("cmd-spawnvessel-success", ("name", vessel.Name), ("uid", EntityManager.GetNetEntity(grid.Value))));
 
-        if (owner == null)
-            return;
+        if (owner != null)
+            AssignOwner(shell, grid.Value, vessel, owner);
 
+        // Named last, so a deed made for the owner takes the name too.
+        if (name.Length > 0 && !_vesselSpawn.TryRenameVessel(grid.Value, name, player))
+            shell.WriteError(Loc.GetString("cmd-renamevessel-failed"));
+    }
+
+    private void AssignOwner(IConsoleShell shell, EntityUid grid, VesselPrototype vessel, ICommonSession owner)
+    {
         // No card to hold the deed (a ghost, say) still registers the ship to the player's account.
         var hasCard = _vesselSpawn.TryGetDeedCard(owner, out var idCard, out var noCardKey);
-        if (!_vesselSpawn.TryAssignOwner(grid.Value, vessel, idCard, owner))
+        if (!_vesselSpawn.TryAssignOwner(grid, vessel, idCard, owner))
             shell.WriteError(Loc.GetString("cmd-spawnvessel-owner-failed", ("name", owner.Name)));
         else if (hasCard)
             shell.WriteLine(Loc.GetString("cmd-spawnvessel-owner-assigned", ("name", owner.Name)));
@@ -94,8 +111,10 @@ public sealed partial class SpawnVesselCommand : LocalizedEntityCommands
                     .Select(vessel => new CompletionOption(vessel.ID, vessel.Name));
                 return CompletionResult.FromHintOptions(vessels, Loc.GetString("cmd-spawnvessel-hint"));
             case 2:
-                var players = _players.Sessions.Select(session => session.Name).OrderBy(name => name);
+                var players = _players.Sessions.Select(session => session.Name).OrderBy(name => name).Prepend(NoOwner);
                 return CompletionResult.FromHintOptions(players, Loc.GetString("cmd-spawnvessel-owner-hint"));
+            case 3:
+                return CompletionResult.FromHint(Loc.GetString("cmd-spawnvessel-name-hint"));
             default:
                 return CompletionResult.Empty;
         }

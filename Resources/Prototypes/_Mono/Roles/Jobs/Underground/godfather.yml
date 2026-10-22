@@ -32,6 +32,12 @@
     prototype: FrontierBirthdayGift
   - !type:AddComponentSpecial
     components:
+    # WOLFGATE(ReaverCampaign) START: Underground people are allied with the Reaver campaign's crews
+    - type: NpcFactionMember
+      factions:
+      - NanoTrasen
+      - WFUnderground
+    # WOLFGATE END
     - type: Contraband
       hideValues: true
       turnInValues:

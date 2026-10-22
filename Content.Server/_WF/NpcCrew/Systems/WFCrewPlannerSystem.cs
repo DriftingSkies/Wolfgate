@@ -220,8 +220,11 @@ public sealed class WFCrewPlannerSystem : EntitySystem
         if (count <= 0 || !TryComp<MapGridComponent>(grid, out var gridComp))
             return tiles;
 
-        var free = FreeTiles(grid, gridComp);
-        free.RemoveWhere(tile => !HasSafeAir(grid, tile));
+        var open = FreeTiles(grid, gridComp);
+        var free = open.Where(tile => HasSafeAir(grid, tile)).ToHashSet();
+        // A hull with no air anywhere, such as an automated one, stows its cargo on its open deck.
+        if (free.Count == 0)
+            free = open;
         if (free.Count == 0)
             return tiles;
 
@@ -246,6 +249,9 @@ public sealed class WFCrewPlannerSystem : EntitySystem
 
         var free = FreeTiles(grid, gridComp);
         var hold = free.Where(tile => HasSafeAir(grid, tile)).ToHashSet();
+        // A hull with no air anywhere, such as an automated one, stows its cargo on its open deck.
+        if (hold.Count == 0)
+            hold = new HashSet<Vector2i>(free);
         if (hold.Count == 0)
             return tiles;
 

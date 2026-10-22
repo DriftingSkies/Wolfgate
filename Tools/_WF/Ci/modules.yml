@@ -172,18 +172,9 @@ unmarked:
   - path: Resources/Textures/Mobs/Customization/tattoos.rsi/
     module: Species
     reason: Moth eye tattoo states added (meta.json re-sorted).
-  - path: Resources/Textures/Mobs/Species/Moth/displacement.rsi/
-    module: Species
-    reason: Moth clothing displacement maps for the protogen subspecies; Wolfgate-only RSI at an upstream path.
-  - path: Resources/Textures/Mobs/Species/Reptilian/displacement.rsi/
-    module: Species
-    reason: Reptilian clothing displacement maps for the protogen subspecies; Wolfgate-only RSI at an upstream path.
   - path: Resources/Textures/_EE/Mobs/Customization/Harpy/harpy_wings.rsi/
     module: Species
     reason: whitescale_harpy_folded2 state added (meta.json re-serialised).
-  - path: Resources/Textures/_Mono/Mobs/Species/Protogen/organs.rsi/
-    module: Species
-    reason: tongueforked state added (meta.json re-serialised).
   - path: Resources/Audio/_DEN/
     module: Species
     reason: The Den species voice sounds, ported in #14 (Customisation Update).
@@ -191,8 +182,8 @@ unmarked:
     module: Species
     reason: Einstein Engines species sounds, ported in #14 (Customisation Update).
   - path: Resources/Audio/_FarHorizons/Voice/
-    module: Species
-    reason: Far Horizons species voices, ported in #14 (Customisation Update).
+    module: EmoteVoices
+    reason: Robotic voice packs for the scream and laugh picker, ported from HardLight (Far Horizons).
   - path: Resources/Audio/_HL/
     module: Species
     reason: HardLight species sound, ported in #14 (Customisation Update).
@@ -229,9 +220,12 @@ unmarked:
   - path: Resources/Textures/_DV/Mobs/Customization/thaven/
     module: Species
     reason: Thaven marking sprites, ported in #14 (Customisation Update).
-  - path: Resources/Textures/_FarHorizons/Mobs/
+  - path: Resources/Textures/_Mono/Mobs/Species/Protogen/organs.rsi/
     module: Species
-    reason: Far Horizons species sprites, ported in #14 (Customisation Update).
+    reason: Back to Monolith's state list; the tongueforked state left with the protogen subspecies.
+  - path: Resources/Textures/_FarHorizons/Mobs/Customization/
+    module: Species
+    reason: Protogen and subspecies-shaped marking sprites, ported in #14 (Customisation Update).
   - path: Resources/Textures/_Floof/
     module: Species
     reason: Floof marking sprites, ported from HardLight in #14 and #129.
@@ -2278,6 +2272,12 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
     module: null
     reason: PDV pack, top-left thruster was mapped disabled.
+  - path: Resources/Maps/_Mono/Bluespace/prefracture.yml
+    module: null
+    reason: Hardpoints mapped under the Unidentified Vessel's Scythe, Sunder and Flayer guns so gunnery links them.
+  - path: Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml
+    module: null
+    reason: Hardpoint mapped under the asteroid ship's AK570 so gunnery links it.
   - path: Resources/Maps/_Mono/POI/tsfmchalcyon.yml
     module: ArmorBalance
     reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
@@ -2326,3 +2326,120 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/TSF/xiphos.yml
     module: ArmorBalance
     reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/Textures/ADT/
+    module: DecorImport
+    reason: Decor sprites, ported from ADT.
+  - path: Resources/Textures/Backmen/
+    module: DecorImport
+    reason: Decor sprites, ported from Backmen.
+  - path: Resources/Textures/Corvax/
+    module: DecorImport
+    reason: Decor sprites, ported from Corvax.
+  - path: Resources/Textures/_CP14/
+    module: DecorImport
+    reason: Decor sprites, ported from CrystallEdge.
+  - path: Resources/Textures/_DEN/
+    module: DecorImport
+    reason: Decor sprites, ported from Delta-V.
+  - path: Resources/Textures/_DV/CosmicCult/
+    module: DecorImport
+    reason: Decor sprites, ported from Delta-V.
+  - path: Resources/Textures/_DV/Objects/Decoration/
+    module: DecorImport
+    reason: Decor sprites, ported from Delta-V.
+  - path: Resources/Textures/_Euphoria/
+    module: DecorImport
+    reason: Decor sprites, ported from Panta Rhei.
+  - path: Resources/Textures/_Floof/Structures/
+    module: DecorImport
+    reason: Decor sprites, ported from Panta Rhei.
+  - path: Resources/Textures/_Goobstation/Structures/Decoration/
+    module: DecorImport
+    reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Goobstation/Structures/Specific/
+    module: DecorImport
+    reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Impstation/Structures/Furniture/
+    module: DecorImport
+    reason: Decor sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Structures/Lighting/
+    module: DecorImport
+    reason: Decor sprites, ported from Impstation.
+  - path: Resources/Textures/_Lavaland/
+    module: DecorImport
+    reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Nuclear14/Structures/Furniture/Street_Furniture/
+    module: DecorImport
+    reason: Decor sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Furniture/schoolchair.rsi/
+    module: DecorImport
+    reason: Decor sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Paradise/
+    module: DecorImport
+    reason: Decor sprites, ported from Starlight.
+  - path: Resources/Textures/_RMC14/Decals/
+    module: DecorImport
+    reason: Decor sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Objects/Flora/
+    module: DecorImport
+    reason: Decor sprites, ported from Einstein Engines.
+  - path: Resources/Textures/_RMC14/Objects/Medical/
+    module: DecorImport
+    reason: Decor sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Flora/
+    module: DecorImport
+    reason: Decor sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Furniture/
+    module: DecorImport
+    reason: Decor sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Wallmounts/Lighting/
+    module: DecorImport
+    reason: Decor sprites, ported from RMC-14.
+  - path: Resources/Textures/_Shitmed/Structures/Furniture/
+    module: DecorImport
+    reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Starlight/Decals/
+    module: DecorImport
+    reason: Decor sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Structures/Furniture/
+    module: DecorImport
+    reason: Decor sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Structures/Wallmounts/
+    module: DecorImport
+    reason: Decor sprites, ported from Starlight.
+  - path: Resources/Textures/_White/Decals/
+    module: DecorImport
+    reason: Decor sprites, ported from White Dream.
+  - path: Resources/Textures/_White/Objects/Decoration/
+    module: DecorImport
+    reason: Decor sprites, ported from White Dream.
+  - path: Resources/Audio/_CP14/Effects/bone_crush1.ogg
+    module: DecorImport
+    reason: Bone crack sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/bone_crush2.ogg
+    module: DecorImport
+    reason: Bone crack sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/Footsteps/bones1.ogg
+    module: DecorImport
+    reason: Bone footstep sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/Footsteps/bones2.ogg
+    module: DecorImport
+    reason: Bone footstep sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/Footsteps/bones3.ogg
+    module: DecorImport
+    reason: Bone footstep sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/Footsteps/bones4.ogg
+    module: DecorImport
+    reason: Bone footstep sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Items/grass_gather.ogg
+    module: DecorImport
+    reason: Grass hit sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Items/grass_gather2.ogg
+    module: DecorImport
+    reason: Grass hit sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Items/grass_gather3.ogg
+    module: DecorImport
+    reason: Grass hit sound, ported from CrystallEdge.
+  - path: Resources/Audio/_Starlight/Effects/Machinery/electric_buzz.ogg
+    module: DecorImport
+    reason: Bar sign buzz sound, ported from Starlight.

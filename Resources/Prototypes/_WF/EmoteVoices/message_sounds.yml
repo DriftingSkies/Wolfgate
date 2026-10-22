@@ -1,0 +1,225 @@
+# Message sounds a character can pick in the creator: the chatter played when they speak. Every speechSounds set a
+# species uses is here, plus HardLight's (Moth, Wawa, Gorilla, Sheleg).
+
+- type: speechSounds
+  id: WFMoth
+  saySound:
+    path: /Audio/_WF/EmoteVoices/Talk/moth.ogg
+  askSound:
+    path: /Audio/_WF/EmoteVoices/Talk/moth_ask.ogg
+  exclaimSound:
+    path: /Audio/_WF/EmoteVoices/Talk/moth_exclaim.ogg
+
+- type: speechSounds
+  id: WFWawa
+  saySound:
+    path: /Audio/_WF/EmoteVoices/Talk/wawa_statement.ogg
+  askSound:
+    path: /Audio/_WF/EmoteVoices/Talk/wawa_question.ogg
+  exclaimSound:
+    path: /Audio/_WF/EmoteVoices/Talk/wawa_exclaim.ogg
+
+- type: speechSounds
+  id: WFGorilla
+  saySound:
+    path: /Audio/_WF/EmoteVoices/Talk/gorilla.ogg
+  askSound:
+    path: /Audio/_WF/EmoteVoices/Talk/gorilla.ogg
+  exclaimSound:
+    path: /Audio/_WF/EmoteVoices/Talk/gorilla.ogg
+
+- type: speechSounds
+  id: WFSheleg
+  saySound:
+    path: /Audio/_WF/EmoteVoices/Talk/sheleg.ogg
+  askSound:
+    path: /Audio/_WF/EmoteVoices/Talk/sheleg_ask.ogg
+  exclaimSound:
+    path: /Audio/_WF/EmoteVoices/Talk/sheleg_exclaim.ogg
+
+- type: wfMessageSound
+  id: WFMessageSilent
+  name: message-sound-name-silent
+
+# Voices
+
+- type: wfMessageSound
+  id: WFMessageAlto
+  name: message-sound-name-alto
+  sounds: Alto
+
+- type: wfMessageSound
+  id: WFMessageTenor
+  name: message-sound-name-tenor
+  sounds: Tenor
+
+- type: wfMessageSound
+  id: WFMessageBaritone
+  name: message-sound-name-baritone
+  sounds: Baritone
+
+- type: wfMessageSound
+  id: WFMessageBass
+  name: message-sound-name-bass
+  sounds: Bass
+
+# Species
+
+- type: wfMessageSound
+  id: WFMessageArachnid
+  name: message-sound-name-arachnid
+  sounds: Arachnid
+
+- type: wfMessageSound
+  id: WFMessageAvali
+  name: message-sound-name-avali
+  sounds: MaleAvali
+
+- type: wfMessageSound
+  id: WFMessageAvaliAlt
+  name: message-sound-name-avali-alt
+  sounds: FemaleAvali
+
+- type: wfMessageSound
+  id: WFMessageChitinid
+  name: message-sound-name-chitinid
+  sounds: Chitinid
+
+- type: wfMessageSound
+  id: WFMessageHarpy
+  name: message-sound-name-harpy
+  sounds: Harpy
+
+- type: wfMessageSound
+  id: WFMessageHydrakin
+  name: message-sound-name-hydrakin
+  sounds: Hydrakin
+
+- type: wfMessageSound
+  id: WFMessageMoth
+  name: message-sound-name-moth
+  sounds: WFMoth
+
+- type: wfMessageSound
+  id: WFMessageReptilian
+  name: message-sound-name-reptilian
+  sounds: Lizard
+
+- type: wfMessageSound
+  id: WFMessageResomi
+  name: message-sound-name-resomi
+  sounds: UnisexResomi
+
+- type: wfMessageSound
+  id: WFMessageRodentia
+  name: message-sound-name-rodentia
+  sounds: Squeak
+
+- type: wfMessageSound
+  id: WFMessageShadekin
+  name: message-sound-name-shadekin
+  sounds: Shadowkin
+
+- type: wfMessageSound
+  id: WFMessageSheleg
+  name: message-sound-name-sheleg
+  sounds: WFSheleg
+
+- type: wfMessageSound
+  id: WFMessageSlime
+  name: message-sound-name-slime
+  sounds: Slime
+
+- type: wfMessageSound
+  id: WFMessageVox
+  name: message-sound-name-vox
+  sounds: Vox
+
+- type: wfMessageSound
+  id: WFMessageVulpkanin
+  name: message-sound-name-vulpkanin
+  sounds: Vulpkanin
+
+- type: wfMessageSound
+  id: WFMessageXenonid
+  name: message-sound-name-xenonid
+  sounds: Xenonid
+
+- type: wfMessageSound
+  id: WFMessageXenonidLarva
+  name: message-sound-name-xenonid-larva
+  sounds: XenonidLarva
+
+# Machines
+
+- type: wfMessageSound
+  id: WFMessageRobotic
+  name: message-sound-name-robotic
+  sounds: Pai
+
+- type: wfMessageSound
+  id: WFMessageCyborg
+  name: message-sound-name-cyborg
+  sounds: Borg
+
+- type: wfMessageSound
+  id: WFMessageSyndicateCyborg
+  name: message-sound-name-syndicate-cyborg
+  sounds: SyndieBorg
+
+- type: wfMessageSound
+  id: WFMessageXenoborg
+  name: message-sound-name-xenoborg
+  sounds: Xenoborg
+
+# Animals
+
+- type: wfMessageSound
+  id: WFMessageCat
+  name: message-sound-name-cat
+  sounds: Cat
+
+- type: wfMessageSound
+  id: WFMessageCatAlt
+  name: message-sound-name-cat-alt
+  sounds: NfsdCat
+
+- type: wfMessageSound
+  id: WFMessageChicken
+  name: message-sound-name-chicken
+  sounds: Cluck
+
+- type: wfMessageSound
+  id: WFMessageDog
+  name: message-sound-name-dog
+  sounds: Dog
+
+- type: wfMessageSound
+  id: WFMessageFox
+  name: message-sound-name-fox
+  sounds: Fox
+
+- type: wfMessageSound
+  id: WFMessageGoat
+  name: message-sound-name-goat
+  sounds: Goat
+
+- type: wfMessageSound
+  id: WFMessageGorilla
+  name: message-sound-name-gorilla
+  sounds: WFGorilla
+
+- type: wfMessageSound
+  id: WFMessageMonkey
+  name: message-sound-name-monkey
+  sounds: Monkey
+
+- type: wfMessageSound
+  id: WFMessageParrot
+  name: message-sound-name-parrot
+  sounds: Parrot
+
+- type: wfMessageSound
+  id: WFMessageWawa
+  name: message-sound-name-wawa
+  sounds: WFWawa

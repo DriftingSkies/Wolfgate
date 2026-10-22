@@ -1533,6 +1533,10 @@
   parent: MobBaseAncestor
   description: New church of neo-darwinists actually believe that EVERY animal evolved from a monkey. Tastes like pork, and killing them is both fun and relaxing.
   components:
+  # WOLFGATE(Xenonids): RMC monkeys are hosts for facehuggers, can be nested and devoured
+  - type: Infectable
+  - type: XenoNestable
+  - type: Devourable
   - type: NameIdentifier
     group: Monkey
   - type: Speech
@@ -1572,6 +1576,10 @@
   description: New church of neo-darwinists actually believe that EVERY animal evolved from a monkey. Tastes like pork, and killing them is both fun and relaxing.
   suffix: syndicate base
   components:
+  # WOLFGATE(Xenonids): RMC monkeys are hosts for facehuggers, can be nested and devoured
+  - type: Infectable
+  - type: XenoNestable
+  - type: Devourable
   - type: NameIdentifier
     group: Monkey
   - type: SentienceTarget

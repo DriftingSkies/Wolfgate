@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Administration.Systems;
@@ -264,7 +265,7 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
             // A role the profile has no loadout for keeps its own mob and gear, so nobody is spawned naked.
             var body = loadout != null && profile != null && profile.Bodies.Count > 0 ? _random.Pick(profile.Bodies) : (EntProtoId?) null;
             var uid = _crew.SpawnCrewman(post.Role, new EntityCoordinates(grid, post.Position), mission.Group, loadout, body,
-                profile != null ? FlavourName(profile) : null);
+                profile != null ? FlavourName(profile) : null, profile?.ID);
             if (uid is not { } mob)
                 continue;
             if (profile != null && profile.Components.Count > 0)
@@ -308,6 +309,66 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
     }
 
     /// <summary>Updates an existing crew without requiring a new spawn roster.</summary>
+    /// <summary>Records on a grid the profile its crew flies under, for the rules a profile sets between its own ships.</summary>
+    public void MarkProfile(EntityUid grid, ProtoId<WFCrewProfilePrototype>? profileId)
+    {
+        if (profileId is { } id && _prototypes.HasIndex(id))
+            EnsureComp<WFCrewShipProfileComponent>(grid).Profile = id;
+    }
+
+    /// <summary>Hull parts waiting to be swapped, worked off a few each tick so crewing a ship never costs one long tick.</summary>
+    private readonly Queue<(EntityUid Old, EntProtoId New)> _hullSwaps = new();
+
+    /// <summary>How long one tick may spend swapping hull parts.</summary>
+    private static readonly TimeSpan HullSwapBudget = TimeSpan.FromMilliseconds(2);
+
+    /// <summary>
+    /// Queues the hull parts a profile swaps out on a grid, to be replaced in place and anchored as they were over the
+    /// next ticks. Returns how many.
+    /// </summary>
+    public int ApplyHullSwaps(EntityUid grid, ProtoId<WFCrewProfilePrototype>? profileId)
+    {
+        if (profileId is not { } id || !_prototypes.TryIndex(id, out var profile) || profile.HullSwaps.Count == 0)
+            return 0;
+
+        // Hull parts are anchored, so they are the grid's own children.
+        var count = 0;
+        var children = Transform(grid).ChildEnumerator;
+        while (children.MoveNext(out var uid))
+        {
+            if (MetaData(uid).EntityPrototype is not { } proto || !profile.HullSwaps.TryGetValue(proto.ID, out var replacement))
+                continue;
+            _hullSwaps.Enqueue((uid, replacement));
+            count++;
+        }
+
+        return count;
+    }
+
+    /// <summary>Whether any hull part is still waiting to be swapped.</summary>
+    public bool HullSwapsPending => _hullSwaps.Count > 0;
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        if (_hullSwaps.Count == 0)
+            return;
+
+        var watch = Stopwatch.StartNew();
+        while (watch.Elapsed < HullSwapBudget && _hullSwaps.TryDequeue(out var swap))
+        {
+            if (TerminatingOrDeleted(swap.Old))
+                continue;
+            var xform = Transform(swap.Old);
+            var rotation = xform.LocalRotation;
+            var spawned = Spawn(swap.New, xform.Coordinates);
+            QueueDel(swap.Old);
+            _transform.SetLocalRotation(spawned, rotation);
+            if (!Transform(spawned).Anchored)
+                _transform.AnchorEntity(spawned);
+        }
+    }
+
     public bool TryApplyMission(EntityUid grid, WFCrewMission mission)
     {
         if (!ValidateMission(grid, mission))
@@ -339,6 +400,7 @@ public sealed partial class WFCrewSetupSystem : EntitySystem
         if (TryComp<WFPilotDutyComponent>(mob, out var pilot))
         {
             pilot.ReactToAttacks = mission.HeaveTo;
+            pilot.FleeAttackers = mission.FleeAttackers;
             pilot.FaceThreats = mission.FaceThreats;
             _pilots.SetNavigation(mob, mission.Navigation);
         }

@@ -1,0 +1,177 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant0
+  components:
+  - type: Sprite
+    state: applebush
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: applebush
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant6
+  components:
+  - type: Sprite
+    state: pottedplant_6
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_6
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant9
+  components:
+  - type: Sprite
+    state: pottedplant_9
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_9
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant10
+  components:
+  - type: Sprite
+    state: pottedplant_10
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_10
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant13
+  components:
+  - type: Sprite
+    state: pottedplant_13
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_13
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant19
+  components:
+  - type: Sprite
+    state: pottedplant_19
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_19
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant20
+  components:
+  - type: Sprite
+    state: pottedplant_20
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_20
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant27
+  components:
+  - type: Sprite
+    state: pottedplant_27
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_27
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant28
+  components:
+  - type: Sprite
+    state: pottedplant_28
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_28
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant29
+  components:
+  - type: Sprite
+    state: pottedplant_29
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_29
+
+- type: entity
+  parent: PottedPlantBase
+  id: CMPottedPlant30
+  components:
+  - type: Sprite
+    state: pottedplant_30
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+  - type: SecretStash
+    maxItemSize: Tiny
+  - type: ContainerContainer
+    containers:
+      stash: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/potted_plants.rsi
+    state: pottedplant_30
+# WOLFGATE END

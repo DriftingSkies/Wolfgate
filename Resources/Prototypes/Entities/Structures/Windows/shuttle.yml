@@ -3,6 +3,11 @@
   name: shuttle window
   parent: Window # Frontier: WindowRCDResistant<Window
   components:
+  # WOLFGATE(Xenonids): sharp xeno claws break a shuttle window in eight hits; its 2000 health would otherwise take over a hundred
+  - type: ReceiverXenoClaws
+    maxHealth: 2000
+    hitsToDestroy: 8
+    minimumClawStrength: Sharp
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/shuttle_window.rsi

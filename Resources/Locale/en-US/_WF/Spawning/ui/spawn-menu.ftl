@@ -20,6 +20,7 @@ wf-spawn-node-recent = Recent
 wf-spawn-group-mobs = Mobs
 wf-spawn-group-weapons = Weapons
 wf-spawn-group-vehicles = Vehicles
+wf-spawn-group-xenonids = Xenonids
 wf-spawn-group-clothing = Clothing
 wf-spawn-group-engineering = Engineering
 wf-spawn-group-medical = Medical
@@ -47,6 +48,8 @@ wf-spawn-category-vehicles-drivable = Vehicles
 wf-spawn-category-vehicle-parts = Parts and ammo
 wf-spawn-category-vehicle-interiors = Interiors and fixtures
 wf-spawn-category-vehicle-scenery = Scenery vehicles
+wf-spawn-category-xeno-castes = Castes
+wf-spawn-category-xeno-hive = Hive, eggs and weeds
 
 wf-spawn-category-clothing-head = Head
 wf-spawn-category-clothing-eyes = Eyes & Masks

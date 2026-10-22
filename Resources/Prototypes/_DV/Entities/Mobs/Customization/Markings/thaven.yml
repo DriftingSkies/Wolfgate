@@ -10,7 +10,7 @@
   id: ThavenCheekBarbels
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoThaven, WFCanine]
+  speciesRestriction: [Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   coloring: #imp
     default:
       type:
@@ -24,7 +24,7 @@
   id: ThavenEyebrowBarbels
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoThaven, WFCanine]
+  speciesRestriction: [Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
   coloring: #imp
     default:
       type:

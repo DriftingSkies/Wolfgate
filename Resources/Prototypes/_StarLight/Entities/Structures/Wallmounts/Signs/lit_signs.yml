@@ -1,0 +1,160 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  id: BarSignLights
+  parent: Poweredlight
+  suffix: On
+  placement:
+    mode: SnapgridCenter
+    snap: [ Wallmount ]
+  components:
+  - type: AmbientSound #SL
+    volume: -7 #SL
+    range: 4 #SL
+    sound: #SL
+      path: /Audio/_Starlight/Effects/Machinery/electric_buzz.ogg #SL
+  - type: WallMount
+    arc: 360
+  - type: Sprite
+    sprite: _Starlight/Structures/Wallmounts/bar_light.rsi
+    drawdepth: WallMountedItems
+    layers:
+    - map: [ enum.PoweredLightLayers.Base ]
+      state: base
+    - map: [ enum.PoweredLightLayers.Glow ]
+      state: glow
+      shader: unshaded
+    state: base
+  - type: Appearance
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalGlassBreak
+  - type: ApcPowerReceiver
+    powerLoad: 100
+  - type: PoweredLight
+    bulb: Bulb
+    "on": true
+    hasLampOnSpawn: LightBulb
+  - type: DamageOnInteract
+    damage:
+      types:
+        Heat: 1
+    popupText: powered-light-component-burn-hand
+  - type: PointLight
+    radius: 1
+    energy: 0.2
+    softness: 3
+    offset: "0, 0"
+    enabled: true
+  - type: PoweredLightVisuals
+    blinkingSound:
+      path: /Audio/Machines/light_tube_on.ogg
+    spriteStateMap:
+      empty: base
+      "off": base
+      "on": base
+      broken: base
+      burned: base
+  - type: Anchorable
+    flags: [ Anchorable ]
+  - type: Rotatable
+  - type: Physics
+    canCollide: false
+    bodyType: Static
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ Structure ]
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        collection: GlassSmash
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: ExtensionCableReceiver
+  - type: LightningTarget
+    priority: 1
+  - type: ESSparkOnHit
+    prob: 0.25
+    count: 2
+  - type: ContainerContainer
+    containers:
+      light_bulb: !type:ContainerSlot {}
+  - type: DeviceLinkSink
+    ports: [ "On", "Off", Toggle ]
+  - type: Construction
+    graph: DecorBuildBarSignLights
+    node: built
+  - type: StaticPrice
+    price: 12
+  - type: Icon
+    sprite: _Starlight/Structures/Wallmounts/bar_light.rsi
+    state: base
+
+- type: entity
+  id: ClinicSignLights
+  parent: [ BarSignLights ]
+  suffix: On
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Wallmounts/clinic.rsi
+    drawdepth: WallMountedItems
+    layers:
+    - map: ["enum.PoweredLightLayers.Base"]
+      state: base
+    - map: ["enum.PoweredLightLayers.Glow"]
+      state: glow
+      shader: unshaded
+    state: base
+  - type: Icon
+    sprite: _Starlight/Structures/Wallmounts/clinic.rsi
+    state: base
+
+- type: entity
+  id: OnAirSignLights
+  parent: [ BarSignLights ]
+  suffix: On
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Wallmounts/on_air.rsi
+    drawdepth: WallMountedItems
+    layers:
+    - map: ["enum.PoweredLightLayers.Base"]
+      state: base
+    - map: ["enum.PoweredLightLayers.Glow"]
+      state: glow
+      shader: unshaded
+    state: base
+  - type: Icon
+    sprite: _Starlight/Structures/Wallmounts/on_air.rsi
+    state: base
+
+- type: entity
+  id: OpenSignLights
+  parent: [ BarSignLights ]
+  suffix: On
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Wallmounts/open.rsi
+    drawdepth: WallMountedItems
+    layers:
+    - map: ["enum.PoweredLightLayers.Base"]
+      state: base
+    - map: ["enum.PoweredLightLayers.Glow"]
+      state: glow
+      shader: unshaded
+    state: base
+  - type: Icon
+    sprite: _Starlight/Structures/Wallmounts/open.rsi
+    state: base
+# WOLFGATE END

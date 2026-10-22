@@ -1,0 +1,127 @@
+# Plasteel barricade and its upgrades.
+- type: entity
+  parent: CMBarricadeMetal
+  id: RMCBarricadePlasteel
+  name: plasteel barricade
+  description: A sturdy and easily assembled barricade made of reinforced plasteel plates, the pinnacle of strongpoints. Use a welder to repair.
+  components:
+  - type: Sprite
+    layers:
+    - state: DamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.DamageOverlay" ]
+      sprite: _WF/Barricades/Structures/plasteel_barricade_cracks.rsi
+    - state: plasteel_wire
+      map: [ "barbWired" ]
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.BarbedWireVisualLayers.Wire:
+        barbWired:
+          UnWired: { state: plasteel_wire, visible: false }
+          WiredClosed: { state: plasteel_wire, visible: true }
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 900
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetPlasteel1:
+            min: 3
+            max: 3
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DamageVisuals
+    damageDivisor: 56.25
+  - type: Construction
+    graph: BarricadePlasteelGraph
+    node: nodePlasteel
+  - type: RMCConstructionUpgradeTarget
+    upgrades: [ RMCExplosiveUpgradePlasteel, RMCBiohazardUpgradePlasteel, RMCBruteUpgradePlasteel ]
+  - type: Tag
+    tags:
+    - RMCPlasteelBarricade
+
+- type: entity
+  parent: RMCBarricadePlasteel
+  id: RMCBarricadeBurnPlasteel
+  suffix: Biohazard
+  components:
+  - type: Sprite
+    layers:
+    - state: DamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.DamageOverlay" ]
+      sprite: _WF/Barricades/Structures/plasteel_barricade_cracks.rsi
+    - state: AdditionalDamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.AdditionalDamageOverlay" ]
+      sprite: _WF/Barricades/Structures/burn_barricade_cracks.rsi
+    - state: plasteel_wire
+      map: [ "barbWired" ]
+      visible: false
+  - type: DamageVisuals
+    targetLayers:
+    - enum.RMCDamageOverlayVisuals.DamageOverlay
+    - enum.RMCDamageOverlayVisuals.AdditionalDamageOverlay
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMBurnBarricade
+  - type: RMCConstructionUpgradeTarget
+    upgrades: null
+    downgrade: RMCBiohazardUpgradePlasteel
+
+- type: entity
+  parent: RMCBarricadePlasteel
+  id: RMCBarricadeBrutePlasteel
+  suffix: Reinforced
+  components:
+  - type: Sprite
+    layers:
+    - state: DamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.DamageOverlay" ]
+      sprite: _WF/Barricades/Structures/plasteel_barricade_cracks.rsi
+    - state: AdditionalDamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.AdditionalDamageOverlay" ]
+      sprite: _WF/Barricades/Structures/brute_barricade_cracks.rsi
+    - state: plasteel_wire
+      map: [ "barbWired" ]
+      visible: false
+  - type: DamageVisuals
+    targetLayers:
+    - enum.RMCDamageOverlayVisuals.DamageOverlay
+    - enum.RMCDamageOverlayVisuals.AdditionalDamageOverlay
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMBruteBarricade
+  - type: RMCConstructionUpgradeTarget
+    upgrades: null
+    downgrade: RMCBruteUpgradePlasteel
+
+- type: entity
+  parent: RMCBarricadePlasteel
+  id: RMCBarricadeExplosivePlasteel
+  suffix: Composite
+  components:
+  - type: Sprite
+    layers:
+    - state: DamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.DamageOverlay" ]
+      sprite: _WF/Barricades/Structures/plasteel_barricade_cracks.rsi
+    - state: AdditionalDamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.AdditionalDamageOverlay" ]
+      sprite: _WF/Barricades/Structures/explosive_barricade_cracks.rsi
+    - state: plasteel_wire
+      map: [ "barbWired" ]
+      visible: false
+  - type: DamageVisuals
+    targetLayers:
+    - enum.RMCDamageOverlayVisuals.DamageOverlay
+    - enum.RMCDamageOverlayVisuals.AdditionalDamageOverlay
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: RMCConstructionUpgradeTarget
+    upgrades: null
+    downgrade: RMCExplosiveUpgradePlasteel

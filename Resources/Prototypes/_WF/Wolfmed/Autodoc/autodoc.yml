@@ -213,12 +213,13 @@
   - type: MachineBoard
     prototype: WFMachineAutodoc
     requirements:
-      Manipulator: 2
+      Manipulator: 4
       MatterBin: 2
-      Capacitor: 1
+      Capacitor: 4
     stackRequirements:
-      Glass: 5
-      Cable: 2
+      Plasteel: 10
+      Glass: 10
+      Cable: 10
 
 - type: entity
   abstract: true
@@ -231,7 +232,8 @@
     sprite: Objects/Specific/Research/researchdisk.rsi
     state: icon
   - type: StaticPrice
-    price: 400
+    price: 1500
+    vendPrice: 15000 # bought from John Wolfgate or a vendor
 
 - type: entity
   parent: WFBaseAutodocProgramDisk
@@ -288,7 +290,8 @@
     state: icon
   - type: AutodocDefibModule
   - type: StaticPrice
-    price: 600
+    price: 2000
+    vendPrice: 25000 # bought from John Wolfgate or a vendor
 
 - type: entity
   parent: BaseItem
@@ -302,4 +305,5 @@
     color: "#6fd6ff"
   - type: AutodocAutofixModule
   - type: StaticPrice
-    price: 600
+    price: 2000
+    vendPrice: 25000 # bought from John Wolfgate or a vendor

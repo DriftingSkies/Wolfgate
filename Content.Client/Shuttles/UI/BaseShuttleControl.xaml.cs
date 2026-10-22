@@ -488,7 +488,7 @@ public partial class BaseShuttleControl : MapGridControl
                     {
                         var idxVec = dirFlag.AsDir().ToIntVec();
                         var arrIdx = GetDirIndex(idxVec);
-                        _gridDirEdges[index][arrIdx] = new Box2(wasPrev, vert);
+                        _gridDirEdges[index][arrIdx] = new Box2(Vector2.Min(wasPrev, vert), Vector2.Max(wasPrev, vert)); // WOLFGATE: v291 Box2 asserts on inverted corners in debug builds; order them
                     }
                 }
             }

@@ -1,0 +1,430 @@
+# Wood, snow, sandbag and HESCO barricades, turnstiles, handrails and stacked barricades.
+- type: entity
+  parent: CMBarricadeBase
+  id: RMCBarricadeWood
+  name: wooden barricade
+  description: A wall made out of wooden planks nailed together. Not very sturdy, but can provide some concealment.
+  components:
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    minContinueWeightClass: Medium
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    state: wooden
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialWoodPlank1:
+            min: 3
+            max: 3
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Construction
+    graph: BarricadeWoodGraph
+    node: nodeWood
+  - type: Climbable
+
+- type: entity
+  parent: CMBarricadeBase
+  id: RMCBarricadeSnow
+  name: snow barricade
+  description: A mound of snow shaped into a sloped wall. Statistically better than thin air as cover.
+  components:
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    minContinueWeightClass: Medium
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    layers:
+    - state: snow
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/Footsteps/snowstep3.ogg
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Climbable
+
+- type: entity
+  parent: CMBarricadeBase
+  id: CMBarricadeSandbag
+  name: sandbag barricade
+  description: A makeshift barricade made out of the sand from the ground. Tough to beat but easy to pierce.
+  components:
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    minContinueWeightClass: Medium
+  - type: BarricadeSandbag
+  - type: Climbable
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/Footsteps/snowstep1.ogg
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    layers:
+    - state: DamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.DamageOverlay" ]
+      sprite: _WF/Barricades/Structures/sandbag_cracks.rsi
+    - state: sandbag_wire
+      map: [ "barbWired" ]
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.BarbedWireVisualLayers.Wire:
+        barbWired:
+          UnWired: { state: sandbag_wire, visible: false }
+          WiredClosed: { state: sandbag_wire, visible: true }
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMSandbag
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 450
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DamageVisuals
+    thresholds: [4, 8, 12]
+    damageDivisor: 28.125
+    trackAllDamage: true
+    overlay: false
+    targetLayers:
+    - enum.RMCDamageOverlayVisuals.DamageOverlay
+    damageGroup: Brute
+  - type: Barbed
+    thornsDamage:
+      types:
+        Slash: 10
+
+- type: entity
+  parent: CMBarricadeSandbag
+  id: RMCBarricadeSandbagSoro
+  suffix: Brown
+  components:
+  - type: Sprite
+    color: "#a98c7c"
+
+- type: entity
+  parent: CMBarricadeBase
+  id: CMBarricadeHesco
+  name: HESCO barricade
+  description: A sandbag wall. Provides better protection than a makeshift sandbag barricade, but requires specialized equipment to set up.
+  components:
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    minContinueWeightClass: Medium
+  - type: BarricadeSandbag
+  - type: Climbable
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/Footsteps/snowstep1.ogg
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    layers:
+    - state: hesco
+      color: "#a98c7c"
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMHescoBarricade
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 500
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: CMBarricadeBase
+  id: CMBarricadeTurnstile
+  name: turnstile
+  description: A railing to keep a queue in line. It only lets people through from behind.
+  components:
+  - type: Anchorable
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    state: turnstile
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Construction
+    graph: BarricadeTurnstileGraph
+    node: nodeTurnstile
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,-0.24"
+        density: 500
+        mask:
+        - FullTileMask
+        layer:
+        - TableLayer
+      # Clears a mob's pass once it has left the tile.
+      turnstileSensor:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,0.49"
+        hard: false
+        layer:
+        - TableLayer
+  - type: BarricadeTurnstile
+    processWhitelist:
+      components:
+      - MobState
+      - Pullable
+
+- type: entity
+  parent: CMBarricadeTurnstile
+  id: CMBarricadeTurnstileMed
+  description: A railing to keep a queue in line. It only lets people through from behind. This one is meant for a medical bay.
+  components:
+  - type: Sprite
+    state: turnstile_med
+
+- type: entity
+  parent: CMBarricadeBase
+  id: RMCBarricadeHandrail
+  name: handrail
+  description: A railing, for your hands. Woooow.
+  components:
+  - type: VehicleSmashable
+  - type: Anchorable
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    state: handrail_a_0
+  - type: Repairable
+    doAfterDelay: 10
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Climbable
+  - type: Construction
+    graph: BarricadeHandrailGraph
+    node: nodeHandrail
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHandrailAlt
+  components:
+  - type: Sprite
+    state: handrail_b_0
+
+- type: entity
+  parent: RMCBarricadeHandrailAlt
+  id: RMCBarricadeHandrailAltDrawdepth
+  suffix: Layers over Platforms
+  components:
+  - type: Sprite
+    drawdepth: SmallObjects
+  - type: RotationDrawDepth
+    defaultDrawDepth: SmallObjects
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHandrailMed
+  components:
+  - type: Sprite
+    state: handrail_med
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHandrailStrata
+  components:
+  - type: Sprite
+    state: handrail_strata
+
+- type: entity
+  parent: RMCBarricadeHandrailStrata
+  id: RMCBarricadeHandrailStrataAltDrawdepth
+  suffix: Layers over Platforms
+  components:
+  - type: Sprite
+    drawdepth: SmallObjects
+  - type: RotationDrawDepth
+    defaultDrawDepth: SmallObjects
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHandrailKutjevo
+  components:
+  - type: Sprite
+    state: hr_kutjevo
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeWireRail
+  components:
+  - type: Sprite
+    state: wire_rail
+
+- type: entity
+  parent: RMCBarricadeWireRail
+  id: RMCBarricadeWireRailAltDrawdepth
+  suffix: Layers over Platforms
+  components:
+  - type: Sprite
+    drawdepth: SmallObjects
+  - type: RotationDrawDepth
+    defaultDrawDepth: SmallObjects
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHybrisa
+  components:
+  - type: Sprite
+    state: handrail_hybrisa
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHybrisaCenterRoad
+  components:
+  - type: Sprite
+    state: centerroadbarrier2
+
+- type: entity
+  parent: RMCBarricadeHybrisaCenterRoad
+  id: RMCBarricadeHybrisaCenterRoadDouble
+  suffix: Double
+  components:
+  - type: Sprite
+    offset: 0,-0.15
+    state: centerroadbarrier1
+
+- type: entity
+  parent: RMCBarricadeHandrail
+  id: RMCBarricadeHybrisaPlasticRoadBarrier
+  name: plastic road barrier
+  components:
+  - type: Sprite
+    state: plasticroadbarrierred
+  - type: Construction
+    graph: RMCBarricadeHandrailPlasticGraph
+    node: nodeHandrail
+
+- type: entity
+  parent: RMCBarricadeHybrisaPlasticRoadBarrier
+  id: RMCBarricadeHybrisaPlasticRoadBarrierBlue
+  components:
+  - type: Sprite
+    state: plasticroadbarrierblue
+
+- type: entity
+  parent: RMCBarricadeHybrisaPlasticRoadBarrier
+  id: RMCBarricadeHybrisaPlasticRoadBarrierBlack
+  components:
+  - type: Sprite
+    state: plasticroadbarrierblack
+
+# Two metal barricades stacked into a wall; it spans the tile edge, so it has a mirrored version.
+- type: entity
+  parent: BaseStructure
+  id: RMCBarricadeStacked
+  name: metal barricades
+  description: Two metal barricades stacked on top of each other to make a makeshift wall.
+  components:
+  - type: Rotatable
+  - type: Appearance
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,-0.38"
+        density: 500
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: RotationDrawDepth
+  - type: Barricade
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMBarricade
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 900
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 4
+            max: 4
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/stacked_barricade.rsi
+    state: metal
+    drawdepth: WallTops
+    offset: -0.5, 0
+
+- type: entity
+  parent: RMCBarricadeStacked
+  id: RMCBarricadeStackedFlipped
+  components:
+  - type: Sprite
+    state: metal_f
+    offset: 0.5, 0

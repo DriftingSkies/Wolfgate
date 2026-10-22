@@ -270,3 +270,9 @@ wf-crew-coward-cry-4 = Take what you want, just leave me be!
 wf-crew-coward-cry-5 = Somebody, anybody, help us!
 
 wf-crew-shove = {CAPITALIZE(THE($user))} shoves {THE($crate)} aside.
+
+# Visitors' conduct aboard an NPC ship: a gun out, and theft.
+wf-crew-conduct-brandish-warn = Put that weapon away. You have ten seconds.
+wf-crew-conduct-brandish-complied = Good. Keep it that way.
+wf-crew-conduct-brandish-hostile = That's it. Take them down!
+wf-crew-conduct-theft = Thief! Put that back!

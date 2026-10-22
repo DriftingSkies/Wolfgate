@@ -4,6 +4,9 @@
   id: NukeDisk
   description: A nuclear auth disk, capable of arming a nuke if used along with a code. Note from nanotrasen reads "THIS IS YOUR MOST IMPORTANT POSESSION"
   components:
+  # WOLFGATE(Xenonids): xeno acid melts any item by default; not this one
+  - type: Corrodible
+    isCorrodible: false
   # Goobstation edit start
   - type: EmitSoundOnPickup
     sound:

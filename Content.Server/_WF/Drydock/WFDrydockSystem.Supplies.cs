@@ -24,6 +24,9 @@ public sealed partial class WFDrydockSystem
     /// <summary>Tiles out from a crane searched for free floor to leave things on.</summary>
     private const int DropSearch = 3;
 
+    /// <summary>Steps of the walk out from a crane to free floor.</summary>
+    private static readonly Vector2i[] DropSteps = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1) };
+
     /// <summary>
     /// Pays the items' full-price refit units with matching parts from the cranes' parts silos where there are any,
     /// taking each unit's materials off the item's bill.
@@ -233,8 +236,8 @@ public sealed partial class WFDrydockSystem
     }
 
     /// <summary>
-    /// Where things a crane can't store are left: the free floor tile nearest it, so they aren't hidden under its
-    /// footprint. The crane's own position when no tile nearby is free.
+    /// Where things a crane can't store are left: the free floor tile nearest it by walking, so they aren't hidden under
+    /// its footprint or put through a wall. The crane's own position when no tile nearby is free.
     /// </summary>
     private EntityCoordinates DropSpot(EntityUid crane)
     {
@@ -242,26 +245,34 @@ public sealed partial class WFDrydockSystem
         if (xform.GridUid is not { } gridUid || !TryComp<MapGridComponent>(gridUid, out var grid))
             return xform.Coordinates;
 
+        // The walk starts from every tile under the crane, which its own body blocks.
+        var footprint = _lookup.GetAABBNoContainer(crane, xform.LocalPosition, xform.LocalRotation).Enlarged(-0.1f);
         var origin = _map.TileIndicesFor(gridUid, grid, xform.Coordinates);
-        Vector2i? best = null;
-        var bestDistance = int.MaxValue;
-        for (var dx = -DropSearch; dx <= DropSearch; dx++)
+        var visited = new HashSet<Vector2i> { origin };
+        var queue = new Queue<Vector2i>();
+        queue.Enqueue(origin);
+        while (queue.TryDequeue(out var current))
         {
-            for (var dy = -DropSearch; dy <= DropSearch; dy++)
+            foreach (var step in DropSteps)
             {
-                var distance = dx * dx + dy * dy;
-                var tile = origin + new Vector2i(dx, dy);
-                if (distance >= bestDistance ||
-                    _map.GetTileRef(gridUid, grid, tile).Tile.IsEmpty ||
-                    _turf.IsTileBlocked(gridUid, tile, CollisionGroup.Impassable | CollisionGroup.MidImpassable, grid))
+                var tile = current + step;
+                if (Math.Max(Math.Abs(tile.X - origin.X), Math.Abs(tile.Y - origin.Y)) > DropSearch ||
+                    !visited.Add(tile) ||
+                    _map.GetTileRef(gridUid, grid, tile).Tile.IsEmpty)
                     continue;
 
-                best = tile;
-                bestDistance = distance;
+                if (footprint.Contains(_map.GridTileToLocal(gridUid, grid, tile).Position))
+                {
+                    queue.Enqueue(tile);
+                    continue;
+                }
+
+                if (!_turf.IsTileBlocked(gridUid, tile, CollisionGroup.Impassable | CollisionGroup.MidImpassable, grid))
+                    return _map.GridTileToLocal(gridUid, grid, tile);
             }
         }
 
-        return best is { } free ? _map.GridTileToLocal(gridUid, grid, free) : xform.Coordinates;
+        return xform.Coordinates;
     }
 
     /// <summary>Lists parts as localized names and counts, comma separated.</summary>

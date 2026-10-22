@@ -13,6 +13,7 @@ using Content.Server.Discord.DiscordLink;
 using Content.Server.GameTicking;
 using Content.Server.Players.RateLimiting;
 using Content.Server.Preferences.Managers;
+using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
@@ -112,7 +113,14 @@ namespace Content.Server.Administration.Systems
 
             SubscribeLocalEvent<GameRunLevelChangedEvent>(OnGameRunLevelChanged);
             SubscribeNetworkEvent<BwoinkClientTypingUpdated>(OnClientTypingUpdated);
-            SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _activeConversations.Clear());
+            // WOLFGATE(EventStaff) START: ahelp categories reset with the round
+            SubscribeLocalEvent<RoundRestartCleanupEvent>(_ =>
+            {
+                _activeConversations.Clear();
+                _ahelpCategories.Clear();
+            });
+            // SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _activeConversations.Clear());
+            // WOLFGATE END
 
         	_rateLimit.Register(
                 RateLimitKey,
@@ -258,7 +266,7 @@ namespace Content.Server.Administration.Systems
                 playSound: false
             );
 
-            var admins = GetTargetAdmins();
+            var admins = GetTargetAdmins(GetAHelpCategory(session.UserId)); // WOLFGATE(EventStaff): gameplay ahelps reach event staff
             foreach (var admin in admins)
             {
                 RaiseNetworkEvent(bwoinkMessage, admin);
@@ -333,11 +341,15 @@ namespace Content.Server.Administration.Systems
             _typingUpdateTimestamps[args.SenderSession.UserId] = (_timing.RealTime, msg.Typing);
 
             // Non-admins can only ever type on their own ahelp, guard against fake messages
-            var isAdmin = _adminManager.GetAdminData(args.SenderSession)?.HasFlag(AdminFlags.Adminhelp) ?? false;
+            // WOLFGATE(EventStaff) START: event staff type on gameplay ahelps
+            var typingAdmin = _adminManager.GetAdminData(args.SenderSession);
+            var isAdmin = (typingAdmin?.HasFlag(AdminFlags.Adminhelp) ?? false) || CanEventStaffAnswer(typingAdmin, msg.Channel);
+            // var isAdmin = _adminManager.GetAdminData(args.SenderSession)?.HasFlag(AdminFlags.Adminhelp) ?? false;
+            // WOLFGATE END
             var channel = isAdmin ? msg.Channel : args.SenderSession.UserId;
             var update = new BwoinkPlayerTypingUpdated(channel, args.SenderSession.Name, msg.Typing);
 
-            foreach (var admin in GetTargetAdmins())
+            foreach (var admin in GetTargetAdmins(GetAHelpCategory(channel))) // WOLFGATE(EventStaff): gameplay ahelps reach event staff
             {
                 if (admin.UserId == args.SenderSession.UserId)
                     continue;
@@ -670,7 +682,11 @@ namespace Content.Server.Administration.Systems
             var personalChannel = senderSession.UserId == message.UserId;
             var senderAdmin = _adminManager.GetAdminData(senderSession);
             var senderAHelpAdmin = senderAdmin?.HasFlag(AdminFlags.Adminhelp) ?? false;
-            var authorized = personalChannel && !message.AdminOnly || senderAHelpAdmin;
+            // WOLFGATE(EventStaff) START: event staff answer gameplay ahelps
+            var senderEventStaff = !senderAHelpAdmin && !personalChannel && CanEventStaffAnswer(senderAdmin, message.UserId);
+            var authorized = personalChannel && !message.AdminOnly || senderAHelpAdmin || senderEventStaff;
+            // var authorized = personalChannel && !message.AdminOnly || senderAHelpAdmin;
+            // WOLFGATE END
             if (!authorized)
             {
                 // Unauthorized bwoink (log?)
@@ -679,6 +695,13 @@ namespace Content.Server.Administration.Systems
 
             if (_rateLimit.CountAction(eventArgs.SenderSession, RateLimitKey) != RateLimitStatus.Allowed)
                 return;
+
+            // WOLFGATE(EventStaff) START: the player's latest message sets the category
+            if (personalChannel && !senderAHelpAdmin)
+                _ahelpCategories[message.UserId] = message.Category;
+            else if (senderEventStaff)
+                _ahelpCategories.TryAdd(message.UserId, AHelpCategory.Gameplay);
+            // WOLFGATE END
 
             OnBwoinkInternal(message, eventArgs.SenderSession.UserId, senderAdmin, eventArgs.SenderSession.Name, eventArgs.SenderSession.Channel, false, true, false);
         }
@@ -696,6 +719,7 @@ namespace Content.Server.Administration.Systems
         private void OnBwoinkInternal(BwoinkTextMessage message, NetUserId senderId, AdminData? senderAdmin, string senderName, INetChannel? senderChannel, bool userOnly, bool sendWebhook, bool fromWebhook)
         {
             _activeConversations[message.UserId] = DateTime.Now;
+            var category = GetAHelpCategory(message.UserId); // WOLFGATE(EventStaff)
 
             var escapedText = FormattedMessage.EscapeText(message.Text);
 
@@ -736,21 +760,28 @@ namespace Content.Server.Administration.Systems
                     bwoinkText = $"[color={colorHex}]{adminPrefix}{senderName}[/color]";
                 }
             }
+            // WOLFGATE(EventStaff) START: event staff names in gold
+            else if (senderAdmin is not null && senderAdmin.HasFlag(AdminFlags.Event) && senderId != message.UserId)
+            {
+                bwoinkText = $"[color=gold]{adminPrefix}{senderName}[/color]";
+            }
+            // WOLFGATE END
             else
             {
                 bwoinkText = $"{senderName}";
             }
 
             bwoinkText = $"{(fromWebhook ? Loc.GetString("bwoink-message-discord") : "")}{(message.AdminOnly ? " " + Loc.GetString("bwoink-message-admin-only") : !message.PlaySound ? " " + Loc.GetString("bwoink-message-silent") : "")} {bwoinkText}: {escapedText}";
+            bwoinkText = $"{CategoryTag(category)} {bwoinkText.TrimStart()}"; // WOLFGATE(EventStaff): tag the category
 
             var senderAHelpAdmin = senderAdmin?.HasFlag(AdminFlags.Adminhelp) ?? false;
             // If it's not an admin / admin chooses to keep the sound and message is not an admin only message, then play it.
             var playSound = (!senderAHelpAdmin || message.PlaySound) && !message.AdminOnly;
-            var msg = new BwoinkTextMessage(message.UserId, senderId, bwoinkText, playSound: playSound, adminOnly: message.AdminOnly);
+            var msg = new BwoinkTextMessage(message.UserId, senderId, bwoinkText, playSound: playSound, adminOnly: message.AdminOnly, category: category); // WOLFGATE(EventStaff)
 
             LogBwoink(msg);
 
-            var admins = GetTargetAdmins();
+            var admins = GetTargetAdmins(category); // WOLFGATE(EventStaff): gameplay ahelps reach event staff
 
             // Notify all admins
             if (!userOnly)
@@ -788,6 +819,12 @@ namespace Content.Server.Administration.Systems
                         {
                             overrideMsgText = $"[color=red]{adminPrefixWebhook}{_overrideClientName}[/color]";
                         }
+                        // WOLFGATE(EventStaff) START: event staff names in gold
+                        else if (senderAdmin is not null && senderAdmin.HasFlag(AdminFlags.Event) && senderId != message.UserId)
+                        {
+                            overrideMsgText = $"[color=gold]{adminPrefixWebhook}{_overrideClientName}[/color]";
+                        }
+                        // WOLFGATE END
                         else
                         {
                             overrideMsgText = $"{senderName}"; // Not an admin, name is not overridden.
@@ -815,7 +852,7 @@ namespace Content.Server.Administration.Systems
                 if (!_messageQueues.ContainsKey(msg.UserId))
                     _messageQueues[msg.UserId] = new Queue<DiscordRelayedData>();
 
-                var str = message.Text;
+                var str = $"{CategoryTag(category)} {message.Text}"; // WOLFGATE(EventStaff): tag the category
                 var unameLength = senderName.Length;
 
                 if (unameLength + str.Length + _maxAdditionalChars > DescriptionMax)
@@ -848,7 +885,7 @@ namespace Content.Server.Administration.Systems
                     var playerName = lookup?.Username ?? "Unknown";
                     var roundId = _gameTicker.RoundId;
                     var characterName = _minds.GetCharacterName(message.UserId);
-                    _discordChatLink.SendAhelpMessage(message.UserId, playerName, senderName, message.Text, message.AdminOnly, roundId, characterName);
+                    _discordChatLink.SendAhelpMessage(message.UserId, playerName, senderName, $"{CategoryTag(category)} {message.Text}", message.AdminOnly, roundId, characterName); // WOLFGATE(EventStaff): tag the category
                 });
             }
 

@@ -58,7 +58,10 @@ public sealed partial class GatherableSystem : EntitySystem
 
         if (TryComp<SoundOnGatherComponent>(gatheredUid, out var soundComp))
         {
-            _audio.PlayPvs(soundComp.Sound, Transform(gatheredUid).Coordinates);
+            // WOLFGATE(Mining) START: one break sound per 0.2 s within 3 tiles; mass mining made an audio entity per rock
+            // _audio.PlayPvs(soundComp.Sound, Transform(gatheredUid).Coordinates);
+            WfPlayGatherSound(gatheredUid, soundComp);
+            // WOLFGATE END
         }
 
         // // Complete the gathering process

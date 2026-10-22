@@ -1,0 +1,107 @@
+- type: constructionGraph
+  id: DecorBuildBarSignLights
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 2.0
+  - node: built
+    entity: BarSignLights
+    edges:
+    - to: start
+      conditions:
+      - !type:ContainerEmpty
+        container: light_bulb
+      steps:
+      - tool: Screwing
+        doAfter: 2.0
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+
+- type: constructionGraph
+  id: DecorBuildClinicSignLights
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 2.0
+  - node: built
+    entity: ClinicSignLights
+    edges:
+    - to: start
+      conditions:
+      - !type:ContainerEmpty
+        container: light_bulb
+      steps:
+      - tool: Screwing
+        doAfter: 2.0
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+
+- type: constructionGraph
+  id: DecorBuildOnAirSignLights
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 2.0
+  - node: built
+    entity: OnAirSignLights
+    edges:
+    - to: start
+      conditions:
+      - !type:ContainerEmpty
+        container: light_bulb
+      steps:
+      - tool: Screwing
+        doAfter: 2.0
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+
+- type: constructionGraph
+  id: DecorBuildOpenSignLights
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 2.0
+  - node: built
+    entity: OpenSignLights
+    edges:
+    - to: start
+      conditions:
+      - !type:ContainerEmpty
+        container: light_bulb
+      steps:
+      - tool: Screwing
+        doAfter: 2.0
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}

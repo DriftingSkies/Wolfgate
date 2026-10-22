@@ -307,6 +307,8 @@ public sealed partial class WFCrewTest
             ConvoyCrew(deck, "WFCrewPilot", "strays");
             SEntMan.EnsureComponent<Content.Shared._Mono.Company.CompanyComponent>(deck).CompanyName = "TSF";
             SEntMan.EnsureComponent<Content.Shared._Mono.Company.CompanyComponent>(friend).CompanyName = "TSFCivilian";
+            // An NPC ship of the same faction; a player one is allowed far more (OwnFactionStrayHits).
+            Server.System<WFCrewSetupSystem>().MarkProfile(friend, "WFCrewProfileHauler");
         });
 
         var alerts = Server.System<WFCrewAlertSystem>();

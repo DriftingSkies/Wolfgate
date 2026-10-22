@@ -1,0 +1,64 @@
+# WOLFGATE(DecorImport) START: ported from Panta Rhei
+- type: entity
+  id: ChairMushWood
+  parent: ChairWood
+  components:
+  - type: Sprite
+    sprite: _Euphoria/Structures/Furniture/Chair/mush_chair.rsi
+    state: mushroom_chair
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Icon
+    sprite: _Euphoria/Structures/Furniture/Chair/mush_chair.rsi
+    state: mushroom_chair
+
+- type: entity
+  parent: DogBed
+  id: MushwoodDogBed
+  components:
+  - type: Sprite
+    sprite: _Euphoria/Structures/Furniture/Chair/mush_bed.rsi
+    noRot: false
+    state: dogbed_mushwood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Icon
+    sprite: _Euphoria/Structures/Furniture/Chair/mush_bed.rsi
+    state: dogbed_mushwood
+# WOLFGATE END

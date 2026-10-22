@@ -1,0 +1,18 @@
+# Borg-held copies of Wolfmed's single-use field items. A borg's module item is never handed back, so these stay
+# in its hand after use instead of being spent.
+
+- type: entity
+  parent: Tourniquet
+  id: WFWolfmedTourniquetBorg
+  suffix: Borg
+  components:
+  - type: Tourniquet
+    consumed: false
+
+- type: entity
+  parent: WFWolfmedSplint
+  id: WFWolfmedSplintBorg
+  suffix: Borg
+  components:
+  - type: WolfmedSplint
+    consumed: false

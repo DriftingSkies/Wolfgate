@@ -1,0 +1,119 @@
+# Ported from RMC-14 (MIT); sprites and sounds from cmss13 (CC-BY-SA-3.0).
+
+- type: examinableDamage
+  id: RMCBarricadeMessages
+  messages:
+  - rmc-barricade-damaged-1
+  - rmc-barricade-damaged-2
+  - rmc-barricade-damaged-3
+  - rmc-barricade-damaged-4
+
+- type: damageModifierSet
+  id: CMBarricade
+  coefficients:
+    Heat: 1.15
+    Shock: 1.15
+    Cold: 1.15
+    Caustic: 1.15
+
+- type: damageModifierSet
+  id: CMFoldingBarricade
+  coefficients:
+    Heat: 0.85
+    Shock: 0.85
+    Cold: 0.85
+    Caustic: 0.85
+
+- type: damageModifierSet
+  id: CMBurnBarricade
+  coefficients:
+    Heat: 0.75
+    Shock: 0.75
+    Cold: 0.75
+    Caustic: 0.75
+
+- type: damageModifierSet
+  id: CMBruteBarricade
+  coefficients:
+    Blunt: 0.75
+    Slash: 0.75
+    Piercing: 0.75
+
+- type: damageModifierSet
+  id: CMSandbag
+  coefficients:
+    Heat: 1.15
+    Shock: 1.15
+    Cold: 1.15
+    Caustic: 1.15
+
+- type: damageModifierSet
+  id: CMHescoBarricade
+  coefficients:
+    Heat: 1.5
+    Shock: 1.15
+    Cold: 1.15
+    Caustic: 1.15
+
+- type: soundCollection
+  id: CMEntrenchingRustle
+  files:
+  - /Audio/_WF/Barricades/rustle1.ogg
+  - /Audio/_WF/Barricades/rustle2.ogg
+  - /Audio/_WF/Barricades/rustle3.ogg
+  - /Audio/_WF/Barricades/rustle4.ogg
+  - /Audio/_WF/Barricades/rustle5.ogg
+
+- type: soundCollection
+  id: CMEntrenchingThud
+  files:
+  - /Audio/_WF/Barricades/thud.ogg
+
+- type: Tag
+  id: RMCMetalBarricade
+
+- type: Tag
+  id: RMCPlasteelBarricade
+
+- type: Tag
+  id: RMCFoldingBarricade
+
+# A directional barricade on the south edge of its tile; rotate it to face another way.
+- type: entity
+  abstract: true
+  parent: BaseStructure
+  id: CMBarricadeBase
+  components:
+  - type: Rotatable
+  - type: Appearance
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,-0.38"
+        density: 500
+        mask:
+        - FullTileMask
+        layer:
+        - TableLayer
+  - type: RotationDrawDepth
+  - type: Barricade
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMBarricade
+  - type: DirectionalAttackBlocker
+  - type: InteractionOutline
+  - type: GenericVisualizer
+    visuals:
+      enum.BarbedWireVisualLayers.Wire:
+        barbWired:
+          UnWired: { state: metal_wire, visible: false }
+          WiredClosed: { state: metal_wire, visible: true }
+  - type: UserInterface
+    interfaces:
+      enum.RMCConstructionUpgradeUiKey.Key:
+        type: RMCConstructionUpgradeBui
+  - type: DamageReceivedModifierWhenUnanchored
+  - type: ExaminableDamage
+    messages: RMCBarricadeMessages

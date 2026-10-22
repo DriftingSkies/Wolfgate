@@ -1,0 +1,169 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1N
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_n
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_n
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1E
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_e
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_e
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1W
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_w
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_w
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1Se
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_se
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_se
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1Sw
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_sw
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_sw
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1Ne
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_ne
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_ne
+
+- type: entity
+  parent: BaseStructure
+  id: ADTNecropolisCrackedSlabBone1Nw
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: cracked_slab_bone1_nw
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    drawdepth: FloorObjects
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags: [ HideContextMenu ]
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Decorations/necropolis_tiles.rsi
+    state: cracked_slab_bone1_nw
+# WOLFGATE END

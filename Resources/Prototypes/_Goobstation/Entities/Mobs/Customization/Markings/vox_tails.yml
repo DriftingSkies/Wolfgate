@@ -26,7 +26,7 @@
   id: VoxTailShort
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vox, ProtoVox] # WOLFGATE(Species): add ProtoVox
+  speciesRestriction: [Vox]
   forcedColoring: true
   sprites:
   - sprite: Mobs/Customization/vox_parts.rsi
@@ -46,7 +46,7 @@
   id: VoxTailBig
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vox, ProtoVox] # WOLFGATE(Species): add ProtoVox
+  speciesRestriction: [Vox]
   forcedColoring: true
   sprites:
   - sprite: Mobs/Customization/vox_parts.rsi
@@ -82,7 +82,7 @@
   id: VoxTailSpikes
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vox, ProtoVox] # WOLFGATE(Species): add ProtoVox
+  speciesRestriction: [Vox]
   forcedColoring: true
   sprites:
   - sprite: Mobs/Customization/vox_parts.rsi
@@ -116,7 +116,7 @@
   id: VoxTailDocked
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vox, ProtoVox] # WOLFGATE(Species): add ProtoVox
+  speciesRestriction: [Vox]
   forcedColoring: true
   sprites:
   - sprite: Mobs/Customization/vox_parts.rsi
@@ -136,7 +136,7 @@
   id: VoxTailSplit
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vox, ProtoVox] # WOLFGATE(Species): add ProtoVox
+  speciesRestriction: [Vox]
   forcedColoring: true
   sprites:
   - sprite: Mobs/Customization/vox_parts.rsi

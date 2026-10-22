@@ -171,6 +171,10 @@ public abstract partial class CESharedZLevelsSystem
         if (zPhysicsComponent.VelocityGravity)
         {
             var targetStatus = distanceToGround > AirborneHeightThreshold ? BodyStatus.InAir : BodyStatus.OnGround;
+            // WOLFGATE(Planets): a thrown body stays InAir until the throw lands, or friction eats a jump at once.
+            if (targetStatus == BodyStatus.OnGround && HasComp<ThrownItemComponent>(entity))
+                targetStatus = entity.Comp2.BodyStatus;
+
             if (entity.Comp2.BodyStatus != targetStatus)
             {
                 _physicsSystem.SetBodyStatus(entity, entity.Comp2, targetStatus);

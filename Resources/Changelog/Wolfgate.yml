@@ -1922,3 +1922,893 @@ Entries:
   id: 100155
   time: '2026-10-17T23:57:09.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/270
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: A new event chat in-game.
+    - type: Add
+      message: Split Ahelp into two categories, Gameplay and Player. Use appropriately.
+  id: 100156
+  time: '2026-10-18T00:58:28.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/274
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Vending machines no longer crash clients.
+    - type: Tweak
+      message: >-
+        Rocks broken close together within a fifth of a second share one break
+        sound, so mass mining sends far fewer sounds over the network.
+    - type: Tweak
+      message: >-
+        Guns firing faster than 5 shots a second play at most 5 gunshot sounds a
+        second for other players. The shooter still hears every shot.
+  id: 100157
+  time: '2026-10-18T03:20:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/275
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Ported RMC's barricades, craftable, and abundant.
+  id: 100158
+  time: '2026-10-18T03:44:40.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/276
+- author: DriftingSkies
+  changes:
+    - type: Add
+      message: >-
+        The PDV CV-53 and TSFMC M92-X tacsuits have a new soft shield. Hits pass
+        through it, but while it's up it soaks 60% of incoming brute damage
+        (blunt, slash and piercing) and stops you from bleeding. Burns, lasers
+        included, pass straight through and only your armour stops them. The
+        field drains as it soaks damage and breaks when empty, and
+        shield-breaker rounds still shatter it.
+    - type: Tweak
+      message: >-
+        Every TSF and PDV tacsuit now has a distinct role within its tier. Suits
+        in the same tier are sidegrades of each other, and T3 suits are tougher
+        overall than T2.
+    - type: Tweak
+      message: >-
+        The M82b is now the TSF burn and environment suit: much better against
+        heat, now protects against shock, keeps its radiation and caustic
+        protection, and is weaker against brute.
+    - type: Tweak
+      message: >-
+        The SCAF is now the PDV burn suit: much better against heat and slightly
+        weaker against brute.
+    - type: Tweak
+      message: >-
+        The M82c and CV-32 are slightly tougher, and the CV-32 is now a little
+        faster.
+    - type: Tweak
+      message: >-
+        The CV-53 no longer resists heat nearly as well. Lasers are now the way
+        to get through its soft shield.
+    - type: Tweak
+      message: >-
+        The CV-280 Basilisk had T3 protection on a T2 suit. It is now a fast T2
+        skirmisher with lighter armour.
+    - type: Tweak
+      message: >-
+        The M86 Mk.4 has lost its hard shield and is now the fast T3 suit:
+        lighter armour, full movement speed. MARSOC's starting suit changes with
+        it.
+    - type: Tweak
+      message: The M92-X is now much faster but takes a little more heat damage.
+    - type: Tweak
+      message: The M86 Mk.3 takes a little more heat damage.
+    - type: Tweak
+      message: >-
+        The M92 colonel tacsuit is still the toughest suit, but by a smaller
+        margin.
+    - type: Tweak
+      message: >-
+        PDV tacsuits are cheaper at the pirate uplink, since PDV can't craft
+        them: the CV-32 and CV-53 cost 35 doubloons (were 45) and the CV-82
+        costs 80 (was 90).
+  id: 100159
+  time: '2026-10-18T03:48:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/262
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Synths now run on hydraulic fluid, so hydraulic packs, IV drips and the
+        autodoc can refill them.
+    - type: Fix
+      message: >-
+        Synth power cells can be taken out and put back in with surgery on the
+        opened torso.
+    - type: Add
+      message: The exosuit fabricator can now print replacement synth organs.
+  id: 100160
+  time: '2026-10-18T06:04:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/277
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        The Automated Defense System is loose in the sector. Its nodes hold
+        ground in purple on the sector map, sweeps and sentinels fly it, and it
+        never touches a station.
+    - type: Add
+      message: >-
+        Enter ADS space and the nearest ADS ship hails your console with one
+        question: are you a threat? Answer no, or don't fire, and it leaves you
+        alone. Answer yes, or shoot first, and it disables you.
+    - type: Add
+      message: >-
+        The ADS and the Ashfall Reavers fight over cells. ADS interdictors
+        contest Reaver space and the Reavers scramble gunships to drive them
+        off. Join either side or pick off the winner.
+    - type: Add
+      message: >-
+        At Overrun the Reavers raise a citadel: a Vulture fortress with two
+        rings of territory that pays triple and buys the sector a lull when it
+        falls.
+    - type: Add
+      message: >-
+        ADS crews are bare automatons with unit designations and a synthetic
+        voice, and their alerts come in with the anomaly klaxon.
+    - type: Tweak
+      message: Ashfall is now the Contested Sector game mode and runs both threats.
+    - type: Tweak
+      message: >-
+        Sector Watch is quieter. Routine news goes over Common radio; only the
+        big events get a banner.
+    - type: Tweak
+      message: Pirates no longer fly adamantite. Their hulls arrive in plastitanium.
+  id: 100161
+  time: '2026-10-18T08:28:25.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/272
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Hail a trader that's on the move and ask it to hold position so you can
+        dock and trade.
+    - type: Tweak
+      message: Traders now run from attackers instead of circling them.
+    - type: Add
+      message: >-
+        NPC crews tell you to put your gun away if they see you holding one
+        aboard their ship. Ignore them for 10 seconds and they open fire.
+    - type: Add
+      message: NPC crews attack anyone they catch taking things from their ship.
+  id: 100162
+  time: '2026-10-18T11:32:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/281
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: >-
+        Planet orbit markers no longer attach themselves to ships entering
+        orbit.
+    - type: Fix
+      message: >-
+        NPC encounters no longer vanish when their lead ship is destroyed or
+        despawns.
+  id: 100163
+  time: '2026-10-18T11:33:01.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/279
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Medical borgs now carry everything Wolfmed needs: sutures, a tourniquet,
+        a splint, antiseptic spray, hydraulic fluid and cable in the treatment
+        module, plus a bone setter and skin graft in both surgery modules.
+    - type: Tweak
+      message: A borg's tourniquet and splint aren't used up when applied.
+  id: 100164
+  time: '2026-10-18T18:33:02.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/284
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        A new bug report/feature suggestion service for you to report bugs and
+        request things, all reports are read and you'll be notified of the
+        outcome in-game!
+  id: 100165
+  time: '2026-10-18T18:52:03.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/278
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Chimeras can no longer revive once dead until after 3 minutes.
+  id: 100166
+  time: '2026-10-18T21:11:16.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/285
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added a search bar to the keybinds menu. Search by action name or by
+        key.
+  id: 100167
+  time: '2026-10-18T21:31:23.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/288
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Every species now has a Biotype toggle in the character creator: Organic
+        or Synthetic. Synthetic characters get an IPC-style chassis (power cell,
+        hydraulic fluid, core and pump, repair with welders and cable); Organic
+        characters get a flesh body with blood, breathing and normal medicine.
+        IPC and Synth default to Synthetic, everyone else to Organic.
+    - type: Tweak
+      message: >-
+        Medical, traits, survival boxes and zombie infection now follow the
+        character's biotype rather than their species. A synthetic Vulpkanin is
+        treated like an IPC; an organic IPC like a human.
+    - type: Remove
+      message: >-
+        The fourteen Protogen subspecies are gone. Existing characters on them
+        load as Protogen; pick a species and set its biotype instead.
+  id: 100168
+  time: '2026-10-18T21:34:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/280
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Pirate and other NPC ships now notice and fire on mechs flying in open
+        space, and fight back when a mech attacks them.
+  id: 100169
+  time: '2026-10-18T23:48:36.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/286
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Cortical borers no longer come out of vents on ships or Caelestinus
+        Central.
+    - type: Tweak
+      message: >-
+        The borer vent event now fires on other stations and outposts, with 1-3
+        borers per event.
+    - type: Tweak
+      message: Cockroach migrations now always bring a moproach.
+  id: 100170
+  time: '2026-10-19T00:30:52.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/287
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        TSF and Dynasty patrols no longer post themselves next to Caelestinus
+        Central when guarding a station nearby.
+    - type: Fix
+      message: >-
+        Scrolling over the markings, hair or facial hair lists now scrolls the
+        page once the list hits its top or bottom, so you can always scroll back
+        up.
+  id: 100171
+  time: '2026-10-19T07:06:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/289
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Xenomorphs. Every RMC-14 caste is playable: larva, drone, lesser drone,
+        runner, lurker, warrior, ravager, praetorian (all strains), defender,
+        crusher, boiler, spitter, sentinel, burrower, hivelord (with the
+        designer strain), carrier, queen and king, with their abilities,
+        evolution and strains.
+    - type: Add
+      message: >-
+        The hive: hivemind chat (;), plasma, weeds and hive weeds, resin walls,
+        doors and membranes, nests, tunnels, hive core, clusters, pylons,
+        recovery and plasma nodes, egg morpher, acid pillar, traps, resin fruit,
+        and a resin sensor that works as a mass scanner.
+    - type: Add
+      message: >-
+        Eggs and facehuggers. Hosts (humans and monkeys) can be infected and
+        burst into larva. Anyone can plant an egg anywhere.
+    - type: Add
+      message: >-
+        Alien Embryo Removal surgery: surgeons and the autodoc can remove a
+        larva from an infected host.
+    - type: Add
+      message: >-
+        Ghosts can join a hive as a burrowed larva (Join Xeno) when one is
+        available. Burst larva nobody claims become ghost roles.
+    - type: Add
+      message: >-
+        A Xenonids section in the ghost menu and a Xenonids group in the admin
+        spawn menu; xeno_larva and hive admin commands.
+    - type: Add
+      message: Xenonid guidebook pages.
+    - type: Tweak
+      message: >-
+        Xeno acid melts any structure; xeno claws damage walls and airlocks by
+        RMC's rules (sharp claws and up; drones pry or acid). Fire burns weeds
+        and spreads along them; xenos pat fires out by clicking them. The queen
+        cannot be set on fire; king and ravager resist burn damage.
+    - type: Tweak
+      message: >-
+        Queens can pilot shuttle consoles but no xeno can use gunnery. Queens
+        and kings ignore air pressure. Station (CC) turrets shoot xenos.
+    - type: Tweak
+      message: >-
+        C4 and grenades collapse xeno tunnels; shovels and entrenching tools
+        fill them. Tunnels and burrowing never cross between grids.
+  id: 100172
+  time: '2026-10-19T07:30:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/282
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Ore veins now drop about two thirds of upstream yields instead of a
+        third; lithium veins always drop at least one ore.
+    - type: Tweak
+      message: >-
+        The scrap processor smelts strategic sheets for 250 raw scrap (lithium
+        1000) and lathe upgrades discount them again.
+    - type: Tweak
+      message: >-
+        The crystallizer makes five plastitanium sheets per batch instead of
+        one.
+    - type: Tweak
+      message: >-
+        Sand and chromite rocks are back in the 9 km asteroid ring at half their
+        old weight, and still spawn in the Wilds.
+    - type: Tweak
+      message: The hyper-convection upgrade kit fits ore processors again.
+  id: 100173
+  time: '2026-10-19T20:37:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/292
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: You can now set your species blood and flesh colour.
+  id: 100174
+  time: '2026-10-19T22:48:11.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/293
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: Fixed severe server lag when drydocks repair large ships.
+    - type: Fix
+      message: >-
+        Mobile drydock cranes are now built in a 2x2 machine frame and can be
+        pulled while unbolted.
+    - type: Fix
+      message: >-
+        Breaking a ship at a mobile drydock no longer leaves its wiring behind
+        as cable coils.
+    - type: Fix
+      message: >-
+        Salvaged parts no longer get dropped through walls, and linked parts
+        silos now store circuit boards.
+    - type: Tweak
+      message: >-
+        The mobile drydock crane now needs plasteel, MV cable, motors and armor
+        plating to build.
+  id: 100175
+  time: '2026-10-19T23:12:32.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/290
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Ships with no crew, pilot or running engines now drift to a stop, which
+        cuts network lag and stutter for everyone.
+  id: 100176
+  time: '2026-10-20T03:15:10.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/296
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Three admin-spawn facehuggers: a hardy one that bites, and two that hunt
+        on their own (one bites only, one infects). None of them wither off
+        weeds.
+    - type: Add
+      message: >-
+        Burst Chest Repair surgery. A chestburst body can be mended and revived,
+        unless the host's own player took the larva.
+    - type: Add
+      message: Every xeno has a built-in mass scanner.
+    - type: Add
+      message: >-
+        Xenos can name themselves once with a tag of up to four letters,
+        replacing the XX in their name.
+    - type: Add
+      message: >-
+        Xenos splatter acid blood when hurt and when they die, and a corpse that
+        keeps taking damage gibs.
+    - type: Tweak
+      message: >-
+        Xeno claws break windows by hits, as in CM. Reinforced in five,
+        plastitanium in eight with sharp claws.
+    - type: Tweak
+      message: >-
+        Xeno acid melts almost anything: furniture, items, machines. Not the
+        nuke disk.
+    - type: Fix
+      message: >-
+        Crusher stomp and charge, plant weeds button vanishing on the
+        ovipositor, queen eye black on ships, resin doors spamming client
+        errors, berserker ravager failing to load on clients, burrowers showing
+        in the external camera view.
+  id: 100177
+  time: '2026-10-20T05:14:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/295
+- author: bluebrouny
+  changes:
+    - type: Tweak
+      message: Changed the McChicken, now you can chickenmaxx
+  id: 100178
+  time: '2026-10-20T17:31:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/291
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Dragging yourself onto a folded unicycle no longer locks one of your
+        hands.
+    - type: Fix
+      message: >-
+        The laser cannon's chaining beam no longer jumps back into the person
+        who fired it.
+    - type: Fix
+      message: >-
+        Expedition consoles no longer get stuck on an empty board with the timer
+        at 00:00; opening or re-anchoring the console refreshes it.
+    - type: Fix
+      message: >-
+        The admin and sandbox buttons no longer show for regular players after
+        switching HUD layout.
+    - type: Fix
+      message: >-
+        Vulpkanin and Canine hand markings (fade, sharp, crest, claws) no longer
+        draw over the body when the far hand should be hidden from the side.
+    - type: Fix
+      message: >-
+        Wagging your tail no longer sometimes leaves the still tail drawn
+        underneath it.
+    - type: Fix
+      message: >-
+        Automatic and burst weapons no longer sometimes show a phantom shot that
+        was never fired.
+  id: 100179
+  time: '2026-10-20T19:42:28.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/297
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        The Unidentified Vessel's Scythe, Sunder and Flayer guns now link to its
+        gunnery console.
+    - type: Fix
+      message: The AK570 on the Monolithic asteroid ship now links to gunnery.
+  id: 100180
+  time: '2026-10-20T19:42:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/300
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Mapping mode: a server cvar (wf.mapping_mode.enabled) that turns the
+        server into a mapping workshop. No rounds, no maps loaded; the lobby
+        becomes a mapping menu where you create a map, join one by code, or open
+        one from your library.
+    - type: Add
+      message: >-
+        Mapping sessions: private maps with join codes, up to 8 members, owner
+        kick and new code, rejoin after a disconnect, z-levels per session.
+    - type: Add
+      message: >-
+        Full mapping tools for everyone in mapping mode, no admin needed, on a
+        dedicated mapping screen with a palette, Properties, Tools, Layers,
+        Template and Keys tabs, undockable panels, a movable mode bar and a
+        customisable quick-select bar.
+    - type: Add
+      message: >-
+        Build modes: Place, Erase, Select, Fill, Shape (line, rectangle, circle,
+        fill or border), Pick, Template, Pipe (smart pipes, atmos device box,
+        colour presets, network painting) and Link (signal links, device lists,
+        door access).
+    - type: Add
+      message: >-
+        Map library: numbered versions, autosave, Quicksave (Ctrl+S), download
+        to your data folder or anywhere with Save to, upload a map to edit
+        (unknown prototypes can be dropped), delete.
+    - type: Add
+      message: >-
+        Ship export: download a single-grid map as a ship grid with a generated
+        vessel prototype.
+    - type: Add
+      message: >-
+        PNG templates you can share with your session, and reference grids from
+        game ships, maps or your own saves.
+    - type: Add
+      message: >-
+        An in-game mapping guide, opened from the lobby, the Mapping window, the
+        Keys tab or the Guidebook button.
+    - type: Add
+      message: >-
+        Limits that keep the server healthy and stop griefing: map area, grids
+        per player, entities per tile and per map, request rates, library
+        quotas, protected players and ghosts, and a block list for things like
+        singularities and Nar'Sie.
+    - type: Add
+      message: >-
+        Admins keep every tool, get an Observe button in the lobby, and
+        wf_mappingmode_* commands to list, visit, save, close, kick and purge.
+    - type: Fix
+      message: The rcd/colornetwork command no longer runs for players without access.
+  id: 100181
+  time: '2026-10-20T23:35:44.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/294
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Typing just an emote's name, like *salute or *laugh, now does that emote
+        ("David salutes.").
+    - type: Fix
+      message: Emotes no longer say "The David" after you've worn a mask.
+    - type: Fix
+      message: You can type "..." in chat again.
+  id: 100182
+  time: '2026-10-21T02:16:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/302
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Ashfall Reaver kit: orange combat and void hardsuits, fatigues, deck and
+        engine jumpsuits, pack, chest rig, headset, beret and captain's and
+        warlord's cloaks.
+    - type: Tweak
+      message: >-
+        Reaver crews now wear their own hardsuits: red raider suits on riflemen,
+        orange combat suits on bruisers, a stolen cloak on officers.
+  id: 100183
+  time: '2026-10-21T02:30:52.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/303
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Encounter ships no longer vanish the moment you step off them. They wait
+        5 minutes after the last player leaves, and never go while docked to a
+        player ship.
+    - type: Fix
+      message: >-
+        Reaver reinforcements no longer disappear from under you when their
+        stronghold falls.
+    - type: Tweak
+      message: >-
+        Killing an encounter's crew in person now earns a share of its reward,
+        split evenly with the ships that fought it.
+    - type: Tweak
+      message: >-
+        Reaver stronghold and patrol bounties are much higher, and the hourly
+        reward cap is raised to 250k.
+    - type: Add
+      message: >-
+        Reaver bounties now include a drydock repair voucher, good for one free
+        full repair at Anvilhold.
+    - type: Add
+      message: >-
+        NPC crews can't see players in stealth suits or ships with a cloak up,
+        until they attack, steal or shoot.
+  id: 100184
+  time: '2026-10-21T02:52:40.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/305
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        The instrument menu has been overhauled. It shows your instrument and
+        splits playing into Files, Band and Input tabs, with a Configuration tab
+        for channels.
+    - type: Add
+      message: >-
+        MIDI files you add are now saved in a collection you can filter, rename,
+        remove and shuffle. You can also drop files straight into the UserMidis
+        folder in your game data.
+    - type: Add
+      message: A min volume slider for MIDI input devices.
+    - type: Fix
+      message: >-
+        Turning off the percussion channel now actually mutes it. Channels are
+        numbered from 1.
+  id: 100185
+  time: '2026-10-21T03:11:05.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/304
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added a "Cortical borers may enter me" consent toggle. It's on by
+        default; turn it off to stop borers infesting you.
+  id: 100186
+  time: '2026-10-21T03:11:44.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/306
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Two judge patrol ships now circle Caelestinus Central, opposite each
+        other, crewed by elite judges.
+    - type: Add
+      message: >-
+        The judges fight off Reavers, the ADS, corsairs and hostile drones that
+        come near CC. They leave captains alone and will put up with a lot of
+        stray fire before shooting back.
+    - type: Add
+      message: A destroyed judge ship is replaced after 20 minutes.
+  id: 100187
+  time: '2026-10-21T07:02:13.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/308
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        The shuttle console flight panel now shows your flight status, lift and
+        power against what you need, whether you're ready for liftoff, and what
+        is holding you down.
+    - type: Add
+      message: >-
+        The flight panel tells you how many thrusters to convert or add, or how
+        much power you're missing.
+    - type: Add
+      message: >-
+        Hold ascend on the ground to lift off. Hold descend in orbit to enter
+        the atmosphere when you have enough lift and power.
+    - type: Add
+      message: The ship preview shows the strongest gravity a ship can lift off in.
+    - type: Add
+      message: Added a Planet Flight guidebook page under Piloting.
+    - type: Tweak
+      message: >-
+        Ordinary thrusters no longer use triple power in atmosphere. They still
+        give half thrust.
+    - type: Tweak
+      message: Lift comes back as soon as power returns, instead of after two seconds.
+    - type: Fix
+      message: Fixed a client crash from tether ropes when switching bodies.
+  id: 100188
+  time: '2026-10-21T07:05:39.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/307
+- author: Balls2zawall
+  changes:
+    - type: Add
+      message: >-
+        After a fist fight broke out between a safety inspector and a negligent
+        engineer on Caelestinus Central, the Overseer has instated a new fire
+        code. Fire extinguishers and fire safety cabinets can be frequently
+        found throughout the hallways now.
+    - type: Fix
+      message: >-
+        Fixed the cryopods in the Caelestinus Central medical department, they
+        should no longer pull a vacuum and suffocate the patient.
+  id: 100189
+  time: '2026-10-21T07:08:18.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/309
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Encounter ships no longer get adamantium hulls.
+  id: 100190
+  time: '2026-10-21T18:43:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/311
+- author: TheSlapper
+  changes:
+    - type: Add
+      message: Various mapping assets.
+  id: 100191
+  time: '2026-10-21T18:54:51.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/310
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        NPC ship gunners hold fire rather than shoot through a friendly or
+        neutral ship in the way. The Reavers don't care and fire anyway.
+  id: 100192
+  time: '2026-10-21T18:59:14.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/313
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Cockpit panning should be less buggy.
+  id: 100193
+  time: '2026-10-21T18:59:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/314
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Following a player as admin now aghosts you
+  id: 100194
+  time: '2026-10-21T20:14:00.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/312
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Synthetics (any species with the Synthetic biotype, plus IPCs and
+        Synths) get a chassis panel action, which works while downed. It has a
+        Parts tab with a body doll and a Components tab, gauges for power,
+        fluid, sensor load, core temperature, radiation collector charge and a
+        built-in radiation meter, and tooltips explaining every state, load and
+        fault. From it you can isolate a limb (cuts its servos and sensor load),
+        detach a limb, reboot, overclock, open your chassis bay and disconnect
+        your own components, power cell included.
+    - type: Add
+      message: >-
+        Chassis bay: alt-click a synthetic to open its bay and pull or seat
+        components by hand, no surgery needed. An overlay shows when the bay is
+        open.
+    - type: Add
+      message: >-
+        Lego limbs: synthetic limbs come off more easily, and you click one on
+        to reattach it. It runs loose until you recouple it with cable coil, and
+        each pass tells you how many are left.
+    - type: Add
+      message: A mechanic can link a multitool into a synthetic's chassis panel.
+    - type: Add
+      message: Overclocking sparks and shorts more the hotter the chassis gets.
+    - type: Add
+      message: Synthetics hear a quiet alarm beep when close to going down.
+    - type: Add
+      message: >-
+        Synthetics have a radiation collector in their chassis. It soaks up
+        radiation until full, then strains and leaks into the core. Pull it to
+        vent it, weld it to repair it, and print a new one if it burns out.
+    - type: Add
+      message: >-
+        Synthetics spawn with a "Synths and You" book on how to repair them,
+        also in the guidebook.
+    - type: Add
+      message: >-
+        Synthetics spawn with a synthetic survival box: a spare power cell,
+        hydraulic fluid, cable, flares, a crowbar and a mass scanner.
+    - type: Add
+      message: >-
+        Chat font picker in the character creator: Default, Terminal, Boxfont
+        Round, Iceberg, Fondamento or Minecraftia. It shows in chat and speech
+        bubbles.
+    - type: Add
+      message: Typing bubble picker in the character creator, with animated previews.
+    - type: Add
+      message: >-
+        With Mismatched parts ticked, humans and other skin-tone species can
+        pick any skin colour.
+    - type: Tweak
+      message: Biotype is now a two-way Organic/Synthetic switch with icons.
+    - type: Tweak
+      message: >-
+        The blood colour toggle moved into the Body card, under Digitigrade
+        legs.
+    - type: Tweak
+      message: >-
+        A dead or missing power cell no longer shuts a synthetic down. It crawls
+        and can use one arm, picked from its own menu.
+    - type: Tweak
+      message: >-
+        Synthetics take damage more like flesh does. Gunfire puts them down in
+        about as many hits as a human, and sustained laser fire and blunt hits
+        now put them down too, armoured or not.
+    - type: Tweak
+      message: >-
+        Synthetic hydraulic fluid slowly refills on its own. HYDRAULIC PRESSURE
+        LOW now tells you to weld leaks and fit a hydraulic pack.
+    - type: Fix
+      message: >-
+        Synthetic sensor and optics damage can now be repaired. Glass fixes
+        optics, welders fix cold and acid damage, and Replace Damaged Servo
+        needs nothing opened.
+    - type: Fix
+      message: >-
+        Picking the Synthetic biotype no longer knocks you down with damage on
+        spawn.
+    - type: Fix
+      message: >-
+        A synthetic drained of hydraulic fluid now shuts down and can succumb,
+        instead of lying there indefinitely.
+    - type: Fix
+      message: Radiation no longer piles up endlessly on synthetics.
+    - type: Fix
+      message: >-
+        NPCs now aim at any part of the body instead of always hitting the
+        chest.
+    - type: Fix
+      message: A missing foot now slows you down, organic or synthetic.
+    - type: Fix
+      message: Blind healing repairs the target instead of the user.
+  id: 100195
+  time: '2026-10-21T21:11:30.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/301
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: EMP's no longer affect shuttle consoles.
+  id: 100196
+  time: '2026-10-21T22:33:08.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/298
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added a message sound picker to the Voice section of the character
+        creator. Choose the sound your character makes when they talk, or keep
+        your species' default.
+    - type: Add
+      message: Added the Moth, Wawa, Gorilla and Sheleg message sounds from HardLight.
+    - type: Tweak
+      message: Moths now chatter when they talk.
+  id: 100197
+  time: '2026-10-22T01:45:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/316
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Expedition consoles on ships started from the lobby now show offers.
+    - type: Fix
+      message: Ships started from the lobby now get a numbered name like bought ships.
+    - type: Fix
+      message: >-
+        NPC ships no longer attack player ships of their own faction. They only
+        shoot back after a lot of friendly fire.
+    - type: Tweak
+      message: >-
+        NPC patrols judge a ship by its IFF flag when it shows theirs, otherwise
+        by the free crew aboard. Cuffed prisoners don't count.
+    - type: Tweak
+      message: Judge patrols leave player ships alone unless fired on heavily.
+    - type: Tweak
+      message: >-
+        Reaver campaign crews shoot on sight and are hostile to everyone except
+        the Underground, PDV included.
+    - type: Fix
+      message: '*giggles and similar emotes read as typed instead of "laughs".'
+    - type: Fix
+      message: Less lag when NPC ships spawn.
+  id: 100198
+  time: '2026-10-22T02:56:50.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/317
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Fixed a few sources of network traffic causing clientside jittering.
+  id: 100199
+  time: '2026-10-22T03:17:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/318
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Jump boots and the modsuit jump carry you the full distance again
+        instead of a third of a tile.
+    - type: Fix
+      message: >-
+        A welder now seals a synthetic's fluid leak even after the chassis
+        damage is already repaired.
+  id: 100200
+  time: '2026-10-22T04:37:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/320
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Spacesuits, hardsuits and modsuits now have a 2x2 storage for air tanks.
+        Internals breathe from a tank in there, so your suit storage slot stays
+        free.
+    - type: Add
+      message: >-
+        With two tanks in your suit, internals switch to the other one when the
+        first runs low.
+    - type: Tweak
+      message: A tank in your suit still shows on your character.
+  id: 100201
+  time: '2026-10-22T04:45:16.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/321

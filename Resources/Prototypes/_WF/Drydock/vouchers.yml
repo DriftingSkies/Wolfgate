@@ -1,0 +1,23 @@
+# Pays for one full repair at a drydock that takes credits, such as Anvilhold. Carried in hand or a pocket when the
+# work starts. Reaver bounties give one to each ship that helped, bound to that ship, one unused at a time.
+- type: entity
+  parent: BaseItem
+  id: WFDrydockRepairVoucher
+  name: drydock repair voucher
+  description: A card good for one full repair of the ship it was issued to at the Anvilhold Drydock. Keep it on you when the cranes start.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Misc/lpcnew.rsi
+    layers:
+    - state: icon
+    - state: screen
+      color: "#E8A33A"
+    - state: screen4
+      color: "#E8A33A"
+      shader: unshaded
+  - type: Item
+    size: Tiny
+    sprite: _Mono/Objects/Misc/lpcnew.rsi
+  - type: WFDrydockRepairVoucher
+  - type: StaticPrice
+    price: 0

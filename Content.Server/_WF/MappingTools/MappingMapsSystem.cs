@@ -46,6 +46,9 @@ public sealed class MappingMapsSystem : EntitySystem
 
     private static readonly ResPath ShipsFolder = new("/SharedMaps");
     private static readonly ResPath MapsFolder = new("/Maps");
+
+    /// <summary>Mapping mode's per-player libraries, which only their owners reach.</summary>
+    private static readonly ResPath LibraryFolder = new("/Mapping/Library");
     private static readonly Regex SaveName = new("^[A-Za-z0-9_-]{1,64}$", RegexOptions.Compiled);
 
     public override void Initialize()
@@ -100,7 +103,7 @@ public sealed class MappingMapsSystem : EntitySystem
             var path = dir / entry;
             if (_res.UserData.IsDir(path))
             {
-                if (depth < MaxSaveDepth)
+                if (depth < MaxSaveDepth && path != LibraryFolder)
                     FindSaved(path, found, depth + 1);
             }
             else if (path.Extension == "yml")

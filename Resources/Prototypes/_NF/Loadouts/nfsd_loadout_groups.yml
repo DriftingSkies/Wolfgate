@@ -89,10 +89,12 @@
   - NfsdBoxSurvivalNfsdOxygen
   - NfsdBoxSurvivalNfsdNitrogen
   - NfsdBoxSurvivalNfsdVapor
+  - WFContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
   fallbacks:
   - NfsdBoxSurvivalNfsdOxygen
   - NfsdBoxSurvivalNfsdNitrogen
   - NfsdBoxSurvivalNfsdVapor
+  - WFContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: NfsdFace

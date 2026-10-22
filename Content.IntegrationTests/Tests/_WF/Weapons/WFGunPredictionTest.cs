@@ -285,6 +285,39 @@ public sealed class WFGunPredictionTest : InteractionTest
         Assert.That(copyAlive, Is.False, "orphaned predicted copy was not removed");
     }
 
+    /// <summary>
+    /// A round the client predicted but the server didn't fire (here the server's gun is still cooling down, as when
+    /// a late request finds the server already fired that round) is dropped from the shooter's screen.
+    /// </summary>
+    [Test]
+    public async Task RefusedPredictionIsDropped()
+    {
+        var gunUid = await ArmPlayer("WFPredTestGun");
+        var gun = SEntMan.GetNetEntity(gunUid);
+        var aim = new NetCoordinates(Player, new Vector2(5f, 0f));
+
+        await Server.WaitPost(() =>
+        {
+            var comp = SEntMan.GetComponent<GunComponent>(gunUid);
+            comp.NextFire = STiming.CurTime + TimeSpan.FromSeconds(10);
+        });
+
+        var (slots, _) = await ClientShoot(gun, aim);
+        Assert.That(slots, Is.Not.Null, "client predicted nothing");
+        var clientCopy = new EntityUid(slots![0]);
+
+        await RunTicks(10);
+
+        var exists = true;
+        await Client.WaitPost(() => exists = CEntMan.EntityExists(clientCopy));
+        var copies = await ServerCopies();
+        Assert.Multiple(() =>
+        {
+            Assert.That(copies, Is.Empty, "the server fired while cooling down");
+            Assert.That(exists, Is.False, "a round the server never fired is still flying on the shooter's screen");
+        });
+    }
+
     [Test]
     public async Task PelletsLinkInOrder()
     {

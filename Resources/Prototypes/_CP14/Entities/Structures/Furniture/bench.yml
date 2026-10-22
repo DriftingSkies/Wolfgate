@@ -1,0 +1,75 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14BenchWood
+  parent: SeatBase
+  components:
+  - type: Transform
+    anchored: true
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Rotatable
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/bench.rsi
+    layers:
+    - state: wooden
+    snapCardinals: false
+  - type: Physics
+    bodyType: Static
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Icon
+    sprite: _CP14/Structures/Furniture/bench.rsi
+    state: wooden
+
+- type: entity
+  id: CP14BenchWoodBirch
+  parent: CP14BenchWood
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Furniture/bench.rsi
+    layers:
+    - state: birch
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Icon
+    sprite: _CP14/Structures/Furniture/bench.rsi
+    state: birch
+# WOLFGATE END

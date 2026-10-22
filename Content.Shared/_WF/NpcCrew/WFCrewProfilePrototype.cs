@@ -44,4 +44,23 @@ public sealed partial class WFCrewProfilePrototype : IPrototype
     /// <summary>Components every crewman gets, such as an accent.</summary>
     [DataField]
     public ComponentRegistry Components = new();
+
+    /// <summary>Whether its ships never count one another as attackers, however much fire passes between them: a machine fleet does not turn on itself.</summary>
+    [DataField]
+    public bool ForgivesOwn;
+
+    /// <summary>
+    /// Stray ship weapon hits in 30 s its ships let pass from any vessel not crewed by NPCs, whatever its colours, in
+    /// place of the few they allow their own faction: a station's guard takes a lot of fire before it turns.
+    /// </summary>
+    [DataField]
+    public int? StrayHits;
+
+    /// <summary>Titles its crews carry in place of a role's own, by role: an automaton is a Helm Unit, not a First Officer.</summary>
+    [DataField]
+    public Dictionary<ProtoId<WFCrewRolePrototype>, LocId> Titles = new();
+
+    /// <summary>Hull parts swapped out when a ship is crewed with this profile: a pirate hull loses its adamantite for plastitanium.</summary>
+    [DataField]
+    public Dictionary<EntProtoId, EntProtoId> HullSwaps = new();
 }

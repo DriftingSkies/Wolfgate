@@ -162,7 +162,10 @@ internal sealed partial class ChatManager : IChatManager
 
     public void SendAdminAlert(string message)
     {
-        var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
+        // WOLFGATE(EventStaff) START: only Adminchat holders get admin chat, not event staff
+        var clients = _adminManager.ActiveAdmins.Where(p => _adminManager.HasAdminFlag(p, AdminFlags.Adminchat)).Select(p => p.Channel);
+        // var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
+        // WOLFGATE END
 
         var wrappedMessage = Loc.GetString("chat-manager-send-admin-announcement-wrap-message",
             ("adminChannelName", Loc.GetString("chat-manager-admin-channel-name")), ("message", FormattedMessage.EscapeText(message)));
@@ -203,7 +206,10 @@ internal sealed partial class ChatManager : IChatManager
 
     public void SendHookAdmin(string sender, string message)
     {
-        var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
+        // WOLFGATE(EventStaff) START: only Adminchat holders get admin chat, not event staff
+        var clients = _adminManager.ActiveAdmins.Where(p => _adminManager.HasAdminFlag(p, AdminFlags.Adminchat)).Select(p => p.Channel);
+        // var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
+        // WOLFGATE END
         var wrappedMessage = Loc.GetString("chat-manager-send-hook-admin-wrap-message", ("senderName", sender), ("message", FormattedMessage.EscapeText(message)));
 
         ChatMessageToMany(ChatChannel.AdminChat, message, wrappedMessage, source: EntityUid.Invalid, hideChat: false, recordReplay: false, clients);
@@ -275,6 +281,11 @@ internal sealed partial class ChatManager : IChatManager
             case OOCChatType.Admin:
                 SendAdminChat(player, message);
                 break;
+            // WOLFGATE(EventStaff) START: event staff chat
+            case OOCChatType.Event:
+                SendEventChat(player, message);
+                break;
+            // WOLFGATE END
         }
     }
 
@@ -325,7 +336,10 @@ internal sealed partial class ChatManager : IChatManager
             return;
         }
 
-        var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
+        // WOLFGATE(EventStaff) START: only Adminchat holders get admin chat, not event staff
+        var clients = _adminManager.ActiveAdmins.Where(p => _adminManager.HasAdminFlag(p, AdminFlags.Adminchat)).Select(p => p.Channel);
+        // var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
+        // WOLFGATE END
         var wrappedMessage = Loc.GetString("chat-manager-send-admin-chat-wrap-message",
                                         ("adminChannelName", Loc.GetString("chat-manager-admin-channel-name")),
                                         ("playerName", player.Name), ("message", FormattedMessage.EscapeText(message)));
@@ -454,5 +468,6 @@ internal sealed partial class ChatManager : IChatManager
 public enum OOCChatType : byte
 {
     OOC,
-    Admin
+    Admin,
+    Event, // WOLFGATE(EventStaff): event staff chat
 }

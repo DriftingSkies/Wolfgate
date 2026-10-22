@@ -12,6 +12,10 @@ drydock-console-started = Repair started: { $count } { $count ->
     [one] item
    *[other] items
 } for { $price } cr.
+drydock-console-voucher-used = Repair started: { $count } { $count ->
+    [one] item
+   *[other] items
+}, paid by your repair voucher.
 drydock-console-refit-started = Refit started on { $count } { $count ->
     [one] machine
    *[other] machines
@@ -62,3 +66,7 @@ drydock-console-break-aborted-power = The cranes lost power. Breaking stopped. R
 
 drydock-salvaged-flatpack-name = salvaged { $name } flatpack
 drydock-salvaged-flatpack-description = { CAPITALIZE(INDEFINITE($name)) } { $name } stripped off a broken hull. It unpacks damaged.
+drydock-voucher-examine-ship = Issued to the [color=yellow]{ $ship }[/color]. It repairs that ship only.
+drydock-voucher-issued-popup = FREE REPAIR EARNED!
+drydock-voucher-issued-holder = [font size=16][bold]FREE REPAIR EARNED![/bold][/font] The { $ship } gets one full repair at the Anvilhold Drydock, on the house. The voucher is in your hands: keep it on you when the cranes start.
+drydock-voucher-issued-crew = [font size=16][bold]FREE REPAIR EARNED![/bold][/font] The { $ship } gets one full repair at the Anvilhold Drydock, on the house. { $holder } holds the voucher.

@@ -402,7 +402,10 @@ public sealed class ChatTabsTest : InteractionTest
             Assert.That(body.Children.ToArray(), Is.EqualTo(new Control[] { _box.WfTabBar, _log, _box.ChatInput }));
             Assert.That(_box.MinSize, Is.EqualTo(minSize));
             Assert.That(_box.GetValue<float>(LayoutContainer.MarginBottomProperty), Is.EqualTo(marginBottom));
-            Assert.That(_log.EntryCount, Is.EqualTo(2));
+
+            // The server may send its own lines while the log is out; the docked log shows the whole history.
+            Assert.That(_chat.History.Select(h => h.Msg.Message), Is.SupersetOf(new[] { "before", "after" }));
+            Assert.That(_log.EntryCount, Is.EqualTo(_chat.History.Count));
         });
     }
 

@@ -17,6 +17,7 @@ namespace Content.Server._WF.NpcCrew.Systems;
 /// <summary>Shares live targets among on-sight crew aboard the same ship and restores awareness after an alert.</summary>
 public sealed partial class WFCrewAlertSystem : EntitySystem
 {
+    [Dependency] private Robust.Shared.Prototypes.IPrototypeManager _prototypes = default!;
     [Dependency] private NpcFactionSystem _factions = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private HTNSystem _htn = default!;
@@ -24,6 +25,8 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     [Dependency] private WFCrewEscortSystem _escorts = default!;
     [Dependency] private WFCrewShipStatusSystem _status = default!;
     [Dependency] private WFCrewSystem _crew = default!;
+    [Dependency] private WFCrewStealthSystem _stealth = default!;
+    [Dependency] private WFCrewSparedSystem _spared = default!;
 
     private const string Vision = "VisionRadius";
     private const string AggroVision = "AggroVisionRadius";
@@ -93,7 +96,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     /// </summary>
     private bool ValidShip(EntityUid grid, EntityUid ship, bool attacked, bool fired = false)
     {
-        return !TerminatingOrDeleted(ship) && !_status.ShouldDisengage(grid, ship, range: !fired, shooter: fired)
+        return !TerminatingOrDeleted(ship) && IsVessel(ship) && !_stealth.ShipUnseen(ship) && !_status.ShouldDisengage(grid, ship, range: !fired, shooter: fired)
             && Transform(ship).MapID == Transform(grid).MapID && (attacked || !_escorts.AreInFormation(grid, ship));
     }
 
@@ -141,6 +144,9 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
 
     /// <summary>How many stray hits a ship lets a friendly vessel land inside the window before it is an attack.</summary>
     public const int StrayHits = 6;
+
+    /// <summary>How many stray hits a player vessel of the crew's own faction may land inside the window: a great many.</summary>
+    public const int OwnFactionStrayHits = 40;
     private static readonly TimeSpan StrayWindow = TimeSpan.FromSeconds(30);
 
     /// <summary>Hits closer together than this are one burst or one shell, and count once.</summary>
@@ -152,15 +158,19 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     /// Says whether a ship weapon hit is let pass. Fire from a vessel fighting on the ship's side, by alliance or by
     /// whom it has been shooting, is forgiven outright, whatever its colours: in a melee nobody's aim is clean. A
     /// vessel of the ship's own faction is allowed a few stray shots, and more than <see cref="StrayHits"/> inside the
-    /// window are not an accident. Once a vessel is taken for an attacker nothing more of its fire is excused.
+    /// window are not an accident; a profile with its own <see cref="WFCrewProfilePrototype.StrayHits"/> allows that
+    /// many to any vessel no NPC crew flies. A player vessel of the ship's faction is allowed
+    /// <see cref="OwnFactionStrayHits"/>. Once a vessel is taken for an attacker nothing more of its fire is excused.
     /// </summary>
     private bool Excuse(EntityUid grid, EntityUid attacker)
     {
+        if (OwnKind(grid, attacker))
+            return true;
         if (KnownAttacker(grid, attacker))
             return false;
         if (Friend(grid, attacker))
             return true;
-        if (!SameFaction(grid, attacker))
+        if (StrayLimit(grid, attacker) is not { } limit)
             return false;
 
         var now = _timing.CurTime;
@@ -171,20 +181,44 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
             strays = (strays.First, now, strays.Count + 1);
 
         _strays[key] = strays;
-        return strays.Count <= StrayHits;
+        return strays.Count <= limit;
     }
 
     /// <summary>Whether a vessel's recent fire on a ship is being let pass: a friend's, or a few strays from its own side.</summary>
     public bool IsExcused(EntityUid grid, EntityUid attacker)
     {
+        if (OwnKind(grid, attacker))
+            return true;
         if (KnownAttacker(grid, attacker))
             return false;
         if (Friend(grid, attacker))
             return true;
 
-        return SameFaction(grid, attacker)
+        return StrayLimit(grid, attacker) is { } limit
                && (!_strays.TryGetValue((grid, attacker), out var strays) || _timing.CurTime - strays.First > StrayWindow
-                   || strays.Count <= StrayHits);
+                   || strays.Count <= limit);
+    }
+
+    /// <summary>
+    /// How many stray hits a ship lets a vessel land inside the window, or null for none: its profile's own allowance
+    /// for a vessel no NPC crew flies, else <see cref="StrayHits"/> for one of its own faction.
+    /// </summary>
+    private int? StrayLimit(EntityUid grid, EntityUid attacker)
+    {
+        if (_spared.Spared(grid, attacker))
+            return OwnFactionStrayHits;
+        if (TryComp<WFCrewShipProfileComponent>(grid, out var own) && _prototypes.TryIndex(own.Profile, out var profile)
+            && profile.StrayHits is { } allowance && !HasComp<WFCrewShipProfileComponent>(attacker))
+            return SameFaction(grid, attacker) ? Math.Max(allowance, StrayHits) : allowance;
+
+        return SameFaction(grid, attacker) ? StrayHits : null;
+    }
+
+    /// <summary>Whether two ships fly under one crew profile that never turns on its own, whatever fire passes between them.</summary>
+    public bool OwnKind(EntityUid first, EntityUid second)
+    {
+        return TryComp<WFCrewShipProfileComponent>(first, out var own) && TryComp<WFCrewShipProfileComponent>(second, out var other)
+            && own.Profile == other.Profile && _prototypes.TryIndex(own.Profile, out var profile) && profile.ForgivesOwn;
     }
 
     /// <summary>Whether whoever knows the vessel, the encounter it is fighting in, vouches for it as the ship's friend.</summary>
@@ -217,8 +251,8 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
 
     private void OnShieldHit(ref WFShipShieldAttackedEvent args)
     {
-        // A handheld shot at a shield is not its grid's attack; only ship weapons raise ship alerts.
-        if (!IsShipWeapon(args.Weapon))
+        // A handheld shot at a shield is not its grid's attack; only ship weapons and free-flying mechs raise ship alerts.
+        if (!IsShipWeapon(args.Weapon) && !IsFreeMech(args.AttackerGrid))
             return;
         if ((args.Weapon ?? args.Shooter) is { } source
             && EntityManager.System<WFCrewFriendlyFireSystem>().Protected(source, args.Grid))
@@ -230,9 +264,11 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
 
     private void ReportAttack(EntityUid grid, EntityUid attacker, string? group = null, bool gunfire = false)
     {
-        if (grid == attacker || !HasComp<MapGridComponent>(grid) || !HasComp<MapGridComponent>(attacker)
+        if (grid == attacker || !HasComp<MapGridComponent>(grid) || !IsVessel(attacker)
             || Transform(grid).MapID != Transform(attacker).MapID)
             return;
+        // An attack shows a cloaked ship to every crew for a while.
+        _stealth.RevealShip(attacker);
         // Grids without crew, escorts or battlegroups have nobody to alert.
         if (group == null && !_escorts.IsInvolved(grid))
             return;
@@ -360,8 +396,11 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
 
     private void AlertShip(EntityUid grid, string group, EntityUid attacker, bool retaliation = true, bool gunfire = false)
     {
-        if (grid == attacker || !HasComp<MapGridComponent>(grid) || !HasComp<MapGridComponent>(attacker)
+        if (grid == attacker || !HasComp<MapGridComponent>(grid) || !IsVessel(attacker)
             || Transform(grid).MapID != Transform(attacker).MapID)
+            return;
+        // Only its own gunfire, past the stray allowance, turns a crew on a player vessel of its faction.
+        if (!gunfire && _spared.Spared(grid, attacker))
             return;
         var key = (grid, group);
         if (!_alerts.TryGetValue(key, out var alert))

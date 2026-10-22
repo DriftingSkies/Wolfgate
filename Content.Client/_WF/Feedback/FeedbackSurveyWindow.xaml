@@ -1,0 +1,23 @@
+<controls:FeedbackSurveyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._WF.Feedback"
+    SetSize="460 500"
+    MinSize="400 420"
+    Title="{Loc 'wf-feedback-survey-title'}">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <Label Text="{Loc 'wf-feedback-survey-enjoy'}" />
+        <BoxContainer Name="RatingButtons" Orientation="Horizontal" SeparationOverride="4" />
+        <BoxContainer Orientation="Horizontal">
+            <Label Text="{Loc 'wf-feedback-survey-enjoy-low'}" StyleClasses="LabelSubText" />
+            <Control HorizontalExpand="True" />
+            <Label Text="{Loc 'wf-feedback-survey-enjoy-high'}" StyleClasses="LabelSubText" />
+        </BoxContainer>
+        <Label Text="{Loc 'wf-feedback-survey-issues'}" />
+        <TextEdit Name="IssuesEdit" MinSize="0 90" VerticalExpand="True" />
+        <Label Text="{Loc 'wf-feedback-survey-frustrations'}" />
+        <TextEdit Name="FrustrationsEdit" MinSize="0 90" VerticalExpand="True" />
+        <RichTextLabel Name="AttachedNote" />
+        <RichTextLabel Name="StatusLabel" />
+        <Button Name="SubmitButton" Text="{Loc 'wf-feedback-submit'}" />
+    </BoxContainer>
+</controls:FeedbackSurveyWindow>

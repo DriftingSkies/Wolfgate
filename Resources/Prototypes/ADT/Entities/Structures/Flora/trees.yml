@@ -1,0 +1,13 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: BaseTree
+  id: ADTFloraPalmTree01
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Flora/flora_treepalm.rsi
+    state: treepalm01
+  - type: Destructible
+  - type: Icon
+    sprite: ADT/Structures/Flora/flora_treepalm.rsi
+    state: treepalm01
+# WOLFGATE END

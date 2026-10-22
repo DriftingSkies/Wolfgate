@@ -500,6 +500,13 @@
     - Gauze10Lingering
     - Bloodpack10Lingering
     - Syringe
+    # WOLFGATE(Wolfmed): the field items Wolfmed's wound and IPC treatments call for
+    - Suture10Lingering
+    - WFWolfmedTourniquetBorg
+    - WFWolfmedSplintBorg
+    - WFWolfmedAntisepticSpray
+    - WFWolfmedHydraulicFluidPack
+    - CableApcStackLingering10
   - type: BorgModuleIcon
     icon: { sprite: Interface/Actions/actions_borg.rsi, state: treatment-module }
 
@@ -833,6 +840,9 @@
     - Cautery
     - SawElectric
     - BoneGel
+    # WOLFGATE(Wolfmed): fracture setting and burn grafting
+    - Bonesetter
+    - WFWolfmedSkinGraft
     # Frontier -> GoobStation -> Monolith: droppable borg items
   - type: DroppableBorgModule
     moduleId: Surgery
@@ -862,6 +872,9 @@
     - EnergyCautery
     - AdvancedRetractor
     - BoneGel
+    # WOLFGATE(Wolfmed): fracture setting and burn grafting
+    - Bonesetter
+    - WFWolfmedSkinGraft
     # Frontier -> GoobStation -> Monolith: droppable borg items
   - type: DroppableBorgModule
     moduleId: Surgery

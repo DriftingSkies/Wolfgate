@@ -21,4 +21,10 @@ public sealed partial class DropOriginalBodyOnDeathComponent : Component
     /// </summary>
     [DataField]
     public LocId Popup = "wf-chimera-original-body-drop";
+
+    /// <summary>
+    /// How long Letoferol can't turn the dropped body again, so other fleshbeasts can't bring it straight back.
+    /// </summary>
+    [DataField]
+    public TimeSpan TurnCooldown = TimeSpan.FromMinutes(3);
 }

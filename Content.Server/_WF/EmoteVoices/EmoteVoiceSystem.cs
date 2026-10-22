@@ -6,6 +6,7 @@ using Content.Shared.Chat.Prototypes;
 using Content.Shared.Cloning;
 using Content.Shared.Humanoid;
 using Content.Shared.Polymorph;
+using Content.Shared.Speech;
 using Content.Shared.Speech.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
@@ -33,14 +34,20 @@ public sealed partial class EmoteVoiceSystem : EntitySystem
         SubscribeLocalEvent<EmoteVoiceComponent, MapInitEvent>(OnMapInit, after: [typeof(VocalSystem)]);
         SubscribeLocalEvent<EmoteVoiceComponent, SexChangedEvent>(OnSexChanged, after: [typeof(VocalSystem)]);
         SubscribeLocalEvent<EmoteVoiceComponent, CloningEvent>(OnCloning);
+        SubscribeLocalEvent<SpeechComponent, CloningEvent>(OnSpeechCloning);
         SubscribeLocalEvent<EmoteVoiceComponent, PolymorphedEvent>(OnPolymorphed);
     }
 
     /// <summary>Every profile load sets the voices, so a profile without any gives back the species' own.</summary>
     private void OnProfileLoadFinished(Entity<VocalComponent> ent, ref ProfileLoadFinishedEvent args)
     {
-        if (args.Profile is { } profile)
-            SetVoices(ent, EmoteVoiceRules.Chosen(profile));
+        if (args.Profile is not { } profile)
+            return;
+
+        SetVoices(ent, EmoteVoiceRules.Chosen(profile));
+
+        if (TryComp<SpeechComponent>(ent, out var speech))
+            speech.SpeechSounds = MessageSoundRules.Resolve(profile.Species, profile.MessageSound, _proto, EntityManager.ComponentFactory);
     }
 
     private void OnMapInit(Entity<EmoteVoiceComponent> ent, ref MapInitEvent args)
@@ -57,6 +64,13 @@ public sealed partial class EmoteVoiceSystem : EntitySystem
     private void OnCloning(Entity<EmoteVoiceComponent> ent, ref CloningEvent args)
     {
         SetVoices(args.Target, ent.Comp.Voices);
+    }
+
+    /// <summary>A clone keeps the message sound too.</summary>
+    private void OnSpeechCloning(Entity<SpeechComponent> ent, ref CloningEvent args)
+    {
+        if (TryComp<SpeechComponent>(args.Target, out var target))
+            target.SpeechSounds = ent.Comp.SpeechSounds;
     }
 
     /// <summary>A transformation that keeps the person's appearance keeps their voices too.</summary>

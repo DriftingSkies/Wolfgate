@@ -20,14 +20,16 @@ public sealed partial class ShipShieldsSystem
         RaiseLocalEvent(shield.Shielded, ref ev, true);
     }
 
-    /// <summary>Resolves an existing source grid without relying on the projectile's impact parent.</summary>
+    /// <summary>Resolves an existing source grid, or the free-flying mech it came from, without relying on the projectile's impact parent.</summary>
     private EntityUid? WolfgateAttackSourceGrid(EntityUid? source)
     {
         if (source is not { } uid || TerminatingOrDeleted(uid))
             return null;
         if (HasComp<MapGridComponent>(uid))
             return uid;
-        return TryComp<TransformComponent>(uid, out var transform) && transform.GridUid is { } grid
-            && !TerminatingOrDeleted(grid) && HasComp<MapGridComponent>(grid) ? grid : null;
+        if (TryComp<TransformComponent>(uid, out var transform) && transform.GridUid is { } grid
+            && !TerminatingOrDeleted(grid) && HasComp<MapGridComponent>(grid))
+            return grid;
+        return EntityManager.System<Content.Server._WF.NpcCrew.Systems.WFCrewAlertSystem>().FreeMechOf(uid);
     }
 }

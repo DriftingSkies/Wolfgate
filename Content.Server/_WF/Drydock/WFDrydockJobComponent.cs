@@ -42,6 +42,9 @@ public sealed class WFDrydockJobSlot
 
     /// <summary>Time an unreachable item is given up on.</summary>
     public TimeSpan GiveUpAt;
+
+    /// <summary>Time an idle slot that found nothing to take looks through the queue again.</summary>
+    public TimeSpan NextTake;
 }
 
 /// <summary>
@@ -83,6 +86,10 @@ public sealed partial class WFDrydockJobComponent : Component
     /// <summary>Whether the job was paid in materials, so refunds return materials instead of credits.</summary>
     [ViewVariables]
     public bool PaidInMaterials;
+
+    /// <summary>The repair voucher that paid for the job, handed back if it aborts; null for a paid job.</summary>
+    [ViewVariables]
+    public string? Voucher;
 
     /// <summary>Refit lines the job's refit items bring up, to the highest tier among them.</summary>
     public Dictionary<string, int> Refits = new();

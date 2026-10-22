@@ -384,6 +384,7 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
                 HighlightedRadarColor = comp.HighlightedRadarColor, // Frontier
                 DockType = comp.DockType, // Frontier
                 ReceiveOnly = comp.ReceiveOnly, // Frontier
+                WfClampedBy = WfClampedBy((uid, comp)), // WOLFGATE(Encounters): docking screens show clamped ports.
             };
 
             gridDocks.Add(state);
@@ -542,6 +543,10 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
         {
             if (query.TryGetComponent(pilot, out var pilotComponent))
                 RemovePilot(pilot, pilotComponent);
+            // WOLFGATE START: an entry RemovePilot can't take out (no PilotComponent, or one for another console) hung the server
+            if (component.SubscribedPilots.Count > 0 && component.SubscribedPilots[0] == pilot)
+                component.SubscribedPilots.RemoveAt(0);
+            // WOLFGATE END
         }
     }
 

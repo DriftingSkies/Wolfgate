@@ -654,7 +654,7 @@ public sealed class WFCockpitGunneryTest
         foreach (var (type, count) in new[]
         {
             (typeof(FireControlConsoleBoundInterfaceState), 4), (typeof(FireControllableEntry), 6),
-            (typeof(WFCombatConsoleState), 9), (typeof(NavInterfaceState), 8), (typeof(DockingPortState), 10),
+            (typeof(WFCombatConsoleState), 9), (typeof(NavInterfaceState), 8), (typeof(DockingPortState), 11),
         })
         {
             Assert.That(type.GetFields(BindingFlags.Public | BindingFlags.Instance), Has.Length.EqualTo(count),
@@ -713,6 +713,7 @@ public sealed class WFCockpitGunneryTest
             ("dock highlight colour", state => Dock(state).HighlightedRadarColor = Color.Green),
             ("dock receive only", state => Dock(state).ReceiveOnly = true),
             ("dock type", state => Dock(state).DockType = DockType.Gas),
+            ("dock clamp", state => Dock(state).WfClampedBy = new NetEntity(7)),
             ("combat automatic", state => state.Combat.Automatic = true),
             ("combat ammunition", state => state.Combat.Ammunition = 1),
             ("combat unlimited supply", state => state.Combat.UnlimitedSupply = true),

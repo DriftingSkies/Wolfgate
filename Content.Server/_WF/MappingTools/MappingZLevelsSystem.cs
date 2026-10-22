@@ -38,6 +38,7 @@ public sealed class MappingZLevelsSystem : EntitySystem
     [Dependency] private MappingMapsSystem _maps = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private MappingProtectionSystem _protection = default!;
 
     private static readonly Regex SaveName = new("^[A-Za-z0-9_-]{1,64}$", RegexOptions.Compiled);
 
@@ -55,6 +56,27 @@ public sealed class MappingZLevelsSystem : EntitySystem
     private bool CanUse(ICommonSession session)
     {
         return _admin.HasAdminFlag(session, AdminFlags.Mapping);
+    }
+
+    /// <summary>
+    /// Whether a player may move between, add or remove levels: Mapping admins, or whoever a
+    /// <see cref="WFMappingCanUseEvent"/> handler allows. Saving and opening stacks stays admin-only.
+    /// </summary>
+    private bool CanUseLevels(ICommonSession session)
+    {
+        if (CanUse(session))
+            return true;
+
+        var ev = new WFMappingCanUseEvent(session, true);
+        RaiseLocalEvent(ev);
+        return ev.Allowed;
+    }
+
+    private bool CanEdit(ICommonSession session, EntityUid map, WFMappingEditKind kind)
+    {
+        var ev = new WFMappingCanEditEvent(session, map, kind);
+        RaiseLocalEvent(ev);
+        return !ev.Cancelled;
     }
 
     /// <summary>
@@ -104,7 +126,7 @@ public sealed class MappingZLevelsSystem : EntitySystem
     private void OnMove(MappingZLevelsMoveEvent ev, EntitySessionEventArgs args)
     {
         var session = args.SenderSession;
-        if (!CanUse(session) || !TryGetPlayerMap(session, out var player, out var map))
+        if (!CanUseLevels(session) || !TryGetPlayerMap(session, out var player, out var map))
             return;
 
         if (!_zLevels.TryMapOffset(map, ev.Offset, out var target, out var targetMap))
@@ -112,6 +134,9 @@ public sealed class MappingZLevelsSystem : EntitySystem
             _popup.PopupCursor(Loc.GetString(ev.Offset > 0 ? "wf-mapping-zlevels-none-above" : "wf-mapping-zlevels-none-below"), session);
             return;
         }
+
+        if (!CanEdit(session, target.Owner, WFMappingEditKind.Read))
+            return;
 
         MoveTo(player, targetMap.MapId);
         _popup.PopupCursor(Loc.GetString("wf-mapping-zlevels-moved", ("depth", target.Comp.Depth)), session);
@@ -125,8 +150,11 @@ public sealed class MappingZLevelsSystem : EntitySystem
     private void OnAdd(MappingZLevelsAddEvent ev, EntitySessionEventArgs args)
     {
         var session = args.SenderSession;
-        if (!CanUse(session) || !TryGetPlayerMap(session, out _, out var map))
+        if (!CanUseLevels(session) || !TryGetPlayerMap(session, out _, out var map) ||
+            !CanEdit(session, map, WFMappingEditKind.AddLevel))
+        {
             return;
+        }
 
         if (!TryAddLevel(map, ev.Above, out var added, out var depth, out var error))
         {
@@ -163,6 +191,7 @@ public sealed class MappingZLevelsSystem : EntitySystem
 
         ground = levels.IndexOf(groundMap);
         _zLevels.WfRestack(levels, ground);
+        RaiseLocalEvent(new WFMappingStackChangedEvent(levels, ground));
         depth = index - ground;
         return true;
     }
@@ -170,8 +199,11 @@ public sealed class MappingZLevelsSystem : EntitySystem
     private void OnRemove(MappingZLevelsRemoveEvent ev, EntitySessionEventArgs args)
     {
         var session = args.SenderSession;
-        if (!CanUse(session) || !TryGetPlayerMap(session, out _, out var map))
+        if (!CanUseLevels(session) || !TryGetPlayerMap(session, out _, out var map) ||
+            !CanEdit(session, map, WFMappingEditKind.RemoveLevel))
+        {
             return;
+        }
 
         if (!TryRemoveLevel(map, out var error))
         {
@@ -211,15 +243,12 @@ public sealed class MappingZLevelsSystem : EntitySystem
         if (index < ground || index == ground && index == levels.Count)
             ground--;
 
+        // Players, ghosts and observers, attached or not, move to the next level instead of going with this one.
         var refuge = Comp<MapComponent>(levels[Math.Min(index, levels.Count - 1)]).MapId;
-        var actors = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-        while (actors.MoveNext(out var uid, out _, out var xform))
-        {
-            if (xform.MapUid == map)
-                MoveTo(uid, refuge);
-        }
+        _protection.MoveProtectedToMap(map, refuge);
 
         _zLevels.WfRestack(levels, ground);
+        RaiseLocalEvent(new WFMappingStackChangedEvent(levels, ground));
         QueueDel(map);
         return true;
     }
@@ -260,13 +289,11 @@ public sealed class MappingZLevelsSystem : EntitySystem
         if (!SaveName.IsMatch(name))
             return false;
 
+        var ok = TrySaveLevels(levels, ground, depth => new ResPath(MappingZLevels.StackPath(name, depth)));
         var saved = new HashSet<string>();
-        var ok = true;
         for (var i = 0; i < levels.Count; i++)
         {
-            var path = MappingZLevels.StackPath(name, i - ground);
-            ok &= _loader.TrySaveMap(levels[i], new ResPath(path));
-            saved.Add(path);
+            saved.Add(MappingZLevels.StackPath(name, i - ground));
         }
 
         var folder = new ResPath(MappingZLevels.StackPath(name, 0)).Directory;
@@ -284,6 +311,81 @@ public sealed class MappingZLevelsSystem : EntitySystem
         }
 
         return ok;
+    }
+
+    /// <summary>
+    /// Saves each level, listed bottom-up with depth 0 at <paramref name="ground"/>, as a whole map to the file
+    /// <paramref name="pathFor"/> gives its depth. False if any level failed.
+    /// </summary>
+    public bool TrySaveLevels(List<EntityUid> levels, int ground, Func<int, ResPath> pathFor)
+    {
+        var ok = true;
+        for (var i = 0; i < levels.Count; i++)
+        {
+            ok &= _loader.TrySaveMap(levels[i], pathFor(i - ground));
+        }
+
+        return ok;
+    }
+
+    /// <summary>
+    /// Loads level files, by depth, as new paused and uninitialised maps and stacks them with depth 0 as the ground,
+    /// then raises <see cref="WFMappingStackChangedEvent"/>. Nothing stays loaded when a level fails.
+    /// </summary>
+    public bool TryLoadLevels(SortedDictionary<int, ResPath> files, [NotNullWhen(true)] out List<EntityUid>? levels,
+        out int ground)
+    {
+        levels = null;
+        ground = 0;
+        if (!files.ContainsKey(0))
+            return false;
+
+        var loaded = new List<EntityUid>();
+        var opts = new DeserializationOptions
+        {
+            StoreYamlUids = true,
+            InitializeMaps = false,
+            PauseMaps = true,
+        };
+
+        try
+        {
+            foreach (var (depth, file) in files)
+            {
+                if (!_loader.TryLoadMap(file, out var map, out _, opts))
+                {
+                    Log.Error($"Couldn't load z-level {depth} from {file}");
+                    DeleteLevels(loaded);
+                    return false;
+                }
+
+                if (depth == 0)
+                    ground = loaded.Count;
+
+                loaded.Add(map.Value.Owner);
+            }
+        }
+        catch
+        {
+            DeleteLevels(loaded);
+            throw;
+        }
+
+        if (loaded.Count > 1)
+            _zLevels.WfRestack(loaded, ground);
+
+        RaiseLocalEvent(new WFMappingStackChangedEvent(loaded, ground));
+        levels = loaded;
+        return true;
+    }
+
+    private void DeleteLevels(List<EntityUid> levels)
+    {
+        foreach (var level in levels)
+        {
+            if (!TerminatingOrDeleted(level))
+                Del(level);
+        }
     }
 
     private void OnOpen(MappingZLevelsOpenEvent ev, EntitySessionEventArgs args)

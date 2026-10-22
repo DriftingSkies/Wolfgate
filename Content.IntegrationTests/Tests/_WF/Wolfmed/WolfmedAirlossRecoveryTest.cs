@@ -17,7 +17,7 @@ namespace Content.IntegrationTests.Tests._WF.Wolfmed;
 /// a minute in station air with full blood. None of them suffocates standing there (the thaven did: its port left
 /// out the gas entries that feed its lungs), and each sheds the suffocation and blood loss damage it was given at
 /// something like the usual rate. A species with no respirator had nothing to take suffocation damage back, and
-/// the shadekin and its Proto subspecies healed blood loss at a quarter of everybody else's rate.
+/// the shadekin healed blood loss at a quarter of everybody else's rate.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(WolfmedBreathingSystem))]

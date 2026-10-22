@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._WF.BloodColour;
 using Content.Server._WF.BloodTrail;
 using Content.Server.Body.Components;
 using Content.Server.Decals;
@@ -32,6 +33,7 @@ namespace Content.Server._WF.Wolfmed.Gore;
 /// </remarks>
 public sealed class WolfmedGoreSystem : EntitySystem
 {
+    [Dependency] private WFBloodColourSystem _bloodColour = default!;
     [Dependency] private DecalSystem _decals = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -139,9 +141,12 @@ public sealed class WolfmedGoreSystem : EntitySystem
         return null;
     }
 
-    /// <summary>The colour of whatever this body bleeds, or null when it does not bleed at all.</summary>
+    /// <summary>The colour of whatever this body bleeds, the profile's own if it picked one, or null when it does not bleed at all.</summary>
     public Color? GetBloodColor(EntityUid body)
     {
+        if (_bloodColour.GetColour(body) is { } own)
+            return own;
+
         return TryComp(body, out BloodstreamComponent? bloodstream) &&
                _prototypes.TryIndex<ReagentPrototype>(bloodstream.BloodReagent, out var reagent)
             ? reagent.SubstanceColor

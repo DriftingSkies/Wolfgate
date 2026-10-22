@@ -27,6 +27,7 @@ public sealed partial class WFCrewWeaponSystem
     [Dependency] private Content.Server.Atmos.EntitySystems.AtmosphereSystem _atmos = default!;
     [Dependency] private SharedMapSystem _maps = default!;
     [Dependency] private WFCrewEvaSystem _eva = default!;
+    [Dependency] private WFCrewStealthSystem _stealth = default!;
     [Dependency] private Robust.Shared.Timing.IGameTiming _timing = default!;
 
     private const string MagazineSlot = "gun_magazine";
@@ -129,11 +130,15 @@ public sealed partial class WFCrewWeaponSystem
     /// <summary>Crew defend their assigned ship without pursuing targets across docking connections.</summary>
     public bool CanEngage(EntityUid uid, EntityUid target)
     {
-        if (TerminatingOrDeleted(target) || !_mobs.IsAlive(target)
-            || Transform(uid).GridUid is not { } grid || Transform(target).GridUid != grid)
+        if (TerminatingOrDeleted(target) || !_mobs.IsAlive(target) || Transform(uid).GridUid is not { } grid)
             return false;
 
         TryComp<WFCrewComponent>(uid, out var crew);
+        if (OnSight(uid, crew, grid, target))
+            return true;
+        if (Transform(target).GridUid != grid)
+            return false;
+
         var attacked = WasAttackedBy(uid, target);
         // Off his post's grid a crewman starts nothing. He answers whoever attacked him, in sight, only when sent
         // there on a job or a raid, or when the attacker is his faction's enemy anyway, as for a raider carried off;
@@ -167,6 +172,21 @@ public sealed partial class WFCrewWeaponSystem
     {
         return TryComp<WFCrewComponent>(uid, out var crew) && crew.Struck.TryGetValue(target, out var at)
                && _timing.CurTime < at + PursuitWindow;
+    }
+
+    /// <summary>
+    /// Whether an on-sight crewman opens fire on a faction enemy he sees: anywhere for the hands, only aboard for the
+    /// helm, guns and radio, which stay manned against anyone outside.
+    /// </summary>
+    private bool OnSight(EntityUid uid, WFCrewComponent? crew, EntityUid grid, EntityUid target)
+    {
+        if (!TryComp<WFCrewOnSightComponent>(crew?.Post?.EntityId ?? grid, out var onSight)
+            || Transform(target).GridUid != grid && IsStationCrew(uid)
+            || !IsFactionEnemy(uid, target) || !CanSee(uid, target))
+            return false;
+
+        var company = WFCompanyFamily.Of(CompOrNull<Content.Shared._Mono.Company.CompanyComponent>(target)?.CompanyName.Id);
+        return company.Length == 0 || !onSight.Spares.Any(spared => WFCompanyFamily.Of(spared) == company);
     }
 
     /// <summary>Whether the target belongs to a faction the crewman's own is hostile to, attack or no attack.</summary>
@@ -276,9 +296,11 @@ public sealed partial class WFCrewWeaponSystem
 
     /// <summary>
     /// Walls and closed opaque doors conceal boarders; radio awareness does not extend eyesight. Only what is built
-    /// into the ship blocks the view: a crewmate, a body, a crate or a locker in between does not.
+    /// into the ship blocks the view: a crewmate, a body, a crate or a locker in between does not. A stealthed mob that
+    /// has done nothing hostile lately is not seen, unless <paramref name="ignoreStealth"/>.
     /// </summary>
-    public bool CanSee(EntityUid uid, EntityUid target) => !TerminatingOrDeleted(target)
+    public bool CanSee(EntityUid uid, EntityUid target, bool ignoreStealth = false) => !TerminatingOrDeleted(target)
+        && (ignoreStealth || !_stealth.Unseen(target))
         && _interaction.InRangeUnobstructed(uid, target, 10f, Content.Shared.Physics.CollisionGroup.Opaque,
             predicate: blocker => !Transform(blocker).Anchored);
 

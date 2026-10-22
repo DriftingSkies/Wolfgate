@@ -43,7 +43,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
 
     /// <summary>Space that has to be free of other grids around an open-space origin.</summary>
     private const float Clearance = 600f;
-    private const int PlacementTries = 8;
+    private const int PlacementTries = 16;
 
     /// <summary>Room for a hull beyond its offset, kept free of other grids around a station-placed origin.</summary>
     private const float HullClearance = 150f;
@@ -317,14 +317,18 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
     /// Chooses the stations an encounter is placed by and flies to, and its origin: beside the first for a
     /// station or a route, out at the approach distance from the first for a circuit.
     /// </summary>
-    private bool TryPlaceAtStations(WFEncounterPrototype prototype, MapId map, out MapCoordinates origin, out List<EntityUid> stops)
+    internal bool TryPlaceAtStations(WFEncounterPrototype prototype, MapId map, out MapCoordinates origin, out List<EntityUid> stops)
     {
         stops = new List<EntityUid>();
         origin = MapCoordinates.Nullspace;
         var stations = Stations(map);
-        // Never beside or bound for an enemy's home port.
+        // Never beside or bound for an enemy's home port, nor posted near one off a station beside it.
+        var avoided = new List<Entity<MapGridComponent>>();
         if (prototype.AvoidStations.Count > 0)
-            stations.RemoveAll(station => Avoided(station, prototype.AvoidStations));
+        {
+            avoided.AddRange(stations.Where(station => StationMatches(station, prototype.AvoidStations)));
+            stations.RemoveAll(station => avoided.Contains(station));
+        }
 
         var wanted = prototype.Placement switch
         {
@@ -336,44 +340,66 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         if (stations.Count < wanted || prototype.Placement == WFEncounterPlacement.Route && stations.Count < 2)
             return false;
 
-        // The first stop is picked at random; each next one is the nearest station not yet on the route, so a
-        // haul works its way across the sector and doesn't zigzag. A station placement keeps off a station that already has
-        // an encounter ship about, unless every station has one.
-        Entity<MapGridComponent> first;
-        if (prototype.Placement == WFEncounterPlacement.Station && StationsWithoutShips(stations) is { Count: > 0 } free)
-        {
-            first = _random.Pick(free);
-            stations.Remove(first);
-        }
-        else
-        {
-            first = _random.PickAndTake(stations);
-        }
-
-        stops.Add(first);
-        var from = _transform.GetWorldPosition(first);
-        while (stops.Count < wanted)
-        {
-            var next = stations.MinBy(station => (_transform.GetWorldPosition(station) - from).LengthSquared());
-            stations.Remove(next);
-            stops.Add(next);
-            from = _transform.GetWorldPosition(next);
-        }
-
         // The ships load where they are told, so their spot must be clear of anything but the first stop.
-        var centre = _transform.GetMapCoordinates(first);
         var room = HullClearance;
         foreach (var ship in prototype.Ships)
         {
             room = MathF.Max(room, ship.Offset.Length() + HullClearance);
         }
 
+        // A first stop with no clear spot, such as one right beside an avoided station, gives way to another.
+        var anchors = new List<Entity<MapGridComponent>>(stations);
+        while (anchors.Count > 0)
+        {
+            // The first stop is picked at random; each next one is the nearest station not yet on the route, so a
+            // haul works its way across the sector and doesn't zigzag. A station placement keeps off a station that
+            // already has an encounter ship about, unless every station has one.
+            Entity<MapGridComponent> first;
+            if (prototype.Placement == WFEncounterPlacement.Station && StationsWithoutShips(anchors) is { Count: > 0 } free)
+                first = _random.Pick(free);
+            else
+                first = _random.Pick(anchors);
+            anchors.Remove(first);
+
+            if (!TryPlaceBeside(prototype, first, room, avoided, out origin))
+                continue;
+
+            var rest = new List<Entity<MapGridComponent>>(stations);
+            rest.Remove(first);
+            stops.Add(first);
+            var from = _transform.GetWorldPosition(first);
+            while (stops.Count < wanted)
+            {
+                var next = rest.MinBy(station => (_transform.GetWorldPosition(station) - from).LengthSquared());
+                rest.Remove(next);
+                stops.Add(next);
+                from = _transform.GetWorldPosition(next);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Finds a clear origin off a first stop, at its standoff or a circuit's approach distance, that keeps at least
+    /// the standoff from every avoided station.
+    /// </summary>
+    private bool TryPlaceBeside(WFEncounterPrototype prototype, Entity<MapGridComponent> first, float room,
+        List<Entity<MapGridComponent>> avoided, out MapCoordinates origin)
+    {
+        origin = MapCoordinates.Nullspace;
+        var centre = _transform.GetMapCoordinates(first);
         for (var i = 0; i < PlacementTries; i++)
         {
             var reach = prototype.Placement == WFEncounterPlacement.Circuit && prototype.Route is { } route
                 ? _random.NextFloat(route.ApproachMin, MathF.Max(route.ApproachMin, route.ApproachMax))
                 : first.Comp.LocalAABB.Size.Length() / 2f + prototype.Standoff;
             var point = centre.Position + _random.NextAngle().ToVec() * reach;
+            if (avoided.Any(station => TooNear(station, point, MathF.Max(prototype.Standoff, room))))
+                continue;
+
             _nearby.Clear();
             _maps.FindGridsIntersecting(centre.MapId, Box2.CenteredAround(point, new Vector2(room * 2f)), ref _nearby, approx: true, includeMap: false);
             if (_nearby.Any(grid => grid.Owner != first.Owner))
@@ -384,6 +410,14 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         }
 
         return false;
+    }
+
+    /// <summary>Whether a point is within a distance of a station's hull, measured from the hull's centre.</summary>
+    private bool TooNear(Entity<MapGridComponent> station, Vector2 point, float distance)
+    {
+        var reach = station.Comp.LocalAABB.Size.Length() / 2f + distance;
+        var centre = Vector2.Transform(station.Comp.LocalAABB.Center, _transform.GetWorldMatrix(station));
+        return (centre - point).LengthSquared() < reach * reach;
     }
 
     /// <summary>Stations kept secret: never a stop or a berth, and open space near them is never used.</summary>
@@ -459,11 +493,11 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         if (TryComp<IFFComponent>(station, out var iff) && (iff.Flags & (IFFFlags.Hide | IFFFlags.HideLabel | IFFFlags.HideLabelAlways)) != 0)
             return true;
 
-        return _hidden.Count > 0 && Avoided(station, _hidden);
+        return _hidden.Count > 0 && StationMatches(station, _hidden);
     }
 
     /// <summary>Whether a station's grid name, station name or station id contains any of the given fragments.</summary>
-    private bool Avoided(EntityUid station, List<string> fragments)
+    public bool StationMatches(EntityUid station, List<string> fragments)
     {
         var name = Name(station);
         var id = CompOrNull<Content.Server.Station.Components.BecomesStationComponent>(station)?.Id ?? string.Empty;

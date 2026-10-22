@@ -27,6 +27,7 @@ namespace Content.Server._WF.NpcCrew.Systems;
 public sealed partial class WFGunnerDutySystem : EntitySystem
 {
     [Dependency] private WFCrewAlertSystem _alerts = default!;
+    [Dependency] private WFCrewSparedSystem _spared = default!;
     [Dependency] private Robust.Shared.Random.IRobustRandom _skillRandom = default!;
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
     [Dependency] private WFCrewSecuritySystem _security = default!;
@@ -213,15 +214,17 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
                     _batteries[uid] = battery;
                 }
 
-                if (_targeting.Target(uid, new EntityCoordinates(hostile, Lay(grid, hostile, duty))) is { } aim)
+                var laid = new EntityCoordinates(hostile, Lay(grid, hostile, duty));
+                if (_targeting.Target(uid, laid) is { } aim)
                 {
                     aim.LeadingAccuracy = skill.Leading;
                     aim.OffgridLeadingAccuracy = skill.Leading;
                     // The guns are this gunner's to share out: the targeting system is kept from taking them all back.
+                    // A gun with a bystander in its line holds its fire.
                     var cannons = aim.Cannons;
                     cannons.Clear();
                     if (battery.Groups.Count > 0)
-                        cannons.AddRange(battery.Groups[0].Guns);
+                        cannons.AddRange(ClearGuns(grid, crew.Group, battery.Groups[0].Guns, hostile, _transform.ToMapCoordinates(laid)));
                     aim.WeaponCheckAccum = 3600f;
                 }
 
@@ -234,7 +237,9 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
                             continue;
 
                         var at = _transform.ToMapCoordinates(new EntityCoordinates(other, Lay(grid, other, duty)));
-                        _targeting.FireWeapons(grid, guns, at, body.LinearVelocity, _physics.GetMapLinearVelocity(other) * skill.Leading, uid);
+                        var clear = ClearGuns(grid, crew.Group, guns, other, at);
+                        if (clear.Count > 0)
+                            _targeting.FireWeapons(grid, clear, at, body.LinearVelocity, _physics.GetMapLinearVelocity(other) * skill.Leading, uid);
                     }
                 }
             }
@@ -374,6 +379,9 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
         MapCoordinates here, EntityUid ship, bool hostile)
     {
         if (ship == grid || TerminatingOrDeleted(ship))
+            return null;
+        // A player vessel of the crew's faction is fired on only once its own fire has made it an attacker.
+        if (_spared.Spared(grid, ship) && !_alerts.FiredShipGuns(grid, crew.Group, ship))
             return null;
         // A boarding party's ship only answers ship guns with its own.
         if (HasComp<WFHoldFireComponent>(grid) && !_alerts.FiredShipGuns(grid, crew.Group, ship))

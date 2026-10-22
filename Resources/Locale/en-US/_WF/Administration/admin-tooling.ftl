@@ -11,6 +11,7 @@ wf-vessel-spawn-size-label = Size:{" "}
 wf-vessel-spawn-category-label = Category:{" "}
 wf-vessel-spawn-owner-label = Owner:{" "}
 wf-vessel-spawn-owner-none = None
+wf-vessel-spawn-name-placeholder = Ship name (optional)
 wf-vessel-spawn-none = None
 wf-vessel-spawn-button = Spawn
 wf-vessel-spawn-count = Showing {$shown} of {$total} vessels
@@ -46,10 +47,12 @@ wf-vessel-spawn-category-AdminOnly = Admin only
 shipyard-console-class-Mercenary = Mercenary
 
 ## spawnvessel command
-cmd-spawnvessel-desc = Spawns a vessel prototype's grid at your current position, optionally registering it to a player: their account, and the ID card they carry as its deed.
-cmd-spawnvessel-help = Usage: {$command} <vessel ID> [owner username]
+cmd-spawnvessel-desc = Spawns a vessel prototype's grid at your current position with its late-join job slots, optionally registering it to a player (their account, and the ID card they carry as its deed) and naming it.
+cmd-spawnvessel-help = Usage: {$command} <vessel ID> [owner username, or - for none] [ship name]
 cmd-spawnvessel-hint = <vessel ID>
-cmd-spawnvessel-owner-hint = [owner username]
+cmd-spawnvessel-owner-hint = [owner username, or - for none]
+cmd-spawnvessel-name-hint = [ship name]
+cmd-spawnvessel-name-too-long = Ship names can be at most {$max} characters.
 cmd-spawnvessel-invalid-args = Expected one or two arguments.
 cmd-spawnvessel-no-entity = You need an entity in the world to spawn a vessel at.
 cmd-spawnvessel-no-map = You are not on a map.
@@ -64,6 +67,17 @@ cmd-spawnvessel-owner-has-deed = {$name}'s ID card already holds a ship deed.
 cmd-spawnvessel-owner-assigned = Deed assigned to {$name}, and the ship registered to their account.
 cmd-spawnvessel-owner-registered = Registered to {$name}'s account, with no deed card: {$reason} Its access follows them into any body.
 cmd-spawnvessel-owner-failed = Could not assign the deed to {$name}.
+
+## renamevessel command
+cmd-renamevessel-desc = Renames a vessel: its grid, its late-join station and any deeds for it.
+cmd-renamevessel-help = Usage: {$command} <grid entity> <new name>
+cmd-renamevessel-grid-hint = <grid entity>
+cmd-renamevessel-name-hint = <new name>
+cmd-renamevessel-invalid-args = Expected a grid entity and a name.
+cmd-renamevessel-not-grid = "{$uid}" is not a grid.
+cmd-renamevessel-bad-name = Ship names need 1 to {$max} characters.
+cmd-renamevessel-failed = Could not rename the vessel. Check the server log.
+cmd-renamevessel-success = Vessel renamed to {$name}.
 
 ## Spawn as Outfit verb and window
 wf-admin-verbs-spawn-outfit = Spawn as Outfit...

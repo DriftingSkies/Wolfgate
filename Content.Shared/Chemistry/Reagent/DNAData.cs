@@ -18,7 +18,7 @@ public sealed partial class DnaData : ReagentData
             return false;
         }
 
-        return ((DnaData) other).DNA == DNA;
+        return other is DnaData dna && dna.DNA == DNA; // WOLFGATE(BloodColour): blood also carries WFBloodColourData, which the cast threw on
     }
 
     public override int GetHashCode()

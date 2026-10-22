@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.Cockpit;
 using Content.Client._WF.Shuttles.UI;
 using Content.Client.CombatMode;
 using Content.Client.ContextMenu.UI;
@@ -48,6 +49,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
     [Dependency] private VerbSystem _verbs = default!;
+    [Dependency] private WFCockpitPanDiagnosticSystem _panDiagnostics = default!;
 
     /// <summary>
     /// How far a drag carries the look point before the server is told, in tiles.
@@ -155,6 +157,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     {
         base.Initialize();
         _input.FirstChanceOnKeyEvent += OnPanKey;
+        _clyde.OnWindowFocused += OnWindowFocused;
 
         SubscribeLocalEvent<ShuttleCameraComponent, GetEyeOffsetEvent>(OnGetEyeOffset);
         SubscribeLocalEvent<ShuttleCameraComponent, MenuVisibilityEvent>(OnMenuVisibility);
@@ -181,6 +184,7 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     public override void Shutdown()
     {
         _input.FirstChanceOnKeyEvent -= OnPanKey;
+        _clyde.OnWindowFocused -= OnWindowFocused;
         base.Shutdown();
 
         Deactivate();
@@ -324,15 +328,41 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
             }
             return;
         }
-        if (args.Handled || type != KeyEventType.Down || args.IsRepeat || !Active || !_net.IsConnected ||
-            !_clyde.IsFocused || !mouse.IsValid || args.Shift || args.Control || args.Alt ||
-            _uiManager.MouseGetControl(mouse) is not ScalingViewport { Parent: MainViewport } viewport)
+        if (type != KeyEventType.Down || args.IsRepeat || !Active || !mouse.IsValid)
+            return;
+        // Window focus and the window's modifier flags were dropped as gates: either can go stale and silently
+        // refuse every press. Modifiers come from the engine's own key state instead.
+        var hit = _uiManager.MouseGetControl(mouse);
+        var viewport = hit as ScalingViewport;
+        var refusal = !_net.IsConnected ? "wf-cockpit-pan-offline"
+            : args.Handled ? "wf-cockpit-pan-already-taken"
+            : WFCockpitPanDiagnosticSystem.ModifierHeld(_input) ? "wf-cockpit-pan-modifier"
+            : viewport is not { Parent: MainViewport } ? "wf-cockpit-pan-not-world"
+            : null;
+        if (refusal != "wf-cockpit-pan-not-world" || OverWorldView(mouse))
+            _panDiagnostics.Record(args, mouse, Loc.GetString("wf-cockpit-pan-source-world"), refusal ?? "wf-cockpit-pan-started");
+        if (refusal != null || viewport == null)
             return;
         args.Handle();
         _panButtonDown = _dragging = true;
         _dragViewport = viewport;
         _lastMouse = mouse.Position;
         _panStart = mouse.Position;
+    }
+
+    /// <summary>Whether the pointer is inside the world viewport, whatever control sits on top of it there.</summary>
+    private bool OverWorldView(ScreenCoordinates mouse)
+    {
+        return _uiManager.ActiveScreen?.GetWidget<MainViewport>() is { VisibleInTree: true } world &&
+               mouse.Window == world.Window?.Id &&
+               world.GlobalPixelRect.Contains((Vector2i) mouse.Position);
+    }
+
+    /// <summary>Ends a pan when a window loses focus; the focus flag itself never gates a press.</summary>
+    private void OnWindowFocused(WindowFocusedEventArgs args)
+    {
+        if (!args.Focused)
+            EndDrag();
     }
 
     /// <summary>
@@ -365,14 +395,14 @@ public sealed partial class ShuttleExternalCameraSystem : EntitySystem
     }
 
     /// <summary>Keeps hold of the grabbed world point through viewport rotation, zoom and pointer movement.</summary>
-    private void UpdateDrag(EntityUid gridUid) => UpdateDrag(gridUid, _input.MouseScreenPosition, _clyde.IsFocused);
+    private void UpdateDrag(EntityUid gridUid) => UpdateDrag(gridUid, _input.MouseScreenPosition);
 
-    private void UpdateDrag(EntityUid gridUid, ScreenCoordinates mouse, bool focused)
+    private void UpdateDrag(EntityUid gridUid, ScreenCoordinates mouse)
     {
         if (!_dragging)
             return;
 
-        if (!_panButtonDown || !focused || _dragViewport is not { IsInsideTree: true, VisibleInTree: true } dragged)
+        if (!_panButtonDown || _dragViewport is not { IsInsideTree: true, VisibleInTree: true } dragged)
         {
             EndDrag();
             return;

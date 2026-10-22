@@ -98,6 +98,14 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public int PatrolBounty = 20000;
 
+    /// <summary>The repair voucher each ship that helps break a stronghold or convoy gets, bound to that ship.</summary>
+    [DataField]
+    public EntProtoId? StrongholdVoucher;
+
+    /// <summary>The repair voucher each ship that helps destroy a patrol or reinforcement gets, bound to that ship.</summary>
+    [DataField]
+    public EntProtoId? PatrolVoucher;
+
     /// <summary>Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.</summary>
     [DataField]
     public List<int> RetakeBounty = new() { 10000, 12000, 14000, 17000, 20000, 25000 };
@@ -136,6 +144,26 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public float LevelBountyScale = 0.5f;
 
+    /// <summary>The citadel raised at tier 5: a stronghold flown out as a convoy that holds more rings and grows past the cap; null for none.</summary>
+    [DataField]
+    public ProtoId<WFEncounterPrototype>? Citadel;
+
+    /// <summary>How long the campaign must stand at tier 5 before a citadel sets out.</summary>
+    [DataField]
+    public TimeSpan CitadelDelay = TimeSpan.FromMinutes(10);
+
+    /// <summary>Levels a citadel may grow past the tier's cap.</summary>
+    [DataField]
+    public int CitadelExtraLevels = 2;
+
+    /// <summary>What a citadel's bounty and credits are multiplied by over a stronghold's of the same level.</summary>
+    [DataField]
+    public float CitadelBountyScale = 3f;
+
+    /// <summary>How many rings round its cell a citadel claims.</summary>
+    [DataField]
+    public int CitadelRings = 2;
+
     [DataField]
     public ProtoId<WFEncounterPrototype> Patrol = "WFReaverPatrol";
 
@@ -151,6 +179,10 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public ProtoId<WFEncounterPrototype> RaidStation = "WFReaverRaidStation";
 
+    /// <summary>The pack a stronghold sends to drive off a faction challenging a Reaver cell.</summary>
+    [DataField]
+    public ProtoId<WFEncounterPrototype> ResponsePack = "WFReaverResponsePack";
+
     /// <summary>The storyteller's own Reaver encounters, weighted up by tier.</summary>
     [DataField]
     public List<ProtoId<WFEncounterPrototype>> ScaledEncounters = new() { "WFEncounterPirateRaiders", "WFEncounterPirateBoarders" };
@@ -162,6 +194,10 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     /// <summary>Played with a falling tier and a broken stronghold.</summary>
     [DataField]
     public SoundSpecifier FallingSound = new SoundPathSpecifier("/Audio/Misc/notice1.ogg");
+
+    /// <summary>Played on top of the chime for a capital event: the citadel setting out and raised.</summary>
+    [DataField]
+    public SoundSpecifier CapitalSound = new SoundPathSpecifier("/Audio/Misc/gamma.ogg");
 
     [DataField]
     public Color RisingColor = Color.FromHex("#D84A3A");

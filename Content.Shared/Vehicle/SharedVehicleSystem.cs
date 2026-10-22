@@ -5,6 +5,7 @@ using Content.Shared.Actions;
 using Content.Shared.Audio;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
+using Content.Shared.Hands.EntitySystems; // WOLFGATE(Vehicles)
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
 using Content.Shared.Light.Components;
@@ -43,6 +44,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     [Dependency] private SharedJointSystem _joints = default!;
     [Dependency] private SharedBuckleSystem _buckle = default!;
     [Dependency] private SharedMoverController _mover = default!;
+    [Dependency] private SharedHandsSystem _hands = default!; // WOLFGATE(Vehicles)
 
     private const string KeySlot = "key_slot";
 
@@ -148,18 +150,26 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             }
             // End Frontier
 
+            // WOLFGATE(Vehicles) START: only check for a free hand; a later attempt handler (folded) can still cancel
             // Add a virtual item to rider's hand, cancel if we can't.
-            if (!_virtualItemSystem.TrySpawnVirtualItemInHand(uid, riderUid))
+            // if (!_virtualItemSystem.TrySpawnVirtualItemInHand(uid, riderUid))
+            if (!_hands.TryGetEmptyHand(riderUid, out _))
             {
                 args.Cancelled = true;
                 return;
             }
+            // WOLFGATE END
         }
     }
 
     protected virtual void OnStrapped(EntityUid uid, VehicleComponent component, ref StrappedEvent args) //Lua: private void<protected virtual void
     {
         var riderUid = args.Buckle.Owner;
+
+        // WOLFGATE(Vehicles) START: take the hand once the buckle has gone through
+        if (component.UseHand == true)
+            _virtualItemSystem.TrySpawnVirtualItemInHand(uid, riderUid);
+        // WOLFGATE END
 
         // Set up the rider and vehicle with each other
         EnsureComp<InputMoverComponent>(uid);

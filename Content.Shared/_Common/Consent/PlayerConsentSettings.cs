@@ -40,9 +40,12 @@ public sealed class PlayerConsentSettings
         if (Freetext.Length > maxLength)
             Freetext = Freetext.Substring(0, maxLength);
 
+        // WOLFGATE(CorticalBorer) START: keep only states that differ from the toggle's default
         Toggles = Toggles.Where(t =>
-            prototypeManager.HasIndex<ConsentTogglePrototype>(t.Key)
-            && t.Value == "on"
+            prototypeManager.TryIndex(t.Key, out var proto)
+            && (t.Value == "on" || t.Value == "off")
+            && t.Value != proto.DefaultState
         ).ToDictionary();
+        // WOLFGATE END
     }
 }

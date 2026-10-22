@@ -3,7 +3,7 @@
   id: FelinidTiger
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoFeline, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   layering: # WOLFGATE: the south frame draws behind the body, so the tail never covers anatomy
     m_tail_tiger_primary_BEHIND: TailBehind
     m_tail_tiger_secondary_BEHIND: TailBehind

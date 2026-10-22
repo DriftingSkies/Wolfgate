@@ -43,6 +43,8 @@ using Robust.Shared.Utility;
 using Content.Shared.Atmos.Components;
 using System.Linq;
 using Content.Shared.StatusEffect; // Frontier
+using Content.Server._WF.Xenonids.Parasite.AI; // WOLFGATE(Xenonids)
+using Content.Shared._WF.Xenonids.Parasite; // WOLFGATE(Xenonids)
 
 namespace Content.Server.NPC.Systems;
 
@@ -438,6 +440,14 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             {
                 return !TryComp<MobStateComponent>(targetUid, out var mobState) || _mobState.IsAlive(targetUid, mobState) ? 1f : 0f;
             }
+            // WOLFGATE(Xenonids) START: AI facehuggers pick hosts they can still infect
+            case WFTargetInfectableCon:
+            {
+                return TryComp<InfectableComponent>(targetUid, out var infectable)
+                       && !infectable.BeingInfected
+                       && !HasComp<VictimInfectedComponent>(targetUid) ? 1f : 0f;
+            }
+            // WOLFGATE END
             default:
                 throw new NotImplementedException();
         }

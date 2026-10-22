@@ -1,0 +1,71 @@
+<template:WFMappingTemplatePanel xmlns="https://spacestation14.io"
+                                 xmlns:template="clr-namespace:Content.Client._WF.MappingMode.Template"
+                                 Orientation="Vertical"
+                                 HorizontalExpand="True"
+                                 VerticalExpand="True">
+    <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" SeparationOverride="4" Margin="6">
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <Button Name="LoadButton" HorizontalExpand="True" Text="{Loc 'wf-mapping-template-load'}"
+                        ToolTip="{Loc 'wf-mapping-template-load-tooltip'}" />
+                <Button Name="ClearButton" HorizontalExpand="True" Text="{Loc 'wf-mapping-template-clear'}"
+                        ToolTip="{Loc 'wf-mapping-template-clear-tooltip'}" />
+            </BoxContainer>
+            <Label Name="InfoLabel" ClipText="True" StyleClasses="LabelSubText" />
+
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <Button Name="ShareButton" HorizontalExpand="True" Text="{Loc 'wf-mapping-template-share'}"
+                        ToolTip="{Loc 'wf-mapping-template-share-tooltip'}" />
+                <Button Name="UnshareButton" HorizontalExpand="True" Text="{Loc 'wf-mapping-template-unshare'}"
+                        ToolTip="{Loc 'wf-mapping-template-unshare-tooltip'}" />
+            </BoxContainer>
+            <Label Name="SharedLabel" ClipText="True" StyleClasses="LabelSubText" />
+            <ProgressBar Name="TransferBar" MinValue="0" MaxValue="1" MinHeight="6" Visible="False" />
+            <Label Name="OwnHiddenLabel" ClipText="True" StyleClasses="LabelSubText"
+                   Text="{Loc 'wf-mapping-template-own-hidden'}" Visible="False" />
+
+            <BoxContainer Name="SettingsBox" Orientation="Vertical" SeparationOverride="4">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                    <CheckBox Name="VisibleCheck" Text="{Loc 'wf-mapping-template-visible'}" />
+                    <CheckBox Name="LockCheck" Text="{Loc 'wf-mapping-template-locked'}"
+                              ToolTip="{Loc 'wf-mapping-template-locked-tooltip'}" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Label Text="{Loc 'wf-mapping-template-layer'}" />
+                    <OptionButton Name="LayerMenu" HorizontalExpand="True" />
+                </BoxContainer>
+
+                <Label Text="{Loc 'wf-mapping-template-section-position'}" StyleClasses="LabelHeading"
+                       Margin="0 6 0 0" />
+                <BoxContainer Name="PositionRow" Orientation="Horizontal" SeparationOverride="4" />
+
+                <Label Text="{Loc 'wf-mapping-template-section-scale'}" StyleClasses="LabelHeading"
+                       Margin="0 6 0 0" />
+                <BoxContainer Name="ScaleRow" Orientation="Horizontal" SeparationOverride="4" />
+                <CheckBox Name="UniformCheck" Text="{Loc 'wf-mapping-template-uniform'}"
+                          ToolTip="{Loc 'wf-mapping-template-uniform-tooltip'}" />
+                <BoxContainer Name="PixelsRow" Orientation="Horizontal" SeparationOverride="4">
+                    <Label Text="{Loc 'wf-mapping-template-pixels-per-tile'}" HorizontalExpand="True" />
+                </BoxContainer>
+
+                <Label Text="{Loc 'wf-mapping-template-section-rotation'}" StyleClasses="LabelHeading"
+                       Margin="0 6 0 0" />
+                <BoxContainer Name="RotationRow" Orientation="Horizontal" SeparationOverride="4" />
+                <Slider Name="RotationSlider" MinValue="-180" MaxValue="180" HorizontalExpand="True" />
+
+                <Label Text="{Loc 'wf-mapping-template-section-opacity'}" StyleClasses="LabelHeading"
+                       Margin="0 6 0 0" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                    <Slider Name="OpacitySlider" MinValue="0" MaxValue="1" HorizontalExpand="True"
+                            VerticalAlignment="Center" />
+                    <Label Name="OpacityLabel" MinWidth="44" />
+                </BoxContainer>
+
+                <Button Name="ResetButton" Text="{Loc 'wf-mapping-template-reset'}"
+                        ToolTip="{Loc 'wf-mapping-template-reset-tooltip'}" Margin="0 6 0 0" />
+            </BoxContainer>
+
+            <RichTextLabel Name="HintLabel" Margin="0 8 0 0" />
+        </BoxContainer>
+    </ScrollContainer>
+</template:WFMappingTemplatePanel>

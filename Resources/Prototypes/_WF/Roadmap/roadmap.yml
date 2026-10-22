@@ -101,18 +101,90 @@
   - name: wf-roadmap-item-cc-medbay
     description: wf-roadmap-item-cc-medbay-desc
     state: Complete
+  - name: wf-roadmap-item-cockpit
+    description: wf-roadmap-item-cockpit-desc
+    state: Complete
+  - name: wf-roadmap-item-planet-flight
+    description: wf-roadmap-item-planet-flight-desc
+    state: Complete
+  - name: wf-roadmap-item-hailing
+    description: wf-roadmap-item-hailing-desc
+    state: Complete
+  - name: wf-roadmap-item-encounters-fleets
+    description: wf-roadmap-item-encounters-fleets-desc
+    state: Complete
+  - name: wf-roadmap-item-sector-threats
+    description: wf-roadmap-item-sector-threats-desc
+    state: Complete
+  - name: wf-roadmap-item-ceasefire
+    description: wf-roadmap-item-ceasefire-desc
+    state: Complete
+  - name: wf-roadmap-item-judge-patrols
+    description: wf-roadmap-item-judge-patrols-desc
+    state: Complete
+  - name: wf-roadmap-item-crew-starts
+    description: wf-roadmap-item-crew-starts-desc
+    state: Complete
+  - name: wf-roadmap-item-shipyards
+    description: wf-roadmap-item-shipyards-desc
+    state: Complete
+  - name: wf-roadmap-item-vehicles
+    description: wf-roadmap-item-vehicles-desc
+    state: Complete
+  - name: wf-roadmap-item-xenonids
+    description: wf-roadmap-item-xenonids-desc
+    state: Complete
+  - name: wf-roadmap-item-synthetics
+    description: wf-roadmap-item-synthetics-desc
+    state: Complete
+  - name: wf-roadmap-item-barricades
+    description: wf-roadmap-item-barricades-desc
+    state: Complete
+  - name: wf-roadmap-item-loadouts
+    description: wf-roadmap-item-loadouts-desc
+    state: Complete
+  - name: wf-roadmap-item-chat
+    description: wf-roadmap-item-chat-desc
+    state: Complete
+  - name: wf-roadmap-item-instruments
+    description: wf-roadmap-item-instruments-desc
+    state: Complete
+  - name: wf-roadmap-item-black-hole
+    description: wf-roadmap-item-black-hole-desc
+    state: Complete
+  - name: wf-roadmap-item-feedback
+    description: wf-roadmap-item-feedback-desc
+    state: Complete
+  - name: wf-roadmap-item-mapping-mode
+    description: wf-roadmap-item-mapping-mode-desc
+    state: Complete
 
 - type: roadmapColumn
   id: WFRoadmapUpcoming
   name: wf-roadmap-column-upcoming
   order: 1
   items:
-  - name: wf-roadmap-item-encounters-fleets
-    description: wf-roadmap-item-encounters-fleets-desc
+  - name: wf-roadmap-item-planet-settlements
+    description: wf-roadmap-item-planet-settlements-desc
     state: InProgress
-  - name: wf-roadmap-item-planet-structures
-    description: wf-roadmap-item-planet-structures-desc
-    state: Planned
+  - name: wf-roadmap-item-crocus
+    description: wf-roadmap-item-crocus-desc
+    state: InProgress
+  - name: wf-roadmap-item-planet-expeditions
+    description: wf-roadmap-item-planet-expeditions-desc
+    state: InProgress
+  - name: wf-roadmap-item-planet-wrecks
+    description: wf-roadmap-item-planet-wrecks-desc
+    state: InProgress
+  - name: wf-roadmap-item-planet-threats
+    description: wf-roadmap-item-planet-threats-desc
+    state: InProgress
+  - name: wf-roadmap-item-planet-vehicles
+    description: wf-roadmap-item-planet-vehicles-desc
+    state: InProgress
+  - name: wf-roadmap-item-planet-signals
+    description: wf-roadmap-item-planet-signals-desc
+    state: InProgress
 
 - type: roadmapColumn
   id: WFRoadmapFuture
@@ -121,6 +193,9 @@
   items:
   - name: wf-roadmap-item-planet-cracking
     description: wf-roadmap-item-planet-cracking-desc
+    state: Planned
+  - name: wf-roadmap-item-generated-cities
+    description: wf-roadmap-item-generated-cities-desc
     state: Planned
   - name: wf-roadmap-item-outposts-bases
     description: wf-roadmap-item-outposts-bases-desc

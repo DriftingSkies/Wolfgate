@@ -1,3 +1,4 @@
+using Content.Shared._WF.BloodColour; // WOLFGATE(BloodColour)
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.FixedPoint;
 using JetBrains.Annotations;
@@ -955,15 +956,16 @@ namespace Content.Shared.Chemistry.Components
                     continue;
                 }
 
+                var wfColour = WFBloodColourData.ColourOf(reagent) ?? proto.SubstanceColor; // WOLFGATE(BloodColour): a character's own blood colour beats the reagent's
                 if (first)
                 {
                     first = false;
-                    mixColor = proto.SubstanceColor;
+                    mixColor = wfColour; // WOLFGATE(BloodColour)
                     continue;
                 }
 
                 var interpolateValue = quantity.Float() / runningTotalQuantity.Float();
-                mixColor = Color.InterpolateBetween(mixColor, proto.SubstanceColor, interpolateValue);
+                mixColor = Color.InterpolateBetween(mixColor, wfColour, interpolateValue); // WOLFGATE(BloodColour)
             }
             return mixColor;
         }
@@ -998,15 +1000,16 @@ namespace Content.Shared.Chemistry.Components
                     continue;
                 }
 
+                var wfColour = WFBloodColourData.ColourOf(reagent) ?? proto.SubstanceColor; // WOLFGATE(BloodColour): a character's own blood colour beats the reagent's
                 if (first)
                 {
                     first = false;
-                    mixColor = proto.SubstanceColor;
+                    mixColor = wfColour; // WOLFGATE(BloodColour)
                     continue;
                 }
 
                 var interpolateValue = quantity.Float() / runningTotalQuantity.Float();
-                mixColor = Color.InterpolateBetween(mixColor, proto.SubstanceColor, interpolateValue);
+                mixColor = Color.InterpolateBetween(mixColor, wfColour, interpolateValue); // WOLFGATE(BloodColour)
             }
             return mixColor;
         }

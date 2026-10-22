@@ -3,6 +3,11 @@
   name: uranium window
   parent: WindowRCDResistant
   components:
+  # WOLFGATE(Xenonids): xeno claws break a uranium window in four hits
+  - type: ReceiverXenoClaws
+    maxHealth: 300
+    hitsToDestroy: 4
+    minimumClawStrength: Normal
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/uranium_window.rsi
@@ -70,6 +75,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): xeno claws break a uranium directional window in two hits
+  - type: ReceiverXenoClaws
+    maxHealth: 37
+    hitsToDestroy: 2
+    minimumClawStrength: Normal
   - type: Sprite
     sprite: Structures/Windows/directional.rsi
     state: uranium_window

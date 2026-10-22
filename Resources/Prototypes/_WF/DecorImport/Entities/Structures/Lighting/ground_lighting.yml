@@ -1,0 +1,48 @@
+- type: entity
+  parent: PoweredSmallLight
+  id: AuroraLight
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/light_floor.rsi
+    offset: "0,0"
+    drawdepth: FloorObjects
+    snapCardinals: false
+  - type: Physics
+    canCollide: false
+
+- type: entity
+  parent: PoweredSmallLight
+  id: AuroraLightSmall
+  suffix: light
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/small_floor.rsi
+    offset: "0,0"
+    drawdepth: FloorObjects
+  - type: Physics
+    canCollide: false
+
+- type: entity
+  parent: PoweredSmallLight
+  id: AuroraLightSmallEmergency
+  suffix: emergency
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/floor_emergency.rsi
+    offset: "0,0"
+    drawdepth: FloorObjects
+  - type: Physics
+    canCollide: false
+
+- type: entity
+  parent: PoweredSmallLight
+  id: VoreLightFloortube
+  suffix: floortube
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Lighting/light_floortube.rsi
+    offset: "0,0"
+    drawdepth: FloorObjects
+    snapCardinals: false
+  - type: Physics
+    canCollide: false

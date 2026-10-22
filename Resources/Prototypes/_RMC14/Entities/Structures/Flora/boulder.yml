@@ -1,0 +1,141 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: PottedPlantBase
+  id: RMCBoulderLargeDark3
+  placement:
+    mode: SnapgridBorder
+  components:
+  - type: Sprite
+    state: dark3
+    noRot: true
+    sprite: _RMC14/Structures/Flora/large_boulder.rsi
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 1000
+        layer: [ HalfWallLayer, Opaque ]
+  - type: Climbable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: VehicleSmashable
+    minDestroyWeightClass: Medium
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/large_boulder.rsi
+    state: dark3
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCBoulderWideDark2
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: dark2
+    noRot: true
+    sprite: _RMC14/Structures/Flora/wide_boulder.rsi
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 1000
+        layer: [ HalfWallLayer, Opaque ]
+  - type: Climbable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: VehicleSmashable
+    minDestroyWeightClass: Medium
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/wide_boulder.rsi
+    state: dark2
+# WOLFGATE END
+
+# WOLFGATE(DecorImport) START: ported from Einstein Engines
+- type: entity
+  parent: PottedPlantBase
+  id: RMCBoulderLarge
+  placement:
+    mode: SnapgridBorder
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Flora/large_boulder.rsi
+    state: boulder_large1
+    noRot: true
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 1000
+        layer: [ HalfWallLayer, Opaque ]
+  - type: Climbable
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/large_boulder.rsi
+    state: boulder_large1
+
+- type: entity
+  parent: RMCBoulderLarge
+  id: RMCBoulderLarge1
+  components:
+  - type: Sprite
+    state: boulder_large2
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/large_boulder.rsi
+    state: boulder_large2
+
+- type: entity
+  parent: RMCBoulderLarge
+  id: RMCBoulderWide
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Flora/wide_boulder.rsi
+    state: boulder1
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/wide_boulder.rsi
+    state: boulder1
+# WOLFGATE END

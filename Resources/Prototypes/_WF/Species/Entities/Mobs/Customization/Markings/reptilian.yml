@@ -2,7 +2,7 @@
   id: LizardFloofNeckfull
   bodyPart: HeadSide
   markingCategory: HeadSide
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   sprites:
   - sprite: Mobs/Customization/reptilian_parts.rsi
     state: floof_neckfull
@@ -11,7 +11,7 @@
   id: LizardTailAquatic
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   # split tail art into front/behind layers so the south frame doesn't cover anatomy
   layering:
     tail_aquatic_BEHIND: TailBehind
@@ -27,7 +27,7 @@
   id: LizardChestFin
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   sprites:
   - sprite: Mobs/Customization/reptilian_parts.rsi
     state: body_fin
@@ -54,7 +54,7 @@
   id: LizardTailAquaticAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   # split tail art into front/behind layers so the south frame doesn't cover anatomy
   layering:
     tail_aquatic_wagging_BEHIND: TailBehind

@@ -1,0 +1,349 @@
+# MB-6 deployable barricade, sandbags, barbed wire and the entrenching tool.
+- type: entity
+  parent: CMBarricadeBase
+  id: CMBarricadeFolding
+  name: portable composite barricade
+  description: A deployed MB-6 folding barricade. It is light enough to be packed back down, but strong enough to hold a defensive line.
+  components:
+  - type: VehicleSmashable
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/_WF/Barricades/metalhit.ogg
+  - type: Sprite
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    drawdepth: WallTops
+    layers:
+    - state: DamageOverlay_0
+      map: [ "enum.RMCDamageOverlayVisuals.DamageOverlay" ]
+      sprite: _WF/Barricades/Structures/folding_cracks.rsi
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: CMFoldingBarricade
+  - type: Repairable
+    doAfterDelay: 10
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 350
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DamageVisuals
+    thresholds: [4, 8, 12]
+    damageDivisor: 21.875
+    trackAllDamage: true
+    overlay: false
+    targetLayers:
+    - enum.RMCDamageOverlayVisuals.DamageOverlay
+    damageGroup: Brute
+  - type: RMCFoldingBarricade
+
+- type: stack
+  id: CMFoldingBarricade
+  name: MB-6 folding barricade
+  icon: { sprite: _WF/Barricades/Objects/folding_barricade.rsi, state: folding-1 }
+  spawn: CMFoldingBarricade
+  maxCount: 3
+
+- type: entity
+  parent: BaseItem
+  id: CMFoldingBarricade
+  name: MB-6 folding barricade
+  description: A portable composite barricade that can be rapidly deployed into a defensive position.
+  suffix: Single
+  components:
+  - type: Sprite
+    sprite: _WF/Barricades/Objects/folding_barricade.rsi
+    layers:
+    - state: folding-1
+      map: [ "base" ]
+  - type: Item
+    sprite: _WF/Barricades/Objects/folding_barricade.rsi
+    size: Large
+  - type: Clothing
+    quickEquip: false
+    sprite: _WF/Barricades/Objects/folding_barricade.rsi
+    slots:
+    - suitStorage
+    - Back
+  - type: Stack
+    stackType: CMFoldingBarricade
+    count: 1
+    baseLayer: base
+    layerStates:
+    - folding-1
+    - folding-2
+    - folding-3
+    layerFunction: Threshold
+  - type: StackLayerThreshold
+    thresholds: [2, 3]
+  - type: RMCFoldingBarricadeStack
+    storedDamage:
+    - 0
+  - type: Appearance
+  - type: Tag
+    tags:
+    - RMCFoldingBarricade
+
+- type: entity
+  parent: CMFoldingBarricade
+  id: CMFoldingBarricadesMB6x3
+  suffix: Three
+  components:
+  - type: Sprite
+    layers:
+    - state: folding-3
+      map: [ "base" ]
+  - type: Stack
+    count: 3
+  - type: RMCFoldingBarricadeStack
+    storedDamage:
+    - 0
+    - 0
+    - 0
+
+- type: stack
+  id: CMSandbagEmpty
+  name: empty sandbags
+  icon: { sprite: _WF/Barricades/Objects/sandbags.rsi, state: sandbag_stack }
+  spawn: CMSandbagEmpty
+  maxCount: 50
+
+- type: stack
+  id: CMSandbagFull
+  name: sandbags
+  icon: { sprite: _WF/Barricades/Objects/sandbags.rsi, state: sandbag_pile }
+  spawn: CMSandbagFull
+  maxCount: 50
+
+- type: entity
+  parent: BaseItem
+  id: CMSandbagEmpty
+  name: empty sandbags
+  description: Some empty sandbags, best to fill them up with an entrenching tool if you want to use them.
+  components:
+  - type: Item
+    sprite: _WF/Barricades/Objects/sandbags.rsi
+    inhandVisuals:
+      left:
+      - state: stack-inhand-left
+      right:
+      - state: stack-inhand-right
+    size: Small
+  - type: Sprite
+    sprite: _WF/Barricades/Objects/sandbags.rsi
+    state: sandbag_stack
+  - type: EmptySandbag
+  - type: Stack
+    stackType: CMSandbagEmpty
+    count: 1
+
+- type: entity
+  parent: CMSandbagEmpty
+  id: CMSandbagEmpty50
+  suffix: "50"
+  components:
+  - type: Stack
+    count: 50
+
+- type: entity
+  parent: CMSandbagEmpty
+  id: CMSandbagEmpty25
+  suffix: "25"
+  components:
+  - type: Stack
+    count: 25
+
+- type: entity
+  parent: CMSandbagEmpty
+  id: CMSandbagEmpty10
+  suffix: "10"
+  components:
+  - type: Stack
+    count: 10
+
+- type: entity
+  parent: BaseItem
+  id: CMSandbagFull
+  name: sandbags
+  description: Some bags filled with sand. Use five of them to build a sandbag barricade where you stand, facing the way you face.
+  components:
+  - type: Item
+    sprite: _WF/Barricades/Objects/sandbags.rsi
+    inhandVisuals:
+      left:
+      - state: pile-inhand-left
+      right:
+      - state: pile-inhand-right
+    size: Large
+  - type: Sprite
+    sprite: _WF/Barricades/Objects/sandbags.rsi
+    state: sandbag_pile
+  - type: FullSandbag
+  - type: Stack
+    stackType: CMSandbagFull
+    count: 1
+
+- type: entity
+  parent: CMSandbagFull
+  id: CMSandbagFull50
+  suffix: "50"
+  components:
+  - type: Stack
+    count: 50
+
+- type: entity
+  parent: CMSandbagFull
+  id: CMSandbagFull25
+  suffix: "25"
+  components:
+  - type: Stack
+    count: 25
+
+- type: entity
+  parent: CMSandbagFull
+  id: CMSandbagFull5
+  suffix: "5"
+  components:
+  - type: Stack
+    count: 5
+
+- type: stack
+  id: BarbedWire
+  name: barbed wire
+  icon: { sprite: _WF/Barricades/Objects/barbed_wire.rsi, state: barbed_wire }
+  spawn: BarbedWire1
+  maxCount: 20
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: BarbedWireBase
+  name: barbed wire
+  description: Metal fencing wire with sharp points along the strands. String it across a barricade to make anyone hitting or climbing it regret it.
+  components:
+  - type: Tag
+    tags:
+    - Metal
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Stack
+    stackType: BarbedWire
+    baseLayer: base
+    layerStates:
+    - barbed_wire
+    - barbed_wire_2
+    - barbed_wire_3
+  - type: Sprite
+    sprite: _WF/Barricades/Objects/barbed_wire.rsi
+    layers:
+    - state: barbed_wire_3
+      map: [ "base" ]
+  - type: Item
+    size: Small
+  - type: Appearance
+  - type: BarbedWire
+
+- type: entity
+  parent: BarbedWireBase
+  id: BarbedWire10
+  suffix: "10"
+  components:
+  - type: Stack
+    count: 10
+
+- type: entity
+  parent: BarbedWireBase
+  id: BarbedWire15
+  suffix: "15"
+  components:
+  - type: Stack
+    count: 15
+
+- type: entity
+  parent: BarbedWireBase
+  id: BarbedWire1
+  suffix: Single
+  components:
+  - type: Stack
+    count: 1
+  - type: Construction
+    graph: BarbedWireGraph
+    node: nodeBarbedWire
+
+- type: entity
+  parent: BaseItem
+  id: CMEntrenchingTool
+  name: entrenching tool
+  description: Used to dig holes and bash heads in. Folds in to fit in small spaces. Unfold it and dig dirt, sand, grass or snow to fill empty sandbags next to you.
+  components:
+  - type: ItemToggle
+  - type: ItemToggleSize
+    activatedSize: Large
+  - type: Sprite
+    sprite: _WF/Barricades/Objects/etool.rsi
+    layers:
+    - state: etool
+      map: [ "enum.EntrenchingToolComponentVisualLayers.Base" ]
+    - state: etool_c
+      map: [ "enum.EntrenchingToolComponentVisualLayers.Folded" ]
+    - state: etool_overlay
+      map: [ "enum.EntrenchingToolComponentVisualLayers.Dirt" ]
+      visible: false
+  - type: Item
+    size: Small
+    sprite: _WF/Barricades/Objects/etool.rsi
+    heldPrefix: etool
+  - type: UseDelay
+    delay: 0.25
+  - type: Appearance
+  - type: EntrenchingTool
+    digTilePrefixes:
+    - FloorAsteroidSand
+    - FloorAsteroidCoarseSand
+    - FloorAsteroidIronsand
+    - FloorAstroAsteroidSand
+    - FloorAstroGrass
+    - FloorAstroSnow
+    - FloorJungleAstroGrass
+    - FloorDesert
+    - FloorLowDesert
+    - FloorDirt
+    - FloorPlanetDirt
+    - FloorPlanetGrass
+    - FloorGrass
+    - FloorSnow
+    - FloorCave
+  - type: Shovel
+  - type: ItemToggleMeleeWeapon
+    activatedSoundOnHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    activatedSoundOnSwing:
+      path: /Audio/Weapons/punchmiss.ogg
+    deactivatedSoundOnHit:
+      collection: MetalThud
+    activatedDamage:
+      types:
+        Blunt: 30
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 3
+    soundHit:
+      collection: MetalThud
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 50

@@ -5,7 +5,8 @@
                SetSize="700 550">
     <BoxContainer Orientation="Vertical" Margin="4">
         <Label Name="VesselLabel" StyleClasses="LabelHeading" />
-        <Label Name="InfoLabel" StyleClasses="LabelSubText" Margin="0 0 0 4" />
+        <Label Name="InfoLabel" StyleClasses="LabelSubText" />
+        <Label Name="LiftLabel" StyleClasses="LabelSubText" Margin="0 0 0 4" />
         <PanelContainer HorizontalExpand="True" VerticalExpand="True">
             <preview:ShipPreviewControl Name="Preview"
                                         HorizontalExpand="True"

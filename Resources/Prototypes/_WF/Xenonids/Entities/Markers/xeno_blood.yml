@@ -1,0 +1,20 @@
+# Dropped by WFXenoBloodSystem where a xeno bleeds, dies or is gibbed.
+- type: entity
+  parent: DecalSpawnerBase
+  id: WFDecalSpawnerXenoBlood
+  name: xeno blood spawner
+  suffix: Xenonids
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RandomDecalSpawner
+    radius: 0.6
+    randomRotation: true
+    cleanable: true
+    deleteSpawnerAfterSpawn: true
+    decals:
+    - RMCDecalBloodXenonidSplatter1
+    - RMCDecalBloodXenonidSplatter2
+    - RMCDecalBloodXenonidSplatter3
+    - RMCDecalBloodXenonidSplatter4
+    - RMCDecalBloodXenonidSplatter5
+    - RMCDecalBloodXenonidSplatter6

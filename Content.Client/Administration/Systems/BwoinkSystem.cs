@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
 using Content.Shared.Administration;
 using JetBrains.Annotations;
 using Robust.Shared.Network;
@@ -19,11 +20,13 @@ namespace Content.Client.Administration.Systems
             OnBwoinkTextMessageRecieved?.Invoke(this, message);
         }
 
-        public void Send(NetUserId channelId, string text, bool playSound, bool adminOnly)
+        // WOLFGATE(EventStaff) START: send the ahelp category
+        public void Send(NetUserId channelId, string text, bool playSound, bool adminOnly, AHelpCategory category = AHelpCategory.Player)
         {
             // Reuse the channel ID as the 'true sender'.
             // Server will ignore this and if someone makes it not ignore this (which is bad, allows impersonation!!!), that will help.
-            RaiseNetworkEvent(new BwoinkTextMessage(channelId, channelId, text, playSound: playSound, adminOnly: adminOnly));
+            RaiseNetworkEvent(new BwoinkTextMessage(channelId, channelId, text, playSound: playSound, adminOnly: adminOnly, category: category));
+            // WOLFGATE END
             SendInputTextUpdated(channelId, false);
         }
 

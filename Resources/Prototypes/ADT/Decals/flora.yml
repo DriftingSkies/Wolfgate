@@ -1,0 +1,109 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: decal
+  id: cactusA1
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: cactusA1
+
+- type: decal
+  id: cactusA2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: cactusA2
+
+- type: decal
+  id: cactusA6
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: cactusA6
+
+- type: decal
+  id: cactusB1
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: cactusB1
+
+- type: decal
+  id: mushroomA4
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomA4
+
+- type: decal
+  id: mushroomA6
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomA6
+
+- type: decal
+  id: mushroomA8
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomA8
+
+- type: decal
+  id: mushroomB4
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomB4
+
+- type: decal
+  id: mushroomB6
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomB6
+
+- type: decal
+  id: mushroomB8
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomB8
+
+- type: decal
+  id: mushroomC4
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomC4
+
+- type: decal
+  id: mushroomC6
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/ash_flora.rsi
+    state: mushroomC6
+# WOLFGATE END

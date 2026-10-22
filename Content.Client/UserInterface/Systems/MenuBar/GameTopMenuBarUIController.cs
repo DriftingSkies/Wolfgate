@@ -1,6 +1,7 @@
 using Content.Client._Common.Consent.UI; // WOLFGATE(Genitals)
 using Content.Client._WF.Genitals.UI; // WOLFGATE(Genitals): anatomy panel
 using Content.Client._WF.SectorControl; // WOLFGATE(SectorControl)
+using Content.Client._WF.Feedback; // WOLFGATE(Feedback)
 using Content.Client.UserInterface.Systems.Actions;
 using Content.Client.UserInterface.Systems.Admin;
 using Content.Client.UserInterface.Systems.Bwoink;
@@ -32,6 +33,7 @@ public sealed partial class GameTopMenuBarUIController : UIController
     [Dependency] private WFSectorMapUIController _sectorMap = default!; // WOLFGATE(SectorControl): sector map button
     [Dependency] private EmotesUIController _emotes = default!;
     [Dependency] private LanguageMenuUIController _language = default!;
+    [Dependency] private FeedbackUIController _feedback = default!; // WOLFGATE(Feedback): bug report button
 
     private GameTopMenuBar? GameTopMenuBar => UIManager.GetActiveUIWidgetOrNull<GameTopMenuBar>();
 
@@ -59,6 +61,7 @@ public sealed partial class GameTopMenuBarUIController : UIController
         _sandbox.UnloadButton();
         _emotes.UnloadButton();
         _language.UnloadButton();
+        _feedback.UnloadButton(); // WOLFGATE(Feedback): bug report button
     }
 
     public void LoadButtons()
@@ -76,5 +79,6 @@ public sealed partial class GameTopMenuBarUIController : UIController
         _sandbox.LoadButton();
         _emotes.LoadButton();
         _language.LoadButton();
+        _feedback.LoadButton(); // WOLFGATE(Feedback): bug report button
     }
 }

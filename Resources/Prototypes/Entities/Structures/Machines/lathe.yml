@@ -400,6 +400,7 @@
     - MechMiscStatic # Mono
     # Shitmed Change
     - IPCPartsStatic
+    - WFSynthOrgansStatic # WOLFGATE(Wolfmed): replacement synth organs
     dynamicPacks:
     - Robotics
     - BorgModules

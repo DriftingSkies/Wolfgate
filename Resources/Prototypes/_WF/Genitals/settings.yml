@@ -25,20 +25,13 @@
   # share the values. Provisional until each species is checked in the client.
   speciesOffsets:
     Resomi: { Chest: "0,-4", Groin: "0,-3" }        # torso top 4 px lower, crotch 3 px lower
-    ProtoResomi: { Chest: "0,-4", Groin: "0,-3" }
     Vox: { Chest: "0,-2" }                          # shoulders 2 px lower, crotch matches
-    ProtoVox: { Chest: "0,-2" }
     Felionoid: { Chest: "0,-2" }
-    ProtoFeline: { Chest: "0,-2" }
     Hydrakin: { Chest: "0,-2" }
     Arachnid: { Groin: "0,1" }                      # crotch 1 px higher, shoulders match
-    ProtoArachnid: { Groin: "0,1" }
     Protogen: { Groin: "0,1" }
     Shadekin: { Groin: "0,1" }
-    ProtoKin: { Groin: "0,1" }
     Thaven: { Chest: "0,1", Groin: "0,1" }          # torso 1 px higher
-    ProtoThaven: { Chest: "0,1", Groin: "0,1" }
     Skrell: { Chest: "0,1", Groin: "0,1" }
     Diona: { Chest: "0,1", Groin: "0,1" }
-    ProtoDionae: { Chest: "0,1", Groin: "0,1" }
   adultOnlyMarkings: [ Pregnant-1, Pregnant-2, Pregnant-3, Pregnant-4 ]

@@ -18,7 +18,9 @@ head's points; no species limits it.
 ## Mismatched parts
 
 A per-character checkbox in the creator's Body card, saved with the profile, as on Nova Sector. With it on, the
-character may wear every species' markings, hair and facial hair. The species' point budgets still apply, and a
+character may wear every species' markings, hair and facial hair, and the skin takes any colour even where the species
+limits it to skin tones (`MismatchedPartsRules.SkinColoration`, used by validation, `LoadProfile` and the creator's
+skin picker). The species' point budgets still apply, and a
 category the species has no points for gets one. Body parts only some species' sprites have (Resomi tail extras,
 harpy arm extensions) stay with those species. Random profiles leave it off, and turning it off in the creator drops
 whatever only the option allowed.
@@ -82,6 +84,7 @@ and its own sprite.
 - [`Content.IntegrationTests/Tests/_WF/Species/OptionalDefaultMarkingsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/OptionalDefaultMarkingsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/ShadekinNightVisionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/ShadekinNightVisionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Species/SpeciesLoadoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/SpeciesLoadoutTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Species/WaggingTailLayersTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Species/WaggingTailLayersTest.cs)
 
 ### Prototypes
 
@@ -183,11 +186,14 @@ and its own sprite.
   - keeps other species' markings
   - optional defaults live in the profile
   - hair and beards the species can't wear
+  - a layer drawn outside the last full rebuild (say a wag swapped in between) left a still tail behind
   - mismatched parts draw without a species layer
+  - removed on the next rebuild whatever drew it
   - mismatched parts are coloured without a species layer
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml): lets any species wear every species' markings (HumanoidProfileEditor.MismatchedParts.cs)
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
   - the first style the option allows
+  - any colour with Mismatched parts
   - ported from HardLight, unrestricted skin colour
   - the new species' defaults are saved into the profile, so they can be removed
   - the styles the option allows
@@ -226,7 +232,6 @@ and its own sprite.
   - Wolfgate's night vision starts disabled, so adding the component never showed anything.
 - [`Content.Server/_Starlight/Shadekin/StationTheDark.cs`](../../../Content.Server/_Starlight/Shadekin/StationTheDark.cs): ported from HardLight
 - [`Content.Server/Database/ServerDbBase.cs`](../../../Content.Server/Database/ServerDbBase.cs)
-- [`Content.Server/Humanoid/Systems/RandomHumanoidSystem.cs`](../../../Content.Server/Humanoid/Systems/RandomHumanoidSystem.cs): random humanoids never roll a subspecies
 - [`Content.Server/Speech/EntitySystems/VocalSystem.cs`](../../../Content.Server/Speech/EntitySystems/VocalSystem.cs): every species offers Unsexed now, but most Vocal components only list Male and Female.
 - [`Content.Shared/_CE/ZLevels/Core/Components/CEZPhysicsComponent.cs`](../../_CE/ZLevels/Core/Components/CEZPhysicsComponent.cs): transition-based airborne draw depth
 - [`Content.Shared/_DV/Abilities/CrawlUnderObjectsComponent.cs`](../../_DV/Abilities/CrawlUnderObjectsComponent.cs)
@@ -281,11 +286,13 @@ and its own sprite.
   - merge parent sounds into children
 - [`Content.Shared/Damage/Systems/DamageableSystem.cs`](../../Damage/Systems/DamageableSystem.cs): heal modifiers, ported from HardLight
 - [`Content.Shared/Eye/VisibilityFlags.cs`](../../Eye/VisibilityFlags.cs): ported from HardLight/Starlight, for Shadekin dark phasing
+- [`Content.Shared/Humanoid/HumanoidAppearanceComponent.cs`](../../Humanoid/HumanoidAppearanceComponent.cs): every marking layer the client drew, so a rebuild removes all of them
 - [`Content.Shared/Humanoid/HumanoidCharacterAppearance.cs`](../../Humanoid/HumanoidCharacterAppearance.cs)
   - optional defaults start saved, so they can be removed
   - optional defaults start saved
   - mismatchedParts lets the hair check accept the styles the option opens
   - was new MarkingSet(...), opens the species' closed categories
+  - Mismatched parts lets the skin take any colour
   - per-species eye colour, ported from HardLight/Starlight
   - keeps other species' markings
 - [`Content.Shared/Humanoid/Markings/MarkingCategories.cs`](../../Humanoid/Markings/MarkingCategories.cs)
@@ -297,12 +304,12 @@ and its own sprite.
   - a chassis is one part on each body part, not a default for each spare point
   - optional defaults are saved into new profiles instead
 - [`Content.Shared/Humanoid/Prototypes/SpeciesPrototype.cs`](../../Humanoid/Prototypes/SpeciesPrototype.cs)
-  - subspecies
   - ported from HardLight/Starlight, per-species eye colour
   - Unsexed is offered by default
 - [`Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs`](../../Humanoid/SharedHumanoidAppearanceSystem.cs)
   - copies keep drawing mismatched hair
   - ported from HardLight/Starlight, constrain eye colour per species
+  - Mismatched parts lets the skin take any colour
   - one point for each category the species has none for
   - keeps other species' markings
   - hair and beards the species can't wear
@@ -320,7 +327,6 @@ and its own sprite.
 - [`Resources/Audio/_DEN/Voice/Shadowkin/Emotes/attributions.yml`](../../../Resources/Audio/_DEN/Voice/Shadowkin/Emotes/attributions.yml): ported from HardLight
 - [`Resources/Audio/_DEN/Voice/Shadowkin/Talk/attributions.yml`](../../../Resources/Audio/_DEN/Voice/Shadowkin/Talk/attributions.yml): ported from HardLight
 - [`Resources/Audio/_EE/`](../../../Resources/Audio/_EE/): Einstein Engines species sounds, ported in
-- [`Resources/Audio/_FarHorizons/Voice/`](../../../Resources/Audio/_FarHorizons/Voice/): Far Horizons species voices, ported in
 - [`Resources/Audio/_FarHorizons/Voice/Proto/Arachnid/attributions.yml`](../../../Resources/Audio/_FarHorizons/Voice/Proto/Arachnid/attributions.yml): ported from HardLight
 - [`Resources/Audio/_FarHorizons/Voice/Proto/Avali/attributions.yml`](../../../Resources/Audio/_FarHorizons/Voice/Proto/Avali/attributions.yml): ported from HardLight
 - [`Resources/Audio/_FarHorizons/Voice/Proto/Felionoid/attributions.yml`](../../../Resources/Audio/_FarHorizons/Voice/Proto/Felionoid/attributions.yml): ported from HardLight
@@ -355,7 +361,6 @@ and its own sprite.
   - ported from HardLight - Protogen subspecies markings.
   - per-layer names for the only two-layer marking of the 60.
 - [`Resources/Locale/en-US/_FarHorizons/radio/channels.ftl`](../../../Resources/Locale/en-US/_FarHorizons/radio/channels.ftl): ported from HardLight
-- [`Resources/Locale/en-US/_FarHorizons/species/species.ftl`](../../../Resources/Locale/en-US/_FarHorizons/species/species.ftl): ported from HardLight - display names for the 14 Protogen subspecies.
 - [`Resources/Locale/en-US/_Funkystation/datasets/names/thaven_names.ftl`](../../../Resources/Locale/en-US/_Funkystation/datasets/names/thaven_names.ftl): ported from HardLight
 - [`Resources/Locale/en-US/_HL/accessories/human-hair.ftl`](../../../Resources/Locale/en-US/_HL/accessories/human-hair.ftl): ported from HardLight
 - [`Resources/Locale/en-US/_HL/chat/emotes.ftl`](../../../Resources/Locale/en-US/_HL/chat/emotes.ftl): ported from HardLight, display strings for the Marr emote
@@ -405,17 +410,21 @@ and its own sprite.
 - [`Resources/Locale/en-US/markings/anthro.ftl`](../../../Resources/Locale/en-US/markings/anthro.ftl): ported from HardLight
 - [`Resources/Locale/en-US/markings/earrings.ftl`](../../../Resources/Locale/en-US/markings/earrings.ftl): ported from HardLight
 - [`Resources/Locale/en-US/markings/face.ftl`](../../../Resources/Locale/en-US/markings/face.ftl): ported from HardLight
-- [`Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/moth.yml): ported from HardLight
-- [`Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/reptilian.yml): ported from HardLight
+- [`Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/moth.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
+- [`Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/reptilian.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
 - [`Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/synthetic.yml`](../../../Resources/Prototypes/_CD/Entities/Mobs/Customization/Markings/synthetic.yml): ported from HardLight
 - [`Resources/Prototypes/_DEN/SoundsCollections/Shadowkin/laughs.yml`](../../../Resources/Prototypes/_DEN/SoundsCollections/Shadowkin/laughs.yml): ported from HardLight
 - [`Resources/Prototypes/_DEN/SoundsCollections/Shadowkin/screams.yml`](../../../Resources/Prototypes/_DEN/SoundsCollections/Shadowkin/screams.yml): ported from HardLight
 - [`Resources/Prototypes/_DV/Body/Prototypes/avali.yml`](../../../Resources/Prototypes/_DV/Body/Prototypes/avali.yml): ported from HardLight
 - [`Resources/Prototypes/_DV/Body/Prototypes/shadekin.yml`](../../../Resources/Prototypes/_DV/Body/Prototypes/shadekin.yml): ported from HardLight
-- [`Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/felinid.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/felinid.yml): added ProtoFeline
 - [`Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/kitsune.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/kitsune.yml): ported from HardLight
-- [`Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/moth.yml): added ProtoMoth
-- [`Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/thaven.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/thaven.yml): ported from HardLight
+- [`Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/thaven.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/thaven.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
 - [`Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Customization/Markings/vulpkanin.yml)
 - [`Resources/Prototypes/_DV/Entities/Mobs/Species/rodentia.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Species/rodentia.yml): HardLight balance, squeeze instead of walking under tables
 - [`Resources/Prototypes/_DV/Entities/Mobs/Species/skrell.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Species/skrell.yml)
@@ -451,37 +460,16 @@ and its own sprite.
   - chassis parts get their own budget, the body categories are for markings
   - chassis part, was a Head, Chest, Arms or Legs marking
 - [`Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml): was the default scream icon
-- [`Resources/Prototypes/_FarHorizons/Body/Organs/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Body/Organs/protogen.yml)
-  - ported from HardLight - Protogen subspecies.
-  - single parent, see port notes
-  - reparented off the animal stomach
-  - matches the other protogen stomachs
-- [`Resources/Prototypes/_FarHorizons/Body/Parts/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Body/Parts/protogen.yml)
-  - ported from HardLight - Protogen subspecies.
-  - else it inherits PartProtogen's _Mono icon
-- [`Resources/Prototypes/_FarHorizons/Body/Prototypes/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Body/Prototypes/protogen.yml): ported from HardLight - Protogen subspecies.
-- [`Resources/Prototypes/_FarHorizons/Damage/modifier_sets.yml`](../../../Resources/Prototypes/_FarHorizons/Damage/modifier_sets.yml): ported from HardLight - Protogen subspecies.
 - [`Resources/Prototypes/_FarHorizons/Entities/Mobs/Customization/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Entities/Mobs/Customization/protogen.yml)
   - ported from HardLight
-  - it is a required Special default for ProtoSlimePerson
-- [`Resources/Prototypes/_FarHorizons/Guidebook/subspecies.yml`](../../../Resources/Prototypes/_FarHorizons/Guidebook/subspecies.yml): Protogen subspecies, ported from HardLight
-- [`Resources/Prototypes/_FarHorizons/InventoryTemplates/protogen_inventory_template.yml`](../../../Resources/Prototypes/_FarHorizons/InventoryTemplates/protogen_inventory_template.yml): inventory templates for the Protogen subspecies, ported from HardLight.
+  - shaped for this species; was the Proto subspecies' own
 - [`Resources/Prototypes/_FarHorizons/radio_channels.yml`](../../../Resources/Prototypes/_FarHorizons/radio_channels.yml): ported from HardLight
 - [`Resources/Prototypes/_FarHorizons/SoundCollections/disease.yml`](../../../Resources/Prototypes/_FarHorizons/SoundCollections/disease.yml): Protogen subspecies, ported from HardLight
 - [`Resources/Prototypes/_FarHorizons/SoundCollections/emotes.yml`](../../../Resources/Prototypes/_FarHorizons/SoundCollections/emotes.yml): Protogen subspecies, ported from HardLight
 - [`Resources/Prototypes/_FarHorizons/SoundCollections/screams.yml`](../../../Resources/Prototypes/_FarHorizons/SoundCollections/screams.yml): Protogen subspecies, ported from HardLight
-- [`Resources/Prototypes/_FarHorizons/Species/protogen_subspecies.yml`](../../../Resources/Prototypes/_FarHorizons/Species/protogen_subspecies.yml)
-  - the 14 Protogen subspecies, ported from HardLight.
-  - groups it under Protogen in the creator
-  - blank, LED face markings replace eyes
-  - was MobSlimeMarkingFollowSkin; hair colour is the player's pick
-- [`Resources/Prototypes/_FarHorizons/Voices/protogen_speech_emotes_sounds.yml`](../../../Resources/Prototypes/_FarHorizons/Voices/protogen_speech_emotes_sounds.yml)
-  - _Mono protogen mobs use this emote
-  - Whine collection does not exist here
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml): ported from HardLight
-- [`Resources/Prototypes/_Goobstation/Entities/Mobs/Customization/Markings/vox_tails.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Mobs/Customization/Markings/vox_tails.yml): add ProtoVox
 - [`Resources/Prototypes/_HL/ai_factions.yml`](../../../Resources/Prototypes/_HL/ai_factions.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Body/Organs/skrell.yml`](../../../Resources/Prototypes/_HL/Body/Organs/skrell.yml): ported from HardLight (Skrell)
 - [`Resources/Prototypes/_HL/Body/Organs/synth.yml`](../../../Resources/Prototypes/_HL/Body/Organs/synth.yml): HardLight's GalacticCommon is TauCetiBasic here
@@ -494,26 +482,16 @@ and its own sprite.
   - HardLight put it on Tail, which draws over anatomy facing south
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/human.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/human.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/protogen.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/protogen.yml): ported from HardLight
-- [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/reptilian.yml): ported from HardLight
+- [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/reptilian.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/shadekin.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/shadekin.yml)
   - eye markings get their own points (was Head)
   - ported from HardLight
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/synth.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/synth.yml): eye markings get their own points (was Head)
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/vulpkanin.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/vulpkanin.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/wings.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Customization/Markings/wings.yml): ported from HardLight
-- [`Resources/Prototypes/_HL/Entities/Mobs/Player/protogen_subspecies.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Player/protogen_subspecies.yml): Protogen subspecies mobs, ported from HardLight.
 - [`Resources/Prototypes/_HL/Entities/Mobs/Player/synth.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Player/synth.yml): PotentialPsionic dropped - Wolfgate has no psionics system.
-- [`Resources/Prototypes/_HL/Entities/Mobs/Species/protogen_subspecies.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Species/protogen_subspecies.yml)
-  - Protogen subspecies mobs, ported from HardLight.
-  - drop BaseMobProtogen's jumpsuit-only set, which disabled these maps on females
-  - JumpAbility here does not grant its own action
-  - Tag replaces rather than merges
-  - this species has wag-capable tails but had no Wagging Tail action
-  - the moods action opens this key; it had been registered on Proto-Kin instead
-  - matches MobSlimePerson
-  - matches the _Moffstation sheets
-  - night vision starts disabled, so it needs a way to turn it on
-  - re-added, a Brute-only dict replaces the inherited pair
 - [`Resources/Prototypes/_HL/Entities/Mobs/Species/synth.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Species/synth.yml)
   - HardLight's blockHypospray/blockInjectOnProjectile/blockReason are dropped
   - HardLight's intrinsicChannels field is dropped
@@ -539,11 +517,10 @@ and its own sprite.
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/headcovers.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/headcovers.yml): add Canine
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/human_hair.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/human_hair.yml): add Canine
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/misc.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/misc.yml): eye markings get their own points (was Head)
-- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/moth.yml)
-  - was [Moth]
+- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/moth.yml): eye markings get their own points (was Head)
+- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven.yml)
+  - Wolfgate species in the list
   - eye markings get their own points (was Head)
-- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/slime.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/slime.yml): was [SlimePerson]
-- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven.yml): eye markings get their own points (was Head)
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven_hair.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven_hair.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Player/thaven.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Player/thaven.yml): PotentialPsionic dropped - Wolfgate has no psionics system.
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Species/thaven.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Species/thaven.yml): HardLight's GalacticCommon is TauCetiBasic here
@@ -558,21 +535,13 @@ and its own sprite.
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/wildcard.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/wildcard.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/tags.yml`](../../../Resources/Prototypes/_Impstation/tags.yml): ported from HardLight
-- [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi.yml): was [Resomi]
-- [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_hair.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_hair.yml): was [Resomi]
-- [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_tail.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/resomi_tail.yml): was [Resomi]
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml): eye markings get their own points (was Head)
-- [`Resources/Prototypes/_Mono/Entities/Mobs/Customization/Markings/protogen.yml`](../../../Resources/Prototypes/_Mono/Entities/Mobs/Customization/Markings/protogen.yml): was [Protogen]
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/med_assembler.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/med_assembler.yml): Avali auto-injector (amoxla and tranexamic acid)
-- [`Resources/Prototypes/_Mono/Species/protogen.yml`](../../../Resources/Prototypes/_Mono/Species/protogen.yml): was false, so only the subspecies were playable
+- [`Resources/Prototypes/_Mono/Species/protogen.yml`](../../../Resources/Prototypes/_Mono/Species/protogen.yml): was false, so the base species is selectable in the creator
 - [`Resources/Prototypes/_Mono/Traits/physical.yml`](../../../Resources/Prototypes/_Mono/Traits/physical.yml): Canine is a Vulpkanin copy
 - [`Resources/Prototypes/_NF/Body/Organs/avali.yml`](../../../Resources/Prototypes/_NF/Body/Organs/avali.yml): ported from HardLight
 - [`Resources/Prototypes/_NF/Entities/Mobs/Customization/Markings/human_hair.yml`](../../../Resources/Prototypes/_NF/Entities/Mobs/Customization/Markings/human_hair.yml): ported from HardLight
-- [`Resources/Prototypes/_NF/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_NF/Entities/Mobs/Customization/Markings/moth.yml): added ProtoMoth
-- [`Resources/Prototypes/_NF/Loadouts/loadout_effects.yml`](../../../Resources/Prototypes/_NF/Loadouts/loadout_effects.yml)
-  - uses the Slime body
-  - Protogen subspecies + the six species the earlier port missed
-  - Protogen subspecies (not ProtoDionae - no shoes slot) + the six the earlier port missed
+- [`Resources/Prototypes/_NF/Loadouts/loadout_effects.yml`](../../../Resources/Prototypes/_NF/Loadouts/loadout_effects.yml): the six species the earlier port missed
 - [`Resources/Prototypes/_NF/Loadouts/species_loadout_groups.yml`](../../../Resources/Prototypes/_NF/Loadouts/species_loadout_groups.yml)
   - one more for the Avali auto-injector
   - Avali auto-injector, like the Vox tank
@@ -603,15 +572,22 @@ and its own sprite.
 - [`Resources/Prototypes/_StarLight/Datasets/Names/shadekin.yml`](../../../Resources/Prototypes/_StarLight/Datasets/Names/shadekin.yml): converted from HardLight localizedDataset - Wolfgate species use plain datasets.
 - [`Resources/Prototypes/_StarLight/Entities/Effects/avali_nanites.yml`](../../../Resources/Prototypes/_StarLight/Entities/Effects/avali_nanites.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Entities/Effects/shadekin.yml`](../../../Resources/Prototypes/_StarLight/Entities/Effects/shadekin.yml): ported from HardLight
-- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali.yml): fields with no consumer in this fork removed (see the port notes).
-- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali_hair.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali_hair.yml): ported from HardLight
+- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali.yml)
+  - fields with no consumer in this fork removed (see the port notes).
+  - Wolfgate species in the list
+- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali_hair.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/avali_hair.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_facial_hair.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_facial_hair.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_hair.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_hair.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_parts.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_parts.yml)
   - ported from HardLight
   - was [], which stripped it from every species including Felionoid
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_tattoos.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/felionoid_tattoos.yml): ported from HardLight
-- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/vulpkanin.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/vulpkanin.yml): ported from HardLight
+- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/shadekin.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/shadekin.yml): Wolfgate species in the list
+- [`Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/vulpkanin.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Customization/Marking/vulpkanin.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Player/avali.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Player/avali.yml): HardLight's PotentialPsionic is dropped
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Player/felionoid.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Player/felionoid.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Player/shadekin.yml`](../../../Resources/Prototypes/_StarLight/Entities/Mobs/Player/shadekin.yml): HardLight's PotentialPsionic was dropped here - Wolfgate has no psionics system.
@@ -640,38 +616,29 @@ and its own sprite.
 - [`Resources/Prototypes/_StarLight/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_StarLight/Voice/speech_sounds.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_sounds.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Voice/speech_verbs.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_verbs.yml): ported from HardLight
-- [`Resources/Prototypes/_White/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/_White/Entities/Mobs/Customization/Markings/reptilian.yml): added ProtoReptile
 - [`Resources/Prototypes/Body/Parts/skrell.yml`](../../../Resources/Prototypes/Body/Parts/skrell.yml): ported from HardLight (Skrell)
 - [`Resources/Prototypes/Body/Prototypes/skrell.yml`](../../../Resources/Prototypes/Body/Prototypes/skrell.yml): HardLight's OrganCrescentDummy placeholders are dropped
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/arachnid.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/arachnid.yml): was [Arachnid]
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/diona.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/diona.yml): added ProtoDionae
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/earrings.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/earrings.yml): ported from HardLight
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/face.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/face.yml): ported from HardLight
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/gauze.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/gauze.yml): added Canine
+- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/genitals.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/genitals.yml): Wolfgate species in the list
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/human_noses.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/human_noses.yml): added Canine
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/moth.yml): was [Moth]
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/reptilian.yml): added ProtoReptile
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/slime.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/slime.yml): added ProtoSlimePerson
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/tattoos.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/tattoos.yml)
   - eye markings get their own points (was Head)
   - added Canine
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/vox_hair.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/vox_hair.yml): added ProtoVox
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/vox_parts.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/vox_parts.yml): was [Vox]
-- [`Resources/Prototypes/Entities/Mobs/Customization/Markings/vox_tattoos.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/vox_tattoos.yml): was [Vox]
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_hair.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_hair.yml): ported from HardLight
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_head.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_head.yml): ported from HardLight
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_limbs.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_limbs.yml): ported from HardLight
 - [`Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_tail.yml`](../../../Resources/Prototypes/Entities/Mobs/Customization/Markings/Vulpkanin/vulpkanin_tail.yml): ported from HardLight
-- [`Resources/Prototypes/Floof/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/Floof/Entities/Mobs/Customization/Markings/reptilian.yml): ported from HardLight
+- [`Resources/Prototypes/Floof/Entities/Mobs/Customization/Markings/reptilian.yml`](../../../Resources/Prototypes/Floof/Entities/Mobs/Customization/Markings/reptilian.yml)
+  - ported from HardLight
+  - Wolfgate species in the list
 - [`Resources/Prototypes/Guidebook/species.yml`](../../../Resources/Prototypes/Guidebook/species.yml)
   - ported from HardLight/Starlight
   - ported from HardLight
   - ported from HardLight/Impstation
-  - the 14 subspecies ported from HardLight
 - [`Resources/Prototypes/Loadouts/loadout_groups.yml`](../../../Resources/Prototypes/Loadouts/loadout_groups.yml): Avali auto-injector, like the Vox tank
 - [`Resources/Prototypes/Loadouts/Miscellaneous/survival.yml`](../../../Resources/Prototypes/Loadouts/Miscellaneous/survival.yml): ported from HardLight/Starlight
-- [`Resources/Prototypes/Nyanotrasen/Entities/Mobs/Customization/Markings/felinid.yml`](../../../Resources/Prototypes/Nyanotrasen/Entities/Mobs/Customization/Markings/felinid.yml): ProtoFeline
-- [`Resources/Prototypes/Nyanotrasen/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/Nyanotrasen/Entities/Mobs/Customization/Markings/moth.yml): was [Moth]
 - [`Resources/Prototypes/Nyanotrasen/Voice/speech_emotes.yml`](../../../Resources/Prototypes/Nyanotrasen/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/Reagents/botany.yml`](../../../Resources/Prototypes/Reagents/botany.yml)
   - ammonia isn't caustic to Avali (Starlight)
@@ -701,22 +668,8 @@ and its own sprite.
   - ported from HardLight/Starlight
   - ported from HardLight
   - ported from HardLight/Impstation
-- [`Resources/Prototypes/Traits/speech.yml`](../../../Resources/Prototypes/Traits/speech.yml): Felionoids and ProtoFelines have it as their species accent
+- [`Resources/Prototypes/Traits/speech.yml`](../../../Resources/Prototypes/Traits/speech.yml): Felionoids have it as their species accent
 - [`Resources/Prototypes/Voice/speech_emotes.yml`](../../../Resources/Prototypes/Voice/speech_emotes.yml): was the default scream action icon; this is the open-mouthed face
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoArachnid.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoArachnid.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoAvali.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoAvali.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoDawi.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoDawi.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoDionae.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoDionae.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoFeline.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoFeline.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoHumie.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoHumie.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoKin.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoKin.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoMoth.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoMoth.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoReptile.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoReptile.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoResomi.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoResomi.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoSlimePerson.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoSlimePerson.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoThaven.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoThaven.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoVox.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoVox.xml): ported from HardLight
-- [`Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoVulp.xml`](../../../Resources/ServerInfo/_FarHorizons/Guidebook/Mobs/SubMobs/ProtoVulp.xml): ported from HardLight
 - [`Resources/ServerInfo/_HL/Guidebook/Mobs/Synth.xml`](../../../Resources/ServerInfo/_HL/Guidebook/Mobs/Synth.xml): ported from HardLight
 - [`Resources/ServerInfo/_Impstation/Guidebook/Mobs/Thaven.xml`](../../../Resources/ServerInfo/_Impstation/Guidebook/Mobs/Thaven.xml): ported from HardLight
 - [`Resources/ServerInfo/_StarLight/Guidebook/Mobs/Felionoid.xml`](../../../Resources/ServerInfo/_StarLight/Guidebook/Mobs/Felionoid.xml): ported from HardLight
@@ -727,12 +680,12 @@ and its own sprite.
 - [`Resources/Textures/_DV/Mobs/Customization/kitsune/`](../../../Resources/Textures/_DV/Mobs/Customization/kitsune/): Kitsune marking sprites, ported in
 - [`Resources/Textures/_DV/Mobs/Customization/thaven/`](../../../Resources/Textures/_DV/Mobs/Customization/thaven/): Thaven marking sprites, ported in
 - [`Resources/Textures/_EE/Mobs/Customization/Harpy/harpy_wings.rsi/`](../../../Resources/Textures/_EE/Mobs/Customization/Harpy/harpy_wings.rsi/): whitescale_harpy_folded2 state added (meta.json re-serialised).
-- [`Resources/Textures/_FarHorizons/Mobs/`](../../../Resources/Textures/_FarHorizons/Mobs/): Far Horizons species sprites, ported in
+- [`Resources/Textures/_FarHorizons/Mobs/Customization/`](../../../Resources/Textures/_FarHorizons/Mobs/Customization/): Protogen and subspecies-shaped marking sprites, ported in
 - [`Resources/Textures/_Floof/`](../../../Resources/Textures/_Floof/): Floof marking sprites, ported from HardLight in
 - [`Resources/Textures/_HL/`](../../../Resources/Textures/_HL/): HardLight species and marking sprites, ported in
 - [`Resources/Textures/_Impstation/Mobs/Customization/thaven/`](../../../Resources/Textures/_Impstation/Mobs/Customization/thaven/): Thaven marking sprites, ported from HardLight in
 - [`Resources/Textures/_Impstation/Mobs/Species/`](../../../Resources/Textures/_Impstation/Mobs/Species/): Impstation species sprites, ported from HardLight in
-- [`Resources/Textures/_Mono/Mobs/Species/Protogen/organs.rsi/`](../../../Resources/Textures/_Mono/Mobs/Species/Protogen/organs.rsi/): tongueforked state added (meta.json re-serialised).
+- [`Resources/Textures/_Mono/Mobs/Species/Protogen/organs.rsi/`](../../../Resources/Textures/_Mono/Mobs/Species/Protogen/organs.rsi/): Back to Monolith's state list; the tongueforked state left with the protogen subspecies.
 - [`Resources/Textures/_NF/Mobs/Customization/human_hair.rsi/`](../../../Resources/Textures/_NF/Mobs/Customization/human_hair.rsi/): Extra human hair sprites, ported in
 - [`Resources/Textures/_RMC14/Actions/`](../../../Resources/Textures/_RMC14/Actions/): RMC14 action icons, ported from HardLight in
 - [`Resources/Textures/_RMC14/Mobs/`](../../../Resources/Textures/_RMC14/Mobs/): RMC14 mob and marking sprites, ported from HardLight in
@@ -781,7 +734,5 @@ and its own sprite.
 - [`Resources/Textures/Mobs/Customization/scars.rsi/`](../../../Resources/Textures/Mobs/Customization/scars.rsi/): Bullet, face and neck scar states added (meta.json re-sorted).
 - [`Resources/Textures/Mobs/Customization/tattoos.rsi/`](../../../Resources/Textures/Mobs/Customization/tattoos.rsi/): Moth eye tattoo states added (meta.json re-sorted).
 - [`Resources/Textures/Mobs/Customization/Vulpkanin/`](../../../Resources/Textures/Mobs/Customization/Vulpkanin/): Vulpkanin hair, facial hair and marking sprites; Wolfgate-only RSIs at an upstream path.
-- [`Resources/Textures/Mobs/Species/Moth/displacement.rsi/`](../../../Resources/Textures/Mobs/Species/Moth/displacement.rsi/): Moth clothing displacement maps for the protogen subspecies; Wolfgate-only RSI at an upstream path.
-- [`Resources/Textures/Mobs/Species/Reptilian/displacement.rsi/`](../../../Resources/Textures/Mobs/Species/Reptilian/displacement.rsi/): Reptilian clothing displacement maps for the protogen subspecies; Wolfgate-only RSI at an upstream path.
 
 <!-- WOLFGATE-GENERATED END -->

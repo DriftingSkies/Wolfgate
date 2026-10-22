@@ -149,34 +149,6 @@ public sealed class LoadoutCatalogTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>A species with no feet has no shoes to list, so the shoes group is left out rather than shown empty.</summary>
-    [Test]
-    public async Task GroupWithNothingToOfferIsLeftOut()
-    {
-        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
-        var client = pair.Client;
-        var proto = client.ResolveDependency<IPrototypeManager>();
-        var collection = client.ResolveDependency<IDependencyCollection>();
-        var session = client.ResolveDependency<IPlayerManager>().LocalSession!;
-
-        await client.WaitAssertion(() =>
-        {
-            var role = proto.Index<RoleLoadoutPrototype>(Role);
-            List<string> Groups(string species)
-            {
-                var profile = HumanoidCharacterProfile.DefaultWithSpecies(species);
-                var loadout = new RoleLoadout(role.ID);
-                loadout.SetDefault(profile, session, proto);
-                return new LoadoutCatalog(profile, loadout, role, session, collection).Groups.Select(g => g.Id.Id).ToList();
-            }
-
-            Assert.That(Groups("Human"), Does.Contain("MercenaryShoes"));
-            Assert.That(Groups("ProtoDionae"), Does.Not.Contain("MercenaryShoes"));
-        });
-
-        await pair.CleanReturnAsync();
-    }
-
     /// <summary>A search finds items by the name of their group too, and lists name matches before description matches.</summary>
     [Test]
     public async Task SearchRanksNamesBeforeDescriptions()
@@ -373,5 +345,65 @@ public sealed class LoadoutCatalogTest
                 yield return descendant;
             }
         }
+    }
+}
+
+/// <summary>A group none of whose picks the species may see is left out of the listing, not shown empty.</summary>
+[TestFixture]
+[TestOf(typeof(LoadoutCatalog))]
+public sealed class LoadoutCatalogEmptyGroupTest
+{
+    private const string TestRole = "WFTestEmptyGroupRole";
+    private const string TestGroup = "WFTestEmptyGroupShoes";
+
+    [TestPrototypes]
+    private const string Prototypes = @"
+- type: loadout
+  id: WFTestEmptyGroupBoots
+  hideEffects:
+  - !type:SpeciesLoadoutEffect
+    species:
+    - Dwarf
+  price: 0
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadoutGroup
+  id: WFTestEmptyGroupShoes
+  name: loadout-group-contractor-shoes
+  loadouts:
+  - WFTestEmptyGroupBoots
+
+- type: roleLoadout
+  id: WFTestEmptyGroupRole
+  groups:
+  - WFTestEmptyGroupShoes
+";
+
+    [Test]
+    public async Task GroupWithNothingToOfferIsLeftOut()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        var client = pair.Client;
+        var proto = client.ResolveDependency<IPrototypeManager>();
+        var collection = client.ResolveDependency<IDependencyCollection>();
+        var session = client.ResolveDependency<IPlayerManager>().LocalSession!;
+
+        await client.WaitAssertion(() =>
+        {
+            var role = proto.Index<RoleLoadoutPrototype>(TestRole);
+            List<string> Groups(string species)
+            {
+                var profile = HumanoidCharacterProfile.DefaultWithSpecies(species);
+                var loadout = new RoleLoadout(role.ID);
+                loadout.SetDefault(profile, session, proto);
+                return new LoadoutCatalog(profile, loadout, role, session, collection).Groups.Select(g => g.Id.Id).ToList();
+            }
+
+            Assert.That(Groups("Dwarf"), Does.Contain(TestGroup));
+            Assert.That(Groups("Human"), Does.Not.Contain(TestGroup));
+        });
+
+        await pair.CleanReturnAsync();
     }
 }

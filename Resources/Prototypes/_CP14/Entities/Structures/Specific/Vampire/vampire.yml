@@ -1,0 +1,33 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14VampireStoneAltar
+  parent: Bed
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _CP14/Structures/Specific/Vampire/altar.rsi
+    layers:
+    - state: base
+    - state: fx
+      shader: unshaded
+    noRot: true
+  - type: Icon
+    sprite: _CP14/Structures/Specific/Vampire/altar.rsi
+    state: base
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+# WOLFGATE END

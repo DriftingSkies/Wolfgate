@@ -33,6 +33,10 @@
   - WFSurgeryHealLiver
   - WFSurgeryHealStomach
   - WFSurgeryHealKidneys
+  # Xenomorph larva, listed only while the patient carries one.
+  - WFSurgeryAlienEmbryoRemoval
+  # Chest burst repair, listed only while the burst host can still be mended.
+  - WFSurgeryBurstChestRepair
   # Mechanical.
   - WFSurgeryWeldChassisBreach
   - WFSurgeryWeldChassis

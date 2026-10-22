@@ -323,7 +323,7 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
 
                 var interpolateValue = quantity.Float() / solution.Volume.Float();
                 color = Color.InterpolateBetween(color,
-                    _prototypeManager.Index<ReagentPrototype>(standout).SubstanceColor, interpolateValue);
+                    solution.GetColorWithOnly(_prototypeManager, standout), interpolateValue); // WOLFGATE(BloodColour): was the reagent's SubstanceColor, which ignored a character's own blood colour
             }
         }
 

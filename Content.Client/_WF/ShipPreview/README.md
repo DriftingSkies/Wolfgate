@@ -11,6 +11,8 @@ its own. Entry points: `ShipPreviewSystem` (loads grids onto preview maps), `Shi
 still uses a removed prototype ID fails to preview. Components the client doesn't have (`Shuttle`,
 `GridPathfinding` and the like, on every saved ship) are dropped before loading, so previews don't log errors.
 `TryLoadText` previews YAML the server sent, which the mapping tools' Maps window uses.
+`ShipPreviewLift` estimates the strongest planet gravity the grid lifts off in, from its thruster prototypes and tile
+count; the window shows it under the size.
 
 Vessel grids must sit under `Resources/SharedMaps`: client builds leave out `Resources/Maps`, so a grid there only
 previews in a dev client. `VesselGridPathTest` checks every vessel.
@@ -24,6 +26,7 @@ previews in a dev client. `VesselGridPathTest` checks every vessel.
 
 - [`Content.Client/_WF/ShipPreview/ShipPreviewCommand.cs`](ShipPreviewCommand.cs)
 - [`Content.Client/_WF/ShipPreview/ShipPreviewControl.cs`](ShipPreviewControl.cs)
+- [`Content.Client/_WF/ShipPreview/ShipPreviewLift.cs`](ShipPreviewLift.cs)
 - [`Content.Client/_WF/ShipPreview/ShipPreviewMigrationSystem.cs`](ShipPreviewMigrationSystem.cs)
 - [`Content.Client/_WF/ShipPreview/ShipPreviewSystem.cs`](ShipPreviewSystem.cs)
 - [`Content.Client/_WF/ShipPreview/ShipPreviewSystem.Load.cs`](ShipPreviewSystem.Load.cs)

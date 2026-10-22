@@ -87,7 +87,7 @@ namespace Content.Server.Atmos.EntitySystems
                 if (comp.CheckUser)
                 {
                     comp.CheckUser = false;
-                    if (Transform(uid).ParentUid != comp.User)
+                    if (Transform(uid).ParentUid != comp.User && !InUsersSuit(uid, comp.User)) // WOLFGATE(SuitTank): a tank in the user's worn suit stays connected
                     {
                         DisconnectFromInternals(gasTank);
                         continue;

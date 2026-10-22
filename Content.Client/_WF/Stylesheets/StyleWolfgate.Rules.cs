@@ -452,6 +452,12 @@ public sealed partial class StyleWolfgate
                 new[] { new StyleProperty(Button.StylePropertyModulateSelf, ButtonDangerDefault) }),
             new StyleRule(new SelectorElement(typeof(MenuButton), new[] { MenuButton.StyleClassRedTopButton }, null, new[] { Button.StylePseudoClassHover }),
                 new[] { new StyleProperty(Button.StylePropertyModulateSelf, ButtonDangerHovered) }),
+            new StyleRule(new SelectorElement(typeof(MenuButton), new[] { StyleNano.StyleClassButtonColorGreen }, null, new[] { Button.StylePseudoClassNormal }),
+                new[] { new StyleProperty(Button.StylePropertyModulateSelf, ButtonGoodDefault) }),
+            new StyleRule(new SelectorElement(typeof(MenuButton), new[] { StyleNano.StyleClassButtonColorGreen }, null, new[] { Button.StylePseudoClassHover }),
+                new[] { new StyleProperty(Button.StylePropertyModulateSelf, ButtonGoodHovered) }),
+            new StyleRule(new SelectorElement(typeof(MenuButton), new[] { StyleNano.StyleClassButtonColorGreen }, null, new[] { Button.StylePseudoClassPressed }),
+                new[] { new StyleProperty(Button.StylePropertyModulateSelf, ButtonGoodHovered) }),
 
             // Chat
             Element<PanelContainer>().Class(StyleNano.StyleClassChatPanel)

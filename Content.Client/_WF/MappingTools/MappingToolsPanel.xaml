@@ -1,0 +1,75 @@
+<mappingTools:MappingToolsPanel xmlns="https://spacestation14.io"
+                                xmlns:mappingTools="clr-namespace:Content.Client._WF.MappingTools"
+                                Orientation="Vertical"
+                                HorizontalExpand="True"
+                                VerticalExpand="True">
+    <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="4">
+        <Button Name="SelectButton" Access="Public" ToggleMode="True" MinHeight="36"
+                Text="{Loc 'wf-mapping-tools-select'}"
+                ToolTip="{Loc 'wf-mapping-tools-select-tooltip'}" TooltipDelay="0" />
+        <Button Name="EyedropperButton" Access="Public" ToggleMode="True"
+                Text="{Loc 'wf-mapping-tools-eyedropper'}"
+                ToolTip="{Loc 'wf-mapping-tools-eyedropper-tooltip'}" TooltipDelay="0" />
+
+        <Label Text="{Loc 'wf-mapping-tools-section-edit'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+        <GridContainer Columns="3" HSeparationOverride="4" VSeparationOverride="4">
+            <Button Name="CopyButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-copy'}"
+                    ToolTip="{Loc 'wf-mapping-tools-copy-tooltip'}" TooltipDelay="0" />
+            <Button Name="CutButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-cut'}"
+                    ToolTip="{Loc 'wf-mapping-tools-cut-tooltip'}" TooltipDelay="0" />
+            <Button Name="PasteButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-paste'}"
+                    ToolTip="{Loc 'wf-mapping-tools-paste-tooltip'}" TooltipDelay="0" />
+            <Button Name="RotateButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-rotate'}"
+                    ToolTip="{Loc 'wf-mapping-tools-rotate-tooltip'}" TooltipDelay="0" />
+            <Button Name="DeleteButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-delete'}"
+                    ToolTip="{Loc 'wf-mapping-tools-delete-tooltip'}" TooltipDelay="0" />
+            <Button Name="MirrorButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-mirror'}"
+                    ToolTip="{Loc 'wf-mapping-tools-mirror-tooltip'}" TooltipDelay="0" />
+            <Button Name="MirrorVerticalButton" Access="Public" HorizontalExpand="True"
+                    Text="{Loc 'wf-mapping-tools-mirror-vertical'}"
+                    ToolTip="{Loc 'wf-mapping-tools-mirror-vertical-tooltip'}" TooltipDelay="0" />
+        </GridContainer>
+
+        <Label Text="{Loc 'wf-mapping-tools-section-history'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+        <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+            <Button Name="UndoButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-undo'}"
+                    ToolTip="{Loc 'wf-mapping-tools-undo-tooltip'}" TooltipDelay="0" />
+            <Button Name="RedoButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-redo'}"
+                    ToolTip="{Loc 'wf-mapping-tools-redo-tooltip'}" TooltipDelay="0" />
+        </BoxContainer>
+
+        <Label Text="{Loc 'wf-mapping-tools-section-view'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+        <Button Name="HideWallsButton" Access="Public" ToggleMode="True" Text="{Loc 'wf-mapping-tools-hide-walls'}"
+                ToolTip="{Loc 'wf-mapping-tools-hide-walls-tooltip'}" TooltipDelay="0" />
+
+        <Label Text="{Loc 'wf-mapping-tools-section-zlevels'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+        <BoxContainer Name="LevelList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+        <GridContainer Columns="2" HSeparationOverride="4" VSeparationOverride="4">
+            <Button Name="LevelUpButton" Access="Public" HorizontalExpand="True" Text="{Loc 'wf-mapping-tools-level-up'}"
+                    ToolTip="{Loc 'wf-mapping-tools-level-up-tooltip'}" TooltipDelay="0" />
+            <Button Name="LevelDownButton" Access="Public" HorizontalExpand="True"
+                    Text="{Loc 'wf-mapping-tools-level-down'}"
+                    ToolTip="{Loc 'wf-mapping-tools-level-down-tooltip'}" TooltipDelay="0" />
+        </GridContainer>
+        <GridContainer Columns="3" HSeparationOverride="4" VSeparationOverride="4">
+            <Button Name="AddAboveButton" Access="Public" HorizontalExpand="True"
+                    Text="{Loc 'wf-mapping-tools-level-add-above'}"
+                    ToolTip="{Loc 'wf-mapping-tools-level-add-above-tooltip'}" TooltipDelay="0" />
+            <Button Name="AddBelowButton" Access="Public" HorizontalExpand="True"
+                    Text="{Loc 'wf-mapping-tools-level-add-below'}"
+                    ToolTip="{Loc 'wf-mapping-tools-level-add-below-tooltip'}" TooltipDelay="0" />
+            <Button Name="RemoveLevelButton" Access="Public" HorizontalExpand="True"
+                    Text="{Loc 'wf-mapping-tools-level-remove'}"
+                    ToolTip="{Loc 'wf-mapping-tools-level-remove-tooltip'}" TooltipDelay="0" />
+        </GridContainer>
+
+        <Label Name="FilesLabel" Access="Public" Text="{Loc 'wf-mapping-tools-section-files'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+        <Button Name="MapsButton" Access="Public" Text="{Loc 'wf-mapping-tools-maps'}"
+                ToolTip="{Loc 'wf-mapping-tools-maps-tooltip'}" TooltipDelay="0" />
+
+        <Label Text="{Loc 'wf-mapping-tools-section-keys'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+        <GridContainer Name="KeyGrid" Columns="2" HSeparationOverride="12" VSeparationOverride="2" />
+    </BoxContainer>
+    </ScrollContainer>
+</mappingTools:MappingToolsPanel>

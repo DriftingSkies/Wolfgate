@@ -1,0 +1,11 @@
+wf-biotype-organic = Organic
+wf-biotype-organic-desc = A body of flesh and blood. It breathes, eats, bleeds blood and is treated with medicine and surgery.
+wf-biotype-synthetic = Synthetic
+wf-biotype-synthetic-desc = A machine body. It runs on a power cell, leaks hydraulic fluid and is repaired with welders and cable.
+wf-biotype-label = Biotype
+wf-biotype-tooltip = Organic is a body of flesh and blood: it breathes, bleeds and is treated with medicine. Synthetic is a machine body: a chassis with hydraulic fluid and a power cell, repaired with welders and cable.
+wf-biotype-default = Species default
+wf-biotype-trait-blocked = You must not be: {$biotypes}
+wf-biotype-loadout-restriction = This item is not available for your current biotype.
+wf-biotype-requirement-whitelisted = Your character must have one of the following biotypes for you to select this:
+wf-biotype-requirement-blacklisted = Your character must not have one of the following biotypes for you to select this:

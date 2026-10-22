@@ -148,10 +148,10 @@
 - type: latheRecipe
   id: ScrapSheetPlasteel1
   result: SheetPlasteel1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 120 -> 500 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 120 -> 250 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 500 #Mono 4000 > 120
+    RawScrap: 250 #Mono 4000 > 120
 
 - type: latheRecipe
   id: ScrapSheetPlastic1
@@ -163,34 +163,34 @@
 - type: latheRecipe
   id: ScrapSheetPlasma1
   result: SheetPlasma1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 120 -> 500 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 120 -> 250 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 500 #Mono 3000 > 120
+    RawScrap: 250 #Mono 3000 > 120
 
 - type: latheRecipe
   id: ScrapSheetUranium1
   result: SheetUranium1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 120 -> 500 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 120 -> 250 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 500 #Mono 3000 > 120
+    RawScrap: 250 #Mono 3000 > 120
 
 - type: latheRecipe
   id: ScrapIngotSilver1
   result: IngotSilver1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 500 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 250 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 500 #Mono 2300 > 100
+    RawScrap: 250 #Mono 2300 > 100
 
 - type: latheRecipe
   id: ScrapIngotGold1
   result: IngotGold1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 500 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 250 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 500 #Mono 3000 > 100
+    RawScrap: 250 #Mono 3000 > 100
 
 - type: latheRecipe
   id: ScrapMaterialBananium1
@@ -267,15 +267,15 @@
 - type: latheRecipe
   id: ScrapMaterialCopper1
   result: SheetCopper1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 500 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 250 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 500
+    RawScrap: 250
 
 - type: latheRecipe
   id: ScrapMaterialLithium1
   result: SheetLithium1
-  # WOLFGATE(Mining): scrap smelts strategic sheets at a real cost, 100 -> 2000 raw, no discount
-  parent: BaseMaterialsNoDiscountRecipe
+  # WOLFGATE(Mining): scrap smelts lithium at a real cost, 100 -> 1000 raw
+  parent: BaseMaterialsYesDiscountRecipe
   materials:
-    RawScrap: 2000
+    RawScrap: 1000

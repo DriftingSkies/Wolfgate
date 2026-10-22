@@ -71,6 +71,20 @@ public static class WFLegacyPrototypeIds
     public static readonly IReadOnlyDictionary<string, string> Species = new Dictionary<string, string>
     {
         ["Canine"] = "WFCanine",
+        ["ProtoArachnid"] = "Protogen",
+        ["ProtoAvali"] = "Protogen",
+        ["ProtoDawi"] = "Protogen",
+        ["ProtoDionae"] = "Protogen",
+        ["ProtoFeline"] = "Protogen",
+        ["ProtoHumie"] = "Protogen",
+        ["ProtoKin"] = "Protogen",
+        ["ProtoMoth"] = "Protogen",
+        ["ProtoReptile"] = "Protogen",
+        ["ProtoResomi"] = "Protogen",
+        ["ProtoSlimePerson"] = "Protogen",
+        ["ProtoThaven"] = "Protogen",
+        ["ProtoVox"] = "Protogen",
+        ["ProtoVulp"] = "Protogen",
     };
 
     /// <summary>Moves a profile's species and loadouts off renamed ids; run before it is validated.</summary>

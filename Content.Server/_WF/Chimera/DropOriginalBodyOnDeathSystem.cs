@@ -1,8 +1,10 @@
 using Content.Server.Body.Components;
+using Content.Server.Chat.Managers;
 using Content.Server.Polymorph.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.IdentityManagement;
@@ -14,7 +16,9 @@ using Content.Shared.Popups;
 using Content.Shared.Storage;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Server._WF.Chimera;
 
@@ -25,8 +29,11 @@ public sealed partial class DropOriginalBodyOnDeathSystem : EntitySystem
 {
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedBodySystem _body = default!;
+    [Dependency] private IChatManager _chat = default!;
     [Dependency] private SharedContainerSystem _container = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
+    [Dependency] private IGameTiming _timing = default!;
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private SharedMindSystem _mind = default!;
@@ -41,6 +48,29 @@ public sealed partial class DropOriginalBodyOnDeathSystem : EntitySystem
         SubscribeLocalEvent<DropOriginalBodyOnDeathComponent, MobStateChangedEvent>(OnMobStateChanged);
         SubscribeLocalEvent<DropOriginalBodyOnDeathComponent, BeforeGibbedEvent>(OnBeforeGibbed);
         SubscribeLocalEvent<DropOriginalBodyOnDeathComponent, PolymorphedEvent>(OnPolymorphed);
+        SubscribeLocalEvent<ChimeraTurnCooldownComponent, ExaminedEvent>(OnCooldownExamined);
+    }
+
+    /// <summary>Whether Letoferol may turn this body; false while its turn cooldown runs.</summary>
+    public bool CanTurn(EntityUid uid)
+    {
+        return !TryComp<ChimeraTurnCooldownComponent>(uid, out var cooldown) || _timing.CurTime >= cooldown.ReadyAt;
+    }
+
+    private void OnCooldownExamined(Entity<ChimeraTurnCooldownComponent> ent, ref ExaminedEvent args)
+    {
+        var left = ent.Comp.ReadyAt - _timing.CurTime;
+        if (left <= TimeSpan.Zero)
+            return;
+
+        args.PushMarkup(Loc.GetString("wf-chimera-turn-cooldown-examine", ("time", FormatTime(left))));
+    }
+
+    private string FormatTime(TimeSpan time)
+    {
+        return Loc.GetString("wf-chimera-turn-cooldown-time",
+            ("minutes", (int) time.TotalMinutes),
+            ("seconds", time.Seconds));
     }
 
     private void OnMobStateChanged(Entity<DropOriginalBodyOnDeathComponent> ent, ref MobStateChangedEvent args)
@@ -103,8 +133,19 @@ public sealed partial class DropOriginalBodyOnDeathSystem : EntitySystem
         Purge(original, ent.Comp.PurgedReagents);
         _transform.DropNextTo(original, ent.Owner);
 
+        if (ent.Comp.TurnCooldown > TimeSpan.Zero)
+            EnsureComp<ChimeraTurnCooldownComponent>(original).ReadyAt = _timing.CurTime + ent.Comp.TurnCooldown;
+
         if (_mind.TryGetMind(ent, out var mindId, out var mind))
+        {
             _mind.TransferTo(mindId, original, mind: mind);
+
+            if (ent.Comp.TurnCooldown > TimeSpan.Zero && _player.TryGetSessionById(mind.UserId, out var session))
+            {
+                _chat.DispatchServerMessage(session,
+                    Loc.GetString("wf-chimera-turn-cooldown-message", ("time", FormatTime(ent.Comp.TurnCooldown))));
+            }
+        }
 
         // The person's name leaves the corpse with them.
         if (config.TransferName && Prototype(ent) is { } proto)

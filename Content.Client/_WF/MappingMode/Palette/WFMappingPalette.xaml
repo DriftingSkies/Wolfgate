@@ -1,0 +1,10 @@
+<palette:WFMappingPalette xmlns="https://spacestation14.io"
+                          xmlns:palette="clr-namespace:Content.Client._WF.MappingMode.Palette"
+                          Orientation="Vertical"
+                          SeparationOverride="4"
+                          HorizontalExpand="True"
+                          VerticalExpand="True">
+    <TabContainer Name="Tabs" VerticalExpand="True" HorizontalExpand="True" />
+    <Label Text="{Loc 'wf-mapping-screen-recent-strip'}" StyleClasses="LabelSubText" Margin="4 0" />
+    <BoxContainer Name="StripBox" Orientation="Horizontal" SeparationOverride="2" Margin="4 0 4 4" MinHeight="36" />
+</palette:WFMappingPalette>

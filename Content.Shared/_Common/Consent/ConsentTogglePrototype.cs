@@ -48,4 +48,13 @@ public sealed partial class ConsentTogglePrototype : IPrototype
     /// <summary>Toggle that must be on for this one to matter; the consent tab indents and disables dependents.</summary>
     [DataField]
     public ProtoId<ConsentTogglePrototype>? Requires;
+
+    // WOLFGATE(CorticalBorer): DefaultOn, for toggles that start on
+    /// <summary>The state a player has until they change it; only the other state is stored.</summary>
+    [DataField]
+    public bool DefaultOn;
+
+    // WOLFGATE(CorticalBorer): DefaultState, the default as a stored state string
+    /// <summary>"on" or "off", matching <see cref="DefaultOn"/>.</summary>
+    public string DefaultState => DefaultOn ? "on" : "off";
 }

@@ -277,6 +277,19 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
                 RemoveMarking(marking, sprite);
             }
         }
+
+        // WOLFGATE(Species) START: a layer drawn outside the last full rebuild (say a wag swapped in between) left a still tail behind
+        foreach (var layerId in humanoid.ClientMarkingLayers)
+        {
+            if (!sprite.LayerMapTryGet(layerId, out var index))
+                continue;
+
+            sprite.LayerMapRemove(layerId);
+            sprite.RemoveLayer(index);
+        }
+
+        humanoid.ClientMarkingLayers.Clear();
+        // WOLFGATE END
     }
 
     private void RemoveMarking(Marking marking, SpriteComponent spriteComp)
@@ -370,6 +383,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
             {
                 var layer = sprite.AddLayer(markingSprite, targetLayer + slotOffset + 1); // WOLFGATE(Genitals): per-layer slot offset
                 sprite.LayerMapSet(layerId, layer);
+                humanoid.ClientMarkingLayers.Add(layerId); // WOLFGATE(Species): removed on the next rebuild whatever drew it
                 sprite.LayerSetSprite(layerId, rsi);
             }
 		    // impstation edit begin - check if there's a shader defined in the markingPrototype's shader datafield, and if there is...

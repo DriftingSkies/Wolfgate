@@ -4,8 +4,7 @@
   id: FelinidEarsBasic
   bodyPart: HeadTop
   markingCategory: HeadTop
-  # WOLFGATE(Species): ProtoFeline
-  speciesRestriction: [Felinid, Human, ProtoFeline] # Mono
+  speciesRestriction: [Felinid, Human] # Mono
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: basic_outer
@@ -16,7 +15,7 @@
   id: FelinidEarsCurled
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: curled_outer
@@ -27,7 +26,7 @@
   id: FelinidEarsDroopy
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: droopy_outer
@@ -38,7 +37,7 @@
   id: FelinidEarsFuzzy
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: basic_outer
@@ -49,7 +48,7 @@
   id: FelinidEarsStubby
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: stubby_outer
@@ -60,7 +59,7 @@
   id: FelinidEarsTall
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: tall_outer
@@ -73,7 +72,7 @@
   id: FelinidEarsTorn
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: torn_outer
@@ -84,7 +83,7 @@
   id: FelinidEarsWide
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Felinid, Human, ProtoFeline] # WOLFGATE(Species): ProtoFeline
+  speciesRestriction: [Felinid, Human]
   sprites:
   - sprite: Nyanotrasen/Mobs/Customization/felinid_ears.rsi
     state: wide_outer
@@ -98,8 +97,7 @@
   id: FelinidTailBasic
   bodyPart: Tail
   markingCategory: Tail
-  # WOLFGATE(Species): ProtoFeline
-  speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  speciesRestriction: [Felinid, Tajaran, Human] # Goobstation - Tajaran
   # WOLFGATE(Genitals) START: the south frame draws behind the body, so the tail never covers anatomy
   layering:
     basic_tail_tip_BEHIND: TailBehind
@@ -126,8 +124,7 @@
   id: FelinidTailBasicWithBow
   bodyPart: Tail
   markingCategory: Tail
-  # WOLFGATE(Species): ProtoFeline
-  speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  speciesRestriction: [Felinid, Tajaran, Human] # Goobstation - Tajaran
   # WOLFGATE(Genitals) START: the south frame draws behind the body, so the tail never covers anatomy
   layering:
     basic_tail_tip_BEHIND: TailBehind
@@ -162,8 +159,7 @@
   id: FelinidTailBasicWithBell
   bodyPart: Tail
   markingCategory: Tail
-  # WOLFGATE(Species): ProtoFeline
-  speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  speciesRestriction: [Felinid, Tajaran, Human] # Goobstation - Tajaran
   # WOLFGATE(Genitals) START: the south frame draws behind the body, so the tail never covers anatomy
   layering:
     basic_tail_tip_BEHIND: TailBehind
@@ -198,8 +194,7 @@
   id: FelinidTailBasicWithBowAndBell
   bodyPart: Tail
   markingCategory: Tail
-  # WOLFGATE(Species): ProtoFeline
-  speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  speciesRestriction: [Felinid, Tajaran, Human] # Goobstation - Tajaran
   # WOLFGATE(Genitals) START: the south frame draws behind the body, so the tail never covers anatomy
   layering:
     basic_tail_tip_BEHIND: TailBehind

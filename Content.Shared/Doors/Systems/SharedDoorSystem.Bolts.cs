@@ -116,7 +116,7 @@ public abstract partial class SharedDoorSystem
 
     public bool IsBolted(EntityUid uid, DoorBoltComponent? component = null)
     {
-        if (!Resolve(uid, ref component))
+        if (!Resolve(uid, ref component, false)) // WOLFGATE(Xenonids): resin doors are airlocks without bolts; no error spam
         {
             return false;
         }

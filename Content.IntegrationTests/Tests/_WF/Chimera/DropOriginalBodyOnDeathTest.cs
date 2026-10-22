@@ -99,6 +99,66 @@ public sealed class DropOriginalBodyOnDeathTest
     }
 
     [Test]
+    public async Task DroppedBodyCantBeTurnedStraightBack()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false, Dirty = true });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        var entMan = server.EntMan;
+        var protoMan = server.ResolveDependency<IPrototypeManager>();
+        var dropSys = entMan.System<DropOriginalBodyOnDeathSystem>();
+
+        var body = EntityUid.Invalid;
+        var beast = EntityUid.Invalid;
+
+        await server.WaitAssertion(() =>
+        {
+            (body, beast, _) = Turn(entMan, map.GridCoords, "LetoferolMutationNatural");
+            var lethal = new DamageSpecifier(protoMan.Index<DamageTypePrototype>(Piercing), 1000);
+            entMan.System<DamageableSystem>().TryChangeDamage(beast, lethal, ignoreResistances: true, canSever: false);
+
+            Assert.That(entMan.HasComponent<ChimeraTurnCooldownComponent>(body), Is.True,
+                "The dropped body got no turn cooldown.");
+            Assert.That(dropSys.CanTurn(body), Is.False);
+
+            // What another fleshbeast's claws put in it.
+            AddNaturalLetoferol(entMan, body);
+        });
+
+        await pair.RunTicksSync(150);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<TransformComponent>(body).MapUid, Is.EqualTo(map.MapUid),
+                "The body was turned again during its cooldown.");
+
+            // Ends the cooldown early.
+            entMan.RemoveComponent<ChimeraTurnCooldownComponent>(body);
+            Assert.That(dropSys.CanTurn(body), Is.True);
+            AddNaturalLetoferol(entMan, body);
+        });
+
+        await pair.RunTicksSync(150);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<TransformComponent>(body).MapUid, Is.Not.EqualTo(map.MapUid),
+                "Letoferol didn't turn the body once its cooldown was over.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    private static void AddNaturalLetoferol(IEntityManager entMan, EntityUid body)
+    {
+        var solutionSys = entMan.System<SharedSolutionContainerSystem>();
+        Assert.That(solutionSys.TryGetSolution(body, BloodstreamComponent.DefaultChemicalsSolutionName, out var chemicals),
+            Is.True);
+        solutionSys.TryAddReagent(chemicals!.Value, NaturalLetoferol, 30);
+    }
+
+    [Test]
     public async Task GibbedFleshbeastDropsBody()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false, Dirty = true });

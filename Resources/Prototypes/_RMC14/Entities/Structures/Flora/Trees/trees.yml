@@ -1,0 +1,326 @@
+# WOLFGATE(DecorImport) START: ported from Einstein Engines
+- type: entity
+  parent: PottedPlantBase
+  id: RMCAlienTree01
+  suffix: RMCAlienTree01
+  components:
+  - type: Sprite
+    state: treealien01
+    noRot: true
+    sprite: _RMC14/Objects/Flora/flora_treealien.rsi
+    drawdepth: Overdoors
+    offset: "0,0.7"
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.1,-0.3,0.1,0.3"
+        density: 4000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Objects/Flora/flora_treealien.rsi
+    state: treealien01
+
+- type: entity
+  parent: FloraTreeStump
+  id: FloraAlienStump
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Flora/flora_treealien.rsi
+    state: treestumpalien
+    offset: 0,0.7
+  - type: Icon
+    sprite: _RMC14/Objects/Flora/flora_treealien.rsi
+    state: treestumpalien
+# WOLFGATE END
+
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: PottedPlantBase
+  id: RMCFloraTreeTyrargo01
+  suffix: 1
+  components:
+  - type: Sprite
+    state: treetyrargo01
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargo.rsi
+    drawdepth: Overdoors
+    offset: "0,0.9"
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    slowdownBelowWeightClass: Medium
+    slowdownMultiplier: 0.5
+    slowdownDuration: 0.4
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.15,-1.15,0.35,-0.3"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargo.rsi
+    state: treetyrargo01
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCFloraTreeTyrargo02
+  suffix: 2
+  components:
+  - type: Sprite
+    state: treetyrargo02
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargo.rsi
+    drawdepth: Overdoors
+    offset: "0,0.9"
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    slowdownBelowWeightClass: Medium
+    slowdownMultiplier: 0.5
+    slowdownDuration: 0.4
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.15,-1.15,0.35,-0.3"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargo.rsi
+    state: treetyrargo02
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCFloraTreeTyrargo03
+  suffix: 3
+  components:
+  - type: Sprite
+    state: treetyrargo03
+    noRot: true
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargo.rsi
+    drawdepth: Overdoors
+    offset: "0,0.9"
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    slowdownBelowWeightClass: Medium
+    slowdownMultiplier: 0.5
+    slowdownDuration: 0.4
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.15,-1.15,0.35,-0.3"
+        density: 1000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargo.rsi
+    state: treetyrargo03
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCFloraTyrargoDeadTree01
+  suffix: 1, Dead
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargodead.rsi
+    state: tyrargo_deadtree01
+    noRot: true
+    drawdepth: Overdoors
+    offset: "0,0.7"
+  - type: VehicleSmashable
+    minDestroyWeightClass: Light
+    slowdownBelowWeightClass: Medium
+    slowdownMultiplier: 0.5
+    slowdownDuration: 0.4
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.1,-0.3,0.1,0.3"
+        density: 4000
+        layer: [ WallLayer ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path: /Audio/Effects/chop.ogg
+        params:
+          variation: 0.05
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargodead.rsi
+    state: tyrargo_deadtree01
+
+- type: entity
+  parent: RMCFloraTyrargoDeadTree01
+  id: RMCFloraTyrargoDeadTree04
+  suffix: 4, Dead
+  components:
+  - type: Sprite
+    state: tyrargo_deadtree04
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/Trees/flora_trees_tyrargodead.rsi
+    state: tyrargo_deadtree04
+# WOLFGATE END

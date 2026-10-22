@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared._NF.LoggingExtensions;
 using Content.Shared._WF.Traders; // WOLFGATE(Traders)
+using Content.Shared._WF.Xenonids.Devour; // WOLFGATE(Xenonids)
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.CCVar;
@@ -356,6 +357,13 @@ namespace Content.Shared.Interaction
         /// <returns></returns>
         public bool CombatModeCanHandInteract(EntityUid user, EntityUid? target)
         {
+            // WOLFGATE(Xenonids) START: devoured mobs and devouring xenos override combat-mode interaction
+            var overrideEv = new RMCCombatModeInteractOverrideUserEvent(target);
+            RaiseLocalEvent(user, ref overrideEv);
+            if (overrideEv.Handled)
+                return overrideEv.CanInteract;
+            // WOLFGATE END
+
             // Always allow attack in these cases
             if (target == null || !_handsQuery.TryComp(user, out var hands) || hands.ActiveHand?.HeldEntity is not null)
                 return false;

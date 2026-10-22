@@ -1,0 +1,61 @@
+<Document>
+  # Selecting and editing
+
+  Press 3 for Select mode. M, or [bold]Enable selection tools[/bold] in the Tools tab, also turns it on and off.
+
+  ## Selecting
+
+  - [bold]Click an entity[/bold]: select it.
+  - [bold]Click bare floor[/bold]: select that tile and everything on it.
+  - [bold]Shift+click[/bold]: add or take out an entity or a tile.
+  - [bold]Drag[/bold]: select every tile in the box and everything on them. The drag can start in space; it takes the first grid it reaches.
+  - [bold]Right click[/bold]: drop the drag, then the paste, then the selection. Escape drops the selection.
+
+  Selected tiles travel with the selection. Moving, rotating, mirroring, copying and deleting take the floor too.
+
+  ## Editing
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Drag the selection[/bold]</Box>
+    <Box HorizontalAlignment="Left">Move it. R while dragging turns it.</Box>
+    <Box HorizontalAlignment="Left">[bold]R[/bold]</Box>
+    <Box HorizontalAlignment="Left">Rotate clockwise</Box>
+    <Box HorizontalAlignment="Left">[bold]F[/bold]</Box>
+    <Box HorizontalAlignment="Left">Mirror left to right</Box>
+    <Box HorizontalAlignment="Left">[bold]Shift+F[/bold]</Box>
+    <Box HorizontalAlignment="Left">Mirror top to bottom</Box>
+    <Box HorizontalAlignment="Left">[bold]Delete[/bold]</Box>
+    <Box HorizontalAlignment="Left">Delete it</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+C[/bold]</Box>
+    <Box HorizontalAlignment="Left">Copy</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+X[/bold]</Box>
+    <Box HorizontalAlignment="Left">Cut</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+V[/bold]</Box>
+    <Box HorizontalAlignment="Left">Paste</Box>
+  </Table>
+
+  The Tools tab has the same actions as buttons.
+
+  Paste shows a preview on the cursor. R turns it. Click to put it down. Shift+click puts it down and keeps the preview for another copy. Right click drops it. A paste in space lands on the grid it was copied from, or on a new grid if that grid is gone.
+
+  Mirroring flips rotations, pipe fittings and one-sided decals. Lopsided sprites, such as a chair's armrest or a sign's text, keep their look.
+
+  ## Undo
+
+  Ctrl+Z undoes, Ctrl+Y or Ctrl+Shift+Z redoes. It works in every mode and covers placing, erasing, tiles, decals, shapes, pipes, links and the selection tools.
+
+  - Each mapper has their own history of 30 steps. The oldest go first.
+  - History is lost when you disconnect.
+  - Adding or removing a z-level can't be undone.
+  - A mob that was erased can't be brought back, and mobs can't be copied.
+
+  ## Size limits
+
+  A selection or an erase covers at most 4096 tiles. One copy, paste, delete or undo step touches at most 2000 entities, contents included. A copy or paste carries at most 4096 decals. Anything over a limit is refused whole.
+
+  ## Whole grids
+
+  [bold]Delete the grid under me[/bold] in the Session tab deletes the grid you are over, every tile and entity on it. It asks for a second click. Undo brings it back. Grids over 256 by 256 tiles have to be selected and deleted in parts.
+
+  [bold]Hide walls[/bold] in the Tools tab hides every wall for you, so you can see and click what's behind them.
+</Document>

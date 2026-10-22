@@ -4,7 +4,7 @@
   id: LizardFinTop
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   sprites:
   - sprite: Floof/Mobs/Customization/Reptilian/fin.rsi
     state: primary
@@ -15,7 +15,7 @@
   id: LizardCrestLargeTop
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, WFCanine]
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
   - sprite: Floof/Mobs/Customization/Reptilian/crest_large.rsi
     state: primary

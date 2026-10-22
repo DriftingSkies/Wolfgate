@@ -1,0 +1,67 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14CrystalQuartz
+  suffix: Normal
+  parent: BaseRock
+  components:
+  - type: Sprite
+    layers:
+    - state: medium1
+      map: [ random ]
+    drawdepth: Mobs
+    sprite: _CP14/Structures/Flora/Crystal/crystal.rsi
+    offset: "0, 0.25"
+    noRot: true
+  - type: PointLight
+    enabled: false
+    netSync: false
+    radius: 2.5
+    energy: 1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Glass
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        collection: GlassSmash
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.3
+        density: 60
+        mask: [ MachineMask ]
+        layer: [ MidImpassable, LowImpassable, BulletImpassable, Opaque ]
+  - type: RandomSprite
+    available:
+    - random:
+        big0: Inherit
+        big1: Inherit
+        big2: Inherit
+        medium0: Inherit
+        medium1: Inherit
+        medium2: Inherit
+        medium3: Inherit
+        medium4: Inherit
+        small0: Inherit
+        small1: Inherit
+        small2: Inherit
+        small3: Inherit
+        small4: Inherit
+        small5: Inherit
+  - type: Icon
+    sprite: _CP14/Structures/Flora/Crystal/crystal.rsi
+    state: medium1
+# WOLFGATE END

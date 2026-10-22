@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 
@@ -42,7 +43,11 @@ namespace Content.Shared.Administration
 
             public readonly bool AdminOnly;
 
-            public BwoinkTextMessage(NetUserId userId, NetUserId trueSender, string text, DateTime? sentAt = default, bool playSound = true, bool adminOnly = false)
+            // WOLFGATE(EventStaff) START: ahelp category picked by the player
+            public readonly AHelpCategory Category;
+
+            public BwoinkTextMessage(NetUserId userId, NetUserId trueSender, string text, DateTime? sentAt = default, bool playSound = true, bool adminOnly = false, AHelpCategory category = AHelpCategory.Player)
+            // WOLFGATE END
             {
                 SentAt = sentAt ?? DateTime.Now;
                 UserId = userId;
@@ -50,6 +55,7 @@ namespace Content.Shared.Administration
                 Text = text;
                 PlaySound = playSound;
                 AdminOnly = adminOnly;
+                Category = category; // WOLFGATE(EventStaff)
             }
         }
     }

@@ -20,7 +20,7 @@ public sealed class EncountersCVars
 
     /// <summary>The most spesos encounter rewards pay one player in an hour.</summary>
     public static readonly CVarDef<int> PayoutHourlyCap =
-        CVarDef.Create("wf.encounters.payout_hourly_cap", 120000, CVar.SERVERONLY);
+        CVarDef.Create("wf.encounters.payout_hourly_cap", 250000, CVar.SERVERONLY);
 
     /// <summary>Shortest wait between scheduled encounters, in seconds.</summary>
     public static readonly CVarDef<float> IntervalMin =
@@ -48,6 +48,10 @@ public sealed class EncountersCVars
     /// </summary>
     public static readonly CVarDef<float> CleanupLinger =
         CVarDef.Create("wf.encounters.cleanup_linger", 1200f, CVar.SERVERONLY);
+
+    /// <summary>Seconds a resolved encounter's ship stays after the last player has left it or undocked from it.</summary>
+    public static readonly CVarDef<float> CleanupGrace =
+        CVarDef.Create("wf.encounters.cleanup_grace", 300f, CVar.SERVERONLY);
 
     /// <summary>
     /// Stations no encounter is placed at or routed to, and that open-space encounters keep clear of: a comma-separated

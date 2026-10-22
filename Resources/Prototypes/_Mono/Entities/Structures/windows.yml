@@ -6,6 +6,10 @@
   name: reinforced window
   parent: ReinforcedWindow
   components:
+  # WOLFGATE(Xenonids): outpost windows are not meant to fall to claws; a hundred hits
+  - type: ReceiverXenoClaws
+    maxHealth: 15000
+    hitsToDestroy: 100
   - type: Destructible
     thresholds:
     - trigger:
@@ -41,6 +45,10 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): outpost windows are not meant to fall to claws; a hundred hits
+  - type: ReceiverXenoClaws
+    maxHealth: 5000
+    hitsToDestroy: 100
   - type: Destructible
     thresholds:
     - trigger:
@@ -74,6 +82,10 @@
   suffix: OUTPOST ONLY
   parent: PlastitaniumWindow
   components:
+  # WOLFGATE(Xenonids): outpost windows are not meant to fall to claws; a hundred hits
+  - type: ReceiverXenoClaws
+    maxHealth: 30000
+    hitsToDestroy: 100
   - type: Destructible
     thresholds:
     - trigger:
@@ -109,6 +121,10 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): outpost windows are not meant to fall to claws; a hundred hits
+  - type: ReceiverXenoClaws
+    maxHealth: 20000
+    hitsToDestroy: 100
   - type: Destructible
     thresholds:
     - trigger:

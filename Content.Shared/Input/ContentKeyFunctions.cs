@@ -178,5 +178,6 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction WFMappingLevelUp = "WFMappingLevelUp";
         public static readonly BoundKeyFunction WFMappingLevelDown = "WFMappingLevelDown";
         // WOLFGATE END
+        public static readonly BoundKeyFunction WFMappingReferenceCancel = "WFMappingReferenceCancel"; // WOLFGATE(MappingMode): Escape drops a reference grid being placed
     }
 }

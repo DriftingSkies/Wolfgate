@@ -1,0 +1,64 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: decal
+  id: ADTfernybush2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: fernybush_2
+
+- type: decal
+  id: ADTfirstbush2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: firstbush_2
+
+- type: decal
+  id: ADTfullgrass2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: fullgrass_2
+
+- type: decal
+  id: ADTgenericbush2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: genericbush_2
+
+- type: decal
+  id: ADTgrassybush2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: grassybush_2
+
+- type: decal
+  id: ADTywflowers2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: ywflowers_2
+
+- type: decal
+  id: ADTywflowers4
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: ADT/Decals/Flora/hell_flora.rsi
+    state: ywflowers_4
+# WOLFGATE END

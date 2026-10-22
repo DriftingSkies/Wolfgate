@@ -162,6 +162,8 @@ public sealed partial class WFDrydockSystem
     /// </summary>
     private WFDrydockWorkItem? TakeBreakTile(WFDrydockConsoleComponent comp, WFDrydockJobComponent job, WFDrydockJobSlot slot)
     {
+        var own = ReachOf(job.Ship, slot.Crane);
+        var all = JobReach(job);
         var reach = new List<(int Index, float Distance)>();
         var stranded = -1;
         var strandedDistance = float.MaxValue;
@@ -169,9 +171,9 @@ public sealed partial class WFDrydockSystem
         {
             var pos = job.Pending[i].LocalPos;
             var distance = (pos - slot.ToolPos).LengthSquared();
-            if (CanReach(comp, job.Ship, slot.Crane, pos))
+            if (Reaches(comp, own, pos))
                 reach.Add((i, distance));
-            else if (distance < strandedDistance && !ReachableByJob(comp, job, pos))
+            else if (distance < strandedDistance && !ReachableByAny(comp, all, pos))
             {
                 stranded = i;
                 strandedDistance = distance;
@@ -382,7 +384,9 @@ public sealed partial class WFDrydockSystem
                     AddBreakYield(pay, proto, yield);
             }
 
-            QueueDel(uid);
+            // Deleted now, not queued: lifting the tile below unanchors what's left, and a cable unanchored alive
+            // drops a coil as if cut.
+            Del(uid);
         }
 
         if (pay != null)

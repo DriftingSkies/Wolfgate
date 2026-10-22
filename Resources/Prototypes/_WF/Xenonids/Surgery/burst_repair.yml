@@ -1,0 +1,49 @@
+# A chest a larva burst out of can be mended, unless the host's own player took the larva.
+- type: entity
+  parent: SurgeryBase
+  id: WFSurgeryBurstChestRepair
+  name: Burst Chest Repair
+  description: Clears and mends a chest an alien larva burst out of, so the body can be revived.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    priority: -1
+    requirement: SurgeryOpenRibcage
+    steps:
+    - WFSurgeryStepClearBurstChest
+    - WFSurgeryStepMendBurstChest
+  - type: XenoBurstSurgeryCondition
+  - type: SurgeryPartCondition
+    part: Torso
+
+- type: entity
+  parent: SurgeryStepBase
+  id: WFSurgeryStepClearBurstChest
+  name: Clear burst chest
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SurgeryStep
+    tool:
+    - type: Hemostat
+    duration: 6
+  - type: Sprite
+    sprite: _Shitmed/Objects/Specific/Medical/Surgery/hemostat.rsi
+    state: hemostat
+  - type: XenoBurstClearStep
+  - type: SurgeryStepEmoteEffect
+
+- type: entity
+  parent: SurgeryStepBase
+  id: WFSurgeryStepMendBurstChest
+  name: Mend burst chest
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SurgeryStep
+    tool:
+    - type: Cautery
+    duration: 6
+  - type: Sprite
+    sprite: _Shitmed/Objects/Specific/Medical/Surgery/cautery.rsi
+    state: cautery
+  - type: XenoBurstMendStep
+  - type: SurgeryStepEmoteEffect

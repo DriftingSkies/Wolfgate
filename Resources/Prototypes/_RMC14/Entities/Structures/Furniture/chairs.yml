@@ -1,0 +1,176 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: SeatBase
+  id: CMChairAlt
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    state: chair_alt
+    snapCardinals: false
+  - type: Tag
+    tags: []
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    state: chair_alt
+
+- type: entity
+  parent: SeatBase
+  id: RMCStoolRed
+  components:
+  - type: Sprite
+    state: stool_red
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    noRot: false
+    snapCardinals: false
+  - type: Tag
+    tags: []
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    state: stool_red
+
+- type: entity
+  parent: SeatBase
+  id: RMCChairComfyAI
+  suffix: RMC, AI
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: ai_interface_chair
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    noRot: false
+    snapCardinals: false
+  - type: Tag
+    tags: []
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    state: ai_interface_chair
+
+- type: entity
+  parent: SeatBase
+  id: RMCChairComfyAlien
+  suffix: RMC, Alien
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: comfychair_alien
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    snapCardinals: false
+  - type: Tag
+    tags: []
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/chairs.rsi
+    state: comfychair_alien
+
+- type: entity
+  parent: SeatBase
+  id: RMCSofa
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/sofa.rsi
+    state: sofa
+    snapCardinals: false
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Tag
+    tags: []
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/sofa.rsi
+    state: sofa
+
+- type: entity
+  parent: RMCSofa
+  id: RMCSofaRed
+  components:
+  - type: Sprite
+    state: sofa_red
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/sofa.rsi
+    state: sofa_red
+
+- type: entity
+  parent: RMCSofa
+  id: RMCSofaBlack
+  components:
+  - type: Sprite
+    state: sofa_black
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Couches/sofa.rsi
+    state: sofa_black
+# WOLFGATE END

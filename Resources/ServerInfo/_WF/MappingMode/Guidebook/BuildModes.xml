@@ -1,0 +1,100 @@
+<Document>
+  # Build modes
+
+  Press 1 to 9, or click a mode on the mode bar. The Keys tab lists the mouse actions of every mode.
+
+  <Table Columns="3">
+    <Box HorizontalAlignment="Left">[bold]1[/bold]</Box>
+    <Box HorizontalAlignment="Left">Place</Box>
+    <Box HorizontalAlignment="Left">Put down what you picked in the palette.</Box>
+    <Box HorizontalAlignment="Left">[bold]2[/bold]</Box>
+    <Box HorizontalAlignment="Left">Erase</Box>
+    <Box HorizontalAlignment="Left">Remove one thing, or everything in a box.</Box>
+    <Box HorizontalAlignment="Left">[bold]3[/bold]</Box>
+    <Box HorizontalAlignment="Left">Select</Box>
+    <Box HorizontalAlignment="Left">Select, move, rotate, mirror, copy and paste.</Box>
+    <Box HorizontalAlignment="Left">[bold]4[/bold]</Box>
+    <Box HorizontalAlignment="Left">Fill</Box>
+    <Box HorizontalAlignment="Left">Flood connected tiles with your tile.</Box>
+    <Box HorizontalAlignment="Left">[bold]5[/bold]</Box>
+    <Box HorizontalAlignment="Left">Shape</Box>
+    <Box HorizontalAlignment="Left">Draw a line, rectangle or circle.</Box>
+    <Box HorizontalAlignment="Left">[bold]6[/bold]</Box>
+    <Box HorizontalAlignment="Left">Pick</Box>
+    <Box HorizontalAlignment="Left">Eyedropper.</Box>
+    <Box HorizontalAlignment="Left">[bold]7[/bold]</Box>
+    <Box HorizontalAlignment="Left">Template</Box>
+    <Box HorizontalAlignment="Left">Move and scale the PNG template.</Box>
+    <Box HorizontalAlignment="Left">[bold]8[/bold]</Box>
+    <Box HorizontalAlignment="Left">Pipe</Box>
+    <Box HorizontalAlignment="Left">Draw gas pipes and place atmos devices.</Box>
+    <Box HorizontalAlignment="Left">[bold]9[/bold]</Box>
+    <Box HorizontalAlignment="Left">Link</Box>
+    <Box HorizontalAlignment="Left">Signal links, device lists and access.</Box>
+  </Table>
+
+  Right click drops a drag in progress. Escape drops what you're doing; press it again to go back to Place. Picking anything in the palette or the quick-select bar switches to Place, so pick first, then change mode.
+
+  ## Place (1)
+
+  - [bold]Left click[/bold]: place what you hold.
+  - [bold]Right click[/bold]: erase the entity under the cursor if you hold an entity, the tile if you hold a tile. Holding a decal, it erases decals.
+  - [bold]Middle click[/bold]: eyedropper.
+  - [bold]R[/bold] or [bold]Ctrl+wheel[/bold]: turn it. Decals turn by 90 degrees.
+  - [bold]Escape[/bold]: stop placing.
+
+  Properties has the placement mode and [bold]Replace[/bold], as in the spawn menu.
+
+  ## Erase (2)
+
+  Set what it removes under [bold]Erase[/bold] in Properties: Everything (the default), Entities, Tiles or Decals. The cursor readout shows the current choice.
+
+  - [bold]Click[/bold]: remove one thing. Everything takes the entity under the cursor, or the tile when there is none.
+  - [bold]Drag[/bold]: remove everything of that kind in the box.
+  - [bold]Right click[/bold]: open [bold]Delete under cursor[/bold], a list of what's there by name and prototype. Pick one to remove it.
+
+  ## Select (3)
+
+  Click or drag to select, then move, turn, mirror, copy or delete. See Selecting and editing.
+
+  ## Fill (4)
+
+  Hold a tile. Click a tile on a grid and every connected tile of that type becomes yours. See Shapes, fill and erase.
+
+  ## Shape (5)
+
+  Drag a line, rectangle or circle of the tile or entity you hold. See Shapes, fill and erase.
+
+  ## Pick (6)
+
+  Click anything. You hold it, at its rotation, and go back to Place. A click on bare floor picks the floor tile.
+
+  ## Template (7)
+
+  Drag the template image. See Templates and references.
+
+  ## Pipe (8)
+
+  Drag to lay pipes. See Atmos and pipes.
+
+  ## Link (9)
+
+  Click machines to wire them up. See Wiring.
+
+  ## Other keys
+
+  <Table Columns="2">
+    <Box HorizontalAlignment="Left">[bold]Ctrl+Z[/bold]</Box>
+    <Box HorizontalAlignment="Left">Undo</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+Y[/bold], [bold]Ctrl+Shift+Z[/bold]</Box>
+    <Box HorizontalAlignment="Left">Redo</Box>
+    <Box HorizontalAlignment="Left">[bold]Ctrl+S[/bold]</Box>
+    <Box HorizontalAlignment="Left">Quicksave to your library</Box>
+    <Box HorizontalAlignment="Left">[bold]Page Up[/bold], [bold]Page Down[/bold]</Box>
+    <Box HorizontalAlignment="Left">Go up or down a level</Box>
+    <Box HorizontalAlignment="Left">[bold]M[/bold]</Box>
+    <Box HorizontalAlignment="Left">Selection on or off</Box>
+    <Box HorizontalAlignment="Left">[bold]Tab[/bold]</Box>
+    <Box HorizontalAlignment="Left">Next tool in Link mode</Box>
+  </Table>
+</Document>

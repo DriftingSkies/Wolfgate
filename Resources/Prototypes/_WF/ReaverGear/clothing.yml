@@ -1,0 +1,233 @@
+# The Ashfall Reavers' kit: stolen TSF M86 gear repainted in ash orange. Sprites ported from Lonestar by way of
+# Panta-Rhei PR 1177 (Floof-Station/Panta-Rhei), where they were the Solarian Alliance's; retargeted to Wolfgate's
+# Reavers. Their red raider hardsuit lives with the crew gear in NpcCrew/gear.yml.
+
+# Hardsuits
+
+- type: entity
+  parent: ClothingOuterHardsuitBase
+  id: WFClothingOuterHardsuitReaverCombat
+  name: reaver combat hardsuit
+  description: A TSF M86 that never made it back to its locker. Stripped, patched and painted in Ashfall orange.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/OuterClothing/combat_hardsuit.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/OuterClothing/combat_hardsuit.rsi
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING
+      outerClothing-harpy:
+      - state: equipped-OUTERCLOTHING-harpy
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-vox
+  - type: PressureProtection
+    highPressureMultiplier: 0.05
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: StaminaDamageResistance
+    coefficient: 0.2
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.3
+        Heat: 0.5
+        Radiation: 0.25
+        Caustic: 0.4
+        Cold: 0.8
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: HeldSpeedModifier
+  - type: ToggleableClothing
+    requiredSlot: outerclothing
+    blockUnequipWhenAttached: false
+    replaceCurrentClothing: true
+    clothingPrototypes:
+      head: WFClothingHeadHelmetHardsuitReaverCombat
+      helmetcover: ClothingHeadHelmetCoverBlock
+      helmetattachment: ClothingHeadHelmetAttachmentBlock
+  - type: Tag
+    tags:
+    - Hardsuit
+    - WhitelistChameleon
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WFClothingOuterHardsuitReaverCombat
+  id: WFClothingOuterHardsuitReaverVoid
+  name: reaver void hardsuit
+  description: A navy M86 Mark Four taken off a boarded hull. Built for EVA work; now for cutting into ships that cannot shoot back.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/OuterClothing/void_hardsuit.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/OuterClothing/void_hardsuit.rsi
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-vox
+
+# Night vision uses Monolith's M86 helmet settings; the thermals are the deathsquad helmet's.
+- type: entity
+  parent: ClothingHeadHelmetHardsuitSyndieCommander
+  id: WFClothingHeadHelmetHardsuitReaverCombat
+  name: reaver combat helmet
+  description: Visor lit in ash orange. The night and thermal optics still work, which is more than the last owner can say.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Head/combat_helmet.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Head/combat_helmet.rsi
+  - type: ToggleableVisuals
+    spriteLayer: light
+    clothingVisuals:
+      head:
+      - state: on-equipped-HELMET-light
+        shader: unshaded
+      head-vox:
+      - state: on-equipped-HELMET-vox-light
+        shader: unshaded
+      head-reptilian:
+      - state: on-equipped-HELMET-reptilian-light
+        shader: unshaded
+  - type: PointLight
+    color: orange
+  - type: PressureProtection
+    highPressureMultiplier: 0.08
+    lowPressureMultiplier: 1000
+  - type: Armor
+    coverage: [Head]
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.9
+        Heat: 0.9
+  - type: NightVision
+    relayOverlay: true
+    goggleEffect: true
+    viewCircleRadius: 450
+    viewCircleCount: 4
+    viewCircleSpacing: 280
+    action: ActionToggleNightVision
+    phosphorColor: "#41D7D9"
+    lightingColor: "#FFFFFF32"
+  - type: ThermalVision
+    isEquipment: true
+    lightRadius: 15
+  - type: StaticPrice
+    price: 0
+
+# Uniforms
+
+- type: entity
+  parent: ClothingUniformBase
+  id: WFClothingUniformReaverFatigues
+  name: reaver fatigues
+  description: Camouflage fatigues cut from stolen TSF stock and dyed in the ash belts.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Uniforms/fatigues.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Uniforms/fatigues.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: WFClothingUniformReaverDeck
+  name: reaver deck jumpsuit
+  description: A dark jumpsuit for the hands who keep the patched hulls flying.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Uniforms/deck.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Uniforms/deck.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: WFClothingUniformReaverEngine
+  name: reaver engine jumpsuit
+  description: Worn by Reaver engine hands. The stains are not all oil.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Uniforms/engine.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Uniforms/engine.rsi
+
+# Back, belt, ears
+
+- type: entity
+  parent: ClothingBackpackERTLeader
+  id: WFClothingBackpackReaver
+  name: reaver pack
+  description: A big military pack with a lot of pockets. Holds everything taken off the last crew.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Back/pack.rsi
+
+- type: entity
+  parent: ClothingBeltSecurityWebbing
+  id: WFClothingBeltReaverChestRig
+  name: reaver chest rig
+  description: A chest rig with room for all the ammunition a boarding takes.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Belt/chest_rig.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Belt/chest_rig.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: WFClothingHeadsetReaver
+  name: reaver headset
+  description: Tuned to the common and traffic channels, so the Reavers hear who is coming before the navies do.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyCommon
+      - EncryptionKeyTraffic
+  - type: Sprite
+    sprite: _WF/ReaverGear/Ears/headset.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Ears/headset.rsi
+
+# Head and neck
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFClothingHeadReaverBeret
+  name: reaver beret
+  description: A brown beret. The ones who wear it have been on more raids than the ones who do not.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Head/beret.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Head/beret.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFClothingNeckReaverCaptainCloak
+  name: reaver captain's cloak
+  description: A cloak taken off a navy officer and worn by a Reaver captain. Ask where he got it and you will not like the answer.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Neck/captain_cloak.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Neck/captain_cloak.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFClothingNeckReaverWarlordCloak
+  name: reaver warlord's cloak
+  description: A kitbashed cloak worn by whoever runs the anchorage this month.
+  components:
+  - type: Sprite
+    sprite: _WF/ReaverGear/Neck/warlord_cloak.rsi
+  - type: Clothing
+    sprite: _WF/ReaverGear/Neck/warlord_cloak.rsi

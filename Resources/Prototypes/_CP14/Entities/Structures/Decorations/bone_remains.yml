@@ -1,0 +1,172 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  parent: BaseStructure
+  id: CP14BaseBoneRemains
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _CP14/Structures/Decoration/bone_remains.rsi
+    drawdepth: BelowFloor
+    layers:
+    - state: bone_remains_1
+      map: [ random ]
+  - type: RandomSprite
+    available:
+    - random:
+        bone_remains_1: ""
+        bone_remains_2: ""
+        bone_remains_3: ""
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 50
+        mask: [ SlipLayer ]
+        layer: [ ItemMask ]
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: CP14StepBones
+      params:
+        volume: 4
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 10
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: CP14BoneCrack
+  - type: Physics
+    bodyType: Static
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Icon
+    sprite: _CP14/Structures/Decoration/bone_remains.rsi
+    state: bone_remains_1
+
+- type: entity
+  parent: BaseStructure
+  id: CP14BoneRemainsBoneHound
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _CP14/Mobs/Monster/bone_hound.rsi
+    drawdepth: BelowFloor
+    layers:
+    - state: dead
+    snapCardinals: false
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: CP14StepBones
+      params:
+        volume: 4
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 50
+        mask: [ SlipLayer ]
+        layer: [ ItemMask ]
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 10
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: CP14BoneCrack
+  - type: Physics
+    bodyType: Static
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Icon
+    sprite: _CP14/Mobs/Monster/bone_hound.rsi
+    state: dead
+
+- type: entity
+  parent: BaseStructure
+  id: CP14BoneSpine
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _CP14/Structures/Decoration/bone_spine.rsi
+    drawdepth: Mobs
+    layers:
+    - state: bone_spine
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 80
+        mask: [ MachineMask ]
+        layer: [ MachineLayer ]
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: CP14BoneCrack
+  - type: Physics
+    bodyType: Static
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Icon
+    sprite: _CP14/Structures/Decoration/bone_spine.rsi
+    state: bone_spine
+
+- type: entity
+  parent: BaseStructure
+  id: CP14BoneDragon
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _CP14/Structures/Decoration/bone_dragon.rsi
+    layers:
+    - state: bone_dragon
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.9,1.6,1"
+        density: 500
+        mask: [ MachineMask ]
+        layer: [ MachineLayer ]
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 120
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: CP14BoneCrack
+  - type: Physics
+    bodyType: Static
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Icon
+    sprite: _CP14/Structures/Decoration/bone_dragon.rsi
+    state: bone_dragon
+# WOLFGATE END

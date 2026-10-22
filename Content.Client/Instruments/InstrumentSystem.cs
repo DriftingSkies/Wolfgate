@@ -15,6 +15,11 @@ namespace Content.Client.Instruments;
 
 public sealed partial class InstrumentSystem : SharedInstrumentSystem
 {
+    // WOLFGATE(Instruments) START: wizden#41272 MIDI min volume.
+    private const int MidiMinVolume = 0;
+    private const int MidiMaxVolume = 127;
+    // WOLFGATE END
+
     [Dependency] private IClientNetManager _netManager = default!;
     [Dependency] private IMidiManager _midiManager = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
@@ -38,6 +43,7 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
         SubscribeNetworkEvent<InstrumentMidiEventEvent>(OnMidiEventRx);
         SubscribeNetworkEvent<InstrumentStartMidiEvent>(OnMidiStart);
         SubscribeNetworkEvent<InstrumentStopMidiEvent>(OnMidiStop);
+        SubscribeNetworkEvent<InstrumentSetMidiMinVolumeEvent>(OnSetMidiMinVolume); // WOLFGATE(Instruments): wizden#41272
 
         SubscribeLocalEvent<InstrumentComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<InstrumentComponent, ComponentHandleState>(OnHandleState);
@@ -75,6 +81,7 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
         component.AllowProgramChange = state.AllowProgramChange;
         component.RespectMidiLimits = state.RespectMidiLimits;
         component.Master = EnsureEntity<InstrumentComponent>(state.Master, uid);
+        component.MinVolume = state.MinVolume; // WOLFGATE(Instruments): wizden#41272
         component.FilteredChannels = state.FilteredChannels;
 
         if (component.Playing)
@@ -95,6 +102,20 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
 
         RaiseNetworkEvent(new InstrumentSetMasterEvent(GetNetEntity(uid), GetNetEntity(masterUid)));
     }
+
+    // WOLFGATE(Instruments) START: wizden#41272 MIDI min volume.
+    public void SetMinVolume(EntityUid uid, int volume)
+    {
+        if (!TryComp(uid, out InstrumentComponent? instrument))
+            return;
+
+        var byteMinVolume = (byte)Math.Min(Math.Max(MidiMinVolume, volume), MidiMaxVolume);
+        instrument.MinVolume = byteMinVolume;
+
+        RaiseNetworkEvent(new InstrumentSetMidiMinVolumeEvent(GetNetEntity(uid), byteMinVolume));
+        UpdateRenderer(uid);
+    }
+    // WOLFGATE END
 
     public void SetFilteredChannel(EntityUid uid, int channel, bool value)
     {
@@ -168,7 +189,11 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
         instrument.Renderer.FilteredChannels.SetAll(false);
         instrument.Renderer.FilteredChannels.Or(instrument.FilteredChannels);
 
-        instrument.Renderer.DisablePercussionChannel = !instrument.AllowPercussion;
+        // WOLFGATE(Instruments) START: wizden#45055 a filtered percussion channel stays silent.
+        // instrument.Renderer.DisablePercussionChannel = !instrument.AllowPercussion;
+        instrument.Renderer.DisablePercussionChannel = !instrument.AllowPercussion |
+                                                       instrument.FilteredChannels[RobustMidiEvent.PercussionChannel];
+        // WOLFGATE END
         instrument.Renderer.DisableProgramChangeEvent = !instrument.AllowProgramChange;
 
         for (int i = 0; i < RobustMidiEvent.MaxChannels; i++)
@@ -186,6 +211,7 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
         UpdateRendererMaster(instrument);
 
         instrument.Renderer.LoopMidi = instrument.LoopMidi;
+        instrument.Renderer.MinVolume = instrument.MinVolume; // WOLFGATE(Instruments): wizden#41272
     }
 
     private void UpdateRendererMaster(InstrumentComponent instrument)
@@ -417,6 +443,17 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
     {
         EndRenderer(GetEntity(ev.Uid), true);
     }
+
+    // WOLFGATE(Instruments) START: wizden#41272 MIDI min volume.
+    private void OnSetMidiMinVolume(InstrumentSetMidiMinVolumeEvent ev)
+    {
+        if (!TryComp(GetEntity(ev.Uid), out InstrumentComponent? instrument))
+            return;
+
+        instrument.MinVolume = ev.MinVolume;
+        UpdateRenderer(GetEntity(ev.Uid), instrument);
+    }
+    // WOLFGATE END
 
     public override void Update(float frameTime)
     {

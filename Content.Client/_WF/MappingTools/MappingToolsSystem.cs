@@ -1,11 +1,16 @@
+using System.Numerics;
+using Content.Client.Administration.Managers;
 using Content.Client.IconSmoothing;
 using Content.Shared._WF.MappingTools;
+using Content.Shared.Administration;
+using Content.Shared.Decals;
 using Content.Shared.Input;
 using Content.Shared.Tag;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Placement;
+using Robust.Client.UserInterface;
 using Robust.Shared.Enums;
 using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
@@ -17,16 +22,30 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WF.MappingTools;
 
+/// <summary>What the eyedropper picked: an entity, a tile or a decal.</summary>
+public enum MappingPickKind : byte
+{
+    Entity,
+    Tile,
+    Decal,
+}
+
+/// <summary>An eyedropper pick: the prototype or tile id, with the decal's colour and the facing it had.</summary>
+public readonly record struct MappingPick(MappingPickKind Kind, string Id, Angle Rotation, Color? Color = null);
+
 /// <summary>
-/// Client side of the mapping tools: the window, keys, overlay, eyedropper and wall hiding. Off until the
-/// action-bar button, <c>mappingtools</c> or <c>mapping</c> turns it on.
+/// Client side of the mapping tools: the panel, keys, overlay, eyedropper and wall hiding. Off until the
+/// action-bar button, <c>mappingtools</c> or <c>mapping</c> turns it on. The panel sits in its own window, or in a
+/// host given to <see cref="SetDock"/>.
 /// </summary>
 public sealed class MappingToolsSystem : EntitySystem
 {
+    [Dependency] private IClientAdminManager _admin = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IInputManager _input = default!;
     [Dependency] private IOverlayManager _overlays = default!;
     [Dependency] private IPlacementManager _placement = default!;
+    [Dependency] private ITileDefinitionManager _tileDefs = default!;
     [Dependency] private IconSmoothSystem _smooth = default!;
     [Dependency] private MappingMapsSystem _maps = default!;
     [Dependency] private MappingZLevelsSystem _zLevels = default!;
@@ -66,7 +85,9 @@ public sealed class MappingToolsSystem : EntitySystem
     private static readonly TimeSpan LevelRefreshInterval = TimeSpan.FromSeconds(0.25);
 
     private MappingSelectionTool _tool = default!;
+    private MappingToolsPanel? _panel;
     private MappingToolsWindow? _window;
+    private Control? _dock;
     private bool _selecting;
     private bool _picking;
     private bool _wallsHidden;
@@ -81,6 +102,27 @@ public sealed class MappingToolsSystem : EntitySystem
     public MappingToolsClipboardEvent? Clipboard { get; private set; }
 
     public event Action<MappingSelection>? SelectionReceived;
+
+    /// <summary>Raised when selection is turned on or off.</summary>
+    public event Action<bool>? SelectingChanged;
+
+    /// <summary>Raised when the eyedropper is armed or disarmed.</summary>
+    public event Action<bool>? PickingChanged;
+
+    /// <summary>Raised after the eyedropper picks something.</summary>
+    public event Action<MappingPick>? Picked;
+
+    /// <summary>Whether the eyedropper picks decals before falling back to the tile.</summary>
+    public bool PickDecals { get; set; }
+
+    /// <summary>Whether walls are hidden on this client.</summary>
+    public bool WallsHidden => _wallsHidden;
+
+    /// <summary>Whether anything is selected.</summary>
+    public bool HasSelection => _tool.HasSelection;
+
+    /// <summary>The selection tool, read by tests and the mapping screen.</summary>
+    public MappingSelectionTool Selection => _tool;
 
     /// <summary>
     /// Whether the window is open and the keys work.
@@ -162,28 +204,29 @@ public sealed class MappingToolsSystem : EntitySystem
             _tool.Startup();
             _overlays.AddOverlay(new MappingSelectionOverlay(_tool));
 
-            _window = new MappingToolsWindow();
-            _window.SelectButton.OnToggled += args => SetSelecting(args.Pressed);
-            _window.UndoButton.OnPressed += _ => History(false);
-            _window.RedoButton.OnPressed += _ => History(true);
-            _window.CopyButton.OnPressed += _ => _tool.Copy(false);
-            _window.CutButton.OnPressed += _ => _tool.Copy(true);
-            _window.PasteButton.OnPressed += _ => _tool.Paste();
-            _window.RotateButton.OnPressed += _ => _tool.Rotate();
-            _window.DeleteButton.OnPressed += _ => _tool.Delete();
-            _window.MirrorButton.OnPressed += _ => _tool.Mirror(false);
-            _window.MirrorVerticalButton.OnPressed += _ => _tool.Mirror(true);
-            _window.HideWallsButton.OnToggled += args => SetWallsHidden(args.Pressed);
-            _window.MapsButton.OnPressed += _ => _maps.Open();
-            _window.EyedropperButton.OnToggled += args => SetPicking(args.Pressed);
-            _window.LevelUpButton.OnPressed += _ => MoveLevel(1);
-            _window.LevelDownButton.OnPressed += _ => MoveLevel(-1);
-            _window.LevelPicked += offset => MoveLevel(offset);
-            _window.AddAboveButton.OnPressed += _ => _zLevels.Add(true);
-            _window.AddBelowButton.OnPressed += _ => _zLevels.Add(false);
-            _window.RemoveConfirmed += () => _zLevels.Remove();
-            _window.OnClose += () => SetEnabled(false);
-            _window.OpenCenteredLeft();
+            _panel = new MappingToolsPanel();
+            _panel.SelectButton.OnToggled += args => SetSelecting(args.Pressed);
+            _panel.UndoButton.OnPressed += _ => History(false);
+            _panel.RedoButton.OnPressed += _ => History(true);
+            _panel.CopyButton.OnPressed += _ => _tool.Copy(false);
+            _panel.CutButton.OnPressed += _ => _tool.Copy(true);
+            _panel.PasteButton.OnPressed += _ => _tool.Paste();
+            _panel.RotateButton.OnPressed += _ => _tool.Rotate();
+            _panel.DeleteButton.OnPressed += _ => _tool.Delete();
+            _panel.MirrorButton.OnPressed += _ => _tool.Mirror(false);
+            _panel.MirrorVerticalButton.OnPressed += _ => _tool.Mirror(true);
+            _panel.HideWallsButton.OnToggled += args => SetWallsHidden(args.Pressed);
+            _panel.MapsButton.OnPressed += _ => _maps.Open();
+            // The Maps window reads and writes the server's shared map folders, so it stays with admins.
+            _panel.FilesLabel.Visible = _panel.MapsButton.Visible = _admin.HasFlag(AdminFlags.Mapping);
+            _panel.EyedropperButton.OnToggled += args => SetPicking(args.Pressed);
+            _panel.LevelUpButton.OnPressed += _ => MoveLevel(1);
+            _panel.LevelDownButton.OnPressed += _ => MoveLevel(-1);
+            _panel.LevelPicked += offset => MoveLevel(offset);
+            _panel.AddAboveButton.OnPressed += _ => _zLevels.Add(true);
+            _panel.AddBelowButton.OnPressed += _ => _zLevels.Add(false);
+            _panel.RemoveConfirmed += () => _zLevels.Remove();
+            PlacePanel();
             SetSelecting(false);
             RefreshLevels();
         }
@@ -198,7 +241,57 @@ public sealed class MappingToolsSystem : EntitySystem
             var window = _window;
             _window = null;
             window?.Close();
+            _panel?.Orphan();
+            _panel = null;
         }
+    }
+
+    /// <summary>
+    /// Puts the panel in <paramref name="host"/> instead of its own window, or back in a window with null.
+    /// </summary>
+    public void SetDock(Control? host)
+    {
+        _dock = host;
+        if (_panel != null)
+            PlacePanel();
+    }
+
+    private void PlacePanel()
+    {
+        if (_panel == null)
+            return;
+
+        if (_dock is { Disposed: false } dock)
+        {
+            if (_window != null)
+            {
+                var window = _window;
+                _window = null;
+                window.Close();
+            }
+
+            if (_panel.Parent != dock)
+            {
+                _panel.Orphan();
+                dock.AddChild(_panel);
+            }
+
+            return;
+        }
+
+        if (_window != null)
+            return;
+
+        _panel.Orphan();
+        var created = new MappingToolsWindow(_panel);
+        created.OnClose += () =>
+        {
+            // Closing the window turns the tools off, unless it closed because the panel was docked.
+            if (_window == created)
+                SetEnabled(false);
+        };
+        _window = created;
+        created.OpenCenteredLeft();
     }
 
     /// <summary>
@@ -206,14 +299,28 @@ public sealed class MappingToolsSystem : EntitySystem
     /// </summary>
     public void SetSelecting(bool selecting)
     {
+        var changed = _selecting != selecting;
         _selecting = selecting;
         if (selecting)
             _placement.Clear();
         else
             _tool.Clear();
 
-        if (_window != null)
-            _window.SelectButton.Pressed = selecting;
+        if (_panel != null)
+            _panel.SelectButton.Pressed = selecting;
+
+        if (changed)
+            SelectingChanged?.Invoke(selecting);
+    }
+
+    /// <summary>Drops the selection, the drag and the paste preview; says whether there was anything to drop.</summary>
+    public bool ClearSelection()
+    {
+        if (!_tool.HasSelection && !_tool.Pasting && _tool.Drag == MappingSelectionTool.DragMode.None)
+            return false;
+
+        _tool.Clear();
+        return true;
     }
 
     /// <summary>
@@ -265,16 +372,22 @@ public sealed class MappingToolsSystem : EntitySystem
     /// </summary>
     public void SetPicking(bool picking)
     {
+        var changed = _picking != picking;
         _picking = picking;
         if (picking)
             _placement.Clear();
 
-        if (_window != null)
-            _window.EyedropperButton.Pressed = picking;
+        if (_panel != null)
+            _panel.EyedropperButton.Pressed = picking;
+
+        if (changed)
+            PickingChanged?.Invoke(picking);
     }
 
     /// <summary>
-    /// Starts placing the clicked entity with its rotation, or else the tile under the cursor.
+    /// Starts placing the clicked entity with its rotation, or else the tile under the cursor. With
+    /// <see cref="PickDecals"/> a decal under the cursor comes before the tile; it is only reported through
+    /// <see cref="Picked"/>, since decal placement belongs to whoever listens.
     /// </summary>
     public bool Pick(EntityCoordinates coords, EntityUid clicked)
     {
@@ -287,19 +400,28 @@ public sealed class MappingToolsSystem : EntitySystem
             _tool.IsSelectable(clicked) &&
             MetaData(clicked).EntityPrototype is { Abstract: false } prototype)
         {
+            var rotation = Transform(clicked).LocalRotation;
             _placement.BeginPlacing(new PlacementInformation
             {
                 EntityType = prototype.ID,
                 PlacementOption = prototype.PlacementMode,
             });
-            _placement.Direction = Transform(clicked).LocalRotation.GetDir();
+            _placement.Direction = rotation.GetDir();
+            Picked?.Invoke(new MappingPick(MappingPickKind.Entity, prototype.ID, rotation));
             return true;
         }
 
         var mapCoords = _transform.ToMapCoordinates(coords);
-        if (_map.TryFindGridAt(mapCoords, out var gridUid, out var grid) &&
-            _map.TryGetTileRef(gridUid, grid, coords, out var tile) &&
-            !tile.Tile.IsEmpty)
+        if (!_map.TryFindGridAt(mapCoords, out var gridUid, out var grid))
+            return true;
+
+        if (PickDecals && TryPickDecal(gridUid, mapCoords, out var decal))
+        {
+            Picked?.Invoke(new MappingPick(MappingPickKind.Decal, decal.Id, decal.Angle, decal.Color));
+            return true;
+        }
+
+        if (_map.TryGetTileRef(gridUid, grid, coords, out var tile) && !tile.Tile.IsEmpty)
         {
             _placement.BeginPlacing(new PlacementInformation
             {
@@ -307,16 +429,55 @@ public sealed class MappingToolsSystem : EntitySystem
                 TileType = tile.Tile.TypeId,
                 PlacementOption = "AlignTileAny",
             });
+            Picked?.Invoke(new MappingPick(MappingPickKind.Tile, _tileDefs[tile.Tile.TypeId].ID, Angle.Zero));
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// The top decal whose tile-sized square holds the point. The client's decal lookups are no-ops, so this reads
+    /// the grid's chunks as the decal overlay does.
+    /// </summary>
+    private bool TryPickDecal(EntityUid gridUid, MapCoordinates mapCoords, out Decal picked)
+    {
+        picked = default!;
+        if (!TryComp(gridUid, out DecalGridComponent? decals))
+            return false;
+
+        var local = Vector2.Transform(mapCoords.Position, _transform.GetInvWorldMatrix(gridUid));
+        var chunk = SharedMapSystem.GetChunkIndices(local, SharedDecalSystem.ChunkSize);
+        var found = false;
+        for (var x = -1; x <= 1; x++)
+        {
+            for (var y = -1; y <= 1; y++)
+            {
+                if (!decals.ChunkCollection.ChunkCollection.TryGetValue(chunk + new Vector2i(x, y), out var decalChunk))
+                    continue;
+
+                foreach (var decal in decalChunk.Decals.Values)
+                {
+                    var offset = local - decal.Coordinates;
+                    if (offset.X < 0f || offset.Y < 0f || offset.X >= 1f || offset.Y >= 1f)
+                        continue;
+
+                    if (found && decal.ZIndex < picked.ZIndex)
+                        continue;
+
+                    picked = decal;
+                    found = true;
+                }
+            }
+        }
+
+        return found;
     }
 
     public override void FrameUpdate(float frameTime)
     {
         base.FrameUpdate(frameTime);
 
-        if (_window != null && _timing.RealTime >= _nextLevelRefresh)
+        if (_panel != null && _timing.RealTime >= _nextLevelRefresh)
             RefreshLevels();
 
         if (!_wallsHidden || _timing.RealTime < _nextWallSweep)
@@ -332,8 +493,8 @@ public sealed class MappingToolsSystem : EntitySystem
     public void SetWallsHidden(bool hidden)
     {
         _wallsHidden = hidden;
-        if (_window != null)
-            _window.HideWallsButton.Pressed = hidden;
+        if (_panel != null)
+            _panel.HideWallsButton.Pressed = hidden;
 
         if (hidden)
         {
@@ -368,7 +529,7 @@ public sealed class MappingToolsSystem : EntitySystem
     {
         _nextLevelRefresh = _timing.RealTime + LevelRefreshInterval;
         _zLevels.GetStack(_depths, out var current);
-        _window?.SetLevels(_depths, current);
+        _panel?.SetLevels(_depths, current);
     }
 
     /// <summary>

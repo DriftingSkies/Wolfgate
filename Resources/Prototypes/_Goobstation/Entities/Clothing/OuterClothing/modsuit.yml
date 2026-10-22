@@ -9,6 +9,23 @@
   description: A special modular suit spaceproof cover designed for compact folding inside modular suit control.
   categories: [ HideSpawnMenu ]
   components:
+  # WOLFGATE(SuitTank) START: 2x2 storage for air tanks that feed internals
+  - type: WFSuitTankStorage
+  - type: Storage
+    grid:
+    - 0,0,1,1
+    maxItemSize: Normal
+    whitelist:
+      components:
+      - GasTank
+    blacklist:
+      components:
+      - Jetpack
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  # WOLFGATE END
   - type: Appearance
   - type: Sprite
     sprite: _Goobstation/Clothing/OuterClothing/Modsuits/standard.rsi

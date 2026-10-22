@@ -1,0 +1,39 @@
+<Document>
+  # Playing together
+
+  ## Join codes
+
+  Every session has a six character join code. Find it in the Session tab of the Mapping window, or under Session in Properties. [bold]Copy[/bold] copies it. Give it to the people you want; they type it under [bold]Join a session[/bold] in the lobby.
+
+  The owner can press [bold]New code[/bold] to replace it. The old code stops working. Members already in stay in.
+
+  A session holds 8 members, members who are away included.
+
+  ## Owner
+
+  The player who made or opened the map owns the session. The owner can:
+
+  - Press [bold]Remove[/bold] next to a member. A removed player can't join that session again.
+  - Change Autosave. Autosaves go into the owner's library.
+  - Replace the join code.
+
+  When the owner leaves, the member who has been in longest becomes owner.
+
+  You can own one session at a time.
+
+  ## Leaving and coming back
+
+  [bold]Leave session[/bold] in the Session tab takes you back to the lobby. Save first. You can only come back with the join code.
+
+  If you disconnect you stay a member. Back in the lobby, press [bold]Rejoin[/bold] under Your sessions.
+
+  A session closes as soon as its last member leaves, autosaving first if anything changed. If every member is away it waits 5 minutes before it closes.
+
+  ## Sharing the work
+
+  Everyone in a session builds on the same maps and can change anything on them. Each of you has your own undo history, so Ctrl+Z only takes back your own edits. Each of you saves into your own library.
+
+  Other mappers can't erase, select, move or delete you. Deleting a grid or level someone stands on moves them off it first.
+
+  The PNG template is per player until someone shares it. See Templates and references.
+</Document>

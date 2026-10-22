@@ -111,6 +111,7 @@
     - RadiationProtection
     - Drowsiness
     - Adrenaline
+    - Unconscious # WOLFGATE(Xenonids): a facehugger's hug knocks a monkey out
   - type: Bloodstream
     bloodMaxVolume: 150
   - type: MobPrice

@@ -126,6 +126,7 @@ public sealed partial class AdminUIController : UIController,
         }
 
         AdminButton.OnPressed += AdminButtonPressed;
+        AdminStatusUpdated(); // WOLFGATE: a HUD layout swap rebuilds the button visible
     }
 
     private void OnWindowOpen()

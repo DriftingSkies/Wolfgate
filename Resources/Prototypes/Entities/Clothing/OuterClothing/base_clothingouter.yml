@@ -137,6 +137,19 @@
   id: ClothingOuterHardsuitBase
   name: base hardsuit
   components:
+  # WOLFGATE(SuitTank) START: 2x2 storage for air tanks that feed internals
+  - type: WFSuitTankStorage
+  - type: Storage
+    grid:
+    - 0,0,1,1
+    maxItemSize: Normal
+    whitelist:
+      components:
+      - GasTank
+    blacklist:
+      components:
+      - Jetpack
+  # WOLFGATE END
   - type: PressureProtection
     highPressureMultiplier: 0.3
     lowPressureMultiplier: 1000
@@ -209,6 +222,23 @@
   id: ClothingOuterEVASuitBase
   name: base EVA Suit
   components:
+  # WOLFGATE(SuitTank) START: 2x2 storage for air tanks that feed internals
+  - type: WFSuitTankStorage
+  - type: Storage
+    grid:
+    - 0,0,1,1
+    maxItemSize: Normal
+    whitelist:
+      components:
+      - GasTank
+    blacklist:
+      components:
+      - Jetpack
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  # WOLFGATE END
   - type: PressureProtection
     highPressureMultiplier: 0.6
     lowPressureMultiplier: 1000

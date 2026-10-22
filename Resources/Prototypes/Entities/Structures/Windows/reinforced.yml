@@ -3,6 +3,11 @@
   name: reinforced window
   parent: Window
   components:
+  # WOLFGATE(Xenonids): xeno claws break a reinforced window in five hits, as in CM
+  - type: ReceiverXenoClaws
+    maxHealth: 150
+    hitsToDestroy: 5
+    minimumClawStrength: Normal
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/reinforced_window.rsi
@@ -74,6 +79,11 @@
     snap:
     - Window
   components:
+  # WOLFGATE(Xenonids): xeno claws break a reinforced directional window in three hits
+  - type: ReceiverXenoClaws
+    maxHealth: 75
+    hitsToDestroy: 3
+    minimumClawStrength: Normal
   - type: Sprite
     sprite: Structures/Windows/directional.rsi
     state: reinforced_window

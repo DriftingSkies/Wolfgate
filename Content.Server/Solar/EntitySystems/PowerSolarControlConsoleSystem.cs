@@ -27,7 +27,23 @@ namespace Content.Server.Solar.EntitySystems
             base.Initialize();
 
             SubscribeLocalEvent<SolarControlConsoleComponent, SolarControlConsoleAdjustMessage>(OnUIMessage);
+            SubscribeLocalEvent<SolarControlConsoleComponent, BoundUIOpenedEvent>(OnUIOpened); // WOLFGATE: closed UIs skip updates, so refresh on open
         }
+
+        // WOLFGATE START: refresh the state on open; the update loop skips closed UIs
+        private void OnUIOpened(EntityUid uid, SolarControlConsoleComponent component, BoundUIOpenedEvent args)
+        {
+            if (!args.UiKey.Equals(SolarControlConsoleUiKey.Key))
+                return;
+
+            var gridUid = Transform(uid).GridUid;
+            var state = gridUid != null && TryComp<SolarPoweredGridComponent>(gridUid, out var gridPower)
+                ? new SolarControlConsoleBoundInterfaceState(gridPower.TargetPanelRotation, gridPower.TargetPanelVelocity, gridPower.TotalPanelPower, _powerSolarSystem.TowardsSun)
+                : new SolarControlConsoleBoundInterfaceState(0, 0, 0, _powerSolarSystem.TowardsSun);
+
+            _uiSystem.SetUiState(uid, SolarControlConsoleUiKey.Key, state);
+        }
+        // WOLFGATE END
 
         public override void Update(float frameTime)
         {
@@ -40,6 +56,11 @@ namespace Content.Server.Solar.EntitySystems
                 var query = EntityQueryEnumerator<SolarControlConsoleComponent, UserInterfaceComponent, TransformComponent>();
                 while (query.MoveNext(out var uid, out _, out var uiComp, out var xform))
                 {
+                    // WOLFGATE START: skip closed UIs; each update re-sent the whole UI component, a large radar state on admin ghosts
+                    if (!_uiSystem.IsUiOpen((uid, uiComp), SolarControlConsoleUiKey.Key))
+                        continue;
+                    // WOLFGATE END
+
                     SolarControlConsoleBoundInterfaceState state;
                     if (xform.GridUid != null && TryComp<SolarPoweredGridComponent>(xform.GridUid, out var gridPower))
                         state = new SolarControlConsoleBoundInterfaceState(gridPower.TargetPanelRotation, gridPower.TargetPanelVelocity, gridPower.TotalPanelPower, _powerSolarSystem.TowardsSun);

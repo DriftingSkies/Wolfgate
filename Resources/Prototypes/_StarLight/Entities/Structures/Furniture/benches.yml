@@ -1,0 +1,543 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  suffix: Corner. White
+  id: BenchComfyCorner
+  parent: SeatBase
+  components:
+  - type: Transform
+    anchored: true
+  - type: Rotatable
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      renderingStrategy: Default
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 35
+  - type: Construction
+    graph: DecorBuildBenchComfyCorner
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    state: base
+
+- type: entity
+  suffix: End Left. White
+  id: BenchComfyEndLeft
+  parent: SeatBase
+  components:
+  - type: Transform
+    anchored: true
+  - type: Rotatable
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      renderingStrategy: Default
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 35
+  - type: Construction
+    graph: DecorBuildBenchComfyEndLeft
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    state: base
+
+- type: entity
+  suffix: End Right. White
+  id: BenchComfyEndRight
+  parent: SeatBase
+  components:
+  - type: Transform
+    anchored: true
+  - type: Rotatable
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      renderingStrategy: Default
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 35
+  - type: Construction
+    graph: DecorBuildBenchComfyEndRight
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    state: base
+
+- type: entity
+  suffix: Middle. White
+  id: BenchComfyMiddle
+  parent: SeatBase
+  components:
+  - type: Transform
+    anchored: true
+  - type: Rotatable
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      renderingStrategy: Default
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 35
+  - type: Construction
+    graph: DecorBuildBenchComfyMiddle
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    state: base
+
+#region Bench Red
+
+- type: entity
+  id: BenchRedComfyCorner
+  suffix: Corner. Red
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#8c4141"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchRedComfyCorner
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    state: base
+
+- type: entity
+  id: BenchRedComfyEndLeft
+  suffix: End Left. Red
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#8c4141"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchRedComfyEndLeft
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    state: base
+
+- type: entity
+  id: BenchRedComfyEndRight
+  suffix: End Right. Red
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#8c4141"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchRedComfyEndRight
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    state: base
+
+- type: entity
+  id: BenchRedComfyMiddle
+  suffix: Middle. Red
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#8c4141"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchRedComfyMiddle
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    state: base
+
+#region Bench Blue
+
+- type: entity
+  id: BenchBlueComfyCorner
+  suffix: Corner. Blue
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#334e6d"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchBlueComfyCorner
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    state: base
+
+- type: entity
+  id: BenchBlueComfyEndLeft
+  suffix: End Left. Blue
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#334e6d"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchBlueComfyEndLeft
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    state: base
+
+- type: entity
+  id: BenchBlueComfyEndRight
+  suffix: End Right. Blue
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#334e6d"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchBlueComfyEndRight
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    state: base
+
+- type: entity
+  id: BenchBlueComfyMiddle
+  suffix: Middle. Blue
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#334e6d"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchBlueComfyMiddle
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    state: base
+
+#region Bench Gray
+
+- type: entity
+  id: BenchGrayComfy
+  suffix: Solo. Gray
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    layers:
+    - state: bench_solo_base
+      color: "#767e82"
+    - state: bench_solo_cover
+      color: "#767e82"
+  - type: Construction
+    graph: DecorBuildBenchGrayComfy
+    node: built
+
+- type: entity
+  id: BenchGrayComfyCorner
+  suffix: Corner. Gray
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#767e82"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGrayComfyCorner
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    state: base
+
+- type: entity
+  id: BenchGrayComfyEndLeft
+  suffix: End Left. Gray
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#767e82"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGrayComfyEndLeft
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    state: base
+
+- type: entity
+  id: BenchGrayComfyEndRight
+  suffix: End Right. Gray
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#767e82"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGrayComfyEndRight
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    state: base
+
+- type: entity
+  id: BenchGrayComfyMiddle
+  suffix: Middle. Gray
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#767e82"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGrayComfyMiddle
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    state: base
+
+#region Bench Green
+
+- type: entity
+  id: BenchGreenComfy
+  suffix: Solo. Green
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    layers:
+    - state: bench_solo_base
+      color: "#767e82"
+    - state: bench_solo_cover
+      color: "#3c9950"
+  - type: Construction
+    graph: DecorBuildBenchGreenComfy
+    node: built
+
+- type: entity
+  id: BenchGreenComfyCorner
+  suffix: Corner. Green
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#3c9950"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGreenComfyCorner
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_corner.rsi
+    state: base
+
+- type: entity
+  id: BenchGreenComfyEndLeft
+  suffix: End Left. Green
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#3c9950"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGreenComfyEndLeft
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_left.rsi
+    state: base
+
+- type: entity
+  id: BenchGreenComfyEndRight
+  suffix: End Right. Green
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#3c9950"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGreenComfyEndRight
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_end_right.rsi
+    state: base
+
+- type: entity
+  id: BenchGreenComfyMiddle
+  suffix: Middle. Green
+  parent: BenchComfy
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    granularLayersRendering: true
+    enableOverrideDir: true
+    overrideDir: South
+    layers:
+    - state: base
+      color: "#767e82"
+      renderingStrategy: Default
+    - state: cover
+      color: "#3c9950"
+      renderingStrategy: Default
+  - type: Construction
+    graph: DecorBuildBenchGreenComfyMiddle
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Benches/bench_middle.rsi
+    state: base
+# WOLFGATE END

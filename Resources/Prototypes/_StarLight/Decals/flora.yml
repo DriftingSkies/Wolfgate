@@ -1,0 +1,64 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: decal
+  id: WaterReedsBig1
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: &waterReeds _Starlight/Decals/water_reeds.rsi
+    state: big1
+
+- type: decal
+  id: WaterReedsBig2
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: *waterReeds
+    state: big2
+
+- type: decal
+  id: WaterReedsBig3
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: *waterReeds
+    state: big3
+
+- type: decal
+  id: WaterReedsBig4
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: *waterReeds
+    state: big4
+
+- type: decal
+  id: WaterReedsBig5
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: *waterReeds
+    state: big5
+
+- type: decal
+  id: WaterReedsBig6
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: *waterReeds
+    state: big6
+
+- type: decal
+  id: WaterReedsSmall8
+  tags: ["flora"]
+  snapCardinals: true
+  defaultSnap: false
+  sprite:
+    sprite: *waterReeds
+    state: small8
+# WOLFGATE END

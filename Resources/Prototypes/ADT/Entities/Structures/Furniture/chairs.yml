@@ -1,0 +1,1003 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTChairPizzeria
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: pizza_chair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairPizzeria
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: pizza_chair
+
+- type: entity
+  id: ADTChairRed
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: red_chair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairRed
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: red_chair
+
+- type: entity
+  id: ADTChairWhite
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: white_chair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairWhite
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: white_chair
+
+- type: entity
+  id: ADTChairOktoberfestOrange
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/oktoberfest_chair.rsi
+    state: oct_chair_orange
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairOktoberfestOrange
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/oktoberfest_chair.rsi
+    state: oct_chair_orange
+
+- type: entity
+  id: ADTChairRusty
+  parent: ChairBase
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: rusty_chair
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: rusty_chair
+
+- type: entity
+  id: ADTChairBarStool
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: bar-stool
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairBarStool
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: bar-stool
+
+- type: entity
+  id: ADTChairBarStool2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: bar-stool2
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairBarStool2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: bar-stool2
+
+- type: entity
+  id: ADTChairComfyBlack
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: comfy_black
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairComfyBlack
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: comfy_black
+
+- type: entity
+  id: ADTChairComfyMaroon
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: comfy_maroon
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTChairComfyMaroon
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: comfy_maroon
+
+- type: entity
+  id: ADTChairRich
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: rich
+    snapCardinals: false
+  - type: StaticPrice
+    price: 260.0
+  - type: Construction
+    graph: DecorBuildADTChairRich
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/chairs.rsi
+    state: rich
+
+- type: entity
+  id: ADTArmchairViolet
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsyuna.rsi
+    state: violet_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairViolet
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsyuna.rsi
+    state: violet_armchair
+
+- type: entity
+  id: ADTArmchairRed
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsyuna.rsi
+    state: red_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairRed
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsyuna.rsi
+    state: red_armchair
+
+- type: entity
+  id: ADTArmchairLeather
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsyuna.rsi
+    state: brown_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairLeather
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsyuna.rsi
+    state: brown_armchair
+
+- type: entity
+  id: ADTArmchairBlack
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: black_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairBlack
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: black_armchair
+
+- type: entity
+  id: ADTArmchairWhite
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: white_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairWhite
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: white_armchair
+
+- type: entity
+  id: ADTArmchairWhite2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: white_armchair_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairWhite2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: white_armchair_02
+
+- type: entity
+  id: ADTArmchairBrown
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: brown_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairBrown
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: brown_armchair
+
+- type: entity
+  id: ADTArmchairBrown2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: brown_armchair_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairBrown2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: brown_armchair_02
+
+- type: entity
+  id: ADTArmchairBlue
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: blue_armchair
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairBlue
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: blue_armchair
+
+- type: entity
+  id: ADTArmchairBlue2
+  parent: [ SeatBase, BaseStructure ]
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: blue_armchair_02
+    snapCardinals: false
+  - type: Construction
+    graph: DecorBuildADTArmchairBlue2
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/armchairsluna.rsi
+    state: blue_armchair_02
+
+- type: entity
+  id: ADTBarberChair
+  parent: StoolBase
+  components:
+  - type: Rotatable
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/barber_chair.rsi
+    state: barber_chair
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/barber_chair.rsi
+    state: barber_chair
+
+- type: entity
+  id: ADTBarbellChair
+  parent: [ SeatBase, BaseStructure ]
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Furniture/Chairs/barbell_chair.rsi
+    noRot: false
+    layers:
+    - state: barbell-chair
+      map: [ base ]
+    - state: barbell-chair
+      map: [ adt-aslot-barbell ]
+      visible: false
+  - type: Appearance
+  - type: Construction
+    graph: DecorBuildADTBarbellChair
+    node: built
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Rotatable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeAabb {}
+        density: 190
+        mask: [ TableMask ]
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.1
+        Blunt: -0.1
+  - type: Strap
+    position: Down
+    rotation: 0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: Physics
+    bodyType: Static
+  - type: StaticPrice
+    price: 30.0
+  - type: Icon
+    sprite: ADT/Structures/Furniture/Chairs/barbell_chair.rsi
+    state: barbell-chair
+# WOLFGATE END

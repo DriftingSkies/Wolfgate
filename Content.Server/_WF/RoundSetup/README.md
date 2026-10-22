@@ -129,6 +129,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupUiTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupUiTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupUiTest.Refresh.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupUiTest.Refresh.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.Expeditions.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.Expeditions.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.Payments.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.Payments.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.Sales.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/ShipScenarioTest.Sales.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/WFCrewRadioTestSystem.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/WFCrewRadioTestSystem.cs)
@@ -200,6 +201,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
   - character editing clears crew readiness too
   - Join no longer toggles, but character edits still clear pregame readiness
 - [`Content.Client/Options/UI/EscapeMenu.xaml`](../../../Content.Client/Options/UI/EscapeMenu.xaml): hosts can manage admission and survivors after spawning
+- [`Content.Client/UserInterface/BoundKeyHelpers.cs`](../../../Content.Client/UserInterface/BoundKeyHelpers.cs): a menu button with no key, such as crew setup, has no function to look up
 - [`Content.Client/UserInterface/Systems/Alerts/Widgets/AlertsUI.xaml.cs`](../../../Content.Client/UserInterface/Systems/Alerts/Widgets/AlertsUI.xaml.cs): The crew locator shares this column and isn't an AlertControl.
 - [`Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs`](../../../Content.Client/UserInterface/Systems/EscapeMenu/EscapeUIController.cs): manage the player lobby during the round
 - [`Content.Client/UserInterface/Systems/MenuBar/Widgets/GameTopMenuBar.xaml`](../../../Content.Client/UserInterface/Systems/MenuBar/Widgets/GameTopMenuBar.xaml): open crew setup from the gameplay toolbar

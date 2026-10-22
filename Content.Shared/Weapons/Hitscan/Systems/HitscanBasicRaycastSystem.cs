@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared._Mono.Weapons.Hitscan.Components; // WOLFGATE(Weapons)
 using Content.Shared._WF.ShipShields; // WOLFGATE(ShipShields)
 using Content.Shared.Administration.Logs;
 using Content.Shared.Damage.Components;
@@ -37,6 +38,10 @@ public sealed partial class HitscanBasicRaycastSystem : EntitySystem
 
         // WOLFGATE(ShipShields): resolve shield crossings against their visible perimeter
         rayCastResults = rayCastResults.Where(hit => !HasComp<WFShipShieldVisualsComponent>(hit.HitEntity));
+        // WOLFGATE(Weapons) START: a chained beam passes through its shooter and the targets it already hit
+        if (TryComp<HitscanJumpComponent>(ent, out var jump) && jump.IgnoredEntities.Count > 0)
+            rayCastResults = rayCastResults.Where(hit => !jump.IgnoredEntities.Contains(hit.HitEntity));
+        // WOLFGATE END
 
         var target = args.Target;
         // If you are in a container, use the raycast result

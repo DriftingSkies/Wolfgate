@@ -1,0 +1,9 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: Poweredlight
+  id: ADTHeliosLightAmber
+  suffix: Гелиос, янтарная
+  components:
+  - type: PoweredLight
+    hasLampOnSpawn: LightTube
+# WOLFGATE END

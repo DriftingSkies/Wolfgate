@@ -1,0 +1,64 @@
+<Document>
+  # Saving, library and downloads
+
+  Maps save into your library on the server. To use a map anywhere else, download it.
+
+  ## Saving
+
+  - [bold]Quicksave[/bold]: the floppy icon on the menu bar, or Ctrl+S. Saves under the session's name. It's off for 10 seconds after each press.
+  - [bold]Save[/bold] tab of the Mapping window: type a name in [bold]Save as[/bold] and press [bold]Save now[/bold]. A blank name uses the session's name.
+
+  Every save goes into your own library, whoever owns the session. A save is a new version; older versions stay.
+
+  The Save tab shows your last save, the next autosave check and any unsaved changes.
+
+  ## Autosave
+
+  The session owner sets [bold]Autosave[/bold] in the Session tab: Off, or every 1, 2, 5, 10 or 15 minutes. It starts at 2 minutes. Autosaves go into the owner's library, and only when something changed. A round restart saves every session with unsaved changes.
+
+  ## Library
+
+  [bold]My maps[/bold] in the lobby and the [bold]Library[/bold] tab list your maps, with how much of your space you've used.
+
+  - [bold]Open[/bold]: start a new session from the newest version. You leave the session you were in.
+  - [bold]Download[/bold]: copy the newest version to your computer.
+  - [bold]Ship[/bold]: download it as a ship. See below.
+  - [bold]Versions[/bold]: list every version, each with its own Open, Download, Ship and Delete. A version is marked saved, autosave or upload, and ship grid when it can download as a ship.
+  - [bold]Delete[/bold]: press it twice. On a map it deletes every version.
+
+  Each map keeps 25 versions. Past that, autosaves are removed first. The newest version is never removed. A library holds 50 maps and 256 MiB; when it's full, saves are refused until you delete something.
+
+  ## Downloads
+
+  [bold]Downloads go to[/bold] picks where files land:
+
+  - [bold]Data folder[/bold]: the Mapping folder of the game's data folder, in a folder per map and version. [bold]Open folder[/bold] shows it.
+  - [bold]Save to...[/bold]: a save dialog opens for each file. Type the file name yourself; the row tells you which file it wants. The game can only write outside its data folder this way, so it asks once per file.
+
+  File names:
+
+  - One level holding one grid: the map name with .yml. That's the grid file and loads into the game as a ship.
+  - One level with several grids or none: the map name with .yml, as a whole map file.
+  - Several levels: one file per level, the map name with _z and the level number, such as _z0 for the ground.
+
+  ## Ships
+
+  [bold]Ship[/bold] in the library, or [bold]Download as ship[/bold] in the Save tab, sends two files: the grid as the map name with .yml, and a vessel prototype as the map name with .vessel.yml. Download as ship takes the newest saved version of the name in Save as, or of the session's name when that's blank, so save first.
+
+  The map must be exactly one grid. A version with no grid or several grids is refused, and the message says why. A version saved before ship files existed needs opening and saving again.
+
+  The vessel file is a starting point. Its price, size, class and engine are guesses from the grid. Write the description, check every field, and rename the id if the header says it's taken.
+
+  To add the ship to the game, as the vessel file's header says:
+
+  - Put the grid file in Resources/SharedMaps/_WF/Community/ as the map name in lower case with _ between words.
+  - Put the vessel file in Resources/Prototypes/_WF/Community/ under the same name.
+
+  ## Uploading
+
+  [bold]Upload map[/bold], in the lobby and the Library tab, sends a .yml map file from your computer into your library as a new upload version named after the file. Then [bold]Open[/bold] it.
+
+  - Files up to 1.5 MiB. Wait 30 seconds between uploads.
+  - The server checks the file and keeps its own copy. Things that can't be used in mapping mode are removed and counted.
+  - If the file uses prototypes this server doesn't have, the row says how many and names them. [bold]Load anyway[/bold] stores the map without those entities. [bold]Cancel[/bold], or two minutes with no answer, drops it.
+</Document>

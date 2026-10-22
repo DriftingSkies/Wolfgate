@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._WF.Encounters.Components;
+using Content.Server._WF.NpcCrew.Components;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.ReaverCampaign;
 using Content.Shared._WF.SectorControl;
@@ -39,19 +40,25 @@ public sealed partial class WFReaverCampaignSystem
         return stations;
     }
 
-    /// <summary>Spawns an encounter for the campaign, telling its ships which companies to leave alone.</summary>
+    /// <summary>
+    /// Spawns an encounter for the campaign, telling its ships which companies to leave alone. Its crews fire on
+    /// sight, which the sector's other Reaver encounters do not.
+    /// </summary>
     private bool SpawnEncounter(WFEncounterPrototype prototype, MapCoordinates at, out EntityUid uid, bool offBudget = false)
     {
         if (!_encounters.TrySpawn(prototype, at, out uid, offBudget: offBudget))
             return false;
+        if (!TryComp<WFEncounterComponent>(uid, out var encounter))
+            return true;
 
-        if (CampaignFor(State()) is { } campaign && _prototypes.TryIndex(campaign.Faction, out var faction)
-            && faction.NeutralCompanies.Count > 0 && TryComp<WFEncounterComponent>(uid, out var encounter))
+        var neutral = CampaignFor(State()) is { } campaign && _prototypes.TryIndex(campaign.Faction, out var faction)
+            ? faction.NeutralCompanies.Select(company => company.Id).ToList()
+            : new List<string>();
+        foreach (var ship in encounter.Ships.Values)
         {
-            foreach (var ship in encounter.Ships.Values)
-            {
-                ship.NeutralCompanies = faction.NeutralCompanies.Select(company => company.Id).ToList();
-            }
+            if (neutral.Count > 0)
+                ship.NeutralCompanies = neutral.ToList();
+            EnsureComp<WFCrewOnSightComponent>(ship.Grid).Spares = neutral.ToList();
         }
 
         return true;

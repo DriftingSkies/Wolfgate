@@ -10,7 +10,7 @@
   id: ProtogenLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [Protogen, ProtoReptile, ProtoHumie, ProtoDawi, ProtoArachnid, ProtoSlimePerson] # WOLFGATE(Species): it is a required Special default for ProtoSlimePerson
+  speciesRestriction: [Protogen, Reptilian, Human, Dwarf, Arachnid, SlimePerson] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/protogen/led_shapes_body.rsi
     state: body
@@ -19,7 +19,7 @@
   id: ProtogenVisorRound
   bodyPart: LFoot
   markingCategory: Special
-  speciesRestriction: [Protogen, ProtoHumie, ProtoDawi]
+  speciesRestriction: [Protogen, Human, Dwarf] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/protogen/visor_shapes.rsi
       state: rounded
@@ -28,7 +28,7 @@
   id: ProtogenLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [Protogen, ProtoReptile, ProtoHumie, ProtoDawi]
+  speciesRestriction: [Protogen, Reptilian, Human, Dwarf] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/protogen/led_shapes_face.rsi
       state: face
@@ -37,7 +37,7 @@
   id: ProtogenLEDFaceNoseless
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [Protogen, ProtoReptile, ProtoHumie, ProtoDawi]
+  speciesRestriction: [Protogen, Reptilian, Human, Dwarf] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/protogen/led_shapes_face.rsi
       state: noseless
@@ -46,7 +46,7 @@
   id: ProtogenLEDFaceRound
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [Protogen, ProtoHumie, ProtoDawi]
+  speciesRestriction: [Protogen, Human, Dwarf] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/protogen/led_shapes_face.rsi
       state: rounded
@@ -55,7 +55,7 @@
   id: ProtogenMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [Protogen, ProtoReptile, ProtoHumie, ProtoDawi, ProtoArachnid]
+  speciesRestriction: [Protogen, Reptilian, Human, Dwarf, Arachnid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/protogen/body_armor.rsi
       state: medium
@@ -66,7 +66,7 @@
   id: ProtoVulpPawSocksFeet
   bodyPart: RFoot
   markingCategory: Overlay
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/proto-vulp.rsi
       state: pawsocks_feet
@@ -75,7 +75,7 @@
   id: ProtoVulpPawSocksLegs
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/proto-vulp.rsi
       state: pawsocks_legs
@@ -84,7 +84,7 @@
   id: ProtoVulpVisor
   bodyPart: LFoot
   markingCategory: Special
-  speciesRestriction: [ProtoVulp, ProtoReptile, ProtoHumie]
+  speciesRestriction: [Vulpkanin, Reptilian, Human] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/visor_shapes.rsi
       state: vulpvisor
@@ -93,7 +93,7 @@
   id: ProtoVulpVisorFourEyes
   bodyPart: LFoot
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/visor_shapes.rsi
       state: vulpvisor-four-eyes
@@ -102,7 +102,7 @@
   id: ProtoVulpSnoutLong
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/visor_markings.rsi
       state: snout
@@ -111,7 +111,7 @@
   id: ProtoVulpVisorSideWings
   bodyPart: Chest
   markingCategory: Head
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/visor_markings.rsi
       state: side-visor-wings
@@ -120,7 +120,7 @@
   id: ProtoVulpMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/body_armor.rsi
       state: medium
@@ -129,7 +129,7 @@
   id: ProtoVulpMediumArmorAngled
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/body_armor.rsi
       state: mediumangled
@@ -138,7 +138,7 @@
   id: ProtoVulpLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_face.rsi
       state: face
@@ -147,7 +147,7 @@
   id: ProtoVulpLEDFaceLong
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_face.rsi
       state: long
@@ -156,7 +156,7 @@
   id: ProtoVulpLEDFaceFourEyes
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_face.rsi
       state: four-eyes
@@ -165,7 +165,7 @@
   id: ProtoVulpClaws
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_body.rsi
     state: claws
@@ -174,7 +174,7 @@
   id: ProtoVulpClawsLong
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_body.rsi
     state: clawslong
@@ -183,7 +183,7 @@
   id: ProtoVulpLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_body.rsi
     state: body
@@ -192,7 +192,7 @@
   id: ProtoVulpLightsAngled
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVulp]
+  speciesRestriction: [Vulpkanin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-vulp/led_shapes_body.rsi
     state: bodyangled
@@ -205,7 +205,7 @@
   id: ProtoVoxVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoVox]
+  speciesRestriction: [Vox] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vox/visor_shapes.rsi
       state: visor
@@ -214,7 +214,7 @@
   id: ProtoVoxMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoVox]
+  speciesRestriction: [Vox] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vox/body_armor.rsi
       state: medium
@@ -223,7 +223,7 @@
   id: ProtoVoxLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVox]
+  speciesRestriction: [Vox] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-vox/led_shapes_face.rsi
       state: face
@@ -232,7 +232,7 @@
   id: ProtoVoxLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoVox]
+  speciesRestriction: [Vox] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-vox/led_shapes_body.rsi
     state: body
@@ -241,7 +241,7 @@
   id: ProtoVoxClaws
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoVox]
+  speciesRestriction: [Vox] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-vox/led_shapes_body.rsi
     state: claws
@@ -252,7 +252,7 @@
   id: ProtoThavenVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-thaven/visor_shapes.rsi
       state: visor
@@ -261,7 +261,7 @@
   id: ProtoThavenMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-thaven/body_armor.rsi
       state: medium
@@ -270,7 +270,7 @@
   id: ProtoThavenLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-thaven/led_shapes_face.rsi
       state: face
@@ -279,7 +279,7 @@
   id: ProtoThavenLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoThaven]
+  speciesRestriction: [Thaven] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-thaven/led_shapes_body.rsi
     state: body
@@ -290,7 +290,7 @@
   id: ProtoSlimePersonMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoSlimePerson]
+  speciesRestriction: [SlimePerson] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-slime/body_armor.rsi
       state: medium
@@ -299,7 +299,7 @@
   id: ProtoSlimePersonVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoSlimePerson]
+  speciesRestriction: [SlimePerson] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-slime/visor_shapes.rsi
       state: visor
@@ -308,7 +308,7 @@
   id: ProtoSlimePersonLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoSlimePerson]
+  speciesRestriction: [SlimePerson] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-slime/led_shapes_face.rsi
       state: face
@@ -317,7 +317,7 @@
   id: ProtoSlimePersonLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoSlimePerson]
+  speciesRestriction: [SlimePerson] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/protogen/led_shapes_body.rsi
     state: body
@@ -328,7 +328,7 @@
   id: ProtoKinMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoKin]
+  speciesRestriction: [Shadekin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-kin/body_armor.rsi
       state: medium
@@ -337,7 +337,7 @@
   id: ProtoKinVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoKin]
+  speciesRestriction: [Shadekin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-kin/visor_shapes.rsi
       state: visor
@@ -346,7 +346,7 @@
   id: ProtoKinLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoKin]
+  speciesRestriction: [Shadekin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-kin/led_shapes_face.rsi
       state: face
@@ -355,7 +355,7 @@
   id: ProtoKinLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoKin]
+  speciesRestriction: [Shadekin] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-kin/led_shapes_body.rsi
     state: body
@@ -366,7 +366,7 @@
   id: ProtoResomiMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoResomi]
+  speciesRestriction: [Resomi] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-resomi/body_armor.rsi
       state: medium
@@ -375,7 +375,7 @@
   id: ProtoResomiVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoResomi]
+  speciesRestriction: [Resomi] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-resomi/visor_shapes.rsi
       state: visor
@@ -384,7 +384,7 @@
   id: ProtoResomiLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoResomi]
+  speciesRestriction: [Resomi] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-resomi/led_shapes_face.rsi
       state: face
@@ -393,7 +393,7 @@
   id: ProtoResomiLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoResomi]
+  speciesRestriction: [Resomi] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-resomi/led_shapes_body.rsi
     state: body
@@ -404,7 +404,7 @@
   id: ProtoReptileLEDFaceBoxy
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoReptile, ProtoHumie, ProtoDawi]
+  speciesRestriction: [Reptilian, Human, Dwarf] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/protogen/led_shapes_face.rsi
       state: boxy
@@ -413,7 +413,7 @@
   id: ProtoReptileClaws
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoReptile]
+  speciesRestriction: [Reptilian] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-reptile/led_shapes_body.rsi
     state: claws
@@ -424,7 +424,7 @@
   id: ProtoMothMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoMoth]
+  speciesRestriction: [Moth] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-moth/body_armor.rsi
       state: medium
@@ -433,7 +433,7 @@
   id: ProtoMothVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoMoth]
+  speciesRestriction: [Moth] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-moth/visor_shapes.rsi
       state: visor
@@ -442,7 +442,7 @@
   id: ProtoMothLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoMoth]
+  speciesRestriction: [Moth] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-moth/led_shapes_face.rsi
       state: face
@@ -451,7 +451,7 @@
   id: ProtoMothLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoMoth]
+  speciesRestriction: [Moth] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-moth/led_shapes_body.rsi
     state: body
@@ -460,7 +460,7 @@
   id: ProtoMothClaws
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoMoth]
+  speciesRestriction: [Moth] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-moth/led_shapes_body.rsi
     state: claws
@@ -473,7 +473,7 @@
   id: ProtoFelineMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoFeline]
+  speciesRestriction: [Felionoid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-feline/body_armor.rsi
       state: medium
@@ -482,7 +482,7 @@
   id: ProtoFelineVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoFeline]
+  speciesRestriction: [Felionoid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-feline/visor_shapes.rsi
       state: visor
@@ -491,7 +491,7 @@
   id: ProtoFelineLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoFeline]
+  speciesRestriction: [Felionoid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-feline/led_shapes_face.rsi
       state: face
@@ -500,7 +500,7 @@
   id: ProtoFelineLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoFeline]
+  speciesRestriction: [Felionoid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-feline/led_shapes_body.rsi
     state: body
@@ -509,7 +509,7 @@
   id: ProtoFelineClaws
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoFeline]
+  speciesRestriction: [Felionoid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-feline/led_shapes_body.rsi
     state: claws
@@ -522,7 +522,7 @@
   id: ProtoDionaeMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoDionae]
+  speciesRestriction: [Diona] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-dionae/body_armor.rsi
       state: medium
@@ -531,7 +531,7 @@
   id: ProtoDionaeVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoDionae]
+  speciesRestriction: [Diona] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-dionae/visor_shapes.rsi
       state: visor
@@ -540,7 +540,7 @@
   id: ProtoDionaeLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoDionae]
+  speciesRestriction: [Diona] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-dionae/led_shapes_face.rsi
       state: face
@@ -549,7 +549,7 @@
   id: ProtoDionaeLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoDionae]
+  speciesRestriction: [Diona] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-dionae/led_shapes_body.rsi
     state: body
@@ -558,7 +558,7 @@
   id: ProtoDionaeVines
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [ProtoDionae]
+  speciesRestriction: [Diona] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-dionae/led_shapes_body.rsi
     state: vines
@@ -569,7 +569,7 @@
   id: ProtoAvaliMediumArmor
   bodyPart: Chest
   markingCategory: Special
-  speciesRestriction: [ProtoAvali]
+  speciesRestriction: [Avali] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-avali/body_armor.rsi
       state: medium
@@ -578,7 +578,7 @@
   id: ProtoAvaliVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoAvali]
+  speciesRestriction: [Avali] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-avali/visor_shapes.rsi
       state: visor
@@ -587,7 +587,7 @@
   id: ProtoAvaliLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoAvali]
+  speciesRestriction: [Avali] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-avali/led_shapes_face.rsi
       state: face
@@ -596,7 +596,7 @@
   id: ProtoAvaliLights
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoAvali]
+  speciesRestriction: [Avali] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
   - sprite: _FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi
     state: body
@@ -605,7 +605,7 @@
   id: ProtoAvaliWings
   bodyPart: Tail
   markingCategory: Overlay
-  speciesRestriction: [ProtoAvali]
+  speciesRestriction: [Avali] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   layering: # WOLFGATE(Genitals): the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
     wings_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
@@ -622,7 +622,7 @@
   id: ProtoArachnidVisor
   bodyPart: RFoot
   markingCategory: Special
-  speciesRestriction: [ProtoArachnid]
+  speciesRestriction: [Arachnid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-arachnid/visor_shapes.rsi
       state: visor
@@ -631,7 +631,7 @@
   id: ProtoArachnidLEDFace
   bodyPart: RHand
   markingCategory: Special
-  speciesRestriction: [ProtoArachnid]
+  speciesRestriction: [Arachnid] # WOLFGATE(Species): shaped for this species; was the Proto subspecies' own
   sprites:
     - sprite: _FarHorizons/Mobs/Customization/proto-arachnid/led_shapes_face.rsi
       state: face

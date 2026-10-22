@@ -3,7 +3,7 @@
   id: VulpEarSpaniel
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoVulp, WFCanine]
+  speciesRestriction: [Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
   sprites:
     - sprite: _HL/Mobs/Customization/Vulpkanin/ear_markings.rsi
       state: spaniel

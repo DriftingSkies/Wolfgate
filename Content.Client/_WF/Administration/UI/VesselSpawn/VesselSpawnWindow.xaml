@@ -80,6 +80,10 @@
                     </ScrollContainer>
                 </BoxContainer>
             </PanelContainer>
+            <LineEdit Name="ShipNameEdit"
+                      PlaceHolder="{Loc 'wf-vessel-spawn-name-placeholder'}"
+                      HorizontalExpand="True"
+                      Margin="0 6 0 0" />
             <BoxContainer Orientation="Horizontal" Margin="0 6 0 0">
                 <OptionButton Name="OwnerSelect"
                               Prefix="{Loc 'wf-vessel-spawn-owner-label'}"

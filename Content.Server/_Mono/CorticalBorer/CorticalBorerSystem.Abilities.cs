@@ -1,4 +1,5 @@
 using Content.Server._NF.Salvage;
+using Content.Server._WF.CorticalBorer; // WOLFGATE(CorticalBorer)
 using Content.Server.Body.Components;
 using Content.Server.Medical;
 using Content.Shared._Mono.CorticalBorer;
@@ -13,6 +14,7 @@ namespace Content.Server._Mono.CorticalBorer;
 public sealed partial class CorticalBorerSystem
 {
     [Dependency] private VomitSystem _vomit = default!;
+    [Dependency] private BorerEntryConsentSystem _entryConsent = default!; // WOLFGATE(CorticalBorer): consent to infest
 
     private void SubscribeAbilities()
     {
@@ -61,6 +63,10 @@ public sealed partial class CorticalBorerSystem
             _popup.PopupEntity(Loc.GetString("cortical-borer-host-already-infested", ("target", targetIdentity)), uid, uid, PopupType.Medium);
             return;
         }
+
+        // WOLFGATE(CorticalBorer): players can refuse borers in the consent menu
+        if (!_entryConsent.Allows(uid, target))
+            return;
 
         // Prevent borers from infesting other borers. :o)
         if (HasComp<CorticalBorerComponent>(target))
@@ -124,6 +130,10 @@ public sealed partial class CorticalBorerSystem
             return;
 
         if (HasComp<CorticalBorerComponent>(target))
+            return;
+
+        // WOLFGATE(CorticalBorer): consent may have been withdrawn during the do-after
+        if (!_entryConsent.Allows(ent, target))
             return;
 
         InfestTarget(ent, target);

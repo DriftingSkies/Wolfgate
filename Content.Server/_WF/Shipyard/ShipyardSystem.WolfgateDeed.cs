@@ -52,15 +52,23 @@ public sealed partial class ShipyardSystem
             Dirty(shuttleUid, company);
         }
 
-        // Ships with a matching game map get a station so players can late-join onto them.
+        // Ships with a matching game map get a station so players can late-join onto them. An admin-spawned ship
+        // may already have one from its spawn; it is reused rather than doubled, keeping any name it was given.
         EntityUid? shuttleStation = existingStation;
-        if (shuttleStation == null && vessel != null
-            && _prototypeManager.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto)
-            && stationProto.Stations.TryGetValue(vessel.ID, out var stationConfig))
+        if (shuttleStation == null && vessel != null)
         {
-            shuttleStation = _station.InitializeNewStation(stationConfig, new List<EntityUid> { shuttleUid });
-            name = Name(shuttleStation.Value);
-            EnsureComp<ExtraShuttleInformationComponent>(shuttleStation.Value).Vessel = vessel.ID;
+            if (_station.GetOwningStation(shuttleUid) is { } spawnStation
+                && TryComp<ExtraShuttleInformationComponent>(spawnStation, out var info)
+                && info.Vessel == vessel.ID)
+            {
+                shuttleStation = spawnStation;
+                name = Name(spawnStation);
+            }
+            else if (TryCreateVesselStation(shuttleUid, vessel) is { } created)
+            {
+                shuttleStation = created;
+                name = Name(created);
+            }
         }
 
         // A ship that is changing hands rather than rolling off the line keeps the name it had.
@@ -126,6 +134,47 @@ public sealed partial class ShipyardSystem
         {
             _station.RenameStation(shuttleStation.Value, fullName, loud: false);
             _metaData.SetEntityName(shuttleStation.Value, fullName);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Makes a late-join station, with the design's job slots, for a ship whose design has a matching game map.
+    /// </summary>
+    /// <returns>The new station, or null when the design has no game map.</returns>
+    public EntityUid? TryCreateVesselStation(EntityUid shuttleUid, VesselPrototype vessel)
+    {
+        if (!_prototypeManager.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto)
+            || !stationProto.Stations.TryGetValue(vessel.ID, out var stationConfig))
+        {
+            return null;
+        }
+
+        var station = _station.InitializeNewStation(stationConfig, new List<EntityUid> { shuttleUid });
+        EnsureComp<ExtraShuttleInformationComponent>(station).Vessel = vessel.ID;
+        return station;
+    }
+
+    /// <summary>
+    /// Renames a ship: its deeds and shuttle record when it has them, otherwise the grid and its station.
+    /// </summary>
+    public bool TryRenameVessel(EntityUid shuttleUid, string newName)
+    {
+        var station = _station.GetOwningStation(shuttleUid);
+
+        // TryRenameShuttle needs the ship's station, so a deeded ship without one only renames its grid.
+        if (station != null && TryComp<ShuttleDeedComponent>(shuttleUid, out var deed) && deed.ShuttleUid == shuttleUid)
+        {
+            var suffix = deed.ShuttleNameSuffix;
+            return TryRenameShuttle(shuttleUid, deed, newName, suffix);
+        }
+
+        _metaData.SetEntityName(shuttleUid, newName);
+        if (station != null)
+        {
+            _station.RenameStation(station.Value, newName, loud: false);
+            _metaData.SetEntityName(station.Value, newName);
         }
 
         return true;

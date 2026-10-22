@@ -451,7 +451,7 @@ class Port:
         elif kind.species is not None:
             species = list(kind.species)
         elif candidate.species and set(candidate.species) <= VOX:
-            species = ["Vox", "ProtoVox"]
+            species = ["Vox"]
         else:
             species = list(self.anthro)
         marking_id = self._unique_id(ID_PREFIX + kind.token + camel(candidate.name))

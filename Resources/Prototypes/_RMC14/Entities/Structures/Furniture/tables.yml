@@ -1,0 +1,55 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: TableBase
+  id: CMTableReinforced
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Tables/reinforced.rsi
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Damageable
+    damageModifierSet: null
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -4
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Tables/reinforced.rsi
+    state: full
+
+- type: entity
+  parent: TableBase
+  id: CMTableWoodenFancy
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Tables/fancy_wood.rsi
+    snapCardinals: false
+  - type: VehicleSmashable
+  - type: Damageable
+    damageModifierSet: null
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -4
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Furniture/Tables/fancy_wood.rsi
+    state: full
+# WOLFGATE END

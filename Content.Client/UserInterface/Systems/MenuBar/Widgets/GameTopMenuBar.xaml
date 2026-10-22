@@ -150,6 +150,18 @@
         HorizontalExpand="True"
         AppendStyleClass="{x:Static style:StyleBase.ButtonSquare}"
         />
+    <!-- WOLFGATE(Feedback) START: green bug report button beside ahelp -->
+    <ui:MenuButton
+        Name="FeedbackButton"
+        Access="Internal"
+        Icon="{xe:Tex '/Textures/_WF/Feedback/bug.png'}"
+        ToolTip="{Loc 'wf-feedback-button-tooltip'}"
+        MinSize="42 64"
+        HorizontalExpand="True"
+        ToggleMode="False"
+        AppendStyleClass="{x:Static style:StyleBase.ButtonSquare}"
+        />
+    <!-- WOLFGATE END -->
     <ui:MenuButton
         Name="AHelpButton"
         Access="Internal"

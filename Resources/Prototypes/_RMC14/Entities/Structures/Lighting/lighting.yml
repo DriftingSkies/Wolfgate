@@ -1,0 +1,201 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: AlwaysPoweredWallLight
+  id: RMCLightFixture
+  suffix: DO NOT MAP
+  components:
+  - type: Sprite
+    state: tube1
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_tube.rsi
+    layers:
+    - state: tube1
+      map: [ enum.PoweredLightLayers.Base ]
+    snapCardinals: false
+  - type: PointLight
+    enabled: true
+    color: "#FFEFD2"
+    energy: 1
+    radius: 10
+    softness: 1
+    offset: "0, -0.5"
+  - type: PoweredLight
+    hasLampOnSpawn: LightTube
+    unarmedHitShock: 0
+    bulb: Tube
+  - type: DamageOnInteract
+    damage:
+      types:
+        Heat: 2
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -15
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/light_hum.ogg
+  - type: DeviceLinkSink
+    ports: [ "On", "Off", Toggle ]
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: PoweredLightVisuals
+    spriteStateMap:
+      Empty: tube-empty
+      "Off": tube0
+      "On": tube1
+      Broken: tube-broken
+      Burned: tube-burned
+  - type: Destructible
+    thresholds: []
+  - type: ApcPowerReceiver
+  - type: ExtensionCableReceiver
+  - type: Appearance
+  - type: ContainerContainer
+    containers:
+      light_bulb: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_tube.rsi
+    state: tube1
+
+- type: entity
+  parent: RMCLightFixture
+  id: RMCLightFixtureBlue
+  components:
+  - type: Sprite
+    state: btube1
+    layers:
+    - state: btube1
+      map: ["enum.PoweredLightLayers.Base"]
+  - type: PoweredLight
+    hasLampOnSpawn: LightTubeCrystalBlue
+  - type: PoweredLightVisuals
+    spriteStateMap:
+      Empty: btube-empty
+      Off: btube0
+      On: btube1
+      Broken: btube-broken
+      Burned: btube-burned
+  - type: Icon
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_tube.rsi
+    state: btube1
+
+- type: entity
+  parent: RMCLightFixture
+  id: RMCLightFixtureDouble
+  components:
+  - type: Sprite
+    state: ptube1
+    layers:
+    - state: ptube1
+      map: ["enum.PoweredLightLayers.Base"]
+  - type: PoweredLightVisuals
+    spriteStateMap:
+      Empty: ptube-empty
+      Off: ptube0
+      On: ptube1
+      Broken: ptube-broken
+      Burned: ptube-burned
+  - type: Icon
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_tube.rsi
+    state: ptube1
+
+- type: entity
+  parent: RMCLightFixtureDouble
+  id: RMCLightFixtureBlueDouble
+  components:
+  - type: Sprite
+    state: bptube1
+    layers:
+    - state: bptube1
+      map: ["enum.PoweredLightLayers.Base"]
+  - type: PoweredLight
+    hasLampOnSpawn: LightTubeCrystalBlue
+  - type: PoweredLightVisuals
+    spriteStateMap:
+      Empty: bptube-empty
+      Off: bptube0
+      On: bptube1
+      Broken: bptube-broken
+      Burned: bptube-burned
+  - type: Icon
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_tube.rsi
+    state: bptube1
+
+- type: entity
+  parent: AlwaysPoweredWallLight
+  id: RMCLightFixtureSmall
+  suffix: DO NOT MAP
+  components:
+  - type: Sprite
+    state: bulb1
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_bulb.rsi
+    layers:
+    - state: bulb1
+      map: [ enum.PoweredLightLayers.Base ]
+    snapCardinals: false
+  - type: PointLight
+    enabled: true
+    color: "#FFEFD2"
+    energy: 1.0
+    radius: 6
+    softness: 1.1
+    offset: "0, -0.5"
+  - type: PoweredLight
+    hasLampOnSpawn: LightBulb
+    unarmedHitShock: 0
+    bulb: Bulb
+  - type: DamageOnInteract
+    damage:
+      types:
+        Heat: 2
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -15
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/light_hum.ogg
+  - type: DeviceLinkSink
+    ports: [ "On", "Off", Toggle ]
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: PoweredLightVisuals
+    spriteStateMap:
+      Empty: bulb-empty
+      "Off": bulb0
+      "On": bulb1
+      Broken: bulb-broken
+      Burned: bulb-burned
+  - type: Destructible
+    thresholds: []
+  - type: ApcPowerReceiver
+  - type: ExtensionCableReceiver
+  - type: Appearance
+  - type: ContainerContainer
+    containers:
+      light_bulb: !type:ContainerSlot {}
+  - type: Icon
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_bulb.rsi
+    state: bulb1
+
+- type: entity
+  parent: RMCLightFixtureSmall
+  id: RMCLightFixtureSmallBlue
+  components:
+  - type: Sprite
+    state: bbulb1
+    layers:
+    - state: bbulb1
+      map: ["enum.PoweredLightLayers.Base"]
+  - type: PoweredLight
+    hasLampOnSpawn: LightBulbCrystalBlue
+  - type: PoweredLightVisuals
+    spriteStateMap:
+      Empty: bbulb-empty
+      Off: bbulb0
+      On: bbulb1
+      Broken: bbulb-broken
+      Burned: bbulb-burned
+  - type: Icon
+    sprite: _RMC14/Structures/Wallmounts/Lighting/light_bulb.rsi
+    state: bbulb1
+# WOLFGATE END

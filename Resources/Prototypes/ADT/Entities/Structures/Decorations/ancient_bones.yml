@@ -1,0 +1,64 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTAncientAnimalScull
+  parent: BaseStructure
+  suffix: Lavaland
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: ADT/Structures/Decoration/Ancient_bones/scull_and_bones.rsi
+    state: skull
+    drawdepth: Mobs
+    offset: "0.0,0.5"
+  - type: Icon
+    sprite: ADT/Structures/Decoration/Ancient_bones/scull_and_bones.rsi
+    state: skull
+
+- type: entity
+  id: ADTAncientAnimalLeftBone
+  parent: BaseStructure
+  suffix: Lavaland
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: ADT/Structures/Decoration/Ancient_bones/scull_and_bones.rsi
+    state: left_bone
+    drawdepth: LowFloors
+    offset: "0.0,0.5"
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+  - type: Icon
+    sprite: ADT/Structures/Decoration/Ancient_bones/scull_and_bones.rsi
+    state: left_bone
+
+- type: entity
+  id: ADTAncientAnimalLeftRibLarge
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: ADT/Structures/Decoration/Ancient_bones/ribs.rsi
+    state: large_rib_left
+    drawdepth: Mobs
+    offset: "0.0,0.5"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.200,-0.400,0.000,0.300"
+        density: 60
+        mask:
+        - MachineMask
+        layer:
+        - WallLayer
+  - type: Icon
+    sprite: ADT/Structures/Decoration/Ancient_bones/ribs.rsi
+    state: large_rib_left
+# WOLFGATE END

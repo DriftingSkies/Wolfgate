@@ -1,0 +1,13 @@
+<controls:FeedbackNoticeWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._WF.Feedback"
+    MinSize="420 200"
+    Title="{Loc 'wf-feedback-notice-title'}">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="8">
+        <Label Text="{Loc 'wf-feedback-notice-intro'}" />
+        <ScrollContainer VerticalExpand="True" HScrollEnabled="False" MinSize="0 120">
+            <BoxContainer Name="Reports" Orientation="Vertical" HorizontalExpand="True" />
+        </ScrollContainer>
+        <Button Name="OkButton" Text="{Loc 'wf-feedback-notice-ok'}" HorizontalAlignment="Right" MinWidth="90" />
+    </BoxContainer>
+</controls:FeedbackNoticeWindow>

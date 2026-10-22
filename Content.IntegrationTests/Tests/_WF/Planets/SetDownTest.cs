@@ -100,7 +100,9 @@ public sealed class SetDownTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(server.System<MobStateSystem>().IsAlive(mob), Is.True, "A mob under the hull was killed.");
+                // A 40 blunt blow can leave a body critical under Wolfmed, depending on where it lands; it must not kill.
+                Assert.That(server.System<MobStateSystem>().IsDead(mob), Is.False,
+                    $"A mob under the hull was killed: {string.Join(", ", entMan.GetComponent<DamageableComponent>(mob).Damage.DamageDict.Where(d => d.Value > 0).Select(d => $"{d.Key} {d.Value}"))}.");
                 Assert.That(entMan.GetComponent<DamageableComponent>(mob).TotalDamage.Float(), Is.GreaterThanOrEqualTo(ShuttleSystem.WfSetDownDamage / 2f),
                     "A mob under the hull was not hurt.");
                 Assert.That(entMan.GetComponent<TransformComponent>(mob).MapUid, Is.EqualTo(ground), "The mob left the ground.");

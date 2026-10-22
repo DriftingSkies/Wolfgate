@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
+using Content.Shared._WF.Barricades; // WOLFGATE(Barricades)
 using Content.Shared._WF.Wolfmed.Sounds; // WOLFGATE(Wolfmed)
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
@@ -50,6 +51,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
     [Dependency] private   IPrototypeManager       _protoManager    = default!;
     [Dependency] private   StaminaSystem           _stamina         = default!;
     [Dependency] private   WolfmedOrganicSoundSystem _wolfmedSounds = default!; // WOLFGATE(Wolfmed): Bob's stab and melee hit sounds on flesh
+    [Dependency] private   BarricadeMeleeBlockSystem _barricadeMelee = default!; // WOLFGATE(Barricades): melee hits on barricades in the way
 
     private const int AttackMask = (int) (CollisionGroup.MobMask | CollisionGroup.Opaque);
 
@@ -446,6 +448,11 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
                     return false;
                 break;
         }
+
+        // WOLFGATE(Barricades) START: a barricade facing the attacker can take the hit instead of the target behind it
+        if (target != null)
+            _barricadeMelee.TryRedirectAttack(attacker, target.Value, weaponUid, ref attack);
+        // WOLFGATE END
 
         // Windup time checked elsewhere.
         var fireRate = TimeSpan.FromSeconds(1f / GetAttackRate(weaponUid, attacker, weapon));

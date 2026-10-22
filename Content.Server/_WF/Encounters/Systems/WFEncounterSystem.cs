@@ -45,6 +45,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     [Dependency] private WFCrewSetupSystem _setup = default!;
     [Dependency] private WFCrewWorkSystem _work = default!;
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
+    [Dependency] private WFCrewStealthSystem _stealth = default!;
     [Dependency] private WFCrewPlannerSystem _planner = default!;
     [Dependency] private WFCrewShipStatusSystem _status = default!;
     [Dependency] private WFCrewAlertSystem _alerts = default!;
@@ -87,6 +88,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     private float _cleanupRange;
     private TimeSpan _cleanupDelay;
     private TimeSpan _cleanupLinger;
+    private TimeSpan _cleanupGrace;
     private readonly List<MapCoordinates> _players = new();
     private readonly HashSet<EntityUid> _playerGrids = new();
     private readonly List<Entity<WFEncounterComponent>> _running = new();
@@ -97,6 +99,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         Subs.CVar(_config, EncountersCVars.CleanupRange, value => _cleanupRange = value, true);
         Subs.CVar(_config, EncountersCVars.CleanupDelay, value => _cleanupDelay = TimeSpan.FromSeconds(value), true);
         Subs.CVar(_config, EncountersCVars.CleanupLinger, value => _cleanupLinger = TimeSpan.FromSeconds(value), true);
+        Subs.CVar(_config, EncountersCVars.CleanupGrace, value => _cleanupGrace = TimeSpan.FromSeconds(value), true);
         SubscribeLocalEvent<WFCrewAlertEvent>(OnCrewAlert);
         // Before the damage lands: Wolfmed routes a body's damage through its parts, and the body's own
         // DamageChangedEvent then has no origin.
@@ -315,7 +318,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
             return false;
 
         // On the map itself: parented to a grid under the origin, it would go with that grid and orphan its ships.
+        // Out of grid traversal too, or a ship loaded on top of it would pick it up as it flies off.
         var uid = Spawn(null, new EntityCoordinates(map.Value, origin.Position));
+        Transform(uid).GridTraversal = false;
         var comp = AddComp<WFEncounterComponent>(uid);
         var designation = $"{(char) ('A' + _random.Next(26))}{(char) ('A' + _random.Next(26))}-{_random.Next(100, 1000)}";
         comp.Prototype = prototype.ID;
@@ -474,6 +479,20 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return IssueOrders(encounter, prototype);
     }
 
+    /// <summary>
+    /// Has a ship that serves visitors hold position for a while, as asked by a ship that hailed it. False if it has no
+    /// orders to pause.
+    /// </summary>
+    public bool HoldPosition(WFEncounterShipState ship, TimeSpan duration)
+    {
+        if (!HoldsForVisitors(ship) || !ship.HasOrders || TerminatingOrDeleted(ship.Grid))
+            return false;
+
+        ship.HeldUntil = _timing.CurTime + duration;
+        Serve(ship);
+        return true;
+    }
+
     /// <summary>Whether a ship waits for players aboard or docked with it before it flies on or jumps out.</summary>
     private static bool HoldsForVisitors(WFEncounterShipState ship)
     {
@@ -606,6 +625,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
         marker.Encounter = encounter;
         marker.Key = ship.Key;
         Unload(grid);
+        // A crew that is not allowed the hull's best plating gets it swapped out before anything else goes aboard.
+        _setup.ApplyHullSwaps(grid, ship.Profile);
+        _setup.MarkProfile(grid, ship.Profile);
 
         var name = Loc.GetString("wf-encounter-ship-name", ("vessel", vessel.Name), ("designation", designation));
         _meta.SetEntityName(grid, name);
@@ -622,6 +644,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
             AttackRange = ship.AttackRange,
             ZoneLines = ship.ZoneLines,
             ZoneTargets = ship.ZoneTargets,
+            KnownThreatsOnly = ship.KnownThreatsOnly,
+            NpcTargetsOnly = ship.NpcTargetsOnly,
             Icon = ship.Icon,
             Hunt = ship.Hunt || ship.Extort != null,
             Extort = ship.Extort is { } extort ? NewExtort(extort) : null,
@@ -668,6 +692,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
             BoardingResponse = ship.Boarding,
             DockingResponse = ship.Docking,
             HeaveTo = ship.Evades,
+            // Traders carry no fight worth having: attacked, they run.
+            FleeAttackers = ship.Passengers.Count > 0,
             FaceThreats = ship.Platform,
             CallsForHelp = ship.Distress && ship.Passengers.Count == 0,
             Disengage = ship.Disengage,
@@ -750,6 +776,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
             aboard.Key = ship.Key;
         }
 
+        // Whatever came aboard with the ship is the crew's: taking it in front of them is theft.
+        EntityManager.System<WFCrewConductSystem>().MarkProperty(grid, state.Group);
         return true;
     }
 
@@ -1065,12 +1093,12 @@ public sealed partial class WFEncounterSystem : EntitySystem
     }
 
     /// <summary>
-    /// A ship with passengers stays put while players are aboard or docked with it: its next leg would cast off
-    /// with them. Its orders carry on once they have gone.
+    /// A ship with passengers stays put while players are aboard or docked with it, or while it holds for a ship that
+    /// hailed it: its next leg would cast off with them. Its orders carry on once they have gone.
     /// </summary>
     private void Serve(WFEncounterShipState ship)
     {
-        var customers = PlayersAboard(ship.Grid);
+        var customers = PlayersAboard(ship.Grid) || ship.HeldUntil is { } until && _timing.CurTime < until;
         if (customers == ship.Serving)
             return;
 
@@ -1215,10 +1243,10 @@ public sealed partial class WFEncounterSystem : EntitySystem
         if (fighting.Count == 0)
         {
             // A persistent ship that only lost power, with nobody shooting at it, is not beaten: its engineer and the restock bring it back.
-            if (encounter.Lifetime == WFEncounterLifetime.Persistent && encounter.ShipHits.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPower))
+            if (encounter.Lifetime == WFEncounterLifetime.Persistent && encounter.ShipHits.Count == 0 && encounter.Kills.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPower))
                 return null;
             // A helm left unmanned, with no player having hit the ship, is a stall and not a kill; the campaign ends it the same way.
-            if (encounter.ShipHits.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPilot))
+            if (encounter.ShipHits.Count == 0 && encounter.Kills.Count == 0 && encounter.Ships.Values.Any(OutForWantOfPilot))
                 return WFEncounterResolution.Ended;
             return WFEncounterResolution.Destroyed;
         }
@@ -1299,6 +1327,19 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
+    /// <summary>Whether a ship is docked with a player-owned ship, crewed or not.</summary>
+    private bool DockedWithPlayerShip(EntityUid grid)
+    {
+        foreach (var dock in _docking.GetDocks(grid))
+        {
+            if (dock.Comp.DockedWith is { } other && Transform(other).GridUid is { } docked
+                && HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(docked))
+                return true;
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// Removes the ships of a resolved encounter that players have left alone, or that have lingered long enough
     /// with nobody aboard or docked, however near players are. False once none is left.
@@ -1331,18 +1372,33 @@ public sealed partial class WFEncounterSystem : EntitySystem
                 continue;
             }
 
+            // A ship docked with a player's ship, or left by its last visitor only a short while ago, stays: no hull
+            // vanishes the moment a player steps off it to fetch tools or loot.
+            var visited = PlayersAboard(ship.Grid) || DockedWithPlayerShip(ship.Grid);
+            if (visited)
+                ship.LastVisited = now;
+            else if (ship.LastVisited is { } visit && now - visit < _cleanupGrace)
+                visited = true;
+
             if (encounter.JumpAt is { } jump)
             {
                 // A ship jumps out only once nobody is aboard or docked with it: a trader waits for its customers, and
                 // no hull vanishes from under a player who is working on it.
-                if (now >= jump && !PlayersAboard(ship.Grid))
+                if (now >= jump && !visited)
                     RemoveShip(ship);
                 else
                     remaining = true;
                 continue;
             }
 
-            if (overdue && !PlayersAboard(ship.Grid))
+            if (visited)
+            {
+                ship.Quiet = null;
+                remaining = true;
+                continue;
+            }
+
+            if (overdue)
             {
                 RemoveShip(ship);
                 continue;

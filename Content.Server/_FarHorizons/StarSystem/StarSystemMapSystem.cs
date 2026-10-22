@@ -52,6 +52,7 @@ public sealed partial class StarSystemMapSystem : SharedStarSystemMapSystem
             var coords = new EntityCoordinates(ent, ent.Comp.StarSystem.Star.Position);
             var spawned = SpawnAtPosition(starEnt.ID, coords);
             _metadata.SetEntityName(spawned, ent.Comp.StarSystem.Star.Name);
+            WfPinBody(ent, spawned, ent.Comp.StarSystem.Star.Position); // WOLFGATE(Planets): keep the star off hulls that arrive on top of it.
             _pvs.AddGlobalOverride(spawned);
         }
 

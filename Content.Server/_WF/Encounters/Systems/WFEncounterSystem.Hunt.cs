@@ -463,6 +463,7 @@ public sealed partial class WFEncounterSystem
                 || HasComp<Content.Shared.Station.Components.StationMemberComponent>(grid)
                 && !HasComp<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(grid)
                 || DockedAtStation(grid)
+                || _stealth.ShipUnseen(grid)
                 || shunned != null && shunned.Contains(grid)
                 || except != null && except.Contains(grid)
                 || neutral is { Count: > 0 } && IsNeutralPlayer(uid, grid, neutral))

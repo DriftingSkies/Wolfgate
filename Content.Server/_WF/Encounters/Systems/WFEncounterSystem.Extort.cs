@@ -592,7 +592,7 @@ public sealed partial class WFEncounterSystem
     {
         mark = extort.Mark ?? default;
         return extort.Mark != null && !TerminatingOrDeleted(mark) && Transform(mark).MapID == Transform(ship.Grid).MapID
-               && !DockedAtStation(mark);
+               && !DockedAtStation(mark) && !_stealth.ShipUnseen(mark);
     }
 
     private string ExtortMarkName(WFExtortState extort)
@@ -689,7 +689,7 @@ public sealed partial class WFEncounterSystem
     /// A powered helm console aboard that is free, and the crewman who makes the ship's calls from it: its captain,
     /// else its radio officer, else its pilot, else a hand, and a guard only if nobody else is left.
     /// </summary>
-    private bool TryFindHelm(WFEncounterShipState ship, out EntityUid console, out EntityUid speaker)
+    public bool TryFindHelm(WFEncounterShipState ship, out EntityUid console, out EntityUid speaker)
     {
         console = default;
         speaker = default;

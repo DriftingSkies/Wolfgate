@@ -1,0 +1,27 @@
+# WOLFGATE(DecorImport) START: ported from Panta Rhei
+- type: entity
+  id: WoodBathTubEmpty
+  suffix: empty
+  parent: StoolBase
+  components:
+  - type: Sprite
+    sprite: _Floof/Structures/Furniture/Bathroom/bathtub.rsi
+    noRot: false
+    state: icon
+    snapCardinals: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+          params:
+            volume: -2
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+# WOLFGATE END

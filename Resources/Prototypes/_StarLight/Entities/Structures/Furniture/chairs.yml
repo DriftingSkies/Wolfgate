@@ -1,0 +1,55 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  id: ChairFroggy
+  parent: SeatBase
+  components:
+    - type: Transform
+      anchored: true
+    - type: Physics
+      bodyType: Static
+    - type: Anchorable
+    - type: Rotatable
+    - type: Sprite
+      sprite: _Starlight/Structures/Furniture/Chairs/froggy_chair.rsi
+      state: froggy_chair
+    - type: Construction
+      graph: DecorBuildChairFroggy
+      node: built
+    - type: Icon
+      sprite: _Starlight/Structures/Furniture/Chairs/froggy_chair.rsi
+      state: froggy_chair
+
+- type: entity
+  id: ChairLovey
+  parent: SeatBase
+  components:
+    - type: Transform
+      anchored: true
+    - type: Physics
+      bodyType: Static
+    - type: Anchorable
+    - type: Rotatable
+    - type: Sprite
+      sprite: _Starlight/Structures/Furniture/Chairs/lovey_chair.rsi
+      state: lovey_chair
+    - type: Construction
+      graph: DecorBuildChairLovey
+      node: built
+    - type: Icon
+      sprite: _Starlight/Structures/Furniture/Chairs/lovey_chair.rsi
+      state: lovey_chair
+
+- type: entity
+  id: ChairEvacSeat
+  parent: ChairBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Furniture/Chairs/evac_chair.rsi
+    state: evac_chair
+  - type: Construction
+    graph: DecorBuildChairEvacSeat
+    node: built
+  - type: Icon
+    sprite: _Starlight/Structures/Furniture/Chairs/evac_chair.rsi
+    state: evac_chair
+# WOLFGATE END

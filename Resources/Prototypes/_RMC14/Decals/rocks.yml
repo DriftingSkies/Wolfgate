@@ -1,0 +1,50 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: decal
+  id: RMCDecalRock1
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_1
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalRock2
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_2
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalRock3
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_3
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalRock4
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_4
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalRock5
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_5
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalRock10
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_10
+  tags: [ station ]
+
+- type: decal
+  id: RMCDecalRock11
+  sprite:
+    sprite: _RMC14/Decals/rocks.rsi
+    state: rock_11
+  tags: [ station ]
+# WOLFGATE END

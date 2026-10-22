@@ -244,6 +244,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/CMUCargoVehicleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/CMUCargoVehicleTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/CMUEmergencyLightsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/CMUEmergencyLightsTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/FoldedVehicleBuckleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/FoldedVehicleBuckleTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleFloorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleFloorTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleHardeningTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleHardeningTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleMoverTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleMoverTest.cs)
@@ -694,6 +695,9 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - bubbleSource in place of source
   - BubbleSource, the entity this listener sees the bubble on
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers
+- [`Content.Shared/Vehicle/SharedVehicleSystem.cs`](../../../Content.Shared/Vehicle/SharedVehicleSystem.cs)
+  - only check for a free hand; a later attempt handler (folded) can still cancel
+  - take the hand once the buckle has gone through
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
   - the origin is settled before the event so handlers can move it and the target
   - a refused vehicle shot leaves no cooldown

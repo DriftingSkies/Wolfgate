@@ -37,7 +37,7 @@ public sealed partial class FollowCommand : IConsoleCommand
         var entity = args[0];
         if (NetEntity.TryParse(entity, out var uidNet) && _entManager.TryGetEntity(uidNet, out var uid))
         {
-            _entManager.System<FollowerSystem>().StartFollowingEntity(playerEntity, uid.Value);
+            _entManager.System<Content.Server._WF.Administration.Systems.AdminFollowSystem>().Follow(player, uid.Value); // WOLFGATE(Administration): aghost before orbiting
         }
     }
 }

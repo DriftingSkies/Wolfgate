@@ -26,6 +26,18 @@ public sealed partial class WFCaptainSystem : EntitySystem
 
     private readonly Dictionary<EntityUid, SavedCourse> _courses = new();
     private readonly HashSet<(EntityUid Grid, string Group, EntityUid Pilot)> _overridden = new();
+    /// <summary>How far a run from an attacker takes the ship.</summary>
+    private const float FleeLeg = 2500f;
+
+    /// <summary>A run is flown again once the ship is this close to its end.</summary>
+    private const float FleeRenew = 600f;
+
+    /// <summary>Cosine of how far the bearing from the attacker may drift before the run is turned.</summary>
+    private const float FleeTurn = 0.8f;
+
+    /// <summary>Where each fleeing pilot's run ends.</summary>
+    private readonly Dictionary<EntityUid, System.Numerics.Vector2> _fleeGoals = new();
+
     /// <summary>Pilots whose current orders are an evasion this system issued.</summary>
     private readonly HashSet<EntityUid> _evading = new();
     private bool _changingOrders;
@@ -66,6 +78,8 @@ public sealed partial class WFCaptainSystem : EntitySystem
         {
             _nextRetarget = _timing.CurTime + RetargetInterval;
             _evading.RemoveWhere(uid => TerminatingOrDeleted(uid));
+            foreach (var pilot in _fleeGoals.Keys.Where(uid => !_evading.Contains(uid)).ToArray())
+                _fleeGoals.Remove(pilot);
         }
         if (_courses.Count == 0)
             return;
@@ -174,6 +188,12 @@ public sealed partial class WFCaptainSystem : EntitySystem
     {
         if (!TryComp<WFPilotDutyComponent>(pilot, out var duty))
             return;
+        if (duty.FleeAttackers)
+        {
+            Flee(pilot, duty, course);
+            return;
+        }
+
         // While undocking for the evasion, the evasion is the order resumed afterwards.
         var current = duty.ResumeOrder ?? duty.Orders;
         var orbiting = current == WFPilotOrder.Loiter && duty.OrbitKind == WFCrewObjectiveKind.Attack
@@ -195,6 +215,51 @@ public sealed partial class WFCaptainSystem : EntitySystem
             else
                 _pilots.Hold(pilot);
             _evading.Add(pilot);
+        }
+        finally { _changingOrders = false; }
+    }
+
+    /// <summary>
+    /// Runs directly away from the nearest hostile ship, or holds when none is left. A run is kept until it nears its
+    /// end or the attacker comes round to another side.
+    /// </summary>
+    private void Flee(EntityUid pilot, WFPilotDutyComponent duty, SavedCourse course)
+    {
+        var current = duty.ResumeOrder ?? duty.Orders;
+        if (PickThreat(course.Grid, course.Group, null) is not { } threat)
+        {
+            if (current == WFPilotOrder.Hold)
+                return;
+
+            _changingOrders = true;
+            try
+            {
+                _pilots.Hold(pilot);
+                _evading.Add(pilot);
+                _fleeGoals.Remove(pilot);
+            }
+            finally { _changingOrders = false; }
+            return;
+        }
+
+        var here = _transform.GetWorldPosition(course.Grid);
+        var away = here - _transform.GetWorldPosition(threat);
+        var heading = away.LengthSquared() > 1f ? System.Numerics.Vector2.Normalize(away) : System.Numerics.Vector2.UnitX;
+        if (current == WFPilotOrder.GoTo && _fleeGoals.TryGetValue(pilot, out var goal)
+            && (goal - here).LengthSquared() > FleeRenew * FleeRenew
+            && System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(goal - here), heading) >= FleeTurn)
+            return;
+
+        if (Transform(course.Grid).MapUid is not { } map)
+            return;
+
+        goal = here + heading * FleeLeg;
+        _changingOrders = true;
+        try
+        {
+            _pilots.GoTo(pilot, new List<EntityCoordinates> { new(map, goal) });
+            _evading.Add(pilot);
+            _fleeGoals[pilot] = goal;
         }
         finally { _changingOrders = false; }
     }

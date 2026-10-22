@@ -1,0 +1,119 @@
+# Admin facehugger AI: leap at a target in range, otherwise chase and bite it, otherwise idle.
+- type: htnCompound
+  id: WFParasiteHunterCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WFParasiteLeapCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# The infecting hugger only leaps at hosts it can still infect.
+- type: htnCompound
+  id: WFParasiteInfectorCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WFParasiteInfectLeapCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+- type: htnCompound
+  id: WFParasiteLeapCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: WFParasiteLeapTargets
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: WFLeapRange
+      - !type:TargetInLOSPrecondition
+        targetKey: Target
+        rangeKey: WFLeapRange
+      operator: !type:WFLeapOperator
+        targetKey: Target
+    - !type:HTNPrimitiveTask
+      operator: !type:SetFloatOperator
+        targetKey: IdleTime
+        amount: 4
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: IdleTime
+      operator: !type:WaitOperator
+        key: IdleTime
+
+- type: htnCompound
+  id: WFParasiteInfectLeapCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: WFParasiteInfectTargets
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: WFLeapRange
+      - !type:TargetInLOSPrecondition
+        targetKey: Target
+        rangeKey: WFLeapRange
+      operator: !type:WFLeapOperator
+        targetKey: Target
+    - !type:HTNPrimitiveTask
+      operator: !type:SetFloatOperator
+        targetKey: IdleTime
+        amount: 4
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: IdleTime
+      operator: !type:WaitOperator
+        key: IdleTime
+
+- type: utilityQuery
+  id: WFParasiteLeapTargets
+  query:
+  - !type:NearbyHostilesQuery
+  considerations:
+  - !type:TargetIsAliveCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+  - !type:TargetInLOSOrCurrentCon
+    curve: !type:BoolCurve
+
+- type: utilityQuery
+  id: WFParasiteInfectTargets
+  query:
+  - !type:NearbyHostilesQuery
+  considerations:
+  - !type:WFTargetInfectableCon
+    curve: !type:BoolCurve
+  - !type:TargetIsAliveCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+  - !type:TargetInLOSOrCurrentCon
+    curve: !type:BoolCurve

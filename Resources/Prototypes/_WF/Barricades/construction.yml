@@ -1,0 +1,399 @@
+# Construction graphs and recipes. Barricades face the way the ghost is rotated; one per facing per tile.
+- type: constructionGraph
+  id: BarricadeMetalGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeMetal
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Steel
+        amount: 4
+        doAfter: 2
+  - node: nodeMetal
+    entity: CMBarricadeMetal
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 3
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 1
+      - tool: Prying
+        doAfter: 2
+
+- type: constructionGraph
+  id: BarricadePlasteelGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodePlasteel
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Plasteel
+        amount: 6
+        doAfter: 8
+  - node: nodePlasteel
+    entity: RMCBarricadePlasteel
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetPlasteel1
+        amount: 6
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 1
+      - tool: Prying
+        doAfter: 2
+
+- type: constructionGraph
+  id: BarricadeMetalDoorGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeBarricadeMetalDoor
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Steel
+        amount: 6
+        doAfter: 3
+  - node: nodeBarricadeMetalDoor
+    entity: CMBarricadeMetalDoor
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 1
+      - tool: Prying
+        doAfter: 5
+
+- type: constructionGraph
+  id: BarricadePlasteelDoorGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeBarricadePlasteelDoor
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Plasteel
+        amount: 8
+        doAfter: 3
+  - node: nodeBarricadePlasteelDoor
+    entity: CMBarricadePlasteelDoor
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetPlasteel1
+        amount: 8
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 1
+      - tool: Prying
+        doAfter: 5
+
+- type: constructionGraph
+  id: BarricadeWoodGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeWood
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: WoodPlank
+        amount: 5
+        doAfter: 3
+  - node: nodeWood
+    entity: RMCBarricadeWood
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 4
+      - !type:DeleteEntity
+      steps:
+      - tool: Prying
+        doAfter: 3
+
+- type: constructionGraph
+  id: BarricadeTurnstileGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeTurnstile
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 3
+  - node: nodeTurnstile
+    entity: CMBarricadeTurnstile
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 1
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 3
+
+- type: constructionGraph
+  id: BarricadeHandrailGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeHandrail
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 3
+  - node: nodeHandrail
+    entity: RMCBarricadeHandrail
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 3
+
+- type: constructionGraph
+  id: RMCBarricadeHandrailPlasticGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeHandrail
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - material: Plastic
+        amount: 2
+        doAfter: 3
+  - node: nodeHandrail
+    entity: RMCBarricadeHybrisaPlasticRoadBarrier
+    edges:
+    - to: start
+      completed:
+      - !type:DeleteEntity
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      steps:
+      - tool: Screwing
+        doAfter: 3
+
+- type: constructionGraph
+  id: BarbedWireGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: nodeBarbedWire
+      completed:
+      - !type:SetStackCount
+        amount: 1
+      steps:
+      - material: Steel
+        amount: 1
+  - node: nodeBarbedWire
+    entity: BarbedWire1
+
+- type: construction
+  name: metal barricade
+  id: CMBarricadeMetal
+  graph: BarricadeMetalGraph
+  startNode: start
+  targetNode: nodeMetal
+  category: construction-category-structures
+  description: A directional metal barricade. Wire it, weld it, or upgrade it with two more sheets of steel.
+  icon:
+    sprite: _WF/Barricades/Structures/metal_barricade_cracks.rsi
+    state: DamageOverlay_0
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: plasteel barricade
+  id: RMCBarricadePlasteel
+  graph: BarricadePlasteelGraph
+  startNode: start
+  targetNode: nodePlasteel
+  category: construction-category-structures
+  description: A hardened directional plasteel barricade.
+  icon:
+    sprite: _WF/Barricades/Structures/plasteel_barricade_cracks.rsi
+    state: DamageOverlay_0
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: folding metal barricade
+  id: CMBarricadeMetalDoor
+  graph: BarricadeMetalDoorGraph
+  startNode: start
+  targetNode: nodeBarricadeMetalDoor
+  category: construction-category-structures
+  description: A directional barricade that can be folded open to let people through.
+  icon:
+    sprite: _WF/Barricades/Structures/folding_metal_cracks.rsi
+    state: DamageOverlay_0
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: folding plasteel barricade
+  id: CMBarricadePlasteelDoor
+  graph: BarricadePlasteelDoorGraph
+  startNode: start
+  targetNode: nodeBarricadePlasteelDoor
+  category: construction-category-structures
+  description: A plasteel folding barricade. Link a row of them with a crowbar so they open and close together.
+  icon:
+    sprite: _WF/Barricades/Structures/folding_plasteel_cracks.rsi
+    state: DamageOverlay_0
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: wooden barricade
+  id: RMCBarricadeWood
+  graph: BarricadeWoodGraph
+  startNode: start
+  targetNode: nodeWood
+  category: construction-category-structures
+  description: A makeshift directional barricade of wooden planks.
+  icon:
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    state: wooden
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: turnstile
+  id: CMBarricadeTurnstile
+  graph: BarricadeTurnstileGraph
+  startNode: start
+  targetNode: nodeTurnstile
+  category: construction-category-structures
+  description: A railing that only lets people through from behind.
+  icon:
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    state: turnstile
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: handrail
+  id: RMCBarricadeHandrail
+  graph: BarricadeHandrailGraph
+  startNode: start
+  targetNode: nodeHandrail
+  category: construction-category-structures
+  description: A metal railing.
+  icon:
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    state: handrail_a_0
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: plastic road barrier
+  id: RMCBarricadeHybrisaPlasticRoadBarrier
+  graph: RMCBarricadeHandrailPlasticGraph
+  startNode: start
+  targetNode: nodeHandrail
+  category: construction-category-structures
+  description: A plastic road barrier.
+  icon:
+    sprite: _WF/Barricades/Structures/barricade.rsi
+    state: plasticroadbarrierred
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileBarricadeClear
+
+- type: construction
+  name: barbed wire
+  id: BarbedWire
+  graph: BarbedWireGraph
+  startNode: start
+  targetNode: nodeBarbedWire
+  category: construction-category-materials
+  description: Barbed wire to string across a barricade.
+  icon:
+    sprite: _WF/Barricades/Objects/barbed_wire.rsi
+    state: barbed_wire
+  objectType: Item

@@ -1,0 +1,33 @@
+<palette:WFMappingDecalPalette xmlns="https://spacestation14.io"
+                               xmlns:palette="clr-namespace:Content.Client._WF.MappingMode.Palette"
+                               Orientation="Vertical"
+                               SeparationOverride="4"
+                               Margin="4"
+                               HorizontalExpand="True"
+                               VerticalExpand="True">
+    <LineEdit Name="SearchBar" HorizontalExpand="True" PlaceHolder="{Loc 'wf-mapping-screen-search'}" />
+    <OptionButton Name="CategoryMenu" HorizontalExpand="True" />
+    <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+        <GridContainer Name="DecalGrid" Columns="6" HSeparationOverride="2" VSeparationOverride="2" />
+    </ScrollContainer>
+    <Label Name="EmptyLabel" Text="{Loc 'wf-mapping-screen-empty'}" StyleClasses="LabelSubText" Visible="False" />
+    <ColorSelectorSliders Name="ColorPicker" IsAlphaVisible="True" />
+    <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+        <Label Text="{Loc 'decal-placer-window-palette'}" />
+        <OptionButton Name="PaletteMenu" HorizontalExpand="True" />
+    </BoxContainer>
+    <GridContainer Name="PaletteGrid" Columns="10" HSeparationOverride="2" VSeparationOverride="2" />
+    <GridContainer Columns="2" HSeparationOverride="8">
+        <CheckBox Name="UseColorBox" Text="{Loc 'decal-placer-window-use-color'}" />
+        <CheckBox Name="AutoBox" Text="{Loc 'decal-placer-window-enable-auto'}" Pressed="True" />
+        <CheckBox Name="SnapBox" Text="{Loc 'decal-placer-window-enable-snap'}" Pressed="True" />
+        <CheckBox Name="CleanableBox" Text="{Loc 'decal-placer-window-enable-cleanable'}" />
+    </GridContainer>
+    <BoxContainer Name="RotationRow" Orientation="Horizontal" SeparationOverride="4">
+        <Label Text="{Loc 'decal-placer-window-rotation'}" />
+    </BoxContainer>
+    <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+        <Label Text="{Loc 'decal-placer-window-zindex'}" />
+        <SpinBox Name="ZIndexBox" HorizontalExpand="True" />
+    </BoxContainer>
+</palette:WFMappingDecalPalette>

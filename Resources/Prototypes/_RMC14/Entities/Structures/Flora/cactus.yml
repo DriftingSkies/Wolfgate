@@ -1,0 +1,137 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: PottedPlantBase
+  id: RMCCactus3
+  components:
+  - type: Sprite
+    state: cactus_8
+    noRot: true
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    state: cactus_8
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCCacti8
+  components:
+  - type: Sprite
+    state: cacti_8
+    noRot: true
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    state: cacti_8
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCCacti10
+  components:
+  - type: Sprite
+    state: cacti_10
+    noRot: true
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    state: cacti_10
+
+- type: entity
+  parent: PottedPlantBase
+  id: RMCCacti12
+  components:
+  - type: Sprite
+    state: cacti_12
+    noRot: true
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    drawdepth: FloorObjects
+  - type: SpriteFade
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+  - type: Icon
+    sprite: _RMC14/Structures/Flora/cactus.rsi
+    state: cacti_12
+# WOLFGATE END

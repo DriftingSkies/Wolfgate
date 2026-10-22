@@ -70,7 +70,7 @@ public sealed partial class WFReaverCampaignSystem
         foreach (var stronghold in Strongholds())
         {
             var comp = stronghold.Comp1;
-            if (comp.Inbound != null || comp.Scattered || UnderFire(comp) || now < comp.NextReinforcement || comp.Level >= LevelCap(campaign, state))
+            if (comp.Inbound != null || comp.Scattered || UnderFire(comp) || now < comp.NextReinforcement || comp.Level >= LevelCap(campaign, state, comp))
                 continue;
 
             if (!TryReinforce(stronghold.Owner))
@@ -81,12 +81,12 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>Sends a stronghold's next reinforcement now, if it is under its tier's level cap and none is on its way: a convoy from the sector edge that flies to the hub and docks.</summary>
     public bool TryReinforce(EntityUid stronghold)
     {
-        if (Campaign is not { } campaign || State(true) is not { } state
+        if (Campaign is not { } campaign || State(true) is not { Finished: false } state
             || !TryComp<WFReaverStrongholdComponent>(stronghold, out var comp)
             || !TryComp<WFEncounterComponent>(stronghold, out var encounter) || encounter.Resolution != null
-            || comp.Inbound != null || comp.Level >= LevelCap(campaign, state)
+            || comp.Inbound != null || comp.Level >= LevelCap(campaign, state, comp)
             || !encounter.Ships.TryGetValue(comp.Lead, out var hub) || TerminatingOrDeleted(hub.Grid)
-            || !_prototypes.TryIndex(campaign.Reinforcements[comp.Level], out var prototype) || prototype.Ships.Count == 0)
+            || !_prototypes.TryIndex(campaign.Reinforcements[Math.Min(comp.Level, campaign.Reinforcements.Count - 1)], out var prototype) || prototype.Ships.Count == 0)
             return false;
 
         var map = Transform(stronghold).MapID;
@@ -113,14 +113,14 @@ public sealed partial class WFReaverCampaignSystem
         comp.Inbound = uid;
 
         var minutes = Math.Max(1, (int) Math.Ceiling(Vector2.Distance(start, hubAt) / ConvoySpeed / 60f));
-        Announce(campaign, Loc.GetString("wf-reaver-reinforcement-launched",
+        AnnounceRadio(Loc.GetString("wf-reaver-reinforcement-launched",
             ("callsign", WFSectorHex.Callsign(comp.Cell)),
-            ("minutes", minutes)), true, chime: false);
+            ("minutes", minutes)));
         Log.Info($"Reaver reinforcement {ToPrettyString(uid)} (level {reinforcement.Level}) launched for hub {ToPrettyString(stronghold)}.");
         return true;
     }
 
-    /// <summary>Whether a hub took a hit from a player ship within the support window.</summary>
+    /// <summary>Whether a hub took a hit, from a player ship or another campaign's, within the support window.</summary>
     private bool UnderFire(WFReaverStrongholdComponent home)
     {
         return home.Hits > 0 && _timing.CurTime - home.LastHit < SupportWindow;
@@ -322,9 +322,9 @@ public sealed partial class WFReaverCampaignSystem
         home.Reinforcements.Add(reinforcement);
         home.NextReinforcement = _timing.CurTime + campaign.ReinforcementInterval;
         SetLevel((comp.Stronghold, home, hubEncounter), comp.Level);
-        Announce(campaign, Loc.GetString("wf-reaver-grown",
+        AnnounceRadio(Loc.GetString("wf-reaver-grown",
             ("callsign", WFSectorHex.Callsign(home.Cell)),
-            ("level", home.Level)), true, chime: false);
+            ("level", home.Level)));
         Log.Info($"Reaver stronghold {ToPrettyString(comp.Stronghold)} grew to level {home.Level}.");
         Recompute();
 
@@ -341,7 +341,7 @@ public sealed partial class WFReaverCampaignSystem
     }
 
     /// <summary>
-    /// The player ship a hub's reinforcements go for: of the <paramref name="fresh"/> ships that just hit it, the one
+    /// The ship a hub's reinforcements go for, a player's or another campaign's: of the <paramref name="fresh"/> ships that just hit it, the one
     /// with most hits. With none fresh, the last one chosen if it is still near the hub, else the top attacker near
     /// it, else the top attacker anywhere.
     /// </summary>
@@ -349,6 +349,12 @@ public sealed partial class WFReaverCampaignSystem
     {
         var hits = new Dictionary<EntityUid, int>();
         foreach (var ((attacker, _), count) in encounter.ShipHits)
+        {
+            if (!TerminatingOrDeleted(attacker))
+                hits[attacker] = hits.GetValueOrDefault(attacker) + count;
+        }
+
+        foreach (var (attacker, count) in home.NpcHits)
         {
             if (!TerminatingOrDeleted(attacker))
                 hits[attacker] = hits.GetValueOrDefault(attacker) + count;
@@ -437,7 +443,7 @@ public sealed partial class WFReaverCampaignSystem
         {
             var hubAt = _transform.GetWorldPosition(hub.Grid);
             if (_timing.CurTime - home.LastHit < ReturnDelay
-                || hubEncounter.ShipHits.Keys.Select(key => key.Attacker).Distinct().Any(attacker => !TerminatingOrDeleted(attacker)
+                || hubEncounter.ShipHits.Keys.Select(key => key.Attacker).Concat(home.NpcHits.Keys).Distinct().Any(attacker => !TerminatingOrDeleted(attacker)
                     && Vector2.Distance(_transform.GetWorldPosition(attacker), hubAt) <= ReturnClearance))
                 return;
         }
@@ -476,7 +482,11 @@ public sealed partial class WFReaverCampaignSystem
             if (fold && TryComp<WFEncounterComponent>(uid, out var hub))
                 FoldHits(hub, reinforcement.Comp2);
 
-            _encounters.End(reinforcement.Owner);
+            // Beaten with its hub, it is resolved, not ended: hulls players are aboard or docked with go through the usual cleanup.
+            if (fold)
+                _encounters.Resolve(reinforcement.Owner, WFEncounterResolution.Ended);
+            else
+                _encounters.End(reinforcement.Owner);
         }
 
         comp.Reinforcements.Clear();
@@ -484,18 +494,26 @@ public sealed partial class WFReaverCampaignSystem
     }
 
     /// <summary>Adds the hits a reinforcement took to a hub's, so those who shot at either are paid for the stronghold.</summary>
-    private static void FoldHits(WFEncounterComponent hub, WFEncounterComponent reinforcement)
+    /// <summary>Adds each player's counts by side into another tally.</summary>
+    private static void Fold(Dictionary<Robust.Shared.Network.NetUserId, Dictionary<string, int>> into,
+        Dictionary<Robust.Shared.Network.NetUserId, Dictionary<string, int>> from)
     {
-        foreach (var (user, bySide) in reinforcement.Hits)
+        foreach (var (user, bySide) in from)
         {
-            if (!hub.Hits.TryGetValue(user, out var into))
-                hub.Hits[user] = into = new Dictionary<string, int>();
+            if (!into.TryGetValue(user, out var tally))
+                into[user] = tally = new Dictionary<string, int>();
 
-            foreach (var (side, hits) in bySide)
+            foreach (var (side, count) in bySide)
             {
-                into[side] = into.GetValueOrDefault(side) + hits;
+                tally[side] = tally.GetValueOrDefault(side) + count;
             }
         }
+    }
+
+    private static void FoldHits(WFEncounterComponent hub, WFEncounterComponent reinforcement)
+    {
+        Fold(hub.Hits, reinforcement.Hits);
+        Fold(hub.Kills, reinforcement.Kills);
 
         foreach (var (key, hits) in reinforcement.ShipHits)
         {
@@ -526,9 +544,9 @@ public sealed partial class WFReaverCampaignSystem
 
         Mark(encounter.ShipHits.Keys.Select(key => key.Attacker));
         var (bounty, paid) = PayReinforcementBounty(campaign, uid);
-        Announce(campaign, Loc.GetString("wf-reaver-reinforcement-destroyed",
+        AnnounceRadio(Loc.GetString("wf-reaver-reinforcement-destroyed",
             ("callsign", WFSectorHex.Callsign(home.Cell)),
             ("bounty", bounty),
-            ("paid", paid)), false, chime: false);
+            ("paid", paid)));
     }
 }

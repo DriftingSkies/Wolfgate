@@ -430,6 +430,8 @@ public sealed class MobileDrydockTest
             var board = em.SpawnEntity("WFMobileDrydockCraneMachineCircuitboard", new MapCoordinates(0, 0, map.MapId));
             Assert.That(em.GetComponent<MachineBoardComponent>(board).Prototype.Id, Is.EqualTo("WFMobileDrydockCrane"),
                 "The crane board should build a mobile drydock crane.");
+            Assert.That(em.GetComponent<MachineBoardComponent>(board).FrameSize, Is.EqualTo("2x2"),
+                "The crane board should only fit the 2x2 frame its crane occupies.");
 
             var unlocks = protos.Index(Shuttlecraft).RecipeUnlocks;
             Assert.Multiple(() =>

@@ -5,6 +5,7 @@ using System.Text;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server._WF.ChatWebhook; // WOLFGATE(ChatWebhook)
+using Content.Shared._WF.ChatFont; // WOLFGATE(ChatFont)
 using Content.Server.Chat.Managers;
 using Content.Server.Discord.DiscordLink;
 using Content.Server.GameTicking;
@@ -273,6 +274,10 @@ public sealed partial class ChatSystem : SharedChatSystem
         if (desiredType == InGameICChatType.CollectiveMind && !message.StartsWith(CollectiveMindPrefix))
             message = $"{CollectiveMindPrefix} {message}";
         // WOLFGATE END
+
+        // WOLFGATE(Xenonids): a xeno's radio prefix sends the message to its hive instead
+        if (checkRadioPrefix && EntityManager.System<Content.Server._WF.Xenonids.Hive.XenoHiveChatSystem>().TrySendHiveMessage(source, message))
+            return;
 
         // This message may have a radio prefix, and should then be whispered to the resolved radio channel
         if (checkRadioPrefix)
@@ -816,6 +821,12 @@ public sealed partial class ChatSystem : SharedChatSystem
         var ent = Identity.Entity(source, EntityManager);
         string name = FormattedMessage.EscapeText(nameOverride ?? Name(ent));
 
+        // WOLFGATE(Emotes) START: a typed trigger word like *salute shows that emote's own message
+        var typedAction = action;
+        if (checkEmote)
+            action = ResolveTypedEmote(source, action);
+        // WOLFGATE END
+
         // Emotes use Identity.Name, since it doesn't actually involve your voice at all.
         var wrappedMessage = Loc.GetString("chat-manager-entity-me-wrap-message",
             ("entityName", name),
@@ -823,7 +834,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("message", FormattedMessage.RemoveMarkupOrThrow(action)));
 
         if (checkEmote)
-            TryEmoteChatInput(source, action);
+            TryEmoteChatInput(source, typedAction); // WOLFGATE(Emotes): match the trigger on what was typed
         SendInVoiceRange(ChatChannel.Emotes, name, action, wrappedMessage, obfuscated: "", obfuscatedWrappedMessage: "", source, range, author); // Einstein Engines - Language
         if (!hideLog)
             if (name != Name(source))
@@ -1129,7 +1140,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("color", color),
             ("entityName", entityName),
             ("verb", Loc.GetString(verbId)),
-            ("fontType", language.SpeechOverride.FontId ?? speech.FontId),
+            ("fontType", language.SpeechOverride.FontId ?? CompOrNull<WFChatFontComponent>(source)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the character's picked font, under a language's own
             ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
             ("message", message),
             ("language", languageDisplay));

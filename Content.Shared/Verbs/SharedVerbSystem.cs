@@ -1,3 +1,5 @@
+using Content.Shared._WF.MappingMode; // WOLFGATE(MappingMode)
+using Content.Shared.Administration.Managers; // WOLFGATE(MappingMode)
 using Content.Shared.ActionBlocker;
 using Content.Shared.Hands.Components;
 using Content.Shared.Interaction;
@@ -12,6 +14,7 @@ namespace Content.Shared.Verbs
         [Dependency] private SharedInteractionSystem _interactionSystem = default!;
         [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
         [Dependency] protected SharedContainerSystem ContainerSystem = default!;
+        [Dependency] private ISharedAdminManager _wfAdmin = default!; // WOLFGATE(MappingMode)
 
         public override void Initialize()
         {
@@ -71,6 +74,10 @@ namespace Content.Shared.Verbs
         {
             SortedSet<Verb> verbs = new();
             extraCategories = new();
+
+            // WOLFGATE(MappingMode): mapping observers without admin data get no verbs; admins keep theirs
+            if (!force && HasComp<WFMappingObserverComponent>(user) && !_wfAdmin.IsAdmin(user))
+                return verbs;
 
             // accessibility checks
             var canAccess = force || _interactionSystem.InRangeAndAccessible(user, target);

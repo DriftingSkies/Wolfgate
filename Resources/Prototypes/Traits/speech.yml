@@ -14,7 +14,7 @@
     - type: MothAccent
     - type: ReplacementAccent
       accent: dwarf
-    - type: OwOAccent # WOLFGATE(Species): Felionoids and ProtoFelines have it as their species accent
+    - type: OwOAccent # WOLFGATE(Species): Felionoids have it as their species accent
 
 # 1 Cost
 

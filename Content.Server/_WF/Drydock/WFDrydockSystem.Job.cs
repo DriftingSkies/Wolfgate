@@ -37,6 +37,9 @@ public sealed partial class WFDrydockSystem
     /// <summary>Time between re-aims of the cranes, so a drifting ship keeps its items under the heads.</summary>
     private static readonly TimeSpan AimInterval = TimeSpan.FromSeconds(0.5);
 
+    /// <summary>Time between queue scans of an idle crane that found nothing it could take.</summary>
+    private static readonly TimeSpan IdleRetry = TimeSpan.FromSeconds(0.5);
+
     /// <summary>Jobs that ended this tick, ended after the loop so the query is not disturbed.</summary>
     private readonly List<(EntityUid Console, WFDrydockConsoleComponent Comp, WFDrydockJobComponent Job, JobEnd End)> _ends = new();
 
@@ -126,17 +129,26 @@ public sealed partial class WFDrydockSystem
                 return job.HullGone ? JobEnd.Finished : JobEnd.Aborted;
         }
 
-        // No crane took a tile, so those left would split the hull if lifted; they stay.
+        // No crane took a tile, so those left would split the hull if lifted; they stay. Slots waiting out their idle
+        // retry try once more first, since a tile lifted since then may have opened the hull up.
         if (job.Break && job.Pending.Count > 0 && job.Slots.All(s => s.Item == null))
         {
-            LeaveStanding(job);
+            foreach (var slot in job.Slots)
+            {
+                StartSlot(comp, job, slot, curTime);
+            }
+
+            if (job.Slots.All(s => s.Item == null))
+                LeaveStanding(job);
             changed = true;
         }
 
+        // A closed console catches up when opened; building its state per finished item adds up on a large ship.
         if (changed)
         {
             UpdateEstimate(job, curTime);
-            UpdateUi(console, comp);
+            if (_ui.IsUiOpen(console, WFDrydockConsoleUiKey.Key))
+                UpdateUi(console, comp);
         }
 
         return job.Pending.Count == 0 && job.Slots.All(s => s.Item == null) ? JobEnd.Finished : JobEnd.None;
@@ -187,7 +199,7 @@ public sealed partial class WFDrydockSystem
             changed = true;
         }
 
-        if (slot.Item == null && job.Pending.Count > 0)
+        if (slot.Item == null && job.Pending.Count > 0 && curTime >= slot.NextTake)
             StartSlot(comp, job, slot, curTime);
 
         if (slot.Item is { } item && curTime >= slot.WorkFrom && !slot.Unreachable && !slot.Stalled)
@@ -316,7 +328,11 @@ public sealed partial class WFDrydockSystem
     {
         var item = TakeNearest(comp, job, slot);
         if (item == null)
+        {
+            // What's left is another crane's; scanning the queue every tick costs a large ship dearly.
+            slot.NextTake = curTime + IdleRetry;
             return;
+        }
 
         var reachable = CanReach(comp, job.Ship, slot.Crane, item.LocalPos);
         var travel = PointCrane(comp, job.Ship, slot, item.LocalPos);
@@ -343,10 +359,11 @@ public sealed partial class WFDrydockSystem
         slot.Item = null;
         slot.Unreachable = false;
 
+        var all = JobReach(job);
         for (var i = job.Pending.Count - 1; i >= 0; i--)
         {
             var pending = job.Pending[i];
-            if (ReachableByJob(comp, job, pending.LocalPos))
+            if (ReachableByAny(comp, all, pending.LocalPos))
                 continue;
 
             returned.Add(pending);
@@ -363,7 +380,7 @@ public sealed partial class WFDrydockSystem
         }
         else
         {
-            var refund = returned.Sum(i => i.Cost);
+            var refund = job.Voucher != null ? 0 : returned.Sum(i => i.Cost);
             job.SkippedRefund += refund;
             Refund(job, refund);
         }
@@ -381,6 +398,8 @@ public sealed partial class WFDrydockSystem
             return TakeBreakTile(comp, job, slot);
 
         var rank = job.Pending.Min(Rank);
+        var own = ReachOf(job.Ship, slot.Crane);
+        var all = JobReach(job);
         var reach = -1;
         var reachDistance = float.MaxValue;
         var stranded = -1;
@@ -392,7 +411,7 @@ public sealed partial class WFDrydockSystem
                 continue;
 
             var distance = (candidate.LocalPos - slot.ToolPos).LengthSquared();
-            if (CanReach(comp, job.Ship, slot.Crane, candidate.LocalPos))
+            if (Reaches(comp, own, candidate.LocalPos))
             {
                 if (distance < reachDistance)
                 {
@@ -400,7 +419,7 @@ public sealed partial class WFDrydockSystem
                     reachDistance = distance;
                 }
             }
-            else if (distance < strandedDistance && !ReachableByJob(comp, job, candidate.LocalPos))
+            else if (reach < 0 && distance < strandedDistance && !ReachableByAny(comp, all, candidate.LocalPos))
             {
                 stranded = i;
                 strandedDistance = distance;
@@ -452,18 +471,6 @@ public sealed partial class WFDrydockSystem
         foreach (var other in job.Slots)
         {
             if (other != slot && other.Item is { } working && working.LocalPos.Floored() == tile)
-                return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>Whether any crane of the job reaches a ship-local point.</summary>
-    private bool ReachableByJob(WFDrydockConsoleComponent comp, WFDrydockJobComponent job, Vector2 shipLocal)
-    {
-        foreach (var slot in job.Slots)
-        {
-            if (CanReach(comp, job.Ship, slot.Crane, shipLocal))
                 return true;
         }
 
@@ -540,15 +547,51 @@ public sealed partial class WFDrydockSystem
     /// <summary>Whether a crane's envelope, with the reach tolerance, covers a ship-local point. A missing crane reaches everything.</summary>
     public bool CanReach(WFDrydockConsoleComponent comp, EntityUid ship, EntityUid? crane, Vector2 shipLocal)
     {
+        return Reaches(comp, ReachOf(ship, crane), shipLocal);
+    }
+
+    /// <summary>A crane with its ship-to-crane transform resolved once, for reach checks over many points.</summary>
+    private readonly record struct CraneReach(EntityUid Uid, WFDrydockCraneComponent Crane, Matrix3x2 ShipToCrane);
+
+    /// <summary>A crane's reach from a ship's frame, or null for a missing crane, which reaches everything.</summary>
+    private CraneReach? ReachOf(EntityUid ship, EntityUid? crane)
+    {
         if (crane is not { } craneUid || !TryGetCrane(craneUid, out var craneComp))
+            return null;
+
+        return new CraneReach(craneUid, craneComp, _transform.GetWorldMatrix(ship) * _transform.GetInvWorldMatrix(craneUid));
+    }
+
+    /// <summary>The reach of every slot's crane in a job.</summary>
+    private List<CraneReach?> JobReach(WFDrydockJobComponent job)
+    {
+        return job.Slots.Select(s => ReachOf(job.Ship, s.Crane)).ToList();
+    }
+
+    /// <summary>Whether a resolved crane reach covers a ship-local point.</summary>
+    private bool Reaches(WFDrydockConsoleComponent comp, CraneReach? reach, Vector2 shipLocal)
+    {
+        if (reach is not { } r)
             return true;
 
-        var arm = ArmPoint(ship, craneUid, craneComp, shipLocal);
+        var arm = r.Crane.LocalToArm(Vector2.Transform(shipLocal, r.ShipToCrane));
         var tol = comp.ReachTolerance;
         // Points in the gap before the berth, or past a solid blocker on their arm row, lie beyond the boom's path.
-        return arm.Y >= craneComp.BerthGap - tol && arm.Y <= craneComp.MaxArm + tol
-            && arm.X >= -tol && arm.X <= craneComp.MaxExtension + tol
-            && arm.X < BoomBlockAt(craneUid, craneComp, arm.Y) - 0.5f;
+        return arm.Y >= r.Crane.BerthGap - tol && arm.Y <= r.Crane.MaxArm + tol
+            && arm.X >= -tol && arm.X <= r.Crane.MaxExtension + tol
+            && arm.X < BoomBlockAt(r.Uid, r.Crane, arm.Y) - 0.5f;
+    }
+
+    /// <summary>Whether any of a job's resolved crane reaches covers a ship-local point.</summary>
+    private bool ReachableByAny(WFDrydockConsoleComponent comp, List<CraneReach?> reaches, Vector2 shipLocal)
+    {
+        foreach (var reach in reaches)
+        {
+            if (Reaches(comp, reach, shipLocal))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>Moves the crane of a slot so its tool head sits over the target. Returns the travel time in seconds.</summary>
@@ -706,8 +749,9 @@ public sealed partial class WFDrydockSystem
             }
             else
             {
-                var refund = unfinished.Sum(i => i.Cost);
+                var refund = job.Voucher != null ? 0 : unfinished.Sum(i => i.Cost);
                 Refund(job, refund);
+                ReturnVoucher(job);
                 Notify(console, comp, job, Loc.GetString(powerLost ? "drydock-console-aborted-power" : "drydock-console-aborted", ("refund", refund)));
             }
             _audio.PlayPvs(comp.DenySound, console);

@@ -1,0 +1,72 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14WebCocoon
+  parent: BaseStructure
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Climbable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 500
+        layer: [ HalfWallLayer, Opaque ]
+  - type: Sprite
+    drawdepth: Mobs
+    snapCardinals: true
+    sprite: _CP14/Structures/Dungeon/web_cocoon.rsi
+    layers:
+    - state: full
+      map: [ random ]
+  - type: RandomSprite
+    available:
+    - random:
+        full: ""
+        full2: ""
+        full3: ""
+        full4: ""
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: GlassTable
+    climberDamage:
+      types:
+        Blunt: 1
+    tableDamage:
+      types:
+        Blunt: 65
+    tableMassLimit: 60
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/gib1.ogg
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+  - type: Icon
+    sprite: _CP14/Structures/Dungeon/web_cocoon.rsi
+    state: full
+# WOLFGATE END
