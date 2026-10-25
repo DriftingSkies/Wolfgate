@@ -53,7 +53,7 @@
   parent: [ ClothingOuterHardsuitM82c, BaseFactionGearTSFT2 ]
   id: ClothingOuterHardsuitM82b
   name: M82b hardsuit
-  description: Corpsman variant of the M82c outfitted with caustic and radiological shielding. Some of the blunt-absorbent gel layer is sacrificed for the NBC protection.
+  description: A corpsman variant of the M82c, outfitted with caustic and radiological shielding. Some of the blunt-absorbent gel layer is sacrificed for the NBC protection. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): sealed spall liner.
   - type: WFWoundWard
@@ -88,7 +88,7 @@
   parent: [ClothingOuterHardsuitBase, BaseFactionGearTSFT3]
   id: ClothingOuterHardsuitM86
   name: M86 Mk.3(R) hardsuit
-  description: An armored hardsuit, designed to be an upgrade for the M82 series. The extra general armor gives it significant weight to move around.
+  description: An armored hardsuit, designed as an upgrade to the M82 series. The extra armor makes it heavy to move around in. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): bone plating.
   - type: WFWoundWard
@@ -186,7 +186,7 @@
   parent: [ClothingOuterHardsuitBaseNoPlateholder, MonoEnergyShieldClothing, BaseFactionGearTSFT3 ] # Jugger Suit
   id: ClothingOuterHardsuitNfsdExperimental
   name: TSFMC M92-X tacsuit
-  description: An experimental modification of the M92 tacsuit for spec-ops units of the TSFMC. Durable, and comes with an integrated soft-shield along with numerous gadgets at the cost of insulation and solid armor. # WOLFGATE(SoftShield): soft shield
+  description: An experimental modification of the M92 tacsuit for TSFMC spec-ops units. Durable, with an integrated soft shield and numerous gadgets, at the cost of insulation and solid armor. # WOLFGATE(SoftShield): soft shield
   components:
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/tsfmc_experimental.rsi # Mono

@@ -25,7 +25,7 @@ public record struct WolfmedWoundRuleAttemptEvent(
 
 /// <summary>
 /// Raised on a body, and relayed to its worn items, before a hit or a blast takes a limb off. Surgery doesn't raise it.
-/// <see cref="HitDamage"/> is the largest single damage type of the hit.
+/// <see cref="HitDamage"/> is the amount of the damage type that would take the limb.
 /// </summary>
 [ByRefEvent]
 public record struct WolfmedSeverAttemptEvent(EntityUid Part, FixedPoint2 HitDamage) : IInventoryRelayEvent

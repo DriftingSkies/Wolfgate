@@ -1,3 +1,5 @@
+using System.Linq;
+using Content.Shared._Onyx.Medical.Tourniquet;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WF.ArmorSpecialization;
 using Content.Shared._WF.Wolfmed.Wounds;
@@ -11,8 +13,8 @@ using Robust.Shared.Timing;
 namespace Content.Server._WF.ArmorSpecialization;
 
 /// <summary>
-/// Clamps untreated arterial bleeds on the limbs a worn <see cref="WFAutoTourniquetComponent"/> suit covers,
-/// spending a charge per clamp and earning charges back over time.
+/// Ties a Wolfmed tourniquet onto a covered limb with an untreated arterial bleed, for a worn
+/// <see cref="WFAutoTourniquetComponent"/> suit, spending a charge per strap and earning charges back over time.
 /// </summary>
 public sealed class WFAutoTourniquetSystem : EntitySystem
 {
@@ -21,7 +23,7 @@ public sealed class WFAutoTourniquetSystem : EntitySystem
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private WolfmedWoundTraitSystem _traits = default!;
-    [Dependency] private WoundBleedingSystem _bleeding = default!;
+    [Dependency] private TourniquetSystem _tourniquets = default!;
     [Dependency] private WoundSystem _wounds = default!;
 
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(0.5);
@@ -58,37 +60,41 @@ public sealed class WFAutoTourniquetSystem : EntitySystem
                 !_inventory.TryGetContainingEntity(uid, out var wearer))
                 continue;
 
-            foreach (var (part, _) in _body.GetBodyChildren(wearer.Value))
+            foreach (var (part, _) in _body.GetBodyChildren(wearer.Value).ToList())
             {
-                if (!WolfmedArmorCoverage.Covers(EntityManager, uid, part))
-                    continue;
-
-                foreach (var wound in _wounds.GetWounds(part))
-                {
-                    // Only an untreated, still-pumping artery: a medic's suture, dressing or clamp is left alone.
-                    if (!TryComp<WoundBleedingComponent>(wound, out var bleeding) ||
-                        bleeding.Treatment != BleedingTreatment.None || bleeding.BleedingSeverity <= FixedPoint2.Zero ||
-                        !_traits.TryGetBehavior(wound.AsNullable(), out WolfmedArterialBleedBehavior _))
-                        continue;
-
-                    if (!_bleeding.SetTreatment(wound.AsNullable(), BleedingTreatment.Clamped))
-                        continue;
-
-                    tourniquet.Charges--;
-                    if (tourniquet.NextCharge <= now)
-                        tourniquet.NextCharge = now + tourniquet.RechargeTime;
-                    Dirty(uid, tourniquet);
-                    _popup.PopupEntity(Loc.GetString("wf-armor-spec-tourniquet-popup"), wearer.Value, wearer.Value,
-                        PopupType.Medium);
-
-                    if (tourniquet.Charges <= 0)
-                        break;
-                }
-
                 if (tourniquet.Charges <= 0)
                     break;
+
+                if (!WolfmedArmorCoverage.Covers(EntityManager, uid, part) || !HasUntreatedArtery(part))
+                    continue;
+
+                // A real Wolfmed tourniquet: limbs only, ties off the parts below, and starts the necrosis clock.
+                if (!_tourniquets.Apply(wearer.Value, part))
+                    continue;
+
+                tourniquet.Charges--;
+                if (tourniquet.NextCharge <= now)
+                    tourniquet.NextCharge = now + tourniquet.RechargeTime;
+                Dirty(uid, tourniquet);
+                _popup.PopupEntity(Loc.GetString("wf-armor-spec-tourniquet-popup"), wearer.Value, wearer.Value,
+                    PopupType.Medium);
             }
         }
+    }
+
+    /// <summary>An untreated, still-pumping artery on this part that a tourniquet can tie off.</summary>
+    private bool HasUntreatedArtery(EntityUid part)
+    {
+        foreach (var wound in _wounds.GetWounds(part))
+        {
+            if (TryComp<WoundBleedingComponent>(wound, out var bleeding) &&
+                bleeding.Treatment == BleedingTreatment.None && bleeding.BleedingSeverity > FixedPoint2.Zero &&
+                _traits.TryGetBehavior(wound.AsNullable(), out WolfmedArterialBleedBehavior _) &&
+                _traits.CanTourniquet(wound.AsNullable(), part))
+                return true;
+        }
+
+        return false;
     }
 
     private void Recharge(Entity<WFAutoTourniquetComponent> ent, TimeSpan now)

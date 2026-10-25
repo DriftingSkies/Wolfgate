@@ -1,7 +1,7 @@
 - type: entity
   parent: ClothingOuterHardsuitSyndie # to-do: give a better sprite.
   id: ClothingOuterHardsuitGodfather
-  name: BR-238 godfather hardsuit
+  name: BR-238 Godfather hardsuit # WOLFGATE(ArmorBalance): grammar pass.
   description: A heavily reinforced hardsuit and a true symbol of wealth and power, however fleeting.
   components: 
   # WOLFGATE(ArmorSpecialization): ablative coat.
@@ -35,7 +35,7 @@
   parent: [ ClothingOuterHardsuitBase, BaseC3SyndicateContraband ]
   id: ClothingOuterHardsuitWarlord
   name: UGR WL-01
-  description: Nicknamed "Warlord", a former state-of-the-art technology in military equipment, now widespread among black markets due to a critical security breach. It has been modified to withstand space depressurized atmosphere, rating it space capable.
+  description: Nicknamed "Warlord", this was once state-of-the-art military equipment, and is now widespread on black markets after a critical security breach. It has been modified to withstand vacuum, making it spaceworthy. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): pain dampener.
   - type: WFPainDampener

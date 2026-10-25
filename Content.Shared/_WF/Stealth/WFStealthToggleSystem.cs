@@ -3,6 +3,7 @@ using Content.Shared.Actions;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Stealth;
 using Content.Shared.Stealth.Components;
@@ -18,6 +19,7 @@ public sealed class WFStealthToggleSystem : EntitySystem
 {
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedStealthSystem _stealth = default!;
@@ -93,7 +95,10 @@ public sealed class WFStealthToggleSystem : EntitySystem
         {
             RemComp<WFStealthSuppressedComponent>(wearer);
             RemComp<WFStealthFadingOutComponent>(wearer);
-            if (stealth is { Enabled: false })
+            // A downed wearer stays visible if the stealth is set to drop in crit or on death.
+            if (stealth is { Enabled: false } &&
+                !(_mobState.IsCritical(wearer) && !stealth.EnabledOnCrit) &&
+                !(_mobState.IsDead(wearer) && !stealth.EnabledOnDeath))
             {
                 // Start fully visible, so the field fades in instead of snapping to wherever it was left.
                 _stealth.SetVisibility(wearer, 1f, stealth);

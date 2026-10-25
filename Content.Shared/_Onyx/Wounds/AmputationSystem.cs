@@ -186,7 +186,7 @@ public sealed partial class AmputationSystem : EntitySystem
             if (minimum > FixedPoint2.Zero && amount >= minimum)
                 // WOLFGATE(Wolfmed) START: worn armour with a limb lock may keep the limb on.
                 // return true;
-                return WfMaySever(body, part, damage);
+                return WfMaySever(body, part, amount);
                 // WOLFGATE END
         }
 
@@ -194,13 +194,9 @@ public sealed partial class AmputationSystem : EntitySystem
     }
 
     // WOLFGATE(Wolfmed) START: asked only once a hit would take the limb, so ordinary hits skip the inventory relay.
-    private bool WfMaySever(EntityUid body, EntityUid part, DamageSpecifier damage)
+    private bool WfMaySever(EntityUid body, EntityUid part, FixedPoint2 finishing)
     {
-        var largest = FixedPoint2.Zero;
-        foreach (var amount in damage.DamageDict.Values)
-            largest = FixedPoint2.Max(largest, amount);
-
-        var ev = new Content.Shared._WF.Wolfmed.Wounds.WolfmedSeverAttemptEvent(part, largest);
+        var ev = new Content.Shared._WF.Wolfmed.Wounds.WolfmedSeverAttemptEvent(part, finishing);
         RaiseLocalEvent(body, ref ev);
         return !ev.Cancelled;
     }

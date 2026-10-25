@@ -3,6 +3,7 @@ using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
+using Content.Shared.Weapons.Reflect;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
@@ -31,7 +32,9 @@ public sealed class WFArmorDeflectSystem : EntitySystem
         SubscribeLocalEvent<WFArmorDeflectComponent, GotEquippedEvent>(OnEquipped);
         SubscribeLocalEvent<WFArmorDeflectComponent, GotUnequippedEvent>(OnUnequipped);
         SubscribeLocalEvent<WFArmorDeflectComponent, ExaminedEvent>(OnExamined);
-        SubscribeLocalEvent<WFArmorDeflectWearerComponent, ProjectileReflectAttemptEvent>(OnReflectAttempt);
+        // After upstream reflection, so a round a reflective item already turned isn't bounced twice.
+        SubscribeLocalEvent<WFArmorDeflectWearerComponent, ProjectileReflectAttemptEvent>(OnReflectAttempt,
+            after: [typeof(ReflectSystem)]);
     }
 
     private void OnEquipped(Entity<WFArmorDeflectComponent> ent, ref GotEquippedEvent args)

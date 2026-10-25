@@ -15,8 +15,9 @@ in a fight and not only on paper. Each is one component on the suit, and each re
   `WolfmedArmorPainReliefEvent`.
 - `WFAblativeCoat`: a passive pool that soaks a share of one damage group (Burn by default) at the armour step, then
   recovers after a lull without hits.
-- `WFAutoTourniquet` (server): clamps an untreated arterial bleed on a covered limb by itself, spending a charge per
-  clamp; it never overrides a medic's treatment, works only while worn, and its charges come back over time.
+- `WFAutoTourniquet` (server): ties a real Wolfmed tourniquet (`TourniquetSystem.Apply`) onto a covered limb with an
+  untreated arterial bleed, spending a charge each time. Limbs only, so the necrosis clock and loosening work as normal;
+  it never overrides a medic's treatment, works only while worn, and its charges come back over time.
 
 `WFArmorSpecializationTest` covers each one through the real Wolfmed paths.
 

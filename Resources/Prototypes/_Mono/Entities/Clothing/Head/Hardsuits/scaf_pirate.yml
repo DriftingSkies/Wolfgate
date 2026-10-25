@@ -2,7 +2,7 @@
   parent: [ClothingHeadHardsuitBase, BaseFactionGearPDVT2, ShowSecurityIcons, ClothingHeadSuitWithLightBase]
   id: ClothingHeadHelmetHardsuitPirateScaf
   name: PDV SCAF hardsuit helmet
-  description: An old SCAF suit painted in an PDV tan color scheme. Has been outfitted with a thermal pulse scanner.
+  description: An old SCAF helmet painted in a PDV tan color scheme. It has been outfitted with a thermal pulse scanner. # WOLFGATE(ArmorBalance): grammar pass.
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite

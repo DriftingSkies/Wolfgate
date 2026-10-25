@@ -3,7 +3,7 @@
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitScaf
   name: SCAF hardsuit
-  description: A kevlar reinforced combat hardsuit. Old yet sturdy nonetheless. # mono - not green anymore cuh
+  description: A Kevlar-reinforced combat hardsuit. Old, yet sturdy nonetheless. # mono - not green anymore cuh # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): spall liner.
   - type: WFWoundWard

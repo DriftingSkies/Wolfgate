@@ -856,7 +856,7 @@
   parent: [ClothingOuterHardsuitBase]
   id: ClothingOuterHardsuitJuggernaut
   name: juggernaut suit
-  description: A suit of which the blueprint was bestowed upon the Dynasty by the Sultan Himself. Hefty and durable, but not fully insulated.
+  description: A suit whose blueprint was bestowed upon the Dynasty by the Sultan Himself. Hefty and durable, but not fully insulated. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): limb lock.
   - type: WFLimbLock

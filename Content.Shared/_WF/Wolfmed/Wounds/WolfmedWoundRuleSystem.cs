@@ -126,7 +126,9 @@ public sealed class WolfmedWoundRuleSystem : EntitySystem
         // M5 (P21): acid residue still on the skin deepens the chemical burn it came from, never a plain burn.
         if (_chemicalBurns.ResidueTarget is { } residue && residue.Part == part.Owner)
         {
-            _wounds.CreateOrMergeWound(part.AsNullable(), residue.Wound, args.Amount);
+            // A sealed layer keeps residue off covered skin as well as fresh acid.
+            if (!ArmorRefuses(part, residue.Wound, args.Amount, FixedPoint2.Zero))
+                _wounds.CreateOrMergeWound(part.AsNullable(), residue.Wound, args.Amount);
             args.SuppressDefault = true;
             return;
         }
@@ -199,15 +201,21 @@ public sealed class WolfmedWoundRuleSystem : EntitySystem
             !_bleedGate.PartCanStartBleeding(part))
             return false;
 
-        if (TryComp(part, out BodyPartComponent? attached) && attached.Body is { } body)
-        {
-            var attempt = new WolfmedWoundRuleAttemptEvent(part, rule.Wound, amount);
-            RaiseLocalEvent(body, ref attempt);
-            if (attempt.Cancelled || amount < rule.MinDamage * attempt.MinDamageMultiplier)
-                return false;
-        }
+        if (ArmorRefuses(part, rule.Wound, amount, rule.MinDamage))
+            return false;
 
         return _wounds.CanCreateWound(part.AsNullable(), rule.Wound);
+    }
+
+    /// <summary>Whether worn armour refuses this wound, or needs a bigger hit than <paramref name="amount"/> for it.</summary>
+    private bool ArmorRefuses(EntityUid part, ProtoId<WoundPrototype> wound, FixedPoint2 amount, FixedPoint2 minDamage)
+    {
+        if (!TryComp(part, out BodyPartComponent? attached) || attached.Body is not { } body)
+            return false;
+
+        var attempt = new WolfmedWoundRuleAttemptEvent(part, wound, amount);
+        RaiseLocalEvent(body, ref attempt);
+        return attempt.Cancelled || amount < minDamage * attempt.MinDamageMultiplier;
     }
 
     private void Apply(WolfmedWoundRulePrototype rule, Entity<WoundableComponent> part, FixedPoint2 severity)

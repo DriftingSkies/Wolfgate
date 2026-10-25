@@ -48,8 +48,8 @@
 - type: entity
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitMieyoCombat
-  name: MMC kurogane tacsuit
-  description: A tactical combat suit for MMC asset protection & corporate security. It's very light, but not too defensive.
+  name: MMC Kurogane tacsuit # WOLFGATE(ArmorBalance): grammar pass.
+  description: A tactical combat suit for MMC asset protection and corporate security. It's very light, but not very defensive. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): tendon guards.
   - type: WFWoundWard

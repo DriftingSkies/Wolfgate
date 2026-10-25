@@ -157,7 +157,7 @@
   parent: [ ClothingOuterHardsuitBase, MonoEnergyShieldClothing ]
   id: ClothingOuterHardsuitViperGroupShield
   name: MEDUSA mk.VI viper hardsuit
-  description: A heavy combat hardsuit adorned with signature markings of the Viper Group. The armor features a personal shield projector integrated into the suit.
+  description: A heavy combat hardsuit adorned with signature markings of the Viper Group. The armor features a soft shield projector integrated into the suit. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/viper_group_shield.rsi

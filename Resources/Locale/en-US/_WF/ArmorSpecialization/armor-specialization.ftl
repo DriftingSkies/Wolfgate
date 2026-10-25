@@ -15,5 +15,5 @@ wf-armor-spec-limb-lock-examine = [color=#8fb7d6]Limb Lock:[/color] Your covered
 wf-armor-spec-limb-lock-total-examine = [color=#8fb7d6]Limb Lock:[/color] Nothing can sever your covered limbs, not even an explosion.
 wf-armor-spec-pain-dampener-examine = [color=#8fb7d6]Pain Dampener:[/color] Dulls pain about as well as a mild painkiller, helping you stay on your feet when wounded. It stacks with painkillers.
 wf-armor-spec-ablative-examine = [color=#8fb7d6]Ablative Coat ({$percent}% left):[/color] Absorbs half of incoming burn damage until the coat is spent. It recovers after a few seconds without being hit.
-wf-armor-spec-tourniquet-examine = [color=#8fb7d6]Auto-Tourniquet ({$charges}/{$max} charges):[/color] Automatically clamps an arterial bleed on a covered limb. Each new artery uses one charge, and charges recover over time.
-wf-armor-spec-tourniquet-popup = Your suit cinches tight around a bleeding artery!
+wf-armor-spec-tourniquet-examine = [color=#8fb7d6]Auto-Tourniquet ({$charges}/{$max} charges):[/color] Automatically ties a tourniquet around a covered limb with an arterial bleed. Each tourniquet uses one charge, and charges recover over time. A medic can loosen it like any other tourniquet.
+wf-armor-spec-tourniquet-popup = Your suit cinches a tourniquet tight around your limb!

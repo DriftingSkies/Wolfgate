@@ -52,7 +52,7 @@
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitUsspL10
   name: USSP L-10 lightsuit
-  description: An old USSP model of combat suit that is still in use in the frontlines.
+  description: An old model of USSP combat suit that is still in use on the front lines. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): sealed layer.
   - type: WFWoundWard
@@ -102,7 +102,7 @@
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitUsspL10A
   name: USSP L-10-A lightsuit
-  description: An old USSP model of combat suit that is still in use in the frontlines.
+  description: An old model of USSP combat suit that is still in use on the front lines. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): sealed layer.
   - type: WFWoundWard
@@ -152,7 +152,7 @@
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitUsspM10
   name: USSP M-10 scoutsuit
-  description: A new prototype of combat suit using the old L-10 as a baseline. It has a integrated mass scanner in his helmet.
+  description: A new prototype combat suit using the old L-10 as a baseline. It has an integrated mass scanner in its helmet. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): pain dampener.
   - type: WFPainDampener
@@ -196,8 +196,8 @@
 - type: entity
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitUsspL30
-  name: USSP L-30 Naval Commissar parade hardsuit.
-  description: A highly decorated hardsuit with upgraded mobility and higher quality lighter armor plates to quickly convey orders on the frontline. (or not be sweaty in a parade)
+  name: USSP L-30 Naval Commissar parade hardsuit # WOLFGATE(ArmorBalance): grammar pass.
+  description: A highly decorated hardsuit with upgraded mobility and lighter, higher-quality armor plates, for conveying orders quickly on the front line, or for staying cool on parade. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): concussion ward and pain dampener.
   - type: WFWoundWard
@@ -247,7 +247,7 @@
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitOfficerCombat
   name: USSP UF-16 "Voenkom" commissar tacsuit
-  description: Developed by Union armament manufacturers for use by members of the commissariat on the frontlines. Features enhanced plating for survivability, allowing commanders to continue to give orders even while under heavy fire.
+  description: Developed by Union armament manufacturers for use by members of the commissariat on the front lines. Features enhanced plating for survivability, allowing commanders to continue to give orders even while under heavy fire. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): concussion ward and pain dampener.
   - type: WFWoundWard
