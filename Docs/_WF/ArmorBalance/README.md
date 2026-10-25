@@ -43,7 +43,9 @@ prototypes in `_Mono` with `WOLFGATE(ArmorBalance)` markers.
 - [`Resources/Maps/_Mono/ShuttleEvent/cinqueda_chimera.yml`](../../../Resources/Maps/_Mono/ShuttleEvent/cinqueda_chimera.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/Maps/_Mono/ShuttleEvent/fracture_chimera.yml`](../../../Resources/Maps/_Mono/ShuttleEvent/fracture_chimera.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/Prototypes/_Mono/Catalogs/Fills/Lockers/suit_storage.yml`](../../../Resources/Prototypes/_Mono/Catalogs/Fills/Lockers/suit_storage.yml): reverts Monolith#4845.
-- [`Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml): reverts Monolith#4845.
+- [`Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml)
+  - reverts Monolith#4845.
+  - Monolith's price; PDV suits are printable again.
 - [`Resources/Prototypes/_Mono/Catalogs/uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/uplink_catalog.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/phaethon_dynasty.yml): helmet tier rule, T2 0.9 and T3 0.85.
 - [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/scaf_pirate.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/scaf_pirate.yml): helmet tier rule, T2 0.9 and T3 0.85.

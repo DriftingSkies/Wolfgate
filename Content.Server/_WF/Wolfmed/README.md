@@ -1324,6 +1324,7 @@ Skipped ("dirty-disposed").
   - V124: the one damage-driven detach path, so the dismemberment feedback hangs here
   - D8/P3-D15
   - worn armour with a limb lock may keep the limb on.
+  - asked only once a hit would take the limb, so ordinary hits skip the inventory relay.
   - P3-D15 drops Onyx's BodyPartComponent parameter; the data it read is on WolfmedBodyPartComponent.
 - [`Content.Shared/_Onyx/Wounds/BodyPartFunctionalitySystem.cs`](../../../Content.Shared/_Onyx/Wounds/BodyPartFunctionalitySystem.cs): Wolfgate keeps CyberneticsComponent under _Shitmed.
 - [`Content.Shared/_Onyx/Wounds/FractureAlertSystem.cs`](../../../Content.Shared/_Onyx/Wounds/FractureAlertSystem.cs)

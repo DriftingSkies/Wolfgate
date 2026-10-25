@@ -35,9 +35,14 @@ Used by the Cybersun stealth hardsuit helmet, which also carries the CV-53 helme
 
 ## Non-modular edits
 
-- [`Content.Client/Stealth/StealthSystem.cs`](../../../Content.Client/Stealth/StealthSystem.cs): a glowing visor keeps its own colour; the blue tint would blacken it.
+- [`Content.Client/Stealth/StealthSystem.cs`](../../../Content.Client/Stealth/StealthSystem.cs)
+  - the z-level safe shader never reads the screen copy.
+  - a glowing visor keeps its own colour; the blue tint would blacken it.
 - [`Content.Shared/Stealth/SharedStealthSystem.cs`](../../Stealth/SharedStealthSystem.cs): a wearer who switched stealth off stays visible on revival.
-- [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/hardsuit-helmets.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/hardsuit-helmets.yml): stealth toggle, the CV-53 helmet's night vision and a thermal pulse.
-- [`Resources/Prototypes/Shaders/shaders.yml`](../../../Resources/Prototypes/Shaders/shaders.yml): z-level safe, the upstream shader read the level below.
+- [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/hardsuit-helmets.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/hardsuit-helmets.yml)
+  - full invisibility, as Monolith#4845 had it.
+  - stealth toggle, the CV-53 helmet's night vision and a thermal pulse.
+- [`Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/hardsuits.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/hardsuits.yml): Monolith#4845's stealth suit piercing.
+- [`Resources/Prototypes/Shaders/shaders.yml`](../../../Resources/Prototypes/Shaders/shaders.yml): z-level safe; the upstream shader read the level below.
 
 <!-- WOLFGATE-GENERATED END -->
