@@ -35,9 +35,7 @@ Used by the Cybersun stealth hardsuit helmet, which also carries the CV-53 helme
 
 ## Non-modular edits
 
-- [`Content.Client/Stealth/StealthSystem.cs`](../../../Content.Client/Stealth/StealthSystem.cs)
-  - the z-level safe shader never reads the screen copy.
-  - a glowing visor keeps its own colour; the blue tint would blacken it.
+- [`Content.Client/Stealth/StealthSystem.cs`](../../../Content.Client/Stealth/StealthSystem.cs): a glowing visor keeps its own colour; the blue tint would blacken it.
 - [`Content.Shared/Stealth/SharedStealthSystem.cs`](../../Stealth/SharedStealthSystem.cs): a wearer who switched stealth off stays visible on revival.
 - [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/hardsuit-helmets.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/hardsuit-helmets.yml)
   - full invisibility, as Monolith#4845 had it.

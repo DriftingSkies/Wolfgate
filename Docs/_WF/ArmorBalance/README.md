@@ -57,6 +57,7 @@ prototypes in `_Mono` with `WOLFGATE(ArmorBalance)` markers.
   - no shield, faster.
   - hard shield removed.
 - [`Resources/Prototypes/_Mono/Research/TSF/tsf_weapons.yml`](../../../Resources/Prototypes/_Mono/Research/TSF/tsf_weapons.yml): reverts Monolith#4845.
+- [`Resources/Prototypes/_Mono/Shipyard/PDV/layak.yml`](../../../Resources/Prototypes/_Mono/Shipyard/PDV/layak.yml): the rebalanced SCAF in its EVA locker appraises higher; keeps the ship above its contents.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/calypso.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/calypso.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/cinquedea.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/cinquedea.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/paladin.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/paladin.yml): reverts Monolith#4845.
