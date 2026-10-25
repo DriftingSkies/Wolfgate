@@ -42,25 +42,44 @@ prototypes in `_Mono` with `WOLFGATE(ArmorBalance)` markers.
 - [`Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/Maps/_Mono/ShuttleEvent/cinqueda_chimera.yml`](../../../Resources/Maps/_Mono/ShuttleEvent/cinqueda_chimera.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/Maps/_Mono/ShuttleEvent/fracture_chimera.yml`](../../../Resources/Maps/_Mono/ShuttleEvent/fracture_chimera.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+- [`Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/hardsuits.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/hardsuits.yml): grammar pass.
 - [`Resources/Prototypes/_Mono/Catalogs/Fills/Lockers/suit_storage.yml`](../../../Resources/Prototypes/_Mono/Catalogs/Fills/Lockers/suit_storage.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml)
   - reverts Monolith#4845.
   - Monolith's price; PDV suits are printable again.
 - [`Resources/Prototypes/_Mono/Catalogs/uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/uplink_catalog.yml): reverts Monolith#4845.
-- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/phaethon_dynasty.yml): helmet tier rule, T2 0.9 and T3 0.85.
-- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/scaf_pirate.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/scaf_pirate.yml): helmet tier rule, T2 0.9 and T3 0.85.
-- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/tsfmc.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/tsfmc.yml): helmet tier rule, T2 0.9 and T3 0.85.
-- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/phaethon_dynasty.yml): sidegrade pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/phaethon_dynasty.yml)
+  - helmet tier rule, T2 0.9 and T3 0.85.
+  - grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/scaf_pirate.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/scaf_pirate.yml)
+  - grammar pass.
+  - helmet tier rule, T2 0.9 and T3 0.85.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/tsfmc.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/tsfmc.yml)
+  - helmet tier rule, T2 0.9 and T3 0.85.
+  - grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/asakim.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/asakim.yml): grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mercenaries.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mercenaries.yml): grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mmc.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mmc.yml): grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/phaethon_dynasty.yml)
+  - grammar pass.
+  - sidegrade pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/trauma.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/trauma.yml): grammar pass.
 - [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/tsfmc.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/tsfmc.yml)
   - sidegrade pass.
+  - grammar pass.
   - the Mk.4 is the fast T3 suit and drops its hard shield.
   - no shield, faster.
   - hard shield removed.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/ui.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/ui.yml): grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/underground.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/underground.yml): grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/ussp.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/ussp.yml): grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/viper_group.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/viper_group.yml): grammar pass.
 - [`Resources/Prototypes/_Mono/Research/TSF/tsf_weapons.yml`](../../../Resources/Prototypes/_Mono/Research/TSF/tsf_weapons.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/PDV/layak.yml`](../../../Resources/Prototypes/_Mono/Shipyard/PDV/layak.yml): the rebalanced SCAF in its EVA locker appraises higher; keeps the ship above its contents.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/calypso.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/calypso.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/cinquedea.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/cinquedea.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/paladin.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/paladin.yml): reverts Monolith#4845.
+- [`Resources/Prototypes/Entities/Clothing/OuterClothing/hardsuits.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/hardsuits.yml): grammar pass.
 - [`Resources/SharedMaps/_Mono/Shuttles/TSF/calypso.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/TSF/calypso.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/SharedMaps/_Mono/Shuttles/TSF/cinquedea.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/TSF/cinquedea.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/SharedMaps/_Mono/Shuttles/TSF/fujian.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/TSF/fujian.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
