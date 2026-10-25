@@ -38,6 +38,7 @@ Entry points: `WFSuitTankStorageComponent` (marks a suit whose `Storage` feeds i
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/SuitTank/ModsuitHiddenLayersTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SuitTank/ModsuitHiddenLayersTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SuitTank/SuitPieceSwapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SuitTank/SuitPieceSwapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SuitTank/WFSuitTankTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SuitTank/WFSuitTankTest.cs)
 

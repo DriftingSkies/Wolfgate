@@ -123,7 +123,10 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - only a gun the user carries is refused, not an innate ability or a mounted weapon
   - a switched-off or folded shield blocks nothing
   - the attempt repeats every tick while the trigger is held
-- [`Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs): a client that first saw the wearer already dressed never got the equip for this item (the
+- [`Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs)
+  - a modsuit seal adds and removes this on a worn helmet, which raises no equip events
+  - layers follow the component while the clothing is worn
+  - a client that first saw the wearer already dressed never got the equip for this item (the
 - [`Content.Shared/Clothing/EntitySystems/ToggleableClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/ToggleableClothingSystem.cs)
   - whatever the piece replaced goes back on, instead of staying shut inside the piece
   - a suit deleted along with its wearer can't take the piece back
@@ -155,6 +158,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml`](../../Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml): Hardpoint mapped under the asteroid ship's AK570 so gunnery links it.
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../Resources/Maps/_Mono/POI/pdvhelios.yml): Helios mapping fixes for lighting, wallmounts and small layout tweaks.
 - [`Resources/migration.yml`](../../Resources/migration.yml): Monolith#4816 renamed the WL-01 suit and helmet without a migration
+- [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml`](../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml): unsealing strips only the seal's own components, not the ones this helmet always has
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml): the camera bounty asked for optical sensors (OpticsEconomy1)
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml): MMC cash bounties pay 0.9x their value so cash-to-MIC-to-cash can't loop for profit
 - [`Resources/Prototypes/_Mono/Catalogs/Fills/Crates/materials.yml`](../../Resources/Prototypes/_Mono/Catalogs/Fills/Crates/materials.yml): copper and lithium as listed, not uranium and plasma
