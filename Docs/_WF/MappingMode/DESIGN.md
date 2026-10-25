@@ -21,8 +21,9 @@ and must not duplicate it; edits inside `MappingTools` are allowed since both ar
 - While enabled the server forces `game.lobbyenabled true`, `events.enabled false`, `shuttle.auto_call_time 0`,
   and keeps `GameTicker.PauseStart(true)` asserted (re-asserted after any round restart). Late join is disallowed
   through `RefreshLateJoinAllowedEvent`. Ready toggles are ignored. The ticker stays in `PreRoundLobby`; nobody can
-  join a round. Admin `startround`/`restartround` are not blocked; a restart ends every session after a best-effort
-  autosave.
+  join a round. `GameTicker.StartRound` and `LoadMaps` refuse while the mode is on (`startround`, the lobby button
+  and the server API included), so no game map or preset rule ever builds the sector. `restartround` is not blocked;
+  a restart ends every session after a best-effort autosave.
 - Everything is native: no admin flag is needed by a mapper. Admins keep their normal tools on top.
 
 ### Admins
@@ -154,7 +155,7 @@ Every refusal gives the mapper a popup with the limit it hit.
   default 2) and the server clamps it to `autosave_min_interval` (60 s) .. `autosave_max_interval` (900 s). Saves
   are only written when the session is dirty, at most one session is saved per server tick (a queue, so ten
   sessions due at once stagger over ten ticks), and sessions get a random initial offset so intervals don't line up.
-- Grids: `grids_per_player` (2) grids per member, so a session's cap is `2 × members` (capped by `max_grids_per_session`,
+- Grids: `grids_per_player` (6) grids per member, so a session's cap is `6 × members` (capped by `max_grids_per_session`,
   8). Placing a tile in empty space makes a grid; above the cap the guard deletes that grid and tells the player.
   Grid splits (erasing tiles until a grid breaks apart) are counted but not reverted; the mapper can't create more
   until they delete one. The Mapping window has a `Delete grid` action for the grid under the mapper (confirm).

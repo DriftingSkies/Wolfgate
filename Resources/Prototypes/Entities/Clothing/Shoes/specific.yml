@@ -12,7 +12,7 @@
 # stuff common to all clown & jester shoes
 - type: entity
   abstract: true
-  parent: [ClothingShoesBaseButcherable, ClothingSlotBase]
+  parent: [ClothingShoesBaseButcherable, ClothingSlotBase, WFBaseWaddleShoes] # WOLFGATE(Waddle)
   id: ClothingShoesClownBase
   components:
   - type: ItemSlots

@@ -56,6 +56,10 @@ internal sealed partial class BuckleSystem : SharedBuckleSystem
         //if (HasComp<VehicleComponent>(component.LastEntityBuckledTo)) // Umbra
         //    return; // Umbra
 
+        // WOLFGATE(ClownCosmetics): Frontier's MaintainSpriteLayers keeps the rider's draw depth
+        if (component.MaintainSpriteLayers)
+            return;
+
         if (!TryComp<SpriteComponent>(uid, out var strapSprite))
             return;
 
@@ -94,6 +98,10 @@ internal sealed partial class BuckleSystem : SharedBuckleSystem
             return;
 
         if (!TryComp<SpriteComponent>(ent.Owner, out var buckledSprite))
+            return;
+
+        // WOLFGATE(ClownCosmetics): Frontier's MaintainSpriteLayers keeps the rider's draw depth
+        if (args.Strap.Comp.MaintainSpriteLayers)
             return;
 
         var angle = _xformSystem.GetWorldRotation(args.Strap) + _eye.CurrentEye.Rotation; // Get true screen position, or close enough

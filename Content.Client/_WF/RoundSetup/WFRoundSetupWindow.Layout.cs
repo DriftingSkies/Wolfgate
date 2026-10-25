@@ -239,12 +239,13 @@ public sealed partial class WFRoundSetupWindow
         _body.AddChild(crewName);
         crewName.ToolTip = Text("crew-title-help");
         _body.AddChild(DescriptionEditor(_newDescription, value => _newDescription = value));
-        foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Crashlanded, WFRoundScenario.FactionShip })
+        foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Crashlanded, WFRoundScenario.FactionShip, WFRoundScenario.Doomed })
         {
             var card = Column(8);
             var title = PlainDescription(ScenarioName(scenario));
             title.StyleClasses.Add("WFRoundSetupHeading");
             card.AddChild(title);
+            card.AddChild(WFScenarioDifficultyLabel.Create(scenario));
             card.AddChild(Description(ScenarioDescription(scenario)));
             if (scenario == WFRoundScenario.FactionShip)
             {
@@ -256,8 +257,14 @@ public sealed partial class WFRoundSetupWindow
                 card.AddChild(faction);
             }
             var unavailable = scenario == WFRoundScenario.Crashlanded && !state.CrashlandedAvailable ||
+                scenario == WFRoundScenario.Doomed && !state.DoomedAvailable ||
                 scenario == WFRoundScenario.FactionShip && !state.Factions.Contains(_newFaction);
-            var unavailableReason = scenario == WFRoundScenario.FactionShip ? "faction-unavailable" : "crash-unavailable";
+            var unavailableReason = scenario switch
+            {
+                WFRoundScenario.FactionShip => "faction-unavailable",
+                WFRoundScenario.Doomed => "doomed-unavailable",
+                _ => "crash-unavailable",
+            };
             if (unavailable)
                 card.AddChild(Description(unavailableReason));
             var create = Button("create", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Create)
@@ -332,6 +339,7 @@ public sealed partial class WFRoundSetupWindow
                 _body.AddChild(CrewIdentity(lobby));
                 if (host && !lobby.Started)
                     BuildScenarioSelector(state, lobby);
+                _body.AddChild(WFScenarioDifficultyLabel.Create(lobby.Scenario));
                 _body.AddChild(Description(ScenarioDescription(lobby.Scenario)));
                 if (member is { Spawned: false } && state.CanJoin)
                     BuildMemberSetup(state, lobby, member);
@@ -358,6 +366,9 @@ public sealed partial class WFRoundSetupWindow
         selector.AddItem(ScenarioName(WFRoundScenario.Crashlanded), (int) WFRoundScenario.Crashlanded);
         if (!state.CrashlandedAvailable)
             selector.DisableItem(1, Text("crash-unavailable"));
+        selector.AddItem(ScenarioName(WFRoundScenario.Doomed), (int) WFRoundScenario.Doomed);
+        if (!state.DoomedAvailable)
+            selector.DisableItem(2, Text("doomed-unavailable"));
         foreach (var faction in WFFactionCrewPolicy.All)
         {
             selector.AddItem(Text("faction-start", ("faction", Text("faction-" + faction.ToString().ToLowerInvariant()))), 10 + (int) faction);

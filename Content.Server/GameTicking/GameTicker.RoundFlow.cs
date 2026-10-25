@@ -107,6 +107,9 @@ namespace Content.Server.GameTicking
             if (_map.MapExists(DefaultMap))
                 return;
 
+            if (WFMappingBlocksRound(announce: false)) // WOLFGATE(MappingMode): mapping mode loads no game map or preset rule
+                return;
+
             AddGamePresetRules();
 
             var maps = new List<GameMapPrototype>();
@@ -370,6 +373,9 @@ namespace Content.Server.GameTicking
 #endif
             // If this game ticker is a dummy or the round is already being started, do nothing!
             if (DummyTicker || _startingRound)
+                return;
+
+            if (WFMappingBlocksRound(announce: true)) // WOLFGATE(MappingMode): mapping mode never starts a round
                 return;
 
             _startingRound = true;

@@ -197,6 +197,17 @@ namespace Content.Server.EntityEffects.Effects
                     .WithTreatmentCapabilities(args.TargetEntity, TreatmentCapabilities, Apply);
             else
                 Apply();
+
+            // WOLFGATE(Wolfmed): healing chemicals also close the wounds of the types they heal.
+            if (args is EntityEffectReagentArgs &&
+                args.EntityManager.HasComponent<WoundHostComponent>(args.TargetEntity))
+            {
+                var healed = change.DamageDict.Where(pair => pair.Value < 0).ToList();
+                args.EntityManager.System<WolfmedReagentWoundMendSystem>().Mend(args.TargetEntity,
+                    healed.Select(pair => pair.Key).ToList(),
+                    -healed.Aggregate(FixedPoint2.Zero, (sum, pair) => sum + pair.Value),
+                    TreatmentCapabilities);
+            }
             // WOLFGATE END
         }
     }

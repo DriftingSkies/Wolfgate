@@ -128,7 +128,8 @@ public sealed class WolfmedReagentTreatmentTest : WolfmedGameTest
             {
                 // WOLFGATE (W0): BluntWound now sets `healingMultiplier: 0.15`, so WoundSystem.HealWounds
                 // takes 0.75 of severity off for -5 Blunt while the part's own damage drops the full 5.
-                Assert.That(wound.Comp.Severity, Is.EqualTo(FixedPoint2.New(19.25)));
+                // WolfmedReagentWoundMendSystem then closes wolfmed.reagent_wound_mend (1) per unit healed: 5 more.
+                Assert.That(wound.Comp.Severity, Is.EqualTo(FixedPoint2.New(14.25)));
                 Assert.That(damage.GetAllDamage(head).GetTotal(), Is.EqualTo(FixedPoint2.New(15)));
             });
         });

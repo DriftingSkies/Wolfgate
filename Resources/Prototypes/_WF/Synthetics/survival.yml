@@ -38,10 +38,10 @@
       - RadarConsole
       - LightBehaviour
       - PowerCell
-      - CablePlacer
       - DrainableSolution
       tags:
       - SurvivalBox
+      - CableCoil # CablePlacer is server-only, so the client would predict a refusal
       - SignalFlareLaunchable
       - SignalFlareLauncher
   - type: Sprite

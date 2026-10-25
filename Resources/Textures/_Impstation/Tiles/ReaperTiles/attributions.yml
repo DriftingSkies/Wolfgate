@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Impstation
+- files: ["bigtombstonetiles.png", "reapersquaretilememorial.png", "reapertiles.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "made by atdoop (github) for impstation"
+  source: "https://github.com/ATDoop/imp-station-14/tree/reapers"
+# WOLFGATE END

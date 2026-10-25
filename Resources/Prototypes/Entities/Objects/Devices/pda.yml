@@ -139,6 +139,7 @@
     wipeVerbText: pda-wipe-device-verb-text # Frontier
     wipeVerbPopup: pda-wiped-device # Frontier
     mindRoles: [] # Frontier: no default value here
+    activatable: false # WOLFGATE: E and Z open the PDA instead of searching for a player to control it
   - type: ShipyardSellCondition # Frontier: Teleport to shipyard console on sale
     preserveOnSale: true
   - type: RetroMonitorView # Mono

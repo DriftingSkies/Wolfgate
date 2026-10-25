@@ -19,3 +19,23 @@
       prob: 0.3
   # Has a shuttle console for the dockmaster's hails, but is not a ship: no piloting or FTL.
   - type: PreventPilot
+
+# Illegal drydock on Anvilhold's layout: break-only berths and a fence instead of a dockmaster. See chopshop.yml.
+- type: pointOfInterest
+  id: WFChopShop
+  parent: BasePOI
+  name: 'Blackanvil Chop-Shop'
+  minimumDistance: 11000
+  maximumDistance: 13000
+  spawnGroup: Required
+  gridPath: /Maps/_WF/Drydock/chopshop.yml
+  addComponents:
+  - type: IFF
+    color: "#8E2A1E"
+  - type: WorldGenDistanceCarver
+    distanceThresholds:
+    - maxDistance: 800
+      prob: 0.0
+    - maxDistance: 1500
+      prob: 0.3
+  - type: PreventPilot

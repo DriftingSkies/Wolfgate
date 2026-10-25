@@ -1,0 +1,12 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  parent: CMFloorSteel
+  id: RMCFloorResearchContainment
+  name: tiles-rmc-research
+
+- type: tile
+  parent: RMCFloorResearchContainment
+  id: RMCFloorResearchContainmentFloor2North
+  sprite: /Textures/_RMC14/Tiles/almayer/containment_floor_2_1.png
+# WOLFGATE END

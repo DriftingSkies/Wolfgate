@@ -1,7 +1,7 @@
 # Basic
 - type: entity
   id: NFLockerBaseSecure
-  parent: LockerBaseSecure
+  parent: LockerBaseSecureOld #WOLFGATE(Resprites): Fixes shit NF lockers
   abstract: true
   components:
   - type: Sprite

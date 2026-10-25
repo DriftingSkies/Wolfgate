@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._WF.BloodTrail;
+using Content.Server._WF.Cleaning;
 using Content.Server.Administration.Logs;
 using Content.Server.Decals;
 using Content.Server.Fluids.EntitySystems;
@@ -45,6 +46,7 @@ public sealed partial class WFShowerSystem : EntitySystem
     [Dependency] private SharedAmbientSoundSystem _ambient = default!;
     [Dependency] private AppearanceSystem _appearance = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private WFDecalCleaningSystem _cleaning = default!;
     [Dependency] private DamageableSystem _damage = default!;
     [Dependency] private DecalSystem _decal = default!;
     [Dependency] private InventorySystem _inventory = default!;
@@ -339,7 +341,7 @@ public sealed partial class WFShowerSystem : EntitySystem
 
     private void CleanFloor(EntityUid gridUid, System.Numerics.Vector2 center)
     {
-        foreach (var (id, _) in _decal.GetDecalsInRange(gridUid, center, 0.5f, d => d.Cleanable).ToArray())
+        foreach (var (id, _) in _decal.GetDecalsInRange(gridUid, center, 0.5f, _cleaning.IsCleanable).ToArray())
         {
             _decal.RemoveDecal(gridUid, id);
         }

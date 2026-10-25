@@ -18,7 +18,7 @@
 
   ## Tiles
 
-  Hold a tile and left click. A tile in space starts a new grid. A tile next to a grid joins it. For whole floors use Shape or Fill.
+  Hold a tile and left click. A tile in space joins the nearest grid on that level, or starts the level's first grid. To start another grid, press [bold]New grid[/bold] in the Grids list on the Session tab first; it lasts for one placement. For whole floors use Shape or Fill.
 
   ## Decals
 

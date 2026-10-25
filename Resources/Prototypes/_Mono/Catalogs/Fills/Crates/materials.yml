@@ -42,8 +42,10 @@
   - type: StorageFill
     contents:
     - id: SheetPlasteel
-    - id: SheetUranium
-    - id: SheetPlasma
+    # WOLFGATE START: copper and lithium as listed, not uranium and plasma
+    - id: SheetCopper50
+    - id: SheetLithium50
+    # WOLFGATE END
     - id: MaterialDurathread
 
 # Advanced Materials

@@ -119,6 +119,7 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.Client/_WF/Shuttles/Systems/ShuttleExternalCameraSystem.Hidden.cs`](../../../Content.Client/_WF/Shuttles/Systems/ShuttleExternalCameraSystem.Hidden.cs)
 - [`Content.Client/_WF/Shuttles/UI/CollisionWarningBanner.xaml`](../../../Content.Client/_WF/Shuttles/UI/CollisionWarningBanner.xaml)
 - [`Content.Client/_WF/Shuttles/UI/CollisionWarningBanner.xaml.cs`](../../../Content.Client/_WF/Shuttles/UI/CollisionWarningBanner.xaml.cs)
+- [`Content.Client/_WF/Shuttles/UI/MapScreen.DestinationSearch.cs`](../../../Content.Client/_WF/Shuttles/UI/MapScreen.DestinationSearch.cs)
 - [`Content.Client/_WF/Shuttles/UI/MapScreen.FtlDrive.cs`](../../../Content.Client/_WF/Shuttles/UI/MapScreen.FtlDrive.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShipScreen.xaml`](../../../Content.Client/_WF/Shuttles/UI/ShipScreen.xaml)
 - [`Content.Client/_WF/Shuttles/UI/ShipScreen.xaml.cs`](../../../Content.Client/_WF/Shuttles/UI/ShipScreen.xaml.cs)
@@ -160,6 +161,7 @@ and `WFCockpitFtlDriveTest` cover it.
 ### Localization
 
 - [`Resources/Locale/en-US/_WF/Shuttles/collision-warning.ftl`](../../../Resources/Locale/en-US/_WF/Shuttles/collision-warning.ftl)
+- [`Resources/Locale/en-US/_WF/Shuttles/destination-search.ftl`](../../../Resources/Locale/en-US/_WF/Shuttles/destination-search.ftl)
 - [`Resources/Locale/en-US/_WF/Shuttles/ftl-drive.ftl`](../../../Resources/Locale/en-US/_WF/Shuttles/ftl-drive.ftl)
 - [`Resources/Locale/en-US/_WF/Shuttles/ship-view.ftl`](../../../Resources/Locale/en-US/_WF/Shuttles/ship-view.ftl)
 - [`Resources/Locale/en-US/_WF/Shuttles/shuttle-camera.ftl`](../../../Resources/Locale/en-US/_WF/Shuttles/shuttle-camera.ftl)
@@ -179,9 +181,15 @@ and `WFCockpitFtlDriveTest` cover it.
 - [`Content.Client/DoAfter/DoAfterOverlay.cs`](../../../Content.Client/DoAfter/DoAfterOverlay.cs): a progress bar would give away a mob the external pilot view hides
 - [`Content.Client/Parallax/ParallaxOverlay.cs`](../../../Content.Client/Parallax/ParallaxOverlay.cs): the external view pans away from where its eye sits
 - [`Content.Client/Shuttles/BUI/ShuttleConsoleBoundUserInterface.cs`](../../../Content.Client/Shuttles/BUI/ShuttleConsoleBoundUserInterface.cs)
+- [`Content.Client/Shuttles/UI/MapScreen.xaml`](../../../Content.Client/Shuttles/UI/MapScreen.xaml)
+  - destination search; the list scrolls instead of stretching the window
+  - closes the search column
 - [`Content.Client/Shuttles/UI/MapScreen.xaml.cs`](../../../Content.Client/Shuttles/UI/MapScreen.xaml.cs)
+  - search box for the destination register
   - the drive status decides whether the FTL button can be used
   - without a powered drive the FTL button stays off and its preview is released
+  - reapply the destination search to the new list
+  - long names clip instead of running out of the register
 - [`Content.Client/Shuttles/UI/RadarConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/RadarConsoleWindow.xaml.cs): the toggles show the player's saved radar display choices.
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml)
   - xmlns:wf for _WF shuttle controls

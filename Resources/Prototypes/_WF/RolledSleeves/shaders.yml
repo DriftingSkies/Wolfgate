@@ -1,0 +1,16 @@
+- type: shader
+  id: WFRolledSleeves
+  kind: source
+  path: "/Textures/_WF/RolledSleeves/Shaders/rolled_sleeves.swsl"
+
+# Same stencil as DisplacedStencilDraw, which it replaces on displaced layers.
+- type: shader
+  id: WFRolledSleevesDisplaced
+  kind: source
+  path: "/Textures/_WF/RolledSleeves/Shaders/rolled_sleeves_displaced.swsl"
+  stencil:
+    ref: 1
+    op: Keep
+    func: NotEqual
+  params:
+    displacementSize: 127

@@ -21,18 +21,32 @@ public sealed partial class SafetyDepositConsoleWindow : FancyWindow
     public event Action<Guid>? OnWithdrawPressed;
     public event Action<Guid>? OnReclaimPressed;
 
+    private readonly SafetyDepositPurchaseConfirmWindow _confirm = new();
+    private SafetyDepositConsoleState? _state;
+
     public SafetyDepositConsoleWindow()
     {
         RobustXamlLoader.Load(this);
 
-        PurchaseSmallButton.OnPressed += _ => OnPurchasePressed?.Invoke("SafetyDepositBoxSmall");
-        PurchaseMediumButton.OnPressed += _ => OnPurchasePressed?.Invoke("SafetyDepositBoxMedium");
-        PurchaseLargeButton.OnPressed += _ => OnPurchasePressed?.Invoke("SafetyDepositBoxLarge");
+        PurchaseSmallButton.OnPressed += _ => AskPurchase("SafetyDepositBoxSmall", "safety-deposit-console-box-small", _state?.SmallBoxCost);
+        PurchaseMediumButton.OnPressed += _ => AskPurchase("SafetyDepositBoxMedium", "safety-deposit-console-box-medium", _state?.MediumBoxCost);
+        PurchaseLargeButton.OnPressed += _ => AskPurchase("SafetyDepositBoxLarge", "safety-deposit-console-box-large", _state?.LargeBoxCost);
         DepositButton.OnPressed += _ => OnDepositPressed?.Invoke();
+        OnClose += () => _confirm.Close();
+    }
+
+    private void AskPurchase(EntProtoId proto, string nameKey, int? cost)
+    {
+        if (cost is not { } price)
+            return;
+
+        _confirm.Ask(Loc.GetString(nameKey), price, () => OnPurchasePressed?.Invoke(proto));
     }
 
     public void UpdateState(SafetyDepositConsoleState state)
     {
+        _state = state;
+
         // Update purchase buttons with costs
 
         PurchaseSmallButton.Disabled = false; // Bank account check happens server-side

@@ -4,6 +4,7 @@ using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Content.Shared.Localizations;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): HOOK 9 - treatment-capability scope
+using Content.Server._WF.Wolfmed.Medical; // WOLFGATE(Wolfmed)
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -153,6 +154,18 @@ public sealed partial class EvenHealthChange : EntityEffect
                 .WithTreatmentCapabilities(args.TargetEntity, TreatmentCapabilities, Apply);
         else
             Apply();
+
+        // WOLFGATE(Wolfmed): healing chemicals also close the wounds of the groups they heal. Read from the groups, not
+        // dspec, which is empty when the body shows no damage of the group while its wounds are still open.
+        if (args is EntityEffectReagentArgs &&
+            args.EntityManager.HasComponent<WoundHostComponent>(args.TargetEntity))
+        {
+            var healedGroups = Damage.Where(pair => pair.Value < 0).ToList();
+            args.EntityManager.System<WolfmedReagentWoundMendSystem>().Mend(args.TargetEntity,
+                healedGroups.SelectMany(pair => protoMan.Index(pair.Key).DamageTypes).ToList(),
+                -healedGroups.Aggregate(FixedPoint2.Zero, (sum, pair) => sum + pair.Value) * scale * universalReagentHealModifier,
+                TreatmentCapabilities);
+        }
         // WOLFGATE END
     }
 }

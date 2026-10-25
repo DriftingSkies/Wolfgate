@@ -1,8 +1,6 @@
 ﻿<Control xmlns="https://spacestation14.io"
          xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls">
     <BoxContainer Orientation="Vertical">
-        <!-- WOLFGATE(Options): keybind search bar -->
-        <LineEdit Name="WfSearchBar" PlaceHolder="{Loc 'wf-options-binds-search'}" Margin="8 8 8 0" />
         <ScrollContainer VerticalExpand="True">
             <BoxContainer Name="KeybindsContainer" Orientation="Vertical" Margin="8 8 8 8">
 

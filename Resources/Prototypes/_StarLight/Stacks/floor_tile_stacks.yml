@@ -1,0 +1,43 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: stack
+  id: FloorTileCarpetDeco
+  name: stack-carpet-deco-tile
+  spawn: FloorTileItemCarpetDeco
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCarpetArt
+  name: stack-carpet-art-tile
+  spawn: FloorTileItemCarpetArt
+  maxCount: 30
+
+- type: stack
+  id: FloorTileHierophant
+  name: stack-hierophant-tile
+  spawn: FloorTileItemHierophant
+  maxCount: 30
+
+- type: stack
+  id: FloorTileOldConcreteBricks
+  name: stack-old-concrete-bricks-floor
+  spawn: FloorTileItemOldConcreteBricks
+  maxCount: 30
+
+- type: stack
+  id: FloorTileRoughMetal
+  name: stack-rough-metal-floor
+  spawn: FloorTileItemRoughMetal
+  maxCount: 30
+
+- type: stack
+  id: FloorTileRustyMetal
+  name: stack-rusty-metal-floor
+  spawn: FloorTileItemRustyMetal
+  maxCount: 30
+
+- type: stack
+  id: FloorTileTechGreeb
+  name: stack-tech-greeb-floor
+  spawn: FloorTileItemTechGreeb
+  maxCount: 30
+# WOLFGATE END

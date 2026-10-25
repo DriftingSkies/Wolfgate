@@ -12,7 +12,7 @@
   # WOLFGATE(Xenonids): resin, nodes and tunnels do not go on liquid or chasm tiles
   - type: BlockXenoConstruction
   - type: TileEmission
-    color: "#974988"
+    color: "#c906f3" # WOLFGATE(Resprites): Changed from "#ff00ff" to "#c906f3" to match the new sprite color.
   - type: StepTrigger
     requiredTriggeredSpeed: 0
     intersectRatio: 0.1
@@ -30,17 +30,14 @@
   - type: SyncSprite
   - type: Clickable
   - type: Sprite
-    sprite: Tiles/Planet/liquid_plasma.rsi
+    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-phoron.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/liquid_plasma.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-phoron.rsi" to match the new sprite.
     drawdepth: BelowFloor
-    layers:
-    - state: plasma
-      shader: unshaded
   - type: Icon
-    sprite: Tiles/Planet/liquid_plasma.rsi
+    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-phoron.rsi #WOLFGATE(Resprites): Changed from "Tiles/Planet/liquid_plasma.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-phoron.rsi" to match the new sprite.
     state: full
   - type: IconSmooth
-    key: floor
-    base: plasma
+    key: phoron # WOLFGATE(Resprites): Changed from "floor" to "phoron" to match the new sprite.
+    base: water # WOLFGATE(Resprites): Changed from "lava" to "water" to match the new sprite.
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -59,3 +56,5 @@
     tags:
     - HideContextMenu
     - UnavoidableTrap # Mono - TrapAvoider shouldn't make you immune to this.
+  - type: PlacementReplacement # WOLFGATE(Resprites): Added this component to ensure the tile overlay is replaced when this entity is placed.
+    key: tileOverlay # WOLFGATE(Resprites): Added this component to ensure the tile overlay is replaced when this entity is placed.

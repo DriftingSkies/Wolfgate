@@ -1,14 +1,28 @@
+# WOLFGATE(Resprites) START: Port closet sprite mappings from upstream respritening batches.
 - type: entity
   id: LockerBooze
   parent: LockerBase
   name: booze storage
   description: This is where the bartender keeps the booze.
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: cabinet
-    stateDoorOpen: cabinet_open
-    stateDoorClosed: cabinet_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-cabinet.rsi
+    layers:
+    - state: closed
+      map: [ "enum.StorageVisualLayers.Door" ]
+    - state: locked
+      sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-cabinet.rsi
+      map: [ "enum.LockVisualLayers.Lock" ]
+      shader: unshaded
+    - state: welded
+      visible: false
+      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      map: [ "enum.WeldableLayers.BaseWelded" ]
+    - state: paper
+      visible: false
+      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      offset: "-0.065,0"
+      map: [ "enum.PaperLabelVisuals.Layer" ]
   - type: AccessReader
 #    access: [["Bar"]] # Frontier
   - type: EntityStorage
@@ -22,81 +36,62 @@
   id: LockerSteel
   parent: LockerBaseSecure
   name: secure closet
-  components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: secure
-    stateDoorOpen: secure_open
-    stateDoorClosed: secure_door
-
-# Cargo
-- type: entity
-  id: LockerQuarterMaster
-  parent: LockerBaseSecure
-  name: quartermaster's locker
-  components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: qm
-    stateDoorOpen: qm_open
-    stateDoorClosed: qm_door
-  - type: AccessReader
-#    access: [["Quartermaster"]] # Frontier
 
 - type: entity
-  id: LockerSalvageSpecialist
   parent: LockerBase
+  id: LockerSalvageSpecialist
   name: salvage specialist's equipment
   description: Nevermind the pickaxe.
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: mining
-    stateDoorOpen: mining_open
-    stateDoorClosed: mining_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/cargo-secure-salvage.rsi
   - type: AccessReader
 #    access: [["Salvage"]] # Frontier
 
-# Command
+## COMMAND ##
+# Captain
 - type: entity
   id: LockerCaptain
   parent: LockerBaseSecure
   name: captain's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: cap
-    stateDoorOpen: cap_open
-    stateDoorClosed: cap_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-captain.rsi
   - type: AccessReader
-    access: [["Captain"]]
+    access: [ [ "Captain" ] ]
 
+# Head of Personnel
 - type: entity
   id: LockerHeadOfPersonnel
   parent: LockerBaseSecure
   name: head of personnel's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: hop
-    stateDoorOpen: hop_open
-    stateDoorClosed: hop_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
   - type: AccessReader
-    access: [["HeadOfPersonnel"]]
+    access: [ [ "HeadOfPersonnel" ] ]
 
-# CE
+# Chief Engineer
 - type: entity
   id: LockerChiefEngineer
   parent: LockerBaseSecure
   name: chief engineer's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: ce
-    stateDoorOpen: ce_open
-    stateDoorClosed: ce_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-engineering.rsi
   - type: AccessReader
 #    access: [ [ "ChiefEngineer" ] ] # Frontier
+
+# Quarter Master
+- type: entity
+  parent: LockerBase
+  id: LockerQuarterMaster
+  name: quartermaster's locker
+  components:
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-cargo.rsi
+  - type: AccessReader
+#    access: [ [ "Quartermaster" ] ]
 
 # Electrical supplies
 - type: entity
@@ -104,11 +99,8 @@
   parent: LockerBase
   name: electrical supplies locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: eng
-    stateDoorOpen: eng_open
-    stateDoorClosed: eng_elec_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-electrical.rsi
   - type: AccessReader
 #    access: [ [ "Engineering" ] ] # Frontier
 
@@ -118,11 +110,8 @@
   parent: LockerBase
   name: welding supplies locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: eng
-    stateDoorOpen: eng_open
-    stateDoorClosed: eng_weld_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-welding.rsi
   - type: AccessReader
 #    access: [ [ "Engineering" ] ] # Frontier
 
@@ -132,11 +121,8 @@
   parent: LockerBase
   name: atmospheric technician's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: atmos
-    stateDoorOpen: atmos_open
-    stateDoorClosed: atmos_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-atmos.rsi
   - type: AccessReader
 #    access: [ [ "Atmospherics" ] ] # Frontier
 
@@ -146,13 +132,22 @@
   parent: LockerBase
   name: engineer's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: eng_secure
-    stateDoorOpen: eng_secure_open
-    stateDoorClosed: eng_secure_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-engineer.rsi
   - type: AccessReader
 #    access: [ [ "Engineering" ] ] # Frontier
+
+# Evac Repair
+- type: entity
+  parent: LockerBase
+  id: LockerEvacRepair
+  name: emergency shuttle emergency locker
+  description: It's emergencies all the way down.
+  components:
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-shuttlerepair.rsi
+  - type: AccessReader
+    access: [ [ "Engineering" ] ]
 
 # Freezer
 - type: entity
@@ -161,11 +156,24 @@
   name: freezer
   suffix: No Access
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: freezer
-    stateDoorOpen: freezer_open
-    stateDoorClosed: freezer_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-freezer.rsi
+    layers:
+    - state: closed
+      map: [ "enum.StorageVisualLayers.Door" ]
+    - state: locked
+      sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-freezer.rsi
+      map: [ "enum.LockVisualLayers.Lock" ]
+      shader: unshaded
+    - state: welded
+      visible: false
+      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      map: [ "enum.WeldableLayers.BaseWelded" ]
+    - state: paper
+      visible: false
+      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      offset: "-0.065,0"
+      map: [ "enum.PaperLabelVisuals.Layer" ]
   - type: ExplosionResistance
     damageCoefficient: 0.01 # Mono 0.50->0.01
   - type: AntiRottingContainer
@@ -190,11 +198,8 @@
   parent: LockerBase
   name: botanist's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: hydro
-    stateDoorOpen: hydro_open
-    stateDoorClosed: hydro_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-botany.rsi
   - type: AccessReader
 #    access: [ [ "Hydroponics" ] ] # Frontier
 
@@ -205,11 +210,8 @@
   name: medicine locker
   description: Filled to the brim with medical junk.
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: med
-    stateDoorOpen: med_open
-    stateDoorClosed: med_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-medicine.rsi
   - type: AccessReader
 #    access: [ [ "Medical" ] ] # Frontier
 
@@ -219,11 +221,8 @@
   parent: LockerBase
   name: medical doctor's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: med_secure
-    stateDoorOpen: med_secure_open
-    stateDoorClosed: med_secure_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-doctor.rsi
   - type: AccessReader
 #    access: [ [ "Medical" ] ] # Frontier
 
@@ -233,11 +232,8 @@
   parent: LockerBase
   name: paramedic's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: paramed
-    stateDoorOpen: paramed_open
-    stateDoorClosed: paramed_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-paramedic.rsi
   - type: AccessReader
 #    access: [ [ "Medical" ] ] # Frontier
 
@@ -248,66 +244,52 @@
   parent: LockerBase
   name: chemical locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: med
-    stateDoorOpen: med_open
-    stateDoorClosed: chemical_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-chemistry.rsi
   - type: AccessReader
 #    access: [ [ "Chemistry" ] ] # Frontier
 
-# CMO
+# Chief Medical Officer
 - type: entity
   id: LockerChiefMedicalOfficer
   parent: LockerBaseSecure
   name: chief medical officer's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: cmo
-    stateDoorOpen: cmo_open
-    stateDoorClosed: cmo_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-medical.rsi
   - type: AccessReader
 #    access: [ [ "ChiefMedicalOfficer" ] ] # Frontier
 
-# Science
+# Research Director
 - type: entity
   id: LockerResearchDirector
   parent: LockerBase
   name: research director's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: rd
-    stateDoorOpen: rd_open
-    stateDoorClosed: rd_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-science.rsi
   - type: AccessReader
 #    access: [ [ "ResearchDirector" ] ] # Frontier
 
+# Science
 - type: entity
   id: LockerScientist
   parent: LockerBase
   name: scientist's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: science
-    stateDoorOpen: science_open
-    stateDoorClosed: science_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/science-secure-scientist.rsi
   - type: AccessReader
 #    access: [ [ "Research" ] ] # Frontier
 
-# HoS
+# Head of Security
 - type: entity
   id: LockerHeadOfSecurity
   parent: [LockerBaseSecure]
   name: head of security's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: hos
-    stateDoorOpen: hos_open
-    stateDoorClosed: hos_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-security.rsi
   - type: AccessReader
     access: [["Security"]]
 
@@ -317,11 +299,8 @@
   parent: [BaseStructureIndestructible, BaseStructureLockImmuneToEmag, BaseStructureAccessReaderImmuneToEmag, BaseStructureDisableToolUse, LockerBaseSecure] # Frontier: add BaseStructureIndestructible, BaseStructureLockImmuneToEmag, BaseStructureAccessReaderImmuneToEmag, BaseStructureDisableToolUse
   name: warden's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: warden
-    stateDoorOpen: warden_open
-    stateDoorClosed: warden_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/security-secure-warden.rsi
   - type: AccessReader
     access: [["Armory"]]
 
@@ -331,11 +310,8 @@
   parent: LockerBaseSecure
   name: brigmedic's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: brigmedic
-    stateDoorOpen: armory_open
-    stateDoorClosed: brigmedic_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/misc-secure-brigmedic.rsi
   - type: AccessReader
     access: [["Security"]]
 
@@ -345,11 +321,8 @@
   parent: LockerBaseSecure
   name: security officer's locker
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: sec
-    stateDoorOpen: sec_open
-    stateDoorClosed: sec_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/security-secure-officer.rsi
   - type: AccessReader
     access: [["Security"]]
 
@@ -358,11 +331,24 @@
   parent: LockerBaseSecure
   name: gun safe
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: shotguncase
-    stateDoorOpen: shotguncase_open
-    stateDoorClosed: shotguncase_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/armory-secure-gunsafe.rsi
+    layers:
+    - state: closed
+      map: [ "enum.StorageVisualLayers.Door" ]
+    - state: locked
+      sprite: _WF/Resprites/Wizden/Storage/Closets/armory-secure-gunsafe.rsi
+      map: [ "enum.LockVisualLayers.Lock" ]
+      shader: unshaded
+    - state: welded
+      visible: false
+      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      map: [ "enum.WeldableLayers.BaseWelded" ]
+    - state: paper
+      visible: false
+      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      offset: "-0.065,0"
+      map: [ "enum.PaperLabelVisuals.Layer" ]
   - type: AccessReader
   - type: Construction
     graph: GunSafe
@@ -406,11 +392,8 @@
   parent: LockerBaseSecure
   description: It's a personal storage unit for operative gear.
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: syndicate
-    stateDoorOpen: syndicate_open
-    stateDoorClosed: syndicate_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/antag-secure-syndicate.rsi
 
 # Bluespace
 - type: entity
@@ -445,13 +428,10 @@
   name: clown locker
   parent: LockerBaseSecure
   components:
-  - type: Appearance
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-clown.rsi
   - type: AccessReader
-#    access: [["Theatre"]] # Frontier
-  - type: EntityStorageVisuals
-    stateBaseClosed: clown
-    stateDoorOpen: clown_open
-    stateDoorClosed: clown_door
+#    access: [ [ "Theatre" ] ]
 
 # Mime
 - type: entity
@@ -459,13 +439,10 @@
   name: mime locker
   parent: LockerBaseSecure
   components:
-  - type: Appearance
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-mime.rsi
   - type: AccessReader
 #    access: [["Theatre"]] # Frontier
-  - type: EntityStorageVisuals
-    stateBaseClosed: mime
-    stateDoorOpen: mime_open
-    stateDoorClosed: mime_door
 
 # Representative
 - type: entity
@@ -473,11 +450,9 @@
   name: representative locker
   parent: LockerBaseSecure
   components:
-  - type: Appearance
   - type: AccessReader
 #    access: [["Command"]]
     access: [["HeadOfPersonnel"]] # Frontier
-  - type: EntityStorageVisuals
-    stateBaseClosed: hop
-    stateDoorOpen: hop_open
-    stateDoorClosed: representative_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
+# WOLFGATE END

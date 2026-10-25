@@ -1,0 +1,34 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-4.0",
+  "copyright": "Sprited by Davyei (Github) for Moffstation | ported from https://github.com/moff-station/moff-station-14/tree/d1a8a5e6d279ad62f95f358ceb79a7d532f331de/Resources/Textures/_Moffstation/Clothing/Mask/pierrot.rsi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "equipped-MASK",
+      "directions": 4
+    },
+    {
+      "name": "equipped-MASK-vulpkanin",
+      "directions": 4
+    },
+    {
+      "name": "equipped-MASK-reptilian",
+      "directions": 4
+    },
+    {
+      "name": "equipped-MASK-vox",
+      "directions": 4
+    },
+    {
+      "name": "equipped-MASK-hamster",
+      "directions": 4
+    }
+  ]
+}

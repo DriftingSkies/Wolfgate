@@ -252,6 +252,12 @@ public sealed partial class WFMappingModeSystem
             return false;
         }
 
+        if (IsTesting(player))
+        {
+            Refuse(player, "wf-mapping-test-no-edit");
+            return false;
+        }
+
         coords = GetCoordinates(netCoords);
         if (!coords.IsValid(EntityManager) ||
             _transform.GetMap(coords) is not { } map ||

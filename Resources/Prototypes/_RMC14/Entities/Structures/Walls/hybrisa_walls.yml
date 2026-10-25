@@ -1,0 +1,124 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+# Rocks
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallHybrisaRock
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_rock.rsi
+    state: rock
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_rock.rsi
+    state: rock
+  - type: IconSmooth
+    key: walls
+    base: rock
+
+# Engineer Ship
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallEngineer
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_engineership.rsi
+    state: metal
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_engineership.rsi
+    state: metal
+  - type: IconSmooth
+    key: walls
+    base: metal
+
+# Colony
+
+- type: entity
+  parent: CMWallMetal
+  id: RMCWallHybrisa
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_wall.rsi
+    state: strata_bare_outpost_
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_wall.rsi
+    state: strata_bare_outpost_
+  - type: IconSmooth
+    key: walls
+    base: strata_bare_outpost_
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallHybrisaHull
+  suffix: hull
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_rwall.rsi
+    state: strata_ribbed_outpost_
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_rwall.rsi
+    state: strata_hull
+  - type: IconSmooth
+    key: walls
+    base: strata_ribbed_outpost_
+
+# Engineering
+
+- type: entity
+  parent: RMCWallHybrisaHull
+  id: RMCWallHybrisaEngiHull
+  suffix: engineering, hull
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_rwall_engineering.rsi
+    state: strata_ribbed_outpost_
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_rwall_engineering.rsi
+    state: strata_hull
+
+# Space Port
+
+- type: entity
+  parent: RMCWallHybrisa
+  id: RMCWallHybrisaSpacePort
+  suffix: space port
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_spaceport.rsi
+    state: metal
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_spaceport.rsi
+    state: metal
+  - type: IconSmooth
+    key: walls
+    base: metal
+
+- type: entity
+  parent: RMCWallHybrisaHull
+  id: RMCWallHybrisaSpacePortHull
+  suffix: space port, hull
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_spaceport_reinforced.rsi
+    state: rwall
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_spaceport_reinforced.rsi
+    state: hwall
+  - type: IconSmooth
+    key: walls
+    base: rwall
+
+# Research
+
+- type: entity
+  parent: RMCWallHybrisaHull
+  id: RMCWallHybrisaResearchHull
+  suffix: research, hull
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hybrisa_rwall_research.rsi
+    state: strata_ribbed_outpost_
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hybrisa_rwall_research.rsi
+    state: strata_hull
+# WOLFGATE END

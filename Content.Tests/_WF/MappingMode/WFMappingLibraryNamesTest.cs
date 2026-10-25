@@ -1,5 +1,6 @@
 using System;
 using Content.Shared._WF.MappingMode;
+using Content.Shared._WF.MappingMode.Export;
 using NUnit.Framework;
 using Robust.Shared.Network;
 
@@ -122,6 +123,12 @@ public sealed class WFMappingLibraryNamesTest
             Assert.That(WFMappingLibraryNames.DownloadVesselFile("test"), Is.EqualTo("test.vessel.yml"));
             Assert.That(WFMappingLibraryNames.IsDownloadFile("test", "test_z1.yml"), Is.True);
             Assert.That(WFMappingLibraryNames.IsDownloadFile("test", "test.grid.yml"), Is.False);
+            Assert.That(WFMappingLibraryNames.DownloadGridFile("Old Outpost 2"), Is.EqualTo("old_outpost_2.yml"), "The grid export follows the ship grid's naming.");
+            Assert.That(WFMappingLibraryNames.ExportFile("Old Outpost 2", WFMappingExportKind.Grid), Is.EqualTo("old_outpost_2.yml"));
+            Assert.That(WFMappingLibraryNames.ExportFile("Old Outpost 2", WFMappingExportKind.Ship), Is.EqualTo("Old Outpost 2.zip"));
+            Assert.That(WFMappingLibraryNames.ExportFile("Old Outpost 2", WFMappingExportKind.Map), Is.EqualTo("Old Outpost 2.zip"));
+            Assert.That(WFMappingLibraryNames.IsDownloadFile("Old Outpost 2", "old_outpost_2.yml"), Is.True, "The grid export's name doesn't start with the map name.");
+            Assert.That(WFMappingLibraryNames.IsDownloadFile("Old Outpost 2", "old_outpost.yml"), Is.False);
             Assert.That(WFMappingLibraryNames.IsDownloadFile("CON", "CON.yml"), Is.False, "Not a valid map name.");
         });
     }

@@ -1,0 +1,15 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  parent: CMTileBase
+  id: CMFloorSteel
+  name: tiles-cm-default
+  sprite: /Textures/_RMC14/Tiles/almayer/default.png
+  canPlaceTunnel: false
+
+- type: tile
+  parent: CMTileBase
+  id: CMFloorPlate
+  name: tiles-cm-plate
+  sprite: /Textures/_RMC14/Tiles/almayer/plate.png
+  canPlaceTunnel: false
+# WOLFGATE END

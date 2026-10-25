@@ -1,0 +1,465 @@
+﻿- type: Tag
+  id: WFBunnysuit
+
+# DeltaV mime set
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckMimeCloak
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_cloak.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_cloak.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckMimeMantle
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_mantle.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_mantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckMimeMantleOffShoulder
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_mantle_offshoulder.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_mantle_offshoulder.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckMimeStole
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_stole.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/mime_stole.rsi
+
+- type: entity
+  parent: ClothingOuterWinterCoatLong
+  id: ClothingOuterWinterLongMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/OuterClothing/mime_long_coat.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/OuterClothing/mime_long_coat.rsi
+
+- type: entity
+  parent: ClothingOuterWinterCoatLong
+  id: ClothingOuterFurCoatMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/OuterClothing/mime_fur_coat.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/OuterClothing/mime_fur_coat.rsi
+
+- type: entity
+  parent: ClothingShoesBaseWinterBoots
+  id: ClothingShoesFurBootsMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/mime_fur_boots.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/mime_fur_boots.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpsuitMimeTurtleneckPants
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/mime_turtleneck_pants.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/mime_turtleneck_pants.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpskirtMimeTurtleneckSkirt
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/mime_turtleneck_skirt.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/mime_turtleneck_skirt.rsi
+
+# Moffstation
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatClownSunhat
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Head/clown_sunhat.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Head/clown_sunhat.rsi
+
+- type: entity
+  parent: ClothingShoesClown
+  id: ClothingShoesClownSandals
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/clown_sandals.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/clown_sandals.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepClown
+      params:
+        variation: 0.17
+        volume: -15
+
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformHonkini
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/honkini.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/honkini.rsi
+
+- type: entity
+  parent: ClothingHeadHatJesterAlt
+  id: ClothingHeadHatHarlequin
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Head/harlequin_hood.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Head/harlequin_hood.rsi
+
+- type: entity
+  parent: ClothingMaskClownBase
+  id: ClothingMaskClownHarlequin
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Mask/harlequin.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Mask/harlequin.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpsuitHarlequin
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/harlequin.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Uniforms/harlequin.rsi
+
+- type: entity
+  parent: ClothingShoesClown
+  id: ClothingShoesHarlequin
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/harlequin_shoes.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/harlequin_shoes.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepJester
+      params:
+        variation: 0.07
+
+- type: entity
+  parent: ClothingMaskMime
+  id: ClothingMaskMimePierrot
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Mask/pierrot.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Mask/pierrot.rsi
+
+# Panta Rhei bunnysuits
+
+- type: entity
+  parent: ClothingUniformBase
+  id: BunnysuitClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/suit_clown.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/suit_clown.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingUniformBase
+  id: BunnysuitMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/suit_mime.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/suit_mime.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingShoesBase
+  id: ClothingUndergarmentSocksBunnysuitClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/socks_clown.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/socks_clown.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingShoesBase
+  id: ClothingUndergarmentSocksBunnysuitMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/socks_mime.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/socks_mime.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingOuterStorageBase
+  id: BunnyJacketClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/jacket_clown.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/jacket_clown.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingOuterStorageBase
+  id: BunnyJacketMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/jacket_mime.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/jacket_mime.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingHeadBase
+  id: BunnyEarsClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/ears_icons.rsi
+    state: clown
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/ears_equipped.rsi
+    equippedState: clown
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: ClothingHeadBase
+  id: BunnyEarsMime
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/ears_icons.rsi
+    state: mime
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/ears_equipped.rsi
+    equippedState: mime
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  parent: [ClothingNeckBase, BaseFoldable]
+  id: BowtieClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/bowtie_clown.rsi
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: icon-tied
+      map: [ "foldedLayer" ]
+      visible: false
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/bowtie_clown.rsi
+  - type: Appearance
+  - type: Foldable
+    canFoldInsideContainer: true
+    unfoldVerbText: bowtie-untie
+    foldVerbText: bowtie-tie
+  - type: FoldableClothing
+    foldedEquippedPrefix: tied
+    foldedHeldPrefix: tied
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+    - WFBunnysuit
+
+- type: entity
+  abstract: true
+  parent: BoxBase
+  id: BunnysuitBox
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Bunnysuit/box.rsi
+    state: icon
+  - type: Item
+    size: Normal
+    shape:
+    - 0,0,1,1
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,5,3
+    whitelist:
+      tags:
+      - WFBunnysuit
+  - type: PhysicalComposition
+    materialComposition:
+      Cardboard: 100
+  - type: Tag
+    tags:
+    - BoxCardboard
+
+- type: entity
+  parent: BunnysuitBox
+  id: BunnysuitBoxClown
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: BunnysuitClown
+        - id: ClothingUndergarmentSocksBunnysuitClown
+        - id: BunnyJacketClown
+        - id: BowtieClown
+        - id: BunnyEarsClown
+
+- type: entity
+  parent: BunnysuitBox
+  id: BunnysuitBoxMime
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: BunnysuitMime
+        - id: ClothingUndergarmentSocksBunnysuitMime
+        - id: BunnyJacketMime
+        - id: BunnyEarsMime
+
+# Starlight and wizden
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckCloakHonk
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/honk_cloak.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/honk_cloak.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatMitreClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Head/mitre_clown.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Head/mitre_clown.rsi
+
+# SS13
+
+- type: entity
+  parent: ClothingHandsGlovesSyntheticBase
+  id: WFClothingHandsGlovesPinkClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Hands/pink_clown_gloves.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Hands/pink_clown_gloves.rsi
+  - type: Fiber
+    fiberMaterial: fibers-synthetic
+    fiberColor: fibers-pink
+
+- type: entity
+  parent: ClothingShoesClown
+  id: WFClothingShoesPinkClownHeels
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/pink_clown_heels.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Shoes/pink_clown_heels.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepHighHeels
+      params:
+        variation: 0.09
+
+- type: entity
+  parent: ClothingNeckPinBase
+  id: WFClothingNeckClownPin
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/pin_clown.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/pin_clown.rsi
+
+- type: entity
+  parent: ClothingNeckPinBase
+  id: WFClothingNeckMimePin
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Neck/pin_mime.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Neck/pin_mime.rsi
+
+- type: entity
+  parent: [ClothingMaskBase, BaseToggleClothing]
+  id: WFClothingMaskPartyHorn
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/Mask/party_horn.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/Mask/party_horn.rsi
+  - type: Item
+    size: Small
+  - type: ItemToggle
+    onUse: false
+    soundActivate:
+      path: /Audio/_WF/ClownCosmetics/Clothing/party_horn.ogg
+    soundDeactivate:
+      path: /Audio/_WF/ClownCosmetics/Clothing/party_horn.ogg
+  - type: ToggleClothing
+    action: WFActionTootPartyHorn
+
+- type: entity
+  categories: [ Actions, HideSpawnMenu ]
+  id: WFActionTootPartyHorn
+  components:
+  - type: InstantAction
+    itemIconStyle: BigItem
+    useDelay: 10
+    event: !type:ToggleActionEvent

@@ -238,7 +238,7 @@ public sealed partial class MappingToolsSystem
     private void SendLinkSnapshot(ICommonSession session, EntityUid map)
     {
         var links = new List<MappingSignalLinkState>();
-        var query = EntityQueryEnumerator<DeviceLinkSourceComponent, TransformComponent>();
+        var query = AllEntityQuery<DeviceLinkSourceComponent, TransformComponent>(); // All: session maps are paused
         while (query.MoveNext(out var uid, out var source, out var xform) && links.Count < MaxSnapshotLinks)
         {
             if (xform.MapUid != map || source.LinkedPorts.Count == 0)

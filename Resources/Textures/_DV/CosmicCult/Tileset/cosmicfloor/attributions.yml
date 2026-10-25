@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- files: ["tile_glyph.png", "tile_half.png", "tile_malign.png", "tile_notched.png", "tile_smooth.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Delta-V at commit https://github.com/DeltaV-Station/Delta-v/commit/e0e9917ffb145c0d1dc7509e7115ae8c81406eef."
+  source: "https://github.com/DeltaV-Station/Delta-v"
+# WOLFGATE END

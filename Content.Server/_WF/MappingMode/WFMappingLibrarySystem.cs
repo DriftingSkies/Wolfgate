@@ -5,6 +5,7 @@ using Content.Server._WF.MappingTools;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Administration.Logs;
 using Content.Shared._WF.MappingMode;
+using Content.Shared._WF.MappingMode.Export;
 using Content.Shared.Database;
 using Robust.Server.Player;
 using Robust.Shared.Configuration;
@@ -37,8 +38,8 @@ public sealed class WFMappingLibrarySystem : EntitySystem
     [Dependency] private WFMappingTemplateShareSystem _share = default!;
 
     /// <summary>
-    /// A version folder on disk: its name, level files by depth, the grid and vessel files beside levels holding one
-    /// grid, each level's grid count from its file header (-1 when unreadable) and size.
+    /// A version folder on disk: its name, level files by depth, the grid, vessel and scan files beside levels holding
+    /// one grid, each level's grid count from its file header (-1 when unreadable), the ship details and size.
     /// </summary>
     public sealed class LibraryVersion(WFMappingVersionName name)
     {
@@ -46,8 +47,12 @@ public sealed class WFMappingLibrarySystem : EntitySystem
         public readonly SortedDictionary<int, ResPath> Levels = new();
         public readonly SortedDictionary<int, ResPath> Grids = new();
         public readonly SortedDictionary<int, ResPath> Vessels = new();
+        public readonly SortedDictionary<int, ResPath> Scans = new();
         public readonly SortedDictionary<int, int> GridCounts = new();
         public long Bytes;
+
+        /// <summary>The mapper's ship details saved with the version, if any.</summary>
+        public ResPath? ShipDetails;
 
         /// <summary>The shared template saved with the version, and its placement.</summary>
         public ResPath? TemplateImage;
@@ -158,6 +163,10 @@ public sealed class WFMappingLibrarySystem : EntitySystem
                     version.Grids[depth] = filePath;
                 else if (WFMappingLibraryNames.TryParseVesselFile(file, out depth))
                     version.Vessels[depth] = filePath;
+                else if (WFMappingLibraryNames.TryParseScanFile(file, out depth))
+                    version.Scans[depth] = filePath;
+                else if (file == WFMappingLibraryNames.ShipDetailsFile)
+                    version.ShipDetails = filePath;
                 else if (file == WFMappingTemplateShareSystem.ImageFile)
                     version.TemplateImage = filePath;
                 else if (file == WFMappingTemplateShareSystem.SettingsFile)
@@ -310,7 +319,7 @@ public sealed class WFMappingLibrarySystem : EntitySystem
                     version.ShipDepth != null));
             }
 
-            maps.Add(new WFMappingLibraryMap(map.Name, versions));
+            maps.Add(new WFMappingLibraryMap(map.Name, versions, ReadShipDetails(map)));
         }
 
         Log.Debug($"Sending {player} their mapping library: {maps.Count} maps, {scan.Bytes} bytes");
@@ -324,6 +333,75 @@ public sealed class WFMappingLibrarySystem : EntitySystem
     {
         if (_players.TryGetSessionById(user, out var player))
             SendLibrary(player);
+    }
+
+    /// <summary>The ship details of a map's newest version that keeps any; null when none does or it won't read.</summary>
+    public WFMappingShipDetails? ReadShipDetails(LibraryMap map)
+    {
+        for (var i = map.Versions.Count - 1; i >= 0; i--)
+        {
+            if (map.Versions[i].ShipDetails is not { } path)
+                continue;
+
+            try
+            {
+                return WFMappingShipDetailsYaml.Read(_res.UserData.ReadAllText(path));
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Reading the ship details {path} failed: {e}");
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>The vessel scan saved with a version's level, or null when it has none or it won't read.</summary>
+    public WFMappingVesselScan? ReadScan(LibraryVersion version, int depth)
+    {
+        if (!version.Scans.TryGetValue(depth, out var path))
+            return null;
+
+        try
+        {
+            return WFMappingVesselScan.Read(_res.UserData.ReadAllText(path));
+        }
+        catch (Exception e)
+        {
+            Log.Warning($"Reading the vessel scan {path} failed: {e}");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Writes a map's ship details into a version folder, so the next save carries them on, and rewrites the version's
+    /// vessel file with them; false when the write failed.
+    /// </summary>
+    public bool TryWriteShipDetails(NetUserId user, LibraryMap map, LibraryVersion version, WFMappingShipDetails details)
+    {
+        try
+        {
+            var folder = WFMappingLibraryNames.VersionFolder(user, map.Name, version.Name.Folder);
+            _res.UserData.WriteAllText(folder / WFMappingLibraryNames.ShipDetailsFile, WFMappingShipDetailsYaml.Write(details));
+            version.ShipDetails = folder / WFMappingLibraryNames.ShipDetailsFile;
+            if (version.ShipDepth is { } depth && ReadScan(version, depth) is { } scan)
+            {
+                _res.UserData.WriteAllText(WFMappingLibraryNames.VesselPath(user, map.Name, version.Name.Folder, depth),
+                    _vessel.Generate(scan, map.Name, details, out _));
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Writing the ship details of {user}'s library map \"{map.Name}\" failed: {e}");
+            return false;
+        }
+        finally
+        {
+            _scans.Remove(user);
+        }
     }
 
     #endregion
@@ -345,6 +423,12 @@ public sealed class WFMappingLibrarySystem : EntitySystem
         if (!_saveThrottle.TryTake(player.UserId, _timing.CurTime))
         {
             _mapping.Notify(player, false, "wf-mapping-mode-save-too-soon");
+            return;
+        }
+
+        if (_mapping.IsTesting(player))
+        {
+            _mapping.Notify(player, false, "wf-mapping-export-while-testing");
             return;
         }
 
@@ -442,11 +526,23 @@ public sealed class WFMappingLibrarySystem : EntitySystem
         return SaveVersion(levels, ground, user, mapName, kind, $"mapping session {session.Code}", session.Template);
     }
 
-    /// <summary>Resets the air on every grid of the levels to its roundstart mix, as <c>fixgridatmos</c> does.</summary>
-    private void FixAtmos(List<EntityUid> levels, WFMappingSession session)
+    /// <summary>
+    /// Resets the air on every grid of the levels to its roundstart mix, as <c>fixgridatmos</c> does, and relinks
+    /// windows to the grid they stand on. Live testing runs it on its copy of the levels.
+    /// </summary>
+    public void FixAtmos(List<EntityUid> levels, WFMappingSession session)
     {
         foreach (var level in levels)
         {
+            try
+            {
+                _atmos.WfRelinkDeltaPressure(level);
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Relinking windows on {ToPrettyString(level)} in mapping session {session.Code} failed: {e}");
+            }
+
             var children = Transform(level).ChildEnumerator;
             while (children.MoveNext(out var child))
             {
@@ -523,13 +619,18 @@ public sealed class WFMappingLibrarySystem : EntitySystem
                 return SaveResult.Fail("wf-mapping-mode-save-failed");
 
             written = folder;
+            var details = map != null ? ReadShipDetails(map) : null;
             if (!_zLevels.TrySaveLevels(levels, ground,
                     depth => WFMappingLibraryNames.LevelPath(user, folderName, versionName.Folder, depth)) ||
-                !SaveGrids(levels, ground, user, folderName, versionName.Folder))
+                !SaveGrids(levels, ground, user, folderName, versionName.Folder, details))
             {
                 DeleteQuietly(folder);
                 return SaveResult.Fail("wf-mapping-mode-save-failed");
             }
+
+            // The mapper's ship details ride along from the newest version that had them.
+            if (details != null)
+                _res.UserData.WriteAllText(folder / WFMappingLibraryNames.ShipDetailsFile, WFMappingShipDetailsYaml.Write(details));
 
             if (template != null)
                 _share.WriteSaved(template, folder);
@@ -571,10 +672,12 @@ public sealed class WFMappingLibrarySystem : EntitySystem
     }
 
     /// <summary>
-    /// Saves the grid of every level that holds exactly one as a grid file beside the level, with its generated vessel
-    /// prototype; false when a grid file failed. A vessel that fails to generate is only logged.
+    /// Saves the grid of every level that holds exactly one as a grid file beside the level, with its scan and its
+    /// generated vessel prototype (the mapper's details applied); false when a grid file failed. A vessel that fails to
+    /// generate is only logged.
     /// </summary>
-    private bool SaveGrids(List<EntityUid> levels, int ground, NetUserId user, string mapName, string version)
+    private bool SaveGrids(List<EntityUid> levels, int ground, NetUserId user, string mapName, string version,
+        WFMappingShipDetails? details)
     {
         for (var i = 0; i < levels.Count; i++)
         {
@@ -587,8 +690,10 @@ public sealed class WFMappingLibrarySystem : EntitySystem
 
             try
             {
+                var scan = _vessel.Scan(grid);
+                _res.UserData.WriteAllText(WFMappingLibraryNames.ScanPath(user, mapName, version, depth), scan.Write());
                 _res.UserData.WriteAllText(WFMappingLibraryNames.VesselPath(user, mapName, version, depth),
-                    _vessel.Generate(grid, mapName));
+                    _vessel.Generate(scan, mapName, details, out _));
             }
             catch (Exception e)
             {

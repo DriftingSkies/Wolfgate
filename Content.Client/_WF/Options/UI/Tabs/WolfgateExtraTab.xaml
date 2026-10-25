@@ -13,6 +13,7 @@
                 <ui:OptionDropDown Name="DropDownWolfgateStyle" Title="{Loc 'ui-options-wf-ui-style'}" />
                 <CheckBox Name="WindowPopoutCheckBox" Text="{Loc 'ui-options-wf-window-popout'}" />
                 <CheckBox Name="CockpitAutoEnterCheckBox" Text="{Loc 'ui-options-wf-cockpit-auto-enter'}" />
+                <CheckBox Name="DefaultNorthCheckBox" Text="{Loc 'ui-options-wf-default-north'}" />
                 <Label Text="{Loc 'ui-options-wf-effects'}" StyleClasses="LabelKeyText"/>
                 <CheckBox Name="HeatHazeCheckBox" Text="{Loc 'ui-options-wf-heat-haze'}" />
                 <ui:OptionSlider Name="HeatHazeStrengthSlider" Title="{Loc 'ui-options-wf-heat-haze-strength'}" />
@@ -25,6 +26,7 @@
                 <ui:OptionSlider Name="SyntheticHudScaleSlider" Title="{Loc 'ui-options-wf-synthetic-hud-scale'}" />
                 <Label Text="{Loc 'ui-options-wf-audio'}" StyleClasses="LabelKeyText"/>
                 <ui:OptionSlider Name="InternetSoundVolumeSlider" Title="{Loc 'ui-options-wf-internet-sound-volume'}" />
+                <ui:OptionSlider Name="JukeboxVolumeSlider" Title="{Loc 'ui-options-wf-jukebox-volume'}" />
                 <CheckBox Name="SoundtrackMuteCheckBox" Text="{Loc 'ui-options-wf-soundtrack-mute'}" />
                 <Label Text="{Loc 'ui-options-general-accessibility'}" StyleClasses="LabelKeyText"/>
                 <CheckBox Name="DisableFiltersCheckBox" Text="{Loc 'ui-options-no-filters'}" />

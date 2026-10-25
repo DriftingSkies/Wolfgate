@@ -1,0 +1,9 @@
+﻿- type: loadout
+  id: WFContractorHonkCoFlippo
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - HonkCoFlippo

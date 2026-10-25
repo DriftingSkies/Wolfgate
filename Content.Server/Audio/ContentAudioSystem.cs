@@ -75,6 +75,9 @@ public sealed partial class ContentAudioSystem : SharedContentAudioSystem
 
     private string[] ShuffleLobbyPlaylist()
     {
+        // WOLFGATE(Symphony): a playlist the SSymphony panel set plays in its own order, round after round
+        if (LobbyPlaylistOverride != null)
+            return LobbyPlaylistOverride.ToArray();
         var playlist = _lobbyMusicCollection.PickFiles
                                             .Select(x => x.ToString())
                                             .ToArray();

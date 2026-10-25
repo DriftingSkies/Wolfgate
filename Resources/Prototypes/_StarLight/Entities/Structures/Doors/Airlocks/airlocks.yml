@@ -1,0 +1,8 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  parent: AirlockGlass
+  id: AirlockXenoborgGlass
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Doors/Airlocks/Glass/xenoborg.rsi
+# WOLFGATE END

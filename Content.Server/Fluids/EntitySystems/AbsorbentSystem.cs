@@ -329,6 +329,10 @@ public sealed partial class AbsorbentSystem : SharedAbsorbentSystem
 
         _solutionContainerSystem.AddSolution(puddle.Solution.Value, absorberSplit);
         _solutionContainerSystem.AddSolution(absorberSoln, puddleSplit);
+        // WOLFGATE(BloodTrail) START: the floor can drink all the water, so AddSolution may raise no change event
+        _solutionContainerSystem.UpdateChemicals(puddle.Solution.Value);
+        _solutionContainerSystem.UpdateChemicals(absorberSoln);
+        // WOLFGATE END
 
         _audio.PlayPvs(absorber.PickupSound, target);
         if (useDelay != null)

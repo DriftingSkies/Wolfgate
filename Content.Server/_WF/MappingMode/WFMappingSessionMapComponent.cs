@@ -11,6 +11,9 @@ public enum WFMappingMapKind : byte
 
     /// <summary>Holds a reference file while its mapper places it.</summary>
     Scratch,
+
+    /// <summary>A running level of a session's live test: initialised, never saved, never edited.</summary>
+    Test,
 }
 
 /// <summary>

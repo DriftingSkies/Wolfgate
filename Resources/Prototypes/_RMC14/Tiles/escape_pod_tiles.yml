@@ -1,0 +1,33 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  parent: CMTileBase
+  id: RMCFloorEscapePod00
+  name: tiles-rmc-escape-pod
+  sprite: /Textures/_RMC14/Tiles/escape_pods/floor0_0.png
+  canPlaceTunnel: false
+
+- type: tile
+  parent: RMCFloorEscapePod00
+  id: RMCFloorEscapePod20
+  sprite: /Textures/_RMC14/Tiles/escape_pods/floor2_0.png
+
+- type: tile
+  parent: RMCFloorEscapePod00
+  id: RMCFloorEscapePod21
+  sprite: /Textures/_RMC14/Tiles/escape_pods/floor2_1.png
+
+- type: tile
+  parent: RMCFloorEscapePod00
+  id: RMCFloorEscapePod22
+  sprite: /Textures/_RMC14/Tiles/escape_pods/floor2_2.png
+
+- type: tile
+  parent: RMCFloorEscapePod00
+  id: RMCFloorEscapePod23
+  sprite: /Textures/_RMC14/Tiles/escape_pods/floor2_3.png
+
+- type: tile
+  parent: RMCFloorEscapePod00
+  id: RMCFloorEscapePod31
+  sprite: /Textures/_RMC14/Tiles/escape_pods/floor3_1.png
+# WOLFGATE END

@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using Content.Shared._WF.MappingMode.Export;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
@@ -153,6 +154,11 @@ public static class WFMappingLibraryNames
     private const string LevelSuffix = ".yml";
     private const string GridSuffix = ".grid.yml";
     private const string VesselSuffix = ".vessel.yml";
+    private const string ScanSuffix = ".scan.yml";
+    private const string ZipSuffix = ".zip";
+
+    /// <summary>The mapper's ship details, kept in a version folder and carried into the next version.</summary>
+    public const string ShipDetailsFile = "ship.yml";
 
     /// <summary>The file a level is saved to inside a version folder: <c>z0.yml</c> for the ground.</summary>
     public static string LevelFile(int depth)
@@ -170,6 +176,18 @@ public static class WFMappingLibraryNames
     public static string VesselFile(int depth)
     {
         return $"z{depth.ToString(CultureInfo.InvariantCulture)}{VesselSuffix}";
+    }
+
+    /// <summary>What the vessel generator read off a grid, saved beside its grid file: <c>z0.scan.yml</c>.</summary>
+    public static string ScanFile(int depth)
+    {
+        return $"z{depth.ToString(CultureInfo.InvariantCulture)}{ScanSuffix}";
+    }
+
+    /// <summary>Reads a scan file name back to its depth.</summary>
+    public static bool TryParseScanFile(string fileName, out int depth)
+    {
+        return TryParseDepthFile(fileName, ScanSuffix, out depth) && ScanFile(depth) == fileName;
     }
 
     /// <summary>Reads a level file name back to its depth.</summary>
@@ -232,14 +250,47 @@ public static class WFMappingLibraryNames
         return mapName + VesselSuffix;
     }
 
+    /// <summary>The export package: <c>&lt;MapName&gt;.zip</c>.</summary>
+    public static string DownloadZipFile(string mapName)
+    {
+        return mapName + ZipSuffix;
+    }
+
+    /// <summary>Whether a downloaded file name is the export package.</summary>
+    public static bool IsZipFile(string fileName)
+    {
+        return fileName.EndsWith(ZipSuffix, StringComparison.Ordinal);
+    }
+
+    /// <summary>The grid export: the ship grid's file name, <c>&lt;file&gt;.yml</c> (<see cref="WFMappingShipNaming.FileName"/>).</summary>
+    public static string DownloadGridFile(string mapName)
+    {
+        return WFMappingShipNaming.FileName(mapName) + LevelSuffix;
+    }
+
+    /// <summary>The file an export of a kind arrives as: the zip, or the grid file for <see cref="WFMappingExportKind.Grid"/>.</summary>
+    public static string ExportFile(string mapName, WFMappingExportKind kind)
+    {
+        return kind == WFMappingExportKind.Grid ? DownloadGridFile(mapName) : DownloadZipFile(mapName);
+    }
+
     /// <summary>Whether a downloaded file name is one the server may send for <paramref name="mapName"/>.</summary>
     public static bool IsDownloadFile(string mapName, string fileName)
     {
-        if (!IsValidMapName(mapName) || !fileName.StartsWith(mapName, StringComparison.Ordinal))
+        if (!IsValidMapName(mapName))
             return false;
 
-        if (fileName == DownloadMapFile(mapName) || fileName == DownloadVesselFile(mapName))
+        if (fileName == DownloadGridFile(mapName))
             return true;
+
+        if (!fileName.StartsWith(mapName, StringComparison.Ordinal))
+            return false;
+
+        if (fileName == DownloadMapFile(mapName) || fileName == DownloadVesselFile(mapName) ||
+            fileName == DownloadZipFile(mapName))
+        {
+            return true;
+        }
 
         var rest = fileName.Substring(mapName.Length);
         return rest.Length > 1 && rest[0] == '_' && TryParseLevelFile(rest.Substring(1), out _);
@@ -273,6 +324,16 @@ public static class WFMappingLibraryNames
     public static ResPath VesselPath(NetUserId user, string mapName, string version, int depth)
     {
         return VersionFolder(user, mapName, version) / VesselFile(depth);
+    }
+
+    public static ResPath ScanPath(NetUserId user, string mapName, string version, int depth)
+    {
+        return VersionFolder(user, mapName, version) / ScanFile(depth);
+    }
+
+    public static ResPath ShipDetailsPath(NetUserId user, string mapName, string version)
+    {
+        return VersionFolder(user, mapName, version) / ShipDetailsFile;
     }
 
     /// <summary>Where the client writes a downloaded file: <c>/Mapping/&lt;MapName&gt;/&lt;version&gt;/&lt;file&gt;</c>.</summary>

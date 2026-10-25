@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  parent: CMTileBase
+  id: RMCFloorHybrisaBeigeBase
+  name: tiles-cm-default-beige
+
+- type: tile
+  parent: RMCFloorHybrisaBeigeBase
+  id: RMCFloorHybrisaBeige
+  name: tiles-wf-rmc-beige-metal-tile
+  sprite: /Textures/_RMC14/Tiles/hybrisa/tilebeige.png
+
+- type: tile
+  parent: RMCFloorHybrisaBeige
+  id: RMCFloorHybrisaBeigeCheckAlt
+  sprite: /Textures/_RMC14/Tiles/hybrisa/tilebeigecheckalt.png
+
+- type: tile
+  parent: RMCFloorHybrisaBeige
+  id: RMCFloorHybrisaBeigeLight
+  sprite: /Textures/_RMC14/Tiles/hybrisa/tilelightbeige.png
+
+- type: tile
+  parent: RMCFloorHybrisaBeigeBase
+  id: RMCFloorHybrisaBeigeCarpet
+  name: tiles-wf-rmc-beige-carpet
+  sprite: /Textures/_RMC14/Tiles/hybrisa/carpetbeige.png
+# WOLFGATE END

@@ -24,6 +24,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
     [Dependency] private UserDbDataManager _userDb = default!;
     [Dependency] private IServerPreferencesManager _preferences = default!;
     [Dependency] private WFCrashScenarioSystem _crash = default!;
+    [Dependency] private WFDoomedScenarioSystem _doomed = default!;
     [Dependency] private WFShipScenarioSystem _ships = default!;
 
     private readonly Dictionary<int, Lobby> _lobbies = new();
@@ -214,8 +215,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 success = SetPersonalTitle(own, user, msg.RoleName);
                 break;
             case WFRoundSetupAction.Create when own == null && CanEnter(session):
-                if (msg.Scenario is not (WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip) || _lobbies.Count >= 64 ||
-                    msg.Scenario == WFRoundScenario.Crashlanded && !_crash.IsAvailable)
+                if (!IsScenarioAvailable(msg.Scenario) || _lobbies.Count >= 64)
                     break;
                 if (!WFRoundSetupPolicy.TryNormalizeTitle(msg.Title, out var title))
                 {
@@ -402,8 +402,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 lobby.Code = NewCode();
                 return true;
             case WFRoundSetupAction.ChangeScenario:
-                if (lobby.Started || msg.Scenario is not (WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip) ||
-                    msg.Scenario == WFRoundScenario.Crashlanded && !_crash.IsAvailable)
+                if (lobby.Started || !IsScenarioAvailable(msg.Scenario))
                     return false;
                 if (msg.Scenario == WFRoundScenario.FactionShip && !CanCreateFaction(session, msg.Faction))
                     return false;
@@ -411,6 +410,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 if (lobby.Scenario == msg.Scenario && lobby.Faction == faction)
                     return true;
                 _crash.RemoveScenario(lobby.Id);
+                _doomed.RemoveScenario(lobby.Id);
                 _ships.RemoveScenario(lobby.Id);
                 lobby.Scenario = msg.Scenario;
                 lobby.Faction = faction;
@@ -546,6 +546,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         {
             _lobbies.Remove(lobby.Id);
             _crash.RemoveScenario(lobby.Id);
+            _doomed.RemoveScenario(lobby.Id);
             _ships.RemoveScenario(lobby.Id);
         }
         else if (lobby.Host == user)
@@ -663,7 +664,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         {
             InRound = _ticker.RunLevel != GameRunLevel.PreRoundLobby,
             JoinConfirmed = joinConfirmed,
-            CanJoin = canEnter, CrashlandedAvailable = _crash.IsAvailable, OwnLobby = own?.Id,
+            CanJoin = canEnter, CrashlandedAvailable = _crash.IsAvailable, DoomedAvailable = _doomed.IsAvailable, OwnLobby = own?.Id,
             Lobbies = _lobbies.Values.Select(ForRecipient).ToArray(),
             Invitations = _lobbies.Values.Where(l => l.Invitations.Contains(session.UserId))
                 .Select(ForRecipient).ToArray(),

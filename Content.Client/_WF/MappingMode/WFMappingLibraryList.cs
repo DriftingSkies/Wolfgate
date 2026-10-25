@@ -8,8 +8,8 @@ using Robust.Client.UserInterface.Controls;
 namespace Content.Client._WF.MappingMode;
 
 /// <summary>
-/// A player's library maps with Open, Download, Ship and Delete, each map's versions folding out underneath. Shared by
-/// the lobby panel and the Mapping window's Library tab.
+/// A player's library maps with Open, Export, Download and Delete, each map's versions folding out underneath. Shared
+/// by the lobby panel and the Mapping window's Library tab.
 /// </summary>
 public sealed class WFMappingLibraryList : BoxContainer
 {
@@ -20,10 +20,11 @@ public sealed class WFMappingLibraryList : BoxContainer
     /// <summary>Raised with a map and a version folder, or null for the newest.</summary>
     public event Action<string, string?>? OpenRequested;
 
+    /// <summary>Raised with a map and a version folder, or null for the newest, to download its plain level files.</summary>
     public event Action<string, string?>? DownloadRequested;
 
-    /// <summary>Raised with a map and a version folder, or null for the newest, to download it as a ship.</summary>
-    public event Action<string, string?>? ShipRequested;
+    /// <summary>Raised with a map and a version folder, or null for the newest, to open the export wizard on it.</summary>
+    public event Action<string, string?>? ExportRequested;
 
     /// <summary>Raised with a map and a version folder, or null for the whole map.</summary>
     public event Action<string, string?>? DeleteRequested;
@@ -98,10 +99,10 @@ public sealed class WFMappingLibraryList : BoxContainer
             header.AddChild(ActionButton("wf-mapping-mode-library-open", () => OpenRequested?.Invoke(map.Name, null),
                 "wf-mapping-mode-library-open-latest-tooltip"));
 
-        header.AddChild(ActionButton("wf-mapping-mode-library-download",
+        header.AddChild(ActionButton("wf-mapping-export-library-button",
+            () => ExportRequested?.Invoke(map.Name, null), "wf-mapping-export-library-latest-tooltip"));
+        header.AddChild(SmallButton("wf-mapping-mode-library-download",
             () => DownloadRequested?.Invoke(map.Name, null), "wf-mapping-mode-library-download-latest-tooltip"));
-        header.AddChild(ActionButton("wf-mapping-ship-library-download",
-            () => ShipRequested?.Invoke(map.Name, null), "wf-mapping-ship-library-download-latest-tooltip"));
 
         var expanded = _expanded.Contains(map.Name);
         header.AddChild(ActionButton(expanded ? "wf-mapping-mode-library-hide-versions" : "wf-mapping-mode-library-versions",
@@ -159,9 +160,10 @@ public sealed class WFMappingLibraryList : BoxContainer
         if (_showOpen)
             row.AddChild(ActionButton("wf-mapping-mode-library-open", () => OpenRequested?.Invoke(mapName, folder)));
 
-        row.AddChild(ActionButton("wf-mapping-mode-library-download", () => DownloadRequested?.Invoke(mapName, folder)));
-        row.AddChild(ActionButton("wf-mapping-ship-library-download", () => ShipRequested?.Invoke(mapName, folder),
-            version.Ship ? "wf-mapping-ship-library-download-tooltip" : "wf-mapping-ship-library-no-ship-tooltip"));
+        row.AddChild(ActionButton("wf-mapping-export-library-button", () => ExportRequested?.Invoke(mapName, folder),
+            "wf-mapping-export-library-tooltip"));
+        row.AddChild(SmallButton("wf-mapping-mode-library-download", () => DownloadRequested?.Invoke(mapName, folder),
+            "wf-mapping-export-library-download-tooltip"));
         row.AddChild(DeleteButton(() => DeleteRequested?.Invoke(mapName, folder)));
         return row;
     }
@@ -184,6 +186,15 @@ public sealed class WFMappingLibraryList : BoxContainer
         }
 
         button.OnPressed += _ => pressed();
+        return button;
+    }
+
+    /// <summary>The plain level download beside Export: a smaller, secondary button.</summary>
+    private static Button SmallButton(string text, Action pressed, string? tooltip = null)
+    {
+        var button = ActionButton(text, pressed, tooltip);
+        button.StyleClasses.Add("OpenBoth");
+        button.Label.StyleClasses.Add("LabelSubText");
         return button;
     }
 

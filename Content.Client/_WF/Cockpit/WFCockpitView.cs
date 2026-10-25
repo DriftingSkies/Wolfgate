@@ -41,11 +41,14 @@ public sealed partial class WFCockpitView : Control
     private readonly (string Key, Control Content)[] _pages;
     private readonly (Control Dial, float Full)[] _dials;
     private bool _restored;
-    private bool _compactDials;
+    private float _dialScale = 1f;
     private string _page = DefaultPage;
 
     /// <summary>Whether the dial column is too short for full-size dials and shows the smaller faces.</summary>
-    public bool CompactDials => _compactDials;
+    public bool CompactDials => _dialScale < 1f;
+
+    /// <summary>The scale the dials are drawn at, 1 when the column fits them whole.</summary>
+    public float DialScale => _dialScale;
 
     /// <summary>Creates the cockpit, borrowing every control through the caller's lease so a failed build can be undone.</summary>
     public WFCockpitView(ShuttleConsoleWindow console, InGameScreen screen, MainViewport viewport, Action exit, WFCockpitLease lease)
@@ -328,16 +331,16 @@ public sealed partial class WFCockpitView : Control
             _translation.DesiredSize.Y, strip, votes), _swapped, _maximised);
     }
 
-    /// <summary>Swaps the large dials for compact ones while the instrument column is too short to show them whole.</summary>
+    /// <summary>Shrinks the dials to fill the instrument column while it is too short to show them whole.</summary>
     private void FitDials(float columnHeight)
     {
-        var compact = WFCockpitInstrumentSizing.UseCompact(columnHeight);
-        if (compact == _compactDials)
+        var scale = WFCockpitInstrumentSizing.DialScale(columnHeight);
+        if (scale == _dialScale)
             return;
-        _compactDials = compact;
+        _dialScale = scale;
         foreach (var (dial, full) in _dials)
         {
-            dial.SetHeight = compact ? WFCockpitInstrumentSizing.CompactHeight(full) : full;
+            dial.SetHeight = WFCockpitInstrumentSizing.ScaledHeight(full, scale);
             for (var parent = dial.Parent; parent != null && parent != this; parent = parent.Parent)
                 parent.InvalidateMeasure();
         }

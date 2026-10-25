@@ -1,0 +1,73 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  abstract: true
+  parent:
+  - CMBaseDoor
+  - CMBaseDoorConstructible
+  id: CMDoubleDoorBase
+  components:
+  - type: Door
+    openSpriteState: door_open
+    closedSpriteState: door_closed
+    openingSpriteState: door_opening
+    closingSpriteState: door_closing
+    emaggingSpriteState: unlit
+  - type: Sprite
+    layers:
+    - state: door_closed
+      map: [ "enum.DoorVisualLayers.Base" ]
+    - state: unlit
+      map: ["enum.DoorVisualLayers.BaseUnlit"]
+    - state: welded
+      map: [ "enum.WeldableLayers.BaseWelded" ]
+    - state: door_locked
+      shader: unshaded
+      map: ["enum.DoorVisualLayers.BaseBolted"]
+    - state: door_spark
+      shader: unshaded
+      map: ["enum.DoorVisualLayers.BaseEmergencyAccess"]
+    - state: panel_open
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+
+- type: entity
+  parent: CMDoubleDoorBase
+  id: CMDoubleDoorAlmayerGlass
+  suffix: Almayer, Glass
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/Double/almayer_glass.rsi
+
+- type: entity
+  parent: CMDoubleDoorBase
+  id: CMDoubleDoorAlmayerSolid
+  suffix: Almayer, Solid
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/Double/almayer_solid.rsi
+  - type: Occluder
+
+- type: entity
+  parent: CMDoubleDoorBase
+  id: CMDoubleDoorEngineerGlass
+  suffix: Engineer, Glass
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/Double/engineer_glass.rsi
+
+- type: entity
+  parent: CMDoubleDoorBase
+  id: RMCDoubleDoorGlassHybrisa
+  suffix: Hybrisa, Glass
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/Double/hybrisa_glass.rsi
+
+- type: entity
+  parent: CMDoubleDoorBase
+  id: RMCDoubleDoorSolidHybrisa
+  suffix: Hybrisa, Solid
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/Double/hybrisa_solid.rsi
+  - type: Occluder
+# WOLFGATE END

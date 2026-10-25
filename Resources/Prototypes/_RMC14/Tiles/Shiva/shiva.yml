@@ -1,0 +1,7 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  parent: CMFloorSteel
+  id: CMFloorShivaRadiator
+  name: tiles-wf-rmc-radiator
+  sprite: /Textures/_RMC14/Tiles/shiva/radiator_tile.png
+# WOLFGATE END

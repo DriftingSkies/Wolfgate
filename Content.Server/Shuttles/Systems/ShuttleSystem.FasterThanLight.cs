@@ -1010,9 +1010,12 @@ public sealed partial class ShuttleSystem
                 // goob edit - stunmeta
                 _stuns.TryKnockdown(child, _hyperspaceKnockdownTime, true, _statusQuery.Get(child));
 
+                // WOLFGATE START: the jump knocks crew down but never throws them off the grid; only leaving it strands you
+                // On open-framed ships most of the deck is lattice, so crew were flung into space on every jump.
                 // If the guy we knocked down is on a spaced tile, throw them too
-                if (grid != null)
-                    TossIfSpaced((xform.GridUid.Value, grid, shuttleBody), child);
+                // if (grid != null)
+                //     TossIfSpaced((xform.GridUid.Value, grid, shuttleBody), child);
+                // WOLFGATE END
             }
         }
     }

@@ -894,6 +894,11 @@
       sprite: Clothing/Head/Hats/jester2.rsi
     - type: Clothing
       sprite: Clothing/Head/Hats/jester2.rsi
+    # WOLFGATE(ClownCosmetics) START: the alt jester hood and the harlequin hood cover the hair
+    - type: HideLayerClothing
+      slots:
+      - Hair
+    # WOLFGATE END
     - type: Tag
       tags:
       - PetWearable

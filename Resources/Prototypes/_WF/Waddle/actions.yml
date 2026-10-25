@@ -1,0 +1,7 @@
+﻿- type: entity
+  id: ActionToggleWaddling
+  components:
+  - type: InstantAction
+    itemIconStyle: BigItem
+    useDelay: 2.5
+    event: !type:ToggleActionEvent

@@ -1,0 +1,17 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  parent: CMTileBase
+  id: RMCFloorKutjevoMultiBase
+  name: tiles-cm-default-multipanel
+
+- type: tile
+  parent: RMCFloorKutjevoMultiBase
+  id: RMCFloorKutjevoMulti1
+  sprite: /Textures/_RMC14/Tiles/kutjevo/multi_tiles_1.png
+
+- type: tile
+  parent: RMCFloorKutjevoMultiBase
+  id: RMCFloorKutjevoMulti3
+  sprite: /Textures/_RMC14/Tiles/kutjevo/multi_tiles_3.png
+# WOLFGATE END

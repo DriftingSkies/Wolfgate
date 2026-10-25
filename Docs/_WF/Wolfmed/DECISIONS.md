@@ -5053,3 +5053,13 @@ the graft step calls `WolfmedNecrosisSystem.RemoveNecrosis`, so closing up after
 necrosis wound goes, the part is alive again, and a risk still on the part (charring, a deep freeze) restarts its clock. The part's own
 infection is left at the top and recovers by itself or with spaceacillin. The pod does it from the base program,
 before organ repair. `WolfmedNecrosisSurgeryTest`.
+
+## Healing chemicals close wounds (2026-10-22)
+
+Complaint: healing chems did not heal wounds. Removed damage takes only `healingMultiplier` (0.15) off a wound, and a
+chem stops working once the part shows no damage of its type, so a bicaridine dose left the cut open. Every metabolising
+`HealthChange` or `EvenHealthChange` heal on a wound host now also closes `wolfmed.reagent_wound_mend` (1) severity per
+unit healed, worst open wound of the healed types first (`WolfmedReagentWoundMendSystem`). Wounds with
+`healingMultiplier: 0` (bleeds, incisions, stumps, fractures) and wounds that refuse treatment (a lodged round, a
+pumping artery, a scar) are left alone, and the effect's treatment capabilities still gate the part. Bicaridine at
+0.2 u a tick closes 5 severity per unit. `WolfmedReagentWoundMendTest`.

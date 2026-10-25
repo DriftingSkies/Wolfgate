@@ -1,3 +1,4 @@
+using Content.Client._WF.JukeboxVolume;
 using Content.Client.Audio;
 using Content.Client.Instruments;
 using Content.Shared._WF.CCVar;
@@ -33,6 +34,8 @@ public sealed class SoundtrackMuteSystem : EntitySystem
         base.Initialize();
 
         UpdatesAfter.Add(typeof(AudioSystem));
+        // A jukebox turned down to zero shouldn't mute the music.
+        UpdatesAfter.Add(typeof(JukeboxVolumeSystem));
 
         Subs.CVar(_cfg, SoundtrackMuteCVars.Enabled, value => _enabled = value, true);
         Subs.CVar(_cfg, CVars.MidiVolume, value => _midiVolume = value, true);

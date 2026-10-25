@@ -1,7 +1,7 @@
 - type: tile
   id: Plating
   name: tiles-plating
-  sprite: /Textures/Tiles/plating.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/plating.png #WOLFGATE(Resprites): Repathed
   baseTurf: Lattice
   isSubfloor: true
   deconstructTools: [ Axing ] # DeltaV - The return of fireaxe prying
@@ -34,12 +34,15 @@
 - type: tile
   id: PlatingDamaged
   name: tiles-plating
-  sprite: /Textures/Tiles/plating_damaged.png
-  variants: 3
+  # WOLFGATE(Resprites) START: Wizden resprite; variant count kept so saved maps don't show error tiles.
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/plating-damaged.png
+  variants: 4
   placementVariants:
   - 1.0
   - 1.0
   - 1.0
+  - 1.0
+  # WOLFGATE END
   baseTurf: Lattice
   isSubfloor: true
   deconstructTools: [ Axing ] # DeltaV - The return of fireaxe prying
@@ -55,7 +58,7 @@
 - type: tile
   id: PlatingAsteroid
   name: tiles-asteroid-plating
-  sprite: /Textures/Tiles/Asteroid/asteroid_plating.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/asteroid-plating.png # WOLFGATE(Resprites): Repathed
   baseTurf: Lattice
   isSubfloor: true
   deconstructTools: [ Axing ] # DeltaV - The return of fireaxe prying
@@ -87,7 +90,12 @@
 - type: tile
   id: PlatingSnow
   name: tiles-snow-plating
-  sprite: /Textures/Tiles/snow_plating.png #Not in the snow planet RSI because it doesn't have any metadata. Should probably be moved to its own folder later.
+  # WOLFGATE(Resprites) START: Wizden resprite; variant count kept so saved maps don't show error tiles.
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Snow/snow-plating.png
+  variants: 1
+  placementVariants:
+  - 1.0
+  # WOLFGATE END
   baseTurf: Lattice
   isSubfloor: true
   deconstructTools: [ Axing ] # DeltaV - The return of fireaxe prying
@@ -103,12 +111,17 @@
 - type: tile
   id: Lattice
   name: tiles-lattice
-  sprite: /Textures/Tiles/lattice.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/lattice.png #WOLFGATE(Resprites): Repathed
   baseTurf: Space
   isSubfloor: true
   deconstructTools: [ Cutting ]
   deconstructTimeMultiplier: 1 # Goobstation
   weather: true
+  variants: 3 #WOLFGATE(Resprites) START: Added variants
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0 #WOLFGATE END
   footstepSounds:
     collection: FootstepCatwalk
   friction: 1.5

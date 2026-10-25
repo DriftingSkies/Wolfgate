@@ -22,6 +22,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.Encounters.Systems;
@@ -40,6 +41,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
     [Dependency] private WFEncounterSystem _encounters = default!;
     [Dependency] private WFCrewEscortSystem _escorts = default!;
     [Dependency] private WFCrewShipStatusSystem _status = default!;
@@ -58,6 +60,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
     public const float RescueRange = 150f;
 
     private static readonly ProtoId<RadioChannelPrototype> ThanksChannel = "Common";
+    private static readonly EntProtoId CashEntity = "SpaceCash";
     private static readonly TimeSpan CapWindow = TimeSpan.FromHours(1);
     private readonly Dictionary<NetUserId, (TimeSpan Since, int Paid)> _paid = new();
 
@@ -78,18 +81,112 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         if (args.Suicide || !TryComp<WFCrewComponent>(args.Entity, out var member) || member.Group.Length == 0)
             return;
 
+        // A laser names the gun and not its holder, so a kill can come with no player behind it; the crewman's last
+        // player attacker takes it then.
+        var primary = args.Primary is KillEnvironmentSource ? LastPlayerAttacker(member) ?? args.Primary : args.Primary;
+        WFEncounterComponent? found = null;
         var query = EntityQueryEnumerator<WFEncounterComponent>();
         while (query.MoveNext(out _, out var encounter))
         {
-            if (encounter.Resolution != null
-                || encounter.Ships.Values.FirstOrDefault(ship => ship.Group == member.Group) is not { } ship)
+            if (encounter.Ships.Values.FirstOrDefault(ship => ship.Group == member.Group) is not { } ship)
                 continue;
 
-            RecordKill(encounter, args.Primary, ship.Side);
-            if (args.Assist is { } assist && assist != args.Primary)
+            found = encounter;
+            if (encounter.Resolution != null)
+                break;
+
+            RecordKill(encounter, primary, ship.Side);
+            if (args.Assist is { } assist && assist != primary)
                 RecordKill(encounter, assist, ship.Side);
+            break;
+        }
+
+        if (!EnsureComp<WFCrewKillPaidComponent>(args.Entity, out _))
+        {
+            PayKillBounty(args.Entity, primary, args.Assist);
+            DropCash(args.Entity, found);
+        }
+    }
+
+    /// <summary>The player who struck a crewman last, if one did in the last little while.</summary>
+    private KillSource? LastPlayerAttacker(WFCrewComponent member)
+    {
+        EntityUid? last = null;
+        var at = TimeSpan.MinValue;
+        foreach (var (attacker, time) in member.Struck)
+        {
+            if (time > at && HasComp<ActorComponent>(attacker))
+                (last, at) = (attacker, time);
+        }
+
+        return CompOrNull<ActorComponent>(last)?.PlayerSession.UserId is { } user ? new KillPlayerSource(user) : null;
+    }
+
+    /// <summary>
+    /// Drops a downed crewman's thalers at his feet, scaled by the threat tier his encounter spawned at, or by the
+    /// sector's threat when he flies for none.
+    /// </summary>
+    private void DropCash(EntityUid victim, WFEncounterComponent? encounter)
+    {
+        if (CompOrNull<CompanyComponent>(victim)?.CompanyName.Id is not { } company
+            || !_prototypes.TryIndex<WFStandingPrototype>(company, out var standing) || standing.CashDrop <= 0)
+            return;
+
+        var tier = encounter?.Tier ?? encounter?.Threat;
+        if (tier == null)
+        {
+            var ev = new WFEncounterThreatTierEvent(null);
+            RaiseLocalEvent(ref ev);
+            tier = ev.Tier;
+        }
+
+        var steps = Math.Clamp(tier ?? 0, 0, WFEncounterThreat.MaxTier) + 1;
+        var amount = (int) (standing.CashDrop * steps * _random.NextFloat(0.75f, 1.25f));
+        if (amount > 0)
+            _stack.SpawnMultiple(CashEntity, amount, Transform(victim).Coordinates);
+    }
+
+    /// <summary>
+    /// Pays a player on the spot for killing a crewman of a company with a kill bounty, and half that to one who assisted,
+    /// whether the crewman's encounter is still running or not: boarders left aboard a player's ship pay too.
+    /// </summary>
+    private void PayKillBounty(EntityUid victim, KillSource primary, KillSource? assist)
+    {
+        if (CompOrNull<CompanyComponent>(victim)?.CompanyName.Id is not { } company
+            || !_prototypes.TryIndex<WFStandingPrototype>(company, out var standing) || standing.KillBounty <= 0)
+            return;
+
+        var name = _prototypes.TryIndex<CompanyPrototype>(company, out var companyPrototype) ? companyPrototype.Name : company;
+        PayKill(primary, standing.KillBounty, name, victim);
+        if (assist != null && !SamePlayer(assist, primary))
+            PayKill(assist, standing.KillBounty / 2, name, victim);
+    }
+
+    private static bool SamePlayer(KillSource first, KillSource second)
+    {
+        return first is KillPlayerSource a && second is KillPlayerSource b && a.PlayerId == b.PlayerId;
+    }
+
+    private void PayKill(KillSource source, int amount, string company, EntityUid victim)
+    {
+        if (source is not KillPlayerSource player || !_playerManager.TryGetSessionById(player.PlayerId, out var session)
+            || session.AttachedEntity is not { } mob)
+            return;
+
+        var paid = Capped(session.UserId, amount, _config.GetCVar(EncountersCVars.PayoutHourlyCap));
+        if (paid <= 0)
+            return;
+
+        // A deposit that fails, with no bank account or deposits off, pays nothing and keeps the allowance.
+        if (!_bank.TryBankDeposit(mob, paid, false))
+        {
+            Refund(session.UserId, paid);
             return;
         }
+
+        _chat.DispatchServerMessage(session, Loc.GetString("wf-encounter-kill-bounty-paid", ("amount", paid), ("company", company)));
+        _adminLog.Add(LogType.Action, LogImpact.Medium,
+            $"{session.Name} was paid {paid} thalers for killing {ToPrettyString(victim):entity} of {company}");
     }
 
     private static void RecordKill(WFEncounterComponent encounter, KillSource source, string side)
@@ -104,6 +201,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
     private void OnHullHit(ref WFCrewHullHitEvent args)
     {
+        Damaged(args.Grid);
         // Judged before it is counted, as the crews judged it, so the same hit is never weighed twice.
         RecordHit(args.Grid, args.AttackerGrid);
         Track(args.Grid, args.AttackerGrid);
@@ -115,8 +213,17 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         if (!_alerts.IsShipWeapon(args.Weapon))
             return;
 
+        Damaged(args.Grid);
         RecordHit(args.Grid, args.AttackerGrid);
         Track(args.Grid, args.AttackerGrid);
+    }
+
+    /// <summary>An encounter ship hit by any ship weapon, an NPC's included, stays real: it would come back whole from simulation.</summary>
+    private void Damaged(EntityUid victim)
+    {
+        if (TryComp<WFEncounterGridComponent>(victim, out var marker) && TryComp<WFEncounterComponent>(marker.Encounter, out var encounter)
+            && encounter.Ships.TryGetValue(marker.Key, out var ship))
+            ship.Touched = true;
     }
 
     /// <summary>How long a vessel's hits count toward whom it is fighting.</summary>

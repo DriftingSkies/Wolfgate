@@ -1100,9 +1100,11 @@ public sealed class WFCombatConsoleTest
         var rebuildNearby = typeof(ShipAccessScreen).GetMethod("RebuildNearby", flags)!;
         var nearbyType = rebuildNearby.GetParameters()[1].ParameterType;
         var nearby = (System.Collections.IList) Activator.CreateInstance(nearbyType)!;
-        var personType = nearbyType.GenericTypeArguments[0];
+        var personCtor = nearbyType.GenericTypeArguments[0].GetConstructors().Single();
+        // Optional parameters added later take their defaults.
+        var personDefaults = personCtor.GetParameters().Skip(4).Select(p => p.DefaultValue);
         for (var index = 0; index < 12; index++)
-            nearby.Add(Activator.CreateInstance(personType, new object[] { door, $"Nearby crew {index + 1}", true, true }));
+            nearby.Add(personCtor.Invoke(new object[] { door, $"Nearby crew {index + 1}", true, true }.Concat(personDefaults).ToArray()));
         rebuildNearby.Invoke(screen, new object[] { true, nearby });
         var node = new ShipAccessDoorNode(door, "Forward compartment airlock", new Vector2(3, -2), WFDoorAccessRule.PlayersOrCode, true);
         typeof(ShipAccessScreen).GetMethod("RebuildDoor", flags)!

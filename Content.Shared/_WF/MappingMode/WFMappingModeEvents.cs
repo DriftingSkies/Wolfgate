@@ -97,6 +97,9 @@ public sealed class WFMappingSessionInfo
 
     /// <summary>The template shared with the session, if any.</summary>
     public WFMappingTemplateInfo? Template;
+
+    /// <summary>The live test running on the session, if any.</summary>
+    public Test.WFMappingTestInfo? Test;
 }
 
 /// <summary>

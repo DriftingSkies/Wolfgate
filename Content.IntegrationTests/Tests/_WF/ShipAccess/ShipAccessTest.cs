@@ -23,6 +23,7 @@ using Content.Shared.Lock;
 using Content.Shared.Mind;
 using Content.Shared.Players;
 using Content.Shared.Power;
+using Content.Shared.Shuttles.Components;
 using Content.Shared.StationRecords;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
@@ -64,6 +65,48 @@ public sealed class ShipAccessTest
 
     /// <summary>Access a secure locker brought aboard might ask for.</summary>
     private const string SecureAccess = "Captain";
+
+    [Test]
+    public async Task OwnerAddsHeldCardWithoutItsHolder()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+        await server.WaitAssertion(() =>
+        {
+            var hands = entMan.System<SharedHandsSystem>();
+            var readers = entMan.System<AccessReaderSystem>();
+            var access = entMan.System<WFShipAccessServerSystem>();
+            var console = entMan.SpawnEntity("ComputerShuttle", map.GridCoords);
+            var door = entMan.SpawnEntity(DoorProto, map.GridCoords);
+            var (owner, deed) = SpawnPersonWithCard(entMan, hands, map, "Ada Vance", 1);
+            GiveDeed(entMan, deed, map.Grid.Owner);
+            var (friend, card) = SpawnPersonWithCard(entMan, hands, map, "Ben Ortiz", 2);
+            entMan.System<SharedIdCardSystem>().TryChangeFullName(card, "Ben Ortiz");
+            var ship = new Entity<WFShipAccessComponent>(map.Grid.Owner, entMan.EnsureComponent<WFShipAccessComponent>(map.Grid.Owner));
+            access.SetLocked(ship, true);
+
+            Assert.That(hands.TryDrop(friend, card), Is.True, "Precondition: the friend hands their card over.");
+            entMan.DeleteEntity(friend);
+            Assert.That(hands.TryPickupAnyHand(owner, card), Is.True, "Precondition: the owner holds the friend's card.");
+
+            var message = new WFShipAccessAddPlayerMessage(entMan.GetNetEntity(card))
+            {
+                Actor = owner,
+                UiKey = ShuttleConsoleUiKey.Key,
+                Entity = entMan.GetNetEntity(console),
+            };
+            entMan.EventBus.RaiseLocalEvent(console, (object) message);
+
+            Assert.That(ship.Comp.AllowList.Select(e => e.Name), Is.EqualTo(new[] { "Ben Ortiz" }), "A card in the owner's hands is listed under its name.");
+            Assert.That(hands.TryDrop(owner, card), Is.True);
+            var (stranger, _) = SpawnPersonWithCard(entMan, hands, map, "Random Stranger", 3);
+            Assert.That(hands.TryPickupAnyHand(stranger, card), Is.True);
+            Assert.That(readers.IsAllowed(stranger, door), Is.True, "The listed card opens the locked ship.");
+        });
+        await pair.CleanReturnAsync();
+    }
 
     [Test]
     public async Task DeedAndListedCardsGateLockedDoors()

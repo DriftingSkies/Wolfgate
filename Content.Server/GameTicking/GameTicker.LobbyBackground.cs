@@ -26,6 +26,12 @@ public sealed partial class GameTicker
     }
 
     private void RandomizeLobbyBackground() {
+        // WOLFGATE(Symphony): a background the SSymphony panel set holds over every round until it is cleared
+        if (LobbyBackgroundOverride != null)
+        {
+            LobbyBackground = LobbyBackgroundOverride;
+            return;
+        }
         LobbyBackground = _lobbyBackgrounds!.Any() ? _robustRandom.Pick(_lobbyBackgrounds!).ToString() : null;
     }
 }

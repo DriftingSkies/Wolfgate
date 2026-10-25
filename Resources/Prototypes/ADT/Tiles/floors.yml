@@ -1,0 +1,89 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: tile
+  id: ADTFloorDigital
+  name: adt-tiles-digital-floor
+  sprite: /Textures/ADT/Tiles/digital.png
+  variants: 1
+  placementVariants:
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  #canCrowbar: true
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemSteel
+  heatCapacity: 10000
+
+- type: tile
+  id: ADTFloorDigitalRed
+  name: adt-tiles-digital-red-floor
+  sprite: /Textures/ADT/Tiles/digitalred.png
+  variants: 1
+  placementVariants:
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  #canCrowbar: true
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemSteel
+  heatCapacity: 10000
+
+- type: tile
+  id: ADTFloorDigitalBlue
+  name: adt-tiles-digital-blue-floor
+  sprite: /Textures/ADT/Tiles/digitalblue.png
+  variants: 1
+  placementVariants:
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  #canCrowbar: true
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemSteel
+  heatCapacity: 10000
+
+- type: tile
+  id: ADTFloorCultFire
+  name: adt-tiles-cult-fire-floor
+  sprite: /Textures/ADT/Tiles/cultfire.png
+  variants: 1
+  placementVariants:
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  #canCrowbar: true
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemSteel
+  heatCapacity: 10000
+
+- type: tile
+  id: ADTFloorCultHell
+  name: adt-tiles-cult-hell-floor
+  sprite: /Textures/ADT/Tiles/culthell.png
+  variants: 1
+  placementVariants:
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  #canCrowbar: true
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemSteel
+  heatCapacity: 10000
+
+- type: tile
+  id: ADTFloorCarpetLiminal
+  name: adt-tiles-liminal-carpet-floor
+  sprite: /Textures/ADT/Tiles/carpetliminal.png
+  baseTurf: Plating
+  isSubfloor: false
+  footstepSounds:
+    collection: FootstepCarpet
+  barestepSounds:
+    collection: BarestepCarpet
+  heatCapacity: 10000
+  indestructible: true
+# WOLFGATE END

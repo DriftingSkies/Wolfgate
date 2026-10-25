@@ -43,6 +43,9 @@ public sealed partial class WaggingSystem : EntitySystem
         if (args.Handled)
             return;
 
+        if (args.Action.Owner != component.ActionEntity) // WOLFGATE(Avali): the flight toggle also wagged the tail
+            return;
+
         TryToggleWagging(uid, wagging: component);
     }
 

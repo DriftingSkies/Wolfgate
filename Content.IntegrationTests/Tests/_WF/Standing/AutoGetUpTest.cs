@@ -117,4 +117,50 @@ public sealed class AutoGetUpTest : GameTest
             });
         });
     }
+
+    /// <summary>
+    /// A player who takes a body part way through its knockdown is asked from then on, and a body its player leaves
+    /// part way through gets up like any other body with no player.
+    /// </summary>
+    [Test]
+    public async Task PlayerComesAndGoesMidKnockdownTest()
+    {
+        Assert.That(ServerSession, Is.Not.Null, "This test needs a connected pair.");
+        var map = await WolfmedGameTest.CreateTestMap(Pair);
+        var minds = SEntMan.System<SharedMindSystem>();
+        EntityUid body = default, mind = default;
+        StandingState tookOver = default, left = default;
+
+        await Server.WaitPost(() =>
+        {
+            var session = ServerSession!;
+            minds.WipeMind(session.ContentData()?.Mind);
+            body = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            mind = minds.CreateMind(session.UserId).Owner;
+        });
+        await RunTicksSync(30);
+        await SetClientAutoGetUp(false);
+
+        // Nobody is in the body when it falls; the player, with the setting off, takes it before the knockdown ends.
+        await KnockDown(async () =>
+        {
+            await Server.WaitPost(() => minds.TransferTo(mind, body));
+            Assert.That(ServerSession!.AttachedEntity, Is.EqualTo(body), "the player did not attach to the body.");
+        }, body);
+        await Server.WaitPost(() => tookOver = State(body));
+
+        // The player is in the body when it falls again, and leaves it before the knockdown ends.
+        await KnockDown(async () =>
+        {
+            await Server.WaitPost(() => minds.TransferTo(mind, null));
+            Assert.That(ServerSession!.AttachedEntity, Is.Not.EqualTo(body), "the player did not leave the body.");
+        }, body);
+        await Server.WaitPost(() => left = State(body));
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(tookOver, Is.EqualTo(StandingState.Lying), "a body got up with its new player's setting off.");
+            Assert.That(left, Is.EqualTo(StandingState.Standing), "a body stayed down after its player left it.");
+        });
+    }
 }

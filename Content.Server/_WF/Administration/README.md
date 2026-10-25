@@ -119,6 +119,7 @@ Audio.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Administration/AdminFollowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/AdminFollowTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Administration/DelayRoundEndTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/DelayRoundEndTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/SecondChanceTest.cs)
@@ -150,5 +151,11 @@ Audio.
   - an admin in a ghost gets the resizable, far-zooming scanner
 - [`Content.Server/Administration/Commands/FollowCommand.cs`](../../Administration/Commands/FollowCommand.cs): aghost before orbiting
 - [`Content.Server/Administration/UI/AdminCameraEui.cs`](../../Administration/UI/AdminCameraEui.cs): aghost before orbiting
+- [`Content.Server/RoundEnd/RoundEndSystem.cs`](../../RoundEnd/RoundEndSystem.cs): no auto-call while delayroundend holds the round
+- [`Content.Server/Shuttles/Systems/EmergencyShuttleSystem.Console.cs`](../../Shuttles/Systems/EmergencyShuttleSystem.Console.cs)
+  - delayroundend sets this; shuttle round-end paths and the auto-call check it.
+  - check the delay flag when the timer fires, not the token
+  - set a flag instead; the token was nulled before the timer that used it existed
+- [`Content.Server/Shuttles/Systems/EmergencyShuttleSystem.cs`](../../Shuttles/Systems/EmergencyShuttleSystem.cs): delayroundend holds the round open
 
 <!-- WOLFGATE-GENERATED END -->

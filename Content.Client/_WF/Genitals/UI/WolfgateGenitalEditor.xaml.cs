@@ -277,10 +277,13 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         ResetPreview();
     }
 
-    protected override void Resized()
+    // Columns come from the width on offer, not the current width, so the grids can shrink as well as grow.
+    protected override System.Numerics.Vector2 MeasureOverride(System.Numerics.Vector2 availableSize)
     {
-        base.Resized();
-        UpdateColumns();
+        if (float.IsFinite(availableSize.X))
+            UpdateColumns(availableSize.X);
+
+        return base.MeasureOverride(availableSize);
     }
 
     private void OnAnatomyEnabledChanged(bool enabled)
@@ -927,7 +930,7 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         BuildTiles(PenisShapes, _penisTiles, GenitalSlot.Penis, OnPenisShapePicked);
         BuildTiles(VaginaShapes, _vaginaTiles, GenitalSlot.Vagina, shape => EditVagina(v => v.With(shape: shape)));
         BuildTiles(BreastShapes, _breastTiles, GenitalSlot.Breasts, shape => EditBreasts(b => b.With(shape: shape)));
-        UpdateColumns();
+        UpdateColumns(Width);
     }
 
     private void BuildTiles(GridContainer grid, ButtonGroup group, GenitalSlot slot, Action<ProtoId<GenitalShapePrototype>> picked)
@@ -973,10 +976,10 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         }
     }
 
-    private void UpdateColumns()
+    private void UpdateColumns(float width)
     {
         // The cards and the tab add about 48 px of margin around the grids.
-        var columns = Math.Max(1, (int) ((Width - 48) / WolfgateGenitalShapeTile.TileWidth));
+        var columns = Math.Max(1, (int) ((width - 48) / WolfgateGenitalShapeTile.TileWidth));
         foreach (var grid in ShapeGrids())
         {
             if (grid.Columns != columns)

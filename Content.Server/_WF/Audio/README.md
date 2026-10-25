@@ -68,6 +68,7 @@ works around an OpenAL Soft 1.24.3 crash (a pitched-up loop overruns the mix buf
 
 ## Non-modular edits
 
+- [`Content.Client/Audio/AmbientSoundSystem.cs`](../../../Content.Client/Audio/AmbientSoundSystem.cs): Stop is refused during state application, orphaning a looping stream on server deletes
 - [`Content.Client/Audio/ContentAudioSystem.AmbientMusic.cs`](../../../Content.Client/Audio/ContentAudioSystem.AmbientMusic.cs): replay shutdown flushes audio entities before the UI leaves gameplay
 - [`Content.Client/Replay/ContentReplayPlaybackManager.cs`](../../../Content.Client/Replay/ContentReplayPlaybackManager.cs): indexed by the internet sound system when playback starts
 - [`Content.Server/Destructible/DestructibleSystem.cs`](../../Destructible/DestructibleSystem.cs)

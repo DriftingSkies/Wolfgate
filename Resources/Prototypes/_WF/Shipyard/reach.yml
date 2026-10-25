@@ -1,0 +1,41 @@
+- type: vessel
+  id: WFReach
+  parent: BaseVessel
+  name: SY Reach
+  description: "A civilian capital ship with a full crew's worth of departments: bridge, medbay and chemistry, research, botany, kitchen and bar, salvage bay, brig and dorms. Twin pinch reactors, a shield generator and sixteen L85 autocannons. Needs a crew to fly."
+  price: 400000
+  category: Large
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/reach.yml
+  guidebookPage: null
+  class:
+  - Capital
+  - Civilian
+  - Medical
+  - Chemistry
+  - Science
+  - Botany
+  - Kitchen
+  - Salvage
+  - Expedition
+  engine:
+  - Plasma
+  - APU
+
+- type: gameMap
+  id: WFReach
+  mapName: 'SY Reach'
+  mapPath: /SharedMaps/_WF/Shipyard/Shuttles/reach.yml
+  minPlayers: 0
+  stations:
+    WFReach:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Reach CIV{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

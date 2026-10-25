@@ -1,0 +1,18 @@
+# Walks to a nearby tile with cleanable decals and washes it.
+- type: htnCompound
+  id: WFCleanNearbyDecalsCompound
+  branches:
+    - tasks:
+        - !type:HTNPrimitiveTask
+          operator: !type:WFPickDirtyTileOperator
+
+        - !type:HTNPrimitiveTask
+          operator: !type:MoveToOperator
+            pathfindInPlanning: true
+            removeKeyOnFinish: false
+            targetKey: TargetCoordinates
+            pathfindKey: TargetPathfind
+            rangeKey: MeleeRange
+
+        - !type:HTNPrimitiveTask
+          operator: !type:WFCleanTileOperator

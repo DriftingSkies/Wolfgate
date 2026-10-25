@@ -1,0 +1,226 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: BaseWall
+  id: ADTWallLightArmorKMT
+  suffix: Space Battleships, KMT
+  components:
+    - type: Construction
+      graph: Girder
+      node: wall
+    - type: Sprite
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_kmt_armor.rsi
+    - type: Icon
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_kmt_armor.rsi
+    - type: IconSmooth
+      key: walls
+      base: state
+    - type: Destructible
+      thresholds:
+        - trigger:
+            !type:DamageTrigger
+            damage: 1500
+          behaviors:
+            # - !type:SpawnEntitiesBehavior
+            #   spawn:
+            #     Girder:
+            #       min: 1
+            #       max: 1
+            - !type:DoActsBehavior
+              acts: [ "Destruction" ]
+    - type: RCDDeconstructable
+      cost: 6
+      delay: 8
+      fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: ADTWallLightArmorKMT
+  id: ADTWallLightArmorTSF
+  suffix: Space Battleships, TSF
+  components:
+    - type: Sprite
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_tsf_armor.rsi
+    - type: Icon
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_tsf_armor.rsi
+
+- type: entity
+  parent: ADTWallLightArmorKMT
+  id: ADTWallHeavyArmorKMT
+  suffix: Space Battleships, KMT
+  components:
+    - type: StaticPrice
+      price: 115
+    - type: Construction
+      graph: Girder
+      node: reinforcedWall
+    - type: Sprite
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_kmt_heavy_armor.rsi
+    - type: Icon
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_kmt_heavy_armor.rsi
+    - type: Destructible
+      thresholds:
+        - trigger:
+            !type:DamageTrigger
+            damage: 3000
+          behaviors:
+            - !type:DoActsBehavior
+              acts: [ "Destruction" ]
+    - type: RCDDeconstructable
+      deconstructable: false
+
+- type: entity
+  parent: ADTWallHeavyArmorKMT
+  id: ADTWallHeavyArmorTSF
+  suffix: Space Battleships, TSF
+  components:
+    - type: Sprite
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_tsf_heavy_armor.rsi
+    - type: Icon
+      sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/space_battleships_tsf_heavy_armor.rsi
+
+- type: entity
+  parent: WallShuttleDiagonal
+  id: ADTWallHeavyArmorKMTDiagonal
+  suffix: Space Battleships, KMT, Diagonal
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/diagonal_kmt_heavyarmor.rsi
+    state: state0
+  - type: IconSmooth
+    mode: Diagonal
+    key: walls
+    base: state
+  - type: Icon
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/diagonal_kmt_heavyarmor.rsi
+    state: state0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalSlam
+  - type: Reflect
+    reflectProb: 0
+  - type: RCDDeconstructable
+    deconstructable: false
+
+- type: entity
+  parent: ADTWallHeavyArmorKMTDiagonal
+  id: ADTWallHeavyArmorTSFDiagonal
+  suffix: Space Battleships, TSF, Diagonal
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/diagonal_tsf_heavyarmor.rsi
+    state: state0
+  - type: Icon
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/diagonal_tsf_heavyarmor.rsi
+    state: state0
+
+- type: entity
+  parent: WallShuttleDiagonal
+  id: ADTWallHeavyArmorKMTBevel
+  suffix: Space Battleships, KMT, Bevel
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/bevel_kmt_heavyarmor.rsi
+    state: state0
+  - type: IconSmooth
+    mode: Diagonal
+    key: walls
+    base: state
+  - type: Icon
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/bevel_kmt_heavyarmor.rsi
+    state: state0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalSlam
+  - type: Reflect
+    reflectProb: 0
+  - type: RCDDeconstructable
+    deconstructable: false
+
+- type: entity
+  parent: ADTWallHeavyArmorKMTBevel
+  id: ADTWallHeavyArmorTSFBevel
+  suffix: Space Battleships, TSF, Bevel
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/bevel_tsf_heavyarmor.rsi
+    state: state0
+  - type: Icon
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/bevel_tsf_heavyarmor.rsi
+    state: state0
+
+- type: entity
+  parent: WallShuttleDiagonal
+  id: ADTWallHeavyArmorKMTRound
+  suffix: Space Battleships, KMT, Round
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/round_kmt_heavyarmor.rsi
+    state: state0
+  - type: IconSmooth
+    mode: Diagonal
+    key: walls
+    base: state
+  - type: Icon
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/round_kmt_heavyarmor.rsi
+    state: state0
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalSlam
+  - type: Reflect
+    reflectProb: 0
+  - type: RCDDeconstructable
+    deconstructable: false
+
+- type: entity
+  parent: ADTWallHeavyArmorKMTRound
+  id: ADTWallHeavyArmorTSFRound
+  suffix: Space Battleships, TSF, Round
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/round_tsf_heavyarmor.rsi
+    state: state0
+  - type: Icon
+    sprite: ADT/ADTGlobalEvents/ShipBattle/Structures/Walls/round_tsf_heavyarmor.rsi
+    state: state0
+# WOLFGATE END

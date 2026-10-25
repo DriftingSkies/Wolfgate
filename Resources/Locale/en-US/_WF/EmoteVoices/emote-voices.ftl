@@ -33,6 +33,7 @@ emote-voice-name-synth = Synth
 emote-voice-name-cyborg = Cyborg
 emote-voice-name-syndicate-cyborg = Syndicate cyborg
 emote-voice-name-vox = Vox
+emote-voice-name-vulpkanin = Vulpkanin
 emote-voice-name-classic = Classic
 emote-voice-name-robotic = Robotic
 emote-voice-name-lizard = Lizard

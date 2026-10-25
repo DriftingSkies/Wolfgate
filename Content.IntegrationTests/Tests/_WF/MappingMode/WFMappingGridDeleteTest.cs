@@ -175,6 +175,85 @@ public sealed class WFMappingGridDeleteTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>The grid list's Delete: the owner's request removes a whole grid, a stranger's is refused.</summary>
+    [Test]
+    public async Task DeleteGridRequest()
+    {
+        await using var pair = await PoolManager.GetServerClient(Settings);
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var mapping = entMan.System<WFMappingModeSystem>();
+        var tools = entMan.System<MappingToolsSystem>();
+        var mapSys = entMan.System<MapSystem>();
+        var xformSys = entMan.System<TransformSystem>();
+        var tileDefs = server.ResolveDependency<ITileDefinitionManager>();
+        await Enable(pair);
+        var players = await AddMappers(pair, 2);
+        var (a, b) = (players[0], players[1]);
+
+        WFMappingSession session = default!;
+        EntityUid kept = default;
+        EntityUid stray = default;
+        var plating = new Tile(tileDefs["Plating"].TileId);
+
+        List<EntityUid> Grids() => Children(entMan.GetComponent<TransformComponent>(session.RootMap).ChildEnumerator)
+            .Where(entMan.HasComponent<MapGridComponent>)
+            .ToList();
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(mapping.TryCreateSession(a, "Grid Request Test", out var created), Is.True);
+            session = created!;
+            Assert.That(mapping.TryCreateSession(b, "Other Session", out _), Is.True);
+            Assert.That(mapping.GridCap(session), Is.EqualTo(6), "One member gets six grids.");
+
+            var mapId = entMan.GetComponent<MapComponent>(session.RootMap).MapId;
+            var keptGrid = mapSys.CreateGridEntity(mapId);
+            kept = keptGrid.Owner;
+            mapSys.SetTile(kept, keptGrid.Comp, Vector2i.Zero, plating);
+
+            var strayGrid = mapSys.CreateGridEntity(mapId);
+            stray = strayGrid.Owner;
+            xformSys.SetWorldPosition(stray, new Vector2(20, 20));
+            for (var x = 0; x < 3; x++)
+            {
+                mapSys.SetTile(stray, strayGrid.Comp, new Vector2i(x, 0), plating);
+            }
+
+            entMan.SpawnEntity("WFMappingModeTestFixture", new EntityCoordinates(stray, new Vector2(1.5f, 0.5f)));
+
+            RaiseAs(entMan, b, new WFMappingDeleteGridRequest(entMan.GetNetEntity(stray)));
+        });
+
+        await pair.RunTicksSync(3);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.Deleted(stray), Is.False, "Another session's mapper can't delete it.");
+            RaiseAs(entMan, a, new WFMappingDeleteGridRequest(entMan.GetNetEntity(stray)));
+        });
+
+        await pair.RunTicksSync(3);
+        await server.WaitAssertion(() =>
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.Deleted(stray), Is.True, "The owner's request deletes the grid.");
+                Assert.That(Grids(), Is.EquivalentTo(new[] { kept }), "The other grid stays.");
+            });
+
+            tools.StepHistory(a, redo: false);
+            var grids = Grids();
+            Assert.That(grids, Has.Count.EqualTo(2), "Undo brings it back.");
+            var restored = grids.Single(g => g != kept);
+            Assert.That(Children(entMan.GetComponent<TransformComponent>(restored).ChildEnumerator).Any(c =>
+                    entMan.GetComponent<MetaDataComponent>(c).EntityPrototype?.ID == "WFMappingModeTestFixture"),
+                Is.True, "The fixture comes back with it.");
+        });
+
+        await Disable(pair);
+        await pair.CleanReturnAsync();
+    }
+
     private static List<EntityUid> Children(TransformChildrenEnumerator children)
     {
         var list = new List<EntityUid>();

@@ -111,6 +111,7 @@
     # WOLFGATE END
       color: "#4f94ad"
       requireDetailRange: true
+  - type: OreSiloClient
 
 #USSP
 

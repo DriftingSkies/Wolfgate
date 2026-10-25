@@ -32,6 +32,10 @@ public sealed partial class ToggleableGhostRoleSystem : EntitySystem
 
     private void OnUseInHand(EntityUid uid, ToggleableGhostRoleComponent component, UseInHandEvent args)
     {
+        // WOLFGATE: a device that only carries the wipe verb (a PDA) leaves using and activating it to its own UI
+        if (!component.Activatable)
+            return;
+
         if (args.Handled)
             return;
 
@@ -44,6 +48,10 @@ public sealed partial class ToggleableGhostRoleSystem : EntitySystem
     // Goobstation
     private void OnActivateInWorld(EntityUid uid, ToggleableGhostRoleComponent component, ActivateInWorldEvent args)
     {
+        // WOLFGATE: a device that only carries the wipe verb (a PDA) leaves using and activating it to its own UI
+        if (!component.Activatable)
+            return;
+
         if (args.Handled)
             return;
 

@@ -1,0 +1,35 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14BaseFlammable
+  abstract: true
+  components:
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg #TODO replace
+  - type: Appearance
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: Flammable
+    fireSpread: false
+    canResistFire: false
+    alwaysCombustible: true
+    canExtinguish: true
+    firestacksOnIgnite: 0.25
+    firestackFade: 0.15
+    damage:
+      types:
+        Heat: 0.25
+  - type: FireVisuals
+    sprite: _CP14/Effects/fire.rsi
+    normalState: small
+
+- type: entity
+  id: CP14BaseFlammableSpreading
+  parent: CP14BaseFlammable
+  abstract: true
+# WOLFGATE END

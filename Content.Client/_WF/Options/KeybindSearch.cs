@@ -10,8 +10,9 @@ public static class KeybindSearch
     /// <summary>
     /// Shows the rows of <paramref name="container"/> whose name contains <paramref name="query"/>, or whose bound key
     /// equals it, and the headers of sections that still have a row. An empty query shows everything.
+    /// Returns whether any row is shown.
     /// </summary>
-    public static void Filter(Control container, string query)
+    public static bool Filter(Control container, string query)
     {
         query = query.Trim();
         var all = query.Length == 0;
@@ -19,6 +20,7 @@ public static class KeybindSearch
         Control? header = null;
         Control? spacer = null;
         var sectionShown = false;
+        var anyShown = false;
 
         foreach (var child in container.Children)
         {
@@ -36,11 +38,13 @@ public static class KeybindSearch
                 default:
                     child.Visible = all || Matches(child, query);
                     sectionShown |= child.Visible;
+                    anyShown |= child.Visible;
                     break;
             }
         }
 
         CloseSection(header, spacer, sectionShown, all);
+        return anyShown;
     }
 
     private static void CloseSection(Control? header, Control? spacer, bool shown, bool all)

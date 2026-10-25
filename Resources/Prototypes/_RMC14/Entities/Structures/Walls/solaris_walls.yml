@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMWallMetal
+  id: CMWallSolaris
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/solaris_wall.rsi
+    state: solaris_interior
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/solaris_wall.rsi
+    state: solaris_interior
+  - type: IconSmooth
+    key: walls
+    base: solaris_interior
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: CMWallSolarisRock
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/solaris_rock.rsi
+    state: solaris_rock
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/solaris_rock.rsi
+    state: solaris_rock
+  - type: IconSmooth
+    key: walls
+    base: solaris_rock
+# WOLFGATE END

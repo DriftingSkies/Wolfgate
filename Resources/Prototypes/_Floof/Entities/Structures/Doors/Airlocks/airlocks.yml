@@ -1,0 +1,9 @@
+# WOLFGATE(DecorImport) START: ported from Panta Rhei
+- type: entity
+  parent: Airlock
+  id: AirlockFreelancerCamo
+  suffix: Freelancer
+  components:
+  - type: Sprite
+    sprite: _Floof/Structures/Doors/Airlocks/Standard/freelancer_camo.rsi
+# WOLFGATE END

@@ -67,6 +67,7 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WFEncounterComponent, WFEncounterStartedEvent>(OnStarted);
         SubscribeLocalEvent<WFEncounterResolvedEvent>(OnResolved);
+        SubscribeLocalEvent<WFEncounterShipSpawnedEvent>(OnShipSpawned);
         SubscribeLocalEvent<WFEncounterBountyComponent, ComponentShutdown>(OnShutdown);
         // Before the damage lands, while the damage still names who dealt it.
         SubscribeLocalEvent<WFEncounterBountyTargetComponent, BeforeDamageChangedEvent>(OnTargetDamaged,
@@ -132,7 +133,8 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         bounty.Name = warrant.Target == WFEncounterBountyTarget.Captain && bounty.Fugitive is { } fugitive
             ? MetaData(fugitive).EntityName
             : shipName;
-        if (bounty.Crew.Count == 0)
+        // A simulated ship's crew are marked when its hull is spawned.
+        if (bounty.Crew.Count == 0 && !ship.Virtual)
         {
             Log.Error($"Encounter {prototype.ID} has nobody aboard '{warrant.Ship}' to put a warrant on.");
             RemComp<WFEncounterBountyComponent>(ent);
@@ -154,6 +156,18 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
                 Loc.GetString(broadcast, ("name", bounty.Name), ("ship", shipName), ("reward", bounty.Pool)),
                 Loc.GetString("wf-encounter-bounty-author"), colorOverride: BroadcastColor);
         }
+    }
+
+    /// <summary>A wanted crew's ship spawned from simulation: its new crew are the ones the warrant is for.</summary>
+    private void OnShipSpawned(ref WFEncounterShipSpawnedEvent ev)
+    {
+        if (!TryComp<WFEncounterBountyComponent>(ev.Encounter, out var bounty) || bounty.State != WFBountyState.Open
+            || bounty.Ship != ev.Key || !TryComp<WFEncounterComponent>(ev.Encounter, out var encounter)
+            || !encounter.Ships.TryGetValue(ev.Key, out var ship))
+            return;
+
+        bounty.Crew.RemoveAll(uid => TerminatingOrDeleted(uid));
+        MarkTargets((ev.Encounter, encounter), bounty, ship);
     }
 
     /// <summary>Marks the crewmen a warrant is for: the ship's captain, else its pilot, else any hand; or every hand.</summary>
@@ -287,10 +301,16 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
     /// <summary>Whether the target is dead (not merely down) or destroyed; a crew's ship being gone counts too.</summary>
     private bool Taken(WFEncounterBountyComponent bounty, WFEncounterShipState ship)
     {
+        // Simulated or still being built, nobody can have taken them: the crew are marked once the hull is crewed. Beaten in
+        // a simulated fight, the ship is removed and the warrant withdrawn.
+        if (ship.Virtual || ship.Building)
+            return false;
+
         if (bounty.Target == WFEncounterBountyTarget.Captain)
             return bounty.Fugitive is not { } fugitive || Down(fugitive);
 
-        return TerminatingOrDeleted(ship.Grid) || bounty.Crew.All(Down);
+        // A crew warrant with nobody marked yet is not taken by its hands all being down.
+        return TerminatingOrDeleted(ship.Grid) || bounty.Crew.Count > 0 && bounty.Crew.All(Down);
     }
 
     private bool Down(EntityUid uid)
@@ -348,7 +368,7 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
     }
 
     /// <summary>Whether a helper has an account to be paid into: their body's, or as a ghost their character's.</summary>
-    private bool Payable(ICommonSession session)
+    public bool Payable(ICommonSession session)
     {
         if (session.AttachedEntity is { } mob && !HasComp<GhostComponent>(mob))
             return HasComp<BankAccountComponent>(mob);
@@ -356,7 +376,8 @@ public sealed partial class WFEncounterBountySystem : EntitySystem
         return _prefs.TryGetCachedPreferences(session.UserId, out var prefs) && prefs.SelectedCharacter is HumanoidCharacterProfile;
     }
 
-    private bool Deposit(ICommonSession session, int amount)
+    /// <summary>Pays into a helper's account: their body's, or as a ghost their character's.</summary>
+    public bool Deposit(ICommonSession session, int amount)
     {
         if (session.AttachedEntity is { } mob && HasComp<BankAccountComponent>(mob))
             return _bank.TryBankDeposit(mob, amount, false);

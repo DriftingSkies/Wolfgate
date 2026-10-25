@@ -15,6 +15,10 @@
 
   Your PNG template shows only on the level you loaded it on.
 
+  ## Lining up levels
+
+  Every level uses the same world tiles, and Up and Down keep you where you are, so build over what shows through from below. Every grid sits on whole world tiles at a right angle: anything placed, pasted or loaded off them, ships and maps included, moves onto them by itself. The [bold]World grid[/bold] layer draws those tiles. The [bold]Depth perspective[/bold] layer draws the levels below smaller, as on a planet; it's off by default so levels line up on screen. The Grids list on the Session tab lists the grids on every level.
+
   ## Saving and downloading
 
   Every level saves with the map. A download of a map with several levels gives one file per level, named after the map with _z and the level number, so level 0 ends in _z0.

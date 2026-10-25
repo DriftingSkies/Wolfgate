@@ -1,4 +1,5 @@
 using Content.Shared._WF.MappingMode;
+using Content.Shared._WF.MappingMode.Test;
 using Content.Shared.Ghost;
 using Content.Shared.Mind.Components;
 using Robust.Shared.Containers;
@@ -9,8 +10,8 @@ using Robust.Shared.Player;
 namespace Content.Server._WF.MappingTools;
 
 /// <summary>
-/// Which entities mapping edits never delete, move or copy: players, ghosts, mapping observers, bodies holding a mind,
-/// and anything parented under one of them. Used by the mapping tools and mapping mode alike.
+/// Which entities mapping edits never delete, move or copy: players, ghosts, mapping observers, live-test characters,
+/// bodies holding a mind, and anything parented under one of them. Used by the mapping tools and mapping mode alike.
 /// </summary>
 public sealed partial class MappingProtectionSystem : EntitySystem
 {
@@ -21,6 +22,7 @@ public sealed partial class MappingProtectionSystem : EntitySystem
     private EntityQuery<GhostComponent> _ghostQuery;
     private EntityQuery<MindContainerComponent> _mindQuery;
     private EntityQuery<WFMappingObserverComponent> _observerQuery;
+    private EntityQuery<WFMappingTesterComponent> _testerQuery;
 
     public override void Initialize()
     {
@@ -30,14 +32,16 @@ public sealed partial class MappingProtectionSystem : EntitySystem
         _ghostQuery = GetEntityQuery<GhostComponent>();
         _mindQuery = GetEntityQuery<MindContainerComponent>();
         _observerQuery = GetEntityQuery<WFMappingObserverComponent>();
+        _testerQuery = GetEntityQuery<WFMappingTesterComponent>();
     }
 
-    /// <summary>Whether the entity itself is a player, a ghost, a mapping observer or a body with a mind.</summary>
+    /// <summary>Whether the entity itself is a player, a ghost, a mapping observer, a test character or a body with a mind.</summary>
     public bool IsProtectedSelf(EntityUid uid)
     {
         return _actorQuery.HasComp(uid) ||
                _ghostQuery.HasComp(uid) ||
                _observerQuery.HasComp(uid) ||
+               _testerQuery.HasComp(uid) ||
                _mindQuery.TryComp(uid, out var mind) && mind.HasMind;
     }
 

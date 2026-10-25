@@ -24,6 +24,25 @@ public sealed class BiotypeGatesTest
     private static HumanoidCharacterProfile Profile(string species, WFBiotype biotype) =>
         HumanoidCharacterProfile.DefaultWithSpecies(species).WithBiotype(biotype);
 
+    /// <summary>Downsides pay for positive traits whatever order the saved set comes back in.</summary>
+    [Test]
+    public async Task TraitPointsIgnoreOrderTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var proto = server.ResolveDependency<IPrototypeManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var profile = Profile("Human", WFBiotype.Default);
+            var traits = new ProtoId<TraitPrototype>[] { "PlateletFactories", "Helmsmanship", "Lethargy", "GlassJaw" };
+            var valid = profile.GetValidTraits(traits, proto);
+            Assert.That(valid, Is.EquivalentTo(traits));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>No trait still keys its body on a machine species id, and a biotype list never holds Default.</summary>
     [Test]
     public async Task TraitListsSweepTest()

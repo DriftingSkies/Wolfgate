@@ -9,6 +9,7 @@ namespace Content.Client._Mono.Blocking;
 public sealed partial class BlockingVisualsSystem : SharedBlockingSystem
 {
     [Dependency] private IPrototypeManager _protoMan = default!;
+    [Dependency] private SpriteSystem _sprite = default!; // WOLFGATE: post-shader flags are set through SpriteSystem since engine 291
 
     private ShaderInstance _shader = default!;
 
@@ -36,9 +37,12 @@ public sealed partial class BlockingVisualsSystem : SharedBlockingSystem
         if (!Resolve(uid, ref component, ref sprite, false))
             return;
 
-        sprite.PostShader = enabled ? _shader : null;
-        sprite.GetScreenTexture = enabled;
-        sprite.RaiseShaderEvent = enabled;
+        // WOLFGATE START: engine 291 ignores the sprite-wide GetScreenTexture/RaiseShaderEvent; they are per post-shader now
+        // upstream original: sprite.PostShader = enabled ? _shader : null; sprite.GetScreenTexture = enabled; sprite.RaiseShaderEvent = enabled;
+        sprite.PostShader = null;
+        if (enabled)
+            _sprite.SetPostShader(sprite, new SpriteComponent.PostShaderArgs("ShieldingOutline", _shader) { GetScreenTexture = true, RaiseShaderEvent = true });
+        // WOLFGATE END
     }
     private void OnStartup(EntityUid uid, BlockingVisualsComponent component, ComponentStartup args)
     {

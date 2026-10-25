@@ -12,6 +12,7 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Mind;
 using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
+using Content.Shared.Timing;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Log;
@@ -34,6 +35,9 @@ public sealed class SafetyDepositBoxWithdrawTest
     private const string KeptProto = "Wrench";
     private const string RefusedProto = "WFSafetyDepositWithdrawTestRefused";
     private const string MissingProto = "WFSafetyDepositWithdrawTestRemoved";
+    private const string DelayedProto = "WFSafetyDepositWithdrawTestDelayed";
+    private const string PouchProto = "WFSafetyDepositWithdrawTestPouch";
+    private const string DelayedChildProto = "WFSafetyDepositWithdrawTestDelayedChild";
 
     private static readonly string[] ItemProtos = { ChangedProto, KeptProto };
 
@@ -66,6 +70,33 @@ public sealed class SafetyDepositBoxWithdrawTest
   - type: Tag
     tags:
     - SafetyDepositBlacklist
+
+- type: entity
+  id: WFSafetyDepositWithdrawTestDelayed
+  parent: Crowbar
+  components:
+  - type: UseDelay
+    delay: 1
+
+- type: entity
+  id: WFSafetyDepositWithdrawTestPouch
+  parent: BaseStorageItem
+  components:
+  - type: Item
+    size: Small
+  - type: Storage
+    maxItemSize: Tiny
+    grid:
+    - 0,0,0,0
+
+- type: entity
+  id: WFSafetyDepositWithdrawTestDelayedChild
+  parent: BaseItem
+  components:
+  - type: Item
+    size: Tiny
+  - type: UseDelay
+    delay: 1
 ";
 
     [Test]
@@ -107,6 +138,56 @@ public sealed class SafetyDepositBoxWithdrawTest
         await bench.Send(new SafetyDepositWithdrawMessage(boxId));
         Assert.That(await bench.BoxesInWorld(boxId), Has.Count.EqualTo(1), "The box came out a second time.");
         Assert.That(await bench.StoredItems(RefusedProto), Has.Count.EqualTo(1), "The refused item came out a second time.");
+
+        await bench.Db.DeleteSafetyDepositBox(boxId);
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// Saved cooldowns hold the old round's clock; a withdrawn item and what it holds come out ready to use.
+    /// </summary>
+    [Test]
+    public async Task WithdrawnItemsKeepNoCooldown()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var bench = await Bench.Create(pair);
+        var server = pair.Server;
+        var entMan = bench.EntMan;
+        var delays = entMan.System<UseDelaySystem>();
+
+        void LongCooldown(EntityUid uid)
+        {
+            var delay = entMan.GetComponent<UseDelayComponent>(uid);
+            delays.SetLength((uid, delay), TimeSpan.FromHours(1));
+            delays.TryResetDelay((uid, delay));
+            Assert.That(delays.IsDelayed((uid, delay)), "The test cooldown didn't start.");
+        }
+
+        var boxId = await bench.DepositBox(new[] { DelayedProto, PouchProto }, item =>
+        {
+            if (entMan.HasComponent<UseDelayComponent>(item))
+                LongCooldown(item);
+            if (!entMan.TryGetComponent<StorageComponent>(item, out var pouch))
+                return;
+            var child = entMan.SpawnEntity(DelayedChildProto, bench.Coords);
+            LongCooldown(child);
+            Assert.That(entMan.System<SharedStorageSystem>().Insert(item, child, out _, storageComp: pouch, playSound: false));
+        });
+
+        await bench.Send(new SafetyDepositWithdrawMessage(boxId));
+
+        var tools = await bench.StoredItems(DelayedProto);
+        var pouches = await bench.StoredItems(PouchProto);
+        Assert.That(tools, Has.Count.EqualTo(1), "The tool didn't come out.");
+        Assert.That(pouches, Has.Count.EqualTo(1), "The pouch didn't come out.");
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(delays.IsDelayed(tools[0]), Is.False, "The withdrawn tool is still on its saved cooldown.");
+            var contents = entMan.GetComponent<StorageComponent>(pouches[0]).Container.ContainedEntities;
+            Assert.That(contents, Has.Count.EqualTo(1), "The pouch lost what it held.");
+            Assert.That(delays.IsDelayed(contents[0]), Is.False, "The item inside the pouch is still on its saved cooldown.");
+        });
 
         await bench.Db.DeleteSafetyDepositBox(boxId);
         await pair.CleanReturnAsync();
@@ -218,8 +299,9 @@ public sealed class SafetyDepositBoxWithdrawTest
         /// <summary>
         /// Buys a box, fills it and deposits it through the console, so the saved data is what the game writes.
         /// </summary>
-        public async Task<Guid> DepositBox()
+        public async Task<Guid> DepositBox(string[]? protos = null, Action<EntityUid>? prepare = null)
         {
+            protos ??= ItemProtos;
             var record = await Db.PurchaseSafetyDepositBox(UserId, Character, "Tester", BoxProto);
             var boxId = record.BoxId;
             await Db.ClearSafetyDepositBoxItems(boxId, Round);
@@ -233,9 +315,10 @@ public sealed class SafetyDepositBoxWithdrawTest
                 comp.CharacterIndex = Character;
 
                 var storage = EntMan.System<SharedStorageSystem>();
-                foreach (var proto in ItemProtos)
+                foreach (var proto in protos)
                 {
                     var item = EntMan.SpawnEntity(proto, Coords);
+                    prepare?.Invoke(item);
                     Assert.That(storage.Insert(box, item, out _, playSound: false), Is.True,
                         $"{proto} doesn't go in {BoxProto}; pick an item that does.");
                 }
@@ -249,7 +332,7 @@ public sealed class SafetyDepositBoxWithdrawTest
 
             var saved = await Db.GetSafetyDepositBox(boxId);
             Assert.That(saved, Is.Not.Null);
-            Assert.That(saved!.Items, Has.Count.EqualTo(ItemProtos.Length), "The deposit didn't save the box's items.");
+            Assert.That(saved!.Items, Has.Count.EqualTo(protos.Length), "The deposit didn't save the box's items.");
             Assert.That(saved.LastWithdrawn, Is.Null, "The deposit didn't mark the box as stored.");
             Assert.That(await BoxesInWorld(boxId), Is.Empty, "The deposited box is still in the world.");
 

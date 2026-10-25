@@ -94,7 +94,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             foreach (var ship in encounter.Ships.Values)
             {
                 // A ship lying in wait gives itself away to nobody.
-                if (ship.WarnRange <= 0f && ship.AttackRange <= 0f || ship.Lurking || TerminatingOrDeleted(ship.Grid)
+                if (ship.WarnRange <= 0f && ship.AttackRange <= 0f || ship.Lurking || ship.Virtual || ship.Building || TerminatingOrDeleted(ship.Grid)
                     || Disabled(ship))
                     continue;
 
@@ -134,7 +134,8 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
 
             foreach (var ship in encounter.Ships.Values)
             {
-                if (!ship.Lurking && !TerminatingOrDeleted(ship.Grid) && !Disabled(ship))
+                // A hull still being built has no crew or company yet: no zone of its own, and nobody's intruder.
+                if (!ship.Lurking && !ship.Virtual && !ship.Building && !TerminatingOrDeleted(ship.Grid) && !Disabled(ship))
                     _fleet.Add((uid, ship));
             }
         }
@@ -436,7 +437,9 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             // Anyone else is only known for what he is by his IFF. With that switched off he is nobody's friend: he is
             // told to show himself and shot across the bows in the warning zone, and fired on in the attack zone. With
             // it on, a patrol only minds its faction's enemies.
-            var masked = IffMasked(intruder);
+            // A navy patrol knows the station's own people and the judges by their codes, IFF or none: their ships, the
+            // Roswell among them, fly dark by design. They are judged by their company like anyone showing an IFF.
+            var masked = IffMasked(intruder) && !(ship.ZoneTargets == WFEncounterZoneTargets.AtWar && StationAuthority(crewed));
             // A ship minding only known threats leaves a player hull running dark alone; its fire is still answered.
             if (masked && ship.KnownThreatsOnly)
             {
@@ -648,6 +651,21 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
         crewed.RawFlags.All(company => company.EndsWith("Civilian", StringComparison.Ordinal));
 
     /// <summary>Whether a ship has its IFF switched off, so nobody can tell whose it is.</summary>
+    /// <summary>Companies a navy patrol knows whatever their IFF says: Caelestinus staff and the judges.</summary>
+    private static readonly string[] StationCompanies = { "Colonial", "WFJudges" };
+
+    /// <summary>Whether a ship flies for the station or carries its staff: its flag, or any player aboard.</summary>
+    private static bool StationAuthority(Crewed crewed)
+    {
+        foreach (var company in StationCompanies)
+        {
+            if (crewed.GridFlag == company || crewed.Aboard.Contains(company))
+                return true;
+        }
+
+        return false;
+    }
+
     private bool IffMasked(EntityUid grid)
     {
         return TryComp<Content.Shared.Shuttles.Components.IFFComponent>(grid, out var iff)

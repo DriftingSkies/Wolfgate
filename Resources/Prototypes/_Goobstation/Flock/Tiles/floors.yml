@@ -1,0 +1,12 @@
+# WOLFGATE(DecorImport) START: ported from Goob Station
+- type: tile
+  id: FloorFlockZone1
+  name: tiles-flockzone-floor-steel
+  sprite: /Textures/_Goobstation/Flock/Tiles/FZTile1.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+# WOLFGATE END

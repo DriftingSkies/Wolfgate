@@ -15,7 +15,10 @@ public sealed partial class MapScreen
             _shuttleEntity == null || _state == FTLState.Invalid ? null : FTLBar.Value * 100, 0, 100, "wf-gauge-unit-percent"), true);
         var jump = Panel("wf-console-drive", Column(_wfDriveNotice, new WFGlassReadout(MapFTLState), progress, FTLBar,
             MapFTLButton, MapAutopilotButton, MapRebuildButton, MapBeaconsButton));
-        var destinations = Panel("wf-console-destinations", Scroll(HyperspaceDestinations), true);
+        var list = Scroll(HyperspaceDestinations);
+        var register = Column(DestinationSearch, list);
+        register.VerticalExpand = true;
+        var destinations = Panel("wf-console-destinations", register, true);
         var side = Column(jump, destinations);
         side.MinWidth = side.MaxWidth = 260;
         side.VerticalExpand = true;

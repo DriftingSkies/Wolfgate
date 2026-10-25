@@ -1,0 +1,18 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from NovaSector at https://github.com/NovaSector/NovaSector/tree/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/master_files/icons (obj/clothing/gloves.dmi, mob/clothing/hands.dmi)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "equipped-HAND",
+      "directions": 4
+    }
+  ]
+}

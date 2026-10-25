@@ -1,0 +1,7 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  parent: CMFloorSteel
+  id: CMFloorSteelPlanetCult
+  name: tiles-cm-cult
+  sprite: /Textures/_RMC14/Tiles/floors/cult.png
+# WOLFGATE END

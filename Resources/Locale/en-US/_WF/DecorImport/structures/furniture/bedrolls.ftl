@@ -15,7 +15,6 @@ ent-CMBedrollComfyYellow = unfolded comfy bedroll
 ent-NebulaBedBedroll = bedroll
     .desc = A thick, padded bag big enough for a human to huddle in. It's better than sleeping on the ground.
 ent-GoonFakeobjectBedrolls = bedrolls
-    .desc = TEMP
 ent-BayMattressDirty = dirty mattress
     .desc = A dirty, smelly mattress covered in body fluids. You wouldn't want to touch this.
 ent-CoyoteBedMattress = mattress

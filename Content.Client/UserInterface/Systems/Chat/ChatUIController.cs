@@ -681,7 +681,7 @@ public sealed partial class ChatUIController : UIController
 
             if (occluded && !_examine.InRangeUnOccluded(
                     playerPos,
-                    otherPos, 0f,
+                    otherPos, Content.Shared.Examine.ExamineSystemShared.MaxRaycastRange, // WOLFGATE: an unlimited check warns when the eye lags a long teleport
                     (ent, player), predicate))
             {
                 SetBubbles(bubs, false);

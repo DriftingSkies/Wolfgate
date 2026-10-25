@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallPrisonHull
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/prison_rwall.rsi
+    state: rwall
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/prison_rwall.rsi
+    state: hwall
+  - type: IconSmooth
+    key: walls
+    base: rwall
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallBoneResin
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/bone_resin.rsi
+    state: bone_resin
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/bone_resin.rsi
+    state: bone_resin
+  - type: IconSmooth
+    key: walls
+    base: bone_resin
+# WOLFGATE END

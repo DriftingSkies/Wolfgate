@@ -54,6 +54,7 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
     [Dependency] private ShipPaSystem _pa = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private ShipRepairSystem _repair = default!;
+    [Dependency] private WFSafeSpawnSystem _safeSpawn = default!;
 
     /// <summary>Time to prepare after the first survivor boards.</summary>
     public static readonly TimeSpan PreparationTime = TimeSpan.FromSeconds(WFCrashCountdownEvent.DurationSeconds);
@@ -268,24 +269,9 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Chooses enclosed deck over lattices, missing tiles, walls and equipment.</summary>
-    private bool TryFindFloor(EntityUid grid, out EntityCoordinates coordinates)
-    {
-        coordinates = default;
-        if (!TryComp<MapGridComponent>(grid, out var mapGrid))
-            return false;
-        var tiles = _map.GetAllTilesEnumerator(grid, mapGrid);
-        var count = 0;
-        while (tiles.MoveNext(out var tile))
-        {
-            if (tile.Value.Tile.IsEmpty || _turf.IsSpace(tile.Value)
-                || _turf.IsTileBlocked(tile.Value, CollisionGroup.MobMask))
-                continue;
-            if (_random.Next(++count) == 0)
-                coordinates = _turf.GetTileCenter(tile.Value);
-        }
-        return count != 0;
-    }
+    /// <summary>Picks a breathable interior deck tile, never exterior plating or machinery.</summary>
+    private bool TryFindFloor(EntityUid grid, out EntityCoordinates coordinates) =>
+        _safeSpawn.TryFindSafeFloor(grid, out coordinates);
 
     private void OnRoundRestart(RoundRestartCleanupEvent args)
     {

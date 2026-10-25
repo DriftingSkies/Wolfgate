@@ -7,7 +7,11 @@ namespace Content.Shared._WF.RoundSetup;
 
 /// <summary>The crew starting conditions; Normal is reserved and cannot create a scenario lobby.</summary>
 [Serializable, NetSerializable]
-public enum WFRoundScenario : byte { Normal, Crashlanded, Ship, FactionShip }
+public enum WFRoundScenario : byte { Normal, Crashlanded, Ship, FactionShip, Doomed }
+
+/// <summary>How hard a scenario is to survive, shown on its card.</summary>
+[Serializable, NetSerializable]
+public enum WFScenarioDifficulty : byte { Easy, Normal, Hard, VeryHard, Impossible }
 
 /// <summary>Where a purchased crew ship begins its journey.</summary>
 [Serializable, NetSerializable]
@@ -136,6 +140,7 @@ public sealed class WFRoundSetupState : EntityEventArgs
     public bool JoinConfirmed;
     public bool CanJoin;
     public bool CrashlandedAvailable;
+    public bool DoomedAvailable;
     public WFCrewFaction[] Factions = Array.Empty<WFCrewFaction>();
     public int? OwnLobby;
     public WFRoundSetupLobby[] Lobbies = Array.Empty<WFRoundSetupLobby>();

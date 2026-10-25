@@ -1,0 +1,26 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- files: ["hierophant.png", "carpet_deco.png", "techfloor_greeb.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "TG Station"
+  source: "https://github.com/tgstation/tgstation"
+
+- files: ["old_concrete_bricks.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Sojourn"
+  source: "https://github.com/sojourn-13/sojourn-station"
+
+- files: ["rough_metal.png", "rusty_metal.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Starlight"
+  source: "https://github.com/ss14Starlight/space-station-14"
+
+- files: ["artcarpet.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Aurora Station"
+  source: "https://github.com/Aurorastation/Aurora.3/blob/HEAD/icons/turf/flooring/carpet.dmi"
+
+- files: ["abductor_tile.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Starlight at commit https://github.com/ss14Starlight/space-station-14/commit/1736c7305dfe2fdc38c1c384bec8c9768796e68d."
+  source: "https://github.com/ss14Starlight/space-station-14"
+# WOLFGATE END

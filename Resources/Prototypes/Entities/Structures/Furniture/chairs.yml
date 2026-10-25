@@ -212,6 +212,9 @@
   components:
   - type: Sprite
     state: shuttle
+  # WOLFGATE(Seats): the pilot seat swivels toward where you click, like Frontier's
+  - type: Rotatable
+    rotateWhileAnchored: true
   - type: Construction
     graph: Seat
     node: chairPilotSeat

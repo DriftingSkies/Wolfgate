@@ -1,0 +1,76 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14WallWooden
+  parent:
+  - CP14BaseWall
+  - CP14BaseFlammableSpreading
+  components:
+  - type: StaticPrice
+    price: 30
+  - type: Construction
+    graph: Barricade
+    node: woodWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/wooden_wall.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/wooden_wall.rsi
+  - type: IconSmooth
+    base: wood
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  id: CP14WallWoodenBirch
+  parent: CP14WallWooden
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/wooden_wall_birch.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/wooden_wall_birch.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  id: CP14WallWoodenSpruce
+  parent: CP14WallWooden
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/wooden_wall_spruce.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/wooden_wall_spruce.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+# WOLFGATE END

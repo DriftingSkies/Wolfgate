@@ -86,4 +86,10 @@ public sealed partial class ToggleableGhostRoleComponent : Component
     /// </summary>
     [DataField("job")]
     public ProtoId<JobPrototype>? JobProto;
+
+    // WOLFGATE START: a device that only carries the wipe verb (a PDA) keeps its own activation
+    /// <summary>Whether using or activating the item starts a search for a controlling player.</summary>
+    [DataField]
+    public bool Activatable = true;
+    // WOLFGATE END
 }

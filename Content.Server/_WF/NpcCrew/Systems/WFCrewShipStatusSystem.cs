@@ -104,6 +104,10 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     /// </summary>
     public bool IsDisabled(EntityUid grid)
     {
+        // A simulated ship is whole until it is fought in earnest.
+        if (HasComp<WFCrewVirtualShipComponent>(grid))
+            return false;
+
         var reading = Read(grid);
         return reading.Abandoned || reading.Disarmed || reading.Crippled || reading.Wrecked;
     }
@@ -117,6 +121,9 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
     /// </summary>
     public bool IsStarved(EntityUid grid)
     {
+        if (HasComp<WFCrewVirtualShipComponent>(grid))
+            return false;
+
         var reading = Read(grid);
         return (reading.Disarmed || reading.Crippled) && !reading.Wrecked && !reading.Abandoned
                && (!reading.Disarmed || reading.GunsUnpowered) && (!reading.Crippled || reading.ThrustUnpowered);

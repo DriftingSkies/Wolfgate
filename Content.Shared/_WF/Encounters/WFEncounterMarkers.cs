@@ -51,4 +51,20 @@ public sealed class WFEncounterMarker
 
     /// <summary>Radius inside which ships are fired on; zero for none.</summary>
     public float AttackRange;
+
+    /// <summary>The encounter's threat rank, 0 to <see cref="WFEncounterThreat.Max"/>; none for an unranked encounter.</summary>
+    public int? Threat;
+
+    /// <summary>Whether the ship is a pirate retrofit of a civilian hull.</summary>
+    public bool Retrofitted;
+}
+
+/// <summary>Threat ranks: one to three chevrons, then one to three stars.</summary>
+public static class WFEncounterThreat
+{
+    /// <summary>The citadel's rank: three stars.</summary>
+    public const int Max = 6;
+
+    /// <summary>The highest rank a threat tier alone reaches.</summary>
+    public const int MaxTier = 5;
 }

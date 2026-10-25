@@ -1,0 +1,89 @@
+- files: [ bamboo_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ birch_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ dark_pattern.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state darkpattern)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ diagonal_bamboo.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state lightdiag)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ diagonal_mahogany.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state lightdiag)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ ebony_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ floor_bronze.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/obj/clockwork_objects.dmi (state clockwork_floor)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ floor_mech_bay_recharge_floor.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state recharge_floor)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ floor_suns.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state light)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ hatch_bamboo.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state lighthatched)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ hatch_mahogany.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state lighthatched)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ jungle_dark.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/darkjunglegrass.dmi (state grass-255)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ mahogany_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ maple_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ suns_pattern.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors/suns.dmi (state lightpattern)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ walnut_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ wood_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"
+
+- files: [ yew_right.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/icons/turf/floors.dmi (state stairs-wood-r)."
+  source: "https://github.com/shiptest-ss13/Shiptest"

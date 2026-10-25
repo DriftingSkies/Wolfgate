@@ -20,7 +20,10 @@ public sealed partial class WFMappingLinkOverlay : Overlay
     private static readonly Color SelectedColor = Color.FromHex("#ffffff");
     private static readonly Color BoxColor = Color.FromHex("#4fc3f7");
 
-    private const float EndSize = 0.18f;
+    private const float EndSize = 0.22f;
+
+    /// <summary>Width of a link line in tiles.</summary>
+    private const float LineWidth = 0.08f;
 
     private readonly WFMappingLinkSystem _link;
     private readonly WFMappingBuildModeSystem _modes;
@@ -55,7 +58,7 @@ public sealed partial class WFMappingLinkOverlay : Overlay
                 }
             }
 
-            var lists = _entities.EntityQueryEnumerator<DeviceListComponent, TransformComponent>();
+            var lists = _entities.AllEntityQueryEnumerator<DeviceListComponent, TransformComponent>(); // All: session maps are paused
             while (lists.MoveNext(out var holder, out var list, out var xform))
             {
                 if (xform.MapID != map)
@@ -115,7 +118,15 @@ public sealed partial class WFMappingLinkOverlay : Overlay
         if (!TryPosition(from, map, out var a) || !TryPosition(to, map, out var b))
             return;
 
-        handle.DrawLine(a, b, color);
+        // A quad rather than DrawLine: a one-pixel line vanishes over a busy grid at any zoom.
+        var along = b - a;
+        if (along.LengthSquared() > 0.0001f)
+        {
+            var side = Vector2.Normalize(new Vector2(-along.Y, along.X)) * (LineWidth / 2f);
+            var quad = new[] { a + side, b + side, a - side, b - side };
+            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleStrip, quad, color);
+        }
+
         handle.DrawRect(Box2.CenteredAround(a, new Vector2(EndSize)), color);
         handle.DrawRect(Box2.CenteredAround(b, new Vector2(EndSize)), color);
     }

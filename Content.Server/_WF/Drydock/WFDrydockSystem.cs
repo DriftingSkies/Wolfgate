@@ -515,7 +515,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
             $"{s.MissingTiles}/{s.MissingParts}/{s.DamagedParts}/{s.RepairPrice}",
             $"{s.Working}/{s.PowerRatio}/{s.CraneCount}/{s.BlockedCranes}/{s.Deploying}/{s.Progress}/{s.RemainingSeconds}",
             $"{s.Booking}/{s.BookedBerth}/{s.BookingSeconds}/{s.Notice}/{s.PaysWithMaterials}/{s.BerthLightsOn}",
-            $"{s.CanBreak}/{s.Breakable}/{s.Breaking}",
+            $"{s.CanBreak}/{s.Breakable}/{s.Breaking}/{s.BreakOnly}/{s.BreakCash}/{s.BreakWarrant}/{s.BreakRefusal}",
             DictKey(s.BreakYield),
             $"{s.Station}/{s.BerthConsole}/{s.BerthLabel}/{s.BerthArea}/{s.Approach}/{s.Ship}/{s.Marks.Count}",
             DictKey(s.RepairMaterials),
@@ -560,7 +560,10 @@ public sealed partial class WFDrydockSystem : EntitySystem
             state.Approach = berth.Approach;
         }
 
-        var pay = CompOrNull<WFDrydockMaterialPaymentComponent>(console);
+        // A chop shop's material terms are only its break yields: it sells no work and stocks nothing.
+        var chop = CompOrNull<WFDrydockChopShopComponent>(console);
+        state.BreakOnly = chop != null;
+        var pay = chop == null ? CompOrNull<WFDrydockMaterialPaymentComponent>(console) : null;
         if (pay != null)
         {
             state.PaysWithMaterials = true;
@@ -575,7 +578,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
             state.ShipName = MetaData(berthed).EntityName;
             state.Ship = GetNetEntity(berthed);
 
-            var items = job != null ? UnfinishedItems(job) : BuildRepairItems(berthed, comp);
+            var items = job != null ? UnfinishedItems(job) : chop != null ? new List<WFDrydockWorkItem>() : BuildRepairItems(berthed, comp);
             CountWork(state, items);
             AddMarks(state, items);
 
@@ -597,10 +600,20 @@ public sealed partial class WFDrydockSystem : EntitySystem
         if (CanBreak(console, out var breaker))
         {
             state.CanBreak = true;
-            if (job == null && ship is { } target && BreakRefusal(console, comp, target) == null)
+            var refusal = job == null && ship is { } inBerth ? BreakRefusal(console, comp, inBerth) : null;
+            state.BreakRefusal = refusal;
+            if (job == null && ship is { } target && refusal == null)
             {
                 state.Breakable = true;
-                state.BreakYield = BreakPreview(target, breaker);
+                if (chop != null)
+                {
+                    state.BreakCash = ChopPayout(chop, target);
+                    state.BreakWarrant = IsLawfulProperty(chop, target, null);
+                }
+                else
+                {
+                    state.BreakYield = BreakPreview(target, breaker);
+                }
             }
         }
 
@@ -613,7 +626,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
             state.RemainingSeconds = (float) Math.Max(0d, (job.EstimatedEnd - _timing.CurTime).TotalSeconds);
         }
 
-        foreach (var id in comp.Refits)
+        foreach (var id in chop == null ? comp.Refits : new())
         {
             if (_prototype.TryIndex(id, out var proto))
                 state.Upgrades.Add(BuildRefitEntry(proto, ship, comp, pay, working, scan: job == null));
@@ -689,6 +702,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
     /// <summary>Validates and charges a repair (null upgrade) or refit, then starts its job on the ship.</summary>
     private bool TryStartWork(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid actor, string? upgrade, bool booked = false)
     {
+        if (HasComp<WFDrydockChopShopComponent>(console))
+            return Deny(console, comp, actor, Loc.GetString("drydock-chop-break-only"));
+
         if (BuildWork(ship, comp, upgrade, out var items) is { } denial)
             return Deny(console, comp, actor, denial);
 
@@ -833,7 +849,6 @@ public sealed partial class WFDrydockSystem : EntitySystem
         job.Total = items.Count;
         job.Break = items[0].Kind == WFDrydockWorkKind.Break;
         job.ShipName = Name(ship);
-        job.Attacker = Transform(console).GridUid;
 
         AddSlots(console, comp, job);
         CollectSparkTiles(ship, job);

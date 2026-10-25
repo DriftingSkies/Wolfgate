@@ -1,0 +1,90 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  id: CMPlanetBase
+  isSubfloor: true
+  deconstructTools: [ ]
+  footstepSounds:
+    collection: FootstepGrass
+  heatCapacity: 10000
+  indestructible: true
+
+- type: tile
+  parent: CMPlanetBase
+  id: CMPlanetRunedSandstone
+  name: tiles-wf-rmc-runed-sandstone
+  sprite: /Textures/_RMC14/Tiles/planet/runed_sandstone/runedsandstone.png
+  footstepSounds:
+    collection: FootstepWood
+
+- type: tile
+  parent: CMPlanetBase
+  id: RMCPlanetSandWet
+  name: tiles-wf-rmc-sand
+  sprite: /Textures/_RMC14/Tiles/varadero/layer1.png
+  variants: 8
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 1
+  edgeSprites:
+    SouthEast: /Textures/_RMC14/Tiles/varadero/layer1_single_edge.png
+    NorthEast: /Textures/_RMC14/Tiles/varadero/layer1_single_edge.png
+    NorthWest: /Textures/_RMC14/Tiles/varadero/layer1_single_edge.png
+    SouthWest: /Textures/_RMC14/Tiles/varadero/layer1_single_edge.png
+    South: /Textures/_RMC14/Tiles/varadero/layer1_double_edge.png
+    East: /Textures/_RMC14/Tiles/varadero/layer1_double_edge.png
+    North: /Textures/_RMC14/Tiles/varadero/layer1_double_edge.png
+    West: /Textures/_RMC14/Tiles/varadero/layer1_double_edge.png
+
+- type: tile
+  parent: CMPlanetBase
+  id: RMCPlanetShale
+  name: tiles-wf-rmc-shale
+  sprite: /Textures/_RMC14/Tiles/planet/auto_shale/shale_1.png
+  variants: 8
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 0
+  edgeSprites:
+    SouthEast: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_single_edge.png
+    NorthEast: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_single_edge.png
+    NorthWest: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_single_edge.png
+    SouthWest: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_single_edge.png
+    South: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_double_edge.png
+    East: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_double_edge.png
+    North: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_double_edge.png
+    West: /Textures/_RMC14/Tiles/planet/auto_shale/layer1_double_edge.png
+  weedsSpreadable: false
+  semiWeedable: true
+
+- type: tile
+  parent: RMCPlanetShale
+  id: RMCPlanetShaleAlt
+  sprite: /Textures/_RMC14/Tiles/planet/auto_shale/shale_2.png
+
+- type: tile
+  parent: CMTileBase
+  id: CMPlanetTatami
+  name: tiles-wf-rmc-tatami-flooring
+  sprite: /Textures/_RMC14/Tiles/planet/interior/tatami.png
+
+- type: tile
+  parent: CMPlanetBase
+  id: RMCPlanetDirtBrownRoad
+  name: tiles-wf-rmc-dirt-road
+  sprite: /Textures/_RMC14/Tiles/planet/browndirt_road/browndirt_road.png
+# WOLFGATE END

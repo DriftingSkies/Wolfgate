@@ -33,6 +33,9 @@ uplink-data-chit-50-desc = Fifty data chits. An extremely valuable currency amon
 uplink-iff-console-flatpack-name = IFF Computer Flatpack
 uplink-iff-console-flatpack-desc = A flatpack for a computer that will obfuscate your shuttle's IFF signals.
 
+uplink-underground-codespeak-translator-implanter-name = Codespeak Implanter
+uplink-underground-codespeak-translator-implanter-desc = An implant that allows the user to understand and speak Underground Codespeak. For initiating new members into the black market.
+
 # ullman stuff
 
 uplink-ullman-pilot-name = U.I. Pilot Voidsuit
@@ -80,4 +83,5 @@ uplink-faction-materials-advanced-name = Advanced Materials Crate
 uplink-faction-materials-advanced-desc = A crate containing 50 sheets of plasma, uranium, gold and silver.
 
 uplink-faction-materials-exotic-name = Exotic Materials Crate
-uplink-faction-materials-exotic-desc = A crate containing 10 sheets of plastitanium, 5 bars of depleted uranium, and 3 plates of fissile uranium.
+# WOLFGATE(Mining): one fissile plate, matching the crate fill
+uplink-faction-materials-exotic-desc = A crate containing 10 sheets of plastitanium, 5 bars of depleted uranium, and 1 plate of fissile uranium.

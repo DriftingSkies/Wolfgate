@@ -1,0 +1,65 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: tile
+  id: CP14FloorMycelium
+  name: cp14-tiles-mycelium
+  sprite: /Textures/_CP14/Tiles/Mycelium/tile.png
+  variants: 12
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 3
+  edgeSprites:
+    South: /Textures/_CP14/Tiles/Mycelium/double_edge_S.png
+    East: /Textures/_CP14/Tiles/Mycelium/double_edge_E.png
+    North: /Textures/_CP14/Tiles/Mycelium/double_edge_N.png
+    West: /Textures/_CP14/Tiles/Mycelium/double_edge_W.png
+  baseTurf: FloorDirt
+  deconstructTools: [ Digging ]
+  itemDrop: FloorTileItemDirt
+  isSubfloor: false
+  footstepSounds:
+    collection: FootstepGrass
+  heatCapacity: 10000
+
+- type: tile
+  id: CP14FloorMyceliumLight
+  name: cp14-tiles-mycelium-light
+  sprite: /Textures/_CP14/Tiles/MyceliumLight/tile.png
+  variants: 12
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 4
+  edgeSprites:
+    South: /Textures/_CP14/Tiles/MyceliumLight/double_edge_S.png
+    East: /Textures/_CP14/Tiles/MyceliumLight/double_edge_E.png
+    North: /Textures/_CP14/Tiles/MyceliumLight/double_edge_N.png
+    West: /Textures/_CP14/Tiles/MyceliumLight/double_edge_W.png
+  baseTurf: FloorDirt
+  deconstructTools: [ Digging ]
+  itemDrop: FloorTileItemDirt
+  isSubfloor: false
+  footstepSounds:
+    collection: FootstepGrass
+  heatCapacity: 10000
+# WOLFGATE END

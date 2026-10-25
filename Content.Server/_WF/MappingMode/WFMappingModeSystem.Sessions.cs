@@ -387,6 +387,7 @@ public sealed partial class WFMappingModeSystem
     /// </summary>
     public void LeaveSession(NetUserId user, bool kicked)
     {
+        _newGridNext.Remove(user);
         if (!_membership.Remove(user, out var id) || !_sessions.TryGetValue(id, out var session))
             return;
 
@@ -396,6 +397,8 @@ public sealed partial class WFMappingModeSystem
 
         _players.TryGetSessionById(user, out var player);
 
+        // A tester goes back on their observer first, so the observer's return takes them to the lobby.
+        _test.EndTest(user);
         if (session.Present.Remove(user, out var observer))
             ReturnToLobby(player, observer);
 
@@ -462,6 +465,10 @@ public sealed partial class WFMappingModeSystem
     /// </summary>
     private void OnObserverDetached(Entity<WFMappingObserverComponent> ent, ref PlayerDetachedEvent args)
     {
+        // Moving onto a test character parks the observer; the member stays present.
+        if (_test.IsTesting(args.Player.UserId))
+            return;
+
         MarkAbsent(args.Player.UserId, ent.Owner);
     }
 
@@ -566,6 +573,8 @@ public sealed partial class WFMappingModeSystem
             }
         }
 
+        // Testers come back onto their observers while the session is still looked up by id.
+        _test.EndTest(session);
         _sessions.Remove(session.Id);
 
         foreach (var (user, observer) in session.Present.ToList())
@@ -634,6 +643,7 @@ public sealed partial class WFMappingModeSystem
 
         _sessions.Clear();
         _membership.Clear();
+        _test.Clear();
         _nextReferenceLoad = TimeSpan.Zero;
         _registry.Clear();
         ClearAutosaveQueue();
@@ -686,6 +696,7 @@ public sealed partial class WFMappingModeSystem
                     LastSaved = session.LastSaved,
                     Dirty = session.Dirty,
                     Template = session.Template?.Info(),
+                    Test = _test.Info(session),
                 };
 
                 foreach (var (user, _) in session.Members.OrderBy(pair => pair.Value))

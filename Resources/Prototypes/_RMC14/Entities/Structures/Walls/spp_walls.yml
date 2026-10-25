@@ -1,0 +1,35 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallSPPHull
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/spp_wall.rsi
+    state: uppwall_interior
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/spp_wall.rsi
+    state: uppwall_interior
+  - type: IconSmooth
+    key: walls
+    base: uppwall_interior
+
+- type: entity
+  parent: RMCWallSPPHull
+  id: RMCWallSPPGreyHull
+  suffix: Grey
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/spp_grey_wall.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/spp_grey_wall.rsi
+
+- type: entity
+  parent: RMCWallSPPHull
+  id: RMCWallSPPWhiteHull
+  suffix: White
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/spp_white_wall.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/spp_white_wall.rsi
+# WOLFGATE END

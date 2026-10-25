@@ -1,3 +1,4 @@
+using System.Numerics;
 using Robust.Shared.Player;
 
 namespace Content.Server._WF.MappingTools;
@@ -113,4 +114,19 @@ public sealed class WFMappingStackChangedEvent(List<EntityUid> levels, int groun
 public sealed class WFMappingEditedEvent(EntityUid map) : EntityEventArgs
 {
     public readonly EntityUid Map = map;
+}
+
+/// <summary>
+/// Raised before a mapping tools request starts a new grid for tiles drawn or pasted off every grid. A handler that
+/// sets <see cref="Grid"/> sends the tiles onto that grid instead. Nothing handles it outside mapping mode.
+/// </summary>
+public sealed class WFMappingNewGridTargetEvent(ICommonSession session, EntityUid map, Vector2 point) : EntityEventArgs
+{
+    public readonly ICommonSession Session = session;
+    public readonly EntityUid Map = map;
+
+    /// <summary>Where the tiles go, in map space.</summary>
+    public readonly Vector2 Point = point;
+
+    public EntityUid? Grid;
 }

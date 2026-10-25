@@ -1,0 +1,216 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "State based copyright",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "assembly",
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "bolted_unlit",
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "closed",
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "closed_unlit",
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "closing",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "closing_unlit",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "deny_unlit",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "open",
+            "delays": [
+                [
+                    1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "opening",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "opening_unlit",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "panel_closing",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "panel_open",
+            "delays": [
+                [
+                    1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "panel_opening",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "sparks",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "sparks_broken",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "sparks_damaged",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1.7
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "sparks_open",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        },
+        {
+            "name": "welded"
+        },
+        {
+            "name": "emergency_unlit",
+            "delays": [
+                [
+                    0.4,
+                    0.4
+                ]
+            ],
+            "copyright": "Created by Samuka-C (github), Glass version by SevenShades"
+        }
+    ]
+}

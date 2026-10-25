@@ -33,7 +33,7 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
             case "list" when args.Length == 1:
                 List(shell);
                 break;
-            case "spawn" when args.Length is >= 2 and <= 4:
+            case "spawn" when args.Length is >= 2 and <= 5:
                 Spawn(shell, args);
                 break;
             case "end" when args.Length == 2:
@@ -68,6 +68,9 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
                 Loc.GetString("cmd-wf_encounter-hint-prototype")),
             3 when args[0] == "spawn" => CompletionResult.FromHintOptions(Keeping, Loc.GetString("cmd-wf_encounter-hint-distance")),
             4 when args[0] == "spawn" => CompletionResult.FromHintOptions(Keeping, Loc.GetString("cmd-wf_encounter-hint-keep")),
+            5 when args[0] == "spawn" => CompletionResult.FromHintOptions(
+                Enumerable.Range(0, WFEncounterThreat.MaxTier + 1).Select(tier => TierPrefix + tier),
+                Loc.GetString("cmd-wf_encounter-hint-tier")),
             2 when args[0] == "end" => CompletionResult.FromHint(Loc.GetString("cmd-wf_encounter-hint-uid")),
             _ => CompletionResult.Empty,
         };
@@ -97,9 +100,12 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
     /// <summary>The words for keeping a spawned encounter until it is ended, or letting it jump out as usual.</summary>
     private static readonly string[] Keeping = { "keep", "jump" };
 
+    /// <summary>The argument that sets the threat tier, as tier=3.</summary>
+    private const string TierPrefix = "tier=";
+
     /// <summary>
-    /// wf_encounter spawn &lt;prototype&gt; [distance] [keep|jump]: its origin north of the caller, kept until ended unless
-    /// told to jump out as usual.
+    /// wf_encounter spawn &lt;prototype&gt; [distance] [keep|jump] [tier=N]: its origin north of the caller, kept until
+    /// ended unless told to jump out as usual, at the given threat tier or the sector's.
     /// </summary>
     private void Spawn(IConsoleShell shell, string[] args)
     {
@@ -118,11 +124,24 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
 
         var distance = DefaultDistance;
         var pinned = true;
+        int? tier = null;
         for (var i = 2; i < args.Length; i++)
         {
             if (args[i] == Keeping[0] || args[i] == Keeping[1])
             {
                 pinned = args[i] == Keeping[0];
+                continue;
+            }
+
+            if (args[i].StartsWith(TierPrefix))
+            {
+                if (!int.TryParse(args[i][TierPrefix.Length..], out var parsed) || parsed is < 0 or > WFEncounterThreat.MaxTier)
+                {
+                    shell.WriteLine(Loc.GetString("cmd-wf_encounter-bad-tier", ("arg", args[i]), ("max", WFEncounterThreat.MaxTier)));
+                    return;
+                }
+
+                tier = parsed;
                 continue;
             }
 
@@ -134,7 +153,7 @@ public sealed partial class WFEncounterCommand : LocalizedEntityCommands
         }
 
         var origin = new MapCoordinates(here.Position + new System.Numerics.Vector2(0f, distance), here.MapId);
-        shell.WriteLine(_scheduler.TryStartAt(prototype, origin, out var encounter, player, pinned)
+        shell.WriteLine(_scheduler.TryStartAt(prototype, origin, out var encounter, player, pinned, tier)
             ? Loc.GetString("cmd-wf_encounter-spawned", ("name", EntityManager.GetComponent<WFEncounterComponent>(encounter).Name),
                 ("uid", EntityManager.GetNetEntity(encounter)))
             : Loc.GetString("cmd-wf_encounter-spawn-failed", ("prototype", prototype.ID)));

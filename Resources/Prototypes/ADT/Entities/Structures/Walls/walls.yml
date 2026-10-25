@@ -1,0 +1,201 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: BaseWall
+  id: ADTSpaceSecWall
+  suffix: Space Sec
+  components:
+    - type: Construction
+      graph: Girder
+      node: wall
+    - type: RCDDeconstructable
+      cost: 6
+      delay: 8
+      fx: EffectRCDDeconstruct8
+    - type: Sprite
+      sprite: ADT/Structures/Walls/space_sec_wall.rsi
+    - type: Icon
+      sprite: ADT/Structures/Walls/space_sec_wall.rsi
+    - type: IconSmooth
+      key: walls
+      base: state
+    - type: Destructible
+      thresholds:
+        - trigger:
+            !type:DamageTrigger
+            damage: 550
+          behaviors:
+            - !type:SpawnEntitiesBehavior
+              spawn:
+                Girder:
+                  min: 1
+                  max: 1
+            - !type:DoActsBehavior
+              acts: [ "Destruction" ]
+
+- type: entity
+  parent: WallShuttleDiagonal
+  id: ADTSpaceSecWallDiagonal
+  suffix: Space Sec, diagonal
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: ADT/Structures/Walls/space_sec_diagonal.rsi
+    state: state0
+  - type: IconSmooth
+    mode: Diagonal
+    key: walls
+    base: state
+  - type: Icon
+    sprite: ADT/Structures/Walls/space_sec_diagonal.rsi
+    state: state0
+  - type: Destructible
+    thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 550
+        behaviors:
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+
+- type: entity
+  parent: BaseWall
+  id: ADTCardboardWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: ADT/Structures/Walls/cardboard_walls.rsi
+  - type: Icon
+    sprite: ADT/Structures/Walls/cardboard_walls.rsi
+  - type: IconSmooth
+    key: walls
+    base: cardboard
+  - type: Destructible
+    thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 40
+        behaviors:
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+
+- type: entity
+  parent: BaseWall
+  id: ADTStonebrickWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: ADT/Structures/Walls/stone_bricks_wall.rsi
+  - type: Icon
+    sprite: ADT/Structures/Walls/stone_bricks_wall.rsi
+  - type: IconSmooth
+    key: walls
+    base: stonebricks
+
+- type: entity
+  parent: BaseWall
+  id: ADTYellowbrickWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: ADT/Structures/Walls/yellow_bricks_wall.rsi
+  - type: Icon
+    sprite: ADT/Structures/Walls/yellow_bricks_wall.rsi
+  - type: IconSmooth
+    key: walls
+    base: yellowbricks
+
+- type: entity
+  parent: BaseWall
+  id: ADTDigitalWall
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Walls/digital_wall.rsi
+  - type: Icon
+    sprite: ADT/Structures/Walls/digital_wall.rsi
+  - type: IconSmooth
+    key: walls
+    base: digital
+  - type: Destructible
+    thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 550
+        behaviors:
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+
+- type: entity
+  parent: ADTDigitalWall
+  id: ADTDigitalBlueWall
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Walls/digital_blue_wall.rsi
+  - type: Icon
+    sprite: ADT/Structures/Walls/digital_blue_wall.rsi
+  - type: IconSmooth
+    key: walls
+    base: digital
+
+- type: entity
+  parent: BaseWall
+  id: ADTWallSolidWhite
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: Sprite
+    sprite: ADT/Structures/Walls/white_solid.rsi
+  - type: WallReplacementMarker
+  - type: Icon
+    sprite: ADT/Structures/Walls/white_solid.rsi
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: IconSmooth
+    key: walls
+    base: solid
+
+- type: entity
+  parent: ADTWallSolidWhite
+  id: ADTWallSolidBlack
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Walls/white_solid.rsi
+    color: "#535353"
+  - type: Icon
+    sprite: ADT/Structures/Walls/white_solid.rsi
+# WOLFGATE END

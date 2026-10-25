@@ -1,3 +1,4 @@
+using Content.Server._WF.Cleaning; // WOLFGATE(Cleaning)
 using Content.Server.Decals;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.Reagent;
@@ -37,6 +38,7 @@ public sealed partial class CleanDecalsReaction : ITileReaction
 
         var lookupSystem = entityManager.System<EntityLookupSystem>();
         var decalSystem = entityManager.System<DecalSystem>();
+        var cleaning = entityManager.System<WFDecalCleaningSystem>(); // WOLFGATE(Cleaning): mapped decals saved with the flag off
         // Very generous hitbox.
         var decals = decalSystem
             .GetDecalsIntersecting(tile.GridUid, lookupSystem.GetLocalBounds(tile, grid.TileSize).Enlarged(0.5f).Translated(new Vector2(-0.5f, -0.5f)));
@@ -44,7 +46,7 @@ public sealed partial class CleanDecalsReaction : ITileReaction
 
         foreach (var decal in decals)
         {
-            if (!decal.Decal.Cleanable)
+            if (!cleaning.IsCleanable(decal.Decal)) // WOLFGATE(Cleaning): honour the prototype's defaultCleanable
                 continue;
 
             if (amount + CleanCost > reactVolume)

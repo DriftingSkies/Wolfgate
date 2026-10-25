@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Numerics;
+using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._WF.MappingMode;
+using Content.Shared._WF.MappingTools;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Network;
@@ -12,10 +14,17 @@ public sealed partial class WFMappingModeSystem
 {
     private readonly WFMappingThrottle<NetUserId> _gridThrottle = new(2, 4);
 
+    /// <summary>How far off whole tiles, or radians off a right angle, a grid may sit and still count as aligned.</summary>
+    private const float SnapTolerance = 0.001f;
+
+    /// <summary>The largest selection MappingTools accepts, in cells; it ignores bigger ones.</summary>
+    private const long MaxDeleteCells = 256 * 256;
+
     private void InitializeGrids()
     {
         SubscribeNetworkEvent<WFMappingGridListRequest>(OnGridListRequest);
         SubscribeNetworkEvent<WFMappingGoToGridRequest>(OnGoToGridRequest);
+        SubscribeNetworkEvent<WFMappingDeleteGridRequest>(OnDeleteGridRequest);
     }
 
     /// <summary>The grids directly on a map, most tiles first.</summary>
@@ -25,15 +34,47 @@ public sealed partial class WFMappingModeSystem
         var children = Transform(map).ChildEnumerator;
         while (children.MoveNext(out var child))
         {
-            if (!TryComp<MapGridComponent>(child, out var grid))
+            if (!TryComp<MapGridComponent>(child, out var grid) || TerminatingOrDeleted(child))
                 continue;
 
             grids.Add(new WFMappingGridInfo(GetNetEntity(child), MetaData(child).EntityName, CountTiles(child, grid),
-                CountGridEntities(child)));
+                CountGridEntities(child), CompOrNull<CEZMapComponent>(map)?.Depth ?? 0));
         }
 
         grids.Sort((a, b) => b.Tiles.CompareTo(a.Tiles));
         return grids;
+    }
+
+    /// <summary>The grids on every level of a session, top level first, most tiles first within a level.</summary>
+    public List<WFMappingGridInfo> GridsOfSession(WFMappingSession session)
+    {
+        var grids = new List<WFMappingGridInfo>();
+        foreach (var map in SessionMaps(session.Id))
+        {
+            if (!TerminatingOrDeleted(map))
+                grids.AddRange(GridsOn(map));
+        }
+
+        grids.Sort((a, b) => a.Depth != b.Depth ? b.Depth.CompareTo(a.Depth) : b.Tiles.CompareTo(a.Tiles));
+        return grids;
+    }
+
+    /// <summary>Whether a grid sits on whole map tiles at a right angle.</summary>
+    public bool IsAligned(EntityUid grid)
+    {
+        var (position, rotation) = SnappedPose(grid);
+        var xform = Transform(grid);
+        return Vector2.DistanceSquared(xform.LocalPosition, position) < SnapTolerance * SnapTolerance &&
+               Math.Abs(Angle.ShortestDistance(xform.LocalRotation, rotation).Theta) < SnapTolerance;
+    }
+
+    /// <summary>A grid's position rounded to whole tiles and its rotation to the nearest right angle.</summary>
+    private (Vector2 Position, Angle Rotation) SnappedPose(EntityUid grid)
+    {
+        var xform = Transform(grid);
+        var position = new Vector2(MathF.Round(xform.LocalPosition.X), MathF.Round(xform.LocalPosition.Y));
+        var rotation = new Angle(Math.Round(xform.LocalRotation.Theta / (Math.PI / 2)) * (Math.PI / 2));
+        return (position, rotation);
     }
 
     /// <summary>Everything under a grid, contents included, but not the players standing on it.</summary>
@@ -114,15 +155,12 @@ public sealed partial class WFMappingModeSystem
     {
         var player = args.SenderSession;
         if (!Enabled || !TryGetPresent(player, out var session) ||
-            !TryThrottle(_gridThrottle, player, "grid list") ||
-            player.AttachedEntity is not { } observer ||
-            Transform(observer).MapUid is not { } map ||
-            !IsSessionMap(map, session))
+            !TryThrottle(_gridThrottle, player, "grid list"))
         {
             return;
         }
 
-        RaiseNetworkEvent(new WFMappingGridListEvent(GridsOn(map)), player);
+        RaiseNetworkEvent(new WFMappingGridListEvent(GridsOfSession(session)), player);
     }
 
     private void OnGoToGridRequest(WFMappingGoToGridRequest ev, EntitySessionEventArgs args)
@@ -146,6 +184,39 @@ public sealed partial class WFMappingModeSystem
         }
 
         MoveObserver(observer, map, GridCentre(grid.Value));
+    }
+
+    /// <summary>Deletes a whole grid through MappingTools, so undo brings it back with everything on it.</summary>
+    private void OnDeleteGridRequest(WFMappingDeleteGridRequest ev, EntitySessionEventArgs args)
+    {
+        var player = args.SenderSession;
+        if (!Enabled || !TryGetPresent(player, out var session) ||
+            !TryThrottle(_gridThrottle, player, "delete grid"))
+        {
+            return;
+        }
+
+        if (!TryGetEntity(ev.Grid, out var gridUid) ||
+            TerminatingOrDeleted(gridUid) ||
+            !TryComp<MapGridComponent>(gridUid, out var grid) ||
+            Transform(gridUid.Value).MapUid is not { } map ||
+            !IsSessionMap(map, session))
+        {
+            Refuse(player, "wf-mapping-ship-goto-not-yours");
+            return;
+        }
+
+        var aabb = grid.LocalAABB;
+        var area = new Box2i((int) MathF.Floor(aabb.Left), (int) MathF.Floor(aabb.Bottom),
+            (int) MathF.Ceiling(aabb.Right), (int) MathF.Ceiling(aabb.Top));
+        if (area.Width <= 0 || area.Height <= 0 || (long) area.Width * area.Height > MaxDeleteCells)
+        {
+            Refuse(player, "wf-mapping-mode-menu-delete-grid-too-large");
+            return;
+        }
+
+        _tools.Delete(player, new MappingSelection { Grid = ev.Grid, Area = area });
+        RaiseNetworkEvent(new WFMappingGridListEvent(GridsOfSession(session)), player);
     }
 
     /// <summary>Puts an observer at a world position on a map.</summary>

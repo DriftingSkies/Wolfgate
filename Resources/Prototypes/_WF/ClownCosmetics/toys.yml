@@ -1,0 +1,140 @@
+﻿- type: entity
+  abstract: true
+  parent: [BaseItem, RecyclableItemDeviceTiny]
+  id: BaseBrandedLighter
+  components:
+  - type: ItemToggle
+    predictable: false
+    soundActivate:
+      path: /Audio/Items/Lighters/zippo_open.ogg
+      params:
+        volume: -5
+    soundDeactivate:
+      path: /Audio/Items/Lighters/zippo_close.ogg
+      params:
+        volume: -5
+  - type: ItemToggleMeleeWeapon
+    activatedDamage:
+      types:
+        Heat: 1
+  - type: ItemToggleSize
+    activatedSize: Small
+  - type: ItemToggleHot
+  - type: Item
+    size: Tiny
+  - type: Appearance
+  - type: SolutionContainerManager
+    solutions:
+      Welder:
+        reagents:
+        - ReagentId: WeldingFuel
+          Quantity: 12
+        maxVol: 12
+  - type: Sprite
+    layers:
+    - state: icon
+      map: [ "base" ]
+    - state: top
+      map: [ "top" ]
+      visible: false
+    - state: open
+      map: [ "open" ]
+      visible: false
+    - state: flame
+      map: [ "flame" ]
+      visible: false
+      shader: unshaded
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        flame:
+          True: { visible: true }
+          False: { visible: false }
+        open:
+          True: { visible: true }
+          False: { visible: false }
+        top:
+          True: { visible: true }
+          False: { visible: false }
+        base:
+          True: { visible: false }
+          False: { visible: true }
+  - type: ToggleableVisuals
+    spriteLayer: lighter_flame
+    inhandVisuals:
+      left:
+      - state: inhand-left-lit
+        shader: unshaded
+      right:
+      - state: inhand-right-lit
+        shader: unshaded
+  - type: ItemTogglePointLight
+  - type: UseDelay
+  - type: IgnitionSource
+    ignited: false
+  - type: RefillableSolution
+    solution: Welder
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    damage:
+      types:
+        Blunt: 0
+  - type: NFLighter
+  - type: Cautery
+    speed: 0.45
+  - type: SurgeryTool
+    startSound:
+      collection: lighterOnSounds
+    endSound:
+      collection: lighterOffSounds
+  - type: EntityRadiusHeater
+    thermalEnergy: 900
+    radius: 0.3
+    limit: 390
+    requireActivation: true
+
+- type: entity
+  parent: BaseBrandedLighter
+  id: HonkCoFlippo
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Toys/honkco.rsi
+  - type: Item
+    sprite: _WF/ClownCosmetics/Toys/honkco.rsi
+  - type: Fixtures
+    fixtures:
+      slips:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.3,0.4,0.3"
+        layer:
+        - SlipLayer
+        hard: false
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.3,0.4,0.3"
+        density: 10
+        mask:
+        - ItemMask
+  - type: ComponentToggler
+    components:
+    - type: Slippery
+    - type: StepTrigger
+      intersectRatio: 0.2
+    - type: CollisionWake
+      enabled: false
+    removeComponents:
+    - type: Slippery
+    - type: StepTrigger
+  - type: Welder
+    fuelConsumption: 0.1
+    fuelLitCost: 1
+    tankSafe: true
+  - type: PointLight
+    enabled: false
+    netsync: false
+    radius: 2
+    color: yellow
+  - type: StaticPrice
+    price: 10

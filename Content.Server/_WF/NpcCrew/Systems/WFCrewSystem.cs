@@ -388,6 +388,7 @@ public sealed class WFCrewSystem : EntitySystem
         crew.Engagement = role.Engagement;
         crew.Group = group;
         crew.Post = post;
+        EntityManager.System<WFCrewEvaSystem>().FitSuitHelmet(uid);
         // A name given here replaces the body's before the title goes on and the card and records are written.
         if (name != null)
             _meta.SetEntityName(uid, name);

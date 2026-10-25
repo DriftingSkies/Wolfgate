@@ -36,7 +36,7 @@
 
   The Tools tab has the same actions as buttons.
 
-  Paste shows a preview on the cursor. R turns it. Click to put it down. Shift+click puts it down and keeps the preview for another copy. Right click drops it. A paste in space lands on the grid it was copied from, or on a new grid if that grid is gone.
+  Paste shows a preview on the cursor. R turns it. Click to put it down. Shift+click puts it down and keeps the preview for another copy. Right click drops it. A paste in space lands on the grid it was copied from, or on the nearest grid if that one is gone.
 
   Mirroring flips rotations, pipe fittings and one-sided decals. Lopsided sprites, such as a chair's armrest or a sign's text, keep their look.
 
@@ -55,7 +55,7 @@
 
   ## Whole grids
 
-  [bold]Delete the grid under me[/bold] in the Session tab deletes the grid you are over, every tile and entity on it. It asks for a second click. Undo brings it back. Grids over 256 by 256 tiles have to be selected and deleted in parts.
+  Every grid in the Session tab's Grids list has a [bold]Delete[/bold] button, and [bold]Delete the grid under me[/bold] picks the grid you are over. Either one takes you to the grid and shows its tiles and entities in red, then asks you to confirm. Undo brings it back. Grids over 256 by 256 tiles have to be selected and deleted in parts.
 
   [bold]Hide walls[/bold] in the Tools tab hides every wall for you, so you can see and click what's behind them.
 </Document>

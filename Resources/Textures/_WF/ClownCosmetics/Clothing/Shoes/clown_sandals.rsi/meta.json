@@ -1,0 +1,18 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made by zangothedino (discord) for Moffstation, edited by Davyei (Github) | ported from https://github.com/moff-station/moff-station-14/tree/d1a8a5e6d279ad62f95f358ceb79a7d532f331de/Resources/Textures/_Moffstation/Clothing/Shoes/clown-sandals.rsi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "equipped-FEET",
+      "directions": 4
+    }
+  ]
+}

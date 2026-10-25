@@ -203,6 +203,13 @@
   sound:
     collection: VoxScreams
 
+- type: emoteVoice
+  id: WFScreamVulpkanin
+  emote: Scream
+  name: emote-voice-name-vulpkanin
+  sound:
+    collection: WFVulpkaninScreams
+
 # Nova Sector
 
 - type: emoteVoice

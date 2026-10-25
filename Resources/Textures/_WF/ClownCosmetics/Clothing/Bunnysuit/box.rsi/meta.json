@@ -1,0 +1,14 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made via an edit of the box sprite | ported from https://github.com/Floof-Station/Panta-Rhei/tree/64d80a853b3d30e72855e7c0837f89f6240ea450/Resources/Textures/_HL/Clothing/Bunnysuit/box.rsi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    }
+  ]
+}

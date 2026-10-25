@@ -313,12 +313,29 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         PopulateUsed();
     }
 
-    protected override void Resized()
+    // Columns come from the width on offer, not the current width, so the grids can shrink as well as grow.
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
-        base.Resized();
-        var columns = Math.Max(1, (int) ((Width - 32) / WolfgateMarkingTile.TileWidth));
-        if (_grid.Columns != columns)
-            _grid.Columns = columns;
+        if (float.IsFinite(availableSize.X))
+        {
+            var inner = availableSize.X - 32;
+            var columns = Math.Max(1, (int) (inner / WolfgateMarkingTile.TileWidth));
+            if (_grid.Columns != columns)
+                _grid.Columns = columns;
+
+            var widest = 0f;
+            foreach (var button in _parts.Children)
+            {
+                button.Measure(new Vector2(float.PositiveInfinity, float.PositiveInfinity));
+                widest = Math.Max(widest, button.DesiredSize.X);
+            }
+
+            var partColumns = widest > 0 ? Math.Clamp((int) ((inner + 4) / (widest + 4)), 1, 6) : 6;
+            if (_parts.Columns != partColumns)
+                _parts.Columns = partColumns;
+        }
+
+        return base.MeasureOverride(availableSize);
     }
 
     private IReadOnlyDictionary<string, MarkingPrototype> GetMarkings(MarkingCategories category)

@@ -21,7 +21,7 @@ public sealed class WFShipAccessSetLockedMessage : BoundUserInterfaceMessage
     }
 }
 
-/// <summary>The owner adds the card of a humanoid standing near the console to the allow list.</summary>
+/// <summary>The owner adds the card of a humanoid standing near the console, or a card in their own hands, to the allow list.</summary>
 [Serializable, NetSerializable]
 public sealed class WFShipAccessAddPlayerMessage : BoundUserInterfaceMessage
 {

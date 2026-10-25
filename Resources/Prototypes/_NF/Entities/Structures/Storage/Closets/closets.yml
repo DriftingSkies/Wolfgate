@@ -1,8 +1,9 @@
+# WOLFGATE(Resprites) START: Repath Frontier closet prototypes for the new closet sprites.
 #Frontier specific for new closets without needing to touch upstream entities.
 - type: entity
   id: ClosetO2N2
   name: emergency internals closet
-  parent: ClosetSteelBase
+  parent: ClosetSteelBaseOld
   description: It's a storage unit for emergency breathing equipment for all species.
   components:
   - type: Sprite
@@ -16,7 +17,7 @@
 - type: entity
   id: ClosetFsbEva
   name: FSB EVA suit closet
-  parent: ClosetSteelBase
+  parent: ClosetSteelBaseOld
   description: It's a storage unit that could contain a Far Star Biotech EVA suit. It may also contain other things.
   components:
   - type: Sprite
@@ -26,3 +27,4 @@
     stateBaseClosed: fsb
     stateDoorOpen: fsb_open
     stateDoorClosed: fsb_door
+# WOLFGATE END

@@ -1,0 +1,158 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+# Grass
+
+# TODO RMC14 scoched dirt grass
+- type: tile
+  abstract: true
+  parent: CMPlanetBase
+  id: CMPlanetGrassDirt
+  name: tiles-wf-rmc-grass-dirt
+  sprite: /Textures/_RMC14/Tiles/planet/grass1/grass.png
+  weedsSpreadable: false
+
+- type: tile
+  parent: CMPlanetGrassDirt
+  id: CMPlanetGrassDirtNW
+  name: tiles-wf-rmc-grass-dirt-nw
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner_0.png
+  semiWeedable: true
+
+- type: tile
+  parent: CMPlanetGrassDirtNW # reparent to inherit semiweedable property
+  id: CMPlanetGrassDirtNE
+  name: tiles-wf-rmc-grass-dirt-ne
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner_1.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtSE
+  name: tiles-wf-rmc-grass-dirt-se
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner_2.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtSW
+  name: tiles-wf-rmc-grass-dirt-sw
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner_3.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtNW2
+  name: tiles-wf-rmc-grass-dirt-nw-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner2_0.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtSE2
+  name: tiles-wf-rmc-grass-dirt-se-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner2_1.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtNE2
+  name: tiles-wf-rmc-grass-dirt-ne-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner2_2.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtSW2
+  name: tiles-wf-rmc-grass-dirt-sw-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_corner2_3.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtNorth
+  name: tiles-wf-rmc-grass-dirt-north
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_edge_0.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtSouth
+  name: tiles-wf-rmc-grass-dirt-south
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_edge_1.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtWest
+  name: tiles-wf-rmc-grass-dirt-west
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_edge_2.png
+
+- type: tile
+  parent: CMPlanetGrassDirtNW
+  id: CMPlanetGrassDirtEast
+  name: tiles-wf-rmc-grass-dirt-east
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt_edge_3.png
+
+- type: tile
+  parent: CMPlanetGrassDirt
+  id: CMPlanetGrassDirt2NW
+  name: tiles-wf-rmc-grass-dirt2-nw
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner_0.png
+  semiWeedable: true
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW # reparent to inherit semiweedable property
+  id: CMPlanetGrassDirt2NE
+  name: tiles-wf-rmc-grass-dirt2-ne
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner_1.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2SE
+  name: tiles-wf-rmc-grass-dirt2-se
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner_2.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2SW
+  name: tiles-wf-rmc-grass-dirt2-sw
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner_3.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2NW2
+  name: tiles-wf-rmc-grass-dirt2-nw-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner2_0.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2SE2
+  name: tiles-wf-rmc-grass-dirt2-se-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner2_1.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2NE2
+  name: tiles-wf-rmc-grass-dirt2-ne-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner2_2.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2SW2
+  name: tiles-wf-rmc-grass-dirt2-sw-2
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_corner2_3.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2North
+  name: tiles-wf-rmc-grass-dirt2-north
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_edge_0.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2South
+  name: tiles-wf-rmc-grass-dirt2-south
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_edge_1.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2West
+  name: tiles-wf-rmc-grass-dirt2-west
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_edge_2.png
+
+- type: tile
+  parent: CMPlanetGrassDirt2NW
+  id: CMPlanetGrassDirt2East
+  name: tiles-wf-rmc-grass-dirt2-east
+  sprite: /Textures/_RMC14/Tiles/planet/grass_dirt/grassdirt2_edge_3.png
+# WOLFGATE END

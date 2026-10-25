@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- files: ["red_double_edge_E.png", "red_double_edge_N.png", "red_double_edge_S.png", "red_double_edge_W.png", "red_single_edge_NE.png", "red_single_edge_NW.png", "red_single_edge_SE.png", "red_single_edge_SW.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CrystallEdge at commit https://github.com/crystallpunk-14/crystall-punk-14/commit/5b6108377e40235c768be3ac6ffadb37a085f441."
+  source: "https://github.com/crystallpunk-14/crystall-punk-14"
+# WOLFGATE END

@@ -330,3 +330,100 @@
   price: 0
   equipment:
     jumpsuit: WFCoolCoyoteClothesSexymime
+
+- type: loadout
+  id: WFContractorClothingUniformJumpskirtClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtClown
+
+- type: loadout
+  id: WFContractorClothingOuterHardsuitClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    outerClothing: ClothingOuterHardsuitClown
+
+- type: loadout
+  id: WFContractorClothingOuterHardsuitMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    outerClothing: ClothingOuterHardsuitMime
+
+- type: loadout
+  id: WFContractorClothingMaskBlushingClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - ClothingMaskBlushingClown
+
+- type: loadout
+  id: WFContractorClownRecorder
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - ClownRecorder
+
+- type: loadout
+  id: WFContractorWhoopieCushion
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - WhoopieCushion
+
+- type: loadout
+  id: WFContractorVehicleUnicycleFolded
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - VehicleUnicycleFolded
+
+- type: loadout
+  id: WFContractorRubberChicken
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - RubberChicken
+
+- type: loadout
+  id: WFContractorToyHammer
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - ToyHammer
+
+- type: loadout
+  id: WFContractorLauncherCreamPie
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - LauncherCreamPie

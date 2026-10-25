@@ -175,7 +175,8 @@ public sealed partial class WFEncounterSystem
         }
 
         var distance = (_transform.GetWorldPosition(mark) - _transform.GetWorldPosition(ship.Grid)).Length();
-        if (distance <= extort.Config.Standoff + ExtortHailSlack)
+        // A simulated ship has no helm to hail from: it holds its mark until its hull is spawned.
+        if (distance <= extort.Config.Standoff + ExtortHailSlack && !ship.Virtual)
         {
             SetExtortPhase(extort, WFExtortPhase.Hail);
             extort.NextHail = _timing.CurTime;

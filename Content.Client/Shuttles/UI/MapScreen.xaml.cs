@@ -119,6 +119,8 @@ public sealed partial class MapScreen : BoxContainer
         {
             MapRadar.ShowBeacons = args.Pressed;
         };
+
+        WfInitDestinationSearch(); // WOLFGATE(Shuttles): search box for the destination register
     }
 
     public void UpdateState(ShuttleMapInterfaceState state)
@@ -286,6 +288,7 @@ public sealed partial class MapScreen : BoxContainer
             AddMapObject(mapObj.mapId, mapObj.mapobj);
         }
         _pendingMapObjects.Clear();
+        WfFilterDestinations(); // WOLFGATE(Shuttles): reapply the destination search to the new list
 
         _nextPing = _timing.CurTime + _pingCooldown;
         MapRebuildButton.Disabled = true;
@@ -529,6 +532,7 @@ public sealed partial class MapScreen : BoxContainer
             Text = mapObj.Name,
             HorizontalExpand = true,
         };
+        WfFitMapObject(gridButton, mapObj.Name); // WOLFGATE(Shuttles): long names clip instead of running out of the register
 
         var gridContainer = new BoxContainer()
         {

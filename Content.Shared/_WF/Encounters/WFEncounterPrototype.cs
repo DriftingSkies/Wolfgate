@@ -151,6 +151,10 @@ public sealed partial class WFEncounterPrototype : IPrototype
     /// </summary>
     [DataField]
     public List<string> AvoidStations = new();
+
+    /// <summary>A fixed threat rank for the map, as for the citadel. Unset, a ship with tier bands ranks it by the tier it spawned at.</summary>
+    [DataField]
+    public int? Threat;
 }
 
 /// <summary>One ship of an encounter with its crew, its rules and its orders.</summary>
@@ -168,6 +172,17 @@ public sealed partial class WFEncounterShip
     /// <summary>Hulls to pick one from each run.</summary>
     [DataField]
     public List<ProtoId<VesselPrototype>> Vessels = new();
+
+    /// <summary>
+    /// Hulls, crew skill and refit by threat tier: the band with the highest <see cref="WFEncounterShipTier.MinTier"/> at
+    /// or below the tier is flown. Empty flies <see cref="Vessels"/> at every tier.
+    /// </summary>
+    [DataField]
+    public List<WFEncounterShipTier> Tiers = new();
+
+    /// <summary>The pirate retrofitting the hull gets when its tier band names none.</summary>
+    [DataField]
+    public ProtoId<WFPirateRetrofitPrototype>? Retrofit;
 
     /// <summary>Who the crew are and what they wear and carry. None spawns each role's own mob.</summary>
     [DataField]
@@ -366,6 +381,24 @@ public sealed partial class WFEncounterShip
     /// <summary>Set, the hull arrives a hulk: no crew and no fuel, squatters aboard, and it can be claimed.</summary>
     [DataField]
     public WFEncounterDerelict? Derelict;
+}
+
+/// <summary>What a ship flies from a threat tier up.</summary>
+[DataDefinition]
+public sealed partial class WFEncounterShipTier
+{
+    [DataField(required: true)]
+    public int MinTier;
+
+    [DataField(required: true)]
+    public List<ProtoId<VesselPrototype>> Vessels = new();
+
+    /// <summary>Crew skills, one picked per ship. Empty keeps the ship's own.</summary>
+    [DataField]
+    public List<WFCrewSkill> Skills = new();
+
+    [DataField]
+    public ProtoId<WFPirateRetrofitPrototype>? Retrofit;
 }
 
 /// <summary>How an extorter picks its marks and what it asks of them.</summary>
@@ -595,6 +628,7 @@ public enum WFEncounterIcon : byte
     Flag,
     Swords,
     Ghost,
+    Drone,
 }
 
 public enum WFEncounterPlacement : byte

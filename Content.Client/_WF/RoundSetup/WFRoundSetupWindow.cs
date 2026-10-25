@@ -166,6 +166,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             content.AddChild(Row(WFRoundSetupCrewRow.JobIcon(crewmate.Job),
                 PlainDescription(Text("public-member", ("name", crewmate.Name), ("role", role), ("status", Text(status))))));
         }
+        content.AddChild(WFScenarioDifficultyLabel.Create(lobby.Scenario));
         content.AddChild(Description(ScenarioDescription(lobby.Scenario)));
         if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started)
         {
@@ -333,7 +334,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     {
         return first.Payment == second.Payment && first.CrewShips.SequenceEqual(second.CrewShips) && first.PendingShip == second.PendingShip &&
                first.InRound == second.InRound && first.CanJoin == second.CanJoin && first.OwnLobby == second.OwnLobby &&
-               first.CrashlandedAvailable == second.CrashlandedAvailable && first.Factions.SequenceEqual(second.Factions) && first.HostBalance == second.HostBalance &&
+               first.CrashlandedAvailable == second.CrashlandedAvailable && first.DoomedAvailable == second.DoomedAvailable && first.Factions.SequenceEqual(second.Factions) && first.HostBalance == second.HostBalance &&
                SameSavedSetups(first.SavedSetups, second.SavedSetups) && first.Vessels.SequenceEqual(second.Vessels) &&
                first.Jobs.SequenceEqual(second.Jobs) && first.RoleJobs.SequenceEqual(second.RoleJobs) && first.InviteTargets.SequenceEqual(second.InviteTargets) &&
                first.Lobbies.Length == second.Lobbies.Length && first.Invitations.Length == second.Invitations.Length &&
@@ -386,6 +387,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         WFRoundScenario.Crashlanded => "scenario-crash",
         WFRoundScenario.Ship => "scenario-ship",
         WFRoundScenario.FactionShip => "scenario-faction",
+        WFRoundScenario.Doomed => "scenario-doomed",
         _ => "scenario-normal",
     });
 
@@ -394,6 +396,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         WFRoundScenario.Crashlanded => "crash-description",
         WFRoundScenario.Ship => "ship-description",
         WFRoundScenario.FactionShip => "faction-description",
+        WFRoundScenario.Doomed => "doomed-description",
         _ => "normal-description",
     };
 

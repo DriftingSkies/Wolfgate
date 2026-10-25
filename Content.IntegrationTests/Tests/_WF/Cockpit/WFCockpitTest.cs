@@ -313,7 +313,7 @@ public sealed class WFCockpitTest : InteractionTest
             {
                 settings.SetCVar(WolfgateCVars.UiStyle, theme);
                 AssertFuelBinding(Named<ShipScreen>(hud, "ShipContainer"), hud);
-                foreach (var size in new[] { new Vector2(1130, 636), new Vector2(1600, 900) })
+                foreach (var size in new[] { new Vector2(1130, 636), new Vector2(1366, 768), new Vector2(1600, 900) })
                 {
                     var swap = Named<Button>(hud, "CockpitMfdSwap");
                     var maximise = Named<Button>(hud, "CockpitMfdMaximise");
@@ -405,7 +405,7 @@ public sealed class WFCockpitTest : InteractionTest
             Assert.That(gunMessages.OfType<WFCockpitGunnerySessionMessage>().Last().Controlling, Is.True,
                 "GUNS must explicitly request firing control.");
             foreach (var theme in new[] { WolfgateSkins.Retro.Id, WolfgateSkins.Futurist.Id })
-            foreach (var size in new[] { new Vector2(1130, 636), new Vector2(1600, 900) })
+            foreach (var size in new[] { new Vector2(1130, 636), new Vector2(1366, 768), new Vector2(1600, 900) })
             {
                 settings.SetCVar(WolfgateCVars.UiStyle, theme);
                 Layout(hud, size);
@@ -1949,8 +1949,8 @@ public sealed class WFCockpitTest : InteractionTest
             "Flight-status lamps must remain visible when flight controls need to scroll.");
         var heading = Named<WFHeadingInstrument>(hud, "CockpitHeading");
         var dialScroll = Named<ScrollContainer>(hud, "CockpitInstrumentScroll");
-        var headingHeight = hud.CompactDials ? WFCockpitInstrumentSizing.CompactHeight(176) : 176;
-        var dialHeight = hud.CompactDials ? WFCockpitInstrumentSizing.CompactHeight(160) : 160;
+        var headingHeight = WFCockpitInstrumentSizing.ScaledHeight(176, hud.DialScale);
+        var dialHeight = WFCockpitInstrumentSizing.ScaledHeight(160, hud.DialScale);
         if (hud.CompactDials)
             Assert.That(dialScroll.Height, Is.LessThan(WFCockpitInstrumentSizing.FullColumnHeight + 8),
                 $"{theme}, {size}: compact dials are only for columns too short to show the full-size ones.");
@@ -1970,6 +1970,9 @@ public sealed class WFCockpitTest : InteractionTest
         var instrumentScroll = Named<ScrollContainer>(hud, "CockpitInstrumentScroll");
         Assert.That(Ancestors(hull, instruments), Does.Contain(instrumentScroll));
         Assert.That(fuelBank.Width, Is.GreaterThanOrEqualTo(hull.Width - 1));
+        if (hud.DialScale > WFCockpitInstrumentSizing.MinScale)
+            Assert.That(fuelBank.GlobalPosition.Y - Bottom(hull), Is.LessThan(48),
+                $"{theme}, {size}: scaled dials fill the column, leaving no gap above the fuel strip.");
         Assert.That(fuel.Width, Is.GreaterThanOrEqualTo(104), "The fuel scale must remain readable at compact side-panel widths.");
         Assert.That(fuel.CompactStrip, Is.True);
         Assert.That(fuel.Height, Is.EqualTo(44).Within(1));

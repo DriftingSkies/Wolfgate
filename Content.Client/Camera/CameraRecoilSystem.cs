@@ -39,6 +39,9 @@ public sealed partial class CameraRecoilSystem : SharedCameraRecoilSystem
 
         recoil *= _intensity;
 
+        // WOLFGATE(Camera) START: kicks move the view a short way and hard ones shake faster instead of further
+        WFKickCamera(uid, component, recoil);
+        /*
         // Use really bad math to "dampen" kicks when we're already kicked.
         var existing = component.CurrentKick.Length();
         var dampen = existing / KickMagnitudeMax;
@@ -48,5 +51,7 @@ public sealed partial class CameraRecoilSystem : SharedCameraRecoilSystem
             component.CurrentKick = component.CurrentKick.Normalized() * KickMagnitudeMax;
 
         component.LastKickTime = 0;
+        */
+        // WOLFGATE END
     }
 }

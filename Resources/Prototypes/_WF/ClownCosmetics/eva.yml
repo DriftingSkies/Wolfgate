@@ -1,0 +1,243 @@
+﻿# Black mime hardsuit (Impstation)
+
+- type: entity
+  parent: ClothingOuterHardsuitBase
+  id: ClothingOuterHardsuitMimeBlack
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/mime_black_hardsuit.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/EVA/mime_black_hardsuit.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.9
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.9
+        Caustic: 0.8
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
+  - type: StaminaDamageResistance
+    coefficient: 0.8
+  - type: ToggleableClothing
+    requiredSlot: outerclothing
+    blockUnequipWhenAttached: false
+    replaceCurrentClothing: true
+    clothingPrototypes:
+      head: ClothingHeadHelmetHardsuitMimeBlack
+      helmetcover: ClothingHeadHelmetCoverBlock
+      helmetattachment: ClothingHeadHelmetAttachmentBlock
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitMime
+  id: ClothingHeadHelmetHardsuitMimeBlack
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/mime_black_hardsuit_helmet.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/EVA/mime_black_hardsuit_helmet.rsi
+
+# Clown battlesuit (Starlight)
+
+- type: entity
+  parent: ClothingOuterHardsuitBase
+  id: ClothingOuterBattlesuitClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/clown_battlesuit.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/EVA/clown_battlesuit.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.4
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Caustic: 0.7
+        Heat: 0.5
+        Radiation: 0.1
+  - type: StaminaDamageResistance
+    coefficient: 0.7
+  - type: ClothingSpeedModifier
+    walkModifier: 0.85
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
+  - type: ToggleableClothing
+    requiredSlot: outerclothing
+    blockUnequipWhenAttached: false
+    replaceCurrentClothing: true
+    clothingPrototypes:
+      head: ClothingHeadHelmetBattlesuitClown
+      helmetcover: ClothingHeadHelmetCoverBlock
+      helmetattachment: ClothingHeadHelmetAttachmentBlock
+
+- type: entity
+  parent: [ ClothingHeadHardsuitBase, ClothingHeadSuitWithLightBase ]
+  id: ClothingHeadHelmetBattlesuitClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/clown_battlesuit_helmet.rsi
+  - type: Clothing
+    sprite: _WF/ClownCosmetics/Clothing/EVA/clown_battlesuit_helmet.rsi
+  - type: PointLight
+    color: "#ffa1e3"
+  - type: PressureProtection
+    highPressureMultiplier: 0.525
+    lowPressureMultiplier: 1000
+  - type: Armor
+    coverage: [Head]
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.9
+        Heat: 0.9
+
+# Clown modsuit (ADT sprites on Goobstation's sealable modsuit)
+
+- type: entity
+  parent: ClothingModsuitBase
+  id: ADTClothingModsuitBackClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_control.rsi
+  - type: ToggleableClothing
+    clothingPrototypes:
+      head: ADTClothingHeadHelmetModsuitClown
+      gloves: ADTClothingHandsModsuitClown
+      outerClothing: ADTClothingOuterModsuitBodyClown
+      shoes: ADTClothingModsuitShoesClown
+
+- type: entity
+  parent: ADTClothingModsuitBackClown
+  id: ADTClothingModsuitBackClownPowerCell
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+        whitelist:
+          components:
+          - PowerCell
+
+- type: entity
+  parent: ClothingModsuitHelmetStandard
+  id: ADTClothingHeadHelmetModsuitClown
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_helmet.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      shader: unshaded
+      map: [ "sealed" ]
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD
+      head-vulpkanin:
+      - state: equipped-HEAD
+  - type: SealableClothingVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+        shader: unshaded
+      head-vox:
+      - state: equipped-HEAD-sealed
+        shader: unshaded
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed
+        shader: unshaded
+  - type: Armor
+    coverage: [Head]
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.95
+        Heat: 0.9
+        Radiation: 0.9
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    - Snout
+    - HeadTop
+    - HeadSide
+  - type: ComponentToggler
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+  - type: PointLight
+    color: "#ff66cc"
+
+- type: entity
+  parent: ClothingModsuitGauntletsBase
+  id: ADTClothingHandsModsuitClown
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_gauntlets.rsi
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ADTClothingOuterModsuitBodyClown
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_chestplate.rsi
+  - type: SealableClothingVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.9
+        Caustic: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.9
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+
+- type: entity
+  parent: ClothingModsuitBootsBase
+  id: ADTClothingModsuitShoesClown
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_boots.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepClown
+      params:
+        variation: 0.17

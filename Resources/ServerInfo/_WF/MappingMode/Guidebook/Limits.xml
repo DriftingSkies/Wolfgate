@@ -9,7 +9,7 @@
     <Box HorizontalAlignment="Left">[bold]Map area[/bold]</Box>
     <Box HorizontalAlignment="Left">256 by 256 tiles, centred on the map's origin. A border marks it.</Box>
     <Box HorizontalAlignment="Left">[bold]Grids[/bold]</Box>
-    <Box HorizontalAlignment="Left">2 per member, 8 per session at most.</Box>
+    <Box HorizontalAlignment="Left">6 per member, 8 per session at most.</Box>
     <Box HorizontalAlignment="Left">[bold]Entities[/bold]</Box>
     <Box HorizontalAlignment="Left">25000 across all your session's levels, 30 on one tile.</Box>
     <Box HorizontalAlignment="Left">[bold]Decals[/bold]</Box>

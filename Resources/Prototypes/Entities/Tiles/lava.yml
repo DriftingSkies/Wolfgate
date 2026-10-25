@@ -30,17 +30,14 @@
   - type: SyncSprite
   - type: Clickable
   - type: Sprite
-    sprite: Tiles/Planet/lava.rsi
+    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/lava.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi" to match the new sprite.
     drawdepth: BelowFloor
-    layers:
-      - state: lava
-        shader: unshaded
   - type: Icon
-    sprite: Tiles/Planet/lava.rsi
+    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/lava.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi" to match the new sprite.
     state: full
   - type: IconSmooth
-    key: floor
-    base: lava
+    key: lava # WOLFGATE(Resprites): Changed from "floor" to "lava" to match the new sprite.
+    base: water # WOLFGATE(Resprites): Changed from "lava" to "water" to match the new sprite.
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -59,3 +56,5 @@
     tags:
       - HideContextMenu
       - UnavoidableTrap # Mono - TrapAvoider shouldn't make you immune to this.
+  - type: PlacementReplacement # WOLFGATE(Resprites): Added this component to ensure the tile overlay is replaced when this entity is placed.
+    key: tileOverlay # WOLFGATE(Resprites): Added this component to ensure the tile overlay is replaced when this entity is placed.

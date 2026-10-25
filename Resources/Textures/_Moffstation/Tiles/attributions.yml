@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Moffstation
+- files: ["plaswood.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Moffstation at commit https://github.com/moff-station/moff-station-14/commit/d1a8a5e6d279ad62f95f358ceb79a7d532f331de."
+  source: "https://github.com/moff-station/moff-station-14"
+# WOLFGATE END

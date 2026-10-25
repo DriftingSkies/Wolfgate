@@ -228,6 +228,9 @@ public sealed partial class WFMappingBuildModeSystem : EntitySystem
             Active = true;
             Mode = WFMappingBuildMode.Place;
             PlacementModeIndex = Array.IndexOf(_placement.AllModeNames, IPlacementManager.DefaultModeName);
+
+            // A wall placed on a wall replaces it instead of stacking; the Replace toggle can still turn this off.
+            _placement.Replacement = true;
             if (!_overlays.HasOverlay<WFMappingShapeOverlay>())
                 _overlays.AddOverlay(new WFMappingShapeOverlay(this));
 
@@ -288,17 +291,19 @@ public sealed partial class WFMappingBuildModeSystem : EntitySystem
         ModeChanged?.Invoke(mode);
     }
 
-    /// <summary>Selects an entry to place and switches to Place mode.</summary>
+    /// <summary>
+    /// Selects an entry, keeping the current mode; Place starts placing it, and Pick hands over to Place.
+    /// </summary>
     public void BeginPlacing(WFMappingPaletteEntry entry)
     {
         SetEntry(entry);
         if (!Active)
             return;
 
-        if (Mode != WFMappingBuildMode.Place)
-            SetMode(WFMappingBuildMode.Place);
-        else
+        if (Mode == WFMappingBuildMode.Place)
             StartPlacement(entry);
+        else if (Mode == WFMappingBuildMode.Pick)
+            SetMode(WFMappingBuildMode.Place);
     }
 
     /// <summary>Drops the selected entry and stops placing it.</summary>

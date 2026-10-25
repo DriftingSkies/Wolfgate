@@ -1,3 +1,4 @@
+# WOLFGATE(Resprites) START: Port floor sprite updates from upstream respritening batches.
 - type: tile
   id: FloorPlanetDirt
   name: tiles-dirt-floor
@@ -153,7 +154,7 @@
 - type: tile
   id: FloorLowDesert
   name: tiles-low-desert-floor
-  sprite: /Textures/_RMC14/Tiles/planet/desert/desert.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Desert/desert.png
   variants: 6
   placementVariants:
   - 0.95
@@ -161,7 +162,16 @@
   - 0.3
   - 0.25
   - 0.5
-  - 0.05
+  edgeSpritePriority: 1
+  edgeSprites:
+      SouthEast: /Textures/_WF/Resprites/Wizden/Tiles/Desert/single_edge_SE.png
+      NorthEast: /Textures/_WF/Resprites/Wizden/Tiles/Desert/single_edge_NE.png
+      NorthWest: /Textures/_WF/Resprites/Wizden/Tiles/Desert/single_edge_NW.png
+      SouthWest: /Textures/_WF/Resprites/Wizden/Tiles/Desert/single_edge_SW.png
+      South: /Textures/_WF/Resprites/Wizden/Tiles/Desert/double_edge_S.png
+      East: /Textures/_WF/Resprites/Wizden/Tiles/Desert/double_edge_E.png
+      North: /Textures/_WF/Resprites/Wizden/Tiles/Desert/double_edge_N.png
+      West: /Textures/_WF/Resprites/Wizden/Tiles/Desert/double_edge_W.png
   isSubfloor: true
   deconstructTools: [ Digging ]
   deconstructTimeMultiplier: 2
@@ -235,7 +245,7 @@
 - type: tile
   id: FloorAsteroidSandPlanet
   name: tiles-asteroid-sand
-  sprite: /Textures/Tiles/Asteroid/asteroid.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/asteroid.png # WOLFGATE(Resprites): Repathed
   variants: 13
   placementVariants:
   - 0.8
@@ -255,14 +265,14 @@
   baseTurf: Space
   edgeSpritePriority: 1
   edgeSprites:
-    SouthEast: /Textures/_Mono/Tiles/planet/Asteroid/sand_single_edge.png
-    NorthEast: /Textures/_Mono/Tiles/planet/Asteroid/sand_single_edge.png
-    NorthWest: /Textures/_Mono/Tiles/planet/Asteroid/sand_single_edge.png
-    SouthWest: /Textures/_Mono/Tiles/planet/Asteroid/sand_single_edge.png
-    South: /Textures/_Mono/Tiles/planet/Asteroid/sand_double_edge.png
-    East: /Textures/_Mono/Tiles/planet/Asteroid/sand_double_edge.png
-    North: /Textures/_Mono/Tiles/planet/Asteroid/sand_double_edge.png
-    West: /Textures/_Mono/Tiles/planet/Asteroid/sand_double_edge.png
+    SouthEast: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/single_edge_SE.png
+    NorthEast: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/single_edge_NE.png
+    NorthWest: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/single_edge_NW.png
+    SouthWest: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/single_edge_SW.png
+    South: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/double_edge_S.png
+    East: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/double_edge_E.png
+    North: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/double_edge_N.png
+    West: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/double_edge_W.png
   deconstructTools: [ Digging ]
   deconstructTimeMultiplier: 1
   itemDrop: DesertSand1
@@ -336,28 +346,25 @@
 - type: tile
   id: FloorSnow
   name: tiles-snow
-  sprite: /Textures/Tiles/Planet/Snow/snow.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Snow/snow.png
   variants: 13
   placementVariants:
-  - 0.8
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0166
-  - 0.0116
-  - 0.0116
-  edgeSpritePriority: 2
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 1
   edgeSprites:
-    South: /Textures/Tiles/Planet/Snow/snow_double_edge_south.png
-    East: /Textures/Tiles/Planet/Snow/snow_double_edge_east.png
-    North: /Textures/Tiles/Planet/Snow/snow_double_edge_north.png
-    West: /Textures/Tiles/Planet/Snow/snow_double_edge_west.png
+    SouthEast: /Textures/_WF/Resprites/Wizden/Tiles/Snow/single_edge_SE.png
+    NorthEast: /Textures/_WF/Resprites/Wizden/Tiles/Snow/single_edge_NE.png
+    NorthWest: /Textures/_WF/Resprites/Wizden/Tiles/Snow/single_edge_NW.png
+    SouthWest: /Textures/_WF/Resprites/Wizden/Tiles/Snow/single_edge_SW.png
+    South: /Textures/_WF/Resprites/Wizden/Tiles/Snow/double_edge_S.png
+    East: /Textures/_WF/Resprites/Wizden/Tiles/Snow/double_edge_E.png
+    North: /Textures/_WF/Resprites/Wizden/Tiles/Snow/double_edge_N.png
+    West: /Textures/_WF/Resprites/Wizden/Tiles/Snow/double_edge_W.png
   baseTurf: FloorDirt
   itemDrop: FloorTileItemSnow # Delta V
   deconstructTools: [ Digging ] # Frontier
@@ -378,7 +385,8 @@
 - type: tile
   id: FloorIce
   name: tiles-ice
-  sprite: /Textures/Tiles/Planet/Snow/ice.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Ice/ice.png # WOLFGATE(Resprites): Repathed
+  variants: 4 # WOLFGATE(Resprites): Repathed
   isSubfloor: true
   friction: 0.05
   heatCapacity: 10000
@@ -413,3 +421,4 @@
   # ES END
 
 # Wasteland
+# WOLFGATE END

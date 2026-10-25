@@ -4,9 +4,11 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
 using Content.Shared._Shitmed.Body.Components;
 using Content.Shared.Body.Systems;
+using Content.Shared.Clothing.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Interaction;
+using Content.Shared.Item;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
@@ -63,9 +65,42 @@ public sealed class WFCrewEvaSystem : EntitySystem
                 if (!_inventory.TryEquip(mob, item, slot, silent: true, force: true))
                     QueueDel(item);
             }
+            FitSuitHelmet(mob);
         }
         TopUp(mob, kit);
         Ready(mob);
+    }
+
+    /// <summary>
+    /// Puts the worn suit's own helmet on, in place of a loose suit helmet or on a bare head. Gear names the helmet on
+    /// its own, but a suit helmet is no item: knocked off with the head, it lay on the floor and couldn't be picked up.
+    /// </summary>
+    public void FitSuitHelmet(EntityUid mob)
+    {
+        _inventory.TryGetSlotEntity(mob, "head", out var loose);
+        if (loose != null && (HasComp<ItemComponent>(loose) || HasComp<AttachedClothingComponent>(loose))
+            || !_inventory.TryGetSlotEntity(mob, "outerClothing", out var suit)
+            || !TryComp<ToggleableClothingComponent>(suit, out var toggleable))
+            return;
+
+        var container = toggleable.Container;
+        var pieces = toggleable.ClothingUids;
+        if (container == null)
+            return;
+
+        foreach (var (piece, slot) in pieces)
+        {
+            if (slot != "head" || !container.Contains(piece))
+                continue;
+            if (loose != null)
+            {
+                if (!_inventory.TryUnequip(mob, "head", silent: true, force: true))
+                    return;
+                QueueDel(loose);
+            }
+            _inventory.TryEquip(mob, piece, "head", silent: true, force: true);
+            return;
+        }
     }
 
     /// <summary>Whether a mob neither needs pressure nor breathes, so bad air cannot hurt him.</summary>

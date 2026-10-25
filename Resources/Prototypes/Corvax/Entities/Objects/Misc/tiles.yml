@@ -1,0 +1,69 @@
+# WOLFGATE(DecorImport) START: ported from Corvax
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemWoodBlack
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    state: wood_black
+  - type: Item
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    heldPrefix: wood-black
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorWoodBlack
+  - type: Stack
+    stackType: FloorTileItemWoodBlack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemWoodDark
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    state: wood_dark
+  - type: Item
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    heldPrefix: wood-dark
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorWoodDark
+  - type: Stack
+    stackType: FloorTileItemWoodDark
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemWoodLight
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    state: wood_light
+  - type: Item
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    heldPrefix: wood-light
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorWoodLight
+  - type: Stack
+    stackType: FloorTileItemWoodLight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemWoodRed
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    state: wood_red
+  - type: Item
+    sprite: Corvax/Objects/Tiles/wood.rsi
+    heldPrefix: wood-red
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorWoodRed
+  - type: Stack
+    stackType: FloorTileItemWoodRed
+# WOLFGATE END

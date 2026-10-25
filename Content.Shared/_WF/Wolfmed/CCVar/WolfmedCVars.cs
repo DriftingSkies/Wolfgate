@@ -824,6 +824,13 @@ public sealed class WolfmedCVars
         CVarDef.Create("wolfmed.reagent_toxin_factor", 0.5f, CVar.SERVERONLY);
 
     /// <summary>
+    /// Wound severity a metabolising reagent closes per unit of damage it heals, on the worst open wounds of the healed
+    /// types. 0 leaves wounds to the 0.15 that removed damage takes off them.
+    /// </summary>
+    public static readonly CVarDef<float> ReagentWoundMend =
+        CVarDef.Create("wolfmed.reagent_wound_mend", 1f, CVar.SERVERONLY);
+
+    /// <summary>
     /// What a hit on a wound host in Avali stasis keeps before it becomes a wound. The stock stasis healed back half
     /// of the flat total after the fact, which a wound host does not read. 1 is the whole hit.
     /// </summary>

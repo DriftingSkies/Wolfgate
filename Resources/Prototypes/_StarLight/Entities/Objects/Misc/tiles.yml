@@ -1,0 +1,99 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  parent: FloorTileItemSteel
+  id: FloorTileItemCarpetDeco
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: tile_carpet_deco
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorCarpetDeco
+  - type: Stack
+    stackType: FloorTileCarpetDeco
+
+- type: entity
+  parent: FloorTileItemSteel
+  id: FloorTileItemCarpetArt
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: artcarpet
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorCarpetArt
+  - type: Stack
+    stackType: FloorTileCarpetArt
+
+- type: entity
+  parent: FloorTileItemSteel
+  id: FloorTileItemHierophant
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: tile_hierophant
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorHierophant
+  - type: Stack
+    stackType: FloorTileHierophant
+
+- type: entity
+  id: FloorTileItemOldConcreteBricks
+  parent: FloorTileItemBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: old_concrete_bricks
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorOldConcreteBricks
+  - type: Stack
+    stackType: FloorTileOldConcreteBricks
+
+- type: entity
+  id: FloorTileItemRoughMetal
+  parent: FloorTileItemBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: rough_metal
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorRoughMetal
+  - type: Stack
+    stackType: FloorTileRoughMetal
+
+- type: entity
+  id: FloorTileItemRustyMetal
+  parent: FloorTileItemBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: rusty_metal
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorRustyMetal
+  - type: Stack
+    stackType: FloorTileRustyMetal
+
+- type: entity
+  id: FloorTileItemTechGreeb
+  parent: FloorTileItemBase
+  components:
+  - type: Sprite
+    sprite: _Starlight/Objects/Tiles/tiles.rsi
+    state: techfloor_greeb
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorTechGreeb
+  - type: Stack
+    stackType: FloorTileTechGreeb
+# WOLFGATE END

@@ -1,0 +1,31 @@
+# WOLFGATE(DecorImport) START: ported from Frontier
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFancyWood
+  components:
+  - type: Sprite
+    sprite: /Textures/_NF/Objects/Tiles/woodtile.rsi
+    state: fancy
+  - type: Item
+    sprite: /Textures/_NF/Objects/Tiles/woodtile.rsi
+  - type: FloorTile
+    outputs:
+      - FloorFancyWood
+  - type: Stack
+    stackType: FloorFancyWood
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVersaillesWood
+  components:
+  - type: Sprite
+    sprite: /Textures/_NF/Objects/Tiles/woodtile.rsi
+    state: versailles
+  - type: Item
+    sprite: /Textures/_NF/Objects/Tiles/woodtile.rsi
+  - type: FloorTile
+    outputs:
+      - FloorVersaillesWood
+  - type: Stack
+    stackType: FloorVersaillesWood
+# WOLFGATE END

@@ -11,3 +11,12 @@
     - /Audio/Machines/robotscream_7.ogg
     - /Audio/Machines/robotscream_8.ogg
     - /Audio/Machines/robotscream_9.ogg
+
+# Ported from upstream space-station-14
+- type: soundCollection
+  id: WFVulpkaninScreams
+  files:
+    - /Audio/_WF/Species/Vulpkanin/vulp_scream1.ogg
+    - /Audio/_WF/Species/Vulpkanin/vulp_scream2.ogg
+    - /Audio/_WF/Species/Vulpkanin/vulp_scream3.ogg
+    - /Audio/_WF/Species/Vulpkanin/vulp_scream4.ogg

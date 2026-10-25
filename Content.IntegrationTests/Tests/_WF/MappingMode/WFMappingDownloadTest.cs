@@ -178,6 +178,80 @@ public sealed class WFMappingDownloadTest
         await pair.CleanReturnAsync();
     }
 
+    [Test]
+    public async Task MultiLevelDownloadsEveryLevel()
+    {
+        await using var pair = await PoolManager.GetServerClient(Settings);
+        var server = pair.Server;
+        var client = pair.Client;
+        var entMan = server.EntMan;
+        var mapping = entMan.System<WFMappingModeSystem>();
+        var library = entMan.System<WFMappingLibrarySystem>();
+        var zLevels = entMan.System<Content.Server._WF.MappingTools.MappingZLevelsSystem>();
+        var mapSys = entMan.System<MapSystem>();
+        var tileDefs = server.ResolveDependency<ITileDefinitionManager>();
+        var clientRes = client.ResolveDependency<IResourceManager>();
+        var clientSys = client.EntMan.System<WFMappingClientSystem>();
+        await Enable(pair);
+        var player = pair.Player!;
+        const string name = "Download Levels";
+
+        var results = new List<string>();
+        await client.WaitPost(() =>
+        {
+            clientSys.DownloadSaveTo = false;
+            clientSys.ResultReceived += result => results.Add(result.LocKey);
+        });
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(mapping.TryCreateSession(player, name, out var session), Is.True);
+            Assert.That(zLevels.TryAddLevel(session!.RootMap, true, out var upper, out _, out _), Is.True);
+            var plating = new Tile(tileDefs["Plating"].TileId);
+            foreach (var level in new[] { session.RootMap, upper })
+            {
+                var grid = mapSys.CreateGridEntity(entMan.GetComponent<MapComponent>(level).MapId);
+                mapSys.SetTiles(grid, grid.Comp,
+                    Enumerable.Range(0, 6).Select(x => (new Vector2i(x % 3, x / 3), plating)).ToList());
+            }
+        });
+        await pair.RunTicksSync(10);
+
+        await client.WaitPost(() => clientSys.Send(new WFMappingSaveRequest(string.Empty)));
+        WFMappingLibrarySystem.LibraryVersion? version = null;
+        for (var i = 0; i < 100 && version == null; i++)
+        {
+            await pair.RunTicksSync(1);
+            await server.WaitPost(() =>
+            {
+                if (library.TryFindVersion(player.UserId, name, null, out _, out var found))
+                    version = found;
+            });
+        }
+
+        Assert.That(version, Is.Not.Null, "The save should have made a version.");
+        Assert.That(version!.Levels, Has.Count.EqualTo(2));
+
+        await client.WaitPost(() => clientSys.RequestDownload(name, null));
+        await WaitDone(pair, clientSys, ship: false);
+        await client.WaitAssertion(() =>
+        {
+            Assert.That(results.Where(r => r.Contains("fail") || r.Contains("empty") || r.Contains("bad") || r.Contains("large")),
+                Is.Empty, "The download should raise no error.");
+            Assert.That(clientSys.Download, Is.Not.Null, "The download should have finished.");
+            Assert.That(clientSys.Download!.FileCount, Is.EqualTo(2));
+            foreach (var depth in new[] { 0, 1 })
+            {
+                var path = WFMappingLibraryNames.DownloadPath(name, version.Name.Folder,
+                    WFMappingLibraryNames.DownloadLevelFile(name, depth));
+                Assert.That(clientRes.UserData.Exists(path), Is.True, $"Level {depth} should be downloaded.");
+            }
+        });
+
+        await Disable(pair);
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>Waits for a download of the given kind to finish on the client.</summary>
     private static async Task WaitDone(TestPair pair, WFMappingClientSystem clientSys, bool ship)
     {

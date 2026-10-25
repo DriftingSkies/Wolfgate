@@ -590,6 +590,7 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
                         var itemEntity = entity.Value.Owner;
                         // Mark item as having been stored in a deposit box
                         EnsureComp<SafetyDepositStoredComponent>(itemEntity);
+                        ClearSavedCooldowns(itemEntity);
 
                         // Insert into storage
                         if (!_storage.Insert(boxEntity, itemEntity, out _, storageComp: storageComp, playSound: false))

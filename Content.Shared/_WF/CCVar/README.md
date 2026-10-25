@@ -21,6 +21,7 @@ internet sounds, soundtrack mute, NPC crew docking, ship access locking and expl
 - [`Content.Shared/_WF/CCVar/FeedbackCVars.cs`](FeedbackCVars.cs)
 - [`Content.Shared/_WF/CCVar/HeatHazeCVars.cs`](HeatHazeCVars.cs)
 - [`Content.Shared/_WF/CCVar/InternetSoundCVars.cs`](InternetSoundCVars.cs)
+- [`Content.Shared/_WF/CCVar/JukeboxVolumeCVars.cs`](JukeboxVolumeCVars.cs)
 - [`Content.Shared/_WF/CCVar/NpcCrewCVars.cs`](NpcCrewCVars.cs)
 - [`Content.Shared/_WF/CCVar/PlanetCVars.cs`](PlanetCVars.cs)
 - [`Content.Shared/_WF/CCVar/ShipAccessCVars.cs`](ShipAccessCVars.cs)

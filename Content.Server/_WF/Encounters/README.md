@@ -35,6 +35,37 @@ carries its deed (`deed`, `WFEncounterShipDeed` by default; null for none) and d
 encounter, cancels its crew's orders, frees its passengers, opens its clamps and makes it immune to cleanup, so it
 never despawns. It gives no ownership; the encounter completes once it has no ships left.
 
+Encounter ships are simulated while nobody is near (`wf.encounters.simulate`, `WFEncounterSystem.Simulation.cs`). A
+simulated ship is a stand-in entity carrying `WFEncounterGridComponent` and `WFCrewVirtualShipComponent` in place of its
+hull; `WFCrewObjectiveSystem` flies its queue as a point at cruise speed (travel, timed holds, docking by reaching the
+target), and campaigns, markers and judging read it like a ship that is in the fight. A living player or an admin ghost
+within `materialize_range` (4 km, past radar range), or a jump plotted to an exit within it (`FTLStartedEvent`), spawns
+its hull, crew and retrofit (seeded, so it looks the same each time), hands it the stand-in's orders and retargets any
+orders aimed at it. A real ship nobody has boarded, docked with or fought, with its whole crew and no alert, goes back
+to simulation after `dematerialize_delay` with every player past `dematerialize_range`. Spawns and despawns are queued
+and run one at a time. A ship spawned from simulation is built over several ticks (`WFEncounterSystem.Build.cs`):
+its hull is loaded onto a paused staging map, map-initialised 250 entities a tick, moved into place, refitted, crewed
+three men a tick and powered up, and only then given the stand-in's orders; it is left out of judging, fights and
+despawning meanwhile. Each build logs its time per stage and its worst tick. The hull load itself is one engine call
+and the largest step left (a few hundred ms on a big hull in DebugOpt). Simulated docking (`DockedTo`, `RedockTo`, `AreDocked`) carries over both ways,
+and a ship spawned on top of another is moved clear. Two simulated ships where one is ordered to attack the other
+fight it out by a roll (`duel_mean_seconds`, weighted by hull worth, crew skill and refit); each round raises
+`WFEncounterSimulatedHitEvent`, which a Reaver stronghold counts as a hit. A simulated extorter roams and picks its mark
+off the map, then closes on it and is spawned on the way. A crew warrant stands on a simulated ship and marks its crew
+when the hull spawns; a captain warrant names the man, so its encounter is always real. A ship hit by any ship weapon,
+an NPC's included, never goes back to simulation. Tests run with simulation off (`PoolManager.Cvars.cs`).
+
+Pirate and Reaver ships fly by threat tier (`tiers` on a ship: the band with the highest `minTier` at or below the
+tier picks the hulls, crew `skills` and `retrofit`). The tier is the one passed to `TrySpawn`, else the Reaver
+campaign's (`WFEncounterThreatTierEvent`), else 0; admins set it with `wf_encounter spawn ... tier=N` or the window's
+tier picker. Tiers 0-2 fly retrofitted civilian hulls with Green crews, tier 3 mixes heavy civilian hulls and gunships,
+tiers 4-5 fly the black-market line. Stronghold hubs draw from a pool of civilian hulls with docking ports and a fixed
+gun count. `WFPirateRetrofitSystem` applies a `wfPirateRetrofit` (pirate retrofitting) as a hull spawns: it pulls mapped
+guns its pool doesn't list, fills hardpoints at random from the pool within the fire control's processing power, and
+wears the decks (worn tiles, rusted walls, grime decals, cobwebs, dead lights, litter). The encounter's rank (its tier,
+a stronghold's founding tier plus level, three stars for the citadel) goes out on the markers and is drawn as chevrons
+and stars beside the radar label and under the sector map glyph, with the threat and hull class on its card.
+
 The encounter pirates fly as the Ashfall Reavers (`WFAshfallReavers`, a company nobody can pick, at war with both
 navies in `standing.yml`) on scrapyard and black-market hulls, in pirate slops. The prototypes cover freight runs, TSF and Phaethon Dynasty patrols (one of each at round start, kept to different
 stations and away from the other's home ports with `avoidStations`) and transports, wandering traders (with exotic dealers under mercenary escort), pirate raiders
@@ -140,7 +171,10 @@ is gone after again. A warrant with `broadcast` set is read out to the whole sec
 fugitives' are, and every PDA carries the bounty board program so the Warrants tab is there to read.
 
 Admins use the Encounters window in the Wolfgate admin tab, or `wf_encounter list | spawn <prototype> [distance] |
-end <encounter> | schedule | pause | resume`. Other code calls `WFEncounterSystem.TrySpawn`, `Resolve`, `End` and
+end <encounter> | schedule | pause | resume`. The window's Running tab lists the encounters beside the one picked, with
+its ships (simulated, spawning or spawned) and an order panel: pick a ship, an order and, where it needs one, a player
+ship, and `WFEncounterSystem.AdminOrder` has it extort or board that ship, attack or follow it, come to the admin, hold,
+resume its own orders, spawn its hull now, or send the encounter away. The Start and Scheduler tabs hold the rest. Other code calls `WFEncounterSystem.TrySpawn`, `Resolve`, `End` and
 `Reveal` and listens for `WFEncounterStartedEvent` and `WFEncounterResolvedEvent`.
 
 Systems that run encounters of their own (the Reaver campaign, sector control) have more entry points. `TrySpawn(..., offBudget)`
@@ -165,6 +199,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 ### Server
 
 - [`Content.Server/_WF/Encounters/Commands/WFEncounterCommand.cs`](Commands/WFEncounterCommand.cs)
+- [`Content.Server/_WF/Encounters/Components/WFCrewKillPaidComponent.cs`](Components/WFCrewKillPaidComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFDockingClampComponent.cs`](Components/WFDockingClampComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterBountyComponent.cs`](Components/WFEncounterBountyComponent.cs)
 - [`Content.Server/_WF/Encounters/Components/WFEncounterComponent.cs`](Components/WFEncounterComponent.cs)
@@ -183,7 +218,9 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterMarkerSystem.cs`](Systems/WFEncounterMarkerSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterRewardSystem.cs`](Systems/WFEncounterRewardSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSchedulerSystem.cs`](Systems/WFEncounterSchedulerSystem.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Admin.cs`](Systems/WFEncounterSystem.Admin.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Battle.cs`](Systems/WFEncounterSystem.Battle.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Build.cs`](Systems/WFEncounterSystem.Build.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.cs`](Systems/WFEncounterSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Deed.cs`](Systems/WFEncounterSystem.Deed.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Derelict.cs`](Systems/WFEncounterSystem.Derelict.cs)
@@ -191,10 +228,12 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Fugitive.cs`](Systems/WFEncounterSystem.Fugitive.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Hunt.cs`](Systems/WFEncounterSystem.Hunt.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Radar.cs`](Systems/WFEncounterSystem.Radar.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Simulation.cs`](Systems/WFEncounterSystem.Simulation.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterSystem.Stranded.cs`](Systems/WFEncounterSystem.Stranded.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterTraderHailSystem.cs`](Systems/WFEncounterTraderHailSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterVoteSystem.cs`](Systems/WFEncounterVoteSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFEncounterZoneSystem.cs`](Systems/WFEncounterZoneSystem.cs)
+- [`Content.Server/_WF/Encounters/Systems/WFPirateRetrofitSystem.cs`](Systems/WFPirateRetrofitSystem.cs)
 - [`Content.Server/_WF/Encounters/Systems/WFSalvageClaimSystem.cs`](Systems/WFSalvageClaimSystem.cs)
 - [`Content.Server/_WF/Encounters/WFEncounterEvents.cs`](WFEncounterEvents.cs)
 
@@ -205,6 +244,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Shared/_WF/Encounters/WFEncounterMarkers.cs`](../../../Content.Shared/_WF/Encounters/WFEncounterMarkers.cs)
 - [`Content.Shared/_WF/Encounters/WFEncounterPresetPrototype.cs`](../../../Content.Shared/_WF/Encounters/WFEncounterPresetPrototype.cs)
 - [`Content.Shared/_WF/Encounters/WFEncounterPrototype.cs`](../../../Content.Shared/_WF/Encounters/WFEncounterPrototype.cs)
+- [`Content.Shared/_WF/Encounters/WFPirateRetrofitPrototype.cs`](../../../Content.Shared/_WF/Encounters/WFPirateRetrofitPrototype.cs)
 - [`Content.Shared/_WF/Encounters/WFStandingPrototype.cs`](../../../Content.Shared/_WF/Encounters/WFStandingPrototype.cs)
 
 ### Client
@@ -215,10 +255,12 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.Client/_WF/Encounters/WFEncounterClientSystem.cs`](../../../Content.Client/_WF/Encounters/WFEncounterClientSystem.cs)
 - [`Content.Client/_WF/Encounters/WFEncounterColors.cs`](../../../Content.Client/_WF/Encounters/WFEncounterColors.cs)
 - [`Content.Client/_WF/Encounters/WFEncounterMarkerClientSystem.cs`](../../../Content.Client/_WF/Encounters/WFEncounterMarkerClientSystem.cs)
+- [`Content.Client/_WF/Encounters/WFEncounterRanks.cs`](../../../Content.Client/_WF/Encounters/WFEncounterRanks.cs)
 - [`Content.Client/_WF/Encounters/WFEncounterWindow.cs`](../../../Content.Client/_WF/Encounters/WFEncounterWindow.cs)
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AdminOrders.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AdminOrders.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AuditLifecycle.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AuditLifecycle.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AuditZones.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.AuditZones.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.BatchCore.cs)
@@ -233,14 +275,18 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Extort.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.FriendlyFire.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Fuel.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Fuel.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.KillBounty.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.KillBounty.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.MapRoot.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.MapRoot.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Mechs.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Mechs.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.NeutralZones.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.NeutralZones.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Pinned.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Placement.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Placement.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Reactor.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Retrofit.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Retrofit.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Sanctuary.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Simulation.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Simulation.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stealth.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stealth.cs)
+- [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.StealthBoarding.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.StealthBoarding.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Storyteller.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.Stranded.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.TraderHail.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.TraderHail.cs)
@@ -257,6 +303,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 - [`Resources/Prototypes/_WF/Encounters/fugitives.yml`](../../../Resources/Prototypes/_WF/Encounters/fugitives.yml)
 - [`Resources/Prototypes/_WF/Encounters/manifests.yml`](../../../Resources/Prototypes/_WF/Encounters/manifests.yml)
 - [`Resources/Prototypes/_WF/Encounters/presets.yml`](../../../Resources/Prototypes/_WF/Encounters/presets.yml)
+- [`Resources/Prototypes/_WF/Encounters/retrofits.yml`](../../../Resources/Prototypes/_WF/Encounters/retrofits.yml)
 - [`Resources/Prototypes/_WF/Encounters/standing.yml`](../../../Resources/Prototypes/_WF/Encounters/standing.yml)
 - [`Resources/Prototypes/_WF/Encounters/vessels.yml`](../../../Resources/Prototypes/_WF/Encounters/vessels.yml)
 - [`Resources/Prototypes/_WF/Encounters/warrants.yml`](../../../Resources/Prototypes/_WF/Encounters/warrants.yml)
@@ -270,6 +317,7 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
 ### Textures
 
 - [`Resources/Textures/_WF/Encounters/markers.rsi/`](../../../Resources/Textures/_WF/Encounters/markers.rsi/)
+- [`Resources/Textures/_WF/Encounters/ranks.rsi/`](../../../Resources/Textures/_WF/Encounters/ranks.rsi/)
 
 ### Shared maps
 
@@ -288,6 +336,9 @@ are always real), freight value and payouts, follow-up encounters, and a real FT
   - flag a ship held by docking clamps on the plot.
   - a clamped port's undock says so.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): Sector markers for visible encounters.
+- [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs)
+  - tests spawn real ships unless they turn simulation on
+  - a round-restart vote throws on a dummy session's join
 - [`Content.Server/Cargo/Systems/PricingSystem.cs`](../../Cargo/Systems/PricingSystem.cs): a claimed hulk is worth a fraction of its parts
 - [`Content.Server/Shuttles/Systems/DockingSystem.cs`](../../Shuttles/Systems/DockingSystem.cs): a raider's docking clamps hold the ship until released at its helm.
 - [`Content.Server/Shuttles/Systems/ShuttleConsoleSystem.cs`](../../Shuttles/Systems/ShuttleConsoleSystem.cs): docking screens show clamped ports.

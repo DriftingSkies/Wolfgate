@@ -1,0 +1,20 @@
+// Restyles a worn jumpsuit through a mask (see Tools/_WF/RolledSleeves): alpha 0 cuts the pixel, red shades it
+// (0.5 leaves it), green and blue move where the suit is sampled from, in pixels offset by 128.
+uniform sampler2D rollMask;
+uniform highp vec4 rollMaskUV;
+
+varying highp vec2 rollMaskUVOut;
+
+void vertex() {
+    rollMaskUVOut = mix(rollMaskUV.xy, rollMaskUV.zw, tCoord2);
+}
+
+void fragment() {
+    highp vec4 mask = texture2D(rollMask, rollMaskUVOut);
+    highp vec2 offset = floor(mask.gb * 255.0 + 0.5) - vec2(128.0);
+    COLOR = zTexture(UV + offset * TEXTURE_PIXEL_SIZE * vec2(1.0, -1.0));
+
+    highp float shade = mask.r * 2.0 - 1.0;
+    COLOR.rgb = shade > 0.0 ? mix(COLOR.rgb, vec3(1.0), shade * 0.25) : COLOR.rgb * (1.0 + shade * 0.5);
+    COLOR.a *= mask.a;
+}

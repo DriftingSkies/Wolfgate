@@ -1,0 +1,25 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made by tamioki, meow | ported from https://github.com/AdventureTimeSS14/space_station_ADT/tree/f8eddb59ad901c9165e443d9efe9b05c565ff106/Resources/Textures/ADT/Clothing/OuterClothing/Modsuit/clown.rsi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "chestplate"
+    },
+    {
+      "name": "chestplate-sealed"
+    },
+    {
+      "name": "equipped-OUTERCLOTHING",
+      "directions": 4
+    },
+    {
+      "name": "equipped-OUTERCLOTHING-sealed",
+      "directions": 4
+    }
+  ]
+}

@@ -13,4 +13,5 @@ ui-options-wf-synthetic-hud = Diagnostics readout for synthetic bodies
 ui-options-wf-synthetic-hud-scale = Diagnostics readout text size
 ui-options-wf-audio = Audio
 ui-options-wf-internet-sound-volume = Admin radio volume
+ui-options-wf-jukebox-volume = Jukebox volume
 ui-options-wf-soundtrack-mute = Silence background music near a jukebox or instrument

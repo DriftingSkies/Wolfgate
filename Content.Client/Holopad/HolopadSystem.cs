@@ -14,6 +14,7 @@ public sealed partial class HolopadSystem : SharedHolopadSystem
 {
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SpriteSystem _sprite = default!; // WOLFGATE: post-shader flags are set through SpriteSystem since engine 291
 
     public override void Initialize()
     {
@@ -126,7 +127,9 @@ public sealed partial class HolopadSystem : SharedHolopadSystem
         instance.SetParameter("texHeight", texHeight);
         instance.SetParameter("t", (float)_timing.CurTime.TotalSeconds * holopadHologram.ScrollRate);
 
-        sprite.PostShader = instance;
-        sprite.RaiseShaderEvent = true;
+        // WOLFGATE START: engine 291 ignores the sprite-wide RaiseShaderEvent; it is per post-shader now
+        // upstream original: sprite.PostShader = instance; sprite.RaiseShaderEvent = true;
+        _sprite.SetPostShader(sprite, new SpriteComponent.PostShaderArgs("Hologram", instance) { RaiseShaderEvent = true });
+        // WOLFGATE END
     }
 }

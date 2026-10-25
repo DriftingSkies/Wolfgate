@@ -1,0 +1,37 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- type: tile
+  id: FloorTilePool
+  name: tiles-wf-den-pool-tile
+  sprite: /Textures/_DEN/Tiles/pool/pool.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemPool
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorTilePoolDark
+  name: tiles-wf-den-dark-pool-tile
+  sprite: /Textures/_DEN/Tiles/pool/pool-dark.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemPoolDark
+  heatCapacity: 10000
+# WOLFGATE END

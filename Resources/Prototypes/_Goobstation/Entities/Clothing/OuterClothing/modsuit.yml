@@ -25,6 +25,10 @@
     interfaces:
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
   # WOLFGATE END
   - type: Appearance
   - type: Sprite

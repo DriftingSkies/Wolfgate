@@ -1,0 +1,10 @@
+# WOLFGATE(DecorImport) START: ported from Panta Rhei
+- type: entity
+  parent: WallReinforced
+  id: WallCamoReinforced
+  components:
+  - type: Sprite
+    sprite: _Floof/Structures/Walls/camo.rsi
+  - type: Icon
+    sprite: _Floof/Structures/Walls/camo.rsi
+# WOLFGATE END

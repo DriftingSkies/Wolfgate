@@ -2812,3 +2812,436 @@ Entries:
   id: 100201
   time: '2026-10-22T04:45:16.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/321
+- author: TheSlapper
+  changes:
+    - type: Add
+      message: Various walls and doors.
+  id: 100202
+  time: '2026-10-22T21:12:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/315
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        You can roll up the sleeves of any jumpsuit or jumpskirt. Right-click it
+        and pick Roll up sleeves.
+    - type: Add
+      message: >-
+        You can roll a jumpsuit down and tie the sleeves round your waist with
+        Roll down jumpsuit.
+    - type: Add
+      message: >-
+        Many department jumpsuits and skirts roll down using sprites from
+        Meridian Rift.
+  id: 100203
+  time: '2026-10-22T21:19:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/327
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        You no longer get unbuckled the moment you sit in a chair placed next to
+        a table, wall or another chair.
+    - type: Fix
+      message: Bunk beds keep both sleepers buckled in.
+    - type: Fix
+      message: Wall handrails hold you instead of dropping you instantly.
+    - type: Tweak
+      message: >-
+        The pilot seat turns toward wherever you click while you're sitting in
+        it.
+  id: 100204
+  time: '2026-10-22T21:45:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/322
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Screen shake no longer throws your view far. Hard hits now shake faster
+        and a bit longer instead.
+    - type: Add
+      message: >-
+        Added a "Default to North" option to the Extra tab of the game options.
+        With it on, your view faces north on every grid you step onto.
+  id: 100205
+  time: '2026-10-22T21:45:30.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/323
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Low-threat Reavers and pirates now fly beat-up civilian ships with
+        bolted-on light guns and green crews. Faction gunships only show up once
+        the Reaver threat climbs to tier 3 and up.
+    - type: Add
+      message: >-
+        Pirate retrofitting: raider ships come with random guns on their
+        hardpoints, rusted walls, dirty floors, cobwebs, grime and dead lights.
+    - type: Tweak
+      message: >-
+        Pirate guns and crew skill scale with the Reaver threat tier. No heavy
+        cannons or EMP guns at the low tiers.
+    - type: Tweak
+      message: >-
+        Reaver strongholds use a mix of civilian hulls with matching gun counts,
+        and get tougher guns as the threat rises.
+    - type: Add
+      message: The MMC Dredger can now show up as a pirate ship.
+    - type: Add
+      message: >-
+        Pirate and Reaver contacts show their threat as chevrons and stars on
+        the radar and sector map, and as "Threat N" in the map list.
+    - type: Tweak
+      message: >-
+        Ships far from any player are simulated instead of spawned, which cuts
+        server load. They spawn when you get within 4 km or jump in nearby.
+    - type: Tweak
+      message: >-
+        Fights between NPC factions nobody is watching are decided by a dice
+        roll. Show up and you'll find the real fight.
+    - type: Tweak
+      message: Simulated extorters still roam and pick a victim from the map.
+    - type: Fix
+      message: >-
+        Factions can no longer claim sectors outside the hex grid shown on the
+        sector map.
+  id: 100206
+  time: '2026-10-22T22:32:18.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/319
+- author: TheSlapper
+  changes:
+    - type: Add
+      message: Various floors
+  id: 100207
+  time: '2026-10-22T22:32:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/326
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Healing chems now close wounds of the damage type they heal, not just
+        the damage number. Bleeds, fractures, lodged rounds and pumping arteries
+        still need proper treatment.
+  id: 100208
+  time: '2026-10-22T22:33:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/328
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Missile engine sounds no longer keep looping forever after the missile
+        is gone, which you'd hear in the lobby or after respawning.
+  id: 100209
+  time: '2026-10-22T22:54:12.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/329
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Mapping mode grids list has a Delete button on each grid. It takes you
+        to the grid and shows what gets deleted in red before you confirm.
+    - type: Add
+      message: >-
+        Mapping mode grids list has a Snap button that puts a grid on whole
+        tiles so it lines up with other levels.
+    - type: Tweak
+      message: >-
+        "Delete the grid under me" now shows the same red preview instead of
+        asking for a second click.
+    - type: Tweak
+      message: Mapping mode allows 6 grids per player, up from 2.
+  id: 100210
+  time: '2026-10-23T03:29:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/332
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added Blackanvil Chop-Shop, an illegal drydock out past Anvilhold. Pull
+        any ship into a berth and break it for sheets and cash.
+    - type: Add
+      message: >-
+        Breaking someone else's ship or a lawful NPC ship puts a warrant on you.
+        Whoever kills you collects it.
+    - type: Tweak
+      message: >-
+        NPC crews now go after the player breaking their ship, and that player's
+        own ship, instead of the drydock.
+  id: 100211
+  time: '2026-10-23T03:29:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/331
+- author: Erol509
+  changes:
+    - type: Tweak
+      message: >-
+        Updated closet, locker, wardrobe, wall-mounted storage, and floor
+        appearances.
+  id: 100212
+  time: '2026-10-23T18:45:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/182
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: The SY Reach, a civilian capital ship, for 400,000 thalers.
+  id: 100213
+  time: '2026-10-24T04:16:47.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/337
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        New crew scenario "Down With Ye' Ship!": your crew starts on the SY
+        Reach in drone space, surrounded by three Reaver warships with your FTL
+        jammed. Good luck.
+    - type: Add
+      message: >-
+        Crew scenarios now show a colour-coded difficulty: Ship and Faction
+        crews are Normal, Crashlanded is Very Hard, Down With Ye' Ship! is
+        Impossible.
+    - type: Add
+      message: Actually adds the vulp speech bubble
+  id: 100214
+  time: '2026-10-24T06:47:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/339
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Added a global search bar to settings.
+  id: 100215
+  time: '2026-10-24T21:51:08.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/340
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Delayroundend now actually works.
+  id: 100216
+  time: '2026-10-24T21:52:13.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/341
+- author: TheSlapper
+  changes:
+    - type: Add
+      message: Adds new clown/mime items.
+    - type: Add
+      message: Adds new and existing clown/mime items to the vagrant loadout.
+    - type: Add
+      message: Adds clown/mime clothing to the autodrobe.
+    - type: Fix
+      message: Corrects the unicycles movement to how it was intended to be.
+    - type: Add
+      message: >-
+        Re-adds the clown waddle. Now featured on the kinds of shoes you'd
+        imagine.
+    - type: Fix
+      message: >-
+        Corrects some hood/helmet items to properly hid player hair, such as the
+        jester hat.
+  id: 100217
+  time: '2026-10-25T00:29:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/343
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Killing Reaver and pirate crew now pays the kill bounty, including kills
+        with lasers and kills while boarding.
+    - type: Add
+      message: >-
+        Downed Reaver and pirate crew drop thalers. Higher threat tiers drop
+        more.
+    - type: Fix
+      message: Pirates hunting or extorting your ship lose track of you once you cloak.
+    - type: Tweak
+      message: ADS encounters have their own drone icon on the sector map and radar.
+  id: 100218
+  time: '2026-10-25T01:28:18.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/346
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Avali have their own deathgasp.
+    - type: Add
+      message: The shuttle console's map screen has a search box for FTL destinations.
+    - type: Tweak
+      message: >-
+        The destination list scrolls instead of stretching the window, and long
+        names are cut off instead of running out of the list.
+    - type: Tweak
+      message: FTL jumps still knock you down but no longer throw you off the ship.
+    - type: Fix
+      message: >-
+        Mopping a small blood puddle on a footprinted tile no longer leaves an
+        empty puddle you can't mop.
+    - type: Fix
+      message: >-
+        Synthetic survival boxes no longer say cable "doesn't go in there" when
+        you put it back.
+    - type: Fix
+      message: >-
+        Emptying a beaker into the ChemMaster buffer no longer freezes your
+        game.
+    - type: Fix
+      message: Ships bought with an Agent ID can now be sold to the used ship dealer.
+    - type: Fix
+      message: >-
+        NPC crew in hardsuits no longer leave stuck helmets on the floor when
+        decapitated.
+    - type: Fix
+      message: >-
+        The R-300 howitzer now reloads from a linked ammo loader after each
+        shot.
+    - type: Fix
+      message: Tools taken out of a safety deposit box are no longer stuck on cooldown.
+    - type: Fix
+      message: Pressing E (or Z in hand) on a PDA opens it again.
+    - type: Fix
+      message: >-
+        Deploying a modsuit over a hardsuit's helmet now works, and hats under
+        either helmet come back afterwards.
+    - type: Add
+      message: A jukebox volume slider!
+  id: 100219
+  time: '2026-10-25T02:03:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/345
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Added a jukebox volume slider to the options menu.
+    - type: Tweak
+      message: >-
+        The chop-shop now pays 80% of a ship's shipyard value in thalers per
+        tile.
+    - type: Fix
+      message: >-
+        Ownerless spawned vessels can be broken at the chop-shop, and it now
+        tells you why it refuses a hull.
+    - type: Fix
+      message: >-
+        Auto get-up keeps working when a player enters or leaves a body
+        mid-knockdown.
+    - type: Fix
+      message: Ghost chat links no longer try to follow speakers in nullspace.
+  id: 100220
+  time: '2026-10-25T05:30:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/349
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Ship owners can add an ID card they're holding to their ship's access
+        list from the shuttle console's Access tab. The card's owner doesn't
+        need to be there.
+  id: 100221
+  time: '2026-10-25T05:33:05.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/350
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Buying a safety deposit box now asks you to confirm the size and price
+        first.
+    - type: Tweak
+      message: >-
+        The safety deposit box guide now lists everything a box refuses, and
+        updates itself when that list changes.
+  id: 100222
+  time: '2026-10-25T05:43:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/348
+- author: Balls2zawall
+  changes:
+    - type: Tweak
+      message: >-
+        Tweaked Helios to fit new mapping standards. Wallmounts on windows and
+        harsh lighting artifacts have been removed.
+  id: 100223
+  time: '2026-10-25T07:24:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/347
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Mops, cleanbots and space cleaner now clean up dirt decals, including
+        the grime already placed on maps.
+    - type: Fix
+      message: The Avali tail wag button no longer makes you start flying.
+  id: 100224
+  time: '2026-10-25T07:45:14.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/353
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Crew starts no longer spawn you outside the ship or on a gun. You start
+        inside, in breathable air, or in the cockpit on small pods.
+  id: 100225
+  time: '2026-10-25T07:45:23.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/352
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        The TSFMC Industrial Materials Crate now contains copper and lithium
+        instead of uranium and plasma.
+    - type: Fix
+      message: >-
+        The TSFMC Exotic Materials Crate description now says it contains 1
+        fissile uranium plate.
+  id: 100226
+  time: '2026-10-25T08:08:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/356
+- author: Balls2zawall
+  changes:
+    - type: Tweak
+      message: >-
+        Tweaked the Dredger's radar profile and cockpit layout, and put an
+        emergency light in the salvage bay.
+  id: 100227
+  time: '2026-10-25T08:35:16.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/355
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Platelet Factories and other positive traits no longer turn themselves
+        off when you join with downside traits.
+    - type: Fix
+      message: >-
+        The character creator now fits smaller windows and the in-round creator
+        window. The preview panel scrolls instead of stacking its buttons, and
+        the marking grids shrink to fit.
+    - type: Fix
+      message: >-
+        Cockpit flight dials now shrink only as much as needed instead of
+        dropping to a tiny size and leaving a gap above the fuel gauge.
+    - type: Fix
+      message: >-
+        The cockpit docking plot is a usable size again at mid resolutions such
+        as 1366x768.
+    - type: Fix
+      message: >-
+        The stealth suit, other stealth effects, shield outlines, holopad
+        holograms and tile shaders render properly again since the engine
+        update.
+  id: 100228
+  time: '2026-10-25T08:35:28.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/357
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Mapping mode: an Export wizard that checks your map for problems
+        (missing console, docks, thrusters, power, unsaveable mobs and more),
+        lets you fill in the ship details, and downloads one zip laid out for
+        the repo. Also exports multi-level maps, or just the bare grid file for
+        POIs.
+    - type: Add
+      message: >-
+        Mapping mode: Test map. One click loads a copy of your ship next to a
+        test station and spawns you on it as your character; Back to mapping
+        returns you to where you were.
+    - type: Fix
+      message: >-
+        Mapping mode saves a multi-level map as one package instead of one
+        prompt per level.
+  id: 100229
+  time: '2026-10-25T09:35:01.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/354

@@ -15,11 +15,12 @@ namespace Content.Client.Launcher
     {
         private BoxContainer? _symphonyRow;
         private string? _symphonyLink;
+        private SymphonyMoproach? _symphonyMoproach;
 
         private void InitSymphony()
         {
-            var open = new Button { Text = Loc.GetString("connecting-symphony-link"), HorizontalAlignment = HAlignment.Center };
-            open.StyleClasses.Add("OpenRight");
+            // Blue and breathing: on a refusal, this is the button that gets them in.
+            var open = new SymphonyPulseButton { Text = Loc.GetString("connecting-symphony-link"), HorizontalAlignment = HAlignment.Center };
             open.OnPressed += _ =>
             {
                 if (_symphonyLink != null)
@@ -42,6 +43,11 @@ namespace Content.Client.Launcher
             // Straight under the reason text, above the Retry and Copy Message row.
             ConnectFail.AddChild(_symphonyRow);
             _symphonyRow.SetPositionInParent(1);
+
+            // Over the parallax, under the window: company while they sort the link out.
+            _symphonyMoproach = new SymphonyMoproach { Visible = false };
+            AddChild(_symphonyMoproach);
+            _symphonyMoproach.SetPositionInParent(1);
         }
 
         /// <summary>
@@ -57,6 +63,8 @@ namespace Content.Client.Launcher
 
             if (_symphonyRow != null)
                 _symphonyRow.Visible = _symphonyLink != null;
+            if (_symphonyMoproach != null)
+                _symphonyMoproach.Visible = _symphonyLink != null;
         }
     }
 }

@@ -30,6 +30,7 @@ ship-access-nearby-empty = Nobody is standing near the console.
 ship-access-add = Add
 ship-access-no-card = no ID
 ship-access-no-record = no record
+ship-access-held = in hand
 ship-access-label-guest = Guest
 
 # Server popups
@@ -37,6 +38,7 @@ ship-access-not-owner = Your ID is not an owner of this ship.
 ship-access-added = { $name }'s ID card may now open the ship.
 ship-access-add-no-card = They carry no ID card.
 ship-access-add-no-record = Their ID card has no crew record, so no door can be keyed to it.
+ship-access-add-card-no-record = That ID card has no crew record, so no door can be keyed to it.
 ship-access-add-out-of-range = They must stand closer to the console.
 ship-access-add-already = That ID card is already allowed aboard.
 ship-access-allow-list-cleared = Allow list cleared: { $count } removed.

@@ -911,7 +911,13 @@ namespace Content.Shared.Preferences
             var groups = new Dictionary<string, int>();
             var result = new List<ProtoId<TraitPrototype>>();
 
-            foreach (var trait in traits)
+            // WOLFGATE START: count downsides first so a positive trait isn't dropped by set order
+            var ordered = traits
+                .OrderBy(t => protoManager.TryIndex(t, out var p) ? p.Cost : 0)
+                .ThenBy(t => t.Id, StringComparer.Ordinal);
+
+            foreach (var trait in ordered)
+            // WOLFGATE END
             {
                 if (!protoManager.TryIndex(trait, out var traitProto))
                     continue;

@@ -1,0 +1,33 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- type: entity
+  parent: WallCobblebrick
+  id: WallIronsandCobblebrick
+  components:
+  - type: Sprite
+    sprite: _DV/Structures/Walls/cobblebrick_ironsand.rsi
+  - type: Icon
+    sprite: _DV/Structures/Walls/cobblebrick_ironsand.rsi
+  - type: IconSmooth
+    key: cobblebricks
+    base: cobblebrick
+  - type: RCDDeconstructable
+    deconstructable: false
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SteelOre1:
+            min: 0
+            max: 2
+# WOLFGATE END

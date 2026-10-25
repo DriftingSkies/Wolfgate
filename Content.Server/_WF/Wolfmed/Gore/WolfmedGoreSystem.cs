@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WF.BloodColour;
 using Content.Server._WF.BloodTrail;
+using Content.Server._WF.Cleaning;
 using Content.Server.Body.Components;
 using Content.Server.Decals;
 using Content.Shared._WF.Wolfmed.Gore;
@@ -34,6 +35,7 @@ namespace Content.Server._WF.Wolfmed.Gore;
 public sealed class WolfmedGoreSystem : EntitySystem
 {
     [Dependency] private WFBloodColourSystem _bloodColour = default!;
+    [Dependency] private WFDecalCleaningSystem _cleaning = default!;
     [Dependency] private DecalSystem _decals = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -179,7 +181,7 @@ public sealed class WolfmedGoreSystem : EntitySystem
         {
             foreach (var (index, decal) in _decals.GetDecalsIntersecting(gridUid, WashBounds(tile, grid), decalGrid).ToList())
             {
-                if (!decal.Cleanable || !IsBloodDecal(decal.Id) || spent + DecalCleanCost > budget)
+                if (!_cleaning.IsCleanable(decal) || !IsBloodDecal(decal.Id) || spent + DecalCleanCost > budget)
                     continue;
 
                 _decals.RemoveDecal(gridUid, index, decalGrid);
@@ -188,21 +190,6 @@ public sealed class WolfmedGoreSystem : EntitySystem
         }
 
         return spent;
-    }
-
-    /// <summary>Whether a wash of this tile would find a blood decal to take.</summary>
-    public bool HasBloodDecals(EntityUid gridUid, MapGridComponent grid, Vector2i tile)
-    {
-        if (!TryComp(gridUid, out DecalGridComponent? decalGrid))
-            return false;
-
-        foreach (var (_, decal) in _decals.GetDecalsIntersecting(gridUid, WashBounds(tile, grid), decalGrid))
-        {
-            if (decal.Cleanable && IsBloodDecal(decal.Id))
-                return true;
-        }
-
-        return false;
     }
 
     /// <summary>The reach of one wash: the tile and half a tile around it, as CleanDecalsReaction has it.</summary>

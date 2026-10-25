@@ -151,6 +151,12 @@ public sealed partial class WFMappingModeSystem
             count += CountTree(map) - 1;
         }
 
+        // A running live test is the session's copy of itself plus the range; it counts against the same cap.
+        foreach (var map in TestMaps(session.Id))
+        {
+            count += CountTree(map) - 1;
+        }
+
         session.EntityCount = count;
         session.CountedAt = now;
         return count;
@@ -407,6 +413,15 @@ public sealed partial class WFMappingModeSystem
         if (!Enabled || !TryGetPresent(player, out var session))
             return false;
 
+        if (IsTesting(player))
+        {
+            Log.Debug($"Refused a placement from {player} while they test their map");
+            if (msg.PlaceType is PlacementManagerMessage.RequestPlacement or PlacementManagerMessage.RequestEntRemove)
+                Refuse(player, "wf-mapping-test-no-edit");
+
+            return false;
+        }
+
         switch (msg.PlaceType)
         {
             case PlacementManagerMessage.StartPlacement:
@@ -461,6 +476,10 @@ public sealed partial class WFMappingModeSystem
 
             if (gridUid == null && msg.TileType != 0)
             {
+                RouteOffGridTile(player, map, mapCoords, msg);
+                if (TryComp<MapGridComponent>(GetCoordinates(msg.NetCoordinates).EntityId, out _))
+                    return true;
+
                 var cap = GridCap(session);
                 if (CountGrids(session) >= cap)
                 {

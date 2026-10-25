@@ -26,6 +26,9 @@ public sealed class WFMappingDownloadProgress
     /// <summary>A ship download: the grid file, then the vessel prototype.</summary>
     public bool Ship;
 
+    /// <summary>An export from the wizard: one zip laid out like the repository, or the bare grid file of a grid export.</summary>
+    public bool Zip;
+
     /// <summary>The file the save dialog is open for, while it is.</summary>
     public string? Asking;
 
@@ -53,6 +56,9 @@ public sealed partial class WFMappingClientSystem
     /// <summary>Whether the last request was a ship download, for the progress of the download it starts.</summary>
     private bool _requestedShip;
 
+    /// <summary>Whether the last request was an export, whose download is one file: a zip or a grid file.</summary>
+    private bool _requestedZip;
+
     /// <summary>The running or last finished download, or null when there is none to show.</summary>
     public WFMappingDownloadProgress? Download { get; private set; }
 
@@ -79,6 +85,7 @@ public sealed partial class WFMappingClientSystem
     {
         SubscribeNetworkEvent<WFMappingDownloadChunkEvent>(OnChunk);
         SubscribeNetworkEvent<WFMappingDownloadCancelledEvent>(OnDownloadCancelled);
+        InitializeExport();
     }
 
     /// <summary>Asks for every level of a library version; null is the newest.</summary>
@@ -88,6 +95,7 @@ public sealed partial class WFMappingClientSystem
             return;
 
         _requestedShip = false;
+        _requestedZip = false;
         RaiseNetworkEvent(new WFMappingDownloadRequest(mapName, version));
     }
 
@@ -98,6 +106,7 @@ public sealed partial class WFMappingClientSystem
             return;
 
         _requestedShip = true;
+        _requestedZip = false;
         RaiseNetworkEvent(new WFMappingDownloadRequest(mapName, version, ship: true));
     }
 
@@ -172,6 +181,7 @@ public sealed partial class WFMappingClientSystem
                     Active = true,
                     SaveTo = DownloadSaveTo,
                     Ship = _requestedShip,
+                    Zip = _requestedZip || WFMappingLibraryNames.IsZipFile(ev.FileName),
                 };
             }
 
@@ -279,7 +289,8 @@ public sealed partial class WFMappingClientSystem
 
     /// <summary>
     /// Offers each held file through the save dialog in turn and writes it to the stream the dialog returns. The
-    /// dialog takes no file name, so the download row names the file it is asking for.
+    /// dialog takes no file name, so the download row names the file it is asking for; an export is one zip, so one
+    /// dialog.
     /// </summary>
     private async void SaveHeld(WFMappingDownloadProgress progress)
     {
@@ -288,7 +299,8 @@ public sealed partial class WFMappingClientSystem
         string? failed = null;
         try
         {
-            var filters = new FileDialogFilters(new FileDialogFilters.Group("yml"));
+            var yml = new FileDialogFilters(new FileDialogFilters.Group("yml"));
+            var zip = new FileDialogFilters(new FileDialogFilters.Group("zip"));
             for (var i = 0; i < files.Count; i++)
             {
                 var (name, data) = files[i];
@@ -296,7 +308,7 @@ public sealed partial class WFMappingClientSystem
                 progress.AskingIndex = i;
                 DownloadUpdated?.Invoke();
 
-                var chosen = await _dialogs.SaveFile(filters, truncate: true);
+                var chosen = await _dialogs.SaveFile(WFMappingLibraryNames.IsZipFile(name) ? zip : yml, truncate: true);
                 if (chosen is not { } target)
                     continue;
 

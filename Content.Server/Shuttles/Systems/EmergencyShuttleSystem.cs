@@ -431,6 +431,11 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
 
         if (!_emergencyShuttleEnabled)
         {
+            // WOLFGATE(Administration) START: delayroundend holds the round open
+            if (RoundEndDelayed)
+                return;
+            // WOLFGATE END
+
             _roundEnd.EndRound();
             return;
         }

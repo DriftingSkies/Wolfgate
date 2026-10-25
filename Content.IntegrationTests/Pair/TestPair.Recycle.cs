@@ -8,6 +8,8 @@ using Content.Shared.GameTicking;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Preferences;
+using Robust.Client.UserInterface; // WOLFGATE: pooled client windows are closed on return
+using Robust.Client.UserInterface.CustomControls; // WOLFGATE: pooled client windows are closed on return
 using Robust.Shared.Player;
 
 namespace Content.IntegrationTests.Pair;
@@ -19,7 +21,25 @@ public sealed partial class TestPair
     {
         await base.Cleanup();
         await ResetModifiedPreferences();
+        await CloseClientWindows(); // WOLFGATE: a window left open covers the next test's UI
     }
+
+    // WOLFGATE START: the pooled client keeps its windows across tests, and one left open intercepts the next test's clicks
+    private async Task CloseClientWindows()
+    {
+        // Let deleted entities reach the client first; their interfaces close their own windows, and closing one by
+        // hand while its entity is going reopens the interface on a dead entity.
+        await RunTicksSync(5);
+        await Client.WaitPost(() =>
+        {
+            var root = Client.ResolveDependency<IUserInterfaceManager>().WindowRoot;
+            foreach (var window in root.Children.OfType<BaseWindow>().ToArray())
+            {
+                window.Close();
+            }
+        });
+    }
+    // WOLFGATE END
 
     private async Task ResetModifiedPreferences()
     {

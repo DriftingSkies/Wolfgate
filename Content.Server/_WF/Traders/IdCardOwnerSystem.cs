@@ -1,4 +1,7 @@
+using Content.Shared._Mono.Shipyard;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Traders;
+using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.GameTicking;
 using Robust.Shared.Player;
@@ -6,7 +9,7 @@ using Robust.Shared.Player;
 namespace Content.Server._WF.Traders;
 
 /// <summary>
-/// Stamps a spawning player's ID card with who it belongs to.
+/// Stamps a spawning player's ID card with who it belongs to, and an unstamped card with the buyer of the ship it holds.
 /// </summary>
 public sealed class IdCardOwnerSystem : EntitySystem
 {
@@ -17,6 +20,7 @@ public sealed class IdCardOwnerSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<PlayerSpawnCompleteEvent>(OnSpawnComplete);
+        SubscribeLocalEvent<ShipyardShuttlePurchaseEvent>(OnShipPurchased);
     }
 
     private void OnSpawnComplete(PlayerSpawnCompleteEvent ev)
@@ -27,6 +31,24 @@ public sealed class IdCardOwnerSystem : EntitySystem
         var owner = EnsureComp<IdCardOwnerComponent>(idCard);
         owner.UserId = ev.Player.UserId;
         owner.CharacterName = ev.Profile.Name;
+    }
+
+    /// <summary>A card got after spawning (an agent ID) has no owner; whoever buys a ship on it becomes its owner.</summary>
+    private void OnShipPurchased(ShipyardShuttlePurchaseEvent ev)
+    {
+        if (!TryComp<ActorComponent>(ev.Purchaser, out var actor))
+            return;
+
+        var query = EntityQueryEnumerator<ShuttleDeedComponent, IdCardComponent>();
+        while (query.MoveNext(out var uid, out var deed, out _))
+        {
+            if (deed.ShuttleUid != ev.Shuttle || HasComp<IdCardOwnerComponent>(uid))
+                continue;
+
+            var owner = AddComp<IdCardOwnerComponent>(uid);
+            owner.UserId = actor.PlayerSession.UserId;
+            owner.CharacterName = Name(ev.Purchaser);
+        }
     }
 
     /// <summary>

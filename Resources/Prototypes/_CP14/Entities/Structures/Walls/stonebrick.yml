@@ -1,0 +1,91 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14WallStonebrick
+  parent: CP14BaseWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/bricks_stone_wall.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/bricks_stone_wall.rsi
+  - type: IconSmooth
+    base: stonebricks
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  id: CP14WallMarbleBrick
+  parent: CP14BaseWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/marblebricks_stone_wall.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/marblebricks_stone_wall.rsi
+  - type: IconSmooth
+    base: stonebricks
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  id: CP14WallStonebrickOld
+  parent: CP14BaseWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/brick_stone_old_wall.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/brick_stone_old_wall.rsi
+  - type: IconSmooth
+    base: stonebricks
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+# WOLFGATE END

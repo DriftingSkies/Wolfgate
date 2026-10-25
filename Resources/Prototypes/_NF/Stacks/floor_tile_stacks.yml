@@ -1,0 +1,13 @@
+# WOLFGATE(DecorImport) START: ported from Frontier
+- type: stack
+  id: FloorFancyWood
+  name: stack-fancy-wood-floor
+  spawn: FloorTileItemFancyWood
+  maxCount: 30
+
+- type: stack
+  id: FloorVersaillesWood
+  name: stack-versailles-wood-floor
+  spawn: FloorTileItemVersaillesWood
+  maxCount: 30
+# WOLFGATE END

@@ -6,7 +6,8 @@ ship is loaded from YAML and never map-initialised, so `UsedShipReinitSystem` re
 network addresses, wires, nav map data and charged machines such as gravity generators. The `ShipyardSystem` partials
 let an NPC trader stand in for a console and register a spawned ship to an owner with a deed. Also holds the medical
 responder ship voucher, the MMC Dredger (`WFDredger`), a salvage ship sold at the MMC shipyard, and the Carabela
-(`WFCarabela`), a salvage frigate with a mobile drydock sold at the civilian shipyard beside the Caracara.
+(`WFCarabela`), a salvage frigate with a mobile drydock sold at the civilian shipyard beside the Caracara, and the
+Reach (`WFReach`), a crewed civilian capital ship with a full set of departments.
 
 `VesselShipyardTest` holds the checks that apply to every vessel grid, so ship tests belong there rather than in
 tests for one ship: each vessel must load as a shuttle with every hardpoint-only gun mounted on a hardpoint.
@@ -43,6 +44,7 @@ share from its slot, or from the counter of a trader hosting it (`ShipyardHostCa
 - [`Resources/Prototypes/_WF/Shipyard/carabela.yml`](../../../Resources/Prototypes/_WF/Shipyard/carabela.yml)
 - [`Resources/Prototypes/_WF/Shipyard/dredger.yml`](../../../Resources/Prototypes/_WF/Shipyard/dredger.yml)
 - [`Resources/Prototypes/_WF/Shipyard/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_WF/Shipyard/Entities/Objects/Devices/ship_vouchers.yml)
+- [`Resources/Prototypes/_WF/Shipyard/reach.yml`](../../../Resources/Prototypes/_WF/Shipyard/reach.yml)
 
 ### Localization
 
@@ -56,6 +58,7 @@ share from its slot, or from the counter of a trader hosting it (`ShipyardHostCa
 
 - [`Resources/SharedMaps/_WF/Shipyard/Shuttles/carabela.yml`](../../../Resources/SharedMaps/_WF/Shipyard/Shuttles/carabela.yml)
 - [`Resources/SharedMaps/_WF/Shipyard/Shuttles/dredger.yml`](../../../Resources/SharedMaps/_WF/Shipyard/Shuttles/dredger.yml)
+- [`Resources/SharedMaps/_WF/Shipyard/Shuttles/reach.yml`](../../../Resources/SharedMaps/_WF/Shipyard/Shuttles/reach.yml)
 
 ## Non-modular edits
 

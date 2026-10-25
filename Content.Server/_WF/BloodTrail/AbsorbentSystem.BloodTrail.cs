@@ -1,5 +1,5 @@
 using System.Numerics;
-using Content.Server._WF.Wolfmed.Gore;
+using Content.Server._WF.Cleaning;
 using Content.Shared.FixedPoint;
 using Content.Shared.Fluids;
 using Content.Shared.Timing;
@@ -10,11 +10,11 @@ namespace Content.Server.Fluids.EntitySystems;
 
 public sealed partial class AbsorbentSystem
 {
-    [Dependency] private WolfmedGoreSystem _wolfmedGore = default!;
+    [Dependency] private WFDecalCleaningSystem _decalCleaning = default!;
 
     /// <summary>
-    /// A mop used on bare floor washes the blood decals off that tile: the footprints and drag marks lie where
-    /// there is no puddle to mop. Returns true if the mop did anything.
+    /// A mop used on bare floor washes the cleanable decals off that tile: footprints, drag marks, blood and dirt
+    /// lie where there is no puddle to mop. Returns true if the mop did anything.
     /// </summary>
     private bool TryMopFloor(EntityUid user, EntityUid used, AbsorbentComponent absorber, EntityCoordinates location)
     {
@@ -22,7 +22,7 @@ public sealed partial class AbsorbentSystem
             return false;
 
         var tile = _mapSystem.GetTileRef(gridUid, grid, location);
-        if (!_wolfmedGore.HasBloodDecals(gridUid, grid, tile.GridIndices))
+        if (!_decalCleaning.HasCleanableDecals(gridUid, grid, tile.GridIndices))
             return false;
 
         if (!_solutionContainerSystem.TryGetSolution(used, AbsorbentComponent.SolutionName, out var absorberSoln))
@@ -43,6 +43,9 @@ public sealed partial class AbsorbentSystem
         // The water goes over the tile as it does when mopping a puddle, and what the floor didn't take comes back.
         var water = solution.SplitSolutionWithOnly(FixedPoint2.Min(available, absorber.PickupAmount), absorbents);
         _puddleSystem.DoTileReactions(tile, water);
+        // Water only washes blood off by itself; the scrubbing takes the rest.
+        var scrubbed = _decalCleaning.CleanTile(gridUid, grid, tile.GridIndices, water.Volume.Float());
+        water.RemoveSolution(FixedPoint2.New(scrubbed));
         _solutionContainerSystem.AddSolution(absorberSoln.Value, water);
         _solutionContainerSystem.UpdateChemicals(absorberSoln.Value);
 

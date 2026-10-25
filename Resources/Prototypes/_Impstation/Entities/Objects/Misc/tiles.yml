@@ -1,0 +1,57 @@
+# WOLFGATE(DecorImport) START: ported from Impstation
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemApid
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Tiles/apid.rsi
+    state: apid
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorApid
+  - type: Stack
+    stackType: FloorTileApid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCardboard
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Tiles/cardboard.rsi
+    state: icon
+  - type: Item
+  - type: FloorTile
+    outputs:
+    - FloorCardboard
+  - type: Stack
+    stackType: FloorTileCardboard
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDecapoid
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Tiles/decapoid.rsi
+    state: decapoid
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorDecapoid
+  - type: Stack
+    stackType: FloorTileDecapoid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDecapoidFancy
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Tiles/decapoid.rsi
+    state: decapoid_fancy
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorDecapoidFancy
+  - type: Stack
+    stackType: FloorTileDecapoidFancy
+# WOLFGATE END

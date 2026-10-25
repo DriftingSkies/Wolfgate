@@ -42,6 +42,8 @@ stains again on every visit and is not drained, and a spot holds at most `MaxPri
 
 ## Non-modular edits
 
-- [`Content.Server/Fluids/EntitySystems/AbsorbentSystem.cs`](../../Fluids/EntitySystems/AbsorbentSystem.cs): a mop used on bare floor washes the blood decals off the tile
+- [`Content.Server/Fluids/EntitySystems/AbsorbentSystem.cs`](../../Fluids/EntitySystems/AbsorbentSystem.cs)
+  - a mop used on bare floor washes the blood decals off the tile
+  - the floor can drink all the water, so AddSolution may raise no change event
 
 <!-- WOLFGATE-GENERATED END -->

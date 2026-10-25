@@ -228,7 +228,14 @@
   - WFContractorClothingUniformJumpsuitMimeSuaveWhite
   - WFContractorClothingUniformJumpsuitMimeSuaveBlack
   - WFContractorMimeFrillsUniformSuit
+  - WFContractorClothingUniformJumpskirtClown
   - WFContractorCoolCoyoteClothesSexymime
+  - WFContractorClothingUniformJumpsuitMimeTurtleneckPants
+  - WFContractorClothingUniformJumpskirtMimeTurtleneckSkirt
+  - WFContractorClothingUniformHonkini
+  - WFContractorClothingUniformJumpsuitHarlequin
+  - WFContractorBunnysuitClown
+  - WFContractorBunnysuitMime
   # WOLFGATE END
 
   fallbacks:
@@ -243,6 +250,9 @@
   - ContractorClothingModsuitAtmostechPowerCell
   - ContractorClothingModsuitEngineerPowerCell
   ## Mono end
+  # WOLFGATE(ClownCosmetics) START
+  - WFContractorClothingModsuitClownPowerCell
+  # WOLFGATE END
   - ContractorClothingBackpack
   - ContractorClothingBackpackDuffel
   - ContractorClothingBackpackSatchel
@@ -414,6 +424,14 @@
   # WOLFGATE(ClownCosmetics) START
   - WFContractorClothingOuterCoatJokester
   - WFContractorClothingOuterCoatPufferMime
+  - WFContractorClothingOuterHardsuitClown
+  - WFContractorClothingOuterHardsuitMime
+  - WFContractorClothingOuterWinterLongMime
+  - WFContractorClothingOuterFurCoatMime
+  - WFContractorBunnyJacketClown
+  - WFContractorBunnyJacketMime
+  - WFContractorClothingOuterHardsuitMimeBlack
+  - WFContractorClothingOuterClownPriest
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -519,6 +537,12 @@
   - WFContractorClothingShoesJesterEvilJanglers
   - WFContractorClothingShoesMimeBoots
   - WFContractorClothingUnderSocksMime
+  - WFContractorClothingShoesFurBootsMime
+  - WFContractorClothingShoesClownSandals
+  - WFContractorClothingShoesHarlequin
+  - WFContractorClothingUndergarmentSocksBunnysuitClown
+  - WFContractorClothingUndergarmentSocksBunnysuitMime
+  - WFContractorClothingShoesPinkClownHeels
   # WOLFGATE END
   fallbacks:
   - ContractorClothingShoesColorBlack
@@ -613,6 +637,11 @@
   - WFContractorClothingHeadHatCircusClown
   - WFContractorClothingHeadJesterEvilHat
   - WFContractorClothingHeadHatMimeBowler
+  - WFContractorClothingHeadHatClownSunhat
+  - WFContractorClothingHeadHatHarlequin
+  - WFContractorBunnyEarsClown
+  - WFContractorBunnyEarsMime
+  - WFContractorClothingHeadHatMitreClown
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -666,6 +695,9 @@
   - ContractorClothingHandsGlovesBoxingYellow
 # - ContractorClothingHandsGlovesCaptain
   - ContractorClothingHandsGlovesColorWhite
+  # WOLFGATE(ClownCosmetics) START
+  - WFContractorClothingHandsGlovesPinkClown
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: ContractorNeck
@@ -737,6 +769,14 @@
   - ContractorClothingNeckUIOvercoat # Mono
   # WOLFGATE(ClownCosmetics) START
   - WFContractorClothingNeckRuffle
+  - WFContractorClothingNeckMimeCloak
+  - WFContractorClothingNeckMimeMantle
+  - WFContractorClothingNeckMimeMantleOffShoulder
+  - WFContractorClothingNeckMimeStole
+  - WFContractorBowtieClown
+  - WFContractorClothingNeckCloakHonk
+  - WFContractorClothingNeckClownPin
+  - WFContractorClothingNeckMimePin
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -884,6 +924,9 @@
   - WFContractorClothingMaskClownNose
   - WFContractorClothingMaskSusMime
   - WFContractorClothingMaskMimeSecurity
+  - WFContractorClothingMaskBlushingClown
+  - WFContractorClothingMaskClownHarlequin
+  - WFContractorClothingMaskMimePierrot
   # WOLFGATE END
   fallbacks:
   - ContractorClothingMaskBreath
@@ -946,6 +989,16 @@
   - ClothingNeckAutismPin
   - ClothingNeckGoldAutismPin
   - BikeHorn #Mono
+  # WOLFGATE(ClownCosmetics) START
+  - WFContractorClownRecorder
+  - WFContractorWhoopieCushion
+  - WFContractorVehicleUnicycleFolded
+  - WFContractorRubberChicken
+  - WFContractorToyHammer
+  - WFContractorLauncherCreamPie
+  - WFContractorHonkCoFlippo
+  - WFContractorClothingMaskPartyHorn
+  # WOLFGATE END
 
 - type: loadoutGroup # Mono - removed standard supply boxes.
   id: ContractorBoxSurvival

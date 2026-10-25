@@ -1,0 +1,62 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMWallReinforced
+  id: RMCWallSandstone
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/stone.rsi
+    state: stone
+    color: "#c6a480"
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/stone.rsi
+    state: stone
+  - type: IconSmooth
+    key: walls
+    base: stone
+
+- type: entity
+  parent: RMCWallSandstone
+  id: RMCWallSandstoneTempleRuned
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/runedstone.rsi
+    state: runedstone
+    color: "#b29082"
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/runedstone.rsi
+    state: runedstone
+  - type: IconSmooth
+    key: walls
+    base: runedstone
+
+- type: entity
+  parent: CMBaseWall
+  id: RMCWallGold
+  components:
+  - type: Construction
+    graph: Girder
+    node: goldWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/gold.rsi
+    state: gold0
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/gold.rsi
+    state: gold0
+  - type: Tag
+    tags:
+    - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 9000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: StaticPrice
+    price: 150
+# WOLFGATE END

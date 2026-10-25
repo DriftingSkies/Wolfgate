@@ -54,6 +54,7 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
     [Dependency] private HandsSystem _hands = default!;
     [Dependency] private ShipRepairSystem _repair = default!;
     [Dependency] private WFShipAccessServerSystem _access = default!;
+    [Dependency] private WFSafeSpawnSystem _safeSpawn = default!;
 
     private readonly Dictionary<int, Scenario> _scenarios = new();
 
@@ -323,23 +324,9 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Finds an unobstructed floor without borrowing another ship's spawn points.</summary>
-    private bool TryFindFloor(EntityUid hull, out EntityCoordinates coordinates)
-    {
-        coordinates = default;
-        if (!TryComp<MapGridComponent>(hull, out var grid) || Transform(hull).MapUid == null)
-            return false;
-        var tiles = _map.GetAllTilesEnumerator(hull, grid);
-        var count = 0;
-        while (tiles.MoveNext(out var tile))
-        {
-            if (tile.Value.Tile.IsEmpty || _turf.IsSpace(tile.Value) || _turf.IsTileBlocked(tile.Value, CollisionGroup.MobMask))
-                continue;
-            if (_random.Next(++count) == 0)
-                coordinates = _turf.GetTileCenter(tile.Value);
-        }
-        return count > 0;
-    }
+    /// <summary>Picks a breathable interior deck tile, never exterior plating or machinery.</summary>
+    private bool TryFindFloor(EntityUid hull, out EntityCoordinates coordinates) =>
+        _safeSpawn.TryFindSafeFloor(hull, out coordinates);
 
     /// <summary>Keeps late arrivals confined to fragments of the purchased hull.</summary>
     private void OnSplit(ref GridSplitEvent args)

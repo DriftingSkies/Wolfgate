@@ -55,7 +55,8 @@ public sealed partial class WFRoundSetupSystem
 
     /// <summary>Private scenario stations never enter the ordinary station picker.</summary>
     private bool IsScenarioStation(EntityUid station) =>
-        HasComp<WFCrashScenarioStationComponent>(station) || HasComp<WFShipScenarioStationComponent>(station);
+        HasComp<WFCrashScenarioStationComponent>(station) || HasComp<WFShipScenarioStationComponent>(station) ||
+        HasComp<WFDoomedScenarioStationComponent>(station);
 
     /// <summary>Rechecks role bans and character requirements before offering or spawning a job.</summary>
     private bool IsJobAllowed(ICommonSession session, string job, Dictionary<string, bool>? eligibility = null)
@@ -277,6 +278,17 @@ public sealed partial class WFRoundSetupSystem
             }
             coordinates = spawn;
         }
+        else if (lobby.Scenario == WFRoundScenario.Doomed)
+        {
+            if (!_doomed.TryPrepare(lobby.Id, out station, out error))
+                return false;
+            if (!_doomed.TryGetSpawn(lobby.Id, out var spawn))
+            {
+                error = "wf-round-setup-doomed-gone";
+                return false;
+            }
+            coordinates = spawn;
+        }
         else if (WFRoundSetupPolicy.IsShip(lobby.Scenario))
         {
             if (!lobby.Started && (lobby.Host != session.UserId || !AllPaymentsApproved(lobby)))
@@ -342,6 +354,8 @@ public sealed partial class WFRoundSetupSystem
                     _crash.GiveEmergencyEquipment(survivor);
                 _crash.NotifyArrival(lobby.Id, session);
             }
+            else if (lobby.Scenario == WFRoundScenario.Doomed && !_ships.HasAssignedShip(lobby.Id))
+                _doomed.NotifyArrival(lobby.Id, session);
             else if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || _ships.HasAssignedShip(lobby.Id))
                 _ships.NotifyArrival(lobby.Id, session);
             SyncCrewShips();

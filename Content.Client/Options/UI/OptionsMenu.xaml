@@ -4,7 +4,14 @@
             xmlns:wftabs="clr-namespace:Content.Client._WF.Options.UI.Tabs"
             Title="{Loc 'ui-options-title'}"
             MinSize="800 450">
-    <TabContainer Name="Tabs" Access="Public">
+    <!-- WOLFGATE(Options) START: settings search bar above the tabs -->
+    <BoxContainer Orientation="Vertical">
+    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+        <LineEdit Name="WfSearchBar" PlaceHolder="{Loc 'wf-options-search'}" HorizontalExpand="True" />
+        <Label Name="WfSearchEmpty" Text="{Loc 'wf-options-search-none'}" StyleClasses="LabelSubText" Margin="8 0 0 0" Visible="False" />
+    </BoxContainer>
+    <!-- WOLFGATE END -->
+    <TabContainer Name="Tabs" Access="Public" VerticalExpand="True"> <!-- WOLFGATE(Options): VerticalExpand under the search bar -->
         <tabs:MiscTab Name="MiscTab" />
         <tabs:GraphicsTab Name="GraphicsTab" />
         <tabs:KeyRebindTab Name="KeyRebindTab" />
@@ -17,4 +24,5 @@
         <!-- WOLFGATE END -->
         <wftabs:WolfgateConsentTab Name="ConsentTab" /> <!-- WOLFGATE(Options): consent tab (xmlns:wftabs), appended so existing tab indices stay valid -->
     </TabContainer>
+    </BoxContainer> <!-- WOLFGATE(Options): settings search bar -->
 </DefaultWindow>

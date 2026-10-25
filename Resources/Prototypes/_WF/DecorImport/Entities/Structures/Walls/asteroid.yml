@@ -1,0 +1,94 @@
+- type: entity
+  parent: BaseWallTierTwo
+  id: TgRock
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/reinforced_rock.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/reinforced_rock.rsi
+  - type: IconSmooth
+    key: walls
+    base: porous_rock
+
+- type: entity
+  parent: BaseWallTierTwo
+  id: SkyratRock
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/reinforced_rock_skyrat.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/reinforced_rock_skyrat.rsi
+  - type: IconSmooth
+    key: walls
+    base: porous_rock
+
+- type: entity
+  parent: BaseWallTierOne
+  id: CMRockIce
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/cave_ice_cmss13.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/cave_ice_cmss13.rsi
+  - type: IconSmooth
+    key: walls
+    base: cavewall
+
+- type: entity
+  parent: BaseWallTierOne
+  id: CMRockOrange
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/cave_orange_cmss13.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/cave_orange_cmss13.rsi
+  - type: IconSmooth
+    key: walls
+    base: cavewall
+
+- type: entity
+  parent: BaseWallTierOne
+  id: CMRock
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/cave_cmss13.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/cave_cmss13.rsi
+  - type: IconSmooth
+    key: walls
+    base: cavewall

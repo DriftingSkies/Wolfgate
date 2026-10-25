@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-4.0",
+  "copyright": "Made by Gersoon",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "glass-frame-dark"
+    },
+    {
+      "name": "glass-frame-steel"
+    },
+    {
+      "name": "glass-frame-white"
+    }
+  ]
+}

@@ -32,8 +32,9 @@ public sealed partial class WFMappingMenuWindow : FancyWindow
     public event Action<int>? AutosaveRequested;
     public event Action<string>? ReferencePicked;
     public event Action<NetEntity>? GoToGridRequested;
+    public event Action<NetEntity>? DeleteGridRequested;
 
-    /// <summary>Raised every few seconds while the Session tab shows, so the grid list follows level changes.</summary>
+    /// <summary>Raised every few seconds while the Session tab shows, so the grid list follows edits.</summary>
     public event Action? GridsWanted;
 
     private static readonly TimeSpan GridsInterval = TimeSpan.FromSeconds(3);
@@ -105,6 +106,14 @@ public sealed partial class WFMappingMenuWindow : FancyWindow
             ("maxEntities", limits.MaxEntities.ToString("N0", CultureInfo.InvariantCulture)),
             ("size", limits.MapSize));
 
+        TestLabel.Visible = session.Test != null;
+        if (session.Test is { } test)
+        {
+            TestLabel.Text = Loc.GetString("wf-mapping-mode-menu-testing",
+                ("testers", string.Join(", ", test.Testers)),
+                ("minutes", Math.Max(0, (int) Math.Ceiling((test.Ends - _timing.CurTime).TotalMinutes))));
+        }
+
         MemberList.RemoveAllChildren();
         foreach (var member in session.Members)
         {
@@ -156,7 +165,7 @@ public sealed partial class WFMappingMenuWindow : FancyWindow
                 ("max", WFMappingLibraryList.FormatMiB(library.MaxBytes)));
     }
 
-    /// <summary>One row per grid on the mapper's level: tiles, entities and Go to.</summary>
+    /// <summary>One row per grid on every level: level, tiles, entities, Go to and Delete.</summary>
     public void SetGrids(List<WFMappingGridInfo> grids)
     {
         GridList.RemoveAllChildren();
@@ -170,8 +179,8 @@ public sealed partial class WFMappingMenuWindow : FancyWindow
             var row = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 4 };
             row.AddChild(new Label
             {
-                Text = Loc.GetString("wf-mapping-ship-menu-grid-row", ("name", grid.Name), ("tiles", grid.Tiles),
-                    ("entities", grid.Entities)),
+                Text = Loc.GetString("wf-mapping-ship-menu-grid-row", ("depth", grid.Depth), ("name", grid.Name),
+                    ("tiles", grid.Tiles), ("entities", grid.Entities)),
                 HorizontalExpand = true,
                 ClipText = true,
             });
@@ -180,8 +189,31 @@ public sealed partial class WFMappingMenuWindow : FancyWindow
             var goTo = new Button { Text = Loc.GetString("wf-mapping-ship-menu-goto") };
             goTo.OnPressed += _ => GoToGridRequested?.Invoke(target);
             row.AddChild(goTo);
+
+            var delete = new Button
+            {
+                Text = Loc.GetString("wf-mapping-mode-menu-delete-grid-row"),
+                ToolTip = Loc.GetString("wf-mapping-mode-menu-delete-grid-row-tooltip"),
+                TooltipDelay = 0,
+                StyleClasses = { "Caution" },
+            };
+            delete.OnPressed += _ => DeleteGridRequested?.Invoke(target);
+            row.AddChild(delete);
             GridList.AddChild(row);
         }
+    }
+
+    /// <summary>Shows the confirm strip for the grid waiting on deletion, or hides it.</summary>
+    public void SetPendingDelete(WFMappingGridInfo? grid)
+    {
+        DeleteConfirmBox.Visible = grid != null;
+        if (grid is not { } pending)
+            return;
+
+        DeleteConfirmLabel.Text = string.IsNullOrEmpty(pending.Name)
+            ? Loc.GetString("wf-mapping-mode-menu-delete-grid-preview-unknown")
+            : Loc.GetString("wf-mapping-mode-menu-delete-grid-preview", ("name", pending.Name),
+                ("tiles", pending.Tiles), ("entities", pending.Entities));
     }
 
     public void SetReferenceFiles(List<MappingMapFile> files)

@@ -99,6 +99,7 @@ public sealed class WFMappingLimitsTest
             // Grids: one allowed, so a tile off the grid would make a second and is refused.
             cfg.SetCVar(WFMappingModeCVars.GridsPerPlayer, 1);
             cfg.SetCVar(WFMappingModeCVars.MaxGridsPerSession, 1);
+            RaiseAs(entMan, a, new WFMappingNewGridRequest(true));
             Assert.Multiple(() =>
             {
                 Assert.That(mapping.GridCap(session), Is.EqualTo(1));

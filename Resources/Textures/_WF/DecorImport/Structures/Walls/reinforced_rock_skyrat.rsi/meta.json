@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Skyrat at commit https://github.com/Skyrat-SS13/Skyrat-tg/commit/e507f9120bb0c3beecfe169d14193d90e7229a58.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "porous_rock0",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock1",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock2",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock3",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock4",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock5",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock6",
+      "directions": 4
+    },
+    {
+      "name": "porous_rock7",
+      "directions": 4
+    },
+    {
+      "name": "full"
+    }
+  ]
+}

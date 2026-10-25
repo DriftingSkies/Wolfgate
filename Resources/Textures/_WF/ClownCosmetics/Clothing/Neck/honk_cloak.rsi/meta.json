@@ -1,0 +1,18 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "made by brainfood1183 (github) for ss14 | ported from https://github.com/ss14Starlight/space-station-14/tree/1736c7305dfe2fdc38c1c384bec8c9768796e68d/Resources/Textures/Clothing/Neck/Cloaks/honk.rsi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "equipped-NECK",
+      "directions": 4
+    }
+  ]
+}

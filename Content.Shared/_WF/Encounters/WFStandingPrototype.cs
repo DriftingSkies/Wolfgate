@@ -27,6 +27,17 @@ public sealed partial class WFStandingPrototype : IPrototype
     /// <summary>Whether its crews fire through any ship in the way of their target, friend or bystander, where others hold fire.</summary>
     [DataField]
     public bool RecklessFire;
+
+    /// <summary>Thalers paid at once to a player who kills one of its NPC crewmen, half that to one who assists; zero for none.</summary>
+    [DataField]
+    public int KillBounty;
+
+    /// <summary>
+    /// Thalers a downed NPC crewman drops at his feet per step of threat tier, tier 0 counting as one step, give or take
+    /// a quarter; zero for none.
+    /// </summary>
+    [DataField]
+    public int CashDrop;
 }
 
 /// <summary>Which ships a zone answers to.</summary>

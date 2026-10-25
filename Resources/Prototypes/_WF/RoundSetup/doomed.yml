@@ -1,0 +1,116 @@
+- type: entity
+  id: WFDoomedScenarioStation
+  parent:
+  - BaseStation
+  - BaseStationJobsSpawning
+  - BaseStationRecords
+  categories: [ HideSpawnMenu ]
+  # Round-scoped private stations are rebuilt each round and never saved with a map.
+  save: false
+  components:
+  - type: WFDoomedScenarioStation
+  - type: StationJobs
+    availableJobs:
+      Contractor: [ -1, -1 ]
+      Pilot: [ -1, -1 ]
+      Mercenary: [ -1, -1 ]
+      StationEngineer: [ -1, -1 ]
+      MedicalDoctor: [ -1, -1 ]
+      AtmosphericTechnician: [ -1, -1 ]
+      MdMedic: [ -1, -1 ]
+      Chemist: [ -1, -1 ]
+      Paramedic: [ -1, -1 ]
+      SalvageSpecialist: [ -1, -1 ]
+      Scientist: [ -1, -1 ]
+      CargoTechnician: [ -1, -1 ]
+      Botanist: [ -1, -1 ]
+      Chef: [ -1, -1 ]
+      Bartender: [ -1, -1 ]
+      Janitor: [ -1, -1 ]
+
+# Down With Ye' Ship!: three tier 4-5 Reaver warships round the SY Reach, fighting to the last man.
+# Spawned by WFDoomedScenarioSystem on the crew's first arrival, which orders each ship to attack the Reach.
+- type: wfEncounter
+  id: WFDoomedReaverAmbush
+  name: wf-round-setup-doomed-ambush
+  start: Manual
+  lifetime: Transient
+  category: Threat
+  icon: Skull
+  duration: 3600
+  ships:
+  - key: alpha
+    navigation: WFCrewNavigationRaider
+    side: reavers
+    faction: WFAshfallReavers
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    vessels: [ Kalisto, Metis, Bastion, Garm ]
+    tiers:
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Bastion, Garm ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    offset: 0, 800
+    deckhands: 2
+    engineer: false
+    evades: false
+    warnRange: 1500
+    attackRange: 1200
+    zoneLines: wf-encounter-pirate-zone
+    disengage: Destroy
+  - key: bravo
+    navigation: WFCrewNavigationRaider
+    side: reavers
+    faction: WFAshfallReavers
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    tiers:
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    offset: 693, -400
+    deckhands: 2
+    engineer: false
+    evades: false
+    warnRange: 1500
+    attackRange: 1200
+    zoneLines: wf-encounter-pirate-zone
+    disengage: Destroy
+  - key: charlie
+    navigation: WFCrewNavigationRaider
+    side: reavers
+    faction: WFAshfallReavers
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    vessels: [ Kalisto, Metis, Bastion, Garm ]
+    tiers:
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Bastion, Garm ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    offset: -693, -400
+    deckhands: 2
+    engineer: false
+    evades: false
+    warnRange: 1500
+    attackRange: 1200
+    zoneLines: wf-encounter-pirate-zone
+    disengage: Destroy

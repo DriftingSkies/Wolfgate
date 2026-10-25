@@ -530,3 +530,199 @@
         - TableMask
         layer:
         - TableLayer
+
+# WOLFGATE(DecorImport) START: ported from Nuclear 14
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallAdobeSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/adobe.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/adobe.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedadobe
+
+- type: entity
+  parent: [ N14WallAdobeSlantedIndestructible, N14BaseWallSlanted ]
+  id: N14WallAdobeSlanted
+  suffix: slanted
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallBunkerSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/bunker.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/bunker.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedbunker
+
+- type: entity
+  parent: [ N14WallBunkerSlantedIndestructible, N14BaseWallSlantedMetalStrong ]
+  id: N14WallBunkerSlanted
+  suffix: slanted
+  components:
+  - type: Construction
+    graph: Girder
+    node: reinforcedWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallCombSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/comb.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/comb.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedcomb
+
+- type: entity
+  parent: [ N14WallCombSlantedIndestructible, N14BaseWallSlanted ]
+  id: N14WallCombSlanted
+  suffix: slanted
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallDungeonAltSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/dungeonalt.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/dungeonalt.rsi
+  - type: IconSmooth
+    key: walls
+    base: slanteddungeonalt
+
+- type: entity
+  parent: [ N14WallDungeonAltSlantedIndestructible, N14BaseWallSlanted ]
+  id: N14WallDungeonAltSlanted
+  suffix: slanted
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallPrisonSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/prison.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/prison.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedprison
+
+- type: entity
+  parent: [ N14WallPrisonSlantedIndestructible, N14BaseWallSlantedMetal ]
+  id: N14WallPrisonSlanted
+  suffix: slanted
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallVaultRustSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/rustvault.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/rustvault.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedrustvault
+
+- type: entity
+  parent: [ N14WallVaultRustSlantedIndestructible, N14BaseWallSlantedMetalStrong ]
+  id: N14WallVaultRustSlanted
+  suffix: slanted
+  components:
+  - type: Construction
+    graph: Girder
+    node: reinforcedWallRust
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallVaultVentsRustSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/rustvaultvent.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/rustvaultvent.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedrustvaultvent
+
+- type: entity
+  parent: [ N14WallVaultVentsRustSlantedIndestructible, N14BaseWallSlantedMetal ]
+  id: N14WallVaultVentsRustSlanted
+  suffix: slanted
+  components:
+  - type: Construction
+    graph: Girder
+    node: wallrust
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWallIndestructible
+  id: N14WallVaultVentSlantedIndestructible
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/vaultvent.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/slanted/vaultvent.rsi
+  - type: IconSmooth
+    key: walls
+    base: slantedvaultvent
+
+- type: entity
+  parent: [ N14WallVaultVentSlantedIndestructible, N14BaseWallSlantedMetal ]
+  id: N14WallVaultVentSlanted
+  suffix: slanted
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+# WOLFGATE END

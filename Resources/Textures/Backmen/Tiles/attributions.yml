@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Backmen
+- files: ["dark_pavement_vertical.png", "steel_pavement_vertical.png", "white_pavement_vertical.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Backmen at commit https://github.com/Rxup/space-station-14/commit/af8a395979b3d30d81deefba77f255122e15f715."
+  source: "https://github.com/Rxup/space-station-14"
+# WOLFGATE END

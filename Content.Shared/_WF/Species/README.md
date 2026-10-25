@@ -139,10 +139,19 @@ and its own sprite.
 
 ### Textures
 
+- [`Resources/Textures/_WF/Species/Effects/speech.rsi/`](../../../Resources/Textures/_WF/Species/Effects/speech.rsi/)
 - [`Resources/Textures/_WF/Species/Mobs/Customization/synthliz.rsi/`](../../../Resources/Textures/_WF/Species/Mobs/Customization/synthliz.rsi/)
 - [`Resources/Textures/_WF/Species/Mobs/Species/Canine/parts.rsi/`](../../../Resources/Textures/_WF/Species/Mobs/Species/Canine/parts.rsi/)
 - [`Resources/Textures/_WF/Species/Mobs/Species/Vulpkanin/parts.rsi/`](../../../Resources/Textures/_WF/Species/Mobs/Species/Vulpkanin/parts.rsi/)
 - [`Resources/Textures/_WF/Species/Objects/Specific/Medical/avalipen.rsi/`](../../../Resources/Textures/_WF/Species/Objects/Specific/Medical/avalipen.rsi/)
+
+### Audio
+
+- [`Resources/Audio/_WF/Species/Vulpkanin/attributions.yml`](../../../Resources/Audio/_WF/Species/Vulpkanin/attributions.yml)
+- [`Resources/Audio/_WF/Species/Vulpkanin/vulp_scream1.ogg`](../../../Resources/Audio/_WF/Species/Vulpkanin/vulp_scream1.ogg)
+- [`Resources/Audio/_WF/Species/Vulpkanin/vulp_scream2.ogg`](../../../Resources/Audio/_WF/Species/Vulpkanin/vulp_scream2.ogg)
+- [`Resources/Audio/_WF/Species/Vulpkanin/vulp_scream3.ogg`](../../../Resources/Audio/_WF/Species/Vulpkanin/vulp_scream3.ogg)
+- [`Resources/Audio/_WF/Species/Vulpkanin/vulp_scream4.ogg`](../../../Resources/Audio/_WF/Species/Vulpkanin/vulp_scream4.ogg)
 
 ### Guidebook
 
@@ -431,12 +440,17 @@ and its own sprite.
   - psionic components (InnatePsionicPowers, PsionicBonusChance) dropped - Wolfgate has no psionics system.
   - HardLight's GalacticCommon is TauCetiBasic here
   - was RMCSkrellWarble, which shared Warble's trigger words
-- [`Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml): this species has wag-capable tails but had no Wagging Tail action
+- [`Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml)
+  - this species has wag-capable tails but had no Wagging Tail action
+  - upstream's vulpkanin speech bubble
 - [`Resources/Prototypes/_DV/Species/skrell.yml`](../../../Resources/Prototypes/_DV/Species/skrell.yml): ported from HardLight (Skrell)
 - [`Resources/Prototypes/_DV/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Species/vulpkanin.yml)
   - was MobVulpkaninSprites; Starlight's body on digitigrade legs
   - was VulpTail; Starlight's tail for Starlight's body
   - was VulpEar; Starlight's ears for Starlight's body
+- [`Resources/Prototypes/_DV/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emote_sounds.yml)
+  - upstream's vulpkanin scream; was MaleScreams
+  - upstream's vulpkanin scream; was FemaleScreams
 - [`Resources/Prototypes/_DV/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_EE/Entities/Mobs/Customization/bishop.yml`](../../../Resources/Prototypes/_EE/Entities/Mobs/Customization/bishop.yml)
   - chassis part, was a Head, Chest, Arms or Legs marking

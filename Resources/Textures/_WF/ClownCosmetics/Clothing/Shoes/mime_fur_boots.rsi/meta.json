@@ -1,0 +1,26 @@
+﻿{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made by Velitation | ported from https://github.com/DeltaV-Station/Delta-v/tree/e0e9917ffb145c0d1dc7509e7115ae8c81406eef/Resources/Textures/_DV/Clothing/Shoes/Boots/mimefurboots.rsi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "equipped-FEET",
+      "directions": 4
+    },
+    {
+      "name": "inhand-left",
+      "directions": 4
+    },
+    {
+      "name": "inhand-right",
+      "directions": 4
+    }
+  ]
+}

@@ -5,8 +5,10 @@
   name: prisoner wardrobe
   description: It's a storage unit for Space Law compliant prisoner garb.
   components:
-  - type: Appearance
-  - type: EntityStorageVisuals
-    stateBaseClosed: generic
-    stateDoorOpen: generic_open
-    stateDoorClosed: orange_door
+  - type: Sprite
+    sprite: _WF/Resprites/Wizden/Storage/Closets/prisoner-wardrobe.rsi
+#  - type: Appearance #WOLFGATE(Resprites) START: Repathed
+#  - type: EntityStorageVisuals
+#    stateBaseClosed: generic
+#    stateDoorOpen: generic_open
+#    stateDoorClosed: orange_door #WOLFGATE END

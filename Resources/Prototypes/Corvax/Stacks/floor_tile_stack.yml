@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from Corvax
+- type: stack
+  id: FloorTileItemWoodBlack
+  name: black-wood-floor
+  icon: { sprite: /Textures/Objects/Tiles/tile.rsi, state: steel }
+  spawn: FloorTileItemWoodBlack
+  maxCount: 30
+
+- type: stack
+  id: FloorTileItemWoodDark
+  name: dark-wood-floor
+  icon: { sprite: /Textures/Objects/Tiles/tile.rsi, state: steel }
+  spawn: FloorTileItemWoodDark
+  maxCount: 30
+
+- type: stack
+  id: FloorTileItemWoodLight
+  name: light-wood-floor
+  icon: { sprite: /Textures/Objects/Tiles/tile.rsi, state: steel }
+  spawn: FloorTileItemWoodLight
+  maxCount: 30
+
+- type: stack
+  id: FloorTileItemWoodRed
+  name: red-wood-floor
+  icon: { sprite: /Textures/Objects/Tiles/tile.rsi, state: steel }
+  spawn: FloorTileItemWoodRed
+  maxCount: 30
+# WOLFGATE END

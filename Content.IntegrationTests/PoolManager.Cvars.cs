@@ -39,6 +39,9 @@ public static partial class PoolManager
         (CCVars.MovementMobPushing.Name, "false"),
         (CCVars.GameLobbyDefaultPreset.Name, "secret"), // Frontier: Adventure takes ages, default to secret
         (CCVars.StaticStorageUI.Name, "true"),// Frontier: causes storage test failures
+        ("wf.encounters.simulate", "false"), // WOLFGATE(Encounters): tests spawn real ships unless they turn simulation on
+        ("wf.encounters.vote", "false"), // WOLFGATE(Encounters): a round-restart vote throws on a dummy session's join
+        (CCVars.AutoVoteEnabled.Name, "false"), // WOLFGATE: a round-restart vote throws on a dummy session's join
         (CCVars.StorageLimit.Name, "1")// Frontier: test failures with multiple storage
     };
 }

@@ -1,0 +1,62 @@
+# WOLFGATE(DecorImport) START: ported from Moffstation
+- type: entity
+  parent: BaseWall
+  id: MoffIronSandstone
+  suffix: no ore yield
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Transform
+    noRot: true
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+  - type: SmoothEdge
+  - type: Icon
+    sprite: _Moffstation/Structures/Walls/ironsandstone.rsi
+    state: ironsandstone
+  - type: Sprite
+    sprite: _Moffstation/Structures/Walls/ironsandstone.rsi
+    layers:
+    - state: ironsandstone
+    - map: [ "enum.EdgeLayer.South" ]
+      state: ironsandstone_south
+    - map: [ "enum.EdgeLayer.East" ]
+      state: ironsandstone_east
+    - map: [ "enum.EdgeLayer.North" ]
+      state: ironsandstone_north
+    - map: [ "enum.EdgeLayer.West" ]
+      state: ironsandstone_west
+  - type: MiningScannerViewable
+  - type: Damageable
+    damageModifierSet: Rock
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        density: 2000
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 120
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+# WOLFGATE END

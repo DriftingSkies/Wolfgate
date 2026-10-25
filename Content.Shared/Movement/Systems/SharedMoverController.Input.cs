@@ -229,6 +229,8 @@ namespace Content.Shared.Movement.Systems
             {
                 var targetDir = mover.TargetRelativeRotation - diff;
                 targetDir = targetDir.GetCardinalDir().ToAngle().Reduced();
+                if (_wfDefaultNorth.WantsNorth(uid)) // WOLFGATE(Camera): the Default to North option faces the new grid's north
+                    targetDir = Angle.Zero; // WOLFGATE(Camera)
                 mover.TargetRelativeRotation = targetDir;
             }
 

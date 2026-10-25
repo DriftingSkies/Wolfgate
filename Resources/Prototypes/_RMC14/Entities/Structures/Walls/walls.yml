@@ -1,0 +1,453 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: examinableDamage
+  id: RMCWallMessages
+  messages:
+    - rmc-wall-integrity-1
+    - rmc-wall-integrity-2
+    - rmc-wall-integrity-3
+    - rmc-wall-integrity-4
+
+# Standard
+- type: entity
+  parent: CMBaseWall
+  id: CMWallMetal
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/metal.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/metal.rsi
+  - type: Tag
+    tags:
+    - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3125
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+        - !type:DoActsBehavior
+          acts: ["Breakage"]
+  - type: IconSmooth
+    key: walls
+    base: metal
+
+- type: entity
+  parent: CMWallMetal
+  id: CMWallMetalAlmayer
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/almayer_black.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/almayer_black.rsi
+    state: wall
+  - type: IconSmooth
+    key: walls
+    base: wall
+
+- type: entity
+  parent: CMWallMetal
+  id: RMCWallAlmayerDeco1
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/almayer_black.rsi
+    state: almayer_deco_wall0
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/almayer_black.rsi
+    state: almayer_deco_wall0
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+
+- type: entity
+  parent: RMCWallAlmayerDeco1
+  id: RMCWallAlmayerDeco2
+  components:
+  - type: Sprite
+    state: almayer_deco_wall1
+  - type: Icon
+    state: almayer_deco_wall1
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+
+- type: entity
+  parent: RMCWallAlmayerDeco1
+  id: RMCWallAlmayerDeco4
+  components:
+  - type: Sprite
+    state: almayer_deco_wall3
+  - type: Icon
+    state: almayer_deco_wall3
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+
+- type: entity
+  parent: RMCWallAlmayerDeco1
+  id: RMCWallAlmayerDecoElevator
+  components:
+  - type: Sprite
+    state: almayer_elevator
+  - type: Icon
+    state: almayer_elevator
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+
+- type: entity
+  parent: CMWallMetal
+  id: CMWallMetalAlmayerWhite
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/almayer_white.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/almayer_white.rsi
+    state: wall
+  - type: IconSmooth
+    key: walls
+    base: wall
+
+# Reinforced
+- type: entity
+  parent: CMBaseWall
+  id: RMCBaseWallReinforced
+  abstract: true
+  components:
+  - type: Construction
+    graph: Girder
+    node: reinforcedWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/rwall.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/rwall.rsi
+  - type: Tag
+    tags:
+    - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 9500
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 9000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Breakage" ]
+  - type: IconSmooth
+    key: walls
+    base: rwall
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: RMCBaseWallReinforced
+  id: CMWallReinforced
+
+- type: entity
+  parent: RMCBaseWallReinforced
+  id: CMWallReinforcedAlmayerAI
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/almayer_aicore.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/almayer_aicore.rsi
+    state: reinforced
+  - type: IconSmooth
+    key: walls
+    base: aiwall
+
+# Shuttle
+- type: entity
+  parent: CMBaseWallInvincible
+  id: CMWallShuttleBlack
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/shuttle.rsi
+    state: wall3
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/shuttle.rsi
+    state: wall3
+
+- type: entity
+  parent: CMWallShuttleBlack
+  id: CMWallShuttleOrange
+  components:
+  - type: Sprite
+    state: pwall
+  - type: Icon
+    state: pwall
+
+- type: entity
+  parent: CMWallShuttleBlack
+  id: CMWallShuttleWhite
+  components:
+  - type: Sprite
+    state: wall1
+  - type: Icon
+    state: wall1
+
+# Cave
+- type: entity
+  parent: CMBaseWallInvincible
+  id: CMWallRock
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/cave.rsi
+    color: "#826161"
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/cave.rsi
+    state: cavewall
+  - type: IconSmooth
+    key: walls
+    base: cavewall
+
+# Cult
+- type: entity
+  parent: CMBaseWall
+  id: CMWallCult
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/cult.rsi
+    color: "#3C3434"
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/cult.rsi
+    state: cult0
+  - type: Tag
+    tags:
+    - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: cult
+
+# Wood
+- type: entity
+  parent: CMBaseWall
+  id: CMWallWood
+  components:
+  - type: Construction
+    graph: Barricade
+    node: woodWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/wood.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/wood.rsi
+    state: wood0
+  - type: Tag
+    tags:
+    - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: wood
+
+# Jungle
+- type: entity
+  parent: CMBaseWallInvincible
+  id: CMWallJungle
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/jungle.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/jungle.rsi
+    state: jungle_veg0
+  - type: Tag
+    tags:
+    - Wall
+  - type: IconSmooth
+    key: walls
+    base: jungle_veg
+
+- type: entity
+  parent: CMWallJungle
+  id: RMCWallJungleStrata
+  suffix: Strata
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/strata_jungle.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/strata_jungle.rsi
+    state: strata_jungle0
+  - type: IconSmooth
+    key: walls
+    base: strata_jungle
+
+# Forest
+- type: entity
+  parent: CMWallJungle
+  id: CMWallForest
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/forest.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/forest.rsi
+    state: forest_veg
+  - type: Tag
+    tags:
+    - Wall
+  - type: IconSmooth
+    key: walls
+    base: forest_veg
+
+# Elevator
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallElevator
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/elevator.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/elevator.rsi
+    state: full
+  - type: Tag
+    tags:
+    - Wall
+  - type: IconSmooth
+    key: walls
+    base: wall
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallElevatorNoConnect1
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/elevator_single.rsi
+    state: elevator_1
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/elevator_single.rsi
+    state: elevator_1
+
+- type: entity
+  parent: RMCWallElevatorNoConnect1
+  id: RMCWallElevatorGear
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/elevator.rsi
+    state: wall_gear
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/elevator.rsi
+    state: wall_gear
+
+# Containment
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallContainment
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/containment.rsi
+    state: containment_wall_south
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/containment.rsi
+    state: containment_wall_south
+
+- type: entity
+  parent: RMCWallContainment
+  id: RMCWallContainmentCorner
+  components:
+  - type: Sprite
+    state: containment_wall_corner
+  - type: Icon
+    state: containment_wall_corner
+
+- type: entity
+  parent: RMCWallContainment
+  id: RMCWallContainmentWest
+  components:
+  - type: Sprite
+    state: containment_wall_w
+  - type: Icon
+    state: containment_wall_w
+
+- type: entity
+  parent: RMCWallContainment
+  id: RMCWallContainmentEast
+  components:
+  - type: Sprite
+    state: containment_wall_e
+  - type: Icon
+    state: containment_wall_e
+
+- type: entity
+  parent: RMCWallContainment
+  id: RMCWallContainmentNorth
+  components:
+  - type: Sprite
+    state: containment_wall_n
+  - type: Icon
+    state: containment_wall_n
+
+# Hunter Walls
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallHunter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hunter.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hunter.rsi
+    state: metal
+  - type: Tag
+    tags:
+    - Wall
+  - type: IconSmooth
+    key: walls
+    base: metal
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallHunterDegraded
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hunter_degraded.rsi
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hunter_degraded.rsi
+    state: metal
+  - type: IconSmooth
+    key: walls
+    base: metal
+  - type: Tag
+    tags:
+    - Wall
+# WOLFGATE END

@@ -28,25 +28,33 @@ ticket table, the feedback table or any of the endpoints change.
 
 ### Server
 
+- [`Content.Server/Audio/ContentAudioSystem.Symphony.cs`](../Audio/ContentAudioSystem.Symphony.cs)
 - [`Content.Server/Connection/ConnectionManager.Symphony.cs`](../Connection/ConnectionManager.Symphony.cs)
+- [`Content.Server/GameTicking/GameTicker.Symphony.cs`](../GameTicking/GameTicker.Symphony.cs)
 - [`Content.Server/Symphony/SymphonyApi.cs`](SymphonyApi.cs)
 - [`Content.Server/Symphony/SymphonyCVarsSystem.cs`](SymphonyCVarsSystem.cs)
 - [`Content.Server/Symphony/SymphonyFeedbackSystem.cs`](SymphonyFeedbackSystem.cs)
 - [`Content.Server/Symphony/SymphonyHubSystem.cs`](SymphonyHubSystem.cs)
 - [`Content.Server/Symphony/SymphonyLinkTickets.cs`](SymphonyLinkTickets.cs)
+- [`Content.Server/Symphony/SymphonyLobbySystem.cs`](SymphonyLobbySystem.cs)
 - [`Content.Server/Symphony/SymphonyPlayersSystem.cs`](SymphonyPlayersSystem.cs)
 - [`Content.Server/Symphony/SymphonyRolesSystem.cs`](SymphonyRolesSystem.cs)
 - [`Content.Server/Symphony/SymphonyStatusSystem.cs`](SymphonyStatusSystem.cs)
 - [`Content.Server/Symphony/SymphonyTestMerges.cs`](SymphonyTestMerges.cs)
+- [`Content.Server/Symphony/SymphonyUploads.cs`](SymphonyUploads.cs)
 
 ### Shared
 
 - [`Content.Shared/CCVar/CCVars.Symphony.cs`](../../Content.Shared/CCVar/CCVars.Symphony.cs)
 - [`Content.Shared/Symphony/SharedSymphony.cs`](../../Content.Shared/Symphony/SharedSymphony.cs)
+- [`Content.Shared/Symphony/SymphonyLobbyNotice.cs`](../../Content.Shared/Symphony/SymphonyLobbyNotice.cs)
 
 ### Client
 
 - [`Content.Client/Launcher/LauncherConnectingGui.Symphony.cs`](../../Content.Client/Launcher/LauncherConnectingGui.Symphony.cs)
+- [`Content.Client/Launcher/LauncherFlourish.Symphony.cs`](../../Content.Client/Launcher/LauncherFlourish.Symphony.cs)
+- [`Content.Client/Lobby/SymphonyWait.Symphony.cs`](../../Content.Client/Lobby/SymphonyWait.Symphony.cs)
+- [`Content.Client/Lobby/UI/LobbyNotice.Symphony.cs`](../../Content.Client/Lobby/UI/LobbyNotice.Symphony.cs)
 
 ### Localization
 
@@ -57,13 +65,22 @@ ticket table, the feedback table or any of the endpoints change.
 ## Non-modular edits
 
 - [`.github/workflows/publish.yml`](../../.github/workflows/publish.yml): run name for the SSymphony panel
+- [`Content.Client/Audio/ContentAudioSystem.LobbyMusic.cs`](../../Content.Client/Audio/ContentAudioSystem.LobbyMusic.cs)
+  - attempt
+  - a track the panel uploaded can arrive just after the playlist naming it
 - [`Content.Client/Launcher/LauncherConnectingGui.xaml.cs`](../../Content.Client/Launcher/LauncherConnectingGui.xaml.cs)
   - Symphony, the Link Discord buttons, built in LauncherConnectingGui.Symphony.cs
   - Symphony, show or hide the Link Discord buttons
+- [`Content.Client/Lobby/LobbyState.cs`](../../Content.Client/Lobby/LobbyState.cs)
+  - a background the panel uploaded can arrive just after the status naming it
+  - shown once the uploaded file is here. A big picture over a slow link can take
+- [`Content.Client/Lobby/UI/LobbyGui.xaml`](../../Content.Client/Lobby/UI/LobbyGui.xaml): the notice staff set from the SSymphony panel; hidden when there is none
+- [`Content.Server/Audio/ContentAudioSystem.cs`](../Audio/ContentAudioSystem.cs): a playlist the SSymphony panel set plays in its own order, round after round
 - [`Content.Server/Connection/ConnectionManager.cs`](../Connection/ConnectionManager.cs)
   - Symphony, the Discord link as a property so the client can offer a button
   - Symphony, not one who passed a running whitelist, so a revoke holds
   - Symphony, with the Discord link that gets them whitelisted
   - Symphony, so a later revoke is checked on reconnect rather than waved through
+- [`Content.Server/GameTicking/GameTicker.LobbyBackground.cs`](../GameTicking/GameTicker.LobbyBackground.cs): a background the SSymphony panel set holds over every round until it is cleared
 
 <!-- WOLFGATE-GENERATED END -->

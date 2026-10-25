@@ -76,7 +76,7 @@ public sealed class WFEncounterTraderHailSystem : EntitySystem
 
             foreach (var ship in encounter.Ships.Values)
             {
-                if (ship.Passengers && ship.Extort == null && !WFEncounterSystem.IsStranded(ship) && !TerminatingOrDeleted(ship.Grid))
+                if (ship.Passengers && ship.Extort == null && !ship.Virtual && !WFEncounterSystem.IsStranded(ship) && !TerminatingOrDeleted(ship.Grid))
                     Answer(ship, now);
             }
         }

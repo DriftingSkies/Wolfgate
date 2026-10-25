@@ -1,0 +1,56 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+# Coast/Beach
+
+- type: tile
+  parent: CMPlanetBase
+  id: CMPlanetBeachBase
+  abstract: true
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassNorth
+  name: tiles-wf-rmc-beach-grass-north
+  sprite: /Textures/_RMC14/Tiles/planet/beach/grassbeach_0.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassSouth
+  name: tiles-wf-rmc-beach-grass-south
+  sprite: /Textures/_RMC14/Tiles/planet/beach/grassbeach_1.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassWest
+  name: tiles-wf-rmc-beach-grass-west
+  sprite: /Textures/_RMC14/Tiles/planet/beach/grassbeach_2.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassEast
+  name: tiles-wf-rmc-beach-grass-east
+  sprite: /Textures/_RMC14/Tiles/planet/beach/grassbeach_3.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassSE
+  name: tiles-wf-rmc-beach-grass-corner-se
+  sprite: /Textures/_RMC14/Tiles/planet/beach/gbcorner_0.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassNW
+  name: tiles-wf-rmc-beach-grass-corner-nw
+  sprite: /Textures/_RMC14/Tiles/planet/beach/gbcorner_1.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassNE
+  name: tiles-wf-rmc-beach-grass-corner-ne
+  sprite: /Textures/_RMC14/Tiles/planet/beach/gbcorner_2.png
+
+- type: tile
+  parent: CMPlanetBeachBase
+  id: CMPlanetBeachGrassSW
+  name: tiles-wf-rmc-beach-grass-corner-sw
+  sprite: /Textures/_RMC14/Tiles/planet/beach/gbcorner_3.png
+# WOLFGATE END

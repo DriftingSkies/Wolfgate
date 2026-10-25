@@ -20,12 +20,17 @@ public static class WFMappingAutosaveSteps
 [Serializable, NetSerializable]
 public readonly record struct WFMappingLibraryVersion(WFMappingVersionName Name, int Levels, long Bytes, bool Ship);
 
-/// <summary>A map in a player's library and its versions, newest first.</summary>
+/// <summary>
+/// A map in a player's library and its versions, newest first, with the ship details the mapper last gave it (from the
+/// newest version that keeps a <c>ship.yml</c>), so the export wizard pre-fills.
+/// </summary>
 [Serializable, NetSerializable]
-public sealed class WFMappingLibraryMap(string name, List<WFMappingLibraryVersion> versions)
+public sealed class WFMappingLibraryMap(string name, List<WFMappingLibraryVersion> versions,
+    Export.WFMappingShipDetails? ship = null)
 {
     public readonly string Name = name;
     public readonly List<WFMappingLibraryVersion> Versions = versions;
+    public readonly Export.WFMappingShipDetails? Ship = ship;
 }
 
 /// <summary>Asks for the player's library.</summary>

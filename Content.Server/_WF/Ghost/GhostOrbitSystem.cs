@@ -109,6 +109,10 @@ public sealed class GhostOrbitSystem : EntitySystem
         if (!Exists(target) || target == ghost)
             return;
 
+        // Hive announcements speak as the hive itself, which lives in nullspace; warping there loses the ghost.
+        if (Transform(target).MapUid == null)
+            return;
+
         var isAdmin = _admin.IsAdmin(ghost);
         TryComp<WarpPointComponent>(target, out var warp);
         if (!isAdmin && (warp is { AdminOnly: true } || (_ghostQuery.HasComp(target) && _admin.IsAdmin(target))))

@@ -1,0 +1,62 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- type: tile
+  id: FloorCosmicGlyph
+  name: tiles-cosmiccult-floor-glyph
+  sprite: /Textures/_DV/CosmicCult/Tileset/cosmicfloor/tile_glyph.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorCosmicSmooth
+  name: tiles-cosmiccult-floor-smooth
+  sprite: /Textures/_DV/CosmicCult/Tileset/cosmicfloor/tile_smooth.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorCosmicHalf
+  name: tiles-cosmiccult-floor-half
+  sprite: /Textures/_DV/CosmicCult/Tileset/cosmicfloor/tile_half.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorCosmicNotched
+  name: tiles-cosmiccult-floor-notched
+  sprite: /Textures/_DV/CosmicCult/Tileset/cosmicfloor/tile_notched.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorCosmicCorruption
+  name: tiles-cosmiccult-floor-malign
+  sprite: /Textures/_DV/CosmicCult/Tileset/cosmicfloor/tile_malign.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+# WOLFGATE END

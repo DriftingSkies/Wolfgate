@@ -193,6 +193,9 @@ unmarked:
   - path: Resources/Audio/_RMC14/Voice/
     module: Species
     reason: RMC14 species voices, ported from HardLight in #14 (Customisation Update).
+  - path: Resources/Audio/_RMC14/Machines/
+    module: DecorImport
+    reason: Door sounds, ported from RMC-14.
   - path: Resources/Audio/_Starlight/
     module: Species
     reason: Starlight species sounds, ported in #14 (Customisation Update).
@@ -265,6 +268,9 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/underground.yml
     module: LockableButtons
     reason: The two blast door buttons take Underground access; the station's crew has no Pirate access.
+  - path: Resources/Maps/_Mono/POI/pdvhelios.yml
+    module: null
+    reason: Helios mapping fixes for lighting, wallmounts and small layout tweaks.
   - path: Resources/Textures/Tiles/exoborg.png
     module: Xenoborgs
     reason: Exoborg floor tile redrawn.
@@ -2347,6 +2353,30 @@ unmarked:
   - path: Resources/Textures/_DV/Objects/Decoration/
     module: DecorImport
     reason: Decor sprites, ported from Delta-V.
+  - path: Resources/Textures/_DV/Structures/Walls/
+    module: DecorImport
+    reason: Wall sprites, ported from Delta-V.
+  - path: Resources/Textures/_DV/Tiles/
+    module: DecorImport
+    reason: Floor tile sprites, ported from Delta-V.
+  - path: Resources/Textures/Nyanotrasen/Structures/walls/paper.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Delta-V.
+  - path: Resources/Textures/Nyanotrasen/Structures/walls/drywall.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Delta-V.
+  - path: Resources/Textures/_NF/Structures/Walls/shuttleinterior.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Frontier.
+  - path: Resources/Textures/_NF/Tiles/
+    module: DecorImport
+    reason: Floor tile sprites, ported from Frontier.
+  - path: Resources/Textures/_NF/Objects/Tiles/woodtile.rsi/
+    module: DecorImport
+    reason: Floor tile item sprites, ported from Frontier.
+  - path: Resources/Audio/_DV/CosmicCult/
+    module: DecorImport
+    reason: Door sounds, ported from Delta-V.
   - path: Resources/Textures/_Euphoria/
     module: DecorImport
     reason: Decor sprites, ported from Panta Rhei.
@@ -2359,12 +2389,30 @@ unmarked:
   - path: Resources/Textures/_Goobstation/Structures/Specific/
     module: DecorImport
     reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Goobstation/Flock/
+    module: DecorImport
+    reason: Floor tile sprites, ported from Goob Station.
   - path: Resources/Textures/_Impstation/Structures/Furniture/
     module: DecorImport
     reason: Decor sprites, ported from Impstation.
   - path: Resources/Textures/_Impstation/Structures/Lighting/
     module: DecorImport
     reason: Decor sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Structures/Walls/
+    module: DecorImport
+    reason: Wall sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Tiles/
+    module: DecorImport
+    reason: Floor tile sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Objects/Tiles/
+    module: DecorImport
+    reason: Floor tile item sprites, ported from Impstation.
+  - path: Resources/Textures/_Moffstation/Structures/
+    module: DecorImport
+    reason: Wall and door sprites, ported from Moffstation.
+  - path: Resources/Textures/_Moffstation/Tiles/
+    module: DecorImport
+    reason: Floor tile sprites, ported from Moffstation.
   - path: Resources/Textures/_Lavaland/
     module: DecorImport
     reason: Decor sprites, ported from Goob Station.
@@ -2374,6 +2422,84 @@ unmarked:
   - path: Resources/Textures/_Nuclear14/Structures/Furniture/schoolchair.rsi/
     module: DecorImport
     reason: Decor sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/half/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/adobe.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/bunker.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/comb.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/dungeonalt.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/prison.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/rustvault.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/rustvaultvent.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/slanted/vaultvent.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/tall/adobe.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/tall/bunker.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/tall/comb.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/tall/dungeonalt.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/tall/prison.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/ms13/tall/rustvault.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/nc14/enclavewall.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Walls/nc14/ruins.rsi/
+    module: DecorImport
+    reason: Wall sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Doors/FalloutDoors/bunkerdoor.rsi/
+    module: DecorImport
+    reason: Door sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Doors/FalloutDoors/glassbunkerdoor.rsi/
+    module: DecorImport
+    reason: Door sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Doors/FalloutDoors/housecleandoor.rsi/
+    module: DecorImport
+    reason: Door sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Doors/FalloutDoors/irondoor.rsi/
+    module: DecorImport
+    reason: Door sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Doors/FalloutDoors/securedoor_ncr.rsi/
+    module: DecorImport
+    reason: Door sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Structures/Doors/FalloutDoors/vaultdoor.rsi/
+    module: DecorImport
+    reason: Door sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Tiles/roadinnermiddlewithtop.png
+    module: DecorImport
+    reason: Road tile, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Tiles/roadouterturnstop.png
+    module: DecorImport
+    reason: Road tile, ported from Nuclear 14.
+  - path: Resources/Textures/_Nuclear14/Tiles/roadouterturnwtop.png
+    module: DecorImport
+    reason: Road tile, ported from Nuclear 14.
   - path: Resources/Textures/_Paradise/
     module: DecorImport
     reason: Decor sprites, ported from Starlight.
@@ -2395,6 +2521,69 @@ unmarked:
   - path: Resources/Textures/_RMC14/Structures/Wallmounts/Lighting/
     module: DecorImport
     reason: Decor sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Doors/
+    module: DecorImport
+    reason: Door sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Walls/
+    module: DecorImport
+    reason: Wall sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/almayer/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/asphalt/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/corsat/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/escape_pods/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/floors/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/hybrisa/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/kutjevo/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/auto_ice/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/auto_shale/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/beach/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/browndirt_road/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/grass_dirt/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/interior/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/meta.json
+    module: DecorImport
+    reason: Tile sprite attribution, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/red_desert/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/runed_sandstone/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/planet/sorokyne/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/shiva/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Tiles/varadero/
+    module: DecorImport
+    reason: Tile sprites, ported from RMC-14.
   - path: Resources/Textures/_Shitmed/Structures/Furniture/
     module: DecorImport
     reason: Decor sprites, ported from Goob Station.
@@ -2407,12 +2596,39 @@ unmarked:
   - path: Resources/Textures/_Starlight/Structures/Wallmounts/
     module: DecorImport
     reason: Decor sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Structures/Walls/
+    module: DecorImport
+    reason: Wall sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Structures/Doors/
+    module: DecorImport
+    reason: Door sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Structures/wall_fan.rsi/
+    module: DecorImport
+    reason: Wall fan sprite, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Tiles/
+    module: DecorImport
+    reason: Floor tile sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Objects/Tiles/
+    module: DecorImport
+    reason: Floor tile item sprites, ported from Starlight.
+  - path: Resources/Textures/_Blimpuf/
+    module: DecorImport
+    reason: Wall and door sprites, ported from Starlight.
   - path: Resources/Textures/_White/Decals/
     module: DecorImport
     reason: Decor sprites, ported from White Dream.
   - path: Resources/Textures/_White/Objects/Decoration/
     module: DecorImport
     reason: Decor sprites, ported from White Dream.
+  - path: Resources/Textures/_White/Tiles/
+    module: DecorImport
+    reason: Floor tile sprites, ported from White Dream.
+  - path: Resources/Textures/_White/Objects/Tiles/
+    module: DecorImport
+    reason: Floor tile item sprites, ported from White Dream.
+  - path: Resources/Textures/_White/Structures/Walls/
+    module: DecorImport
+    reason: Wall sprites, ported from White Dream.
   - path: Resources/Audio/_CP14/Effects/bone_crush1.ogg
     module: DecorImport
     reason: Bone crack sound, ported from CrystallEdge.

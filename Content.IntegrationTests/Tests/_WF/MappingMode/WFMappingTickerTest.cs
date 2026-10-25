@@ -8,6 +8,7 @@ using Content.Shared.CCVar;
 using Content.Shared.Maps;
 using Content.Shared.Station.Components;
 using Content.Shared.GameTicking;
+using Content.Shared.GameTicking.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
@@ -57,6 +58,7 @@ public sealed class WFMappingTickerTest
         await pair.RunTicksSync(10);
 
         var maps = 0;
+        var rules = 0;
         await server.WaitAssertion(() =>
         {
             AssertLobby("after a restart");
@@ -83,6 +85,22 @@ public sealed class WFMappingTickerTest
             var ev = new LoadingMapsEvent(list);
             entMan.EventBus.RaiseEvent(EventSource.Local, ev);
             Assert.That(ev.Maps, Is.Empty);
+
+            // A forced start, as startround or the server API would, starts nothing: no rules, no sector.
+            rules = entMan.EntityQuery<GameRuleComponent>(true).Count();
+            ticker.StartRound(force: true);
+        });
+
+        await pair.RunTicksSync(10);
+        await server.WaitAssertion(() =>
+        {
+            AssertLobby("after a forced round start");
+            Assert.Multiple(() =>
+            {
+                Assert.That(Maps(), Is.EqualTo(maps + 1), "A forced start loads no map.");
+                Assert.That(entMan.EntityQuery<GameRuleComponent>(true).Count(), Is.EqualTo(rules),
+                    "A forced start adds no game rule.");
+            });
         });
 
         await Disable(pair);

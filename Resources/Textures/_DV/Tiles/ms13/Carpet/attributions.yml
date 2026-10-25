@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- files: ["carpet_fancy_blue_diamond.png", "carpet_fancy_red_diamond.png", "carpet_fancy_violet_diamond.png"]
+  license: "CC-BY-NC-SA-3.0"
+  copyright: "Mojave-Sun, taken from Delta-V at commit https://github.com/DeltaV-Station/Delta-v/commit/e0e9917ffb145c0d1dc7509e7115ae8c81406eef."
+  source: "https://github.com/Mojave-Sun/mojave-sun-13"
+# WOLFGATE END

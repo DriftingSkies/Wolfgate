@@ -21,6 +21,15 @@ safety-deposit-console-box-deposited = Stored
 safety-deposit-console-box-not-deposited = Not Stored
 safety-deposit-console-box-in-world = In World
 safety-deposit-console-box-lost = Lost
+safety-deposit-console-box-small = small safety deposit box
+safety-deposit-console-box-medium = medium safety deposit box
+safety-deposit-console-box-large = large safety deposit box
+
+# Purchase confirmation
+safety-deposit-console-confirm-title = Confirm Purchase
+safety-deposit-console-confirm-text = Buy a [bold]{$box}[/bold] for [color=#ff6600]${$cost}[/color]? The cost is taken from your bank and savings straight away.
+safety-deposit-console-confirm-buy = Buy
+safety-deposit-console-confirm-cancel = Cancel
 
 # Safety Deposit Box Entity
 safety-deposit-box-boxSlot = Box Slot
@@ -52,3 +61,30 @@ safety-deposit-console-withdraw-refused = Safety deposit box retrieved. {$count 
 safety-deposit-stored-examine = [color=gray]This item has a signature on it that indicates that it was at one point stowed in a deposit box.[/color]
 safety-deposit-box-examine-id = [color=cyan]Box ID:[/color] {$id}...
 safety-deposit-box-examine-owner = [color=yellow]Owner:[/color] {$owner}
+
+# Guidebook list of refused items; anything missing here is listed under its raw name
+safety-deposit-refused-component-idcard = ID cards
+safety-deposit-refused-component-currency = Currency and LPCs
+safety-deposit-refused-component-store = Anything with a store
+safety-deposit-refused-component-encryptionkey = Encryption keys
+safety-deposit-refused-component-headset = Headsets
+safety-deposit-refused-component-implant = Implants
+safety-deposit-refused-component-implanter = Implanters
+safety-deposit-refused-component-storage = Anything with storage (bags, boxes, other deposit boxes)
+safety-deposit-refused-component-safetydepositbox = Safety deposit boxes
+safety-deposit-refused-component-shipyardvoucher = Shipyard vouchers
+safety-deposit-refused-component-secretstash = Secret stashes (plushies and the like)
+safety-deposit-refused-component-overwatchconsole = Overwatch consoles
+safety-deposit-refused-component-ghostrolemobspawner = Ghostrole spawners (such as reinforcement radios)
+safety-deposit-refused-component-doorremote = Door remotes
+safety-deposit-refused-component-solutioncontainermanager = Anything holding reagents (beakers, bottles)
+safety-deposit-refused-component-nukedisk = Nuclear authentication disks
+safety-deposit-refused-component-contraband = Contraband (items that sell for FMC or DC, most faction gear)
+safety-deposit-refused-component-thiefundeterminedbackpack = Thief kits
+safety-deposit-refused-component-accessoverrider = Access overriders
+safety-deposit-refused-component-pda = PDAs
+safety-deposit-refused-component-pill = Pills
+safety-deposit-refused-component-machineboard = Machine boards
+safety-deposit-refused-component-flatpack = Flatpacks
+safety-deposit-refused-tag-unstashable = Items marked unstashable (some weapons and loot)
+safety-deposit-refused-tag-safetydepositblacklist = Items marked unstashable (some weapons and loot)

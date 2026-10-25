@@ -1,0 +1,87 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent:
+  - CMBaseDoor
+  - CMBaseDoorConstructible
+  id: CMAirlock
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/personal_door.rsi
+  - type: Occluder
+
+- type: entity
+  parent: CMAirlock
+  id: CMAirlockEngineer
+  suffix: Engineering
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/engi_door.rsi
+
+- type: entity
+  parent: CMAirlock
+  id: CMAirlockPrison
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/prison_door.rsi
+
+- type: entity
+  parent: CMAirlock
+  id: RMCAirlockRustedWhite
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/rusted_white_door.rsi
+
+# Glass
+- type: entity
+  parent: CMAirlock
+  id: CMAirlockGlass
+  components:
+  - type: Construction
+    graph: Airlock
+    node: glassAirlock
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/personal_door_glass.rsi
+  - type: Door
+    occludes: false
+  - type: Occluder
+    enabled: false
+  - type: AnimationPlayer
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,-0.49,0.49,0.49"
+        density: 100
+        mask:
+        - FullTileMask
+        layer:
+        - GlassAirlockLayer
+  - type: Tag
+    tags:
+    - GlassAirlock
+
+- type: entity
+  parent: CMAirlockGlass
+  id: CMAirlockGlassEngineer
+  suffix: Engineer
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/engi_door_glass.rsi
+
+- type: entity
+  parent: CMAirlock
+  id: RMCAirlockBlack
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/almayer_door_black.rsi
+
+- type: entity
+  parent: CMAirlock
+  id: RMCAirlockStrata
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Doors/Airlocks/strata_door.rsi
+# WOLFGATE END

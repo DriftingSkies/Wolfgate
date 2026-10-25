@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Rolled-down sprites from Meridian Rift (github.com/Aphelion-Moon/Meridian-Rift), based on tgstation: equipped-INNERCLOTHING from icons_mob_clothing_under_civilian.dmi state janitor_skirt_d.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "equipped-INNERCLOTHING",
+      "directions": 4
+    }
+  ]
+}

@@ -332,8 +332,9 @@ public sealed class MappingToolsDrawTest
 
         await server.WaitAssertion(() =>
         {
-            // At the cap, a rectangle in space is refused.
+            // At the cap, a rectangle in space asked to start a new grid is refused.
             cfg.SetCVar(WFMappingModeCVars.MaxGridsPerSession, 1);
+            RaiseAs(entMan, a, new WFMappingNewGridRequest(true));
             tools.Draw(a, NewGrid(MappingToolsShapes.Rect(new Vector2i(-20, -20), new Vector2i(-18, -18), false)));
             Assert.Multiple(() =>
             {

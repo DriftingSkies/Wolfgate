@@ -18,7 +18,7 @@
 
   Move with your movement keys. The mouse wheel zooms when the current mode doesn't use it.
 
-  A new map is empty space. Pick a floor in the Tiles tab and click in space to start a grid, or draw a rectangle of floor in Shape mode.
+  A new map is empty space. Pick a floor in the Tiles tab and click in space to start a grid, or draw a rectangle of floor in Shape mode. Floor laid in space after that joins the nearest grid.
 
   ## The screen
 
@@ -33,7 +33,7 @@
     <Box HorizontalAlignment="Left">[bold]Tools[/bold]</Box>
     <Box HorizontalAlignment="Left">Selection, eyedropper, clipboard, undo, Hide walls and z-levels.</Box>
     <Box HorizontalAlignment="Left">[bold]Layers[/bold]</Box>
-    <Box HorizontalAlignment="Left">Show or hide walls, subfloor, decals, markers, lighting and links. Only you see this.</Box>
+    <Box HorizontalAlignment="Left">Show or hide walls, subfloor, decals, markers, lighting, links, the world grid and depth perspective. Only you see this.</Box>
     <Box HorizontalAlignment="Left">[bold]Template[/bold]</Box>
     <Box HorizontalAlignment="Left">The PNG you trace over.</Box>
     <Box HorizontalAlignment="Left">[bold]Keys[/bold]</Box>

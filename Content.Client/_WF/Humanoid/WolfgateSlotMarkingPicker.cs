@@ -142,13 +142,18 @@ public sealed class WolfgateSlotMarkingPicker : BoxContainer
         PopulateSlotControls();
     }
 
-    protected override void Resized()
+    // Columns come from the width on offer, not the current width, so the grid can shrink as well as grow.
+    protected override System.Numerics.Vector2 MeasureOverride(System.Numerics.Vector2 availableSize)
     {
-        base.Resized();
         // c tiles occupy 108c - 4, and the vertical scrollbar eats 10 more whenever the grid overflows.
-        var columns = Math.Max(1, (int) ((Width - 6) / WolfgateMarkingTile.TileWidth));
-        if (_grid.Columns != columns)
-            _grid.Columns = columns;
+        if (float.IsFinite(availableSize.X))
+        {
+            var columns = Math.Max(1, (int) ((availableSize.X - 6) / WolfgateMarkingTile.TileWidth));
+            if (_grid.Columns != columns)
+                _grid.Columns = columns;
+        }
+
+        return base.MeasureOverride(availableSize);
     }
 
     /// <summary>Rebuilds the tile grid: a "none" tile first, then every marking matching the filter.</summary>

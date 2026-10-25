@@ -211,6 +211,12 @@ public sealed partial class ToggleableClothingSystem : EntitySystem
                 continue;
 
             _inventorySystem.TryUnequip(args.Equipee, part.Value, force: true);
+
+            // WOLFGATE START: whatever the piece replaced goes back on, instead of staying shut inside the piece
+            if (TryComp<AttachedClothingComponent>(part.Key, out var attached)
+                && attached.ClothingContainer?.ContainedEntity is { } stored)
+                _inventorySystem.TryEquip(args.Equipee, stored, part.Value, silent: true, force: true);
+            // WOLFGATE END
         }
     }
 
@@ -285,6 +291,10 @@ public sealed partial class ToggleableClothingSystem : EntitySystem
             return;
 
         if (toggleableComp.LifeStage > ComponentLifeStage.Running)
+            return;
+
+        // WOLFGATE: a suit deleted along with its wearer can't take the piece back
+        if (TerminatingOrDeleted(comp.AttachedUid))
             return;
 
         // As unequipped gets called in the middle of container removal, we cannot call a container-insert without causing issues.
@@ -432,6 +442,18 @@ public sealed partial class ToggleableClothingSystem : EntitySystem
             if (attachedComp.ClothingContainer == null || attachedComp.ClothingContainer.ContainedEntity != null)
                 return;
 
+            // WOLFGATE START: another suit's piece goes back to its suit, and what it covered is kept under this one
+            // A worn suit piece refuses a plain unequip, so this piece never went on and the hat inside the other was lost.
+            if (TryComp<AttachedClothingComponent>(currentClothing, out var otherPiece))
+            {
+                var covered = otherPiece.ClothingContainer?.ContainedEntity;
+                if (!_inventorySystem.TryUnequip(user, parent, slot, force: true))
+                    return;
+                if (covered != null)
+                    _containerSystem.Insert(covered.Value, attachedComp.ClothingContainer);
+            }
+            else
+            // WOLFGATE END
             if (_inventorySystem.TryUnequip(user, parent, slot))
                 _containerSystem.Insert(currentClothing.Value, attachedComp.ClothingContainer);
         }

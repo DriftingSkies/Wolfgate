@@ -139,8 +139,8 @@ public sealed class WolfmedDamageableSystem : EntitySystem
         return ent.Comp.TotalDamage;
     }
 
-    /// <summary>Replaces the entity's damage wholesale and reports a real delta to DamageChangedEvent.</summary>
-    public void SetDamage(Entity<DamageableComponent?> ent, DamageSpecifier damage)
+    /// <summary>Replaces the entity's damage wholesale and reports a real delta to DamageChangedEvent, from the origin if given.</summary>
+    public void SetDamage(Entity<DamageableComponent?> ent, DamageSpecifier damage, EntityUid? origin = null)
     {
         if (!_damageableQuery.Resolve(ent.Owner, ref ent.Comp, false))
             return;
@@ -167,7 +167,7 @@ public sealed class WolfmedDamageableSystem : EntitySystem
             dict[type] = amount;
         }
 
-        _damage.DamageChanged(ent.Owner, ent.Comp, delta.Empty ? null : delta, interruptsDoAfters: false);
+        _damage.DamageChanged(ent.Owner, ent.Comp, delta.Empty ? null : delta, interruptsDoAfters: false, origin: origin);
     }
 
     /// <summary>Zeroes every damage type on the entity.</summary>

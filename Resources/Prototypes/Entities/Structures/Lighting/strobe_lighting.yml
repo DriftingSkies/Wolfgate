@@ -17,6 +17,10 @@
     anchored: true
   - type: Clickable
   - type: InteractionOutline
+  # WOLFGATE START: draw over posters at the same depth instead of flickering with them
+  - type: SpriteSetRenderOrder
+    renderOrder: 1
+  # WOLFGATE END
   - type: Construction
     graph: LightFixture
     node: bulbLight

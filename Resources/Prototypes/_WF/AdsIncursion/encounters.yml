@@ -12,7 +12,7 @@
   start: Manual
   lifetime: Persistent
   category: Threat
-  icon: Flag
+  icon: Drone
   leash: 2000
   manifests: [ WFManifestAdsTech ]
   ships:
@@ -50,7 +50,7 @@
   start: Manual
   lifetime: Persistent
   category: Threat
-  icon: Shield
+  icon: Drone
   ships:
   - key: lead
     navigation: WFCrewNavigationRaider
@@ -81,7 +81,7 @@
   start: Manual
   lifetime: Transient
   category: Threat
-  icon: Shield
+  icon: Drone
   duration: 3600
   ships:
   - key: lead
@@ -113,7 +113,7 @@
   start: Manual
   lifetime: Persistent
   category: Threat
-  icon: Swords
+  icon: Drone
   ships:
   - key: lead
     navigation: WFCrewNavigationRaider
@@ -148,7 +148,7 @@
   start: Manual
   lifetime: Persistent
   category: Threat
-  icon: Skull
+  icon: Drone
   manifests: [ WFManifestAdsTech ]
   ships:
   - key: lead
@@ -184,7 +184,7 @@
   start: Manual
   lifetime: Persistent
   category: Threat
-  icon: Flag
+  icon: Drone
   manifests: [ WFManifestAdsTech ]
   ships:
   - key: lead

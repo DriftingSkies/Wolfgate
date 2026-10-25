@@ -1,0 +1,21 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  parent: CMTileBase
+  id: RMCFloorKutjevoMiscBase
+  name: tiles-cm-default-misc
+
+# Fake wood
+
+- type: tile
+  parent: RMCFloorKutjevoMiscBase
+  id: RMCFloorKutjevoFakeWood0
+  sprite: /Textures/_RMC14/Tiles/kutjevo/fake_wood_0.png
+
+# Plating
+- type: tile
+  parent: CMFloorPlating
+  id: RMCFloorPlatingKutjevo
+  isSubfloor: true
+  sprite: /Textures/_RMC14/Tiles/kutjevo/plating.png
+# WOLFGATE END

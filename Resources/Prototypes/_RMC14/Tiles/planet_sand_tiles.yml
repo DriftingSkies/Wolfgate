@@ -1,0 +1,26 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+# Base
+
+- type: tile
+  abstract: true
+  parent: CMPlanetBase
+  id: RMCPlanetSandBase
+  name: tiles-rmc-planet-auto-sand
+
+# Sand_1
+
+- type: tile
+  parent: RMCPlanetSandBase
+  id: RMCPlanetSandVaradero
+  sprite: /Textures/_RMC14/Tiles/planet/auto_sand/varadero_0.png
+  variants: 8
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+# WOLFGATE END

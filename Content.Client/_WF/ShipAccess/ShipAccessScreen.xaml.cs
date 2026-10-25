@@ -611,11 +611,11 @@ public sealed partial class ShipAccessScreen : BoxContainer
         var row = Row();
         row.AddChild(new Label { Text = person.Name, HorizontalExpand = true, VerticalAlignment = VAlignment.Center, FontColorOverride = Readout });
 
-        if (!person.HasRecord)
+        if (!person.HasRecord || person.Held)
         {
             row.AddChild(new Label
             {
-                Text = Loc.GetString(person.HasCard ? "ship-access-no-record" : "ship-access-no-card"),
+                Text = Loc.GetString(!person.HasCard ? "ship-access-no-card" : !person.HasRecord ? "ship-access-no-record" : "ship-access-held"),
                 StyleClasses = { "LabelSecondaryColor" },
                 VerticalAlignment = VAlignment.Center,
                 Margin = new Thickness(0, 0, 8, 0),
@@ -674,7 +674,8 @@ public sealed partial class ShipAccessScreen : BoxContainer
     /// <summary>
     /// Humanoids within adding range of the console, minus the viewer, anyone carrying this ship's deed and
     /// anyone whose card is listed already. People without a card, or with a card that has no crew record, are
-    /// shown but cannot be added: a door reader can only be given a record key.
+    /// shown but cannot be added: a door reader can only be given a record key. ID cards in the viewer's hands follow,
+    /// so a card can be added without its owner present.
     /// </summary>
     private List<NearbyPerson> FindNearby(WFShipAccessComponent? comp)
     {
@@ -702,10 +703,25 @@ public sealed partial class ShipAccessScreen : BoxContainer
             result.Add(new NearbyPerson(uid, _entManager.GetComponent<MetaDataComponent>(uid).EntityName, hasCard, hasRecord));
         }
 
+        if (local != null)
+        {
+            foreach (var (item, card) in _access.HeldCards(local.Value))
+            {
+                if (_access.IsDeedFor(card, _grid.Value))
+                    continue;
+
+                var hasRecord = _access.TryGetKey(card, out var key);
+                if (hasRecord && comp != null && (_access.TryGetEntry(comp, key, out _) || comp.OwnerKeys.Contains(key)))
+                    continue;
+
+                result.Add(new NearbyPerson(item, _access.CardHolderName(card), true, hasRecord, true));
+            }
+        }
+
         result.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
         return result;
     }
 
-    /// <summary>Someone near the console, and whether they carry a card and whether it has a crew record.</summary>
-    private sealed record NearbyPerson(EntityUid Uid, string Name, bool HasCard, bool HasRecord);
+    /// <summary>Someone near the console, or an ID card in the viewer's hands, and whether it has a card with a crew record.</summary>
+    private sealed record NearbyPerson(EntityUid Uid, string Name, bool HasCard, bool HasRecord, bool Held = false);
 }

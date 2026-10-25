@@ -489,3 +489,42 @@
     layers:
     - state: closed
       map: ["enum.DoorVisualLayers.Base"]
+
+# WOLFGATE(DecorImport) START: ported from Nuclear 14
+- type: entity
+  parent: N14DoorMakeshift
+  id: N14DoorWoodHouseWhiteClean
+  components:
+  - type: Sprite
+    netsync: false
+    sprite: _Nuclear14/Structures/Doors/FalloutDoors/housecleandoor.rsi
+    layers:
+    - state: closed
+      map: ["enum.DoorVisualLayers.Base"]
+
+- type: entity
+  parent: N14DoorWoodSecure
+  id: N14DoorWoodSecureNCR
+  suffix: NCR
+  components:
+  - type: Sprite
+    netsync: false
+    sprite: _Nuclear14/Structures/Doors/FalloutDoors/securedoor_ncr.rsi
+    layers:
+    - state: closed
+      map: ["enum.DoorVisualLayers.Base"]
+  - type: AccessReader
+
+- type: entity
+  parent: N14DoorMetalReinforced
+  id: N14DoorMetalIron
+  components:
+  - type: Construction
+    graph: DoorGraph
+    node: metalDoor
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Doors/FalloutDoors/irondoor.rsi
+    layers:
+    - state: closed
+      map: ["enum.DoorVisualLayers.Base"]
+# WOLFGATE END

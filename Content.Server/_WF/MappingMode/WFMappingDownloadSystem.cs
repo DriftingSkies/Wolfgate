@@ -14,8 +14,8 @@ using Robust.Shared.Utility;
 namespace Content.Server._WF.MappingMode;
 
 /// <summary>
-/// Streams a library version's level files, or its ship grid and vessel prototype, to their owner: one transfer per
-/// file and one download per player, in chunks paced by the client's acknowledgements.
+/// Streams a library version's level files, its ship grid and vessel prototype, or an export package built in memory,
+/// to their owner: one transfer per file and one download per player, in chunks paced by the client's acknowledgements.
 /// </summary>
 public sealed class WFMappingDownloadSystem : EntitySystem
 {
@@ -32,13 +32,16 @@ public sealed class WFMappingDownloadSystem : EntitySystem
     /// <summary>A download whose client acknowledges nothing for this long is dropped.</summary>
     private static readonly TimeSpan StallTimeout = TimeSpan.FromSeconds(30);
 
+    /// <summary>A file a download sends: read from the data folder, or already in memory.</summary>
+    public readonly record struct DownloadFile(string Name, ResPath? Path, byte[]? Bytes);
+
     /// <summary>One player's download: the version's files and where the current one stands.</summary>
-    private sealed class Download(ICommonSession player, string mapName, string version, List<(string Name, ResPath Path)> files)
+    private sealed class Download(ICommonSession player, string mapName, string version, List<DownloadFile> files)
     {
         public readonly ICommonSession Player = player;
         public readonly string MapName = mapName;
         public readonly string Version = version;
-        public readonly List<(string Name, ResPath Path)> Files = files;
+        public readonly List<DownloadFile> Files = files;
 
         public int FileIndex = -1;
         public int TransferId;
@@ -112,7 +115,8 @@ public sealed class WFMappingDownloadSystem : EntitySystem
                 return;
             }
 
-            var download = new Download(player, map.Name, version.Name.Folder, files)
+            var download = new Download(player, map.Name, version.Name.Folder,
+                files.Select(file => new DownloadFile(file.Name, file.Path, null)).ToList())
             {
                 LastActivity = _timing.RealTime,
             };
@@ -130,6 +134,60 @@ public sealed class WFMappingDownloadSystem : EntitySystem
             else
                 _mapping.Notify(player, false, "wf-mapping-mode-download-failed");
         }
+    }
+
+    /// <summary>Whether a player has a download running.</summary>
+    public bool IsDownloading(NetUserId user)
+    {
+        return _downloads.ContainsKey(user);
+    }
+
+    /// <summary>
+    /// Starts sending one in-memory file, such as an export package, as a player's download; false, telling them why,
+    /// when they already have one running or the data is empty or over <see cref="WFMappingDownloadAssembler.MaxFileBytes"/>.
+    /// </summary>
+    public bool TryStartData(ICommonSession player, string mapName, string version, string fileName, byte[] data,
+        string logNote)
+    {
+        if (_downloads.ContainsKey(player.UserId))
+        {
+            _mapping.Notify(player, false, "wf-mapping-mode-download-busy");
+            return false;
+        }
+
+        if (data.Length == 0)
+        {
+            _mapping.Notify(player, false, "wf-mapping-mode-download-empty", ("file", fileName));
+            return false;
+        }
+
+        if (data.Length > WFMappingDownloadAssembler.MaxFileBytes)
+        {
+            _mapping.Notify(player, false, "wf-mapping-mode-download-too-large",
+                ("max", WFMappingDownloadAssembler.MaxFileBytes / (1024 * 1024)));
+            return false;
+        }
+
+        var download = new Download(player, mapName, version, new List<DownloadFile> { new(fileName, null, data) })
+        {
+            LastActivity = _timing.RealTime,
+        };
+
+        _downloads[player.UserId] = download;
+        _adminLog.Add(LogType.Action, LogImpact.Low,
+            $"{player:player} downloads {fileName} of their library map \"{mapName}\" {version} ({logNote}, {data.Length} bytes)");
+        try
+        {
+            NextFile(download);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Starting a mapping export download for {player} failed: {e}");
+            Cancel(player.UserId, "wf-mapping-mode-download-failed");
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -208,10 +266,11 @@ public sealed class WFMappingDownloadSystem : EntitySystem
             return;
         }
 
-        var (name, path) = download.Files[download.FileIndex];
-        byte[]? data;
-        using (var stream = _res.UserData.OpenRead(path))
+        var (name, path, bytes) = download.Files[download.FileIndex];
+        var data = bytes;
+        if (data == null && path is { } file)
         {
+            using var stream = _res.UserData.OpenRead(file);
             data = ReadCapped(stream, WFMappingDownloadAssembler.MaxFileBytes);
         }
 
@@ -261,7 +320,7 @@ public sealed class WFMappingDownloadSystem : EntitySystem
     /// <summary>Sends chunks until <see cref="InFlight"/> are unacknowledged or the file is all sent.</summary>
     private void Pump(Download download)
     {
-        var (name, _) = download.Files[download.FileIndex];
+        var name = download.Files[download.FileIndex].Name;
         while (download.NextChunk < download.ChunkCount && download.NextChunk - download.Acked < InFlight)
         {
             var offset = download.NextChunk * WFMappingDownloadAssembler.ChunkSize;

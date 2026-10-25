@@ -126,6 +126,12 @@ public sealed partial class WFRoundSetupLobbyTest
             await server.WaitAssertion(() =>
             {
                 Assert.That(server.System<WFShipAccessSystem>().TryGetWornCard(body, out card), Is.True);
+                // Crew starts need enclosed deck, so the centre tile must have neighbours.
+                for (var x = -1; x <= 1; x++)
+                {
+                    for (var y = -1; y <= 1; y++)
+                        server.System<SharedMapSystem>().SetTile(replacementGrid, replacement.Grid.Comp, new Vector2i(x, y), replacement.Tile.Tile);
+                }
                 em.EnsureComponent<ShuttleComponent>(replacementGrid);
                 if (faction != WFCrewFaction.None)
                     em.EnsureComponent<CompanyComponent>(replacementGrid).CompanyName = faction.ToString();

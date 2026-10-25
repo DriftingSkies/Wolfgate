@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Frontier
+- files: ["fancywood.png", "versailles.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Frontier at commit https://github.com/new-frontiers-14/frontier-station-14/commit/8a530ced2fd18fa430482245581a32f64f4a435a."
+  source: "https://github.com/new-frontiers-14/frontier-station-14"
+# WOLFGATE END

@@ -70,8 +70,9 @@ namespace Content.Server.Sandbox
 
                 if (_conGroupController.CanAdminPlace(player))
                 {
-                    // WOLFGATE(MappingMode) START: admins who map get the won't-be-saved warning too
+                    // WOLFGATE(MappingMode) START: admins who map get the won't-be-saved warning and tile routing too
                     _wfMapping.WarnPlacement(player, placement);
+                    _wfMapping.RouteAdminPlacement(player, placement);
                     // WOLFGATE END
                     return true;
                 }

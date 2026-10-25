@@ -1,0 +1,8 @@
+# WOLFGATE(DecorImport) START: ported from Panta Rhei
+# mushwood tiles
+- type: stack
+  id: FloorTileMushWood
+  name: tiles-mushwood
+  spawn: FloorTileItemMushWood
+  maxCount: 30
+# WOLFGATE END

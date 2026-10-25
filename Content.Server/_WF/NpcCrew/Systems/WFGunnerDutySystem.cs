@@ -380,6 +380,9 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
     {
         if (ship == grid || TerminatingOrDeleted(ship))
             return null;
+        // A cloaked ship is not seen, even one the crew was sent after.
+        if (EntityManager.System<WFCrewStealthSystem>().ShipUnseen(ship))
+            return null;
         // A player vessel of the crew's faction is fired on only once its own fire has made it an attacker.
         if (_spared.Spared(grid, ship) && !_alerts.FiredShipGuns(grid, crew.Group, ship))
             return null;

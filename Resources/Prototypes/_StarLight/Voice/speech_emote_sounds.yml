@@ -112,8 +112,9 @@
       collection: VulpkaninBarks
     Gasp:
       collection: MaleGasp
+    # WOLFGATE(Avali): Avali deathgasp from Moffstation in place of the human one
     DefaultDeathgasp:
-      collection: MaleDeathGasp
+      path: /Audio/_WF/Avali/avali_deathgasp.ogg
     Crying:
       path: /Audio/_Starlight/Voice/Avali/avali_cry.ogg
 
@@ -141,7 +142,8 @@
       collection: VulpkaninBarks
     Gasp:
       collection: FemaleGasp
+    # WOLFGATE(Avali): Avali deathgasp from Moffstation in place of the human one
     DefaultDeathgasp:
-      collection: FemaleDeathGasp
+      path: /Audio/_WF/Avali/avali_deathgasp.ogg
     Crying:
       path: /Audio/_Starlight/Voice/Avali/avali_cry.ogg

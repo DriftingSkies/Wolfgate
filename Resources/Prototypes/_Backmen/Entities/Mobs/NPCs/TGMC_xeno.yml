@@ -1,0 +1,99 @@
+# WOLFGATE(DecorImport) START: ported from Backmen
+- type: entity
+  id: XenoWall
+  parent: BaseWall
+  suffix: KsenosXeno
+  components:
+  - type: IconSmooth
+    key: xenowalls
+    base: weed
+  - type: Sprite
+    sprite: Backmen/test/base/rsi/Textures/Structures/xeno/wall.rsi
+  - type: Icon
+    sprite: Backmen/test/base/rsi/Textures/Structures/xeno/wall.rsi
+  - type: Damageable
+    damageModifierSet: XenoSlimeModifier
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 130
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Occluder
+  - type: Airtight
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 100
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Temperature
+  - type: Flammable
+    fireSpread: true #If you walk into incredibly dense, flaming vines, you can expect to burn.
+    damage:
+      types:
+        Heat: 3
+  - type: Reactive
+    groups:
+      Flammable: [Touch]
+      Extinguish: [Touch]
+  - type: FireVisuals
+    sprite: Effects/fire.rsi
+    normalState: 1
+
+- type: entity
+  id: XenoDoor
+  parent: BaseMaterialDoor
+  components:
+  - type: Sprite
+    sprite: Backmen/test/base/rsi/Textures/Structures/xeno/xenodoor.rsi
+    layers:
+    - state: closed
+      map: ["enum.DoorVisualLayers.Base"]
+  - type: Door
+    bumpOpen: true
+    clickOpen: true
+    canCrush: false
+    canPry: false
+    closeTimeOne: 0.4
+    closeTimeTwo: 0.4
+    openTimeOne: 0.4
+    openTimeTwo: 0.4
+    openSound:
+      path: /Audio/_WF/Xenonids/Xeno/alien_resin_move1.ogg
+    closeSound:
+      path: /Audio/_WF/Xenonids/Xeno/alien_resin_move2.ogg
+  - type: Damageable
+    damageModifierSet: XenoSlimeModifier
+  - type: IconSmooth
+    key: xenowalls
+    mode: NoSprite
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Temperature
+  - type: Flammable
+    fireSpread: true #If you walk into incredibly dense, flaming vines, you can expect to burn.
+    damage:
+      types:
+        Heat: 3
+- type: damageModifierSet
+  id: XenoSlimeModifier
+  coefficients:
+    Blunt: 0.2
+    Slash: 2
+    Piercing: 0.2
+    Shock: 1
+# WOLFGATE END

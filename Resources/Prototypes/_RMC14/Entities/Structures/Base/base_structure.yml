@@ -1,0 +1,81 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: BaseStructure
+  id: CMBaseStructure
+  abstract: true
+  placement:
+    mode: SnapgridCenter
+
+- type: entity
+  parent:
+  - CMBaseStructure
+  - CMCorrodible
+  id: CMBaseStructureCorrodible
+  abstract: true
+  placement:
+    mode: SnapgridCenter
+
+- type: entity
+  id: CMCorrodible
+  abstract: true
+
+# BaseWall
+- type: entity
+  abstract: true
+  id: RMCBaseWallInvincibleNoIcon
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    drawdepth: Walls
+  - type: PlacementReplacement
+    key: walls
+  - type: Occluder
+  - type: Airtight
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        density: 1000
+  - type: IsRoof
+  - type: SunShadowCast
+  - type: Tag
+    tags:
+    - Wall
+  - type: Clickable
+
+- type: entity
+  abstract: true
+  parent: RMCBaseWallInvincibleNoIcon
+  id: CMBaseWallInvincible
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Icon
+    state: full
+
+- type: entity
+  abstract: true
+  parent: CMBaseWallInvincible
+  id: CMBaseWall
+  components:
+  - type: Damageable
+  - type: ExaminableDamage
+    messages: RMCWallMessages
+  - type: Clickable
+  - type: Appearance
+# WOLFGATE END

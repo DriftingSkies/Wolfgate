@@ -9,7 +9,7 @@
 - type: entity
   id: JukeboxWallmount
   suffix: Wallmount
-  parent: [ BaseStructureWallmount, Jukebox ]
+  parent: [ BaseStructureWallmountOld, Jukebox ] #WOLFGATE(Resprites): Needed
   components:
   - type: Sprite
     sprite: _NF/Structures/Machines/jukebox.rsi

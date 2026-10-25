@@ -268,6 +268,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewShipProfileComponent.cs`](Components/WFCrewShipProfileComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSpawnPointComponent.cs`](Components/WFCrewSpawnPointComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewSuitUpComponent.cs`](Components/WFCrewSuitUpComponent.cs)
+- [`Content.Server/_WF/NpcCrew/Components/WFCrewVirtualShipComponent.cs`](Components/WFCrewVirtualShipComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewVoidKitComponent.cs`](Components/WFCrewVoidKitComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFCrewWeaponComponent.cs`](Components/WFCrewWeaponComponent.cs)
 - [`Content.Server/_WF/NpcCrew/Components/WFGunnerDutyComponent.cs`](Components/WFGunnerDutyComponent.cs)
@@ -304,6 +305,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewEvaSystem.cs`](Systems/WFCrewEvaSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewFriendlyFireSystem.cs`](Systems/WFCrewFriendlyFireSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewObjectiveSystem.cs`](Systems/WFCrewObjectiveSystem.cs)
+- [`Content.Server/_WF/NpcCrew/Systems/WFCrewObjectiveSystem.Virtual.cs`](Systems/WFCrewObjectiveSystem.Virtual.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewPlannerSystem.cs`](Systems/WFCrewPlannerSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewRammingSystem.cs`](Systems/WFCrewRammingSystem.cs)
 - [`Content.Server/_WF/NpcCrew/Systems/WFCrewRoutineSystem.cs`](Systems/WFCrewRoutineSystem.cs)
@@ -363,6 +365,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFBodyToolTest.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFBodyToolTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewSuitHelmetTest.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewSuitHelmetTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Arena.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Arena.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.AuditCombat.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.AuditCombat.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.AuditNavigation.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.AuditNavigation.cs)

@@ -371,7 +371,8 @@ public sealed class ChatTabsTest : InteractionTest
 
             // The popped-out log still fills and still follows the tabs.
             Say(ChatChannel.OOC, "after");
-            Assert.That(_log.EntryCount, Is.EqualTo(2));
+            Assert.That(_chat.History.Select(h => h.Msg.Message), Is.SupersetOf(new[] { "before", "after" }));
+            Assert.That(_log.EntryCount, Is.EqualTo(_chat.History.Count));
             _tabs.Select(Radio);
             Assert.That(_log.EntryCount, Is.Zero);
             _tabs.Select(All);

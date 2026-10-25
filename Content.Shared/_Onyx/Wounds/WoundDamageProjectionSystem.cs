@@ -105,7 +105,7 @@ public sealed partial class WoundDamageProjectionSystem : EntitySystem
         _pain.ApplyDamage(part, delta, component); // WOLFGATE(Wolfmed): D11, the post-write event carries the delta.
 
         if (component.Body is { } body)
-            RefreshBodyDamage(body);
+            RefreshBodyDamage(body, args.Origin); // WOLFGATE(Wolfmed): the body's damage event names who hit the part, for kill credit.
         else
             RefreshDetachedDamage(GetDetachedRoot(part));
     }
@@ -159,7 +159,7 @@ public sealed partial class WoundDamageProjectionSystem : EntitySystem
         Dirty(root, visual);
     }
 
-    public void RefreshBodyDamage(EntityUid body)
+    public void RefreshBodyDamage(EntityUid body, EntityUid? origin = null) // WOLFGATE(Wolfmed): origin, for kill credit.
     {
         if (!_net.IsServer || !HasComp<WoundHostComponent>(body) || !_projecting.Add(body))
             return;
@@ -199,7 +199,7 @@ public sealed partial class WoundDamageProjectionSystem : EntitySystem
                 }
             }
 
-            _damage.SetDamage(body, total);
+            _damage.SetDamage(body, total, origin); // WOLFGATE(Wolfmed): origin, for kill credit.
             Dirty(body, visual);
         }
         finally

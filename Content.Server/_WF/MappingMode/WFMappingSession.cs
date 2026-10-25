@@ -54,6 +54,12 @@ public sealed class WFMappingSession(int id, string code, string name, NetUserId
 
     /// <summary>The PNG template shared with every member, if any.</summary>
     public WFMappingSessionTemplate? Template;
+
+    /// <summary>The live test running on the session, if any.</summary>
+    public Test.WFMappingTest? Test;
+
+    /// <summary>Game time before which no new live test may start, after the last one ended.</summary>
+    public TimeSpan TestCooldownUntil;
 }
 
 /// <summary>Raised when a player stops being a member of a session: they left, were kicked or it closed.</summary>

@@ -108,6 +108,42 @@
     RubberStampMime: 1 # Frontier
     ClothingHeadSanabi: 1 # Goobstation
     ClothingNeckCloakSanabi: 1 # Goobstation
+    # WOLFGATE(ClownCosmetics) START: stock the ClownCosmetics clown and mime clothing
+    WFClothingHeadHatCircusClown: 2
+    WFClothingUniformCircusClown: 2
+    WFClothingUniformJokester: 2
+    WFClothingOuterCoatJokester: 2
+    WFClothingUniformJesterEvil: 2
+    WFClothingHeadJesterEvilHat: 2
+    WFClothingNeckRuffle: 2
+    WFClothingMaskClownNose: 2
+    WFClothingShoesCircus: 2
+    WFClothingShoesJokester: 2
+    WFClothingShoesJesterEvilJanglers: 2
+    WFClothingHeadHatMimeBowler: 2
+    WFClothingOuterCoatPufferMime: 2
+    WFClothingUniformJumpsuitMimeCropped: 2
+    WFClothingUniformJumpskirtMimeCropped: 2
+    WFClothingUniformJumpsuitMimeNouveau: 2
+    WFClothingUniformJumpskirtMimeNouveau: 2
+    WFClothingShoesMimeBoots: 2
+    WFCandyClownUniformSuit: 2
+    WFStripedClownUniformSuit: 2
+    WFSpottedClownUniformSuit: 2
+    WFClothingUniformJumpsuitPerformerClown: 2
+    WFClothingUniformJumpskirtPerformerClown: 2
+    WFClothingUniformJumpsuitClownFormal: 2
+    WFClothingUniformJumpskirtClownFormal: 2
+    WFClothingUniformJumpsuitPerformerMime: 2
+    WFClothingUniformJumpskirtPerformerMime: 2
+    WFClothingUniformJumpsuitMimeSuaveWhite: 2
+    WFClothingUniformJumpsuitMimeSuaveBlack: 2
+    WFMimeFrillsUniformSuit: 2
+    WFClothingMaskSusMime: 2
+    WFClothingUnderSocksMime: 2
+    WFCoolCoyoteClothesSexyclown: 2
+    WFCoolCoyoteClothesSexymime: 2
+    # WOLFGATE END
   contrabandInventory:
     ClothingHeadHatRichard: 1
     ToyFigurineBoxer: 1

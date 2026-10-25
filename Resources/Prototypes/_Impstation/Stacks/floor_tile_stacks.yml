@@ -1,0 +1,25 @@
+# WOLFGATE(DecorImport) START: ported from Impstation
+- type: stack
+  id: FloorTileApid
+  name: stack-apid-hex-tile
+  spawn: FloorTileItemApid
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCardboard
+  name: stack-cardboard-floor-tile
+  spawn: FloorTileItemCardboard
+  maxCount: 30
+
+- type: stack
+  id: FloorTileDecapoid
+  name: stack-apid-hex-tile
+  spawn: FloorTileItemDecapoid
+  maxCount: 30
+
+- type: stack
+  id: FloorTileDecapoidFancy
+  name: stack-apid-hex-tile
+  spawn: FloorTileItemDecapoidFancy
+  maxCount: 30
+# WOLFGATE END

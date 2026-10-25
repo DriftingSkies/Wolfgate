@@ -1,0 +1,47 @@
+- type: entity
+  parent: BaseMaterialDoorNavMap
+  id: CMDoorAncientTempleDoor
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Doors/MaterialDoors/ancient_temple_door.rsi
+  - type: Door
+    openingAnimationTime: 1.7
+    closingAnimationTime: 1.7
+    openTimeOne: 1.13
+    openTimeTwo: 0.57
+    closeTimeOne: 0.57
+    closeTimeTwo: 1.13
+
+- type: entity
+  parent: BaseMaterialDoorNavMap
+  id: GoonDoorDoorOffice
+  components:
+  - type: Construction
+    graph: DoorGraph
+    node: woodDoor
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Doors/MaterialDoors/door_office.rsi
+  - type: Door
+    openingAnimationTime: 0.7
+    closingAnimationTime: 0.7
+    openTimeOne: 0.47
+    openTimeTwo: 0.23
+    closeTimeOne: 0.23
+    closeTimeTwo: 0.47
+
+- type: entity
+  parent: BaseMaterialDoorNavMap
+  id: GoonDoorDoorWood
+  components:
+  - type: Construction
+    graph: DoorGraph
+    node: woodDoor
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Doors/MaterialDoors/door_wood.rsi
+  - type: Door
+    openingAnimationTime: 0.7
+    closingAnimationTime: 0.7
+    openTimeOne: 0.47
+    openTimeTwo: 0.23
+    closeTimeOne: 0.23
+    closeTimeTwo: 0.47

@@ -827,7 +827,8 @@ public sealed class WolfmedBurnScenarioTest : WolfmedGameTest
         await Server.WaitPost(() => SEntMan.System<FlammableSystem>().SetFireStacks(a, 1, ignite: true));
 
         // The pain shock (130) sits just past the Downed line (128.25), so its two-second stun, which cancels every
-        // action, starts with the fall or with the next burn up to a second later. Wait for the stun, not a time.
+        // action, starts with the fall or with a later burn. Poll until the body is not stunned and resist on that
+        // same tick: nothing runs in between, so a stun that is still to come cannot get in first.
         var stunned = true;
         for (var i = 0; i < 25 && stunned; i++)
         {

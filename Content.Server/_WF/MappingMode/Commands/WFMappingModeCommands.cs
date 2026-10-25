@@ -9,6 +9,7 @@ using Robust.Server.Player;
 using Robust.Shared.Console;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Server._WF.MappingMode.Commands;
 
@@ -42,6 +43,7 @@ public abstract partial class WFMappingModeCommandBase : LocalizedEntityCommands
 public sealed partial class WFMappingModeListCommand : WFMappingModeCommandBase
 {
     [Dependency] private IPlayerManager _players = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override string Command => "wf_mappingmode_list";
 
@@ -69,6 +71,14 @@ public sealed partial class WFMappingModeListCommand : WFMappingModeCommandBase
                 ("maps", Mapping.SessionMaps(session.Id).Count),
                 ("dirty", session.Dirty ? "yes" : "no"),
                 ("saved", session.LastSaved?.ToString("u") ?? "-")));
+
+            if (session.Test is { } test)
+            {
+                shell.WriteLine(Loc.GetString("cmd-wf_mappingmode_list-testing",
+                    ("minutes", (int) (_timing.CurTime - test.Started).TotalMinutes),
+                    ("testers", string.Join(", ", test.Testers.Keys.Select(user =>
+                        _players.TryGetPlayerData(user, out var data) ? data.UserName : user.ToString())))));
+            }
         }
     }
 

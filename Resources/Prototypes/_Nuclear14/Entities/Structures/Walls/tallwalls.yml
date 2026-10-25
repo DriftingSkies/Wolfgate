@@ -1,0 +1,152 @@
+# WOLFGATE(DecorImport) START: ported from Nuclear 14
+- type: entity
+  parent: BaseWall
+  id: N14BaseWallTall
+  suffix: tall
+  abstract: true
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+  - type: SpriteFade
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Rock
+
+- type: entity
+  parent: N14BaseWallTall
+  id: N14BaseWallTallMetal
+  abstract: true
+  components:
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: StructuralMetallic
+
+- type: entity
+  parent: N14BaseWallTall
+  id: N14BaseWallTallMetalStrong
+  abstract: true
+  components:
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: RadiationBlocker
+    resistance: 10
+
+- type: entity
+  parent: N14BaseWallTall
+  id: N14WallAdobeTall
+  suffix: tall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/adobe.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/adobe.rsi
+  - type: IconSmooth
+    key: walls
+    base: talladobe
+
+- type: entity
+  parent: N14BaseWallTallMetalStrong
+  id: N14WallBunkerTall
+  suffix: tall
+  components:
+  - type: StaticPrice
+    price: 115
+  - type: Construction
+    graph: Girder
+    node: reinforcedWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/bunker.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/bunker.rsi
+  - type: IconSmooth
+    key: walls
+    base: tallbunker
+
+- type: entity
+  parent: N14BaseWallTall
+  id: N14WallCombTall
+  suffix: tall
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/comb.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/comb.rsi
+  - type: IconSmooth
+    key: walls
+    base: tallcomb
+
+- type: entity
+  parent: N14BaseWallTall
+  id: N14WallDungeonAltTall
+  suffix: tall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/dungeonalt.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/dungeonalt.rsi
+  - type: IconSmooth
+    key: walls
+    base: talldungeonalt
+
+- type: entity
+  parent: N14BaseWallTallMetal
+  id: N14WallPrisonTall
+  suffix: tall
+  components:
+  - type: Construction
+    graph: Girder
+    node: wall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/prison.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/prison.rsi
+  - type: IconSmooth
+    key: walls
+    base: tallprison
+
+- type: entity
+  parent: N14BaseWallTallMetalStrong
+  id: N14WallVaultRustTall
+  suffix: tall
+  components:
+  - type: StaticPrice
+    price: 115
+  - type: Construction
+    graph: Girder
+    node: reinforcedWallRust
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/rustvault.rsi
+  - type: Icon
+    sprite: _Nuclear14/Structures/Walls/ms13/tall/rustvault.rsi
+  - type: IconSmooth
+    key: walls
+    base: tallrustvault
+# WOLFGATE END

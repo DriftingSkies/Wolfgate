@@ -132,7 +132,7 @@ public sealed partial class WFRoundSetupSystem
     {
         var saved = GetSavedSetups(host.UserId).FirstOrDefault(entry => entry.Id == id);
         if (saved == null || !ValidSavedSetup(saved) || _lobbies.Count >= 64 ||
-            saved.Scenario == WFRoundScenario.Crashlanded && !_crash.IsAvailable ||
+            !IsScenarioAvailable(saved.Scenario) ||
             WFRoundSetupPolicy.IsShip(saved.Scenario) && saved.Vessel != null && !_ships.IsVesselAvailable(saved.Vessel, saved.Faction, saved.Job != null && IsJobAllowed(host, saved.Job) ? saved.Job : null) ||
             saved.Scenario == WFRoundScenario.FactionShip && (!CanCreateFaction(host, saved.Faction) || saved.Job != null && !IsJobAllowed(host, saved.Job)))
             return false;
@@ -166,7 +166,7 @@ public sealed partial class WFRoundSetupSystem
 
     private static bool ValidSavedSetup(WFSavedSetup saved) =>
         saved.Id is >= 1 and <= WFRoundSetupPolicy.MaximumSavedSetups &&
-        saved.Scenario is WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip &&
+        WFRoundSetupPolicy.IsCrewScenario(saved.Scenario) &&
         (saved.Scenario == WFRoundScenario.FactionShip ? WFFactionCrewPolicy.All.Contains(saved.Faction) : saved.Faction == WFCrewFaction.None) &&
         saved.ShipName != null && WFRoundSetupPolicy.TryNormalizeTitle(saved.ShipName, out _) && Enum.IsDefined(saved.ShipStart) && Enum.IsDefined(saved.Access) &&
         saved.Name != null && saved.Title != null && saved.JobTitle != null && saved.Description != null &&

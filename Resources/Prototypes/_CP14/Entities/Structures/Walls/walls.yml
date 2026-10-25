@@ -1,0 +1,64 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  abstract: true
+  parent: BaseWall
+  id: CP14BaseWall
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Transform
+    noRot: true
+  - type: Sprite
+    drawdepth: Mobs
+  - type: SpriteFade
+  - type: IconSmooth
+    key: CP14wall
+    base: stone
+  - type: Icon
+    state: full
+  - type: PlacementReplacement
+    key: walls
+
+- type: entity
+  id: CP14WallWoodenPalisade
+  parent:
+  - CP14BaseWall
+  - CP14BaseFlammableSpreading
+  components:
+  - type: StaticPrice
+    price: 30
+  - type: Construction
+    graph: Barricade
+    node: woodWall
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/wooden_palisad.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/wooden_palisad.rsi
+  - type: IconSmooth
+    key: CP14palisade
+    base: wood
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Tag
+  - type: Occluder
+    enabled: false
+  - type: Airtight
+    airBlocked: false
+# WOLFGATE END

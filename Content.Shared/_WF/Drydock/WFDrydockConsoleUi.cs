@@ -94,11 +94,23 @@ public sealed class WFDrydockConsoleState : BoundUserInterfaceState
     /// <summary>Whether the ship in the berth may be broken here.</summary>
     public bool Breakable;
 
+    /// <summary>Localized reason the ship in the berth can't be broken, or null.</summary>
+    public string? BreakRefusal;
+
     /// <summary>Whether the running job breaks the ship.</summary>
     public bool Breaking;
 
     /// <summary>Materials breaking the ship would recover, within what is left of its caps.</summary>
     public Dictionary<string, int> BreakYield = new();
+
+    /// <summary>Whether this console is a chop shop: it breaks hulls and sells no work.</summary>
+    public bool BreakOnly;
+
+    /// <summary>Thalers a chop shop pays for breaking the whole ship.</summary>
+    public int BreakCash;
+
+    /// <summary>Whether breaking the ship posts a warrant, unless its deed is in the breaker's name.</summary>
+    public bool BreakWarrant;
 
     /// <summary>Whether the console's berth lights are on.</summary>
     public bool BerthLightsOn;

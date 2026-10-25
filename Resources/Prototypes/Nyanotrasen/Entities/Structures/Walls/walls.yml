@@ -1,0 +1,77 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- type: entity
+  parent: BaseWall
+  id: WallPaper
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: Nyanotrasen/Structures/walls/paper.rsi
+  - type: Icon
+    sprite: Nyanotrasen/Structures/walls/paper.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300 # #excess damage (nuke?). avoid computational cost of spawning entities.
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: IconSmooth
+    key: walls
+    base: paperwall
+
+# TODO: construction graph, material, better sounds
+- type: entity
+  parent: BaseWall
+  id: WallDrywall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: Nyanotrasen/Structures/walls/drywall.rsi
+  - type: Icon
+    sprite: Nyanotrasen/Structures/walls/drywall.rsi
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: IconSmooth
+    key: walls
+    base: drywall
+  - type: Tag
+    tags:
+      - Wall
+# WOLFGATE END

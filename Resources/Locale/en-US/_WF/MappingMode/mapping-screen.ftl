@@ -134,6 +134,8 @@ wf-mapping-screen-layer-subfloor = Subfloor (pipes, cables)
 wf-mapping-screen-layer-decals = Decals
 wf-mapping-screen-layer-markers = Markers
 wf-mapping-screen-layer-lights = Lighting
+wf-mapping-screen-layer-worldgrid = World grid
+wf-mapping-screen-layer-perspective = Depth perspective (lower levels smaller)
 wf-mapping-screen-layers-note = Only you see these. Leaving the session puts them back.
 
 wf-mapping-screen-keys-modes = Modes

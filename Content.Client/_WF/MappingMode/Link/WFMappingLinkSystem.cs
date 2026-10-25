@@ -131,6 +131,8 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
         UpdateOverlay();
         if (shown)
             RequestSnapshot(force: true);
+
+        SnapshotChanged?.Invoke();
     }
 
     public void SetTool(WFMappingLinkTool tool)
@@ -458,6 +460,30 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
         _snapshotMap = map.Value;
         _snapshot.Clear();
         _snapshot.AddRange(ev.Links);
+        SnapshotChanged?.Invoke();
+    }
+
+    /// <summary>Raised when a links snapshot arrives or the Links layer is switched.</summary>
+    public event Action? SnapshotChanged;
+
+    /// <summary>
+    /// What the Links layer has to draw on the viewed level: the snapshot's signal links, when it is for this level,
+    /// and the device lists the client knows there.
+    /// </summary>
+    public (int Links, int Lists) CountOnViewedLevel()
+    {
+        var mapId = _eye.CurrentEye.Position.MapId;
+        var map = _map.GetMapOrInvalid(mapId);
+        var links = map.IsValid() && map == _snapshotMap ? _snapshot.Count : 0;
+        var lists = 0;
+        var query = AllEntityQuery<DeviceListComponent, TransformComponent>();
+        while (query.MoveNext(out _, out var list, out var xform))
+        {
+            if (xform.MapID == mapId && list.Devices.Count > 0)
+                lists++;
+        }
+
+        return (links, lists);
     }
 
     /// <summary>The sinks a source links to in the snapshot.</summary>

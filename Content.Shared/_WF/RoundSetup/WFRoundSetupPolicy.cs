@@ -14,6 +14,18 @@ public static class WFRoundSetupPolicy
     /// <summary>Both independent and faction crews use the ship preparation flow.</summary>
     public static bool IsShip(WFRoundScenario scenario) => scenario is WFRoundScenario.Ship or WFRoundScenario.FactionShip;
 
+    /// <summary>Scenarios a player crew can be created with.</summary>
+    public static bool IsCrewScenario(WFRoundScenario scenario) =>
+        scenario is WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip or WFRoundScenario.Doomed;
+
+    /// <summary>The difficulty a scenario's card shows.</summary>
+    public static WFScenarioDifficulty Difficulty(WFRoundScenario scenario) => scenario switch
+    {
+        WFRoundScenario.Crashlanded => WFScenarioDifficulty.VeryHard,
+        WFRoundScenario.Doomed => WFScenarioDifficulty.Impossible,
+        _ => WFScenarioDifficulty.Normal,
+    };
+
     /// <summary>Faction ships use their own base; civilian ships use the central station.</summary>
     public static bool IsShipStartAllowed(WFShipStartLocation location, WFCrewFaction faction) => faction switch
     {

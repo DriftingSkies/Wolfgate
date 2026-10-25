@@ -1,0 +1,36 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- files: ["digital.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Adventure Time MRP Server"
+  source: "https://github.com/AdventureTimeSS14/space_station_ADT"
+
+- files: ["digitalred.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Adventure Time MRP Server"
+  source: "https://github.com/AdventureTimeSS14/space_station_ADT"
+
+- files: ["digitalblue.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Adventure Time MRP Server"
+  source: "https://github.com/AdventureTimeSS14/space_station_ADT"
+
+- files: ["cultfire.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "SS1984"
+  source: "https://github.com/ss220-space/Paradise"
+
+- files: ["culthell.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "SS1984"
+  source: "https://github.com/ss220-space/Paradise"
+
+- files: ["carpetliminal.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Adventure Time MRP Server"
+  source: "https://github.com/AdventureTimeSS14/space_station_ADT"
+
+- files: ["hierophant_floor.png"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from ADT at commit https://github.com/AdventureTimeSS14/space_station_ADT/commit/f8eddb59ad901c9165e443d9efe9b05c565ff106."
+  source: "https://github.com/AdventureTimeSS14/space_station_ADT"
+# WOLFGATE END

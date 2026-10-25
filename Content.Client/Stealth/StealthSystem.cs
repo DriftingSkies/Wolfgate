@@ -12,6 +12,7 @@ public sealed partial class StealthSystem : SharedStealthSystem
 {
     [Dependency] private IPrototypeManager _protoMan = default!;
     [Dependency] private SharedTransformSystem _transformSystem = default!;
+    [Dependency] private SpriteSystem _sprite = default!; // WOLFGATE: post-shader flags are set through SpriteSystem since engine 291
 
     private ShaderInstance _shader = default!;
 
@@ -41,9 +42,12 @@ public sealed partial class StealthSystem : SharedStealthSystem
             return;
 
         sprite.Color = Color.White;
-        sprite.PostShader = enabled ? _shader : null;
-        sprite.GetScreenTexture = false; // WOLFGATE(Stealth): the z-level safe shader never reads the screen copy.
-        sprite.RaiseShaderEvent = enabled;
+        // WOLFGATE START: engine 291 ignores the sprite-wide GetScreenTexture/RaiseShaderEvent; they are per post-shader now
+        // upstream original: sprite.PostShader = enabled ? _shader : null; sprite.GetScreenTexture = enabled; sprite.RaiseShaderEvent = enabled;
+        sprite.PostShader = null;
+        if (enabled)
+            _sprite.SetPostShader(sprite, new SpriteComponent.PostShaderArgs("Stealth", _shader) { GetScreenTexture = true, RaiseShaderEvent = true });
+        // WOLFGATE END
 
         if (!enabled)
         {

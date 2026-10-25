@@ -1,0 +1,62 @@
+# WOLFGATE(DecorImport) START: ported from White Dream
+- type: entity
+  parent: FloorTileItemSteel
+  id: FloorTileItemGlassFrameSteel
+  components:
+  - type: Sprite
+    state: glass-frame-steel
+    sprite: _White/Objects/Tiles/tile.rsi
+  - type: Item
+    sprite: _White/Objects/Tiles/tile.rsi
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorGlassFrameSteel
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 5
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+          params:
+            volume: -5
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: FloorTileItemGlassFrameSteel
+  id: FloorTileItemGlassFrameDark
+  components:
+  - type: Sprite
+    state: glass-frame-dark
+    sprite: _White/Objects/Tiles/tile.rsi
+  - type: Item
+    sprite: _White/Objects/Tiles/tile.rsi
+  - type: FloorTile
+    outputs:
+    - Plating
+    - FloorGlassFrameDark
+
+- type: entity
+  parent: FloorTileItemGlassFrameSteel
+  id: FloorTileItemGlassFrameWhite
+  components:
+  - type: Sprite
+    state: glass-frame-white
+    sprite: _White/Objects/Tiles/tile.rsi
+  - type: Item
+    sprite: _White/Objects/Tiles/tile.rsi
+  - type: FloorTile
+    outputs:
+    - Plating
+    - FloorGlassFrameWhite
+# WOLFGATE END

@@ -10,12 +10,13 @@ using Robust.Shared.Map;
 namespace Content.IntegrationTests.Tests._WF.Weapons;
 
 /// <summary>
-/// A CHARON linked to an ammo loader takes the next slug from it after firing.
+/// A single-round ship gun linked to an ammo loader takes the next round from it after firing.
 /// </summary>
 public sealed class WFLoaderAutoFeedTest
 {
-    [Test]
-    public async Task CharonReloadsFromLinkedLoader()
+    [TestCase("WeaponTurretCharonReload", "CharonSlugAmmo")]
+    [TestCase("WeaponTurretR300", "R300ShellHE")]
+    public async Task ReloadsFromLinkedLoader(string gunProto, string ammoProto)
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -32,7 +33,7 @@ public sealed class WFLoaderAutoFeedTest
 
         await server.WaitAssertion(() =>
         {
-            gun = entMan.SpawnEntity("WeaponTurretCharonReload", map.GridCoords);
+            gun = entMan.SpawnEntity(gunProto, map.GridCoords);
             loader = entMan.SpawnEntity("AmmoLoader", map.GridCoords);
             if (!entMan.GetComponent<TransformComponent>(loader).Anchored)
                 xforms.AnchorEntity(loader);
@@ -41,14 +42,14 @@ public sealed class WFLoaderAutoFeedTest
             links.SaveLinks(null, loader, gun, new List<(string, string)> { ("AmmoLoaderLoad", "SpaceArtilleryLoad") });
 
             var loaderComp = entMan.GetComponent<AmmoLoaderComponent>(loader);
-            Assert.That(containers.Insert(entMan.SpawnEntity("CharonSlugAmmo", map.GridCoords), loaderComp.Container));
+            Assert.That(containers.Insert(entMan.SpawnEntity(ammoProto, map.GridCoords), loaderComp.Container));
 
             var ammo = entMan.GetComponent<BallisticAmmoProviderComponent>(gun);
             Assert.That(ammo.Count, Is.EqualTo(1));
 
             var gunComp = entMan.GetComponent<GunComponent>(gun);
             guns.AttemptShoot(gun, gun, gunComp, new EntityCoordinates(map.MapUid, new System.Numerics.Vector2(0, 50)));
-            Assert.That(ammo.Count, Is.EqualTo(0), "the shot didn't use the chambered slug");
+            Assert.That(ammo.Count, Is.EqualTo(0), "the shot didn't use the chambered round");
         });
 
         await pair.RunTicksSync(2);

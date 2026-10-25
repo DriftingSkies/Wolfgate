@@ -1,0 +1,136 @@
+# WOLFGATE(DecorImport) START: ported from Nuclear14
+# Metal
+
+- type: stack
+  id: FloorTileMetalBlue
+  name: stack-metal-blue
+  spawn: FloorTileItemMetalBlue
+
+- type: stack
+  id: FloorTileMetalBlueSolid
+  name: stack-metal-blue-solid
+  spawn: FloorTileItemMetalBlueSolid
+
+- type: stack
+  id: FloorTileMetalGreen
+  name: stack-metal-green
+  spawn: FloorTileItemMetalGreen
+
+- type: stack
+  id: FloorTileMetalGreenSolid
+  name: stack-metal-green-solid
+  spawn: FloorTileItemMetalGreenSolid
+
+- type: stack
+  id: FloorTileMetalGrey
+  name: stack-metal-grey
+  spawn: FloorTileItemMetalGrey
+
+- type: stack
+  id: FloorTileMetalGreySolid
+  name: stack-metal-grey-solid
+  spawn: FloorTileItemMetalGreySolid
+
+- type: stack
+  id: FloorTileMetalGreyDark
+  name: stack-metal-grey-dark
+  spawn: FloorTileItemMetalGreyDark
+
+- type: stack
+  id: FloorTileMetalGreyDarkSolid
+  name: stack-metal-grey-dark-solid
+  spawn: FloorTileItemMetalGreyDarkSolid
+
+- type: stack
+  id: FloorTileMetalPurple
+  name: stack-metal-purple
+  spawn: FloorTileItemMetalPurple
+
+- type: stack
+  id: FloorTileMetalPurpleSolid
+  name: stack-metal-purple-solid
+  spawn: FloorTileItemMetalPurpleSolid
+
+- type: stack
+  id: FloorTileMetalRed
+  name: stack-metal-red
+  spawn: FloorTileItemMetalRed
+
+- type: stack
+  id: FloorTileMetalRedSolid
+  name: stack-metal-red-solid
+  spawn: FloorTileItemMetalRedSolid
+
+- type: stack
+  id: FloorTileMetalTeal
+  name: stack-metal-teal
+  spawn: FloorTileItemMetalTeal
+
+- type: stack
+  id: FloorTileMetalTealSolid
+  name: stack-metal-teal-solid
+  spawn: FloorTileItemMetalTealSolid
+
+- type: stack
+  id: FloorTileMetalWhite
+  name: stack-metal-white
+  spawn: FloorTileItemMetalWhite
+
+- type: stack
+  id: FloorTileMetalWhiteSolid
+  name: stack-metal-white-solid
+  spawn: FloorTileItemMetalWhiteSolid
+
+- type: stack
+  id: FloorTileMetalYellow
+  name: stack-metal-yellow
+  spawn: FloorTileItemMetalYellow
+
+- type: stack
+  id: FloorTileMetalYellowSolid
+  name: stack-metal-yellow-solid
+  spawn: FloorTileItemMetalYellowSolid
+
+- type: stack
+  id: FloorTileMetalFreezer
+  name: stack-metal-freezer
+  spawn: FloorTileItemMetalFreezer
+
+# Other
+
+- type: stack
+  id: FloorTileWoodOak
+  name: stack-wood-oak
+  spawn: FloorTileItemWoodOak
+
+- type: stack
+  id: FloorTileWoodHouse
+  name: stack-wood-house
+  spawn: FloorTileItemWoodHouse
+
+- type: stack
+  id: FloorTileWoodMaple
+  name: stack-wood-maple
+  spawn: FloorTileItemWoodMaple
+
+# MS13
+- type: stack
+  id: FloorTileMetalIndustrial
+  name: stack-metal-industrial
+  spawn: FloorTileItemMetalIndustrial
+
+- type: stack
+  id: FloorTileMetalMS13
+  name: stack-metal-ms13
+  spawn: FloorTileItemMetalMS13
+
+- type: stack
+  id: FloorTileMetalGrate
+  name: stack-metal-grate
+  spawn: FloorTileItemMetalGrate
+
+- type: stack
+  id: FloorTileMetalSolid
+  name: stack-metal-solid
+  spawn: FloorTileItemMetalSolid
+# WOLFGATE END

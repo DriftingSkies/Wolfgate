@@ -144,8 +144,28 @@ public sealed partial class WFDrydockJobComponent : Component
     /// <summary>Ship's name, kept for the notice once a broken hull is gone.</summary>
     public string ShipName = string.Empty;
 
-    /// <summary>Grid the drydock works from, reported as attacking a ship it breaks.</summary>
+    /// <summary>Vessel a break is blamed on: the breaker's, or null when they have none.</summary>
     public EntityUid? Attacker;
+
+    /// <summary>Who started a break, reported as attacking the ship in person.</summary>
+    public EntityUid? Breaker;
+
+    /// <summary>Thalers a chop-shop break pays for the whole hull, fixed when it starts.</summary>
+    [ViewVariables]
+    public int CashTotal;
+
+    /// <summary>Thalers a chop-shop break has printed so far.</summary>
+    [ViewVariables]
+    public int CashPaid;
+
+    /// <summary>Work time of every tile in a chop-shop break, which its payout is shared out by.</summary>
+    public float CashWeight;
+
+    /// <summary>Work time of the tiles broken so far.</summary>
+    public float CashWeightDone;
+
+    /// <summary>Stack the latest bills went on, topped up while it lies by the console.</summary>
+    public EntityUid? CashStack;
 
     /// <summary>Materials a break job has credited to its cranes so far.</summary>
     public Dictionary<string, int> Yield = new();

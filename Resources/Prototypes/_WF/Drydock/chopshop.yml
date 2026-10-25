@@ -1,0 +1,113 @@
+# Blackanvil Chop-Shop: an illegal drydock on Anvilhold's layout. Its berths only break ships, and print 80% of the
+# ship's shipyard value in thalers by the console as its tiles come off. Breaking a registered ship or a lawful NPC ship posts
+# a warrant on the breaker. See the Drydock README.
+
+- type: entity
+  parent: WFComputerDrydock
+  id: WFComputerChopShop
+  name: chop-shop console
+  description: A drydock console with its registry uplink cut. It only breaks ships, and pays for what comes off them.
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: shipyard
+    - map: ["computerLayerKeys"]
+      state: blackmarket_key
+  - type: WFDrydockConsole
+    refits: []
+  # Break yields only mark the console as one that breaks hulls; the chop shop pays in thalers instead.
+  - type: WFDrydockMaterialPayment
+    structureYield: 0.02
+    breakDefaultYield: 0.5
+    breakYield:
+      Plastitanium: 0.05
+      PdvComposite: 0.05
+    breakTileYield:
+      Steel: 2
+    breakTileSalvage:
+      RawScrap: 200
+  - type: WFDrydockChopShop
+    valueShare: 0.8
+    warrantReward: 15000
+    outlawFactions:
+    - PirateNF
+    - WFAds
+    - WFAshfallReavers
+
+- type: humanoidProfile
+  id: WFDrydockFenceProfile
+  profile:
+    name: Kord Blackanvil
+    species: Dwarf
+    age: 64
+    sex: Male
+    gender: Male
+    appearance:
+      hair: HumanHairBuzzcut
+      hairColor: "#1F1A17"
+      facialHair: HumanFacialHairDwarf
+      facialHairColor: "#1F1A17"
+      eyeColor: "#5A3A2A"
+      skinColor: "#B98462"
+
+- type: startingGear
+  id: WFDrydockFenceGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterVestHazard
+    head: ClothingHeadHatHardhatOrange
+    shoes: ClothingShoesBootsWork
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: traderDialogue
+  id: WFDrydockFenceDialogue
+  greeting: drydock-fence-greeting
+  farewell: drydock-fence-farewell
+  options:
+  - prompt: drydock-fence-prompt-how
+    response: drydock-fence-response-how
+  - prompt: drydock-fence-prompt-law
+    response: drydock-fence-response-law
+  - prompt: drydock-fence-prompt-who
+    response: drydock-fence-response-who
+
+# Dwarf parts over the human trader base, as on the Anvilhold dockmaster. Walk-in only: he answers hails but books
+# no berths.
+- type: entity
+  id: WFDrydockFence
+  parent: WFBaseTrader
+  name: Kord Blackanvil
+  description: The Chop-Shop's dwarf fence. His hazard vest has had its company patch cut off.
+  suffix: Drydock, Fence
+  components:
+  - type: HumanoidAppearance
+    species: Dwarf
+    initial: WFDrydockFenceProfile
+  - type: Body
+    prototype: Dwarf
+  - type: Sprite
+    scale: 1, 0.8
+  - type: Vocal
+    sounds:
+      Male: UnisexDwarf
+      Female: FemaleDwarf
+      Unsexed: UnisexDwarf
+  - type: Speech
+    speechSounds: Bass
+  - type: ReplacementAccent
+    accent: dwarf
+  - type: Loadout
+    prototypes: [ WFDrydockFenceGear ]
+  - type: Trader
+    dialogue: WFDrydockFenceDialogue
+  - type: HailResponder
+    greetings:
+    - drydock-fence-hail-greeting-1
+    - drydock-fence-hail-greeting-2
+    - drydock-fence-hail-greeting-3

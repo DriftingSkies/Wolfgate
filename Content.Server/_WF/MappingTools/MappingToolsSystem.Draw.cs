@@ -136,6 +136,30 @@ public sealed partial class MappingToolsSystem
     }
 
     /// <summary>
+    /// A grid mapping mode sends tiles drawn or pasted off every grid onto, or null for a new grid.
+    /// </summary>
+    private EntityUid? NewGridTarget(ICommonSession session, EntityUid map, Vector2 point)
+    {
+        var target = new WFMappingNewGridTargetEvent(session, map, point);
+        RaiseLocalEvent(target);
+        return target.Grid is { } grid && !TerminatingOrDeleted(grid) && HasComp<MapGridComponent>(grid) ? grid : null;
+    }
+
+    /// <summary>Redraws a draw of map cells as the same cells on a grid.</summary>
+    private void DrawOnGrid(ICommonSession session, MappingToolsDrawEvent ev, EntityUid gridUid, MapId mapId)
+    {
+        var grid = Comp<MapGridComponent>(gridUid);
+        var cells = new List<Vector2i>(ev.Cells.Count);
+        foreach (var cell in ev.Cells)
+        {
+            cells.Add(_map.TileIndicesFor(gridUid, grid, new MapCoordinates(cell + new Vector2(0.5f), mapId)));
+        }
+
+        Draw(session, new MappingToolsDrawEvent(GetNetEntity(gridUid), ev.Op, cells, ev.TileId,
+            ev.TileRotationMirroring, ev.Prototype, ev.Rotation) { Pipes = ev.Pipes });
+    }
+
+    /// <summary>
     /// Tiles drawn off every grid: a new grid over those map cells, made and undone as one root so undo removes it
     /// whole. Checked as a new grid against the grid cap.
     /// </summary>
@@ -168,6 +192,11 @@ public sealed partial class MappingToolsSystem
         }
 
         var box = Bounds(ev.Cells);
+        if (NewGridTarget(session, mapUid.Value, box.Center) is { } joined)
+        {
+            DrawOnGrid(session, ev, joined, mapComp.MapId);
+            return;
+        }
         var check = new WFMappingCanEditEvent(session, mapUid.Value, WFMappingEditKind.Paste)
         {
             Grid = null,

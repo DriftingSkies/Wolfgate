@@ -99,6 +99,12 @@ public sealed partial class StrapComponent : Component
     [DataField, Access(typeof(SharedBuckleSystem))]
     public double UnbuckleDistanceSquared = 1e-5;
     // End Frontier: fix vehicles unbuckling
+
+    // WOLFGATE(ClownCosmetics) START: Frontier's MaintainSpriteLayers, so a unicycle rider stays drawn over the wheel
+    /// <summary>If true, the strap leaves the draw depth of buckled entities alone.</summary>
+    [DataField, Access(typeof(SharedBuckleSystem))]
+    public bool MaintainSpriteLayers;
+    // WOLFGATE END
 }
 
 public enum StrapPosition

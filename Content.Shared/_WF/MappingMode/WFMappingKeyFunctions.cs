@@ -30,6 +30,9 @@ public static class WFMappingKeyFunctions
     /// <summary>Ctrl+S: saves the session to the player's library under its name, as the menu bar's Quicksave.</summary>
     public static readonly BoundKeyFunction WFMappingQuicksave = "WFMappingQuicksave";
 
+    /// <summary>Leaves a live test for the mapping observer, as the test banner's button; bound to nothing by default.</summary>
+    public static readonly BoundKeyFunction WFMappingTestReturn = "WFMappingTestReturn";
+
     /// <summary>The mode keys, Place first.</summary>
     public static readonly BoundKeyFunction[] Modes =
     {

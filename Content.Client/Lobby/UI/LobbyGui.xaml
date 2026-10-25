@@ -193,6 +193,8 @@
                         </ScrollContainer>
                     </BoxContainer>
                     <BoxContainer Name="CharacterHero" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="0 16" SeparationOverride="8">
+                        <!-- WOLFGATE(Symphony): the notice staff set from the SSymphony panel; hidden when there is none -->
+                        <lobbyUi:SymphonyLobbyNotice Name="SymphonyNotice" />
                         <Control VerticalExpand="True" />
                         <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" />

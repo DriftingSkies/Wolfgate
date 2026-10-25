@@ -27,6 +27,13 @@ public sealed class WFRoundSetupCrewRow : Button
         var row = new BoxContainer { SeparationOverride = 8, HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore };
         row.AddChild(JobIcon(lobby.HostJob ?? (WFRoundSetupPolicy.IsShip(lobby.Scenario) ? "Pilot" : "Contractor")));
         row.AddChild(new Label { Text = title, ClipText = true, HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore });
+        var difficulty = WFRoundSetupPolicy.Difficulty(lobby.Scenario);
+        row.AddChild(new Label
+        {
+            Text = WFScenarioDifficultyLabel.Name(difficulty),
+            FontColorOverride = WFScenarioDifficultyLabel.Color(difficulty),
+            MouseFilter = MouseFilterMode.Ignore,
+        });
         row.AddChild(new Label
         {
             Text = Loc.GetString("wf-round-setup-row-count", ("count", lobby.MemberCount)),
@@ -51,6 +58,6 @@ public sealed class WFRoundSetupCrewRow : Button
 
     /// <summary>Avoids rebuilding rows for unrelated readiness and admission changes.</summary>
     public static bool SameListing(WFRoundSetupLobby first, WFRoundSetupLobby second) =>
-        first.Id == second.Id && first.Title == second.Title && first.HostName == second.HostName && first.Portrait?.Name == second.Portrait?.Name && first.HostJob == second.HostJob &&
+        first.Id == second.Id && first.Scenario == second.Scenario && first.Title == second.Title && first.HostName == second.HostName && first.Portrait?.Name == second.Portrait?.Name && first.HostJob == second.HostJob &&
         first.MemberCount == second.MemberCount && first.Started == second.Started && Openings(first) == Openings(second);
 }

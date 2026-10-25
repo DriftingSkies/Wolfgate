@@ -208,7 +208,7 @@
             <BoxContainer Orientation="Vertical" SeparationOverride="6">
                 <BoxContainer Orientation="Horizontal" SeparationOverride="8">
                     <Label Text="{Loc 'humanoid-profile-editor-name-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
-                    <LineEdit Name="NameEdit" HorizontalExpand="True" MinWidth="240" VerticalAlignment="Center" />
+                    <LineEdit Name="NameEdit" HorizontalExpand="True" MinWidth="120" VerticalAlignment="Center" />
                     <Button Name="NameRandomize" Text="{Loc 'humanoid-profile-editor-name-random-button'}" />
                     <Button Name="RandomizeEverythingButton" Text="{Loc 'humanoid-profile-editor-randomize-everything-button'}" />
                 </BoxContainer>
@@ -398,14 +398,16 @@
         </TabContainer>
     </BoxContainer>
     <!-- Preview column -->
-    <PanelContainer StyleClasses="CreatorPreview" Margin="0 12 12 12" MinWidth="320">
+    <!-- WOLFGATE(Stylesheets): scrolls when the window is too short, instead of stacking the bottom buttons on each other -->
+    <PanelContainer StyleClasses="CreatorPreview" Margin="0 12 12 12" MinWidth="300">
+        <ScrollContainer HScrollEnabled="False">
         <BoxContainer Orientation="Vertical" SeparationOverride="8" Margin="14 12">
             <Label Text="{Loc 'wf-creator-preview'}" StyleClasses="CreatorHeading" />
             <!-- WOLFGATE(Stylesheets): fixed box. SpriteView sizes itself from the sprite's rotated bounding box, so a
                  species whose required marking uses a wide RSI (Shadekin's 64x32 tail) blew the whole pane
                  out. Fit shrinks those to the box instead. -->
             <SpriteView Name="SpriteView" Scale="8 8" Margin="4" HorizontalAlignment="Center"
-                        SetSize="288 288" Stretch="Fit" SizeFlagsStretchRatio="1" />
+                        SetSize="256 256" Stretch="Fit" SizeFlagsStretchRatio="1" />
             <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" SeparationOverride="0">
                 <Button Name="SpriteRotateLeft" Text="◀" StyleClasses="OpenRight" />
                 <!-- WOLFGATE(Stylesheets): separator dropped, the two rotate buttons now form one segmented control -->
@@ -448,6 +450,7 @@
                 <Button Name="OpenImagesButton" Text="{Loc 'humanoid-profile-editor-open-image-button'}" StyleClasses="LinkButton" />
             </BoxContainer>
         </BoxContainer>
+        </ScrollContainer>
     </PanelContainer>
     <!-- WOLFGATE END -->
 </BoxContainer>

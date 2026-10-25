@@ -3,6 +3,14 @@
 wf-mapping-screen-mode-link = Link
 wf-mapping-screen-mouse-link = Signals: click a source, then a sink to pick ports; right click a sink to unlink. Devices: click an air alarm or other list, then click devices to add or remove them, or drag a box to add them all. Access: click a door or other reader. Tab: next tool.
 wf-mapping-screen-layer-links = Links (signals, device lists)
+wf-mapping-screen-layer-links-count = {$links ->
+    [one] 1 signal link
+   *[other] {$links} signal links
+} and {$lists ->
+    [one] 1 device list
+   *[other] {$lists} device lists
+} on this level.
+wf-mapping-screen-layer-links-none = Nothing to draw: no signal links or device lists on this level yet. Wire some in Link mode (9).
 wf-mapping-screen-key-WFMappingLinkCycle = Link mode: next tool (signals, devices, access)
 
 wf-mapping-link-tool-signals = Signals

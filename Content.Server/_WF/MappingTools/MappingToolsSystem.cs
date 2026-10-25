@@ -531,6 +531,9 @@ public sealed partial class MappingToolsSystem : EntitySystem
             target = (foundUid, found);
         else if (TryPasteGrid(clip.SourceGrid, mapCoords.MapId, out var sourceUid, out var source))
             target = (sourceUid, source);
+        else if (_map.GetMapOrInvalid(mapCoords.MapId) is { Valid: true } pasteMap &&
+                 NewGridTarget(session, pasteMap, mapCoords.Position) is { } joined)
+            target = (joined, Comp<MapGridComponent>(joined));
 
         // Off every grid, with the source grid gone, a new grid starts with its origin at the cursor's tile.
         var newOrigin = new Vector2i((int) MathF.Floor(mapCoords.X), (int) MathF.Floor(mapCoords.Y));

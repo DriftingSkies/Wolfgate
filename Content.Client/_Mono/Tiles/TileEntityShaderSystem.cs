@@ -149,9 +149,10 @@ public sealed partial class TileEntityShaderSystem : EntitySystem
             var instance = owned.Instance ?? _proto.Index<ShaderPrototype>(wanted).InstanceUnique();
             _instances[uid] = (wanted, instance);
 
-            sprite.PostShader = instance;
-
-            sprite.RaiseShaderEvent = true;
+            // WOLFGATE START: engine 291 ignores the sprite-wide RaiseShaderEvent; it is per post-shader now
+            // upstream original: sprite.PostShader = instance; sprite.RaiseShaderEvent = true;
+            _sprite.SetPostShader(sprite, new SpriteComponent.PostShaderArgs("TileEntityShader", instance) { RaiseShaderEvent = true });
+            // WOLFGATE END
         }
     }
 

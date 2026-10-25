@@ -1,0 +1,24 @@
+﻿- type: entity
+  abstract: true
+  parent: BaseToggleClothing
+  id: WFBaseWaddleShoes
+  components:
+  - type: WaddleWhenWorn
+  - type: ItemToggle
+    activated: true
+    onActivate: false
+  - type: ToggleClothing
+    action: ActionToggleWaddling
+
+- type: entity
+  abstract: true
+  parent: WFBaseWaddleShoes
+  id: BaseWaddleShoesQuacking
+  components:
+  - type: WaddleWhenWorn
+    tumbleIntensity: 10
+  - type: ItemToggle
+    soundActivate:
+      path: /Audio/Items/Toys/quack.ogg
+    soundDeactivate:
+      path: /Audio/Items/Toys/quack.ogg

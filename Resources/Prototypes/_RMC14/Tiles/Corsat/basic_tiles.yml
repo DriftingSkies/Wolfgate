@@ -1,0 +1,17 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  parent: CMTileBase
+  id: CMFloorCorsatBasicBase
+  name: tiles-cm-default-basic
+
+- type: tile
+  parent: CMFloorCorsatBasicBase
+  id: CMFloorCorsatBasicSpiralBlueOffice
+  sprite: /Textures/_RMC14/Tiles/corsat/spiralblueoffice.png
+
+- type: tile
+  parent: CMFloorCorsatBasicBase
+  id: CMFloorCorsatBasicSpiralOffice
+  sprite: /Textures/_RMC14/Tiles/corsat/spiraloffice.png
+# WOLFGATE END

@@ -46,7 +46,9 @@ public sealed partial class ShuttleDockControl
         {
             _wfCockpitDockActions = null;
             Offset = Vector2.Zero;
-            BuildDocks(GridEntity);
+            // The window can be torn down after its grid is gone, as when the BUI closes with the map.
+            if (EntManager.EntityExists(GridEntity))
+                BuildDocks(GridEntity);
         });
         return actions;
     }

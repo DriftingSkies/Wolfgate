@@ -1,0 +1,79 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  parent: WallSolid
+  id: WallXenoborgRCD
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Walls/xenoborglight.rsi
+  - type: Icon
+    sprite: _Starlight/Structures/Walls/xenoborglight.rsi
+  - type: IconSmooth
+    key: walls
+    base: xenoborglight
+
+- type: entity
+  parent: WallWood
+  id: WallDarkWood
+  components:
+  - type: Sprite
+    sprite: _Starlight/Structures/Walls/gray_wood.rsi
+    color: "#795382"
+  - type: Icon
+    sprite: _Starlight/Structures/Walls/gray_wood.rsi
+
+- type: entity
+  parent: BaseStructureWallmount
+  id: WallFan
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Window
+  components:
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Rotatable
+  - type: WallMount
+    arc: 360
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Sprite
+    sprite: _Starlight/Structures/wall_fan.rsi
+    state: wall_fan
+    snapCardinals: true
+    drawdepth: WallMountedItems
+  - type: Transform
+    anchored: true
+  - type: Tag
+    tags:
+      - Window
+  - type: Icon
+    sprite: _Starlight/Structures/wall_fan.rsi
+    state: wall_fan
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 250
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+  - type: Airtight
+  - type: StaticPrice
+    price: 75
+  - type: RadiationBlocker
+    resistance: 1
+  - type: BlockWeather
+# WOLFGATE END

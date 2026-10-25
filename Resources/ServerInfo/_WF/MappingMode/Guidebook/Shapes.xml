@@ -25,7 +25,7 @@
   The shape goes on the grid under the start of the drag, else the grid under its end, else a grid it touches. The preview snaps to that grid's tiles.
 
   - Floor drawn past a grid's edge makes the grid bigger.
-  - Floor drawn with no grid near makes a new grid. It counts against the grid limit.
+  - Floor drawn in space joins the nearest grid, or starts a new one after [bold]New grid[/bold] or on an empty level.
   - Entities need a grid. Cells with no floor are skipped and the popup says how many. Lay the floor first.
 
   ## Fill (4)

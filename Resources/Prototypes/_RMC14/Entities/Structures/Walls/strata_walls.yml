@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMWallMetal
+  id: RMCWallStrata
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/strata_wall.rsi
+    state: strata_bare_outpost_
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/strata_wall.rsi
+    state: strata_bare_outpost_
+  - type: IconSmooth
+    key: walls
+    base: strata_bare_outpost_
+
+- type: entity
+  parent: CMBaseWallInvincible
+  id: RMCWallStrataIce
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/strata_ice.rsi
+    state: strata_ice
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/strata_ice.rsi
+    state: strata_ice
+  - type: IconSmooth
+    key: walls
+    base: strata_ice
+# WOLFGATE END

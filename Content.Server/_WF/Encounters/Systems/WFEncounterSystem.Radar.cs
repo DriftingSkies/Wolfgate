@@ -54,7 +54,9 @@ public sealed partial class WFEncounterSystem
                 continue;
 
             state.Color = color;
-            _shuttles.SetIFFColor(state.Grid, color);
+            // A simulated ship takes its colour when its hull is spawned.
+            if (!state.Virtual)
+                _shuttles.SetIFFColor(state.Grid, color);
         }
     }
 
@@ -62,7 +64,8 @@ public sealed partial class WFEncounterSystem
     private void Mask(WFEncounterShipState ship)
     {
         ship.Lurking = true;
-        _shuttles.AddIFFFlag(ship.Grid, IFFFlags.HideLabel);
+        if (!ship.Virtual)
+            _shuttles.AddIFFFlag(ship.Grid, IFFFlags.HideLabel);
     }
 
     /// <summary>A ship lying in wait shows itself.</summary>
@@ -72,7 +75,7 @@ public sealed partial class WFEncounterSystem
             return;
 
         ship.Lurking = false;
-        if (!TerminatingOrDeleted(ship.Grid))
+        if (!TerminatingOrDeleted(ship.Grid) && !ship.Virtual)
             _shuttles.RemoveIFFFlag(ship.Grid, IFFFlags.HideLabel);
     }
 }

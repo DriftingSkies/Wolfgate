@@ -1,0 +1,43 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMWallMetal
+  id: RMCWallHangar
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/hangar.rsi
+    state: hangar
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/hangar.rsi
+    state: hangar
+  - type: IconSmooth
+    key: walls
+    base: hangar
+
+- type: entity
+  parent: RMCBaseWallReinforced
+  id: RMCWallBunker
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/bunker.rsi
+    state: bunker
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/bunker.rsi
+    state: bunker
+  - type: IconSmooth
+    key: walls
+    base: bunker
+
+- type: entity
+  parent: RMCBaseWallReinforced
+  id: RMCWallChigusa
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Walls/chigusa.rsi
+    state: chigusa
+  - type: Icon
+    sprite: _RMC14/Structures/Walls/chigusa.rsi
+    state: chigusa
+  - type: IconSmooth
+    key: walls
+    base: chigusa
+# WOLFGATE END

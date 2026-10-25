@@ -1,0 +1,7 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  parent: CMTileBase
+  id: RMCFloorTComms
+  name: tiles-rmc-tcomms
+  sprite: /Textures/_RMC14/Tiles/almayer/tcomms_0.png
+# WOLFGATE END

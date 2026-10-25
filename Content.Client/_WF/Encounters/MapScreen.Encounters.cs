@@ -18,7 +18,9 @@ public sealed partial class MapScreen
                 continue;
 
             var position = markers.GetPosition(marker);
-            var name = Loc.GetString("wf-encounter-map-object", ("name", marker.Name));
+            var name = marker.Threat is { } threat
+                ? Loc.GetString("wf-encounter-map-object-ranked", ("name", marker.Name), ("threat", threat))
+                : Loc.GetString("wf-encounter-map-object", ("name", marker.Name));
             _pendingMapObjects.Add((mapId, new ShuttleBeaconObject(NetEntity.Invalid, new NetCoordinates(map, position), name)));
         }
     }

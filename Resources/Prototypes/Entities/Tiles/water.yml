@@ -46,7 +46,7 @@
       fix1:
         shape:
           !type:PhysShapeAabb
-          bounds: "-0.5,-0.5,0.5,0.5"
+          bounds: "-0.25, -0.25, 0.25, 0.25" # WOLFGATE(Resprites): Changed from "-0.5,-0.5,0.5,0.5" to "-0.25, -0.25, 0.25, 0.25" to match the new sprite.
         layer:
           - SlipLayer
         mask:
@@ -87,16 +87,14 @@
   - type: SyncSprite
   - type: Clickable
   - type: Sprite
-    sprite: _Mono/Tiles/planet/water.rsi
+    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-water.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/water.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-water.rsi" to match the new sprite.
     drawdepth: BelowFloor
-    layers:
-    - state: water
   - type: Icon
-    sprite: _Mono/Tiles/planet/water.rsi
+    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-water.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/water.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-water.rsi" to match the new sprite.
     state: full
   - type: IconSmooth
-    key: floor
-    base: water
+    key: floor # WOLFGATE(Resprites): Changed from "lava" to "floor" to match the new sprite.
+    base: water # WOLFGATE(Resprites): Changed from "phoron" to "water" to match the new sprite.
   - type: SolutionContainerManager
     solutions:
       pool:

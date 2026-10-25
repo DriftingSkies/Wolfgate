@@ -1,5 +1,7 @@
 using Content.Client._WF.MappingMode.Link;
 using Content.Client.Decals;
+using Content.Shared._CE.ZLevels.Core.Components;
+using Content.Shared._WF.MappingMode;
 using Robust.Shared.Network;
 using Content.Client.Decals.Overlays;
 
@@ -16,6 +18,12 @@ public enum WFMappingLayer : byte
 
     /// <summary>Signal links and device lists drawn as lines.</summary>
     Links,
+
+    /// <summary>The world tile grid every level shares.</summary>
+    WorldGrid,
+
+    /// <summary>Levels below drawn smaller, as on a planet.</summary>
+    Perspective,
 }
 
 public sealed partial class WFMappingClientSystem
@@ -23,6 +31,9 @@ public sealed partial class WFMappingClientSystem
     [Dependency] private DecalSystem _decalSystem = default!;
     [Dependency] private IClientNetManager _netManager = default!;
     [Dependency] private WFMappingLinkSystem _link = default!;
+
+    /// <summary>The link system, for the Layers panel's count of what the Links layer draws.</summary>
+    public WFMappingLinkSystem Links => _link;
 
     public static readonly WFMappingLayer[] Layers =
     {
@@ -32,7 +43,12 @@ public sealed partial class WFMappingClientSystem
         WFMappingLayer.Markers,
         WFMappingLayer.Lights,
         WFMappingLayer.Links,
+        WFMappingLayer.WorldGrid,
+        WFMappingLayer.Perspective,
     };
+
+    /// <summary>Whether the Depth perspective layer is on.</summary>
+    private bool _perspective;
 
     /// <summary>Whether a layer is shown.</summary>
     public bool GetLayer(WFMappingLayer layer)
@@ -44,6 +60,8 @@ public sealed partial class WFMappingClientSystem
             WFMappingLayer.Decals => _overlays.HasOverlay<DecalOverlay>(),
             WFMappingLayer.Markers => _markers.MarkersVisible,
             WFMappingLayer.Links => _link.ShowAll,
+            WFMappingLayer.WorldGrid => _overlays.HasOverlay<WFMappingWorldGridOverlay>(),
+            WFMappingLayer.Perspective => _perspective,
             _ => _light.Enabled,
         };
     }
@@ -74,11 +92,22 @@ public sealed partial class WFMappingClientSystem
             case WFMappingLayer.Links:
                 _link.SetShowAll(shown);
                 break;
+            case WFMappingLayer.WorldGrid:
+                if (!shown)
+                    _overlays.RemoveOverlay<WFMappingWorldGridOverlay>();
+                else if (!_overlays.HasOverlay<WFMappingWorldGridOverlay>())
+                    _overlays.AddOverlay(new WFMappingWorldGridOverlay(this));
+                break;
+            case WFMappingLayer.Perspective:
+                _perspective = shown;
+                UpdatePerspective();
+                break;
         }
     }
 
     /// <summary>
-    /// Puts every layer back: the mapping defaults (markers, subfloor, no lighting, no links) or the normal game's.
+    /// Puts every layer back: the mapping defaults (markers, subfloor, world grid, no lighting, no links) or the normal
+    /// game's.
     /// </summary>
     private void ResetLayers(bool mapping)
     {
@@ -88,5 +117,20 @@ public sealed partial class WFMappingClientSystem
         SetLayer(WFMappingLayer.Markers, mapping);
         SetLayer(WFMappingLayer.Lights, !mapping);
         SetLayer(WFMappingLayer.Links, false);
+        SetLayer(WFMappingLayer.WorldGrid, mapping);
+        SetLayer(WFMappingLayer.Perspective, false);
+    }
+
+    /// <summary>Puts the perspective marker on every level while the layer is on, and takes it off otherwise.</summary>
+    private void UpdatePerspective()
+    {
+        var query = AllEntityQuery<CEZMapComponent>(); // All: session levels are paused
+        while (query.MoveNext(out var uid, out _))
+        {
+            if (_perspective)
+                EnsureComp<WFMappingPerspectiveComponent>(uid);
+            else
+                RemComp<WFMappingPerspectiveComponent>(uid);
+        }
     }
 }

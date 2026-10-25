@@ -83,18 +83,13 @@ The safety deposit system preserves:
   - [bold]Stack counts[/bold] - The exact number of items in stacks
   - [bold]Box nicknames[/bold] - Custom labels on the boxes themselves
 
-[italic][color=gold]The following items are explicitly blacklisted (not an extensive list!):[/color][/italic]
-  - [bold]ID Cards[/bold]
-  - [bold]LPCs[/bold]
-  - [bold]Uplinks[/bold]
-  - [bold]Currency[/bold]
-  - [bold]Encryption Keys[/bold]
-  - [bold]Implanters[/bold]
-  - [bold]Anything with storage[/bold]
-  - [bold]Overwatch Consoles[/bold]
-  - [bold]Ghostrole spawners (such as reinforcement radios)[/bold]
-  - [bold]Anything with secret storage (such as plushies)[/bold]
-  - [bold]Reagent storages (such as beakers)[/bold]
-  - [bold]Iridite[/bold] <!--NOTE - I don't mind if someone adds a way to store Iridite, perhaps in a compressed form w/ much lower stack size?-->
+<!-- WOLFGATE(SafetyDepositBox) START: what a box refuses is read from the box prototype, not hand-listed -->
+## What Can Be Stored
+
+A box takes ordinary items that fit its grid and its size limit: Small boxes hold Small items, Medium boxes hold up to Normal items and Large boxes hold up to Large items. Tools, clothing, ammunition, paperwork, food, parts and most other gear are fine.
+
+[color=#ff6600]The box refuses these outright:[/color]
+  <SafetyDepositRefusedEmbed/>
+<!-- WOLFGATE END -->
   - [bold]Monolithic Crystals[/bold]
 </Document>

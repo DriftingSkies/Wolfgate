@@ -1,0 +1,40 @@
+# WOLFGATE(DecorImport) START: ported from Delta-V
+- type: tile
+  id: FloorMS13CarpetFancyBlueDiamond
+  name: tiles-wf-dv-ms13-carpet-fancy-blue-diamond
+  sprite: /Textures/_DV/Tiles/ms13/Carpet/carpet_fancy_blue_diamond.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepCarpet
+  # itemDrop: FloorTileItemCarpetRed
+  thermalConductivity: 0.04
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorMS13CarpetFancyRedDiamond
+  name: tiles-wf-dv-ms13-carpet-fancy-red-diamond
+  sprite: /Textures/_DV/Tiles/ms13/Carpet/carpet_fancy_red_diamond.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepCarpet
+  # itemDrop: FloorTileItemCarpetRed
+  thermalConductivity: 0.04
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorMS13CarpetVioletDiamond
+  name: tiles-wf-dv-ms13-carpet-violet-diamond
+  sprite: /Textures/_DV/Tiles/ms13/Carpet/carpet_fancy_violet_diamond.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepCarpet
+  # itemDrop: FloorTileItemCarpetRed
+  thermalConductivity: 0.04
+  heatCapacity: 10000
+# WOLFGATE END

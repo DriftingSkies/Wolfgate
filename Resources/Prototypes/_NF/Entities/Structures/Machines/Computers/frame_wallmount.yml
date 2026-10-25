@@ -1,6 +1,6 @@
 - type: entity
   id: BaseStructureComputerWallmount
-  parent: [BaseStructureWallmount, BaseStructure]
+  parent: [BaseStructureWallmountOld, BaseStructure] #WOLFGATE(Resprites): Needed
   suffix: Wallmount
   abstract: true
   components:
@@ -66,7 +66,7 @@
           monitorUnsecured: { state: computer_monitor_unscrewed }
 
 - type: entity
-  parent: [BaseStructureWallmount, ComputerBroken]
+  parent: [BaseStructureWallmountOld, ComputerBroken] #WOLFGATE(Resprites): Needed
   id: ComputerWallmountBroken
   suffix: Wallmount
   components:

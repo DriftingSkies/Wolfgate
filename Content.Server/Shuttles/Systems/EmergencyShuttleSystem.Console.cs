@@ -34,6 +34,9 @@ public sealed partial class EmergencyShuttleSystem
 
     public bool EarlyLaunchAuthorized { get; private set; }
 
+    // WOLFGATE(Administration): delayroundend sets this; shuttle round-end paths and the auto-call check it.
+    public bool RoundEndDelayed { get; private set; }
+
     /// <summary>
     /// How much time remaining until the shuttle consoles for emergency shuttles are unlocked?
     /// </summary>
@@ -220,7 +223,14 @@ public sealed partial class EmergencyShuttleSystem
             ShuttlesLeft = true;
             _chatSystem.DispatchGlobalAnnouncement(Loc.GetString("emergency-shuttle-left", ("transitTime", $"{TransitTime:0}")));
 
-            Timer.Spawn((int)(TransitTime * 1000) + _bufferTime.Milliseconds, () => _roundEnd.EndRound(), _roundEndCancelToken?.Token ?? default);
+            // WOLFGATE(Administration) START: check the delay flag when the timer fires, not the token
+            // Timer.Spawn((int)(TransitTime * 1000) + _bufferTime.Milliseconds, () => _roundEnd.EndRound(), _roundEndCancelToken?.Token ?? default);
+            Timer.Spawn((int)(TransitTime * 1000) + _bufferTime.Milliseconds, () =>
+            {
+                if (!RoundEndDelayed)
+                    _roundEnd.EndRound();
+            }, _roundEndCancelToken?.Token ?? default);
+            // WOLFGATE END
         }
 
         // All the others.
@@ -320,6 +330,7 @@ public sealed partial class EmergencyShuttleSystem
         _consoleAccumulator = float.MinValue;
         EarlyLaunchAuthorized = false;
         EmergencyShuttleArrived = false;
+        RoundEndDelayed = false; // WOLFGATE(Administration)
         TransitTime = MinimumTransitTime + (MaximumTransitTime - MinimumTransitTime) * _random.NextFloat();
         // Round to nearest 10
         TransitTime = MathF.Round(TransitTime / 10f) * 10f;
@@ -414,11 +425,18 @@ public sealed partial class EmergencyShuttleSystem
 
     public bool DelayEmergencyRoundEnd()
     {
-        if (_roundEndCancelToken == null)
+        // WOLFGATE(Administration) START: set a flag instead; the token was nulled before the timer that used it existed
+        // if (_roundEndCancelToken == null)
+        //     return false;
+        //
+        // _roundEndCancelToken?.Cancel();
+        // _roundEndCancelToken = null;
+        // return true;
+        if (RoundEndDelayed || _roundEndCancelToken == null)
             return false;
 
-        _roundEndCancelToken?.Cancel();
-        _roundEndCancelToken = null;
+        RoundEndDelayed = true;
         return true;
+        // WOLFGATE END
     }
 }

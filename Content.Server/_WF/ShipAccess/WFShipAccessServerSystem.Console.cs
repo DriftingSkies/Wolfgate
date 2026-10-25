@@ -71,6 +71,13 @@ public sealed partial class WFShipAccessServerSystem
         if (!TryGetEditableShip(console, actor, out var ship) || !TryGetEntity(args.Target, out var target))
             return;
 
+        // An ID card in the owner's own hands is added as it is; its owner need not be there.
+        if (_access.TryGetHeldCard(actor, target.Value, out var held))
+        {
+            AddHeldCard(console, actor, ship, held);
+            return;
+        }
+
         if (!_transform.InRange(Transform(console.Owner).Coordinates, Transform(target.Value).Coordinates, WFShipAccessSystem.AddRange))
         {
             Popup(console, actor, "ship-access-add-out-of-range");
@@ -96,6 +103,24 @@ public sealed partial class WFShipAccessServerSystem
         }
 
         _popup.PopupEntity(Loc.GetString("ship-access-added", ("name", Name(target.Value))), console.Owner, actor);
+    }
+
+    private void AddHeldCard(Entity<ShuttleConsoleComponent> console, EntityUid actor, Entity<WFShipAccessComponent> ship, EntityUid card)
+    {
+        if (!_access.TryGetKey(card, out _))
+        {
+            Popup(console, actor, "ship-access-add-card-no-record");
+            return;
+        }
+
+        var name = _access.CardHolderName(card);
+        if (!TryAddCard(ship, card, name))
+        {
+            Popup(console, actor, "ship-access-add-already");
+            return;
+        }
+
+        _popup.PopupEntity(Loc.GetString("ship-access-added", ("name", name)), console.Owner, actor);
     }
 
     /// <summary>

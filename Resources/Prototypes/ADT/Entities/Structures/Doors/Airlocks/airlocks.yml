@@ -1,0 +1,23 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: AirlockGlass
+  id: ADTSpaceSecGlassAirlock
+  suffix: Space Sec
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Doors/Airlocks/Glass/space_sec.rsi
+  - type: WiresPanel
+  - type: WiresPanelSecurity
+    securityLevel: maxSecurity
+  - type: Wires
+    boardName: wires-board-name-highsec
+    layoutId: HighSec
+
+- type: entity
+  parent: AirlockCommandGlass
+  id: ADTGlassBlackCentcommAirlock
+  suffix: Black Centcomm
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Doors/Airlocks/Glass/black_cc.rsi
+# WOLFGATE END

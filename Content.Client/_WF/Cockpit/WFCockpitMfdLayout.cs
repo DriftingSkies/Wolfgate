@@ -36,6 +36,9 @@ public sealed class WFCockpitMfdSplit : Control
     public const float ShortHeight = 320;
     public const float ShortShare = 0.85f;
 
+    /// <summary>Pages at least this tall give the plot only its own share; between the two the share eases down.</summary>
+    public const float TallHeight = 560;
+
     /// <summary>A page at least this wide, and <see cref="SideAspect"/> times wider than tall, puts the details beside the plot.</summary>
     public const float SideWidth = 640;
     public const float SideAspect = 1.25f;
@@ -56,7 +59,15 @@ public sealed class WFCockpitMfdSplit : Control
     }
 
     /// <summary>The share of the height the plot gets on a page this tall.</summary>
-    public static float PlotShare(float share, float height) => height < ShortHeight ? Math.Max(share, ShortShare) : share;
+    // Eased rather than stepped: the plot's frame is a fixed height, so a page just past the short cutoff would
+    // otherwise leave the plot itself smaller than on a shorter page.
+    public static float PlotShare(float share, float height)
+    {
+        if (share >= ShortShare)
+            return share;
+        var t = Math.Clamp((height - ShortHeight) / (TallHeight - ShortHeight), 0f, 1f);
+        return ShortShare + (share - ShortShare) * t;
+    }
 
     /// <summary>Whether a page this size stands the details beside the plot.</summary>
     public static bool SideBySide(Vector2 size) => size.X >= SideWidth && size.X >= size.Y * SideAspect;

@@ -96,7 +96,7 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
     {
         var content = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 6 };
 
-        var grid = new GridContainer { Columns = Columns(), HSeparationOverride = 6, VSeparationOverride = 6 };
+        var grid = new GridContainer { Columns = Columns(Width), HSeparationOverride = 6, VSeparationOverride = 6 };
         foreach (var species in members)
             grid.AddChild(AddCard(species));
 
@@ -173,22 +173,27 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
     }
 
     /// <summary>Cards per row, shared by every panel so they line up across groups.</summary>
-    private int Columns()
+    private int Columns(float width)
     {
         const float gap = 6f;
         const float panelPadding = 24f; // the group panel's content margin, both sides, plus slack
-        return Math.Max(1, (int) ((Width - panelPadding + gap) / (WolfgateSpeciesCard.CardWidth + gap)));
+        return Math.Max(1, (int) ((width - panelPadding + gap) / (WolfgateSpeciesCard.CardWidth + gap)));
     }
 
-    protected override void Resized()
+    // Columns come from the width on offer, not the current width, so the grids can shrink as well as grow.
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
-        base.Resized();
-        var columns = Columns();
+        if (!float.IsFinite(availableSize.X))
+            return base.MeasureOverride(availableSize);
+
+        var columns = Columns(availableSize.X);
         foreach (var grid in _grids)
         {
             // Guarded: assigning Columns invalidates measure, so an unguarded write relayouts every frame.
             if (grid.Columns != columns)
                 grid.Columns = columns;
         }
+
+        return base.MeasureOverride(availableSize);
     }
 }

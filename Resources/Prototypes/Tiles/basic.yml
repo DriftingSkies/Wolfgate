@@ -1,0 +1,476 @@
+# WOLFGATE(Resprites) START: Port redesigned Gray, White, and Dark floor sprites.
+#### STEEL / GRAY
+- type: tile
+  abstract: true
+  id: BaseStationTile
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+  weather: false
+  baseTurf: Plating
+  materialComposition:
+    Steel: 100 # 0.5 for lattice, 0.25 for plating, 0.25 for tile
+
+- type: tile
+  id: FloorSteel
+  parent: BaseStationTile
+  name: tiles-steel-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  itemDrop: FloorTileItemSteel
+
+- type: tile
+  id: FloorSteelMini
+  parent: BaseStationTile
+  name: tiles-steel-floor-mini
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-mini.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  itemDrop: FloorTileItemSteelMini
+
+- type: tile
+  id: FloorSteelPavement
+  parent: BaseStationTile
+  name: tiles-steel-floor-pavement
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-pavement.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  itemDrop: FloorTileItemSteelPavement
+
+- type: tile
+  id: FloorSteelMono
+  parent: BaseStationTile
+  name: tiles-steel-floor-mono
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-mono.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemSteelMono
+
+- type: tile
+  id: FloorSteelPavementVertical
+  parent: BaseStationTile
+  name: tiles-steel-floor-pavement-vertical
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-pavement-vertical.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemSteelPavementVertical
+
+- type: tile
+  id: FloorSteelHerringbone
+  parent: BaseStationTile
+  name: tiles-steel-floor-herringbone
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-herringbone.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemSteelHerringbone
+
+- type: tile
+  parent: BaseStationTile
+  id: FloorSteelVerticalSlatsBordered
+  name: tiles-steel-floor-vertical-slats-bordered
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-vertical-slats.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+#  itemDrop: FloorTileItemSteelVerticalSlatsBordered
+
+- type: tile
+  parent: BaseStationTile
+  id: FloorSteelHorizontalSlatsBordered
+  name: tiles-steel-floor-horizontal-slats-bordered
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-horizontal-slats.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+#  itemDrop: FloorTileItemSteelHorizontalSlatsBordered
+
+- type: tile
+  id: FloorTechMaint2
+  parent: BaseStationTile
+  name: tiles-techmaint2-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-maint.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: FloorTileItemSteelMaint
+  heatCapacity: 10000
+  # ES START
+  flammability: 2
+  # ES END
+
+- type: tile
+  id: FloorPlastic
+  parent: BaseStationTile
+  name: tiles-plastic-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-plastic.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  itemDrop: FloorTileItemSteel
+  flammability: 3
+
+- type: tile
+  id: FloorSteelDamaged
+  parent: BaseStationTile
+  name: tiles-steel-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-damaged.png
+  variants: 5
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  itemDrop: FloorTileItemSteel #This should probably be made null when it becomes possible to make it such, in SS13 prying destroyed tiles wouldn't give you anything.
+  flammability: 2
+
+#### WHITE
+- type: tile
+  id: FloorWhite
+  parent: BaseStationTile
+  name: tiles-white-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhite
+  flammability: 2
+
+- type: tile
+  id: FloorWhiteMini
+  parent: BaseStationTile
+  name: tiles-white-floor-mini
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-mini.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhiteMini
+  flammability: 2
+
+- type: tile
+  parent: BaseStationTile
+  id: FloorWhiteVerticalSlatsBordered
+  name: tiles-white-floor-vertical-slats-bordered
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-vertical-slats.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+#  itemDrop: FloorTileItemWhiteVerticalSlatsBordered
+
+- type: tile
+  parent: BaseStationTile
+  id: FloorWhiteHorizontalSlatsBordered
+  name: tiles-white-floor-horizontal-slats-bordered
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-horizontal-slats.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+#  itemDrop: FloorTileItemWhiteHorizontalSlatsBordered
+
+- type: tile
+  id: FloorWhitePavement
+  parent: BaseStationTile
+  name: tiles-white-floor-pavement
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-pavement.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhitePavement
+  flammability: 2
+
+- type: tile
+  id: FloorWhiteMono
+  parent: BaseStationTile
+  name: tiles-white-floor-mono
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-mono.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhiteMono
+  flammability: 2
+
+- type: tile
+  id: FloorWhitePavementVertical
+  parent: BaseStationTile
+  name: tiles-white-floor-pavement-vertical
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-pavement-vertical.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhitePavementVertical
+  flammability: 2
+
+- type: tile
+  id: FloorWhiteHerringbone
+  parent: BaseStationTile
+  name: tiles-white-floor-herringbone
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-herringbone.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhiteHerringbone
+  flammability: 2
+
+- type: tile
+  id: FloorWhitePlastic
+  parent: BaseStationTile
+  name: tiles-plastic-white-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-plastic.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemWhite
+  flammability: 3
+
+### DARK
+- type: tile
+  id: FloorDark
+  parent: BaseStationTile
+  name: tiles-dark-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDark
+  flammability: 2
+
+- type: tile
+  id: FloorDarkMini
+  parent: BaseStationTile
+  name: tiles-dark-floor-mini
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-mini.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDarkMini
+  flammability: 2
+
+- type: tile
+  parent: BaseStationTile
+  id: FloorDarkVerticalSlatsBordered
+  name: tiles-dark-floor-vertical-slats-bordered
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-vertical-slats.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  #itemDrop: FloorTileItemDarkVerticalSlatsBordered
+
+- type: tile
+  parent: BaseStationTile
+  id: FloorDarkHorizontalSlatsBordered
+  name: tiles-dark-floor-horizontal-slats-bordered
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-horizontal-slats.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  #itemDrop: FloorTileItemDarkHorizontalSlatsBordered
+
+- type: tile
+  id: FloorDarkPavement
+  parent: BaseStationTile
+  name: tiles-dark-floor-pavement
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-pavement.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDarkPavement
+  flammability: 2
+
+- type: tile
+  id: FloorDarkMono
+  parent: BaseStationTile
+  name: tiles-dark-floor-mono
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-mono.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDarkMono
+  flammability: 2
+
+- type: tile
+  id: FloorDarkPavementVertical
+  parent: BaseStationTile
+  name: tiles-dark-floor-pavement-vertical
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-pavement-vertical.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDarkPavementVertical
+  flammability: 2
+
+- type: tile
+  id: FloorDarkHerringbone
+  parent: BaseStationTile
+  name: tiles-dark-floor-herringbone
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-herringbone.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDarkHerringbone
+  flammability: 2
+
+- type: tile
+  id: FloorDarkPlastic
+  parent: BaseStationTile
+  name: tiles-plastic-dark-floor
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-plastic.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepTile
+  itemDrop: FloorTileItemDark
+  flammability: 3
+
+- type: tile
+  id: FloorTechMaintDark
+  parent: BaseStationTile
+  name: tiles-techmaint-floor-dark
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-maint.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: FloorTileItemTechmaintDark
+  heatCapacity: 10000
+  # ES START
+  flammability: 2
+  # ES END
+# WOLFGATE END

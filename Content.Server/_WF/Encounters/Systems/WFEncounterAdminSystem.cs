@@ -30,6 +30,7 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
     [Dependency] private WFCrewObjectiveSystem _objectives = default!;
     [Dependency] private WFCrewShipStatusSystem _status = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private Content.Shared.Mobs.Systems.MobStateSystem _mobs = default!;
 
     public override void Initialize()
     {
@@ -42,14 +43,9 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
         if (!_admins.HasAdminFlag(args.SenderSession, AdminFlags.Admin))
             return;
 
-        var state = BuildState();
-        state.Message = Handle(request, args.SenderSession) ?? string.Empty;
-        if (request.Action != WFEncounterAdminAction.Refresh)
-        {
-            var message = state.Message;
-            state = BuildState();
-            state.Message = message;
-        }
+        var message = Handle(request, args.SenderSession) ?? string.Empty;
+        var state = BuildState(args.SenderSession);
+        state.Message = message;
 
         RaiseNetworkEvent(state, args.SenderSession);
     }
@@ -67,7 +63,8 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                 if (!float.IsFinite(request.Distance) || request.Distance is < 0 or > 20000)
                     return Loc.GetString("cmd-wf_encounter-bad-distance", ("arg", request.Distance));
                 var origin = new MapCoordinates(here.Position + new Vector2(0f, request.Distance), here.MapId);
-                if (!_scheduler.TryStartAt(prototype, origin, out var spawned, actor, request.Pinned))
+                var tier = request.Tier is { } asked ? Math.Clamp(asked, 0, WFEncounterThreat.MaxTier) : (int?) null;
+                if (!_scheduler.TryStartAt(prototype, origin, out var spawned, actor, request.Pinned, tier))
                     return Loc.GetString("cmd-wf_encounter-spawn-failed", ("prototype", prototype.ID));
                 Audit(session, $"started encounter {prototype.ID} as {ToPrettyString(spawned):entity}{(request.Pinned ? ", kept until ended" : string.Empty)}");
                 return null;
@@ -120,6 +117,18 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                 Audit(session, $"had the scheduler place {count} round-start encounters");
                 return count > 0 ? null : Loc.GetString("cmd-wf_encounter-not-scheduled");
 
+            case WFEncounterAdminAction.Order:
+                if (!TryGetEntity(request.Target, out var ordered) || !TryComp<WFEncounterComponent>(ordered, out var orderedComp))
+                    return Loc.GetString("wf-encounter-admin-gone");
+                TryGetEntity(request.OrderTarget, out var aimedAt);
+                MapCoordinates? where = session.AttachedEntity is { } admin ? _transform.GetMapCoordinates(admin) : null;
+                if (_encounters.AdminOrder((ordered.Value, orderedComp), request.Key, request.Order, aimedAt, where) is { } refused)
+                    return refused;
+                Audit(session, $"ordered ship '{request.Key}' of encounter {ToPrettyString(ordered.Value):entity} to {request.Order}"
+                               + (aimedAt is { } aim ? $" {ToPrettyString(aim):entity}" : string.Empty));
+                return Loc.GetString("wf-encounter-admin-order-done", ("order", Loc.GetString($"wf-encounter-admin-order-{request.Order.ToString().ToLowerInvariant()}")),
+                    ("key", request.Key));
+
             case WFEncounterAdminAction.Teleport:
                 if (session.AttachedEntity is not { } body)
                     return Loc.GetString("cmd-wf_encounter-no-player");
@@ -142,8 +151,8 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
         _adminLog.Add(LogType.AdminCommands, LogImpact.Medium, $"{session.Name} {what}");
     }
 
-    /// <summary>The scheduler settings, every prototype and every encounter with its ships.</summary>
-    public WFEncounterAdminState BuildState()
+    /// <summary>The scheduler settings, every prototype, every encounter with its ships, and the player ships an order can be aimed at, nearest the viewer first.</summary>
+    public WFEncounterAdminState BuildState(ICommonSession? viewer = null)
     {
         var state = new WFEncounterAdminState
         {
@@ -182,6 +191,7 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                     ? $"wf-encounter-resolution-{resolution.ToString().ToLowerInvariant()}"
                     : "cmd-wf_encounter-state-active"), false),
                 Age = (float) (_timing.CurTime - encounter.Started).TotalSeconds,
+                Threat = encounter.Threat,
                 ExpiresIn = encounter.Expires is { } expires ? MathF.Max(0f, (float) (expires - _timing.CurTime).TotalSeconds) : -1f,
             };
             foreach (var (key, ship) in encounter.Ships)
@@ -209,6 +219,10 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                     Disabled = exists && _status.IsDisabled(ship.Grid),
                     Crew = crew?.Alive ?? 0,
                     Activity = activity,
+                    Virtual = ship.Virtual,
+                    Building = ship.Building,
+                    Extorter = ship.Extort != null,
+                    Hunter = ship.Hunt && ship.Extort == null,
                 });
             }
 
@@ -226,6 +240,39 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
             });
         }
 
+        AddTargets(state, viewer);
         return state;
+    }
+
+    /// <summary>Every ship with a living player aboard that isn't an encounter's, with who is aboard, nearest the viewer first.</summary>
+    private void AddTargets(WFEncounterAdminState state, ICommonSession? viewer)
+    {
+        var from = viewer?.AttachedEntity is { } body ? _transform.GetMapCoordinates(body) : MapCoordinates.Nullspace;
+        var aboard = new Dictionary<EntityUid, List<string>>();
+        var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (players.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid is not { } grid || HasComp<WFEncounterGridComponent>(grid) || HasComp<Content.Shared.Ghost.GhostComponent>(uid)
+                || _mobs.IsDead(uid) || grid == xform.MapUid)
+                continue;
+
+            if (!aboard.TryGetValue(grid, out var names))
+                aboard[grid] = names = new List<string>();
+            names.Add(Name(uid));
+        }
+
+        foreach (var (grid, names) in aboard)
+        {
+            var at = _transform.GetMapCoordinates(grid);
+            state.Targets.Add(new WFEncounterAdminTarget
+            {
+                Grid = GetNetEntity(grid),
+                Name = Name(grid),
+                Players = string.Join(", ", names),
+                Distance = at.MapId == from.MapId ? (at.Position - from.Position).Length() : -1f,
+            });
+        }
+
+        state.Targets.Sort((a, b) => (a.Distance < 0f ? float.MaxValue : a.Distance).CompareTo(b.Distance < 0f ? float.MaxValue : b.Distance));
     }
 }

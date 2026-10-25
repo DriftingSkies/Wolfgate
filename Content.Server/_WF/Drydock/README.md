@@ -85,6 +85,29 @@ The console window is an instrument deck in the cockpit style (CombatConsole's i
 missing parts as red diamonds, damage amber) and each crane as the client animates it. A ship outside the plot gets
 an edge pointer with its range. Open consoles refresh once a second.
 
+## Chop-Shop
+
+Blackanvil Chop-Shop (`WFChopShop`, `Resources/Maps/_WF/Drydock/chopshop.yml`) is an illegal drydock on Anvilhold's
+layout, farther out (11 to 13 km). Its berth consoles (`WFComputerChopShop`, `chopshop.yml`) only break ships: they
+refuse repairs and refits, and nobody there books berths, so it's walk-in only. Its fence, Kord Blackanvil
+(`WFDrydockFence`), answers hails and explains the rules.
+
+A chop-shop console (`WFDrydockChopShopComponent`, `WFDrydockSystem.ChopShop.cs`) pays in thalers, not materials, and
+stores nothing in its cranes. When a break starts it fixes the payout at `valueShare` (80%) of the ship's value: its
+shipyard price, from the ship's `VesselComponent` or its vessel station, else what the grid appraises at. Each tile
+lifted prints its share by the console, weighted by its work time (what was stripped off it), onto the stack already
+lying there; the last tile of the hull prints whatever is left. An abort or a destroyed console keeps what was printed
+and pays no more. The console shows the payout before the break. Stripped boards, parts and guns land beside the
+cranes as usual.
+
+Breaking lawful property puts a warrant (`warrantReward`, 15,000) on the breaker, posted on the bounty board's warrant
+list (`WFShipbreakerWarrantSystem`). Lawful property is a ship registered to another player (`ShipOwnershipComponent`; an unregistered deed goes by
+the owner's name), or a live
+encounter ship whose faction isn't in `outlawFactions` (pirates, the ADS, the Reavers) and isn't a derelict. A ship
+freed from its encounter with its deed is anyone's. Each further lawful break adds its reward to the same warrant.
+When the breaker dies, the players who hurt them in person share it equally; if none did, it stands, and it comes off
+the board unpaid if their body is deleted. A warrant posted while the board was down is posted on the next break.
+
 ## Mobile drydock
 
 `WFComputerMobileDrydock` (board `WFComputerMobileDrydockCircuitboard`) and `WFMobileDrydockCrane` (board
@@ -116,11 +139,15 @@ little.
 ### Hull breaking
 
 A mobile console also breaks up the ship in its berth for materials (`WFDrydockSystem.Break.cs`), behind a confirm on
-its Break hull key. Anything but a station can be broken: outposts and POIs (station members with no `ShuttleDeed`) and
-the drydock's own grid are refused, and so is a grid with an indestructible wall, window or door, such as a vault or
-monolith fragment. Player ships, encounter and event ships are fair game. Breaking a crewed
+its Break hull key. Anything but a station can be broken: outposts and POIs (station members with no `ShuttleDeed` whose
+station isn't a vessel's, as `ExtraShuttleInformation` marks it) and the drydock's own grid are refused, and so is a
+grid with an indestructible wall, window or door, such as a vault or monolith fragment. The console says why in place
+of the salvage bill. Player ships, admin-spawned ships with or without an owner, encounter and event ships are fair
+game. Breaking a crewed
 ship is an attack on it, reported on start and with every tile through `WFCrewAlertSystem.ReportBreaking`, so its
-crew, escorts and allies respond. Nobody aboard stops the job.
+crew, escorts and allies respond. The attack is blamed on the breaker's vessel, the console's own grid when that is a
+ship, else the nearest ship registered to the breaker's player, else the ship on their ID's deed, and on the breaker in
+person, whom those crews turn hostile to. Nobody aboard stops the job.
 
 The hull is peeled tile by tile from its edges inward: each crane takes the nearest tile it reaches that has an open
 side and whose loss leaves the hull in one piece, so the grid never splits. Tiles out of reach are skipped, and only
@@ -172,6 +199,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 
 - [`Content.Server/_WF/Drydock/WFDrydockBerth.cs`](WFDrydockBerth.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockBookingComponent.cs`](WFDrydockBookingComponent.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockChopShopComponent.cs`](WFDrydockChopShopComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockCraneUpgradesComponent.cs`](WFDrydockCraneUpgradesComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockJobComponent.cs`](WFDrydockJobComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockRepairVoucherComponent.cs`](WFDrydockRepairVoucherComponent.cs)
@@ -179,6 +207,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Blockers.cs`](WFDrydockSystem.Blockers.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Booking.cs`](WFDrydockSystem.Booking.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Break.cs`](WFDrydockSystem.Break.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockSystem.ChopShop.cs`](WFDrydockSystem.ChopShop.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Construction.cs`](WFDrydockSystem.Construction.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.cs`](WFDrydockSystem.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Job.cs`](WFDrydockSystem.Job.cs)
@@ -193,6 +222,8 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.Server/_WF/Drydock/WFLandingThrusterRefitSystem.cs`](WFLandingThrusterRefitSystem.cs)
 - [`Content.Server/_WF/Drydock/WFPartRefitSystem.cs`](WFPartRefitSystem.cs)
 - [`Content.Server/_WF/Drydock/WFSalvagedHardwareComponent.cs`](WFSalvagedHardwareComponent.cs)
+- [`Content.Server/_WF/Drydock/WFShipbreakerWarrantComponent.cs`](WFShipbreakerWarrantComponent.cs)
+- [`Content.Server/_WF/Drydock/WFShipbreakerWarrantSystem.cs`](WFShipbreakerWarrantSystem.cs)
 - [`Content.Server/_WF/Drydock/WFShipRefitsComponent.cs`](WFShipRefitsComponent.cs)
 - [`Content.Server/_WF/Drydock/WFShipRefitSystem.cs`](WFShipRefitSystem.cs)
 
@@ -228,6 +259,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Drydock/ChopShopTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/ChopShopTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockHailTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockHailTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBerthTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBerthTest.cs)
@@ -236,9 +268,11 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockSiloTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockSiloTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockUpgradeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockUpgradeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Drydock/ShipbreakerWarrantTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/ShipbreakerWarrantTest.cs)
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WF/Drydock/chopshop.yml`](../../../Resources/Prototypes/_WF/Drydock/chopshop.yml)
 - [`Resources/Prototypes/_WF/Drydock/consoles.yml`](../../../Resources/Prototypes/_WF/Drydock/consoles.yml)
 - [`Resources/Prototypes/_WF/Drydock/construction.yml`](../../../Resources/Prototypes/_WF/Drydock/construction.yml)
 - [`Resources/Prototypes/_WF/Drydock/cranes.yml`](../../../Resources/Prototypes/_WF/Drydock/cranes.yml)
@@ -255,6 +289,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 ### Localization
 
 - [`Resources/Locale/en-US/_WF/Drydock/drydock-booking.ftl`](../../../Resources/Locale/en-US/_WF/Drydock/drydock-booking.ftl)
+- [`Resources/Locale/en-US/_WF/Drydock/drydock-chopshop.ftl`](../../../Resources/Locale/en-US/_WF/Drydock/drydock-chopshop.ftl)
 - [`Resources/Locale/en-US/_WF/Drydock/drydock-console-ui.ftl`](../../../Resources/Locale/en-US/_WF/Drydock/drydock-console-ui.ftl)
 - [`Resources/Locale/en-US/_WF/Drydock/drydock-console.ftl`](../../../Resources/Locale/en-US/_WF/Drydock/drydock-console.ftl)
 - [`Resources/Locale/en-US/_WF/Drydock/drydock-crane.ftl`](../../../Resources/Locale/en-US/_WF/Drydock/drydock-crane.ftl)
@@ -267,6 +302,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 
 ### Maps
 
+- [`Resources/Maps/_WF/Drydock/chopshop.yml`](../../../Resources/Maps/_WF/Drydock/chopshop.yml)
 - [`Resources/Maps/_WF/Drydock/drydock.yml`](../../../Resources/Maps/_WF/Drydock/drydock.yml)
 
 ## Non-modular edits

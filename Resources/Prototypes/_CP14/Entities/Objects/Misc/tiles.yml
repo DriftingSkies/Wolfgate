@@ -1,0 +1,90 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  parent: BaseItem
+  id: CP14FloorTileStonebricks
+  components:
+  - type: Sprite
+    sprite: _CP14/Objects/Tile/tile.rsi
+    state: stonebrick
+  - type: Item
+    sprite: _CP14/Objects/Tile/tile.rsi
+    size: Normal
+  - type: Stack
+    count: 1
+    stackType: CP14FloorTileStonebricks
+  - type: FloorTile
+    placeTileSound:
+      path: /Audio/Items/shovel_dig.ogg
+      params:
+        variation: 0.03
+        volume: 2
+    outputs:
+      - CP14FloorStonebricksSnowed
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -8
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: BaseItem
+  id: CP14FloorTileBirchWoodplanksStairs
+  components:
+  - type: Sprite
+    sprite: _CP14/Objects/Tile/tile.rsi
+    state: birch_woodplanks_stairways
+  - type: Item
+    sprite: _CP14/Objects/Tile/tile.rsi
+    size: Normal
+  - type: Stack
+    count: 1
+    stackType: CP14FloorTileBirchWoodplanksStairs
+  - type: FloorTile
+    placeTileSound:
+      path: /Audio/Effects/woodenclosetclose.ogg
+      params:
+        variation: 0.03
+        volume: 2
+    outputs:
+      - CP14FloorBirchWoodPlanksStairways
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -8
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: PhysicalComposition
+    materialComposition:
+      Wood: 5
+# WOLFGATE END

@@ -5,3 +5,11 @@
   typingState: default0
   idleState: default3
   offset: -0.2, 0.1 # 0625
+
+# Ported from upstream space-station-14; Monolith's vulpkanin never got its own bubble.
+- type: typingIndicator
+  id: WFVulpkanin
+  spritePath: /Textures/_WF/Species/Effects/speech.rsi
+  typingState: vulpkanin0
+  idleState: vulpkanin3
+  offset: 0, 0.125

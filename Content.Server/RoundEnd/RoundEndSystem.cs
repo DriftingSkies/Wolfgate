@@ -367,7 +367,7 @@ namespace Content.Server.RoundEnd
 
             if (mins.TotalSeconds != 0 && _gameTiming.CurTime - AutoCallStartTime > mins)
             {
-                if (!_shuttle.EmergencyShuttleArrived && ExpectedCountdownEnd is null)
+                if (!_shuttle.EmergencyShuttleArrived && ExpectedCountdownEnd is null && !_shuttle.RoundEndDelayed) // WOLFGATE(Administration): no auto-call while delayroundend holds the round
                 {
                     RequestRoundEnd(null, false, "round-end-system-shuttle-auto-called-announcement");
                     _autoCalledBefore = true;

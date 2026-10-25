@@ -1,0 +1,57 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: tile #Stairways
+  id: CP14FloorRedWoodPlanksStairways
+  name: cp14-tiles-red-woodplanks-stairways
+  sprite: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_woodplanks_stairways.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 101
+  edgeSprites:
+    SouthEast: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_single_edge_SE.png
+    NorthEast: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_single_edge_NE.png
+    NorthWest: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_single_edge_NW.png
+    SouthWest: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_single_edge_SW.png
+    South: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_double_edge_S.png
+    East: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_double_edge_E.png
+    North: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_double_edge_N.png
+    West: /Textures/_CP14/Tiles/WoodPlanks/RedWood/red_double_edge_W.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  itemDrop: MaterialWoodPlank1
+  footstepSounds:
+    collection: FootstepWood
+  heatCapacity: 10000
+
+- type: tile #Stairways
+  id: CP14FloorBirchWoodPlanksStairways
+  name: cp14-tiles-birch-woodplanks-stairways
+  sprite: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_woodplanks_stairways.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 101
+  edgeSprites:
+    SouthEast: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_single_edge_SE.png
+    NorthEast: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_single_edge_NE.png
+    NorthWest: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_single_edge_NW.png
+    SouthWest: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_single_edge_SW.png
+    South: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_double_edge_S.png
+    East: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_double_edge_E.png
+    North: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_double_edge_N.png
+    West: /Textures/_CP14/Tiles/WoodPlanks/BirchWood/birch_double_edge_W.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  itemDrop: CP14FloorTileBirchWoodplanksStairs
+  footstepSounds:
+    collection: FootstepWood
+  heatCapacity: 10000
+# WOLFGATE END

@@ -294,10 +294,26 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     public void ReportShipThreat(EntityUid grid, string group, EntityUid attacker) => ReportAttack(grid, attacker, group);
 
     /// <summary>
-    /// Reports a drydock breaking a ship up as an attack on it by the drydock's grid. Never excused as stray fire,
-    /// whatever its colours.
+    /// Reports a drydock breaking a ship up as an attack on it by the breaker's vessel, never excused as stray fire
+    /// whatever its colours, and by the breaker in person: every crew of the ship's formation turns hostile to them.
     /// </summary>
-    public void ReportBreaking(EntityUid grid, EntityUid attacker) => ReportAttack(grid, attacker, gunfire: true);
+    public void ReportBreaking(EntityUid grid, EntityUid? vessel, EntityUid? breaker)
+    {
+        if (vessel is { } attacker && !TerminatingOrDeleted(attacker))
+            ReportAttack(grid, attacker, gunfire: true);
+
+        if (breaker is not { } mob || TerminatingOrDeleted(mob) || !HasComp<MapGridComponent>(grid))
+            return;
+
+        var formation = _escorts.GetFormation(grid);
+        var query = EntityQueryEnumerator<WFCrewComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out var crew, out var transform))
+        {
+            if ((crew.Post?.EntityId ?? transform.GridUid) is { } home && formation.Contains(home) && uid != mob
+                && _mobState.IsAlive(uid) && !HasComp<ActorComponent>(uid))
+                _factions.AggroEntity(uid, mob);
+        }
+    }
 
     /// <summary>
     /// Reports a vessel's ship-weapon fire that came at a ship, hit or miss, as an attack. False while it is let pass

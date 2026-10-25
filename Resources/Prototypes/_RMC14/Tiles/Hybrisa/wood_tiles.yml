@@ -1,0 +1,27 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: tile
+  abstract: true
+  parent: CMTileBase
+  id: RMCFloorHybrisaWoodBase
+  name: tiles-cm-wood
+  footstepSounds:
+    collection: FootstepWood
+  barestepSounds:
+    collection: BarestepWood
+  itemDrop: FloorTileItemWood
+
+- type: tile
+  parent: RMCFloorHybrisaWoodBase
+  id: RMCFloorHybrisaWoodGrey
+  sprite: /Textures/_RMC14/Tiles/hybrisa/greywood.png
+
+- type: tile
+  parent: RMCFloorHybrisaWoodBase
+  id: RMCFloorHybrisaWoodRed
+  sprite: /Textures/_RMC14/Tiles/hybrisa/redwood.png
+
+- type: tile
+  parent: RMCFloorHybrisaWoodBase
+  id: RMCFloorHybrisaWoodBlack
+  sprite: /Textures/_RMC14/Tiles/hybrisa/blackwood.png
+# WOLFGATE END

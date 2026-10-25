@@ -1,0 +1,61 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14WallStoneCopperOre
+  suffix: copper ore
+  parent: CP14WallStone
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/Natural/cave_stone_copper.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/Natural/cave_stone_copper.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+
+- type: entity
+  id: CP14WallStoneCoalOre
+  suffix: coal ore
+  parent: CP14WallStone
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Walls/Natural/cave_stone_coal.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Walls/Natural/cave_stone_coal.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: IconSmooth
+    base: wall
+# WOLFGATE END

@@ -32,7 +32,7 @@
     sprite: Clothing/Shoes/Misc/slippers.rsi
 
 - type: entity
-  parent: ClothingShoesBaseButcherable
+  parent: [ClothingShoesBaseButcherable, BaseWaddleShoesQuacking] # WOLFGATE(Waddle): weaker tilt and a quack on toggle
   id: ClothingShoeSlippersDuck
   name: ducky slippers
   # description: You wish these made quacking sounds as you walked.

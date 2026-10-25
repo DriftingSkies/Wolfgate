@@ -1,0 +1,29 @@
+# WOLFGATE(DecorImport) START: ported from Backmen
+- type: entity
+  parent: BaseWall
+  id: WallFlesh
+  components:
+  - type: Construction
+    graph: Girder
+    node: meatWall
+  - type: Tag
+    tags:
+      - Wall
+      - Structure
+      - Flesh
+  - type: Sprite
+    sprite: Backmen/Structures/Walls/flesh.rsi
+  - type: Icon
+    sprite: Backmen/Structures/Walls/flesh.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: flesh
+# WOLFGATE END

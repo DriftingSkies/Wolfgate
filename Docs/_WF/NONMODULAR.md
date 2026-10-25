@@ -11,13 +11,21 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - per-instance cache; a static one leaked entity ids between pooled test clients and tripped SetAuxiliary's assert
   - also rebuild a blank auxiliary that a client state reset deleted
   - a client state reset can delete cached entities without a round restart; rebuild those
+- [`Content.Client/_Mono/Blocking/BlockingVisualsSystem.cs`](../../Content.Client/_Mono/Blocking/BlockingVisualsSystem.cs)
+  - post-shader flags are set through SpriteSystem since engine 291
+  - engine 291 ignores the sprite-wide GetScreenTexture/RaiseShaderEvent; they are per post-shader now
+- [`Content.Client/_Mono/Tiles/TileEntityShaderSystem.cs`](../../Content.Client/_Mono/Tiles/TileEntityShaderSystem.cs): engine 291 ignores the sprite-wide RaiseShaderEvent; it is per post-shader now
 - [`Content.Client/CharacterInfo/CharacterInfoSystem.cs`](../../Content.Client/CharacterInfo/CharacterInfoSystem.cs)
   - replays skip the character info request
   - Replay spectators have a local entity but no server to answer this request.
+- [`Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs`](../../Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs): a merge left the old guard nested over the new one, so an empty beaker with a full buffer threw
 - [`Content.Client/Guidebook/GuidebookDataSystem.cs`](../../Content.Client/Guidebook/GuidebookDataSystem.cs)
   - replays skip the guidebook data request
   - partial for the network dependency
   - replay playback starts these systems without a server connection
+- [`Content.Client/Holopad/HolopadSystem.cs`](../../Content.Client/Holopad/HolopadSystem.cs)
+  - post-shader flags are set through SpriteSystem since engine 291
+  - engine 291 ignores the sprite-wide RaiseShaderEvent; it is per post-shader now
 - [`Content.Client/Lobby/LobbyUIController.cs`](../../Content.Client/Lobby/LobbyUIController.cs): unknown species falls back to the default
 - [`Content.Client/Lobby/UI/CharacterSetupGui.xaml.cs`](../../Content.Client/Lobby/UI/CharacterSetupGui.xaml.cs)
   - logs characters that can't be previewed
@@ -25,7 +33,11 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs`](../../Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs)
   - v291 Box2 asserts on inverted corners in debug builds; order them
   - batch radar edges so huge grids don't overflow the game thread stack
+- [`Content.Client/Stealth/StealthSystem.cs`](../../Content.Client/Stealth/StealthSystem.cs)
+  - post-shader flags are set through SpriteSystem since engine 291
+  - engine 291 ignores the sprite-wide GetScreenTexture/RaiseShaderEvent; they are per post-shader now
 - [`Content.Client/UserInterface/Systems/Admin/AdminUIController.cs`](../../Content.Client/UserInterface/Systems/Admin/AdminUIController.cs): a HUD layout swap rebuilds the button visible
+- [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs): an unlimited check warns when the eye lags a long teleport
 - [`Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs`](../../Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs): Replay seeks and filter changes rebuild the output from scratch.
 - [`Content.Client/UserInterface/Systems/Sandbox/SandboxUIController.cs`](../../Content.Client/UserInterface/Systems/Sandbox/SandboxUIController.cs): a HUD layout swap rebuilds the button visible
 - [`Content.Client/VendingMachines/VendingMachineBoundUserInterface.cs`](../../Content.Client/VendingMachines/VendingMachineBoundUserInterface.cs): skip updates queued before Open(), _uiSystem is still null and the NRE crashes state handling
@@ -41,6 +53,11 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - AsyncLocal for the returned-pair guard
   - dispose skips a pair the test already returned
   - a returned pair can be borrowed by another test before this test's `await using` disposes it
+- [`Content.IntegrationTests/Pair/TestPair.Recycle.cs`](../../Content.IntegrationTests/Pair/TestPair.Recycle.cs)
+  - pooled client windows are closed on return
+  - a window left open covers the next test's UI
+  - the pooled client keeps its windows across tests, and one left open intercepts the next test's clicks
+- [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../Content.IntegrationTests/PoolManager.Cvars.cs): a round-restart vote throws on a dummy session's join
 - [`Content.IntegrationTests/Tests/_NF/ShipyardTests.cs`](../../Content.IntegrationTests/Tests/_NF/ShipyardTests.cs)
   - expected-value appraisal
   - seeded so the appraisal is reproducible
@@ -69,6 +86,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Server/Explosion/EntitySystems/ExplosionGridTileFlood.cs`](../../Content.Server/Explosion/EntitySystems/ExplosionGridTileFlood.cs)
   - a freed tile is never scheduled earlier than the current iteration.
   - a blocker never clears earlier than the current iteration.
+- [`Content.Server/Ghost/Roles/Components/ToggleableGhostRoleComponent.cs`](../../Content.Server/Ghost/Roles/Components/ToggleableGhostRoleComponent.cs): a device that only carries the wipe verb (a PDA) keeps its own activation
+- [`Content.Server/Ghost/Roles/ToggleableGhostRoleSystem.cs`](../../Content.Server/Ghost/Roles/ToggleableGhostRoleSystem.cs): a device that only carries the wipe verb (a PDA) leaves using and activating it to its own UI
 - [`Content.Server/Preferences/Managers/ServerPreferencesManager.cs`](../../Content.Server/Preferences/Managers/ServerPreferencesManager.cs)
   - a failed save is logged with its slot
   - sanitized here like FinishLoad does on login
@@ -84,6 +103,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs`](../../Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs)
   - start a real jump, as an ensured FTLComponent stayed Available and was removed
   - pick the dock without teleporting the shuttle there before the jump
+  - the jump knocks crew down but never throws them off the grid; only leaving it strands you
 - [`Content.Server/Solar/EntitySystems/PowerSolarControlConsoleSystem.cs`](../../Content.Server/Solar/EntitySystems/PowerSolarControlConsoleSystem.cs)
   - closed UIs skip updates, so refresh on open
   - refresh the state on open; the update loop skips closed UIs
@@ -104,6 +124,10 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - a switched-off or folded shield blocks nothing
   - the attempt repeats every tick while the trigger is held
 - [`Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs): a client that first saw the wearer already dressed never got the equip for this item (the
+- [`Content.Shared/Clothing/EntitySystems/ToggleableClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/ToggleableClothingSystem.cs)
+  - whatever the piece replaced goes back on, instead of staying shut inside the piece
+  - a suit deleted along with its wearer can't take the piece back
+  - another suit's piece goes back to its suit, and what it covered is kept under this one
 - [`Content.Shared/Gibbing/Systems/GibbingSystem.cs`](../../Content.Shared/Gibbing/Systems/GibbingSystem.cs)
   - bodiless giblets are skipped when flung.
   - bodiless dropped contents are skipped instead of flung.
@@ -112,6 +136,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Shared/Preferences/HumanoidCharacterProfile.cs`](../../Content.Shared/Preferences/HumanoidCharacterProfile.cs)
   - the company is passed through the constructor
   - copies keep the company
+  - count downsides first so a positive trait isn't dropped by set order
   - MemberwiseEquals - Equals(other) resolved to this override and recursed forever.
   - hash only what MemberwiseEquals compares by value
   - removed - Appearance hashed by reference, broke equal profiles hashing alike
@@ -128,9 +153,11 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Locale/en-US/_Mono/prototypes/access/accesses.ftl`](../../Resources/Locale/en-US/_Mono/prototypes/access/accesses.ftl): Monolith#4816 shipped the Underground access levels without names
 - [`Resources/Maps/_Mono/Bluespace/prefracture.yml`](../../Resources/Maps/_Mono/Bluespace/prefracture.yml): Hardpoints mapped under the Unidentified Vessel's Scythe, Sunder and Flayer guns so gunnery links them.
 - [`Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml`](../../Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml): Hardpoint mapped under the asteroid ship's AK570 so gunnery links it.
+- [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../Resources/Maps/_Mono/POI/pdvhelios.yml): Helios mapping fixes for lighting, wallmounts and small layout tweaks.
 - [`Resources/migration.yml`](../../Resources/migration.yml): Monolith#4816 renamed the WL-01 suit and helmet without a migration
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml): the camera bounty asked for optical sensors (OpticsEconomy1)
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml): MMC cash bounties pay 0.9x their value so cash-to-MIC-to-cash can't loop for profit
+- [`Resources/Prototypes/_Mono/Catalogs/Fills/Crates/materials.yml`](../../Resources/Prototypes/_Mono/Catalogs/Fills/Crates/materials.yml): copper and lithium as listed, not uranium and plasma
 - [`Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml`](../../Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml)
   - PDV pack, 650->500 (+50 tax over mat cost)
   - PDV pack, 1250->1000 (+100 tax over mat cost)
@@ -145,6 +172,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_Mono/Guidebook/rules.yml`](../../Resources/Prototypes/_Mono/Guidebook/rules.yml)
   - erotic roleplay rule removed, PR #27
   - erotic roleplay rule entry removed, PR #27
+- [`Resources/Prototypes/_Mono/Language/underground.yml`](../../Resources/Prototypes/_Mono/Language/underground.yml): codespeak gets its own chat colour so speakers can tell it from Common
 - [`Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml`](../../Resources/Prototypes/_Mono/Loadouts/MedicalDispatch/universal_groups.yml): the ER PDAs, was MedicalDoctorPDA and ContractorSeniorPhysicianPDA, whose ID resets to medical doctor access
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml)
   - PDV pack, composite cost 12000->9000
@@ -166,6 +194,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/Entities/Clothing/OuterClothing/suits.yml`](../../Resources/Prototypes/Entities/Clothing/OuterClothing/suits.yml)
   - radiation suit blocks more radiation (was 0.1)
   - vend price for the EngiVend, instead of its scrap value
+- [`Resources/Prototypes/Entities/Objects/Devices/pda.yml`](../../Resources/Prototypes/Entities/Objects/Devices/pda.yml): E and Z open the PDA instead of searching for a player to control it
 - [`Resources/Prototypes/Entities/Objects/Misc/identification_cards.yml`](../../Resources/Prototypes/Entities/Objects/Misc/identification_cards.yml): the universal card opens the Underground Black Market too
 - [`Resources/Prototypes/Entities/Objects/Tools/access_configurator.yml`](../../Resources/Prototypes/Entities/Objects/Tools/access_configurator.yml): Monolith#4816 added the level without a way to hand it out
 - [`Resources/Prototypes/Entities/Objects/Weapons/Guns/Turrets/turrets_ballistic.yml`](../../Resources/Prototypes/Entities/Objects/Weapons/Guns/Turrets/turrets_ballistic.yml)
@@ -173,6 +202,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - ammo container copied from BaseWeaponBallisticTurret.
   - gun tuning copied from BaseWeaponBallisticTurret (the angles are Mono's).
   - fire modes copied from BaseWeaponBallisticTurret.
+- [`Resources/Prototypes/Entities/Structures/Lighting/base_lighting.yml`](../../Resources/Prototypes/Entities/Structures/Lighting/base_lighting.yml): draw over posters at the same depth instead of flickering with them
+- [`Resources/Prototypes/Entities/Structures/Lighting/strobe_lighting.yml`](../../Resources/Prototypes/Entities/Structures/Lighting/strobe_lighting.yml): draw over posters at the same depth instead of flickering with them
 - [`Resources/Prototypes/GameRules/pests.yml`](../../Resources/Prototypes/GameRules/pests.yml)
   - pest events were crowding out the rest of the table (was 6)
   - each pest event at most once per 90 minutes

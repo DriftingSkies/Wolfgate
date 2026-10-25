@@ -10,7 +10,6 @@ using Content.Server.NPC.Components;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Hands.EntitySystems;
-using Content.Shared.Item;
 using Content.Shared.Mobs.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
@@ -158,11 +157,12 @@ public sealed partial class WFEncounterTest
             own = SEntMan.SpawnEntity("WeaponPistolViper", coordinates);
 
             var containers = Server.System<SharedContainerSystem>();
+            var hands = Server.System<SharedHandsSystem>();
             var query = SEntMan.EntityQueryEnumerator<WFCrewPropertyComponent>();
             while (query.MoveNext(out var uid, out var property))
             {
-                // the first match must be something a hand can take, not a crew-marked structure
-                if (property.Grid != ship.Grid || containers.IsEntityInContainer(uid) || !SEntMan.HasComponent<ItemComponent>(uid))
+                // the first match must be something a hand can take, not a crew-marked structure or an anchored item
+                if (property.Grid != ship.Grid || containers.IsEntityInContainer(uid) || !hands.CanPickupAnyHand(SPlayer, uid))
                     continue;
 
                 item = uid;

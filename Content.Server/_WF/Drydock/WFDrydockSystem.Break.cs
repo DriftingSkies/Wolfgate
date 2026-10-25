@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._NF.Shipyard.Systems;
 using Content.Server._WF.NpcCrew.Systems;
+using Content.Server._NF.Station.Components;
 using Content.Server.Atmos.Components;
 using Content.Server.Cargo.Systems;
 using Content.Server.Construction;
@@ -10,6 +12,7 @@ using Content.Shared._Crescent.Hardpoints;
 using Content.Shared._Mono.ShipRepair.Components;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Drydock;
+using Content.Shared.Access.Systems;
 using Content.Shared.Construction.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -17,6 +20,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Materials;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Station.Components;
+using Robust.Shared.Player;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -34,6 +38,8 @@ public sealed partial class WFDrydockSystem
     [Dependency] private FlatpackSystem _flatpack = default!;
     [Dependency] private MaterialStorageSystem _sheets = default!;
     [Dependency] private SharedContainerSystem _container = default!;
+    [Dependency] private SharedIdCardSystem _idCards = default!;
+    [Dependency] private ShipyardSystem _shipyard = default!;
 
     /// <summary>Flatpack that hardware stripped off a hull comes out in.</summary>
     private static readonly EntProtoId SalvagedFlatpack = "WFSalvagedFlatpack";
@@ -92,10 +98,57 @@ public sealed partial class WFDrydockSystem
         if (!TryComp<WFDrydockJobComponent>(console, out var job))
             return false;
 
-        if (job.Attacker is { } attacker)
-            _crewAlert.ReportBreaking(ship, attacker);
+        job.Attacker = BreakerVessel(console, ship, actor);
+        job.Breaker = actor;
+        _crewAlert.ReportBreaking(ship, job.Attacker, job.Breaker);
+
+        if (TryComp<WFDrydockChopShopComponent>(console, out var chop))
+        {
+            SetUpChopPay(chop, job, items);
+            if (IsLawfulProperty(chop, ship, actor))
+                PostBreakWarrant(console, chop, ship, actor);
+        }
 
         return true;
+    }
+
+    /// <summary>
+    /// The vessel a break is blamed on: the console's own grid when it stands on a ship, as a mobile drydock does, else
+    /// the nearest ship registered to the breaker's player, else the ship on the deed of their ID. Null when none is a
+    /// ship other than the one being broken.
+    /// </summary>
+    private EntityUid? BreakerVessel(EntityUid console, EntityUid ship, EntityUid breaker)
+    {
+        if (Transform(console).GridUid is { } yard && yard != ship && HasComp<ShuttleDeedComponent>(yard))
+            return yard;
+
+        if (TryComp<ActorComponent>(breaker, out var actor))
+        {
+            var at = _transform.GetMapCoordinates(breaker);
+            EntityUid? nearest = null;
+            var best = float.MaxValue;
+            var owned = EntityQueryEnumerator<ShipOwnershipComponent, TransformComponent>();
+            while (owned.MoveNext(out var uid, out var ownership, out var xform))
+            {
+                if (uid == ship || ownership.OwnerUserId != actor.PlayerSession.UserId || xform.MapID != at.MapId)
+                    continue;
+
+                var distance = (_transform.GetWorldPosition(xform) - at.Position).LengthSquared();
+                if (distance < best)
+                {
+                    best = distance;
+                    nearest = uid;
+                }
+            }
+
+            if (nearest != null)
+                return nearest;
+        }
+
+        if (_idCards.TryFindIdCard(breaker, out var card) && _shipyard.TryGetDeedShip(card, out var deedShip) && deedShip != ship)
+            return deedShip;
+
+        return null;
     }
 
     /// <summary>Why a ship can't be broken at a console, or null.</summary>
@@ -104,14 +157,25 @@ public sealed partial class WFDrydockSystem
         if (IsShipyardGrid(console, comp, ship))
             return Loc.GetString("drydock-console-own-grid");
 
-        // A bought ship is a station of its own but carries a deed; a station member without one is an outpost or POI.
-        if (HasComp<StationMemberComponent>(ship) && !HasComp<ShuttleDeedComponent>(ship))
+        if (IsOutpost(ship))
             return Loc.GetString("drydock-console-break-station");
 
         if (HasIndestructibleBarrier(ship))
             return Loc.GetString("drydock-console-break-indestructible");
 
         return null;
+    }
+
+    /// <summary>
+    /// Whether a grid is part of a station or outpost rather than a ship. A ship can be a station of its own: one bought
+    /// carries a deed, and one spawned without an owner still has a vessel station.
+    /// </summary>
+    private bool IsOutpost(EntityUid grid)
+    {
+        if (!TryComp<StationMemberComponent>(grid, out var member) || HasComp<ShuttleDeedComponent>(grid))
+            return false;
+
+        return !HasComp<ExtraShuttleInformationComponent>(member.Station);
     }
 
     /// <summary>Whether a grid has a damageable wall, window or door that can't be destroyed, such as a vault's.</summary>
@@ -393,14 +457,15 @@ public sealed partial class WFDrydockSystem
             AddPerTileYield(pay, yield);
 
         EnsureComp<WFHulkComponent>(ship).LastWork = _timing.CurTime;
-        if (yield.Count > 0)
+        // A chop shop pays in thalers, not materials.
+        var chop = HasComp<WFDrydockChopShopComponent>(console);
+        if (yield.Count > 0 && !chop)
         {
             DepositYield(crane, drop, yield);
             AddBill(job.Yield, yield);
         }
 
-        if (job.Attacker is { } attacker && !TerminatingOrDeleted(attacker))
-            _crewAlert.ReportBreaking(ship, attacker);
+        _crewAlert.ReportBreaking(ship, job.Attacker, job.Breaker);
 
         var last = IsLastTile(ship, grid);
         if (last)
@@ -408,6 +473,9 @@ public sealed partial class WFDrydockSystem
             job.HullGone = true;
             SetAdrift(ship);
         }
+
+        if (chop)
+            PrintChopCash(console, job, item);
 
         // Lifting a tile casts off whoever stands on it; lifting the last one deletes the grid.
         _map.SetTile(ship, grid, item.TileIndex, Tile.Empty);
@@ -531,7 +599,9 @@ public sealed partial class WFDrydockSystem
     /// <summary>Ends a break and reports what the cranes recovered.</summary>
     private void EndBreak(EntityUid console, WFDrydockConsoleComponent comp, WFDrydockJobComponent job, JobEnd end)
     {
-        var yield = job.Yield.Count == 0 ? Loc.GetString("drydock-console-materials-none") : FormatMaterials(job.Yield);
+        var yield = HasComp<WFDrydockChopShopComponent>(console)
+            ? Loc.GetString("drydock-chop-yield", ("cash", job.CashPaid))
+            : job.Yield.Count == 0 ? Loc.GetString("drydock-console-materials-none") : FormatMaterials(job.Yield);
         var message = end switch
         {
             JobEnd.Finished when job.HullGone || job.Skipped == 0 =>

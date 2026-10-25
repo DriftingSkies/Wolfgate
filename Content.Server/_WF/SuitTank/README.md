@@ -38,6 +38,7 @@ Entry points: `WFSuitTankStorageComponent` (marks a suit whose `Storage` feeds i
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/SuitTank/SuitPieceSwapTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SuitTank/SuitPieceSwapTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/SuitTank/WFSuitTankTest.cs`](../../../Content.IntegrationTests/Tests/_WF/SuitTank/WFSuitTankTest.cs)
 
 ### Localization
@@ -52,6 +53,7 @@ Entry points: `WFSuitTankStorageComponent` (marks a suit whose `Storage` feeds i
 - [`Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/modsuit.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/modsuit.yml): 2x2 storage for air tanks that feed internals
 - [`Resources/Prototypes/_Mono/Entities/Clothing/base_shielding.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/base_shielding.yml): tanks in its existing 2x2 storage feed internals
 - [`Resources/Prototypes/Entities/Clothing/OuterClothing/base_clothingouter.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/base_clothingouter.yml): 2x2 storage for air tanks that feed internals
+- [`Resources/Prototypes/Entities/Clothing/OuterClothing/softsuits.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/softsuits.yml): both parents bring a ContainerContainer; keep the helmet and tank storage containers
 - [`Resources/Prototypes/Entities/Clothing/OuterClothing/suits.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/suits.yml): 2x2 storage for air tanks that feed internals
 
 <!-- WOLFGATE-GENERATED END -->

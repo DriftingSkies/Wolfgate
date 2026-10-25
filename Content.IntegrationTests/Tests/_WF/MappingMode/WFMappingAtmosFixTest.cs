@@ -32,6 +32,7 @@ public sealed class WFMappingAtmosFixTest
         var a = (await AddMappers(pair, 1))[0];
 
         Entity<MapGridComponent> grid = default;
+        EntityUid window = default;
         await server.WaitAssertion(() =>
         {
             Assert.That(mapping.TryCreateSession(a, "Atmos Fix Test", out var session), Is.True);
@@ -41,6 +42,12 @@ public sealed class WFMappingAtmosFixTest
             mapSys.SetTiles(grid, grid.Comp,
                 Enumerable.Range(0, 3).SelectMany(x => Enumerable.Range(0, 3).Select(y => (new Vector2i(x, y), plating)))
                     .ToList());
+
+            // A pasted window still points at the grid it was copied from.
+            var other = mapSys.CreateGridEntity(entMan.GetComponent<MapComponent>(session.RootMap).MapId);
+            mapSys.SetTile(other, other.Comp, new Vector2i(10, 10), plating);
+            window = entMan.SpawnEntity("ReinforcedWindow", new EntityCoordinates(grid, 0.5f, 0.5f));
+            entMan.GetComponent<DeltaPressureComponent>(window).GridUid = other;
         });
 
         await pair.RunTicksSync(5);
@@ -55,6 +62,8 @@ public sealed class WFMappingAtmosFixTest
             {
                 Assert.That(air!.GetMoles(Gas.Oxygen), Is.EqualTo(Atmospherics.OxygenMolesStandard).Within(0.01f));
                 Assert.That(air.GetMoles(Gas.Nitrogen), Is.EqualTo(Atmospherics.NitrogenMolesStandard).Within(0.01f));
+                Assert.That(entMan.GetComponent<DeltaPressureComponent>(window).GridUid, Is.EqualTo(grid.Owner),
+                    "A save points every window at the grid it stands on.");
             });
         });
 

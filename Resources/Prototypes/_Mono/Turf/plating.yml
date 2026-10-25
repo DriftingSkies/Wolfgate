@@ -2,7 +2,7 @@
   id: DebugLatticeRadarHalfWidth
   parent: Lattice
   name: debug radar half width lattice
-  sprite: /Textures/Tiles/lattice.png
+  sprite: /Textures/_WF/Resprites/Wizden/Tiles/lattice.png #WOLFGATE(Resprites): Repathed
   vertices: ["0.25, 0", "0.75, 0", "0.75, 1", "0.25, 1"]
 
 - type: tile
@@ -10,6 +10,8 @@
   parent: Lattice
   name: NE lattice
   sprite: /Textures/_Mono/Tiles/lattice/ne.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
+  placementVariants: [ 1.0 ] #WOLFGATE(Resprites): Lattice's three placement weights would pick missing variants
   vertices: ["1, 0", "1, 1", "0, 1"]
 
 - type: tile
@@ -17,6 +19,8 @@
   parent: Lattice
   name: NW lattice
   sprite: /Textures/_Mono/Tiles/lattice/nw.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
+  placementVariants: [ 1.0 ] #WOLFGATE(Resprites): Lattice's three placement weights would pick missing variants
   vertices: ["0, 0", "1, 1", "0, 1"]
 
 - type: tile
@@ -24,6 +28,8 @@
   parent: Lattice
   name: SE lattice
   sprite: /Textures/_Mono/Tiles/lattice/se.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
+  placementVariants: [ 1.0 ] #WOLFGATE(Resprites): Lattice's three placement weights would pick missing variants
   vertices: ["0, 0", "1, 0", "1, 1"]
 
 - type: tile
@@ -31,6 +37,8 @@
   parent: Lattice
   name: SW lattice
   sprite: /Textures/_Mono/Tiles/lattice/sw.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
+  placementVariants: [ 1.0 ] #WOLFGATE(Resprites): Lattice's three placement weights would pick missing variants
   vertices: ["0, 0", "1, 0", "0, 1"]
 
 - type: tile
@@ -38,6 +46,7 @@
   parent: PlatingSpace
   name: NE plating
   sprite: /Textures/_Mono/Tiles/plating/ne.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
   vertices: ["1, 0", "1, 1", "0, 1"]
 
 - type: tile
@@ -45,6 +54,7 @@
   parent: PlatingSpace
   name: NW plating
   sprite: /Textures/_Mono/Tiles/plating/nw.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
   vertices: ["0, 0", "1, 1", "0, 1"]
 
 - type: tile
@@ -52,6 +62,7 @@
   parent: PlatingSpace
   name: SE plating
   sprite: /Textures/_Mono/Tiles/plating/se.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
   vertices: ["0, 0", "1, 0", "1, 1"]
 
 - type: tile
@@ -59,4 +70,5 @@
   parent: PlatingSpace
   name: SW plating
   sprite: /Textures/_Mono/Tiles/plating/sw.png
+  variants: 1 #WOLFGATE(Resprites): Needed to not crash
   vertices: ["0, 0", "1, 0", "0, 1"]

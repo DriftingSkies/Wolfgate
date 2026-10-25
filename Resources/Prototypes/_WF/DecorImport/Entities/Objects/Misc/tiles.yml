@@ -1,0 +1,7819 @@
+# Marble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFrontierFloorWhiteMarble
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FrontierFloorWhiteMarble
+  - type: Stack
+    stackType: FloorTileFrontierFloorWhiteMarble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFrontierFloorDarkMarble
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FrontierFloorDarkMarble
+  - type: Stack
+    stackType: FloorTileFrontierFloorDarkMarble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFrontierFloorPlasmaMarble
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FrontierFloorPlasmaMarble
+  - type: Stack
+    stackType: FloorTileFrontierFloorPlasmaMarble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFrontierFloorUraniumMarble
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FrontierFloorUraniumMarble
+  - type: Stack
+    stackType: FloorTileFrontierFloorUraniumMarble
+
+# Slats
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemHarmonyFloorSteelSlatsContinuous
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - HarmonyFloorSteelSlatsContinuous
+  - type: Stack
+    stackType: FloorTileHarmonyFloorSteelSlatsContinuous
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemHarmonyFloorSteelVerticalSlatsBordered
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - HarmonyFloorSteelVerticalSlatsBordered
+  - type: Stack
+    stackType: FloorTileHarmonyFloorSteelVerticalSlatsBordered
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemHarmonyFloorWhiteSlatsContinuous
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - HarmonyFloorWhiteSlatsContinuous
+  - type: Stack
+    stackType: FloorTileHarmonyFloorWhiteSlatsContinuous
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemHarmonyFloorWhiteVerticalSlatsBordered
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - HarmonyFloorWhiteVerticalSlatsBordered
+  - type: Stack
+    stackType: FloorTileHarmonyFloorWhiteVerticalSlatsBordered
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemHarmonyFloorDarkSlatsContinuous
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - HarmonyFloorDarkSlatsContinuous
+  - type: Stack
+    stackType: FloorTileHarmonyFloorDarkSlatsContinuous
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemHarmonyFloorDarkVerticalSlatsBordered
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - HarmonyFloorDarkVerticalSlatsBordered
+  - type: Stack
+    stackType: FloorTileHarmonyFloorDarkVerticalSlatsBordered
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemWizdenFloorDarkHorizontalSlatsBordered
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - WizdenFloorDarkHorizontalSlatsBordered
+  - type: Stack
+    stackType: FloorTileWizdenFloorDarkHorizontalSlatsBordered
+
+# Exo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemMoffFloorExoHorizontal
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - MoffFloorExoHorizontal
+  - type: Stack
+    stackType: FloorTileMoffFloorExoHorizontal
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemMoffFloorExoVertical
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - MoffFloorExoVertical
+  - type: Stack
+    stackType: FloorTileMoffFloorExoVertical
+
+# Ironsand
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoobFloorIronsandTile
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoobFloorIronsandTile
+  - type: Stack
+    stackType: FloorTileGoobFloorIronsandTile
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDeltaVIronsandPaved
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DeltaVIronsandPaved
+  - type: Stack
+    stackType: FloorTileDeltaVIronsandPaved
+
+# Goonstation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetBlue
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetBlue
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpet
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpet
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetOffice
+  components:
+  - type: Sprite
+    state: carpetoffice
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetOffice
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetOffice
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetRegalcarpet
+  components:
+  - type: Sprite
+    state: carpet-white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetRegalcarpet
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetRegalcarpet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsDarkWide
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsDarkWide
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsDarkWide
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorder
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorder
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorder
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderNorth
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderSouthEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderSouthWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderNorthEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetBorderNorthWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetBorderNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetBorderNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetInnercorner
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetInnercorner
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetInnercorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetInnercornerNorth
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetInnercornerNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetInnercornerNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetInnercornerEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetInnercornerEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetInnercornerEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetDarkcarpetInnercornerWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetDarkcarpetInnercornerWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetDarkcarpetInnercornerWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdge
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdge
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdge
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeNorth
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeEast
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeEast
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeWest
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeWest
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeSouthEast
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeSouthWest
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeNorthEast
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyEdgeNorthWest
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyEdgeNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyEdgeNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrow
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrow
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrow
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowNorth
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowEast
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowEast
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowWest
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowWest
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowSouthEast
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowSouthWest
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowNorthEast
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBlueFancyNarrowNorthWest
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBlueFancyNarrowNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorBlueFancyNarrowNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCaution
+  components:
+  - type: Sprite
+    state: checker-dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCaution
+  - type: Stack
+    stackType: FloorTileGoonFloorCaution
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGlassblock
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGlassblock
+  - type: Stack
+    stackType: FloorTileGoonFloorGlassblock
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarble
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarble
+  - type: Stack
+    stackType: FloorTileGoonFloorMarble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSandytile
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSandytile
+  - type: Stack
+    stackType: FloorTileGoonFloorSandytile
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSanitary
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSanitary
+  - type: Stack
+    stackType: FloorTileGoonFloorSanitary
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStone
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStone
+  - type: Stack
+    stackType: FloorTileGoonFloorStone
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorTechfloor
+  components:
+  - type: Sprite
+    state: techfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorTechfloor
+  - type: Stack
+    stackType: FloorTileGoonFloorTechfloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorTerrazzo
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorTerrazzo
+  - type: Stack
+    stackType: FloorTileGoonFloorTerrazzo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGlassblockLarge
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGlassblockLarge
+  - type: Stack
+    stackType: FloorTileGoonFloorGlassblockLarge
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGlassblockTransparent
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGlassblockTransparent
+  - type: Stack
+    stackType: FloorTileGoonFloorGlassblockTransparent
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreen
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreen
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreen
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenNorth
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenEast
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenWest
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenSouthEast
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenSouthWest
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenNorthEast
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetGreenNorthWest
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetGreenNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetGreenNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorTransparentLargeGrey
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorTransparentLargeGrey
+  - type: Stack
+    stackType: FloorTileGoonFloorTransparentLargeGrey
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorLongtileRed
+  components:
+  - type: Sprite
+    state: shuttlered
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorLongtileRed
+  - type: Stack
+    stackType: FloorTileGoonFloorLongtileRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWb
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWb
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWb
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbNorth
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbEast
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbWest
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbSouthEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbSouthWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbNorthEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarbleBorderWbNorthWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarbleBorderWbNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorMarbleBorderWbNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsMedicalWide
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsMedicalWide
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsMedicalWide
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolBlue
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolBlue
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhite
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhite
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhiteNorth
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhiteNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhiteNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhiteEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhiteEast
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhiteEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhiteSouthEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhiteSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhiteSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhiteNorthEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhiteNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhiteNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhitecorner
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhitecorner
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhitecorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolLightbluewhitecornerEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolLightbluewhitecornerEast
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolLightbluewhitecornerEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorPoolNoAnimate
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorPoolNoAnimate
+  - type: Stack
+    stackType: FloorTileGoonFloorPoolNoAnimate
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurple
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurple
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurple
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleNorth
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleSouthEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleSouthWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleNorthEast
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorCarpetPurpleNorthWest
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorCarpetPurpleNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorCarpetPurpleNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorRacingEdge
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorRacingEdge
+  - type: Stack
+    stackType: FloorTileGoonFloorRacingEdge
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorRacingEdgeSouthEast
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorRacingEdgeSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorRacingEdgeSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSanitaryBlue
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSanitaryBlue
+  - type: Stack
+    stackType: FloorTileGoonFloorSanitaryBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorShuttleRed
+  components:
+  - type: Sprite
+    state: shuttlered
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorShuttleRed
+  - type: Stack
+    stackType: FloorTileGoonFloorShuttleRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorShuttleWhite
+  components:
+  - type: Sprite
+    state: shuttlewhite
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorShuttleWhite
+  - type: Stack
+    stackType: FloorTileGoonFloorShuttleWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsWide
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsWide
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsWide
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsWood
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsWood
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsWood
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsWoodSouthWest
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsWoodSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsWoodSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsWood3
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsWood3
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsWood3
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsWood3SouthWest
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsWood3SouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsWood3SouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorTechfloorRed
+  components:
+  - type: Sprite
+    state: techfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorTechfloorRed
+  - type: Stack
+    stackType: FloorTileGoonFloorTechfloorRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorTerrazzoWhite
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorTerrazzoWhite
+  - type: Stack
+    stackType: FloorTileGoonFloorTerrazzoWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorStairsWideGreen
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorStairsWideGreen
+  - type: Stack
+    stackType: FloorTileGoonFloorStairsWideGreen
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodEight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodEight
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodEight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodFour
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodFour
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodFour
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorYellowChecker
+  components:
+  - type: Sprite
+    state: checker-light
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorYellowChecker
+  - type: Stack
+    stackType: FloorTileGoonFloorYellowChecker
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorAutoArcticLake
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorAutoArcticLake
+  - type: Stack
+    stackType: FloorTileGoonFloorAutoArcticLake
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorArtmazeSilicatefloor
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorArtmazeSilicatefloor
+  - type: Stack
+    stackType: FloorTileGoonFloorArtmazeSilicatefloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirt
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirt
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtNorth
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtNorth
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtEast
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtEast
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtWest
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtWest
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtSouthEast
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtSouthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtSouthWest
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtSouthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtNorthEast
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtNorthEast
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorGrasstodirtNorthWest
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorGrasstodirtNorthWest
+  - type: Stack
+    stackType: FloorTileGoonFloorGrasstodirtNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorLava
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorLava
+  - type: Stack
+    stackType: FloorTileGoonFloorLava
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarslike
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarslike
+  - type: Stack
+    stackType: FloorTileGoonFloorMarslike
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSand
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSand
+  - type: Stack
+    stackType: FloorTileGoonFloorSand
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSnowcalm
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSnowcalm
+  - type: Stack
+    stackType: FloorTileGoonFloorSnowcalm
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSnowrough
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSnowrough
+  - type: Stack
+    stackType: FloorTileGoonFloorSnowrough
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSwampgrass
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSwampgrass
+  - type: Stack
+    stackType: FloorTileGoonFloorSwampgrass
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorAutoGrassSwampGrass
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorAutoGrassSwampGrass
+  - type: Stack
+    stackType: FloorTileGoonFloorAutoGrassSwampGrass
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWaterIceRough
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWaterIceRough
+  - type: Stack
+    stackType: FloorTileGoonFloorWaterIceRough
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorMarslikeT1
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorMarslikeT1
+  - type: Stack
+    stackType: FloorTileGoonFloorMarslikeT1
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorBallpit
+  components:
+  - type: Sprite
+    state: carpetclown
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorBallpit
+  - type: Stack
+    stackType: FloorTileGoonFloorBallpit
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorRacingRainbowRoad
+  components:
+  - type: Sprite
+    state: clown
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorRacingRainbowRoad
+  - type: Stack
+    stackType: FloorTileGoonFloorRacingRainbowRoad
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSetpiecesRootfloor
+  components:
+  - type: Sprite
+    state: oldconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSetpiecesRootfloor
+  - type: Stack
+    stackType: FloorTileGoonFloorSetpiecesRootfloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorSpecialroomClown
+  components:
+  - type: Sprite
+    state: clown
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorSpecialroomClown
+  - type: Stack
+    stackType: FloorTileGoonFloorSpecialroomClown
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorTerrazzoBlack
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorTerrazzoBlack
+  - type: Stack
+    stackType: FloorTileGoonFloorTerrazzoBlack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWood
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWood
+  - type: Stack
+    stackType: FloorTileGoonFloorWood
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodTwo
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodTwo
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodTwo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodThree
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodThree
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodThree
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodFive
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodFive
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodFive
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodSix
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodSix
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodSix
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemGoonFloorWoodSeven
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - GoonFloorWoodSeven
+  - type: Stack
+    stackType: FloorTileGoonFloorWoodSeven
+
+# Aurora
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorSidewalkAssunzioneBlocks
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorSidewalkAssunzioneBlocks
+  - type: Stack
+    stackType: FloorTileAuroraFloorSidewalkAssunzioneBlocks
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorSidewalkAssunzioneDetail
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorSidewalkAssunzioneDetail
+  - type: Stack
+    stackType: FloorTileAuroraFloorSidewalkAssunzioneDetail
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorSidewalkAssunzioneFlat
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorSidewalkAssunzioneFlat
+  - type: Stack
+    stackType: FloorTileAuroraFloorSidewalkAssunzioneFlat
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorSidewalkAssunzionePaved
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorSidewalkAssunzionePaved
+  - type: Stack
+    stackType: FloorTileAuroraFloorSidewalkAssunzionePaved
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorDetailConcreteDark
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorDetailConcreteDark
+  - type: Stack
+    stackType: FloorTileAuroraFloorDetailConcreteDark
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetLino
+  components:
+  - type: Sprite
+    state: lino
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetLino
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetLino
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetRoofingTiles
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetRoofingTiles
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetRoofingTiles
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorTiledRampBottom
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorTiledRampBottom
+  - type: Stack
+    stackType: FloorTileAuroraFloorTiledRampBottom
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorShuttleSkrell
+  components:
+  - type: Sprite
+    state: shuttlepurple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorShuttleSkrell
+  - type: Stack
+    stackType: FloorTileAuroraFloorShuttleSkrell
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorBeachWaterPool
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorBeachWaterPool
+  - type: Stack
+    stackType: FloorTileAuroraFloorBeachWaterPool
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorCaveAdhomai
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorCaveAdhomai
+  - type: Stack
+    stackType: FloorTileAuroraFloorCaveAdhomai
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeach
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeach
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeach
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachNorth
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachNorth
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachEast
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachWest
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachSouthEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachSouthEast
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachSouthWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachSouthWest
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachNorthEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachNorthEast
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMoghesDirtBeachNorthWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMoghesDirtBeachNorthWest
+  - type: Stack
+    stackType: FloorTileAuroraFloorMoghesDirtBeachNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetDirtKonyangSand
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetDirtKonyangSand
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetDirtKonyangSand
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetCrystal
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetCrystal
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetCrystal
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetIce
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetIce
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetIce
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetPermafrost
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetPermafrost
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetPermafrost
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetIceDark
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetIceDark
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetIceDark
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorWaterShallowMoghes
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorWaterShallowMoghes
+  - type: Stack
+    stackType: FloorTileAuroraFloorWaterShallowMoghes
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorWaterShallowSewage
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorWaterShallowSewage
+  - type: Stack
+    stackType: FloorTileAuroraFloorWaterShallowSewage
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetWaterAlt
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetWaterAlt
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetWaterAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorCarpetRubber
+  components:
+  - type: Sprite
+    state: carpet-black
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorCarpetRubber
+  - type: Stack
+    stackType: FloorTileAuroraFloorCarpetRubber
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorMarbleRed
+  components:
+  - type: Sprite
+    state: shuttlered
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorMarbleRed
+  - type: Stack
+    stackType: FloorTileAuroraFloorMarbleRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorSidewalkDetailConcrete
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorSidewalkDetailConcrete
+  - type: Stack
+    stackType: FloorTileAuroraFloorSidewalkDetailConcrete
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorVaurca
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorVaurca
+  - type: Stack
+    stackType: FloorTileAuroraFloorVaurca
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetKonyang
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetKonyang
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetKonyang
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetKonyangPink
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetKonyangPink
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetKonyangPink
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemAuroraFloorExoplanetKonyangWilting
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - AuroraFloorExoplanetKonyangWilting
+  - type: Stack
+    stackType: FloorTileAuroraFloorExoplanetKonyangWilting
+
+# Bubberstation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBambooTatami
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBambooTatami
+  - type: Stack
+    stackType: FloorTileBubberFloorBambooTatami
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBambooTatamiWest
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBambooTatamiWest
+  - type: Stack
+    stackType: FloorTileBubberFloorBambooTatamiWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorCatwalkFloorWoodSmooth
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorCatwalkFloorWoodSmooth
+  - type: Stack
+    stackType: FloorTileBubberFloorCatwalkFloorWoodSmooth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCorner
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCorner
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerNorth
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerNorth
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerEast
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerWest
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerSouthEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerSouthEast
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerSouthWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerSouthWest
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerNorthEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerNorthEast
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorPoolCobbleCornerNorthWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorPoolCobbleCornerNorthWest
+  - type: Stack
+    stackType: FloorTileBubberFloorPoolCobbleCornerNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorLightColourCycleDancefloorA
+  components:
+  - type: Sprite
+    state: lime
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorLightColourCycleDancefloorA
+  - type: Stack
+    stackType: FloorTileBubberFloorLightColourCycleDancefloorA
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBamboo
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBamboo
+  - type: Stack
+    stackType: FloorTileBubberFloorBamboo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorTram
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorTram
+  - type: Stack
+    stackType: FloorTileBubberFloorTram
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorIronSolarpanel
+  components:
+  - type: Sprite
+    state: shuttleblue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorIronSolarpanel
+  - type: Stack
+    stackType: FloorTileBubberFloorIronSolarpanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorIronSubmarine
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorIronSubmarine
+  - type: Stack
+    stackType: FloorTileBubberFloorIronSubmarine
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorIronSubmarinePerf
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorIronSubmarinePerf
+  - type: Stack
+    stackType: FloorTileBubberFloorIronSubmarinePerf
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorIronSubmarineVents
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorIronSubmarineVents
+  - type: Stack
+    stackType: FloorTileBubberFloorIronSubmarineVents
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorIronPoolCobble
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorIronPoolCobble
+  - type: Stack
+    stackType: FloorTileBubberFloorIronPoolCobble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBambooTatamiBlack
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBambooTatamiBlack
+  - type: Stack
+    stackType: FloorTileBubberFloorBambooTatamiBlack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBambooTatamiBlackWest
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBambooTatamiBlackWest
+  - type: Stack
+    stackType: FloorTileBubberFloorBambooTatamiBlackWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBambooTatamiPurple
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBambooTatamiPurple
+  - type: Stack
+    stackType: FloorTileBubberFloorBambooTatamiPurple
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorBambooTatamiPurpleWest
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorBambooTatamiPurpleWest
+  - type: Stack
+    stackType: FloorTileBubberFloorBambooTatamiPurpleWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorTramGuideway
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorTramGuideway
+  - type: Stack
+    stackType: FloorTileBubberFloorTramGuideway
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorTramPlate
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorTramPlate
+  - type: Stack
+    stackType: FloorTileBubberFloorTramPlate
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorVaultAlien
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorVaultAlien
+  - type: Stack
+    stackType: FloorTileBubberFloorVaultAlien
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBubberFloorVaultSandstone
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BubberFloorVaultSandstone
+  - type: Stack
+    stackType: FloorTileBubberFloorVaultSandstone
+
+# Citadel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobble
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobble
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleCornerNE
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleCornerNE
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleCornerNE
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleCornerNW
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleCornerNW
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleCornerNW
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleCornerSE
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleCornerSE
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleCornerSE
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleCornerSW
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleCornerSW
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleCornerSW
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleRoadcornerSW
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleRoadcornerSW
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleRoadcornerSW
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleRoadsideE
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleRoadsideE
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleRoadsideE
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleRoadsideN
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleRoadsideN
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleRoadsideN
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleRoadsideS
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleRoadsideS
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleRoadsideS
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleRoadsideW
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleRoadsideW
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleRoadsideW
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleSideE
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleSideE
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleSideE
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleSideN
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleSideN
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleSideN
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleSideS
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleSideS
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleSideS
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeCobbleSideW
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeCobbleSideW
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeCobbleSideW
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorFestiveSidewalk
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorFestiveSidewalk
+  - type: Stack
+    stackType: FloorTileCitFloorFestiveSidewalk
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorFestiveWhiteAlleyway
+  components:
+  - type: Sprite
+    state: white-pavement
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorFestiveWhiteAlleyway
+  - type: Stack
+    stackType: FloorTileCitFloorFestiveWhiteAlleyway
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorMineralTitanium
+  components:
+  - type: Sprite
+    state: shuttlewhite
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorMineralTitanium
+  - type: Stack
+    stackType: FloorTileCitFloorMineralTitanium
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorFestiveStairsStairsnorth
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorFestiveStairsStairsnorth
+  - type: Stack
+    stackType: FloorTileCitFloorFestiveStairsStairsnorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorFestiveWoodenWooden2
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorFestiveWoodenWooden2
+  - type: Stack
+    stackType: FloorTileCitFloorFestiveWoodenWooden2
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeRiverwatermotion
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeRiverwatermotion
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeRiverwatermotion
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitFloorSpooktimeDirtpatch
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitFloorSpooktimeDirtpatch
+  - type: Stack
+    stackType: FloorTileCitFloorSpooktimeDirtpatch
+
+# Nebula
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorCarpetBlue3
+  components:
+  - type: Sprite
+    state: carpet-blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorCarpetBlue3
+  - type: Stack
+    stackType: FloorTileNebulaFloorCarpetBlue3
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorCarpetPurple
+  components:
+  - type: Sprite
+    state: carpet-purple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorCarpetPurple
+  - type: Stack
+    stackType: FloorTileNebulaFloorCarpetPurple
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorConcreteFlooded
+  components:
+  - type: Sprite
+    state: concrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorConcreteFlooded
+  - type: Stack
+    stackType: FloorTileNebulaFloorConcreteFlooded
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorCarpet
+  components:
+  - type: Sprite
+    state: carpet-orange
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorCarpet
+  - type: Stack
+    stackType: FloorTileNebulaFloorCarpet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorPath
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorPath
+  - type: Stack
+    stackType: FloorTileNebulaFloorPath
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorRescueBase
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorRescueBase
+  - type: Stack
+    stackType: FloorTileNebulaFloorRescueBase
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorWoven
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorWoven
+  - type: Stack
+    stackType: FloorTileNebulaFloorWoven
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorPathHerringbone
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorPathHerringbone
+  - type: Stack
+    stackType: FloorTileNebulaFloorPathHerringbone
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorPathRunningBond
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorPathRunningBond
+  - type: Stack
+    stackType: FloorTileNebulaFloorPathRunningBond
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorTiledMonofloor
+  components:
+  - type: Sprite
+    state: monofloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorTiledMonofloor
+  - type: Stack
+    stackType: FloorTileNebulaFloorTiledMonofloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorWoodRough
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorWoodRough
+  - type: Stack
+    stackType: FloorTileNebulaFloorWoodRough
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorClay
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorClay
+  - type: Stack
+    stackType: FloorTileNebulaFloorClay
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorRock
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorRock
+  - type: Stack
+    stackType: FloorTileNebulaFloorRock
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorShrouded
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorShrouded
+  - type: Stack
+    stackType: FloorTileNebulaFloorShrouded
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorGrassWild
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorGrassWild
+  - type: Stack
+    stackType: FloorTileNebulaFloorGrassWild
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorRockSand
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorRockSand
+  - type: Stack
+    stackType: FloorTileNebulaFloorRockSand
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorRockSandWater
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorRockSandWater
+  - type: Stack
+    stackType: FloorTileNebulaFloorRockSandWater
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorSeafloorFlooded
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorSeafloorFlooded
+  - type: Stack
+    stackType: FloorTileNebulaFloorSeafloorFlooded
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorDry
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorDry
+  - type: Stack
+    stackType: FloorTileNebulaFloorDry
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNebulaFloorMudWater
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NebulaFloorMudWater
+  - type: Stack
+    stackType: FloorTileNebulaFloorMudWater
+
+# Nova Sector
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralAdamantineAlt
+  components:
+  - type: Sprite
+    state: hydro
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralAdamantineAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralAdamantineAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralAdamantinePlating
+  components:
+  - type: Sprite
+    state: hydro
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralAdamantinePlating
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralAdamantinePlating
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorAshAltOff
+  components:
+  - type: Sprite
+    state: rcircuit
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorAshAltOff
+  - type: Stack
+    stackType: FloorTileNovaFloorAshAltOff
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorCircuitAshOff
+  components:
+  - type: Sprite
+    state: rcircuit
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorCircuitAshOff
+  - type: Stack
+    stackType: FloorTileNovaFloorCircuitAshOff
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorBoneMeaty
+  components:
+  - type: Sprite
+    state: meat
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorBoneMeaty
+  - type: Stack
+    stackType: FloorTileNovaFloorBoneMeaty
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorBoneSpine
+  components:
+  - type: Sprite
+    state: meat
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorBoneSpine
+  - type: Stack
+    stackType: FloorTileNovaFloorBoneSpine
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorBoneStraight
+  components:
+  - type: Sprite
+    state: meat
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorBoneStraight
+  - type: Stack
+    stackType: FloorTileNovaFloorBoneStraight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorCircuitAsh
+  components:
+  - type: Sprite
+    state: rcircuit
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorCircuitAsh
+  - type: Stack
+    stackType: FloorTileNovaFloorCircuitAsh
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorPoolCobbleWateryrock
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorPoolCobbleWateryrock
+  - type: Stack
+    stackType: FloorTileNovaFloorPoolCobbleWateryrock
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorConcreteTiles
+  components:
+  - type: Sprite
+    state: concrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorConcreteTiles
+  - type: Stack
+    stackType: FloorTileNovaFloorConcreteTiles
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVertical
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVertical
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVertical
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalNorth
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalEast
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalWest
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalInverse
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalInverse
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalInverse
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalInverseNorth
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalInverseNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalInverseNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalInverseEast
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalInverseEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalInverseEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickAlignedCornerVerticalInverseWest
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickAlignedCornerVerticalInverseWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickAlignedCornerVerticalInverseWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVertical
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVertical
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVertical
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalNorth
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalEast
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalWest
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalInverse
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalInverse
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalInverse
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalInverseNorth
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalInverseNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalInverseNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalInverseEast
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalInverseEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalInverseEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronDarkBrickCornerVerticalInverseWest
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronDarkBrickCornerVerticalInverseWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronDarkBrickCornerVerticalInverseWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorPlastic
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorPlastic
+  - type: Stack
+    stackType: FloorTileNovaFloorPlastic
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSilvergold
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSilvergold
+  - type: Stack
+    stackType: FloorTileNovaFloorSilvergold
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorHauntiumAlt
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorHauntiumAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorHauntiumAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorHauntiumGhostbricked
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorHauntiumGhostbricked
+  - type: Stack
+    stackType: FloorTileNovaFloorHauntiumGhostbricked
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorHauntiumTiled
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorHauntiumTiled
+  - type: Stack
+    stackType: FloorTileNovaFloorHauntiumTiled
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickAlignedCornerVerticalInverse
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickAlignedCornerVerticalInverse
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickAlignedCornerVerticalInverse
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickAlignedCornerVerticalInverseNorth
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickAlignedCornerVerticalInverseNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickAlignedCornerVerticalInverseNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickAlignedCornerVerticalInverseEast
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickAlignedCornerVerticalInverseEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickAlignedCornerVerticalInverseEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickAlignedCornerVerticalInverseWest
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickAlignedCornerVerticalInverseWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickAlignedCornerVerticalInverseWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickCornerVertical
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickCornerVertical
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickCornerVertical
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickCornerVerticalNorth
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickCornerVerticalNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickCornerVerticalNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickCornerVerticalEast
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickCornerVerticalEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickCornerVerticalEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronBrickCornerVerticalWest
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronBrickCornerVerticalWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronBrickCornerVerticalWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMeatFresh
+  components:
+  - type: Sprite
+    state: meat
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMeatFresh
+  - type: Stack
+    stackType: FloorTileNovaFloorMeatFresh
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralMetalHydrogenAlt
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralMetalHydrogenAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralMetalHydrogenAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralPlastitanium
+  components:
+  - type: Sprite
+    state: shuttleblack
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralPlastitanium
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralPlastitanium
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralMythrilAlt
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralMythrilAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralMythrilAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralMythrilTiled
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralMythrilTiled
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralMythrilTiled
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorNeoCyan
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorNeoCyan
+  - type: Stack
+    stackType: FloorTileNovaFloorNeoCyan
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorNeoRed
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorNeoRed
+  - type: Stack
+    stackType: FloorTileNovaFloorNeoRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorBambooPlanksAlt
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorBambooPlanksAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorBambooPlanksAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralPlasteelBlock
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralPlasteelBlock
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralPlasteelBlock
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralPlasteelLock
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralPlasteelLock
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralPlasteelLock
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralRuniteAlt
+  components:
+  - type: Sprite
+    state: blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralRuniteAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralRuniteAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSandstoneAlt
+  components:
+  - type: Sprite
+    state: oldconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSandstoneAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorSandstoneAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSandstoneBasalt
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSandstoneBasalt
+  - type: Stack
+    stackType: FloorTileNovaFloorSandstoneBasalt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSilvergoldFlow
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSilvergoldFlow
+  - type: Stack
+    stackType: FloorTileNovaFloorSilvergoldFlow
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSilvergoldSword
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSilvergoldSword
+  - type: Stack
+    stackType: FloorTileNovaFloorSilvergoldSword
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSilvergoldSwordWest
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSilvergoldSwordWest
+  - type: Stack
+    stackType: FloorTileNovaFloorSilvergoldSwordWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSilvergoldVoid
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSilvergoldVoid
+  - type: Stack
+    stackType: FloorTileNovaFloorSilvergoldVoid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralTelecrystalAlt
+  components:
+  - type: Sprite
+    state: shuttlered
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralTelecrystalAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralTelecrystalAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorTelecrystalTiledAlt
+  components:
+  - type: Sprite
+    state: shuttlered
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorTelecrystalTiledAlt
+  - type: Stack
+    stackType: FloorTileNovaFloorTelecrystalTiledAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorTitaniumTiledWhite
+  components:
+  - type: Sprite
+    state: shuttlewhite
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorTitaniumTiledWhite
+  - type: Stack
+    stackType: FloorTileNovaFloorTitaniumTiledWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorMineralTitaniumTiled
+  components:
+  - type: Sprite
+    state: shuttlegrey
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorMineralTitaniumTiled
+  - type: Stack
+    stackType: FloorTileNovaFloorMineralTitaniumTiled
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVertical
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVertical
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVertical
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalNorth
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalInverse
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalInverse
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalInverse
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalInverseNorth
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalInverseNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalInverseNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalInverseEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalInverseEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalInverseEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedCornerVerticalInverseWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedCornerVerticalInverseWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedCornerVerticalInverseWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedHalfVertical
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedHalfVertical
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedHalfVertical
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedHalfVerticalNorth
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedHalfVerticalNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedHalfVerticalNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedHalfVerticalEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedHalfVerticalEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedHalfVerticalEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickAlignedHalfVerticalWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickAlignedHalfVerticalWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickAlignedHalfVerticalWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickCornerVertical
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickCornerVertical
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickCornerVertical
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickCornerVerticalNorth
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickCornerVerticalNorth
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickCornerVerticalNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickCornerVerticalEast
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickCornerVerticalEast
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickCornerVerticalEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorIronWhiteBrickCornerVerticalWest
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorIronWhiteBrickCornerVerticalWest
+  - type: Stack
+    stackType: FloorTileNovaFloorIronWhiteBrickCornerVerticalWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorGrassLavaland
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorGrassLavaland
+  - type: Stack
+    stackType: FloorTileNovaFloorGrassLavaland
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorGrassThatch
+  components:
+  - type: Sprite
+    state: lime
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorGrassThatch
+  - type: Stack
+    stackType: FloorTileNovaFloorGrassThatch
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorSandstoneCobbled
+  components:
+  - type: Sprite
+    state: oldconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorSandstoneCobbled
+  - type: Stack
+    stackType: FloorTileNovaFloorSandstoneCobbled
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorWoodWood12
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorWoodWood12
+  - type: Stack
+    stackType: FloorTileNovaFloorWoodWood12
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorWoodWood13
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorWoodWood13
+  - type: Stack
+    stackType: FloorTileNovaFloorWoodWood13
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorWoodWood5
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorWoodWood5
+  - type: Stack
+    stackType: FloorTileNovaFloorWoodWood5
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemNovaFloorWoodWood9
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - NovaFloorWoodWood9
+  - type: Stack
+    stackType: FloorTileNovaFloorWoodWood9
+
+# Polaris
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorCarpetTurcarpet
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorCarpetTurcarpet
+  - type: Stack
+    stackType: FloorTilePolarisFloorCarpetTurcarpet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWmarble
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWmarble
+  - type: Stack
+    stackType: FloorTilePolarisFloorWmarble
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorOutdoorsSidewalk
+  components:
+  - type: Sprite
+    state: concrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorOutdoorsSidewalk
+  - type: Stack
+    stackType: FloorTilePolarisFloorOutdoorsSidewalk
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorErisSteelBarDance
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorErisSteelBarDance
+  - type: Stack
+    stackType: FloorTilePolarisFloorErisSteelBarDance
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorErisSteelBarLight
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorErisSteelBarLight
+  - type: Stack
+    stackType: FloorTilePolarisFloorErisSteelBarLight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorOutdoorsIceDark
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorOutdoorsIceDark
+  - type: Stack
+    stackType: FloorTilePolarisFloorOutdoorsIceDark
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorOutdoorsIceDarkSmooth
+  components:
+  - type: Sprite
+    state: snow
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorOutdoorsIceDarkSmooth
+  - type: Stack
+    stackType: FloorTilePolarisFloorOutdoorsIceDarkSmooth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorOutdoorsRocks
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorOutdoorsRocks
+  - type: Stack
+    stackType: FloorTilePolarisFloorOutdoorsRocks
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShoreline
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShoreline
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShoreline
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineNorth
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineNorth
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineEast
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineWest
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineSouthEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineSouthEast
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineSouthWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineSouthWest
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineNorthEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineNorthEast
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineNorthWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineNorthWest
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineCorner
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineCorner
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineCorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineCornerNorth
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineCornerNorth
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineCornerNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineCornerEast
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineCornerEast
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineCornerEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorWaterShorelineCornerWest
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorWaterShorelineCornerWest
+  - type: Stack
+    stackType: FloorTilePolarisFloorWaterShorelineCornerWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorCarpetRetro
+  components:
+  - type: Sprite
+    state: arcadeblue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorCarpetRetro
+  - type: Stack
+    stackType: FloorTilePolarisFloorCarpetRetro
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorOutdoorsMud
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorOutdoorsMud
+  - type: Stack
+    stackType: FloorTilePolarisFloorOutdoorsMud
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPolarisFloorOutdoorsDirt
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PolarisFloorOutdoorsDirt
+  - type: Stack
+    stackType: FloorTilePolarisFloorOutdoorsDirt
+
+# VOREStation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodAcaciaVertPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodAcaciaVertPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodAcaciaVertPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodAltVertPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodAltVertPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodAltVertPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodBirchPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodBirchPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodBirchPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodBirchParquet
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodBirchParquet
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodBirchParquet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodBirchTile
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodBirchTile
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodBirchTile
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorErisDarkTechfloorGrid
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorErisDarkTechfloorGrid
+  - type: Stack
+    stackType: FloorTileVoreFloorErisDarkTechfloorGrid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorHull
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorHull
+  - type: Stack
+    stackType: FloorTileVoreFloorHull
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorSky
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorSky
+  - type: Stack
+    stackType: FloorTileVoreFloorSky
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodHardwoodVertPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodHardwoodVertPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodHardwoodVertPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodOakPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodOakPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodOakPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodOakParquet
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodOakParquet
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodOakParquet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodOakTile
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodOakTile
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodOakTile
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodPineVertPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodPineVertPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodPineVertPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodRedwoodVertPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodRedwoodVertPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodRedwoodVertPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodSifVertPanel
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodSifVertPanel
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodSifVertPanel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorErisSteelPanels
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorErisSteelPanels
+  - type: Stack
+    stackType: FloorTileVoreFloorErisSteelPanels
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorErisSteelTechfloorGrid
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorErisSteelTechfloorGrid
+  - type: Stack
+    stackType: FloorTileVoreFloorErisSteelTechfloorGrid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorErisWhiteCargo
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorErisWhiteCargo
+  - type: Stack
+    stackType: FloorTileVoreFloorErisWhiteCargo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorErisWhitePanels
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorErisWhitePanels
+  - type: Stack
+    stackType: FloorTileVoreFloorErisWhitePanels
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodAcacia
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodAcacia
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodAcacia
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodAlt
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodAlt
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodAlt
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodBirch
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodBirch
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodBirch
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodHardwood
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodHardwood
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodHardwood
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodOak
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodOak
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodOak
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodPine
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodPine
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodPine
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodRedwood
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodRedwood
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodRedwood
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWoodSif
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWoodSif
+  - type: Stack
+    stackType: FloorTileVoreFloorWoodSif
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWaterUnderwaterIndoors
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWaterUnderwaterIndoors
+  - type: Stack
+    stackType: FloorTileVoreFloorWaterUnderwaterIndoors
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWaterDigestiveEnzymes
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWaterDigestiveEnzymes
+  - type: Stack
+    stackType: FloorTileVoreFloorWaterDigestiveEnzymes
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemVoreFloorWaterGlamour
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - VoreFloorWaterGlamour
+  - type: Stack
+    stackType: FloorTileVoreFloorWaterGlamour
+
+# Baystation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorCarpetBlack
+  components:
+  - type: Sprite
+    state: carpet-black
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorCarpetBlack
+  - type: Stack
+    stackType: FloorTileBayFloorCarpetBlack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorCarpetGreen
+  components:
+  - type: Sprite
+    state: carpet-green
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorCarpetGreen
+  - type: Stack
+    stackType: FloorTileBayFloorCarpetGreen
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorCarpetRed
+  components:
+  - type: Sprite
+    state: carpet-red
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorCarpetRed
+  - type: Stack
+    stackType: FloorTileBayFloorCarpetRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorReinforced
+  components:
+  - type: Sprite
+    state: reinforced
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorReinforced
+  - type: Stack
+    stackType: FloorTileBayFloorReinforced
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorTiledSkrellBlue
+  components:
+  - type: Sprite
+    state: reinforced
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorTiledSkrellBlue
+  - type: Stack
+    stackType: FloorTileBayFloorTiledSkrellBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorTiledSkrellRed
+  components:
+  - type: Sprite
+    state: reinforced
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorTiledSkrellRed
+  - type: Stack
+    stackType: FloorTileBayFloorTiledSkrellRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorTiledSkrellWhite
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorTiledSkrellWhite
+  - type: Stack
+    stackType: FloorTileBayFloorTiledSkrellWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorGreengrid
+  components:
+  - type: Sprite
+    state: gcircuit
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorGreengrid
+  - type: Stack
+    stackType: FloorTileBayFloorGreengrid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorExoplanetLava
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorExoplanetLava
+  - type: Stack
+    stackType: FloorTileBayFloorExoplanetLava
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorWaterShallowChlorineLiquid
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorWaterShallowChlorineLiquid
+  - type: Stack
+    stackType: FloorTileBayFloorWaterShallowChlorineLiquid
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBayFloorWaterShallowTar
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BayFloorWaterShallowTar
+  - type: Stack
+    stackType: FloorTileBayFloorWaterShallowTar
+
+# BeeStation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorConcreteTile
+  components:
+  - type: Sprite
+    state: concrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorConcreteTile
+  - type: Stack
+    stackType: FloorTileBeeFloorConcreteTile
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorPod
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorPod
+  - type: Stack
+    stackType: FloorTileBeeFloorPod
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorWax
+  components:
+  - type: Sprite
+    state: gold
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorWax
+  - type: Stack
+    stackType: FloorTileBeeFloorWax
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorIronFreezerHalf
+  components:
+  - type: Sprite
+    state: showroom
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorIronFreezerHalf
+  - type: Stack
+    stackType: FloorTileBeeFloorIronFreezerHalf
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorIronFreezerLarge
+  components:
+  - type: Sprite
+    state: showroom
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorIronFreezerLarge
+  - type: Stack
+    stackType: FloorTileBeeFloorIronFreezerLarge
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorIronFreezer
+  components:
+  - type: Sprite
+    state: showroom
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorIronFreezer
+  - type: Stack
+    stackType: FloorTileBeeFloorIronFreezer
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorMineralBananium
+  components:
+  - type: Sprite
+    state: gold
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorMineralBananium
+  - type: Stack
+    stackType: FloorTileBeeFloorMineralBananium
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorMineralDiamond
+  components:
+  - type: Sprite
+    state: astroice
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorMineralDiamond
+  - type: Stack
+    stackType: FloorTileBeeFloorMineralDiamond
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorMineralPlasma
+  components:
+  - type: Sprite
+    state: shuttlepurple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorMineralPlasma
+  - type: Stack
+    stackType: FloorTileBeeFloorMineralPlasma
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorIronStairsMedium
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorIronStairsMedium
+  - type: Stack
+    stackType: FloorTileBeeFloorIronStairsMedium
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorVaultSandstone
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorVaultSandstone
+  - type: Stack
+    stackType: FloorTileBeeFloorVaultSandstone
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorNoslipBlue
+  components:
+  - type: Sprite
+    state: blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorNoslipBlue
+  - type: Stack
+    stackType: FloorTileBeeFloorNoslipBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorGrassFairyGreen
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorGrassFairyGreen
+  - type: Stack
+    stackType: FloorTileBeeFloorGrassFairyGreen
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemBeeFloorGrassFairyPurple
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - BeeFloorGrassFairyPurple
+  - type: Stack
+    stackType: FloorTileBeeFloorGrassFairyPurple
+
+# CHOMPStation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorBlackholeGrate
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorBlackholeGrate
+  - type: Stack
+    stackType: FloorTileChompFloorBlackholeGrate
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorBlackholeSpirals
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorBlackholeSpirals
+  - type: Stack
+    stackType: FloorTileChompFloorBlackholeSpirals
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorTechfloorGridTrain
+  components:
+  - type: Sprite
+    state: techfloordark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorTechfloorGridTrain
+  - type: Stack
+    stackType: FloorTileChompFloorTechfloorGridTrain
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorDiona
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorDiona
+  - type: Stack
+    stackType: FloorTileChompFloorDiona
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsDesertPlanetGravel
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsDesertPlanetGravel
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsDesertPlanetGravel
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsDesertPlanetMud
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsDesertPlanetMud
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsDesertPlanetMud
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsDesertPlanetSandrock
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsDesertPlanetSandrock
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsDesertPlanetSandrock
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsGrassSmokestar
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsGrassSmokestar
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsGrassSmokestar
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsRocksCetus
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsRocksCetus
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsRocksCetus
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorGrassSifValley
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorGrassSifValley
+  - type: Stack
+    stackType: FloorTileChompFloorGrassSifValley
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsLavalandAsh
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsLavalandAsh
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsLavalandAsh
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemChompFloorOutdoorsLavalandAshrock
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ChompFloorOutdoorsLavalandAshrock
+  - type: Stack
+    stackType: FloorTileChompFloorOutdoorsLavalandAshrock
+
+# CM-SS13
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCMFloorHybrisaWoodWhitewood
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CMFloorHybrisaWoodWhitewood
+  - type: Stack
+    stackType: FloorTileCMFloorHybrisaWoodWhitewood
+
+# Coyote Bayou
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorPadded
+  components:
+  - type: Sprite
+    state: white-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorPadded
+  - type: Stack
+    stackType: FloorTileCoyoteFloorPadded
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorWoodMosaic
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorWoodMosaic
+  - type: Stack
+    stackType: FloorTileCoyoteFloorWoodMosaic
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorMineralTitaniumBlue
+  components:
+  - type: Sprite
+    state: shuttleblue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorMineralTitaniumBlue
+  - type: Stack
+    stackType: FloorTileCoyoteFloorMineralTitaniumBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorMineralTitaniumPurple
+  components:
+  - type: Sprite
+    state: shuttlepurple
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorMineralTitaniumPurple
+  - type: Stack
+    stackType: FloorTileCoyoteFloorMineralTitaniumPurple
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorMineralTitaniumWhite
+  components:
+  - type: Sprite
+    state: shuttlewhite
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorMineralTitaniumWhite
+  - type: Stack
+    stackType: FloorTileCoyoteFloorMineralTitaniumWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorMineralTitaniumYellow
+  components:
+  - type: Sprite
+    state: shuttleorange
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorMineralTitaniumYellow
+  - type: Stack
+    stackType: FloorTileCoyoteFloorMineralTitaniumYellow
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCoyoteFloorF13StoneRugged
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CoyoteFloorF13StoneRugged
+  - type: Stack
+    stackType: FloorTileCoyoteFloorF13StoneRugged
+
+# DarkPack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorStairsBlackRight
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorStairsBlackRight
+  - type: Stack
+    stackType: FloorTileDarkPackFloorStairsBlackRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorStairsBlackRightWest
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorStairsBlackRightWest
+  - type: Stack
+    stackType: FloorTileDarkPackFloorStairsBlackRightWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorCityChurch
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorCityChurch
+  - type: Stack
+    stackType: FloorTileDarkPackFloorCityChurch
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorCityLight
+  components:
+  - type: Sprite
+    state: blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorCityLight
+  - type: Stack
+    stackType: FloorTileDarkPackFloorCityLight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorCitySaint
+  components:
+  - type: Sprite
+    state: brass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorCitySaint
+  - type: Stack
+    stackType: FloorTileDarkPackFloorCitySaint
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorIronStairs
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorIronStairs
+  - type: Stack
+    stackType: FloorTileDarkPackFloorIronStairs
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorIronStairsRamp
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorIronStairsRamp
+  - type: Stack
+    stackType: FloorTileDarkPackFloorIronStairsRamp
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorIronStairsRight
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorIronStairsRight
+  - type: Stack
+    stackType: FloorTileDarkPackFloorIronStairsRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorIronStairsRightWest
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorIronStairsRightWest
+  - type: Stack
+    stackType: FloorTileDarkPackFloorIronStairsRightWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorWoodHerring
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorWoodHerring
+  - type: Stack
+    stackType: FloorTileDarkPackFloorWoodHerring
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorWoodOrnate
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorWoodOrnate
+  - type: Stack
+    stackType: FloorTileDarkPackFloorWoodOrnate
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemDarkPackFloorCityGummaguts
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - DarkPackFloorCityGummaguts
+  - type: Stack
+    stackType: FloorTileDarkPackFloorCityGummaguts
+
+# Fulpstation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFulpFloorWoodDarkLarge
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FulpFloorWoodDarkLarge
+  - type: Stack
+    stackType: FloorTileFulpFloorWoodDarkLarge
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFulpFloorWoodDarkParquet
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FulpFloorWoodDarkParquet
+  - type: Stack
+    stackType: FloorTileFulpFloorWoodDarkParquet
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFulpFloorWoodDarkTile
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FulpFloorWoodDarkTile
+  - type: Stack
+    stackType: FloorTileFulpFloorWoodDarkTile
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemFulpFloorWoodDark
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FulpFloorWoodDark
+  - type: Stack
+    stackType: FloorTileFulpFloorWoodDark
+
+# Monkestation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemMonkeFloorSilk
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - MonkeFloorSilk
+  - type: Stack
+    stackType: FloorTileMonkeFloorSilk
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemMonkeFloorIronTerracottaDiagonal
+  components:
+  - type: Sprite
+    state: shuttleorange
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - MonkeFloorIronTerracottaDiagonal
+  - type: Stack
+    stackType: FloorTileMonkeFloorIronTerracottaDiagonal
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemMonkeFloorIronTerracottaHerringbone
+  components:
+  - type: Sprite
+    state: shuttleorange
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - MonkeFloorIronTerracottaHerringbone
+  - type: Stack
+    stackType: FloorTileMonkeFloorIronTerracottaHerringbone
+
+# Paradise
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemParaFloorWaterDeepWoodFloor
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ParaFloorWaterDeepWoodFloor
+  - type: Stack
+    stackType: FloorTileParaFloorWaterDeepWoodFloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemParaFloorPlasteelReactorPool
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ParaFloorPlasteelReactorPool
+  - type: Stack
+    stackType: FloorTileParaFloorPlasteelReactorPool
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemParaFloorPlasteelReactorPoolLadder
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ParaFloorPlasteelReactorPoolLadder
+  - type: Stack
+    stackType: FloorTileParaFloorPlasteelReactorPoolLadder
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemParaFloorBeachAwaySand
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ParaFloorBeachAwaySand
+  - type: Stack
+    stackType: FloorTileParaFloorBeachAwaySand
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemParaFloorAwayWaterDeep
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ParaFloorAwayWaterDeep
+  - type: Stack
+    stackType: FloorTileParaFloorAwayWaterDeep
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemParaFloorAwayWaterEdgeDrop
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ParaFloorAwayWaterEdgeDrop
+  - type: Stack
+    stackType: FloorTileParaFloorAwayWaterEdgeDrop
+
+# Shiptest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodBambooRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodBambooRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodBambooRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodBirchRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodBirchRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodBirchRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSunsDarkPattern
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSunsDarkPattern
+  - type: Stack
+    stackType: FloorTileShiptestFloorSunsDarkPattern
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSunsDiagonalBamboo
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSunsDiagonalBamboo
+  - type: Stack
+    stackType: FloorTileShiptestFloorSunsDiagonalBamboo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSunsDiagonalMahogany
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSunsDiagonalMahogany
+  - type: Stack
+    stackType: FloorTileShiptestFloorSunsDiagonalMahogany
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodEbonyRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodEbonyRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodEbonyRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorBronze
+  components:
+  - type: Sprite
+    state: brass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorBronze
+  - type: Stack
+    stackType: FloorTileShiptestFloorBronze
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorMechBayRechargeFloor
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorMechBayRechargeFloor
+  - type: Stack
+    stackType: FloorTileShiptestFloorMechBayRechargeFloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSunsHatchBamboo
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSunsHatchBamboo
+  - type: Stack
+    stackType: FloorTileShiptestFloorSunsHatchBamboo
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSunsHatchMahogany
+  components:
+  - type: Sprite
+    state: woodpatternfloor
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSunsHatchMahogany
+  - type: Stack
+    stackType: FloorTileShiptestFloorSunsHatchMahogany
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodMahoganyRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodMahoganyRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodMahoganyRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodMapleRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodMapleRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodMapleRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodWalnutRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodWalnutRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodWalnutRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorStairsWoodRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorStairsWoodRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorStairsWoodRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorWoodYewRight
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorWoodYewRight
+  - type: Stack
+    stackType: FloorTileShiptestFloorWoodYewRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSuns
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSuns
+  - type: Stack
+    stackType: FloorTileShiptestFloorSuns
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorSunsPattern
+  components:
+  - type: Sprite
+    state: white
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorSunsPattern
+  - type: Stack
+    stackType: FloorTileShiptestFloorSunsPattern
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemShiptestFloorShipJungleDark
+  components:
+  - type: Sprite
+    state: grass
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - ShiptestFloorShipJungleDark
+  - type: Stack
+    stackType: FloorTileShiptestFloorShipJungleDark
+
+# Skyrat
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorCatwalkFloorIron
+  components:
+  - type: Sprite
+    state: gratingmaintfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorCatwalkFloorIron
+  - type: Stack
+    stackType: FloorTileSkyratFloorCatwalkFloorIron
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorCatwalkFloorIronDark
+  components:
+  - type: Sprite
+    state: gratingmaintfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorCatwalkFloorIronDark
+  - type: Stack
+    stackType: FloorTileSkyratFloorCatwalkFloorIronDark
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorCatwalkFloorIronWhite
+  components:
+  - type: Sprite
+    state: gratingmaintfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorCatwalkFloorIronWhite
+  - type: Stack
+    stackType: FloorTileSkyratFloorCatwalkFloorIronWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronColonyTexture
+  components:
+  - type: Sprite
+    state: steel-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronColonyTexture
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronColonyTexture
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronColonyWhite
+  components:
+  - type: Sprite
+    state: white-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronColonyWhite
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronColonyWhite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorCatwalkFloor
+  components:
+  - type: Sprite
+    state: gratingmaintfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorCatwalkFloor
+  - type: Stack
+    stackType: FloorTileSkyratFloorCatwalkFloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorStone
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorStone
+  - type: Stack
+    stackType: FloorTileSkyratFloorStone
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronColony
+  components:
+  - type: Sprite
+    state: steel-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronColony
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronColony
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronGoonplaque
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronGoonplaque
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronGoonplaque
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronRechargeFloor
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronRechargeFloor
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronRechargeFloor
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronKitchenDiagonal
+  components:
+  - type: Sprite
+    state: kitchen
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronKitchenDiagonal
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronKitchenDiagonal
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronKitchenHerringbone
+  components:
+  - type: Sprite
+    state: kitchen
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronKitchenHerringbone
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronKitchenHerringbone
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronKitchenSmall
+  components:
+  - type: Sprite
+    state: kitchen
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronKitchenSmall
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronKitchenSmall
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorIronShuttleExploration
+  components:
+  - type: Sprite
+    state: dark-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorIronShuttleExploration
+  - type: Stack
+    stackType: FloorTileSkyratFloorIronShuttleExploration
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorColonyWhiteBolts
+  components:
+  - type: Sprite
+    state: white-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorColonyWhiteBolts
+  - type: Stack
+    stackType: FloorTileSkyratFloorColonyWhiteBolts
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemSkyratFloorColonyWhiteTexture
+  components:
+  - type: Sprite
+    state: white-mono
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - SkyratFloorColonyWhiteTexture
+  - type: Stack
+    stackType: FloorTileSkyratFloorColonyWhiteTexture
+
+# /tg/station
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBambooPlanks
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBambooPlanks
+  - type: Stack
+    stackType: FloorTileTgFloorBambooPlanks
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBambooTatami
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBambooTatami
+  - type: Stack
+    stackType: FloorTileTgFloorBambooTatami
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorConcreteSlab1
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorConcreteSlab1
+  - type: Stack
+    stackType: FloorTileTgFloorConcreteSlab1
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorConcreteSlab3
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorConcreteSlab3
+  - type: Stack
+    stackType: FloorTileTgFloorConcreteSlab3
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorSandstone
+  components:
+  - type: Sprite
+    state: asteroid
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorSandstone
+  - type: Stack
+    stackType: FloorTileTgFloorSandstone
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorGlassStainedBlack
+  components:
+  - type: Sprite
+    state: dark-diagonal
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorGlassStainedBlack
+  - type: Stack
+    stackType: FloorTileTgFloorGlassStainedBlack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorGlassStainedBlue
+  components:
+  - type: Sprite
+    state: dark-diagonal
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorGlassStainedBlue
+  - type: Stack
+    stackType: FloorTileTgFloorGlassStainedBlue
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorGlassStainedRed
+  components:
+  - type: Sprite
+    state: dark-diagonal
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorGlassStainedRed
+  - type: Stack
+    stackType: FloorTileTgFloorGlassStainedRed
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorMineralGoldSun
+  components:
+  - type: Sprite
+    state: gold
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorMineralGoldSun
+  - type: Stack
+    stackType: FloorTileTgFloorMineralGoldSun
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorCarpetLoneStar
+  components:
+  - type: Sprite
+    state: carpet-red
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorCarpetLoneStar
+  - type: Stack
+    stackType: FloorTileTgFloorCarpetLoneStar
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorMineralRunite
+  components:
+  - type: Sprite
+    state: blue
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorMineralRunite
+  - type: Stack
+    stackType: FloorTileTgFloorMineralRunite
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorMineralSilverMoon
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorMineralSilverMoon
+  - type: Stack
+    stackType: FloorTileTgFloorMineralSilverMoon
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorMineralSilverMoonEast
+  components:
+  - type: Sprite
+    state: silver
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorMineralSilverMoonEast
+  - type: Stack
+    stackType: FloorTileTgFloorMineralSilverMoonEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorIronStairsRight
+  components:
+  - type: Sprite
+    state: steel
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorIronStairsRight
+  - type: Stack
+    stackType: FloorTileTgFloorIronStairsRight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBambooTatamiBlack
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBambooTatamiBlack
+  - type: Stack
+    stackType: FloorTileTgFloorBambooTatamiBlack
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBambooTatamiPurple
+  components:
+  - type: Sprite
+    state: wood
+  - type: Item
+    heldPrefix: wood
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBambooTatamiPurple
+  - type: Stack
+    stackType: FloorTileTgFloorBambooTatamiPurple
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorHay
+  components:
+  - type: Sprite
+    state: lime
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorHay
+  - type: Stack
+    stackType: FloorTileTgFloorHay
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorGlassStainedGreen
+  components:
+  - type: Sprite
+    state: dark-diagonal
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorGlassStainedGreen
+  - type: Stack
+    stackType: FloorTileTgFloorGlassStainedGreen
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorGlassStainedPurple
+  components:
+  - type: Sprite
+    state: dark-diagonal
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorGlassStainedPurple
+  - type: Stack
+    stackType: FloorTileTgFloorGlassStainedPurple
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorGlassStainedYellow
+  components:
+  - type: Sprite
+    state: dark-diagonal
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorGlassStainedYellow
+  - type: Stack
+    stackType: FloorTileTgFloorGlassStainedYellow
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorPlasticPuzzle
+  components:
+  - type: Sprite
+    state: clown
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorPlasticPuzzle
+  - type: Stack
+    stackType: FloorTileTgFloorPlasticPuzzle
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoast
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastNorth
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastNorth
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastEast
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastWest
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastSouthEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastSouthEast
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastSouthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastSouthWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastSouthWest
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastSouthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastNorthEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastNorthEast
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastNorthEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastNorthWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastNorthWest
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastNorthWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastCorner
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastCorner
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastCorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastCornerNorth
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastCornerNorth
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastCornerNorth
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastCornerEast
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastCornerEast
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastCornerEast
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachCoastCornerWest
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachCoastCornerWest
+  - type: Stack
+    stackType: FloorTileTgFloorBeachCoastCornerWest
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachWater
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachWater
+  - type: Stack
+    stackType: FloorTileTgFloorBeachWater
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemTgFloorBeachWaterDeep
+  components:
+  - type: Sprite
+    state: grayconcrete
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - TgFloorBeachWaterDeep
+  - type: Stack
+    stackType: FloorTileTgFloorBeachWaterDeep
+
+# Yogstation
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemYogFloorCatwalkFloorTitanium
+  components:
+  - type: Sprite
+    state: gratingmaintfloor
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - YogFloorCatwalkFloorTitanium
+  - type: Stack
+    stackType: FloorTileYogFloorCatwalkFloorTitanium

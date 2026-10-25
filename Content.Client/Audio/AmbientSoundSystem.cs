@@ -110,7 +110,12 @@ public sealed partial class AmbientSoundSystem : SharedAmbientSoundSystem
         if (!_playingSounds.Remove((uid, component), out var sound))
             return;
 
-        _audio.Stop(sound.Stream);
+        // WOLFGATE(Audio) START: Stop is refused during state application, orphaning a looping stream on server deletes
+        // A server delete detaches the stream to nullspace first, where it loops on unheard until the listener is
+        // in nullspace too (the lobby), so it is deleted outright.
+        if (sound.Stream is { } stream && !TerminatingOrDeleted(stream))
+            QueueDel(stream);
+        // WOLFGATE END
         _playingCount[sound.Path] -= 1;
         if (_playingCount[sound.Path] == 0)
             _playingCount.Remove(sound.Path);

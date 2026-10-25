@@ -1,0 +1,12 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: tile
+  id: ADTFloorHierophant
+  name: tiles-hierophant-floor
+  sprite: /Textures/ADT/Tiles/hierophant_floor.png
+  baseTurf: Space
+  isSubfloor: false
+  indestructible: true
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+# WOLFGATE END
