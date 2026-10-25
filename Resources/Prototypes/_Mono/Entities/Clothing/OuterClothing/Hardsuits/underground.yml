@@ -4,6 +4,8 @@
   name: BR-238 godfather hardsuit
   description: A heavily reinforced hardsuit and a true symbol of wealth and power, however fleeting.
   components: 
+  # WOLFGATE(ArmorSpecialization): ablative coat.
+  - type: WFAblativeCoat
   - type: ToggleableClothing # Goobstation - Modsuits change - Mono - this is a solution for helmet attachment/cover to not fit on hardsuits
     requiredSlot: outerclothing
     blockUnequipWhenAttached: false
@@ -35,6 +37,9 @@
   name: UGR WL-01
   description: Nicknamed "Warlord", a former state-of-the-art technology in military equipment, now widespread among black markets due to a critical security breach. It has been modified to withstand space depressurized atmosphere, rating it space capable.
   components:
+  # WOLFGATE(ArmorSpecialization): pain dampener.
+  - type: WFPainDampener
+    relief: 20
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/merc_warlordsuit.rsi
   - type: Clothing

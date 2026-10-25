@@ -4,6 +4,12 @@
   name: U.I. ENFORCER combat tacsuit
   description: Infamously one of the most reliable combat tacsuits that the Black Market has to offer, developed by Ullman Industries. "Heads up display sold seperately!"
   components:
+  # WOLFGATE(ArmorSpecialization): insulation.
+  - type: WFWoundWard
+    examine: wf-armor-spec-insulation-examine
+    blocks:
+    - WFWolfmedInternalBurnWound
+    - WFWolfmedShortCircuitWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ullman_industries_enforcer.rsi
   - type: Clothing
@@ -61,6 +67,7 @@
         Heat: 0.5
         Radiation: 0.6
         Caustic: 0.7
+  - type: WFSoftShield # WOLFGATE(SoftShield): hard shields are retired; brute damage bleeds through the field dampened.
   - type: PersonalShield
     shield:
       maxCharge: 300
@@ -100,6 +107,15 @@
   name: U.I. engineering hardsuit
   description: A protective hardsuit worn by black market engineering specialists. Developed by Ullman Industries.
   components:
+  # WOLFGATE(ArmorSpecialization): insulation and crush rating.
+  - type: WFWoundWard
+    examine: wf-armor-spec-insulation-crush-examine
+    blocks:
+    - WFWolfmedInternalBurnWound
+    - WFWolfmedShortCircuitWound
+    hardens:
+      InternalBleedingWound: 2
+      WFWolfmedCrushInjuryWound: 2
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ullman_industries_engineer.rsi # Ullman sprites
   - type: Clothing
@@ -139,6 +155,12 @@
   name: U.I. pilot voidsuit
   description: A voidsuit made for black market pilots. Developed by Ullman Industries
   components:
+  # WOLFGATE(ArmorSpecialization): shock absorbers.
+  - type: WFWoundWard
+    examine: wf-armor-spec-shock-absorbers-examine
+    hardens:
+      WFWolfmedConcussionWound: 2
+      WFWolfmedOrganContusionWound: 2
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ullman_industries_pilot.rsi
   - type: Clothing
@@ -179,6 +201,8 @@
   name: U.I. VK-1 experimental hardsuit
   description: Felix Ullman's top of the line personal hardsuit. A warning label engraved on the chestplate reads "Theft of this suit has a high chance of death! Seriously, I will find you. You will die."
   components:
+  # WOLFGATE(ArmorSpecialization): ricochet plating.
+  - type: WFArmorDeflect # WOLFGATE(ArmorDeflection): light rounds ricochet off the plate.
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ullman_industries_director.rsi # Ullman sprites
   - type: Clothing

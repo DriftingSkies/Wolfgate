@@ -834,6 +834,9 @@
   name: juggernaut suit
   description: A suit of which the blueprint was bestowed upon the Dynasty by the Sultan Himself. Hefty and durable, but not fully insulated.
   components:
+  # WOLFGATE(ArmorSpecialization): limb lock.
+  - type: WFLimbLock
+  - type: WFArmorDeflect # WOLFGATE(ArmorDeflection): light rounds ricochet off the plate.
   - type: Sprite
     sprite: Clothing/OuterClothing/Hardsuits/cybersun.rsi
   - type: Clothing

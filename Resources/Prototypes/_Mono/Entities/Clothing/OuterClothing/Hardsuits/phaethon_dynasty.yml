@@ -4,6 +4,8 @@
   name: PDV SCAF hardsuit
   description: An old SCAF suit painted in an PDV tan color scheme. The armor feels degraded, but lighter.
   components:
+  # WOLFGATE(ArmorSpecialization): ablative coat.
+  - type: WFAblativeCoat
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/scaf_pirate.rsi
   - type: Item
@@ -52,6 +54,12 @@
   name: PDV CV-32 combat hardsuit
   description: A combat hardsuit designed by the Phaethon Dynasty. A heavier but still general-purpose hardsuit. Sacrifices most of its protection for reinforced ballistic platings.
   components:
+  # WOLFGATE(ArmorSpecialization): spall liner.
+  - type: WFWoundWard
+    examine: wf-armor-spec-spall-liner-examine
+    blocks:
+    - WFWolfmedLodgedRoundWound
+    - WFWolfmedShrapnelWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/syndicate.rsi
   - type: Clothing
@@ -91,6 +99,8 @@
   name: PDV CV-82 combat tacsuit
   description: Fast combat hardsuit designed by the Phaethon Dynasty. The armor features various reinforced plating in vital areas.
   components:
+  # WOLFGATE(ArmorSpecialization): auto-tourniquet.
+  - type: WFAutoTourniquet
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/pdv_medic.rsi
   - type: Item
@@ -138,6 +148,12 @@
   name: PDV CV-67 combat tacsuit
   description: An adorned tacsuit designed with an imperfect nanolaminate composition. High maneuverability, sturdy armor.
   components:
+  # WOLFGATE(ArmorSpecialization): commander's weave.
+  - type: WFWoundWard
+    examine: wf-armor-spec-commander-examine
+    blocks:
+    - WFWolfmedConcussionWound
+    - WFWolfmedArterialBleedWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/pdv_vizier.rsi
   - type: Clothing
@@ -251,6 +267,9 @@
   name: "PDV CV-280 'Basilisk' combat hardsuit"
   description: A combat hardsuit designed by the Phaethon Dynasty for Tarkhans. Utilizes an imperfect nanolaminate composition like the CV-67 to save weight, and an installed hydraulic rig for more mobility, and painted in a royal Tarkhan white palette. A rare sight.
   components:
+  # WOLFGATE(ArmorSpecialization): limb lock.
+  - type: WFLimbLock
+    breakthrough: 40
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/basilisk.rsi
   - type: Clothing

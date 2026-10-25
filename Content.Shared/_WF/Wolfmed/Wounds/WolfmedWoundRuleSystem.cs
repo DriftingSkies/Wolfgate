@@ -26,6 +26,7 @@ public sealed class WolfmedWoundRuleSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private WolfmedEmbeddedObjectSystem _embedded = default!;
     [Dependency] private WoundSystem _wounds = default!;
+    [Dependency] private WolfmedBleedGateSystem _bleedGate = default!;
     [Dependency] private WolfmedChemicalBurnSystem _chemicalBurns = default!; // M5 (P21)
 
     /// <summary>Damage types explosions scale the severity of, mirroring WoundSystem.HandlePartDamageApplied.</summary>
@@ -139,7 +140,7 @@ public sealed class WolfmedWoundRuleSystem : EntitySystem
 
         foreach (var rule in EnumerateRules(args.DamageType))
         {
-            if (!Matches(rule, part, args.Amount, cause) ||
+            if (!Matches(rule, part, args.Amount, cause, multiplier) ||
                 rule.Chance < 1f && !Roll(Math.Clamp(rule.Chance, 0f, 1f)))
                 continue;
 
@@ -173,7 +174,8 @@ public sealed class WolfmedWoundRuleSystem : EntitySystem
         WolfmedWoundRulePrototype rule,
         Entity<WoundableComponent> part,
         FixedPoint2 amount,
-        WolfmedWoundCause cause)
+        WolfmedWoundCause cause,
+        float severityMultiplier = 1f)
     {
         if (amount < rule.MinDamage || rule.MaxDamage is { } max && amount > max)
             return false;
@@ -189,6 +191,21 @@ public sealed class WolfmedWoundRuleSystem : EntitySystem
             (!_prototypes.TryIndex(part.Comp.Profile, out var profile) ||
              !profile.TreatmentCapabilities.Overlaps(rule.Capabilities)))
             return false;
+
+        // A hit that may not open a bleed may not cut an artery either.
+        if (_prototypes.TryIndex(rule.Wound, out var wound) &&
+            wound.TryGetBehavior(FixedPoint2.Max(amount * rule.SeverityMultiplier * severityMultiplier, rule.MinSeverity),
+                out WolfmedArterialBleedBehavior _) &&
+            !_bleedGate.PartCanStartBleeding(part))
+            return false;
+
+        if (TryComp(part, out BodyPartComponent? attached) && attached.Body is { } body)
+        {
+            var attempt = new WolfmedWoundRuleAttemptEvent(part, rule.Wound, amount);
+            RaiseLocalEvent(body, ref attempt);
+            if (attempt.Cancelled || amount < rule.MinDamage * attempt.MinDamageMultiplier)
+                return false;
+        }
 
         return _wounds.CanCreateWound(part.AsNullable(), rule.Wound);
     }

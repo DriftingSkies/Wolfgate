@@ -4,6 +4,12 @@
   name: USSP L-27 tacsuit
   description: The standard combat suit of USSP naval operations.
   components:
+  # WOLFGATE(ArmorSpecialization): spall liner.
+  - type: WFWoundWard
+    examine: wf-armor-spec-spall-liner-examine
+    blocks:
+    - WFWolfmedLodgedRoundWound
+    - WFWolfmedShrapnelWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat.rsi
   - type: Item
@@ -48,6 +54,12 @@
   name: USSP L-10 lightsuit
   description: An old USSP model of combat suit that is still in use in the frontlines.
   components:
+  # WOLFGATE(ArmorSpecialization): sealed layer.
+  - type: WFWoundWard
+    examine: wf-armor-spec-sealed-examine
+    blocks:
+    - WFWolfmedChemicalBurnWound
+    - WFWolfmedFrostbiteWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat_light.rsi
   - type: Item
@@ -92,6 +104,12 @@
   name: USSP L-10-A lightsuit
   description: An old USSP model of combat suit that is still in use in the frontlines.
   components:
+  # WOLFGATE(ArmorSpecialization): sealed layer.
+  - type: WFWoundWard
+    examine: wf-armor-spec-sealed-examine
+    blocks:
+    - WFWolfmedChemicalBurnWound
+    - WFWolfmedFrostbiteWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat_light_officer.rsi
   - type: Item
@@ -136,6 +154,8 @@
   name: USSP M-10 scoutsuit
   description: A new prototype of combat suit using the old L-10 as a baseline. It has a integrated mass scanner in his helmet.
   components:
+  # WOLFGATE(ArmorSpecialization): pain dampener.
+  - type: WFPainDampener
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat_lightmk2.rsi
   - type: Item
@@ -179,6 +199,12 @@
   name: USSP L-30 Naval Commissar parade hardsuit.
   description: A highly decorated hardsuit with upgraded mobility and higher quality lighter armor plates to quickly convey orders on the frontline. (or not be sweaty in a parade)
   components:
+  # WOLFGATE(ArmorSpecialization): concussion ward and pain dampener.
+  - type: WFWoundWard
+    examine: wf-armor-spec-concussion-ward-examine
+    blocks:
+    - WFWolfmedConcussionWound
+  - type: WFPainDampener
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_commissar_parade.rsi
   - type: Item
@@ -223,6 +249,12 @@
   name: USSP UF-16 "Voenkom" commissar tacsuit
   description: Developed by Union armament manufacturers for use by members of the commissariat on the frontlines. Features enhanced plating for survivability, allowing commanders to continue to give orders even while under heavy fire.
   components:
+  # WOLFGATE(ArmorSpecialization): concussion ward and pain dampener.
+  - type: WFWoundWard
+    examine: wf-armor-spec-concussion-ward-examine
+    blocks:
+    - WFWolfmedConcussionWound
+  - type: WFPainDampener
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_officer_combat.rsi
   - type: Item

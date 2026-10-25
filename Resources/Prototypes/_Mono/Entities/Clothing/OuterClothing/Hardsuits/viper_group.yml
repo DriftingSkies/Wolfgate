@@ -4,6 +4,11 @@
   name: JACKAL mk.II viper hardsuit
   description: A combat hardsuit adorned with signature markings of the Viper Group. The armor is remarkably flexible for the protection it offers.
   components:
+  # WOLFGATE(ArmorSpecialization): trauma gel.
+  - type: WFWoundWard
+    examine: wf-armor-spec-trauma-gel-examine
+    blocks:
+    - WFWolfmedArterialBleedWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/viper_group_standard.rsi
   - type: Item
@@ -51,6 +56,11 @@
   name: RIPPER mk.III viper hardsuit
   description: A combat medical hardsuit adorned with signature markings of the Viper Group. The armor features various reinforced plating in vital areas.
   components:
+  # WOLFGATE(ArmorSpecialization): tendon guards.
+  - type: WFWoundWard
+    examine: wf-armor-spec-tendon-ward-examine
+    blocks:
+    - WFWolfmedTendonCutWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/viper_group_medic.rsi
   - type: Item
@@ -98,6 +108,8 @@
   name: IMP mk.IV viper hardsuit
   description: A heavy combat hardsuit adorned with signature markings of the Viper Group. The armor features reinforced plating and padding fitting for close encounters.
   components:
+  # WOLFGATE(ArmorSpecialization): limb lock.
+  - type: WFLimbLock
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/viper_group_juggernaut.rsi
   - type: Item
@@ -176,6 +188,7 @@
     sprintModifier: 0.75
   - type: HeldSpeedModifier
   # Mono - Shielding comps
+  - type: WFSoftShield # WOLFGATE(SoftShield): hard shields are retired; brute damage bleeds through the field dampened.
   - type: PersonalShield
     visuals:
       fillLevel: 0.2

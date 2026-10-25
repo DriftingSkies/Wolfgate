@@ -33,6 +33,8 @@
   name: armed trauma unit T-23 tacsuit
   description: The standard combat suit for the Armed Trauma Unit. It has an integrated limited-range mass scanner in the helmet.
   components:
+  # WOLFGATE(ArmorSpecialization): auto-tourniquet.
+  - type: WFAutoTourniquet
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/trauma.rsi
   - type: Item
@@ -76,6 +78,11 @@
   name: armed trauma unit T-53 tacsuit
   description: Developed for extracting mission-critical patients under heavy fire, this is the standard gear of the Armed Trauma Unit's captain, with heavy plating and an integrated long-range mass scanner to match.
   components:
+  # WOLFGATE(ArmorSpecialization): trauma gel.
+  - type: WFWoundWard
+    examine: wf-armor-spec-trauma-gel-examine
+    blocks:
+    - WFWolfmedArterialBleedWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/trauma_leader.rsi
   - type: Item
