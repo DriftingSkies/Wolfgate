@@ -100,10 +100,22 @@ class Item:
         self.armor = None       # SS13 armor datum path
         self.source = None      # the DMI or config the item icon came from, relative to the SS13 root
         self.player_colorable = False
+        self.worn_offset = (0, 0)       # BYOND pixel offset of the worn sprite from the tile's corner
+        self.inhand_offset = (0, 0)
 
     @property
     def gags(self):
         return bool(self.colors)
+
+
+def byond_offset(dim_x, dim_y, x_off=0, y_off=0):
+    """Where tgstation's build_worn_icon draws a sprite: center_image() by its declared size, then its offsets."""
+    def centre(dim):
+        shift = -((dim / TILE) - 1) * (TILE / 2)
+        return -shift if dim < TILE else shift
+    if not dim_x or not dim_y:
+        return int(x_off), int(y_off)
+    return int(round(centre(dim_x) + x_off)), int(round(centre(dim_y) + y_off))
 
 
 def clean_text(text):
@@ -423,6 +435,10 @@ class Source:
         item.armor = v("armor_type") if isinstance(v("armor_type"), str) else None
         flags1 = self.datums.raw(t, "flags_1") or ""
         item.player_colorable = "IS_PLAYER_COLORABLE_1" in flags1
+        num = lambda var, default: v(var) if isinstance(v(var), (int, float)) else default
+        item.worn_offset = byond_offset(num("worn_x_dimension", TILE), num("worn_y_dimension", TILE),
+                                        num("worn_x_offset", 0), num("worn_y_offset", 0))
+        item.inhand_offset = byond_offset(num("inhand_x_dimension", TILE), num("inhand_y_dimension", TILE))
 
         config = v("greyscale_config")
         colors = parse_colors(v("greyscale_colors"))

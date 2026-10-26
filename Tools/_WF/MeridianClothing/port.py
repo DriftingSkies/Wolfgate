@@ -8,9 +8,10 @@ loadouts and vending stock under the MeridianClothing module.
 What the SS13 art becomes here:
 
     sprites     Each item gets one RSI: its icon, its worn sprite as the slot's equipped state and its in-hand
-                sprites. Art of different sizes is centred on the largest. Species get the human sprite through
-                their displacement maps (Vox, Resomi, Avali, the LegStyle legs), never the SS13 species sheets,
-                which were drawn for bodies the species here don't have.
+                sprites. Frames take the largest art's size; icons are centred, and worn and in-hand art sits
+                where BYOND draws it (from the tile's corner, centred by its declared size). Species get the
+                human sprite through their displacement maps (Vox, Resomi, Avali, the LegStyle legs), never the
+                SS13 species sheets, which were drawn for bodies the species here don't have.
     greyscale   A GAGS item is drawn from its configs as one layer per colour, adjacent layers of one colour
                 merged. A layer's state ends in -c<N> for colour slot N and starts at the SS13 default; the
                 WFGags component (Gags module) recolours them, and the loadout window lets players pick.
@@ -363,6 +364,20 @@ def _write_text(path, text):
         f.write(text)
 
 
+def _frame(cell, size, offset):
+    """A cell on a frame centred on the mob's tile: centred itself, or from the tile's corner plus a BYOND offset.
+    None when that would crop opaque art."""
+    if offset is None:
+        dx, dy = (size[0] - cell.size[0]) // 2, (size[1] - cell.size[1]) // 2
+    else:
+        dx = (size[0] - source.TILE) // 2 + offset[0]
+        dy = (size[1] + source.TILE) // 2 - cell.size[1] - offset[1]
+    frame = source.blank(size)
+    frame.alpha_composite(cell, (max(dx, 0), max(dy, 0)), (max(-dx, 0), max(-dy, 0)))
+    opaque = lambda image: image.getchannel("A").point(lambda a: 255 if a else 0).histogram()[255]
+    return frame if opaque(frame) == opaque(cell) else None
+
+
 class Planned:
     def __init__(self, item, pid, rsi, parent, theme, protective):
         self.item = item
@@ -544,6 +559,9 @@ class Port:
                 "inhand-left": item.inhand_left, "inhand-right": item.inhand_right}
         for base, names in p.states.items():
             layers = sets[base]
+            # BYOND draws mob overlays from the tile's corner; only the item icon is centred.
+            anchor = None if base == "icon" else (
+                item.worn_offset if base == source.EQUIPPED[item.slot] else item.inhand_offset)
             if not item.gags:
                 layers = [source.composite(layers, [])]
             for (name, _), layer in zip(names, layers):
@@ -556,10 +574,11 @@ class Port:
                 for d in range(dirs):
                     for f in range(count):
                         index = d * count + f
-                        cell = frames[f][d]
-                        x = (index % columns) * size[0] + (size[0] - cell.size[0]) // 2
-                        y = (index // columns) * size[1] + (size[1] - cell.size[1]) // 2
-                        sheet.alpha_composite(cell, (x, y))
+                        frame = _frame(frames[f][d], size, anchor)
+                        if frame is None:
+                            print("%s: %s art falls outside its %dx%d frame" % (item.typepath, name, *size))
+                            frame = _frame(frames[f][d], size, None)
+                        sheet.alpha_composite(frame, ((index % columns) * size[0], (index // columns) * size[1]))
                 sheet.save(os.path.join(folder, name + ".png"), optimize=True)
                 state = {"name": name}
                 if dirs != 1:
