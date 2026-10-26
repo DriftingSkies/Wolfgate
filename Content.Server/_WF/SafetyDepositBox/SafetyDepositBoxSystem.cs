@@ -342,6 +342,7 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
         StorageComponent storageComp)
     {
         var entityDataList = new List<string>();
+        var nestedRefused = EjectNestedRefused(player, boxEntity, storageComp);
 
         Log.Info($"DepositBoxAsync: Box has {storageComp.Container.ContainedEntities.Count} items");
 
@@ -387,6 +388,8 @@ public sealed partial class SafetyDepositBoxSystem : EntitySystem
         QueueDel(boxEntity);
 
         ConsolePopup(player, Loc.GetString("safety-deposit-console-deposit-success"));
+        if (nestedRefused > 0)
+            ConsolePopup(player, Loc.GetString("safety-deposit-console-deposit-nested-refused", ("count", nestedRefused)));
         PlayConfirmSound(consoleUid, component);
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium,

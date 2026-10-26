@@ -15,6 +15,8 @@
     <!-- Background -->
     <TextureRect Access="Public" VerticalExpand="True" HorizontalExpand="True" Name="Background"
                  Stretch="KeepAspectCovered" />
+    <!-- WOLFGATE(Symphony): an animated background the SSymphony panel made from a GIF, shown over the still one -->
+    <lobbyUi:SymphonyAnimatedBackground Access="Public" Name="AnimatedBackground" VerticalExpand="True" HorizontalExpand="True" />
     <!-- WOLFGATE(Stylesheets) START: upstream lobby layout, replaced by the game-menu rebuild below -->
     <!--
     <BoxContainer Name="MainContainer" VerticalExpand="True" HorizontalExpand="True" Orientation="Horizontal"

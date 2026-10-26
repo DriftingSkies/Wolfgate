@@ -25,6 +25,9 @@ public sealed partial class WFChassisPanelSystem
     /// <summary>How long a reboot holds the frame down.</summary>
     public static readonly TimeSpan RebootTime = TimeSpan.FromSeconds(4);
 
+    /// <summary>How long after a reboot starts before the next one can.</summary>
+    public static readonly TimeSpan RebootCooldown = TimeSpan.FromMinutes(2);
+
     /// <summary>Share of the cell's capacity a reboot spends.</summary>
     public const float RebootCost = 0.1f;
 
@@ -93,24 +96,53 @@ public sealed partial class WFChassisPanelSystem
 
     private void OnIsolateMessage(Entity<WFChassisComponent> ent, ref WFChassisIsolatePartMessage args)
     {
+        if (!CanSelfControl(ent, args.Actor))
+            return;
+
         if (TryGetEntity(args.Part, out var part))
             SetIsolated(ent, part.Value, args.Isolate, args.Actor);
     }
 
     private void OnDetachMessage(Entity<WFChassisComponent> ent, ref WFChassisDetachPartMessage args)
     {
+        if (!CanSelfControl(ent, args.Actor))
+            return;
+
         if (TryGetEntity(args.Part, out var part))
             TryDetach(ent, part.Value, args.Actor);
     }
 
     private void OnRebootMessage(Entity<WFChassisComponent> ent, ref WFChassisRebootMessage args)
     {
+        if (!CanSelfControl(ent, args.Actor))
+            return;
+
         TryReboot(ent, args.Actor);
     }
 
     private void OnOverclockMessage(Entity<WFChassisComponent> ent, ref WFChassisOverclockMessage args)
     {
+        if (!CanSelfControl(ent, args.Actor))
+            return;
+
         SetOverclock(ent, args.On, args.Actor);
+    }
+
+    /// <summary>A dead or shut-down chassis can't work its own panel; a mechanic's link still can.</summary>
+    private bool CanSelfControl(EntityUid body, EntityUid user)
+    {
+        if (user != body)
+            return true;
+
+        var refusal = _mobState.IsDead(body) ? "wf-chassis-panel-refuse-dead"
+            : _shutdown.IsShutDown(body) ? "wf-chassis-panel-refuse-shutdown"
+            : null;
+        if (refusal == null)
+            return true;
+
+        _ui.CloseUi(body, WFChassisPanelUiKey.Key, user);
+        _popup.PopupEntity(Loc.GetString(refusal), body, user);
+        return false;
     }
 
     /// <summary>Isolates or restores one of this body's limbs from the panel.</summary>
@@ -179,8 +211,20 @@ public sealed partial class WFChassisPanelSystem
             return false;
         }
 
-        if (TryComp(body, out WFChassisComponent? chassis) && chassis.Overclocked)
-            SetOverclock(body, false, user, quiet: true);
+        TryComp(body, out WFChassisComponent? chassis);
+        if (chassis != null && _timing.CurTime < chassis.NextReboot)
+        {
+            var wait = (int) Math.Ceiling((chassis.NextReboot - _timing.CurTime).TotalSeconds);
+            _popup.PopupEntity(Loc.GetString("wf-chassis-reboot-refuse-cooldown", ("seconds", wait)), body, user);
+            return false;
+        }
+
+        if (chassis != null)
+        {
+            chassis.NextReboot = _timing.CurTime + RebootCooldown;
+            if (chassis.Overclocked)
+                SetOverclock(body, false, user, quiet: true);
+        }
 
         if (TryGetCell(body, out var cell))
             _battery.ChangeCharge(cell.Value.Owner, -cell.Value.Comp.MaxCharge * RebootCost, cell.Value.Comp);

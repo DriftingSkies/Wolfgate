@@ -18,6 +18,7 @@ using Content.Shared._WF.BloodColour; // WOLFGATE(BloodColour)
 using Content.Shared._WF.ChatFont; // WOLFGATE(ChatFont)
 using Content.Shared._WF.TypingBubble; // WOLFGATE(TypingBubble)
 using Content.Shared._WF.EmoteVoices; // WOLFGATE(EmoteVoices)
+using Content.Shared._WF.Gags; // WOLFGATE(Gags)
 using Content.Shared._WF.CustomMarkings; // WOLFGATE(CustomMarkings)
 using Content.Shared._WF.Genitals; // WOLFGATE(Genitals)
 using Content.Shared._WF.Genitals.Profile; // WOLFGATE(Genitals)
@@ -267,6 +268,7 @@ namespace Content.Server.Database
                         {
                             // WOLFGATE(Prototypes): rows saved before a loadout rename load under its current id.
                             Prototype = WFLegacyPrototypeIds.Resolve(WFLegacyPrototypeIds.Loadouts, profLoadout.LoadoutName),
+                            WFGagsColors = WFGagsColors.Parse(profLoadout.GagsColors), // WOLFGATE(Gags)
                         });
                     }
                 }
@@ -450,6 +452,7 @@ namespace Content.Server.Database
                         profileGroup.Loadouts.Add(new ProfileLoadout()
                         {
                             LoadoutName = loadout.Prototype,
+                            GagsColors = WFGagsColors.Format(loadout.WFGagsColors), // WOLFGATE(Gags)
                         });
                     }
 

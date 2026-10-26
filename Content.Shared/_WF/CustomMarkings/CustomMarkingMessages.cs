@@ -25,7 +25,8 @@ public sealed class CustomMarkingSaveEvent(
     CustomMarkingPlacement placement,
     byte[]? pixels,
     int[]? frameTimes = null,
-    byte[]? erase = null)
+    byte[]? erase = null,
+    bool pingPong = false)
     : EntityEventArgs
 {
     /// <summary>Echoed in the result, so the editor can tell which save it answers.</summary>
@@ -43,6 +44,9 @@ public sealed class CustomMarkingSaveEvent(
 
     /// <summary>The body pixels the marking erases, as a <see cref="CustomMarkingErase"/> mask. Null for none.</summary>
     public readonly byte[]? Erase = erase;
+
+    /// <summary>Whether the animation plays back to the first frame at the end.</summary>
+    public readonly bool PingPong = pingPong;
 }
 
 /// <summary>Server to client: the saved entry, or a loc id saying why it wasn't saved.</summary>
@@ -78,7 +82,8 @@ public sealed class CustomMarkingArtRequestEvent(List<string> hashes) : EntityEv
 /// show for that hash.
 /// </summary>
 [Serializable, NetSerializable]
-public sealed class CustomMarkingArtEvent(string hash, byte[]? png, int[]? frameTimes = null, byte[]? erase = null) : EntityEventArgs
+public sealed class CustomMarkingArtEvent(string hash, byte[]? png, int[]? frameTimes = null, byte[]? erase = null, bool pingPong = false)
+    : EntityEventArgs
 {
     public readonly string Hash = hash;
     public readonly byte[]? Png = png;
@@ -88,4 +93,7 @@ public sealed class CustomMarkingArtEvent(string hash, byte[]? png, int[]? frame
 
     /// <summary>The body pixels the marking erases, as a <see cref="CustomMarkingErase"/> mask. Null for none.</summary>
     public readonly byte[]? Erase = erase;
+
+    /// <summary>Whether the animation plays back to the first frame at the end.</summary>
+    public readonly bool PingPong = pingPong;
 }

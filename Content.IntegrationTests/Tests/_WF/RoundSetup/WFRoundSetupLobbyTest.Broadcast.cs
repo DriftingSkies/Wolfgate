@@ -1,5 +1,7 @@
+using System.Reflection;
 using Content.Client._WF.RoundSetup;
 using Content.IntegrationTests.Pair;
+using Content.Server._WF.RoundSetup;
 using Content.Server.GameTicking;
 using Content.Shared._WF.RoundSetup;
 
@@ -15,6 +17,12 @@ public sealed partial class WFRoundSetupLobbyTest
         var state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Create) { Scenario = WFRoundScenario.Ship });
         var id = OwnLobby(state).Id;
         await pair.RunTicksSync(pair.SecondsToTicks(1));
+        // The 30-second safety snapshot runs on whatever clock the pooled server has left, so it could fall in the
+        // window; a flush now puts it a full interval away. Its own snapshot lands before counting starts.
+        await pair.Server.WaitPost(() => typeof(WFRoundSetupSystem)
+            .GetMethod("FlushBroadcast", BindingFlags.NonPublic | BindingFlags.Instance)!
+            .Invoke(pair.Server.System<WFRoundSetupSystem>(), null));
+        await pair.RunTicksSync(10);
         var count = await CountSnapshots(pair, 7);
         Assert.That(count, Is.Zero, "Nothing changed, so no snapshot should be sent.");
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure) { LobbyId = id, Title = "Quiet" });

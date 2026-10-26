@@ -704,14 +704,14 @@ public sealed partial class ShuttleSystem
     }
 
     // Mono Begin
-    private void MassAdjustFTLCooldown(PhysicsComponent shuttlePhysics, FTLDriveComponent drive, out float massAdjustedCooldown)
+    private void MassAdjustFTLCooldown(float mass, FTLDriveComponent drive, out float massAdjustedCooldown) // WOLFGATE(Shuttles): takes the jumping group's mass
     {
         if (drive.MassAffectedDrive == false)
         {
             massAdjustedCooldown = drive.Cooldown;
             return;
         }
-        var adjustedMass = shuttlePhysics.Mass * drive.DriveMassMultiplier;
+        var adjustedMass = mass * drive.DriveMassMultiplier; // WOLFGATE(Shuttles)
         var massMultiplier = float.Log(float.Sqrt(adjustedMass / MassConstant + float.E));
         massMultiplier = float.Clamp(massMultiplier, MassMultiplierMin, MassMultiplierMax);
         massAdjustedCooldown = drive.Cooldown * massMultiplier;
@@ -734,9 +734,10 @@ public sealed partial class ShuttleSystem
         DoTheDinosaur(xform);
         _dockSystem.SetDockBolts(entity, false);
 
+        var wfGroupMass = GetFtlGroupMass(uid); // WOLFGATE(Shuttles): docked grids that jumped along count toward the mass
         if (TryGetFTLDrive(entity, out _, out var globalDrive))
         {
-            MassAdjustFTLCooldown(body, globalDrive, out var massAdjustedCooldown);
+            MassAdjustFTLCooldown(wfGroupMass, globalDrive, out var massAdjustedCooldown); // WOLFGATE(Shuttles)
             globalFtlCooldown = massAdjustedCooldown;
         }
 
@@ -842,7 +843,7 @@ public sealed partial class ShuttleSystem
                 var dockedShuttle = Comp<ShuttleComponent>(dockedUid);
                 if (TryGetFTLDrive(dockedUid, out _, out var drive))
                 {
-                    MassAdjustFTLCooldown(dockedBody, drive, out var massAdjustedCooldown);
+                    MassAdjustFTLCooldown(wfGroupMass, drive, out var massAdjustedCooldown); // WOLFGATE(Shuttles)
                     ftlCooldown = massAdjustedCooldown;
                 }
                 if (HasComp<MapGridComponent>(xform.MapUid))

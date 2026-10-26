@@ -1,0 +1,1382 @@
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskAnimalCowmask
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/animal_cowmask.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/animal_cowmask.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskAnimalFrog
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/animal_frog.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/animal_frog.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskAnimalHorsehead
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/animal_horsehead.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/animal_horsehead.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskAnimalPig
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/animal_pig.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/animal_pig.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskAnimalSmallTribal
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/animal_small_tribal.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/animal_small_tribal.rsi
+  - type: HideLayerClothing
+    layers:
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBalaclava
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/balaclava.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/balaclava.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBalaclavaAdjustable
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/balaclava_adjustable.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/balaclava_adjustable.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBalaclavaThreehole
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/balaclava_threehole.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/balaclava_threehole.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBalaclavaThreeholeGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/balaclava_threehole_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/balaclava_threehole_green.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBandana
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/bandana.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2E2E2E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/bandana.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#2E2E2E"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#2E2E2E"
+      right:
+      - state: inhand-right-1-c1
+        color: "#2E2E2E"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#2E2E2E"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBandanaSkull
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/bandana_skull.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2E2E2E"
+    - state: icon-2-c2
+      color: "#C6C6C6"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/bandana_skull.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#2E2E2E"
+      - state: equipped-MASK-2-c2
+        color: "#C6C6C6"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#2E2E2E"
+      - state: inhand-left-2-c2
+        color: "#C6C6C6"
+      right:
+      - state: inhand-right-1-c1
+        color: "#2E2E2E"
+      - state: inhand-right-2-c2
+        color: "#C6C6C6"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#2E2E2E"
+    - "#C6C6C6"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskBandanaStriped
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/bandana_striped.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2E2E2E"
+    - state: icon-2-c2
+      color: "#C6C6C6"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/bandana_striped.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#2E2E2E"
+      - state: equipped-MASK-2-c2
+        color: "#C6C6C6"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#2E2E2E"
+      - state: inhand-left-2-c2
+        color: "#C6C6C6"
+      right:
+      - state: inhand-right-1-c1
+        color: "#2E2E2E"
+      - state: inhand-right-2-c2
+        color: "#C6C6C6"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#2E2E2E"
+    - "#C6C6C6"
+
+- type: entity
+  parent: ClothingMaskBreath
+  id: WFMeridianClothingMaskBreathMuzzle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/breath_muzzle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/breath_muzzle.rsi
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskFacescarfRogue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/facescarf_rogue.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#292929"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/facescarf_rogue.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#292929"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#292929"
+      right:
+      - state: inhand-right-1-c1
+        color: "#292929"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+  - type: WFGags
+    colors:
+    - "#292929"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskFloortilebalaclava
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/floortilebalaclava.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/floortilebalaclava.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasAtmosAdmin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_atmos_admin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_atmos_admin.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasAtmosAdminSubspace
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_atmos_admin_subspace.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_atmos_admin_subspace.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasAtmosFrontierColonist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_atmos_frontier_colonist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_atmos_frontier_colonist.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasBdsmMask
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_bdsm_mask.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#DC7EF4"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_bdsm_mask.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#383840"
+      - state: equipped-MASK-2-c2
+        color: "#DC7EF4"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: BreathMask
+  - type: IngestionBlocker
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasCarp
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_carp.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_carp.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasClownColourable
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_clown_colourable.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#F20018"
+    - state: icon-3-c3
+      color: "#0000FF"
+    - state: icon-4-c4
+      color: "#00CC00"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_clown_colourable.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#FFFFFF"
+      - state: equipped-MASK-2-c2
+        color: "#F20018"
+      - state: equipped-MASK-3-c3
+        color: "#0000FF"
+      - state: equipped-MASK-4-c4
+        color: "#00CC00"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#F20018"
+    - "#0000FF"
+    - "#00CC00"
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasClownbald
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_clownbald.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_clownbald.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasCyborg
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_cyborg.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_cyborg.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasDriscoll
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_driscoll.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_driscoll.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasFull
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_full.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_full.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasGags
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_gags.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#333333"
+    - state: icon-2-c2
+      color: "#04D17E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_gags.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#333333"
+      - state: equipped-MASK-2-c2
+        color: "#04D17E"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: BreathMask
+  - type: IngestionBlocker
+  - type: WFGags
+    colors:
+    - "#333333"
+    - "#04D17E"
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasGlass
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_glass.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_glass.rsi
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasHcPolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_hc_police.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_hc_police.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasHecu
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_hecu.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_hecu.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasHunter
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_hunter.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_hunter.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasJonkler
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_jonkler.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_jonkler.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasMonkeymask
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_monkeymask.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_monkeymask.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasOwlMask
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_owl_mask.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_owl_mask.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasPinkClownWig
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_pink_clown_wig.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_pink_clown_wig.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasProp
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_prop.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_prop.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasRespirator
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_respirator.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2E3333"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_respirator.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#2E3333"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: BreathMask
+  - type: IngestionBlocker
+  - type: WFGags
+    colors:
+    - "#2E3333"
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasSechailerCyborg
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_sechailer_cyborg.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_sechailer_cyborg.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasSechailerSwatSpacepol
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_sechailer_swat_spacepol.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_sechailer_swat_spacepol.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasSeva
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_seva.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_seva.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasSexyclown
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_sexyclown.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_sexyclown.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasSyndicateCybersun
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_syndicate_cybersun.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_syndicate_cybersun.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasSyndicateDs
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_syndicate_ds.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_syndicate_ds.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasTikiMask
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_tiki_mask.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_tiki_mask.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskGas
+  id: WFMeridianClothingMaskGasTikiMaskYalpElor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gas_tiki_mask_yalp_elor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gas_tiki_mask_yalp_elor.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskGondola
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/gondola.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/gondola.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskKitsune
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/kitsune.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EEEEEE"
+    - state: icon-2-c2
+      color: "#AA0000"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/kitsune.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#EEEEEE"
+      - state: equipped-MASK-2-c2
+        color: "#AA0000"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#EEEEEE"
+    - "#AA0000"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskLeatherwhip
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/leatherwhip.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/leatherwhip.rsi
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskLuchador
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/luchador.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/luchador.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskLuchadorRudos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/luchador_rudos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/luchador_rudos.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskLuchadorTecnicos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/luchador_tecnicos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/luchador_tecnicos.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMadnessMask
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/madness_mask.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/madness_mask.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMasquerade
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/masquerade.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#ECECEC"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/masquerade.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#ECECEC"
+  - type: BreathMask
+  - type: WFGags
+    colors:
+    - "#ECECEC"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMasqueradeFeathered
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/masquerade_feathered.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#ECECEC"
+    - state: icon-2-c2
+      color: "#9B1E1E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/masquerade_feathered.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#ECECEC"
+      - state: equipped-MASK-2-c2
+        color: "#9B1E1E"
+  - type: BreathMask
+  - type: WFGags
+    colors:
+    - "#ECECEC"
+    - "#9B1E1E"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMasqueradeTwoColors
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/masquerade_two_colors.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#ECECEC"
+    - state: icon-2-c2
+      color: "#333333"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/masquerade_two_colors.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#ECECEC"
+      - state: equipped-MASK-2-c2
+        color: "#333333"
+  - type: BreathMask
+  - type: WFGags
+    colors:
+    - "#ECECEC"
+    - "#333333"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMasqueradeTwoColorsFeathered
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/masquerade_two_colors_feathered.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#ECECEC"
+    - state: icon-2-c2
+      color: "#333333"
+    - state: icon-3-c3
+      color: "#9B1E1E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/masquerade_two_colors_feathered.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#ECECEC"
+      - state: equipped-MASK-2-c2
+        color: "#333333"
+      - state: equipped-MASK-3-c3
+        color: "#9B1E1E"
+  - type: BreathMask
+  - type: WFGags
+    colors:
+    - "#ECECEC"
+    - "#333333"
+    - "#9B1E1E"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMummy
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/mummy.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/mummy.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMuzzleBallgag
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/muzzle_ballgag.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#DC7EF4"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/muzzle_ballgag.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#383840"
+      - state: equipped-MASK-2-c2
+        color: "#DC7EF4"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMuzzleBallgagChoking
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/muzzle_ballgag_choking.rsi
+    layers:
+    - state: icon-1-c2
+      color: "#DC7EF4"
+    - state: icon-2-c1
+      color: "#383840"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/muzzle_ballgag_choking.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#383840"
+      - state: equipped-MASK-2-c2
+        color: "#DC7EF4"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMuzzleRing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/muzzle_ring.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/muzzle_ring.rsi
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMuzzleTape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/muzzle_tape.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#B2B2B2"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/muzzle_tape.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#B2B2B2"
+  - type: WFGags
+    colors:
+    - "#B2B2B2"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskMuzzleTapePointy
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/muzzle_tape_pointy.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#E64539"
+    - state: icon-2-c2
+      color: "#AD2F45"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/muzzle_tape_pointy.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#E64539"
+      - state: equipped-MASK-2-c2
+        color: "#AD2F45"
+  - type: WFGags
+    colors:
+    - "#E64539"
+    - "#AD2F45"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskNeckGaiterSyndicateTacticool
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/neck_gaiter_syndicate_tacticool.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2C2C2E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/neck_gaiter_syndicate_tacticool.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#2C2C2E"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: BreathMask
+  - type: IngestionBlocker
+  - type: WFGags
+    colors:
+    - "#2C2C2E"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskNobreath
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/nobreath.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/nobreath.rsi
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskPaper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/paper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/paper.rsi
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: BreathMask
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskRebellion
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/rebellion.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EEEEEE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/rebellion.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#EEEEEE"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#EEEEEE"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskRussianBalaclava
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/russian_balaclava.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/russian_balaclava.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskScarecrow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/scarecrow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/scarecrow.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: MASK
+      FacialHair: MASK
+      Snout: MASK
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskSurgicalGreyscale
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/surgical_greyscale.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#AAE4DB"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/surgical_greyscale.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK-1-c1
+        color: "#AAE4DB"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      Snout: MASK
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#AAE4DB"
+
+- type: entity
+  parent: ClothingMaskBase
+  id: WFMeridianClothingMaskWhistleMinigame
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Masks/whistle_minigame.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Masks/whistle_minigame.rsi

@@ -34,6 +34,8 @@ Spawned crew members receive a private radio channel (`:k`) named after their cr
 
 Down With Ye' Ship! starts the crew aboard the SY Reach, free and with no deed, on clear space between drone zones 1 and 2 (the first two `WFDroneRingsComponent` radii, else 4-8 km out). The first arrival springs `WFDoomedReaverAmbush`: three Reaver gunships at tier 4 or 5, 800 m out on three sides, that attack the Reach and fight until nobody aboard is left (`disengage: Destroy`). Their crews fire on sight, and the Reach's FTL is jammed until the encounter resolves. The Reach uses crew access, so the crew opens its doors without owning it. Ship crew jobs apply.
 
+Launched crews show how they are doing. Each spawned member's roster entry reads Alive, Critical, Dead or Missing (body deleted), crew details and the own-crew page show how many deployed members are alive, and crew rows replace the aboard count with a living count, red when nobody is left. The ship line rates the largest surviving grid against the largest deck seen since that ship was assigned: intact from 90%, damaged from 50%, wrecked below that, destroyed with no grid left. Statuses are sampled every two seconds and a change sends a snapshot. When every deployed member is down or the ship is wrecked or destroyed, the join and accept buttons show a warning and need a second press. Rules live in `WFCrewStatusPolicy`; the server side is `WFRoundSetupSystem.Status`.
+
 Every scenario card, crew detail and crew row shows a colour-coded difficulty from `WFRoundSetupPolicy.Difficulty`: Ship and Faction Crew are Normal (green), Crashlanded Very Hard (orange), Down With Ye' Ship! Impossible (red). Easy (blue) and Hard (yellow) exist for later scenarios.
 
 Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSystem`, `WFDoomedScenarioSystem`, `WFShipScenarioSystem`, and the client Crew Setup window.
@@ -70,6 +72,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Ships.cs`](WFRoundSetupSystem.Ships.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Signals.cs`](WFRoundSetupSystem.Signals.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Spawning.cs`](WFRoundSetupSystem.Spawning.cs)
+- [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Status.cs`](WFRoundSetupSystem.Status.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Titles.cs`](WFRoundSetupSystem.Titles.cs)
 - [`Content.Server/_WF/RoundSetup/WFSafeSpawnSystem.cs`](WFSafeSpawnSystem.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioComponent.cs`](WFShipScenarioComponent.cs)
@@ -86,6 +89,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Shared/_WF/RoundSetup/WFCrashCountdownClock.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashCountdownClock.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrashCountdownEvent.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashCountdownEvent.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrewSignalEvent.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrewSignalEvent.cs)
+- [`Content.Shared/_WF/RoundSetup/WFCrewStatus.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrewStatus.cs)
 - [`Content.Shared/_WF/RoundSetup/WFFactionCrewPolicy.cs`](../../../Content.Shared/_WF/RoundSetup/WFFactionCrewPolicy.cs)
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupCVars.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupCVars.cs)
 - [`Content.Shared/_WF/RoundSetup/WFRoundSetupMessages.cs`](../../../Content.Shared/_WF/RoundSetup/WFRoundSetupMessages.cs)
@@ -124,6 +128,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.ScenarioColumns.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.ScenarioColumns.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.ShipName.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.ShipName.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Ships.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Ships.cs)
+- [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Status.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Status.cs)
 - [`Content.Client/_WF/RoundSetup/WFScenarioDifficultyLabel.cs`](../../../Content.Client/_WF/RoundSetup/WFScenarioDifficultyLabel.cs)
 
 ### Integration tests
@@ -154,6 +159,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 ### Unit tests
 
 - [`Content.Tests/_WF/RoundSetup/WFCrashCountdownClockTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFCrashCountdownClockTest.cs)
+- [`Content.Tests/_WF/RoundSetup/WFCrewStatusPolicyTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFCrewStatusPolicyTest.cs)
 - [`Content.Tests/_WF/RoundSetup/WFFactionCrewPolicyTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFFactionCrewPolicyTest.cs)
 - [`Content.Tests/_WF/RoundSetup/WFRoundSetupPolicyTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFRoundSetupPolicyTest.cs)
 - [`Content.Tests/_WF/RoundSetup/WFRoundSetupRolePolicyTest.cs`](../../../Content.Tests/_WF/RoundSetup/WFRoundSetupRolePolicyTest.cs)
@@ -172,6 +178,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Resources/Locale/en-US/_WF/RoundSetup/crash-effects.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/crash-effects.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/crash.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/crash.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/crew-comms.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/crew-comms.ftl)
+- [`Resources/Locale/en-US/_WF/RoundSetup/crew-status.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/crew-status.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/doomed.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/doomed.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/faction-crew.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/faction-crew.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/flow.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/flow.ftl)

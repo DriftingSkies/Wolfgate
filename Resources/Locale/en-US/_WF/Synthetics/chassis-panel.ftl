@@ -20,6 +20,7 @@ wf-chassis-reboot-start = { CAPITALIZE(THE($target)) } locks up and reboots.
 wf-chassis-reboot-done = Reboot complete. Sensor load cleared.
 wf-chassis-reboot-refuse-shutdown = A shut-down chassis can't reboot.
 wf-chassis-reboot-refuse-busy = Already rebooting.
+wf-chassis-reboot-refuse-cooldown = The chassis can't reboot again for { $seconds } seconds.
 
 wf-chassis-overclock-on = Servos overclocked.
 wf-chassis-overclock-off = Servos back at rating.

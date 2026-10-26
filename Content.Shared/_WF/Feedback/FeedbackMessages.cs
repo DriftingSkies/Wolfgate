@@ -37,6 +37,12 @@ public enum FeedbackStatus : byte
     Checked,
     Fixed,
     NonIssue,
+    // For suggestions: whether it is going in.
+    Accepted,
+    Declined,
+    // For shift surveys: staff have read it, or acted on it.
+    Read,
+    Resolved,
 }
 
 /// <summary>A bug report or suggestion, sent by the client when the player presses Submit.</summary>

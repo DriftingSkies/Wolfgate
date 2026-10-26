@@ -284,6 +284,9 @@ public sealed partial class WFEncounterShipState
     /// <summary>When players were last aboard it or docked with it, while resolved.</summary>
     public TimeSpan? LastVisited;
 
+    /// <summary>When it last fought players: its crew raised the alarm, a player ship hit it or a player downed one of its crew.</summary>
+    public TimeSpan? LastFought;
+
     /// <summary>Whether it hunts player ships to dock with and board.</summary>
     [DataField]
     public bool Hunt;

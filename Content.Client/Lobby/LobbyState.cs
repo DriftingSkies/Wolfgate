@@ -259,6 +259,7 @@ namespace Content.Client.Lobby
                 WaitForLobbyBackground(_gameTicker.LobbyBackground, 0);
                 return;
             }
+            Lobby!.AnimatedBackground.Play(null, null);
             // WOLFGATE END
             if (_gameTicker.LobbyBackground != null)
             {
@@ -277,9 +278,15 @@ namespace Content.Client.Lobby
         {
             if (Lobby == null || _gameTicker.LobbyBackground != path)
                 return;
-            if (_resourceCache.TryGetResource<TextureResource>(new ResPath(path), out var texture))
+            // Asked of the cache only once the file is here: a miss is remembered by the cache, and it would then
+            // refuse the file for the rest of the session even after it arrived.
+            if (SymphonyWait.Arrived(_resourceCache, path) && _resourceCache.TryGetResource<TextureResource>(new ResPath(path), out var texture))
             {
-                Lobby.Background.Texture = texture;
+                // A sheet made from a GIF plays as an animation over the still background, which is cleared.
+                var animated = SymphonyAnimatedBackground.IsAnimated(path);
+                Robust.Client.Graphics.Texture sheet = texture;
+                Lobby.Background.Texture = animated ? null : sheet;
+                Lobby.AnimatedBackground.Play(animated ? sheet : null, animated ? path : null);
                 return;
             }
             if (attempt < SymphonyWait.Attempts)

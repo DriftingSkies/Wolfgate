@@ -2,6 +2,18 @@
   id: ChefDrobeInventory
   startingInventory:
     ClothingOuterEVASuitServiceWorker: 2 # Frontier
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadCollectableChef: 2
+    WFMeridianClothingHeadPlaybunnyearsCook: 2
+    WFMeridianClothingNeckTieBunnytieCook: 2
+    WFMeridianClothingShoesCookflops: 2
+    WFMeridianClothingSuitApronChef: 2
+    WFMeridianClothingSuitApronChefColorableApron: 2
+    WFMeridianClothingSuitJacketTailcoatCook: 2
+    WFMeridianClothingSuitToggleChef: 2
+    WFMeridianClothingUnderRankCivilianCookBunnysuit: 2
+    WFMeridianClothingUnderRankCivilianCookjorts: 2
+    # WOLFGATE END
 #    ClothingHeadsetService: 2 # Frontier
     ClothingOuterApronChef: 3
     ClothingOuterWinterChef: 2

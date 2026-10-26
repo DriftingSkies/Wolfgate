@@ -1,3 +1,4 @@
+using Content.Client._WF.Gags;
 using Content.Client._WF.Stylesheets;
 using Content.Client.Stylesheets;
 using Content.Shared._NF.Bank;
@@ -8,8 +9,8 @@ using Robust.Shared.Utility;
 namespace Content.Client._WF.Loadouts;
 
 /// <summary>
-/// Pooled grid tile for one loadout: sprite, a name of up to two lines, the price when it has one and a badge
-/// when it is locked. Lit while the loadout is selected. Also draws the "Nothing" tile of an optional group.
+/// Pooled grid tile for one loadout: sprite, a name of up to two lines, the price when it has one, a badge
+/// when it is locked and a palette when its item can be recoloured. Lit while the loadout is selected. Also draws the "Nothing" tile of an optional group.
 /// </summary>
 public sealed class LoadoutTile : ContainerButton
 {
@@ -29,6 +30,7 @@ public sealed class LoadoutTile : ContainerButton
     private readonly Label _caption;
     private readonly Label _price;
     private readonly Label _badge;
+    private readonly TextureRect _palette;
     private string? _nameText;
 
     /// <summary>Loadout this tile shows, null for the "Nothing" tile and for a tile with no row to show.</summary>
@@ -80,13 +82,26 @@ public sealed class LoadoutTile : ContainerButton
             Children =
             {
                 _icon,
-                // A name longer than two lines is cut off here; the detail strip shows it whole.
+                // A name longer than two lines is cut off here; the selected panel shows it whole.
                 new Control { SetHeight = NameHeight, RectClipContent = true, Children = { _name } },
                 _caption,
             },
         });
+        _palette = new TextureRect
+        {
+            Texture = WFGagsColorRow.PaletteIcon(),
+            TextureScale = new System.Numerics.Vector2(2, 2),
+            HorizontalAlignment = HAlignment.Right,
+            VerticalAlignment = VAlignment.Top,
+            // Under the price, clear of the sprite.
+            Margin = new Thickness(0, 22, 2, 0),
+            ToolTip = Loc.GetString("wf-gags-colorable"),
+            MouseFilter = MouseFilterMode.Pass,
+        };
+
         AddChild(_price);
         AddChild(_badge);
+        AddChild(_palette);
     }
 
     /// <summary>Takes the tile out of the grid: a pooled tile past the end of the list.</summary>
@@ -114,6 +129,8 @@ public sealed class LoadoutTile : ContainerButton
         _caption.Visible = false;
         _price.Visible = false;
         _badge.Visible = false;
+        _palette.Visible = false;
+        ToolTip = null;
     }
 
     /// <summary>Shows a loadout.</summary>
@@ -146,6 +163,10 @@ public sealed class LoadoutTile : ContainerButton
         }
 
         _badge.Visible = entry.Locked;
+        _palette.Visible = entry.Colorable;
+
+        // The selected panel only shows picks, so the whole name and why a tile is locked are on hover here.
+        ToolTip = entry.Locked && entry.Reason != null ? $"{entry.Name}\n{entry.Reason}" : entry.Name;
     }
 
     private void SetName(string text)

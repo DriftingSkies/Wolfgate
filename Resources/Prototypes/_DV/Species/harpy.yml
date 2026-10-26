@@ -56,7 +56,7 @@
       required: true
       defaultMarkings: [ HarpyEarsDefault ]
     Chest:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: true
       defaultMarkings: [ HarpyChestDefault ]
     Legs:

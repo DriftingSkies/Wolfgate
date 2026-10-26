@@ -56,6 +56,9 @@ public sealed class WFDoomedScenarioSystem : EntitySystem
     /// <summary>Drone zone 1-2 bounds when the sector has fewer than two drone rings.</summary>
     private const float FallbackInner = 4000f, FallbackOuter = 8000f;
 
+    /// <summary>How far from the hull's origin other grids must be: past the Reach's size plus the ambush ring.</summary>
+    private const float ClearRadius = 1500f;
+
     private readonly Dictionary<int, Scenario> _scenarios = new();
 
     private sealed class Scenario(EntityUid station)
@@ -108,7 +111,14 @@ public sealed class WFDoomedScenarioSystem : EntitySystem
             return false;
         }
         var vessel = _prototypes.Index(Vessel);
-        if (!_loader.TryLoadGrid(mapId, vessel.ShuttlePath, out var loaded))
+        // Loaded straight onto clear space: loaded at the centre, over Central, its loose items moved onto the station.
+        if (!TryFindClearSpot(mapUid.Value, mapId, out var spot))
+        {
+            Log.Warning($"Doomed scenario for lobby {lobbyId}: no clear space between drone zones 1 and 2.");
+            return false;
+        }
+
+        if (!_loader.TryLoadGrid(mapId, vessel.ShuttlePath, out var loaded, offset: spot))
         {
             Log.Warning($"Doomed scenario for lobby {lobbyId}: {vessel.ShuttlePath} failed to load.");
             return false;
@@ -204,8 +214,8 @@ public sealed class WFDoomedScenarioSystem : EntitySystem
         QueueDel(scenario.Station);
     }
 
-    /// <summary>Moves the hull to clear space between the first two drone rings.</summary>
-    private bool TryPlace(EntityUid hull, MapGridComponent grid, EntityUid map, MapId mapId)
+    /// <summary>The ring between the first two drone rings the hull may start in, kept off its edges.</summary>
+    private (float Inner, float Outer) Band(EntityUid map)
     {
         var (inner, outer) = (FallbackInner, FallbackOuter);
         if (TryComp<WFDroneRingsComponent>(map, out var rings) && rings.Radii.Count > 0)
@@ -215,10 +225,36 @@ public sealed class WFDoomedScenarioSystem : EntitySystem
         }
         // Keep the ambush ring inside the band too.
         var margin = Math.Min(1000f, (outer - inner) / 4f);
+        return (inner + margin, outer - margin);
+    }
+
+    /// <summary>A point in the band with no grid within <see cref="ClearRadius"/>, to load the hull at.</summary>
+    private bool TryFindClearSpot(EntityUid map, MapId mapId, out Vector2 spot)
+    {
+        var (inner, outer) = Band(map);
         var nearby = new List<Entity<MapGridComponent>>();
         for (var attempt = 0; attempt < 32; attempt++)
         {
-            _transform.SetCoordinates(hull, new EntityCoordinates(map, _random.NextVector2(inner + margin, outer - margin)));
+            spot = _random.NextVector2(inner, outer);
+            nearby.Clear();
+            _map.FindGridsIntersecting(mapId, Box2.CenteredAround(spot, new Vector2(ClearRadius * 2)), ref nearby, approx: true, includeMap: false);
+            if (nearby.Count == 0)
+                return true;
+        }
+
+        spot = default;
+        return false;
+    }
+
+    /// <summary>Keeps the hull where it loaded if that is clear, else moves it to clear space in the band.</summary>
+    private bool TryPlace(EntityUid hull, MapGridComponent grid, EntityUid map, MapId mapId)
+    {
+        var (inner, outer) = Band(map);
+        var nearby = new List<Entity<MapGridComponent>>();
+        for (var attempt = 0; attempt < 32; attempt++)
+        {
+            if (attempt > 0)
+                _transform.SetCoordinates(hull, new EntityCoordinates(map, _random.NextVector2(inner, outer)));
             var bounds = _transform.GetWorldMatrix(hull).TransformBox(grid.LocalAABB).Enlarged(1200f);
             nearby.Clear();
             _map.FindGridsIntersecting(mapId, bounds, ref nearby, approx: true, includeMap: false);

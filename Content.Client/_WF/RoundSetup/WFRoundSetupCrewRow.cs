@@ -23,6 +23,13 @@ public sealed class WFRoundSetupCrewRow : Button
         var status = Loc.GetString("wf-round-setup-" + (invited ? "row-invited" : lobby.Started ? "status-started" : "status-waiting"));
         ToolTip = Loc.GetString("wf-round-setup-row-tooltip", ("title", title), ("host", lobby.Portrait?.Name ?? lobby.HostName),
             ("count", lobby.MemberCount), ("open", Openings(lobby)), ("status", status));
+        var statuses = lobby.Roster.Select(mate => mate.Status).ToArray();
+        var living = WFCrewStatusPolicy.Living(statuses);
+        var deployed = WFCrewStatusPolicy.Deployed(statuses);
+        var warning = WFCrewStatusPolicy.NeedsJoinWarning(lobby.Started, statuses, lobby.ShipCondition);
+        if (lobby.Started)
+            ToolTip += "\n" + Loc.GetString("wf-round-setup-row-alive-tooltip", ("living", living), ("deployed", deployed),
+                ("ship", Loc.GetString("wf-round-setup-ship-condition-short-" + lobby.ShipCondition.ToString().ToLowerInvariant())));
         Label.Visible = false;
         var row = new BoxContainer { SeparationOverride = 8, HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore };
         row.AddChild(JobIcon(lobby.HostJob ?? (WFRoundSetupPolicy.IsShip(lobby.Scenario) ? "Pilot" : "Contractor")));
@@ -36,8 +43,10 @@ public sealed class WFRoundSetupCrewRow : Button
         });
         row.AddChild(new Label
         {
-            Text = Loc.GetString("wf-round-setup-row-count", ("count", lobby.MemberCount)),
-            FontColorOverride = invited ? Color.Gold : lobby.Started ? Color.LightGreen : Color.LightGray,
+            Text = lobby.Started && deployed > 0
+                ? Loc.GetString("wf-round-setup-row-alive", ("living", living), ("deployed", deployed))
+                : Loc.GetString("wf-round-setup-row-count", ("count", lobby.MemberCount)),
+            FontColorOverride = invited ? Color.Gold : warning ? Color.OrangeRed : lobby.Started ? Color.LightGreen : Color.LightGray,
             MouseFilter = MouseFilterMode.Ignore,
         });
         AddChild(row);
@@ -59,5 +68,6 @@ public sealed class WFRoundSetupCrewRow : Button
     /// <summary>Avoids rebuilding rows for unrelated readiness and admission changes.</summary>
     public static bool SameListing(WFRoundSetupLobby first, WFRoundSetupLobby second) =>
         first.Id == second.Id && first.Scenario == second.Scenario && first.Title == second.Title && first.HostName == second.HostName && first.Portrait?.Name == second.Portrait?.Name && first.HostJob == second.HostJob &&
-        first.MemberCount == second.MemberCount && first.Started == second.Started && Openings(first) == Openings(second);
+        first.MemberCount == second.MemberCount && first.Started == second.Started && Openings(first) == Openings(second) &&
+        first.ShipCondition == second.ShipCondition && first.Roster.Select(mate => mate.Status).SequenceEqual(second.Roster.Select(mate => mate.Status));
 }

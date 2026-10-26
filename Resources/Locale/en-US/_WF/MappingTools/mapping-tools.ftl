@@ -163,6 +163,7 @@ wf-mapping-tools-draw-not-allowed = You can't use the mapping tools right now.
 wf-mapping-tools-draw-nothing = Nothing there to change.
 wf-mapping-tools-protected = Players, ghosts and observers can't be erased.
 wf-mapping-tools-draw-needs-grid = Entities need a floor. Draw tiles there first.
+wf-mapping-tools-overlaps-grid = That would put tiles on top of another grid.
 wf-mapping-tools-draw-no-tiles = None of those cells has a floor to put that on.
 wf-mapping-tools-draw-skipped = Skipped {$count} {$count ->
     [one] cell

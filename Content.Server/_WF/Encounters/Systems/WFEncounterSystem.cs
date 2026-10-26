@@ -90,6 +90,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     private TimeSpan _cleanupDelay;
     private TimeSpan _cleanupLinger;
     private TimeSpan _cleanupGrace;
+    private TimeSpan _combatGrace;
     private readonly List<MapCoordinates> _players = new();
     private readonly HashSet<EntityUid> _playerGrids = new();
     private readonly List<Entity<WFEncounterComponent>> _running = new();
@@ -101,6 +102,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         Subs.CVar(_config, EncountersCVars.CleanupDelay, value => _cleanupDelay = TimeSpan.FromSeconds(value), true);
         Subs.CVar(_config, EncountersCVars.CleanupLinger, value => _cleanupLinger = TimeSpan.FromSeconds(value), true);
         Subs.CVar(_config, EncountersCVars.CleanupGrace, value => _cleanupGrace = TimeSpan.FromSeconds(value), true);
+        Subs.CVar(_config, EncountersCVars.CombatGrace, value => _combatGrace = TimeSpan.FromSeconds(value), true);
         SubscribeLocalEvent<WFCrewAlertEvent>(OnCrewAlert);
         // Before the damage lands: Wolfmed routes a body's damage through its parts, and the body's own
         // DamageChangedEvent then has no origin.
@@ -120,6 +122,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         Reveal(marker.Encounter);
         if (TryComp<WFEncounterComponent>(marker.Encounter, out var encounter) && encounter.Ships.TryGetValue(marker.Key, out var ship))
         {
+            ship.LastFought = _timing.CurTime;
             // A ship lying in wait that is found and fired on shows itself.
             Unmask(ship);
             CallForHelp(encounter, ship);
@@ -1210,6 +1213,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
         }
         if (sides.Count > 1 && fighting.Count == 1)
             return WFEncounterResolution.Decided;
+        // Neither the clock nor finished orders take ships away from a fight players are in.
+        if (encounter.Ships.Values.Any(FoughtLately))
+            return null;
         // A persistent encounter stays for the round, an admin's until he ends it: finished orders and the clock don't
         // end either.
         if (encounter.Lifetime == WFEncounterLifetime.Persistent || encounter.Pinned)
@@ -1298,6 +1304,12 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return false;
     }
 
+    /// <summary>Whether a ship fought players within the combat grace.</summary>
+    public bool FoughtLately(WFEncounterShipState ship)
+    {
+        return ship.LastFought is { } fought && _timing.CurTime - fought < _combatGrace;
+    }
+
     /// <summary>
     /// Removes the ships of a resolved encounter that players have left alone, or that have lingered long enough
     /// with nobody aboard or docked, however near players are. False once none is left.
@@ -1337,6 +1349,14 @@ public sealed partial class WFEncounterSystem : EntitySystem
                 ship.LastVisited = now;
             else if (ship.LastVisited is { } visit && now - visit < _cleanupGrace)
                 visited = true;
+
+            // A ship players have just fought stays, jump or linger: they may still be at it, or about to strip the wreck.
+            if (FoughtLately(ship))
+            {
+                ship.Quiet = null;
+                remaining = true;
+                continue;
+            }
 
             if (encounter.JumpAt is { } jump)
             {

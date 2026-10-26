@@ -1,6 +1,7 @@
 #nullable enable
 using System.Linq;
 using System.Numerics;
+using Content.Client.Chat.Managers;
 using Content.Client.UserInterface.Systems.Chat;
 using Content.IntegrationTests.Pair;
 using Content.Server._WF.Subtle;
@@ -40,6 +41,7 @@ public sealed class SubtleEmoteTest
 
         var chat = pair.Client.ResolveDependency<IUserInterfaceManager>().GetUIController<ChatUIController>();
         var clientConsole = pair.Client.ResolveDependency<IConsoleHost>();
+        var clientChat = pair.Client.ResolveDependency<IChatManager>();
         var listener = EntityUid.Invalid;
         var other = EntityUid.Invalid;
 
@@ -82,6 +84,10 @@ public sealed class SubtleEmoteTest
         await pair.Client.WaitPost(() => clientConsole.ExecuteCommand("subtle taps the table"));
         await WaitForEmote(pair, chat, "taps the table", "the sender to see their own subtle emote");
 
+        // The Subtle chat channel sends the same way.
+        await pair.Client.WaitPost(() => clientChat.SendMessage("nods slowly", ChatSelectChannel.Subtle));
+        await WaitForEmote(pair, chat, "nods slowly", "a subtle emote sent from the chat channel");
+
         Assert.That(chat.History.Any(h => h.Msg.Message.Contains("mutters from afar")),
             Is.False,
             "A subtle emote reached a player who was not adjacent.");
@@ -91,7 +97,7 @@ public sealed class SubtleEmoteTest
 
     private static async Task WaitForEmote(TestPair pair, ChatUIController chat, string text, string what)
     {
-        bool Arrived() => chat.History.Any(h => h.Msg.Channel == ChatChannel.Emotes && h.Msg.Message == text);
+        bool Arrived() => chat.History.Any(h => h.Msg.Channel == ChatChannel.Subtle && h.Msg.Message == text);
 
         for (var i = 0; i < MaxWaitTicks; i++)
         {

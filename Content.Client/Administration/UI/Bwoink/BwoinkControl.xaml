@@ -11,7 +11,13 @@
                     <Control HorizontalExpand="True" MinWidth="5" />
                     <CheckBox Name="PlaySound" Access="Public" Text="{Loc 'admin-bwoink-play-sound'}" Pressed="True" />
                     <Control HorizontalExpand="True" MinWidth="5" />
+                    <!-- WOLFGATE(AHelpResolve): resolve button -->
+                    <Button Name="Resolve" Text="{Loc 'wf-bwoink-resolve-button'}" ToolTip="{Loc 'wf-bwoink-resolve-tooltip'}" StyleClasses="OpenBoth" Disabled="True" />
                     <Button Visible="True" Name="PopOut" Access="Public" Text="{Loc 'admin-logs-pop-out'}" StyleClasses="OpenBoth" HorizontalAlignment="Left" />
+                <!-- WOLFGATE(AHelpResolve) START: player actions on a row of their own, or the split leaves the player list 100 px wide -->
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                <!-- WOLFGATE END -->
                     <Control HorizontalExpand="True" />
                     <Button Visible="False" Name="Bans" Text="{Loc 'admin-player-actions-bans'}" StyleClasses="OpenRight" />
                     <Button Visible="False" Name="Notes" Text="{Loc 'admin-player-actions-notes'}" StyleClasses="OpenBoth" />

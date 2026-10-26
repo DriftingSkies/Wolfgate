@@ -12,3 +12,7 @@
     ClothingBackpackDuffelVirology: 2
     ClothingShoesBootsWinterViro: 2 #Delta V: Add departmental winter boots
     ClothingBackpackMessengerVirology: 2 # Frontier
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingSuitToggleLabcoatVirologistDoctorTailcoat: 2
+    WFMeridianClothingUnderRankMedicalVirologistSkirt: 2
+    # WOLFGATE END

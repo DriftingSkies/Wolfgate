@@ -65,7 +65,7 @@
       points: 2 # WWDP-Edit
       required: false
     Chest:
-      points: 3
+      points: 4 # WOLFGATE(Species): was 3, more marking slots
       required: false
     Legs:
       points: 8 # imp/mono 2<8

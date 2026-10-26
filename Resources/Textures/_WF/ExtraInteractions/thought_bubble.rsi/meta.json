@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from tgstation (icons/effects/effects.dmi, state thought_bubble) via https://github.com/AphelionDevelopment/Meridian-Rift/commit/624dc2e42a9edcb798dfbb39b27ad4c363f5006d",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "bubble"
+        }
+    ]
+}

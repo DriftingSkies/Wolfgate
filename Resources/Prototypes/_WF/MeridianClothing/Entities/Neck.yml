@@ -1,0 +1,3768 @@
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryAntiSecPin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/anti_sec_pin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/anti_sec_pin.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryArmbandCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/armband_cargo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/armband_cargo.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryArmbandEngine
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/armband_engine.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/armband_engine.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryArmbandHydro
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/armband_hydro.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/armband_hydro.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryArmbandMed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/armband_med.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/armband_med.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryArmbandMedblue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/armband_medblue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/armband_medblue.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryArmbandScience
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/armband_science.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/armband_science.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadge
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeHolo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_holo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_holo.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeHoloBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_holo_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_holo_blue.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeHoloCord
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_holo_cord.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_holo_cord.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeHoloDetective
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_holo_detective.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_holo_detective.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeHoloWarden
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_holo_warden.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_holo_warden.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeOld
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_old.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_old.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryBadgeSheriff
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/badge_sheriff.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/badge_sheriff.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryChaps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/chaps.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#787878"
+    - state: icon-2-c2
+      color: "#252525"
+    - state: icon-3-c3
+      color: "#2B2B2B"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/chaps.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#787878"
+      - state: equipped-NECK-2-c2
+        color: "#252525"
+      - state: equipped-NECK-3-c3
+        color: "#2B2B2B"
+  - type: WFGags
+    colors:
+    - "#787878"
+    - "#252525"
+    - "#2B2B2B"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryDeafPin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/deaf_pin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/deaf_pin.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryDebtPayerPin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/debt_payer_pin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/debt_payer_pin.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryDogtag
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/dogtag.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/dogtag.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryEnergyShieldAdmin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/energy_shield_admin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/energy_shield_admin.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryGreenPin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/green_pin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/green_pin.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryKheiralCuffs
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/kheiral_cuffs.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/kheiral_cuffs.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMaidapron
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/maidapron.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/maidapron.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMaidcorsetSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/maidcorset_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/maidcorset_syndicate.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedal
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalBronzeHeart
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_bronze_heart.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_bronze_heart.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalGold
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_gold.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_gold.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalGoldOrdom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_gold_ordom.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_gold_ordom.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalMedMedal
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_med_medal.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_med_medal.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalMedMedal2
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_med_medal2.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_med_medal2.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalNova
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_nova.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFF66"
+    - state: icon-2-c2
+      color: "#990000"
+    - state: icon-3-c3
+      color: "#FFFF66"
+    - state: icon-4-c4
+      color: "#990000"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_nova.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFF66"
+      - state: equipped-NECK-2-c4
+        color: "#990000"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalNovaSyndicateDiligence
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_diligence.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFF66"
+    - state: icon-2-c2
+      color: "#990000"
+    - state: icon-3-c3
+      color: "#FFFF66"
+    - state: icon-4-c4
+      color: "#990000"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_diligence.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFF66"
+      - state: equipped-NECK-2-c4
+        color: "#990000"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalNovaSyndicateEspionage
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_espionage.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFF66"
+    - state: icon-2-c2
+      color: "#990000"
+    - state: icon-3-c3
+      color: "#FFFF66"
+    - state: icon-4-c4
+      color: "#990000"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_espionage.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFF66"
+      - state: equipped-NECK-2-c4
+        color: "#990000"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalNovaSyndicateIntelligence
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_intelligence.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFF66"
+    - state: icon-2-c2
+      color: "#990000"
+    - state: icon-3-c3
+      color: "#FFFF66"
+    - state: icon-4-c4
+      color: "#990000"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_intelligence.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFF66"
+      - state: equipped-NECK-2-c4
+        color: "#990000"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalNovaSyndicateInterrogation
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_interrogation.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFF66"
+    - state: icon-2-c2
+      color: "#990000"
+    - state: icon-3-c3
+      color: "#FFFF66"
+    - state: icon-4-c4
+      color: "#990000"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_nova_syndicate_interrogation.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFF66"
+      - state: equipped-NECK-2-c4
+        color: "#990000"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFF66"
+    - "#990000"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalPlasma
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_plasma.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_plasma.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_ribbon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_ribbon.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalSilver
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_silver.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_silver.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalSilverElderAtmosian
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_silver_elder_atmosian.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_silver_elder_atmosian.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalSilverEmergencyServices
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_silver_emergency_services.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_silver_emergency_services.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalSilverEmergencyServicesEngineering
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_silver_emergency_services_engineering.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_silver_emergency_services_engineering.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryMedalSilverEmergencyServicesMedical
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/medal_silver_emergency_services_medical.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/medal_silver_emergency_services_medical.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalBarBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_bar_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_bar_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCircle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCircleBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCircleHollow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle_hollow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle_hollow.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCircleHollowBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle_hollow_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_circle_hollow_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCrown
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCrownBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCrownHollow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown_hollow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown_hollow.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalCrownHollowBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown_hollow_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_crown_hollow_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalDogtags
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_dogtags.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FCFCFD"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c3
+      color: "#8A8B9D"
+    - state: icon-4-c4
+      color: "#68697D"
+    - state: icon-5
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_dogtags.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FCFCFD"
+      - state: equipped-NECK-2-c3
+        color: "#8A8B9D"
+      - state: equipped-NECK-3
+  - type: WFGags
+    colors:
+    - "#FCFCFD"
+    - "#CCCED1"
+    - "#8A8B9D"
+    - "#68697D"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalGlowcrystal
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_glowcrystal.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#7EFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_glowcrystal.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#7EFFFF"
+  - type: WFGags
+    colors:
+    - "#7EFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalHeart
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalHeartBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalHeartSpecial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart_special.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart_special.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalHeartSpecialBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart_special_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_heart_special_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#CCCED1"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinCentcom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_centcom.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_centcom.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#CCCED1"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinInterdyne
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_interdyne.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#3ABA1E"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_interdyne.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#3ABA1E"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinPorttarkon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_porttarkon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_porttarkon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#CCCED1"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinSolfed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_solfed.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_solfed.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#CCCED1"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinSolfed811
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_solfed811.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_solfed811.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#CCCED1"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinSolfed911
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_solfed911.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#CCCED1"
+    - state: icon-3-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_solfed911.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#CCCED1"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalNeckpinSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_syndicate.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#262626"
+    - state: icon-2-c2
+      color: "#9C0000"
+    - state: icon-3-c1
+      color: "#262626"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_neckpin_syndicate.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#262626"
+  - type: WFGags
+    colors:
+    - "#262626"
+    - "#9C0000"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalRankpin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_rankpin.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_rankpin.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalRankpinBar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_rankpin_bar.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_rankpin_bar.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalRankpinTwoBar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_rankpin_two_bar.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_rankpin_two_bar.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalShield
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_shield.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_shield.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalShieldBarRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_shield_bar_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_shield_bar_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+      - state: equipped-NECK-3-c4
+        color: "#FF99FF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaAccMedalShieldHollow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_shield_hollow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#9900CC"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3-c3
+      color: "#9900CC"
+    - state: icon-4-c4
+      color: "#FF99FF"
+    - state: icon-5-c5
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_acc_medal_shield_hollow.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#9900CC"
+      - state: equipped-NECK-2-c4
+        color: "#FF99FF"
+      - state: equipped-NECK-3-c5
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#9900CC"
+    - "#FFFFFF"
+    - "#9900CC"
+    - "#FF99FF"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaMilitaryRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_military_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_military_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FF0000"
+  - type: WFGags
+    colors:
+    - "#FF0000"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaMilitaryRibbonThree
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_military_ribbon_three.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+    - state: icon-2-c2
+      color: "#04FF00"
+    - state: icon-3-c3
+      color: "#0008FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_military_ribbon_three.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FF0000"
+      - state: equipped-NECK-2-c2
+        color: "#04FF00"
+      - state: equipped-NECK-3-c3
+        color: "#0008FF"
+  - type: WFGags
+    colors:
+    - "#FF0000"
+    - "#04FF00"
+    - "#0008FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaMilitaryRibbonTwo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_military_ribbon_two.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+    - state: icon-2-c2
+      color: "#04FF00"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_military_ribbon_two.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FF0000"
+      - state: equipped-NECK-2-c2
+        color: "#04FF00"
+  - type: WFGags
+    colors:
+    - "#FF0000"
+    - "#04FF00"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbonRibbonArrup
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_arrup.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_arrup.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbonRibbonDual
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_dual.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_dual.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbonRibbonFlat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_flat.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_flat.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbonRibbonLine
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_line.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_line.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbonRibbonSlash
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_slash.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_slash.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaRibbonRibbonTwotone
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_twotone.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#664200"
+    - state: icon-3-c3
+      color: "#FFF700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_ribbon_ribbon_twotone.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#664200"
+      - state: equipped-NECK-2-c3
+        color: "#FFF700"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#664200"
+    - "#FFF700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank10
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank10.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank10.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank11
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank11.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank11.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank12
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank12.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank12.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank13
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank13.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank13.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank2
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank2.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank2.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank3
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank3.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank3.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank4
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank4.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank4.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank5
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank5.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank5.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank6
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank6.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank6.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank7
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank7.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank7.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank8
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank8.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank8.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryNovaSolfedribbonRank9
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank9.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#FFD700"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/nova_solfedribbon_rank9.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1
+      - state: equipped-NECK-2-c1
+        color: "#FFD700"
+  - type: WFGags
+    colors:
+    - "#FFD700"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryPandoraHope
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/pandora_hope.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/pandora_hope.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryPressBadge
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/press_badge.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/press_badge.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryPride
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/pride.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/pride.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessorySkilt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/skilt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/skilt.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessorySkullcodpiece
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/skullcodpiece.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/skullcodpiece.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessorySpyBug
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/spy_bug.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/spy_bug.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessorySweatervest
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/sweatervest.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#A52F29"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/sweatervest.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#A52F29"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#A52F29"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryTalisman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/talisman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/talisman.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryVaporizer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/vaporizer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/vaporizer.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryVestSheriff
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/vest_sheriff.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/vest_sheriff.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWaistcoat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/waistcoat.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#414344"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/waistcoat.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#414344"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#414344"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWebbing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/webbing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/webbing.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWebbingColonial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/webbing_colonial.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/webbing_colonial.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWebbingPilot
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/webbing_pilot.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/webbing_pilot.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWebbingPouch
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/webbing_pouch.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/webbing_pouch.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWebbingPouchBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/webbing_pouch_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/webbing_pouch_black.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingAccessoryWebbingVest
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/webbing_vest.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/webbing_vest.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckBeads
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/beads.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/beads.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckBowtieGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/bowtie_green.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#70B46E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/bowtie_green.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#70B46E"
+  - type: WFGags
+    colors:
+    - "#70B46E"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckBowtieRainbow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/bowtie_rainbow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/bowtie_rainbow.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckBunnyPendant
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/bunny_pendant.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/bunny_pendant.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckChaplain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/chaplain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/chaplain.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckChaplainBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/chaplain_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/chaplain_black.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloak
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakAdmiral
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_admiral.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_admiral.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakColonial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_colonial.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_colonial.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakColonialHcPolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_colonial_hc_police.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_colonial_hc_police.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakFleetAdmiral
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_fleet_admiral.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_fleet_admiral.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakHeraldCloak
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_herald_cloak.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_herald_cloak.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardArcheology
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_archeology.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_archeology.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardCleaning
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_cleaning.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_cleaning.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardConstruction
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_construction.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_construction.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardGaming
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_gaming.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_gaming.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardPlaying
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_playing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_playing.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardPrimitive
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_primitive.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_primitive.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakSkillRewardProduction
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_production.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_skill_reward_production.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakTribalmantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_tribalmantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_tribalmantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCloakWolfCoat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cloak_wolf_coat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cloak_wolf_coat.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarBell
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_bell.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#DEAD39"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_bell.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#DEAD39"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#DEAD39"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarCowbell
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_cowbell.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#DEAD39"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_cowbell.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#DEAD39"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#DEAD39"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarCross
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_cross.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#DEAD39"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_cross.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#DEAD39"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#DEAD39"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarHolocollar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_holocollar.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#DEAD39"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_holocollar.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#DEAD39"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#DEAD39"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarLeather
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_leather.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#9B111E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_leather.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#9B111E"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#9B111E"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarLeatherBell
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_leather_bell.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#9B111E"
+    - state: icon-3-c3
+      color: "#DEAD39"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_leather_bell.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#9B111E"
+      - state: equipped-NECK-3-c3
+        color: "#DEAD39"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#9B111E"
+    - "#DEAD39"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarReagentClothing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_reagent_clothing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_reagent_clothing.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarSpike
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_spike.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#292929"
+    - state: icon-2-c2
+      color: "#C0C0C0"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_spike.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#292929"
+      - state: equipped-NECK-2-c2
+        color: "#C0C0C0"
+  - type: WFGags
+    colors:
+    - "#292929"
+    - "#C0C0C0"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarTagged
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_tagged.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+    - state: icon-2-c2
+      color: "#DEAD39"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_tagged.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+      - state: equipped-NECK-2-c2
+        color: "#DEAD39"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+    - "#DEAD39"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCollarThick
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/collar_thick.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2D2D33"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/collar_thick.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2D2D33"
+  - type: WFGags
+    colors:
+    - "#2D2D33"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckCowboylea
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/cowboylea.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/cowboylea.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckEldritchAmulet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/eldritch_amulet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/eldritch_amulet.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckFaceScarf
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/face_scarf.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#A52424"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/face_scarf.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#A52424"
+  - type: HideLayerClothing
+    layers:
+      FacialHair: NECK
+      Snout: NECK
+  - type: WFGags
+    colors:
+    - "#A52424"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckGreyscaled
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/greyscaled.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#777777"
+    - state: icon-2-c2
+      color: "#FFFFCC"
+    - state: icon-3-c3
+      color: "#66FFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/greyscaled.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#777777"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFCC"
+      - state: equipped-NECK-3-c3
+        color: "#66FFFF"
+  - type: WFGags
+    colors:
+    - "#777777"
+    - "#FFFFCC"
+    - "#66FFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckGreyscaledMatroncloak
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/greyscaled_matroncloak.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#777777"
+    - state: icon-2-c2
+      color: "#FFFFCC"
+    - state: icon-3-c3
+      color: "#66FFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/greyscaled_matroncloak.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#777777"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFCC"
+      - state: equipped-NECK-3-c3
+        color: "#66FFFF"
+  - type: WFGags
+    colors:
+    - "#777777"
+    - "#FFFFCC"
+    - "#66FFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckGreyscaledSeecloak
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/greyscaled_seecloak.rsi
+    layers:
+    - state: icon-1-c2
+      color: "#4D4D4D"
+    - state: icon-2-c1
+      color: "#FFFF99"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/greyscaled_seecloak.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c2
+        color: "#4D4D4D"
+      - state: equipped-NECK-2-c1
+        color: "#FFFF99"
+  - type: WFGags
+    colors:
+    - "#FFFF99"
+    - "#4D4D4D"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckGreyscaledXylixcloak
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/greyscaled_xylixcloak.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#787878"
+    - state: icon-2-c2
+      color: "#ABE2DC"
+    - state: icon-3-c3
+      color: "#F5D54A"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/greyscaled_xylixcloak.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#787878"
+      - state: equipped-NECK-2-c2
+        color: "#ABE2DC"
+      - state: equipped-NECK-3-c3
+        color: "#F5D54A"
+  - type: WFGags
+    colors:
+    - "#787878"
+    - "#ABE2DC"
+    - "#F5D54A"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckHereticFocus
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/heretic_focus.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/heretic_focus.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckHereticFocusCrimsonMedallion
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/heretic_focus_crimson_medallion.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/heretic_focus_crimson_medallion.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckInfinityScarf
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/infinity_scarf.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EEEEEE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/infinity_scarf.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#EEEEEE"
+  - type: WFGags
+    colors:
+    - "#EEEEEE"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckLargeScarf
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/large_scarf.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#C6C6C6"
+    - state: icon-2-c2
+      color: "#EEEEEE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/large_scarf.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#C6C6C6"
+      - state: equipped-NECK-2-c2
+        color: "#EEEEEE"
+  - type: WFGags
+    colors:
+    - "#C6C6C6"
+    - "#EEEEEE"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckLinkScryer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/link_scryer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/link_scryer.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckLongCape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/long_cape.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#867361"
+    - state: icon-2-c2
+      color: "#4D433D"
+    - state: icon-3-c3
+      color: "#B2A69C"
+    - state: icon-4-c4
+      color: "#B2A69C"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/long_cape.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#867361"
+      - state: equipped-NECK-2-c2
+        color: "#4D433D"
+      - state: equipped-NECK-3-c3
+        color: "#B2A69C"
+      - state: equipped-NECK-4-c4
+        color: "#B2A69C"
+  - type: WFGags
+    colors:
+    - "#867361"
+    - "#4D433D"
+    - "#B2A69C"
+    - "#B2A69C"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMaidNeckCover
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/maid_neck_cover.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#7B9AB5"
+    - state: icon-2-c2
+      color: "#EDF9FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/maid_neck_cover.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#7B9AB5"
+      - state: equipped-NECK-2-c2
+        color: "#EDF9FF"
+  - type: WFGags
+    colors:
+    - "#7B9AB5"
+    - "#EDF9FF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleBsmantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_bsmantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_bsmantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleCapmantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_capmantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_capmantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleCemantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_cemantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_cemantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleCmomantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_cmomantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_cmomantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleHopmantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_hopmantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_hopmantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleHosmantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_hosmantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_hosmantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleQm
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_qm.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_qm.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleRdmantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_rdmantle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_rdmantle.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleRecolorable
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_recolorable.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_recolorable.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleRegal
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_regal.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_regal.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMantleSolfed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mantle_solfed.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mantle_solfed.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 1.0
+        Heat: 1.0
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMindCollar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/mind_collar.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/mind_collar.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckMoonAmulet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/moon_amulet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/moon_amulet.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckNecklaceMementoMori
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/necklace_memento_mori.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/necklace_memento_mori.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckNecklaceTranslator
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/necklace_translator.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/necklace_translator.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckNecklaceTranslatorHearthkin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/necklace_translator_hearthkin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/necklace_translator_hearthkin.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckPauldron
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/pauldron.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/pauldron.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckPauldronCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/pauldron_captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/pauldron_captain.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckPauldronCommander
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/pauldron_commander.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/pauldron_commander.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckPetcollar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/petcollar.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/petcollar.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckPetcollarWearableCyber
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/petcollar_wearable_cyber.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/petcollar_wearable_cyber.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckPillowTag
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/pillow_tag.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/pillow_tag.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckRangerPoncho
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/ranger_poncho.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#917A57"
+    - state: icon-2-c2
+      color: "#858585"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/ranger_poncho.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#917A57"
+      - state: equipped-NECK-2-c2
+        color: "#858585"
+  - type: WFGags
+    colors:
+    - "#917A57"
+    - "#858585"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckRobeCape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/robe_cape.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2A2844"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/robe_cape.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#2A2844"
+  - type: WFGags
+    colors:
+    - "#2A2844"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckScarf
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/scarf.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EEEEEE"
+    - state: icon-2-c2
+      color: "#EEEEEE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/scarf.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#EEEEEE"
+      - state: equipped-NECK-2-c2
+        color: "#EEEEEE"
+  - type: WFGags
+    colors:
+    - "#EEEEEE"
+    - "#EEEEEE"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckSecurityCapeArmplate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/security_cape_armplate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/security_cape_armplate.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckSecurityCapeArmplateCapedEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/security_cape_armplate_caped_engineer.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EE7900"
+    - state: icon-2
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/security_cape_armplate_caped_engineer.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#EE7900"
+      - state: equipped-NECK-2
+  - type: WFGags
+    colors:
+    - "#EE7900"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckSecurityCapeShoulder
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/security_cape_shoulder.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#A52F29"
+    - state: icon-2-c2
+      color: "#39393F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/security_cape_shoulder.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#A52F29"
+      - state: equipped-NECK-2-c2
+        color: "#39393F"
+  - type: WFGags
+    colors:
+    - "#A52F29"
+    - "#39393F"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckSecurityCapeTarkon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/security_cape_tarkon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/security_cape_tarkon.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTesharianMantle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tesharian_mantle.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFCC00"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tesharian_mantle.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFCC00"
+      - state: equipped-NECK-2-c2
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFCC00"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#4D4E4E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#4D4E4E"
+  - type: WFGags
+    colors:
+    - "#4D4E4E"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#39393F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#FFFFFF"
+      - state: equipped-NECK-2-c2
+        color: "#39393F"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#39393F"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieAtmosTech
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_atmos_tech.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_atmos_tech.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieBitrunner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_bitrunner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_bitrunner.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_blue.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieBotanist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_botanist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_botanist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieBrigPhys
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_brig_phys.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_brig_phys.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_captain.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_cargo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_cargo.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCe
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_ce.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_ce.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCentcom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_centcom.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_centcom.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieChemist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_chemist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_chemist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCmo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_cmo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_cmo.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCommunist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_communist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_communist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCook
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_cook.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_cook.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieCoroner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_coroner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_coroner.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieDetective
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_detective.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_detective.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieDoctor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_doctor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_doctor.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_engineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_engineer.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieGeneticist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_geneticist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_geneticist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieHop
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_hop.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_hop.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieJanitor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_janitor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_janitor.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieLawyerBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_black.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieLawyerBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_blue.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieLawyerGood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_good.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_good.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieLawyerRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_lawyer_red.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieMagician
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_magician.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_magician.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieMailman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_mailman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_mailman.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieMiner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_miner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_miner.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieParamedic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_paramedic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_paramedic.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytiePathologist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_pathologist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_pathologist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytiePrisoner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_prisoner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_prisoner.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieRoboticist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_roboticist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_roboticist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieScientist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_scientist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_scientist.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_security.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieSecurityAssistant
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_security_assistant.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_security_assistant.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieBunnytieSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_bunnytie_syndicate.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieDetective
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_detective.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_detective.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieDisco
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_disco.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_disco.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckTieHorrible
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/tie_horrible.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/tie_horrible.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckWarriorCape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/warrior_cape.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/warrior_cape.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckWideCape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/wide_cape.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#867361"
+    - state: icon-2-c2
+      color: "#4D433D"
+    - state: icon-3-c3
+      color: "#B2A69C"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/wide_cape.rsi
+    clothingVisuals:
+      neck:
+      - state: equipped-NECK-1-c1
+        color: "#867361"
+      - state: equipped-NECK-2-c2
+        color: "#4D433D"
+      - state: equipped-NECK-3-c3
+        color: "#B2A69C"
+  - type: WFGags
+    colors:
+    - "#867361"
+    - "#4D433D"
+    - "#B2A69C"
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckWreath
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/wreath.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/wreath.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckWreathIcewing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/wreath_icewing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/wreath_icewing.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: WFMeridianClothingNeckWreathMagmawing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Neck/wreath_magmawing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Neck/wreath_magmawing.rsi

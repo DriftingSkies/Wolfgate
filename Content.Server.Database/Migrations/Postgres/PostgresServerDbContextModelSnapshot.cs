@@ -1196,6 +1196,11 @@ namespace Content.Server.Database.Migrations.Postgres
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("GagsColors")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gags_colors");
+
                     b.Property<string>("LoadoutName")
                         .IsRequired()
                         .HasColumnType("text")

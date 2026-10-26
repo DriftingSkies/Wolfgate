@@ -1116,6 +1116,7 @@
     Medicine:
       effects:
       - !type:ChemHealEyeDamage
+      - !type:WolfmedMendEyes # WOLFGATE(Wolfmed): mends eyes hurt by trauma, not only by flashes
 
 - type: reagent
   id: Cognizine

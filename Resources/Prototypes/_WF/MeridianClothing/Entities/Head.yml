@@ -1,0 +1,7099 @@
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadAshHeaddress
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/ash_headdress.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/ash_headdress.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.75
+        Heat: 0.85
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadAshHeaddressWinged
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/ash_headdress_winged.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/ash_headdress_winged.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.75
+        Heat: 0.85
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeanie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beanie.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EEEEEE"
+    - state: icon-2-c2
+      color: "#EEEEEE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beanie.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#EEEEEE"
+      - state: equipped-HELMET-2-c2
+        color: "#EEEEEE"
+  - type: WFGags
+    colors:
+    - "#EEEEEE"
+    - "#EEEEEE"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_blueshield.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#3A4E7D"
+    - state: icon-2-c2
+      color: "#DEB63D"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_blueshield.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#3A4E7D"
+      - state: equipped-HELMET-2-c2
+        color: "#DEB63D"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+  - type: WFGags
+    colors:
+    - "#3A4E7D"
+    - "#DEB63D"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretClown
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_clown.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFBAFF"
+    - state: icon-2
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_clown.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FFBAFF"
+      - state: equipped-HELMET-2
+  - type: WFGags
+    colors:
+    - "#FFBAFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretEngi
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_engi.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF8200"
+    - state: icon-2-c2
+      color: "#FFE12F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_engi.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FF8200"
+      - state: equipped-HELMET-2-c2
+        color: "#FFE12F"
+  - type: WFGags
+    colors:
+    - "#FF8200"
+    - "#FFE12F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretMedical
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_medical.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+    - state: icon-2-c2
+      color: "#5FA4CC"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_medical.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FFFFFF"
+      - state: equipped-HELMET-2-c2
+        color: "#5FA4CC"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+    - "#5FA4CC"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretSecArmadyne
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_sec_armadyne.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#3F3C40"
+    - state: icon-2-c2
+      color: "#5B2423"
+    - state: icon-3-c3
+      color: "#491716"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_sec_armadyne.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#3F3C40"
+      - state: equipped-HELMET-2-c2
+        color: "#5B2423"
+      - state: equipped-HELMET-3-c3
+        color: "#491716"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+  - type: WFGags
+    colors:
+    - "#3F3C40"
+    - "#5B2423"
+    - "#491716"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretSecNavyofficer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_sec_navyofficer.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#3C485A"
+    - state: icon-2-c2
+      color: "#FF0000"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_sec_navyofficer.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#3C485A"
+      - state: equipped-HELMET-2-c2
+        color: "#FF0000"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+  - type: WFGags
+    colors:
+    - "#3C485A"
+    - "#FF0000"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBeretSecNavywarden
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/beret_sec_navywarden.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#3C485A"
+    - state: icon-2-c2
+      color: "#FF0000"
+    - state: icon-3-c3
+      color: "#00AEEF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/beret_sec_navywarden.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#3C485A"
+      - state: equipped-HELMET-2-c2
+        color: "#FF0000"
+      - state: equipped-HELMET-3-c3
+        color: "#00AEEF"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+  - type: WFGags
+    colors:
+    - "#3C485A"
+    - "#FF0000"
+    - "#00AEEF"
+
+- type: entity
+  parent: ClothingHeadHatHoodBioGeneral
+  id: WFMeridianClothingHeadBioHoodInterdyne
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/bio_hood_interdyne.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/bio_hood_interdyne.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadHatHoodBioGeneral
+  id: WFMeridianClothingHeadBioHoodPlague
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/bio_hood_plague.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/bio_hood_plague.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBlastwave
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/blastwave.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/blastwave.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadBlastwaveOfficer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/blastwave_officer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/blastwave_officer.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCaphatBeret
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/caphat_beret.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#0070B7"
+    - state: icon-2-c2
+      color: "#FFCE5B"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/caphat_beret.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#0070B7"
+      - state: equipped-HELMET-2-c2
+        color: "#FFCE5B"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+  - type: WFGags
+    colors:
+    - "#0070B7"
+    - "#FFCE5B"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadChaplainHabitVeil
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/chaplain_habit_veil.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#373548"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/chaplain_habit_veil.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#373548"
+      - state: equipped-HELMET-2-c2
+        color: "#FFFFFF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: WFGags
+    colors:
+    - "#373548"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadChaplainMedievaljewhat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/chaplain_medievaljewhat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/chaplain_medievaljewhat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadChaplainNunHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/chaplain_nun_hood.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#373548"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/chaplain_nun_hood.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#373548"
+      - state: equipped-HELMET-2-c2
+        color: "#FFFFFF"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: WFGags
+    colors:
+    - "#373548"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadChaplainTaqiyahRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/chaplain_taqiyah_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/chaplain_taqiyah_red.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadChaplainTaqiyahWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/chaplain_taqiyah_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/chaplain_taqiyah_white.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableBeret
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_beret.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#972A2A"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_beret.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#972A2A"
+  - type: WFGags
+    colors:
+    - "#972A2A"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_captain.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableChef
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_chef.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_chef.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableFlatcap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_flatcap.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#8F7654"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_flatcap.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#8F7654"
+  - type: WFGags
+    colors:
+    - "#8F7654"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableHardhat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_hardhat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_hardhat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableHop
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_hop.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_hop.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableHos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_hos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_hos.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectablePetehat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_petehat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_petehat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectablePirate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_pirate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_pirate.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectablePolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_police.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_police.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCollectableXenom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/collectable_xenom.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/collectable_xenom.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadColourableFlatcap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/colourable_flatcap.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#79684C"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/colourable_flatcap.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#79684C"
+  - type: WFGags
+    colors:
+    - "#79684C"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadConeOfShameBadDog
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cone_of_shame_bad_dog.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cone_of_shame_bad_dog.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeAllies
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_allies.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_allies.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeBearpelt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_bearpelt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_bearpelt.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeBronze
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_bronze.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_bronze.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeBunnyhead
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_bunnyhead.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_bunnyhead.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeCanada
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_canada.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_canada.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeConstable
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_constable.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_constable.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeCowboyhatOld
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_cowboyhat_old.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_cowboyhat_old.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeCrown
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_crown.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_crown.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 1.0
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeCueball
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_cueball.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_cueball.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeDeckers
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_deckers.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_deckers.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeDelinquent
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_delinquent.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_delinquent.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeDrfreezehat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_drfreezehat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_drfreezehat.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeFancy
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_fancy.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#E3C937"
+    - state: icon-2-c2
+      color: "#782A81"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_fancy.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#E3C937"
+      - state: equipped-HELMET-2-c2
+        color: "#782A81"
+  - type: WFGags
+    colors:
+    - "#E3C937"
+    - "#782A81"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeFootballHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_football_helmet.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#D74722"
+    - state: icon-2
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_football_helmet.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#D74722"
+      - state: equipped-HELMET-2
+  - type: WFGags
+    colors:
+    - "#D74722"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeGarland
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_garland.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_garland.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeGarlandLily
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_garland_lily.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_garland_lily.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeGarlandPoppy
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_garland_poppy.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_garland_poppy.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeGarlandRainbowbunch
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_garland_rainbowbunch.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_garland_rainbowbunch.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeGarlandSunflower
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_garland_sunflower.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_garland_sunflower.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeGriffin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_griffin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_griffin.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeHairpin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_hairpin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_hairpin.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeHasturhood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_hasturhood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_hasturhood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeIrs
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_irs.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_irs.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJackbros
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_jackbros.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_jackbros.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJester
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_jester.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#00FF00"
+    - state: icon-2-c2
+      color: "#FF0000"
+    - state: icon-3
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_jester.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#00FF00"
+      - state: equipped-HELMET-2-c2
+        color: "#FF0000"
+      - state: equipped-HELMET-3
+  - type: WFGags
+    colors:
+    - "#00FF00"
+    - "#FF0000"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJesteralt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_jesteralt.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#E10000"
+    - state: icon-2-c2
+      color: "#E1E100"
+    - state: icon-3
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_jesteralt.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#E10000"
+      - state: equipped-HELMET-2-c2
+        color: "#E1E100"
+      - state: equipped-HELMET-3
+  - type: WFGags
+    colors:
+    - "#E10000"
+    - "#E1E100"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJustice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_justice.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_justice.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJusticeBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_justice_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_justice_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJusticeGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_justice_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_justice_green.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJusticePink
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_justice_pink.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_justice_pink.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeJusticeYellow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_justice_yellow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_justice_yellow.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeKabuto
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_kabuto.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_kabuto.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeKnight
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_knight.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_knight.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeLizard
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_lizard.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#859333"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_lizard.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#859333"
+  - type: WFGags
+    colors:
+    - "#859333"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeLobsterhat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_lobsterhat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_lobsterhat.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeMaidHeadband
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_maid_headband.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#494955"
+    - state: icon-2-c2
+      color: "#EEEEEE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_maid_headband.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#494955"
+      - state: equipped-HELMET-2-c2
+        color: "#EEEEEE"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#494955"
+      - state: inhand-left-2-c2
+        color: "#EEEEEE"
+      right:
+      - state: inhand-right-1-c1
+        color: "#494955"
+      - state: inhand-right-2-c2
+        color: "#EEEEEE"
+  - type: WFGags
+    colors:
+    - "#494955"
+    - "#EEEEEE"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeMailman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_mailman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_mailman.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNemes
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nemes.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nemes.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNightcapBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nightcap_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nightcap_blue.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNightcapRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nightcap_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nightcap_red.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNovaChristmas
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nova_christmas.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nova_christmas.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNovaChristmasGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nova_christmas_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nova_christmas_green.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNovaEn
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nova_en.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nova_en.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNovaFlowerpin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nova_flowerpin.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nova_flowerpin.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FF0000"
+  - type: WFGags
+    colors:
+    - "#FF0000"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNovaMaid
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nova_maid.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nova_maid.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNovaPapakha
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nova_papakha.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#222222"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nova_papakha.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#222222"
+  - type: WFGags
+    colors:
+    - "#222222"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeNursehat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_nursehat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_nursehat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumePaperHatSavior
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_paper_hat_savior.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_paper_hat_savior.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeParty
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_party.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_party.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumePartyFestive
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_party_festive.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_party_festive.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumePharaoh
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_pharaoh.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_pharaoh.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumePirateBandana
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_pirate_bandana.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_pirate_bandana.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumePirateCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_pirate_captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_pirate_captain.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeRedcoat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_redcoat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_redcoat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeRiceHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_rice_hat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_rice_hat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeSantaGags
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_santa_gags.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#CC0000"
+    - state: icon-2-c2
+      color: "#F8F8F8"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_santa_gags.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#CC0000"
+      - state: equipped-HELMET-2-c2
+        color: "#F8F8F8"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#CC0000"
+    - "#F8F8F8"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeScarecrowHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_scarecrow_hat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_scarecrow_hat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeSnakeeater
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_snakeeater.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_snakeeater.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeSnowman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_snowman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_snowman.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeSombreroGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_sombrero_green.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#13D968"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+    - state: icon-3
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_sombrero_green.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#13D968"
+      - state: equipped-HELMET-2-c2
+        color: "#FFFFFF"
+      - state: equipped-HELMET-3
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#13D968"
+      - state: inhand-left-2-c2
+        color: "#FFFFFF"
+      right:
+      - state: inhand-right-1-c1
+        color: "#13D968"
+      - state: inhand-right-2-c2
+        color: "#FFFFFF"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#13D968"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeSombreroShamebrero
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_sombrero_shamebrero.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#D565D3"
+    - state: icon-2-c2
+      color: "#F8DB18"
+    - state: icon-3
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_sombrero_shamebrero.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#D565D3"
+      - state: equipped-HELMET-2-c2
+        color: "#F8DB18"
+      - state: equipped-HELMET-3
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#D565D3"
+      - state: inhand-left-2-c2
+        color: "#F8DB18"
+      right:
+      - state: inhand-right-1-c1
+        color: "#D565D3"
+      - state: inhand-right-2-c2
+        color: "#F8DB18"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: WFGags
+    colors:
+    - "#D565D3"
+    - "#F8DB18"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeSpacepolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_spacepolice.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_spacepolice.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeTmc
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_tmc.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_tmc.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeTvHead
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_tv_head.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_tv_head.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeUshanka
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_ushanka.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#C7B08B"
+    - state: icon-2-c2
+      color: "#5A4E44"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_ushanka.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#C7B08B"
+      - state: equipped-HELMET-2-c2
+        color: "#5A4E44"
+  - type: WFGags
+    colors:
+    - "#C7B08B"
+    - "#5A4E44"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeWeddingveil
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_weddingveil.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_weddingveil.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeWhoopee
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_whoopee.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_whoopee.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCostumeYuri
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/costume_yuri.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/costume_yuri.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCowboyNovaCattleman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_cattleman.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#725443"
+    - state: icon-2-c2
+      color: "#B2977C"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_cattleman.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#725443"
+      - state: equipped-HELMET-2-c2
+        color: "#B2977C"
+  - type: WFGags
+    colors:
+    - "#725443"
+    - "#B2977C"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCowboyNovaCattlemanWide
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_cattleman_wide.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#4D4D4D"
+    - state: icon-2-c2
+      color: "#5F666E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_cattleman_wide.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#4D4D4D"
+      - state: equipped-HELMET-2-c2
+        color: "#5F666E"
+  - type: WFGags
+    colors:
+    - "#4D4D4D"
+    - "#5F666E"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCowboyNovaFlat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_flat.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#BE925B"
+    - state: icon-2-c2
+      color: "#914C2F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_flat.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#BE925B"
+      - state: equipped-HELMET-2-c2
+        color: "#914C2F"
+  - type: WFGags
+    colors:
+    - "#BE925B"
+    - "#914C2F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCowboyNovaFlatCowl
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_flat_cowl.rsi
+    layers:
+    - state: icon-1-c3
+      color: "#774B2D"
+    - state: icon-2-c1
+      color: "#C26934"
+    - state: icon-3-c2
+      color: "#8F89AE"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_flat_cowl.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c3
+        color: "#774B2D"
+      - state: equipped-HELMET-2-c1
+        color: "#C26934"
+      - state: equipped-HELMET-3-c2
+        color: "#8F89AE"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: WFGags
+    colors:
+    - "#C26934"
+    - "#8F89AE"
+    - "#774B2D"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCowboyNovaWide
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_wide.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#4D4D4D"
+    - state: icon-2-c2
+      color: "#DE9754"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_wide.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#4D4D4D"
+      - state: equipped-HELMET-2-c2
+        color: "#DE9754"
+  - type: WFGags
+    colors:
+    - "#4D4D4D"
+    - "#DE9754"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadCowboyNovaWideFeathered
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_wide_feathered.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#4D4D4D"
+    - state: icon-2-c2
+      color: "#DE9754"
+    - state: icon-3-c3
+      color: "#D5D5B9"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/cowboy_nova_wide_feathered.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#4D4D4D"
+      - state: equipped-HELMET-2-c2
+        color: "#DE9754"
+      - state: equipped-HELMET-3-c3
+        color: "#D5D5B9"
+  - type: WFGags
+    colors:
+    - "#4D4D4D"
+    - "#DE9754"
+    - "#D5D5B9"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadDeprivationHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/deprivation_helmet.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#DC7EF4"
+    - state: icon-3-c3
+      color: "#383840"
+    - state: icon-4-c4
+      color: "#DC7EF4"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/deprivation_helmet.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#383840"
+      - state: equipped-HELMET-2-c2
+        color: "#DC7EF4"
+      - state: equipped-HELMET-3-c3
+        color: "#383840"
+      - state: equipped-HELMET-4-c4
+        color: "#DC7EF4"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadDominaCap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/domina_cap.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/domina_cap.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#383840"
+      - state: equipped-HELMET-2-c2
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedora
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraBeige
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_beige.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_beige.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraBeigePress
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_beige_press.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_beige_press.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraCarpskin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_carpskin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_carpskin.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraCurator
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_curator.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_curator.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraDetHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_det_hat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_det_hat.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.95
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraDetHatCybergoggles
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_det_hat_cybergoggles.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_det_hat_cybergoggles.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.95
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraGreyscale
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_greyscale.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#F0DAB4"
+    - state: icon-2-c2
+      color: "#794D2E"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_greyscale.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#F0DAB4"
+      - state: equipped-HELMET-2-c2
+        color: "#794D2E"
+  - type: WFGags
+    colors:
+    - "#F0DAB4"
+    - "#794D2E"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraHumanLeather
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_human_leather.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_human_leather.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFedoraWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/fedora_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/fedora_white.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadFrontierColonistHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/frontier_colonist_helmet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/frontier_colonist_helmet.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHairTie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hair_tie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hair_tie.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHairTiePlasticBeads
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hair_tie_plastic_beads.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hair_tie_plastic_beads.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHairTieScrunchie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hair_tie_scrunchie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hair_tie_scrunchie.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHairTieSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hair_tie_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hair_tie_syndicate.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsBowler
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_bowler.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_bowler.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatAzulean
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_azulean.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_azulean.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatAzuleanUpstart
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_azulean_upstart.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_azulean_upstart.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatBicorne
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_bicorne.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_bicorne.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatBunnyearsCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_bunnyears_captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_bunnyears_captain.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatNaval
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatNavalCustom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval_custom.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+    - state: icon-2-c2
+      color: "#333333"
+    - state: icon-3-c3
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval_custom.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FF0000"
+      - state: equipped-HELMET-2-c2
+        color: "#333333"
+      - state: equipped-HELMET-3-c3
+        color: "#FFFFFF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#FF0000"
+    - "#333333"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatNavalCustomGold
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval_custom_gold.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+    - state: icon-2-c2
+      color: "#333333"
+    - state: icon-3
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval_custom_gold.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FF0000"
+      - state: equipped-HELMET-2-c2
+        color: "#333333"
+      - state: equipped-HELMET-3
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#FF0000"
+    - "#333333"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatNavalFleetAdmiral
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval_fleet_admiral.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_naval_fleet_admiral.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcapBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_black.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcapCustom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_custom.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+    - state: icon-2-c2
+      color: "#333333"
+    - state: icon-3-c3
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_custom.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FF0000"
+      - state: equipped-HELMET-2-c2
+        color: "#333333"
+      - state: equipped-HELMET-3-c3
+        color: "#FFFFFF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#FF0000"
+    - "#333333"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcapCustomGold
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_custom_gold.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FF0000"
+    - state: icon-2-c2
+      color: "#333333"
+    - state: icon-3
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_custom_gold.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#FF0000"
+      - state: equipped-HELMET-2-c2
+        color: "#333333"
+      - state: equipped-HELMET-3
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#FF0000"
+    - "#333333"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcapEng
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_eng.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_eng.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcapMedsci
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_medsci.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_medsci.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatParadeFedcapSec
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_sec.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_parade_fedcap_sec.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCaphatPilot
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_caphat_pilot.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_caphat_pilot.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCentcomCap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_centcom_cap.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_centcom_cap.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.85
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCenthat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_centhat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_centhat.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.85
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsColonial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_colonial.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_colonial.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsColonialHcPolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_colonial_hc_police.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_colonial_hc_police.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsCoordinator
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_coordinator.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_coordinator.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsFlakhelm
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_flakhelm.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_flakhelm.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsHosShako
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_hos_shako.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_hos_shako.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsImperial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_imperial.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#A49C9C"
+    - state: icon-2-c2
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_imperial.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#A49C9C"
+      - state: equipped-HELMET-2-c2
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#A49C9C"
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsIntern
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_intern.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_intern.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsSyndicateInterdyneDeckofficerBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_syndicate_interdyne_deckofficer_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_syndicate_interdyne_deckofficer_black.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsSyndicateInterdyneDeckofficerWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_syndicate_interdyne_deckofficer_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_syndicate_interdyne_deckofficer_white.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsTophatBalloon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_tophat_balloon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_tophat_balloon.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsWardenDrill
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_warden_drill.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_warden_drill.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsWardenPolicePatrol
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_warden_police_patrol.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#39393F"
+    - state: icon-2-c2
+      color: "#A52F29"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_warden_police_patrol.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#39393F"
+      - state: equipped-HELMET-2-c2
+        color: "#A52F29"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+  - type: WFGags
+    colors:
+    - "#39393F"
+    - "#A52F29"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsWardenRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_warden_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_warden_red.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHatsWardenSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hats_warden_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hats_warden_syndicate.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetAlt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_alt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_alt.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.4
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetAstrum
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_astrum.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_astrum.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetBalloon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_balloon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_balloon.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 1.0
+        Heat: 1.0
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetBlueshirt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_blueshirt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_blueshirt.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetBlueshirtNovaGuard
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_blueshirt_nova_guard.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_blueshirt_nova_guard.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetChaplain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetChaplainBland
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain_bland.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain_bland.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetChaplainClock
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain_clock.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain_clock.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetChaplainHeretic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain_heretic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_chaplain_heretic.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetCinSurplusHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_cin_surplus_helmet.rsi
+    layers:
+    - state: icon-1
+    - state: icon-2-c1
+      color: "#BBBBC9"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_cin_surplus_helmet.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1
+      - state: equipped-HELMET-2-c1
+        color: "#BBBBC9"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.6
+        Heat: 0.9
+  - type: WFGags
+    colors:
+    - "#BBBBC9"
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetDragoon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_dragoon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_dragoon.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetDurabilityBarrelmelon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_durability_barrelmelon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_durability_barrelmelon.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.8
+        Heat: 0.85
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetDurabilityHolymelon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_durability_holymelon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_durability_holymelon.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetDurathread
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_durathread.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_durathread.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.9
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetElderAtmosian
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_elder_atmosian.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_elder_atmosian.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.8
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetExpeditionaryCorps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_expeditionary_corps.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_expeditionary_corps.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetForgingPlateHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_forging_plate_helmet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_forging_plate_helmet.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.8
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetHcPolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_hc_police.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_hc_police.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetKnightBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_knight_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_knight_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetKnightGreyscale
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_knight_greyscale.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_knight_greyscale.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetKnightRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_knight_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_knight_red.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetKnightWarlord
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_knight_warlord.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_knight_warlord.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.4
+        Heat: 0.3
+  - type: FlashImmunity
+  - type: EyeProtection
+  - type: ClothingSpeedModifier
+    walkModifier: 0.96
+    sprintModifier: 0.96
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetKnightYellow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_knight_yellow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_knight_yellow.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMarine
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_marine.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_marine.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.7
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMarineEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_marine_engineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_marine_engineer.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.7
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMarineMedic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_marine_medic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_marine_medic.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.7
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMarinePmc
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_marine_pmc.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_marine_pmc.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.4
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMarineSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_marine_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_marine_security.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.7
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMilitary
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_military.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_military.rsi
+  - type: HideLayerClothing
+    layers:
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.55
+        Slash: 0.55
+        Piercing: 0.75
+        Heat: 0.75
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetMonkeySentience
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_monkey_sentience.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_monkey_sentience.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPerceptomatrix
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_perceptomatrix.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_perceptomatrix.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.4
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPerceptomatrixAdmin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_perceptomatrix_admin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_perceptomatrix_admin.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPerceptomatrixAdminSubspace
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_perceptomatrix_admin_subspace.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_perceptomatrix_admin_subspace.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPlateCrusader
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.5
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPlateCrusaderBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.5
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPlateCrusaderProphetBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader_prophet_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader_prophet_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.4
+        Heat: 0.4
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPlateCrusaderProphetRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader_prophet_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_plate_crusader_prophet_red.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.4
+        Heat: 0.4
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetPress
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_press.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_press.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetRoman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_roman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_roman.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 1.0
+        Heat: 0.75
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetRomanLegionnaire
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_roman_legionnaire.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_roman_legionnaire.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 1.0
+        Heat: 0.75
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetRusHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_rus_helmet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_rus_helmet.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.7
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetRusUshanka
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_rus_ushanka.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_rus_ushanka.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.8
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSfPeacekeeper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_sf_peacekeeper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_sf_peacekeeper.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSfPeacekeeperDebranded
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_sf_peacekeeper_debranded.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_sf_peacekeeper_debranded.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSfSacrificial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_sf_sacrificial.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_sf_sacrificial.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.3
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSkull
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_skull.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_skull.rsi
+  - type: HideLayerClothing
+    layers:
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.9
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSkullCosmic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_skull_cosmic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_skull_cosmic.rsi
+  - type: HideLayerClothing
+    layers:
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.9
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSolfedCorpsman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_solfed_corpsman.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#1DD2FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_solfed_corpsman.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#1DD2FF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.5
+  - type: WFGags
+    colors:
+    - "#1DD2FF"
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetSolfedMk2Corpsman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_solfed_mk2_corpsman.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#1DD2FF"
+    - state: icon-2
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_solfed_mk2_corpsman.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#1DD2FF"
+      - state: equipped-HELMET-2
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+  - type: WFGags
+    colors:
+    - "#1DD2FF"
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpace
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceAkulaWetsuit
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_akula_wetsuit.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_akula_wetsuit.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceFragile
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_fragile.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_fragile.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceNasavoid
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_nasavoid.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_nasavoid.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceNtrauma
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_ntrauma.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_ntrauma.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpacePirate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_pirate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_pirate.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpacePirateBandana
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_pirate_bandana.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_pirate_bandana.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpacePirateTophat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_pirate_tophat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_pirate_tophat.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSkinsuitHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_skinsuit_helmet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_skinsuit_helmet.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlackBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlackEngie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_engie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_engie.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlackGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_green.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlackMed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_med.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_med.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlackOrange
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_orange.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_black_orange.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateContract
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_contract.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_contract.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_green.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceSyndicateGreenDark
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_green_dark.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_syndicate_green_dark.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetEVA
+  id: WFMeridianClothingHeadHelmetSpaceVoskhod
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_space_voskhod.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_space_voskhod.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetStormtrooper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_stormtrooper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_stormtrooper.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetTaghelmBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_taghelm_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_taghelm_blue.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.9
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetTaghelmRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_taghelm_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_taghelm_red.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.9
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetToggleableJustice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_justice.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_justice.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetToggleableJusticeEscape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_justice_escape.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_justice_escape.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetToggleableRiot
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_riot.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_riot.rsi
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetToggleableSfHardened
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_sf_hardened.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_sf_hardened.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadHelmetBasic
+  id: WFMeridianClothingHeadHelmetToggleableSfHardenedEmt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_sf_hardened_emt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/helmet_toggleable_sf_hardened_emt.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.5
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHenchmenHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/henchmen_hat.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#201B1A"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/henchmen_hat.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#201B1A"
+  - type: WFGags
+    colors:
+    - "#201B1A"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedAblative
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_ablative.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_ablative.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.9
+        Heat: 0.4
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedBeeHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_bee_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_bee_hood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedBerserker
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_berserker.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_berserker.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.8
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 1
+  - type: FireProtection
+    reduction: 0.2
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedBerserkerGatsu
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_berserker_gatsu.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_berserker_gatsu.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.6
+        Heat: 0.75
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 1
+  - type: FireProtection
+    reduction: 0.2
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCarpHoodSpaceproof
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_carp_hood_spaceproof.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_carp_hood_spaceproof.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedChaplainHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_chaplain_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_chaplain_hood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedChaplainHoodDivineArcher
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_chaplain_hood_divine_archer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_chaplain_hood_divine_archer.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.95
+        Heat: 0.95
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedChaplainHoodLeader
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_chaplain_hood_leader.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_chaplain_hood_leader.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCloakhoodDrake
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cloakhood_drake.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cloakhood_drake.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.35
+        Slash: 0.35
+        Piercing: 0.85
+        Heat: 0.6
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 1
+  - type: FireProtection
+    reduction: 0.2
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCloakhoodGodslayer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cloakhood_godslayer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cloakhood_godslayer.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.5
+        Heat: 0.6
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FireProtection
+    reduction: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieAlt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_alt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_alt.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritch
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.5
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchAsh
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_ash.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_ash.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.4
+        Heat: 0.5
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchBlade
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_blade.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_blade.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.5
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchCosmic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_cosmic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_cosmic.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.7
+        Heat: 0.4
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchFlesh
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_flesh.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_flesh.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.6
+        Heat: 0.7
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchLock
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_lock.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_lock.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.6
+        Heat: 0.6
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchMoon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_moon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_moon.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchRust
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_rust.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_rust.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.7
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieEldritchVoid
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_void.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_eldritch_void.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.6
+        Heat: 0.5
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedCultHoodieVoid
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_void.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_cult_hoodie_void.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedEtherealRainhood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_ethereal_rainhood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_ethereal_rainhood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedExplorer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_explorer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_explorer.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.9
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedExplorerSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_explorer_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_explorer_syndicate.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedFlashsuit
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_flashsuit.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_flashsuit.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedHostileEnvironment
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_hostile_environment.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#4D4D4D"
+    - state: icon-2-c2
+      color: "#808080"
+    - state: icon-3-c3
+      color: "#FF3300"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_hostile_environment.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#4D4D4D"
+      - state: equipped-HELMET-2-c2
+        color: "#808080"
+      - state: equipped-HELMET-3-c3
+        color: "#FF3300"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.6
+        Heat: 0.8
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 1
+  - type: FireProtection
+    reduction: 0.2
+  - type: WFGags
+    colors:
+    - "#4D4D4D"
+    - "#808080"
+    - "#FF3300"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedLeather
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_leather.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_leather.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedMonkhabit
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_monkhabit.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#8C531A"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_monkhabit.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#8C531A"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: WFGags
+    colors:
+    - "#8C531A"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedSeva
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_seva.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_seva.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.9
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedSharkHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_shark_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_shark_hood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedShorkHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_shork_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_shork_hood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_captain.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_cargo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_cargo.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodCargoQm
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_cargo_qm.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_cargo_qm.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodCentcom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_centcom.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_centcom.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.6
+        Heat: 0.5
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodEngineering
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_engineering.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_engineering.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodEngineeringAtmos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_engineering_atmos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_engineering_atmos.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodEngineeringCe
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_engineering_ce.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_engineering_ce.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodEva
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_eva.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_eva.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 1.0
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodHop
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_hop.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_hop.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.85
+        Heat: 0.75
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodHydro
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_hydro.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_hydro.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodJanitor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_janitor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_janitor.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodMedical
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodMedicalCmo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_cmo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_cmo.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodMedicalCoroner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_coroner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_coroner.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodMedicalParamedic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_paramedic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_paramedic.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodMedicalViro
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_viro.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_medical_viro.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodMiner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_miner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_miner.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 1.0
+        Heat: 1.0
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNova
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNovaBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_blueshield.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_blueshield.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNovaChristmas
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_christmas.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_christmas.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNovaChristmasGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_christmas_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_christmas_green.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNovaNarsie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_narsie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_narsie.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNovaRatvar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_ratvar.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_ratvar.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodNovaSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_nova_syndicate.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodPullover
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_pullover.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#5F5F5F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_pullover.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#5F5F5F"
+  - type: WFGags
+    colors:
+    - "#5F5F5F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodScienceRd
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_science_rd.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_science_rd.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodScienceRobotics
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_science_robotics.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_science_robotics.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_security.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWinterhoodZipup
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_zipup.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#5F5F5F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_winterhood_zipup.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#5F5F5F"
+  - type: WFGags
+    colors:
+    - "#5F5F5F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadHoodedWolfCoatHoodie
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/hooded_wolf_coat_hoodie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/hooded_wolf_coat_hoodie.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadLargeBow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/large_bow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#7B9AB5"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/large_bow.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#7B9AB5"
+  - type: WFGags
+    colors:
+    - "#7B9AB5"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadLargeBowBackBow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/large_bow_back_bow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#7B9AB5"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/large_bow_back_bow.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#7B9AB5"
+  - type: WFGags
+    colors:
+    - "#7B9AB5"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadLargeBowSweetBow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/large_bow_sweet_bow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#7B9AB5"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/large_bow_sweet_bow.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#7B9AB5"
+  - type: WFGags
+    colors:
+    - "#7B9AB5"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadMaidHeadband
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/maid_headband.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EDF9FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/maid_headband.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#EDF9FF"
+  - type: WFGags
+    colors:
+    - "#EDF9FF"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadMothcap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/mothcap.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/mothcap.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadMushHelmet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/mush_helmet.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EB0C07"
+    - state: icon-2
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/mush_helmet.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#EB0C07"
+      - state: equipped-HELMET-2
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: WFGags
+    colors:
+    - "#EB0C07"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadNanotrasenConsultant
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/nanotrasen_consultant.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/nanotrasen_consultant.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.75
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeaceflower
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/peaceflower.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/peaceflower.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPelt
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_black.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltPinkTiger
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_pink_tiger.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_pink_tiger.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltSnowTiger
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_snow_tiger.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_snow_tiger.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltTiger
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_tiger.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_tiger.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_white.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltWolf
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_wolf.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_wolf.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltWolfBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_wolf_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_wolf_black.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPeltWolfWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pelt_wolf_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pelt_wolf_white.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPillowHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pillow_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pillow_hood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPizza
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/pizza.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/pizza.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyears
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#39393F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#39393F"
+  - type: WFGags
+    colors:
+    - "#39393F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsAtmosTech
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_atmos_tech.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_atmos_tech.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsBartender
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_bartender.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_bartender.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsBitrunner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_bitrunner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_bitrunner.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsBotanist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_botanist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_botanist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsBrigPhys
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_brig_phys.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_brig_phys.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsBritish
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_british.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_british.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_cargo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_cargo.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCe
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_ce.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_ce.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCentcom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_centcom.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_centcom.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsChaplain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_chaplain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_chaplain.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsChemist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_chemist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_chemist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCmo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_cmo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_cmo.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCommunist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_communist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_communist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCook
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_cook.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_cook.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCoroner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_coroner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_coroner.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCuratorGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_curator_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_curator_green.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCuratorRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_curator_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_curator_red.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsCuratorTeal
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_curator_teal.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_curator_teal.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsDetective
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_detective.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_detective.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.95
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsDetectiveNoir
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_detective_noir.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_detective_noir.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.95
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsDoctor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_doctor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_doctor.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_engineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_engineer.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsGeneticist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_geneticist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_geneticist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsHop
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_hop.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_hop.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsHos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_hos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_hos.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.7
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsJanitor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_janitor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_janitor.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsLawyerBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_black.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsLawyerBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_blue.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsLawyerGood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_good.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_good.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsLawyerRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_lawyer_red.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsMailman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_mailman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_mailman.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsMiner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_miner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_miner.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.9
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsParamedic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_paramedic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_paramedic.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsPathologist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_pathologist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_pathologist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsPrisoner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_prisoner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_prisoner.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsPsychologist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_psychologist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_psychologist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsQuartermaster
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_quartermaster.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_quartermaster.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsRd
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_rd.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_rd.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsRoboticist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_roboticist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_roboticist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsScientist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_scientist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_scientist.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_security.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsSecurityAssistant
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_security_assistant.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_security_assistant.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_syndicate.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsUsa
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_usa.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_usa.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPlaybunnyearsWarden
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/playbunnyears_warden.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/playbunnyears_warden.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadPrimitiveCatgirlFerroniere
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/primitive_catgirl_ferroniere.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#F1F6FF"
+    - state: icon-2-c2
+      color: "#364660"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/primitive_catgirl_ferroniere.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#F1F6FF"
+      - state: equipped-HELMET-2-c2
+        color: "#364660"
+  - type: WFGags
+    colors:
+    - "#F1F6FF"
+    - "#364660"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadRasta
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/rasta.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/rasta.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSecurityCapCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/security_cap_cargo.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#BA832F"
+    - state: icon-2-c2
+      color: "#EBEBEB"
+    - state: icon-3-c3
+      color: "#39393F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/security_cap_cargo.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#BA832F"
+      - state: equipped-HELMET-2-c2
+        color: "#EBEBEB"
+      - state: equipped-HELMET-3-c3
+        color: "#39393F"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+  - type: WFGags
+    colors:
+    - "#BA832F"
+    - "#EBEBEB"
+    - "#39393F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSecurityGarrison
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/security_garrison.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#39393F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/security_garrison.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#39393F"
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.6
+  - type: WFGags
+    colors:
+    - "#39393F"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadShamanash
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/shamanash.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/shamanash.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSkrellChain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/skrell_chain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/skrell_chain.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSkrellChainSilver
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/skrell_chain_silver.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/skrell_chain_silver.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSmallBow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/small_bow.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#7B9AB5"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/small_bow.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#7B9AB5"
+  - type: WFGags
+    colors:
+    - "#7B9AB5"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_blueshield.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_blueshield.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftFishingHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_fishing_hat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_fishing_hat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftFrontierColonist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_frontier_colonist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_frontier_colonist.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 1.0
+        Slash: 1.0
+        Piercing: 1.0
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftFrontierColonistMedic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_frontier_colonist_medic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_frontier_colonist_medic.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 1.0
+        Slash: 1.0
+        Piercing: 1.0
+        Heat: 0.9
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftHcPolice
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_hc_police.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_hc_police.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftMime
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_mime.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_mime.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftPropellerHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_propeller_hat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_propeller_hat.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftRainbow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_rainbow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_rainbow.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftSecSyndicate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_sec_syndicate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_sec_syndicate.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftVeteran
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_veteran.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_veteran.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+        Heat: 0.65
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftYankee
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_yankee.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_yankee.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSoftYankeeRimless
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/soft_yankee_rimless.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/soft_yankee_rimless.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadStandaloneHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/standalone_hood.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#4E4A43"
+    - state: icon-2-c2
+      color: "#F1F1F1"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/standalone_hood.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#4E4A43"
+      - state: equipped-HELMET-2-c2
+        color: "#F1F1F1"
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+  - type: WFGags
+    colors:
+    - "#4E4A43"
+    - "#F1F1F1"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadSyndicatefake
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/syndicatefake.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/syndicatefake.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityBeekeeperHead
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_beekeeper_head.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_beekeeper_head.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityBombHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_bomb_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_bomb_hood.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 1.0
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityBombHoodSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_bomb_hood_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_bomb_hood_security.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 1.0
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityBombHoodWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_bomb_hood_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_bomb_hood_white.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 1.0
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatCakehatEnergycake
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_cakehat_energycake.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_cakehat_energycake.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatDblue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_dblue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_dblue.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatOrange
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_orange.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_orange.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.8
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatPumpkinheadBlumpkin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_pumpkinhead_blumpkin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_pumpkinhead_blumpkin.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_red.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.8
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FireProtection
+    reduction: 0.2
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatRedUpgraded
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_red_upgraded.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_red_upgraded.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.8
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FireProtection
+    reduction: 0.2
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatReindeer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_reindeer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_reindeer.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatWeldingAtmos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_welding_atmos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_welding_atmos.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+      Snout: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.8
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FireProtection
+    reduction: 0.2
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityHardhatWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_hardhat_white.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.8
+  - type: PressureProtection
+    highPressureMultiplier: 0.6
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.2
+    coolingCoefficient: 0.2
+  - type: FireProtection
+    reduction: 0.2
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilitySurgerycap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilitySurgerycapBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_black.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilitySurgerycapCmo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_cmo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_cmo.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilitySurgerycapGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_green.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilitySurgerycapPurple
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_purple.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_surgerycap_purple.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadUtilityWeldingHat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/utility_welding_hat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/utility_welding_hat.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 1.0
+        Heat: 1.0
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWaldo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/waldo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/waldo.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWig
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wig.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wig.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWizardBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wizard_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wizard_black.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.8
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWizardChanterelle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wizard_chanterelle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wizard_chanterelle.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWizardHood
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wizard_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wizard_hood.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.8
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWizardMarisa
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wizard_marisa.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#343640"
+    - state: icon-2-c2
+      color: "#E0CAB8"
+    - state: icon-3-c3
+      color: "#E0CAB8"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wizard_marisa.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET-1-c1
+        color: "#343640"
+      - state: equipped-HELMET-2-c2
+        color: "#E0CAB8"
+      - state: equipped-HELMET-3-c3
+        color: "#E0CAB8"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.8
+        Heat: 0.7
+  - type: WFGags
+    colors:
+    - "#343640"
+    - "#E0CAB8"
+    - "#E0CAB8"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWizardTape
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wizard_tape.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wizard_tape.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      FacialHair: HEAD
+  - type: IdentityBlocker
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.8
+        Heat: 0.7
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WFMeridianClothingHeadWizardYellow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Head/wizard_yellow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Head/wizard_yellow.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.8
+        Heat: 0.7

@@ -66,6 +66,7 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
             ChatSelectChannel.Dead => Color.MediumPurple,
             ChatSelectChannel.Admin => Color.HotPink,
             ChatSelectChannel.Event => Color.Gold, // WOLFGATE(EventStaff)
+            ChatSelectChannel.Subtle => ChatChannelExtensions.SubtleColor, // WOLFGATE(Subtle)
             _ => Color.DarkGray
         };
     }

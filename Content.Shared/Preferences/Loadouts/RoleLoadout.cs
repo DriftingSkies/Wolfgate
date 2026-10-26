@@ -99,6 +99,7 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
         }
 
         CustomJobTitle = CustomJobTitleRules.Sanitize(CustomJobTitle, Role, protoManager); // WOLFGATE(Roles)
+        SanitizeWFGagsColors(); // WOLFGATE(Gags): picked colours sent by a client are capped and made opaque
 
         // In some instances we might not have picked up a new group for existing data.
         foreach (var groupProto in roleProto.Groups)
@@ -500,7 +501,8 @@ public sealed partial class RoleLoadout : IEquatable<RoleLoadout>
         foreach (var (key, value) in SelectedLoadouts)
         {
             if (!other.SelectedLoadouts.TryGetValue(key, out var otherValue) ||
-                !otherValue.SequenceEqual(value))
+                !otherValue.SequenceEqual(value) ||
+                !WFGagsColorsEqual(otherValue, value)) // WOLFGATE(Gags): a colour change is a change to save
             {
                 return false;
             }

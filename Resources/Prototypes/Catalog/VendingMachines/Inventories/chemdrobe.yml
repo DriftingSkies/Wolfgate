@@ -16,5 +16,13 @@
     ClothingHeadsetMedical: 2
     ClothingOuterWinterChem: 2
     ClothingShoesBootsWinterChem: 2 #Delta V: Add departmental winter boots
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadPlaybunnyearsChemist: 2
+    WFMeridianClothingNeckTieBunnytieChemist: 2
+    WFMeridianClothingSuitToggleLabcoatChemistDoctorTailcoat: 2
+    WFMeridianClothingUnderRankMedicalChemistBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalChemistNovaFormal: 2
+    WFMeridianClothingUnderRankMedicalChemistNovaFormalSkirt: 2
+    # WOLFGATE END
   contrabandInventory:
     ToyFigurineChemist: 1

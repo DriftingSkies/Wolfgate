@@ -83,7 +83,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
     /// </summary>
     private void QuoteSale(Entity<TraderUsedShipsComponent> ent, Entity<TraderComponent> trader, EntityUid customer)
     {
-        if (!TryGetDeedShip(trader, customer, out _, out var shuttle))
+        if (!TryGetDeedShip(trader, customer, out var idCard, out var shuttle))
         {
             _trader.SayAndShow(trader, Loc.GetString("trader-used-no-ship"));
             return;
@@ -101,9 +101,11 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         ent.Comp.AwaitingConfirmation = true;
         ent.Comp.QuotedShip = shuttle;
 
-        _trader.AskConfirmation(trader, Loc.GetString("trader-used-quote",
-            ("amount", BankSystemExtensions.ToSpesoString(quote)),
-            ("ship", Name(shuttle))));
+        _trader.AskConfirmation(trader, IsVoucherShip(idCard)
+            ? Loc.GetString("trader-used-quote-voucher", ("ship", Name(shuttle)))
+            : Loc.GetString("trader-used-quote",
+                ("amount", BankSystemExtensions.ToSpesoString(quote)),
+                ("ship", Name(shuttle))));
     }
 
     private void OnConfirmed(Entity<TraderUsedShipsComponent> ent, ref TraderConfirmedEvent args)
@@ -143,7 +145,8 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
             return;
         }
 
-        var bill = _shipyard.GetShipResaleValue(ent.Owner, shuttle);
+        var voucherShip = IsVoucherShip(idCard);
+        var bill = voucherShip ? 0 : _shipyard.GetShipResaleValue(ent.Owner, shuttle);
         var shipName = Name(shuttle);
 
         // Everything past here is the console's own sale: docking, organics, taxes, the payout.
@@ -161,6 +164,12 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         }
 
         PrintSaleReceipt(traderEnt, customer, shipName, bill);
+        if (voucherShip)
+        {
+            _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-sale-done-voucher"));
+            return;
+        }
+
         _trader.SayAndShow(traderEnt, Loc.GetString(
             HasComp<IronmanComponent>(customer) ? "trader-used-sale-done-cash" : "trader-used-sale-done",
             ("amount", BankSystemExtensions.ToSpesoString(bill))));
@@ -178,12 +187,22 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         args.Handled = true;
     }
 
+    /// <summary>A ship given out on a voucher goes back for nothing.</summary>
+    private bool IsVoucherShip(EntityUid idCard)
+    {
+        return CompOrNull<ShuttleDeedComponent>(idCard)?.PurchasedWithVoucher == true;
+    }
+
     /// <summary>
-    /// The customer's own deed card in the barter zone, and the ship it points at.
+    /// A voucher with a deed on the counter, otherwise the customer's own deed card, and the ship it points at.
     /// </summary>
     private bool TryGetDeedShip(Entity<TraderComponent> trader, EntityUid customer, out EntityUid idCard, out EntityUid shuttle)
     {
         shuttle = default;
+
+        // Vouchers carry no owner: whoever put one down is giving its ship back.
+        if (_trader.TryGetZoneVoucher(trader, out idCard) && _shipyard.TryGetDeedShip(idCard, out shuttle))
+            return true;
 
         if (!_trader.TryGetZoneId(trader, customer, out idCard, out var wrongOwner))
         {

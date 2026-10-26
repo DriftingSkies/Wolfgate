@@ -98,6 +98,12 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
     private readonly CustomMarkingIconButton _addFrame;
     private readonly CustomMarkingIconButton _removeFrame;
     private readonly CustomMarkingIconButton _playButton;
+    private readonly CustomMarkingIconButton _moveFrameLeft;
+    private readonly CustomMarkingIconButton _moveFrameRight;
+    private readonly CustomMarkingIconButton _reverseFrames;
+    private readonly CustomMarkingIconButton _pingPongButton;
+    private readonly CustomMarkingIconButton _timeAllButton;
+    private readonly CheckBox _onionSkin;
     private readonly FloatSpinBox _frameTime;
     private readonly Control _frameTimeRow;
     private readonly Button _saveButton;
@@ -114,6 +120,9 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
     private int _frame;
 
     private bool _playing;
+
+    /// <summary>Where playing is in <see cref="CustomMarkingArt.PlayOrder"/>.</summary>
+    private int _playStep;
 
     /// <summary>How long the frame shown has been up while playing, in seconds.</summary>
     private float _playTime;
@@ -282,7 +291,35 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         _playButton = new CustomMarkingIconButton("play", Loc.GetString("wf-custom-marking-editor-frame-play")) { ToggleMode = true };
         _playButton.AddStyleClass(StyleWolfgate.StyleClassCreatorToggle);
         _playButton.OnToggled += args => SetPlaying(args.Pressed);
-        _frameTime = new FloatSpinBox(0.05f, 2)
+        _moveFrameLeft = Command("frameleft", "wf-custom-marking-editor-frame-move-left", () => MoveFrame(-1));
+        _moveFrameRight = Command("frameright", "wf-custom-marking-editor-frame-move-right", () => MoveFrame(1));
+        _reverseFrames = Command("reverse", "wf-custom-marking-editor-frame-reverse", () =>
+        {
+            StopPlaying();
+            Change(edited => edited.ReverseFrames());
+            SetFrame(Art.Frames - 1 - _frame);
+        });
+        _timeAllButton = Command("timeall", "wf-custom-marking-editor-frame-time-all",
+            () => Change(edited => edited.SetAllFrameTimes(edited.GetFrameTime(_frame))));
+        _pingPongButton = new CustomMarkingIconButton("pingpong", Loc.GetString("wf-custom-marking-editor-frame-ping-pong"))
+        {
+            ToggleMode = true,
+            Pressed = art.PingPong,
+        };
+        _pingPongButton.AddStyleClass(StyleWolfgate.StyleClassCreatorToggle);
+        _pingPongButton.OnToggled += args =>
+        {
+            // The play order changes under a running playback.
+            StopPlaying();
+            Change(edited => edited.PingPong = args.Pressed);
+        };
+        _onionSkin = new CheckBox
+        {
+            Text = Loc.GetString("wf-custom-marking-editor-onion-skin"),
+            ToolTip = Loc.GetString("wf-custom-marking-editor-onion-skin-tooltip"),
+        };
+        _onionSkin.OnPressed += _ => _canvas.OnionSkin = _onionSkin.Pressed;
+        _frameTime = new FloatSpinBox(0.01f, 2)
         {
             HorizontalExpand = true,
             IsValid = seconds => seconds * 1000 >= CustomMarkingRules.MinFrameTime && seconds * 1000 <= CustomMarkingRules.MaxFrameTime,
@@ -319,7 +356,14 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
                     SeparationOverride = 4,
                     Children = { _previousFrame, _nextFrame, _addFrame, _removeFrame, _playButton },
                 },
+                new BoxContainer
+                {
+                    Orientation = BoxContainer.LayoutOrientation.Horizontal,
+                    SeparationOverride = 4,
+                    Children = { _moveFrameLeft, _moveFrameRight, _reverseFrames, _timeAllButton, _pingPongButton },
+                },
                 _frameTimeRow,
+                _onionSkin,
             },
         };
 
@@ -503,10 +547,12 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         });
 
         _system.SaveAnswered += OnSaveAnswered;
+        _cfg.OnValueChanged(CustomMarkingCVars.BodyReach, OnBodyReachChanged);
         OnClose += () =>
         {
             _closePrompt?.Close();
             _system.SaveAnswered -= OnSaveAnswered;
+            _cfg.UnsubValueChanged(CustomMarkingCVars.BodyReach, OnBodyReachChanged);
             DeleteBody();
             _sampler.Orphan();
         };
@@ -786,6 +832,13 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         _removeFrame.Disabled = !animated;
         _playButton.Disabled = !animated;
         _addFrame.Disabled = frames >= MaxFrames;
+        _moveFrameLeft.Disabled = _frame == 0;
+        _moveFrameRight.Disabled = _frame >= frames - 1;
+        _reverseFrames.Disabled = !animated;
+        _timeAllButton.Disabled = !animated;
+        _pingPongButton.Disabled = frames < 3;
+        _pingPongButton.Pressed = Art.PingPong;
+        _onionSkin.Disabled = !animated;
         _frameTimeRow.Visible = animated;
         FillFrameTime();
     }
@@ -833,6 +886,17 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
         Change(art => art.RemoveFrame(_frame));
     }
 
+    /// <summary>Swaps the frame shown with the one beside it and follows it there.</summary>
+    private void MoveFrame(int step)
+    {
+        StopPlaying();
+        var to = _frame + step;
+        var moved = false;
+        Change(art => moved = art.MoveFrame(_frame, to));
+        if (moved)
+            SetFrame(to);
+    }
+
     private void SetFrameTime(float seconds)
     {
         if (_fillingTime)
@@ -846,6 +910,7 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
     {
         _playing = playing && Art.Frames > 1;
         _playTime = 0;
+        _playStep = Math.Max(0, Array.IndexOf(Art.PlayOrder(), _frame));
         _playButton.Pressed = _playing;
     }
 
@@ -863,18 +928,26 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
             return;
 
         // At most one lap a frame: after a hitch the frames skip ahead rather than spin here.
+        var order = Art.PlayOrder();
+        _playStep %= order.Length;
         _playTime += args.DeltaSeconds;
-        for (var i = 0; i < Art.Frames; i++)
+        for (var i = 0; i < order.Length; i++)
         {
             var shown = Art.GetFrameTime(_frame) / 1000f;
             if (_playTime < shown)
                 break;
 
             _playTime -= shown;
-            ShowFrame((_frame + 1) % Art.Frames);
-            _frameLabel.Text = Loc.GetString("wf-custom-marking-editor-frame-count", ("frame", _frame + 1), ("frames", Art.Frames));
-            FillFrameTime();
+            _playStep = (_playStep + 1) % order.Length;
+            ShowFrame(order[_playStep]);
+            UpdateButtons();
         }
+    }
+
+    /// <summary>The server turned the reach limit on or off while the editor is open.</summary>
+    private void OnBodyReachChanged(bool _)
+    {
+        UpdatePlacement();
     }
 
     private void UpdatePlacement()
@@ -885,16 +958,22 @@ public sealed partial class CustomMarkingEditorWindow : CustomMarkingWindow
             tile.Placement = Placement;
         }
 
-        var reach = Loc.GetString("wf-custom-marking-editor-reach", ("margin", CustomMarkingSections.Margin));
-        _placementHint.SetMessage(FormattedMessage.FromUnformatted($"{Loc.GetString(PlacementName(Placement) + "-hint")} {reach}"));
+        var hint = Loc.GetString(PlacementName(Placement) + "-hint");
+        if (_system.BodyReach)
+            hint += " " + Loc.GetString("wf-custom-marking-editor-reach", ("margin", CustomMarkingSections.Margin));
+
+        _placementHint.SetMessage(FormattedMessage.FromUnformatted(hint));
         UpdateSections();
     }
 
-    /// <summary>Keeps drawing to the body shown and the margin around it, and darkens the rest of the canvas.</summary>
+    /// <summary>
+    /// Keeps drawing to the body shown and the margin around it, and darkens the rest of the canvas, while the
+    /// server holds markings to the body.
+    /// </summary>
     private void UpdateSections()
     {
         byte[]? sections = null;
-        if (_body is { } body && _entMan.TryGetComponent(body, out SpriteComponent? sprite))
+        if (_system.BodyReach && _body is { } body && _entMan.TryGetComponent(body, out SpriteComponent? sprite))
             sections = _system.GetSections((body, sprite), Placement);
 
         _canvas.Sections = sections;

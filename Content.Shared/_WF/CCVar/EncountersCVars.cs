@@ -54,6 +54,13 @@ public sealed class EncountersCVars
         CVarDef.Create("wf.encounters.cleanup_grace", 300f, CVar.SERVERONLY);
 
     /// <summary>
+    /// Seconds after its last fight with players that an encounter's ship is kept: its encounter doesn't run out or
+    /// fly off, and its hull isn't removed, so the fight can finish and the wreck be stripped.
+    /// </summary>
+    public static readonly CVarDef<float> CombatGrace =
+        CVarDef.Create("wf.encounters.combat_grace", 600f, CVar.SERVERONLY);
+
+    /// <summary>
     /// Stations no encounter is placed at or routed to, and that open-space encounters keep clear of: a comma-separated
     /// list of name fragments, matched against the grid, station and station id names. For places meant to stay secret.
     /// A grid whose IFF hides it or its label counts as hidden too.

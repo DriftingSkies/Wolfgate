@@ -11,3 +11,12 @@
     ClothingBackpackDuffelGenetics: 2
     ClothingShoesBootsWinterGenetics: 2 #Delta V: Add departmental winter boots
     ClothingBackpackMessengerGenetics: 2 # Frontier
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadPlaybunnyearsGeneticist: 2
+    WFMeridianClothingNeckTieBunnytieGeneticist: 2
+    WFMeridianClothingSuitToggleLabcoatGenetics: 2
+    WFMeridianClothingSuitToggleLabcoatGeneticsDoctorTailcoat: 2
+    WFMeridianClothingUnderRankRndGeneticist: 2
+    WFMeridianClothingUnderRankRndGeneticistBunnysuit: 2
+    WFMeridianClothingUnderRankRndGeneticistSkirt: 2
+    # WOLFGATE END

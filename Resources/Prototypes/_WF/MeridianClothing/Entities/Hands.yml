@@ -1,0 +1,1207 @@
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesAtmos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/atmos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/atmos.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBallMittens
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/ball_mittens.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/ball_mittens.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#383840"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#383840"
+      right:
+      - state: inhand-right-1-c1
+        color: "#383840"
+  - type: WFGags
+    colors:
+    - "#383840"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBallMittensPawMittens
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/ball_mittens_paw_mittens.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#DC7EF4"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/ball_mittens_paw_mittens.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#383840"
+      - state: equipped-HAND-2-c2
+        color: "#DC7EF4"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#383840"
+      right:
+      - state: inhand-right-1-c1
+        color: "#383840"
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBoxing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/boxing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/boxing.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBoxingBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/boxing_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/boxing_blue.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBoxingGolden
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/boxing_golden.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/boxing_golden.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBoxingGreen
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/boxing_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/boxing_green.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBoxingYellow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/boxing_yellow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/boxing_yellow.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBracer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/bracer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/bracer.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.75
+        Heat: 0.85
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesBracerWraps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/bracer_wraps.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/bracer_wraps.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#FFFFFF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#FFFFFF"
+      right:
+      - state: inhand-right-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesCaptain
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/captain.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/captain.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesCaptainPilot
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/captain_pilot.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/captain_pilot.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesCargoGauntlet
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/cargo_gauntlet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/cargo_gauntlet.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesChiefEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/chief_engineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/chief_engineer.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesChiefEngineerExpeditionaryCorps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/chief_engineer_expeditionary_corps.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/chief_engineer_expeditionary_corps.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesClockwork
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/clockwork.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/clockwork.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorBlackExpeditionaryCorps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_black_expeditionary_corps.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_black_expeditionary_corps.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorBlackSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_black_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_black_security.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorBlackSecurityBlu
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_black_security_blu.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_black_security_blu.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorBlackSecurityDepgagCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_black_security_depgag_cargo.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#39393F"
+    - state: icon-2-c2
+      color: "#BA832F"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_black_security_depgag_cargo.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#39393F"
+      - state: equipped-HAND-2-c2
+        color: "#BA832F"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#39393F"
+      right:
+      - state: inhand-right-1-c1
+        color: "#39393F"
+  - type: WFGags
+    colors:
+    - "#39393F"
+    - "#BA832F"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmaman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanAtmos
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_atmos.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_atmos.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanBlack
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_black.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanBotanicLeather
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_botanic_leather.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_botanic_leather.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanCargo
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_cargo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_cargo.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanCentcomCommander
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_centcom_commander.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_centcom_commander.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanCentcomIntern
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_centcom_intern.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_centcom_intern.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanCentcomOfficial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_centcom_official.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_centcom_official.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanChiefEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_chief_engineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_chief_engineer.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanClown
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_clown.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_clown.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanEngineer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_engineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_engineer.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanExplorer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_explorer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_explorer.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanHeadOfPersonnel
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_head_of_personnel.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_head_of_personnel.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanJanny
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_janny.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_janny.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanPlasmanitrile
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_plasmanitrile.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_plasmanitrile.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanPrototype
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_prototype.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_prototype.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanRadio
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_radio.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_radio.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanResearchDirector
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_research_director.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_research_director.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanRobot
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_robot.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_robot.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorPlasmamanWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_plasmaman_white.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesColorRainbow
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_rainbow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_rainbow.rsi
+
+- type: entity
+  parent: ClothingHandsGlovesColorYellow
+  id: WFMeridianClothingGlovesColorYellowSprayon
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/color_yellow_sprayon.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/color_yellow_sprayon.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatArmadyne
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_armadyne.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_armadyne.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatFloortile
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_floortile.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_floortile.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatMaid
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_maid.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_maid.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatNaval
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_naval.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_naval.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatNavalFleetAdmiral
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_naval_fleet_admiral.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_naval_fleet_admiral.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatPeacekeeper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_peacekeeper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_peacekeeper.rsi
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatPeacekeeperStormtrooper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_peacekeeper_stormtrooper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_peacekeeper_stormtrooper.rsi
+
+- type: entity
+  parent: ClothingHandsGlovesCombat
+  id: WFMeridianClothingGlovesCombatWizard
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/combat_wizard.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/combat_wizard.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesDesigner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/designer.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#2F2E31"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/designer.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#2F2E31"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#2F2E31"
+      right:
+      - state: inhand-right-1-c1
+        color: "#2F2E31"
+  - type: WFGags
+    colors:
+    - "#2F2E31"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesDivineArcher
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/divine_archer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/divine_archer.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.95
+        Heat: 0.95
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesEvening
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/evening.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/evening.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#FFFFFF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#FFFFFF"
+      right:
+      - state: inhand-right-1-c1
+        color: "#FFFFFF"
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesFingerlessPrimitiveCatgirlArmwraps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/fingerless_primitive_catgirl_armwraps.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#CEC8BF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/fingerless_primitive_catgirl_armwraps.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#CEC8BF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#CEC8BF"
+      right:
+      - state: inhand-right-1-c1
+        color: "#CEC8BF"
+  - type: WFGags
+    colors:
+    - "#CEC8BF"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesFingerlessPrimitiveCatgirlGauntlets
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/fingerless_primitive_catgirl_gauntlets.rsi
+    layers:
+    - state: icon-1-c2
+      color: "#C55A1D"
+    - state: icon-2-c1
+      color: "#CEC8BF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/fingerless_primitive_catgirl_gauntlets.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#CEC8BF"
+      - state: equipped-HAND-2-c2
+        color: "#C55A1D"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#CEC8BF"
+    - "#C55A1D"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesFingerlessPunchMitts
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/fingerless_punch_mitts.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/fingerless_punch_mitts.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.95
+        Heat: 0.95
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesFishing
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/fishing.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/fishing.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesForgingPlateGloves
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/forging_plate_gloves.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/forging_plate_gloves.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.85
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesFrontierColonist
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/frontier_colonist.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/frontier_colonist.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesKazaRukCombatglovesplus
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_combatglovesplus.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_combatglovesplus.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesKazaRukCombatglovesplusMaa
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_combatglovesplus_maa.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_combatglovesplus_maa.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesKazaRukSec
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_sec.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_sec.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesKazaRukSecPeacekeeper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_sec_peacekeeper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/kaza_ruk_sec_peacekeeper.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesKim
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/kim.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/kim.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesLatexCoroner
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/latex_coroner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/latex_coroner.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesLatexNitrileExpeditionaryCorps
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/latex_nitrile_expeditionary_corps.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/latex_nitrile_expeditionary_corps.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesLatexNitrileLong
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/latex_nitrile_long.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/latex_nitrile_long.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesLatexNitrileNtrauma
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/latex_nitrile_ntrauma.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/latex_nitrile_ntrauma.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesLongGloves
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/long_gloves.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/long_gloves.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#383840"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#383840"
+      right:
+      - state: inhand-right-1-c1
+        color: "#383840"
+  - type: WFGags
+    colors:
+    - "#383840"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesMaidArmCovers
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/maid_arm_covers.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#7B9AB5"
+    - state: icon-2-c2
+      color: "#EDF9FF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/maid_arm_covers.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#7B9AB5"
+      - state: equipped-HAND-2-c2
+        color: "#EDF9FF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: WFGags
+    colors:
+    - "#7B9AB5"
+    - "#EDF9FF"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesMilitary
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/military.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/military.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesMilitaryAshwalk
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/military_ashwalk.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/military_ashwalk.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesMilitaryClaw
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/military_claw.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/military_claw.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesPlate
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/plate.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/plate.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesPlateBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/plate_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/plate_blue.rsi
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesRadio
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/radio.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/radio.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesRecolorableFingerless
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/recolorable_fingerless.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#252525"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/recolorable_fingerless.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#252525"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#252525"
+      right:
+      - state: inhand-right-1-c1
+        color: "#252525"
+  - type: WFGags
+    colors:
+    - "#252525"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesRecolorableFingerlessLong
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/recolorable_fingerless_long.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#252525"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/recolorable_fingerless_long.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#252525"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#252525"
+      right:
+      - state: inhand-right-1-c1
+        color: "#252525"
+  - type: WFGags
+    colors:
+    - "#252525"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesRecolorableLong
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/recolorable_long.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#252525"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/recolorable_long.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#252525"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#252525"
+      right:
+      - state: inhand-right-1-c1
+        color: "#252525"
+  - type: WFGags
+    colors:
+    - "#252525"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesRingDiamond
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/ring_diamond.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/ring_diamond.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesShibariHands
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/shibari_hands.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#BD8FCF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/shibari_hands.rsi
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND-1-c1
+        color: "#BD8FCF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1-c1
+        color: "#BD8FCF"
+      right:
+      - state: inhand-right-1-c1
+        color: "#BD8FCF"
+  - type: WFGags
+    colors:
+    - "#BD8FCF"
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTackler
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTacklerAdmin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler_admin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler_admin.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+  - type: Insulated
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTacklerCombat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler_combat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler_combat.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTacklerDolphin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler_dolphin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler_dolphin.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTacklerFootball
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler_football.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler_football.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTacklerPeacekeeper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler_peacekeeper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler_peacekeeper.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTacklerRocket
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tackler_rocket.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tackler_rocket.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTheSleepingCarp
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/the_sleeping_carp.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/the_sleeping_carp.rsi
+
+- type: entity
+  parent: ClothingHandsBase
+  id: WFMeridianClothingGlovesTinkerer
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Hands/tinkerer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Hands/tinkerer.rsi

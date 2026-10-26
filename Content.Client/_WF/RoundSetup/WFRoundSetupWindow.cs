@@ -159,9 +159,11 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
             ("status", Text(lobby.Started ? "status-started" : "status-waiting")))));
 
         content.AddChild(Heading("members"));
+        if (lobby.Started)
+            content.AddChild(CrewHealthSummary(lobby));
         foreach (var crewmate in lobby.Roster)
         {
-            var status = crewmate.Spawned ? "member-playing" : crewmate.Ready ? "member-ready" : "member-not-ready";
+            var status = MemberStatusKey(crewmate.Spawned, crewmate.Ready, crewmate.Status);
             var role = string.IsNullOrEmpty(crewmate.Title) ? JobName(crewmate.Job) : crewmate.Title;
             content.AddChild(Row(WFRoundSetupCrewRow.JobIcon(crewmate.Job),
                 PlainDescription(Text("public-member", ("name", crewmate.Name), ("role", role), ("status", Text(status))))));
@@ -180,9 +182,11 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         var disabledReason = !state.CanJoin ? "disabled-join" : state.OwnLobby != null ? "disabled-own-crew" :
             lobby.MemberCount >= WFRoundSetupPolicy.MaximumMembers ? "disabled-full" :
             lobby.Started && !lobby.AllowLateJoin ? "latejoin-closed" : "no-roles";
+        if (available && NeedsJoinWarning(lobby))
+            content.AddChild(JoinWarning());
         if (invitation)
         {
-            content.AddChild(FlowRow(Button("accept-invite", () => JoinLobby(WFRoundSetupAction.AcceptInvite, lobby.Id), !available, disabledReason),
+            content.AddChild(FlowRow(JoinButton(lobby, "accept-invite", () => JoinLobby(WFRoundSetupAction.AcceptInvite, lobby.Id), !available, disabledReason),
                 Button("decline", () => Send(WFRoundSetupAction.DeclineInvite, lobby.Id))));
         }
         else if (lobby.Access == WFLobbyAccess.Code)
@@ -196,7 +200,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
                 ToolTip = available ? null : Text(disabledReason),
             };
             code.OnTextChanged += _ => _enteredCodes[lobby.Id] = code.Text;
-            content.AddChild(FlowRow(code, Button("join-code", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Join)
+            content.AddChild(FlowRow(code, JoinButton(lobby, "join-code", () => SendRequest(new WFRoundSetupRequest(WFRoundSetupAction.Join)
             {
                 LobbyId = lobby.Id,
                 Code = code.Text.Trim(),
@@ -205,7 +209,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         }
         else if (lobby.Access is WFLobbyAccess.Public or WFLobbyAccess.Requests)
         {
-            content.AddChild(Button(lobby.Access == WFLobbyAccess.Requests ? "request-join" : "join",
+            content.AddChild(JoinButton(lobby, lobby.Access == WFLobbyAccess.Requests ? "request-join" : "join",
                 () => JoinLobby(WFRoundSetupAction.Join, lobby.Id), !available, disabledReason));
         }
         else
@@ -347,7 +351,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         return first.Id == second.Id && first.Host == second.Host && first.HostJob == second.HostJob && Equals(first.Portrait, second.Portrait) && first.HostName == second.HostName && first.Title == second.Title && first.Description == second.Description &&
                first.Scenario == second.Scenario && first.Faction == second.Faction && first.ShipName == second.ShipName && first.ShipStart == second.ShipStart && first.Access == second.Access && first.AllowLateJoin == second.AllowLateJoin &&
                first.Started == second.Started && first.MemberCount == second.MemberCount && first.Code == second.Code &&
-               first.CurrentShip == second.CurrentShip && first.Vessel == second.Vessel && first.Roles.SequenceEqual(second.Roles) &&
+               first.CurrentShip == second.CurrentShip && first.ShipCondition == second.ShipCondition && first.Vessel == second.Vessel && first.Roles.SequenceEqual(second.Roles) &&
                first.Roster.SequenceEqual(second.Roster) && first.Members.SequenceEqual(second.Members) && first.Requests.SequenceEqual(second.Requests);
     }
 

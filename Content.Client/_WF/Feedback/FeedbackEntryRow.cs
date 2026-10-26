@@ -42,6 +42,10 @@ public sealed class FeedbackEntryRow : BoxContainer
             FeedbackStatus.Checked => "#e5c07b",
             FeedbackStatus.Fixed => "#7fd17f",
             FeedbackStatus.NonIssue => "#c08080",
+            FeedbackStatus.Accepted => "#7fd17f",
+            FeedbackStatus.Declined => "#c08080",
+            FeedbackStatus.Read => "#8fb7e0",
+            FeedbackStatus.Resolved => "#7fd17f",
             _ => "#999999",
         };
     }

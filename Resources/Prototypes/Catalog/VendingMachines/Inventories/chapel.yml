@@ -28,6 +28,29 @@
     ClothingNeckScarfChaplainStole: 3 # Frontier
     ClothingNeckStoleChaplain: 3
     ClothingBeltChaplainSash: 3 # Frontier
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadChaplainHabitVeil: 2
+    WFMeridianClothingHeadChaplainMedievaljewhat: 2
+    WFMeridianClothingHeadChaplainNunHood: 2
+    WFMeridianClothingHeadChaplainTaqiyahRed: 2
+    WFMeridianClothingHeadChaplainTaqiyahWhite: 2
+    WFMeridianClothingHeadHoodedChaplainHood: 2
+    WFMeridianClothingHeadHoodedChaplainHoodLeader: 2
+    WFMeridianClothingHeadHoodedMonkhabit: 2
+    WFMeridianClothingHeadPlaybunnyearsChaplain: 2
+    WFMeridianClothingNeckChaplain: 2
+    WFMeridianClothingNeckChaplainBlack: 2
+    WFMeridianClothingSuitChaplainsuitHabit: 2
+    WFMeridianClothingSuitChaplainsuitHolidaypriest: 2
+    WFMeridianClothingSuitChaplainsuitMonkrobeeast: 2
+    WFMeridianClothingSuitChaplainsuitShrinehand: 2
+    WFMeridianClothingSuitHoodedChaplainHoodie: 2
+    WFMeridianClothingSuitHoodedChaplainHoodieLeader: 2
+    WFMeridianClothingSuitHoodedChaplainsuitMonkhabit: 2
+    WFMeridianClothingSuitJacketTailcoatChaplain: 2
+    WFMeridianClothingUnderRankCivilianChaplainBunnysuit: 2
+    WFMeridianClothingUnderRankCivilianChaplainDivineArcher: 2
+    # WOLFGATE END
 #    ClothingHeadsetService: 4 # Frontier
     RubberStampChaplain: 3
     Bible: 3 # Frontier: 1<3

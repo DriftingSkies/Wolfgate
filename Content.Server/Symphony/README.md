@@ -54,6 +54,7 @@ ticket table, the feedback table or any of the endpoints change.
 - [`Content.Client/Launcher/LauncherConnectingGui.Symphony.cs`](../../Content.Client/Launcher/LauncherConnectingGui.Symphony.cs)
 - [`Content.Client/Launcher/LauncherFlourish.Symphony.cs`](../../Content.Client/Launcher/LauncherFlourish.Symphony.cs)
 - [`Content.Client/Lobby/SymphonyWait.Symphony.cs`](../../Content.Client/Lobby/SymphonyWait.Symphony.cs)
+- [`Content.Client/Lobby/UI/AnimatedBackground.Symphony.cs`](../../Content.Client/Lobby/UI/AnimatedBackground.Symphony.cs)
 - [`Content.Client/Lobby/UI/LobbyNotice.Symphony.cs`](../../Content.Client/Lobby/UI/LobbyNotice.Symphony.cs)
 
 ### Localization
@@ -67,6 +68,7 @@ ticket table, the feedback table or any of the endpoints change.
 - [`.github/workflows/publish.yml`](../../.github/workflows/publish.yml): run name for the SSymphony panel
 - [`Content.Client/Audio/ContentAudioSystem.LobbyMusic.cs`](../../Content.Client/Audio/ContentAudioSystem.LobbyMusic.cs)
   - attempt
+  - an uploaded track is asked of the cache only once it is here, since the cache remembers a miss
   - a track the panel uploaded can arrive just after the playlist naming it
 - [`Content.Client/Launcher/LauncherConnectingGui.xaml.cs`](../../Content.Client/Launcher/LauncherConnectingGui.xaml.cs)
   - Symphony, the Link Discord buttons, built in LauncherConnectingGui.Symphony.cs
@@ -74,13 +76,18 @@ ticket table, the feedback table or any of the endpoints change.
 - [`Content.Client/Lobby/LobbyState.cs`](../../Content.Client/Lobby/LobbyState.cs)
   - a background the panel uploaded can arrive just after the status naming it
   - shown once the uploaded file is here. A big picture over a slow link can take
-- [`Content.Client/Lobby/UI/LobbyGui.xaml`](../../Content.Client/Lobby/UI/LobbyGui.xaml): the notice staff set from the SSymphony panel; hidden when there is none
+- [`Content.Client/Lobby/UI/LobbyGui.xaml`](../../Content.Client/Lobby/UI/LobbyGui.xaml)
+  - an animated background the SSymphony panel made from a GIF, shown over the still one
+  - the notice staff set from the SSymphony panel; hidden when there is none
+- [`Content.Client/Lobby/UI/LobbyGui.xaml.cs`](../../Content.Client/Lobby/UI/LobbyGui.xaml.cs): the GIF background covers the screen as the still one does
 - [`Content.Server/Audio/ContentAudioSystem.cs`](../Audio/ContentAudioSystem.cs): a playlist the SSymphony panel set plays in its own order, round after round
 - [`Content.Server/Connection/ConnectionManager.cs`](../Connection/ConnectionManager.cs)
   - Symphony, the Discord link as a property so the client can offer a button
   - Symphony, not one who passed a running whitelist, so a revoke holds
   - Symphony, with the Discord link that gets them whitelisted
   - Symphony, so a later revoke is checked on reconnect rather than waved through
-- [`Content.Server/GameTicking/GameTicker.LobbyBackground.cs`](../GameTicking/GameTicker.LobbyBackground.cs): a background the SSymphony panel set holds over every round until it is cleared
+- [`Content.Server/GameTicking/GameTicker.LobbyBackground.cs`](../GameTicking/GameTicker.LobbyBackground.cs)
+  - a background the SSymphony panel set holds over every round until it is cleared
+  - or one from the panel's pool, a different one each round
 
 <!-- WOLFGATE-GENERATED END -->

@@ -83,13 +83,13 @@
       required: true
       defaultMarkings: [ MobIPCHeadDefault, MobIPCTorsoDefault, MobIPCLArmDefault, MobIPCLHandDefault, MobIPCRArmDefault, MobIPCRHandDefault, MobIPCLLegDefault, MobIPCLFootDefault, MobIPCRLegDefault, MobIPCRFootDefault ]
     Head:
-      points: 3
+      points: 4 # WOLFGATE(Species): was 3, more marking slots
       required: false
     Snout:
       points: 1
       required: false
     Chest:
-      points: 3
+      points: 4 # WOLFGATE(Species): was 3, more marking slots
       required: false
     Legs:
       points: 8

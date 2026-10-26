@@ -2,9 +2,11 @@
 
 The loadout picker the character creator opens from a job's Loadout button, in place of the stock window with one tab
 per group. A rail on the left lists every group of the role under a few categories (clothing, head and face, bags,
-weapons, tools, extras, rank) with what is picked there and a chip for anything that needs attention. The right side
+weapons, tools, extras, rank) with what is picked there and a chip for anything that needs attention. The middle
 shows the open group as a grid of tiles, or matches from every group while the search box holds two or more
-characters. The header shows what the kit costs against the balance the server will pay from, and links to the first
+characters; a tile whose item can be recoloured carries a palette. A column on the right lists what the open group
+holds, one card per pick, with colour swatches under a recolourable one; only picking changes it, and a tile's tooltip
+gives its whole name and why it is locked. The header shows what the kit costs against the balance the server will pay from, and links to the first
 group that still needs a pick or holds something the character can't afford.
 
 Entry points: `WolfgateLoadoutWindow` (same constructor, events and `RefreshLoadouts` as the stock `LoadoutWindow`, so
@@ -35,10 +37,10 @@ loadouts has to be carried over to `LoadoutCatalog` by hand.
 - [`Content.Client/_WF/Loadouts/LoadoutBudget.cs`](LoadoutBudget.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutCatalog.cs`](LoadoutCatalog.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutCategorizer.cs`](LoadoutCategorizer.cs)
-- [`Content.Client/_WF/Loadouts/LoadoutDetailStrip.cs`](LoadoutDetailStrip.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutIconCache.cs`](LoadoutIconCache.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutRailRow.cs`](LoadoutRailRow.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutSearchBox.cs`](LoadoutSearchBox.cs)
+- [`Content.Client/_WF/Loadouts/LoadoutSelectedPanel.cs`](LoadoutSelectedPanel.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutTile.cs`](LoadoutTile.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutTileGrid.cs`](LoadoutTileGrid.cs)
 - [`Content.Client/_WF/Loadouts/LoadoutTones.cs`](LoadoutTones.cs)

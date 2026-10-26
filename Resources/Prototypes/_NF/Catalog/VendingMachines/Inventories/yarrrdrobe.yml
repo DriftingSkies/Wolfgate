@@ -15,5 +15,13 @@
     ClothingShoesBootsPirate: 4
     ClothingShoesBootsPirateLuffy: 4
     PirateHandyFlag: 4
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadCollectablePirate: 2
+    WFMeridianClothingHeadCostumePirateBandana: 2
+    WFMeridianClothingHeadCostumePirateCaptain: 2
+    WFMeridianClothingSuitCostumePirate: 2
+    WFMeridianClothingSuitCostumePirateCaptain: 2
+    WFMeridianClothingUnderCostumePirate: 2
+    # WOLFGATE END
   contrabandInventory:
     ClothingOuterCoatPirateCaptain: 1

@@ -21,6 +21,32 @@
     ClothingNeckScarfStripedOrange: 3
     ClothingShoesBootsWinterEngi: 2
     # Frontier
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingAccessoryMedalSilverEmergencyServicesEngineering: 2
+    WFMeridianClothingHeadCollectableHardhat: 2
+    WFMeridianClothingHeadHoodedWinterhoodEngineering: 2
+    WFMeridianClothingHeadHoodedWinterhoodEngineeringCe: 2
+    WFMeridianClothingHeadPlaybunnyearsCe: 2
+    WFMeridianClothingHeadPlaybunnyearsEngineer: 2
+    WFMeridianClothingHeadUtilityHardhatCakehatEnergycake: 2
+    WFMeridianClothingHeadUtilityHardhatPumpkinheadBlumpkin: 2
+    WFMeridianClothingHeadUtilityHardhatReindeer: 2
+    WFMeridianClothingNeckCloakSkillRewardConstruction: 2
+    WFMeridianClothingNeckTieBunnytieCe: 2
+    WFMeridianClothingNeckTieBunnytieEngineer: 2
+    WFMeridianClothingSuitJacketTailcoatEngineer: 2
+    WFMeridianClothingUnderAkulaWetsuitJobEngineering: 2
+    WFMeridianClothingUnderCostumeNriEngineer: 2
+    WFMeridianClothingUnderRankEngineeringChiefEngineerBunnysuit: 2
+    WFMeridianClothingUnderRankEngineeringChiefEngineerTurtleneckSkirt: 2
+    WFMeridianClothingUnderRankEngineeringEngineerBunnysuit: 2
+    WFMeridianClothingUnderRankEngineeringEngineerNovaHazardChem: 2
+    WFMeridianClothingUnderRankEngineeringEngineerNovaHazardChemEmt: 2
+    WFMeridianClothingUnderRankEngineeringEngineerNovaTrouser: 2
+    WFMeridianClothingUnderRankEngineeringEngineerNovaUtility: 2
+    WFMeridianClothingUnderRankEngineeringEngineerNovaUtilityTelecomm: 2
+    WFMeridianClothingUnderRankEngineeringEngineerNovaUtilityTelecommSkirt: 2
+    # WOLFGATE END
 # Atmos:
     ClothingBackpackDuffelAtmospherics: 2
     ClothingBackpackSatchelAtmospherics: 2

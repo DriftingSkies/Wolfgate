@@ -316,14 +316,14 @@
                         <PanelContainer Name="HairCard" StyleClasses="CreatorCard" HorizontalExpand="True">
                             <BoxContainer Orientation="Vertical" SeparationOverride="6">
                                 <Label Text="{Loc 'wf-creator-hair'}" StyleClasses="CreatorHeading" />
-                                <!-- WOLFGATE(Stylesheets): a Grid, not a horizontal Box. A BoxContainer hands a stretching child
-                                     its full desired width once that exceeds its share, starving the sibling, and each
-                                     picker's desired width tracks its own tile-column count - so the two boxes settled
-                                     at wildly different widths. Grid columns always split evenly. -->
-                                <GridContainer Columns="2" HSeparationOverride="16" HorizontalExpand="True">
+                                <!-- WOLFGATE(Humanoid): an even row, not a Box or Grid. Both measure each picker against the
+                                     whole width, and a picker picks its tile columns from the width it is measured with, so
+                                     hair took far too many columns: its tiles were cut off, or facial hair was pushed out of
+                                     the card on a wide screen. The row measures each picker against its own half. -->
+                                <wfh:WolfgateEvenRow Separation="16" HorizontalExpand="True">
                                     <wfh:WolfgateSlotMarkingPicker Name="HairStylePicker" Category="Hair" HorizontalExpand="True" />
                                     <wfh:WolfgateSlotMarkingPicker Name="FacialHairPicker" Category="FacialHair" HorizontalExpand="True" />
-                                </GridContainer>
+                                </wfh:WolfgateEvenRow>
                             </BoxContainer>
                         </PanelContainer>
                         <!-- Eyes -->

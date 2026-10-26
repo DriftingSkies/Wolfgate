@@ -64,6 +64,12 @@ internal sealed partial class ChatManager : IChatManager
                 _consoleHost.ExecuteCommand($"me \"{CommandParsing.Escape(str)}\"");
                 break;
 
+            // WOLFGATE(Subtle) START: subtle emote channel
+            case ChatSelectChannel.Subtle:
+                _consoleHost.ExecuteCommand($"subtle \"{CommandParsing.Escape(str)}\"");
+                break;
+            // WOLFGATE END
+
             case ChatSelectChannel.Dead:
                 if (_systems.GetEntitySystemOrNull<GhostSystem>() is {IsGhost: true})
                     goto case ChatSelectChannel.Local;

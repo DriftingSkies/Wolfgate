@@ -5,6 +5,14 @@
     ClothingHeadHatTophat: 2
     ClothingEyesHudBeer: 2
     ClothingEyesEyepatchHudBeer: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingAccessoryNovaAccMedalBarBarRibbon: 2
+    WFMeridianClothingAccessoryNovaAccMedalRankpinBar: 2
+    WFMeridianClothingHeadPlaybunnyearsBartender: 2
+    WFMeridianClothingSuitHoodedWintercoatNovaBartender: 2
+    WFMeridianClothingUnderRankCivilianBartenderBunnysuit: 2
+    WFMeridianClothingUnderSuitWaiter: 2
+    # WOLFGATE END
 #    ClothingHeadsetService: 2 # Frontier
     ClothingOuterApronBar: 2
     ClothingOuterWinterBar: 2

@@ -54,19 +54,19 @@
       points: 1
       required: false
     Head:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: true
     Snout:
       points: 1
       required: true
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): was 4, more marking slots
       required: true
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): was 4, more marking slots
       required: true
     Chest:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: false
     Tail:
       points: 1

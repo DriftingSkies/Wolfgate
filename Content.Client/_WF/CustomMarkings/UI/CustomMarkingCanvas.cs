@@ -30,6 +30,9 @@ public sealed partial class CustomMarkingCanvas : Control
     private static readonly Color MirrorGuide = Color.FromHex("#4FD3FF").WithAlpha(0.8f);
     private static readonly Color MirrorColumn = Color.FromHex("#4FD3FF").WithAlpha(0.14f);
 
+    /// <summary>How strongly the frame before is shown under the one being drawn.</summary>
+    private const float OnionAlpha = 0.3f;
+
     [Dependency] private IEntityManager _entMan = default!;
     [Dependency] private IGameTiming _timing = default!;
 
@@ -48,6 +51,9 @@ public sealed partial class CustomMarkingCanvas : Control
 
     /// <summary>Which frame of <see cref="Art"/> is shown.</summary>
     public int ArtFrame;
+
+    /// <summary>Whether the frame before <see cref="ArtFrame"/> shows faintly under it, to line up a movement.</summary>
+    public bool OnionSkin;
 
     /// <summary>Finished art, drawn from its sprite in place of <see cref="Art"/>, frame after frame if it is animated.</summary>
     public RSI.State? ArtState;
@@ -296,6 +302,23 @@ public sealed partial class CustomMarkingCanvas : Control
             return;
 
         var frame = Math.Clamp(ArtFrame, 0, Art.Frames - 1);
+        if (OnionSkin && Art.Frames > 1)
+        {
+            var before = (frame + Art.Frames - 1) % Art.Frames;
+            for (var y = 0; y < Frame; y++)
+            {
+                for (var x = 0; x < Frame; x++)
+                {
+                    var pixel = Art.GetPixel(before, Facing, x, y);
+                    if (pixel.A == 0)
+                        continue;
+
+                    var color = CustomMarkingArt.ToColor(pixel);
+                    handle.DrawRect(Cells(x, y, 1, cell), color.WithAlpha(color.A * OnionAlpha));
+                }
+            }
+        }
+
         for (var y = 0; y < Frame; y++)
         {
             for (var x = 0; x < Frame; x++)

@@ -170,7 +170,7 @@ public sealed class ChatTabsTest : InteractionTest
             Assert.That(_tabs.Tabs[Local].Channels & ChatChannel.OOC, Is.EqualTo(ChatChannel.OOC));
             Assert.That(popup.IsActive(ChatChannel.OOC));
             Assert.That(_log.EntryCount, Is.EqualTo(2));
-            Assert.That(_cfg.GetCVar(WolfgateCVars.ChatTabs), Does.Contain("Local=Local,Whisper,Emotes,OOC|"));
+            Assert.That(_cfg.GetCVar(WolfgateCVars.ChatTabs), Does.Contain("Local=Local,Whisper,Emotes,Subtle,OOC|"));
             popup.Close();
         });
     }

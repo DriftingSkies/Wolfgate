@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
@@ -67,6 +68,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     public const int MaxImageBytes = 8_000_000;
     public const int MaxTrackBytes = 16_000_000;
     private const int MaxTracks = 30;
+    private const int MaxPool = 30;
 
     private static readonly ResPath UploadDir = new("Symphony/Lobby");
     private static readonly ResPath SavedDir = new("/symphony/lobby");
@@ -161,6 +163,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
             {
                 Current = _ticker.LobbyBackground,
                 Override = _ticker.LobbyBackgroundOverride,
+                Pool = _ticker.LobbyBackgroundPool.ToList(),
                 Choices = _ticker.LobbyBackgroundChoices.Select(p => p.ToString()).ToList(),
             },
             Music = new MusicState
@@ -314,9 +317,18 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
             return;
         }
 
+        // An animated background is a sprite sheet the panel made from a GIF: frames, columns and frame time ride in
+        // its name, which is how the client knows to play it.
+        var anim = HttpUtility.ParseQueryString(context.Url.Query)["anim"];
+        if (anim != null && (kind != "background" || ext != "png" || !AnimTag().IsMatch(anim)))
+        {
+            await context.RespondAsync("anim is <frames>x<columns>-<milliseconds>, on a PNG background only", HttpStatusCode.BadRequest);
+            return;
+        }
+
         // Named by what is in it, so the same file sent twice is one file, and a client never shows a stale one.
         var hash = Convert.ToHexString(SHA256.HashData(data))[..16].ToLowerInvariant();
-        var relative = UploadDir / (kind == "background" ? "art" : "music") / $"{hash}.{ext}";
+        var relative = UploadDir / (kind == "background" ? "art" : "music") / (anim != null ? $"{hash}.anim-{anim}.{ext}" : $"{hash}.{ext}");
         var path = (SymphonyUploads.Root / relative).ToString();
 
         var sent = await _tasks.OnMainThread(() =>
@@ -350,18 +362,29 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
         {
             body = null;
         }
-        if (body == null)
+        if (body == null || body.Pool is { Count: > MaxPool } || body.Pool is { Count: 1 })
         {
-            await context.RespondAsync("expected {\"path\": \"/Textures/...\"} or {\"path\": null}", HttpStatusCode.BadRequest);
+            await context.RespondAsync($"expected {{\"path\": \"/Textures/...\"}}, {{\"path\": null}}, or {{\"pool\": [2 to {MaxPool} paths]}}", HttpStatusCode.BadRequest);
             return;
         }
 
         var outcome = await _tasks.OnMainThread(() =>
         {
-            if (body.Path != null && !_ticker.LobbyBackgroundChoices.Any(p => p.ToString() == body.Path) && !IsUpload(body.Path, "art"))
-                return null;
-            _ticker.SetLobbyBackgroundOverride(body.Path, announce: true);
-            Prune("art", body.Path == null ? [] : [body.Path]);
+            bool Known(string p) => _ticker.LobbyBackgroundChoices.Any(c => c.ToString() == p) || IsUpload(p, "art");
+            if (body.Pool is { Count: > 0 } pool)
+            {
+                if (!pool.All(Known))
+                    return null;
+                _ticker.SetLobbyBackgroundPool(pool, announce: true);
+                Prune("art", pool);
+            }
+            else
+            {
+                if (body.Path != null && !Known(body.Path))
+                    return null;
+                _ticker.SetLobbyBackgroundOverride(body.Path, announce: true);
+                Prune("art", body.Path == null ? [] : [body.Path]);
+            }
             WriteState();
             return new ApplyResponse
             {
@@ -479,6 +502,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
             _resources.UserData.WriteAllText(StateFile, JsonSerializer.Serialize(new SavedState
             {
                 Background = _ticker.LobbyBackgroundOverride,
+                Pool = _ticker.LobbyBackgroundPool.Count > 0 ? _ticker.LobbyBackgroundPool.ToList() : null,
                 Playlist = _audio.LobbyPlaylistOverride?.ToList(),
                 Notice = _notice.IsEmpty ? null : new NoticeBody { Title = _notice.Title, Body = _notice.Body, Style = _notice.Style },
             }));
@@ -538,6 +562,8 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
 
         if (state.Background != null && Available(state.Background))
             _ticker.SetLobbyBackgroundOverride(state.Background, announce: false);
+        else if (state.Pool?.Where(Available).ToList() is { Count: > 1 } pool)
+            _ticker.SetLobbyBackgroundPool(pool, announce: false);
         var tracks = state.Playlist?.Where(Available).ToArray();
         if (tracks is { Length: > 0 })
             _audio.SetLobbyPlaylistOverride(tracks, null);
@@ -616,6 +642,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     {
         [JsonPropertyName("current")] public string? Current { get; set; }
         [JsonPropertyName("override")] public string? Override { get; set; }
+        [JsonPropertyName("pool")] public List<string> Pool { get; set; } = [];
         [JsonPropertyName("choices")] public List<string> Choices { get; set; } = [];
     }
 
@@ -655,6 +682,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     private sealed class BackgroundBody
     {
         [JsonPropertyName("path")] public string? Path { get; set; }
+        [JsonPropertyName("pool")] public List<string>? Pool { get; set; }
         [JsonPropertyName("actor")] public string? Actor { get; set; }
     }
 
@@ -667,7 +695,11 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     private sealed class SavedState
     {
         [JsonPropertyName("background")] public string? Background { get; set; }
+        [JsonPropertyName("pool")] public List<string>? Pool { get; set; }
         [JsonPropertyName("playlist")] public List<string>? Playlist { get; set; }
         [JsonPropertyName("notice")] public NoticeBody? Notice { get; set; }
     }
+
+    [GeneratedRegex(@"^\d{1,3}x\d{1,3}-\d{2,4}$")]
+    private static partial Regex AnimTag();
 }

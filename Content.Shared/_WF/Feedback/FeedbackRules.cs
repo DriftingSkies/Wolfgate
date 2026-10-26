@@ -35,7 +35,7 @@ public static class FeedbackRules
     public static readonly string[] Kinds = { "bug", "suggestion", "survey" };
 
     /// <summary>The statuses as the database and the panel write them, in <see cref="FeedbackStatus"/> order.</summary>
-    public static readonly string[] Statuses = { "pending", "checked", "fixed", "non_issue" };
+    public static readonly string[] Statuses = { "pending", "checked", "fixed", "non_issue", "accepted", "declined", "read", "resolved" };
 
     /// <summary>The areas a report can be filed under. Each has a wf-feedback-category-* string.</summary>
     public static readonly string[] Categories =

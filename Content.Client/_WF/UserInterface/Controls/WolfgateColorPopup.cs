@@ -34,19 +34,13 @@ public sealed class WolfgateColorPopup : Popup
     private float _s = 1f;
     private float _v = 1f;
 
+    // Kept apart from the HSV floats: an RGB or hex colour that went through HSV can come back a step off.
+    private Color _color = Color.White;
+
     public Color Color
     {
-        get => Color.FromHsv(new Vector4(_h, _s, _v, 1f));
-        set
-        {
-            var hsv = Color.ToHsv(value);
-            // Keep the previous hue for greys so the box does not jump to red
-            if (hsv.Y > 0.001f && hsv.Z > 0.001f)
-                _h = hsv.X;
-            _s = hsv.Y;
-            _v = hsv.Z;
-            Refresh();
-        }
+        get => _color;
+        set => SetExact(value, null, false);
     }
 
     public WolfgateColorPopup()
@@ -63,13 +57,20 @@ public sealed class WolfgateColorPopup : Popup
         _hex = Field(9);
         _hex.HorizontalExpand = true;
 
-        _r.OnTextChanged += _ => RgbEntered();
-        _g.OnTextChanged += _ => RgbEntered();
-        _b.OnTextChanged += _ => RgbEntered();
-        _hField.OnTextChanged += _ => HsvEntered(_hField, 360, value => SetHsv(value, _s, _v));
-        _sField.OnTextChanged += _ => HsvEntered(_sField, 100, value => SetHsv(_h, value, _v));
-        _vField.OnTextChanged += _ => HsvEntered(_vField, 100, value => SetHsv(_h, _s, value));
+        _r.OnTextChanged += _ => RgbEntered(_r);
+        _g.OnTextChanged += _ => RgbEntered(_g);
+        _b.OnTextChanged += _ => RgbEntered(_b);
+        _hField.OnTextChanged += _ => HsvEntered(_hField, 360, value => SetHsv(value, _s, _v, _hField));
+        _sField.OnTextChanged += _ => HsvEntered(_sField, 100, value => SetHsv(_h, value, _v, _sField));
+        _vField.OnTextChanged += _ => HsvEntered(_vField, 100, value => SetHsv(_h, _s, value, _vField));
         _hex.OnTextChanged += _ => HexEntered();
+
+        // Typed text is left alone while editing; once done, the field shows the value actually applied.
+        foreach (var field in new[] { _r, _g, _b, _hField, _sField, _vField, _hex })
+        {
+            field.OnFocusExit += _ => Refresh();
+            field.OnTextEntered += _ => Refresh();
+        }
 
         var fields = new BoxContainer
         {
@@ -128,40 +129,64 @@ public sealed class WolfgateColorPopup : Popup
         return new Label { Text = Loc.GetString(loc), StyleClasses = { StyleWolfgate.StyleClassCreatorFieldLabel }, VerticalAlignment = VAlignment.Center };
     }
 
-    private void SetHsv(float h, float s, float v)
+    /// <summary>Sets the colour from HSV: the box, the hue bar and the HSV fields.</summary>
+    private void SetHsv(float h, float s, float v, LineEdit? source = null)
     {
         _h = Math.Clamp(h, 0f, 1f);
         _s = Math.Clamp(s, 0f, 1f);
         _v = Math.Clamp(v, 0f, 1f);
-        Refresh();
-        OnColorChanged?.Invoke(Color);
+        _color = Color.FromHsv(new Vector4(_h, _s, _v, 1f));
+        Refresh(source);
+        OnColorChanged?.Invoke(_color);
     }
 
-    /// <summary>Pushes the current colour into every control without re-triggering their handlers.</summary>
-    private void Refresh()
+    /// <summary>Sets an exact colour, from outside or from the RGB and hex fields.</summary>
+    private void SetExact(Color color, LineEdit? source, bool notify = true)
+    {
+        _color = color.WithAlpha(1f);
+        var hsv = Color.ToHsv(_color);
+        // Keep the previous hue for greys so the box does not jump to red
+        if (hsv.Y > 0.001f && hsv.Z > 0.001f)
+            _h = hsv.X;
+        _s = hsv.Y;
+        _v = hsv.Z;
+        Refresh(source);
+        if (notify)
+            OnColorChanged?.Invoke(_color);
+    }
+
+    /// <summary>
+    /// Pushes the current colour into every control without re-triggering their handlers. The field being typed in is
+    /// left alone so its text and caret are not rewritten under the player.
+    /// </summary>
+    private void Refresh(LineEdit? source = null)
     {
         _updating = true;
-        var color = Color;
-        _chip.PanelOverride = new StyleBoxFlat(color);
-        _r.Text = color.RByte.ToString();
-        _g.Text = color.GByte.ToString();
-        _b.Text = color.BByte.ToString();
-        _hField.Text = MathF.Round(_h * 360f).ToString("0");
-        _sField.Text = MathF.Round(_s * 100f).ToString("0");
-        _vField.Text = MathF.Round(_v * 100f).ToString("0");
-        _hex.Text = color.ToHexNoAlpha();
+        _chip.PanelOverride = new StyleBoxFlat(_color);
+        SetText(_r, _color.RByte.ToString(), source);
+        SetText(_g, _color.GByte.ToString(), source);
+        SetText(_b, _color.BByte.ToString(), source);
+        SetText(_hField, MathF.Round(_h * 360f).ToString("0"), source);
+        SetText(_sField, MathF.Round(_s * 100f).ToString("0"), source);
+        SetText(_vField, MathF.Round(_v * 100f).ToString("0"), source);
+        SetText(_hex, _color.ToHexNoAlpha(), source);
         _sv.SetHue(_h);
         _updating = false;
     }
 
-    private void RgbEntered()
+    private static void SetText(LineEdit field, string text, LineEdit? source)
+    {
+        if (field != source)
+            field.Text = text;
+    }
+
+    private void RgbEntered(LineEdit source)
     {
         if (_updating)
             return;
         if (!byte.TryParse(_r.Text, out var r) || !byte.TryParse(_g.Text, out var g) || !byte.TryParse(_b.Text, out var b))
             return;
-        var hsv = Color.ToHsv(new Color(r, g, b));
-        SetHsv(hsv.Y > 0.001f && hsv.Z > 0.001f ? hsv.X : _h, hsv.Y, hsv.Z);
+        SetExact(new Color(r, g, b), source);
     }
 
     /// <summary>
@@ -184,8 +209,7 @@ public sealed class WolfgateColorPopup : Popup
             text = "#" + text;
         if (text.Length != 7 || !Color.TryFromHex(text, out var color))
             return;
-        var hsv = Color.ToHsv(color);
-        SetHsv(hsv.Y > 0.001f && hsv.Z > 0.001f ? hsv.X : _h, hsv.Y, hsv.Z);
+        SetExact(color, _hex);
     }
 
     protected override void Dispose(bool disposing)

@@ -41,7 +41,8 @@ public sealed partial class CustomMarkingSystem
             placement,
             art?.Pixels,
             art?.GetFrameTimes(),
-            art != null && art.HasErase() ? art.Erase : null));
+            art != null && art.HasErase() ? art.Erase : null,
+            art?.PingPongs ?? false));
         return request;
     }
 

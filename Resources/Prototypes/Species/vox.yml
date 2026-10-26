@@ -51,18 +51,21 @@
       points: 1
       required: false
     Head:
-      points: 3 # Mono 1<3
+      # WOLFGATE(Species): was 3, more marking slots
+      points: 4 # Mono 1<3
       required: true
     Snout:
       points: 1
       required: true
       defaultMarkings: [ VoxBeak ]
     Arms:
-      points: 6 # Mono 4<6
+      # WOLFGATE(Species): was 6, more marking slots
+      points: 8 # Mono 4<6
       required: true
       defaultMarkings: [ VoxLArmScales, VoxRArmScales, VoxRHandScales, VoxLHandScales ]
     Legs:
-      points: 6 # Mono 4<6
+      # WOLFGATE(Species): was 6, more marking slots
+      points: 8 # Mono 4<6
       required: true
       defaultMarkings: [ VoxLLegScales, VoxRLegScales, VoxRFootScales, VoxLFootScales ]
     Chest:

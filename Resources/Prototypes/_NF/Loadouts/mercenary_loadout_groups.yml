@@ -13,6 +13,160 @@
   - MercenaryClothingUniformJumpsuitMilitaryTurtleneckBlueMercenaryMedic
   - MercenaryClothingUniformJumpsuitMilitaryTurtleneckBlueMercenaryCaptain
   - MercenaryClothingUniformJumpsitDrakeIndustriesWatchdog
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderAkulaWetsuit
+  - WFMeridianLoadoutClothingUnderAkulaWetsuitRefit
+  - WFMeridianLoadoutClothingUnderBlastwave
+  - WFMeridianLoadoutClothingUnderCamoGags
+  - WFMeridianLoadoutClothingUnderColonial
+  - WFMeridianLoadoutClothingUnderColonialHcPolice
+  - WFMeridianLoadoutClothingUnderColonialHcPoliceSkirt
+  - WFMeridianLoadoutClothingUnderColor
+  - WFMeridianLoadoutClothingUnderColorJumpskirt
+  - WFMeridianLoadoutClothingUnderColorJumpskirtRainbow
+  - WFMeridianLoadoutClothingUnderCostumeNri
+  - WFMeridianLoadoutClothingUnderCostumeNriMedic
+  - WFMeridianLoadoutClothingUnderDougDimmadome
+  - WFMeridianLoadoutClothingUnderDressEveninggown
+  - WFMeridianLoadoutClothingUnderDressNovaCountess
+  - WFMeridianLoadoutClothingUnderDressNovaFlower
+  - WFMeridianLoadoutClothingUnderDressNovaFormalPenSkirt
+  - WFMeridianLoadoutClothingUnderDressNovaGiantScarf
+  - WFMeridianLoadoutClothingUnderDressNovaJute
+  - WFMeridianLoadoutClothingUnderDressNovaMidnightGown
+  - WFMeridianLoadoutClothingUnderDressNovaPenSkirt
+  - WFMeridianLoadoutClothingUnderDressNovaPentagram
+  - WFMeridianLoadoutClothingUnderDressNovaPinktutu
+  - WFMeridianLoadoutClothingUnderDressNovaRedformal
+  - WFMeridianLoadoutClothingUnderDressNovaShortDress
+  - WFMeridianLoadoutClothingUnderDressNovaShorterDress
+  - WFMeridianLoadoutClothingUnderDressNovaSlitDress
+  - WFMeridianLoadoutClothingUnderDressNovaStrapless
+  - WFMeridianLoadoutClothingUnderDressNovaVirginKillerSweater
+  - WFMeridianLoadoutClothingUnderDressNovaWindowedDress
+  - WFMeridianLoadoutClothingUnderDressSailor
+  - WFMeridianLoadoutClothingUnderDressSkirt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaBlackSkirt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaJean
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaLoincloth
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaLoinclothLoinclothAlt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaLoneSkirt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaLong
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaMedium
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaMiniSkirt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaRedSkirt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaStripedSkirt
+  - WFMeridianLoadoutClothingUnderDressSkirtNovaSwept
+  - WFMeridianLoadoutClothingUnderDressSkirtPlaid
+  - WFMeridianLoadoutClothingUnderDressSkirtPrimitiveCatgirlBodyWraps
+  - WFMeridianLoadoutClothingUnderDressSkirtPrimitiveCatgirlTailoredDress
+  - WFMeridianLoadoutClothingUnderDressSkirtPrimitiveCatgirlTunic
+  - WFMeridianLoadoutClothingUnderDressSkirtTurtleskirt
+  - WFMeridianLoadoutClothingUnderDressStriped
+  - WFMeridianLoadoutClothingUnderDressSundress
+  - WFMeridianLoadoutClothingUnderDressTango
+  - WFMeridianLoadoutClothingUnderDressWeddingDress
+  - WFMeridianLoadoutClothingUnderDressWeddingDressRibbon
+  - WFMeridianLoadoutClothingUnderEtherealTunic
+  - WFMeridianLoadoutClothingUnderFrontierColonist
+  - WFMeridianLoadoutClothingUnderGreyscaleGorkas
+  - WFMeridianLoadoutClothingUnderGreyscaleOveralls
+  - WFMeridianLoadoutClothingUnderGreyscaleOverallsSkirt
+  - WFMeridianLoadoutClothingUnderGreyscalePlaysuit
+  - WFMeridianLoadoutClothingUnderGreyscaleTurtleneck
+  - WFMeridianLoadoutClothingUnderGreyscaleTurtleneckSkirt
+  - WFMeridianLoadoutClothingUnderMiscAssistantformal
+  - WFMeridianLoadoutClothingUnderMiscBluetracksuit
+  - WFMeridianLoadoutClothingUnderMiscBouncer
+  - WFMeridianLoadoutClothingUnderMiscBurial
+  - WFMeridianLoadoutClothingUnderMiscDurathread
+  - WFMeridianLoadoutClothingUnderMiscNovaGearHarness
+  - WFMeridianLoadoutClothingUnderMiscNovaGearHarnessAdam
+  - WFMeridianLoadoutClothingUnderMiscNovaGearHarnessEve
+  - WFMeridianLoadoutClothingUnderMiscNovaMechanic
+  - WFMeridianLoadoutClothingUnderMiscNovaModskin
+  - WFMeridianLoadoutClothingUnderMiscNovaTaccas
+  - WFMeridianLoadoutClothingUnderMiscNovaUtility
+  - WFMeridianLoadoutClothingUnderMiscPatriotsuit
+  - WFMeridianLoadoutClothingUnderMiscPjBlue
+  - WFMeridianLoadoutClothingUnderMiscPjRed
+  - WFMeridianLoadoutClothingUnderMiscViceOfficer
+  - WFMeridianLoadoutClothingUnderPantsCamo
+  - WFMeridianLoadoutClothingUnderPantsJeans
+  - WFMeridianLoadoutClothingUnderPantsNovaBigPants
+  - WFMeridianLoadoutClothingUnderPantsNovaDoubleSkirtDress
+  - WFMeridianLoadoutClothingUnderPantsNovaHakama
+  - WFMeridianLoadoutClothingUnderPantsNovaJeansRipped
+  - WFMeridianLoadoutClothingUnderPantsNovaKilt
+  - WFMeridianLoadoutClothingUnderPantsNovaLoosePants
+  - WFMeridianLoadoutClothingUnderPantsNovaShortedOverall
+  - WFMeridianLoadoutClothingUnderPantsNovaVicvest
+  - WFMeridianLoadoutClothingUnderPantsNovaWideLeg
+  - WFMeridianLoadoutClothingUnderPantsNovaYoga
+  - WFMeridianLoadoutClothingUnderPantsSlacksAltar
+  - WFMeridianLoadoutClothingUnderPantsTactical
+  - WFMeridianLoadoutClothingUnderPantsTrack
+  - WFMeridianLoadoutClothingUnderPizza
+  - WFMeridianLoadoutClothingUnderRankAzuleanOldBlood
+  - WFMeridianLoadoutClothingUnderRankAzuleanOldBloodSkirt
+  - WFMeridianLoadoutClothingUnderRankAzuleanUpstart
+  - WFMeridianLoadoutClothingUnderRankAzuleanUpstartSkirt
+  - WFMeridianLoadoutClothingUnderRankCivilianBarber
+  - WFMeridianLoadoutClothingUnderRankCivilianHopBunnysuit
+  - WFMeridianLoadoutClothingUnderRankExpeditionaryCorps
+  - WFMeridianLoadoutClothingUnderRankStationTraitHumanAi
+  - WFMeridianLoadoutClothingUnderShorts
+  - WFMeridianLoadoutClothingUnderShortsJeanshorts
+  - WFMeridianLoadoutClothingUnderShortsNovaShortershorts
+  - WFMeridianLoadoutClothingUnderShortsNovaShortsRipped
+  - WFMeridianLoadoutClothingUnderSkinsuit
+  - WFMeridianLoadoutClothingUnderSolEmt
+  - WFMeridianLoadoutClothingUnderSolPeacekeeper
+  - WFMeridianLoadoutClothingUnderSolfed
+  - WFMeridianLoadoutClothingUnderSolfedEmergencyfire
+  - WFMeridianLoadoutClothingUnderSolfedEmergencymed
+  - WFMeridianLoadoutClothingUnderSolfedOfficialCivil
+  - WFMeridianLoadoutClothingUnderSolfedOfficialSocial
+  - WFMeridianLoadoutClothingUnderSuitBeige
+  - WFMeridianLoadoutClothingUnderSuitBlack
+  - WFMeridianLoadoutClothingUnderSuitBlackReally
+  - WFMeridianLoadoutClothingUnderSuitBlackReallySkirt
+  - WFMeridianLoadoutClothingUnderSuitBlackSkirt
+  - WFMeridianLoadoutClothingUnderSuitBurgundy
+  - WFMeridianLoadoutClothingUnderSuitCharcoal
+  - WFMeridianLoadoutClothingUnderSuitCheckered
+  - WFMeridianLoadoutClothingUnderSuitNavy
+  - WFMeridianLoadoutClothingUnderSuitNovaBlackReallyCollared
+  - WFMeridianLoadoutClothingUnderSuitNovaBlackReallyCollaredSkirt
+  - WFMeridianLoadoutClothingUnderSuitNovaInferno
+  - WFMeridianLoadoutClothingUnderSuitNovaInfernoSkirt
+  - WFMeridianLoadoutClothingUnderSuitNovaPencil
+  - WFMeridianLoadoutClothingUnderSuitNovaPencilBlackReally
+  - WFMeridianLoadoutClothingUnderSuitNovaPencilCheckered
+  - WFMeridianLoadoutClothingUnderSuitNovaPencilCheckeredNoshirt
+  - WFMeridianLoadoutClothingUnderSuitNovaPencilNoshirt
+  - WFMeridianLoadoutClothingUnderSuitNovaRecolorable
+  - WFMeridianLoadoutClothingUnderSuitNovaRecolorableCasual
+  - WFMeridianLoadoutClothingUnderSuitNovaRecolorableExecutive
+  - WFMeridianLoadoutClothingUnderSuitNovaRecolorableSkirt
+  - WFMeridianLoadoutClothingUnderSuitNovaScarface
+  - WFMeridianLoadoutClothingUnderSuitRed
+  - WFMeridianLoadoutClothingUnderSuitTan
+  - WFMeridianLoadoutClothingUnderSuitTuxedo
+  - WFMeridianLoadoutClothingUnderSuitWhite
+  - WFMeridianLoadoutClothingUnderSuitWhiteSkirt
+  - WFMeridianLoadoutClothingUnderSweater
+  - WFMeridianLoadoutClothingUnderTachawaiian
+  - WFMeridianLoadoutClothingUnderTachawaiianBlue
+  - WFMeridianLoadoutClothingUnderTachawaiianGreen
+  - WFMeridianLoadoutClothingUnderTachawaiianPurple
+  - WFMeridianLoadoutClothingUnderTarkon
+  - WFMeridianLoadoutClothingUnderTarkonGeneral
+  - WFMeridianLoadoutClothingUnderTexas
+  - WFMeridianLoadoutClothingUnderTrekEngsec
+  - WFMeridianLoadoutClothingUnderTrekMedsci
+  - WFMeridianLoadoutClothingUnderTrekQ
+  # WOLFGATE END
   subgroups:
   - MonoMercenaryJumpsuit # Mono
   # - MonoUSSPJumpsuit # Mono
@@ -53,6 +207,141 @@
   #- MercenaryClothingOuterArmorPunkRed # Punkish (Static visuals)
   #- MercenaryClothingOuterArmorPunkRandomized # Punkish (Randomized visuals)
   #- MercenaryClothingOuterArmorCaptainCarapace > Commented out by Monolith
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingSuitApronOveralls
+  - WFMeridianLoadoutClothingSuitApronOverallsLoneskirt
+  - WFMeridianLoadoutClothingSuitApronWaders
+  - WFMeridianLoadoutClothingSuitAshwalkermantle
+  - WFMeridianLoadoutClothingSuitAshwalkermantleCape
+  - WFMeridianLoadoutClothingSuitAutumn
+  - WFMeridianLoadoutClothingSuitBigJacket
+  - WFMeridianLoadoutClothingSuitBlackfurrich
+  - WFMeridianLoadoutClothingSuitBlastwave
+  - WFMeridianLoadoutClothingSuitBluetag
+  - WFMeridianLoadoutClothingSuitBritishOfficer
+  - WFMeridianLoadoutClothingSuitBrownbattlecoat
+  - WFMeridianLoadoutClothingSuitBrownfurrich
+  - WFMeridianLoadoutClothingSuitBrownfurrichCream
+  - WFMeridianLoadoutClothingSuitBrownfurrichWhite
+  - WFMeridianLoadoutClothingSuitCorgisuitEn
+  - WFMeridianLoadoutClothingSuitCossack
+  - WFMeridianLoadoutClothingSuitCropJacket
+  - WFMeridianLoadoutClothingSuitCropJacketLong
+  - WFMeridianLoadoutClothingSuitCropJacketShortsleeve
+  - WFMeridianLoadoutClothingSuitCropJacketShortsleeveLong
+  - WFMeridianLoadoutClothingSuitCropJacketSleeveless
+  - WFMeridianLoadoutClothingSuitCropJacketSleevelessLong
+  - WFMeridianLoadoutClothingSuitDaggerMantle
+  - WFMeridianLoadoutClothingSuitDuster
+  - WFMeridianLoadoutClothingSuitDutchjacketsr
+  - WFMeridianLoadoutClothingSuitFallsparka
+  - WFMeridianLoadoutClothingSuitFedcoat
+  - WFMeridianLoadoutClothingSuitFedcoatCapt
+  - WFMeridianLoadoutClothingSuitFedcoatEng
+  - WFMeridianLoadoutClothingSuitFedcoatMedsci
+  - WFMeridianLoadoutClothingSuitFedcoatModern
+  - WFMeridianLoadoutClothingSuitFedcoatModernEng
+  - WFMeridianLoadoutClothingSuitFedcoatModernMedsci
+  - WFMeridianLoadoutClothingSuitFlakjack
+  - WFMeridianLoadoutClothingSuitFrenchtrench
+  - WFMeridianLoadoutClothingSuitHazardvest
+  - WFMeridianLoadoutClothingSuitHazardvestPress
+  - WFMeridianLoadoutClothingSuitHeartSweater
+  - WFMeridianLoadoutClothingSuitHoodedBeeCostume
+  - WFMeridianLoadoutClothingSuitHoodedEtherealRaincoat
+  - WFMeridianLoadoutClothingSuitHoodedFlashsuit
+  - WFMeridianLoadoutClothingSuitHoodedIanCostume
+  - WFMeridianLoadoutClothingSuitHoodedLeather
+  - WFMeridianLoadoutClothingSuitHoodedSharkCostume
+  - WFMeridianLoadoutClothingSuitHoodedShorkCostume
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatCustom
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatEva
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatNova
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatNovaChristmas
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatNovaChristmasGreen
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatNovaNarsie
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatNovaRatvar
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatPullover
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatZipup
+  - WFMeridianLoadoutClothingSuitJacketBlazer
+  - WFMeridianLoadoutClothingSuitJacketBomber
+  - WFMeridianLoadoutClothingSuitJacketCapjacket
+  - WFMeridianLoadoutClothingSuitJacketCroptop
+  - WFMeridianLoadoutClothingSuitJacketFancy
+  - WFMeridianLoadoutClothingSuitJacketFrontierColonist
+  - WFMeridianLoadoutClothingSuitJacketFrontierColonistShort
+  - WFMeridianLoadoutClothingSuitJacketHaori
+  - WFMeridianLoadoutClothingSuitJacketHenchmenCoat
+  - WFMeridianLoadoutClothingSuitJacketLeatherColourable
+  - WFMeridianLoadoutClothingSuitJacketLettermanSyndie
+  - WFMeridianLoadoutClothingSuitJacketLongRobe
+  - WFMeridianLoadoutClothingSuitJacketMiljacket
+  - WFMeridianLoadoutClothingSuitJacketOversized
+  - WFMeridianLoadoutClothingSuitJacketPrimitiveCatgirlCoat
+  - WFMeridianLoadoutClothingSuitJacketPuffer
+  - WFMeridianLoadoutClothingSuitJacketPufferVest
+  - WFMeridianLoadoutClothingSuitJacketStraightJacket
+  - WFMeridianLoadoutClothingSuitJacketTailcoat
+  - WFMeridianLoadoutClothingSuitJacketTailcoatBritish
+  - WFMeridianLoadoutClothingSuitJacketTailcoatCommunist
+  - WFMeridianLoadoutClothingSuitJacketTailcoatMagician
+  - WFMeridianLoadoutClothingSuitJacketTailcoatPlasmaman
+  - WFMeridianLoadoutClothingSuitJacketTailcoatUsa
+  - WFMeridianLoadoutClothingSuitKimjacket
+  - WFMeridianLoadoutClothingSuitKoreacoat
+  - WFMeridianLoadoutClothingSuitModernwintercoatthing
+  - WFMeridianLoadoutClothingSuitMothcoat
+  - WFMeridianLoadoutClothingSuitMothcoatWinter
+  - WFMeridianLoadoutClothingSuitMush
+  - WFMeridianLoadoutClothingSuitNovaFurredTrenchcoat
+  - WFMeridianLoadoutClothingSuitNovaOvercoat
+  - WFMeridianLoadoutClothingSuitNovaSweater
+  - WFMeridianLoadoutClothingSuitNovaSweaterBow
+  - WFMeridianLoadoutClothingSuitPillowSuit
+  - WFMeridianLoadoutClothingSuitPizzaleader
+  - WFMeridianLoadoutClothingSuitRedtag
+  - WFMeridianLoadoutClothingSuitTailoredJacket
+  - WFMeridianLoadoutClothingSuitTailoredJacketShort
+  - WFMeridianLoadoutClothingSuitTexas
+  - WFMeridianLoadoutClothingSuitToggleJacketCroptopBomberJacket
+  - WFMeridianLoadoutClothingSuitToggleJacketCroptopBomberJacketBadge
+  - WFMeridianLoadoutClothingSuitToggleJacketCroptopBomberJacketPlain
+  - WFMeridianLoadoutClothingSuitToggleJacketCroptopBomberJacketStripe
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaCardigan
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaColorableBomber
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaColorableBomberTcomm
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaCorrectionsOfficer
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaFlannel
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaFlannelAqua
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaFlannelBrown
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaFlannelGags
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodie
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieBranded
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieBrandedCti
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieBrandedMu
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieBrandedNrti
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieBrandedSmw
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieTrim
+  - WFMeridianLoadoutClothingSuitToggleJacketNovaHoodieTrimAlt
+  - WFMeridianLoadoutClothingSuitToggleJacketSweater
+  - WFMeridianLoadoutClothingSuitToggleJacketTrenchcoat
+  - WFMeridianLoadoutClothingSuitToggleOwlwings
+  - WFMeridianLoadoutClothingSuitToggleOwlwingsGriffinwings
+  - WFMeridianLoadoutClothingSuitTogglePeacoat
+  - WFMeridianLoadoutClothingSuitToggleSuspenders
+  - WFMeridianLoadoutClothingSuitToggleTrackjacket
+  - WFMeridianLoadoutClothingSuitTrenchblack
+  - WFMeridianLoadoutClothingSuitTrenchbrown
+  - WFMeridianLoadoutClothingSuitUrban
+  - WFMeridianLoadoutClothingSuitUtilityBeekeeperSuit
+  - WFMeridianLoadoutClothingSuitUtilityFireCeTailcoat
+  - WFMeridianLoadoutClothingSuitVarsity
+  - WFMeridianLoadoutClothingSuitVictoriantailcoatbutler
+  - WFMeridianLoadoutClothingSuitWarmCoat
+  - WFMeridianLoadoutClothingSuitWarmSweater
+  - WFMeridianLoadoutClothingSuitWoolcoat
+  - WFMeridianLoadoutClothingSuitWornshirt
+  # WOLFGATE END
   subgroups:
   - MonoMercenaryOuterClothing # Mono
   # - MonoUSSPOuterClothing # Mono
@@ -68,6 +357,68 @@
   - MercenaryClothingShoesBootsCombat
   - MercenaryClothingShoesMagMercenary
   - MercenaryClothingShoesMagSecurity
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingShoesBhopRocket
+  - WFMeridianLoadoutClothingShoesBhopRocketJet
+  - WFMeridianLoadoutClothingShoesBronze
+  - WFMeridianLoadoutClothingShoesColorableLaceups
+  - WFMeridianLoadoutClothingShoesColorableSandals
+  - WFMeridianLoadoutClothingShoesCombatStormtrooper
+  - WFMeridianLoadoutClothingShoesDiscoshoes
+  - WFMeridianLoadoutClothingShoesDivineArcher
+  - WFMeridianLoadoutClothingShoesFancyHeels
+  - WFMeridianLoadoutClothingShoesFancyHeelsSandals
+  - WFMeridianLoadoutClothingShoesGlow
+  - WFMeridianLoadoutClothingShoesGriffin
+  - WFMeridianLoadoutClothingShoesHighHeels
+  - WFMeridianLoadoutClothingShoesJackbootsArmadyne
+  - WFMeridianLoadoutClothingShoesJackbootsAshwalker
+  - WFMeridianLoadoutClothingShoesJackbootsAshwalkerLegate
+  - WFMeridianLoadoutClothingShoesJackbootsBlack
+  - WFMeridianLoadoutClothingShoesJackbootsDuckboots
+  - WFMeridianLoadoutClothingShoesJackbootsFloortile
+  - WFMeridianLoadoutClothingShoesJackbootsFrontierColonist
+  - WFMeridianLoadoutClothingShoesJackbootsGogoBoots
+  - WFMeridianLoadoutClothingShoesJackbootsKim
+  - WFMeridianLoadoutClothingShoesJackbootsKnee
+  - WFMeridianLoadoutClothingShoesJackbootsKneeRecolorable
+  - WFMeridianLoadoutClothingShoesJackbootsRecolorable
+  - WFMeridianLoadoutClothingShoesJackbootsTimbs
+  - WFMeridianLoadoutClothingShoesJackbootsToeless
+  - WFMeridianLoadoutClothingShoesJackbros
+  - WFMeridianLoadoutClothingShoesJungleboots
+  - WFMeridianLoadoutClothingShoesKindleKicks
+  - WFMeridianLoadoutClothingShoesRoman
+  - WFMeridianLoadoutClothingShoesRussian
+  - WFMeridianLoadoutClothingShoesSaints
+  - WFMeridianLoadoutClothingShoesSandalAlt
+  - WFMeridianLoadoutClothingShoesSingerb
+  - WFMeridianLoadoutClothingShoesSingerr
+  - WFMeridianLoadoutClothingShoesSingery
+  - WFMeridianLoadoutClothingShoesSneakersBlackRogue
+  - WFMeridianLoadoutClothingShoesSneakersMarisa
+  - WFMeridianLoadoutClothingShoesSneakersRainbow
+  - WFMeridianLoadoutClothingShoesSportBoots
+  - WFMeridianLoadoutClothingShoesSports
+  - WFMeridianLoadoutClothingShoesSwagshoes
+  - WFMeridianLoadoutClothingShoesWheelys
+  - WFMeridianLoadoutClothingShoesWheelysSkishoes
+  - WFMeridianLoadoutClothingShoesWinterbootsChristmas
+  - WFMeridianLoadoutClothingShoesWinterbootsIceBoots
+  - WFMeridianLoadoutClothingShoesWinterbootsIceBootsEva
+  - WFMeridianLoadoutClothingShoesWinterbootsIceBootsPrimitiveCatgirlBoots
+  - WFMeridianLoadoutClothingShoesWorkbootsBlack
+  - WFMeridianLoadoutClothingShoesWorkbootsToeless
+  - WFMeridianLoadoutClothingShoesWraps
+  - WFMeridianLoadoutClothingShoesWrapsAshwalker
+  - WFMeridianLoadoutClothingShoesWrapsAshwalkerMundanewraps
+  - WFMeridianLoadoutClothingShoesWrapsAshwalkerTribalwraps
+  - WFMeridianLoadoutClothingShoesWrapsBlue
+  - WFMeridianLoadoutClothingShoesWrapsCloth
+  - WFMeridianLoadoutClothingShoesWrapsColourable
+  - WFMeridianLoadoutClothingShoesWrapsRed
+  - WFMeridianLoadoutClothingShoesWrapsSilver
+  # WOLFGATE END
   subgroups:
   - PilotShoes
   - ContractorShoes
@@ -86,6 +437,76 @@
   - MercenaryClothingHeadHatBeretCommander
   - SecurityHelmet
   - SecurityBeret
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingHeadBeanie
+  - WFMeridianLoadoutClothingHeadBeretEngi
+  - WFMeridianLoadoutClothingHeadBlastwave
+  - WFMeridianLoadoutClothingHeadColourableFlatcap
+  - WFMeridianLoadoutClothingHeadConeOfShameBadDog
+  - WFMeridianLoadoutClothingHeadFedora
+  - WFMeridianLoadoutClothingHeadFedoraBeige
+  - WFMeridianLoadoutClothingHeadFedoraBeigePress
+  - WFMeridianLoadoutClothingHeadFedoraCarpskin
+  - WFMeridianLoadoutClothingHeadFedoraGreyscale
+  - WFMeridianLoadoutClothingHeadFedoraHumanLeather
+  - WFMeridianLoadoutClothingHeadFedoraWhite
+  - WFMeridianLoadoutClothingHeadHairTie
+  - WFMeridianLoadoutClothingHeadHairTiePlasticBeads
+  - WFMeridianLoadoutClothingHeadHairTieScrunchie
+  - WFMeridianLoadoutClothingHeadHatsBowler
+  - WFMeridianLoadoutClothingHeadHatsColonial
+  - WFMeridianLoadoutClothingHeadHatsFlakhelm
+  - WFMeridianLoadoutClothingHeadHatsImperial
+  - WFMeridianLoadoutClothingHeadHatsIntern
+  - WFMeridianLoadoutClothingHeadHatsTophatBalloon
+  - WFMeridianLoadoutClothingHeadHenchmenHat
+  - WFMeridianLoadoutClothingHeadHoodedBeeHood
+  - WFMeridianLoadoutClothingHeadHoodedEtherealRainhood
+  - WFMeridianLoadoutClothingHeadHoodedFlashsuit
+  - WFMeridianLoadoutClothingHeadHoodedLeather
+  - WFMeridianLoadoutClothingHeadHoodedSharkHood
+  - WFMeridianLoadoutClothingHeadHoodedShorkHood
+  - WFMeridianLoadoutClothingHeadHoodedWinterhood
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodEva
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodNova
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodNovaChristmas
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodNovaChristmasGreen
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodNovaNarsie
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodNovaRatvar
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodPullover
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodZipup
+  - WFMeridianLoadoutClothingHeadHoodedWolfCoatHoodie
+  - WFMeridianLoadoutClothingHeadLargeBow
+  - WFMeridianLoadoutClothingHeadLargeBowBackBow
+  - WFMeridianLoadoutClothingHeadLargeBowSweetBow
+  - WFMeridianLoadoutClothingHeadMothcap
+  - WFMeridianLoadoutClothingHeadMushHelmet
+  - WFMeridianLoadoutClothingHeadPeaceflower
+  - WFMeridianLoadoutClothingHeadPillowHood
+  - WFMeridianLoadoutClothingHeadPizza
+  - WFMeridianLoadoutClothingHeadPrimitiveCatgirlFerroniere
+  - WFMeridianLoadoutClothingHeadRasta
+  - WFMeridianLoadoutClothingHeadShamanash
+  - WFMeridianLoadoutClothingHeadSkrellChain
+  - WFMeridianLoadoutClothingHeadSkrellChainSilver
+  - WFMeridianLoadoutClothingHeadSmallBow
+  - WFMeridianLoadoutClothingHeadSoftFishingHat
+  - WFMeridianLoadoutClothingHeadSoftFrontierColonist
+  - WFMeridianLoadoutClothingHeadSoftFrontierColonistMedic
+  - WFMeridianLoadoutClothingHeadSoftPropellerHat
+  - WFMeridianLoadoutClothingHeadSoftRainbow
+  - WFMeridianLoadoutClothingHeadSoftYankee
+  - WFMeridianLoadoutClothingHeadSoftYankeeRimless
+  - WFMeridianLoadoutClothingHeadStandaloneHood
+  - WFMeridianLoadoutClothingHeadUtilityBeekeeperHead
+  - WFMeridianLoadoutClothingHeadUtilitySurgerycap
+  - WFMeridianLoadoutClothingHeadUtilitySurgerycapBlack
+  - WFMeridianLoadoutClothingHeadUtilitySurgerycapGreen
+  - WFMeridianLoadoutClothingHeadUtilitySurgerycapPurple
+  - WFMeridianLoadoutClothingHeadUtilityWeldingHat
+  - WFMeridianLoadoutClothingHeadWaldo
+  - WFMeridianLoadoutClothingHeadWig
+  # WOLFGATE END
   subgroups:
   # - MonoUSSPHead # Mono
   - PilotHead
@@ -114,6 +535,49 @@
   - MercenaryClothingHandsGlovesMercFingerless
   - MercenaryClothingHandsMercenaryGlovesCombat
   - MercenaryClothingHandsGlovesCombat
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingGlovesBoxing
+  - WFMeridianLoadoutClothingGlovesBoxingBlue
+  - WFMeridianLoadoutClothingGlovesBoxingGolden
+  - WFMeridianLoadoutClothingGlovesBoxingGreen
+  - WFMeridianLoadoutClothingGlovesBoxingYellow
+  - WFMeridianLoadoutClothingGlovesBracerWraps
+  - WFMeridianLoadoutClothingGlovesColorBlackExpeditionaryCorps
+  - WFMeridianLoadoutClothingGlovesColorPlasmaman
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanBlack
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanJanny
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanPlasmanitrile
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanPrototype
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanRadio
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanRobot
+  - WFMeridianLoadoutClothingGlovesColorPlasmamanWhite
+  - WFMeridianLoadoutClothingGlovesColorRainbow
+  - WFMeridianLoadoutClothingGlovesDesigner
+  - WFMeridianLoadoutClothingGlovesEvening
+  - WFMeridianLoadoutClothingGlovesFingerlessPrimitiveCatgirlArmwraps
+  - WFMeridianLoadoutClothingGlovesFingerlessPrimitiveCatgirlGauntlets
+  - WFMeridianLoadoutClothingGlovesFishing
+  - WFMeridianLoadoutClothingGlovesFrontierColonist
+  - WFMeridianLoadoutClothingGlovesKim
+  - WFMeridianLoadoutClothingGlovesLatexNitrileExpeditionaryCorps
+  - WFMeridianLoadoutClothingGlovesLatexNitrileLong
+  - WFMeridianLoadoutClothingGlovesLatexNitrileNtrauma
+  - WFMeridianLoadoutClothingGlovesMilitary
+  - WFMeridianLoadoutClothingGlovesMilitaryAshwalk
+  - WFMeridianLoadoutClothingGlovesMilitaryClaw
+  - WFMeridianLoadoutClothingGlovesRadio
+  - WFMeridianLoadoutClothingGlovesRecolorableFingerless
+  - WFMeridianLoadoutClothingGlovesRecolorableFingerlessLong
+  - WFMeridianLoadoutClothingGlovesRecolorableLong
+  - WFMeridianLoadoutClothingGlovesRingDiamond
+  - WFMeridianLoadoutClothingGlovesTackler
+  - WFMeridianLoadoutClothingGlovesTacklerCombat
+  - WFMeridianLoadoutClothingGlovesTacklerDolphin
+  - WFMeridianLoadoutClothingGlovesTacklerFootball
+  - WFMeridianLoadoutClothingGlovesTacklerRocket
+  - WFMeridianLoadoutClothingGlovesTheSleepingCarp
+  - WFMeridianLoadoutClothingGlovesTinkerer
+  # WOLFGATE END
   subgroups:
   - MonoMercenaryGloves # Mono
   - PilotGloves
@@ -137,6 +601,45 @@
   loadouts:
   - MercenaryClothingEyesGlassesMercenary
   - MercenaryClothingEyesGlassesSunglasses
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingGlassesBiker
+  - WFMeridianLoadoutClothingGlassesBlindfoldColor
+  - WFMeridianLoadoutClothingGlassesBlindfoldWhite
+  - WFMeridianLoadoutClothingGlassesCold
+  - WFMeridianLoadoutClothingGlassesEyepatchRogue
+  - WFMeridianLoadoutClothingGlassesEyepatchWhite
+  - WFMeridianLoadoutClothingGlassesEyepatchWrap
+  - WFMeridianLoadoutClothingGlassesGeistGazers
+  - WFMeridianLoadoutClothingGlassesHeat
+  - WFMeridianLoadoutClothingGlassesHudArAviator
+  - WFMeridianLoadoutClothingGlassesHudArProjector
+  - WFMeridianLoadoutClothingGlassesHudEyepatchSci
+  - WFMeridianLoadoutClothingGlassesHudGunPermit
+  - WFMeridianLoadoutClothingGlassesMaterial
+  - WFMeridianLoadoutClothingGlassesMonocle
+  - WFMeridianLoadoutClothingGlassesNerveStaple
+  - WFMeridianLoadoutClothingGlassesNightmareVision
+  - WFMeridianLoadoutClothingGlassesOrange
+  - WFMeridianLoadoutClothingGlassesOsi
+  - WFMeridianLoadoutClothingGlassesPhantom
+  - WFMeridianLoadoutClothingGlassesPrismGlasses
+  - WFMeridianLoadoutClothingGlassesRed
+  - WFMeridianLoadoutClothingGlassesRegularCircle
+  - WFMeridianLoadoutClothingGlassesRegularHipster
+  - WFMeridianLoadoutClothingGlassesRegularKim
+  - WFMeridianLoadoutClothingGlassesRegularModern
+  - WFMeridianLoadoutClothingGlassesRegularThin
+  - WFMeridianLoadoutClothingGlassesSalesman
+  - WFMeridianLoadoutClothingGlassesSunglassesBig
+  - WFMeridianLoadoutClothingGlassesSunglassesChemical
+  - WFMeridianLoadoutClothingGlassesSunglassesGar
+  - WFMeridianLoadoutClothingGlassesSunglassesGarGiga
+  - WFMeridianLoadoutClothingGlassesSunglassesOval
+  - WFMeridianLoadoutClothingGlassesSunglassesSolfedWinter
+  - WFMeridianLoadoutClothingGlassesTrickblindfoldHamburg
+  - WFMeridianLoadoutClothingGlassesTrickblindfoldObsolete
+  - WFMeridianLoadoutClothingGlassesWelding
+  # WOLFGATE END
   subgroups:
   - MonoMercenaryBallisticGoggles # Mono
   - PilotGlasses

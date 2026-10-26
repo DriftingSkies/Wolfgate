@@ -443,10 +443,20 @@ and its own sprite.
 - [`Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Entities/Mobs/Species/vulpkanin.yml)
   - this species has wag-capable tails but had no Wagging Tail action
   - upstream's vulpkanin speech bubble
-- [`Resources/Prototypes/_DV/Species/skrell.yml`](../../../Resources/Prototypes/_DV/Species/skrell.yml): ported from HardLight (Skrell)
+- [`Resources/Prototypes/_DV/Species/avali.yml`](../../../Resources/Prototypes/_DV/Species/avali.yml): was 6, more marking slots
+- [`Resources/Prototypes/_DV/Species/chitinid.yml`](../../../Resources/Prototypes/_DV/Species/chitinid.yml): was 1, more marking slots
+- [`Resources/Prototypes/_DV/Species/feroxi.yml`](../../../Resources/Prototypes/_DV/Species/feroxi.yml): was 3, more marking slots
+- [`Resources/Prototypes/_DV/Species/harpy.yml`](../../../Resources/Prototypes/_DV/Species/harpy.yml): was 1, more marking slots
+- [`Resources/Prototypes/_DV/Species/rodentia.yml`](../../../Resources/Prototypes/_DV/Species/rodentia.yml): was 2, more marking slots
+- [`Resources/Prototypes/_DV/Species/skrell.yml`](../../../Resources/Prototypes/_DV/Species/skrell.yml)
+  - ported from HardLight (Skrell)
+  - was 2, more marking slots
+  - was 1, more marking slots
+  - was 4, more marking slots
 - [`Resources/Prototypes/_DV/Species/vulpkanin.yml`](../../../Resources/Prototypes/_DV/Species/vulpkanin.yml)
   - was MobVulpkaninSprites; Starlight's body on digitigrade legs
   - was VulpTail; Starlight's tail for Starlight's body
+  - was 3, more marking slots
   - was VulpEar; Starlight's ears for Starlight's body
 - [`Resources/Prototypes/_DV/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emote_sounds.yml)
   - upstream's vulpkanin scream; was MaleScreams
@@ -472,6 +482,7 @@ and its own sprite.
   - eye markings had no layer to draw on
   - was MobHumanoidMarkingMatchSkin; hair colour is the player's pick
   - chassis parts get their own budget, the body categories are for markings
+  - was 3, more marking slots
   - chassis part, was a Head, Chest, Arms or Legs marking
 - [`Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_EinsteinEngines/Voice/speech_emotes.yml): was the default scream icon
 - [`Resources/Prototypes/_FarHorizons/Entities/Mobs/Customization/protogen.yml`](../../../Resources/Prototypes/_FarHorizons/Entities/Mobs/Customization/protogen.yml)
@@ -484,6 +495,12 @@ and its own sprite.
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml): ported from HardLight
+- [`Resources/Prototypes/_Goobstation/Species/tajaran.yml`](../../../Resources/Prototypes/_Goobstation/Species/tajaran.yml)
+  - was 1, more marking slots
+  - was 2, more marking slots
+- [`Resources/Prototypes/_Goobstation/Species/yowie.yml`](../../../Resources/Prototypes/_Goobstation/Species/yowie.yml)
+  - was 1, more marking slots
+  - was 2, more marking slots
 - [`Resources/Prototypes/_HL/ai_factions.yml`](../../../Resources/Prototypes/_HL/ai_factions.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Body/Organs/skrell.yml`](../../../Resources/Prototypes/_HL/Body/Organs/skrell.yml): ported from HardLight (Skrell)
 - [`Resources/Prototypes/_HL/Body/Organs/synth.yml`](../../../Resources/Prototypes/_HL/Body/Organs/synth.yml): HardLight's GalacticCommon is TauCetiBasic here
@@ -513,6 +530,9 @@ and its own sprite.
   - HardLight's GalacticCommon is TauCetiBasic here
 - [`Resources/Prototypes/_HL/Reagents/biological.yml`](../../../Resources/Prototypes/_HL/Reagents/biological.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Reagents/nanites.yml`](../../../Resources/Prototypes/_HL/Reagents/nanites.yml): ported from HardLight
+- [`Resources/Prototypes/_HL/Species/synth.yml`](../../../Resources/Prototypes/_HL/Species/synth.yml)
+  - was 3, more marking slots
+  - was 4, more marking slots
 - [`Resources/Prototypes/_HL/tags.yml`](../../../Resources/Prototypes/_HL/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_HL/Traits/shadekin.yml`](../../../Resources/Prototypes/_HL/Traits/shadekin.yml): ported from HardLight, adapted to Wolfgate's TraitPrototype.
 - [`Resources/Prototypes/_HL/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_HL/Voice/speech_emote_sounds.yml): ported from HardLight
@@ -541,6 +561,7 @@ and its own sprite.
 - [`Resources/Prototypes/_Impstation/Flavors/flavors.yml`](../../../Resources/Prototypes/_Impstation/Flavors/flavors.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/InventoryTemplates/thaven_inventory_template.yml`](../../../Resources/Prototypes/_Impstation/InventoryTemplates/thaven_inventory_template.yml): HardLight's ACCESSORY/ACCESSORYALT slots are removed
 - [`Resources/Prototypes/_Impstation/Reagents/biological.yml`](../../../Resources/Prototypes/_Impstation/Reagents/biological.yml): ported from HardLight.
+- [`Resources/Prototypes/_Impstation/Species/thaven.yml`](../../../Resources/Prototypes/_Impstation/Species/thaven.yml): was 6, more marking slots
 - [`Resources/Prototypes/_Impstation/Species/Thavens/datasets.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/datasets.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/horny.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/horny.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/hornyemag.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/hornyemag.yml): ported from HardLight
@@ -550,7 +571,11 @@ and its own sprite.
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/tags.yml`](../../../Resources/Prototypes/_Impstation/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml): eye markings get their own points (was Head)
+- [`Resources/Prototypes/_Moffstation/Species/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Species/resomi.yml): was 6, more marking slots
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/med_assembler.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/med_assembler.yml): Avali auto-injector (amoxla and tranexamic acid)
+- [`Resources/Prototypes/_Mono/Species/asakim.yml`](../../../Resources/Prototypes/_Mono/Species/asakim.yml)
+  - was 3, more marking slots
+  - was 2, more marking slots
 - [`Resources/Prototypes/_Mono/Species/protogen.yml`](../../../Resources/Prototypes/_Mono/Species/protogen.yml): was false, so the base species is selectable in the creator
 - [`Resources/Prototypes/_Mono/Traits/physical.yml`](../../../Resources/Prototypes/_Mono/Traits/physical.yml): Canine is a Vulpkanin copy
 - [`Resources/Prototypes/_NF/Body/Organs/avali.yml`](../../../Resources/Prototypes/_NF/Body/Organs/avali.yml): ported from HardLight
@@ -559,6 +584,10 @@ and its own sprite.
 - [`Resources/Prototypes/_NF/Loadouts/species_loadout_groups.yml`](../../../Resources/Prototypes/_NF/Loadouts/species_loadout_groups.yml)
   - one more for the Avali auto-injector
   - Avali auto-injector, like the Vox tank
+- [`Resources/Prototypes/_NF/Species/goblin_species.yml`](../../../Resources/Prototypes/_NF/Species/goblin_species.yml)
+  - was 1, more marking slots
+  - was 2, more marking slots
+- [`Resources/Prototypes/_Obelisk/Species/hydrakin.yml`](../../../Resources/Prototypes/_Obelisk/Species/hydrakin.yml): was 1, more marking slots
 - [`Resources/Prototypes/_RMC14/Actions/types.yml`](../../../Resources/Prototypes/_RMC14/Actions/types.yml): ported from HardLight
 - [`Resources/Prototypes/_RMC14/Datasets/skrell_names.yml`](../../../Resources/Prototypes/_RMC14/Datasets/skrell_names.yml): converted from HardLight localizedDataset - Wolfgate species use plain datasets.
 - [`Resources/Prototypes/_RMC14/Entities/Mobs/Customization/reptilian.yml`](../../../Resources/Prototypes/_RMC14/Entities/Mobs/Customization/reptilian.yml): ported from HardLight
@@ -571,6 +600,8 @@ and its own sprite.
 - [`Resources/Prototypes/_RMC14/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_RMC14/Voice/speech_emotes.yml)
   - ported from HardLight
   - was the default scream icon
+- [`Resources/Prototypes/_Shitmed/Species/kobold.yml`](../../../Resources/Prototypes/_Shitmed/Species/kobold.yml): was 1, more marking slots
+- [`Resources/Prototypes/_Shitmed/Species/monkey.yml`](../../../Resources/Prototypes/_Shitmed/Species/monkey.yml): was 1, more marking slots
 - [`Resources/Prototypes/_StarLight/Actions/avali.yml`](../../../Resources/Prototypes/_StarLight/Actions/avali.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Actions/shadekin.yml`](../../../Resources/Prototypes/_StarLight/Actions/shadekin.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Alerts/shadekin.yml`](../../../Resources/Prototypes/_StarLight/Alerts/shadekin.yml): ported from HardLight
@@ -625,6 +656,9 @@ and its own sprite.
 - [`Resources/Prototypes/_StarLight/Reagents/biological.yml`](../../../Resources/Prototypes/_StarLight/Reagents/biological.yml): ported from HardLight.
 - [`Resources/Prototypes/_StarLight/SoundCollections/felionoid.yml`](../../../Resources/Prototypes/_StarLight/SoundCollections/felionoid.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/SoundCollections/shadekin.yml`](../../../Resources/Prototypes/_StarLight/SoundCollections/shadekin.yml): ported from HardLight
+- [`Resources/Prototypes/_StarLight/Species/felionoid.yml`](../../../Resources/Prototypes/_StarLight/Species/felionoid.yml)
+  - was 1, more marking slots
+  - was 4, more marking slots
 - [`Resources/Prototypes/_StarLight/tags.yml`](../../../Resources/Prototypes/_StarLight/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_emote_sounds.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_StarLight/Voice/speech_emotes.yml): was the default scream icon
@@ -667,12 +701,19 @@ and its own sprite.
   - dexalin plus doesn't heal Avali; their blood is ammonia-based (Starlight)
   - dexalin plus poisons Avali harder than dexalin (Starlight; lethal dose 15u)
   - saline is lethal to Avali (Starlight); the heart pass doubles the blood restore for everyone else
+- [`Resources/Prototypes/Species/arachnid.yml`](../../../Resources/Prototypes/Species/arachnid.yml): was 1, more marking slots
+- [`Resources/Prototypes/Species/diona.yml`](../../../Resources/Prototypes/Species/diona.yml)
+  - was 2, more marking slots
+  - was 1, more marking slots
+- [`Resources/Prototypes/Species/human.yml`](../../../Resources/Prototypes/Species/human.yml): was 1, more marking slots
+- [`Resources/Prototypes/Species/moth.yml`](../../../Resources/Prototypes/Species/moth.yml): was 4, more marking slots
 - [`Resources/Prototypes/Species/reptilian.yml`](../../../Resources/Prototypes/Species/reptilian.yml)
   - hair layer so reptilian hair is drawn
   - facial hair layer so reptilian facial hair is drawn
   - was true, which hid the shared hair styles from reptilians
   - was 0, reptilians can wear hair
   - was 0, reptilians can wear facial hair
+  - was 3, more marking slots
 - [`Resources/Prototypes/Species/slime.yml`](../../../Resources/Prototypes/Species/slime.yml)
   - Anycolor skin support for slimes
   - was MobSlimeMarkingFollowSkin; hair colour is the player's pick
@@ -682,6 +723,9 @@ and its own sprite.
   - ported from HardLight/Starlight
   - ported from HardLight
   - ported from HardLight/Impstation
+- [`Resources/Prototypes/Species/vox.yml`](../../../Resources/Prototypes/Species/vox.yml)
+  - was 3, more marking slots
+  - was 6, more marking slots
 - [`Resources/Prototypes/Traits/speech.yml`](../../../Resources/Prototypes/Traits/speech.yml): Felionoids have it as their species accent
 - [`Resources/Prototypes/Voice/speech_emotes.yml`](../../../Resources/Prototypes/Voice/speech_emotes.yml): was the default scream action icon; this is the open-mouthed face
 - [`Resources/ServerInfo/_HL/Guidebook/Mobs/Synth.xml`](../../../Resources/ServerInfo/_HL/Guidebook/Mobs/Synth.xml): ported from HardLight

@@ -28,6 +28,7 @@ Client controls other Wolfgate UI is built from.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/UserInterface/WolfgateColorPopupTest.cs`](../../../Content.IntegrationTests/Tests/_WF/UserInterface/WolfgateColorPopupTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/UserInterface/WolfgateNestedScrollContainerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/UserInterface/WolfgateNestedScrollContainerTest.cs)
 
 ### Localization

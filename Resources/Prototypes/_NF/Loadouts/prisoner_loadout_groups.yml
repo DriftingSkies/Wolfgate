@@ -4,6 +4,11 @@
   loadouts:
   - PrisonerJumpsuit
   - PrisonerJumpskirt
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderRankPrisoner
+  - WFMeridianLoadoutClothingUnderRankPrisonerClassic
+  - WFMeridianLoadoutClothingUnderRankPrisonerSkirt
+  # WOLFGATE END
   fallbacks:
   - PrisonerJumpsuit
   - PrisonerJumpskirt

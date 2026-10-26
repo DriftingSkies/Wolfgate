@@ -1,0 +1,127 @@
+# Traits ported from Meridian Rift quirks that run on components Wolfgate already has.
+
+- type: trait
+  id: WFDeaf
+  name: trait-wf-deaf-name
+  description: trait-wf-deaf-desc
+  category: Disabilities
+  components:
+  - type: WFPermanentDeaf
+  - type: Deaf
+
+- type: trait
+  id: WFPseudobulbarAffect
+  name: trait-wf-pseudobulbar-affect-name
+  description: trait-wf-pseudobulbar-affect-desc
+  category: Quirks
+  whitelist:
+    components:
+    - Vocal
+  components:
+  - type: AutoEmote
+    emotes:
+    - WFPseudobulbarLaugh
+
+- type: trait
+  id: WFIlluminated
+  name: trait-wf-illuminated-name
+  description: trait-wf-illuminated-desc
+  category: Quirks
+  components:
+  - type: PointLight
+    radius: 1.5
+    energy: 0.6
+    color: "#FFF4D6"
+
+- type: trait
+  id: WFFragility
+  name: trait-wf-fragility-name
+  description: trait-wf-fragility-desc
+  category: Physical
+  cost: -4
+  mutuallyExclusiveTraits:
+  - DermalArmor
+  - HardenedLymphocytes
+  - WFRadFiend
+  components:
+  - type: DamageProtectionBuff
+    modifiers:
+      fragility:
+        id: WFFragilityTrait
+        coefficients:
+          Blunt: 1.25
+          Heat: 1.25
+
+- type: trait
+  id: WFRadFiend
+  name: trait-wf-rad-fiend-name
+  description: trait-wf-rad-fiend-desc
+  category: Physical
+  cost: 6
+  # Each of these is its own DamageProtectionBuff, and a mob holds only one.
+  mutuallyExclusiveTraits:
+  - DermalArmor
+  - HardenedLymphocytes
+  - WFFragility
+  components:
+  - type: DamageProtectionBuff
+    modifiers:
+      radFiend:
+        id: WFRadFiendTrait
+        coefficients:
+          Radiation: 0
+
+- type: trait
+  id: WFHardenedSoles
+  name: trait-wf-hardened-soles-name
+  description: trait-wf-hardened-soles-desc
+  category: Physical
+  cost: 1
+  components:
+  - type: ProtectedFromStepTriggers
+
+- type: trait
+  id: WFCanineTraits
+  name: trait-wf-canine-traits-name
+  description: trait-wf-canine-traits-desc
+  category: SpeechTraits
+  cost: 1
+  mutuallyExclusiveTraits:
+  - Accentless
+  - WFFelineTraits
+  - WFAvianTraits
+  components:
+  - type: BarkAccent
+
+- type: trait
+  id: WFFelineTraits
+  name: trait-wf-feline-traits-name
+  description: trait-wf-feline-traits-desc
+  category: SpeechTraits
+  cost: 1
+  mutuallyExclusiveTraits:
+  - Accentless
+  - WFCanineTraits
+  - WFAvianTraits
+  components:
+  - type: OwOAccent
+
+- type: trait
+  id: WFAvianTraits
+  name: trait-wf-avian-traits-name
+  description: trait-wf-avian-traits-desc
+  category: SpeechTraits
+  cost: 1
+  mutuallyExclusiveTraits:
+  - Accentless
+  - WFCanineTraits
+  - WFFelineTraits
+  components:
+  - type: ResomiAccent
+    bawkChance: 0.05
+
+- type: autoEmote
+  id: WFPseudobulbarLaugh
+  emote: Laugh
+  interval: 60.0
+  chance: 0.15

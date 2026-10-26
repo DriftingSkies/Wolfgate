@@ -9,6 +9,10 @@ wf-subtle-wrap-message = [italic][color=#c9a9d6]{ PROPER($entity) ->
      [true] {CAPITALIZE($entityName)} {$message}[/color][/italic]
     }
 
+## chat channel
+hud-chatbox-select-channel-Subtle = Subtle
+hud-chatbox-channel-Subtle = Subtle
+
 ## subtle command
 cmd-subtle-desc = Performs an action that only the players right next to you see.
 cmd-subtle-help = Usage: {$command} <action>

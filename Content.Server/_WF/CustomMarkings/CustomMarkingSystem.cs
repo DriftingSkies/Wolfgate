@@ -108,7 +108,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
     {
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         hash.AppendData(art.Pixels);
-        if (CustomMarkingRules.PackFrameTimes(art.GetFrameTimes()) is { } times)
+        if (CustomMarkingRules.PackFrameTimes(art.GetFrameTimes(), art.PingPongs) is { } times)
             hash.AppendData(times);
 
         if (art.HasErase())
@@ -181,7 +181,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             // With erasing turned off, a mask is dropped rather than refused: the drawing is still good.
             var erase = _cfg.GetCVar(CustomMarkingCVars.EraseBody) ? msg.Erase : null;
             var maxFrames = Math.Max(1, _cfg.GetCVar(CustomMarkingCVars.MaxFrames));
-            if (CustomMarkingArt.FromPixels(msg.Pixels, msg.FrameTimes, erase, maxFrames) is not { } art)
+            if (CustomMarkingArt.FromPixels(msg.Pixels, msg.FrameTimes, erase, maxFrames, msg.PingPong) is not { } art)
                 return CustomMarkingSaveResult.Fail("wf-custom-marking-error-invalid");
 
             if (art.IsBlank() && !art.HasErase())
@@ -190,7 +190,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             hash = Hash(art);
             stored = new CustomMarkingStoredArt(
                 art.ToPng(),
-                CustomMarkingRules.PackFrameTimes(art.GetFrameTimes()),
+                CustomMarkingRules.PackFrameTimes(art.GetFrameTimes(), art.PingPongs),
                 art.HasErase() ? art.Erase : null);
         }
 
@@ -258,7 +258,11 @@ public sealed partial class CustomMarkingSystem : EntitySystem
                 return;
 
             RaiseNetworkEvent(
-                new CustomMarkingArtEvent(hash, art?.Png, CustomMarkingRules.UnpackFrameTimes(art?.FrameTimes), art?.Erase),
+                new CustomMarkingArtEvent(hash,
+                    art?.Png,
+                    CustomMarkingRules.UnpackFrameTimes(art?.FrameTimes),
+                    art?.Erase,
+                    CustomMarkingRules.UnpackPingPong(art?.FrameTimes)),
                 session);
         }
     }

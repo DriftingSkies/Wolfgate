@@ -75,13 +75,13 @@
       required: true
       defaultMarkings: [ FoxTail ]
     Head:
-      points: 3
+      points: 4
       required: false
     Legs:
-      points: 1
+      points: 8
       required: false
     Arms:
-      points: 1
+      points: 8
       required: false
     Snout:
       # Unlike Vulpkanin this is a real slot: the head has no muzzle of its own, so the snout marking is

@@ -13,6 +13,7 @@ public sealed partial class CCVars
     /// <summary>
     ///     URL of the discord webhook to relay unanswered ahelp messages.
     /// </summary>
+    // WOLFGATE(AHelpResolve): works without discord.ahelp_webhook; the ping then quotes the messages
     public static readonly CVarDef<string> DiscordOnCallWebhook =
         CVarDef.Create("discord.on_call_webhook", string.Empty, CVar.SERVERONLY | CVar.CONFIDENTIAL);
 

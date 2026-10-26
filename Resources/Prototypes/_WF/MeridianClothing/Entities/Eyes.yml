@@ -1,0 +1,889 @@
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesBiker
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/biker.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/biker.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesBlindfoldColor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/blindfold_color.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#FFFFFF"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/blindfold_color.rsi
+    clothingVisuals:
+      eyes:
+      - state: equipped-EYES-1-c1
+        color: "#FFFFFF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: FlashImmunity
+  - type: EyeProtection
+  - type: WFGags
+    colors:
+    - "#FFFFFF"
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesBlindfoldDorms
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/blindfold_dorms.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#DC7EF4"
+    - state: icon-2-c2
+      color: "#383840"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/blindfold_dorms.rsi
+    clothingVisuals:
+      eyes:
+      - state: equipped-EYES-1-c1
+        color: "#DC7EF4"
+      - state: equipped-EYES-2-c2
+        color: "#383840"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: FlashImmunity
+  - type: EyeProtection
+  - type: WFGags
+    colors:
+    - "#DC7EF4"
+    - "#383840"
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesBlindfoldWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/blindfold_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/blindfold_white.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesClockworkJudicialVisor
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/clockwork_judicial_visor.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/clockwork_judicial_visor.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesClockworkWraithSpectacles
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/clockwork_wraith_spectacles.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/clockwork_wraith_spectacles.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesCold
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/cold.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/cold.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesEyepatchMedical
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_medical.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_medical.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesEyepatchRogue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_rogue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_rogue.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesEyepatchWhite
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_white.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesEyepatchWrap
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_wrap.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/eyepatch_wrap.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesGeistGazers
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/geist_gazers.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/geist_gazers.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesGodeye
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/godeye.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/godeye.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHeat
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/heat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/heat.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHudArAviator
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudDiagnostic
+  id: WFMeridianClothingGlassesHudArAviatorDiagnostic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_diagnostic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_diagnostic.rsi
+
+- type: entity
+  parent: ClothingEyesHudMedical
+  id: WFMeridianClothingGlassesHudArAviatorHealth
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_health.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_health.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesHudArAviatorMeson
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_meson.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_meson.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHudArAviatorScience
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_science.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_science.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudArAviatorSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_security.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudArAviatorSecurityblue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_securityblue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_aviator_securityblue.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHudArProjector
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector.rsi
+
+- type: entity
+  parent: ClothingEyesHudDiagnostic
+  id: WFMeridianClothingGlassesHudArProjectorDiagnostic
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_diagnostic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_diagnostic.rsi
+
+- type: entity
+  parent: ClothingEyesHudMedical
+  id: WFMeridianClothingGlassesHudArProjectorHealth
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_health.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_health.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesHudArProjectorMeson
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_meson.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_meson.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHudArProjectorScience
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_science.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_science.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudArProjectorSecurity
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_ar_projector_security.rsi
+
+- type: entity
+  parent: ClothingEyesHudDiagnostic
+  id: WFMeridianClothingGlassesHudDiagnosticNight
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_diagnostic_night.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_diagnostic_night.rsi
+
+- type: entity
+  parent: ClothingEyesHudDiagnostic
+  id: WFMeridianClothingGlassesHudDiagnosticPrescription
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_diagnostic_prescription.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_diagnostic_prescription.rsi
+
+- type: entity
+  parent: ClothingEyesHudDiagnostic
+  id: WFMeridianClothingGlassesHudDiagnosticSunglasses
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_diagnostic_sunglasses.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_diagnostic_sunglasses.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesHudEyepatchMeson
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_eyepatch_meson.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_eyepatch_meson.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHudEyepatchSci
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_eyepatch_sci.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_eyepatch_sci.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHudGunPermit
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_gun_permit.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_gun_permit.rsi
+
+- type: entity
+  parent: ClothingEyesHudMedical
+  id: WFMeridianClothingGlassesHudHealthNight
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_health_night.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_health_night.rsi
+
+- type: entity
+  parent: ClothingEyesHudMedical
+  id: WFMeridianClothingGlassesHudHealthPrescription
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_health_prescription.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_health_prescription.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudMedsechud
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_medsechud.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_medsechud.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecurityNight
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_night.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_night.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecurityPrescription
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_prescription.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_prescription.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecuritySunglassesArmadyne
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_armadyne.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_armadyne.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecuritySunglassesBlue
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_blue.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecuritySunglassesEyepatch
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_eyepatch.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_eyepatch.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecuritySunglassesGars
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_gars.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_gars.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecuritySunglassesGarsGiga
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_gars_giga.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_gars_giga.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesHudSecuritySunglassesPeacekeeper
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_peacekeeper.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_peacekeeper.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesHypno
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/hypno.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#DC7EF4"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/hypno.rsi
+    clothingVisuals:
+      eyes:
+      - state: equipped-EYES-1-c1
+        color: "#383840"
+      - state: equipped-EYES-2-c2
+        color: "#DC7EF4"
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesMaterial
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/material.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/material.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesMesonEngine
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/meson_engine.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/meson_engine.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesMesonEngineShuttle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/meson_engine_shuttle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/meson_engine_shuttle.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesMesonEngineTray
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/meson_engine_tray.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/meson_engine_tray.rsi
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: WFMeridianClothingGlassesMesonNight
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/meson_night.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/meson_night.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesMonocle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/monocle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/monocle.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesNerveStaple
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/nerve_staple.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/nerve_staple.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesNiceGoggles
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/nice_goggles.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/nice_goggles.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesNightmareVision
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/nightmare_vision.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/nightmare_vision.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesOrange
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/orange.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/orange.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesOsi
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/osi.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/osi.rsi
+
+- type: entity
+  parent: ClothingEyesHudSecurity
+  id: WFMeridianClothingGlassesOverwatch
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/overwatch.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/overwatch.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesPhantom
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/phantom.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/phantom.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesPrismGlasses
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/prism_glasses.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/prism_glasses.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesPsych
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/psych.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/psych.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesRed
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/red.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesRegularCircle
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/regular_circle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/regular_circle.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesRegularHipster
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/regular_hipster.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/regular_hipster.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesRegularKim
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/regular_kim.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/regular_kim.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesRegularModern
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/regular_modern.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/regular_modern.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesRegularThin
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/regular_thin.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/regular_thin.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSalesman
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/salesman.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/salesman.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesScienceNight
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/science_night.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/science_night.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSciencePrescription
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/science_prescription.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/science_prescription.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSunglassesBig
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_big.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_big.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSunglassesChemical
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_chemical.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_chemical.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSunglassesGar
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_gar.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_gar.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSunglassesGarGiga
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_gar_giga.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_gar_giga.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSunglassesOval
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_oval.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_oval.rsi
+  - type: FlashImmunity
+  - type: EyeProtection
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesSunglassesSolfedWinter
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_solfed_winter.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#EAEAEA"
+    - state: icon-2
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/sunglasses_solfed_winter.rsi
+    clothingVisuals:
+      eyes:
+      - state: equipped-EYES-1-c1
+        color: "#EAEAEA"
+      - state: equipped-EYES-2
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-1
+      right:
+      - state: inhand-right-1
+  - type: FlashImmunity
+  - type: EyeProtection
+  - type: WFGags
+    colors:
+    - "#EAEAEA"
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesTrickblindfoldHamburg
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/trickblindfold_hamburg.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/trickblindfold_hamburg.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesTrickblindfoldObsolete
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/trickblindfold_obsolete.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/trickblindfold_obsolete.rsi
+
+- type: entity
+  parent: ClothingEyesBase
+  id: WFMeridianClothingGlassesWelding
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Eyes/welding.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Eyes/welding.rsi
+  - type: FlashImmunity
+  - type: EyeProtection

@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Numerics;
 using Content.Client._Mono.MonoCoins;
+using Content.Client._WF.Gags;
 using Content.Client._WF.Stylesheets;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._NF.Bank;
@@ -18,8 +19,8 @@ namespace Content.Client._WF.Loadouts;
 
 /// <summary>
 /// Loadout picker of the character creator, opened in place of the stock one-tab-per-group window. A rail on
-/// the left lists every group under a few categories with what is picked there; the right side shows the open
-/// group as a grid of tiles, or search results from all groups. Selecting only re-reads state: the rail and
+/// the left lists every group under a few categories with what is picked there; the middle shows the open
+/// group as a grid of tiles, or search results from all groups, and a column on the right lists its picks. Selecting only re-reads state: the rail and
 /// the grid are not rebuilt, so nothing scrolls or jumps.
 /// </summary>
 [GenerateTypedNameReferences]
@@ -43,11 +44,15 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
     public event Action<ProtoId<LoadoutGroupPrototype>, ProtoId<LoadoutPrototype>>? OnLoadoutPressed;
     public event Action<ProtoId<LoadoutGroupPrototype>, ProtoId<LoadoutPrototype>>? OnLoadoutUnpressed;
 
+    /// <summary>Raised when the colours of a recolourable pick change; null resets them to the item's own.</summary>
+    public event Action<ProtoId<LoadoutGroupPrototype>, ProtoId<LoadoutPrototype>, List<Color>?>? OnLoadoutColorsChanged;
+
     public HumanoidCharacterProfile Profile;
 
     private readonly RoleLoadoutPrototype _role;
     private readonly LoadoutIconCache _icons;
-    private readonly LoadoutDetailStrip _detail;
+    private readonly LoadoutSelectedPanel _detail;
+    private readonly WFGagsSystem _gags;
     private readonly List<LoadoutRailRow> _rows = new();
     private readonly List<LoadoutTile> _tiles = new();
 
@@ -58,7 +63,6 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
 
     private RoleLoadout _loadout;
     private LoadoutGroupView? _group;
-    private LoadoutTile? _hovered;
     private string _query = string.Empty;
     private string? _hint;
     private bool _updating;
@@ -97,9 +101,12 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
         _icons = new LoadoutIconCache(collection.Resolve<IEntityManager>());
         Catalog = new LoadoutCatalog(profile, loadout, proto, session, collection);
 
-        _detail = new LoadoutDetailStrip(_icons);
+        _detail = new LoadoutSelectedPanel(_icons);
         _detail.OnRemove += entry => TrySelect(entry);
-        Locker.AddChild(_detail);
+        _gags = collection.Resolve<IEntityManager>().System<WFGagsSystem>();
+        _detail.ColorsOf = ColorsOf;
+        _detail.OnColorsChanged += (entry, colors) => OnLoadoutColorsChanged?.Invoke(entry.Group.Id, entry.Id, colors);
+        Body.AddChild(_detail);
 
         SetupName(loadout, proto);
 
@@ -276,6 +283,25 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
         return true;
     }
 
+    /// <summary>A pick's colours and its item's defaults, or null when its item isn't recolourable.</summary>
+    private (List<Color> Current, List<Color> Defaults)? ColorsOf(LoadoutEntry entry)
+    {
+        if (_gags.ColorableItem(entry.Proto) is not { } item || _gags.DefaultColors(item) is not { } defaults)
+            return null;
+
+        var picked = _loadout.SelectedLoadouts.TryGetValue(entry.Group.Id, out var held)
+            ? held.FirstOrDefault(l => l.Prototype == entry.Id)?.WFGagsColors
+            : null;
+
+        var current = defaults.ToList();
+        for (var i = 0; picked != null && i < picked.Count && i < current.Count; i++)
+        {
+            current[i] = picked[i];
+        }
+
+        return (current, defaults);
+    }
+
     private bool CanRemove(LoadoutEntry entry)
     {
         return _loadout.SelectedLoadouts.TryGetValue(entry.Group.Id, out var held) && held.Count > entry.Group.Min;
@@ -438,14 +464,6 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
 
         if (_revealFrames > 0 && --_revealFrames == 0)
             RevealRow();
-
-        // Hover ends here rather than when the pointer leaves a tile: the gaps between tiles are not tiles, and
-        // the strip would flicker back to the picks on every crossing.
-        if (_hovered != null && UserInterfaceManager.CurrentlyHovered is not LoadoutTile && UserInterfaceManager.CurrentlyHovered != GridScroll)
-        {
-            _hovered = null;
-            UpdateDetail();
-        }
     }
 
     /// <summary>Scrolls the rail so the open group's row is on screen.</summary>
@@ -622,11 +640,6 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
             {
                 var tile = new LoadoutTile(_icons);
                 tile.OnPressed += _ => OnTilePressed(tile);
-                tile.OnMouseEntered += _ =>
-                {
-                    _hovered = tile;
-                    UpdateDetail();
-                };
                 _tiles.Add(tile);
                 Grid.AddChild(tile);
             }
@@ -646,10 +659,6 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
                 else
                     tile.Bind(entry, Searching ? entry.Group.Label : null, Full(entry));
             }
-
-            // The tile under the pointer may show another item now.
-            if (_hovered != null)
-                UpdateDetail();
         }
         finally
         {
@@ -664,18 +673,10 @@ public sealed partial class WolfgateLoadoutWindow : FancyWindow
         return !group.Single && !entry.Selected && !entry.Locked && group.Picks.Count + group.Stale >= group.Max;
     }
 
+    /// <summary>The selected panel follows picks only: hovering a tile never changes it, and a search keeps the open group's.</summary>
     private void UpdateDetail()
     {
-        if (_hovered is { Visible: true, Entry: { } entry })
-        {
-            _detail.ShowEntry(entry);
-            return;
-        }
-
-        if (Searching)
-            _detail.ShowPicks(null, Loc.GetString("wf-loadout-detail-idle"), CanRemove);
-        else
-            _detail.ShowPicks(_group, null, CanRemove);
+        _detail.ShowPicks(_group, null, CanRemove);
     }
 
     #endregion

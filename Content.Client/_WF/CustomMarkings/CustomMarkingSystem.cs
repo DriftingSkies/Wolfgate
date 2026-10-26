@@ -66,6 +66,11 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         // GenitalsVisualizerSystem owns (GenitalsComponent, HumanoidMarkingsAppliedEvent); this pair is ours alone.
         SubscribeLocalEvent<HumanoidAppearanceComponent, HumanoidMarkingsAppliedEvent>(OnMarkingsApplied);
         Subs.CVar(_cfg, CustomMarkingCVars.EraseBody, _ => RefreshAll());
+        Subs.CVar(_cfg, CustomMarkingCVars.BodyReach, _ =>
+        {
+            _cut.Clear();
+            RefreshAll();
+        });
 
         InitializeLibrary();
     }
@@ -98,7 +103,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             return;
 
         _unavailable.Remove(hash);
-        Store(hash, art.ToPng(), art.GetFrameTimes(), art.Erase);
+        Store(hash, art.ToPng(), art.GetFrameTimes(), art.Erase, art.PingPongs);
         if (Load(hash, out _))
             ArtLoaded?.Invoke(hash);
     }
@@ -129,6 +134,8 @@ public sealed partial class CustomMarkingSystem : EntitySystem
 
         if (_resources.TryGetErase(hash, out var erase))
             erase.CopyTo(read.Erase, 0);
+
+        read.PingPong = _resources.GetPingPong(hash);
 
         art = read;
         return true;
@@ -168,7 +175,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         if (!asked)
             return;
 
-        Store(ev.Hash, ev.Png, ev.FrameTimes, ev.Erase);
+        Store(ev.Hash, ev.Png, ev.FrameTimes, ev.Erase, ev.PingPong);
         if (!Load(ev.Hash, out _))
             return;
 
@@ -176,10 +183,10 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         ArtLoaded?.Invoke(ev.Hash);
     }
 
-    private void Store(string hash, byte[] png, int[]? frameTimes, byte[]? erase)
+    private void Store(string hash, byte[] png, int[]? frameTimes, byte[]? erase, bool pingPong)
     {
         _eraseMasks.Remove(hash);
-        _resources.Store(hash, png, frameTimes, erase);
+        _resources.Store(hash, png, frameTimes, erase, pingPong: pingPong);
     }
 
     private void RefreshWearers(string hash)
@@ -250,7 +257,8 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         for (var i = 0; i < worn.Count && i < MaxLayers; i++)
         {
             var marking = worn[i];
-            if (!TryGetArt(marking.Hash, out var rsi))
+            // Hidden for now by its wearer (MarkingToggles).
+            if (ent.Comp.HiddenCustomMarkings.Contains(marking) || !TryGetArt(marking.Hash, out var rsi))
                 continue;
 
             // Art on the body goes without the pixels that lay on a hidden body part.

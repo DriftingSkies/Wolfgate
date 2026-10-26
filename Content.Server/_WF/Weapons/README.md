@@ -184,7 +184,9 @@ predicted on their own client; this only cuts the audio entities other players r
 - [`Content.Server/Explosion/EntitySystems/ExplosionSystem.cs`](../../Explosion/EntitySystems/ExplosionSystem.cs): an entity held on a grid keeps that grid's frame even just off its tiles.
 - [`Content.Server/Projectiles/ProjectileSystem.cs`](../../Projectiles/ProjectileSystem.cs)
   - the sweep leaves contained projectiles alone
+  - a handled hit returns before the shared Dirty, so network the spent flag here
   - an item that is only a projectile once shot is not swept while unfired or inside a container
+  - a held hit velocity is restored even when the projectile has no relative speed
   - hold every hit on the struck grid, so an impact blast moves with the ship it hit.
 - [`Content.Server/Weapons/Ranged/Systems/GunSystem.cs`](../../Weapons/Ranged/Systems/GunSystem.cs)
   - seeded so the shooter's client predicts the same spread

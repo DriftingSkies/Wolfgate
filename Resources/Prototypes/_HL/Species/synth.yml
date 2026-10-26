@@ -56,7 +56,7 @@
       points: 2
       required: false
     Head:
-      points: 3
+      points: 4 # WOLFGATE(Species): was 3, more marking slots
       required: false
       defaultMarkings: [ SynthVisor ]
     Snout:
@@ -64,13 +64,13 @@
       required: true
       defaultMarkings: [ SynthSnout ]
     Chest:
-      points: 3
+      points: 4 # WOLFGATE(Species): was 3, more marking slots
       required: false
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): was 4, more marking slots
       required: false
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): was 4, more marking slots
       required: false
     Tail:
       points: 2

@@ -8,7 +8,8 @@
   - from: [ FloorSteel, FloorSteelMini, FloorSteelMono, FloorSteelPavement, FloorSteelPavementVertical, FloorSteelOffset,
       FloorSteelDiagonal, FloorSteelHerringbone, FloorDark, FloorDarkMono, FloorDarkMini, FloorDarkPavement,
       FloorDarkPavementVertical, FloorDarkOffset, FloorDarkDiagonal, FloorDarkHerringbone, FloorWhite, FloorWhiteMono,
-      FloorWhiteMini, FloorWhiteOffset, FloorWhitePavement, FloorTechMaint, FloorTechMaint2, FloorTechMaintAlt ]
+      FloorWhiteMini, FloorWhiteOffset, FloorWhitePavement, FloorTechMaint, FloorTechMaint2, FloorTechMaintAlt,
+      FloorTechMaint3, FloorTechMaintDark, FloorDarkAlt, FloorDarkMonoAlt, FloorDarkPlastic ]
     to: [ FloorSteelDirty, FloorSteelDirty, FloorSteelDamaged ]
     chance: 0.3
   - from: [ Plating ]
