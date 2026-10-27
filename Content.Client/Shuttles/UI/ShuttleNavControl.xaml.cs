@@ -840,7 +840,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
                 if (!blipOnly)
                 {
-                    DrawGrid(handle, curGridToView, grid, labelColor, 0.01f, true);
+                    DrawGrid(handle, curGridToView, grid, labelColor, 0.01f, true, queue: true); // WOLFGATE(AsteroidMining): batched with the other grids
                 }
             }
             else
@@ -906,6 +906,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
                 if (shouldDrawIFF)
                 {
+                    WfFlushGrids(handle); // WOLFGATE(AsteroidMining): queued outlines go under this label, as before
                     //var gridCentre = Vector2.Transform(gridBody.LocalCenter, curGridToView);
                     //gridCentre.Y = -gridCentre.Y;
 
@@ -1050,7 +1051,9 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                 }
 
                 // Frontier Don't skip drawing blips if they're out of range.
-                NfDrawBlips(handle, _tempBlipDataList);
+                // WOLFGATE(AsteroidMining) START: redrew every blip so far once per grid; drawn once after the loop
+                // NfDrawBlips(handle, _tempBlipDataList);
+                // WOLFGATE END
 
                 // Detailed view
                 var gridAABB = curGridToWorld.TransformBox(grid.Comp.LocalAABB);
@@ -1062,24 +1065,45 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                 // Mono
                 if (!blipOnly)
                 {
-                    DrawGrid(handle, curGridToView, grid, labelColor);
+                    DrawGrid(handle, curGridToView, grid, labelColor, queue: true); // WOLFGATE(AsteroidMining): batched with the other grids
                     DrawDocks(handle, gUid, curGridToView);
                 }
             }
 
-            // If we've set the controlling console, and it's on a different grid
-            // to the shuttle itself, then draw an additional marker to help the
-            // player determine where they are relative to the shuttle.
-            if (_consoleEntity != null && xformQuery.TryGetComponent(_consoleEntity, out var consoleXform))
+            // WOLFGATE(AsteroidMining) START: drawn once per grid inside the loop; drawn once after it instead
+            // // If we've set the controlling console, and it's on a different grid
+            // // to the shuttle itself, then draw an additional marker to help the
+            // // player determine where they are relative to the shuttle.
+            // if (_consoleEntity != null && xformQuery.TryGetComponent(_consoleEntity, out var consoleXform))
+            // {
+            //     if (consoleXform.ParentUid != _coordinates!.Value.EntityId)
+            //     {
+            //         var consolePositionWorld = _transform.GetWorldPosition((EntityUid)_consoleEntity);
+            //         var p = Vector2.Transform(consolePositionWorld, worldToView);
+            //         handle.DrawCircle(p, 5, Color.ToSrgb(Color.Cyan), true);
+            //     }
+            // }
+            // WOLFGATE END
+        }
+
+        // WOLFGATE(AsteroidMining) START: per-grid draws moved out of the loop, so its grids batch into one draw call
+        WfFlushGrids(handle);
+        if (!renderFill)
+            NfDrawBlips(handle, _tempBlipDataList);
+
+        // If we've set the controlling console, and it's on a different grid
+        // to the shuttle itself, then draw an additional marker to help the
+        // player determine where they are relative to the shuttle.
+        if (_consoleEntity != null && xformQuery.TryGetComponent(_consoleEntity, out var consoleXform))
+        {
+            if (consoleXform.ParentUid != _coordinates!.Value.EntityId)
             {
-                if (consoleXform.ParentUid != _coordinates!.Value.EntityId)
-                {
-                    var consolePositionWorld = _transform.GetWorldPosition((EntityUid)_consoleEntity);
-                    var p = Vector2.Transform(consolePositionWorld, worldToView);
-                    handle.DrawCircle(p, 5, Color.ToSrgb(Color.Cyan), true);
-                }
+                var consolePositionWorld = _transform.GetWorldPosition((EntityUid)_consoleEntity);
+                var p = Vector2.Transform(consolePositionWorld, worldToView);
+                handle.DrawCircle(p, 5, Color.ToSrgb(Color.Cyan), true);
             }
         }
+        // WOLFGATE END
     }
 
     protected DetectionLevel GetGridDetected(EntityUid grid)
@@ -1229,6 +1253,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         Box2 viewBounds = new Box2(-dockRadius, -dockRadius, PixelSize.X + dockRadius, PixelSize.Y + dockRadius); // Frontier: Size<PixelSize
         if (_docks.TryGetValue(nent, out var docks))
         {
+            WfFlushGrids(handle); // WOLFGATE(AsteroidMining): docks draw over their grid's queued outline
             foreach (var state in docks)
             {
                 var position = state.Coordinates.Position;

@@ -1141,7 +1141,11 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("entityName", entityName),
             ("verb", Loc.GetString(verbId)),
             ("fontType", language.SpeechOverride.FontId ?? CompOrNull<WFChatFontComponent>(source)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the character's picked font, under a language's own
-            ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
+            // WOLFGATE(ChatFont) START: the picked font's size scale, unless a language's own font wins
+            // ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
+            ("fontSize", WFChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize,
+                language.SpeechOverride.FontId == null ? CompOrNull<WFChatFontComponent>(source) : null)),
+            // WOLFGATE END
             ("message", message),
             ("language", languageDisplay));
     }

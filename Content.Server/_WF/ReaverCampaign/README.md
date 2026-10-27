@@ -13,6 +13,8 @@ reinforcement clock, the convoy and reinforcement deadlines there hold until one
 Campaign crews fire on sight (`WFCrewOnSightComponent` on every campaign hull, set in `SpawnEncounter`): any faction
 enemy a crewman sees within 10 m is engaged, aboard or off the ship; the helm, guns and radio only turn on one aboard.
 The faction's neutral companies are spared. The sector's random Reaver encounters keep the ordinary rules.
+Their fire is reckless and goes through their own hulls, so campaign ships never count one another as attackers
+(`.FriendlyFire`); otherwise a few stray rounds would set a hub and its reinforcements on each other.
 Campaign crews carry their own NPC faction, `WFAshfallReavers`, hostile to everyone, the Dynasty's people included;
 the Fugitive and Godfather jobs add `WFUnderground` beside `NanoTrasen`, and the two are allies.
 
@@ -127,6 +129,7 @@ and counted for the round summary. `wf_reavers respond <q> <r>` sends one by han
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Convoys.cs`](Systems/WFReaverCampaignSystem.Convoys.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.cs`](Systems/WFReaverCampaignSystem.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Disputes.cs`](Systems/WFReaverCampaignSystem.Disputes.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.FriendlyFire.cs`](Systems/WFReaverCampaignSystem.FriendlyFire.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hold.cs`](Systems/WFReaverCampaignSystem.Hold.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hub.cs`](Systems/WFReaverCampaignSystem.Hub.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Intercepts.cs`](Systems/WFReaverCampaignSystem.Intercepts.cs)
@@ -162,6 +165,7 @@ and counted for the round summary. `wf_reavers respond <q> <r>` sends one by han
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNeutralTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverNoticeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverOwnSideTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverOwnSideTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPatrolTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPauseTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverPauseTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverRaidTest.cs)

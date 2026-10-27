@@ -850,6 +850,9 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
         var current = _damage.GetPositiveDamage((part, damageable)).GetTotal();
         var remaining = _wfPart.Get(part).MaxDamage - current; // WOLFGATE(Wolfmed): D8
 
+        if (remaining > FixedPoint2.Zero) // WOLFGATE(Wolfmed): revival pass, room under the cap again
+            _wfPart.ClearOverflow(part);
+
         if (remaining > FixedPoint2.Zero && woundable.AmputationOverflow != FixedPoint2.Zero)
         {
             woundable.AmputationOverflow = FixedPoint2.Zero;

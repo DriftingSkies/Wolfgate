@@ -52,7 +52,7 @@
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ RodentiaTailDefault ]
     Legs:
       points: 8 # mono 4<8
@@ -71,7 +71,7 @@
       points: 1
       required: false
     Chest:
-      points: 2
+      points: 4 # WOLFGATE(Species): was 2, more marking slots
       required: false
 
 - type: humanoidBaseSprite

@@ -104,7 +104,7 @@ public sealed partial class SubtleSystem : EntitySystem
         var names = new List<string>();
         foreach (var recipient in recipients)
         {
-            _chatManager.ChatMessageToOne(ChatChannel.Emotes, message, wrapped, source, false, recipient.Channel, author: player?.UserId);
+            _chatManager.ChatMessageToOne(ChatChannel.Subtle, message, wrapped, source, false, recipient.Channel, author: player?.UserId);
 
             if (recipient.AttachedEntity is { } listener && listener != source)
                 names.Add(ToPrettyString(listener).ToString());

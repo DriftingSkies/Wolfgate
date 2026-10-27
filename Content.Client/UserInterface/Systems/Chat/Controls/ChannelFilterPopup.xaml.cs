@@ -16,6 +16,7 @@ public sealed partial class ChannelFilterPopup : Popup
         ChatChannel.Local,
         ChatChannel.Whisper,
         ChatChannel.Emotes,
+        ChatChannel.Subtle, // WOLFGATE(Subtle)
         ChatChannel.Radio,
         ChatChannel.CollectiveMind,
         ChatChannel.Notifications,

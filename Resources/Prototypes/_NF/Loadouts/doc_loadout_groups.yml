@@ -6,6 +6,29 @@
   - ChiefMedicalOfficerJumpskirt
   - ChiefMedicalOfficerTurtleneckJumpsuit
   - ChiefMedicalOfficerTurtleneckJumpskirt
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderAkulaWetsuitJobMedical
+  - WFMeridianLoadoutClothingUnderMiscPsyche
+  - WFMeridianLoadoutClothingUnderRankCivilianPsychologistBunnysuit
+  - WFMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerScrubs
+  - WFMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerTurtleneck
+  - WFMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerTurtleneckSkirt
+  - WFMeridianLoadoutClothingUnderRankMedicalCmoBunnysuit
+  - WFMeridianLoadoutClothingUnderRankMedicalCoroner
+  - WFMeridianLoadoutClothingUnderRankMedicalCoronerBunnysuit
+  - WFMeridianLoadoutClothingUnderRankMedicalCoronerSkirt
+  - WFMeridianLoadoutClothingUnderRankMedicalDoctorBunnysuit
+  - WFMeridianLoadoutClothingUnderRankMedicalDoctorNovaUtility
+  - WFMeridianLoadoutClothingUnderRankMedicalDoctorNurse
+  - WFMeridianLoadoutClothingUnderRankMedicalDoctorNurseSeriouser
+  - WFMeridianLoadoutClothingUnderRankMedicalParamedicBunnysuit
+  - WFMeridianLoadoutClothingUnderRankMedicalPathologistBunnysuit
+  - WFMeridianLoadoutClothingUnderRankMedicalScrubsBlue
+  - WFMeridianLoadoutClothingUnderRankMedicalScrubsCoroner
+  - WFMeridianLoadoutClothingUnderRankMedicalScrubsGreen
+  - WFMeridianLoadoutClothingUnderRankMedicalScrubsNova
+  - WFMeridianLoadoutClothingUnderRankMedicalScrubsNovaRed
+  # WOLFGATE END
   fallbacks:
   - ChiefMedicalOfficerJumpsuit
   - ChiefMedicalOfficerJumpskirt
@@ -17,6 +40,9 @@
   loadouts:
   - NitrileGloves
   - LatexGloves
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingGlovesLatexCoroner
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: DocBackpack
@@ -38,6 +64,21 @@
   loadouts:
   - ChiefMedicalOfficerBeret
   - CMOMedicalHeadMirror
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingHeadBeretMedical
+  - WFMeridianLoadoutClothingHeadCostumeNursehat
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodMedical
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodMedicalCmo
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodMedicalCoroner
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodMedicalParamedic
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodMedicalViro
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsCmo
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsCoroner
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsDoctor
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsParamedic
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsPsychologist
+  - WFMeridianLoadoutClothingHeadUtilitySurgerycapCmo
+  # WOLFGATE END
   subgroups:
   - ContractorHead
 
@@ -57,6 +98,13 @@
   loadouts:
   - DocClothingCloakCmo
   - DocClothingNeckMantleCMO
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingAccessoryMedalSilverEmergencyServicesMedical
+  - WFMeridianLoadoutClothingNeckTieBunnytieCmo
+  - WFMeridianLoadoutClothingNeckTieBunnytieCoroner
+  - WFMeridianLoadoutClothingNeckTieBunnytieDoctor
+  - WFMeridianLoadoutClothingNeckTieBunnytieParamedic
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: DocPDA

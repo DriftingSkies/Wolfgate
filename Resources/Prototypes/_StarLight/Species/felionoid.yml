@@ -54,23 +54,23 @@
       points: 1
       required: false
     Head:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: true
     Snout:
       points: 1
       required: true
     Arms:
-      points: 4
+      points: 8 # WOLFGATE(Species): was 4, more marking slots
       required: true
     Legs:
-      points: 4
+      points: 8 # WOLFGATE(Species): was 4, more marking slots
       required: true
     Chest:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ FelionoidTailAnimated ]
     # Hardlight Add:
     # WOLFGATE(Genitals): Genital marking points removed with the legacy genital markings (replaced by organ-based anatomy).

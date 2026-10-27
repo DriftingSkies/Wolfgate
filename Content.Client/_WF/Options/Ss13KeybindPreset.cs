@@ -27,6 +27,7 @@ public static class Ss13KeybindPreset
         (ContentKeyFunctions.ThrowItemInHand, Key.End, Key.Unknown),
         (ContentKeyFunctions.ReleasePulledObject, Key.H, Key.Unknown),
         (ContentKeyFunctions.ReleasePulledObject, Key.Delete, Key.Unknown),
+        (ContentKeyFunctions.WFOfferItem, Key.G, Key.Unknown),
         (ContentKeyFunctions.AltUseItemInHand, Key.Z, Key.Control),
         (ContentKeyFunctions.SmartEquipSuitStorage, Key.Q, Key.Shift),
         (ContentKeyFunctions.SmartEquipPocket1, Key.Num1, Key.Control),
@@ -52,6 +53,7 @@ public static class Ss13KeybindPreset
         // Stock keys the layout above takes, moved somewhere free.
         (ContentKeyFunctions.OpenLanguageMenu, Key.J, Key.Unknown),
         (ContentKeyFunctions.OpenEmotesMenu, Key.N, Key.Unknown),
+        (ContentKeyFunctions.OpenCraftingMenu, Key.G, Key.Shift),
         (EngineKeyFunctions.ShowDebugMonitors, Key.F3, Key.Shift),
         (ContentKeyFunctions.RotateObjectClockwise, Key.R, Key.Control),
         (EngineKeyFunctions.CameraRotateLeft, Key.NumpadNum7, Key.Control),

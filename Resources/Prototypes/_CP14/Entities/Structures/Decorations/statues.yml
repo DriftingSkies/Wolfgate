@@ -84,4 +84,44 @@
           path: /Audio/Effects/break_stone.ogg
           params:
             volume: -4
+
+- type: entity
+  id: CP14StatueWizard
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _CP14/Structures/Decoration/wizard_statue.rsi
+    layers:
+    - state: statue_wizard
+    drawdepth: Mobs
+    offset: "0.0,0.5"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.20,-0.35,0.20,0.35"
+        density: 100
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: SpriteFade
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Rock
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 110
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -4
 # WOLFGATE END

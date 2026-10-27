@@ -35,10 +35,10 @@ public sealed partial class WoundBleedingSystem
     /// <summary>
     /// A reagent's bleed change on a wound host (the <c>ModifyBleedAmount</c> effect), where the bloodstream's own
     /// figure is only the wounds' projection. Negative is a coagulant: it takes that much off the body's bleed rate,
-    /// scaled by <see cref="WolfmedCVars.BleedRate"/> like every wound's rate, worst bleed first, and never touches a
-    /// dressing, clamp or tourniquet. An arterial bleed only clots down to its
-    /// <see cref="WolfmedArterialBleedBehavior.CoagulantFloor"/>, so it slows and keeps pumping. Positive opens or
-    /// deepens a systemic bleed, as Onyx's <c>ModifyBleed</c> did.
+    /// worst bleed first, and never touches a dressing, clamp or tourniquet. It is not scaled by
+    /// <see cref="WolfmedCVars.BleedRate"/>: that knob slows bleeds, not the drugs that stop them.
+    /// An arterial bleed only clots down to its <see cref="WolfmedArterialBleedBehavior.CoagulantFloor"/>, so it slows
+    /// and keeps pumping. Positive opens or deepens a systemic bleed, as Onyx's <c>ModifyBleed</c> did.
     /// </summary>
     public bool ApplyReagentBleeding(EntityUid body, float amount)
     {
@@ -48,7 +48,7 @@ public sealed partial class WoundBleedingSystem
         if (amount > 0f)
             return _wfBleedGate.Bypass(() => ModifyBodyBleeding(body, amount)); // a reagent bleed is no hit; the gate doesn't apply
 
-        var remaining = -amount * _configuration.GetCVar(WolfmedCVars.BleedRate);
+        var remaining = -amount;
         var modified = false;
         var wounds = GetAttachedBleedingWounds(body)
             .Where(wound => wound.Comp2.CurrentRate > 0f)

@@ -48,6 +48,7 @@ public sealed partial class WFShipAccessServerSystem : EntitySystem
         InitializeDoors();
         InitializeCodes();
         InitializeStations();
+        InitializeAi();
     }
 
     private void OnShipPurchased(ShipyardShuttlePurchaseEvent args)

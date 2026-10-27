@@ -31,6 +31,8 @@ namespace Content.Client.Chemistry.UI
 
         private const string PillsRsiPath = "/Textures/Objects/Specific/Chemistry/pills.rsi";
 
+        private (int, int, int, uint)? _lastDosageKey; // WOLFGATE: last inputs the dosage defaults were built from
+
         /// <summary>
         /// Create and initialize the chem master UI client-side. Creates the basic layout,
         /// actual data isn't filled in until the server sends data about the chem master.
@@ -179,7 +181,15 @@ namespace Content.Client.Chemistry.UI
                 _ => 0,
             };
 
-            PillDosage.Value = (int)Math.Min(outputVolume, castState.PillDosageLimit);
+            // WOLFGATE START: keep typed pill and bottle amounts when an update changes nothing they depend on
+            var dosageKey = (outputVolume, pillNumberMax, bottleAmountMax, castState.PillDosageLimit);
+            var dosageChanged = dosageKey != _lastDosageKey;
+            _lastDosageKey = dosageKey;
+            // WOLFGATE END
+
+            // WOLFGATE: only reset on a change
+            if (dosageChanged)
+                PillDosage.Value = (int)Math.Min(outputVolume, castState.PillDosageLimit);
 
             PillTypeButtons[castState.SelectedPillType].Pressed = true;
 
@@ -191,6 +201,10 @@ namespace Content.Client.Chemistry.UI
                 PillNumber.Value = pillNumberMax;
             if (BottleDosage.Value > bottleAmountMax)
                 BottleDosage.Value = bottleAmountMax;
+
+            // WOLFGATE: only reset on a change
+            if (!dosageChanged)
+                return;
 
             // Avoid division by zero
             if (PillDosage.Value > 0)

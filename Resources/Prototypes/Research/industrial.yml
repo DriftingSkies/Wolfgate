@@ -19,6 +19,7 @@
   - WeaponProtoKineticAccelerator
   - ShuttleGunKineticCircuitboard
   - WeaponTurretM25Circuitboard # Mono
+  - WFWeaponTurretMiningLaserSmallCircuitboard # WOLFGATE(AsteroidMining): light mining laser board
   # These are roundstart but not replenishable for salvage
   - WeaponCrusher
   - WeaponCrusherDagger
@@ -246,6 +247,7 @@
   - OreBagOfHolding
   - MiningDrillDiamond
   - ShipDrillMachineCircuitboard
+  - WFWeaponTurretMiningBeamCircuitboard # WOLFGATE(AsteroidMining): mining laser board
   - AdvancedMineralScannerEmpty
   - NFBlueprintOreBagOfHolding # Frontier
   - NFBlueprintMiningDrillDiamond # Frontier

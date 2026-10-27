@@ -173,7 +173,8 @@ public sealed partial class ContentAudioSystem
 
     private void PlaySoundtrack(string soundtrackFilename, int attempt = 0) // WOLFGATE(Symphony): attempt
     {
-        if (!_resourceCache.TryGetResource(new ResPath(soundtrackFilename), out AudioResource? audio))
+        // WOLFGATE(Symphony): an uploaded track is asked of the cache only once it is here, since the cache remembers a miss
+        if (!Content.Client.Lobby.SymphonyWait.Arrived(_resourceCache, soundtrackFilename) || !_resourceCache.TryGetResource(new ResPath(soundtrackFilename), out AudioResource? audio))
         {
             // WOLFGATE(Symphony) START: a track the panel uploaded can arrive just after the playlist naming it
             // Only for a first start: while a track plays, advancing already asks again every frame. The music switch

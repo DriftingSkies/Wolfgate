@@ -228,22 +228,10 @@ public sealed class WoundBleedingTest : GameTest
             var torso = parts.Single(part => part.Component.PartType == BodyPartType.Torso).Id;
             var bloodstream = entityManager.GetComponent<BloodstreamComponent>(body);
 
-            // WOLFGATE(Wolfmed): HeadHuman inherits WFWolfmedBaseHead, so its Slash amputation threshold is 200
-            // (_WF/Wolfmed/Body/parts.yml). progress = 200/200 = 1.0 -> Severable, and the threshold hit
-            // itself never detaches (AmputationSystem.HandlePartDamageApplied's first branch returns).
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 200)));
-            Assert.Multiple(() =>
-            {
-                Assert.That(graph.BodyHasChild(body, head), Is.True,
-                    "reaching the threshold only arms the limb; it must not come off on that hit.");
-                Assert.That(entityManager.GetComponent<WoundableComponent>(head).Severable, Is.True);
-            });
-
-            // WOLFGATE(Wolfmed): post-hit 215 -> progress 1.075 >= SeverableResetRatio 0.8; damageBeforeHit is
-            // 215 - 15 = 200 so ReachedThreshold is true; IsFinishingHit reads Slash 15 against
-            // WoundHostComponent.DefaultDismembermentFinishingDamage["Slash"] = 15 (parts.yml's per-part
-            // dict lists only Piercing/Heat, so Slash still falls back to Onyx's host default) -> detach.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15)));
+            // WOLFGATE(Wolfmed): revival pass, a capped head is no longer armed by piled-up damage
+            // It comes off the way a blast or an execution takes it: the traumatic amputation itself, with all its
+            // consequences.
+            Assert.That(entityManager.System<AmputationSystem>().TryAmputate(body, head));
 
             var torsoWounds = wounds.GetWounds((torso, entityManager.GetComponent<WoundableComponent>(torso)))
                 .ToList();

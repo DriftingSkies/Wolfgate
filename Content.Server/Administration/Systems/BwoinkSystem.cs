@@ -13,6 +13,7 @@ using Content.Server.Discord.DiscordLink;
 using Content.Server.GameTicking;
 using Content.Server.Players.RateLimiting;
 using Content.Server.Preferences.Managers;
+using Content.Shared._WF.AHelpResolve; // WOLFGATE(AHelpResolve)
 using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
@@ -113,11 +114,13 @@ namespace Content.Server.Administration.Systems
 
             SubscribeLocalEvent<GameRunLevelChangedEvent>(OnGameRunLevelChanged);
             SubscribeNetworkEvent<BwoinkClientTypingUpdated>(OnClientTypingUpdated);
+            SubscribeNetworkEvent<AHelpResolveMessage>(OnAHelpResolve); // WOLFGATE(AHelpResolve): resolve button
             // WOLFGATE(EventStaff) START: ahelp categories reset with the round
             SubscribeLocalEvent<RoundRestartCleanupEvent>(_ =>
             {
                 _activeConversations.Clear();
                 _ahelpCategories.Clear();
+                _claimedAHelps.Clear(); // WOLFGATE(AHelpResolve): claims reset with the round
             });
             // SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _activeConversations.Clear());
             // WOLFGATE END
@@ -489,6 +492,7 @@ namespace Content.Server.Administration.Systems
             // ... as long as it hasn't been relayed already.
             var discordMention = messages.Last();
             var onCallRelay = !discordMention.Receivers && !existingEmbed.OnCall;
+            var batchText = new StringBuilder(); // WOLFGATE(AHelpResolve): quoted in an on-call-only ping
 
             // Add available messages to the embed description
             while (messages.TryDequeue(out var message))
@@ -502,6 +506,7 @@ namespace Content.Server.Administration.Systems
                     text = message.Message;
 
                 existingEmbed.Description += $"\n{text}";
+                batchText.AppendLine(text); // WOLFGATE(AHelpResolve): quoted in an on-call-only ping
             }
 
             var payload = GeneratePayload(existingEmbed.Description,
@@ -511,6 +516,13 @@ namespace Content.Server.Administration.Systems
 
             // If there is no existing embed, create a new one
             // Otherwise patch (edit) it
+            // WOLFGATE(AHelpResolve) START: the on-call ping works without the ahelp webhook
+            if (_webhookUrl == string.Empty)
+            {
+                // No ahelp channel, so no embed to post or edit.
+            }
+            else
+            // WOLFGATE END
             if (existingEmbed.Id == null)
             {
                 var request = await _httpClient.PostAsync($"{_webhookUrl}?wait=true",
@@ -566,6 +578,11 @@ namespace Content.Server.Administration.Systems
                     message.AppendLine($"<@&{roleMention}>");
                     message.AppendLine("Unanswered SOS");
 
+                    // WOLFGATE(AHelpResolve) START: no ahelp embed to link, so quote the messages
+                    if (_webhookUrl == string.Empty)
+                        message.Append(batchText);
+                    else
+                    // WOLFGATE END
                     // Need webhook data to get the correct link for that channel rather than on-call data.
                     if (_webhookData is { GuildId: { } guildId, ChannelId: { } channelId })
                     {
@@ -776,7 +793,11 @@ namespace Content.Server.Administration.Systems
 
             var senderAHelpAdmin = senderAdmin?.HasFlag(AdminFlags.Adminhelp) ?? false;
             // If it's not an admin / admin chooses to keep the sound and message is not an admin only message, then play it.
-            var playSound = (!senderAHelpAdmin || message.PlaySound) && !message.AdminOnly;
+            // WOLFGATE(AHelpResolve) START: every staff reply honours the play sound box; answered ahelps stop bwoinking staff
+            // var playSound = (!senderAHelpAdmin || message.PlaySound) && !message.AdminOnly;
+            var playSound = (senderId == message.UserId || message.PlaySound) && !message.AdminOnly;
+            var adminMsg = new BwoinkTextMessage(message.UserId, senderId, bwoinkText, playSound: AHelpStaffSound(message.UserId, senderId, playSound), adminOnly: message.AdminOnly, category: category);
+            // WOLFGATE END
             var msg = new BwoinkTextMessage(message.UserId, senderId, bwoinkText, playSound: playSound, adminOnly: message.AdminOnly, category: category); // WOLFGATE(EventStaff)
 
             LogBwoink(msg);
@@ -788,7 +809,7 @@ namespace Content.Server.Administration.Systems
             {
                 foreach (var channel in admins)
                 {
-                    RaiseNetworkEvent(msg, channel);
+                    RaiseNetworkEvent(adminMsg, channel); // WOLFGATE(AHelpResolve): staff get their own sound flag
                 }
             }
 
@@ -847,7 +868,7 @@ namespace Content.Server.Administration.Systems
             }
 
             var sendsWebhook = _webhookUrl != string.Empty;
-            if (sendsWebhook && sendWebhook)
+            if ((sendsWebhook || _onCallUrl != string.Empty) && sendWebhook) // WOLFGATE(AHelpResolve): queue for an on-call-only relay
             {
                 if (!_messageQueues.ContainsKey(msg.UserId))
                     _messageQueues[msg.UserId] = new Queue<DiscordRelayedData>();

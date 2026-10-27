@@ -85,6 +85,7 @@ public sealed partial class ChatUIController : UIController
         {SharedChatSystem.EmotesAltPrefix, ChatSelectChannel.Emotes},
         {SharedChatSystem.AdminPrefix, ChatSelectChannel.Admin},
         {SharedChatSystem.EventPrefix, ChatSelectChannel.Event}, // WOLFGATE(EventStaff)
+        {SharedChatSystem.SubtlePrefix, ChatSelectChannel.Subtle}, // WOLFGATE(Subtle)
         {SharedChatSystem.RadioCommonPrefix, ChatSelectChannel.Radio},
         {SharedChatSystem.DeadPrefix, ChatSelectChannel.Dead},
         {SharedChatSystem.CollectiveMindPrefix, ChatSelectChannel.CollectiveMind}
@@ -100,6 +101,7 @@ public sealed partial class ChatUIController : UIController
         {ChatSelectChannel.Emotes, SharedChatSystem.EmotesPrefix},
         {ChatSelectChannel.Admin, SharedChatSystem.AdminPrefix},
         {ChatSelectChannel.Event, SharedChatSystem.EventPrefix}, // WOLFGATE(EventStaff)
+        {ChatSelectChannel.Subtle, SharedChatSystem.SubtlePrefix}, // WOLFGATE(Subtle)
         {ChatSelectChannel.Radio, SharedChatSystem.RadioCommonPrefix},
         {ChatSelectChannel.Dead, SharedChatSystem.DeadPrefix},
         {ChatSelectChannel.CollectiveMind, SharedChatSystem.CollectiveMindPrefix} // Goobstation - Starlight collective mind port
@@ -542,6 +544,7 @@ public sealed partial class ChatUIController : UIController
             FilterableChannels |= ChatChannel.Whisper;
             FilterableChannels |= ChatChannel.Radio;
             FilterableChannels |= ChatChannel.Emotes;
+            FilterableChannels |= ChatChannel.Subtle; // WOLFGATE(Subtle)
             FilterableChannels |= ChatChannel.Notifications;
 
             // Can only send local / radio / emote when attached to a non-ghost entity.
@@ -552,6 +555,7 @@ public sealed partial class ChatUIController : UIController
                 CanSendChannels |= ChatSelectChannel.Whisper;
                 CanSendChannels |= ChatSelectChannel.Radio;
                 CanSendChannels |= ChatSelectChannel.Emotes;
+                CanSendChannels |= ChatSelectChannel.Subtle; // WOLFGATE(Subtle)
             }
         }
 
@@ -936,6 +940,7 @@ public sealed partial class ChatUIController : UIController
                 break;
 
             case ChatChannel.Emotes:
+            case ChatChannel.Subtle: // WOLFGATE(Subtle)
                 AddSpeechBubble(msg, SpeechBubble.SpeechType.Emote);
                 break;
 

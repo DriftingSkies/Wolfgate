@@ -23,20 +23,20 @@
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ TajaranTailRetro ]
     HeadTop:
       points: 1
       required: true
       defaultMarkings: [ TajaranEarsBasic ]
     Chest:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): was 2, more marking slots
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): was 2, more marking slots
       required: false
 
 - type: speciesBaseSprites

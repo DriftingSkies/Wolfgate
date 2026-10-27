@@ -1,0 +1,25 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: CMBaseStructure
+  id: RMCAncientObelisk
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: Sprite
+    drawdepth: OverMobs
+    sprite: _RMC14/Structures/obelisk.rsi
+    noRot: true
+    state: obelisk
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-2.50,0.25,0"
+        density: 190
+        layer:
+        - MobMask
+# WOLFGATE END

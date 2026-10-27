@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "license": "CC-BY-NC-SA-3.0",
+  "copyright": "Taken from Mojave Sun at commit https://github.com/Mojave-Sun/mojave-sun-13/commit/1302c0c1f01873bdc6bb2db45bf6ba0b4176770e.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "rock1"
+    },
+    {
+      "name": "rock2"
+    },
+    {
+      "name": "rock3"
+    },
+    {
+      "name": "rock4"
+    },
+    {
+      "name": "rock5"
+    },
+    {
+      "name": "rock6"
+    },
+    {
+      "name": "rock_side_s"
+    },
+    {
+      "name": "rock_side_n"
+    },
+    {
+      "name": "rock_side_e"
+    },
+    {
+      "name": "rock_side_w"
+    },
+    {
+      "name": "rock_Diamond1"
+    },
+    {
+      "name": "rock_Diamond2"
+    },
+    {
+      "name": "rock_Diamond3"
+    },
+    {
+      "name": "rock_Plasma1"
+    },
+    {
+      "name": "rock_Plasma2"
+    },
+    {
+      "name": "rock_Plasma3"
+    },
+    {
+      "name": "rock_Uranium1"
+    },
+    {
+      "name": "rock_Uranium2"
+    },
+    {
+      "name": "rock_Uranium3"
+    }
+  ]
+}

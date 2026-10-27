@@ -568,6 +568,14 @@ public sealed partial class MappingToolsSystem : EntitySystem
 
         if (target == null)
         {
+            var centres = clip.Tiles.ConvertAll(t =>
+                (Vector2) (MappingToolsMath.TransformCell(t.Cell, extent, offset, turns) + shift) + half);
+            if (OverlapsGrid(mapCoords.MapId, null, centres))
+            {
+                _popup.PopupCursor(Loc.GetString("wf-mapping-tools-overlaps-grid"), session);
+                return;
+            }
+
             var newGrid = _map.CreateGridEntity(mapCoords.MapId);
             _transform.SetWorldPosition(newGrid.Owner, new Vector2(newOrigin.X, newOrigin.Y));
             target = newGrid;
@@ -604,7 +612,8 @@ public sealed partial class MappingToolsSystem : EntitySystem
         if (group.Roots.Count > 0)
             edit.Created.Add(group);
 
-        Commit(session, edit);
+        if (!Commit(session, edit))
+            return;
 
         var selection = new MappingSelection
         {
@@ -701,6 +710,70 @@ public sealed partial class MappingToolsSystem : EntitySystem
         }
 
         return count == sel.Tiles.Count;
+    }
+
+    /// <summary>
+    /// Whether an edit, applied <paramref name="forward"/> or back, would fill a cell that another grid already has a
+    /// tile on. Each grid only checks its own tiles, so without this a paste or move can stack two grids.
+    /// </summary>
+    private bool FillsOverOtherGrid(MappingEdit edit, bool forward)
+    {
+        foreach (var (gridUid, tiles) in TargetTiles(edit, forward))
+        {
+            if (!TryComp(gridUid, out MapGridComponent? grid) || TerminatingOrDeleted(gridUid))
+                continue;
+
+            var matrix = _transform.GetWorldMatrix(gridUid);
+            var centres = new List<Vector2>();
+            foreach (var (cell, tile) in tiles)
+            {
+                if (!tile.IsEmpty && TileAt((gridUid, grid), cell).IsEmpty)
+                    centres.Add(Vector2.Transform(cell + new Vector2(0.5f), matrix));
+            }
+
+            if (OverlapsGrid(Transform(gridUid).MapID, gridUid, centres))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Whether any of these world points sits on a tile of a grid other than <paramref name="self"/>.
+    /// </summary>
+    private bool OverlapsGrid(MapId mapId, EntityUid? self, List<Vector2> centres)
+    {
+        if (centres.Count == 0)
+            return false;
+
+        var min = centres[0];
+        var max = centres[0];
+        foreach (var centre in centres)
+        {
+            min = Vector2.Min(min, centre);
+            max = Vector2.Max(max, centre);
+        }
+
+        var grids = new List<Entity<MapGridComponent>>();
+        _map.FindGridsIntersecting(mapId, new Box2(min, max).Enlarged(0.5f), ref grids, approx: true, includeMap: false);
+        grids.RemoveAll(g => g.Owner == self);
+        if (grids.Count == 0)
+            return false;
+
+        foreach (var centre in centres)
+        {
+            var coords = new MapCoordinates(centre, mapId);
+            foreach (var other in grids)
+            {
+                if (_map.TryGetTileRef(other, other.Comp, _map.TileIndicesFor(other, other.Comp, coords), out var tileRef) &&
+                    !tileRef.Tile.IsEmpty)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /// <summary>

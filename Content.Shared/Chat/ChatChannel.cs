@@ -98,10 +98,18 @@ namespace Content.Shared.Chat
         EventChat = 1 << 16,
         // WOLFGATE END
 
+        // WOLFGATE(Subtle) START: subtle emote channel
+        /// <summary>
+        ///     Emotes only the players right next to the sender see
+        /// </summary>
+        Subtle = 1 << 17,
+        // WOLFGATE END
+
         /// <summary>
         ///     Channels considered to be IC.
         /// </summary>
-        IC = Local | Whisper | Radio | Dead | Emotes | Damage | Visual | CollectiveMind | Notifications,
+        IC = Local | Whisper | Radio | Dead | Emotes | Damage | Visual | CollectiveMind | Notifications
+            | Subtle, // WOLFGATE(Subtle)
 
         AdminRelated = Admin | AdminAlert | AdminChat | EventChat, // WOLFGATE(EventStaff): keep event chat out of replays
     }

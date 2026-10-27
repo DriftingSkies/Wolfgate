@@ -342,6 +342,9 @@ public sealed class WolfmedSpeciesProfileTest : WolfmedGameTest
         {
             var body = entities.SpawnEntity("MobHuman", map.GridCoords);
             slashed = AttachCybernetic(entities, map.GridCoords, body);
+            // Revival pass: an attacker behind every hit. Damage with no origin is ambient harm and stops at 0.8 of
+            // the part's cap.
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords);
 
             // Structural half. CyberneticPartBase's block is first in every concrete limb's parent list and
             // `thresholds` is a plain non-Always DataField, so the child list REPLACES MajorLimb's three rungs
@@ -363,14 +366,14 @@ public sealed class WolfmedSpeciesProfileTest : WolfmedGameTest
             // of 130 (_WF/Wolfmed/Body/parts.yml - P5-D7 keeps cybernetic limbs on the organic set), so the
             // limb survives and AmputationSystem arms it. Trap 7: arming takes only the crossing hit; severing
             // needs a second, finishing one.
-            Assert.That(Routing(entities).TryApplyPartDamage(body, slashed, Spec("Slash", 140), null,
+            Assert.That(Routing(entities).TryApplyPartDamage(body, slashed, Spec("Slash", 140), attacker,
                 ignoreResistances: true));
 
             // (ii) Heat 260 on a fresh prosthetic, on its own host: above the OLD inherited MajorLimb Heat rung
             // of 250, and nothing must happen, because U15(a) deleted that rung.
             var host = entities.SpawnEntity("MobHuman", map.GridCoords);
             burned = AttachCybernetic(entities, map.GridCoords, host);
-            Assert.That(Routing(entities).TryApplyPartDamage(host, burned, Spec("Heat", 260), null,
+            Assert.That(Routing(entities).TryApplyPartDamage(host, burned, Spec("Heat", 260), attacker,
                 ignoreResistances: true));
         });
 
@@ -556,7 +559,8 @@ public sealed class WolfmedSpeciesProfileTest : WolfmedGameTest
             // 210 gib rung; then the phase-3 finishing hit (14 Piercing, DECISIONS §8.6-1). Neither can do
             // anything: AmputationSystem.HandlePartDamageApplied early-returns on an empty threshold dict.
             Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 120), null, ignoreResistances: true));
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Piercing", 14), null, ignoreResistances: true));
+            // Revival pass: the arm is at its cap of 100 by now, so this round stores nothing and only overflows.
+            routing.TryApplyPartDamage(body, arm, Spec("Piercing", 14), null, ignoreResistances: true);
         });
 
         await Pair.RunTicksSync(2);

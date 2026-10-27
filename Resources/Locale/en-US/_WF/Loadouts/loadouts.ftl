@@ -61,13 +61,12 @@ wf-loadout-hint-full = Full {$max}/{$max}: remove a pick first.
 wf-loadout-hint-all-locked = Locked: {$reason}
 wf-loadout-locked-generic = You do not meet the requirements for this item.
 
-wf-loadout-detail-selected = Selected
 wf-loadout-detail-none = Nothing picked in this slot.
 wf-loadout-detail-remove-glyph = ×
 wf-loadout-detail-remove = Remove {$name}
-wf-loadout-detail-idle = Hover an item for details.
 wf-loadout-detail-locked = Locked
 wf-loadout-detail-unaffordable = Can't afford
+wf-loadout-selected-heading = Selected
 wf-loadout-dropped = You can't afford this, so it will not be issued.
 wf-loadout-dropped-fallback = You can't afford this, so {$item} is issued instead.
 

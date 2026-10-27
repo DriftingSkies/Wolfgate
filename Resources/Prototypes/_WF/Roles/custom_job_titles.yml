@@ -1,11 +1,31 @@
 # Roles whose players can write their own job title. The id is the role loadout id.
-# Every job's name is always rejected; these lists add to that.
+# Every job's name is rejected unless its job is in allowedJobs; the block lists add to that.
 # Matching ignores case, spacing and punctuation, reads look-alike digits as letters ("Adm1n")
 # and joins spaced-out letters ("A D M I N").
 # blockedTitles: rejected only as the whole title.
 # blockedWords: whole words or phrases rejected anywhere in the title ("admin" doesn't catch "badminton").
 - type: customJobTitle
   id: JobContractor
+  allowedJobs:
+  # Non-essential service
+  - Bartender
+  - Botanist
+  - Boxer
+  - Chaplain
+  - Chef
+  - Clown
+  - Janitor
+  - Librarian
+  - Mime
+  - Musician
+  - Passenger
+  - Reporter
+  - ServiceWorker
+  - Visitor
+  - Zookeeper
+  # Mercenary
+  - Mercenary
+
   blockedTitles:
   # Staff and out-of-game roles
   - Staff

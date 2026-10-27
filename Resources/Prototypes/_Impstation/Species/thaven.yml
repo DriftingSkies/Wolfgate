@@ -75,10 +75,12 @@
       points: 5 # 4 < 5, Funky, makes it so that you can have even more customization options on your thaven, sickeningly many even
       required: false
     Arms:
-      points: 6 # 4 < 6, Funky, makes it so that you can have even more customization options on your thaven, sickeningly many even
+      # WOLFGATE(Species): was 6, more marking slots
+      points: 8 # 4 < 6, Funky, makes it so that you can have even more customization options on your thaven, sickeningly many even
       required: false
     Legs:
-      points: 6 # 4 < 6, Funky, makes it so that you can have even more customization options on your thaven, sickeningly many even
+      # WOLFGATE(Species): was 6, more marking slots
+      points: 8 # 4 < 6, Funky, makes it so that you can have even more customization options on your thaven, sickeningly many even
       required: false
     Tail:
       points: 1

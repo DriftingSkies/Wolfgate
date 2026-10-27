@@ -144,5 +144,5 @@
       points: 1
       required: false
     Chest:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: false

@@ -474,6 +474,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
 
         EnsureDefaultMarkings(uid, humanoid);
         humanoid.CustomMarkings = ProfileCustomMarkings(profile); // WOLFGATE(CustomMarkings): the profile's custom markings
+        humanoid.HiddenCustomMarkings.Clear(); // WOLFGATE(MarkingToggles): a loaded character shows all its markings
 
         humanoid.Gender = profile.Gender;
         if (TryComp<GrammarComponent>(uid, out var grammar))

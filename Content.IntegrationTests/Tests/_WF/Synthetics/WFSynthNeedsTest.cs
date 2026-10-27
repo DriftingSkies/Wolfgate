@@ -48,4 +48,34 @@ public sealed class WFSynthNeedsTest
 
         await pair.CleanReturnAsync();
     }
+
+    /// <summary>The Synth species is synthetic as it comes: it neither eats, drinks nor breathes, and refills its own fluid.</summary>
+    [Test]
+    public async Task SynthSpeciesHasNoNeedsTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var profile = HumanoidCharacterProfile.RandomWithSpecies("Synth").WithBiotype(WFBiotype.Synthetic);
+            var synth = entMan.System<StationSpawningSystem>().SpawnPlayerMob(map.GridCoords, job: null, profile, station: null);
+
+            var refresh = entMan.GetComponent<BloodstreamComponent>(synth).BloodRefreshAmount;
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.HasComponent<HungerComponent>(synth), Is.False, "a synth gets hungry.");
+                Assert.That(entMan.HasComponent<ThirstComponent>(synth), Is.False, "a synth gets thirsty.");
+                Assert.That(entMan.HasComponent<RespiratorComponent>(synth), Is.False, "a synth breathes.");
+                Assert.That(refresh.Float(), Is.GreaterThan(0f),
+                    "a synth never refills its fluid.");
+            });
+
+            entMan.DeleteEntity(synth);
+        });
+
+        await pair.CleanReturnAsync();
+    }
 }

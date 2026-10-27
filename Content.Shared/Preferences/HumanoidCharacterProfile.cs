@@ -925,6 +925,12 @@ namespace Content.Shared.Preferences
                 if (WFBiotypeGates.TraitBlocked(traitProto, this, protoManager)) // WOLFGATE(Biotype): a trait the effective biotype can't take is dropped
                     continue;
 
+                // WOLFGATE(MeridianTraits) START: drop a trait that excludes one already taken, in either direction
+                if (result.Any(taken => traitProto.MutuallyExclusiveTraits.Contains(taken)
+                        || protoManager.TryIndex(taken, out var takenProto) && takenProto.MutuallyExclusiveTraits.Contains(trait)))
+                    continue;
+                // WOLFGATE END
+
                 // Always valid.
                 if (traitProto.Category == null)
                 {

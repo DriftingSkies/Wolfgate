@@ -1,0 +1,6 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- files: ["chisel","stones_falling"]
+  license: "CC-BY-4.0"
+  copyright: 'Darkrell'
+  source: "https://github.com/ss14Starlight/space-station-14"
+# WOLFGATE END

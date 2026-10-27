@@ -451,6 +451,8 @@ public sealed class WolfmedCauseScenarioTest : WolfmedGameTest
         // Playtest 4: these sets carry no wound floor, so the loose rate would fade them mid-assertion; this test is
         // the P13 arithmetic, not the decay.
         await OverrideCVar(Side.Server, WolfmedCVars.PainLooseRecovery, 0f);
+        // Revival pass: P13's plain-sum arithmetic; the falloff that now weights the parts has its own test.
+        await OverrideCVar(Side.Server, WolfmedCVars.PainSpreadFalloff, 1f);
         await PinPain();
         var map = await CreateTestMap();
         EntityUid a = default;

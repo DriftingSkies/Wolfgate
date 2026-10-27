@@ -124,6 +124,8 @@ ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpac
 - [`Content.Server/_WF/Planets/WFBiomeGrownComponent.cs`](WFBiomeGrownComponent.cs)
 - [`Content.Server/_WF/Planets/WFGravityWellSystem.cs`](WFGravityWellSystem.cs)
 - [`Content.Server/_WF/Planets/WFGridAudienceSystem.cs`](WFGridAudienceSystem.cs)
+- [`Content.Server/_WF/Planets/WFLooseDebrisComponent.cs`](WFLooseDebrisComponent.cs)
+- [`Content.Server/_WF/Planets/WFLooseDebrisSystem.cs`](WFLooseDebrisSystem.cs)
 - [`Content.Server/_WF/Planets/WFOrbitDecayComponent.cs`](WFOrbitDecayComponent.cs)
 - [`Content.Server/_WF/Planets/WFOrbitDecaySystem.cs`](WFOrbitDecaySystem.cs)
 - [`Content.Server/_WF/Planets/WFOrbitEntrySystem.Approach.cs`](WFOrbitEntrySystem.Approach.cs)
@@ -408,6 +410,7 @@ ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpac
   - over a planet only landing thrusters lift.
   - landing thrusters are the planet-side lift.
   - grids parked on a planet orbit layer never fall.
+  - sets level with each other met on an earlier tick.
   - partial landing-thruster lift slows the sink, and this is where lift lost begins.
   - the sink uses the lift-adjusted gravity.
   - planetary landings can clear, land hard, break up or skid instead of only crashing.

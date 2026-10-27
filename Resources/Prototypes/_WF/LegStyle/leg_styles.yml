@@ -45,6 +45,8 @@
   stance: Digitigrade
   default: true # the species draws these legs itself (Resources/Prototypes/_WF/Species/vulpkanin.yml)
   displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  fittedMarkings:
+  - _Starlight/Mobs/Customization/vulpkanin # drawn for these legs; the rest of the vulpkanin markings were drawn for DeltaV's
   displacements:
     jumpsuit: &starlightSuit
       sizeMaps:

@@ -30,6 +30,10 @@ public sealed partial class WFReaverStrongholdComponent : Component
     [ViewVariables]
     public Dictionary<EntityUid, int> NpcHits = new();
 
+    /// <summary>Players last seen aboard its hub, and when. A boarding party that puts the hub out is paid as its attackers.</summary>
+    [ViewVariables]
+    public Dictionary<Robust.Shared.Network.NetUserId, TimeSpan> Boarders = new();
+
     /// <summary>When its ships last took a hit.</summary>
     [ViewVariables]
     public TimeSpan LastHit;

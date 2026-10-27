@@ -129,6 +129,9 @@ public sealed partial class WFEncounterSystem
             || TerminatingOrDeleted(state.Grid) || state.Virtual != up)
             return;
 
+        if (up && _simulate && _battleHeat.IsHot(_transform.GetMapCoordinates(state.Grid)))
+            return;
+
         if (up)
             Materialize((uid, encounter), key, state);
         else
@@ -163,7 +166,9 @@ public sealed partial class WFEncounterSystem
                 if (ship.Virtual)
                 {
                     // Turned off, every simulated ship is spawned; a resolved encounter's stand-ins just wait for cleanup.
-                    if (encounter.Resolution == null && (!_simulate || nearest <= _materializeRange || JumpingNear(at)))
+                    // A stand-in near a big fight stays simulated until it dies down.
+                    if (encounter.Resolution == null && (!_simulate || nearest <= _materializeRange || JumpingNear(at))
+                        && !(_simulate && _battleHeat.IsHot(at)))
                         spawn.Add((uid, key, _simulate ? nearest : 0f));
                     continue;
                 }

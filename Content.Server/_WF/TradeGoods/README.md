@@ -30,6 +30,9 @@ The free-eject charges are zeroed on `VendingMachineTraderBaikal`, the parent of
 ## Non-modular edits
 
 - [`Content.Server/_Crescent/Dispenser/DispenserSystem.cs`](../../_Crescent/Dispenser/DispenserSystem.cs): chutes refuse goods bought on their own grid
+- [`Resources/Prototypes/_Mono/Entities/Structures/dispensers.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/dispensers.yml)
+  - match the CC manifest, which lists no ship components and metals at 5000
+  - match the Halcyon manifest, which buys fertilizer and no components
 - [`Resources/Prototypes/_Mono/Entities/Structures/Machines/vending_machines.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Machines/vending_machines.yml): no free crates from the eject wire or wrecking the vendor
 
 <!-- WOLFGATE-GENERATED END -->

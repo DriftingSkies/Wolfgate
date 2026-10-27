@@ -195,8 +195,9 @@ public sealed class WolfmedPlaytestTwoTest : WolfmedGameTest
             leftHand = s.Part(body, BodyPartType.Hand, BodyPartSymmetry.Left);
             rightArm = s.Part(body, BodyPartType.Arm, BodyPartSymmetry.Right);
 
-            // Ambient Heat under the ceilings (168 arm, 144 hand since M3), far past Shitmed's 90.
-            Routing.TryApplyPartDamage(body, leftArm, WolfmedScenario.Spec("Heat", 150));
+            // Revival pass: fire now stops at 0.8 of a part's cap (arm 80, hand 48), short of Shitmed's 90, so the arm's
+            // burn is a laser's: an attacker's Heat stores up to the arm's cap of 100. The hand burns ambiently.
+            Routing.TryApplyPartDamage(body, leftArm, WolfmedScenario.Spec("Heat", 150), attacker);
             Routing.TryApplyPartDamage(body, leftHand, WolfmedScenario.Spec("Heat", 120));
         });
 

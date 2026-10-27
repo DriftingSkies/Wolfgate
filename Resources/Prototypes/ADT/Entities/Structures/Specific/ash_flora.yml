@@ -1,0 +1,45 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  abstract: true
+  parent: BaseStructure
+  id: ADTBaseAshFlora
+  suffix: Structure
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: ADT/Structures/Specific/ash_flora.rsi
+    noRot: true
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  abstract: true
+  parent: ADTBaseAshFlora
+  id: ADTAshFloraCoalTree
+
+- type: entity
+  parent: ADTAshFloraCoalTree
+  id: ADTAshFloraCoalTree1
+  components:
+  - type: Sprite
+    state: coaltree1
+# WOLFGATE END

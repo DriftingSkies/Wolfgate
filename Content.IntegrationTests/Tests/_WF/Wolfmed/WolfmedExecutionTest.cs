@@ -341,6 +341,8 @@ public sealed class WolfmedExecutionTest : WolfmedGameTest
     [Test]
     public async Task BluntTiersTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         await Pin();
         var map = await CreateTestMap();
         var s = new WolfmedScenario(SEntMan);
@@ -796,6 +798,8 @@ public sealed class WolfmedExecutionTest : WolfmedGameTest
     [Test]
     public async Task BladeTiersTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         await Pin();
         var map = await CreateTestMap();
         var s = new WolfmedScenario(SEntMan);

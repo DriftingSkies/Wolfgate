@@ -1,0 +1,49 @@
+# WOLFGATE(DecorImport) START: ported from Starlight
+- type: entity
+  id: Phoronic
+  parent: BaseStructure
+  components:
+    - type: Transform
+      anchored: true
+    - type: Sprite
+      noRot: true
+      drawdepth: Mobs
+      offset: "0.0,0.5"
+      sprite: _Starlight/Structures/Decorations/Phoronic.rsi
+      state: phoronic
+    - type: SpriteFade
+    - type: Fixtures
+      fixtures:
+        fix1:
+          shape: !type:PhysShapeAabb
+            bounds: "-0.45,-0.45,0.45,0.45"
+          density: 60
+          mask:
+            - MachineMask
+          layer:
+            - MidImpassable
+            - LowImpassable
+        fix2:
+          shape: !type:PhysShapeCircle
+            radius: 5
+          density: 0
+          hard: false
+          mask:
+            - None
+          layer:
+            - MidImpassable
+    - type: Damageable
+      damageContainer: StructuralInorganic
+      damageModifierSet: Glass
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 500
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: GlassBreak
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+# WOLFGATE END

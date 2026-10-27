@@ -1,4 +1,6 @@
 #nullable enable
+using Content.IntegrationTests.Fixtures.Attributes;
+using Content.Shared._WF.Wolfmed.CCVar;
 using System.Collections.Generic;
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
@@ -32,7 +34,7 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._WF.Wolfmed;
 
 /// <summary>
-/// EVISC: a torso opened by a hit its 250 cap could not absorb. The torso is the one part D9 never severs,
+/// EVISC: a torso opened by a hit its 200 cap could not absorb. The torso is the one part D9 never severs,
 /// so the overflow that would take a limb off buys disembowelment instead.
 /// </summary>
 /// <remarks>
@@ -46,7 +48,7 @@ namespace Content.IntegrationTests.Tests._WF.Wolfmed;
 public sealed class WolfmedEviscerationTest : WolfmedGameTest
 {
     /// <summary>The torso's structural cap (Body/parts.yml). One hit of this puts it exactly at the line.</summary>
-    private const int Cap = 250;
+    private const int Cap = 200; // revival pass: 250 -> 200
 
     /// <summary>Past the profile's 35 Slash bar, so the hit after the cap tears the belly open.</summary>
     private const int BigSlash = 50;
@@ -300,6 +302,8 @@ public sealed class WolfmedEviscerationTest : WolfmedGameTest
     [Test]
     public async Task ItemsSlowItAndOnlySurgeryClosesItTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entities = server.ResolveDependency<IEntityManager>();
@@ -497,6 +501,8 @@ public sealed class WolfmedEviscerationTest : WolfmedGameTest
     [Test]
     public async Task NamesAndSurgeriesExistTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var locale = server.ResolveDependency<ILocalizationManager>();

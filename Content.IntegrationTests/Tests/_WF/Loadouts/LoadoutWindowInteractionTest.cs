@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Content.Client._WF.Gags;
 using Content.Client._WF.Loadouts;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
+using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared;
 using Robust.Shared.Configuration;
 using Robust.Shared.IoC;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.Loadouts;
@@ -169,11 +172,11 @@ public sealed class LoadoutWindowInteractionTest : InteractionTest
     }
 
     /// <summary>
-    /// With nothing hovered the detail strip shows the open group's picks: one is described in full, several
-    /// share the strip as cards that fill it, with nothing to scroll.
+    /// With nothing hovered the column right of the grid lists the open group's picks, one card each, side by side
+    /// with the grid and inside the window.
     /// </summary>
     [Test]
-    public async Task PicksFillTheDetailStrip()
+    public async Task PicksListInTheSelectedPanel()
     {
         await Open();
 
@@ -191,17 +194,16 @@ public sealed class LoadoutWindowInteractionTest : InteractionTest
         });
         await RunTicks(4);
 
-        List<Control> Cards(LoadoutDetailStrip strip)
+        List<Control> Cards(LoadoutSelectedPanel panel)
         {
-            return Descendants(strip).Where(c => c.Visible && c.HasStyleClass("LoadoutPick")).ToList();
+            return Descendants(panel).Where(c => c.Visible && c.HasStyleClass("LoadoutPick")).ToList();
         }
 
         await Client.WaitAssertion(() =>
         {
-            var strip = Descendants(_window).OfType<LoadoutDetailStrip>().Single();
+            var panel = Descendants(_window).OfType<LoadoutSelectedPanel>().Single();
             Assert.That(Held(group), Has.Count.EqualTo(1));
-            Assert.That(Cards(strip), Is.Empty, "a single pick is described, not carded");
-            Assert.That(Descendants(strip).OfType<Label>().Where(l => l.Visible).Select(l => l.Text), Does.Contain(group.Picks[0].Name));
+            Assert.That(Cards(panel), Has.Count.EqualTo(1), "a single pick gets one card");
 
             foreach (var entry in group.Entries.Where(e => !e.Locked && !e.Selected).Take(group.Max - 1))
             {
@@ -212,25 +214,17 @@ public sealed class LoadoutWindowInteractionTest : InteractionTest
 
         await Client.WaitAssertion(() =>
         {
-            var strip = Descendants(_window).OfType<LoadoutDetailStrip>().Single();
-            var cards = Cards(strip);
+            var panel = Descendants(_window).OfType<LoadoutSelectedPanel>().Single();
+            var grid = _window.FindControl<ScrollContainer>("GridScroll");
+            var cards = Cards(panel);
             Assert.That(Held(group), Has.Count.EqualTo(group.Max));
             Assert.That(cards, Has.Count.EqualTo(group.Max), "one card per pick");
-            Assert.That(Descendants(strip).OfType<ScrollContainer>(), Is.Empty, "the picks don't scroll");
-
-            // Together the cards cover the strip: its whole width on every row, and its whole height.
-            var left = cards.Min(c => c.GlobalPosition.X);
-            var right = cards.Max(c => c.GlobalPosition.X + c.Size.X);
-            var top = cards.Min(c => c.GlobalPosition.Y);
-            var bottom = cards.Max(c => c.GlobalPosition.Y + c.Size.Y);
-            Assert.That(right - left, Is.GreaterThan(strip.Size.X - 12), "the cards span the strip's width");
-            Assert.That(bottom - top, Is.GreaterThan(strip.Size.Y - 12), "the cards span the strip's height");
+            Assert.That(panel.GlobalPosition.X, Is.GreaterThanOrEqualTo(grid.GlobalPosition.X + grid.Size.X - 0.5f), "the panel is right of the grid");
 
             foreach (var card in cards)
             {
-                Assert.That(card.Size.X, Is.GreaterThan(120), "a card is wide enough to read");
-                Assert.That(card.GlobalPosition.X + card.Size.X, Is.LessThanOrEqualTo(strip.GlobalPosition.X + strip.Size.X + 0.5f), "no card runs out of the strip");
-                Assert.That(card.GlobalPosition.Y + card.Size.Y, Is.LessThanOrEqualTo(strip.GlobalPosition.Y + strip.Size.Y + 0.5f));
+                Assert.That(card.Size.X, Is.GreaterThan(panel.Size.X - 24), "a card spans the panel");
+                Assert.That(card.GlobalPosition.X + card.Size.X, Is.LessThanOrEqualTo(panel.GlobalPosition.X + panel.Size.X + 0.5f), "no card runs out of the panel");
             }
 
             _window.Dispose();
@@ -355,10 +349,12 @@ public sealed class LoadoutWindowInteractionTest : InteractionTest
             var parent = _window.Parent!;
             Assert.That(_window.Size.X, Is.LessThanOrEqualTo(parent.Size.X + 0.5f), "the window is no wider than the screen");
 
-            var detail = Descendants(_window).OfType<LoadoutDetailStrip>().Single();
+            var panel = Descendants(_window).OfType<LoadoutSelectedPanel>().Single();
+            var right = _window.GlobalPosition.X + _window.Size.X;
             var bottom = _window.GlobalPosition.Y + _window.Size.Y;
-            Assert.That(detail.Size.Y, Is.EqualTo(LoadoutDetailStrip.StripHeight).Within(0.5f), "the detail strip keeps its height");
-            Assert.That(detail.GlobalPosition.Y + detail.Size.Y, Is.LessThanOrEqualTo(bottom + 0.5f), "and sits inside the window");
+            Assert.That(panel.Size.X, Is.EqualTo(LoadoutSelectedPanel.PanelWidth).Within(0.5f), "the selected panel keeps its width");
+            Assert.That(panel.GlobalPosition.X + panel.Size.X, Is.LessThanOrEqualTo(right + 0.5f), "and sits inside the window");
+            Assert.That(panel.GlobalPosition.Y + panel.Size.Y, Is.LessThanOrEqualTo(bottom + 0.5f));
 
             var tiles = Tiles();
             Assert.That(tiles, Is.Not.Empty);
@@ -385,6 +381,57 @@ public sealed class LoadoutWindowInteractionTest : InteractionTest
             config.SetCVar(CVars.DisplayUIScale, original);
         });
         await RunTicks(2);
+    }
+
+    /// <summary>A recolourable pick shows a swatch per colour, and colours set on the loadout show on them.</summary>
+    [Test]
+    public async Task RecolourablePickShowsItsColours()
+    {
+        await Open();
+
+        var collection = Client.ResolveDependency<IDependencyCollection>();
+        var session = Client.ResolveDependency<IPlayerManager>().LocalSession!;
+        var picked = Color.FromHex("#3A7BD5");
+        var gags = Client.EntMan.System<WFGagsSystem>();
+        LoadoutEntry entry = default!;
+
+        await Client.WaitPost(() =>
+        {
+            entry = _window.Catalog.Groups
+                .Where(g => g.Single)
+                .SelectMany(g => g.Entries)
+                .First(e => !e.Locked && !e.Selected && gags.ColorableItem(e.Proto) != null);
+            _window.OpenGroup(entry.Group);
+            _window.TrySelect(entry);
+        });
+        await RunTicks(4);
+
+        await Client.WaitAssertion(() =>
+        {
+            var row = Descendants(_window).OfType<WFGagsColorRow>().Single();
+            var colors = gags.DefaultColors(gags.ColorableItem(entry.Proto)!.Value)!;
+            Assert.That(row.Visible, Is.True, $"{entry.Id} is recolourable and picked");
+            var tile = Tiles().Single(t => t.Entry == entry);
+            Assert.That(Descendants(tile).OfType<TextureRect>().Any(r => r.Visible && r.Texture != null), Is.True, "its tile shows the palette");
+            Assert.That(Swatches(row), Has.Count.EqualTo(colors.Count), "one swatch per colour");
+
+            _loadout.SetWFGagsColors(entry.Group.Id, entry.Id, new List<Color> { picked });
+            _window.RefreshLoadouts(_loadout, session, collection);
+        });
+        await RunTicks(2);
+
+        await Client.WaitAssertion(() =>
+        {
+            var row = Descendants(_window).OfType<WFGagsColorRow>().Single();
+            var first = Swatches(row)[0];
+            Assert.That((first.PanelOverride as StyleBoxFlat)?.BackgroundColor, Is.EqualTo(picked), "the swatch shows the colour");
+            _window.Dispose();
+        });
+
+        List<PanelContainer> Swatches(WFGagsColorRow row)
+        {
+            return Descendants(row).OfType<PanelContainer>().Where(p => p.PanelOverride is StyleBoxFlat && p.ChildCount == 0).ToList();
+        }
     }
 
     private static IEnumerable<Control> Descendants(Control root)

@@ -72,7 +72,7 @@ public sealed partial class HealthAnalyzerSystem
             report.Blood = _life.GetBlood(body);
             report.Trend = GetBloodTrend(body, bloodstream, report.Blood);
             report.UnitsToLine = _life.GetTransfusionGuidance(body).ToBrainSafe;
-            report.Line = _vitalsCfg.GetCVar(WolfmedCVars.BrainBloodStart) * 100f;
+            report.Line = _life.BrainSafeTarget * 100f;
             // M1b (plan §3.7): a burn patient reads as a fluids patient.
             report.BurnFluid = _vitalsFluidLoss.GetRate(body);
             report.BurnFluidFast = report.BurnFluid >= _vitalsCfg.GetCVar(WolfmedCVars.AnalyzerBurnFast);
@@ -156,7 +156,7 @@ public sealed partial class HealthAnalyzerSystem
                 report.RestartUnits = units;
                 report.RestartSafeUnits = safe;
                 report.RestartGraceSeconds = _life.GetPostShockGraceSeconds(body);
-                report.RestartSafeLine = _vitalsCfg.GetCVar(WolfmedCVars.BrainBloodStart) * 100f;
+                report.RestartSafeLine = _life.BrainSafeTarget * 100f;
             }
         }
 
@@ -275,6 +275,6 @@ public sealed partial class HealthAnalyzerSystem
         var (units, safe) = _life.GetTransfusionGuidance(body);
         report.VerdictUnits = units;
         report.VerdictSafeUnits = safe;
-        report.VerdictSafeLine = _vitalsCfg.GetCVar(WolfmedCVars.BrainBloodStart) * 100f;
+        report.VerdictSafeLine = _life.BrainSafeTarget * 100f;
     }
 }

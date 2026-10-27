@@ -1,4 +1,5 @@
 using Content.Shared.Access.Components;
+using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WF.Roles;
@@ -12,6 +13,10 @@ public sealed partial class CustomJobTitlePrototype : IPrototype
 
     [DataField]
     public int MaxLength = IdCardConsoleComponent.MaxJobTitleLength;
+
+    /// <summary>Jobs whose names may be used as a title anyway, along with any other job sharing that name.</summary>
+    [DataField]
+    public List<ProtoId<JobPrototype>> AllowedJobs = new();
 
     /// <summary>Titles rejected outright on top of every job name. Compared on letters and digits only.</summary>
     [DataField]

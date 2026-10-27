@@ -29,6 +29,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
@@ -323,16 +324,31 @@ public sealed partial class VehicleArmedWeaponsTest : InteractionTest
     }
 
     /// <summary>Puts <paramref name="user"/> at the vehicle's first doorway, uses the vehicle and waits out the do-after.</summary>
+    /// <summary>
+    /// Walks the user in through the first doorway. Entering is a do-after that breaks on movement, so the user is
+    /// stopped at the doorway first, and a try that a stray nudge or a stale doorway hold cancelled is tried again.
+    /// </summary>
     private async Task<bool> Enter(EntityUid vehicle, EntityUid user)
     {
         var doorway = SEntMan.GetComponent<VehicleEnterComponent>(vehicle).EntryPoints[0].Offset;
-        await Server.WaitPost(() => Transform.SetCoordinates(user, new EntityCoordinates(MapData.Grid.Owner, VehicleSpot + doorway)));
-        await RunTicks(2);
+        for (var attempt = 0; attempt < 3; attempt++)
+        {
+            await Server.WaitPost(() =>
+            {
+                Transform.SetCoordinates(user, new EntityCoordinates(MapData.Grid.Owner, VehicleSpot + doorway));
+                if (SEntMan.TryGetComponent<PhysicsComponent>(user, out var body))
+                    SEntMan.System<SharedPhysicsSystem>().SetLinearVelocity(user, Vector2.Zero, body: body);
+            });
+            await RunTicks(2);
 
-        await Server.WaitPost(() => SEntMan.System<SharedInteractionSystem>().InteractionActivate(user, vehicle));
-        await RunTicks(120);
+            await Server.WaitPost(() => SEntMan.System<SharedInteractionSystem>().InteractionActivate(user, vehicle));
+            await RunTicks(120);
 
-        return SEntMan.HasComponent<VehicleInteriorOccupantComponent>(user);
+            if (SEntMan.HasComponent<VehicleInteriorOccupantComponent>(user))
+                return true;
+        }
+
+        return false;
     }
 
     private static void ResetGun(GunComponent gun)

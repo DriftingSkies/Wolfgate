@@ -220,8 +220,8 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
     /// <summary>
     /// PLAN5 §6.2 T-P5-11 (U3′(b) shipped). <c>PartIPCBase</c> is a single <c>Destructible</c> block that is
     /// first in every IPC slot's parent list, so its two rungs replace <c>MajorLimb</c>'s and
-    /// <c>MinorLimb</c>'s wholesale. This documents trap 7 rather than asserting a bug: Slash severs because
-    /// 130 &lt; 210, pure Blunt destroys because 190 &lt; 250.
+    /// <c>MinorLimb</c>'s wholesale. Slash severs because 130 &lt; 210; since the revival pass a capped
+    /// limb never reaches a gib rung, so pure Blunt no longer destroys it either.
     /// </summary>
     [Test]
     public async Task IpcLimbSeverabilityAndGibCeilingTest()
@@ -245,9 +245,8 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
             Assert.That(routing.TryApplyPartDamage(first, slashed, Spec("Slash", 140), null,
                 ignoreResistances: true));
 
-            // (ii) 195 pure Blunt on a fresh IPC. The Blunt rung is 190 and the Blunt amputation threshold is
-            // 250, so the part is destroyed before it can ever be severed - the same contradiction organic
-            // limbs already live with (PLAN5 R11, handed to the balance pass).
+            // (ii) 195 pure Blunt on a fresh IPC. Revival pass: the arm stores its cap of 100, short of the 190 rung,
+            // and 195 counted with its overflow clears the IPC arm's Blunt amputation threshold of 100.
             var second = entities.SpawnEntity("MobIPC", map.GridCoords);
             blunted = Part(entities, second, BodyPartType.Arm, BodyPartSymmetry.Left);
             // M1b: somebody deals it; damage with no origin stops at the limb's ambient ceiling.
@@ -265,8 +264,9 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
                     "Slash 140 is well under PartIPCBase's Slash rung of 210 (PROTO O(c), raised from 150).");
                 Assert.That(entities.GetComponent<WoundableComponent>(slashed).Severable, Is.True,
                     "140/130 >= 1, so the crossing hit arms the limb for a later finishing hit.");
-                Assert.That(entities.Deleted(blunted), Is.True,
-                    "Blunt 195 clears the 190 rung (PROTO O(c), raised from 110) and GibPart always QueueDels.");
+                Assert.That(entities.Deleted(blunted), Is.False, "a capped arm never reaches the 190 Blunt rung.");
+                Assert.That(entities.GetComponent<WoundableComponent>(blunted).Severable, Is.True,
+                    "195 Blunt, overflow counted, clears the 100 threshold: severed later, never gibbed.");
             });
         });
     }
@@ -295,16 +295,17 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
                 .ToList();
             Assert.That(limbs, Has.Count.EqualTo(4));
 
-            // 150 per limb keeps every part under its own 190 Blunt rung while putting 600 on the body - well
-            // past the old 400 threshold and well short of the new 1500 one.
+            // 150 per limb; revival pass: each limb stores its cap of 100, so the body holds exactly the old 400
+            // threshold, short of the new 1500 one.
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // no origin is ambient harm, held under the cap
             foreach (var limb in limbs)
-                Assert.That(routing.TryApplyPartDamage(body, limb, Spec("Blunt", 150), null,
+                Assert.That(routing.TryApplyPartDamage(body, limb, Spec("Blunt", 150), attacker,
                     ignoreResistances: true));
 
             Assert.That(entities.GetComponent<DamageableComponent>(body).Damage.DamageDict
                     .GetValueOrDefault(new ProtoId<DamageTypePrototype>("Blunt")),
-                Is.GreaterThan(FixedPoint2.New(400)),
-                "the projected body total must genuinely clear the OLD threshold, or this guard is vacuous.");
+                Is.GreaterThanOrEqualTo(FixedPoint2.New(400)),
+                "the projected body total must reach the OLD threshold, or this guard is vacuous.");
         });
 
         await Pair.RunTicksSync(2);
@@ -377,13 +378,11 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
     }
 
     /// <summary>
-    /// PLAN5 §6.2 T-P5-20 (U17(a) shipped). Stops "diona limbs cannot be severed" being read as "diona limbs
-    /// are indestructible": <c>amputationThresholds: {}</c> disables <c>AmputationSystem</c> only, while the
-    /// inherited <c>MajorLimb</c> gib rung still deletes the limb outright — so no thrown limb, no stump
-    /// <c>AmputationConsequenceWound</c>, no reattachment.
+    /// PLAN5 §6.2 T-P5-20, revised by the revival pass. A diona limb has no sever thresholds, and with a damage cap
+    /// of 100 it never reaches the inherited <c>MajorLimb</c> gib rung either: damage alone no longer takes it.
     /// </summary>
     [Test]
-    public async Task DionaLimbIsDestroyedNotSeveredTest()
+    public async Task DionaLimbStaysOnUnderHeavyDamageTest()
     {
         var server = Pair.Server;
         await server.WaitIdleAsync();
@@ -409,9 +408,12 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
 
         await Pair.RunTicksSync(2);
 
-        await server.WaitAssertion(() => Assert.That(entities.Deleted(arm), Is.True,
-            "an unseverable limb is still destructible - the plant profile changes amputation, not " +
-            "Destructible (PLAN5 §8.1a, U17(a))."));
+        await server.WaitAssertion(() => Assert.Multiple(() =>
+        {
+            Assert.That(entities.Deleted(arm), Is.False, "a capped limb stores 100, short of the 210 gib rung.");
+            Assert.That(entities.GetComponent<WoundableComponent>(arm).Severable, Is.False,
+                "a plant limb is never armed for severing, overflow or not.");
+        }));
     }
 
     /// <summary>

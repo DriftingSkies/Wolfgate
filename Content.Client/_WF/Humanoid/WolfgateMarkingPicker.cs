@@ -642,7 +642,20 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         }
 
         _appliedCard.Visible = any;
+        if (any)
+            InvalidateArrangeTree(_appliedCard);
         UpdatePoints();
+    }
+
+    /// <summary>
+    /// The engine still arranges the card's list while the card is hidden, at zero height, and skips re-arranging a
+    /// control whose rect is unchanged when it is shown again, so the rebuilt rows would stay stacked on one line.
+    /// </summary>
+    private static void InvalidateArrangeTree(Control control)
+    {
+        control.InvalidateArrange();
+        foreach (var child in control.Children)
+            InvalidateArrangeTree(child);
     }
 
     private Control BuildAppliedCard(Marking marking, MarkingPrototype proto, bool topmost, bool bottommost)

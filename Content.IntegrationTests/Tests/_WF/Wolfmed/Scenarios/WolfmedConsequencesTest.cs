@@ -190,19 +190,19 @@ public sealed class WolfmedConsequencesTest : WolfmedGameTest
             Routing.TryApplyPartDamage(clean, s.Part(clean, BodyPartType.Torso), Spec("Piercing", 10), shooter);
             Assert.That(slots.All(slot => Hp(clean, slot) >= 25f), Is.True, "a hit at the reach line reached an organ.");
 
-            // Same shot, same organ damage, saturated or not (plan §6.2): a torso already holding its 250 hands the
+            // Same shot, same organ damage, saturated or not (plan §6.2): a torso already holding its 200 hands the
             // organ step the whole hit, exactly as a fresh one does. The saturating hits sit on the line.
             var fresh = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
             var saturated = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
             var freshTorso = s.Part(fresh, BodyPartType.Torso);
             var saturatedTorso = s.Part(saturated, BodyPartType.Torso);
-            for (var i = 0; i < 26; i++)
+            for (var i = 0; i < 21; i++)
                 Routing.TryApplyPartDamage(saturated, saturatedTorso, Spec("Piercing", 10), shooter);
 
             Assert.Multiple(() =>
             {
                 Assert.That(SEntMan.GetComponent<DamageableComponent>(saturatedTorso).TotalDamage.Float(),
-                    Is.EqualTo(250f).Within(0.01f), "the torso is not saturated.");
+                    Is.EqualTo(200f).Within(0.01f), "the torso is not saturated.");
                 Assert.That(slots.All(slot => Hp(saturated, slot) >= 25f), Is.True, "saturating reached an organ.");
             });
 
@@ -703,11 +703,12 @@ public sealed class WolfmedConsequencesTest : WolfmedGameTest
             var graph = SEntMan.System<SharedBodySystem>();
             attacker = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
 
-            // Slash 200 is the head's sever threshold: the next finishing hit would take it off.
+            // Slash 200 was the head's sever threshold. Revival pass: a capped head is never armed by piled-up damage,
+            // so the blast below is the only thing that could take it.
             var masked = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
             var head = s.Part(masked, BodyPartType.Head);
             Routing.TryApplyPartDamage(masked, head, Spec("Slash", 200), attacker);
-            Assert.That(SEntMan.GetComponent<WoundableComponent>(head).Severable, Is.True);
+            Assert.That(SEntMan.GetComponent<WoundableComponent>(head).Severable, Is.False);
 
             // The whole blast on the head: Onyx's explosion roll saturates at progress 2.
             Routing.TryRouteDistributedDamage(masked, Spec("Piercing", 500), TargetBodyPart.Head,

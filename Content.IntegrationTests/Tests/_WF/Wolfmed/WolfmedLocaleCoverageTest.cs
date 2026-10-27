@@ -130,6 +130,41 @@ public sealed class WolfmedLocaleCoverageTest : WolfmedGameTest
     }
 
     /// <summary>
+    /// Every step of every surgery has the popup bystanders see while it runs: the procedure's own line, or the
+    /// step's generic one. A step with neither printed its raw key ("surgery-popup-step-WFSurgeryStepClampArtery").
+    /// </summary>
+    [Test]
+    public async Task EverySurgeryStepHasAPopupTest()
+    {
+        var server = Pair.Server;
+        await server.WaitIdleAsync();
+        var prototypes = server.ResolveDependency<IPrototypeManager>();
+        var locale = server.ResolveDependency<ILocalizationManager>();
+        var factory = server.ResolveDependency<Robust.Shared.GameObjects.IComponentFactory>();
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.Multiple(() =>
+            {
+                foreach (var surgery in prototypes.EnumeratePrototypes<EntityPrototype>().OrderBy(proto => proto.ID))
+                {
+                    // Test fixtures carry an unprefixed Wolfmed id; everything shipped is WF-prefixed or upstream.
+                    if (surgery.Abstract || surgery.ID.StartsWith("Wolfmed", StringComparison.Ordinal) ||
+                        !surgery.TryGetComponent(out Content.Shared._Shitmed.Medical.Surgery.SurgeryComponent? comp, factory))
+                        continue;
+
+                    foreach (var step in comp.Steps)
+                    {
+                        Assert.That(locale.HasString($"surgery-popup-procedure-{surgery.ID}-step-{step}") ||
+                                    locale.HasString($"surgery-popup-step-{step}"), Is.True,
+                            $"{surgery.ID} step {step} has no popup string (surgery-popup-step-{step}).");
+                    }
+                }
+            });
+        });
+    }
+
+    /// <summary>
     /// Every key the analyzer panel can build, in both the organic and the mechanical form.
     /// </summary>
     [Test]

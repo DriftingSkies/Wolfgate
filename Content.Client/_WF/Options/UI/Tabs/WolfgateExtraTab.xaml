@@ -14,6 +14,7 @@
                 <CheckBox Name="WindowPopoutCheckBox" Text="{Loc 'ui-options-wf-window-popout'}" />
                 <CheckBox Name="CockpitAutoEnterCheckBox" Text="{Loc 'ui-options-wf-cockpit-auto-enter'}" />
                 <CheckBox Name="DefaultNorthCheckBox" Text="{Loc 'ui-options-wf-default-north'}" />
+                <CheckBox Name="ShowNewbieTagCheckBox" Text="{Loc 'wf-newbie-option-show-tag'}" />
                 <Label Text="{Loc 'ui-options-wf-effects'}" StyleClasses="LabelKeyText"/>
                 <CheckBox Name="HeatHazeCheckBox" Text="{Loc 'ui-options-wf-heat-haze'}" />
                 <ui:OptionSlider Name="HeatHazeStrengthSlider" Title="{Loc 'ui-options-wf-heat-haze-strength'}" />

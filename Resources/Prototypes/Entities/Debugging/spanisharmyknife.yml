@@ -5,6 +5,15 @@
   description: The pain of using this is almost too great to bear.
   suffix: DEBUG
   components:
+  # WOLFGATE(Wolfmed) START: a multi-mode tool does the surgery its modes stand in for (feedback #136)
+  - type: Retractor
+    speed: 0.35
+  - type: Hemostat
+    speed: 0.6
+  - type: SurgeryTool
+  - type: WolfmedHullPlate
+  - type: WolfmedCoreProbe
+  # WOLFGATE END
   - type: Tag
     tags:
       - Debug

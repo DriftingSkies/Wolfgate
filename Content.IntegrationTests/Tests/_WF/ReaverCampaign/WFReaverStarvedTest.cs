@@ -187,6 +187,32 @@ public sealed class WFReaverStarvedTest : WFReaverTestBase
         });
     }
 
+    /// <summary>"No payout from boarding and blowing a stronghold's AME": a boarding party that puts the hub out is paid as its attackers, though gone by then.</summary>
+    [Test]
+    public async Task HubBoardedAndOutOfPowerIsBrokenAndPaid()
+    {
+        await StartCampaign();
+        EntityUid stronghold = default;
+        var before = 0;
+        await Server.WaitAssertion(() =>
+        {
+            stronghold = FoundAt(Home);
+            before = Balance();
+            Board(Lead(stronghold));
+            Server.System<WFReaverCampaignSystem>().CheckStrongholds();
+            Board(SpawnGrid(CentreOf(Home) + new Vector2(0f, 7000f), "Test Boat"));
+        });
+        await Starve(Lead(stronghold));
+        await RunTicks(Ticks(5));
+
+        await Server.WaitAssertion(() =>
+        {
+            Server.System<WFReaverCampaignSystem>().CheckStrongholds();
+            Assert.That(SEntMan.GetComponent<WFEncounterComponent>(stronghold).Resolution, Is.EqualTo(WFEncounterResolution.Destroyed));
+            Assert.That(Balance(), Is.GreaterThan(before), "the boarder is paid the bounty.");
+        });
+    }
+
     /// <summary>A hub that has been shot at and goes dark is broken as before.</summary>
     [Test]
     public async Task HubShotAtAndOutOfPowerIsBroken()

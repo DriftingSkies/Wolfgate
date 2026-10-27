@@ -10,4 +10,16 @@
   - type: Icon
     sprite: _Shitmed/Structures/Furniture/Tables/abductor_optable.rsi
     state: operating_table
+
+- type: entity
+  id: TableAbductor
+  parent: TableBase
+  components:
+  - type: Sprite
+    sprite: _Shitmed/Structures/Tables/abductor_table.rsi
+  - type: Icon
+    sprite: _Shitmed/Structures/Tables/abductor_table.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepFloor
 # WOLFGATE END

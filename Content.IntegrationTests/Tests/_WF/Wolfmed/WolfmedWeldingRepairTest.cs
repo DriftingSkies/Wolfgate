@@ -442,8 +442,9 @@ public sealed class WolfmedWeldingRepairTest : WolfmedGameTest
             var graph = entities.System<SharedBodySystem>();
             var leg = graph.GetBodyChildrenOfType(body, BodyPartType.Leg, symmetry: BodyPartSymmetry.Right).Single().Id;
             var slash = server.ResolveDependency<IPrototypeManager>().Index<DamageTypePrototype>("Slash");
+            // Revival pass: the user deals it; damage with no origin is ambient harm and stops at 0.8 of the leg's cap.
             Assert.That(entities.System<WoundDamageRoutingSystem>()
-                .TryApplyPartDamage(body, leg, new DamageSpecifier(slash, 100), ignoreResistances: true), Is.True);
+                .TryApplyPartDamage(body, leg, new DamageSpecifier(slash, 100), user, ignoreResistances: true), Is.True);
             Assert.That(entities.System<WoundSystem>().GetWounds(leg).Any(), Is.True, "no breach to weld.");
 
             var tool = entities.SpawnEntity("Welder", map.GridCoords);

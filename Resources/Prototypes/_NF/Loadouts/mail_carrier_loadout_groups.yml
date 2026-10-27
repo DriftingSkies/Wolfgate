@@ -5,6 +5,39 @@
   - MailCarrierClothingUniformJumpsuitMailCarrier
   - MailCarrierClothingUniformJumpskirtMailCarrier
   - MailCarrierClothingUniformJumpsuitMilitaryMailCarrier
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderAkulaWetsuitJobCargo
+  - WFMeridianLoadoutClothingUnderImperialQuartermaster
+  - WFMeridianLoadoutClothingUnderImperialskirtQuartermaster
+  - WFMeridianLoadoutClothingUnderMiscMailman
+  - WFMeridianLoadoutClothingUnderRankCargoBitrunner
+  - WFMeridianLoadoutClothingUnderRankCargoBitrunnerBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCargoCargoBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCargoMailmanBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCargoMiner
+  - WFMeridianLoadoutClothingUnderRankCargoMinerBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCargoQm
+  - WFMeridianLoadoutClothingUnderRankCargoQmNova
+  - WFMeridianLoadoutClothingUnderRankCargoQmNovaCasual
+  - WFMeridianLoadoutClothingUnderRankCargoQmNovaFormal
+  - WFMeridianLoadoutClothingUnderRankCargoQmNovaFormalSkirt
+  - WFMeridianLoadoutClothingUnderRankCargoQmNovaGorka
+  - WFMeridianLoadoutClothingUnderRankCargoQmNovaTurtleneck
+  - WFMeridianLoadoutClothingUnderRankCargoQmNovaTurtleneckSkirt
+  - WFMeridianLoadoutClothingUnderRankCargoQmSkirt
+  - WFMeridianLoadoutClothingUnderRankCargoQuartermasterBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCargoTech
+  - WFMeridianLoadoutClothingUnderRankCargoTechAlt
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaCasualman
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaEvil
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaGorka
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaLong
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaTurtleneck
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaTurtleneckSkirt
+  - WFMeridianLoadoutClothingUnderRankCargoTechNovaUtility
+  - WFMeridianLoadoutClothingUnderRankCargoTechSkirt
+  - WFMeridianLoadoutClothingUnderRankCargoTechSkirtAlt
+  # WOLFGATE END
   fallbacks:
   - MailCarrierClothingUniformJumpsuitMailCarrier
   - MailCarrierClothingUniformJumpskirtMailCarrier
@@ -16,6 +49,13 @@
   loadouts:
   - MailCarrierClothingOuterWinterCoatMail
   - MailCarrierClothingOuterEVASuitMailman
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingSuitJacketQuartermaster
+  - WFMeridianLoadoutClothingSuitJacketTailcoatBitrunner
+  - WFMeridianLoadoutClothingSuitJacketTailcoatCargo
+  - WFMeridianLoadoutClothingSuitJacketTailcoatQuartermaster
+  - WFMeridianLoadoutClothingSuitToggleCargoTech
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: MailCarrierBackpack

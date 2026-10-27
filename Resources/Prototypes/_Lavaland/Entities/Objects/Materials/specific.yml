@@ -1,0 +1,36 @@
+# WOLFGATE(DecorImport) START: ported from Goob Station
+- type: entity
+  parent: BaseItem
+  id: MaterialLegionSkull
+  components:
+  - type: Sprite
+    sprite: _Lavaland/Objects/Materials/legion.rsi
+    layers:
+    - state: skull
+      map: [ "base" ]
+  - type: Appearance
+  - type: Stack
+    count: 10
+    stackType: LegionSkull
+  - type: StackPrice
+    price: 500
+  - type: Tag
+    tags:
+    - LegionSkull
+
+- type: entity
+  parent: MaterialLegionSkull
+  id: MaterialLegionSkull1
+  suffix: 1
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  parent: MaterialLegionSkull
+  id: MaterialLegionSkull5
+  suffix: 5
+  components:
+  - type: Stack
+    count: 5
+# WOLFGATE END

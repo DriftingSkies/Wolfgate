@@ -55,4 +55,11 @@ public sealed partial class LegStylePrototype : IPrototype
     /// </summary>
     [DataField]
     public Dictionary<string, DisplacementData> FemaleDisplacements = new();
+
+    /// <summary>
+    /// Sprite folders, under /Textures, whose leg and foot markings are drawn for these legs, and so are not reshaped. All other leg
+    /// markings are drawn for plantigrade legs and are reshaped on digitigrade ones.
+    /// </summary>
+    [DataField]
+    public List<string> FittedMarkings = new();
 }

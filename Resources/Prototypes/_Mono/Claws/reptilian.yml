@@ -91,7 +91,10 @@
         Slash: 18
         Piercing: 12
         Blunt: -3
-    canShoot: false
+    # WOLFGATE START: huge claws never stop a lizard shooting; they take the worst spread instead
+    # canShoot: false
+    gunSpreadMultiplier: 1.65
+    # WOLFGATE END
     canWideSwing: true
     meleeDamageModifiers:
       coefficients:

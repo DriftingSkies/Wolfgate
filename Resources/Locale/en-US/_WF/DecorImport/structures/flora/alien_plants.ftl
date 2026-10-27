@@ -45,3 +45,7 @@ ent-CMFloraJunglePlanttop1 = strange tree
 ent-FleshTeeth1 = flesh teeth
 ent-FleshTeeth2 = flesh teeth
 ent-FleshTeeth3 = flesh teeth
+ent-MeatWhisperers = whisperers
+    .desc = It whispers.
+ent-MeatFloorMouth = floor mouth
+    .desc = It's starving.

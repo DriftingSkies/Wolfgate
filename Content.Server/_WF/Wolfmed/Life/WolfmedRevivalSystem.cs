@@ -164,7 +164,7 @@ public sealed class WolfmedRevivalSystem : EntitySystem
             ("units", MathF.Ceiling(toTarget)),
             ("safe", MathF.Ceiling(toSafe)),
             ("target", MathF.Round(_cfg.GetCVar(WolfmedCVars.PostShockBloodTarget) * 100f)),
-            ("line", MathF.Round(_cfg.GetCVar(WolfmedCVars.BrainBloodStart) * 100f)),
+            ("line", MathF.Round(_life.BrainSafeTarget * 100f)),
             // M5: the cold refusal's core temperature and the line to rewarm past.
             ("kelvin", MathF.Round(_temperature.GetCore(body) ?? 0f)),
             ("rewarm", MathF.Ceiling(_temperature.GetLines(body)?.ColdArrest ?? 0f)));

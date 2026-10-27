@@ -1,0 +1,59 @@
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict1
+  name: tiles-wf-citadel-rp-floor-derelict-1
+  spawn: FloorTileItemCitadelRPFloorDerelict1
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict2
+  name: tiles-wf-citadel-rp-floor-derelict-2
+  spawn: FloorTileItemCitadelRPFloorDerelict2
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict3
+  name: tiles-wf-citadel-rp-floor-derelict-3
+  spawn: FloorTileItemCitadelRPFloorDerelict3
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict4
+  name: tiles-wf-citadel-rp-floor-derelict-4
+  spawn: FloorTileItemCitadelRPFloorDerelict4
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict5
+  name: tiles-wf-citadel-rp-floor-derelict-5
+  spawn: FloorTileItemCitadelRPFloorDerelict5
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict6
+  name: tiles-wf-citadel-rp-floor-derelict-6
+  spawn: FloorTileItemCitadelRPFloorDerelict6
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelict7
+  name: tiles-wf-citadel-rp-floor-derelict-7
+  spawn: FloorTileItemCitadelRPFloorDerelict7
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelictLight
+  name: tiles-wf-citadel-rp-floor-derelict-light
+  spawn: FloorTileItemCitadelRPFloorDerelictLight
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelictVent
+  name: tiles-wf-citadel-rp-floor-derelict-vent
+  spawn: FloorTileItemCitadelRPFloorDerelictVent
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorDerelictPlating
+  name: tiles-wf-citadel-rp-floor-derelict-plating
+  spawn: FloorTileItemCitadelRPFloorDerelictPlating
+  maxCount: 30

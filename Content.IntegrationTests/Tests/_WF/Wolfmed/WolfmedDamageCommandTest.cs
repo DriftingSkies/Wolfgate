@@ -66,7 +66,7 @@ public sealed class WolfmedDamageCommandTest : WolfmedGameTest
 
     /// <summary>
     /// M1b (P31): the part form is an admin's hit with no origin, so it bypasses the ambient per-part ceiling and
-    /// lands in full; the same Heat with no origin and no command stops at 0.8 of the arm's lowest destruction line.
+    /// lands up to the arm's cap of 100 (revival pass); the same Heat with no origin and no command stops at 0.8 of it.
     /// </summary>
     [Test]
     public async Task DamageCommandPassesTheAmbientCeilingTest()
@@ -99,11 +99,10 @@ public sealed class WolfmedDamageCommandTest : WolfmedGameTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(damage.GetAllDamage(LeftArm(admin)).GetTotal(), Is.EqualTo(FixedPoint2.New(200)),
-                    "the admin command was held at the ceiling.");
-                // M3 (P19): the arm's lowest destruction line is Slash 210 since the Blunt and Heat rungs rose.
-                Assert.That(damage.GetAllDamage(ambientArm).GetTotal(), Is.EqualTo(FixedPoint2.New(168)),
-                    "ambient Heat was not held at 0.8 x 210.");
+                Assert.That(damage.GetAllDamage(LeftArm(admin)).GetTotal(), Is.EqualTo(FixedPoint2.New(100)),
+                    "the admin command was held at the ceiling, or passed the arm's cap.");
+                Assert.That(damage.GetAllDamage(ambientArm).GetTotal(), Is.EqualTo(FixedPoint2.New(80)),
+                    "ambient Heat was not held at 0.8 x 100.");
             });
         });
     }

@@ -50,7 +50,6 @@
   - ContractorTrinkets
   - ContractorBureaucracy
   - NFSpeciesSpecific
-  - ContractorArmorPlates
 
 - type: jobIcon
   parent: JobIcon
@@ -159,7 +158,6 @@
   - ContractorTrinkets
   - ContractorBureaucracy
   - NFSpeciesSpecific
-  - ContractorArmorPlates
 
 - type: jobIcon
   parent: JobIcon
@@ -265,7 +263,6 @@
   - ContractorTrinkets
   - ContractorBureaucracy
   - NFSpeciesSpecific
-  - ContractorArmorPlates
 
 - type: jobIcon
   parent: JobIcon
@@ -369,7 +366,6 @@
   - ContractorTrinkets
   - ContractorBureaucracy
   - NFSpeciesSpecific
-  - ContractorArmorPlates
 
 - type: jobIcon
   parent: JobIcon

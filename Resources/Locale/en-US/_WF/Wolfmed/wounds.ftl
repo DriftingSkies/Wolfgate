@@ -142,6 +142,12 @@ reagent-effect-guidebook-mend-brain =
        *[other] chance to restore
     } { $amount } health to a damaged brain that still works
 
+reagent-effect-guidebook-mend-eyes =
+    { $chance ->
+        [1] Restores
+       *[other] chance to restore
+    } { $amount } health to damaged eyes that still work
+
 # Splinting a fracture (V5).
 
 wolfmed-splint-start = { CAPITALIZE(THE($user)) } straps a splint around { THE($target) }'s limb.

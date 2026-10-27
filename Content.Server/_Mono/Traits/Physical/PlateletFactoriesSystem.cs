@@ -2,6 +2,10 @@ using Content.Shared._Mono.Traits.Physical;
 using Content.Shared.Damage;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Timing;
+using System.Linq; // WOLFGATE(Wolfmed)
+using Content.Server._WF.Wolfmed.Medical; // WOLFGATE(Wolfmed)
+using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed)
+using Content.Shared.FixedPoint; // WOLFGATE(Wolfmed)
 
 namespace Content.Server._Mono.Traits.Physical;
 
@@ -13,6 +17,7 @@ public sealed partial class PlateletFactoriesSystem : EntitySystem
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private WolfmedReagentWoundMendSystem _woundMend = default!; // WOLFGATE(Wolfmed)
 
     public override void Initialize()
     {
@@ -48,12 +53,22 @@ public sealed partial class PlateletFactoriesSystem : EntitySystem
     private void Tick(EntityUid uid, PlateletFactoriesComponent comp)
     {
         if (!TryComp<DamageableComponent>(uid, out var damage)
-            || damage.TotalDamage <= 0
+            // || damage.TotalDamage <= 0 // WOLFGATE(Wolfmed): open wounds outlast the damage; checked below
             || _mobState.IsDead(uid))
             return;
 
         var multiplier = _mobState.IsCritical(uid) ? comp.CritMultiplier : 1f;
-        _damageable.TryChangeDamage(uid, comp.DamagePerInterval*multiplier, true, false, damage);
+        // WOLFGATE(Wolfmed) START: removed damage barely closes a wound, so the trait mends wounds like a healing chem.
+        if (damage.TotalDamage > 0)
+            _damageable.TryChangeDamage(uid, comp.DamagePerInterval*multiplier, true, false, damage);
+        if (HasComp<WoundHostComponent>(uid))
+        {
+            var healed = comp.DamagePerInterval.DamageDict.Where(pair => pair.Value < 0).ToList();
+            _woundMend.Mend(uid, healed.Select(pair => pair.Key).ToList(),
+                -healed.Aggregate(FixedPoint2.Zero, (sum, pair) => sum + pair.Value) * multiplier,
+                new HashSet<TreatmentCapability> { TreatmentCapability.Biological });
+        }
+        // WOLFGATE END
     }
 }
 

@@ -1,0 +1,40 @@
+# Wound ladders (revival pass). A part holds one wound per ladder. A new wound on a ladder feeds the one already
+# there, or replaces it when it is a worse rung, carrying its severity over as a share of each rung's maximum. A
+# wound pushed past its maximum opens the next rung at wolfmed.wound_ladder_entry of that rung's maximum; past the
+# top rung a limb is marked severable and the next finishing hit takes it. The torso and the head stay at the top.
+#
+# Wounds left off every ladder still stack beside them: tendon cuts and dislocations (what they switch off is their
+# point, not how bad the cut or bruise is), burns and charring (the fire route's fluid loss is tuned on the pair, and
+# both are bounded by their own maximum), fractures, concussions, organ contusions, stumps, surgical incisions,
+# scars, evisceration, necrosis, frostbite, chemical and internal burns, and every mechanical wound.
+
+- type: wolfmedWoundLadder
+  id: WFWolfmedLadderCut
+  tiers:
+  - SlashWound
+  - WFWolfmedArterialBleedWound
+  - WFWolfmedAvulsionWound
+
+# Melee punctures and gunfire share one hole: a bullet into a stab wound makes it a gunshot wound. The two rungs that
+# hold an object sit at the top so a lodged round or fragment is never folded away.
+- type: wolfmedWoundLadder
+  id: WFWolfmedLadderPuncture
+  tiers:
+  - WFWolfmedGrazeWound
+  - PiercingWound
+  - WFWolfmedGunshotWound
+  - WFWolfmedShrapnelWound
+  - WFWolfmedLodgedRoundWound
+
+- type: wolfmedWoundLadder
+  id: WFWolfmedLadderBlunt
+  tiers:
+  - BluntWound
+  - WFWolfmedCrushInjuryWound
+
+# One bleed inside a part, however many organs failed in it.
+- type: wolfmedWoundLadder
+  id: WFWolfmedLadderInternalBleeding
+  dismembers: false
+  tiers:
+  - InternalBleedingWound

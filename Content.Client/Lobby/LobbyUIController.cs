@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client._WF.Gags; // WOLFGATE(Gags)
 using Content.Client._Mono.Company; // Mono
 using Content.Client._Mono.MonoCoins;
 using Content.Client._WF.InRoundCreator; // WOLFGATE(InRoundCreator)
@@ -602,6 +603,7 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
                     continue;
 
                 _spawn.EquipStartingGear(uid, loadoutProto);
+                EntityManager.System<WFGagsSystem>().ApplyLoadout(uid, loadoutProto, loadout); // WOLFGATE(Gags): picked colours on the preview
             }
         }
     }

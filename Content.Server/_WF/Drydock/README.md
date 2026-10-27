@@ -307,6 +307,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 
 ## Non-modular edits
 
+- [`Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs`](../../../Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs): a destroyed gun leaves a dead entry behind, which blocked rebuilt guns
 - [`Content.Shared/Construction/SharedFlatpackSystem.cs`](../../../Content.Shared/Construction/SharedFlatpackSystem.cs): salvaged hardware unpacks damaged
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml): single use, so a drydock repair undercuts printing another card
 - [`Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml): build cost the drydock prices the reactor's rebuild and salvage from

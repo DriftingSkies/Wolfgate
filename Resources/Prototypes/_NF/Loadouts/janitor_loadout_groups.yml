@@ -7,6 +7,13 @@
   - JanitorNFPlunger
   - JanitorNFClothingHeadHatCone
   - JanitorNFGoldenPlunger
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingHeadCostumeMaidHeadband
+  - WFMeridianLoadoutClothingHeadCostumeNovaMaid
+  - WFMeridianLoadoutClothingHeadHoodedWinterhoodJanitor
+  - WFMeridianLoadoutClothingHeadMaidHeadband
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsJanitor
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: JanitorNFJumpsuit
@@ -14,6 +21,14 @@
   loadouts:
   - JanitorNFClothingUniformJumpsuitJanitor
   - JanitorNFClothingUniformJumpskirtJanitor
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderCostumeMaid
+  - WFMeridianLoadoutClothingUnderCostumeNovaMaidUniform
+  - WFMeridianLoadoutClothingUnderCostumeNovaMaidUniformAlt
+  - WFMeridianLoadoutClothingUnderMaidCostume
+  - WFMeridianLoadoutClothingUnderRankCivilianJanitor
+  - WFMeridianLoadoutClothingUnderRankCivilianJanitorBunnysuit
+  # WOLFGATE END
   fallbacks:
   - JanitorNFClothingUniformJumpsuitJanitor
   - JanitorNFClothingUniformJumpskirtJanitor
@@ -26,6 +41,9 @@
   - JanitorNFClothingHandsGlovesJanitor
   - JanitorNFClothingHandsGlovesColorOrange
   - JanitorNFClothingHandsGlovesColorPurple
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingGlovesMaidArmCovers
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: JanitorNFOuterClothing
@@ -34,3 +52,7 @@
   loadouts:
   - JanitorNFClothingOuterWinterJani
   - JanitorNFWetFloorSign
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatJanitor
+  - WFMeridianLoadoutClothingSuitJacketTailcoatJanitor
+  # WOLFGATE END

@@ -329,6 +329,11 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
         if (!posFound)
             return;
 
+        // WOLFGATE(BattleLoad) START: bullet-sized blasts on a grid skip the queue, see ExplosionSystem.BattleLoad.cs
+        if (WFTryQueueMicroExplosion(gridPos!.Value, typeId, totalIntensity, maxTileIntensity, tileBreakScale, maxTileBreak, canCreateVacuum, uid))
+            return;
+        // WOLFGATE END
+
         // Mono - MapCoordinates -> EntityCoordinates
         QueueExplosion(gridPos!.Value, typeId, totalIntensity, slope, maxTileIntensity, uid, tileBreakScale, maxTileBreak, canCreateVacuum, addLog: false);
 
@@ -402,6 +407,8 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
         if (addLog) // dont log if already created a separate, more detailed, log.
             _adminLogger.Add(LogType.Explosion, LogImpact.High, $"Explosion ({typeId}) spawned at {epicenter:coordinates} with intensity {totalIntensity} slope {slope}");
 
+        WFRecordExplosion(epicenter); // WOLFGATE(BattleLoad): counts towards battle heat
+
         // try to combine explosions on the same tile if they are the same type
         foreach (var queued in _queuedExplosions)
         {
@@ -410,11 +417,13 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
                 continue;
 
             var dst = queued.Proto.MaxCombineDistance;
+            dst = WFCombineDistance(queued, epicenter, totalIntensity, dst); // WOLFGATE(BattleLoad): small blasts on one grid merge from further apart
             if (!epicenter.TryDistance(EntityManager, queued.Epicenter, out var distance) || distance > dst)
                 continue;
 
             // they are close enough to combine so just add total intensity and prevent queuing another one
             queued.TotalIntensity += totalIntensity;
+            queued.MaxTileIntensity = MathF.Max(queued.MaxTileIntensity, maxTileIntensity); // WOLFGATE(BattleLoad): a merged blast keeps the stronger tile cap
             queued.Silent &= silent; // WOLFGATE(Planets): one audible contributor is enough to make the merged blast audible.
             return;
         }

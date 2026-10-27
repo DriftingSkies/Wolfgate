@@ -153,6 +153,12 @@ public partial class SharedBodySystem
 
     private void OnPartAttachedToBody(EntityUid uid, BodyComponent component, ref BodyPartAddedEvent args)
     {
+        // WOLFGATE(MarkingToggles) START: the server's humanoid state already has the part's markings
+        // PVS re-inserting a limb on a client used to add a second, visible copy of each marking it carries.
+        if (_timing.ApplyingState)
+            return;
+        // WOLFGATE END
+
         if (!TryComp(args.Part, out BodyPartAppearanceComponent? partAppearance)
             || !TryComp(uid, out HumanoidAppearanceComponent? bodyAppearance))
             return;
@@ -165,6 +171,10 @@ public partial class SharedBodySystem
 
     private void OnPartDroppedFromBody(EntityUid uid, BodyComponent component, ref BodyPartRemovedEvent args)
     {
+        // WOLFGATE(MarkingToggles): a limb leaving PVS isn't dropped; the server's humanoid state covers real drops
+        if (_timing.ApplyingState)
+            return;
+
         if (TerminatingOrDeleted(uid)
             || TerminatingOrDeleted(args.Part)
             || !TryComp(uid, out HumanoidAppearanceComponent? bodyAppearance))

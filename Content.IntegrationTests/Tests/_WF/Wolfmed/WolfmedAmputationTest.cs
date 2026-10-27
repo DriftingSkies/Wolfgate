@@ -133,19 +133,20 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             var head = graph.GetBodyChildren(body)
                 .Single(part => part.Component.PartType == BodyPartType.Head).Id;
 
-            // HeadHuman's Slash threshold is 200 (parts.yml/WFWolfmedBaseHead): this arms the head.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 200)));
+            // Revival pass: the head holds at most 100 and piled-up damage never takes it off, so the head is
+            // filled to its cap and then removed the way an execution or a blast does.
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // no origin is ambient harm, held under the cap
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 100), attacker));
 
             // CheckVitalDamage sums the ATTACHED Head + Torso part damage plus SystemicDamageComponent
             // (_Onyx/Mobs/Systems/MobThresholdSystem.cs). Nothing is systemic yet and the torso is clean,
-            // so this reads the head's own 200.
+            // so this reads the head's own 100.
             var before = thresholds.CheckVitalDamage(body, damageable);
-            Assert.That(before, Is.EqualTo(FixedPoint2.New(200)),
+            Assert.That(before, Is.EqualTo(FixedPoint2.New(100)),
                 "the readout before decapitation must be exactly the head's own damage.");
-            Assert.That(wfDamage.GetTotalDamage(head), Is.EqualTo(FixedPoint2.New(200)));
+            Assert.That(wfDamage.GetTotalDamage(head), Is.EqualTo(FixedPoint2.New(100)));
 
-            // Slash 15 == DefaultDismembermentFinishingDamage["Slash"] -> the head comes off carrying 215.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15)));
+            Assert.That(entities.System<AmputationSystem>().TryAmputate(body, head));
             Assert.That(graph.BodyHasChild(body, head), Is.False);
 
             var after = thresholds.CheckVitalDamage(body, damageable);
@@ -160,17 +161,17 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
                 // THE DERIVATION. Two charges land in the same RemovePart call and both are systemic
                 // Bloodloss, which CheckVitalDamage counts:
                 //   * P3-D1's WolfmedBodyPartLifecycleSystem.ChargeVitalPartLoss - the head's own total
-                //     at detach, 200 + 15 = 215, so the readout loses nothing when the part leaves;
+                //     at detach, 100, so the readout loses nothing when the part leaves;
                 //   * Shitmed's SharedBodySystem.PartRemoveDamage - a flat BodyPartComponent.VitalDamage
                 //     of 100, which every body in the game already pays for losing its head.
-                // 215 + 100 = 315, and the head's 215 no longer counts as an attached part, so the net
-                // movement is exactly the finishing hit (15) plus the flat 100. Playtest 5: Bloodloss is bookkeeping
+                // 100 + 100 = 200, and the head's 100 no longer counts as an attached part, so the net
+                // movement is exactly the flat 100. Playtest 5: Bloodloss is bookkeeping
                 // the model never reads, held at wolfmed.airloss_cap; the charge still lands, the readout stops at
                 // the cap, and the death itself is the life system's (LostVitalPart).
                 var cap = FixedPoint2.New(server.ResolveDependency<IConfigurationManager>().GetCVar(WolfmedCVars.AirlossCap));
                 Assert.That(systemic.Damage.DamageDict[new ProtoId<DamageTypePrototype>("Bloodloss")],
-                    Is.EqualTo(FixedPoint2.Min(FixedPoint2.New(315), cap)));
-                Assert.That(after, Is.EqualTo(FixedPoint2.Min(before + FixedPoint2.New(115), cap)));
+                    Is.EqualTo(FixedPoint2.Min(FixedPoint2.New(200), cap)));
+                Assert.That(after, Is.EqualTo(FixedPoint2.Min(before + FixedPoint2.New(100), cap)));
             });
 
             // (b) the D2 half: an entity without WoundHostComponent must behave exactly as it did before
@@ -238,7 +239,7 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             // host default of 40 precisely so a standard round can finish an over-threshold limb).
             var leftHandWoundable = entities.GetComponent<WoundableComponent>(leftHand);
             for (var i = 0; i < 14; i++)
-                Assert.That(routing.TryApplyPartDamage(body, leftHand, Spec("Piercing", 14), shooter));
+                routing.TryApplyPartDamage(body, leftHand, Spec("Piercing", 14), shooter);
 
             Assert.Multiple(() =>
             {
@@ -249,7 +250,7 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
 
             // Hit 15 takes the hand to 210 (progress 1.05) and only ARMS it - the threshold hit never
             // detaches.
-            Assert.That(routing.TryApplyPartDamage(body, leftHand, Spec("Piercing", 14), shooter));
+            routing.TryApplyPartDamage(body, leftHand, Spec("Piercing", 14), shooter);
             Assert.Multiple(() =>
             {
                 Assert.That(leftHandWoundable.Severable, Is.True);
@@ -257,7 +258,7 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             });
 
             // ONE more 14-Piercing round finishes it: pre-hit progress 210/200 >= 1 and 14 >= 12.
-            Assert.That(routing.TryApplyPartDamage(body, leftHand, Spec("Piercing", 14), shooter));
+            routing.TryApplyPartDamage(body, leftHand, Spec("Piercing", 14), shooter);
             Assert.That(graph.BodyHasChild(body, leftHand), Is.False,
                 "a limb over its Piercing threshold must be severed by one 14-Piercing round (hit 16).");
             Assert.That(entities.Deleted(leftHand), Is.False, "amputated, not gibbed.");
@@ -267,13 +268,13 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             // limb a Heat threshold equal to its Piercing one (Hand 200) and a Heat finishing minimum of 15.
             var rightHandWoundable = entities.GetComponent<WoundableComponent>(rightHand);
             for (var i = 0; i < 12; i++)
-                Assert.That(routing.TryApplyPartDamage(body, rightHand, Spec("Heat", 16), shooter));
+                routing.TryApplyPartDamage(body, rightHand, Spec("Heat", 16), shooter);
 
             // 12 * 16 = 192; progress 192/200 = 0.96 < 1.
             Assert.That(rightHandWoundable.Severable, Is.False);
 
             // Hit 13 -> 208, progress 1.04, arms the hand.
-            Assert.That(routing.TryApplyPartDamage(body, rightHand, Spec("Heat", 16), shooter));
+            routing.TryApplyPartDamage(body, rightHand, Spec("Heat", 16), shooter);
             Assert.Multiple(() =>
             {
                 Assert.That(rightHandWoundable.Severable, Is.True);
@@ -281,16 +282,16 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             });
 
             // ONE more 16-Heat shot finishes it: 16 >= the Heat finishing minimum of 15 (hit 14).
-            Assert.That(routing.TryApplyPartDamage(body, rightHand, Spec("Heat", 16), shooter));
+            routing.TryApplyPartDamage(body, rightHand, Spec("Heat", 16), shooter);
             Assert.That(graph.BodyHasChild(body, rightHand), Is.False,
                 "a limb over its Heat threshold must be severed by one 16-Heat laser shot (hit 14).");
             Assert.That(entities.Deleted(rightHand), Is.False, "amputated, not gibbed.");
 
             // --- A BELOW-threshold limb is severed by neither. Foot Piercing/Heat thresholds are 220.
             for (var i = 0; i < 5; i++)
-                Assert.That(routing.TryApplyPartDamage(body, leftFoot, Spec("Piercing", 14), shooter));
+                routing.TryApplyPartDamage(body, leftFoot, Spec("Piercing", 14), shooter);
             for (var i = 0; i < 3; i++)
-                Assert.That(routing.TryApplyPartDamage(body, rightFoot, Spec("Heat", 16), shooter));
+                routing.TryApplyPartDamage(body, rightFoot, Spec("Heat", 16), shooter);
 
             Assert.Multiple(() =>
             {
@@ -310,19 +311,19 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             // Slash threshold is 130, so PLAN3 §8.2's table predicts ceil(130/32) + 1 = 6 hits.
             var leftArmWoundable = entities.GetComponent<WoundableComponent>(leftArm);
             for (var i = 0; i < 4; i++)
-                Assert.That(routing.TryApplyPartDamage(body, leftArm, Spec("Slash", 32), shooter));
+                routing.TryApplyPartDamage(body, leftArm, Spec("Slash", 32), shooter);
 
             // 4 * 32 = 128; progress 128/130 = 0.985.
             Assert.That(leftArmWoundable.Severable, Is.False);
 
-            Assert.That(routing.TryApplyPartDamage(body, leftArm, Spec("Slash", 32), shooter)); // 160, arms it
+            routing.TryApplyPartDamage(body, leftArm, Spec("Slash", 32), shooter); // 160, arms it
             Assert.Multiple(() =>
             {
                 Assert.That(leftArmWoundable.Severable, Is.True);
                 Assert.That(graph.BodyHasChild(body, leftArm), Is.True);
             });
 
-            Assert.That(routing.TryApplyPartDamage(body, leftArm, Spec("Slash", 32), shooter)); // 32 >= 15 -> detach
+            routing.TryApplyPartDamage(body, leftArm, Spec("Slash", 32), shooter); // 32 >= 15 -> detach
             Assert.That(graph.BodyHasChild(body, leftArm), Is.False,
                 "six machete-grade slashes must take an arm off (PLAN3 §8.2).");
             Assert.That(entities.Deleted(leftArm), Is.False, "amputated, not gibbed.");
@@ -330,11 +331,11 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
     }
 
     /// <summary>
-    /// PLAN3 §6.2 T-AMP-OVERFLOW. A canary, not a play-path test: the overflow branch is data-gated on
-    /// WolfmedBodyPartComponent.MaxDamage, which no shipped limb sets, so it is inert today (P3-D12).
+    /// PLAN3 §6.2 T-AMP-OVERFLOW. Every shipped part has a cap since the revival pass: a capped head piles up
+    /// overflow and never comes off, and a bespoke part shows the accumulator's arithmetic.
     /// </summary>
     [Test]
-    public async Task OverflowAmputationMechanismIsInertOnShippedLimbsTest()
+    public async Task OverflowAmputationMechanismTest()
     {
         var server = Pair.Server;
         await server.WaitIdleAsync();
@@ -343,11 +344,10 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
 
         await server.WaitAssertion(() =>
         {
-            // (a) a real limb: the overflow accumulator never engages, and the THRESHOLD path is what
-            // severs.
+            // (a) Revival pass: the head is capped at 100 and never comes off from piled-up damage. Past the cap the
+            // hits accumulate as overflow, which is brain injury, and the head is never armed for severing; Blunt 50,
+            // the host's finishing minimum, leaves it on.
             var body = entities.SpawnEntity("MobHuman", map.GridCoords);
-            // M1b: an attacker behind every hit. Damage with no origin is ambient harm and stops at the head's
-            // ceiling (0.8 x 500 = 400), which is exactly where this test's 16 chunks leave it.
             var attacker = entities.SpawnEntity("MobHuman", map.GridCoords);
             var graph = entities.System<SharedBodySystem>();
             var routing = entities.System<WoundDamageRoutingSystem>();
@@ -355,36 +355,16 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
                 .Single(part => part.Component.PartType == BodyPartType.Head).Id;
             var woundable = entities.GetComponent<WoundableComponent>(head);
 
-            // The chunk size is load-bearing (CRITIQUE3 M3-4): DefaultDismembermentFinishingDamage["Blunt"]
-            // is 50, so any chunk >= 50 would make the hit after the threshold a finishing hit and the part
-            // would come off immediately; 25 keeps every hit sub-finishing, which is the only way the part
-            // can still be attached well past its threshold for the AmputationOverflow assertion to mean
-            // anything (once detached, bodyPart.Body == null short-circuits HandlePartDamageApplied).
-            //
-            // WOLFGATE: the HEAD is used rather than PLAN3's arm because, when this was written, Shitmed's own
-            // `Destructible` gibbed a limb before its Blunt amputation threshold was reachable (arm Blunt 190
-            // against a threshold of 250). M3 (P19) raised the limb rungs above severing, and limbs now finish
-            // on Blunt 10, so a limb would come off on the first chunk past its threshold; the head keeps the
-            // host's Blunt 50 minimum, which is what this test needs. `BaseHead`'s own thresholds are Blunt
-            // 500 / Slash 600 / Heat 700, and the head's Blunt amputation threshold is 350; this test peaks at 450.
             for (var i = 1; i <= 16; i++)
             {
-                Assert.That(routing.TryApplyPartDamage(body, head, Spec("Blunt", 25), attacker));
-                // AccumulateAmputationOverflow early-returns because WolfmedBodyPartComponent.MaxDamage is
-                // 0 on every shipped limb, so the accumulator can never leave zero.
-                Assert.That(woundable.AmputationOverflow, Is.EqualTo(FixedPoint2.Zero),
-                    $"AmputationOverflow must stay zero on a maxDamage-0 part (hit {i}).");
-                // The head's Blunt threshold is 350, reached on hit 14 (14 * 25).
-                Assert.That(woundable.Severable, Is.EqualTo(i >= 14),
-                    $"Severable must flip exactly at the 350 Blunt threshold (hit {i}).");
-                Assert.That(graph.BodyHasChild(body, head), Is.True,
-                    $"sub-finishing chunks must never detach the part (hit {i}).");
+                routing.TryApplyPartDamage(body, head, Spec("Blunt", 25), attacker);
+                Assert.That(woundable.AmputationOverflow, Is.EqualTo(FixedPoint2.New(System.Math.Max(0, i * 25 - 100))),
+                    $"the head's overflow is everything past its cap of 100 (hit {i}).");
+                Assert.That(woundable.Severable, Is.False, $"a capped head was armed for severing (hit {i}).");
             }
 
-            // One Blunt 50 - exactly the finishing minimum - takes it off at 450, proving the threshold path
-            // is alive and that only the overflow half is inert.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Blunt", 50), attacker));
-            Assert.That(graph.BodyHasChild(body, head), Is.False);
+            routing.TryApplyPartDamage(body, head, Spec("Blunt", 50), attacker);
+            Assert.That(graph.BodyHasChild(body, head), Is.True, "piled-up damage took the head off.");
 
             // (b) the same mechanism on a bespoke part with maxDamage: 50 accumulates, proving it is
             // data-gated rather than code-dead.
@@ -394,12 +374,12 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
             var overflowWoundable = entities.GetComponent<WoundableComponent>(overflowArm);
 
             // 40 fits under maxDamage 50 entirely, so nothing overflows yet.
-            Assert.That(routing.TryApplyPartDamage(overflowBody, overflowArm, Spec("Blunt", 40)));
+            Assert.That(routing.TryApplyPartDamage(overflowBody, overflowArm, Spec("Blunt", 40), attacker));
             Assert.That(overflowWoundable.AmputationOverflow, Is.EqualTo(FixedPoint2.Zero));
 
             // The second 40 finds only 10 of structural room left: 10 is applied as damage and the
             // remaining 30 becomes tear-off pressure (WoundDamageRoutingSystem.AccumulateAmputationOverflow).
-            Assert.That(routing.TryApplyPartDamage(overflowBody, overflowArm, Spec("Blunt", 40)));
+            Assert.That(routing.TryApplyPartDamage(overflowBody, overflowArm, Spec("Blunt", 40), attacker));
             Assert.Multiple(() =>
             {
                 Assert.That(overflowWoundable.AmputationOverflow, Is.GreaterThan(FixedPoint2.Zero));
@@ -503,11 +483,12 @@ public sealed class WolfmedAmputationTest : WolfmedGameTest
 
             // Arm Slash threshold 130 arms the limb; Slash 15 == the host finishing minimum detaches it.
             // Both arms hang off the same torso, so both stumps land on the same parent.
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // no origin is ambient harm, held under the cap
             foreach (var arm in new[] { leftArm, rightArm })
             {
-                Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 130)));
+                Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 130), attacker));
                 Assert.That(entities.GetComponent<WoundableComponent>(arm).Severable, Is.True);
-                Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 15)));
+                routing.TryApplyPartDamage(body, arm, Spec("Slash", 15), attacker); // a finishing hit on a capped arm stores nothing, so this overload returns false; the detach is asserted below
                 Assert.That(graph.BodyHasChild(body, arm), Is.False);
             }
 

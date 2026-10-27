@@ -9,13 +9,13 @@ namespace Content.Client._WF.Stylesheets;
 
 public sealed partial class StyleWolfgate
 {
-    /// <summary>Solid panel behind the loadout rail and behind the tile grid.</summary>
+    /// <summary>Solid panel behind the loadout rail, the tile grid and the selected panel.</summary>
     public const string StyleClassLoadoutPanel = "LoadoutPanel";
 
     /// <summary>Solid sunken box of the loadout detail strip.</summary>
     public const string StyleClassLoadoutInset = "LoadoutInset";
 
-    /// <summary>Card of one pick in the loadout detail strip.</summary>
+    /// <summary>Card of one pick in the loadout window's selected panel.</summary>
     public const string StyleClassLoadoutPick = "LoadoutPick";
 
     /// <summary>Small label for a price or a status word on a loadout tile or rail row.</summary>

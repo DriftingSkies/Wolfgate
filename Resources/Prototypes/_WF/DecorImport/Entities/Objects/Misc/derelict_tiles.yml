@@ -1,0 +1,149 @@
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict1
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict1
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict1
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict2
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict2
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict2
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict3
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict3
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict3
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict4
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict4
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict4
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict5
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict5
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict5
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict6
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict6
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict6
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelict7
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelict7
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelict7
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelictLight
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelictLight
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelictLight
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelictVent
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelictVent
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelictVent
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemCitadelRPFloorDerelictPlating
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - CitadelRPFloorDerelictPlating
+  - type: Stack
+    stackType: FloorTileCitadelRPFloorDerelictPlating

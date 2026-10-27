@@ -38,6 +38,7 @@ public sealed class CustomMarkingLimbsTest
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
         var client = pair.Client;
+        await SetReach(pair, true);
 
         await client.WaitAssertion(() =>
         {
@@ -231,7 +232,33 @@ public sealed class CustomMarkingLimbsTest
             }
         });
 
+        // Without the reach limit the same drawing is shown whole.
+        await SetReach(pair, false);
+        await client.WaitAssertion(() =>
+        {
+            var entMan = client.EntMan;
+            var system = entMan.System<CustomMarkingSystem>();
+            var profile = HumanoidCharacterProfile.DefaultWithSpecies("Human");
+            var species = client.ResolveDependency<IPrototypeManager>().Index<SpeciesPrototype>(profile.Species);
+            var doll = entMan.SpawnEntity(species.DollPrototype, MapCoordinates.Nullspace);
+            entMan.System<HumanoidAppearanceSystem>().LoadProfile(doll,
+                profile.WithCustomMarkings(new List<CustomMarking> { new(Hash, CustomMarkingPlacement.Skin) }));
+
+            var sprite = entMan.GetComponent<SpriteComponent>(doll);
+            Assert.That(system.TryGetArt(Hash, out var whole), Is.True);
+            Assert.That(entMan.System<SpriteSystem>().LayerMapTryGet((doll, sprite), CustomMarkingSystem.LayerKey(0), out var index, false), Is.True);
+            Assert.That(((SpriteComponent.Layer) sprite[index]).ActualRsi, Is.SameAs(whole), "nothing is cut off a whole body");
+            entMan.DeleteEntity(doll);
+        });
+
         await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Turns the server's limit on how far art may reach past the body on or off, and waits for the client.</summary>
+    private static async Task SetReach(Pair.TestPair pair, bool reach)
+    {
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(CustomMarkingCVars.BodyReach, reach));
+        await pair.RunTicksSync(5);
     }
 
     /// <summary>A tail is in a marking's reach, past the body, for as long as it shows.</summary>
@@ -242,6 +269,7 @@ public sealed class CustomMarkingLimbsTest
 
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
         var client = pair.Client;
+        await SetReach(pair, true);
 
         await client.WaitAssertion(() =>
         {
@@ -365,6 +393,7 @@ public sealed class CustomMarkingLimbsTest
             }
         });
 
+        await SetReach(pair, false);
         await pair.CleanReturnAsync();
     }
 

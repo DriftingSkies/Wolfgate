@@ -233,6 +233,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                     {
                         bankBalance -= int.Max(0, loadoutProto.Price); // Treat negatives as zero.
                         EquipStartingGear(entity.Value, loadoutProto, raiseEvent: false);
+                        ApplyWFGagsColors(entity.Value, loadoutProto, items); // WOLFGATE(Gags): the colours picked in the loadout window
                         equippedItems.Add(loadoutProto.ID);
 
                         // Add support for IPC encryption keys from loadout headsets

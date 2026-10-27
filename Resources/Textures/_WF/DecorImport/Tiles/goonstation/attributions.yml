@@ -622,3 +622,83 @@
   license: CC-BY-NC-SA-3.0
   copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/turf/floors.dmi (state wooden)."
   source: "https://github.com/goonstation/goonstation"
+
+- files: [ bluefloor.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/worlds.dmi (state bluefloor)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ martian_floor.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/turf/martian.dmi (state floor1)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ mars_rocks.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (states 1 to 6)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ marslike_t2.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state t2)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ marslike_t3.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state t3)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ marslike_t4.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state t4)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ marslike_t2_edge_south.png, marslike_t2_edge_north.png, marslike_t2_edge_east.png, marslike_t2_edge_west.png, marslike_t2_edge_southeast.png, marslike_t2_edge_southwest.png, marslike_t2_edge_northeast.png, marslike_t2_edge_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state t2-e)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ marslike_t3_edge_south.png, marslike_t3_edge_north.png, marslike_t3_edge_east.png, marslike_t3_edge_west.png, marslike_t3_edge_southeast.png, marslike_t3_edge_southwest.png, marslike_t3_edge_northeast.png, marslike_t3_edge_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state t3-e)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ marslike_t4_edge_south.png, marslike_t4_edge_north.png, marslike_t4_edge_east.png, marslike_t4_edge_west.png, marslike_t4_edge_southeast.png, marslike_t4_edge_southwest.png, marslike_t4_edge_northeast.png, marslike_t4_edge_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state t4-e)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ mars_base1.png, mars_base1_north.png, mars_base1_east.png, mars_base1_west.png, mars_base1_southeast.png, mars_base1_southwest.png, mars_base1_northeast.png, mars_base1_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state base1)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ mars_base2.png, mars_base2_north.png, mars_base2_east.png, mars_base2_west.png, mars_base2_southeast.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state base2)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ mars_base3.png, mars_base3_north.png, mars_base3_east.png, mars_base3_west.png, mars_base3_southeast.png, mars_base3_southwest.png, mars_base3_northeast.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state base3)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ mars_dirtroad1.png, mars_dirtroad1_north.png, mars_dirtroad1_southeast.png, mars_dirtroad1_southwest.png, mars_dirtroad1_northeast.png, mars_dirtroad1_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state dirtroad1)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ mars_dirtroad2.png, mars_dirtroad2_north.png, mars_dirtroad2_east.png, mars_dirtroad2_west.png, mars_dirtroad2_southeast.png, mars_dirtroad2_southwest.png, mars_dirtroad2_northeast.png, mars_dirtroad2_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/misc/mars_outpost.dmi (state dirtroad2)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ martian_dust.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/turf/floors.dmi (states mars1, mars2, mars3)."
+  source: "https://github.com/goonstation/goonstation"
+
+- files: [ snow_rough_border.png, snow_rough_border_north.png, snow_rough_border_east.png, snow_rough_border_west.png, snow_rough_border_southeast.png, snow_rough_border_southwest.png, snow_rough_border_northeast.png, snow_rough_border_northwest.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/goonstation/goonstation/blob/5c2227ce62cee48048c7944aea340b0a14c88a7d/icons/turf/floors.dmi (state snow_rough_border, one file per direction)."
+  source: "https://github.com/goonstation/goonstation"

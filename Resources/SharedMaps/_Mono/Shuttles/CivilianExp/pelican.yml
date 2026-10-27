@@ -9843,7 +9843,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: -13.5,3.5
       parent: 1
-- proto: WeaponTurretM25
+- proto: WFWeaponTurretMiningLaserSmall
   entities:
   - uid: 715
     components:

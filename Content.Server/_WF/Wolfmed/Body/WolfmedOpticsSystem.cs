@@ -1,6 +1,7 @@
 using Content.Shared._Onyx.Body.Systems;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WF.Wolfmed.Body;
+using Content.Shared._WF.Wolfmed.EntityEffects;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
 using Content.Shared.Eye.Blinding.Components;
@@ -11,7 +12,8 @@ namespace Content.Server._WF.Wolfmed.Body;
 
 /// <summary>
 /// Shows a body's eye damage (welder flashes, bright light) on its eyes organ, so the analyzer reads it and the eye
-/// surgery lists. Eye damage blurs and blinds by itself, so it never takes the organ below one health.
+/// surgery lists. Eye damage blurs and blinds by itself, so it never takes the organ below one health. Oculine
+/// clears the eye damage and mends the organ's other losses.
 /// </summary>
 public sealed class WolfmedOpticsSystem : EntitySystem
 {
@@ -23,6 +25,19 @@ public sealed class WolfmedOpticsSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<WoundHostComponent, EyeDamageChangedEvent>(OnEyeDamageChanged);
+        SubscribeLocalEvent<WoundHostComponent, WolfmedMendEyesEvent>(OnMendEyes);
+    }
+
+    private void OnMendEyes(Entity<WoundHostComponent> body, ref WolfmedMendEyesEvent args)
+    {
+        // Destroyed eyes are surgery's. The share eye damage took comes back as that damage heals, so it is left alone.
+        if (GetEyes(body) is not { } eyes || eyes.Comp.Health <= FixedPoint2.Zero)
+            return;
+
+        var strain = CompOrNull<WolfmedOpticStrainComponent>(eyes)?.Applied ?? FixedPoint2.Zero;
+        var missing = eyes.Comp.MaxHealth - strain - eyes.Comp.Health;
+        if (missing > FixedPoint2.Zero)
+            _organs.ChangeHealth(eyes, FixedPoint2.Min(args.Amount, missing));
     }
 
     private void OnEyeDamageChanged(Entity<WoundHostComponent> body, ref EyeDamageChangedEvent args)

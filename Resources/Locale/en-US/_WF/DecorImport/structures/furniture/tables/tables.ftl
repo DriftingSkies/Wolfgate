@@ -98,3 +98,7 @@ ent-TableReaper = spooky table
     .desc = Neglected table spirits like to take their frustration out by subtly tilting to one side, ensuring no pen will ever be safe.
 ent-TableUraniumGlass = uranium glass table
     .desc = A square piece of uranium glass, standing on four metal legs. Pretty!
+ent-TableAbductor = alien table
+    .desc = Literally the sturdiest thing you have ever seen.
+ent-AuroraTableDiona = alien biomass table
+    .desc = It's a table, for putting things on. Or standing on, if you really want to.

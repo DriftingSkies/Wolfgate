@@ -55,13 +55,13 @@
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ ResomiTailFeathered ]
     Legs:
-      points: 6
+      points: 8 # WOLFGATE(Species): was 6, more marking slots
       required: false
     Arms:
-      points: 6
+      points: 8 # WOLFGATE(Species): was 6, more marking slots
       required: false
     Head:
       points: 4

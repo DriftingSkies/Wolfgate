@@ -138,8 +138,9 @@ public sealed class WolfmedReattachTest : WolfmedGameTest
             var attach = surgeries.GetSingleton("SurgeryAttachLeftArm")!.Value;
 
             // Arm Slash threshold 130 arms the limb; Slash 15 is the host finishing minimum and detaches it.
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 130)));
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 15)));
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // no origin is ambient harm, held under the cap
+            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 130), attacker));
+            routing.TryApplyPartDamage(body, arm, Spec("Slash", 15), attacker); // a finishing hit on a capped arm stores nothing, so this overload returns false; the detach is asserted below
             Assert.That(graph.BodyHasChild(body, arm), Is.False);
             Assert.That(Consequences(entities, wounds, torso), Has.Count.EqualTo(1));
 

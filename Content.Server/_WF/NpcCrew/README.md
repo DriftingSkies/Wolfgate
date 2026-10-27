@@ -394,6 +394,7 @@ versus about 0.2 seconds with simulation disabled. Longer combat playtesting rem
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OnSight.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OnSight.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OwnKind.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.OwnKind.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PirateAir.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PirateAir.cs)
+- [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PryGiveUp.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.PryGiveUp.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.RadioSecurity.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Reload.cs)
 - [`Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Routines.cs`](../../../Content.IntegrationTests/Tests/_WF/NpcCrew/WFCrewTest.Routines.cs)

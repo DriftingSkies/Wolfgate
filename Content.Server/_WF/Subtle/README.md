@@ -1,7 +1,8 @@
 # Subtle
 
 Subtle emotes, as in SS13: an emote that only the players right next to you receive. Right-click yourself and pick
-**Subtle emote**, or type `/subtle <action>` in the chat box. It reaches bodies within 1.5 tiles with an unblocked view,
+**Subtle emote**, pick the **Subtle** chat channel (Tab cycles to it, or start a line with `%`), or type
+`/subtle <action>`. Subtle emotes arrive on their own `ChatChannel.Subtle`, so they can be filtered. It reaches bodies within 1.5 tiles with an unblocked view,
 shows as a tinted emote, and is never sent to ghosts or recorded to replays. The admin log (Chat) keeps the text and who
 saw it.
 
@@ -27,6 +28,14 @@ Entry points: `SubtleSystem.TrySendSubtle`, and `SubtleSystem.InSubtleRange` for
 
 ## Non-modular edits
 
-None.
+- [`Content.Client/Chat/Managers/ChatManager.cs`](../../../Content.Client/Chat/Managers/ChatManager.cs): subtle emote channel
+- [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs)
+- [`Content.Client/UserInterface/Systems/Chat/Controls/ChannelFilterPopup.xaml.cs`](../../../Content.Client/UserInterface/Systems/Chat/Controls/ChannelFilterPopup.xaml.cs)
+- [`Content.Client/UserInterface/Systems/Chat/Controls/ChannelSelectorButton.cs`](../../../Content.Client/UserInterface/Systems/Chat/Controls/ChannelSelectorButton.cs)
+- [`Content.Client/UserInterface/Systems/Chat/Controls/ChannelSelectorPopup.cs`](../../../Content.Client/UserInterface/Systems/Chat/Controls/ChannelSelectorPopup.cs)
+- [`Content.Shared/Chat/ChatChannel.cs`](../../../Content.Shared/Chat/ChatChannel.cs): subtle emote channel
+- [`Content.Shared/Chat/ChatChannelExtensions.cs`](../../../Content.Shared/Chat/ChatChannelExtensions.cs): subtle emote tint
+- [`Content.Shared/Chat/ChatSelectChannel.cs`](../../../Content.Shared/Chat/ChatSelectChannel.cs): subtle emote channel
+- [`Content.Shared/Chat/SharedChatSystem.cs`](../../../Content.Shared/Chat/SharedChatSystem.cs): subtle emote channel
 
 <!-- WOLFGATE-GENERATED END -->

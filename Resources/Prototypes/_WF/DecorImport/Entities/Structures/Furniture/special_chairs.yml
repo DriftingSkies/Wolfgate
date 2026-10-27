@@ -22,6 +22,51 @@
 
 - type: entity
   parent: ChairBase
+  id: CMChairBoneThrone
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Decoration/32x32_hunter_props_cm.rsi
+    state: bone_throne
+    snapCardinals: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+
+- type: entity
+  parent: ChairBase
+  id: VGThrone
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Furniture/throne_vgstation.rsi
+    state: throne
+    offset: "0,0.5"
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]
+
+- type: entity
+  parent: VGThrone
+  id: VGThroneSkull
+  components:
+  - type: Sprite
+    state: skullthrone
+
+- type: entity
+  parent: ChairBase
   id: BeeChairFancy
   components:
   - type: Sprite

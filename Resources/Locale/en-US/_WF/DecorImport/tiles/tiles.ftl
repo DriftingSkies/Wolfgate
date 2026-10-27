@@ -273,6 +273,8 @@ tiles-wood-versailles-floor = versailles wood floor
 
 ## Goob Station
 tiles-flockzone-floor-steel = flockzone steel floor
+ent-FloorFlockZone2 = flockzone light floor
+    .desc = It hums with power.
 
 ## Impstation
 tiles-apid-floor = apid hex tile
@@ -348,6 +350,7 @@ tiles-wf-goon-floor-sandytile = sand-covered floor
 tiles-wf-goon-floor-sanitary = sanitary floor
 tiles-wf-goon-floor-stone = stone
 tiles-wf-goon-floor-techfloor = data tech flooring
+tiles-wf-goon-floor-bluefloor = blue floor
 tiles-wf-goon-floor-terrazzo = terrazzo tiling
 tiles-wf-goon-floor-glassblock-large = glass block tiling
 tiles-wf-goon-floor-glassblock-transparent = glass block tiling
@@ -433,6 +436,46 @@ tiles-wf-goon-floor-wood-three = goon wood floor 3
 tiles-wf-goon-floor-wood-five = goon wood floor 5
 tiles-wf-goon-floor-wood-six = goon wood floor 6
 tiles-wf-goon-floor-wood-seven = goon wood floor 7
+tiles-wf-goon-floor-martian = organic floor
+tiles-wf-goon-floor-marslike-t2 = imitation martian dirt
+tiles-wf-goon-floor-marslike-t3 = imitation martian dirt
+tiles-wf-goon-floor-marslike-t4 = imitation martian dirt
+tiles-wf-goon-floor-mars-rocks = Mars
+tiles-wf-goon-floor-martian-dust = martian dust
+tiles-wf-goon-floor-mars-base1 = brick edge
+tiles-wf-goon-floor-mars-base1-north = brick edge (north)
+tiles-wf-goon-floor-mars-base1-east = brick edge (east)
+tiles-wf-goon-floor-mars-base1-west = brick edge (west)
+tiles-wf-goon-floor-mars-base1-south-east = brick edge (south-east)
+tiles-wf-goon-floor-mars-base1-south-west = brick edge (south-west)
+tiles-wf-goon-floor-mars-base1-north-east = brick edge (north-east)
+tiles-wf-goon-floor-mars-base1-north-west = brick edge (north-west)
+tiles-wf-goon-floor-mars-base2 = pad edge
+tiles-wf-goon-floor-mars-base2-north = pad edge (north)
+tiles-wf-goon-floor-mars-base2-east = pad edge (east)
+tiles-wf-goon-floor-mars-base2-west = pad edge (west)
+tiles-wf-goon-floor-mars-base2-south-east = pad edge (south-east)
+tiles-wf-goon-floor-mars-base3 = pad corner
+tiles-wf-goon-floor-mars-base3-north = pad corner (north)
+tiles-wf-goon-floor-mars-base3-east = pad corner (east)
+tiles-wf-goon-floor-mars-base3-west = pad corner (west)
+tiles-wf-goon-floor-mars-base3-south-east = pad corner (south-east)
+tiles-wf-goon-floor-mars-base3-south-west = pad corner (south-west)
+tiles-wf-goon-floor-mars-base3-north-east = pad corner (north-east)
+tiles-wf-goon-floor-mars-dirtroad1 = dirt road
+tiles-wf-goon-floor-mars-dirtroad1-north = dirt road (north)
+tiles-wf-goon-floor-mars-dirtroad1-south-east = dirt road (south-east)
+tiles-wf-goon-floor-mars-dirtroad1-south-west = dirt road (south-west)
+tiles-wf-goon-floor-mars-dirtroad1-north-east = dirt road (north-east)
+tiles-wf-goon-floor-mars-dirtroad1-north-west = dirt road (north-west)
+tiles-wf-goon-floor-mars-dirtroad2 = dirt road end
+tiles-wf-goon-floor-mars-dirtroad2-north = dirt road end (north)
+tiles-wf-goon-floor-mars-dirtroad2-east = dirt road end (east)
+tiles-wf-goon-floor-mars-dirtroad2-west = dirt road end (west)
+tiles-wf-goon-floor-mars-dirtroad2-south-east = dirt road end (south-east)
+tiles-wf-goon-floor-mars-dirtroad2-south-west = dirt road end (south-west)
+tiles-wf-goon-floor-mars-dirtroad2-north-east = dirt road end (north-east)
+tiles-wf-goon-floor-mars-dirtroad2-north-west = dirt road end (north-west)
 
 ## Aurora
 tiles-wf-aurora-floor-sidewalk-assunzione-blocks = blocked sidewalk tiles
@@ -498,6 +541,8 @@ tiles-wf-bubber-floor-tram-guideway = tram guideway
 tiles-wf-bubber-floor-tram-plate = linear induction plate
 tiles-wf-bubber-floor-vault-alien = alien floor
 tiles-wf-bubber-floor-vault-sandstone = sandstone floor
+tiles-wf-bubber-floor-lunar-sand = lunar sand
+tiles-wf-bubber-floor-lunar-rock = lunar rock
 
 ## Citadel
 tiles-wf-cit-floor-spooktime-cobble = cobblestone path
@@ -682,9 +727,15 @@ tiles-wf-vore-floor-wood-oak = oak wood floor
 tiles-wf-vore-floor-wood-pine = pine wood floor
 tiles-wf-vore-floor-wood-redwood = redwood wood floor
 tiles-wf-vore-floor-wood-sif = alien wooden floor
+tiles-wf-vore-floor-reinforced = reinforced floor
+tiles-wf-vore-floor-alien-plating-half = alien plating
+tiles-wf-vore-floor-alien-plating = alien plating
 tiles-wf-vore-floor-water-underwater-indoors = deeper waters
 tiles-wf-vore-floor-water-digestive-enzymes = digestive enzymes
 tiles-wf-vore-floor-water-glamour = glamour
+tiles-wf-vore-floor-flesh = flesh
+tiles-wf-vore-floor-flesh-colour = grey flesh
+tiles-wf-vore-floor-nanites = nanite-infested tiles
 
 ## Baystation
 tiles-wf-bay-floor-carpet-black = black carpet
@@ -698,6 +749,8 @@ tiles-wf-bay-floor-greengrid = mainframe floor
 tiles-wf-bay-floor-exoplanet-lava = lava
 tiles-wf-bay-floor-water-shallow-chlorine-liquid = chlorine marsh
 tiles-wf-bay-floor-water-shallow-tar = tar
+tiles-wf-bay-floor-exoplanet-chlorine-sand = chlorinated sand
+tiles-wf-bay-floor-flesh = flesh
 
 ## BeeStation
 tiles-wf-bee-floor-concrete-tile = concrete
@@ -714,6 +767,7 @@ tiles-wf-bee-floor-vault-sandstone = sandstone floor
 tiles-wf-bee-floor-noslip-blue = high-traction floor
 tiles-wf-bee-floor-grass-fairy-green = green fairygrass patch
 tiles-wf-bee-floor-grass-fairy-purple = purple fairygrass patch
+tiles-wf-bee-floor-water-red = red water
 
 ## CHOMPStation
 tiles-wf-chomp-floor-blackhole-grate = ominous pattern
@@ -731,6 +785,20 @@ tiles-wf-chomp-floor-outdoors-lavaland-ashrock = ashen rock
 
 ## CM-SS13
 tiles-wf-cm-floor-hybrisa-wood-whitewood = hybrisa wood whitewood floor
+tiles-wf-cm-floor-ancient-floor = ancient stone floor
+tiles-wf-cm-floor-ancient-damaged = cracked ancient stone floor
+tiles-wf-cm-floor-ancient-breach = broken ancient floor
+tiles-wf-cm-floor-ancient-deco = carved ancient floor
+tiles-wf-cm-floor-ancient-deco-0 = framed carved ancient floor
+tiles-wf-cm-floor-ancient-deco-1 = diamond ancient floor
+tiles-wf-cm-floor-ancient-deco-2 = worn diamond ancient floor
+tiles-wf-cm-floor-ancient-deco-alt = ancient glyph floor
+tiles-wf-cm-floor-ancient-dark-deco = dark carved ancient floor
+tiles-wf-cm-floor-ancient-dark-deco-1 = dark diamond ancient floor
+tiles-wf-cm-floor-ancient-deco-alt-dark = dark ancient glyph floor
+tiles-wf-cm-floor-hunter-red = hunter floor
+tiles-wf-cm-floor-hunter-red-2 = hunter rune floor
+tiles-wf-cm-floor-hunter-red-4 = lit hunter floor
 
 ## Coyote Bayou
 tiles-wf-coyote-floor-padded = padded floor
@@ -740,6 +808,8 @@ tiles-wf-coyote-floor-mineral-titanium-purple = shuttle floor
 tiles-wf-coyote-floor-mineral-titanium-white = shuttle floor
 tiles-wf-coyote-floor-mineral-titanium-yellow = shuttle floor
 tiles-wf-coyote-floor-f13-stone-rugged = rugged stone floor
+tiles-wf-coyote-floor-ultra-molten = glowing sludge
+tiles-wf-coyote-floor-ultra-fissure = glowing fissure
 
 ## DarkPack
 tiles-wf-dark-pack-floor-stairs-black-right = stairs black right floor
@@ -770,6 +840,8 @@ tiles-wf-monke-floor-iron-terracotta-herringbone = iron terracotta herringbone f
 tiles-wf-para-floor-water-deep-wood-floor = sunken floor
 tiles-wf-para-floor-plasteel-reactor-pool = holding pool
 tiles-wf-para-floor-plasteel-reactor-pool-ladder = holding pool
+tiles-wf-para-floor-flock = weird floor
+tiles-wf-para-floor-fibrenet = fibrenet
 tiles-wf-para-floor-beach-away-sand = sand
 tiles-wf-para-floor-away-water-deep = deep water
 tiles-wf-para-floor-away-water-edge-drop = water
@@ -793,6 +865,13 @@ tiles-wf-shiptest-floor-wood-yew-right = wood yew right floor
 tiles-wf-shiptest-floor-suns = white marble floor
 tiles-wf-shiptest-floor-suns-pattern = patterned white marble floor
 tiles-wf-shiptest-floor-ship-jungle-dark = jungle grass
+tiles-wf-shiptest-floor-shrouded-sand = packed sand
+tiles-wf-shiptest-floor-moon-coarse = coarse regolith
+tiles-wf-shiptest-floor-moon-coarse-dark = coarse regolith
+tiles-wf-shiptest-floor-moon-dark = regolith
+tiles-wf-shiptest-floor-ice-sheet = ice sheet
+tiles-wf-shiptest-floor-iceberg = cracked ice floor
+tiles-wf-shiptest-floor-crimson-grass = crimson grass
 
 ## Skyrat
 tiles-wf-skyrat-floor-catwalk-floor-iron = iron plated catwalk floor
@@ -848,6 +927,43 @@ tiles-wf-tg-floor-beach-coast-corner-east = coast corner (east)
 tiles-wf-tg-floor-beach-coast-corner-west = coast corner (west)
 tiles-wf-tg-floor-beach-water = shallow water
 tiles-wf-tg-floor-beach-water-deep = deep water
+tiles-wf-tg-floor-siderite = siderite floor
 
 ## Yogstation
 tiles-wf-yog-floor-catwalk-floor-titanium = titanium plated catwalk floor
+
+## CEV-Eris
+tiles-wf-eris-floor-asteroid = coarse sand
+tiles-wf-goon-floor-snowrough-border = snow
+tiles-wf-goon-floor-snowrough-border-north = snow (north)
+tiles-wf-goon-floor-snowrough-border-east = snow (east)
+tiles-wf-goon-floor-snowrough-border-west = snow (west)
+tiles-wf-goon-floor-snowrough-border-south-east = snow (south-east)
+tiles-wf-goon-floor-snowrough-border-south-west = snow (south-west)
+tiles-wf-goon-floor-snowrough-border-north-east = snow (north-east)
+tiles-wf-goon-floor-snowrough-border-north-west = snow (north-west)
+tiles-wf-aurora-floor-exoplanet-icy-rock = icy rock
+tiles-wf-polaris-floor-sand-icey = sand
+tiles-wf-vore-floor-grass-winter = grass
+tiles-wf-bee-floor-red-ice = ice sheet
+tiles-wf-mojave-floor-ice = ice
+tiles-wf-shiptest-floor-obsidian = obsidian
+tiles-wf-bay-floor-exoplanet-volcanic = volcanic floor
+tiles-wf-nova-floor-mushroom = mushroom floor
+tiles-wf-nova-floor-mushroom-blue = mushroom floor
+tiles-wf-nova-floor-mushroom-green = mushroom floor
+tiles-wf-aurora-floor-exoplanet-basalt = basalt
+tiles-wf-citadel-rp-floor-cave = cave floor
+tiles-wf-vg-floor-bloodrealm = flesh floor
+tiles-wf-vg-floor-bloodrealm-accent = veined flesh floor
+tiles-wf-vg-floor-bloodrealm-accent-alt = veined flesh floor
+tiles-wf-vg-floor-bloodrealm-grease = blue grease floor
+tiles-wf-vg-floor-bloodrealm-grease-grey = grey grease floor
+tiles-wf-vg-floor-bloodrealm-clot = clotted flesh floor
+tiles-wf-vg-floor-bloodrealm-obsidian = black flesh floor
+tiles-wf-tau-ceti-floor-meatland = bloody vein floor
+
+## DS13
+tiles-wf-ds13-floor-dry-firm = soil
+tiles-wf-ds13-floor-dry-cracked = soil
+tiles-wf-tg-floor-necropolis = necropolis floor

@@ -477,3 +477,30 @@
     denySpriteState: blank
     openPanelSpriteState: blank
     animatePanel: false
+
+- type: entity
+  parent: CMAirlockAlmayerdoorWhite
+  id: TgAirlockAbductor
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Doors/Airlocks/Standard/abductor_tg.rsi
+
+- type: entity
+  parent: TgAirlockAbductor
+  id: VoreAirlockAlienBlue
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Doors/Airlocks/Standard/alien_blue_vore.rsi
+  - type: Door
+    openingAnimationTime: 1.2
+    closingAnimationTime: 1.2
+    openTimeOne: 0.8
+    openTimeTwo: 0.4
+    closeTimeOne: 0.4
+    closeTimeTwo: 0.8
+    openSound:
+      path: /Audio/_WF/DecorImport/vorestation/covert1o.ogg
+    closeSound:
+      path: /Audio/_WF/DecorImport/vorestation/covert1c.ogg
+    denySound:
+      path: /Audio/_WF/DecorImport/vorestation/deniedbeep.ogg

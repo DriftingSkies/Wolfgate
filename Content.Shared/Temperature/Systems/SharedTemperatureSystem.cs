@@ -29,25 +29,44 @@ public sealed partial class SharedTemperatureSystem : EntitySystem
 
     private void OnTemperatureChanged(Entity<TemperatureSpeedComponent> ent, ref OnTemperatureChangeEvent args)
     {
+        // WOLFGATE START: a band takes the slowdown of the lowest threshold above it; warming past a threshold gave it that threshold's heavier slowdown
+        float? wanted = null;
+        var wantedThreshold = float.MaxValue;
         foreach (var (threshold, modifier) in ent.Comp.Thresholds)
         {
-            if (args.CurrentTemperature < threshold && args.LastTemperature > threshold ||
-                args.CurrentTemperature > threshold && args.LastTemperature < threshold)
+            if (args.CurrentTemperature < threshold && threshold < wantedThreshold)
             {
-                ent.Comp.NextSlowdownUpdate = _timing.CurTime + SlowdownApplicationDelay;
-                ent.Comp.CurrentSpeedModifier = modifier;
-                Dirty(ent);
-                break;
+                wanted = modifier;
+                wantedThreshold = threshold;
             }
         }
 
-        var maxThreshold = ent.Comp.Thresholds.Max(p => p.Key);
-        if (args.CurrentTemperature > maxThreshold && args.LastTemperature < maxThreshold)
+        if (wanted != ent.Comp.CurrentSpeedModifier)
         {
             ent.Comp.NextSlowdownUpdate = _timing.CurTime + SlowdownApplicationDelay;
-            ent.Comp.CurrentSpeedModifier = null;
+            ent.Comp.CurrentSpeedModifier = wanted;
             Dirty(ent);
         }
+        // foreach (var (threshold, modifier) in ent.Comp.Thresholds)
+        // {
+        //     if (args.CurrentTemperature < threshold && args.LastTemperature > threshold ||
+        //         args.CurrentTemperature > threshold && args.LastTemperature < threshold)
+        //     {
+        //         ent.Comp.NextSlowdownUpdate = _timing.CurTime + SlowdownApplicationDelay;
+        //         ent.Comp.CurrentSpeedModifier = modifier;
+        //         Dirty(ent);
+        //         break;
+        //     }
+        // }
+
+        // var maxThreshold = ent.Comp.Thresholds.Max(p => p.Key);
+        // if (args.CurrentTemperature > maxThreshold && args.LastTemperature < maxThreshold)
+        // {
+        //     ent.Comp.NextSlowdownUpdate = _timing.CurTime + SlowdownApplicationDelay;
+        //     ent.Comp.CurrentSpeedModifier = null;
+        //     Dirty(ent);
+        // }
+        // WOLFGATE END
     }
 
     private void OnRefreshMovementSpeedModifiers(Entity<TemperatureSpeedComponent> ent, ref RefreshMovementSpeedModifiersEvent args)

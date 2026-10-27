@@ -320,9 +320,10 @@ public sealed class WolfmedBrainTest : WolfmedGameTest
             Assert.That(revival.TryDefibrillate(body, out var line), Is.False);
             Assert.That(line, Is.EqualTo(WolfmedRevivalSystem.NoBlood));
 
-            // 20% of a 300 u pool: 45 u to the 35% post-shock target, 90 u to 50%.
+            // 20% of a 300 u pool: 45 u to the 35% post-shock target, 120 u to 60% (the brain's 50% line plus the
+            // revival pass's 10% margin).
             var text = revival.LocalizeLine(body, line);
-            Assert.That(text, Does.Contain("≈ 45 u").And.Contain("≈ 90 u"), $"the refusal names no units: {text}");
+            Assert.That(text, Does.Contain("≈ 45 u").And.Contain("≈ 120 u"), $"the refusal names no units: {text}");
 
             var healthy = entities.SpawnEntity("MobHuman", map.GridCoords);
             Assert.That(revival.TryDefibrillate(healthy, out var pulse), Is.False, "the paddles restarted a beating heart.");

@@ -174,7 +174,8 @@ public class SharedHardpointSystem : EntitySystem
         {
             if (!TryComp<HardpointComponent>(entity, out var hardComp))
                 continue;
-            if (hardComp.anchoring is not null)
+            // WOLFGATE(Drydock): a destroyed gun leaves a dead entry behind, which blocked rebuilt guns
+            if (hardComp.anchoring is { } held && !TerminatingOrDeleted(held))
                 continue;
             if ((hardComp.CompatibleTypes & component.CompatibleTypes) == 0)
                 continue;

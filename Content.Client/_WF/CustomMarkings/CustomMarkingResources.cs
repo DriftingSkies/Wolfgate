@@ -28,6 +28,9 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
     private const string TimesFile = "times.bin";
     private const string EraseFile = "erase.bin";
 
+    /// <summary>The sheet as drawn, kept beside the sprite's own when that is laid out to play back and forth.</summary>
+    private const string DrawnFile = "drawn.png";
+
     private static readonly List<WeakReference<CustomMarkingResources>> Mounted = new();
 
     private readonly WeakReference<IResourceManager> _owner;
@@ -86,12 +89,28 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
     /// long each frame shows and its erase mask.
     /// </summary>
     /// <param name="size">The size of one facing, for a sheet that isn't a body sprite's.</param>
-    public void Store(string name, byte[] png, int[]? frameTimes = null, byte[]? erase = null, Vector2i? size = null)
+    /// <param name="pingPong">
+    /// Whether the animation plays back to the first frame. An RSI can only run through its frames and start over,
+    /// so the sprite gets a sheet with the way back drawn out.
+    /// </param>
+    public void Store(string name, byte[] png, int[]? frameTimes = null, byte[]? erase = null, Vector2i? size = null, bool pingPong = false)
     {
         var rsi = Relative(name);
-        _root.AddOrUpdateFile(rsi / $"{State}.png", png);
+        var shownTimes = frameTimes;
+        if (pingPong && frameTimes is { Length: > 2 } && Played(png, frameTimes) is { } played)
+        {
+            _root.AddOrUpdateFile(rsi / DrawnFile, png);
+            _root.AddOrUpdateFile(rsi / $"{State}.png", played.ToPng());
+            shownTimes = played.GetFrameTimes();
+        }
+        else
+        {
+            pingPong = false;
+            _root.RemoveFile(rsi / DrawnFile);
+            _root.AddOrUpdateFile(rsi / $"{State}.png", png);
+        }
 
-        if (frameTimes != null && CustomMarkingRules.PackFrameTimes(frameTimes) is { } times)
+        if (frameTimes != null && CustomMarkingRules.PackFrameTimes(frameTimes, pingPong) is { } times)
             _root.AddOrUpdateFile(rsi / TimesFile, times);
         else
             _root.RemoveFile(rsi / TimesFile);
@@ -103,7 +122,22 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
 
         // The manifest goes in last: it is what makes the RSI loadable.
         var frame = size ?? new Vector2i(CustomMarkingRules.FrameSize, CustomMarkingRules.FrameSize);
-        _root.AddOrUpdateFile(rsi / "meta.json", Meta(frame, frameTimes));
+        _root.AddOrUpdateFile(rsi / "meta.json", Meta(frame, shownTimes));
+    }
+
+    /// <summary>A body sprite sheet with its frames in play order, or null when it can't be read.</summary>
+    private static CustomMarkingArt? Played(byte[] png, int[] frameTimes)
+    {
+        if (CustomMarkingPng.Read(png) is not { } art || art.Frames != frameTimes.Length)
+            return null;
+
+        for (var i = 0; i < frameTimes.Length; i++)
+        {
+            art.SetFrameTime(i, frameTimes[i]);
+        }
+
+        art.PingPong = true;
+        return art.Played();
     }
 
     private static byte[] Meta(Vector2i size, int[]? frameTimes)
@@ -151,6 +185,7 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
         _root.RemoveFile(rsi / $"{State}.png");
         _root.RemoveFile(rsi / TimesFile);
         _root.RemoveFile(rsi / EraseFile);
+        _root.RemoveFile(rsi / DrawnFile);
     }
 
     public bool Has(string name)
@@ -158,16 +193,22 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
         return _root.FileExists(Relative(name) / "meta.json");
     }
 
-    /// <summary>The stored PNG sheet, for the editor to open or export.</summary>
+    /// <summary>The stored PNG sheet as drawn, for the editor to open or export.</summary>
     public bool TryGetPng(string name, [NotNullWhen(true)] out byte[]? png)
     {
-        return TryRead(Relative(name) / $"{State}.png", out png);
+        return TryRead(Relative(name) / DrawnFile, out png) || TryRead(Relative(name) / $"{State}.png", out png);
     }
 
     /// <summary>How long each frame of stored art shows, in milliseconds. Null for a still marking.</summary>
     public int[]? GetFrameTimes(string name)
     {
         return TryRead(Relative(name) / TimesFile, out var packed) ? CustomMarkingRules.UnpackFrameTimes(packed) : null;
+    }
+
+    /// <summary>Whether stored art plays back to its first frame.</summary>
+    public bool GetPingPong(string name)
+    {
+        return TryRead(Relative(name) / TimesFile, out var packed) && CustomMarkingRules.UnpackPingPong(packed);
     }
 
     /// <summary>The erase mask of stored art. False when it has none.</summary>

@@ -21,6 +21,7 @@ namespace Content.Client.Lobby.UI
             IoCManager.InjectDependencies(this);
             SetAnchorPreset(MainContainer, LayoutPreset.Wide);
             SetAnchorPreset(Background, LayoutPreset.Wide);
+            SetAnchorPreset(AnimatedBackground, LayoutPreset.Wide); // WOLFGATE(Symphony): the GIF background covers the screen as the still one does
             SetAnchorPreset(SkinScanlines, LayoutPreset.Wide); // WOLFGATE(Stylesheets): skin scanlines cover the whole screen
             InitializeRoundSetupHome(); // WOLFGATE(RoundSetup): unify character and crew preparation controls
 

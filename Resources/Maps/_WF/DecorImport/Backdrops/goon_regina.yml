@@ -1,0 +1,33 @@
+meta:
+  format: 7
+  category: Map
+  engineVersion: 291.0.0
+  forkId: ""
+  forkVersion: ""
+  time: 10/26/2026 01:09:00
+  entityCount: 1
+maps:
+- 1
+grids: []
+orphans: []
+nullspace: []
+tilemap: {}
+entities:
+- proto: ""
+  entities:
+  - uid: 1
+    mapInit: true
+    components:
+    - type: MetaData
+      name: Map Entity
+    - type: Transform
+    - type: Map
+      mapInitialized: True
+    - type: GridTree
+    - type: Broadphase
+    - type: ChunkContainer
+      chunkEntities: []
+    - type: OccluderTree
+    - type: Parallax
+      parallax: GoonRegina
+...

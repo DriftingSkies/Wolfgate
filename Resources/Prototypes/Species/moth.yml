@@ -57,7 +57,7 @@
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ MothWingsDefault ]
     Snout:
       points: 1
@@ -76,10 +76,12 @@
       points: 4 # imp 1<4
       required: false
     Legs:
-      points: 4 # imp 2<4
+      # WOLFGATE(Species): was 4, more marking slots
+      points: 8 # imp 2<4
       required: false
     Arms:
-      points: 4 # imp 2<4
+      # WOLFGATE(Species): was 4, more marking slots
+      points: 8 # imp 2<4
       required: false
 
 - type: humanoidBaseSprite

@@ -1,4 +1,6 @@
 #nullable enable
+using Content.IntegrationTests.Fixtures.Attributes;
+using Content.Shared._WF.Wolfmed.CCVar;
 using System.Collections.Generic;
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
@@ -43,6 +45,8 @@ public sealed class WolfmedBurnWoundTest : WolfmedGameTest
     [Test]
     public async Task CharringComesOffTheBurnsTopStageTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entities = server.ResolveDependency<IEntityManager>();
@@ -105,6 +109,8 @@ public sealed class WolfmedBurnWoundTest : WolfmedGameTest
     [Test]
     public async Task BurnAtItsCapEscalatesIntoCharringTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entities = server.ResolveDependency<IEntityManager>();
@@ -143,6 +149,8 @@ public sealed class WolfmedBurnWoundTest : WolfmedGameTest
     [Test]
     public async Task HeatSealsBleedingWoundsTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entities = server.ResolveDependency<IEntityManager>();

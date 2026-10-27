@@ -412,3 +412,33 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/master_files/icons/turf/floors/floor.dmi (state wood_9)."
   source: "https://github.com/NovaSector/NovaSector"
+
+- files: [ mushroom_floor.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/master_files/icons/turf/floors/floor.dmi (state mushroom)."
+  source: "https://github.com/NovaSector/NovaSector"
+
+- files: [ mushroom_blue_floor.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/master_files/icons/turf/floors/floor.dmi (state mushroom_blue)."
+  source: "https://github.com/NovaSector/NovaSector"
+
+- files: [ mushroom_green_floor.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/master_files/icons/turf/floors/floor.dmi (state mushroom_green)."
+  source: "https://github.com/NovaSector/NovaSector"
+
+- files: [ mushroom_floor_edge_south.png, mushroom_floor_edge_north.png, mushroom_floor_edge_east.png, mushroom_floor_edge_west.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/modules/serenitystation/icons/turfs/floors/mushroom.dmi (states mushroom-55, mushroom-110, mushroom-157, mushroom-203)."
+  source: "https://github.com/NovaSector/NovaSector"
+
+- files: [ mushroom_blue_floor_edge_south.png, mushroom_blue_floor_edge_north.png, mushroom_blue_floor_edge_east.png, mushroom_blue_floor_edge_west.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/modules/serenitystation/icons/turfs/floors/mushroom_blue.dmi (states mushroom_blue-55, mushroom_blue-110, mushroom_blue-157, mushroom_blue-203)."
+  source: "https://github.com/NovaSector/NovaSector"
+
+- files: [ mushroom_green_floor_edge_south.png, mushroom_green_floor_edge_north.png, mushroom_green_floor_edge_east.png, mushroom_green_floor_edge_west.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/NovaSector/NovaSector/blob/3754f28afedc5e20e1bc76dd6c5568c957a4a9de/modular_nova/modules/serenitystation/icons/turfs/floors/mushroom_green.dmi (states mushroom_green-55, mushroom_green-110, mushroom_green-157, mushroom_green-203)."
+  source: "https://github.com/NovaSector/NovaSector"

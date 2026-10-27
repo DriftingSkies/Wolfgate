@@ -12,6 +12,38 @@
     ClothingUniformJumpsuitLawyerGood: 1
     ClothingUniformJumpskirtLawyerGood: 1
     ClothingShoesBootsLaceup: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadPlaybunnyearsLawyerBlack: 2
+    WFMeridianClothingHeadPlaybunnyearsLawyerBlue: 2
+    WFMeridianClothingHeadPlaybunnyearsLawyerGood: 2
+    WFMeridianClothingHeadPlaybunnyearsLawyerRed: 2
+    WFMeridianClothingNeckTieBunnytieLawyerBlack: 2
+    WFMeridianClothingNeckTieBunnytieLawyerBlue: 2
+    WFMeridianClothingNeckTieBunnytieLawyerGood: 2
+    WFMeridianClothingNeckTieBunnytieLawyerRed: 2
+    WFMeridianClothingSuitJacketTailcoatLawyerBlack: 2
+    WFMeridianClothingSuitJacketTailcoatLawyerBlue: 2
+    WFMeridianClothingSuitJacketTailcoatLawyerGood: 2
+    WFMeridianClothingSuitJacketTailcoatLawyerRed: 2
+    WFMeridianClothingSuitToggleLawyer: 2
+    WFMeridianClothingSuitToggleLawyerBlack: 2
+    WFMeridianClothingSuitToggleLawyerGreyscale: 2
+    WFMeridianClothingSuitToggleLawyerPurple: 2
+    WFMeridianClothingUnderRankCivilianLawyerBlack: 2
+    WFMeridianClothingUnderRankCivilianLawyerBlackSkirt: 2
+    WFMeridianClothingUnderRankCivilianLawyerBlue: 2
+    WFMeridianClothingUnderRankCivilianLawyerBlueSkirt: 2
+    WFMeridianClothingUnderRankCivilianLawyerBunnysuitBlack: 2
+    WFMeridianClothingUnderRankCivilianLawyerBunnysuitBlue: 2
+    WFMeridianClothingUnderRankCivilianLawyerBunnysuitGood: 2
+    WFMeridianClothingUnderRankCivilianLawyerBunnysuitRed: 2
+    WFMeridianClothingUnderRankCivilianLawyerGalaxyRedSkirt: 2
+    WFMeridianClothingUnderRankCivilianLawyerGalaxySkirt: 2
+    WFMeridianClothingUnderRankCivilianLawyerPurpsuit: 2
+    WFMeridianClothingUnderRankCivilianLawyerPurpsuitSkirt: 2
+    WFMeridianClothingUnderRankCivilianLawyerRed: 2
+    WFMeridianClothingUnderRankCivilianLawyerRedSkirt: 2
+    # WOLFGATE END
 #    ClothingHeadsetService: 2 # Frontier
     ClothingNeckLawyerbadge: 2
     RubberStampLawyer: 2

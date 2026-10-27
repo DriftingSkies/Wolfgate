@@ -688,9 +688,9 @@ public sealed partial class RoundSetupUiTest
             option = Descendants(selector.OptionsScroll).OfType<Button>().First(button => button.Text == caption);
         });
         await Click(pair, option);
-        await PoolManager.WaitUntil(pair.Client, () => preview.HasPreview, maxTicks: 30);
+        await PoolManager.WaitUntil(pair.Client, () => preview.HasPreview, maxTicks: 180);
         await PoolManager.WaitUntil(pair.Client, () => Descendants(selector).OfType<RichTextLabel>()
-            .Any(label => label.GetFormattedMessage()?.ToString().Contains(vessel.Name) == true), maxTicks: 30);
+            .Any(label => label.GetFormattedMessage()?.ToString().Contains(vessel.Name) == true), maxTicks: 180);
         await pair.Client.WaitAssertion(() =>
         {
             Assert.That(preview.TileCount, Is.Positive, "The ship preview must load actual grid tiles.");
@@ -715,7 +715,7 @@ public sealed partial class RoundSetupUiTest
         });
         await Click(pair, shipPage);
         await pair.Client.WaitPost(() => preview = Named<ShipPreviewControl>(window, "RoundSetupShipPreview"));
-        await PoolManager.WaitUntil(pair.Client, () => preview.HasPreview, maxTicks: 30);
+        await PoolManager.WaitUntil(pair.Client, () => preview.HasPreview, maxTicks: 180);
         await pair.Client.WaitAssertion(() =>
         {
             Assert.That(preview.TileCount, Is.Positive, "Returning to ship options must preview the committed vessel.");

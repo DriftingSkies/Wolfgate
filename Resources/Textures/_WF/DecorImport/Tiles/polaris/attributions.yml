@@ -112,3 +112,8 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/icons/turf/outdoors.dmi (state dirt-dark)."
   source: "https://github.com/PolarisSS13/Polaris"
+
+- files: [ sand_icey.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/icons/turf/flooring/asteroid.dmi (state sand-icey)."
+  source: "https://github.com/PolarisSS13/Polaris"

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Insurrection-13 at commit https://github.com/emoats18/Insurrection-13/commit/e4bc218573884fb04ec48f674bd469ef8dd9c2fe.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wall0"
+    },
+    {
+      "name": "wall1"
+    },
+    {
+      "name": "wall2"
+    },
+    {
+      "name": "wall3"
+    },
+    {
+      "name": "wall4"
+    },
+    {
+      "name": "wall5"
+    },
+    {
+      "name": "wall6"
+    },
+    {
+      "name": "wall7"
+    },
+    {
+      "name": "wall8"
+    },
+    {
+      "name": "wall9"
+    },
+    {
+      "name": "wall10"
+    },
+    {
+      "name": "wall11"
+    },
+    {
+      "name": "wall12"
+    },
+    {
+      "name": "wall13"
+    },
+    {
+      "name": "wall14"
+    },
+    {
+      "name": "wall15"
+    }
+  ]
+}

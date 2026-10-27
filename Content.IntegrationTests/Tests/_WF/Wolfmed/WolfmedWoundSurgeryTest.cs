@@ -254,12 +254,13 @@ public sealed class WolfmedWoundSurgeryTest : WolfmedGameTest
             var (_, _, arm) = Parts(entities, body);
             var routing = entities.System<WoundDamageRoutingSystem>();
             var fractures = entities.System<WoundFractureSystem>();
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // no origin is ambient harm, held at 0.8 of the cap
             var setBone = entities.SpawnEntity("WolfmedStepSetBone", map.GridCoords);
             var mendBone = entities.SpawnEntity("WolfmedStepMendBone", map.GridCoords);
 
             // P2-D23: 75 Blunt clears the Comminuted threshold (60) whose creationChance is 1. Anything lower is
             // a dice roll.
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Blunt", 75)));
+            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Blunt", 75), attacker));
             var fracture = fractures.GetFracture(arm)!.Value;
             Assert.Multiple(() =>
             {
@@ -295,9 +296,9 @@ public sealed class WolfmedWoundSurgeryTest : WolfmedGameTest
             // forever on the commonest grade. Drive a fresh Comminuted fracture down into the Hairline band
             // (WFWolfmedFractureProfile: Hairline 12, Simple starts at 20) and assert the set-bone step reports
             // itself complete anyway.
-            // M6 (P30): the new fracture starts at the arm's whole trauma (75 + the 75 already stored x 0.8 = 135), not
-            // at the hit alone, so it is driven down to 15 from wherever it starts.
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Blunt", 75)));
+            // M6 (P30): the new fracture starts at the arm's whole trauma (the 25 the capped arm still takes + the 75
+            // already stored x 0.8 = 85), not at the hit alone, so it is driven down to 15 from wherever it starts.
+            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Blunt", 75), attacker));
             var second = fractures.GetFracture(arm)!.Value;
             Assert.That(second.Comp1.Severity, Is.GreaterThan(FixedPoint2.New(75)),
                 "a second blow to a battered arm did not count the trauma already there.");
@@ -383,8 +384,9 @@ public sealed class WolfmedWoundSurgeryTest : WolfmedGameTest
 
             // Arm Slash threshold 130 arms the limb; Slash 15 is exactly
             // WoundHostComponent.DefaultDismembermentFinishingDamage["Slash"] and detaches it.
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 130)));
-            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 15)));
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // no origin is ambient harm, held under the cap
+            Assert.That(routing.TryApplyPartDamage(body, arm, Spec("Slash", 130), attacker));
+            routing.TryApplyPartDamage(body, arm, Spec("Slash", 15), attacker); // a finishing hit on a capped arm stores nothing, so this overload returns false; the detach is asserted below
             Assert.That(graph.BodyHasChild(body, arm), Is.False);
 
             var consequence = Wounds(entities, wounds, torso, "AmputationConsequenceWound");

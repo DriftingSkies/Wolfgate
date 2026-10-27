@@ -10,7 +10,7 @@ using Robust.Shared.Timing;
 namespace Content.Shared._WF.Wolfmed.Consciousness;
 
 /// <summary>The Wolfmed half of Onyx's <see cref="PainSystem"/>: one pain number per body.</summary>
-// A body's pain is min(soft cap, Σ parts), suppression is shared out once across the parts, and the pain shock reads
+// A body's pain is min(soft cap, the parts summed with wolfmed.pain_spread_falloff), suppression is shared out once across the parts, and the pain shock reads
 // its lines from CVars. Adrenaline does not lower pain; it speeds the crawl and lifts the Downed do-after penalty.
 public sealed class WolfmedBodyPainSystem : EntitySystem
 {
@@ -111,8 +111,8 @@ public sealed class WolfmedBodyPainSystem : EntitySystem
     }
 
     /// <summary>
-    /// P13: the pain a body with feeling parts carries is the sum of the parts, capped at its soft cap,
-    /// whatever anything tries to set it to. False for a part, or a body with no part that feels pain.
+    /// P13: the pain a body with feeling parts carries is its parts combined by <see cref="Combine"/>, capped at its
+    /// soft cap, whatever anything tries to set it to. False for a part, or a body with no part that feels pain.
     /// </summary>
     public bool TryGetDerivedPain(EntityUid uid, out FixedPoint2 value)
     {
@@ -120,6 +120,7 @@ public sealed class WolfmedBodyPainSystem : EntitySystem
         if (HasComp<BodyPartComponent>(uid))
             return false;
 
+        var parts = new List<float>();
         var any = false;
         foreach (var (part, _) in _body.GetBodyChildren(uid))
         {
@@ -131,10 +132,31 @@ public sealed class WolfmedBodyPainSystem : EntitySystem
             if (HasComp<Content.Shared._WF.Synthetics.WFIsolatedPartComponent>(part))
                 continue;
 
-            value += pain.Value;
+            parts.Add(pain.Value.Float());
         }
 
+        value = FixedPoint2.New(Combine(parts));
         return any;
+    }
+
+    /// <summary>
+    /// Revival pass: parts' pain summed worst first, each one after the first weighted by another factor of
+    /// wolfmed.pain_spread_falloff. One mangled part still counts in full; many light ones no longer add up to the
+    /// same. A falloff of 1 is the plain sum.
+    /// </summary>
+    public float Combine(List<float> parts)
+    {
+        var falloff = Math.Clamp(_cfg.GetCVar(WolfmedCVars.PainSpreadFalloff), 0f, 1f);
+        parts.Sort((a, b) => b.CompareTo(a));
+        var total = 0f;
+        var weight = 1f;
+        foreach (var pain in parts)
+        {
+            total += MathF.Max(0f, pain) * weight;
+            weight *= falloff;
+        }
+
+        return total;
     }
 
     /// <summary>

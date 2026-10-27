@@ -1,0 +1,7 @@
+# Reshapes a leg or foot marking on digitigrade legs and cuts it to its own leg (LegStyleSystem.FitMarking).
+- type: shader
+  id: WFLegMarkingDisplaced
+  kind: source
+  path: "/Textures/_WF/LegStyle/Shaders/leg_marking_displaced.swsl"
+  params:
+    displacementSize: 127

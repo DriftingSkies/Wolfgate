@@ -59,6 +59,8 @@ rotation maths).
   swap to their mirrored ID when it exists; rotatable tiles take the rotate/mirror state that matches Clyde's
   rendering. Other lopsided sprites (a chair's armrest, a sign's text) can't be mirrored and keep their look.
 - Pasting off every grid lands on the grid the clipboard came from, or on a new grid if that one is gone.
+- No edit, undo or redo may lay a tile on a cell another grid already has a tile on (`FillsOverOtherGrid`); each
+  grid only checks its own tiles, so a paste or move off the side of one grid could otherwise stack two grids.
 - A draw checks its cells, grid and tile or prototype first, then asks `WFMappingCanEditEvent` with its box, cell
   count and, for entities, the cells and prototype, so MappingMode can apply its selection, per-tile and prototype
   limits. Tiles that already match are left out; clearing every tile of a grid deletes the grid as one root, so undo

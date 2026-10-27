@@ -20,9 +20,11 @@ public static class SharedSymphony
     /// the panel reads, /symphony/feedback/status, which sets a report's status and tells its player in game, and
     /// /symphony/feedback/refresh, for after the panel has written a status itself. Version 9 added /symphony/lobby: the
     /// lobby's title screen art and music, picked from what the build ships or uploaded from the panel, shown at once,
-    /// a notice box in the lobby, and /symphony/announce, a server announcement in everyone's chat.
+    /// a notice box in the lobby, and /symphony/announce, a server announcement in everyone's chat. Version 10 added
+    /// /symphony/commands: every console, Toolshed and client command with its description, help and the admin flags it
+    /// needs, for the panel's staff handbook.
     /// </summary>
-    public const int ModuleVersion = 9;
+    public const int ModuleVersion = 10;
 
     /// <summary>
     /// Key of the one-time Discord link URL in a whitelist refusal's structured properties.

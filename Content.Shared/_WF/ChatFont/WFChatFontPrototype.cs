@@ -17,6 +17,10 @@ public sealed partial class WFChatFontPrototype : IPrototype
     [DataField(required: true)]
     public string Font = default!;
 
+    /// <summary>Multiplies the speech size so the font's letters stand about as tall as the default's.</summary>
+    [DataField]
+    public float SizeScale = 1f;
+
     /// <summary>Position in the dropdown, lowest first.</summary>
     [DataField]
     public int Order;

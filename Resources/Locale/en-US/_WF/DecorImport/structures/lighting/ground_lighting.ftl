@@ -17,3 +17,7 @@ ent-PoweredFloorLightEmpty = floor light
     .desc = A floor-mounted light fixture. Draws power and produces light when equipped with a light bulb.
 ent-StarlightPoweredFloorLightEmpty = floor light
     .desc = A lightbulb you can walk on without breaking it, amazing.
+ent-CMEngineerCircularLight = circular light
+    .desc = A huge circular light.
+ent-CMLandingLightYautja = alien landing light
+    .desc = A landing light, if it's flashing stay clear!

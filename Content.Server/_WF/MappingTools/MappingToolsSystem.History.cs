@@ -87,17 +87,24 @@ public sealed partial class MappingToolsSystem
     }
 
     /// <summary>
-    /// Applies a new edit and pushes it onto the mapper's history.
+    /// Applies a new edit and pushes it onto the mapper's history. Refuses one that would lay tiles over another grid.
     /// </summary>
-    private void Commit(ICommonSession session, MappingEdit edit)
+    private bool Commit(ICommonSession session, MappingEdit edit)
     {
         if (edit.IsEmpty)
-            return;
+            return false;
+
+        if (FillsOverOtherGrid(edit, forward: true))
+        {
+            _popup.PopupCursor(Loc.GetString("wf-mapping-tools-overlaps-grid"), session);
+            return false;
+        }
 
         Apply(edit, forward: true);
         Push(session, edit);
         RaiseEdited(edit);
         SendLinkSnapshots(session, edit);
+        return true;
     }
 
     /// <summary>
@@ -273,6 +280,12 @@ public sealed partial class MappingToolsSystem
 
             if (!CanEdit(check))
                 return;
+        }
+
+        if (FillsOverOtherGrid(edit, forward: redo))
+        {
+            _popup.PopupCursor(Loc.GetString("wf-mapping-tools-overlaps-grid"), session);
+            return;
         }
 
         from.RemoveAt(from.Count - 1);

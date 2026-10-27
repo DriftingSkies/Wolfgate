@@ -95,7 +95,6 @@ Sentinel; the hardpoints under the swapped guns shrank with them.
 - [`Resources/Prototypes/_WF/OldVessels/Shipyard/Expedition/siebel.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/Expedition/siebel.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Shipyard/Expedition/twilightmk2.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/Expedition/twilightmk2.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Shipyard/framework.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/framework.yml)
-- [`Resources/Prototypes/_WF/OldVessels/Shipyard/hammerhead.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/hammerhead.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Shipyard/iapetus.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/iapetus.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Shipyard/intermission.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/intermission.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Shipyard/jitterbug.yml`](../../../Resources/Prototypes/_WF/OldVessels/Shipyard/jitterbug.yml)
@@ -220,7 +219,6 @@ Sentinel; the hardpoints under the swapped guns shrank with them.
 - [`Resources/SharedMaps/_WF/OldVessels/Expedition/siebel.yml`](../../../Resources/SharedMaps/_WF/OldVessels/Expedition/siebel.yml)
 - [`Resources/SharedMaps/_WF/OldVessels/Expedition/twilightmk2.yml`](../../../Resources/SharedMaps/_WF/OldVessels/Expedition/twilightmk2.yml)
 - [`Resources/SharedMaps/_WF/OldVessels/framework.yml`](../../../Resources/SharedMaps/_WF/OldVessels/framework.yml)
-- [`Resources/SharedMaps/_WF/OldVessels/hammerhead.yml`](../../../Resources/SharedMaps/_WF/OldVessels/hammerhead.yml)
 - [`Resources/SharedMaps/_WF/OldVessels/hermes.yml`](../../../Resources/SharedMaps/_WF/OldVessels/hermes.yml)
 - [`Resources/SharedMaps/_WF/OldVessels/iapetus.yml`](../../../Resources/SharedMaps/_WF/OldVessels/iapetus.yml)
 - [`Resources/SharedMaps/_WF/OldVessels/intermission.yml`](../../../Resources/SharedMaps/_WF/OldVessels/intermission.yml)
@@ -300,5 +298,6 @@ Sentinel; the hardpoints under the swapped guns shrank with them.
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/ussp.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/ussp.yml): classic ship LPCs
 - [`Resources/Prototypes/_Mono/Research/TSF/tsf_misc.yml`](../../../Resources/Prototypes/_Mono/Research/TSF/tsf_misc.yml): classic ship LPCs
 - [`Resources/Prototypes/_Mono/Research/USSP/ussp_ships.yml`](../../../Resources/Prototypes/_Mono/Research/USSP/ussp_ships.yml): classic ship LPCs
+- [`Resources/Prototypes/Entities/Structures/Machines/lathe.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/lathe.yml): Ravager drone LPCs
 
 <!-- WOLFGATE-GENERATED END -->

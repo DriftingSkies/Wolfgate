@@ -29,6 +29,73 @@
     ClothingHeadHatSurgcapGreen: 4
     ClothingHeadHatSurgcapBlue: 4
     ClothingHeadHatSurgcapPurple: 4
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingAccessoryMedalSilverEmergencyServicesMedical: 2
+    WFMeridianClothingGlassesEyepatchMedical: 2
+    WFMeridianClothingGlassesPsych: 2
+    WFMeridianClothingGlovesLatexCoroner: 2
+    WFMeridianClothingHeadBeretMedical: 2
+    WFMeridianClothingHeadCostumeNursehat: 2
+    WFMeridianClothingHeadHoodedWinterhoodMedical: 2
+    WFMeridianClothingHeadHoodedWinterhoodMedicalCmo: 2
+    WFMeridianClothingHeadHoodedWinterhoodMedicalCoroner: 2
+    WFMeridianClothingHeadHoodedWinterhoodMedicalParamedic: 2
+    WFMeridianClothingHeadHoodedWinterhoodMedicalViro: 2
+    WFMeridianClothingHeadPlaybunnyearsCmo: 2
+    WFMeridianClothingHeadPlaybunnyearsCoroner: 2
+    WFMeridianClothingHeadPlaybunnyearsDoctor: 2
+    WFMeridianClothingHeadPlaybunnyearsParamedic: 2
+    WFMeridianClothingHeadPlaybunnyearsPsychologist: 2
+    WFMeridianClothingHeadUtilitySurgerycapCmo: 2
+    WFMeridianClothingMaskSurgicalGreyscale: 2
+    WFMeridianClothingNeckTieBunnytieCmo: 2
+    WFMeridianClothingNeckTieBunnytieCoroner: 2
+    WFMeridianClothingNeckTieBunnytieDoctor: 2
+    WFMeridianClothingNeckTieBunnytieParamedic: 2
+    WFMeridianClothingSuitApronSurgical: 2
+    WFMeridianClothingSuitHoodedWintercoatMedicalCoroner: 2
+    WFMeridianClothingSuitJacketFrontierColonistMedical: 2
+    WFMeridianClothingSuitJacketTailcoatPsychologist: 2
+    WFMeridianClothingSuitToggleLabcoat: 2
+    WFMeridianClothingSuitToggleLabcoatCmoDoctorTailcoat: 2
+    WFMeridianClothingSuitToggleLabcoatCoronerDoctorTailcoat: 2
+    WFMeridianClothingSuitToggleLabcoatDoctorTailcoat: 2
+    WFMeridianClothingSuitToggleLabcoatMad: 2
+    WFMeridianClothingSuitToggleLabcoatNovaFancy: 2
+    WFMeridianClothingSuitToggleLabcoatNovaHighvis: 2
+    WFMeridianClothingSuitToggleLabcoatNovaInterdyneLabcoatBlack: 2
+    WFMeridianClothingSuitToggleLabcoatNovaInterdyneLabcoatWhite: 2
+    WFMeridianClothingSuitToggleLabcoatNovaLalunevest: 2
+    WFMeridianClothingSuitToggleLabcoatNovaSurgicalGown: 2
+    WFMeridianClothingSuitToggleLabcoatNovaSurgicalGownHardlight: 2
+    WFMeridianClothingSuitToggleLabcoatParamedic: 2
+    WFMeridianClothingSuitToggleLabcoatParamedicDoctorTailcoat: 2
+    WFMeridianClothingSuitToggleLabcoatResearchDirector: 2
+    WFMeridianClothingSuitToggleLabcoatResearchDirectorTailcoat: 2
+    WFMeridianClothingSuitToggleLabcoatRoboticistDoctorTailcoat: 2
+    WFMeridianClothingSuitToggleLabcoatScienceDoctorTailcoat: 2
+    WFMeridianClothingUnderAkulaWetsuitJobMedical: 2
+    WFMeridianClothingUnderMiscPsyche: 2
+    WFMeridianClothingUnderRankCivilianPsychologistBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalChiefMedicalOfficerScrubs: 2
+    WFMeridianClothingUnderRankMedicalChiefMedicalOfficerTurtleneck: 2
+    WFMeridianClothingUnderRankMedicalChiefMedicalOfficerTurtleneckSkirt: 2
+    WFMeridianClothingUnderRankMedicalCmoBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalCoroner: 2
+    WFMeridianClothingUnderRankMedicalCoronerBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalCoronerSkirt: 2
+    WFMeridianClothingUnderRankMedicalDoctorBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalDoctorNovaUtility: 2
+    WFMeridianClothingUnderRankMedicalDoctorNurse: 2
+    WFMeridianClothingUnderRankMedicalDoctorNurseSeriouser: 2
+    WFMeridianClothingUnderRankMedicalParamedicBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalPathologistBunnysuit: 2
+    WFMeridianClothingUnderRankMedicalScrubsBlue: 2
+    WFMeridianClothingUnderRankMedicalScrubsCoroner: 2
+    WFMeridianClothingUnderRankMedicalScrubsGreen: 2
+    WFMeridianClothingUnderRankMedicalScrubsNova: 2
+    WFMeridianClothingUnderRankMedicalScrubsNovaRed: 2
+    # WOLFGATE END
 # Paramed:
     ClothingUniformJumpsuitParamedic: 4
     ClothingUniformJumpskirtParamedic: 4

@@ -69,6 +69,21 @@
     },
     {
       "name": "play"
+    },
+    {
+      "name": "frameleft"
+    },
+    {
+      "name": "frameright"
+    },
+    {
+      "name": "reverse"
+    },
+    {
+      "name": "timeall"
+    },
+    {
+      "name": "pingpong"
     }
   ]
 }

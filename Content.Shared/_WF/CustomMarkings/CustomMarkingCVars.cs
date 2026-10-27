@@ -29,6 +29,13 @@ public sealed class CustomMarkingCVars
         CVarDef.Create("wf.custom_markings.max_frames", CustomMarkingRules.MaxFrames, CVar.SERVER | CVar.REPLICATED);
 
     /// <summary>
+    /// Whether a marking is cut to the wearer's outline and a small margin round it. Off, it draws anywhere in its
+    /// frame; pixels on a hidden body part still go with the part. Replicated as every client cuts the art itself.
+    /// </summary>
+    public static readonly CVarDef<bool> BodyReach =
+        CVarDef.Create("wf.custom_markings.body_reach", false, CVar.SERVER | CVar.REPLICATED);
+
+    /// <summary>
     /// Whether a marking may erase parts of the body under it. Off, masks are dropped from what is saved and those
     /// already saved are not applied. Replicated so the editor can hide its tool and bodies are drawn whole.
     /// </summary>

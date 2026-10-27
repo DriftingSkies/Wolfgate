@@ -150,6 +150,39 @@
 
 - type: entity
   parent: DecorAnimatedFloorBase
+  id: CoyoteFloorUltraFissureLeftAnimated
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Tiles/coyote/animated.rsi
+    state: fissurel
+  - type: PointLight
+    radius: 1.5
+    energy: 0.8
+    color: "#c5df43"
+
+- type: entity
+  parent: CoyoteFloorUltraFissureLeftAnimated
+  id: CoyoteFloorUltraFissureCenterAnimated
+  components:
+  - type: Sprite
+    state: fissurec
+
+- type: entity
+  parent: CoyoteFloorUltraFissureLeftAnimated
+  id: CoyoteFloorUltraFissureRightAnimated
+  components:
+  - type: Sprite
+    state: fissurer
+
+- type: entity
+  parent: CoyoteFloorUltraFissureLeftAnimated
+  id: CoyoteFloorUltraMoltenAnimated
+  components:
+  - type: Sprite
+    state: molten
+
+- type: entity
+  parent: DecorAnimatedFloorBase
   id: DarkPackFloorCityLightAnimated
   components:
   - type: Sprite
@@ -166,11 +199,41 @@
 
 - type: entity
   parent: DecorAnimatedFloorBase
+  id: GoonFloorMartianDustAnimated
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Tiles/goonstation/animated.rsi
+    state: mars1
+
+- type: entity
+  parent: GoonFloorMartianDustAnimated
+  id: GoonFloorMartianDustRocksAnimated
+  components:
+  - type: Sprite
+    state: mars2
+
+- type: entity
+  parent: GoonFloorMartianDustAnimated
+  id: GoonFloorMartianDustBouldersAnimated
+  components:
+  - type: Sprite
+    state: mars3
+
+- type: entity
+  parent: DecorAnimatedFloorBase
   id: GoonFloorTechfloorAnimated
   components:
   - type: Sprite
     sprite: _WF/DecorImport/Tiles/goonstation/animated.rsi
     state: floor_techfloor
+
+- type: entity
+  parent: DecorAnimatedFloorBase
+  id: GoonFloorBluefloorAnimated
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Tiles/goonstation/animated.rsi
+    state: bluefloor
 
 - type: entity
   parent: DecorAnimatedFloorBase
@@ -355,3 +418,26 @@
   - type: Sprite
     sprite: _WF/DecorImport/Tiles/vore/animated.rsi
     state: indoors_open
+
+- type: entity
+  parent: DecorAnimatedFloorBase
+  id: BeeFloorWaterRedAnimated
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Tiles/beestation/animated.rsi
+    state: abyssal_water
+
+- type: entity
+  parent: DecorAnimatedFloorBase
+  id: TgFloorNecropolis2Animated
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Tiles/tgstation/animated.rsi
+    state: necro2
+
+- type: entity
+  parent: TgFloorNecropolis2Animated
+  id: TgFloorNecropolis3Animated
+  components:
+  - type: Sprite
+    state: necro3

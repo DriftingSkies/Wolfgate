@@ -55,7 +55,9 @@ public sealed partial class HumanoidProfileEditor
     {
         var sample = FormattedMessage.EscapeText(Loc.GetString("wf-chat-font-preview"));
         // The default tag set leaves out font, so the sample would draw in the label's own.
-        ChatFontPreview.SetMessage(FormattedMessage.FromMarkupOrThrow($"[font=\"{font.Font}\"]{sample}[/font]"),
+        // Sized as speech is: the speech verb's 12, scaled for the font.
+        var size = Math.Max(1, (int) MathF.Round(12 * font.SizeScale));
+        ChatFontPreview.SetMessage(FormattedMessage.FromMarkupOrThrow($"[font=\"{font.Font}\" size={size}]{sample}[/font]"),
             WFChatFontTags.Allowed);
     }
 }

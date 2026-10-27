@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using Content.Client.Administration.Managers;
+using Content.Client.Administration.Systems; // WOLFGATE(AHelpResolve)
 using Content.Client.Administration.UI.CustomControls;
 using Content.Client.UserInterface.Systems.Bwoink;
 using Content.Shared.Administration;
@@ -26,6 +27,7 @@ namespace Content.Client.Administration.UI.Bwoink
         [Dependency] private IClientConsoleHost _console = default!;
         [Dependency] private IUserInterfaceManager _ui = default!;
         [Dependency] private IConfigurationManager _cfg = default!;
+        [Dependency] private IEntityManager _entMan = default!; // WOLFGATE(AHelpResolve)
         public AdminAHelpUIHandler AHelpHelper = default!;
 
         private PlayerInfo? _currentPlayer;
@@ -185,6 +187,14 @@ namespace Content.Client.Administration.UI.Bwoink
             {
                 uiController.PopOut();
             };
+
+            // WOLFGATE(AHelpResolve) START: resolve button
+            Resolve.OnPressed += _ =>
+            {
+                if (_currentPlayer is not null)
+                    _entMan.System<BwoinkSystem>().SendResolve(_currentPlayer.SessionId);
+            };
+            // WOLFGATE END
         }
 
         public void OnBwoink(NetUserId channel)
@@ -232,6 +242,8 @@ namespace Content.Client.Administration.UI.Bwoink
 
             Follow.Visible = _adminManager.CanCommand("follow");
             Follow.Disabled = !Follow.Visible || disabled;
+
+            Resolve.Disabled = disabled; // WOLFGATE(AHelpResolve)
         }
 
         private string FormatTabTitle(ItemList.Item li, PlayerInfo? pl = default)

@@ -50,7 +50,6 @@ wf-round-setup-reject = Decline
 wf-round-setup-invite = Invite player
 wf-round-setup-members = Your crew
 wf-round-setup-member-info = { $job } · { $status }
-wf-round-setup-member-playing = In the round
 wf-round-setup-member-ready = Ready
 wf-round-setup-member-not-ready = Preparing
 wf-round-setup-member-disconnected = Disconnected

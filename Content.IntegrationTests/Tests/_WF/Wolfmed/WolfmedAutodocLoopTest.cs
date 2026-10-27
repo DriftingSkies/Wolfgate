@@ -1,4 +1,6 @@
 #nullable enable
+using Content.IntegrationTests.Fixtures.Attributes;
+using Content.Shared._WF.Wolfmed.CCVar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -411,6 +413,9 @@ public sealed class WolfmedAutodocLoopTest : WolfmedGameTest
     [Test]
     public async Task TendClosesThePartAndIgnoresTheRestOfTheBodyTest()
     {
+        // Revival pass: a Slash of 22 or more always opens an artery, which on a ladder takes the cut over and refuses
+        // treatment until it is repaired; this test is the tend of the cut itself.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         // A plain cut: the W2 rules would otherwise roll a severed artery, which refuses every treatment

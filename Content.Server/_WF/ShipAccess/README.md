@@ -144,6 +144,7 @@ and `ShipAccessKeypadWindow` (the keypad). The `WFShipLocked` access level is in
 ### Server
 
 - [`Content.Server/_WF/ShipAccess/WFShipAccessCodeComponent.cs`](WFShipAccessCodeComponent.cs)
+- [`Content.Server/_WF/ShipAccess/WFShipAccessServerSystem.Ai.cs`](WFShipAccessServerSystem.Ai.cs)
 - [`Content.Server/_WF/ShipAccess/WFShipAccessServerSystem.Codes.cs`](WFShipAccessServerSystem.Codes.cs)
 - [`Content.Server/_WF/ShipAccess/WFShipAccessServerSystem.Console.cs`](WFShipAccessServerSystem.Console.cs)
 - [`Content.Server/_WF/ShipAccess/WFShipAccessServerSystem.Crew.cs`](WFShipAccessServerSystem.Crew.cs)
@@ -159,6 +160,7 @@ and `ShipAccessKeypadWindow` (the keypad). The `WFShipLocked` access level is in
 - [`Content.Shared/_WF/ShipAccess/WFShipAccessComponent.cs`](../../../Content.Shared/_WF/ShipAccess/WFShipAccessComponent.cs)
 - [`Content.Shared/_WF/ShipAccess/WFShipAccessEvents.cs`](../../../Content.Shared/_WF/ShipAccess/WFShipAccessEvents.cs)
 - [`Content.Shared/_WF/ShipAccess/WFShipAccessSystem.cs`](../../../Content.Shared/_WF/ShipAccess/WFShipAccessSystem.cs)
+- [`Content.Shared/_WF/ShipAccess/WFShipAiAccessSystem.cs`](../../../Content.Shared/_WF/ShipAccess/WFShipAiAccessSystem.cs)
 
 ### Client
 
@@ -174,6 +176,7 @@ and `ShipAccessKeypadWindow` (the keypad). The `WFShipLocked` access level is in
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessAiTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessAiTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessCodeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessCodeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessCrewTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessCrewTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessDoorRuleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipAccess/ShipAccessDoorRuleTest.cs)
@@ -213,5 +216,6 @@ and `ShipAccessKeypadWindow` (the keypad). The `WFShipLocked` access level is in
   - the access tab and door prediction read it on the client
 - [`Content.Shared/Access/Systems/AccessReaderSystem.cs`](../../../Content.Shared/Access/Systems/AccessReaderSystem.cs): dirty the reader whose lists were cleared (a door's electronics), or clients keep predicting its old access
 - [`Resources/Prototypes/Entities/Mobs/Player/admin_ghost.yml`](../../../Resources/Prototypes/Entities/Mobs/Player/admin_ghost.yml): admin ghosts open locked ship doors, as they open every other airlock
+- [`Resources/Prototypes/Entities/Mobs/Player/silicon.yml`](../../../Resources/Prototypes/Entities/Mobs/Player/silicon.yml): holds the ship key of the grid the core is anchored on
 
 <!-- WOLFGATE-GENERATED END -->

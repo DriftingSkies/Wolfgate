@@ -782,3 +782,8 @@ ClothingMaskMimeSecurity: WFClothingMaskMimeSecurity
 CoolCoyoteClothesSexyclown: WFCoolCoyoteClothesSexyclown
 CoolCoyoteClothesSexymime: WFCoolCoyoteClothesSexymime
 # WOLFGATE END
+
+# WOLFGATE(DecorImport) START: duplicate flesh wall art merged into the TauCeti meatland wall
+# 2026-10-26
+GoonSetpiecesBloodwall: TauCetiMeatlandWall
+# WOLFGATE END

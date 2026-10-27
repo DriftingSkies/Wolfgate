@@ -291,6 +291,7 @@ public class ListContainer : Control
                             button.Pressed = true;
                     }
                     AddChild(button);
+                    button.Group = _buttonGroup; // WOLFGATE: rejoin the group, engine v291 drops it when a button leaves the tree
                     button.Measure(finalSize);
                 }
             }

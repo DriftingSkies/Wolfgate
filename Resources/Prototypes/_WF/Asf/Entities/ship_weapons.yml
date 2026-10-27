@@ -56,7 +56,8 @@
         Heat: 70
         Structural: 180
 
-# Hummingbird: a slow beam that cuts through up to three objects in a line (maxPierce counts hits after the first).
+# Hummingbird: a rapid beam that cuts through up to three objects in a line (maxPierce counts hits after the first).
+# Recharge covers fireCost at the full fire rate, so it sustains a shot every 0.8 s.
 
 - type: entity
   id: WFAsfTurretHummingbird
@@ -70,10 +71,10 @@
     autoRecharge: true
     autoRechargeRate: 4000
   - type: Gun
-    fireRate: 0.4
+    fireRate: 1.25
   - type: HitscanBatteryAmmoProvider
     proto: WFAsfHummingbirdBeam
-    fireCost: 10000
+    fireCost: 3200
 
 - type: entity
   id: WFAsfHummingbirdBeam

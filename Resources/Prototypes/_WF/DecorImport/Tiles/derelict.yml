@@ -1,0 +1,69 @@
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict1
+  name: tiles-wf-citadel-rp-floor-derelict-1
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_1.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict1
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict2
+  name: tiles-wf-citadel-rp-floor-derelict-2
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_2.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict2
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict3
+  name: tiles-wf-citadel-rp-floor-derelict-3
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_3.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict3
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict4
+  name: tiles-wf-citadel-rp-floor-derelict-4
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_4.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict4
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict5
+  name: tiles-wf-citadel-rp-floor-derelict-5
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_5.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict5
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict6
+  name: tiles-wf-citadel-rp-floor-derelict-6
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_6.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict6
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelict7
+  name: tiles-wf-citadel-rp-floor-derelict-7
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_floor_7.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelict7
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelictLight
+  name: tiles-wf-citadel-rp-floor-derelict-light
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_light.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelictLight
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelictVent
+  name: tiles-wf-citadel-rp-floor-derelict-vent
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_wall_floor.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelictVent
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: CitadelRPFloorDerelictPlating
+  name: tiles-wf-citadel-rp-floor-derelict-plating
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp_derelict/derelict_plating.png
+  itemDrop: FloorTileItemCitadelRPFloorDerelictPlating

@@ -1,0 +1,72 @@
+# WOLFGATE(DecorImport) START: ported from CrystallEdge
+- type: entity
+  id: CP14WindowBase
+  abstract: true
+  parent: Window
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+  - type: Icon
+    state: full
+  - type: IconSmooth
+    key: CP14window
+    base: window
+  - type: PlacementReplacement
+    key: walls
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - GlassLayer
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Glass
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150 #excess damage (nuke?). avoid computational cost of spawning entities.
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WindowShatter
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  id: CP14WindowIceBlock
+  parent: CP14WindowBase
+  components:
+  - type: Sprite
+    sprite: _CP14/Structures/Windows/ice_block.rsi
+  - type: Icon
+    sprite: _CP14/Structures/Windows/ice_block.rsi
+    state: full
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WindowShatter
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        collection: GlassSmash
+  - type: InteractionPopup
+    interactSuccessString: popup-cp14crystal-ding
+    messagePerceivedByOthers: popup-cp14crystal-ding
+    interactSuccessSound:
+      collection: CP14CrystalDings
+      params:
+        variation: 0.03
+# WOLFGATE END

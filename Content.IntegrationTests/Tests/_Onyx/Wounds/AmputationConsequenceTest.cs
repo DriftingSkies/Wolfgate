@@ -104,6 +104,7 @@ public sealed class AmputationConsequenceTest : GameTest
         await server.WaitAssertion(() =>
         {
             var body = entities.SpawnEntity("AmputationConsequenceTestBody", map.GridCoords);
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // WOLFGATE(Wolfmed): revival pass, no origin is ambient harm held at 0.8 of the cap
             var graph = entities.System<SharedBodySystem>();
             var routing = entities.System<WoundDamageRoutingSystem>();
             var damage = entities.System<WolfmedDamageableSystem>(); // WOLFGATE(Wolfmed): D12
@@ -113,7 +114,7 @@ public sealed class AmputationConsequenceTest : GameTest
 
             // The fixture head's Slash threshold is 70, so progress = 70/70 = 1.0 arms the limb without
             // detaching it (AmputationSystem.HandlePartDamageApplied's `!Severable` branch returns).
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 70)));
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 70), attacker)); // WOLFGATE(Wolfmed): revival pass
             Assert.Multiple(() =>
             {
                 Assert.That(graph.BodyHasChild(body, head), Is.True);
@@ -122,7 +123,7 @@ public sealed class AmputationConsequenceTest : GameTest
 
             // Slash 15 is exactly DefaultDismembermentFinishingDamage["Slash"], and damageBeforeHit (70)
             // is still at the threshold, so this hit detaches.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15)));
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15), attacker)); // WOLFGATE(Wolfmed): revival pass
 
             var wounds = entities.System<WoundSystem>()
                 .GetWounds((torso, entities.GetComponent<WoundableComponent>(torso)))
@@ -160,6 +161,7 @@ public sealed class AmputationConsequenceTest : GameTest
         await server.WaitAssertion(() =>
         {
             var body = entities.SpawnEntity("AmputationConsequenceTestBody", map.GridCoords);
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // WOLFGATE(Wolfmed): revival pass, no origin is ambient harm held at 0.8 of the cap
             var graph = entities.System<SharedBodySystem>();
             var routing = entities.System<WoundDamageRoutingSystem>();
             var damage = entities.System<WolfmedDamageableSystem>(); // WOLFGATE(Wolfmed): D12
@@ -194,13 +196,14 @@ public sealed class AmputationConsequenceTest : GameTest
         await server.WaitAssertion(() =>
         {
             var body = entities.SpawnEntity("AmputationConsequenceTestBody", map.GridCoords);
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // WOLFGATE(Wolfmed): revival pass, no origin is ambient harm held at 0.8 of the cap
             var graph = entities.System<SharedBodySystem>();
             var routing = entities.System<WoundDamageRoutingSystem>();
             var head = graph.GetBodyChildren(body)
                 .Single(part => part.Component.PartType == BodyPartType.Head).Id;
             var woundable = entities.GetComponent<WoundableComponent>(head);
 
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 70)));
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 70), attacker)); // WOLFGATE(Wolfmed): revival pass
             Assert.That(woundable.Severable, Is.True);
 
             // 70 - 15 = 55; progress 55/70 = 0.786 < WoundHostComponent.SeverableResetRatio (0.8), so the
@@ -210,7 +213,7 @@ public sealed class AmputationConsequenceTest : GameTest
 
             // Back to 70 - but damageBeforeHit is 55, whose progress (0.786) is below 1, so ReachedThreshold
             // is false and this hit only re-arms the limb instead of taking it off.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15)));
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15), attacker)); // WOLFGATE(Wolfmed): revival pass
             Assert.Multiple(() =>
             {
                 Assert.That(graph.BodyHasChild(body, head), Is.True);
@@ -234,6 +237,7 @@ public sealed class AmputationConsequenceTest : GameTest
         await server.WaitAssertion(() =>
         {
             var body = entities.SpawnEntity("AmputationConsequenceTestBody", map.GridCoords);
+            var attacker = entities.SpawnEntity("MobHuman", map.GridCoords); // WOLFGATE(Wolfmed): revival pass, no origin is ambient harm held at 0.8 of the cap
             var graph = entities.System<SharedBodySystem>();
             var wounds = entities.System<WoundSystem>();
             var routing = entities.System<WoundDamageRoutingSystem>();
@@ -243,8 +247,8 @@ public sealed class AmputationConsequenceTest : GameTest
             var attach = entities.System<SurgerySystem>().GetSingleton("SurgeryAttachHead")!.Value;
 
             // The fixture head's Slash threshold is 70, and Slash 15 is the host finishing minimum.
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 70)));
-            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15)));
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 70), attacker)); // WOLFGATE(Wolfmed): revival pass
+            Assert.That(routing.TryApplyPartDamage(body, head, Spec("Slash", 15), attacker)); // WOLFGATE(Wolfmed): revival pass
             Assert.That(graph.BodyHasChild(body, head), Is.False);
 
             var woundable = entities.GetComponent<WoundableComponent>(torso);

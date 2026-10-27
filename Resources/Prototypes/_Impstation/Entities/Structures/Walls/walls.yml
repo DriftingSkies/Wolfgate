@@ -365,4 +365,29 @@
   - type: IconSmooth
     key: walls
     base: diamond
+
+- type: entity
+  parent: BaseWall
+  id: ImpstationWallIce
+  components:
+  - type: Sprite
+    sprite: _Impstation/Structures/Walls/ice.rsi # Impstation
+  - type: Icon
+    sprite: _Impstation/Structures/Walls/ice.rsi # Impstation
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          Girder:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: ice
 # WOLFGATE END

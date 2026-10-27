@@ -69,7 +69,8 @@ public sealed class HeadshotWindow : DefaultWindow
         Contents.AddChild(new BoxContainer
         {
             Orientation = BoxContainer.LayoutOrientation.Vertical,
-            HorizontalExpand = true,
+            // Fixed, so a long URL scrolls inside the box instead of widening the window to fit it.
+            SetWidth = 460,
             Margin = new Thickness(8),
             SeparationOverride = 6,
             Children =

@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "license": "CC-BY-NC-SA-3.0",
+  "copyright": "Taken from Goonstation at commit https://github.com/goonstation/goonstation/commit/5c2227ce62cee48048c7944aea340b0a14c88a7d.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "asteroid-0"
+    },
+    {
+      "name": "asteroid-1"
+    },
+    {
+      "name": "asteroid-2"
+    },
+    {
+      "name": "asteroid-3"
+    },
+    {
+      "name": "asteroid-4"
+    },
+    {
+      "name": "asteroid-5"
+    },
+    {
+      "name": "asteroid-6"
+    },
+    {
+      "name": "asteroid-7"
+    },
+    {
+      "name": "asteroid-8"
+    },
+    {
+      "name": "asteroid-9"
+    },
+    {
+      "name": "asteroid-10"
+    },
+    {
+      "name": "asteroid-11"
+    },
+    {
+      "name": "asteroid-12"
+    },
+    {
+      "name": "asteroid-13"
+    },
+    {
+      "name": "asteroid-14"
+    },
+    {
+      "name": "asteroid-15"
+    },
+    {
+      "name": "asteroid-21"
+    },
+    {
+      "name": "asteroid-23"
+    },
+    {
+      "name": "asteroid-29"
+    },
+    {
+      "name": "asteroid-31"
+    },
+    {
+      "name": "asteroid-38"
+    },
+    {
+      "name": "asteroid-39"
+    },
+    {
+      "name": "asteroid-46"
+    },
+    {
+      "name": "asteroid-47"
+    },
+    {
+      "name": "asteroid-55"
+    },
+    {
+      "name": "asteroid-63"
+    },
+    {
+      "name": "asteroid-74"
+    },
+    {
+      "name": "asteroid-75"
+    },
+    {
+      "name": "asteroid-78"
+    },
+    {
+      "name": "asteroid-79"
+    },
+    {
+      "name": "asteroid-95"
+    },
+    {
+      "name": "asteroid-110"
+    },
+    {
+      "name": "asteroid-111"
+    },
+    {
+      "name": "asteroid-127"
+    },
+    {
+      "name": "asteroid-137"
+    },
+    {
+      "name": "asteroid-139"
+    },
+    {
+      "name": "asteroid-141"
+    },
+    {
+      "name": "asteroid-143"
+    },
+    {
+      "name": "asteroid-157"
+    },
+    {
+      "name": "asteroid-159"
+    },
+    {
+      "name": "asteroid-175"
+    },
+    {
+      "name": "asteroid-191"
+    },
+    {
+      "name": "asteroid-203"
+    },
+    {
+      "name": "asteroid-207"
+    },
+    {
+      "name": "asteroid-223"
+    },
+    {
+      "name": "asteroid-239"
+    },
+    {
+      "name": "asteroid-255"
+    },
+    {
+      "name": "char1"
+    },
+    {
+      "name": "char2"
+    },
+    {
+      "name": "char3"
+    },
+    {
+      "name": "plasmastone1"
+    },
+    {
+      "name": "plasmastone2"
+    },
+    {
+      "name": "plasmastone3"
+    },
+    {
+      "name": "cerenkite1"
+    },
+    {
+      "name": "cerenkite2"
+    },
+    {
+      "name": "cerenkite3"
+    },
+    {
+      "name": "claretine1"
+    },
+    {
+      "name": "claretine2"
+    },
+    {
+      "name": "claretine3"
+    }
+  ]
+}

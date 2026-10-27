@@ -1245,7 +1245,7 @@ public sealed class WFCockpitTest : InteractionTest
             Assert.That(fresh, Is.Not.SameAs(hud));
             Assert.That((fresh.PanelsSwapped, fresh.MfdExpanded, fresh.MfdMaximised), Is.EqualTo((true, true, false)),
                 "A new cockpit opens in the arrangement the pilot last set.");
-            Assert.That(Named<Control>(fresh, "CockpitMfdSelectors").Children.OfType<Button>().Select(button => button.Pressed),
+            Assert.That(Named<Control>(fresh, "CockpitMfdSelectors").Children.OfType<Button>().Where(button => button.Visible).Select(button => button.Pressed),
                 Is.EqualTo(new[] { false, false, true, false, false, false, false, false }),
                 "A new cockpit opens on the MFD page the pilot last chose.");
         });
@@ -2070,7 +2070,7 @@ public sealed class WFCockpitTest : InteractionTest
         Assert.That(Bottom(arc), Is.LessThanOrEqualTo(Bottom(shields)));
         Assert.That(Descendants(shields).OfType<Slider>().Single().Width, Is.GreaterThan(100),
             "The permanent shield power slider must remain usable.");
-        var buttons = selectors.Children.OfType<Button>().ToArray();
+        var buttons = selectors.Children.OfType<Button>().Where(button => button.Visible).ToArray();
         Assert.That(buttons, Has.Length.EqualTo(8));
         foreach (var button in buttons)
         {

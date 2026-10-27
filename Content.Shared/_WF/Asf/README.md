@@ -6,26 +6,34 @@ good shields, lasers first and a few self-loading torpedoes.
 
 Players join at ASF Lantern Post (`WFAsfLantern`, `Resources/Prototypes/_WF/Asf/lantern.yml`) as Envoy, Enforcer,
 Field Researcher or Colonist. It is a base ship that spawns as a mobile POI (no ForceAnchor) with gyroscopes and a
-station anchor. Its plan is a set of rooms of different sizes and offsets, and the hull is generated around them, so
-the outline is uneven and nothing is mirrored. From bow to stern:
+station anchor. Its hull follows the Starsector Apogee at about Saturn size (35x74 tiles): a hammerhead bow, a narrow
+spine, flared shoulders with the docks, a pinched waist and a wide engineering stern. From bow to stern:
 
-- A tapered bridge on a wide ready-room collar (fire control, EVA gear), with a sensor boom off the starboard bow.
-- A private north block: the envoy office, shipyard hall and quarters, then the post, the wardrobe room with the ASF
-  drobe (`WFAsfDrobe`) and a commons that juts out to starboard, all off a short spine corridor. The post's west wall
-  is its armoury: a rifle rack (`WFAsfGunRackFilled`, three coil rifles), a table with four slug boxes and a box each of rifle and pistol magazines, and a sidearm
-  rack (`WFAsfPistolRackFilled`, four coil pistols). Three suit storage units (`WFAsfSuitStoragePathfinder`, ASF
-  security access) along its north wall each hold a charged Pathfinder modsuit, a breath mask and tanks. Racks and suit
-  units are in `Entities/armory.yml`.
-- The public middle: consular office, atrium garden and clinic over the dock concourse. The concourse runs out into a
-  long port docking arm (3 docks; a FuelVend and a FlatpackVend flank its bay) and a short starboard annex (2 docks)
-  with the public cargo bay behind it: four sell pallets and a sale console, the ASF bounty console, the grant kiosk,
-  two artifact containers and a hand labeler.
-- Aft: the farm with a stores pod off its flank, the gyro room, R&D lab, power room, atmos, and an anomaly pair (an
-  observation room looking through plasma glass into a test chamber with an artifact analyzer and an APE). The lab's
-  material silo is mapped linked to all three lathes (protolathe, `WFAsfLathe`, circuit imprinter), so they share
-  its materials.
-- Outside the pressure hull: engine pylons of different lengths on lattice trusses (seven large thrusters in all,
-  `WFAsfThrusterLarge`), a central engine block, gun pads on trusses and stubs, and hull plating filling the notches.
+- Command, private: the bridge in the forward dome, fire control (gunnery server and a second gunnery console) in the
+  raised starboard sensor block, the shipyard hall in the port arm tip, and the envoy office behind the bridge with the
+  envoy's cabin and the wardrobe room (`WFAsfDrobe`) off a port hall. The starboard arm holds the post and its armoury:
+  three suit storage units (`WFAsfSuitStoragePathfinder`, ASF security access) each with a charged Pathfinder modsuit,
+  a breath mask and tanks; a rifle rack (`WFAsfGunRackFilled`, three coil rifles), a sidearm rack
+  (`WFAsfPistolRackFilled`, four coil pistols) and a table with four slug boxes and a box each of rifle and pistol
+  magazines. Racks and suit units are in `Entities/armory.yml`.
+- Crew, private, behind a transverse corridor: the colonists' bunk room with cryo and a lounge pod, washroom, EVA ready
+  room, commons, galley with a freezer, and a chapel.
+- The spine, public: consular office, library, and the Enforcer's and Field Researcher's cabins.
+- The shoulders, public: the dock concourse runs out into a port docking arm (3 docks; a FuelVend and a FlatpackVend)
+  and a starboard annex (2 docks). Below it are the clinic, an atrium garden on the spine, and the cargo bay: four
+  sell pallets and a sale console, the ASF bounty console, the grant kiosk and a hand labeler, with an artifact vault.
+- Aft, private: farm and stores, gyroscopes with the gravity generator and station anchor, engineering lockers, the R&D
+  lab with a server room, a workshop, and an anomaly pair (an observation room looking through plasma glass into a test
+  chamber with an artifact analyzer and an APE). The lab's material silo is mapped linked to all three lathes
+  (protolathe, `WFAsfLathe`, circuit imprinter), so they share its materials.
+- Stern: atmos, the SMES room, a sealed reactor chamber with two 200 kW bluespace reactors (`MachineOutpostCore`, as on
+  Halcyon and Helios) around the shield generator, the engine bay and engine maintenance. LargeAPCs feed the shield,
+  thrusters and science wing.
+- Outside: nine large thrusters in three stern clusters, two reverse thrusters on the bow arms and two lateral
+  thrusters on each flank (`WFAsfThrusterLarge`). Guns follow the Apogee's mounts: a TPC Scylla superheavy on the
+  sensor block and a Cerberus heavy on the port arm, six Hummingbirds around the hull, six Flutters for point defence,
+  and three self-recharging Serpent torpedo launchers, one of them on a heavy missile mount on the port shoulder
+  (firepower 40 on the scale below).
 
 - Fleet (`fleet.yml`; civilian hulls are "ASF", armed ones "ASFN" like the TSF's "TSFN"), sold at `WFAsfComputerShipyard` in the shipyard hall (a purple recolour of the USSP
   shipyard screen). Prices and loadouts were set against other factions' hulls of similar tile count, scoring
@@ -38,7 +46,7 @@ the outline is uneven and nothing is mirrored. From bow to stern:
   | Porter (hauler) | 130 | - | - | 40k |
   | Vigil (escort fighter) | 64 | 3: Hummingbird, Flutter | - | 40k |
   | Bulwark (gunship) | 99 | 4: Hummingbird, Serpent | small | 75k |
-  | Guardian (corvette) | 237 | 12: Apollo, 2 Hummingbird, 2 Serpent | small | 120k |
+  | Guardian (corvette) | 237 | 12: Apollo, 2 Hummingbird, 2 Tarnyx | small | 123k |
   | Lodestar (flagship frigate) | 479 | 22: 2 Apollo, 4 Hummingbird, 2 Serpent, 2 Flutter | MS-250 Aegis | 250k, voucher only |
 
   Peers at those sizes: QJ340/Bazalt (fighters), QJ270/Strayk/Reaver (gunships), Paladin/Kite/Shiv (corvettes),
@@ -76,10 +84,14 @@ the outline is uneven and nothing is mirrored. From bow to stern:
   Loose slugs come in 60-round boxes (`WFAsfBoxCoilSlug`), printed under the same research.
 - Field modsuits (`Entities/modsuit.yml`), recolours of Goob's Minerva (RD) modsuit with a visor
   added (the Minerva's face is a plain plate). The Pathfinder
-  (`WFAsfClothingModsuitField`, research `WFAsfFieldModsuit`, tier 1) is pearl over plum with a dark visor and has the
+  (`WFAsfClothingModsuitField`, research `WFAsfFieldModsuit`, tier 1) is dark plating with bright violet trim and has the
   TSF M82c's armour (0.65 blunt and slash, 0.6 piercing, 0.95 speed) with better radiation cover; its chestplate takes no
-  armour plates (Monolith#4845 removed them from every modsuit), and it covers harpy and IPC wings (`HarpyHideWings`) as hardsuits do. The Aegis (`WFAsfClothingModsuitAegis`, `WFAsfAegisModsuit`, tier 2) is dark violet
-  with glowing hardlight seams and a lit visor, keeps that armour and adds an M86 Mk.4-class personal shield (250
+  armour plates (Monolith#4845 removed them from every modsuit), and it covers harpy and IPC wings (`HarpyHideWings`) as hardsuits do. Both helmets have dual-tube night vision (lilac phosphor, toggled by action) and both boots are
+  voidboots (`Magboots` with `requiresGrid: false`), so the magboots action holds them in place even off a hull. The sprites
+  are repainted by colour role from the old recolour, with lower contrast and interior rivets folded into the plates,
+  which had made them noisy; the silhouette edge stays a dark rim (as on the Minerva) so the suit reads against the
+  floor. The Aegis (`WFAsfClothingModsuitAegis`, `WFAsfAegisModsuit`, tier 2) is grey plating
+  with violet trim and a lit visor, keeps that armour and adds an M86 Mk.4-class personal shield (250
   charge, violet). The shield sits on the control unit (back slot), not the chestplate: a chestplate's item toggle also
   drives its seal, so toggling a shield there would drop the suit's pressure protection. `ShieldRequiresSeal`
   (`ShieldRequiresSealSystem`, the module's only C#) keeps the shield down until the suit is sealed and drops it when

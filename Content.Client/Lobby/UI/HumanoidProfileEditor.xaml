@@ -275,11 +275,17 @@
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6">
                                         <Label Text="{Loc 'humanoid-profile-editor-height-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" MinWidth="60" />
                                         <Slider Name="HeightSlider" MinValue="0.8" MaxValue="1.2" Value="1.0" HorizontalExpand="True" VerticalAlignment="Center" />
+                                        <!-- typed percentage beside the slider (HumanoidProfileEditor.SizePercent.cs) -->
+                                        <LineEdit Name="HeightPercent" MinWidth="44" VerticalAlignment="Center" />
+                                        <Label Text="%" VAlign="Center" />
                                         <Button Name="HeightResetButton" Text="{Loc 'humanoid-profile-editor-reset-button'}" StyleClasses="LinkButton" />
                                     </BoxContainer>
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6">
                                         <Label Text="{Loc 'humanoid-profile-editor-width-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" MinWidth="60" />
                                         <Slider Name="WidthSlider" MinValue="0.8" MaxValue="1.2" Value="1.0" HorizontalExpand="True" VerticalAlignment="Center" />
+                                        <!-- typed percentage beside the slider (HumanoidProfileEditor.SizePercent.cs) -->
+                                        <LineEdit Name="WidthPercent" MinWidth="44" VerticalAlignment="Center" />
+                                        <Label Text="%" VAlign="Center" />
                                         <Button Name="WidthResetButton" Text="{Loc 'humanoid-profile-editor-reset-button'}" StyleClasses="LinkButton" />
                                     </BoxContainer>
                                     <Label Text="{Loc 'humanoid-profile-editor-skin-color-label'}" StyleClasses="CreatorFieldLabel" Margin="0 6 0 0" />
@@ -316,14 +322,14 @@
                         <PanelContainer Name="HairCard" StyleClasses="CreatorCard" HorizontalExpand="True">
                             <BoxContainer Orientation="Vertical" SeparationOverride="6">
                                 <Label Text="{Loc 'wf-creator-hair'}" StyleClasses="CreatorHeading" />
-                                <!-- WOLFGATE(Stylesheets): a Grid, not a horizontal Box. A BoxContainer hands a stretching child
-                                     its full desired width once that exceeds its share, starving the sibling, and each
-                                     picker's desired width tracks its own tile-column count - so the two boxes settled
-                                     at wildly different widths. Grid columns always split evenly. -->
-                                <GridContainer Columns="2" HSeparationOverride="16" HorizontalExpand="True">
+                                <!-- WOLFGATE(Humanoid): an even row, not a Box or Grid. Both measure each picker against the
+                                     whole width, and a picker picks its tile columns from the width it is measured with, so
+                                     hair took far too many columns: its tiles were cut off, or facial hair was pushed out of
+                                     the card on a wide screen. The row measures each picker against its own half. -->
+                                <wfh:WolfgateEvenRow Separation="16" HorizontalExpand="True">
                                     <wfh:WolfgateSlotMarkingPicker Name="HairStylePicker" Category="Hair" HorizontalExpand="True" />
                                     <wfh:WolfgateSlotMarkingPicker Name="FacialHairPicker" Category="FacialHair" HorizontalExpand="True" />
-                                </GridContainer>
+                                </wfh:WolfgateEvenRow>
                             </BoxContainer>
                         </PanelContainer>
                         <!-- Eyes -->

@@ -106,7 +106,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             var pruned = PrunePendingAdmissions();
             UpdateDemo();
             SyncCrewShips();
-            BroadcastIfChanged(pruned);
+            BroadcastIfChanged(pruned | UpdateCrewStatus());
         }
         if (!_broadcastPending || now < _nextBroadcast)
             return;
@@ -126,6 +126,8 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         _nextRequest.Clear();
         _nextCodeAttempt.Clear();
         _pendingSpawns.Clear();
+        _shipHealth.Clear();
+        _knownStatuses.Clear();
         ResetDemo();
         Broadcast();
     }
@@ -623,16 +625,16 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             Id = lobby.Id, Host = lobby.Host, HostName = lobby.Members[lobby.Host].Name, Title = lobby.Title, Description = lobby.Description,
             HostJob = lobby.Members[lobby.Host].Job, Portrait = lobby.Members[lobby.Host].Portrait,
             Scenario = lobby.Scenario, Faction = lobby.Faction, ShipName = lobby.ShipName, Access = lobby.Access, AllowLateJoin = lobby.AllowLateJoin,
-            CurrentShip = lobby.Started ? CurrentShip(lobby) : null,
+            CurrentShip = lobby.Started ? CurrentShip(lobby) : null, ShipCondition = ShipCondition(lobby),
             Started = lobby.Started, MemberCount = lobby.Members.Count, Vessel = lobby.Vessel, ShipStart = lobby.ShipStart,
             Roster = lobby.Members.Select(pair => new WFRoundSetupCrewmate(pair.Value.Name, pair.Value.Job,
                 string.IsNullOrEmpty(pair.Value.Title) && pair.Value.RoleId is { } roleId && lobby.Roles.TryGetValue(roleId, out var role) ? role.Name : pair.Value.Title,
-                IsReadyForLobby(lobby, pair.Key, pair.Value), pair.Value.Spawned)).ToArray(),
+                IsReadyForLobby(lobby, pair.Key, pair.Value), pair.Value.Spawned, MemberStatus(pair.Value))).ToArray(),
             Roles = SnapshotRoles(lobby, user, canEnter, jobs),
             Code = host && lobby.Access == WFLobbyAccess.Code ? lobby.Code : null,
             Members = member ? lobby.Members.Select(pair => new WFRoundSetupMember(pair.Key, pair.Value.Name,
                 pair.Value.Job, pair.Value.Station, IsReadyForLobby(lobby, pair.Key, pair.Value), pair.Value.Spawned,
-                _players.TryGetSessionById(pair.Key, out _), pair.Value.RoleId, pair.Value.Title, pair.Value.Contribution)).ToArray() : Array.Empty<WFRoundSetupMember>(),
+                _players.TryGetSessionById(pair.Key, out _), pair.Value.RoleId, pair.Value.Title, pair.Value.Contribution, MemberStatus(pair.Value))).ToArray() : Array.Empty<WFRoundSetupMember>(),
             Requests = host ? lobby.Requests.Keys.Where(id => _players.TryGetSessionById(id, out _))
                 .Select(id => new WFRoundSetupPlayer(id, CharacterName(id), lobby.Requests[id])).ToArray() : Array.Empty<WFRoundSetupPlayer>(),
         };

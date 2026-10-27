@@ -70,6 +70,7 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             // mono end
 
             component.ProjectileSpent = true;
+            Dirty(uid, component); // WOLFGATE(Weapons): a handled hit returns before the shared Dirty, so network the spent flag here
             if (component.DeleteOnCollide)
                 QueueDel(uid);
             return null;
@@ -146,10 +147,14 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             // WOLFGATE END
 
             if (projectileComp.ProjectileSpent || TerminatingOrDeleted(uid))
+            {
+                projectileComp.RaycastResetVelocity = null; // Mono
                 continue;
+            }
 
             var xform = Transform(uid);
-            var currentVelocity = projectileComp.RaycastResetVelocity ?? _physics.GetMapLinearVelocity(uid, physicsComp, xform);
+            var parentVel = _physics.GetMapLinearVelocity(uid, physicsComp, xform) - physicsComp.LinearVelocity; // Mono
+            var currentVelocity = projectileComp.RaycastResetVelocity - parentVel ?? physicsComp.LinearVelocity;
             var velLen = currentVelocity.Length();
             // WOLFGATE(ShipShields) START: sweep ship rounds at every speed so slow pulses cannot miss the shield edge
             // if (!ShouldRaycastProjectile(velLen) && projectileComp.RaycastResetVelocity == null)
@@ -163,6 +168,13 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             var rayDirection = currentVelocity / velLen;
             // Ensure rayDistance is not zero to prevent issues with IntersectRay if frametime or velocity is zero.
             var rayDistance = velLen * frameTime;
+            // WOLFGATE(Weapons) START: a held hit velocity is restored even when the projectile has no relative speed
+            if (rayDistance <= 0f && projectileComp.RaycastResetVelocity != null)
+            {
+                _physics.SetLinearVelocity(uid, currentVelocity, body: physicsComp);
+                projectileComp.RaycastResetVelocity = null;
+            }
+            // WOLFGATE END
             if (rayDistance <= 0f)
                 continue;
 
@@ -176,11 +188,9 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
                 false); // IncludeNonHard = false
 
             // do not process other grid velocity if we are gridded
-            if (!ProcessHits(hits) && projectileComp.RaycastResetVelocity is { } resetVel)
+            if (!ProcessHits(hits) && projectileComp.RaycastResetVelocity != null)
             {
-                var parentVel = _physics.GetMapLinearVelocity(xform.ParentUid);
-                var resetTo = resetVel - parentVel;
-                _physics.SetLinearVelocity(uid, resetTo, body: physicsComp);
+                _physics.SetLinearVelocity(uid, currentVelocity, body: physicsComp);
                 projectileComp.RaycastResetVelocity = null;
             }
 
@@ -242,7 +252,6 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
 
                 if (projectileComp.RaycastResetVelocity == null)
                 {
-                    var parentVel = _physics.GetMapLinearVelocity(xform.ParentUid);
                     projectileComp.RaycastResetVelocity = currentVelocity + parentVel; // record specifically world velocity
                     var curVel = physicsComp.LinearVelocity;
                     curVel.Normalize();

@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from CM-SS13 PvE Halo at commit https://github.com/cmss13-devs/cmss13-pve-halo/commit/77ab39636942a7d938632c8637aeae2aec75b6b1.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "full"
+    },
+    {
+      "name": "covwall0",
+      "directions": 4
+    },
+    {
+      "name": "covwall1",
+      "directions": 4
+    },
+    {
+      "name": "covwall2",
+      "directions": 4
+    },
+    {
+      "name": "covwall3",
+      "directions": 4
+    },
+    {
+      "name": "covwall4",
+      "directions": 4
+    },
+    {
+      "name": "covwall5",
+      "directions": 4
+    },
+    {
+      "name": "covwall6",
+      "directions": 4
+    },
+    {
+      "name": "covwall7",
+      "directions": 4
+    }
+  ]
+}

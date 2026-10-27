@@ -130,7 +130,11 @@ public static class GenitalProfileValidator
         // Only the server migration should produce this list; a crafted client must not be able to store arbitrary text.
         var legacy = ValidateLegacy(profile.LegacyMarkings, issues);
 
-        return profile.Normalised(version, reveal, penis, testicles, vagina, womb, breasts, legacy);
+        var nsfwText = profile.NsfwText.Length > GenitalProfile.MaxNsfwTextLength
+            ? profile.NsfwText[..GenitalProfile.MaxNsfwTextLength]
+            : profile.NsfwText;
+
+        return profile.Normalised(version, reveal, penis, testicles, vagina, womb, breasts, nsfwText, legacy);
     }
 
     /// <summary>Longest legacy "id@colours" string kept. Real ones are far shorter.</summary>

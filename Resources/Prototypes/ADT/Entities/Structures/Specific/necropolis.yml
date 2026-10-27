@@ -1,0 +1,121 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTNecropolisGate
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Specific/necropolis_gate.rsi
+    drawdepth: Doors
+    layers:
+    - state: gate
+      map: ["enum.DoorVisualLayers.Base"]
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: PointLight
+    enabled: true
+    radius: 8
+    energy: 2
+    color: "#dc4a1a"
+  - type: Appearance
+  - type: AnimationPlayer
+  - type: Occluder
+    polygon:
+    - "-1.45,-0.45"
+    - "1.45,-0.45"
+    - "1.45,1.2"
+    - "-1.45,1.2"
+  - type: Door
+    openDrawDepth: BlastDoors
+    closedDrawDepth: BlastDoors
+    canCrush: false
+    performCollisionCheck: false
+    bumpOpen: false
+    clickOpen: true
+    closedSpriteState: gate
+    openSpriteState: gate_open
+    openingSpriteState: opening
+    closingSpriteState: closing
+    openingAnimationTime: 3.725
+    closingAnimationTime: 0.555
+    openTimeOne: 2.9
+    openTimeTwo: 0.825
+    closeTimeOne: 0.3
+    closeTimeTwo: 0.255
+    openSound:
+      path: /Audio/Effects/stonedoor_openclose.ogg
+    closeSound:
+      path: /Audio/Effects/stonedoor_openclose.ogg
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.45,-0.45,1.45,0.7"
+        density: 1000
+        mask:
+        - MachineMask
+        layer:
+        - WallLayer
+
+- type: entity
+  id: ADTNecropolisArch
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Specific/necropolis_arch.rsi
+    state: arch
+    drawdepth: BlastDoors
+    offset: 0,0.75
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+
+- type: entity
+  id: ADTNecropolisGateSubstrate
+  parent: BaseStructure
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Specific/necropolis_gate.rsi
+    state: substrate
+    drawdepth: HighFloorObjects
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Tag
+    tags:
+    - HideContextMenu
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+
+- type: entity
+  id: ADTNecropolisRune
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: Sprite
+    sprite: ADT/Effects/necropolis_rune.rsi
+    state: rune
+    drawdepth: FloorObjects
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  parent: CrateGenericSteel
+  id: ADTCrateNecropolis
+  components:
+  - type: Icon
+    sprite: ADT/Structures/Storage/Crates/necropolechest.rsi
+  - type: Sprite
+    sprite: ADT/Structures/Storage/Crates/necropolechest.rsi
+# WOLFGATE END

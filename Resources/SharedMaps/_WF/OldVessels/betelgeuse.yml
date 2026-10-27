@@ -1823,7 +1823,7 @@ entities:
     - type: Transform
       pos: 3.5,-1.5
       parent: 1
-- proto: WeaponLaserTurretApollo
+- proto: WFWeaponTurretMiningBeam
   entities:
   - uid: 2
     components:
@@ -1831,7 +1831,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: 6.5,7.5
       parent: 1
-- proto: WeaponTurretM25
+- proto: WFWeaponTurretMiningLaserSmall
   entities:
   - uid: 3
     components:

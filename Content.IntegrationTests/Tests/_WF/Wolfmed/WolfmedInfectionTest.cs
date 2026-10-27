@@ -1,4 +1,5 @@
 #nullable enable
+using Content.IntegrationTests.Fixtures.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -648,6 +649,8 @@ public sealed class WolfmedInfectionTest : WolfmedGameTest
     [Test]
     public async Task CVarsDisableTheModelTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entities = server.ResolveDependency<IEntityManager>();

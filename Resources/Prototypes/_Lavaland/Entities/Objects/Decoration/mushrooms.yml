@@ -1,0 +1,41 @@
+# WOLFGATE(DecorImport) START: ported from Goob Station
+- type: entity
+  parent: BaseStructure
+  id: Lavashroom
+  suffix: Structure
+  components:
+  - type: Sprite
+    sprite: _Lavaland/Objects/Decoration/Flora/Plants/lavashroom.rsi
+    noRot: true
+    layers:
+    - state: shroom1
+      map: ["random"]
+  - type: RandomSprite
+    available:
+    - random:
+        shroom1: ""
+        shroom2: ""
+        shroom3: ""
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+# WOLFGATE END

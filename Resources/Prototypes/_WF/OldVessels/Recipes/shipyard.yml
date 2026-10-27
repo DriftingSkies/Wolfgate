@@ -112,3 +112,22 @@
     Gold: 5000
     Silver: 5000
     UraniumDepleted: 1000
+
+# The Ravager's drone LPC, printed at any security techfab. It only buys at the Ravager's own console.
+- type: latheRecipe
+  parent: BaseVoucherRecipe
+  id: WFRavagerDroneVoucher
+  result: ShipVoucherTaser
+  completetime: 10
+  materials:
+    Steel: 10000
+    Plasteel: 5000
+    Plastic: 5000
+    Glass: 5000
+    Plasma: 2000
+    Silver: 1000
+
+- type: latheRecipePack
+  id: WFRavagerDroneVouchersStatic
+  recipes:
+  - WFRavagerDroneVoucher

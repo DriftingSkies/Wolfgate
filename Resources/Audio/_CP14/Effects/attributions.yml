@@ -8,4 +8,14 @@
   license: "CC0-1.0"
   copyright: 'Created by AKkingStudio on Freesound.org'
   source: "https://freesound.org/people/AKkingStudio/sounds/784768/"
+
+- files: ["crystal_ding.ogg"]
+  license: "CC0-1.0"
+  copyright: '2022-01-14-crystal-bell-08.flac by arseniiv'
+  source: "https://freesound.org/s/614832/"
+
+- files: ["crystal_ding2.ogg"]
+  license: "CC0-1.0"
+  copyright: '2022-01-14-crystal-bell-01.flac by arseniiv'
+  source: "https://freesound.org/s/614833/"
 # WOLFGATE END

@@ -40,6 +40,11 @@ public sealed partial class AmputationSystem : EntitySystem
             _wfPart.Get(part).MaxDamage <= FixedPoint2.Zero) // WOLFGATE(Wolfmed): D8
             return;
 
+        // WOLFGATE(Wolfmed): revival pass, a capped head never comes off from piled-up damage
+        // Its overflow is brain injury. Only a blast may still take it, where wolfmed.blast_dismember_head allows.
+        if (bodyPart.PartType == BodyPartType.Head && !(args.IsExplosion && _wfPart.BlastMaySever(part)))
+            return;
+
         // WOLFGATE(Wolfmed): EVISC: D9 never severs a torso, so its overflow is offered to evisceration instead.
         if (bodyPart.PartType == BodyPartType.Torso)
         {
@@ -48,15 +53,24 @@ public sealed partial class AmputationSystem : EntitySystem
             return;
         }
 
-        if (args.ExplosionAmputationCandidate && TryExplosionAmputate(args.Body, part, args.Damage)) // WOLFGATE(Wolfmed): P3-D15
+        _wfPart.AddOverflow(part, args.Damage); // WOLFGATE(Wolfmed): revival pass, the sever thresholds count it
+
+        // WOLFGATE(Wolfmed): revival pass, the blast roll reads the part's whole total as the threshold path does
+        // That is what it stored, what overflowed (this hit's included) and the share of this hit that fills it to its
+        // cap, which lands only after this event.
+        if (args.ExplosionAmputationCandidate && TryExplosionAmputate(args.Body, part, args.Damage, // WOLFGATE(Wolfmed): P3-D15
+                ExplosionTotal(part, args.Damage)))
             return;
 
         if (!part.Comp.Severable)
         {
-            if (part.Comp.AmputationOverflow >= _wfPart.Get(part).MaxDamage) // WOLFGATE(Wolfmed): D8
-            {
-                SetSeverable(part, true);
-            }
+            // WOLFGATE(Wolfmed) START: revival pass, a limb is armed by its thresholds with the overflow counted
+            // (HandlePartDamageApplied); one with none, like a plant limb, is never armed by overflow.
+            // if (part.Comp.AmputationOverflow >= _wfPart.Get(part).MaxDamage) // WOLFGATE(Wolfmed): D8
+            // {
+            //     SetSeverable(part, true);
+            // }
+            // WOLFGATE END
             return;
         }
 
@@ -93,7 +107,22 @@ public sealed partial class AmputationSystem : EntitySystem
         if (args.IsExplosion && !_wfPart.BlastMaySever(part))
             return;
 
-        var damage = _damageable.GetAllDamage((part.Owner, damageable));
+        // WOLFGATE(Wolfmed) START: revival pass, healing a capped part back under its cap clears its overflow
+        // Only a damage hit cleared it in the routing.
+        if (args.Damage.GetTotal() < FixedPoint2.Zero &&
+            _wfPart.Get(part).MaxDamage is var healCap && healCap > FixedPoint2.Zero &&
+            _damageable.GetPositiveDamage((part.Owner, damageable)).GetTotal() < healCap)
+        {
+            _wfPart.ClearOverflow(part);
+            if (part.Comp.AmputationOverflow != FixedPoint2.Zero)
+            {
+                part.Comp.AmputationOverflow = FixedPoint2.Zero;
+                Dirty(part);
+            }
+        }
+        // WOLFGATE END
+
+        var damage = _wfPart.WithOverflow(part, _damageable.GetAllDamage((part.Owner, damageable))); // WOLFGATE(Wolfmed): revival pass, a capped part's overflow counts
         if (args.ExplosionAmputationCandidate && TryExplosionAmputate(args.Body, part, args.Damage, damage)) // WOLFGATE(Wolfmed): P3-D15
             return;
 
@@ -106,7 +135,8 @@ public sealed partial class AmputationSystem : EntitySystem
             return;
         }
 
-        if (GetThresholdProgress(damage, _wfPart.Get(part).AmputationThresholds) < GetResetRatio(args.Body)) // WOLFGATE(Wolfmed): D8
+        if (GetThresholdProgress(damage, _wfPart.Get(part).AmputationThresholds) < GetResetRatio(args.Body) && // WOLFGATE(Wolfmed): D8
+            !OverflowHoldsSeverable(part)) // WOLFGATE(Wolfmed): revival pass, a capped part's overflow keeps it severable
         {
             SetSeverable(part, false);
             return;
@@ -223,6 +253,56 @@ public sealed partial class AmputationSystem : EntitySystem
         var chance = Math.Clamp(GetThresholdProgress(totalDamage, _wfPart.Get(part.Owner).AmputationThresholds) * 0.5f, 0f, 1f); // WOLFGATE(Wolfmed): D8
         return chance > 0f && _random.Prob(chance) && TryAmputate(body, part.Owner);
     }
+
+    // WOLFGATE(Wolfmed) START: revival pass, an overflowing hit's whole effect on a capped part, for the blast roll.
+    private DamageSpecifier ExplosionTotal(Entity<WoundableComponent> part, DamageSpecifier overflow)
+    {
+        var stored = _damageable.GetAllDamage(part.Owner).Clone();
+        var room = TryComp(part, out DamageableComponent? partDamage)
+            ? _wfPart.Get(part).MaxDamage - _damageable.GetPositiveDamage((part.Owner, partDamage)).GetTotal()
+            : FixedPoint2.Zero;
+        var over = overflow.GetTotal();
+        if (room > FixedPoint2.Zero && over > FixedPoint2.Zero)
+        {
+            foreach (var (type, amount) in overflow.DamageDict)
+            {
+                if (amount > FixedPoint2.Zero)
+                    stored.DamageDict[type] = stored.DamageDict.GetValueOrDefault(type) + amount * (room.Float() / over.Float());
+            }
+        }
+
+        return _wfPart.WithOverflow(part, stored);
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Wolfmed) START: revival pass, a capped part never reaches its stored thresholds, so its overflow
+    // decides; the wound ladders' top rung marks a limb the same way.
+    private bool OverflowHoldsSeverable(Entity<WoundableComponent> part)
+    {
+        var cap = _wfPart.Get(part).MaxDamage;
+        return cap > FixedPoint2.Zero && part.Comp.AmputationOverflow >= cap;
+    }
+
+    /// <summary>
+    /// Marks a limb severable: the next finishing hit takes it. Its overflow is raised to its cap so the stored
+    /// thresholds do not clear the mark again. Never the torso or the head.
+    /// </summary>
+    public void MarkSeverable(Entity<WoundableComponent> part)
+    {
+        if (!TryComp(part, out BodyPartComponent? bodyPart) ||
+            bodyPart.PartType is BodyPartType.Torso or BodyPartType.Head)
+            return;
+
+        var cap = _wfPart.Get(part).MaxDamage;
+        if (cap > FixedPoint2.Zero && part.Comp.AmputationOverflow < cap)
+        {
+            part.Comp.AmputationOverflow = cap;
+            Dirty(part);
+        }
+
+        SetSeverable(part, true);
+    }
+    // WOLFGATE END
 
     private float GetResetRatio(EntityUid body)
     {

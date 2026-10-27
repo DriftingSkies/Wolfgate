@@ -63,6 +63,13 @@ namespace Content.Shared.Chat
         Event = ChatChannel.EventChat,
         // WOLFGATE END
 
+        // WOLFGATE(Subtle) START: subtle emote channel
+        /// <summary>
+        ///     Emotes only the players right next to the sender see
+        /// </summary>
+        Subtle = ChatChannel.Subtle,
+        // WOLFGATE END
+
         Console = ChatChannel.Unspecified
     }
 }

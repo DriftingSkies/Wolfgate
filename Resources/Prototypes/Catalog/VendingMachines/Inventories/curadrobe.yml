@@ -13,6 +13,20 @@
     ClothingUniformJumpsuitLibrarian: 3
     ClothingUniformJumpskirtLibrarian: 3
     ClothingShoesBootsLaceup: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadFedoraCurator: 2
+    WFMeridianClothingHeadPlaybunnyearsCuratorGreen: 2
+    WFMeridianClothingHeadPlaybunnyearsCuratorRed: 2
+    WFMeridianClothingHeadPlaybunnyearsCuratorTeal: 2
+    WFMeridianClothingSuitJacketTailcoatCuratorGreen: 2
+    WFMeridianClothingSuitJacketTailcoatCuratorRed: 2
+    WFMeridianClothingSuitJacketTailcoatCuratorTeal: 2
+    WFMeridianClothingUnderRankCivilianCuratorBunnysuitGreen: 2
+    WFMeridianClothingUnderRankCivilianCuratorBunnysuitRed: 2
+    WFMeridianClothingUnderRankCivilianCuratorBunnysuitTeal: 2
+    WFMeridianClothingUnderRankCivilianCuratorSkirt: 2
+    WFMeridianClothingUnderRankCivilianCuratorTreasureHunter: 2
+    # WOLFGATE END
 #    ClothingHeadsetService: 2 # Frontier
   contrabandInventory:
     ToyFigurineLibrarian: 1

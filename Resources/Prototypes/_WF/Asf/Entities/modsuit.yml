@@ -43,6 +43,15 @@
   components:
   - type: Sprite
     sprite: _WF/Asf/Clothing/Head/modsuit.rsi
+  - type: NightVision # dual-tube, ASF lilac phosphor
+    relayOverlay: true
+    goggleEffect: true
+    viewCircleRadius: 450
+    viewCircleCount: 2
+    viewCircleSpacing: 280
+    action: ActionToggleNightVision
+    phosphorColor: "#C99CF5"
+    lightingColor: "#FFFFFF32"
   - type: Armor
     coverage: [Head]
     modifiers:
@@ -94,8 +103,10 @@
   components:
   - type: Sprite
     sprite: _WF/Asf/Clothing/Shoes/modsuit.rsi
+  - type: Magboots # voidboots: hold on outside a grid too
+    requiresGrid: false
 
-# Aegis: same armour, plus a hardlight personal shield in the control unit; dark armour so it reads apart
+# Aegis: same armour, plus a hardlight personal shield in the control unit; grey armour so it reads apart
 
 - type: entity
   parent: [ WFAsfClothingModsuitField, MonoEnergyShieldClothing, BaseFactionGearOtherFactionT3 ]

@@ -36,6 +36,12 @@ public static class WFChatFontRules
         return prototype.Font;
     }
 
+    /// <summary>A speech size scaled for the speaker's picked font, unchanged when none is picked.</summary>
+    public static int ScaleSize(int size, WFChatFontComponent? font)
+    {
+        return font == null ? size : Math.Max(1, (int) MathF.Round(size * font.SizeScale));
+    }
+
     /// <summary>Every chat font in dropdown order.</summary>
     public static List<WFChatFontPrototype> Ordered(IPrototypeManager proto)
     {

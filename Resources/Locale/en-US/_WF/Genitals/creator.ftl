@@ -95,3 +95,8 @@ wf-genitals-warning-CupClamped = The cup size was out of range and has been adju
 wf-genitals-warning-LengthClamped = The length was out of range and has been adjusted.
 wf-genitals-warning-InvalidValue = Some stored values were invalid and have been reset.
 wf-genitals-warning-PregnancyMarkingWithoutWomb = A pregnancy marking is selected, but no womb is configured.
+
+wf-genitals-nsfw-text = Adult description
+wf-genitals-nsfw-text-hint = Shown from the heart on your examine card, only to adult characters whose players have adult content on, and only while you have it on too.
+wf-genitals-nsfw-text-placeholder = What others notice that the normal description leaves out.
+wf-genitals-nsfw-text-counter = {$count} / {$max}

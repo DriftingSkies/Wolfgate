@@ -184,6 +184,7 @@ public sealed class ChatFontTest
             chatSys.TrySendInGameICMessage(body, "icebergs ahead", InGameICChatType.Speak, ChatTransmitRange.Normal));
         var said = await WaitForMessage(pair, chat, "icebergs ahead");
         Assert.That(said.WrappedMessage, Does.Contain($"font=\"{IcebergFont}\""), "Speech is not wrapped in the picked font.");
+        Assert.That(said.WrappedMessage, Does.Contain("size=12"), "Iceberg needs no size change.");
 
         // The bubble draws the BubbleContent part of the same markup, so the font has to be inside it.
         await pair.Client.WaitAssertion(() =>
@@ -209,7 +210,16 @@ public sealed class ChatFontTest
         {
             Assert.That(native.WrappedMessage, Does.Contain("font=\"Thaveyan\""), "The language's font should win.");
             Assert.That(native.WrappedMessage, Does.Not.Contain(IcebergFont));
+            Assert.That(native.WrappedMessage, Does.Contain("size=12"), "The language's font keeps the speech size.");
         });
+
+        // Minecraftia draws large, so its speech is scaled down to stand about as tall as the default's 12.
+        await server.WaitPost(() => entMan.System<SharedHumanoidAppearanceSystem>()
+            .LoadProfile(body, HumanoidCharacterProfile.RandomWithSpecies("Human").WithChatFont(Minecraftia)));
+        await server.WaitPost(() =>
+            chatSys.TrySendInGameICMessage(body, "blocky words", InGameICChatType.Speak, ChatTransmitRange.Normal));
+        var blocky = await WaitForMessage(pair, chat, "blocky words");
+        Assert.That(blocky.WrappedMessage, Does.Contain("size=10"), "Minecraftia speech is not scaled down.");
 
         await server.WaitPost(() => entMan.DeleteEntity(body));
         await pair.CleanReturnAsync();

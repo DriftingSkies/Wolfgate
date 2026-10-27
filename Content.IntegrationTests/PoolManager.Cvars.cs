@@ -42,6 +42,7 @@ public static partial class PoolManager
         ("wf.encounters.simulate", "false"), // WOLFGATE(Encounters): tests spawn real ships unless they turn simulation on
         ("wf.encounters.vote", "false"), // WOLFGATE(Encounters): a round-restart vote throws on a dummy session's join
         (CCVars.AutoVoteEnabled.Name, "false"), // WOLFGATE: a round-restart vote throws on a dummy session's join
+        ("wf.newbie.welcome", "false"), // WOLFGATE(Newbie): welcome popups would open over other tests' windows
         (CCVars.StorageLimit.Name, "1")// Frontier: test failures with multiple storage
     };
 }

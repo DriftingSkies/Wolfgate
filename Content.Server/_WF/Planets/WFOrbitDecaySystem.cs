@@ -20,6 +20,7 @@ public sealed partial class WFOrbitDecaySystem : EntitySystem
     [Dependency] private ShipAlertSystem _alert = default!;
     [Dependency] private ShipPaSystem _pa = default!;
     [Dependency] private WFOrbitEntrySystem _orbitEntry = default!;
+    [Dependency] private WFLooseDebrisSystem _debris = default!;
 
     /// <summary>Situation code for a decaying hull; not pilot-selectable.</summary>
     public const string AlertOrbitDecay = "WFAlertOrbitDecay";
@@ -77,7 +78,8 @@ public sealed partial class WFOrbitDecaySystem : EntitySystem
             _settleAt.TryAdd(grid, _timing.CurTime + SettleDelay);
 
             // Clear rather than skip, so a grid that became detached terrain loses an existing countdown.
-            if (HasComp<WFDetachedTerrainComponent>(grid) || HasStationKeeping(grid))
+            // Debris stays up: dozens of rocks falling at once swamp planet transit.
+            if (HasComp<WFDetachedTerrainComponent>(grid) || _debris.IsDebris(grid) || HasStationKeeping(grid))
             {
                 ClearDecay(grid);
                 continue;

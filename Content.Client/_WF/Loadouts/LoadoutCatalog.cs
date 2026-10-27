@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using Content.Client._WF.Gags;
 using Content.Shared.Clothing;
 using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
@@ -32,6 +33,9 @@ public sealed class LoadoutEntry
     public FormattedMessage? Reason;
 
     public bool Selected;
+
+    /// <summary>The item it puts on can be recoloured.</summary>
+    public bool Colorable;
 
     /// <summary>Selected, but the server will not issue it at the current balance.</summary>
     public bool Unaffordable;
@@ -105,6 +109,7 @@ public sealed class LoadoutCatalog
     private readonly IDependencyCollection _collection;
     private readonly IPrototypeManager _protoManager;
     private readonly LoadoutSystem _loadoutSystem;
+    private readonly WFGagsSystem _gags;
 
     /// <summary>Groups with at least one listed entry, by category and then by the role's order.</summary>
     public readonly List<LoadoutGroupView> Groups = new();
@@ -127,6 +132,7 @@ public sealed class LoadoutCatalog
         _collection = collection;
         _protoManager = collection.Resolve<IPrototypeManager>();
         _loadoutSystem = collection.Resolve<IEntityManager>().System<LoadoutSystem>();
+        _gags = collection.Resolve<IEntityManager>().System<WFGagsSystem>();
 
         foreach (var groupId in role.Groups)
         {
@@ -161,6 +167,7 @@ public sealed class LoadoutCatalog
             {
                 Name = string.IsNullOrEmpty(proto.Name) ? _loadoutSystem.GetName(proto) : proto.Name,
                 Icon = string.IsNullOrEmpty(proto.PreviewEntity?.Id) ? _loadoutSystem.GetFirstOrNull(proto) : proto.PreviewEntity,
+                Colorable = _gags.ColorableItem(proto) != null,
             };
 
             entry.Description = !string.IsNullOrEmpty(proto.Description)

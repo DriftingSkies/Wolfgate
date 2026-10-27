@@ -18,12 +18,15 @@ public sealed partial class WFChatFontSystem : EntitySystem
 
     private void OnProfileLoadFinished(Entity<SpeechComponent> ent, ref ProfileLoadFinishedEvent args)
     {
-        if (args.Profile != null)
-            SetFont(ent, WFChatFontRules.ClientFont(args.Profile.ChatFont, _proto));
+        if (args.Profile == null)
+            return;
+
+        var scale = _proto.TryIndex(args.Profile.ChatFont, out var picked) ? picked.SizeScale : 1f;
+        SetFont(ent, WFChatFontRules.ClientFont(args.Profile.ChatFont, _proto), scale);
     }
 
-    /// <summary>Draws the entity's speech in the client font, or in the speech verb's own when null.</summary>
-    public void SetFont(EntityUid uid, string? font)
+    /// <summary>Draws the entity's speech in the client font at a scaled size, or in the speech verb's own when null.</summary>
+    public void SetFont(EntityUid uid, string? font, float sizeScale = 1f)
     {
         if (font == null)
         {
@@ -33,6 +36,7 @@ public sealed partial class WFChatFontSystem : EntitySystem
 
         var comp = EnsureComp<WFChatFontComponent>(uid);
         comp.Font = font;
+        comp.SizeScale = sizeScale;
         Dirty(uid, comp);
     }
 

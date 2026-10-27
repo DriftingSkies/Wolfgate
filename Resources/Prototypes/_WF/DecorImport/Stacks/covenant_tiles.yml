@@ -1,0 +1,53 @@
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantPattern
+  name: tiles-wf-pvehalo-floor-covenant-pattern
+  spawn: FloorTileItemPvEHaloFloorCovenantPattern
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantSmoothPlating
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating
+  spawn: FloorTileItemPvEHaloFloorCovenantSmoothPlating
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantSmoothPlatingSides
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-sides
+  spawn: FloorTileItemPvEHaloFloorCovenantSmoothPlatingSides
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantPlating
+  name: tiles-wf-pvehalo-floor-covenant-plating
+  spawn: FloorTileItemPvEHaloFloorCovenantPlating
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantSmoothPlatingCorner
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-corner
+  spawn: FloorTileItemPvEHaloFloorCovenantSmoothPlatingCorner
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantSmoothPlatingOuterCorner
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-outer-corner
+  spawn: FloorTileItemPvEHaloFloorCovenantSmoothPlatingOuterCorner
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantPaneling
+  name: tiles-wf-pvehalo-floor-covenant-paneling
+  spawn: FloorTileItemPvEHaloFloorCovenantPaneling
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantSmoothPlatingLane
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-lane
+  spawn: FloorTileItemPvEHaloFloorCovenantSmoothPlatingLane
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePvEHaloFloorCovenantSmoothPlatingEndcap
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-endcap
+  spawn: FloorTileItemPvEHaloFloorCovenantSmoothPlatingEndcap
+  maxCount: 30

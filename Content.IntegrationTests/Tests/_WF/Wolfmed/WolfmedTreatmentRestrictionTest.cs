@@ -1,3 +1,5 @@
+using Content.IntegrationTests.Fixtures.Attributes;
+using Content.Shared._WF.Wolfmed.CCVar;
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
 using Content.Server.Medical.Components; // WOLFGATE: HealingComponent is server-only here.
@@ -30,6 +32,8 @@ public sealed class WolfmedTreatmentRestrictionTest : WolfmedGameTest
     [Test]
     public async Task BruisePackTreatsBluntOnlyTest()
     {
+        // Revival pass: this pins one wound's own behaviour, not what the wound ladders fold together.
+        await OverrideCVar(Side.Server, WolfmedCVars.WoundLadders, false);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entities = server.ResolveDependency<IEntityManager>();

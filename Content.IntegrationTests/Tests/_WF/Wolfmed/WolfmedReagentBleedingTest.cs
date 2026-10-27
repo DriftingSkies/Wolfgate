@@ -7,7 +7,6 @@ using Content.Server.EntityEffects.Effects;
 using Content.Shared._Onyx.Medical.Tourniquet;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._Shitmed.Targeting;
-using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Reagent;
@@ -30,7 +29,7 @@ namespace Content.IntegrationTests.Tests._WF.Wolfmed;
 [TestOf(typeof(WoundBleedingSystem))]
 public sealed class WolfmedReagentBleedingTest : WolfmedGameTest
 {
-    /// <summary>Tranexamic acid's own effect stops an ordinary cut, at its dose times the bleed-rate knob per tick.</summary>
+    /// <summary>Tranexamic acid's own effect stops an ordinary cut, at its full dose per tick whatever the bleed-rate knob.</summary>
     [Test]
     public async Task CoagulantStopsAnOrdinaryBleedTest()
     {
@@ -43,9 +42,9 @@ public sealed class WolfmedReagentBleedingTest : WolfmedGameTest
             var torso = Part(body, BodyPartType.Torso, BodyPartSymmetry.None);
             var bloodstream = SEntMan.GetComponent<BloodstreamComponent>(body);
             var txa = Effect<ModifyBleedAmount>("TranexamicAcid");
-            var perTick = -txa.Amount * Server.CfgMan.GetCVar(WolfmedCVars.BleedRate);
+            var perTick = -txa.Amount;
 
-            var cut = wounds.CreateOrMergeWound(torso, "SlashWound", 30)!.Value;
+            var cut = wounds.CreateOrMergeWound(torso, "SlashWound", 80)!.Value;
             var open = bloodstream.BleedAmount;
             Assert.That(open, Is.GreaterThan(perTick), "the cut must bleed faster than one tick of the drug takes off.");
 

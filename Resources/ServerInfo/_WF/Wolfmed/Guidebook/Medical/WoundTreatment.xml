@@ -262,6 +262,8 @@ Damage totals no longer kill anybody with a body. Two things do: the heart stopp
 
 [bold]Cardiac arrest[/bold] is the heart stopping. The analyzer says CARDIAC ARREST and [bold]pulse: none[/bold], the patient is unconscious, the bleeding drops to a trickle because there is no pressure behind it, and the heartbeat you can hear in your own ears goes flat. It comes from a destroyed or missing heart, from blood under 30%, from a brain that is already out of oxygen, from a pain shock on somebody who has already bled out, and from a big enough electric shock.
 
+An organ shot or burned to nothing is [bold]failed[/bold], not gone. It stays where it is and does nothing until it is healed: open the ribcage and heal it in place, no spare needed. A failed heart is an arrest that will not end until it is healed.
+
 An arrested patient [bold]looks dead[/bold], and that is the point. They do not gasp, they do not move, and examining them says they appear to be dead and are not breathing; a hand on the neck finds no pulse. Nothing you can see tells them apart from a corpse. A [bold]medical HUD[/bold] shows a flatline icon over them instead of the crit icon, and a [bold]health analyzer[/bold] gives you the truth. If you are not wearing one, assume every body is worth a shock.
 
 [bold]Brain oxygenation[/bold] is the clock. It drains fastest with the heart stopped - about three minutes from full to empty - more slowly when the patient simply is not breathing, more slowly still on low blood. Below 40% the brain organ itself starts dying, and organ damage does not heal. The analyzer reads out [bold]brain activity[/bold] and, while the clock is running, an estimate of how long is left.

@@ -45,7 +45,7 @@ public sealed partial class OrganDamageSystem : EntitySystem
 
         // WOLFGATE(Wolfmed): M3: a part with reach lines takes organ damage by the size of the whole hit (plan §8), and
         // checks the head blow there; the roll below stays for parts without them.
-        if (_net.IsServer && _wfOrgans.HandleHit(part, total.Damage))
+        if (_net.IsServer && _wfOrgans.HandleHit(part, total.Damage, args.Damage)) // WOLFGATE(Wolfmed): revival pass, the stored share weighs the organ damage
             return;
 
         if (!_net.IsServer || !TryComp(part, out BodyPartComponent? bodyPart) || bodyPart.Body == null ||

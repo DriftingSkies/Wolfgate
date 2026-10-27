@@ -167,3 +167,13 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/Aurorastation/Aurora.3/blob/4c83a7bac48311e4e0fd9449a27980ca35eed7a7/icons/turf/flooring/tiles.dmi (state vaurca)."
   source: "https://github.com/Aurorastation/Aurora.3"
+
+- files: [ icy_rock.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/Aurorastation/Aurora.3/blob/4c83a7bac48311e4e0fd9449a27980ca35eed7a7/icons/turf/flooring/ice_cavern.dmi (states icy_rock1 to icy_rock19)."
+  source: "https://github.com/Aurorastation/Aurora.3"
+
+- files: [ basalt.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/Aurorastation/Aurora.3/blob/4c83a7bac48311e4e0fd9449a27980ca35eed7a7/icons/turf/basalt.dmi (states basalt, basalt0 to basalt12)."
+  source: "https://github.com/Aurorastation/Aurora.3"

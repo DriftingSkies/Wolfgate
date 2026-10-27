@@ -2,7 +2,9 @@
   id: Akasono
   parent: BaseVessel
   name: MMC Akasono
-  description: A basic gas-harvesting (not processing!) ship. Equipped with a pulser to strip asteroids, a boom for exporting and importing gas, and the equipment to setup a drilling rig. The internal gas tank has a volume of 67.5kL (not counting piping), and is equipped with coolers for condensation & a canister port.
+  # WOLFGATE(AsteroidMining): an M12 mining laser in place of the pulser
+  # description: A basic gas-harvesting (not processing!) ship. Equipped with a pulser to strip asteroids, a boom for exporting and importing gas, and the equipment to setup a drilling rig. The internal gas tank has a volume of 67.5kL (not counting piping), and is equipped with coolers for condensation & a canister port.
+  description: A basic gas-harvesting (not processing!) ship. Equipped with an M12 mining laser to strip asteroids, a boom for exporting and importing gas, and the equipment to setup a drilling rig. The internal gas tank has a volume of 67.5kL (not counting piping), and is equipped with coolers for condensation & a canister port.
   price: 46000
   category: Small
   group: Mieyo

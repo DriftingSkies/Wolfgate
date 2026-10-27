@@ -56,10 +56,16 @@ through `WFChatFontTags`, the bubble only for a speaker with a picked font.
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml): the font the character's speech is shown in (HumanoidProfileEditor.ChatFont.cs)
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): the wfChatFont prototype id, empty for the default.
-- [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Chat/Systems/ChatSystem.cs): the character's picked font, under a language's own
+- [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Chat/Systems/ChatSystem.cs)
+  - the character's picked font, under a language's own
+  - the picked font's size scale, unless a language's own font wins
 - [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
-- [`Content.Server/Radio/EntitySystems/RadioSystem.cs`](../../Radio/EntitySystems/RadioSystem.cs): the speaker's picked font, under a language's own
-- [`Content.Server/Telephone/TelephoneSystem.cs`](../../Telephone/TelephoneSystem.cs): the caller's picked font
+- [`Content.Server/Radio/EntitySystems/RadioSystem.cs`](../../Radio/EntitySystems/RadioSystem.cs)
+  - the speaker's picked font, under a language's own
+  - the picked font's size scale, unless a language's own font wins
+- [`Content.Server/Telephone/TelephoneSystem.cs`](../../Telephone/TelephoneSystem.cs)
+  - the caller's picked font
+  - the picked font's size scale
 - [`Content.Shared/Preferences/HumanoidCharacterProfile.cs`](../../../Content.Shared/Preferences/HumanoidCharacterProfile.cs): an unknown font becomes the default
 
 <!-- WOLFGATE-GENERATED END -->

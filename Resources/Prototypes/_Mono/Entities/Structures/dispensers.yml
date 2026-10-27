@@ -159,9 +159,12 @@
       TradeGoodFusionFuel: SpaceCash12000
       TradeGoodComponents: SpaceCash4000
       TradeGoodFertilizer: SpaceCash4500
-      TradeGoodShipComponents: SpaceCash4000
+      # WOLFGATE(TradeGoods) START: match the CC manifest, which lists no ship components and metals at 5000
+      # TradeGoodShipComponents: SpaceCash4000
       TradeGoodFabric: SpaceCash5000
-      TradeGoodMetals: SpaceCash2500
+      # TradeGoodMetals: SpaceCash2500
+      TradeGoodMetals: SpaceCash5000
+      # WOLFGATE END
 
 - type: entity
   id: PaperWrittenDispenserTradeMallRequesting
@@ -227,8 +230,12 @@
       TradeGoodWeaponParts: SpaceCash9000
       TradeGoodFusionFuel: SpaceCash12000
       TradeGoodEquipment: SpaceCash3000
-      TradeGoodComponents: SpaceCash6000
-      TradeGoodShipComponents: SpaceCash10000
+      # WOLFGATE(TradeGoods) START: match the Halcyon manifest, which buys fertilizer and no components
+      # TradeGoodComponents: SpaceCash6000
+      # TradeGoodShipComponents: SpaceCash10000
+      TradeGoodShipComponents: SpaceCash6000
+      TradeGoodFertilizer: SpaceCash7000
+      # WOLFGATE END
       TradeGoodFabric: SpaceCash2500
       TradeGoodMetals: SpaceCash5000
 

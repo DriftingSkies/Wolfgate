@@ -18,13 +18,18 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Client/CharacterInfo/CharacterInfoSystem.cs`](../../Content.Client/CharacterInfo/CharacterInfoSystem.cs)
   - replays skip the character info request
   - Replay spectators have a local entity but no server to answer this request.
-- [`Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs`](../../Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs): a merge left the old guard nested over the new one, so an empty beaker with a full buffer threw
+- [`Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs`](../../Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs)
+  - last inputs the dosage defaults were built from
+  - keep typed pill and bottle amounts when an update changes nothing they depend on
+  - only reset on a change
+  - a merge left the old guard nested over the new one, so an empty beaker with a full buffer threw
 - [`Content.Client/Guidebook/GuidebookDataSystem.cs`](../../Content.Client/Guidebook/GuidebookDataSystem.cs)
   - replays skip the guidebook data request
   - partial for the network dependency
   - replay playback starts these systems without a server connection
 - [`Content.Client/Holopad/HolopadSystem.cs`](../../Content.Client/Holopad/HolopadSystem.cs)
   - post-shader flags are set through SpriteSystem since engine 291
+  - wizden#38042
   - engine 291 ignores the sprite-wide RaiseShaderEvent; it is per post-shader now
 - [`Content.Client/Lobby/LobbyUIController.cs`](../../Content.Client/Lobby/LobbyUIController.cs): unknown species falls back to the default
 - [`Content.Client/Lobby/UI/CharacterSetupGui.xaml.cs`](../../Content.Client/Lobby/UI/CharacterSetupGui.xaml.cs)
@@ -36,6 +41,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Client/Stealth/StealthSystem.cs`](../../Content.Client/Stealth/StealthSystem.cs)
   - post-shader flags are set through SpriteSystem since engine 291
   - engine 291 ignores the sprite-wide GetScreenTexture/RaiseShaderEvent; they are per post-shader now
+- [`Content.Client/UserInterface/Controls/ListContainer.cs`](../../Content.Client/UserInterface/Controls/ListContainer.cs): rejoin the group, engine v291 drops it when a button leaves the tree
 - [`Content.Client/UserInterface/Systems/Admin/AdminUIController.cs`](../../Content.Client/UserInterface/Systems/Admin/AdminUIController.cs): a HUD layout swap rebuilds the button visible
 - [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs): an unlimited check warns when the eye lags a long teleport
 - [`Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs`](../../Content.Client/UserInterface/Systems/Chat/Widgets/ChatBox.xaml.cs): Replay seeks and filter changes rebuild the output from scratch.
@@ -123,11 +129,15 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - only a gun the user carries is refused, not an innate ability or a mounted weapon
   - a switched-off or folded shield blocks nothing
   - the attempt repeats every tick while the trigger is held
-- [`Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs): a client that first saw the wearer already dressed never got the equip for this item (the
+- [`Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs)
+  - a modsuit seal adds and removes this on a worn helmet, which raises no equip events
+  - layers follow the component while the clothing is worn
+  - a client that first saw the wearer already dressed never got the equip for this item (the
 - [`Content.Shared/Clothing/EntitySystems/ToggleableClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/ToggleableClothingSystem.cs)
   - whatever the piece replaced goes back on, instead of staying shut inside the piece
   - a suit deleted along with its wearer can't take the piece back
   - another suit's piece goes back to its suit, and what it covered is kept under this one
+- [`Content.Shared/DisplacementMap/DisplacementData.cs`](../../Content.Shared/DisplacementMap/DisplacementData.cs): wizden#38042, the stencil one draws nothing in UI sprite views
 - [`Content.Shared/Gibbing/Systems/GibbingSystem.cs`](../../Content.Shared/Gibbing/Systems/GibbingSystem.cs)
   - bodiless giblets are skipped when flung.
   - bodiless dropped contents are skipped instead of flung.
@@ -142,6 +152,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - removed - Appearance hashed by reference, broke equal profiles hashing alike
   - the company is part of the hash
 - [`Content.Shared/Projectiles/SharedProjectileSystem.cs`](../../Content.Shared/Projectiles/SharedProjectileSystem.cs): the client replays a thrown embed's collision in prediction, and the projectile is already in
+- [`Content.Shared/Temperature/Systems/SharedTemperatureSystem.cs`](../../Content.Shared/Temperature/Systems/SharedTemperatureSystem.cs): a band takes the slowdown of the lowest threshold above it; warming past a threshold gave it that threshold's heavier slowdown
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.Revolver.cs`](../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.Revolver.cs): C# % keeps the sign, index 0 gave -1 and crashed the server
 - [`README.md`](../../README.md): reworded for Wolfgate build differences
 - [`Resources/Audio/_Goobstation/RadioStation/`](../../Resources/Audio/_Goobstation/RadioStation/): Radio host tracks (Monolith#4833) re-encoded to mono Vorbis q0 to cut download size.
@@ -153,8 +164,11 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Locale/en-US/_Mono/prototypes/access/accesses.ftl`](../../Resources/Locale/en-US/_Mono/prototypes/access/accesses.ftl): Monolith#4816 shipped the Underground access levels without names
 - [`Resources/Maps/_Mono/Bluespace/prefracture.yml`](../../Resources/Maps/_Mono/Bluespace/prefracture.yml): Hardpoints mapped under the Unidentified Vessel's Scythe, Sunder and Flayer guns so gunnery links them.
 - [`Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml`](../../Resources/Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml): Hardpoint mapped under the asteroid ship's AK570 so gunnery links it.
+- [`Resources/Maps/_Mono/POI/Dungeons/zvezda.yml`](../../Resources/Maps/_Mono/POI/Dungeons/zvezda.yml): Zvezda lighting re-work and power generation.
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../Resources/Maps/_Mono/POI/pdvhelios.yml): Helios mapping fixes for lighting, wallmounts and small layout tweaks.
+- [`Resources/Maps/_Mono/POI/tsfmc_industry.yml`](../../Resources/Maps/_Mono/POI/tsfmc_industry.yml): Stellar Blessing lighting, colour-coded distro, fire suit lockers and extinguishers.
 - [`Resources/migration.yml`](../../Resources/migration.yml): Monolith#4816 renamed the WL-01 suit and helmet without a migration
+- [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml`](../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml): unsealing strips only the seal's own components, not the ones this helmet always has
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/production_bounties.yml): the camera bounty asked for optical sensors (OpticsEconomy1)
 - [`Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml`](../../Resources/Prototypes/_Mono/Catalogs/Bounties/MMC/value_bounties.yml): MMC cash bounties pay 0.9x their value so cash-to-MIC-to-cash can't loop for profit
 - [`Resources/Prototypes/_Mono/Catalogs/Fills/Crates/materials.yml`](../../Resources/Prototypes/_Mono/Catalogs/Fills/Crates/materials.yml): copper and lithium as listed, not uranium and plasma
@@ -163,6 +177,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - PDV pack, 1250->1000 (+100 tax over mat cost)
 - [`Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml`](../../Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml): PDV pack, price 125->175
 - [`Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/ussp.yml`](../../Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/ussp.yml): the loaded magazine is class-3 contraband worth 10 FMC since Monolith#4816
+- [`Resources/Prototypes/_Mono/Claws/reptilian.yml`](../../Resources/Prototypes/_Mono/Claws/reptilian.yml): huge claws never stop a lizard shooting; they take the worst spread instead
 - [`Resources/Prototypes/_Mono/Entities/Objects/Economy/components.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Economy/components.yml): Monolith#4805 commented the price out with the flash, leaving 300 for a good made from 1800
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml`](../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml): CHARON damage doubled, it fell behind the other heavy guns
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml`](../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml): CYREXA 2->1, its shells one-shot any hardpoint or wall
@@ -208,6 +223,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - pest events were crowding out the rest of the table (was 6)
   - each pest event at most once per 90 minutes
 - [`Resources/Prototypes/Nyanotrasen/Species/felinid.yml`](../../Resources/Prototypes/Nyanotrasen/Species/felinid.yml): mrrow
+- [`Resources/Prototypes/Shaders/displacement.yml`](../../Resources/Prototypes/Shaders/displacement.yml): wizden#38042, displacement without the stencil test, which hid displaced layers in UI sprite views
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Four_PortStriking.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Four_PortStriking.xml)
   - fixed broken link, was MonolithRuleRoleplayEightSafeZones
   - was color=blue, unreadable on the dark background

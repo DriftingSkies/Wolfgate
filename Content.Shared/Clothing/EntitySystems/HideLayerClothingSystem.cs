@@ -16,7 +16,30 @@ public sealed partial class HideLayerClothingSystem : EntitySystem
         SubscribeLocalEvent<HideLayerClothingComponent, ClothingGotUnequippedEvent>(OnHideGotUnequipped);
         SubscribeLocalEvent<HideLayerClothingComponent, ClothingGotEquippedEvent>(OnHideGotEquipped);
         SubscribeLocalEvent<HideLayerClothingComponent, ItemMaskToggledEvent>(OnHideToggled);
+        // WOLFGATE START: a modsuit seal adds and removes this on a worn helmet, which raises no equip events
+        // Without these the seal never hid the layers, and removing it from a helmet that hid them left them hidden for good.
+        SubscribeLocalEvent<HideLayerClothingComponent, ComponentStartup>(OnHideStartup);
+        SubscribeLocalEvent<HideLayerClothingComponent, ComponentShutdown>(OnHideShutdown);
+        // WOLFGATE END
     }
+
+    // WOLFGATE START: layers follow the component while the clothing is worn
+    private void OnHideStartup(Entity<HideLayerClothingComponent> ent, ref ComponentStartup args)
+    {
+        if (TryComp<ClothingComponent>(ent, out var clothing) && clothing.InSlot != null)
+            SetLayerVisibility((ent, ent.Comp, clothing), Transform(ent).ParentUid, hideLayers: true);
+    }
+
+    private void OnHideShutdown(Entity<HideLayerClothingComponent> ent, ref ComponentShutdown args)
+    {
+        if (!TryComp<ClothingComponent>(ent, out var clothing) || clothing.InSlot == null)
+            return;
+
+        var wearer = Transform(ent).ParentUid;
+        if (!TerminatingOrDeleted(wearer))
+            SetLayerVisibility((ent, ent.Comp, clothing), wearer, hideLayers: false);
+    }
+    // WOLFGATE END
 
     private void OnHideToggled(Entity<HideLayerClothingComponent> ent, ref ItemMaskToggledEvent args)
     {

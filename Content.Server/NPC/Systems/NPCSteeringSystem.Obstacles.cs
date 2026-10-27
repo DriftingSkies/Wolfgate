@@ -124,8 +124,15 @@ public sealed partial class NPCSteeringSystem
                     {
                         // TODO: Use the verb.
 
+                        // WOLFGATE(NpcPry) START: give up on a door that keeps failing instead of retrying every tick
                         if (door.State != DoorState.Opening)
+                        {
+                            if (!TryNotePryAttempt(uid, ent))
+                                return SteeringObstacleStatus.Failed;
+
                             _pryingSystem.TryPry(ent, uid, out id, uid);
+                        }
+                        // WOLFGATE END
 
                         component.DoAfterId = id;
                         return SteeringObstacleStatus.Continuing;

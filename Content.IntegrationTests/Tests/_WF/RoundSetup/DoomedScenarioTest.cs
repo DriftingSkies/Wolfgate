@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.RoundSetup;
@@ -11,6 +13,8 @@ using Content.Shared._WF.ShipAccess;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Content.Shared.Maps;
+using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WF.RoundSetup;
 
@@ -112,6 +116,68 @@ public sealed class DoomedScenarioTest
             Assert.That(system.TryGetStation(lobby, out var station), Is.True);
             system.RemoveScenario(lobby);
             em.DeleteEntity(hull);
+            em.DeleteEntity(station);
+        });
+        await pair.RunTicksSync(5);
+        await server.WaitPost(() => server.System<GameTicker>().RestartRound());
+        await pair.RunTicksSync(2);
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// Nothing of the Reach is left on a station at the map's centre, where a grid loads before it is moved out.
+    /// </summary>
+    [Test]
+    public async Task ReachLeavesNothingOnTheStationAtTheCentre()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
+        var server = pair.Server;
+        var em = server.EntMan;
+        var system = server.System<WFDoomedScenarioSystem>();
+        var mapSystem = server.System<SharedMapSystem>();
+        const int lobby = 19102;
+        const int half = 80;
+        await server.WaitPost(() => server.System<GameTicker>().StartRound(force: true));
+        await pair.RunTicksSync(2);
+
+        var station = EntityUid.Invalid;
+        var before = 0;
+        await server.WaitAssertion(() =>
+        {
+            // A deck at the centre, standing in for Central.
+            var mapUid = mapSystem.GetMap(server.System<GameTicker>().DefaultMap);
+            var grid = mapSystem.CreateGridEntity(server.System<GameTicker>().DefaultMap);
+            station = grid.Owner;
+            server.System<SharedTransformSystem>().SetWorldPosition(station, Vector2.Zero);
+            var floor = new Tile(server.ResolveDependency<ITileDefinitionManager>()["FloorSteel"].TileId);
+            var tiles = new List<(Vector2i, Tile)>();
+            for (var x = -half; x < half; x++)
+            {
+                for (var y = -half; y < half; y++)
+                {
+                    tiles.Add((new Vector2i(x, y), floor));
+                }
+            }
+
+            mapSystem.SetTiles(station, grid.Comp, tiles);
+            before = em.GetComponent<TransformComponent>(station).ChildCount;
+            Assert.That(em.GetComponent<TransformComponent>(station).MapUid, Is.EqualTo(mapUid));
+
+            Assert.That(system.TryPrepare(lobby, out _, out var reason), Is.True, reason);
+        });
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            var children = em.GetComponent<TransformComponent>(station).ChildEnumerator;
+            var strays = new List<string>();
+            while (children.MoveNext(out var child))
+            {
+                strays.Add(em.ToPrettyString(child).ToString());
+            }
+
+            Assert.That(strays, Has.Count.EqualTo(before), "Reach entities were left on the deck at the centre: " + string.Join(", ", strays.Take(10)));
+            system.RemoveScenario(lobby);
             em.DeleteEntity(station);
         });
         await pair.RunTicksSync(5);

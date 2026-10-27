@@ -770,3 +770,85 @@
     offset: "0.0,0.500"
     layers:
     - state: siderite_growth1
+
+- type: entity
+  parent: BaseRock
+  id: PolarisOutcropCoal
+  suffix: Coal
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Decoration/outcrops_polaris.rsi
+    state: outcrop-coal
+  - type: SoundOnGather
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOreCoal
+
+- type: entity
+  parent: PolarisOutcropCoal
+  id: PolarisOutcropDiamond
+  suffix: Diamond
+  components:
+  - type: Sprite
+    state: outcrop-diamond
+  - type: OreVein
+    currentOre: OreDiamond
+
+- type: entity
+  parent: PolarisOutcropCoal
+  id: PolarisOutcropGold
+  suffix: Gold
+  components:
+  - type: Sprite
+    state: outcrop-gold
+  - type: OreVein
+    currentOre: NFOreGold
+
+- type: entity
+  parent: PolarisOutcropCoal
+  id: PolarisOutcropIron
+  suffix: Iron
+  components:
+  - type: Sprite
+    state: outcrop-iron
+  - type: OreVein
+    currentOre: NFOreSteel
+
+- type: entity
+  parent: PolarisOutcropCoal
+  id: PolarisOutcropPhoron
+  suffix: Plasma
+  components:
+  - type: Sprite
+    state: outcrop-phoron
+  - type: OreVein
+    currentOre: NFOrePlasma
+
+- type: entity
+  parent: PolarisOutcropCoal
+  id: PolarisOutcropSilver
+  suffix: Silver
+  components:
+  - type: Sprite
+    state: outcrop-silver
+  - type: OreVein
+    currentOre: NFOreSilver
+
+- type: entity
+  parent: PolarisOutcropCoal
+  id: PolarisOutcropUranium
+  suffix: Uranium
+  components:
+  - type: Sprite
+    state: outcrop-uranium
+  - type: OreVein
+    currentOre: NFOreUranium

@@ -59,6 +59,10 @@ wf-feedback-status-pending = Pending
 wf-feedback-status-checked = Checked
 wf-feedback-status-fixed = Fixed
 wf-feedback-status-nonissue = Non-Issue
+wf-feedback-status-accepted = Accepted
+wf-feedback-status-declined = Declined
+wf-feedback-status-read = Read
+wf-feedback-status-resolved = Resolved
 wf-feedback-entry-header = [bold]#{ $id }[/bold] [color=#999999]{ $kind }, { $date }[/color] [color={ $color }][bold]{ $status }[/bold][/color]
 wf-feedback-entry-title = { $title }
 wf-feedback-entry-staff = [color=#8fb7e0]Staff: { $message }[/color]

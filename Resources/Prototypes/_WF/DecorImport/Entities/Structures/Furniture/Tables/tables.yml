@@ -1244,3 +1244,26 @@
   - type: Construction
     graph: DecorBuildNebulaTableGamblingtable
     node: built
+
+- type: entity
+  parent: TableBase
+  id: AuroraTableDiona
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Furniture/Tables/table_diona_aurora.rsi
+    snapCardinals: false
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Furniture/Tables/table_diona_aurora.rsi
+  - type: IconSmooth
+    key: AuroraTableDiona
+    base: biomass_
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ Destruction ]

@@ -1,8 +1,8 @@
 <controls:FancyWindow xmlns="https://spacestation14.io"
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:loadouts="clr-namespace:Content.Client._WF.Loadouts"
-                      MinSize="640 440"
-                      SetSize="980 800">
+                      MinSize="900 440"
+                      SetSize="1240 800">
     <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
         <BoxContainer Orientation="Horizontal" SeparationOverride="8">
             <loadouts:LoadoutSearchBox Name="SearchBar" HorizontalExpand="True" MinWidth="110"

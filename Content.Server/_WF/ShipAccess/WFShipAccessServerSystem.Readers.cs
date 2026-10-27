@@ -186,6 +186,7 @@ public sealed partial class WFShipAccessServerSystem
             keys.Clear();
             keys.UnionWith(backup.Keys);
             keys.UnionWith(owners);
+            keys.Add(WFShipAiAccessSystem.AiKey(ship.Owner));
             foreach (var entry in ship.Comp.AllowList)
                 keys.Add(_access.ToRecordKey(entry.Key));
 
@@ -251,6 +252,10 @@ public sealed partial class WFShipAccessServerSystem
                 }
                 break;
         }
+
+        // The ship's own AI opens any door that admits someone by card.
+        if (ruleKind is not (WFDoorAccessRule.Public or WFDoorAccessRule.Sealed))
+            keys.Add(WFShipAiAccessSystem.AiKey(ship.Owner));
 
         backup.Locked = ruleKind != WFDoorAccessRule.Public;
         CommitReader(reader);

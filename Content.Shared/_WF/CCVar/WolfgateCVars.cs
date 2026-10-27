@@ -95,6 +95,10 @@ public sealed class WolfgateCVars
     public static readonly CVarDef<string> ChatTabs =
         CVarDef.Create("wf.chat_tabs", string.Empty, CVar.CLIENTONLY | CVar.ARCHIVE);
 
+    /// <summary>Whether saved chat tabs have had the Subtle channel added to an old default Local tab, done once.</summary>
+    public static readonly CVarDef<bool> ChatTabsSubtleAdded =
+        CVarDef.Create("wf.chat_tabs_subtle_added", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
     /// <summary>
     /// Comma separated entity prototype ids starred in the spawn menu's Favourites folder.
     /// </summary>

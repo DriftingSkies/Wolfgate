@@ -133,10 +133,12 @@ public sealed partial class WFCockpitView : Control
             button.Group = group;
             button.OnPressed += _ =>
             {
+                _awaitedPage = null;
                 SelectPage(key);
                 SaveLayout();
             };
             button.Pressed = key == DefaultPage;
+            button.Visible = content is not IWFCockpitOptionalPage;
             selectors.AddChild(button);
             _selectors.Add(key, button);
             content.HorizontalExpand = content.VerticalExpand = true;
@@ -190,6 +192,7 @@ public sealed partial class WFCockpitView : Control
         AddChild(_camera);
         AddChild(_shields);
         InitializeGunnery(viewport);
+        InitializeScanner(viewport);
         LayoutContainer.SetAnchorPreset(this, LayoutContainer.LayoutPreset.Wide);
         screen.AddChild(this);
         LoadLayout();
@@ -350,5 +353,6 @@ public sealed partial class WFCockpitView : Control
     {
         base.FrameUpdate(args);
         _console.WfCockpitRefresh();
+        SyncOptionalPages();
     }
 }

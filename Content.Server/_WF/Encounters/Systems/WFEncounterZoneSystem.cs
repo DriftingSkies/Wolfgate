@@ -157,6 +157,10 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                     || _escorts.AreInFormation(ship.Grid, rival.Grid))
                     continue;
 
+                // The sides of an encounter that hasn't begun hold their fire on each other until a player comes near.
+                if (other == uid && !Comp<WFEncounterComponent>(uid).Begun)
+                    continue;
+
                 var theirs = Company(rival.Grid);
                 if (WFCompanyFamily.Same(company, theirs) || IsNeutral(ship, theirs))
                     continue;

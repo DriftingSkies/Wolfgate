@@ -7,6 +7,7 @@ using Content.Server.GameTicking;
 using Content.Server.Ghost;
 using Content.Server.Popups;
 using Content.Shared._WF.MappingMode;
+using Content.Shared._WF.MappingMode.Test;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
@@ -179,9 +180,21 @@ public sealed partial class WFMappingModeSystem : EntitySystem
         ClearState();
     }
 
+    /// <summary>
+    /// Mappers can't ghost, from their observer or a test character: the ghost lands on a paused or deleted map and
+    /// leaves them in nullspace. Mapping admins can.
+    /// </summary>
     private void OnGhostAttempt(GhostAttemptHandleEvent ev)
     {
-        if (ev.Handled || ev.Mind.CurrentEntity is not { } entity || !HasComp<WFMappingObserverComponent>(entity))
+        if (ev.Handled)
+            return;
+
+        var mapping = ev.Mind.CurrentEntity is { } entity &&
+                      (HasComp<WFMappingObserverComponent>(entity) || HasComp<WFMappingTesterComponent>(entity));
+        if (!mapping && (!Enabled || ev.Mind.UserId is not { } user || !TryGetMembership(user, out _)))
+            return;
+
+        if (ev.Mind.UserId is { } id && _players.TryGetSessionById(id, out var player) && IsAdminMapper(player))
             return;
 
         ev.Handled = true;

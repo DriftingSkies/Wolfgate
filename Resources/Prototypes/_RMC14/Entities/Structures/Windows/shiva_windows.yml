@@ -1,0 +1,53 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  parent: BaseStructure
+  id: CMWindowShivaIce
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Windows/ice.rsi
+    state: ice_wall
+    drawdepth: Walls
+  - type: Icon
+    sprite: _RMC14/Structures/Windows/ice.rsi
+    state: ice_wall
+  - type: PlacementReplacement
+    key: walls
+  - type: Airtight
+  - type: RadiationBlocker
+    resistance: 2
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        density: 1000
+  - type: RMCMesonsNonviewable
+  - type: RMCWallExplosionDeletable
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        collection: GlassSmack
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Glass
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WindowShatter
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+# WOLFGATE END

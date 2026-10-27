@@ -15,7 +15,9 @@ Entry points: `WolfgateSpeciesPicker` (species cards with previews and guidebook
 
 ### Client
 
+- [`Content.Client/_WF/Humanoid/HumanoidProfileEditor.SizePercent.cs`](HumanoidProfileEditor.SizePercent.cs)
 - [`Content.Client/_WF/Humanoid/WolfgateDescriptionWindow.cs`](WolfgateDescriptionWindow.cs)
+- [`Content.Client/_WF/Humanoid/WolfgateEvenRow.cs`](WolfgateEvenRow.cs)
 - [`Content.Client/_WF/Humanoid/WolfgateMarkingIcon.cs`](WolfgateMarkingIcon.cs)
 - [`Content.Client/_WF/Humanoid/WolfgateMarkingNames.cs`](WolfgateMarkingNames.cs)
 - [`Content.Client/_WF/Humanoid/WolfgateMarkingPicker.cs`](WolfgateMarkingPicker.cs)
@@ -27,8 +29,11 @@ Entry points: `WolfgateSpeciesPicker` (species cards with previews and guidebook
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Humanoid/SizePercentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Humanoid/SizePercentTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateEvenRowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateEvenRowTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingIconTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingIconTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingPickerChassisTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingPickerChassisTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingPickerLayoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingPickerLayoutTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingTileTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Humanoid/WolfgateMarkingTileTest.cs)
 
 ### Localization
@@ -60,6 +65,7 @@ Entry points: `WolfgateSpeciesPicker` (species cards with previews and guidebook
   - was CreateCharacter + ReloadCharacterPickers here
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml`](../../Lobby/UI/HumanoidProfileEditor.xaml)
   - overrides the species name wherever it is shown.
+  - an even row, not a Box or Grid. Both measure each picker against the whole width, and a picker picks its tile columns from the width it is measured with, so hair took far too many columns: its tiles were cut off, or facial hair was pushed out of the card on a wide screen. The row measures each picker against its own half.
   - description moved out of its own tab and under the preview. The editor is capped and scrolls, so a long description cannot stretch the pane; Expand opens a full-size editor.
   - live length and the square bracket note, so neither surprises the player at save time.
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../Lobby/UI/HumanoidProfileEditor.xaml.cs)
@@ -68,6 +74,7 @@ Entry points: `WolfgateSpeciesPicker` (species cards with previews and guidebook
   - sex icon selector replaces the dropdown
   - species name override; blank falls back to the species' own name
   - description box under the preview, plus a full-size editor for longer text
+  - typed percentages for height and width
   - the description lives under the preview now, so this only shows or hides that box.
   - populate the species picker and sync its selection
   - body split out so the species tab's per-card info buttons can reach it

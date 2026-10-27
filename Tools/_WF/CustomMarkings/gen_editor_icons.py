@@ -307,12 +307,89 @@ ICONS = {
         "................",
         "................",
     ],
+    # A frame card with an arrow pushing it along: move the frame later. Earlier is its mirror.
+    "frameright": [
+        "................",
+        "................",
+        "..#######.......",
+        "..#.....#.......",
+        "..#.....#.......",
+        "..#.....#...#...",
+        "..#.....#...##..",
+        "..#.....#######.",
+        "..#.....#######.",
+        "..#.....#...##..",
+        "..#.....#...#...",
+        "..#.....#.......",
+        "..#######.......",
+        "................",
+        "................",
+        "................",
+    ],
+    # Two arrows passing each other: the frames in the opposite order.
+    "reverse": [
+        "................",
+        "................",
+        "....#...........",
+        "...##...........",
+        "..############..",
+        "..############..",
+        "...##...........",
+        "....#...........",
+        "...........#....",
+        "...........##...",
+        "..############..",
+        "..############..",
+        "...........##...",
+        "...........#....",
+        "................",
+        "................",
+    ],
+    # A clock face: this frame's time for every frame.
+    "timeall": [
+        "................",
+        ".....######.....",
+        "...##......##...",
+        "..#....##....#..",
+        "..#....##....#..",
+        ".#.....##.....#.",
+        ".#.....##.....#.",
+        ".#.....######.#.",
+        ".#.....######.#.",
+        ".#............#.",
+        ".#............#.",
+        "..#..........#..",
+        "..#..........#..",
+        "...##......##...",
+        ".....######.....",
+        "................",
+    ],
+    # An arrow there and one back: play down to the first frame at the end.
+    "pingpong": [
+        "................",
+        "................",
+        "...........#....",
+        "...........##...",
+        "..############..",
+        "..############..",
+        "...........##...",
+        "...........#....",
+        "............##..",
+        ".............#..",
+        "....#........#..",
+        "...##.......##..",
+        "..###########...",
+        "..##########....",
+        "...##...........",
+        "....#...........",
+    ],
 }
 
 # The order states are listed in meta.json. Redo mirrors undo, previous mirrors next; the other arrows turn the up arrow.
 ORDER = [
     "pencil", "eraser", "fill", "picker", "bodyeraser", "symmetry", "undo", "redo", "flip", "mirror", "trash",
     "left", "up", "down", "right", "export", "previous", "next", "add", "remove", "play",
+    "frameleft", "frameright", "reverse", "timeall", "pingpong",
 ]
 
 
@@ -336,6 +413,7 @@ def icons():
     images["down"] = images["up"].transpose(Image.FLIP_TOP_BOTTOM)
     images["left"] = images["up"].transpose(Image.ROTATE_90)
     images["right"] = images["up"].transpose(Image.ROTATE_270)
+    images["frameleft"] = images["frameright"].transpose(Image.FLIP_LEFT_RIGHT)
     assert set(ORDER) == set(images), set(images) ^ set(ORDER)
     return images
 

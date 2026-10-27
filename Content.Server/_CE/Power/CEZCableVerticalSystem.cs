@@ -44,6 +44,9 @@ public sealed partial class CEZCableVerticalSystem : EntitySystem
 
     private void RefloodVerticalNodes(EntityUid gridUid)
     {
+        // WOLFGATE(BattleLoad) START: batched into one scan per tick, see CEZCableVerticalSystem.BattleLoad.cs
+        WFQueueReflood(gridUid);
+        /*
         var enumerator = EntityQueryEnumerator<NodeContainerComponent, TransformComponent>();
         while (enumerator.MoveNext(out _, out var nc, out var xform))
         {
@@ -56,5 +59,7 @@ public sealed partial class CEZCableVerticalSystem : EntitySystem
                     _nodeGroup.QueueReflood(node);
             }
         }
+        */
+        // WOLFGATE END
     }
 }

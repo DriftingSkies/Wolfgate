@@ -2,7 +2,9 @@
   id: Kami
   parent: BaseVessel
   name: MMC Kami
-  description: Light mining craft. Only equipped with 2 14mms, plus 2 mining pulsers and a magnet.
+  # WOLFGATE(AsteroidMining): M12 mining lasers in place of the mining pulsers
+  # description: Light mining craft. Only equipped with 2 14mms, plus 2 mining pulsers and a magnet.
+  description: Light mining craft. Only equipped with 2 14mms, plus 2 M12 mining lasers and a magnet.
   price: 92015
   category: Small
   group: Mieyo

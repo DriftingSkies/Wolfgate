@@ -20,6 +20,8 @@ public sealed partial class WFCockpitView
     /// <summary>The MFD page a cockpit opens on when none is saved.</summary>
     public const string DefaultPage = "wf-cockpit-nav";
 
+    /// <summary>An optional page to open as soon as it has something to show: the saved page, or one that went away while open.</summary>
+    private string? _awaitedPage;
     private bool _swapped;
     private bool _expanded;
     private bool _expandMoot;
@@ -41,10 +43,41 @@ public sealed partial class WFCockpitView
     {
         var config = IoCManager.Resolve<IConfigurationManager>();
         var page = config.GetCVar(WolfgateCVars.CockpitMfdPage);
-        SelectPage(_pageHosts.ContainsKey(page) ? page : DefaultPage);
+        if (!_pageHosts.ContainsKey(page))
+            page = DefaultPage;
+        else if (!_selectors[page].Visible)
+        {
+            _awaitedPage = page;
+            page = DefaultPage;
+        }
+        SelectPage(page);
         SetSwapped(config.GetCVar(WolfgateCVars.CockpitMfdSwapped));
         SetExpanded(config.GetCVar(WolfgateCVars.CockpitMfdExpanded));
         SetMaximised(config.GetCVar(WolfgateCVars.CockpitMfdMaximised));
+    }
+
+    /// <summary>
+    /// Shows an optional page's selector only while it has something to show. A page that goes away while open hands the
+    /// MFD back to the default page, and opens again if it returns before the player picks another.
+    /// </summary>
+    private void SyncOptionalPages()
+    {
+        foreach (var (key, content) in _pages)
+        {
+            if (content is not IWFCockpitOptionalPage optional || _selectors[key].Visible == optional.Available)
+                continue;
+            _selectors[key].Visible = optional.Available;
+            if (optional.Available && _awaitedPage == key)
+            {
+                _awaitedPage = null;
+                SelectPage(key);
+            }
+            else if (!optional.Available && _page == key)
+            {
+                _awaitedPage = key;
+                SelectPage(DefaultPage);
+            }
+        }
     }
 
     /// <summary>Saves the MFD page and panel arrangement when the player changes one.</summary>

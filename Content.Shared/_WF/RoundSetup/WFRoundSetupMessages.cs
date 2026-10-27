@@ -70,11 +70,11 @@ public sealed record WFRoundSetupPlayer(NetUserId UserId, string Name, int? Role
 
 /// <summary>A member's own job and readiness, with no character profile data.</summary>
 [Serializable, NetSerializable]
-public sealed record WFRoundSetupMember(NetUserId UserId, string Name, string? Job, NetEntity? Station, bool Ready, bool Spawned, bool Connected, int? RoleId = null, string Title = "", int Contribution = 0);
+public sealed record WFRoundSetupMember(NetUserId UserId, string Name, string? Job, NetEntity? Station, bool Ready, bool Spawned, bool Connected, int? RoleId = null, string Title = "", int Contribution = 0, WFCrewMemberStatus Status = WFCrewMemberStatus.Waiting);
 
 /// <summary>A public crew roster entry containing only character identity and readiness.</summary>
 [Serializable, NetSerializable]
-public sealed record WFRoundSetupCrewmate(string Name, string? Job, string Title, bool Ready, bool Spawned);
+public sealed record WFRoundSetupCrewmate(string Name, string? Job, string Title, bool Ready, bool Spawned, WFCrewMemberStatus Status = WFCrewMemberStatus.Waiting);
 
 /// <summary>The recipient's exact purchase quote; bank balances remain private.</summary>
 [Serializable, NetSerializable]
@@ -123,6 +123,7 @@ public sealed class WFRoundSetupLobby
     public bool AllowLateJoin;
     public bool Started;
     public WFRoundSetupShip? CurrentShip;
+    public WFCrewShipCondition ShipCondition;
     public int MemberCount;
     public WFRoundSetupCrewmate[] Roster = Array.Empty<WFRoundSetupCrewmate>();
     public WFRoundSetupMember[] Members = Array.Empty<WFRoundSetupMember>();

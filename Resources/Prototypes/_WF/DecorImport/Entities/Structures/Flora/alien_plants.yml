@@ -74,6 +74,12 @@
     offset: "0,0"
     layers:
     - state: chilly_pepper1
+      map: [ "base" ]
+  - type: RandomSprite
+    available:
+    - base:
+        chilly_pepper1: ""
+        chilly_pepper2: ""
 
 - type: entity
   parent: BaseFlora
@@ -290,9 +296,28 @@
     offset: "0,0"
     layers:
     - state: lvcluster_1
+      map: [ "base" ]
+    - state: lvcluster_1-em
+      map: [ "glow" ]
+      shader: unshaded
+  - type: RandomSprite
+    available:
+    - base:
+        lvcluster_1: ""
+      glow:
+        lvcluster_1-em: ""
+    - base:
+        lvcluster_2: ""
+      glow:
+        lvcluster_2-em: ""
+    - base:
+        lvcluster_3: ""
+      glow:
+        lvcluster_3-em: ""
   - type: PointLight
     radius: 1.9
     energy: 1.0
+    color: "#00FFFF"
 
 - type: entity
   parent: BaseFlora

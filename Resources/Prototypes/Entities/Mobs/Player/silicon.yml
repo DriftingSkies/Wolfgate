@@ -441,6 +441,7 @@
     powerLoad: 1000
     needsPower: false # Mono
   - type: StationAiCore
+  - type: StationRecordKeyStorage # WOLFGATE(ShipAccess): holds the ship key of the grid the core is anchored on
   - type: StationAiVision
   - type: InteractionOutline
   - type: Sprite
@@ -554,6 +555,7 @@
     powerLoad: 1000
     needsPower: false # Mono
   - type: StationAiCore
+  - type: StationRecordKeyStorage # WOLFGATE(ShipAccess): holds the ship key of the grid the core is anchored on
   - type: StationAiVision
   - type: InteractionOutline
   - type: Sprite

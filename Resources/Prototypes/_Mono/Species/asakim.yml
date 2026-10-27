@@ -150,7 +150,7 @@
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ LizardTailSmooth ]
     HeadTop:
       points: 2
@@ -159,11 +159,11 @@
       points: 2 # WWDP-Edit
       required: false
     Chest:
-      points: 3
+      points: 4 # WOLFGATE(Species): was 3, more marking slots
       required: false
     Legs:
-      points: 2
+      points: 8 # WOLFGATE(Species): was 2, more marking slots
       required: false
     Arms:
-      points: 2
+      points: 8 # WOLFGATE(Species): was 2, more marking slots
       required: false

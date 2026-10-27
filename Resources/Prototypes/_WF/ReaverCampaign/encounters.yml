@@ -28,23 +28,23 @@
     # anchors a shield on any without one. From tier 3 only hulls with six hardpoints or more.
     tiers:
     - minTier: 0
-      vessels: [ Balor, MClass, Intermission, Hammerhead, Arkansaw, Claymore, Pelican, Saintie ]
+      vessels: [ Balor, MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Pelican, Saintie ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitHubLight
     - minTier: 2
-      vessels: [ Balor, MClass, Intermission, Hammerhead, Arkansaw, Claymore, Pelican, Saintie ]
+      vessels: [ Balor, MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Pelican, Saintie ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitHubMedium
     - minTier: 3
-      vessels: [ MClass, Intermission, Hammerhead, Arkansaw, Claymore, Saintie ]
+      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHubHeavy
     - minTier: 4
-      vessels: [ MClass, Intermission, Hammerhead, Arkansaw, Claymore, Saintie ]
+      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitHubSiege
     - minTier: 5
-      vessels: [ MClass, Intermission, Hammerhead, Arkansaw, Claymore, Saintie ]
+      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitHubSiege
     deckhands: 4

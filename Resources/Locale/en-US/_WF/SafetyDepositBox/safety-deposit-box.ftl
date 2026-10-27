@@ -47,6 +47,10 @@ safety-deposit-console-error-invalid-box = Invalid safety deposit box.
 safety-deposit-console-error-not-owner = This box does not belong to you.
 safety-deposit-console-error-no-storage = Error: Box has no storage.
 safety-deposit-console-deposit-success = Safety deposit box contents saved. The box has been stored.
+safety-deposit-console-deposit-nested-refused = {$count ->
+    [one] One item tucked inside something can't be stored and was handed back.
+   *[other] {$count} items tucked inside things can't be stored and were handed back.
+}
 safety-deposit-console-error-box-not-found = Box not found.
 safety-deposit-console-error-not-lost = This box is not lost and cannot be reclaimed.
 safety-deposit-console-reclaim-success = Lost box reclaimed! A new empty box has been issued.

@@ -2,7 +2,7 @@
   id: WFDredger
   parent: BaseVessel
   name: MMC Dredger
-  description: A lightly armed mining and salvage vessel with an ore processor, a scrap processor, salvage radar, ore magnet, tractor beam and a pinch generator. Comes with four M25 mining pulsers, plus four autocannons to hold its claim.
+  description: A lightly armed mining and salvage vessel with an ore processor, a scrap processor, salvage radar, ore magnet, tractor beam and a pinch generator. Comes with four M12 mining lasers, plus four autocannons to hold its claim.
   price: 150000 # ~50% over the 99833 appraisal
   category: Medium
   group: Mieyo

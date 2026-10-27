@@ -1,8 +1,10 @@
 using System.Linq;
 using Content.Shared.Humanoid;
+using Content.Shared.Humanoid.Markings;
 using Content.Shared.Preferences;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.Species;
 
@@ -46,6 +48,22 @@ public sealed class OptionalDefaultMarkingsTest
 
             entities.DeleteEntity(mob);
         });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Every species lets the player go without a tail.</summary>
+    [Test]
+    public async Task TailsOptionalTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var proto = pair.Server.ResolveDependency<IPrototypeManager>();
+
+        var required = proto.EnumeratePrototypes<MarkingPointsPrototype>()
+            .Where(p => p.Points.TryGetValue(MarkingCategories.Tail, out var tail) && tail.Required)
+            .Select(p => p.ID)
+            .ToList();
+        Assert.That(required, Is.Empty, "these marking points require a tail.");
 
         await pair.CleanReturnAsync();
     }

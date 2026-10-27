@@ -172,3 +172,28 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/tgstation/tgstation/blob/0f669632f5f8972a04df1e24bb987240dbaf7518/icons/turf/beach.dmi (state deepwater)."
   source: "https://github.com/tgstation/tgstation"
+
+- files: [ siderite.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/tgstation/tgstation/blob/0f669632f5f8972a04df1e24bb987240dbaf7518/icons/turf/floors/siderite.dmi (state siderite-255)."
+  source: "https://github.com/tgstation/tgstation"
+
+- files: [ siderite_edge_south.png, siderite_edge_north.png, siderite_edge_east.png, siderite_edge_west.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/tgstation/tgstation/blob/0f669632f5f8972a04df1e24bb987240dbaf7518/icons/turf/floors/siderite.dmi (states siderite-55, siderite-110, siderite-157, siderite-203)."
+  source: "https://github.com/tgstation/tgstation"
+
+- files: [ necropolis_1.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/tgstation/tgstation/blob/0f669632f5f8972a04df1e24bb987240dbaf7518/icons/turf/floors.dmi (state necro1)."
+  source: "https://github.com/tgstation/tgstation"
+
+- files: [ necropolis_2.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/tgstation/tgstation/blob/0f669632f5f8972a04df1e24bb987240dbaf7518/icons/turf/floors.dmi (state necro2)."
+  source: "https://github.com/tgstation/tgstation"
+
+- files: [ necropolis_3.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/tgstation/tgstation/blob/0f669632f5f8972a04df1e24bb987240dbaf7518/icons/turf/floors.dmi (state necro3)."
+  source: "https://github.com/tgstation/tgstation"

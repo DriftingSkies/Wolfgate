@@ -107,6 +107,7 @@ public sealed partial class GenitalOrganSystem : EntitySystem
             return;
 
         TryComp<GenitalsComponent>(uid, out var genitals);
+        SetNsfwText(uid, profile);
 
         var species = profile.Species.Id;
         if (!_genitals.IsEligible(profile.Age, species))

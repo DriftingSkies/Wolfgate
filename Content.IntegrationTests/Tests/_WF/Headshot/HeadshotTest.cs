@@ -96,4 +96,20 @@ public sealed class HeadshotTest
         builder.UseSqlite(conn);
         return new ServerDbSqlite(() => builder.Options, true, cfg, true, opsLog);
     }
+
+    /// <summary>A long URL scrolls inside the box; the window keeps its width.</summary>
+    [Test]
+    public async Task WindowKeepsWidthTest()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        await pair.Client.WaitAssertion(() =>
+        {
+            var url = "not-a-link-" + new string('a', 400);
+            var window = new Content.Client._WF.Headshot.HeadshotWindow(url);
+            window.Measure(new System.Numerics.Vector2(4000, 4000));
+            Assert.That(window.DesiredSize.X, Is.LessThan(560f));
+            window.Close();
+        });
+        await pair.CleanReturnAsync();
+    }
 }

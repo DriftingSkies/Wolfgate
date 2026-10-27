@@ -75,6 +75,7 @@ public static class GenitalProfileJson
                     Visibility = breasts.Visibility.ToString(),
                 }
                 : null,
+            Nsfw = string.IsNullOrEmpty(profile.NsfwText) ? null : profile.NsfwText,
             Legacy = profile.LegacyMarkings,
         };
 
@@ -147,6 +148,15 @@ public static class GenitalProfileJson
                 failures.Add("womb");
         }
 
+        var nsfw = string.Empty;
+        if (root.TryGetProperty("nsfw", out var nsfwElement) && nsfwElement.ValueKind != JsonValueKind.Null)
+        {
+            if (nsfwElement.ValueKind == JsonValueKind.String)
+                nsfw = nsfwElement.GetString() ?? string.Empty;
+            else
+                failures.Add("nsfw");
+        }
+
         List<string>? legacy = null;
         if (root.TryGetProperty("legacy", out var legacyElement) && legacyElement.ValueKind != JsonValueKind.Null)
         {
@@ -167,7 +177,8 @@ public static class GenitalProfileJson
             .WithTesticles(testicles)
             .WithVagina(vagina)
             .WithWomb(womb)
-            .WithBreasts(breasts);
+            .WithBreasts(breasts)
+            .WithNsfwText(nsfw);
 
         if (legacy != null && version != 0)
             profile = profile.AsMigrated(legacy);
@@ -272,7 +283,8 @@ public static class GenitalProfileJson
     /// <summary>Holds nothing a player chose: what an empty column loads as. Only an edit changes a version-0 profile.</summary>
     private static bool IsUntouched(GenitalProfile profile)
     {
-        return profile.IsEmpty && profile.RevealMode == GenitalRevealMode.UndergarmentRemoval;
+        return profile.IsEmpty && profile.RevealMode == GenitalRevealMode.UndergarmentRemoval
+               && string.IsNullOrEmpty(profile.NsfwText);
     }
 
     /// <summary>A defined enum name; null gives the fallback. Unknown names and numbers fail.</summary>
@@ -330,6 +342,7 @@ public static class GenitalProfileJson
         [JsonPropertyName("vagina")] public VaginaDto? Vagina { get; init; }
         [JsonPropertyName("womb")] public bool Womb { get; init; }
         [JsonPropertyName("breasts")] public BreastsDto? Breasts { get; init; }
+        [JsonPropertyName("nsfw")] public string? Nsfw { get; init; }
         [JsonPropertyName("legacy")] public List<string>? Legacy { get; init; }
     }
 

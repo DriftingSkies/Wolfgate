@@ -260,6 +260,7 @@ namespace Content.Client.Lobby.UI
             // WOLFGATE END
 
             InitializeEmoteVoices(); // WOLFGATE(EmoteVoices)
+            InitializeSizePercent(); // WOLFGATE(Humanoid): typed percentages for height and width
             InitializeBloodColour(); // WOLFGATE(BloodColour)
 
             #endregion Sex
@@ -1737,6 +1738,16 @@ namespace Content.Client.Lobby.UI
                 Profile = Profile?.WithLoadout(roleLoadout);
                 ReloadPreview();
             };
+
+            // WOLFGATE(Gags) START: colours picked for a recolourable item
+            _loadoutWindow.OnLoadoutColorsChanged += (loadoutGroup, loadoutProto, colors) =>
+            {
+                roleLoadout.SetWFGagsColors(loadoutGroup, loadoutProto, colors);
+                _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
+                Profile = Profile?.WithLoadout(roleLoadout);
+                ReloadPreview();
+            };
+            // WOLFGATE END
 
             JobOverride = jobProto;
             ReloadPreview();

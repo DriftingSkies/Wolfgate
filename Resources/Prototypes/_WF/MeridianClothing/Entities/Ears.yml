@@ -1,0 +1,35 @@
+- type: entity
+  parent: Clothing
+  id: WFMeridianClothingEarsDormsHeadphones
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Ears/dorms_headphones.rsi
+    layers:
+    - state: icon-1-c1
+      color: "#383840"
+    - state: icon-2-c2
+      color: "#DC7EF4"
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Ears/dorms_headphones.rsi
+    slots: [ears]
+    clothingVisuals:
+      ears:
+      - state: equipped-EARS-1-c1
+        color: "#383840"
+      - state: equipped-EARS-2-c2
+        color: "#DC7EF4"
+  - type: WFGags
+    colors:
+    - "#383840"
+    - "#DC7EF4"
+
+- type: entity
+  parent: Clothing
+  id: WFMeridianClothingEarsEarmuffs
+  components:
+  - type: Sprite
+    sprite: _WF/MeridianClothing/Ears/earmuffs.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WF/MeridianClothing/Ears/earmuffs.rsi
+    slots: [ears]

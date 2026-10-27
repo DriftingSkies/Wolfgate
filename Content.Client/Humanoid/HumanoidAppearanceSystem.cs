@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client._WF.Genitals; // WOLFGATE(Genitals)
+using Content.Client._WF.LegStyle; // WOLFGATE(LegStyle)
 using Content.Shared._WF.Genitals; // WOLFGATE(Genitals)
 using Content.Shared._WF.Genitals.Events; // WOLFGATE(Genitals)
 using Content.Shared.Humanoid;
@@ -18,6 +19,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private MarkingManager _markingManager = default!;
     [Dependency] private GenitalsVisualizerSystem _genitalsVisuals = default!; // WOLFGATE(Genitals): anatomy undergarment hiding
+    [Dependency] private LegStyleSystem _legStyle = default!; // WOLFGATE(LegStyle): leg markings follow the picked legs
 
     public override void Initialize()
     {
@@ -385,6 +387,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
                 sprite.LayerMapSet(layerId, layer);
                 humanoid.ClientMarkingLayers.Add(layerId); // WOLFGATE(Species): removed on the next rebuild whatever drew it
                 sprite.LayerSetSprite(layerId, rsi);
+                _legStyle.FitMarking((uid, humanoid, sprite), layerSlot, layerId, rsi.RsiPath); // WOLFGATE(LegStyle): reshape leg markings like clothing
             }
 		    // impstation edit begin - check if there's a shader defined in the markingPrototype's shader datafield, and if there is...
 			if (markingPrototype.Shader != null)

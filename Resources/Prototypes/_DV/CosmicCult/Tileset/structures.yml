@@ -52,4 +52,56 @@
   - type: IconSmooth
     key: cosmictable
     base: state_
+
+- type: entity
+  parent: BaseStructure
+  id: CosmicObelisk
+  components:
+  - type: Sprite
+    sprite: _DV/CosmicCult/Tileset/cosmicpillar.rsi
+    offset: 0, 0.5
+    layers:
+      - state: icon
+    drawdepth: Mobs
+    noRot: true
+  - type: SpriteFade
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.1,0.2,0.375"
+        mask:
+        - LargeMobMask
+        layer:
+        - WallLayer
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+
+- type: entity
+  id: AltarCosmic
+  parent: AltarNanotrasen
+  components:
+  - type: Sprite
+    sprite: _DV/CosmicCult/Tileset/altar.rsi
+    layers:
+    - state: cosmic
+    - state: cosmic_light
+      shader: unshaded
+  - type: Icon
+    sprite: _DV/CosmicCult/Tileset/altar.rsi
+    state: cosmic
+  - type: PointLight
+    radius: 1.5
+    energy: 2.5
+    color: "#42a4ae"
 # WOLFGATE END

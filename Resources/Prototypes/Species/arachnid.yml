@@ -58,7 +58,7 @@
       required: false
     Tail:
       points: 1
-      required: true
+      required: false # WOLFGATE(Species): tails are optional so players can go without one
       defaultMarkings: [ ArachnidAppendagesDefault ]
     HeadTop:
       points: 1
@@ -68,7 +68,7 @@
       required: true
       defaultMarkings: [ ArachnidCheliceraeDownwards ]
     Chest:
-      points: 1
+      points: 4 # WOLFGATE(Species): was 1, more marking slots
       required: false
     Legs:
       points: 8 # imp 2<8

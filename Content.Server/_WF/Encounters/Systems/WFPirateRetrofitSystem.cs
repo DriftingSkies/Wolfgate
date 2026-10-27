@@ -217,25 +217,38 @@ public sealed partial class WFPirateRetrofitSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Swaps a share of each listed floor kind for a worn one.</summary>
+    /// <summary>Swaps a share of each listed floor kind for a worn one, and at least one floor when any is listed.</summary>
     private void SwapTiles(Entity<MapGridComponent> grid, WFPirateRetrofitPrototype retrofit, List<TileRef> floors)
     {
         if (retrofit.TileSwaps.Count == 0)
             return;
 
         var changes = new List<(Vector2i, Tile)>();
+        var candidates = new List<(TileRef Floor, WFPirateRetrofitTileSwap Swap)>();
         foreach (var floor in floors)
         {
             var id = _tileDefs[floor.Tile.TypeId].ID;
             foreach (var swap in retrofit.TileSwaps)
             {
-                if (swap.To.Count == 0 || !swap.From.Contains(id) || !Prob(swap.Chance))
+                if (swap.To.Count == 0 || !swap.From.Contains(id))
+                    continue;
+
+                candidates.Add((floor, swap));
+                if (!Prob(swap.Chance))
                     continue;
 
                 var worn = (ContentTileDefinition) _tileDefs[Pick(swap.To)];
                 changes.Add((floor.GridIndices, new Tile(worn.TileId)));
                 break;
             }
+        }
+
+        // A hull with few listed floors can roll none; it still shows wear.
+        if (changes.Count == 0 && candidates.Count > 0)
+        {
+            var (floor, swap) = Pick(candidates);
+            var worn = (ContentTileDefinition) _tileDefs[Pick(swap.To)];
+            changes.Add((floor.GridIndices, new Tile(worn.TileId)));
         }
 
         if (changes.Count > 0)

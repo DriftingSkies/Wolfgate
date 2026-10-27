@@ -209,6 +209,12 @@ public sealed partial class MappingToolsSystem
         if (!CanDraw(session, ev, check))
             return;
 
+        if (OverlapsGrid(mapComp.MapId, null, ev.Cells.ConvertAll(c => (Vector2) c + new Vector2(0.5f))))
+        {
+            Refuse(session, ev, "wf-mapping-tools-overlaps-grid");
+            return;
+        }
+
         // The new grid's origin sits on the shape's bottom-left cell, so its cells line up with the map's tiles.
         var origin = box.BottomLeft;
         var grid = _map.CreateGridEntity(mapComp.MapId);

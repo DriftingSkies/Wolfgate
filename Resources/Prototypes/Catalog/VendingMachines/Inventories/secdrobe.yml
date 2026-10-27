@@ -10,6 +10,71 @@
     ClothingHeadBandRed: 3
     ClothingMaskNeckGaiterRed: 3
     ClothingHandsGlovesCombat: 3 # Frontier - Officers just walk around with yellow insulated gloves if you wont sell the combat gloves.
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingAccessoryBadgeHoloWarden: 2
+    WFMeridianClothingGlovesColorBlackSecurity: 2
+    WFMeridianClothingGlovesColorBlackSecurityBlu: 2
+    WFMeridianClothingGlovesColorBlackSecurityDepgagCargo: 2
+    WFMeridianClothingGlovesKazaRukSec: 2
+    WFMeridianClothingGlovesKazaRukSecPeacekeeper: 2
+    WFMeridianClothingGlovesTacklerPeacekeeper: 2
+    WFMeridianClothingHeadBlastwaveOfficer: 2
+    WFMeridianClothingHeadCollectableHos: 2
+    WFMeridianClothingHeadCollectablePolice: 2
+    WFMeridianClothingHeadPlaybunnyearsBrigPhys: 2
+    WFMeridianClothingNeckSecurityCapeArmplate: 2
+    WFMeridianClothingNeckSecurityCapeArmplateCapedEngineer: 2
+    WFMeridianClothingNeckSecurityCapeShoulder: 2
+    WFMeridianClothingNeckSecurityCapeTarkon: 2
+    WFMeridianClothingNeckTieBunnytieBrigPhys: 2
+    WFMeridianClothingNeckTieBunnytieSecurity: 2
+    WFMeridianClothingNeckTieBunnytieSecurityAssistant: 2
+    WFMeridianClothingShoesJackbootsPeacekeeper: 2
+    WFMeridianClothingSuitFedcoatModernSec: 2
+    WFMeridianClothingSuitJacketHosBlue: 2
+    WFMeridianClothingSuitJacketHosTan: 2
+    WFMeridianClothingSuitJacketOfficerBlue: 2
+    WFMeridianClothingSuitJacketOfficerTan: 2
+    WFMeridianClothingSuitJacketWardenBlue: 2
+    WFMeridianClothingSuitJacketWardenTan: 2
+    WFMeridianClothingSuitToggleLabcoatNovaSecurityMedicDoctorTailcoat: 2
+    WFMeridianClothingUnderAkulaWetsuitJobSecurity: 2
+    WFMeridianClothingUnderRankSecurityArmadyne: 2
+    WFMeridianClothingUnderRankSecurityArmadyneTactical: 2
+    WFMeridianClothingUnderRankSecurityBrigPhysBunnysuit: 2
+    WFMeridianClothingUnderRankSecurityConstable: 2
+    WFMeridianClothingUnderRankSecurityCorrectionsOfficerSweater: 2
+    WFMeridianClothingUnderRankSecurityCorrectionsOfficerSweaterSkirt: 2
+    WFMeridianClothingUnderRankSecurityNovaDepgagPantsuit: 2
+    WFMeridianClothingUnderRankSecurityNovaDressCargo: 2
+    WFMeridianClothingUnderRankSecurityNovaFormal: 2
+    WFMeridianClothingUnderRankSecurityNovaMiniskirt: 2
+    WFMeridianClothingUnderRankSecurityNovaPlainskirtCargo: 2
+    WFMeridianClothingUnderRankSecurityNovaShortsCargo: 2
+    WFMeridianClothingUnderRankSecurityNovaSkirtCargo: 2
+    WFMeridianClothingUnderRankSecurityNovaTrousers: 2
+    WFMeridianClothingUnderRankSecurityNovaTurtleneckCargo: 2
+    WFMeridianClothingUnderRankSecurityNovaUniform: 2
+    WFMeridianClothingUnderRankSecurityNovaUtility: 2
+    WFMeridianClothingUnderRankSecurityOfficer: 2
+    WFMeridianClothingUnderRankSecurityOfficerBeatcop: 2
+    WFMeridianClothingUnderRankSecurityOfficerBlueshirtNovaBouncer: 2
+    WFMeridianClothingUnderRankSecurityOfficerBlueshirtNovaCustomsAgent: 2
+    WFMeridianClothingUnderRankSecurityOfficerBlueshirtNovaEngineeringGuard: 2
+    WFMeridianClothingUnderRankSecurityOfficerBlueshirtNovaOrderly: 2
+    WFMeridianClothingUnderRankSecurityOfficerSpacepol: 2
+    WFMeridianClothingUnderRankSecurityPrisonerBunnysuit: 2
+    WFMeridianClothingUnderRankSecuritySecurityAssistantBunnysuit: 2
+    WFMeridianClothingUnderRankSecuritySecurityBunnysuit: 2
+    WFMeridianClothingUnderRankSecurityWarden: 2
+    WFMeridianClothingUnderRankSecurityWardenBunnysuit: 2
+    WFMeridianClothingUnderRankSecurityWardenNova: 2
+    WFMeridianClothingUnderRankSecurityWardenNovaBlue: 2
+    WFMeridianClothingUnderRankSecurityWardenNovaSuit: 2
+    WFMeridianClothingUnderRankSecurityWardenNovaSuitBlue: 2
+    WFMeridianClothingUnderSolfedOfficer: 2
+    WFMeridianClothingUnderSolfedOfficerLowrnk: 2
+    # WOLFGATE END
 #    ClothingHandsGlovesColorBlack: 3 # Frontier - No point in selling this, its like the none insulated gloves.
     ClothingHandsGlovesFingerless: 3
     ClothingUniformJumpsuitSec: 3 # Frontier

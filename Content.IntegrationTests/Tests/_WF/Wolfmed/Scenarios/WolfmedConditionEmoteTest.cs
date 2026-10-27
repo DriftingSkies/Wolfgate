@@ -103,8 +103,11 @@ public sealed class WolfmedConditionEmoteTest : WolfmedGameTest
         var seen = (await Watch(24, new[] { body }))[body];
         TestContext.Out.WriteLine($"FailedLungsCoughTest: {string.Join(", ", seen)}");
         Assert.That(seen, Is.Not.Empty, "failed lungs played no emote in three intervals.");
-        Assert.That(seen[0], Is.EqualTo(WolfmedConditionEmoteSystem.CoughBlood.Id),
-            "the first emote of a body with failed lungs is not coughing up blood.");
+        // Revival pass: failed lungs stay in the chest with their internal bleed, which is a holed lung bleeding into
+        // the chest, so choking can come first.
+        Assert.That(seen[0], Is.EqualTo(WolfmedConditionEmoteSystem.CoughBlood.Id).Or.EqualTo(WolfmedConditionEmoteSystem.Choke.Id),
+            "the first emote of a body with failed lungs is neither coughing up blood nor choking.");
+        Assert.That(seen, Does.Contain(WolfmedConditionEmoteSystem.CoughBlood.Id), "failed lungs never coughed up blood.");
     }
 
     /// <summary>

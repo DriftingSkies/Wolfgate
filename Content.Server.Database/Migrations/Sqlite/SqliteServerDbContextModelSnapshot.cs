@@ -1136,6 +1136,11 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("INTEGER")
                         .HasColumnName("profile_loadout_id");
 
+                    b.Property<string>("GagsColors")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("gags_colors");
+
                     b.Property<string>("LoadoutName")
                         .IsRequired()
                         .HasColumnType("TEXT")

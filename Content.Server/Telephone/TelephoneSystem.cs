@@ -356,7 +356,7 @@ public sealed partial class TelephoneSystem : SharedTelephoneSystem
         var wrappedMessage = Loc.GetString(speech.Bold ? "chat-telephone-message-wrap-bold" : "chat-telephone-message-wrap",
             ("color", Color.White),
             ("fontType", CompOrNull<WFChatFontComponent>(messageSource)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the caller's picked font
-            ("fontSize", speech.FontSize),
+            ("fontSize", WFChatFontRules.ScaleSize(speech.FontSize, CompOrNull<WFChatFontComponent>(messageSource))), // WOLFGATE(ChatFont): the picked font's size scale
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("name", name),
             ("message", content));

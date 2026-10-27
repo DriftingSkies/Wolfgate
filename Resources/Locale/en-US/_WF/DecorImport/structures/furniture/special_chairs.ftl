@@ -1,5 +1,7 @@
 ent-AuroraStoolChairFancy = fancy chair
     .desc = The armrests give you a signature feeling of superiority.
+ent-CMChairBoneThrone = Throne of the Eternal Hunt
+    .desc = A grotesquely magnificent seat, carved from the remains of the most formidable prey. Twisted spines, shattered skulls, and serrated bones form a testament to the ancient hunter’s unchallenged supremacy. The throne whispers of countless battles, its macabre elegance a reminder that only the strongest may sit upon it.
 ent-BeeChairFancy = fancy chair
     .desc = It gives you the feel of importance by just having armrests.
 ent-BeeChairFancyCorp = corporate chair
@@ -52,3 +54,5 @@ ent-ChairLovey = lovey chair
     .desc = Wait a second ... this isn't a froggy chair. Well, whatever it is, it's repulsively cute!
 ent-CosmicChair = malign settee
 ent-RMCChairComfyAlien = alien chair
+ent-VGThrone = throne
+ent-VGThroneSkull = skull throne

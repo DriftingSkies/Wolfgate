@@ -1,3 +1,11 @@
+- type: tile
+  abstract: true
+  id: DecorImportPlanetTileBase
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  heatCapacity: 10000
+
 # Ironsand
 
 - type: tile
@@ -299,6 +307,512 @@
   itemDrop: FloorTileItemGoonFloorMarslikeT1
   heatCapacity: 10000
 
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarslikeT2
+  name: tiles-wf-goon-floor-marslike-t2
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2.png
+  variants: 5
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_west.png
+    SouthEast: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_southeast.png
+    SouthWest: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_southwest.png
+    NorthEast: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_northeast.png
+    NorthWest: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t2_edge_northwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarslikeT2
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarslikeT3
+  name: tiles-wf-goon-floor-marslike-t3
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3.png
+  edgeSpritePriority: 2
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_west.png
+    SouthEast: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_southeast.png
+    SouthWest: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_southwest.png
+    NorthEast: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_northeast.png
+    NorthWest: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t3_edge_northwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarslikeT3
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarslikeT4
+  name: tiles-wf-goon-floor-marslike-t4
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 3
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_west.png
+    SouthEast: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_southeast.png
+    SouthWest: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_southwest.png
+    NorthEast: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_northeast.png
+    NorthWest: /Textures/_WF/DecorImport/Tiles/goonstation/marslike_t4_edge_northwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarslikeT4
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsRocks
+  name: tiles-wf-goon-floor-mars-rocks
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_rocks.png
+  variants: 6
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsRocks
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMartianDust
+  name: tiles-wf-goon-floor-martian-dust
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/martian_dust.png
+  variants: 3
+  placementVariants:
+  - 3.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMartianDust
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1
+  name: tiles-wf-goon-floor-mars-base1
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1North
+  name: tiles-wf-goon-floor-mars-base1-north
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_north.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1North
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1East
+  name: tiles-wf-goon-floor-mars-base1-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_east.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1East
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1West
+  name: tiles-wf-goon-floor-mars-base1-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_west.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1West
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1SouthEast
+  name: tiles-wf-goon-floor-mars-base1-south-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_southeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1SouthEast
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1SouthWest
+  name: tiles-wf-goon-floor-mars-base1-south-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_southwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1SouthWest
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1NorthEast
+  name: tiles-wf-goon-floor-mars-base1-north-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_northeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1NorthEast
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase1NorthWest
+  name: tiles-wf-goon-floor-mars-base1-north-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base1_northwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase1NorthWest
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase2
+  name: tiles-wf-goon-floor-mars-base2
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base2.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase2
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase2North
+  name: tiles-wf-goon-floor-mars-base2-north
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base2_north.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase2North
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase2East
+  name: tiles-wf-goon-floor-mars-base2-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base2_east.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase2East
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase2West
+  name: tiles-wf-goon-floor-mars-base2-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base2_west.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase2West
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase2SouthEast
+  name: tiles-wf-goon-floor-mars-base2-south-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base2_southeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase2SouthEast
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3
+  name: tiles-wf-goon-floor-mars-base3
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3North
+  name: tiles-wf-goon-floor-mars-base3-north
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3_north.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3North
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3East
+  name: tiles-wf-goon-floor-mars-base3-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3_east.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3East
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3West
+  name: tiles-wf-goon-floor-mars-base3-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3_west.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3West
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3SouthEast
+  name: tiles-wf-goon-floor-mars-base3-south-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3_southeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3SouthEast
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3SouthWest
+  name: tiles-wf-goon-floor-mars-base3-south-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3_southwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3SouthWest
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsBase3NorthEast
+  name: tiles-wf-goon-floor-mars-base3-north-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_base3_northeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsBase3NorthEast
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad1
+  name: tiles-wf-goon-floor-mars-dirtroad1
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad1.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad1
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad1North
+  name: tiles-wf-goon-floor-mars-dirtroad1-north
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad1_north.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad1North
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad1SouthEast
+  name: tiles-wf-goon-floor-mars-dirtroad1-south-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad1_southeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad1SouthEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad1SouthWest
+  name: tiles-wf-goon-floor-mars-dirtroad1-south-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad1_southwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad1SouthWest
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad1NorthEast
+  name: tiles-wf-goon-floor-mars-dirtroad1-north-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad1_northeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad1NorthEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad1NorthWest
+  name: tiles-wf-goon-floor-mars-dirtroad1-north-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad1_northwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad1NorthWest
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2
+  name: tiles-wf-goon-floor-mars-dirtroad2
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2North
+  name: tiles-wf-goon-floor-mars-dirtroad2-north
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_north.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2North
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2East
+  name: tiles-wf-goon-floor-mars-dirtroad2-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_east.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2East
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2West
+  name: tiles-wf-goon-floor-mars-dirtroad2-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_west.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2West
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2SouthEast
+  name: tiles-wf-goon-floor-mars-dirtroad2-south-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_southeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2SouthEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2SouthWest
+  name: tiles-wf-goon-floor-mars-dirtroad2-south-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_southwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2SouthWest
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2NorthEast
+  name: tiles-wf-goon-floor-mars-dirtroad2-north-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_northeast.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2NorthEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorMarsDirtroad2NorthWest
+  name: tiles-wf-goon-floor-mars-dirtroad2-north-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/mars_dirtroad2_northwest.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemGoonFloorMarsDirtroad2NorthWest
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorder
+  name: tiles-wf-goon-floor-snowrough-border
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorder
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderNorth
+  name: tiles-wf-goon-floor-snowrough-border-north
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_north.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderNorth
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderEast
+  name: tiles-wf-goon-floor-snowrough-border-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_east.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderWest
+  name: tiles-wf-goon-floor-snowrough-border-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_west.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderWest
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderSouthEast
+  name: tiles-wf-goon-floor-snowrough-border-south-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_southeast.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderSouthEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderSouthWest
+  name: tiles-wf-goon-floor-snowrough-border-south-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_southwest.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderSouthWest
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderNorthEast
+  name: tiles-wf-goon-floor-snowrough-border-north-east
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_northeast.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderNorthEast
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: GoonFloorSnowroughBorderNorthWest
+  name: tiles-wf-goon-floor-snowrough-border-north-west
+  sprite: /Textures/_WF/DecorImport/Tiles/goonstation/snow_rough_border_northwest.png
+  footstepSounds:
+    collection: FootstepSnow
+  itemDrop: FloorTileItemGoonFloorSnowroughBorderNorthWest
+  weather: true
+
 # Aurora
 
 - type: tile
@@ -540,6 +1054,30 @@
     collection: FootstepGrass
   itemDrop: FloorTileItemAuroraFloorExoplanetKonyangWilting
   heatCapacity: 10000
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: AuroraFloorExoplanetIcyRock
+  name: tiles-wf-aurora-floor-exoplanet-icy-rock
+  sprite: /Textures/_WF/DecorImport/Tiles/aurora/icy_rock.png
+  variants: 19
+  placementVariants: [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+  footstepSounds:
+    collection: BayFootstepSand
+  itemDrop: FloorTileItemAuroraFloorExoplanetIcyRock
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: AuroraFloorExoplanetBasalt
+  name: tiles-wf-aurora-floor-exoplanet-basalt
+  sprite: /Textures/_WF/DecorImport/Tiles/aurora/basalt.png
+  variants: 14
+  placementVariants: [ 52.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemAuroraFloorExoplanetBasalt
+  weather: true
 
 # Citadel
 
@@ -923,6 +1461,16 @@
   itemDrop: FloorTileItemPolarisFloorOutdoorsDirt
   heatCapacity: 10000
 
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: PolarisFloorSandIcey
+  name: tiles-wf-polaris-floor-sand-icey
+  sprite: /Textures/_WF/DecorImport/Tiles/polaris/sand_icey.png
+  footstepSounds:
+    collection: PolarisFootstepHeavySand
+  itemDrop: FloorTileItemPolarisFloorSandIcey
+  weather: true
+
 # VOREStation
 
 - type: tile
@@ -960,6 +1508,34 @@
     collection: FootstepFloor
   itemDrop: FloorTileItemVoreFloorWaterGlamour
   heatCapacity: 10000
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VoreFloorNanites
+  name: tiles-wf-vore-floor-nanites
+  sprite: /Textures/_WF/DecorImport/Tiles/vore/nanites.png
+  footstepSounds:
+    collection: FootstepPlating
+  itemDrop: FloorTileItemVoreFloorNanites
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VoreFloorGrassWinter
+  name: tiles-wf-vore-floor-grass-winter
+  sprite: /Textures/_WF/DecorImport/Tiles/vore/grass_winter.png
+  variants: 12
+  placementVariants: [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/vore/grass_winter_edge.png
+    North: /Textures/_WF/DecorImport/Tiles/vore/grass_winter_edge.png
+    East: /Textures/_WF/DecorImport/Tiles/vore/grass_winter_edge.png
+    West: /Textures/_WF/DecorImport/Tiles/vore/grass_winter_edge.png
+  footstepSounds:
+    collection: FootstepGrass
+  itemDrop: FloorTileItemVoreFloorGrassWinter
+  weather: true
 
 # Baystation
 
@@ -999,6 +1575,52 @@
   itemDrop: FloorTileItemBayFloorWaterShallowTar
   heatCapacity: 10000
 
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: BayFloorExoplanetChlorineSand
+  name: tiles-wf-bay-floor-exoplanet-chlorine-sand
+  sprite: /Textures/_WF/DecorImport/Tiles/baystation/chlorine_sand.png
+  variants: 12
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  edgeSpritePriority: 2
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/baystation/chlorine_sand_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/baystation/chlorine_sand_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/baystation/chlorine_sand_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/baystation/chlorine_sand_edge_west.png
+  footstepSounds:
+    collection: BayFootstepSand
+  itemDrop: FloorTileItemBayFloorExoplanetChlorineSand
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: BayFloorExoplanetVolcanic
+  name: tiles-wf-bay-floor-exoplanet-volcanic
+  sprite: /Textures/_WF/DecorImport/Tiles/baystation/lava_cold.png
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/baystation/lava_cold_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/baystation/lava_cold_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/baystation/lava_cold_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/baystation/lava_cold_edge_west.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemBayFloorExoplanetVolcanic
+  weather: true
+
 # BeeStation
 
 - type: tile
@@ -1024,6 +1646,18 @@
     collection: FootstepGrass
   itemDrop: FloorTileItemBeeFloorGrassFairyPurple
   heatCapacity: 10000
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: BeeFloorRedIce
+  name: tiles-wf-bee-floor-red-ice
+  sprite: /Textures/_WF/DecorImport/Tiles/beestation/red_ice.png
+  friction: 0.05
+  mobAcceleration: 0.1
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemBeeFloorRedIce
+  weather: true
 
 # CHOMPStation
 
@@ -1178,6 +1812,118 @@
     collection: FootstepGrass
   itemDrop: FloorTileItemShiptestFloorShipJungleDark
   heatCapacity: 10000
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorShroudedSand
+  name: tiles-wf-shiptest-floor-shrouded-sand
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand.png
+  variants: 6
+  placementVariants:
+  - 0.17
+  - 0.166
+  - 0.166
+  - 0.166
+  - 0.166
+  - 0.166
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_west.png
+    SouthEast: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_southeast.png
+    SouthWest: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_southwest.png
+    NorthEast: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_northeast.png
+    NorthWest: /Textures/_WF/DecorImport/Tiles/shiptest/shrouded_sand_edge_northwest.png
+  footstepSounds:
+    collection: BayFootstepSand
+  itemDrop: FloorTileItemShiptestFloorShroudedSand
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorMoonCoarse
+  name: tiles-wf-shiptest-floor-moon-coarse
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/moonsand_coarse.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemShiptestFloorMoonCoarse
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorMoonCoarseDark
+  name: tiles-wf-shiptest-floor-moon-coarse-dark
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/moonsand_coarse_dark.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemShiptestFloorMoonCoarseDark
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorMoonDark
+  name: tiles-wf-shiptest-floor-moon-dark
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/moonsand_dark.png
+  footstepSounds:
+    collection: BayFootstepSand
+  itemDrop: FloorTileItemShiptestFloorMoonDark
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorIceSheet
+  name: tiles-wf-shiptest-floor-ice-sheet
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/dark_ice.png
+  friction: 0.05
+  mobAcceleration: 0.1
+  footstepSounds:
+    collection: ShiptestFootstepIce
+  itemDrop: FloorTileItemShiptestFloorIceSheet
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorIceberg
+  name: tiles-wf-shiptest-floor-iceberg
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/iceberg.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: ShiptestFootstepIce
+  itemDrop: FloorTileItemShiptestFloorIceberg
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorCrimsonGrass
+  name: tiles-wf-shiptest-floor-crimson-grass
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/crimsongrass.png
+  edgeSpritePriority: 4
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/shiptest/crimsongrass_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/shiptest/crimsongrass_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/shiptest/crimsongrass_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/shiptest/crimsongrass_edge_west.png
+  footstepSounds:
+    collection: FootstepGrass
+  itemDrop: FloorTileItemShiptestFloorCrimsonGrass
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ShiptestFloorObsidian
+  name: tiles-wf-shiptest-floor-obsidian
+  sprite: /Textures/_WF/DecorImport/Tiles/shiptest/obsidian.png
+  footstepSounds:
+    collection: ShiptestFootstepConcrete
+  itemDrop: FloorTileItemShiptestFloorObsidian
+  weather: true
 
 # /tg/station
 
@@ -1348,3 +2094,278 @@
     collection: FootstepWater
   itemDrop: FloorTileItemTgFloorBeachWaterDeep
   heatCapacity: 10000
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: TgFloorSiderite
+  name: tiles-wf-tg-floor-siderite
+  sprite: /Textures/_WF/DecorImport/Tiles/tgstation/siderite.png
+  edgeSpritePriority: 4
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/tgstation/siderite_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/tgstation/siderite_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/tgstation/siderite_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/tgstation/siderite_edge_west.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemTgFloorSiderite
+  weather: true
+
+# Bubberstation
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: BubberFloorLunarSand
+  name: tiles-wf-bubber-floor-lunar-sand
+  sprite: /Textures/_WF/DecorImport/Tiles/bubber/lunar_sand.png
+  variants: 100
+  placementVariants: [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemBubberFloorLunarSand
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: BubberFloorLunarRock
+  name: tiles-wf-bubber-floor-lunar-rock
+  sprite: /Textures/_WF/DecorImport/Tiles/bubber/lunar_rock.png
+  variants: 100
+  placementVariants: [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemBubberFloorLunarRock
+  weather: true
+
+# CEV-Eris
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: ErisFloorAsteroid
+  name: tiles-wf-eris-floor-asteroid
+  sprite: /Textures/_WF/DecorImport/Tiles/eris/asteroid.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemErisFloorAsteroid
+  weather: true
+
+# Mojave Sun
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: MojaveFloorIce
+  name: tiles-wf-mojave-floor-ice
+  sprite: /Textures/_WF/DecorImport/Tiles/mojavesun/ice.png
+  edgeSpritePriority: 2
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/mojavesun/ice_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/mojavesun/ice_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/mojavesun/ice_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/mojavesun/ice_edge_west.png
+  friction: 0.05
+  mobAcceleration: 0.1
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemMojaveFloorIce
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: NovaFloorMushroom
+  name: tiles-wf-nova-floor-mushroom
+  sprite: /Textures/_WF/DecorImport/Tiles/nova/mushroom_floor.png
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/nova/mushroom_floor_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/nova/mushroom_floor_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/nova/mushroom_floor_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/nova/mushroom_floor_edge_west.png
+  footstepSounds:
+    collection: FootstepGrass
+  itemDrop: FloorTileItemNovaFloorMushroom
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: NovaFloorMushroomBlue
+  name: tiles-wf-nova-floor-mushroom-blue
+  sprite: /Textures/_WF/DecorImport/Tiles/nova/mushroom_blue_floor.png
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/nova/mushroom_blue_floor_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/nova/mushroom_blue_floor_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/nova/mushroom_blue_floor_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/nova/mushroom_blue_floor_edge_west.png
+  footstepSounds:
+    collection: FootstepGrass
+  itemDrop: FloorTileItemNovaFloorMushroomBlue
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: NovaFloorMushroomGreen
+  name: tiles-wf-nova-floor-mushroom-green
+  sprite: /Textures/_WF/DecorImport/Tiles/nova/mushroom_green_floor.png
+  edgeSpritePriority: 1
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/nova/mushroom_green_floor_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/nova/mushroom_green_floor_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/nova/mushroom_green_floor_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/nova/mushroom_green_floor_edge_west.png
+  footstepSounds:
+    collection: FootstepGrass
+  itemDrop: FloorTileItemNovaFloorMushroomGreen
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: CitadelRPFloorCave
+  name: tiles-wf-citadel-rp-floor-cave
+  sprite: /Textures/_WF/DecorImport/Tiles/citadelrp/cave_floor.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemCitadelRPFloorCave
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealm
+  name: tiles-wf-vg-floor-bloodrealm
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_floor.png
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemVGFloorBloodrealm
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealmAccent
+  name: tiles-wf-vg-floor-bloodrealm-accent
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_accent.png
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemVGFloorBloodrealmAccent
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealmAccentAlt
+  name: tiles-wf-vg-floor-bloodrealm-accent-alt
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_accent_alt.png
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemVGFloorBloodrealmAccentAlt
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealmGrease
+  name: tiles-wf-vg-floor-bloodrealm-grease
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_grease.png
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemVGFloorBloodrealmGrease
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealmGreaseGrey
+  name: tiles-wf-vg-floor-bloodrealm-grease-grey
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_grease_grey.png
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemVGFloorBloodrealmGreaseGrey
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealmClot
+  name: tiles-wf-vg-floor-bloodrealm-clot
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot.png
+  edgeSpritePriority: 4
+  edgeSprites:
+    South: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_south.png
+    North: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_north.png
+    East: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_east.png
+    West: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_west.png
+    SouthEast: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_southeast.png
+    SouthWest: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_southwest.png
+    NorthEast: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_northeast.png
+    NorthWest: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_clot_edge_northwest.png
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemVGFloorBloodrealmClot
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: VGFloorBloodrealmObsidian
+  name: tiles-wf-vg-floor-bloodrealm-obsidian
+  sprite: /Textures/_WF/DecorImport/Tiles/vgstation/bloodrealm_obsidian.png
+  footstepSounds:
+    collection: FootstepAsteroid
+  itemDrop: FloorTileItemVGFloorBloodrealmObsidian
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: TauCetiFloorMeatland
+  name: tiles-wf-tau-ceti-floor-meatland
+  sprite: /Textures/_WF/DecorImport/Tiles/taucetistation/meatland_floor.png
+  variants: 3
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: FloorTileItemTauCetiFloorMeatland
+  weather: true
+
+# DS13
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: DS13FloorDryFirm
+  name: tiles-wf-ds13-floor-dry-firm
+  sprite: /Textures/_WF/DecorImport/Tiles/ds13/dry_firm.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: BayFootstepSand
+  itemDrop: FloorTileItemDS13FloorDryFirm
+  weather: true
+
+- type: tile
+  parent: DecorImportPlanetTileBase
+  id: DS13FloorDryCracked
+  name: tiles-wf-ds13-floor-dry-cracked
+  sprite: /Textures/_WF/DecorImport/Tiles/ds13/dry_cracked.png
+  variants: 4
+  placementVariants:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  footstepSounds:
+    collection: BayFootstepSand
+  itemDrop: FloorTileItemDS13FloorDryCracked
+  weather: true

@@ -1,0 +1,25 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  parent: BaseStructure
+  id: ADTForerunnersComputer
+  suffix: Forerunner
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: ADT/Structures/Decoration/forerunners_structures/forerunners_computer.rsi
+    state: forerunnerscomputer
+    offset: "0.0,0.5"
+    drawdepth: Mobs
+
+- type: entity
+  parent: BaseStructure
+  id: ADTForerunnersSphere
+  suffix: Forerunner
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: ADT/Structures/Decoration/forerunners_structures/forerunners_sphere.rsi
+    state: forerunnerssphere
+    offset: "0.0,0.5"
+    drawdepth: Mobs
+# WOLFGATE END

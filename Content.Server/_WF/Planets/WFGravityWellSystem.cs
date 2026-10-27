@@ -26,6 +26,7 @@ public sealed partial class WFGravityWellSystem : EntitySystem
     [Dependency] private ShipPaSystem _pa = default!;
     [Dependency] private WFOrbitDecaySystem _decay = default!;
     [Dependency] private WFOrbitEntrySystem _orbitEntry = default!;
+    [Dependency] private WFLooseDebrisSystem _debris = default!;
 
     /// <summary>Pull at the rim of the well and at the capture line, in m/s².</summary>
     public const float RimAcceleration = 0.15f;
@@ -108,7 +109,8 @@ public sealed partial class WFGravityWellSystem : EntitySystem
                 if (xform.MapUid != sectorMap
                     || physics.BodyType == BodyType.Static
                     || HasComp<FTLComponent>(grid)
-                    || HasComp<ForceAnchorComponent>(grid))
+                    || HasComp<ForceAnchorComponent>(grid)
+                    || _debris.IsDebris(grid))
                 {
                     continue;
                 }

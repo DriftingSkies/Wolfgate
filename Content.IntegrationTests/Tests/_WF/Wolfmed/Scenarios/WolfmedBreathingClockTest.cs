@@ -202,7 +202,7 @@ public sealed class WolfmedBreathingClockTest : WolfmedGameTest
             Assert.Multiple(() =>
             {
                 Assert.That(units, Is.EqualTo(0.35f * s.Pool(a) - 0.24f * s.Pool(a)).Within(1f));
-                Assert.That(safe, Is.EqualTo(0.5f * s.Pool(a) - 0.24f * s.Pool(a)).Within(1f));
+                Assert.That(safe, Is.EqualTo(s.Life.BrainSafeTarget * s.Pool(a) - 0.24f * s.Pool(a)).Within(1f));
                 Assert.That(text, Does.Contain($"{MathF.Ceiling(units)} u"), "the refusal does not name the units.");
                 Assert.That(text, Does.Not.Contain("will work"));
             });
@@ -219,14 +219,14 @@ public sealed class WolfmedBreathingClockTest : WolfmedGameTest
                 Assert.That(s.Breathing.BreathingSuppressed(a), Is.False, "a restarted patient is not allowed to breathe.");
             });
 
-            // The analyzer's two numbers, bleed stopped: N to 35%, M to 50%.
+            // The analyzer's two numbers, bleed stopped: N to 35%, M to the brain-safe target (60% since the revival pass).
             var analyzer = SEntMan.System<HealthAnalyzerSystem>();
             var stopped = analyzer.BuildWoundDiagnostics(a)!;
             var pool = s.Pool(a);
             Assert.Multiple(() =>
             {
                 Assert.That(stopped.PostShockUnits, Is.EqualTo(0.10f * pool).Within(1f), "N with the bleed stopped.");
-                Assert.That(stopped.PostShockSafeUnits, Is.EqualTo(0.25f * pool).Within(1f), "M.");
+                Assert.That(stopped.PostShockSafeUnits, Is.EqualTo((s.Life.BrainSafeTarget - 0.25f) * pool).Within(1f), "M.");
                 Assert.That(stopped.PostShockGraceSeconds, Is.EqualTo(45f).Within(1f));
             });
 
@@ -234,7 +234,7 @@ public sealed class WolfmedBreathingClockTest : WolfmedGameTest
                 stopped.PostShockGraceSeconds, stopped.PostShockSafeLine);
             TestContext.Out.WriteLine($"analyzer after the shock: {shown}");
             Assert.That(shown, Does.Contain($"Transfuse ≈ {MathF.Ceiling(0.10f * pool)} u within 45 s"));
-            Assert.That(shown, Does.Contain($"≈ {MathF.Ceiling(0.25f * pool)} u to 50%"));
+            Assert.That(shown, Does.Contain($"≈ {MathF.Ceiling(MathF.Round((s.Life.BrainSafeTarget - 0.25f) * pool, 2))} u to 60%"));
 
             // A slow bleed: N grows by what it takes over the grace.
             SEntMan.System<DamageableSystem>().TryChangeDamage(a, WolfmedScenario.Spec("Slash", 10),

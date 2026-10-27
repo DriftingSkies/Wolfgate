@@ -1,0 +1,70 @@
+# WOLFGATE(DecorImport) START: ported from Space Wizards
+- type: entity
+  parent: BaseStructure
+  id: ChangelingFleshCocoon
+  components:
+  - type: Transform
+    noRot: true
+    anchored: false
+  - type: Physics
+    bodyType: Dynamic
+  - type: Sprite
+    noRot: true
+    sprite: Structures/Changeling/cocoon.rsi
+    layers:
+    - state: cocoon
+  - type: Clickable
+  - type: DamageOnHighSpeedImpact
+    damage:
+      types:
+        Blunt: 5
+    soundHit:
+      collection: AlienClaw
+  - type: InteractionOutline
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.48,0.25,0.48"
+        density: 500
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+  - type: AntiRottingContainer
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: SulfuricAcid
+        Quantity: 25
+  - type: Damageable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 10
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:EmptyContainersBehaviour
+        containers:
+        - storage
+      - !type:SpillBehavior
+        solution: solution
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: AtmosExposed
+  - type: MovedByPressure
+  - type: Barotrauma
+    damage:
+      types:
+        Blunt: 0.25
+  - type: ContainerContainer
+    containers:
+      storage: !type:Container
+  - type: StaticPrice
+    price: 75
+# WOLFGATE END

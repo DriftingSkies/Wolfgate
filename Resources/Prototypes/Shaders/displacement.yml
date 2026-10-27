@@ -8,3 +8,11 @@
     func: NotEqual
   params:
     displacementSize: 127
+
+# WOLFGATE: wizden#38042, displacement without the stencil test, which hid displaced layers in UI sprite views
+- type: shader
+  id: DisplacedDraw
+  kind: source
+  path: "/Textures/Shaders/displacement.swsl"
+  params:
+    displacementSize: 127

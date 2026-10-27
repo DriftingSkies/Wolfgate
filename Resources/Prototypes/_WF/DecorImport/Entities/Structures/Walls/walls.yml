@@ -157,6 +157,20 @@
     base: icedmetal_wall
 
 - type: entity
+  parent: ShiptestMineralShrouded
+  id: TgMineralRedRock
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/red_rock_tgstation.rsi
+    state: red_rock-0
+    offset: -0.25,-0.25
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/red_rock_tgstation.rsi
+    state: red_rock-0
+  - type: IconSmooth
+    base: red_rock-
+
+- type: entity
   parent: BaseWallTierTwo
   id: TgRWall
   components:
@@ -487,6 +501,58 @@
   - type: IconSmooth
     key: walls
     base: reinforced_wall
+
+- type: entity
+  parent: ShiptestMineralShrouded
+  id: BubberMineralLunarCave
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/lunar_rock_wall_bubber.rsi
+    state: rock_wall-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/lunar_rock_wall_bubber.rsi
+    state: rock_wall-0
+  - type: IconSmooth
+    base: rock_wall-
+
+- type: entity
+  parent: ShiptestMineralShrouded
+  id: BubberMineralIcerock
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/icerock_wall_bubber.rsi
+    state: icerock_wall-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/icerock_wall_bubber.rsi
+    state: icerock_wall-0
+  - type: IconSmooth
+    base: icerock_wall-
+
+- type: entity
+  parent: [ BaseWallTierOne, BaseWallBitmask ]
+  id: YogObsidianWall
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/obsidian_yogstation.rsi
+    state: wall-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/obsidian_yogstation.rsi
+    state: wall-0
+  - type: IconSmooth
+    base: wall-
+
+- type: entity
+  parent: [ BaseWallTierOne, BaseWallBitmask ]
+  id: YogObsidianWallHard
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/obsidian_hard_yogstation.rsi
+    state: wall-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/obsidian_hard_yogstation.rsi
+    state: wall-0
+  - type: IconSmooth
+    base: wall-
 
 - type: entity
   parent: BaseWallTierOne
@@ -2559,10 +2625,14 @@
     fx: EffectRCDDeconstruct8
   - type: Sprite
     sprite: _WF/DecorImport/Structures/Walls/marsoutpost.rsi
-    state: interior-map
+    state: interior-0
   - type: Icon
     sprite: _WF/DecorImport/Structures/Walls/marsoutpost.rsi
     state: interior-map
+  - type: IconSmooth
+    key: walls
+    base: interior-
+    mode: Bitmask
 
 - type: entity
   parent: BaseWallTierOne
@@ -2729,17 +2799,6 @@
 
 - type: entity
   parent: BaseWallTierOne
-  id: GoonSetpiecesBloodwall
-  components:
-  - type: Sprite
-    sprite: _WF/DecorImport/Structures/Walls/meatland.rsi
-    state: bloodwall_1
-  - type: Icon
-    sprite: _WF/DecorImport/Structures/Walls/meatland.rsi
-    state: bloodwall_1
-
-- type: entity
-  parent: BaseWallTierOne
   id: GoonSetpiecesGauntlet
   components:
   - type: Sprite
@@ -2842,6 +2901,93 @@
   - type: Icon
     sprite: _WF/DecorImport/Structures/Walls/walls_goonstation.rsi
     state: cave-dark
+
+- type: entity
+  parent: [ GoonCave, BaseWallBitmask ]
+  id: GoonAdventureIomoon
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/silicate_goon.rsi
+    state: silicate-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/silicate_goon.rsi
+    state: silicate-0
+  - type: IconSmooth
+    base: silicate-
+
+- type: entity
+  parent: [ GoonCave, BaseWallBitmask ]
+  id: GoonAdventureHospital
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/asteroid_dark_goon.rsi
+    state: exterior-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/asteroid_dark_goon.rsi
+    state: exterior-0
+  - type: IconSmooth
+    base: exterior-
+
+- type: entity
+  parent: [ GoonCave, BaseWallBitmask ]
+  id: GoonAdventureMars
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/mars_goon.rsi
+    state: mars-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/mars_goon.rsi
+    state: mars-0
+  - type: IconSmooth
+    base: mars-
+
+- type: entity
+  parent: [ GoonCave, BaseWallBitmask ]
+  id: GoonAdventureIcemoon
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/ice_goon.rsi
+    state: ice-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/ice_goon.rsi
+    state: ice-0
+  - type: IconSmooth
+    base: ice-
+
+- type: entity
+  parent: [ GoonCave, BaseWallBitmask ]
+  id: TGMCWallLava
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/lava_wall_tgmc.rsi
+    state: lava_wall-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/lava_wall_tgmc.rsi
+    state: lava_wall-0
+  - type: IconSmooth
+    base: lava_wall-
+
+- type: entity
+  parent: BaseWallTierOne
+  id: CitadelGlacierRockBlue
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/glacier_blue_citadel.rsi
+    state: ice0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/glacier_blue_citadel.rsi
+    state: ice0
+  - type: IconSmooth
+    key: glacierBlue
+    base: ice
+    mode: CardinalFlags
 
 - type: entity
   parent: BaseWallTierOne
@@ -4142,6 +4288,52 @@
 
 - type: entity
   parent: [ BaseWallTierOne, BaseWallBitmask ]
+  id: ShiptestMineralShrouded
+  components:
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: SoundOnGather
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/shrouded_shiptest.rsi
+    state: shrouded-0
+    offset: -0.125,-0.125
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/shrouded_shiptest.rsi
+    state: shrouded-0
+  - type: IconSmooth
+    base: shrouded-
+
+- type: entity
+  parent: ShiptestMineralShrouded
+  id: ShiptestMineralSnow
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/rockwall_icemoon_shiptest.rsi
+    state: rockwall_icemoon-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/rockwall_icemoon_shiptest.rsi
+    state: rockwall_icemoon-0
+  - type: IconSmooth
+    base: rockwall_icemoon-
+
+- type: entity
+  parent: [ BaseWallTierOne, BaseWallBitmask ]
   id: SkyratClosedWall
   components:
   - type: Construction
@@ -4298,3 +4490,393 @@
     key: walls
     base: brick
     mode: CardinalFlags
+
+- type: entity
+  parent: BaseWallTierTwo
+  id: GoonLeadWall
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/leadwall_goon.rsi
+    state: leadwall
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/leadwall_goon.rsi
+    state: leadwall
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+
+- type: entity
+  parent: GoonLeadWall
+  id: GoonLeadWallJunction
+  components:
+  - type: Sprite
+    state: leadjunction
+  - type: Icon
+    state: leadjunction
+
+- type: entity
+  parent: GoonLeadWall
+  id: GoonLeadWallCap
+  components:
+  - type: Sprite
+    state: leadcap
+  - type: Icon
+    state: leadcap
+
+- type: entity
+  parent: GoonLeadWall
+  id: GoonLeadWindow
+  components:
+  - type: Sprite
+    state: leadwindow_1
+  - type: Icon
+    state: leadwindow_1
+  - type: Occluder
+    enabled: false
+
+- type: entity
+  parent: GoonLeadWindow
+  id: GoonLeadWindowFull
+  components:
+  - type: Sprite
+    state: leadwindow_2
+  - type: Icon
+    state: leadwindow_2
+
+- type: entity
+  parent: GoonLeadWindow
+  id: GoonLeadWindowAlt
+  components:
+  - type: Sprite
+    state: leadwindow_3
+  - type: Icon
+    state: leadwindow_3
+
+- type: entity
+  parent: BaseWallTierTwo
+  id: VoreWallAlienBlue
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/alien_blue_vore.rsi
+    state: alien0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/alien_blue_vore.rsi
+  - type: IconSmooth
+    key: walls
+    base: alien
+    mode: CardinalFlags
+  - type: PointLight
+    radius: 3
+    energy: 0.75
+    color: "#1fdbf4"
+
+- type: entity
+  parent: VoreWallAlienBlue
+  id: ChompWallAlienOrange
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/alien_orange_chomp.rsi
+    state: alien0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/alien_orange_chomp.rsi
+  - type: PointLight
+    color: "#FF3300"
+
+- type: entity
+  parent: BaseWall
+  id: FrontierWallMeat
+  components:
+  - type: Tag
+    tags:
+      - Wall
+      - Structure
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/meat_frontier.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/meat_frontier.rsi
+  - type: Construction
+    graph: Girder
+    node: meatWall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100 # weak
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          Girder:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: meat
+
+- type: entity
+  parent: BaseWall
+  id: SS220WallMeat
+  components:
+  - type: Tag
+    tags:
+      - Wall
+      - Structure
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/meat_ss220.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/meat_ss220.rsi
+  - type: Construction
+    graph: Girder
+    node: meatWall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100 # weak
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          Girder:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: meat
+
+- type: entity
+  abstract: true
+  parent: BaseWallTierOne
+  id: DecorImportMeatWallBase
+  components:
+  - type: Tag
+    tags:
+    - Wall
+    - Structure
+  - type: Construction
+    graph: Girder
+    node: meatWall
+
+- type: entity
+  parent: [ DecorImportMeatWallBase, BaseWallBitmask ]
+  id: GoonAdventureMeat
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/meaty_goonstation.rsi
+    state: meaty-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/meaty_goonstation.rsi
+    state: meaty-0
+  - type: IconSmooth
+    base: meaty-
+
+- type: entity
+  parent: [ DecorImportMeatWallBase, BaseWallBitmask ]
+  id: GoonAdventureMeatMeatier
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/meatier_goonstation.rsi
+    state: meatier-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/meatier_goonstation.rsi
+    state: meatier-0
+  - type: IconSmooth
+    base: meatier-
+
+- type: entity
+  parent: [ DecorImportMeatWallBase, BaseWallBitmask ]
+  id: GoonAdventureMeatEyes
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/meateyes_goonstation.rsi
+    state: meateyes-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/meateyes_goonstation.rsi
+    state: meateyes-0
+  - type: IconSmooth
+    base: meateyes-
+
+- type: entity
+  parent: DecorImportMeatWallBase
+  id: BubberIndestructibleMeat
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/meat_wall_bubberstation.rsi
+    state: meat_wall0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/meat_wall_bubberstation.rsi
+    state: meat_wall0
+  - type: IconSmooth
+    key: walls
+    base: meat_wall
+    mode: CardinalFlags
+
+- type: entity
+  parent: BaseWallTierOne
+  id: TgIndestructibleNecropolis
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/necro_tgstation.rsi
+    state: necro
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/necro_tgstation.rsi
+    state: necro
+
+- type: entity
+  parent: [ DecorImportMeatWallBase, BaseWallBitmask ]
+  id: GoonAutoMartian
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/martian_goonstation.rsi
+    state: martian-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/martian_goonstation.rsi
+    state: martian-0
+  - type: IconSmooth
+    base: martian-
+
+- type: entity
+  parent: BaseWall
+  id: FrontierWallSolidChitin
+  components:
+  - type: Tag
+    tags:
+      - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+      - !type:ChangeConstructionNodeBehavior
+        node: girder
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/xeno_frontier.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/xeno_frontier.rsi
+  - type: IconSmooth
+    key: chitin
+    base: solid
+  - type: Construction
+    graph: Girder
+    node: wallChitin
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWall
+  id: FrontierWallReinforcedChitin
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/xeno_frontier.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/xeno_frontier.rsi
+    state: rgeneric
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 600
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+      - !type:ChangeConstructionNodeBehavior
+        node: girder
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ReinforcedWallVisuals.DeconstructionStage:
+        ReinforcedWallVisualLayers.Deconstruction:
+          -1: { visible: false }
+          0: { state: reinf_construct-0, visible: true}
+          1: { state: reinf_construct-1, visible: true}
+          2: { state: reinf_construct-2, visible: true}
+          3: { state: reinf_construct-3, visible: true}
+          4: { state: reinf_construct-4, visible: true}
+          5: { state: reinf_construct-5, visible: true}
+  - type: StaticPrice
+    price: 250
+  - type: RadiationBlocker
+    resistance: 5
+  - type: IconSmooth
+    key: chitin
+    base: reinf_over
+  - type: Construction
+    graph: Girder
+    node: reinforcedWallChitin
+
+- type: entity
+  parent: GoonCave
+  id: PolarisMineralCrystal
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/rock_crystal_polaris.rsi
+    state: rock-crystal
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/rock_crystal_polaris.rsi
+    state: rock-crystal
+
+- type: entity
+  parent: GoonCave
+  id: PolarisMineralIcey
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/rock_icey_polaris.rsi
+    state: rock-icey
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/rock_icey_polaris.rsi
+    state: rock-icey
+
+- type: entity
+  parent: [ BaseWallTierTwo, BaseWallBitmask ]
+  id: CitadelRPWallDerelict
+  components:
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/engineer_citadelrp.rsi
+    state: wall-0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/engineer_citadelrp.rsi
+    state: wall-0
+  - type: IconSmooth
+    base: wall-

@@ -92,3 +92,303 @@
   - type: IconSmooth
     key: walls
     base: cavewall
+
+- type: entity
+  parent: WallRock
+  id: MojaveRock
+  components:
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/mining_mojave.rsi
+    state: rock1
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/mining_mojave.rsi
+    layers:
+    - state: rock1
+      map: [ "random" ]
+    - map: [ "enum.EdgeLayer.South" ]
+      state: rock_side_n
+    - map: [ "enum.EdgeLayer.East" ]
+      state: rock_side_w
+    - map: [ "enum.EdgeLayer.North" ]
+      state: rock_side_s
+    - map: [ "enum.EdgeLayer.West" ]
+      state: rock_side_e
+  - type: RandomSprite
+    available:
+    - random:
+        rock1: ""
+        rock2: ""
+        rock3: ""
+        rock4: ""
+        rock5: ""
+        rock6: ""
+
+- type: entity
+  parent: MojaveRock
+  id: MojaveRockDiamond
+  suffix: Diamond
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreDiamond
+  - type: Icon
+    state: rock_Diamond1
+  - type: Sprite
+    layers:
+    - state: rock_Diamond1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+    - map: [ "enum.EdgeLayer.South" ]
+      state: rock_side_n
+    - map: [ "enum.EdgeLayer.East" ]
+      state: rock_side_w
+    - map: [ "enum.EdgeLayer.North" ]
+      state: rock_side_s
+    - map: [ "enum.EdgeLayer.West" ]
+      state: rock_side_e
+  - type: RandomSprite
+    available:
+    - random:
+        rock_Diamond1: ""
+        rock_Diamond2: ""
+        rock_Diamond3: ""
+
+- type: entity
+  parent: MojaveRock
+  id: MojaveRockPlasma
+  suffix: Plasma
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOrePlasma
+  - type: Icon
+    state: rock_Plasma1
+  - type: Sprite
+    layers:
+    - state: rock_Plasma1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+    - map: [ "enum.EdgeLayer.South" ]
+      state: rock_side_n
+    - map: [ "enum.EdgeLayer.East" ]
+      state: rock_side_w
+    - map: [ "enum.EdgeLayer.North" ]
+      state: rock_side_s
+    - map: [ "enum.EdgeLayer.West" ]
+      state: rock_side_e
+  - type: RandomSprite
+    available:
+    - random:
+        rock_Plasma1: ""
+        rock_Plasma2: ""
+        rock_Plasma3: ""
+
+- type: entity
+  parent: MojaveRock
+  id: MojaveRockUranium
+  suffix: Uranium
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOreUranium
+  - type: Icon
+    state: rock_Uranium1
+  - type: Sprite
+    layers:
+    - state: rock_Uranium1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+    - map: [ "enum.EdgeLayer.South" ]
+      state: rock_side_n
+    - map: [ "enum.EdgeLayer.East" ]
+      state: rock_side_w
+    - map: [ "enum.EdgeLayer.North" ]
+      state: rock_side_s
+    - map: [ "enum.EdgeLayer.West" ]
+      state: rock_side_e
+  - type: RandomSprite
+    available:
+    - random:
+        rock_Uranium1: ""
+        rock_Uranium2: ""
+        rock_Uranium3: ""
+
+- type: entity
+  abstract: true
+  parent: BaseWall
+  id: DecorImportAsteroidRockBase
+  components:
+  - type: Transform
+    noRot: true
+  - type: SoundOnGather
+  - type: Gatherable
+    toolWhitelist:
+      tags:
+      - Pickaxe
+      components:
+      - MiningGatheringHard
+      - MiningGatheringSoft
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: MiningScannerViewable
+
+- type: entity
+  parent: DecorImportAsteroidRockBase
+  id: ErisRock
+  components:
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/rock_eris.rsi
+    state: rock0
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/rock_eris.rsi
+    layers:
+    - state: rock0
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        rock0: ""
+        rock1: ""
+        rock2: ""
+        rock3: ""
+        rock4: ""
+
+- type: entity
+  parent: ErisRock
+  id: ErisRockPlasma
+  suffix: Plasma
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOrePlasma
+  - type: Sprite
+    layers:
+    - state: rock0
+      map: [ "random" ]
+    - sprite: _WF/DecorImport/Structures/Walls/ore_eris.rsi
+      state: rock_o_plasma
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  parent: DecorImportAsteroidRockBase
+  id: GoonAsteroid
+  components:
+  - type: IconSmooth
+    key: rockwalls
+    base: asteroid-
+    mode: Bitmask
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/asteroid_goon.rsi
+    state: asteroid-0
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/asteroid_goon.rsi
+    layers:
+    - state: asteroid-0
+      color: "#D1E6FF"
+
+- type: entity
+  parent: GoonAsteroid
+  id: GoonAsteroidChar
+  suffix: Coal
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOreCoal
+  - type: Sprite
+    layers:
+    - state: asteroid-0
+      color: "#D1E6FF"
+    - state: char1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+  - type: RandomSprite
+    available:
+    - random:
+        char1: ""
+        char2: ""
+        char3: ""
+
+- type: entity
+  parent: GoonAsteroid
+  id: GoonAsteroidPlasmastone
+  suffix: Plasma
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOrePlasma
+  - type: Sprite
+    layers:
+    - state: asteroid-0
+      color: "#D1E6FF"
+    - state: plasmastone1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+  - type: RandomSprite
+    available:
+    - random:
+        plasmastone1: ""
+        plasmastone2: ""
+        plasmastone3: ""
+
+- type: entity
+  parent: GoonAsteroid
+  id: GoonAsteroidCerenkite
+  suffix: Uranium
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOreUranium
+  - type: Sprite
+    layers:
+    - state: asteroid-0
+      color: "#D1E6FF"
+    - state: cerenkite1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+  - type: RandomSprite
+    available:
+    - random:
+        cerenkite1: ""
+        cerenkite2: ""
+        cerenkite3: ""
+
+- type: entity
+  parent: GoonAsteroid
+  id: GoonAsteroidClaretine
+  suffix: Salt
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOreSalt
+  - type: Sprite
+    layers:
+    - state: asteroid-0
+      color: "#D1E6FF"
+    - state: claretine1
+      map: [ "random", "enum.MiningScannerVisualLayers.Overlay" ]
+  - type: RandomSprite
+    available:
+    - random:
+        claretine1: ""
+        claretine2: ""
+        claretine3: ""
+
+- type: entity
+  parent: BubberMineralIcerock
+  id: TgIcerockPlasma
+  suffix: Plasma
+  components:
+  - type: MiningScannerViewable
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: NFOrePlasma
+  - type: Sprite
+    layers:
+    - state: icerock_wall-0
+    - sprite: _WF/DecorImport/Structures/Walls/ore_visuals_tg.rsi
+      state: rock_plasma
+      offset: 0.125,0.125
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]

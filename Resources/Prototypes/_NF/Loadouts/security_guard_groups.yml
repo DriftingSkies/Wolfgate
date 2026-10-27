@@ -6,6 +6,14 @@
   - ColorBlackGloves
   - FingerlessGloves
   - SecurityCombatGlovesBlack # Mono
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingGlovesColorBlackSecurity
+  - WFMeridianLoadoutClothingGlovesColorBlackSecurityBlu
+  - WFMeridianLoadoutClothingGlovesColorBlackSecurityDepgagCargo
+  - WFMeridianLoadoutClothingGlovesKazaRukSec
+  - WFMeridianLoadoutClothingGlovesKazaRukSecPeacekeeper
+  - WFMeridianLoadoutClothingGlovesTacklerPeacekeeper
+  # WOLFGATE END
   fallbacks:
   - SecurityCombatGlovesBlack # Mono
 
@@ -16,6 +24,12 @@
   loadouts:
   - SecurityBeret
   - SecurityHelmet
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingHeadBlastwaveOfficer
+  - WFMeridianLoadoutClothingHeadCollectableHos
+  - WFMeridianLoadoutClothingHeadCollectablePolice
+  - WFMeridianLoadoutClothingHeadPlaybunnyearsBrigPhys
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: SecurityGuardJumpsuit

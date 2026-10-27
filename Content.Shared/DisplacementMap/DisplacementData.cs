@@ -10,5 +10,5 @@ public sealed partial class DisplacementData
     public Dictionary<int, PrototypeLayerData> SizeMaps = new();
 
     [DataField]
-    public string? ShaderOverride = "DisplacedStencilDraw";
+    public string? ShaderOverride = "DisplacedDraw"; // WOLFGATE: wizden#38042, the stencil one draws nothing in UI sprite views
 }

@@ -1,0 +1,34 @@
+- type: entity
+  parent: BaseWallTierTwo
+  id: PvEHaloWallCovenant
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/covenant_pvehalo.rsi
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/covenant_pvehalo.rsi
+  - type: IconSmooth
+    key: walls
+    base: covwall
+
+- type: entity
+  parent: BaseWallTierTwo
+  id: InsurrectionWallAlien
+  components:
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+  - type: Sprite
+    sprite: _WF/DecorImport/Structures/Walls/alien_insurrection.rsi
+    state: wall0
+  - type: Icon
+    sprite: _WF/DecorImport/Structures/Walls/alien_insurrection.rsi
+    state: wall0
+  - type: IconSmooth
+    key: walls
+    base: wall
+    mode: CardinalFlags

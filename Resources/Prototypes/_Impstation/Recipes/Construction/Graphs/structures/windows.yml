@@ -1,0 +1,14 @@
+# WOLFGATE(DecorImport) START: ported from Impstation
+- type: constructionGraph
+  id: WindowDecapoid
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: reinforcedwindow
+      steps:
+            - tool: Welding
+              doAfter: 10
+  - node: reinforcedwindow
+    entity: ReinforcedWindow
+# WOLFGATE END

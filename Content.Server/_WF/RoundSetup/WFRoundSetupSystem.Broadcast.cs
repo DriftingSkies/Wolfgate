@@ -82,8 +82,12 @@ public sealed partial class WFRoundSetupSystem
         RefreshPortraits();
         _portraitSources.Clear();
         foreach (var lobby in _lobbies.Values)
-        foreach (var user in lobby.Members.Keys)
+        foreach (var (user, member) in lobby.Members)
+        {
             _portraitSources[user] = _preferences.GetPreferencesOrNull(user)?.SelectedCharacter;
+            // This snapshot carries the status, so the next poll must not resend it.
+            _knownStatuses[user] = MemberStatus(member);
+        }
         foreach (var user in _watchers.ToArray())
         {
             if (_players.TryGetSessionById(user, out var session))

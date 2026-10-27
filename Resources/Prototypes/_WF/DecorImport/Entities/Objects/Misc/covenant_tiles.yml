@@ -1,0 +1,134 @@
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantPattern
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantPattern
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantPattern
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantSmoothPlating
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantSmoothPlating
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantSmoothPlating
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantSmoothPlatingSides
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantSmoothPlatingSides
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantSmoothPlatingSides
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantPlating
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantPlating
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantPlating
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantSmoothPlatingCorner
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantSmoothPlatingCorner
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantSmoothPlatingCorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantSmoothPlatingOuterCorner
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantSmoothPlatingOuterCorner
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantSmoothPlatingOuterCorner
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantPaneling
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantPaneling
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantPaneling
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantSmoothPlatingLane
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantSmoothPlatingLane
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantSmoothPlatingLane
+
+- type: entity
+  parent: FloorTileItemBase
+  id: FloorTileItemPvEHaloFloorCovenantSmoothPlatingEndcap
+  components:
+  - type: Sprite
+    state: dark
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - PvEHaloFloorCovenantSmoothPlatingEndcap
+  - type: Stack
+    stackType: FloorTilePvEHaloFloorCovenantSmoothPlatingEndcap

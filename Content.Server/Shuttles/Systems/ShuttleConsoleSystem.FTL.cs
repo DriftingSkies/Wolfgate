@@ -222,7 +222,7 @@ public sealed partial class ShuttleConsoleSystem
         RaiseLocalEvent(ref ev);
         if (_shuttle.TryGetFTLDrive(shuttleUid.Value, out _, out var drive)) // Mono Begin
         {
-            MassAdjustFTLStart(shuttlePhysics,
+            MassAdjustFTLStart(_shuttle.GetFtlGroupMass(shuttleUid.Value), // WOLFGATE(Shuttles): docked grids that jump along count toward the mass
                 drive,
                 out var massAdjustedStartupTime,
                 out var massAdjustedHyperSpaceTime);
@@ -231,7 +231,7 @@ public sealed partial class ShuttleConsoleSystem
     }
 
     // Mono Begin
-    private void MassAdjustFTLStart(PhysicsComponent shuttlePhysics, FTLDriveComponent drive, out float massAdjustedStartupTime, out float massAdjustedHyperSpaceTime)
+    private void MassAdjustFTLStart(float mass, FTLDriveComponent drive, out float massAdjustedStartupTime, out float massAdjustedHyperSpaceTime) // WOLFGATE(Shuttles): takes the jumping group's mass
     {
         if (drive.MassAffectedDrive == false)
         {
@@ -239,7 +239,7 @@ public sealed partial class ShuttleConsoleSystem
             massAdjustedStartupTime = drive.StartupTime;
             return;
         }
-        var adjustedMass = shuttlePhysics.Mass * drive.DriveMassMultiplier;
+        var adjustedMass = mass * drive.DriveMassMultiplier; // WOLFGATE(Shuttles)
         var massMultiplier = float.Log(float.Sqrt(adjustedMass / MassConstant + float.E));
         massMultiplier = float.Clamp(massMultiplier, MassMultiplierMin, MassMultiplierMax);
         massAdjustedStartupTime = drive.StartupTime * massMultiplier;

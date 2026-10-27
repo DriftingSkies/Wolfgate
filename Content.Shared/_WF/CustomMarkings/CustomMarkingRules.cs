@@ -18,13 +18,10 @@ public static class CustomMarkingRules
     public const int PixelBytes = SheetSize * SheetSize * 4;
 
     /// <summary>Most frames a marking has, whatever the server setting says. One is a still marking.</summary>
-    public const int MaxFrames = 8;
+    public const int MaxFrames = 32;
 
-    /// <summary>
-    /// The shortest a frame of an animated marking shows, in milliseconds, which keeps a marking from flashing
-    /// faster than ten times a second.
-    /// </summary>
-    public const int MinFrameTime = 100;
+    /// <summary>The shortest a frame of an animated marking shows, in milliseconds: about one rendered frame.</summary>
+    public const int MinFrameTime = 20;
 
     /// <summary>The longest a frame shows, in milliseconds.</summary>
     public const int MaxFrameTime = 10000;
@@ -150,11 +147,14 @@ public static class CustomMarkingRules
         return true;
     }
 
+    /// <summary>Set on the last packed time when the animation plays back to the start instead of jumping to it.</summary>
+    private const int PingPongBit = 0x8000;
+
     /// <summary>
-    /// Frame times as stored beside art: two bytes for each frame, low byte first. Null for a still marking, which
-    /// has none worth keeping.
+    /// Frame times as stored beside art: two bytes for each frame, low byte first, with
+    /// <paramref name="pingPong"/> as the top bit of the last. Null for a still marking, which has none worth keeping.
     /// </summary>
-    public static byte[]? PackFrameTimes(int[] times)
+    public static byte[]? PackFrameTimes(int[] times, bool pingPong = false)
     {
         if (times.Length <= 1)
             return null;
@@ -162,8 +162,12 @@ public static class CustomMarkingRules
         var packed = new byte[times.Length * 2];
         for (var i = 0; i < times.Length; i++)
         {
-            packed[i * 2] = (byte) times[i];
-            packed[i * 2 + 1] = (byte) (times[i] >> 8);
+            var time = times[i] & ~PingPongBit;
+            if (pingPong && i == times.Length - 1)
+                time |= PingPongBit;
+
+            packed[i * 2] = (byte) time;
+            packed[i * 2 + 1] = (byte) (time >> 8);
         }
 
         return packed;
@@ -178,10 +182,16 @@ public static class CustomMarkingRules
         var times = new int[packed.Length / 2];
         for (var i = 0; i < times.Length; i++)
         {
-            times[i] = packed[i * 2] | packed[i * 2 + 1] << 8;
+            times[i] = (packed[i * 2] | packed[i * 2 + 1] << 8) & ~PingPongBit;
         }
 
         return times;
+    }
+
+    /// <summary>Whether <see cref="PackFrameTimes"/> bytes play back and forth.</summary>
+    public static bool UnpackPingPong(byte[]? packed)
+    {
+        return UnpackFrameTimes(packed) != null && (packed![^1] << 8 & PingPongBit) != 0;
     }
 
     /// <summary>A worn list as the text saved with a character: <c>hash:placement</c> pairs, comma separated.</summary>

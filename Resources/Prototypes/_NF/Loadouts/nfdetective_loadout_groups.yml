@@ -6,6 +6,14 @@
   - NFDetectiveClothingUniformJumpskirtDetective
   - NFDetectiveClothingUniformJumpsuitDetectiveGrey
   - NFDetectiveClothingUniformJumpskirtDetectiveGrey
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderRankSecurityDetectiveBunnysuit
+  - WFMeridianLoadoutClothingUnderRankSecurityDetectiveBunnysuitNoir
+  - WFMeridianLoadoutClothingUnderRankSecurityDetectiveCowboy
+  - WFMeridianLoadoutClothingUnderRankSecurityDetectiveDisco
+  - WFMeridianLoadoutClothingUnderRankSecurityDetectiveKim
+  - WFMeridianLoadoutClothingUnderRankSecurityDetectiveRunner
+  # WOLFGATE END
   fallbacks:
   - NFDetectiveClothingUniformJumpsuitDetective
   - NFDetectiveClothingUniformJumpskirtDetective
@@ -43,6 +51,11 @@
   hidden: true # No point in showing this, it gets auto-selected.
   loadouts:
   - NFDetectiveClothingNeckNfsdBadgeDetective
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingAccessoryBadgeHoloDetective
+  - WFMeridianLoadoutClothingNeckTieBunnytieDetective
+  - WFMeridianLoadoutClothingNeckTieDetective
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: NFDetectivePDA

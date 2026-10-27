@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Content.Client.Clickable;
 using Content.Shared._WF.CustomMarkings;
@@ -12,11 +13,11 @@ using Robust.Shared.Utility;
 
 namespace Content.Client._WF.CustomMarkings;
 
-// A marking is only drawn on the body that wears it, on the body's other markings such as a tail or ears, and on a
-// small margin around them. Each of its pixels belongs to what it lies on: a body part that is hidden, such as a lost
-// limb, takes its pixels along, and so does a tail or a pair of ears a helmet hides. Every client cuts the art to the
-// wearer's own outline as it draws, so nothing a player uploads can reach past that. Art drawn on the body that wears
-// it already fits, and is drawn as it is.
+// Each pixel of a marking belongs to what it lies on: a body part that is hidden, such as a lost limb, takes its pixels
+// along, and so does a tail or a pair of ears a helmet hides. With wf.custom_markings.body_reach on, a marking is also
+// only drawn on the body that wears it, on the body's other markings such as a tail or ears, and on a small margin
+// around them; every client cuts the art to the wearer's own outline as it draws, so nothing a player uploads can
+// reach past that. Art that already fits is drawn as it is.
 public sealed partial class CustomMarkingSystem
 {
     [Dependency] private IClickMapManager _clickMap = default!;
@@ -25,6 +26,9 @@ public sealed partial class CustomMarkingSystem
     private const int MaxCutArt = 512;
     private const int MaxDecodedArt = 128;
     private const int MaxSections = 256;
+
+    /// <summary>Whether art is cut to the wearer's outline and the margin round it.</summary>
+    public bool BodyReach => _cfg.GetCVar(CustomMarkingCVars.BodyReach);
 
     /// <summary>A section map numbers what it holds in a byte, so only so many marking sprites can have a section.</summary>
     private const int MaxExtras = 200;
@@ -159,9 +163,10 @@ public sealed partial class CustomMarkingSystem
 
     /// <summary>
     /// The sprites of the markings a body shows, such as a tail, ears or hair, lowest drawn first. One that is
-    /// hidden, by a helmet say, is left out: art has nothing to lie on there.
+    /// hidden, by a helmet say, is left out, as art has nothing to lie on there, unless <paramref name="withHidden"/>
+    /// asks for it to take its pixels along.
     /// </summary>
-    private List<Part> FindExtras(Entity<SpriteComponent?> sprite, List<Part> limbs)
+    private List<Part> FindExtras(Entity<SpriteComponent?> sprite, List<Part> limbs, bool withHidden = false)
     {
         var extras = new List<Part>();
         if (sprite.Comp is not { } comp || !TryComp<HumanoidAppearanceComponent>(sprite, out var humanoid))
@@ -188,7 +193,7 @@ public sealed partial class CustomMarkingSystem
                     if (_sprite.LayerMapTryGet(sprite, key, out var index, false)
                         && !limbs.Exists(limb => limb.Index == index)
                         && TryGetPart(comp, index, key, prototype.ID, out var part)
-                        && !part.Hidden)
+                        && (withHidden || !part.Hidden))
                         extras.Add(part);
                 }
             }
@@ -311,11 +316,15 @@ public sealed partial class CustomMarkingSystem
         if (limbs.Count == 0)
             return null;
 
-        var sections = SectionsFor(limbs, FindExtras(sprite, limbs), depth, out var body);
+        // Without the reach limit a hidden extra is listed too, so art on a tail under a hardsuit goes with the tail
+        // instead of being left in the open.
+        var reach = BodyReach;
+        var extras = FindExtras(sprite, limbs, !reach);
+        var sections = SectionsFor(limbs, extras, depth, out var body);
         var key = new StringBuilder(marking.Hash).Append('|').Append(body).Append('|');
-        foreach (var limb in limbs)
+        foreach (var part in limbs.Concat(extras))
         {
-            key.Append(limb.Hidden ? '-' : '+');
+            key.Append(part.Hidden ? '-' : '+');
         }
 
         var cutKey = key.ToString();
@@ -325,10 +334,10 @@ public sealed partial class CustomMarkingSystem
         if (_cut.Count >= MaxCutArt)
             _cut.Clear();
 
-        return _cut[cutKey] = Cut(marking.Hash, whole, sections, limbs);
+        return _cut[cutKey] = Cut(marking.Hash, whole, sections, limbs, extras, reach);
     }
 
-    private Shown? Cut(string hash, RSI whole, byte[] sections, List<Part> limbs)
+    private Shown? Cut(string hash, RSI whole, byte[] sections, List<Part> limbs, List<Part> extras, bool reach)
     {
         // Art that can't be read can't be shown to fit, so it isn't shown.
         if (!TryDecode(hash, out var art))
@@ -336,9 +345,11 @@ public sealed partial class CustomMarkingSystem
 
         var cut = art.Without((facing, x, y) =>
         {
-            // Only a limb can be listed and hidden; what else the map numbers was showing when it was made.
             var owner = sections[CustomMarkingSections.Index(facing, x, y)];
-            return owner == CustomMarkingSections.None || owner <= limbs.Count && limbs[owner - 1].Hidden;
+            if (owner == CustomMarkingSections.None)
+                return reach;
+
+            return (owner <= limbs.Count ? limbs[owner - 1] : extras[owner - 1 - limbs.Count]).Hidden;
         });
 
         if (cut.IsBlank())
@@ -350,7 +361,7 @@ public sealed partial class CustomMarkingSystem
         // Named after itself, so the same cut is one RSI however it was reached, on this connection or the last.
         var name = $"{hash}-{cut.Fingerprint()}";
         if (!_resources.Has(name))
-            _resources.Store(name, cut.ToPng(), cut.GetFrameTimes());
+            _resources.Store(name, cut.ToPng(), cut.GetFrameTimes(), pingPong: cut.PingPongs);
 
         try
         {

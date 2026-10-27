@@ -32,6 +32,12 @@ public sealed partial class GameTicker
             LobbyBackground = LobbyBackgroundOverride;
             return;
         }
+        // WOLFGATE(Symphony): or one from the panel's pool, a different one each round
+        if (PickFromPool() is { } pooled)
+        {
+            LobbyBackground = pooled;
+            return;
+        }
         LobbyBackground = _lobbyBackgrounds!.Any() ? _robustRandom.Pick(_lobbyBackgrounds!).ToString() : null;
     }
 }

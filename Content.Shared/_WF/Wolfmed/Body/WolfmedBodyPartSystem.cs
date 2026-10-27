@@ -17,6 +17,32 @@ public sealed class WolfmedBodyPartSystem : EntitySystem
     /// <summary>Wolfmed data for a part; a zeroed default when the part has none.</summary>
     public WolfmedBodyPartComponent Get(EntityUid part) => CompOrNull<WolfmedBodyPartComponent>(part) ?? None;
 
+    /// <summary>Records damage a part took past its cap.</summary>
+    public void AddOverflow(EntityUid part, DamageSpecifier overflow)
+    {
+        var record = EnsureComp<WolfmedPartOverflowComponent>(part);
+        foreach (var (type, amount) in overflow.DamageDict)
+        {
+            if (amount > FixedPoint2.Zero)
+                record.Damage.DamageDict[type] = record.Damage.DamageDict.GetValueOrDefault(type) + amount;
+        }
+    }
+
+    /// <summary>Forgets a part's overflow once it has room under its cap again.</summary>
+    public void ClearOverflow(EntityUid part) => RemComp<WolfmedPartOverflowComponent>(part);
+
+    /// <summary>The part's stored damage with its overflow added, for the sever thresholds.</summary>
+    public DamageSpecifier WithOverflow(EntityUid part, DamageSpecifier stored)
+    {
+        if (!TryComp(part, out WolfmedPartOverflowComponent? record) || record.Damage.Empty)
+            return stored;
+
+        var total = stored.Clone();
+        foreach (var (type, amount) in record.Damage.DamageDict)
+            total.DamageDict[type] = total.DamageDict.GetValueOrDefault(type) + amount;
+        return total;
+    }
+
     /// <summary>
     /// The systemic damage types with a ceiling. Bloodloss used to be left out so a vital loss could deal its fixed
     /// lethal figure through it; BRAIN made that death the life system's (LostVitalPart), and nothing in the model
@@ -68,14 +94,18 @@ public sealed class WolfmedBodyPartSystem : EntitySystem
     }
 
     /// <summary>
-    /// The per-part ceiling for damage nobody dealt: wolfmed.ambient_part_cap_fraction of the part's lowest
-    /// destruction threshold, or null when the part has none (the torso, which keeps its own cap).
+    /// The per-part ceiling for damage nobody dealt: wolfmed.ambient_part_cap_fraction of the part's damage cap,
+    /// or of its lowest destruction threshold when it has no cap; null when it has neither.
     /// </summary>
     public FixedPoint2? AmbientCeiling(EntityUid part)
     {
         var fraction = _config.GetCVar(WolfmedCVars.AmbientPartCapFraction);
         if (fraction <= 0f)
             return null;
+
+        // Revival pass: a part with a damage cap measures fire against that, not its far higher ash line.
+        if (Get(part).MaxDamage is var cap && cap > FixedPoint2.Zero)
+            return cap * fraction;
 
         var ev = new WolfmedPartDestructionThresholdEvent();
         RaiseLocalEvent(part, ref ev);

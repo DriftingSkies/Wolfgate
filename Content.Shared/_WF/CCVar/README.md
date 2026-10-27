@@ -15,6 +15,7 @@ internet sounds, soundtrack mute, NPC crew docking, ship access locking and expl
 
 ### Shared
 
+- [`Content.Shared/_WF/CCVar/BattleLoadCVars.cs`](BattleLoadCVars.cs)
 - [`Content.Shared/_WF/CCVar/CavernCVars.cs`](CavernCVars.cs)
 - [`Content.Shared/_WF/CCVar/CollisionWarningCVars.cs`](CollisionWarningCVars.cs)
 - [`Content.Shared/_WF/CCVar/EncountersCVars.cs`](EncountersCVars.cs)

@@ -131,6 +131,7 @@ ent-FloorTileItemGoonFloorSandytile = sand-covered floor
 ent-FloorTileItemGoonFloorSanitary = sanitary floor
 ent-FloorTileItemGoonFloorStone = stone
 ent-FloorTileItemGoonFloorTechfloor = data tech flooring
+ent-FloorTileItemGoonFloorBluefloor = blue floor
 ent-FloorTileItemGoonFloorTerrazzo = terrazzo tiling
 ent-FloorTileItemGoonFloorGlassblockLarge = glass block tiling
 ent-FloorTileItemGoonFloorGlassblockTransparent = glass block tiling
@@ -216,6 +217,46 @@ ent-FloorTileItemGoonFloorWoodThree = goon wood floor 3
 ent-FloorTileItemGoonFloorWoodFive = goon wood floor 5
 ent-FloorTileItemGoonFloorWoodSix = goon wood floor 6
 ent-FloorTileItemGoonFloorWoodSeven = goon wood floor 7
+ent-FloorTileItemGoonFloorMartian = organic floor
+ent-FloorTileItemGoonFloorMarslikeT2 = imitation martian dirt
+ent-FloorTileItemGoonFloorMarslikeT3 = imitation martian dirt
+ent-FloorTileItemGoonFloorMarslikeT4 = imitation martian dirt
+ent-FloorTileItemGoonFloorMarsRocks = Mars
+ent-FloorTileItemGoonFloorMartianDust = martian dust
+ent-FloorTileItemGoonFloorMarsBase1 = brick edge
+ent-FloorTileItemGoonFloorMarsBase1North = brick edge (north)
+ent-FloorTileItemGoonFloorMarsBase1East = brick edge (east)
+ent-FloorTileItemGoonFloorMarsBase1West = brick edge (west)
+ent-FloorTileItemGoonFloorMarsBase1SouthEast = brick edge (south-east)
+ent-FloorTileItemGoonFloorMarsBase1SouthWest = brick edge (south-west)
+ent-FloorTileItemGoonFloorMarsBase1NorthEast = brick edge (north-east)
+ent-FloorTileItemGoonFloorMarsBase1NorthWest = brick edge (north-west)
+ent-FloorTileItemGoonFloorMarsBase2 = pad edge
+ent-FloorTileItemGoonFloorMarsBase2North = pad edge (north)
+ent-FloorTileItemGoonFloorMarsBase2East = pad edge (east)
+ent-FloorTileItemGoonFloorMarsBase2West = pad edge (west)
+ent-FloorTileItemGoonFloorMarsBase2SouthEast = pad edge (south-east)
+ent-FloorTileItemGoonFloorMarsBase3 = pad corner
+ent-FloorTileItemGoonFloorMarsBase3North = pad corner (north)
+ent-FloorTileItemGoonFloorMarsBase3East = pad corner (east)
+ent-FloorTileItemGoonFloorMarsBase3West = pad corner (west)
+ent-FloorTileItemGoonFloorMarsBase3SouthEast = pad corner (south-east)
+ent-FloorTileItemGoonFloorMarsBase3SouthWest = pad corner (south-west)
+ent-FloorTileItemGoonFloorMarsBase3NorthEast = pad corner (north-east)
+ent-FloorTileItemGoonFloorMarsDirtroad1 = dirt road
+ent-FloorTileItemGoonFloorMarsDirtroad1North = dirt road (north)
+ent-FloorTileItemGoonFloorMarsDirtroad1SouthEast = dirt road (south-east)
+ent-FloorTileItemGoonFloorMarsDirtroad1SouthWest = dirt road (south-west)
+ent-FloorTileItemGoonFloorMarsDirtroad1NorthEast = dirt road (north-east)
+ent-FloorTileItemGoonFloorMarsDirtroad1NorthWest = dirt road (north-west)
+ent-FloorTileItemGoonFloorMarsDirtroad2 = dirt road end
+ent-FloorTileItemGoonFloorMarsDirtroad2North = dirt road end (north)
+ent-FloorTileItemGoonFloorMarsDirtroad2East = dirt road end (east)
+ent-FloorTileItemGoonFloorMarsDirtroad2West = dirt road end (west)
+ent-FloorTileItemGoonFloorMarsDirtroad2SouthEast = dirt road end (south-east)
+ent-FloorTileItemGoonFloorMarsDirtroad2SouthWest = dirt road end (south-west)
+ent-FloorTileItemGoonFloorMarsDirtroad2NorthEast = dirt road end (north-east)
+ent-FloorTileItemGoonFloorMarsDirtroad2NorthWest = dirt road end (north-west)
 
 ## Aurora
 ent-FloorTileItemAuroraFloorSidewalkAssunzioneBlocks = blocked sidewalk tiles
@@ -281,6 +322,8 @@ ent-FloorTileItemBubberFloorTramGuideway = tram guideway
 ent-FloorTileItemBubberFloorTramPlate = linear induction plate
 ent-FloorTileItemBubberFloorVaultAlien = alien floor
 ent-FloorTileItemBubberFloorVaultSandstone = sandstone floor
+ent-FloorTileItemBubberFloorLunarSand = lunar sand
+ent-FloorTileItemBubberFloorLunarRock = lunar rock
 
 ## Citadel
 ent-FloorTileItemCitFloorSpooktimeCobble = cobblestone path
@@ -465,9 +508,15 @@ ent-FloorTileItemVoreFloorWoodOak = oak wood floor
 ent-FloorTileItemVoreFloorWoodPine = pine wood floor
 ent-FloorTileItemVoreFloorWoodRedwood = redwood wood floor
 ent-FloorTileItemVoreFloorWoodSif = alien wooden floor
+ent-FloorTileItemVoreFloorReinforced = reinforced floor
+ent-FloorTileItemVoreFloorAlienPlatingHalf = alien plating
+ent-FloorTileItemVoreFloorAlienPlating = alien plating
 ent-FloorTileItemVoreFloorWaterUnderwaterIndoors = deeper waters
 ent-FloorTileItemVoreFloorWaterDigestiveEnzymes = digestive enzymes
 ent-FloorTileItemVoreFloorWaterGlamour = glamour
+ent-FloorTileItemVoreFloorFlesh = flesh
+ent-FloorTileItemVoreFloorFleshColour = grey flesh
+ent-FloorTileItemVoreFloorNanites = nanite-infested tiles
 
 ## Baystation
 ent-FloorTileItemBayFloorCarpetBlack = black carpet
@@ -481,6 +530,8 @@ ent-FloorTileItemBayFloorGreengrid = mainframe floor
 ent-FloorTileItemBayFloorExoplanetLava = lava
 ent-FloorTileItemBayFloorWaterShallowChlorineLiquid = chlorine marsh
 ent-FloorTileItemBayFloorWaterShallowTar = tar
+ent-FloorTileItemBayFloorExoplanetChlorineSand = chlorinated sand
+ent-FloorTileItemBayFloorFlesh = flesh
 
 ## BeeStation
 ent-FloorTileItemBeeFloorConcreteTile = concrete
@@ -497,6 +548,7 @@ ent-FloorTileItemBeeFloorVaultSandstone = sandstone floor
 ent-FloorTileItemBeeFloorNoslipBlue = high-traction floor
 ent-FloorTileItemBeeFloorGrassFairyGreen = green fairygrass patch
 ent-FloorTileItemBeeFloorGrassFairyPurple = purple fairygrass patch
+ent-FloorTileItemBeeFloorWaterRed = red water
 
 ## CHOMPStation
 ent-FloorTileItemChompFloorBlackholeGrate = ominous pattern
@@ -514,6 +566,20 @@ ent-FloorTileItemChompFloorOutdoorsLavalandAshrock = ashen rock
 
 ## CM-SS13
 ent-FloorTileItemCMFloorHybrisaWoodWhitewood = hybrisa wood whitewood floor
+ent-FloorTileItemCMFloorAncientFloor = ancient stone floor
+ent-FloorTileItemCMFloorAncientDamaged = cracked ancient stone floor
+ent-FloorTileItemCMFloorAncientBreach = broken ancient floor
+ent-FloorTileItemCMFloorAncientDeco = carved ancient floor
+ent-FloorTileItemCMFloorAncientDeco0 = framed carved ancient floor
+ent-FloorTileItemCMFloorAncientDeco1 = diamond ancient floor
+ent-FloorTileItemCMFloorAncientDeco2 = worn diamond ancient floor
+ent-FloorTileItemCMFloorAncientDecoAlt = ancient glyph floor
+ent-FloorTileItemCMFloorAncientDarkDeco = dark carved ancient floor
+ent-FloorTileItemCMFloorAncientDarkDeco1 = dark diamond ancient floor
+ent-FloorTileItemCMFloorAncientDecoAltDark = dark ancient glyph floor
+ent-FloorTileItemCMFloorHunterRed = hunter floor
+ent-FloorTileItemCMFloorHunterRed2 = hunter rune floor
+ent-FloorTileItemCMFloorHunterRed4 = lit hunter floor
 
 ## Coyote Bayou
 ent-FloorTileItemCoyoteFloorPadded = padded floor
@@ -523,6 +589,10 @@ ent-FloorTileItemCoyoteFloorMineralTitaniumPurple = shuttle floor
 ent-FloorTileItemCoyoteFloorMineralTitaniumWhite = shuttle floor
 ent-FloorTileItemCoyoteFloorMineralTitaniumYellow = shuttle floor
 ent-FloorTileItemCoyoteFloorF13StoneRugged = rugged stone floor
+ent-FloorTileItemCoyoteFloorUltraMolten = glowing sludge
+ent-FloorTileItemCoyoteFloorUltraFissureLeft = glowing fissure
+ent-FloorTileItemCoyoteFloorUltraFissureCenter = glowing fissure
+ent-FloorTileItemCoyoteFloorUltraFissureRight = glowing fissure
 
 ## DarkPack
 ent-FloorTileItemDarkPackFloorStairsBlackRight = stairs black right floor
@@ -553,6 +623,7 @@ ent-FloorTileItemMonkeFloorIronTerracottaHerringbone = iron terracotta herringbo
 ent-FloorTileItemParaFloorWaterDeepWoodFloor = sunken floor
 ent-FloorTileItemParaFloorPlasteelReactorPool = holding pool
 ent-FloorTileItemParaFloorPlasteelReactorPoolLadder = holding pool
+ent-FloorTileItemParaFloorFlock = weird floor
 ent-FloorTileItemParaFloorBeachAwaySand = sand
 ent-FloorTileItemParaFloorAwayWaterDeep = deep water
 ent-FloorTileItemParaFloorAwayWaterEdgeDrop = water
@@ -576,6 +647,13 @@ ent-FloorTileItemShiptestFloorWoodYewRight = wood yew right floor
 ent-FloorTileItemShiptestFloorSuns = white marble floor
 ent-FloorTileItemShiptestFloorSunsPattern = patterned white marble floor
 ent-FloorTileItemShiptestFloorShipJungleDark = jungle grass
+ent-FloorTileItemShiptestFloorShroudedSand = packed sand
+ent-FloorTileItemShiptestFloorMoonCoarse = coarse regolith
+ent-FloorTileItemShiptestFloorMoonCoarseDark = coarse regolith
+ent-FloorTileItemShiptestFloorMoonDark = regolith
+ent-FloorTileItemShiptestFloorIceSheet = ice sheet
+ent-FloorTileItemShiptestFloorIceberg = cracked ice floor
+ent-FloorTileItemShiptestFloorCrimsonGrass = crimson grass
 
 ## Skyrat
 ent-FloorTileItemSkyratFloorCatwalkFloorIron = iron plated catwalk floor
@@ -631,6 +709,41 @@ ent-FloorTileItemTgFloorBeachCoastCornerEast = coast corner (east)
 ent-FloorTileItemTgFloorBeachCoastCornerWest = coast corner (west)
 ent-FloorTileItemTgFloorBeachWater = shallow water
 ent-FloorTileItemTgFloorBeachWaterDeep = deep water
+ent-FloorTileItemTgFloorSiderite = siderite floor
 
 ## Yogstation
 ent-FloorTileItemYogFloorCatwalkFloorTitanium = titanium plated catwalk floor
+
+## CEV-Eris
+ent-FloorTileItemErisFloorAsteroid = coarse sand
+ent-FloorTileItemGoonFloorSnowroughBorder = snow
+ent-FloorTileItemGoonFloorSnowroughBorderNorth = snow (north)
+ent-FloorTileItemGoonFloorSnowroughBorderEast = snow (east)
+ent-FloorTileItemGoonFloorSnowroughBorderWest = snow (west)
+ent-FloorTileItemGoonFloorSnowroughBorderSouthEast = snow (south-east)
+ent-FloorTileItemGoonFloorSnowroughBorderSouthWest = snow (south-west)
+ent-FloorTileItemGoonFloorSnowroughBorderNorthEast = snow (north-east)
+ent-FloorTileItemGoonFloorSnowroughBorderNorthWest = snow (north-west)
+ent-FloorTileItemAuroraFloorExoplanetIcyRock = icy rock
+ent-FloorTileItemPolarisFloorSandIcey = sand
+ent-FloorTileItemVoreFloorGrassWinter = grass
+ent-FloorTileItemBeeFloorRedIce = ice sheet
+ent-FloorTileItemMojaveFloorIce = ice
+ent-FloorTileItemShiptestFloorObsidian = obsidian
+ent-FloorTileItemBayFloorExoplanetVolcanic = volcanic floor
+ent-FloorTileItemNovaFloorMushroom = mushroom floor
+ent-FloorTileItemNovaFloorMushroomBlue = mushroom floor
+ent-FloorTileItemNovaFloorMushroomGreen = mushroom floor
+ent-FloorTileItemAuroraFloorExoplanetBasalt = basalt
+ent-FloorTileItemCitadelRPFloorCave = cave floor
+ent-FloorTileItemVGFloorBloodrealm = flesh floor
+ent-FloorTileItemVGFloorBloodrealmAccent = veined flesh floor
+ent-FloorTileItemVGFloorBloodrealmAccentAlt = veined flesh floor
+ent-FloorTileItemVGFloorBloodrealmGrease = blue grease floor
+ent-FloorTileItemVGFloorBloodrealmGreaseGrey = grey grease floor
+ent-FloorTileItemVGFloorBloodrealmClot = clotted flesh floor
+ent-FloorTileItemVGFloorBloodrealmObsidian = black flesh floor
+ent-FloorTileItemTauCetiFloorMeatland = bloody vein floor
+ent-FloorTileItemDS13FloorDryFirm = soil
+ent-FloorTileItemDS13FloorDryCracked = soil
+ent-FloorTileItemTgFloorNecropolis = necropolis floor

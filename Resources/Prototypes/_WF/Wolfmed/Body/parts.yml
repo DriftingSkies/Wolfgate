@@ -27,7 +27,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
-    maxDamage: 250
+    maxDamage: 200 # revival pass: 250 -> 200
     # WOLFGATE (EVISC): what the overflow past that cap buys, now that D9 spends it on nothing else.
     eviscerationProfile: WFWolfmedEviscerationDefault
     # M3 (plan §8): what one hit, after armour, has to exceed to reach the organs; the excess is split across
@@ -45,6 +45,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 100 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds:
       Slash: 200
       Piercing: 200
@@ -68,6 +69,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 100 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: &wolfmedArmThresholds
       Slash: 130
       Piercing: 250
@@ -87,6 +89,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 100 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: *wolfmedArmThresholds
     dismembermentFinishingDamage: *wolfmedLimbFinishingDamage # WOLFGATE (P3 balance, M3)
 
@@ -96,6 +99,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 60 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: &wolfmedHandThresholds
       Slash: 70
       Piercing: 200
@@ -109,6 +113,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 60 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: *wolfmedHandThresholds
     dismembermentFinishingDamage: *wolfmedLimbFinishingDamage # WOLFGATE (P3 balance, M3)
 
@@ -118,6 +123,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 100 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: &wolfmedLegThresholds
       Slash: 150
       Piercing: 250
@@ -131,6 +137,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 100 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: *wolfmedLegThresholds
     dismembermentFinishingDamage: *wolfmedLimbFinishingDamage # WOLFGATE (P3 balance, M3)
 
@@ -140,6 +147,7 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 60 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: &wolfmedFootThresholds
       Slash: 80
       Piercing: 220
@@ -153,5 +161,6 @@
   components:
   - type: WolfmedBodyPart
     fractureProfile: WFWolfmedFractureProfile # WOLFGATE (W0 balance): Wolfgate thresholds, see fractures.yml
+    maxDamage: 60 # revival pass: stored damage stops here; the rest is overflow (severing, wound ladders)
     amputationThresholds: *wolfmedFootThresholds
     dismembermentFinishingDamage: *wolfmedLimbFinishingDamage # WOLFGATE (P3 balance, M3)

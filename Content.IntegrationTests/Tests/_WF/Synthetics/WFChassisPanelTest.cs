@@ -18,6 +18,8 @@ using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Components;
 using Content.Shared.Power.Components;
 using Content.Shared.Preferences;
@@ -283,6 +285,38 @@ public sealed class WFChassisPanelTest : WolfmedGameTest
                 "the reboot did not clear the chassis's pain.");
             Assert.That(SEntMan.GetComponent<WolfmedSyntheticHudComponent>(body).Shutdown, Is.False,
                 "the readout stayed on standby after the reboot.");
+            Assert.That(SEntMan.System<WFChassisPanelSystem>().TryReboot(body, body), Is.False,
+                "a second reboot was allowed inside the cooldown.");
+        });
+    }
+
+    /// <summary>A dead chassis can't work its own panel; a mechanic linked in still can.</summary>
+    [Test]
+    public async Task DeadChassisRefusesOwnControlsTest()
+    {
+        var map = await CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            var body = SpawnBody(SyntheticHuman, map.GridCoords);
+            var leg = Part(body, BodyPartType.Leg, BodyPartSymmetry.Right);
+            SEntMan.System<MobStateSystem>().ChangeMobState(body, MobState.Dead);
+
+            WFChassisDetachPartMessage Detach(EntityUid actor) => new(SEntMan.GetNetEntity(leg))
+            {
+                Actor = actor,
+                UiKey = WFChassisPanelUiKey.Key,
+                Entity = SEntMan.GetNetEntity(body),
+            };
+
+            SEntMan.EventBus.RaiseLocalEvent(body, (object) Detach(body));
+            Assert.That(SEntMan.GetComponent<BodyPartComponent>(leg).Body, Is.EqualTo(body),
+                "a dead chassis detached its own leg.");
+
+            var mechanic = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            SEntMan.EventBus.RaiseLocalEvent(body, (object) Detach(mechanic));
+            Assert.That(SEntMan.GetComponent<BodyPartComponent>(leg).Body, Is.Null,
+                "a mechanic could not detach a dead chassis's leg.");
         });
     }
 

@@ -147,3 +147,48 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/flooring/wood_greyscale.dmi (state wood)."
   source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ reinforced.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/floors_vr.dmi (state reinforced)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ alienplatinghalf.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/shuttle_alien_blue.dmi (state alienplatinghalf)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ alienplating.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/shuttle_alien_blue.dmi (state alienplating)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ flesh_floor.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/stomach_vr.dmi (state flesh_floor)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ c_flesh_floor.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/stomach_vr.dmi (state c_flesh_floor)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ nanites.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/nanitegoo.dmi (state composite)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ grass_winter.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/seasonal/turf.dmi (states grass-winter0 to grass-winter11)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ grass_winter_edge.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/seasonal/turf_edge.dmi (state grass-winter0-edge)."
+  source: "https://github.com/VOREStation/VOREStation"
+
+- files: [ flesh_floor_edge_south.png, flesh_floor_edge_north.png, flesh_floor_edge_east.png, flesh_floor_edge_west.png, flesh_floor_edge_southeast.png, flesh_floor_edge_southwest.png, flesh_floor_edge_northeast.png, flesh_floor_edge_northwest.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/icons/turf/stomach_vr.dmi (state flesh_floor_edges)."
+  source: "https://github.com/VOREStation/VOREStation"

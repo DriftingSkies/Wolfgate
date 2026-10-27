@@ -2,7 +2,9 @@
   id: Noble
   parent: BaseVessel
   name: SKR Noble
-  description: A slightly heavier mining craft, equipped with 4 mining pulsers and a magnet, but no self defense and poor armor.
+  # WOLFGATE(AsteroidMining): M12 mining lasers in place of the mining pulsers
+  # description: A slightly heavier mining craft, equipped with 4 mining pulsers and a magnet, but no self defense and poor armor.
+  description: A slightly heavier mining craft, equipped with 4 M12 mining lasers and a magnet, but no self defense and poor armor.
   price: 94365
   category: Small
   group: Shipyard

@@ -8,14 +8,15 @@ namespace Content.Server._WF.Wolfmed.Body;
 
 /// <summary>Bridges Onyx's organ-functionality event onto Shitmed's organ enable/disable switch.</summary>
 /// <remarks>
-/// Covers the one-tick window in which an organ sits at 0 HP but has not been destroyed yet;
-/// OrganHealthSystem.Update destroys it on the next tick and RemoveOrgan raises the same event again,
-/// which is idempotent. Everything Onyx's OrganEffectSystem does on organ *removal* Wolfgate already
+/// A failed organ stays in its slot at 0 HP (WolfmedOrganFailureSystem) and is switched off here until it is mended.
+/// With wolfmed.organ_destruction_removes on, OrganHealthSystem.Update destroys it on the next tick instead and
+/// RemoveOrgan raises the same event again, which is idempotent. Everything Onyx's OrganEffectSystem does on organ *removal* Wolfgate already
 /// does through Shitmed (P3-D8), so this is the only consequence glue phase 3 needs.
 /// </remarks>
 public sealed class WolfmedOrganConsequenceSystem : EntitySystem
 {
     [Dependency] private WolfmedShutdownSystem _shutdown = default!; // BRAIN
+    [Dependency] private WolfmedOrganFailureSystem _failure = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -35,6 +36,9 @@ public sealed class WolfmedOrganConsequenceSystem : EntitySystem
         // rather than subscribing it (precedent: CyberneticsSystem.cs:27-28,45-46). Its handler turns the
         // event into OrganComponentsModifyEvent, which revokes the organ's OnAdd grants and drives the eyes
         // blindness path.
+        if (args.Functional)
+            _failure.Restored(ent);
+
         var enable = new OrganEnableChangedEvent(args.Functional);
         RaiseLocalEvent(ent, ref enable);
 

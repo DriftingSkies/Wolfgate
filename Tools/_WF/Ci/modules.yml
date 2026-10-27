@@ -196,6 +196,12 @@ unmarked:
   - path: Resources/Audio/_RMC14/Machines/
     module: DecorImport
     reason: Door sounds, ported from RMC-14.
+  - path: Resources/Audio/_Starlight/Effects/chisel.ogg
+    module: DecorImport
+    reason: Obelisk hit sound, ported from Starlight.
+  - path: Resources/Audio/_Starlight/Effects/stones_falling.ogg
+    module: DecorImport
+    reason: Obelisk break sound, ported from Starlight.
   - path: Resources/Audio/_Starlight/
     module: Species
     reason: Starlight species sounds, ported in #14 (Customisation Update).
@@ -268,9 +274,15 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/underground.yml
     module: LockableButtons
     reason: The two blast door buttons take Underground access; the station's crew has no Pirate access.
+  - path: Resources/Maps/_Mono/POI/tsfmc_industry.yml
+    module: null
+    reason: Stellar Blessing lighting, colour-coded distro, fire suit lockers and extinguishers.
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: null
     reason: Helios mapping fixes for lighting, wallmounts and small layout tweaks.
+  - path: Resources/Maps/_Mono/POI/Dungeons/zvezda.yml
+    module: null
+    reason: Zvezda lighting re-work and power generation.
   - path: Resources/Textures/Tiles/exoborg.png
     module: Xenoborgs
     reason: Exoborg floor tile redrawn.
@@ -2278,6 +2290,24 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
     module: null
     reason: PDV pack, top-left thruster was mapped disabled.
+  - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
+    module: AsteroidMining
+    reason: Its Apollo mining laser is swapped for the M40 Prospector, the heavy asteroid mining laser.
+  - path: Resources/SharedMaps/_Mono/Shuttles/MMC/akasono.yml
+    module: AsteroidMining
+    reason: Its M25 mining pulsar is swapped for the M12 Prospector, the light asteroid mining laser.
+  - path: Resources/SharedMaps/_Mono/Shuttles/MMC/kami.yml
+    module: AsteroidMining
+    reason: Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
+  - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/noble.yml
+    module: AsteroidMining
+    reason: Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
+  - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/peregrine.yml
+    module: AsteroidMining
+    reason: Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
+  - path: Resources/SharedMaps/_Mono/Shuttles/CivilianExp/pelican.yml
+    module: AsteroidMining
+    reason: Its M25 mining pulsar is swapped for the M12 Prospector, the light asteroid mining laser.
   - path: Resources/Maps/_Mono/Bluespace/prefracture.yml
     module: null
     reason: Hardpoints mapped under the Unidentified Vessel's Scythe, Sunder and Flayer guns so gunnery links them.
@@ -2326,6 +2356,9 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/TSF/shiv.yml
     module: ArmorBalance
     reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
+  - path: Resources/SharedMaps/_Mono/Shuttles/TSF/shiv.yml
+    module: AsteroidMining
+    reason: Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
   - path: Resources/SharedMaps/_Mono/Shuttles/TSF/spekter.yml
     module: ArmorBalance
     reason: Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
@@ -2391,10 +2424,16 @@ unmarked:
     reason: Decor sprites, ported from Goob Station.
   - path: Resources/Textures/_Goobstation/Flock/
     module: DecorImport
-    reason: Floor tile sprites, ported from Goob Station.
+    reason: Flock floor tile and structure sprites, ported from Goob Station.
+  - path: Resources/Audio/_Goobstation/Flock/
+    module: DecorImport
+    reason: Flock structure sounds, ported from Goob Station.
   - path: Resources/Textures/_Impstation/Structures/Furniture/
     module: DecorImport
     reason: Decor sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Structures/crystal.rsi/
+    module: DecorImport
+    reason: Crystal sprites, ported from Impstation.
   - path: Resources/Textures/_Impstation/Structures/Lighting/
     module: DecorImport
     reason: Decor sprites, ported from Impstation.
@@ -2413,9 +2452,15 @@ unmarked:
   - path: Resources/Textures/_Moffstation/Tiles/
     module: DecorImport
     reason: Floor tile sprites, ported from Moffstation.
-  - path: Resources/Textures/_Lavaland/
+  - path: Resources/Textures/_Lavaland/Objects/Decoration/
     module: DecorImport
     reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Lavaland/Structures/
+    module: DecorImport
+    reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Lavaland/Objects/Materials/
+    module: DecorImport
+    reason: Legion skull sprite, ported from Goob Station.
   - path: Resources/Textures/_Nuclear14/Structures/Furniture/Street_Furniture/
     module: DecorImport
     reason: Decor sprites, ported from Nuclear 14.
@@ -2527,6 +2572,27 @@ unmarked:
   - path: Resources/Textures/_RMC14/Structures/Walls/
     module: DecorImport
     reason: Wall sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/research_icechunk.rsi/
+    module: DecorImport
+    reason: Ice chunk sample sprites, ported from RMC-14.
+  - path: Resources/Textures/_DV/Structures/Decoration/lavafountains.rsi/
+    module: DecorImport
+    reason: Lava fountain sprites, ported from Delta-V.
+  - path: Resources/Textures/_RMC14/Structures/obelisk.rsi/
+    module: DecorImport
+    reason: Ancient obelisk sprite, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/mushrooms.rsi/
+    module: DecorImport
+    reason: Mushroom sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Effects/LightMasks/quad_cone.png
+    module: DecorImport
+    reason: Glowshroom light mask, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Windows/
+    module: DecorImport
+    reason: Window sprites, ported from RMC-14.
+  - path: Resources/Textures/_RMC14/Structures/Machines/drop_pod.rsi/
+    module: DecorImport
+    reason: Drop pod sprites, ported from RMC-14.
   - path: Resources/Textures/_RMC14/Tiles/almayer/
     module: DecorImport
     reason: Tile sprites, ported from RMC-14.
@@ -2587,9 +2653,15 @@ unmarked:
   - path: Resources/Textures/_Shitmed/Structures/Furniture/
     module: DecorImport
     reason: Decor sprites, ported from Goob Station.
+  - path: Resources/Textures/_Shitmed/Structures/Tables/
+    module: DecorImport
+    reason: Decor sprites, ported from Goob Station.
   - path: Resources/Textures/_Starlight/Decals/
     module: DecorImport
     reason: Decor sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Structures/Decorations/
+    module: DecorImport
+    reason: Phoron crystal sprite, ported from Starlight.
   - path: Resources/Textures/_Starlight/Structures/Furniture/
     module: DecorImport
     reason: Decor sprites, ported from Starlight.
@@ -2611,6 +2683,9 @@ unmarked:
   - path: Resources/Textures/_Starlight/Objects/Tiles/
     module: DecorImport
     reason: Floor tile item sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Objects/Decoration/Flora/Abyss/obelisk.rsi/
+    module: DecorImport
+    reason: Abyss obelisk sprites, ported from Starlight.
   - path: Resources/Textures/_Blimpuf/
     module: DecorImport
     reason: Wall and door sprites, ported from Starlight.
@@ -2635,6 +2710,12 @@ unmarked:
   - path: Resources/Audio/_CP14/Effects/bone_crush2.ogg
     module: DecorImport
     reason: Bone crack sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/crystal_ding.ogg
+    module: DecorImport
+    reason: Ice block ding sound, ported from CrystallEdge.
+  - path: Resources/Audio/_CP14/Effects/crystal_ding2.ogg
+    module: DecorImport
+    reason: Ice block ding sound, ported from CrystallEdge.
   - path: Resources/Audio/_CP14/Effects/Footsteps/bones1.ogg
     module: DecorImport
     reason: Bone footstep sound, ported from CrystallEdge.
@@ -2659,3 +2740,9 @@ unmarked:
   - path: Resources/Audio/_Starlight/Effects/Machinery/electric_buzz.ogg
     module: DecorImport
     reason: Bar sign buzz sound, ported from Starlight.
+  - path: Resources/Textures/Structures/Changeling/
+    module: DecorImport
+    reason: Changeling cocoon sprite, ported from Space Wizards.
+  - path: Resources/Textures/_White/Structures/Furniture/
+    module: DecorImport
+    reason: Resin nest sprite, ported from Goob Station.

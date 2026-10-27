@@ -87,12 +87,15 @@
   - type: Uncloneable
   - type: HumanoidAppearance
     species: Synth
-  - type: Hunger
-    baseDecayRate: 0.0085
-    starvingSlowdownModifier: 0.75
+  # WOLFGATE(Biotype) START: a synthetic needs neither food nor drink, as every Synthetic biotype body
+  # - type: Hunger
+  #   baseDecayRate: 0.0085
+  #   starvingSlowdownModifier: 0.75
+  # WOLFGATE END
   - type: Puller
     needsHands: false
-  - type: Thirst
+  # WOLFGATE(Biotype): no Thirst, see Hunger above
+  # - type: Thirst
   - type: Body
     prototype: Synth
     requiredLegs: 2
@@ -170,7 +173,10 @@
   - type: Bloodstream
     bloodReagent: WFWolfmedHydraulicFluid # WOLFGATE(Wolfmed): runs on the IPC's fluid so the pack, IV and autodoc refill it
     bloodMaxVolume: 300
-    bloodRefreshAmount: 0.0
+    # WOLFGATE(Biotype) START: refills itself as a Synthetic biotype body does, with no hunger to pay SynthBloodstream
+    # bloodRefreshAmount: 0.0
+    bloodRefreshAmount: 0.5
+    # WOLFGATE END
     bloodlossDamage:
       types:
         Bloodloss: 0.5
@@ -178,25 +184,27 @@
       types:
         Bloodloss: -1
   - type: BlockInjection
-  - type: SynthBloodstream
-    minBloodLevel: 0.3
-    fullEfficiencyBloodLevel: 0.9
-    minBloodEfficiency: 0.1
-    minHunger: 50
-    hungerCostPerRepair: 1.5
-    hungerCostPerBleed: 2
-    bleedReductionAmount: 0.25
-    damage:
-      groups:
-        Brute: -2.5 # -1.25 after modifiers
-        Burn: -3 # -1.5 after modifiers
-      types:
-        Bloodloss: -0.2 # -0.1 after modifiers
-        Cellular: -0.07 # -0.035 after modifiers
-    bloodRegeneration:
-      targetBloodLevel: 1
-      bloodRefreshAmount: 0.3
-      hungerCostPerUnit: 0.5
+  # WOLFGATE(Biotype) START: its self-repair is paid for in hunger, which a synthetic no longer has
+  # - type: SynthBloodstream
+  #   minBloodLevel: 0.3
+  #   fullEfficiencyBloodLevel: 0.9
+  #   minBloodEfficiency: 0.1
+  #   minHunger: 50
+  #   hungerCostPerRepair: 1.5
+  #   hungerCostPerBleed: 2
+  #   bleedReductionAmount: 0.25
+  #   damage:
+  #     groups:
+  #       Brute: -2.5 # -1.25 after modifiers
+  #       Burn: -3 # -1.5 after modifiers
+  #     types:
+  #       Bloodloss: -0.2 # -0.1 after modifiers
+  #       Cellular: -0.07 # -0.035 after modifiers
+  #   bloodRegeneration:
+  #     targetBloodLevel: 1
+  #     bloodRefreshAmount: 0.3
+  #     hungerCostPerUnit: 0.5
+  # WOLFGATE END
   - type: SynthBattery
     organSlot: battery
     startingBattery: PowerCellMedium
@@ -222,8 +230,10 @@
   - type: BatteryAlert
     batteryAlert: BorgBattery
     noBatteryAlert: BorgBatteryNone
-  - type: UniversalHealModifier
-    modifier: 0.5 # reduces the effectiveness of most healing sources by 50%
+  # WOLFGATE(Biotype) START: halved healing went with the hunger-paid self-repair above; a synthetic heals as an IPC does
+  # - type: UniversalHealModifier
+  #   modifier: 0.5 # reduces the effectiveness of most healing sources by 50%
+  # WOLFGATE END
   - type: ThermalRegulator
     metabolismHeat: 500
     radiatedHeat: 150

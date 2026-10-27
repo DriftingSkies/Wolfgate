@@ -208,7 +208,7 @@ public sealed class WolfmedMedicInfoTest : WolfmedGameTest
                 Assert.That(report.RestartPresent, Is.True);
                 Assert.That(restart, Does.StartWith("After a restart: arrest cause blood. Still present: yes. Transfuse ≈"));
                 Assert.That(restart, Does.Contain("within 45 s"));
-                Assert.That(restart, Does.Contain("to 50% to stop the brain injury"));
+                Assert.That(restart, Does.Contain("to 60% to stop the brain injury"));
             });
 
             // Transfused to 60%: the cause is gone but the line stays for the memory window.

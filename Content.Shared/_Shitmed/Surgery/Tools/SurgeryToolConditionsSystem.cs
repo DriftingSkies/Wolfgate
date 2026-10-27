@@ -33,10 +33,16 @@ public sealed partial class SurgeryToolConditionsSystem : EntitySystem
 
     private void OnGunUsed(Entity<GunComponent> ent, ref SurgeryToolUsedEvent args)
     {
-        var coords = Transform(args.User).Coordinates;
-        var ev = new TakeAmmoEvent(1, new List<(EntityUid? Entity, IShootable Shootable)>(), coords, args.User);
-        if (ev.Ammo.Count > 0)
+        // WOLFGATE(Wolfmed) START: the take-ammo event was never raised, so every gun read as empty
+        // var coords = Transform(args.User).Coordinates;
+        // var ev = new TakeAmmoEvent(1, new List<(EntityUid? Entity, IShootable Shootable)>(), coords, args.User);
+        // if (ev.Ammo.Count > 0)
+        //     return;
+        var ev = new GetAmmoCountEvent();
+        RaiseLocalEvent(ent, ref ev);
+        if (ev.Count > 0)
             return;
+        // WOLFGATE END
 
         _popup.PopupEntity(Loc.GetString("surgery-tool-reload"), ent, args.User);
         args.Cancelled = true;

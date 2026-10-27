@@ -87,6 +87,8 @@ public sealed partial class ExplosionSystem
     /// </summary>
     public override void Update(float frameTime)
     {
+        WFProcessMicroExplosions(); // WOLFGATE(BattleLoad): bullet-sized blasts queued last tick
+
         if (_activeExplosion == null && _explosionQueue.Count == 0)
             // nothing to do
             return;

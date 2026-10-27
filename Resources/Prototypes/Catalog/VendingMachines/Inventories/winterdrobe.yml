@@ -18,6 +18,32 @@
     ClothingOuterCoatBomber: 3
     ClothingHeadHatSantahat: 2
     ClothingHeadHatXmasCrown: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingHeadHoodedWinterhood: 2
+    WFMeridianClothingHeadHoodedWinterhoodEva: 2
+    WFMeridianClothingHeadHoodedWinterhoodNova: 2
+    WFMeridianClothingHeadHoodedWinterhoodNovaChristmas: 2
+    WFMeridianClothingHeadHoodedWinterhoodNovaChristmasGreen: 2
+    WFMeridianClothingHeadHoodedWinterhoodNovaNarsie: 2
+    WFMeridianClothingHeadHoodedWinterhoodNovaRatvar: 2
+    WFMeridianClothingHeadHoodedWinterhoodPullover: 2
+    WFMeridianClothingHeadHoodedWinterhoodZipup: 2
+    WFMeridianClothingShoesWinterbootsChristmas: 2
+    WFMeridianClothingShoesWinterbootsIceBoots: 2
+    WFMeridianClothingShoesWinterbootsIceBootsEva: 2
+    WFMeridianClothingShoesWinterbootsIceBootsPrimitiveCatgirlBoots: 2
+    WFMeridianClothingSuitHoodedWintercoatCustom: 2
+    WFMeridianClothingSuitHoodedWintercoatEva: 2
+    WFMeridianClothingSuitHoodedWintercoatNova: 2
+    WFMeridianClothingSuitHoodedWintercoatNovaChristmas: 2
+    WFMeridianClothingSuitHoodedWintercoatNovaChristmasGreen: 2
+    WFMeridianClothingSuitHoodedWintercoatNovaNarsie: 2
+    WFMeridianClothingSuitHoodedWintercoatNovaRatvar: 2
+    WFMeridianClothingSuitHoodedWintercoatPullover: 2
+    WFMeridianClothingSuitHoodedWintercoatZipup: 2
+    WFMeridianClothingSuitModernwintercoatthing: 2
+    WFMeridianClothingSuitMothcoatWinter: 2
+    # WOLFGATE END
 
   emaggedInventory:
     ClothingNeckScarfStripedSyndieGreen: 3

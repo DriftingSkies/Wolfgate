@@ -1,0 +1,10 @@
+# WOLFGATE(DecorImport) START: ported from Goob Station
+- type: stack
+  id: LegionSkull
+  name: stack-legion-skull
+  icon:
+    sprite: _Lavaland/Objects/Materials/legion.rsi
+    state: skull
+  spawn: MaterialLegionSkull1
+  maxCount: 10
+# WOLFGATE END

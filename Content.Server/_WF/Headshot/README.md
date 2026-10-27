@@ -60,7 +60,7 @@ included; empty allows any public host) and `wf.headshot.max_download_kb`.
 
 ## Non-modular edits
 
-- [`Content.Client/Examine/ExamineSystem.cs`](../../../Content.Client/Examine/ExamineSystem.cs): lets the headshot join the tooltip
+- [`Content.Client/Examine/ExamineSystem.cs`](../../../Content.Client/Examine/ExamineSystem.cs): lets the headshot and the examine card join the tooltip
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml): opens the headshot URL editor
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): image URL shown on examine, empty when unused.

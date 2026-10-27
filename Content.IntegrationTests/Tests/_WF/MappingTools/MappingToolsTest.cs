@@ -397,6 +397,75 @@ public sealed class MappingToolsTest
     }
 
     [Test]
+    public async Task NoOverlappingGrids()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var testMap = await pair.CreateTestMap();
+        var mapSys = entMan.System<MapSystem>();
+        var xformSys = entMan.System<SharedTransformSystem>();
+        var tools = entMan.System<MappingToolsSystem>();
+        var session = pair.Player!;
+        var grid = testMap.Grid;
+
+        await server.WaitAssertion(() =>
+        {
+            grid.Comp.CanSplit = false;
+            var plating = new Tile(server.ResolveDependency<ITileDefinitionManager>()["Plating"].TileId);
+            mapSys.SetTiles(grid, grid, new()
+            {
+                (new Vector2i(10, 0), plating), (new Vector2i(11, 0), plating), (new Vector2i(12, 0), plating),
+            });
+
+            // Another grid with one tile over the test grid's cell (14, 0).
+            EntityUid GridOver(Vector2i cell)
+            {
+                var other = mapSys.CreateGridEntity(testMap.MapId);
+                var world = xformSys.ToMapCoordinates(new EntityCoordinates(grid, new Vector2(cell.X, cell.Y))).Position;
+                xformSys.SetWorldPosition(other.Owner, world);
+                mapSys.SetTile(other.Owner, other.Comp, Vector2i.Zero, plating);
+                return other.Owner;
+            }
+
+            GridOver(new Vector2i(14, 0));
+
+            bool HasTile(Vector2i cell) => mapSys.TryGetTileRef(grid, grid, cell, out var tile) && !tile.Tile.IsEmpty;
+            var strip = new MappingSelection { Grid = entMan.GetNetEntity(grid), Area = new Box2i(10, 0, 13, 1) };
+
+            // Sliding the strip two tiles right would put its last tile on the other grid.
+            tools.Move(session, strip, new Vector2i(2, 0), 0);
+            Assert.Multiple(() =>
+            {
+                Assert.That(HasTile(new Vector2i(10, 0)), Is.True, "A move onto another grid is refused.");
+                Assert.That(HasTile(new Vector2i(14, 0)), Is.False);
+            });
+
+            // A paste off every grid lands on the source grid; centred on (13, 0) it spans 12-14 and is refused.
+            tools.Copy(session, strip, cut: false);
+            tools.Paste(session, new EntityCoordinates(grid, new Vector2(13.5f, 0.5f)), 0);
+            Assert.That(HasTile(new Vector2i(13, 0)), Is.False, "A paste onto another grid is refused.");
+
+            tools.Paste(session, new EntityCoordinates(grid, new Vector2(13.5f, 3.5f)), 0);
+            Assert.That(HasTile(new Vector2i(13, 3)), Is.True, "A paste clear of other grids goes ahead.");
+            tools.StepHistory(session, redo: false);
+
+            // Undoing a move whose old cells another grid has since covered is refused too.
+            tools.Move(session, strip, new Vector2i(0, 2), 0);
+            Assert.That(HasTile(new Vector2i(10, 2)), Is.True);
+            GridOver(new Vector2i(10, 0));
+            tools.StepHistory(session, redo: false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(HasTile(new Vector2i(10, 2)), Is.True, "The undo is refused.");
+                Assert.That(HasTile(new Vector2i(10, 0)), Is.False);
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public void TileStateMath()
     {
         Assert.Multiple(() =>

@@ -17,6 +17,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 
 namespace Content.Client._WF.Genitals.UI;
 
@@ -118,6 +119,10 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
     public WolfgateGenitalEditor()
     {
         RobustXamlLoader.Load(this);
+
+        NsfwTextHint.SetMessage(Loc.GetString("wf-genitals-nsfw-text-hint"));
+        NsfwTextEdit.Placeholder = new Rope.Leaf(Loc.GetString("wf-genitals-nsfw-text-placeholder"));
+        NsfwTextEdit.OnTextChanged += _ => OnNsfwTextChanged();
         IoCManager.InjectDependencies(this);
 
         _previewMode.Add(GenitalPreviewMode.AsWorn, Loc.GetString("wf-genitals-preview-worn"));
@@ -227,6 +232,31 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         _sheathChoice = _profile.Penis?.Sheath ?? SheathType.None;
         HidePresetConfirm();
         Refresh();
+
+        // Only replace the text when it differs, so typing never loses the cursor.
+        if (Rope.Collapse(NsfwTextEdit.TextRope) != _profile.NsfwText)
+            NsfwTextEdit.TextRope = new Rope.Leaf(_profile.NsfwText);
+        UpdateNsfwCounter();
+    }
+
+    /// <summary>Hands typed text straight to the profile editor; it carries no organ rules, so no full refresh.</summary>
+    private void OnNsfwTextChanged()
+    {
+        var text = Rope.Collapse(NsfwTextEdit.TextRope);
+        UpdateNsfwCounter();
+        if (text == _profile.NsfwText)
+            return;
+
+        _profile = _profile.WithNsfwText(text);
+        OnProfileChanged?.Invoke(_profile);
+    }
+
+    private void UpdateNsfwCounter()
+    {
+        var length = Rope.Collapse(NsfwTextEdit.TextRope).Length;
+        NsfwTextCounter.Text = Loc.GetString("wf-genitals-nsfw-text-counter",
+            ("count", length), ("max", GenitalProfile.MaxNsfwTextLength));
+        NsfwTextCounter.FontColorOverride = length > GenitalProfile.MaxNsfwTextLength ? Color.FromHex("#E05050") : null;
     }
 
     /// <summary>Re-reads the local consent settings; called whenever the server sends them.</summary>

@@ -143,3 +143,10 @@ public sealed partial class WolfmedRelocateDoAfterEvent : SimpleDoAfterEvent
         Wound = wound;
     }
 }
+
+/// <summary>
+/// Broadcast when a wound ladder is about to swap <paramref name="Old"/> on <paramref name="Part"/> for another rung.
+/// The old wound is still whole; the new one does not exist yet.
+/// </summary>
+[ByRefEvent]
+public readonly record struct WolfmedWoundLadderReplacingEvent(EntityUid Part, EntityUid Old);

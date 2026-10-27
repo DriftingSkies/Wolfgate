@@ -15,5 +15,16 @@
     ClothingOuterWinterAtmos: 2
     ClothingNeckScarfStripedLightBlue: 3
     ClothingShoesBootsWinterAtmos: 2 #Delta V: Add departmental winter boots
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingGlovesAtmos: 2
+    WFMeridianClothingGlovesColorPlasmamanAtmos: 2
+    WFMeridianClothingHeadHoodedWinterhoodEngineeringAtmos: 2
+    WFMeridianClothingHeadPlaybunnyearsAtmosTech: 2
+    WFMeridianClothingNeckTieBunnytieAtmosTech: 2
+    WFMeridianClothingSuitAtmosOveralls: 2
+    WFMeridianClothingSuitUtilityFireAtmosTechTailcoat: 2
+    WFMeridianClothingUnderRankEngineeringAtmosTechBunnysuit: 2
+    WFMeridianClothingUnderRankEngineeringAtmosphericTechnicianNovaUtilityAdvanced: 2
+    # WOLFGATE END
   contrabandInventory:
     ToyFigurineAtmosTech: 1

@@ -301,11 +301,20 @@ public sealed partial class WFReaverCampaignSystem
         foreach (var stronghold in Strongholds())
         {
             var (uid, comp, encounter) = stronghold;
-            if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
+            encounter.Ships.TryGetValue(comp.Lead, out var lead);
+            if (lead != null)
+                TrackBoarders(comp, lead.Grid);
+
+            if (lead == null || !_encounters.InFight(lead))
             {
+                // A boarding party aboard when the hub went out, its AME blown or its crew gone, put it out: they are
+                // paid as its attackers.
+                if (lead != null)
+                    CreditBoarders(comp, encounter, lead.Side);
+
                 // A hub that went dark with nobody shooting at it has not been beaten: its engineer and the restock
                 // bring the power back. One that stays dark past the grace is broken all the same.
-                if (lead != null && encounter.ShipHits.Count == 0 && encounter.Kills.Count == 0 && comp.NpcHits.Count == 0 && _encounters.OutForWantOfPower(lead))
+                if (lead != null && encounter.ShipHits.Count == 0 && encounter.Kills.Count == 0 && encounter.Hits.Count == 0 && comp.NpcHits.Count == 0 && _encounters.OutForWantOfPower(lead))
                 {
                     if (!comp.Starved)
                     {
@@ -348,6 +357,38 @@ public sealed partial class WFReaverCampaignSystem
             if (playerHits > 0 && _timing.CurTime - comp.LastHit <= SupportWindow)
                 TrackSupport(comp, encounter, _transform.GetWorldPosition(lead.Grid), ships, elapsed);
         }
+    }
+
+    /// <summary>How long after leaving the hub a boarder still counts for putting it out.</summary>
+    private static readonly TimeSpan BoardingWindow = TimeSpan.FromMinutes(5);
+
+    /// <summary>Notes the living players aboard a hub, and forgets those gone past the window.</summary>
+    private void TrackBoarders(WFReaverStrongholdComponent stronghold, EntityUid hub)
+    {
+        var now = _timing.CurTime;
+        var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (players.MoveNext(out var uid, out var actor, out var xform))
+        {
+            if (xform.GridUid == hub && !HasComp<GhostComponent>(uid) && !_mobs.IsDead(uid))
+                stronghold.Boarders[actor.PlayerSession.UserId] = now;
+        }
+
+        foreach (var (user, seen) in stronghold.Boarders.ToList())
+        {
+            if (now - seen > BoardingWindow)
+                stronghold.Boarders.Remove(user);
+        }
+    }
+
+    /// <summary>Credits each recent boarder of a hub that went dark as one of its attackers, once.</summary>
+    private void CreditBoarders(WFReaverStrongholdComponent stronghold, WFEncounterComponent encounter, string side)
+    {
+        foreach (var user in stronghold.Boarders.Keys)
+        {
+            _rewards.RecordBoarding(encounter, user, side);
+        }
+
+        stronghold.Boarders.Clear();
     }
 
     /// <summary>

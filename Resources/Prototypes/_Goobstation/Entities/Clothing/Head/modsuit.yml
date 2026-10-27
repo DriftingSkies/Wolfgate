@@ -87,6 +87,12 @@
     - Snout
     - HeadTop
     - HeadSide
+  # WOLFGATE: unsealing strips only the seal's own components, not the ones this helmet always has
+  - type: ComponentToggler
+    removeComponents:
+    - type: BreathMask
+    - type: PressureProtection
+    - type: TemperatureProtection
 
 - type: entity
   parent: BaseClothingModsuitHelmet

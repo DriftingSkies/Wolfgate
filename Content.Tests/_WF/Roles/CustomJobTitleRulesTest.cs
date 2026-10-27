@@ -6,7 +6,7 @@ using Robust.Shared.Serialization.Manager;
 
 namespace Content.Tests._WF.Roles;
 
-/// <summary>Custom job title cleaning, look-alike folding, blocklists, job-name matches and the length cap.</summary>
+/// <summary>Custom job title cleaning, look-alike folding, blocklists, job-name matches, allowed jobs and the length cap.</summary>
 [TestFixture]
 [TestOf(typeof(CustomJobTitleRules))]
 public sealed class CustomJobTitleRulesTest : ContentUnitTest
@@ -22,9 +22,21 @@ public sealed class CustomJobTitleRulesTest : ContentUnitTest
   playTimeTracker: WFTestTitleTracker
   name: Pilot
 
+- type: job
+  id: WFTestTitleChef
+  playTimeTracker: WFTestTitleTracker
+  name: Chef
+
+- type: job
+  id: WFTestTitleStationChef
+  playTimeTracker: WFTestTitleTracker
+  name: Chef
+
 - type: customJobTitle
   id: {RoleId}
   maxLength: 20
+  allowedJobs:
+  - WFTestTitleChef
   blockedTitles:
   - Staff
   - N/A
@@ -82,6 +94,8 @@ public sealed class CustomJobTitleRulesTest : ContentUnitTest
     [TestCase("N/A", false)]
     [TestCase("Pilot", false)]
     [TestCase("P1LOT", false)]
+    [TestCase("Chef", true)]
+    [TestCase("CH3F", true)]
     [TestCase("Twenty One Characters", false)]
     [TestCase("Café Owner", false)]
     [TestCase("Diver!", false)]

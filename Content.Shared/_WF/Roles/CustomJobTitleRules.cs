@@ -133,10 +133,12 @@ public static class CustomJobTitleRules
         }
 
         var normalized = Normalize(title);
+        var allowed = rules.AllowedJobs.Any(id => protoManager.TryIndex(id, out var job)
+                                                  && Normalize(job.LocalizedName) == normalized);
 
         foreach (var job in protoManager.EnumeratePrototypes<JobPrototype>())
         {
-            if (Normalize(job.LocalizedName) != normalized)
+            if (allowed || Normalize(job.LocalizedName) != normalized)
                 continue;
 
             reason = Loc.GetString("custom-job-title-matches-job", ("job", job.LocalizedName));

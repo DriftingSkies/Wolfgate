@@ -29,6 +29,7 @@ namespace Content.Shared._Onyx.Body.Systems
         [Dependency] private SharedBodySystem _body = default!;
         [Dependency] private WoundSystem _wounds = default!;
         [Dependency] private MobStateSystem _mobState = default!;
+        [Dependency] private Content.Server._WF.Wolfmed.Body.WolfmedOrganFailureSystem _wfFailure = default!; // WOLFGATE(Wolfmed): revival pass
 
         public override void Update(float frameTime)
         {
@@ -56,6 +57,10 @@ namespace Content.Shared._Onyx.Body.Systems
                 // WOLFGATE(Wolfmed): P3-D23, DestroyOrgan detaches and wounds; RecursiveDeleteEntity reaches here while a
                 // mob terminates, which is the DebugAssertException WP9 fixed in WolfmedBodyPartLifecycleSystem.
                 if (TerminatingOrDeleted(uid))
+                    continue;
+
+                // WOLFGATE(Wolfmed): revival pass, a failed organ stays in at 0 health for the heal surgery.
+                if (_wfFailure.Keep((uid, organ, slotted)))
                     continue;
 
                 DestroyOrgan((uid, organ, slotted));

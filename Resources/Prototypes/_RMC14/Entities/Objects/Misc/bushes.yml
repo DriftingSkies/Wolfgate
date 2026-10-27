@@ -1,0 +1,44 @@
+# WOLFGATE(DecorImport) START: ported from RMC-14
+- type: entity
+  id: RMCBaseBush
+  suffix: RMCBaseBush
+  abstract: true
+  components:
+  - type: SpriteFade
+  - type: Clickable
+  - type: Sprite
+    noRot: true
+    sprite: Decals/Flora/flora_bushes.rsi
+    drawdepth: FloorObjects
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/tree_fell.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: RMCBaseBush
+  id: RMCAlienBush1
+  suffix: RMCAlienBush1
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Flora/flora_plantalien.rsi
+    state: alienplant1
+  - type: PointLight
+    castShadows: false
+    radius: 2
+# WOLFGATE END

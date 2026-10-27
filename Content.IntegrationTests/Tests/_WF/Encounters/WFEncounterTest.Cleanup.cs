@@ -58,6 +58,64 @@ public sealed partial class WFEncounterTest
         await RunTicks(10);
     }
 
+    /// <summary>
+    /// A ship players have just fought neither runs out of time, nor jumps out, nor is cleaned up, until the combat
+    /// grace has passed.
+    /// </summary>
+    [Test]
+    public async Task FoughtShipStaysThroughTheCombatGrace()
+    {
+        EntityUid encounter = default, ship = default, attacker = default;
+        EntityCoordinates playerWas = default;
+        var config = Server.ResolveDependency<IConfigurationManager>();
+        var timing = Server.ResolveDependency<IGameTiming>();
+        await Server.WaitAssertion(() =>
+        {
+            var prototype = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>(Convoy);
+            Assert.That(Server.System<WFEncounterSystem>().TrySpawn(prototype, new MapCoordinates(new Vector2(-45000, 45000), MapData.MapId), out encounter), Is.True);
+            var comp = SEntMan.GetComponent<WFEncounterComponent>(encounter);
+            ship = comp.Ships["lead"].Grid;
+            attacker = Server.System<SharedMapSystem>().CreateGridEntity(MapData.MapId).Owner;
+
+            var rewards = Server.System<WFEncounterRewardSystem>();
+            rewards.RecordHit(ship, attacker);
+            Assert.That(comp.Ships["lead"].LastFought, Is.Null, "A hit from a ship with no player aboard is no fight with players.");
+
+            var player = SEntMan.GetEntity(Player);
+            playerWas = SEntMan.GetComponent<TransformComponent>(player).Coordinates;
+            Server.System<SharedTransformSystem>().SetCoordinates(player, new EntityCoordinates(attacker, Vector2.Zero));
+            rewards.RecordHit(ship, attacker);
+            Assert.That(comp.Ships["lead"].LastFought, Is.EqualTo(timing.CurTime), "A player ship's hit is a fight.");
+            comp.Expires = timing.CurTime;
+        });
+        await RunSeconds(6);
+        await Server.WaitAssertion(() =>
+        {
+            var comp = SEntMan.GetComponent<WFEncounterComponent>(encounter);
+            Assert.That(comp.Resolution, Is.Null, "The clock doesn't end an encounter in the middle of a fight.");
+            Server.System<WFEncounterSystem>().Resolve(encounter, WFEncounterResolution.Completed);
+            comp.JumpAt = timing.CurTime;
+        });
+        await RunSeconds(6);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.EntityExists(ship) && !SEntMan.IsQueuedForDeletion(ship), Is.True,
+                "A ship just fought doesn't jump out, with nobody aboard or near.");
+            config.SetCVar(EncountersCVars.CombatGrace, 1f);
+        });
+        await RunSeconds(6);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(!SEntMan.EntityExists(ship) || SEntMan.IsQueuedForDeletion(ship), Is.True, "Past the grace it jumps out.");
+            if (SEntMan.EntityExists(encounter))
+                Server.System<WFEncounterSystem>().End(encounter);
+            Server.System<SharedTransformSystem>().SetCoordinates(SEntMan.GetEntity(Player), playerWas);
+            SEntMan.DeleteEntity(attacker);
+            config.SetCVar(EncountersCVars.CombatGrace, EncountersCVars.CombatGrace.DefaultValue);
+        });
+        await RunTicks(10);
+    }
+
     /// <summary>A player who downs a side's crewman in person shares that side's defeat like one whose ship hit it.</summary>
     [Test]
     public async Task DowningACrewmanCountsTowardTheReward()

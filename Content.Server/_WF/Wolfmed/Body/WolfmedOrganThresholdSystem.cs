@@ -57,7 +57,8 @@ public sealed class WolfmedOrganThresholdSystem : EntitySystem
     /// One hit on a part. Returns false when the part has no reach lines, which leaves it to Onyx's roll; true
     /// when this system owns the part's organ damage, whether or not the hit reached anything.
     /// </summary>
-    public bool HandleHit(EntityUid part, DamageSpecifier total)
+    /// <param name="stored">What the part kept of the hit; the rest was overflow past its cap. Null means all of it.</param>
+    public bool HandleHit(EntityUid part, DamageSpecifier total, DamageSpecifier? stored = null)
     {
         // M4: owned and reaching nothing, so Onyx's roll does not run for the pulse either.
         if (_noReach > 0)
@@ -70,7 +71,8 @@ public sealed class WolfmedOrganThresholdSystem : EntitySystem
             bodyPart.Body is not { } body)
             return true;
 
-        DamageOrgans(part, data, total);
+        // The head's overflow is brain injury in full: a capped head is never severed, so that is where it goes.
+        DamageOrgans(part, data, total, bodyPart.PartType == BodyPartType.Head ? 1f : StoredWeight(total, stored));
 
         if (bodyPart.PartType == BodyPartType.Head)
             TryHeadBlow(body, total);
@@ -92,8 +94,26 @@ public sealed class WolfmedOrganThresholdSystem : EntitySystem
         return excess;
     }
 
-    private void DamageOrgans(EntityUid part, WolfmedBodyPartComponent data, DamageSpecifier total)
+    /// <summary>
+    /// The factor on a hit's organ damage: the stored share counts in full, the overflow share at
+    /// wolfmed.organ_overflow_factor.
+    /// </summary>
+    private float StoredWeight(DamageSpecifier total, DamageSpecifier? stored)
     {
+        var whole = total.GetTotal().Float();
+        if (stored == null || whole <= 0f)
+            return 1f;
+
+        var kept = Math.Clamp(stored.GetTotal().Float() / whole, 0f, 1f);
+        var overflow = Math.Clamp(_config.GetCVar(WolfmedCVars.OrganOverflowFactor), 0f, 1f);
+        return kept + (1f - kept) * overflow;
+    }
+
+    private void DamageOrgans(EntityUid part, WolfmedBodyPartComponent data, DamageSpecifier total, float weightOfHit)
+    {
+        if (weightOfHit <= 0f)
+            return;
+
         var excess = GetExcess(data, total);
         if (excess.Count == 0)
             return;
@@ -122,7 +142,7 @@ public sealed class WolfmedOrganThresholdSystem : EntitySystem
             foreach (var (type, over) in excess)
                 sum += over * MathF.Max(0f, policy.DamageMultipliers.GetValueOrDefault(type));
 
-            var damage = sum * share * scale;
+            var damage = sum * share * scale * weightOfHit;
             var organCap = health.HitCap ?? cap;
             if (organCap > 0f)
                 damage = MathF.Min(damage, organCap);

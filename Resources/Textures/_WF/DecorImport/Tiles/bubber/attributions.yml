@@ -132,3 +132,13 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/Bubberstation/Bubberstation/blob/792301a70da075679790652676e6774e746df81d/modular_zubbers/icons/turf/floors/floors.dmi (state sandstonevault)."
   source: "https://github.com/Bubberstation/Bubberstation"
+
+- files: [ lunar_sand.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/Bubberstation/Bubberstation/blob/792301a70da075679790652676e6774e746df81d/modular_zubbers/icons/turf/lunar_sand.dmi (states 0,0 to 9,9)."
+  source: "https://github.com/Bubberstation/Bubberstation"
+
+- files: [ lunar_rock.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/Bubberstation/Bubberstation/blob/792301a70da075679790652676e6774e746df81d/modular_zubbers/icons/turf/lunar_rock.dmi (states 0,0 to 9,9)."
+  source: "https://github.com/Bubberstation/Bubberstation"

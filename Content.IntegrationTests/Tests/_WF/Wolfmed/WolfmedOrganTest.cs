@@ -274,7 +274,10 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
         });
     }
 
-    /// <summary>PLAN3 §6.2 T-ORG-DESTROY.</summary>
+    /// <summary>
+    /// PLAN3 §6.2 T-ORG-DESTROY, revised by the revival pass: a failed organ stays in its slot at 0 health and its
+    /// destruction wound lands once, however long it stays failed.
+    /// </summary>
     [Test]
     public async Task OrganDestructionMergesConsequenceWoundTest()
     {
@@ -297,8 +300,8 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
                 .SetHealth((lungs, entities.GetComponent<WolfmedOrganComponent>(lungs)), FixedPoint2.Zero);
         });
 
-        // OrganHealthSystem.Update destroys zero-health organs on the next server tick, then QueueDel runs.
-        await Pair.RunTicksSync(5);
+        // OrganHealthSystem.Update sees the zero-health organ on the next server tick; more ticks must not wound again.
+        await Pair.RunTicksSync(30);
 
         await server.WaitAssertion(() =>
         {
@@ -310,8 +313,11 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(entities.Deleted(lungs), Is.True, "a destroyed organ is deleted, not disabled.");
-                Assert.That(graph.GetPartOrgans(torso).Any(organ => organ.Id == lungs), Is.False);
+                Assert.That(entities.Deleted(lungs), Is.False, "a failed organ is kept, not deleted.");
+                Assert.That(graph.GetPartOrgans(torso).Any(organ => organ.Id == lungs), Is.True,
+                    "a failed organ stays in its slot for the heal surgery.");
+                Assert.That(entities.HasComponent<Content.Server._WF.Wolfmed.Body.WolfmedOrganFailedComponent>(lungs),
+                    Is.True);
                 // WFWolfmedOrganLungs: destructionWound InternalBleedingWound, destructionWoundSeverity 35
                 // (_WF/Wolfmed/Body/organs.yml, Onyx's base_organs.yml value).
                 Assert.That(wounds, Has.Count.EqualTo(1));
@@ -321,9 +327,8 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
     }
 
     /// <summary>
-    /// PLAN3 §6.2 T-ORG-HEART. The single most important organ assertion: it is the only proof that
-    /// Shitmed's own removal consequences fire from OrganHealthSystem.DestroyOrgan, which is the whole of
-    /// P3-D8's argument for skipping seven of Onyx's nine consequence pieces.
+    /// PLAN3 §6.2 T-ORG-HEART, revised by the revival pass: a failed heart stays in the chest, and the life system
+    /// stops the heart on it (cause "heart") until it is mended.
     /// </summary>
     [Test]
     public async Task DestroyedHeartAppliesDelayedDeathTest()
@@ -333,6 +338,7 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
         var entities = server.ResolveDependency<IEntityManager>();
         var map = await CreateTestMap();
         var body = EntityUid.Invalid;
+        var heart = EntityUid.Invalid;
 
         await server.WaitAssertion(() =>
         {
@@ -340,9 +346,8 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
             var graph = entities.System<SharedBodySystem>();
             var torso = graph.GetBodyChildren(body)
                 .Single(part => part.Component.PartType == BodyPartType.Torso).Id;
-            var heart = FindOrgan(entities, graph, torso, "OrganHumanHeart");
+            heart = FindOrgan(entities, graph, torso, "OrganHumanHeart");
 
-            Assert.That(entities.HasComponent<DelayedDeathComponent>(body), Is.False);
             entities.System<OrganHealthSystem>()
                 .SetHealth((heart, entities.GetComponent<WolfmedOrganComponent>(heart)), FixedPoint2.Zero);
         });
@@ -350,8 +355,15 @@ public sealed class WolfmedOrganTest : WolfmedGameTest
         await Pair.RunTicksSync(5);
 
         await server.WaitAssertion(() =>
-            Assert.That(entities.HasComponent<DelayedDeathComponent>(body), Is.True,
-                "destroying the heart must route through Shitmed's HeartSystem removal handler."));
+        {
+            var life = entities.System<Content.Server._WF.Wolfmed.Life.WolfmedLifeSystem>();
+            life.Tick(body, 1f);
+            Assert.Multiple(() =>
+            {
+                Assert.That(entities.Deleted(heart), Is.False, "a failed heart is kept for the heal surgery.");
+                Assert.That(life.InArrest(body), Is.True, "a failed heart must stop the heart.");
+            });
+        });
     }
 
     /// <summary>PLAN3 §6.2 T-ORG-BRAIN. Pins P3-D22: the brain branch kills instead of destroying.</summary>

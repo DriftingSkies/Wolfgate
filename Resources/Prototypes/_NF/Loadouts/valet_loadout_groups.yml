@@ -4,6 +4,12 @@
   loadouts:
   - ValetClothingUniformJumpsuitValet
   - ValetClothingUniformJumpskirtValet
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingUnderRankCivilianBartenderBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCivilianCookBunnysuit
+  - WFMeridianLoadoutClothingUnderRankCivilianCookjorts
+  - WFMeridianLoadoutClothingUnderSuitWaiter
+  # WOLFGATE END
   fallbacks:
   - ValetClothingUniformJumpsuitValet
   - ValetClothingUniformJumpskirtValet
@@ -13,5 +19,12 @@
   name: loadout-group-contractor-outerclothing
   loadouts:
   - ValetClothingOuterVestValet
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+  - WFMeridianLoadoutClothingSuitApronChef
+  - WFMeridianLoadoutClothingSuitApronChefColorableApron
+  - WFMeridianLoadoutClothingSuitHoodedWintercoatNovaBartender
+  - WFMeridianLoadoutClothingSuitJacketTailcoatCook
+  - WFMeridianLoadoutClothingSuitToggleChef
+  # WOLFGATE END
   fallbacks:
   - ValetClothingOuterVestValet

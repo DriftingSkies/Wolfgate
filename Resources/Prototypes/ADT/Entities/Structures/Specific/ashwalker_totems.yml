@@ -1,0 +1,87 @@
+# WOLFGATE(DecorImport) START: ported from ADT
+- type: entity
+  id: ADTAshTotemBase
+  parent: BaseStructure
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: ADT/Structures/Specific/ashwalker_totems.rsi
+    drawdepth: Mobs
+    noRot: true
+    offset: 0,0.5
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 1000
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+        - BulletImpassable
+
+- type: entity
+  id: ADTAshTotemWooden
+  parent: ADTAshTotemBase
+  components:
+  - type: Sprite
+    layers:
+    - state: totem_wooden
+    - state: totem_wooden_cinnabar
+      map: [ "dye" ]
+      visible: false
+
+- type: entity
+  id: ADTAshTotemStone
+  parent: ADTAshTotemBase
+  components:
+  - type: Sprite
+    layers:
+    - state: totem_stone
+    - state: totem_stone_cinnabar
+      map: [ "dye" ]
+      visible: false
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+
+- type: entity
+  id: ADTAshTotemBone
+  parent: ADTAshTotemBase
+  components:
+  - type: Sprite
+    layers:
+    - state: totem_bone
+    - state: totem_bone_cinnabar
+      map: [ "dye" ]
+      visible: false
+# WOLFGATE END

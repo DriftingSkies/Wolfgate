@@ -36,6 +36,12 @@ public sealed class CustomMarkingArt
     /// </summary>
     public readonly byte[] Erase = new byte[EraseBytes];
 
+    /// <summary>
+    /// Whether the animation plays back down to the first frame at the end instead of starting over. Only means
+    /// anything with three frames or more; see <see cref="PingPongs"/>.
+    /// </summary>
+    public bool PingPong;
+
     public CustomMarkingArt()
     {
         Pixels = new byte[PixelBytes];
@@ -50,13 +56,21 @@ public sealed class CustomMarkingArt
 
     public int Frames => _frameTimes.Length;
 
+    /// <summary>Whether playing back makes a difference: with two frames it is the same as starting over.</summary>
+    public bool PingPongs => PingPong && Frames > 2;
+
     /// <summary>
     /// Art from what a client uploads, or null when it isn't well formed: raw sheet bytes for a whole number of
     /// frames, a time for each frame, and an erase mask of the right size. Null times and a null mask are a still
     /// marking's and no mask. Everything is copied.
     /// </summary>
     /// <param name="maxFrames">Most frames to accept.</param>
-    public static CustomMarkingArt? FromPixels(byte[]? rgba, int[]? frameTimes = null, byte[]? erase = null, int maxFrames = MaxFrames)
+    public static CustomMarkingArt? FromPixels(
+        byte[]? rgba,
+        int[]? frameTimes = null,
+        byte[]? erase = null,
+        int maxFrames = MaxFrames,
+        bool pingPong = false)
     {
         if (rgba == null || rgba.Length == 0 || rgba.Length % PixelBytes != 0)
             return null;
@@ -85,14 +99,14 @@ public sealed class CustomMarkingArt
             times[i] = frameTimes == null ? DefaultFrameTime : Math.Clamp(frameTimes[i], MinFrameTime, MaxFrameTime);
         }
 
-        var art = new CustomMarkingArt(pixels, times);
+        var art = new CustomMarkingArt(pixels, times) { PingPong = pingPong && frames > 2 };
         erase?.CopyTo(art.Erase, 0);
         return art;
     }
 
     public CustomMarkingArt Clone()
     {
-        var copy = new CustomMarkingArt(Pixels.AsSpan().ToArray(), _frameTimes.AsSpan().ToArray());
+        var copy = new CustomMarkingArt(Pixels.AsSpan().ToArray(), _frameTimes.AsSpan().ToArray()) { PingPong = PingPong };
         Erase.CopyTo(copy.Erase, 0);
         return copy;
     }
@@ -103,6 +117,7 @@ public sealed class CustomMarkingArt
         Pixels = other.Pixels.AsSpan().ToArray();
         _frameTimes = other._frameTimes.AsSpan().ToArray();
         other.Erase.CopyTo(Erase, 0);
+        PingPong = other.PingPong;
     }
 
     /// <summary>Whether nothing is drawn on any facing of any frame. The erase mask doesn't count.</summary>
@@ -122,6 +137,7 @@ public sealed class CustomMarkingArt
     {
         return SamePixels(other)
                && _frameTimes.AsSpan().SequenceEqual(other._frameTimes)
+               && PingPongs == other.PingPongs
                && Erase.AsSpan().SequenceEqual(other.Erase);
     }
 
@@ -370,6 +386,97 @@ public sealed class CustomMarkingArt
         return true;
     }
 
+    /// <summary>Moves a frame to another place in the order, its time with it. Returns whether anything moved.</summary>
+    public bool MoveFrame(int frame, int to)
+    {
+        var frames = Frames;
+        if (frame == to || frame < 0 || to < 0 || frame >= frames || to >= frames)
+            return false;
+
+        var moved = Pixels.AsSpan(frame * PixelBytes, PixelBytes).ToArray();
+        var time = _frameTimes[frame];
+        var step = to > frame ? 1 : -1;
+        for (var i = frame; i != to; i += step)
+        {
+            Pixels.AsSpan((i + step) * PixelBytes, PixelBytes).CopyTo(Pixels.AsSpan(i * PixelBytes));
+            _frameTimes[i] = _frameTimes[i + step];
+        }
+
+        moved.CopyTo(Pixels.AsSpan(to * PixelBytes));
+        _frameTimes[to] = time;
+        return true;
+    }
+
+    /// <summary>Puts the frames in the opposite order, each keeping its time. Returns whether anything moved.</summary>
+    public bool ReverseFrames()
+    {
+        var frames = Frames;
+        if (frames < 2)
+            return false;
+
+        for (var i = 0; i < frames / 2; i++)
+        {
+            var j = frames - 1 - i;
+            var first = Pixels.AsSpan(i * PixelBytes, PixelBytes).ToArray();
+            Pixels.AsSpan(j * PixelBytes, PixelBytes).CopyTo(Pixels.AsSpan(i * PixelBytes));
+            first.CopyTo(Pixels.AsSpan(j * PixelBytes));
+            (_frameTimes[i], _frameTimes[j]) = (_frameTimes[j], _frameTimes[i]);
+        }
+
+        return true;
+    }
+
+    /// <summary>Gives every frame the same time, kept within the rules. Returns whether any changed.</summary>
+    public bool SetAllFrameTimes(int milliseconds)
+    {
+        var changed = false;
+        for (var i = 0; i < Frames; i++)
+        {
+            changed |= SetFrameTime(i, milliseconds);
+        }
+
+        return changed;
+    }
+
+    /// <summary>
+    /// The order frames are shown in: each once, then, for art that <see cref="PingPongs"/>, back down through
+    /// the middle ones to the first.
+    /// </summary>
+    public int[] PlayOrder()
+    {
+        var frames = Frames;
+        var order = new int[PingPongs ? frames * 2 - 2 : frames];
+        for (var i = 0; i < order.Length; i++)
+        {
+            order[i] = i < frames ? i : frames * 2 - 2 - i;
+        }
+
+        return order;
+    }
+
+    /// <summary>
+    /// The art with its frames laid out in <see cref="PlayOrder"/>, for a sprite to run through and start over,
+    /// as an RSI only can. Itself when it doesn't play back.
+    /// </summary>
+    public CustomMarkingArt Played()
+    {
+        if (!PingPongs)
+            return this;
+
+        var order = PlayOrder();
+        var pixels = new byte[order.Length * PixelBytes];
+        var times = new int[order.Length];
+        for (var i = 0; i < order.Length; i++)
+        {
+            Pixels.AsSpan(order[i] * PixelBytes, PixelBytes).CopyTo(pixels.AsSpan(i * PixelBytes));
+            times[i] = _frameTimes[order[i]];
+        }
+
+        var played = new CustomMarkingArt(pixels, times);
+        Erase.CopyTo(played.Erase, 0);
+        return played;
+    }
+
     /// <summary>Whether the body's pixel at a point is erased.</summary>
     public bool IsErased(int facing, int x, int y)
     {
@@ -482,6 +589,9 @@ public sealed class CustomMarkingArt
         {
             hash = unchecked((hash ^ value) * 1099511628211UL);
         }
+
+        if (PingPongs)
+            hash = unchecked((hash ^ 1) * 1099511628211UL);
 
         return hash.ToString("x16");
     }

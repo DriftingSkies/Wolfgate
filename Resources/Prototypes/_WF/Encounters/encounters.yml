@@ -2864,6 +2864,7 @@
 - type: wfEncounter
   id: WFEncounterFleetBattle
   leash: 4000
+  startRadius: 1000
   name: wf-encounter-name-fleet-battle
   announcement: wf-encounter-announce-fleet-battle
   announcementSender: wf-encounter-sender-traffic

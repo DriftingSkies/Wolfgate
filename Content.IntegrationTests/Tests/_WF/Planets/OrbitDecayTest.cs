@@ -7,6 +7,9 @@ using Content.Server._WF.Planets;
 using Content.Server._WF.ShipPa;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
+using Content.Server.Worldgen.Components.Debris;
+using Content.Shared._NF.Shipyard.Components;
+using Robust.Server.Physics;
 using Content.Shared._WF.Planets.Flight;
 using Content.Shared._WF.Planets;
 using Content.Shared._WF.ShipPa;
@@ -386,6 +389,51 @@ public sealed class OrbitDecayTest
                     "The force-anchored grid left the orbit layer.");
                 Assert.That(entMan.GetComponent<TransformComponent>(terrain).MapUid, Is.EqualTo(orbit),
                     "The detached terrain left the orbit layer.");
+            }
+        });
+
+        await Teardown(pair, layers);
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Asteroids and the pieces they split into hold orbit; a deeded one is a ship and decays.</summary>
+    [Test]
+    public async Task WorldgenDebrisNeverDecays()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+
+        await EnableFeature(pair);
+        var layers = await BuildStandalone(pair);
+        var orbit = layers[^1];
+        var orbitMap = await MapIdOf(pair, orbit);
+
+        var asteroid = await BuildDebris(pair, orbitMap, 3, new Vector2(30f, 0f));
+        var piece = await BuildDebris(pair, orbitMap, 3, new Vector2(60f, 0f));
+        var claimed = await BuildDebris(pair, orbitMap, 3, new Vector2(90f, 0f));
+
+        await server.WaitPost(() =>
+        {
+            entMan.AddComponent<OwnedDebrisComponent>(asteroid);
+            var split = new PostGridSplitEvent(asteroid, piece);
+            entMan.EventBus.RaiseEvent(EventSource.Local, ref split);
+            entMan.AddComponent<OwnedDebrisComponent>(claimed);
+            entMan.AddComponent<ShuttleDeedComponent>(claimed);
+        });
+
+        await server.WaitRunTicks(pair.SecondsToTicks(StampWait));
+
+        await server.WaitAssertion(() =>
+        {
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(entMan.HasComponent<WFLooseDebrisComponent>(piece), Is.True,
+                    "A piece split off an asteroid is still debris.");
+                Assert.That(entMan.HasComponent<WFOrbitDecayComponent>(asteroid), Is.False, "An asteroid is decaying.");
+                Assert.That(entMan.HasComponent<WFOrbitDecayComponent>(piece), Is.False, "An asteroid's piece is decaying.");
+                Assert.That(entMan.HasComponent<WFOrbitDecayComponent>(claimed), Is.True,
+                    "A deeded asteroid is somebody's ship and should decay like one.");
             }
         });
 

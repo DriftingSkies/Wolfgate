@@ -589,6 +589,7 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingDockPopoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingDockPopoutTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingDownloadTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingDownloadTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingExportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingExportTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingGhostTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingGhostTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingGridDeleteTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingGridDeleteTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingGuideTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingGuideTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingIssuesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingIssuesTest.cs)

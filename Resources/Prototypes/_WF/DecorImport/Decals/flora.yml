@@ -27,3 +27,31 @@
   sprite:
     sprite: _White/Decals/Flora/spring_flowers.rsi
     state: flowersp1
+
+- type: decal
+  id: CMDecalTangledVines1
+  tags: [ flora ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/vines_cmss13.rsi
+    state: tw1
+
+- type: decal
+  id: CMDecalTangledVines2
+  tags: [ flora ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/vines_cmss13.rsi
+    state: tw2
+
+- type: decal
+  id: CMDecalTangledVines3
+  tags: [ flora ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/vines_cmss13.rsi
+    state: tw3
+
+- type: decal
+  id: CMDecalTangledVines4
+  tags: [ flora ]
+  sprite:
+    sprite: _WF/DecorImport/Decals/Flora/vines_cmss13.rsi
+    state: tw4

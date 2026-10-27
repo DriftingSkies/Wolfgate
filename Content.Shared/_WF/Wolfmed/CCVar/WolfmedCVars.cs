@@ -143,6 +143,14 @@ public sealed class WolfmedCVars
     public static readonly CVarDef<float> ConsciousnessPainOut =
         CVarDef.Create("wolfmed.consc_pain_out", 1.4f, CVar.SERVERONLY);
 
+    /// <summary>
+    /// The weight each further part's pain carries in the body's pain, worst part first: 1, this, this squared...
+    /// Ships at 1, the plain sum: at 0.6 a body burning all over, which is pain spread across every part, stopped
+    /// going down in a fire. A Downed patient is a painkiller's job. The faint line always reads the plain sum.
+    /// </summary>
+    public static readonly CVarDef<float> PainSpreadFalloff =
+        CVarDef.Create("wolfmed.pain_spread_falloff", 1f, CVar.SERVER | CVar.REPLICATED);
+
     /// <summary>Blood volume fraction at or below which a body goes Downed.</summary>
     public static readonly CVarDef<float> ConsciousnessBloodDown =
         CVarDef.Create("wolfmed.consc_blood_down", 0.5f, CVar.SERVERONLY);
@@ -248,6 +256,13 @@ public sealed class WolfmedCVars
     /// <summary>Blood volume fraction at which the blood drain is at its full rate.</summary>
     public static readonly CVarDef<float> BrainBloodFull =
         CVarDef.Create("wolfmed.brain_blood_full", 0.3f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Blood, as a fraction of the pool, the analyzer's brain-safe transfusion figure aims above
+    /// <see cref="BrainBloodStart"/>. A patient left exactly on the line hovered there and never woke.
+    /// </summary>
+    public static readonly CVarDef<float> TransfuseSafeMargin =
+        CVarDef.Create("wolfmed.transfuse_safe_margin", 0.1f, CVar.SERVERONLY);
 
     /// <summary>
     /// Seconds of late sepsis that drain brain oxygenation from full to nothing. 0 since playtest 5: septic shock
@@ -592,9 +607,10 @@ public sealed class WolfmedCVars
     // M1b: burns and caps (plan §3.7, §6, OD11, OD12).
 
     /// <summary>
-    /// Per-part ceiling for damage nobody dealt, as a fraction of the part's lowest destruction threshold (arm
-    /// and leg 168, hand and foot 144 since M3 raised the limbs' Blunt and Heat rungs, head 400). A part without one (the torso) keeps its own cap. What the
-    /// ceiling trims still grows wounds and fluid loss; it is only not stored. Zero turns it off.
+    /// Per-part ceiling for damage nobody dealt, as a fraction of the part's damage cap (revival pass: torso 160,
+    /// head, arm and leg 80, hand and foot 48), or of its lowest destruction threshold for a part with no cap. What
+    /// the ceiling trims still grows wounds and fluid loss, up to the wound ladders' top rung; it is only not stored.
+    /// Zero turns it off.
     /// </summary>
     public static readonly CVarDef<float> AmbientPartCapFraction =
         CVarDef.Create("wolfmed.ambient_part_cap_fraction", 0.8f, CVar.SERVER | CVar.REPLICATED);
@@ -713,6 +729,22 @@ public sealed class WolfmedCVars
     /// </summary>
     public static readonly CVarDef<float> OrganHitCap =
         CVarDef.Create("wolfmed.organ_hit_cap", 3f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// How much of a hit's organ damage the part's overflow carries, 0 to 1; the share the part stored always counts.
+    /// 1 is the M1b behaviour: a full torso still hands the organs the whole hit. Below 1 a full chest stops hurting
+    /// what is inside it, which leaves a chassis whose death runs through its core nearly unkillable by chest fire.
+    /// The head's overflow always counts in full.
+    /// </summary>
+    public static readonly CVarDef<float> OrganOverflowFactor =
+        CVarDef.Create("wolfmed.organ_overflow_factor", 1f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Whether an organ at 0 health is torn out and deleted, Onyx's behaviour. Off (revival pass): it stays in at 0,
+    /// failed and switched off, and the organ heal surgery brings it back.
+    /// </summary>
+    public static readonly CVarDef<bool> OrganDestructionRemoves =
+        CVarDef.Create("wolfmed.organ_destruction_removes", false, CVar.SERVERONLY);
 
     /// <summary>
     /// Damaged lungs as a breathing input (plan §3.3): (impaired line - lung health fraction) / impaired line,
@@ -1173,4 +1205,25 @@ public sealed class WolfmedCVars
     /// <summary>One swing of a blunt weapon from which an execution crushes the head. Above a maintenance jack in both hands (45).</summary>
     public static readonly CVarDef<float> ExecutionBluntHeavy =
         CVarDef.Create("wolfmed.execution_blunt_heavy", 50f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Wound ladders (revival pass): a part holds one wound of each kind, which gets worse rather than more wounds
+    /// piling up beside it. Off is the old stacking.
+    /// </summary>
+    public static readonly CVarDef<bool> WoundLadders =
+        CVarDef.Create("wolfmed.wound_ladders", true, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Where a wound pushed past its maximum opens the next rung of its ladder, as a share of that rung's maximum,
+    /// before the excess is added.
+    /// </summary>
+    public static readonly CVarDef<float> WoundLadderEntry =
+        CVarDef.Create("wolfmed.wound_ladder_entry", 0.5f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// The share of a lesser wound's severity, rescaled to the worse wound already on the part, that it adds there.
+    /// One hit can make a cut, its tendon and its artery together; at 1 they summed into one far worse bleed.
+    /// </summary>
+    public static readonly CVarDef<float> WoundLadderLowerShare =
+        CVarDef.Create("wolfmed.wound_ladder_lower_share", 0f, CVar.SERVERONLY);
 }

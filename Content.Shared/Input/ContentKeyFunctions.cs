@@ -10,6 +10,7 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction ActivateItemInWorld = "ActivateItemInWorld";
         public static readonly BoundKeyFunction AltActivateItemInWorld = "AltActivateItemInWorld";
         public static readonly BoundKeyFunction Drop = "Drop";
+        public static readonly BoundKeyFunction WFOfferItem = "WFOfferItem"; // WOLFGATE(ExtraInteractions): hold out the active item
         public static readonly BoundKeyFunction ExamineEntity = "ExamineEntity";
         public static readonly BoundKeyFunction FocusChat = "FocusChatInputWindow";
         public static readonly BoundKeyFunction FocusLocalChat = "FocusLocalChatWindow";

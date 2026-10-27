@@ -1,0 +1,70 @@
+- type: tile
+  abstract: true
+  parent: DecorImportPlanetTileBase
+  id: DecorImportPlatingTileBase
+  footstepSounds:
+    collection: FootstepPlating
+  allowRotationMirror: true
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantPattern
+  name: tiles-wf-pvehalo-floor-covenant-pattern
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_pattern.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantPattern
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantSmoothPlating
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_smooth_plating.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantSmoothPlating
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantSmoothPlatingSides
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-sides
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_smooth_plating_sides.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantSmoothPlatingSides
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantPlating
+  name: tiles-wf-pvehalo-floor-covenant-plating
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_plating.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantPlating
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantSmoothPlatingCorner
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-corner
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_smooth_plating_corner.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantSmoothPlatingCorner
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantSmoothPlatingOuterCorner
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-outer-corner
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_smooth_plating_outer_corner.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantSmoothPlatingOuterCorner
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantPaneling
+  name: tiles-wf-pvehalo-floor-covenant-paneling
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_paneling.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantPaneling
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantSmoothPlatingLane
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-lane
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_smooth_plating_lane.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantSmoothPlatingLane
+
+- type: tile
+  parent: DecorImportPlatingTileBase
+  id: PvEHaloFloorCovenantSmoothPlatingEndcap
+  name: tiles-wf-pvehalo-floor-covenant-smooth-plating-endcap
+  sprite: /Textures/_WF/DecorImport/Tiles/pvehalo/covenant_smooth_plating_endcap.png
+  itemDrop: FloorTileItemPvEHaloFloorCovenantSmoothPlatingEndcap

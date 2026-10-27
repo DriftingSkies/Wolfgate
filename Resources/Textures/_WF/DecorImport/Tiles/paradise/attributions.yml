@@ -27,3 +27,13 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/ParadiseSS13/Paradise/blob/7cd73f80152a5e234249d99cace75ce2b5c1c54b/icons/misc/beach.dmi (state seadrop)."
   source: "https://github.com/ParadiseSS13/Paradise"
+
+- files: [ flock_floor.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/ParadiseSS13/Paradise/blob/7cd73f80152a5e234249d99cace75ce2b5c1c54b/icons/goonstation/mob/featherzone.dmi (state floor)."
+  source: "https://github.com/ParadiseSS13/Paradise"
+
+- files: [ fibrenet.png ]
+  license: CC-BY-NC-SA-3.0
+  copyright: "Taken from https://github.com/ParadiseSS13/Paradise/blob/7cd73f80152a5e234249d99cace75ce2b5c1c54b/icons/goonstation/mob/featherzone.dmi (state fibrenet)."
+  source: "https://github.com/ParadiseSS13/Paradise"

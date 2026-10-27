@@ -14,6 +14,7 @@ using Content.Server.Construction.Components;
 using Content.Server.DeviceLinking.Systems;
 using Content.Server.Power.Components;
 using Content.Server.Shuttles.Components;
+using Content.Shared._Crescent.Hardpoints;
 using Content.Shared._Mono.Ships.Components;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
@@ -353,6 +354,40 @@ public sealed class DrydockTest
 
             var items = drydock.BuildRepairItems(grid, console);
             Assert.That(items.Count(i => i.Kind == WFDrydockWorkKind.Entity), Is.EqualTo(0), "A moved original was counted as missing.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A gun rebuilt after its original was destroyed mounts on the hardpoint the original held.</summary>
+    [Test]
+    public async Task RebuiltGunMountsOnItsHardpoint()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var grid = map.Grid;
+        var drydock = server.System<WFDrydockSystem>();
+        var console = new WFDrydockConsoleComponent { Berth = "T" };
+
+        await server.WaitAssertion(() =>
+        {
+            SetFloor(pair, grid, 5);
+            var hardpoint = SpawnAnchored(pair, grid, "HardpointEnergyHeavy", new Vector2i(2, 2));
+            var gun = SpawnAnchored(pair, grid, "WeaponTurretSunder", new Vector2i(2, 2));
+            Assert.That(em.GetComponent<HardpointComponent>(hardpoint).anchoring, Is.EqualTo(gun), "The gun did not mount.");
+            server.System<ShipRepairSystem>().GenerateRepairData(grid);
+
+            em.DeleteEntity(gun);
+            foreach (var item in drydock.BuildRepairItems(grid, console))
+            {
+                drydock.ApplyItem(grid, item);
+            }
+
+            var rebuilt = em.GetComponent<HardpointComponent>(hardpoint).anchoring;
+            Assert.That(rebuilt, Is.Not.Null.And.Not.EqualTo(gun), "The rebuilt gun did not take the hardpoint.");
+            Assert.That(em.GetComponent<HardpointAnchorableOnlyComponent>(rebuilt!.Value).anchoredTo, Is.EqualTo(hardpoint));
         });
 
         await pair.CleanReturnAsync();

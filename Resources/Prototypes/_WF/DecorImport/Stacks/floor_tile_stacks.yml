@@ -339,6 +339,12 @@
   maxCount: 30
 
 - type: stack
+  id: FloorTileGoonFloorBluefloor
+  name: tiles-wf-goon-floor-bluefloor
+  spawn: FloorTileItemGoonFloorBluefloor
+  maxCount: 30
+
+- type: stack
   id: FloorTileGoonFloorTerrazzo
   name: tiles-wf-goon-floor-terrazzo
   spawn: FloorTileItemGoonFloorTerrazzo
@@ -848,6 +854,240 @@
   spawn: FloorTileItemGoonFloorWoodSeven
   maxCount: 30
 
+- type: stack
+  id: FloorTileGoonFloorMarslikeT2
+  name: tiles-wf-goon-floor-marslike-t2
+  spawn: FloorTileItemGoonFloorMarslikeT2
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarslikeT3
+  name: tiles-wf-goon-floor-marslike-t3
+  spawn: FloorTileItemGoonFloorMarslikeT3
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarslikeT4
+  name: tiles-wf-goon-floor-marslike-t4
+  spawn: FloorTileItemGoonFloorMarslikeT4
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsRocks
+  name: tiles-wf-goon-floor-mars-rocks
+  spawn: FloorTileItemGoonFloorMarsRocks
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMartianDust
+  name: tiles-wf-goon-floor-martian-dust
+  spawn: FloorTileItemGoonFloorMartianDust
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1
+  name: tiles-wf-goon-floor-mars-base1
+  spawn: FloorTileItemGoonFloorMarsBase1
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1North
+  name: tiles-wf-goon-floor-mars-base1-north
+  spawn: FloorTileItemGoonFloorMarsBase1North
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1East
+  name: tiles-wf-goon-floor-mars-base1-east
+  spawn: FloorTileItemGoonFloorMarsBase1East
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1West
+  name: tiles-wf-goon-floor-mars-base1-west
+  spawn: FloorTileItemGoonFloorMarsBase1West
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1SouthEast
+  name: tiles-wf-goon-floor-mars-base1-south-east
+  spawn: FloorTileItemGoonFloorMarsBase1SouthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1SouthWest
+  name: tiles-wf-goon-floor-mars-base1-south-west
+  spawn: FloorTileItemGoonFloorMarsBase1SouthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1NorthEast
+  name: tiles-wf-goon-floor-mars-base1-north-east
+  spawn: FloorTileItemGoonFloorMarsBase1NorthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase1NorthWest
+  name: tiles-wf-goon-floor-mars-base1-north-west
+  spawn: FloorTileItemGoonFloorMarsBase1NorthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase2
+  name: tiles-wf-goon-floor-mars-base2
+  spawn: FloorTileItemGoonFloorMarsBase2
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase2North
+  name: tiles-wf-goon-floor-mars-base2-north
+  spawn: FloorTileItemGoonFloorMarsBase2North
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase2East
+  name: tiles-wf-goon-floor-mars-base2-east
+  spawn: FloorTileItemGoonFloorMarsBase2East
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase2West
+  name: tiles-wf-goon-floor-mars-base2-west
+  spawn: FloorTileItemGoonFloorMarsBase2West
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase2SouthEast
+  name: tiles-wf-goon-floor-mars-base2-south-east
+  spawn: FloorTileItemGoonFloorMarsBase2SouthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3
+  name: tiles-wf-goon-floor-mars-base3
+  spawn: FloorTileItemGoonFloorMarsBase3
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3North
+  name: tiles-wf-goon-floor-mars-base3-north
+  spawn: FloorTileItemGoonFloorMarsBase3North
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3East
+  name: tiles-wf-goon-floor-mars-base3-east
+  spawn: FloorTileItemGoonFloorMarsBase3East
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3West
+  name: tiles-wf-goon-floor-mars-base3-west
+  spawn: FloorTileItemGoonFloorMarsBase3West
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3SouthEast
+  name: tiles-wf-goon-floor-mars-base3-south-east
+  spawn: FloorTileItemGoonFloorMarsBase3SouthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3SouthWest
+  name: tiles-wf-goon-floor-mars-base3-south-west
+  spawn: FloorTileItemGoonFloorMarsBase3SouthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsBase3NorthEast
+  name: tiles-wf-goon-floor-mars-base3-north-east
+  spawn: FloorTileItemGoonFloorMarsBase3NorthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad1
+  name: tiles-wf-goon-floor-mars-dirtroad1
+  spawn: FloorTileItemGoonFloorMarsDirtroad1
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad1North
+  name: tiles-wf-goon-floor-mars-dirtroad1-north
+  spawn: FloorTileItemGoonFloorMarsDirtroad1North
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad1SouthEast
+  name: tiles-wf-goon-floor-mars-dirtroad1-south-east
+  spawn: FloorTileItemGoonFloorMarsDirtroad1SouthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad1SouthWest
+  name: tiles-wf-goon-floor-mars-dirtroad1-south-west
+  spawn: FloorTileItemGoonFloorMarsDirtroad1SouthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad1NorthEast
+  name: tiles-wf-goon-floor-mars-dirtroad1-north-east
+  spawn: FloorTileItemGoonFloorMarsDirtroad1NorthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad1NorthWest
+  name: tiles-wf-goon-floor-mars-dirtroad1-north-west
+  spawn: FloorTileItemGoonFloorMarsDirtroad1NorthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2
+  name: tiles-wf-goon-floor-mars-dirtroad2
+  spawn: FloorTileItemGoonFloorMarsDirtroad2
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2North
+  name: tiles-wf-goon-floor-mars-dirtroad2-north
+  spawn: FloorTileItemGoonFloorMarsDirtroad2North
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2East
+  name: tiles-wf-goon-floor-mars-dirtroad2-east
+  spawn: FloorTileItemGoonFloorMarsDirtroad2East
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2West
+  name: tiles-wf-goon-floor-mars-dirtroad2-west
+  spawn: FloorTileItemGoonFloorMarsDirtroad2West
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2SouthEast
+  name: tiles-wf-goon-floor-mars-dirtroad2-south-east
+  spawn: FloorTileItemGoonFloorMarsDirtroad2SouthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2SouthWest
+  name: tiles-wf-goon-floor-mars-dirtroad2-south-west
+  spawn: FloorTileItemGoonFloorMarsDirtroad2SouthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2NorthEast
+  name: tiles-wf-goon-floor-mars-dirtroad2-north-east
+  spawn: FloorTileItemGoonFloorMarsDirtroad2NorthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMarsDirtroad2NorthWest
+  name: tiles-wf-goon-floor-mars-dirtroad2-north-west
+  spawn: FloorTileItemGoonFloorMarsDirtroad2NorthWest
+  maxCount: 30
+
 # Aurora
 
 - type: stack
@@ -1216,6 +1456,18 @@
   id: FloorTileBubberFloorVaultSandstone
   name: tiles-wf-bubber-floor-vault-sandstone
   spawn: FloorTileItemBubberFloorVaultSandstone
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBubberFloorLunarSand
+  name: tiles-wf-bubber-floor-lunar-sand
+  spawn: FloorTileItemBubberFloorLunarSand
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBubberFloorLunarRock
+  name: tiles-wf-bubber-floor-lunar-rock
+  spawn: FloorTileItemBubberFloorLunarRock
   maxCount: 30
 
 # Citadel
@@ -2290,6 +2542,12 @@
   spawn: FloorTileItemVoreFloorWaterGlamour
   maxCount: 30
 
+- type: stack
+  id: FloorTileVoreFloorNanites
+  name: tiles-wf-vore-floor-nanites
+  spawn: FloorTileItemVoreFloorNanites
+  maxCount: 30
+
 # Baystation
 
 - type: stack
@@ -2356,6 +2614,12 @@
   id: FloorTileBayFloorWaterShallowTar
   name: tiles-wf-bay-floor-water-shallow-tar
   spawn: FloorTileItemBayFloorWaterShallowTar
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBayFloorExoplanetChlorineSand
+  name: tiles-wf-bay-floor-exoplanet-chlorine-sand
+  spawn: FloorTileItemBayFloorExoplanetChlorineSand
   maxCount: 30
 
 # BeeStation
@@ -2526,6 +2790,90 @@
   spawn: FloorTileItemCMFloorHybrisaWoodWhitewood
   maxCount: 30
 
+- type: stack
+  id: FloorTileCMFloorAncientFloor
+  name: tiles-wf-cm-floor-ancient-floor
+  spawn: FloorTileItemCMFloorAncientFloor
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDamaged
+  name: tiles-wf-cm-floor-ancient-damaged
+  spawn: FloorTileItemCMFloorAncientDamaged
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientBreach
+  name: tiles-wf-cm-floor-ancient-breach
+  spawn: FloorTileItemCMFloorAncientBreach
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDeco
+  name: tiles-wf-cm-floor-ancient-deco
+  spawn: FloorTileItemCMFloorAncientDeco
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDeco0
+  name: tiles-wf-cm-floor-ancient-deco-0
+  spawn: FloorTileItemCMFloorAncientDeco0
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDeco1
+  name: tiles-wf-cm-floor-ancient-deco-1
+  spawn: FloorTileItemCMFloorAncientDeco1
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDeco2
+  name: tiles-wf-cm-floor-ancient-deco-2
+  spawn: FloorTileItemCMFloorAncientDeco2
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDecoAlt
+  name: tiles-wf-cm-floor-ancient-deco-alt
+  spawn: FloorTileItemCMFloorAncientDecoAlt
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDarkDeco
+  name: tiles-wf-cm-floor-ancient-dark-deco
+  spawn: FloorTileItemCMFloorAncientDarkDeco
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDarkDeco1
+  name: tiles-wf-cm-floor-ancient-dark-deco-1
+  spawn: FloorTileItemCMFloorAncientDarkDeco1
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorAncientDecoAltDark
+  name: tiles-wf-cm-floor-ancient-deco-alt-dark
+  spawn: FloorTileItemCMFloorAncientDecoAltDark
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorHunterRed
+  name: tiles-wf-cm-floor-hunter-red
+  spawn: FloorTileItemCMFloorHunterRed
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorHunterRed2
+  name: tiles-wf-cm-floor-hunter-red-2
+  spawn: FloorTileItemCMFloorHunterRed2
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCMFloorHunterRed4
+  name: tiles-wf-cm-floor-hunter-red-4
+  spawn: FloorTileItemCMFloorHunterRed4
+  maxCount: 30
+
 # Coyote Bayou
 
 - type: stack
@@ -2568,6 +2916,30 @@
   id: FloorTileCoyoteFloorF13StoneRugged
   name: tiles-wf-coyote-floor-f13-stone-rugged
   spawn: FloorTileItemCoyoteFloorF13StoneRugged
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCoyoteFloorUltraMolten
+  name: tiles-wf-coyote-floor-ultra-molten
+  spawn: FloorTileItemCoyoteFloorUltraMolten
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCoyoteFloorUltraFissureLeft
+  name: tiles-wf-coyote-floor-ultra-fissure
+  spawn: FloorTileItemCoyoteFloorUltraFissureLeft
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCoyoteFloorUltraFissureCenter
+  name: tiles-wf-coyote-floor-ultra-fissure
+  spawn: FloorTileItemCoyoteFloorUltraFissureCenter
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCoyoteFloorUltraFissureRight
+  name: tiles-wf-coyote-floor-ultra-fissure
+  spawn: FloorTileItemCoyoteFloorUltraFissureRight
   maxCount: 30
 
 # DarkPack
@@ -2711,6 +3083,12 @@
   maxCount: 30
 
 - type: stack
+  id: FloorTileParaFloorFlock
+  name: tiles-wf-para-floor-flock
+  spawn: FloorTileItemParaFloorFlock
+  maxCount: 30
+
+- type: stack
   id: FloorTileParaFloorBeachAwaySand
   name: tiles-wf-para-floor-beach-away-sand
   spawn: FloorTileItemParaFloorBeachAwaySand
@@ -2836,6 +3214,48 @@
   id: FloorTileShiptestFloorShipJungleDark
   name: tiles-wf-shiptest-floor-ship-jungle-dark
   spawn: FloorTileItemShiptestFloorShipJungleDark
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorShroudedSand
+  name: tiles-wf-shiptest-floor-shrouded-sand
+  spawn: FloorTileItemShiptestFloorShroudedSand
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorMoonCoarse
+  name: tiles-wf-shiptest-floor-moon-coarse
+  spawn: FloorTileItemShiptestFloorMoonCoarse
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorMoonCoarseDark
+  name: tiles-wf-shiptest-floor-moon-coarse-dark
+  spawn: FloorTileItemShiptestFloorMoonCoarseDark
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorMoonDark
+  name: tiles-wf-shiptest-floor-moon-dark
+  spawn: FloorTileItemShiptestFloorMoonDark
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorIceSheet
+  name: tiles-wf-shiptest-floor-ice-sheet
+  spawn: FloorTileItemShiptestFloorIceSheet
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorIceberg
+  name: tiles-wf-shiptest-floor-iceberg
+  spawn: FloorTileItemShiptestFloorIceberg
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorCrimsonGrass
+  name: tiles-wf-shiptest-floor-crimson-grass
+  spawn: FloorTileItemShiptestFloorCrimsonGrass
   maxCount: 30
 
 # Skyrat
@@ -3148,6 +3568,12 @@
   spawn: FloorTileItemTgFloorBeachWaterDeep
   maxCount: 30
 
+- type: stack
+  id: FloorTileTgFloorSiderite
+  name: tiles-wf-tg-floor-siderite
+  spawn: FloorTileItemTgFloorSiderite
+  maxCount: 30
+
 # Yogstation
 
 - type: stack
@@ -3318,4 +3744,246 @@
   id: FloorCarpetTgFloorCarpetStellar
   name: stack-wf-carpet-stellar
   spawn: FloorCarpetItemTgFloorCarpetStellar
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVoreFloorReinforced
+  name: tiles-wf-vore-floor-reinforced
+  spawn: FloorTileItemVoreFloorReinforced
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVoreFloorAlienPlatingHalf
+  name: tiles-wf-vore-floor-alien-plating-half
+  spawn: FloorTileItemVoreFloorAlienPlatingHalf
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVoreFloorAlienPlating
+  name: tiles-wf-vore-floor-alien-plating
+  spawn: FloorTileItemVoreFloorAlienPlating
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVoreFloorFlesh
+  name: tiles-wf-vore-floor-flesh
+  spawn: FloorTileItemVoreFloorFlesh
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVoreFloorFleshColour
+  name: tiles-wf-vore-floor-flesh-colour
+  spawn: FloorTileItemVoreFloorFleshColour
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBayFloorFlesh
+  name: tiles-wf-bay-floor-flesh
+  spawn: FloorTileItemBayFloorFlesh
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBeeFloorWaterRed
+  name: tiles-wf-bee-floor-water-red
+  spawn: FloorTileItemBeeFloorWaterRed
+  maxCount: 30
+
+# CEV-Eris
+
+- type: stack
+  id: FloorTileErisFloorAsteroid
+  name: tiles-wf-eris-floor-asteroid
+  spawn: FloorTileItemErisFloorAsteroid
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorMartian
+  name: tiles-wf-goon-floor-martian
+  spawn: FloorTileItemGoonFloorMartian
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorder
+  name: tiles-wf-goon-floor-snowrough-border
+  spawn: FloorTileItemGoonFloorSnowroughBorder
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderNorth
+  name: tiles-wf-goon-floor-snowrough-border-north
+  spawn: FloorTileItemGoonFloorSnowroughBorderNorth
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderEast
+  name: tiles-wf-goon-floor-snowrough-border-east
+  spawn: FloorTileItemGoonFloorSnowroughBorderEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderWest
+  name: tiles-wf-goon-floor-snowrough-border-west
+  spawn: FloorTileItemGoonFloorSnowroughBorderWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderSouthEast
+  name: tiles-wf-goon-floor-snowrough-border-south-east
+  spawn: FloorTileItemGoonFloorSnowroughBorderSouthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderSouthWest
+  name: tiles-wf-goon-floor-snowrough-border-south-west
+  spawn: FloorTileItemGoonFloorSnowroughBorderSouthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderNorthEast
+  name: tiles-wf-goon-floor-snowrough-border-north-east
+  spawn: FloorTileItemGoonFloorSnowroughBorderNorthEast
+  maxCount: 30
+
+- type: stack
+  id: FloorTileGoonFloorSnowroughBorderNorthWest
+  name: tiles-wf-goon-floor-snowrough-border-north-west
+  spawn: FloorTileItemGoonFloorSnowroughBorderNorthWest
+  maxCount: 30
+
+- type: stack
+  id: FloorTileAuroraFloorExoplanetIcyRock
+  name: tiles-wf-aurora-floor-exoplanet-icy-rock
+  spawn: FloorTileItemAuroraFloorExoplanetIcyRock
+  maxCount: 30
+
+- type: stack
+  id: FloorTilePolarisFloorSandIcey
+  name: tiles-wf-polaris-floor-sand-icey
+  spawn: FloorTileItemPolarisFloorSandIcey
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVoreFloorGrassWinter
+  name: tiles-wf-vore-floor-grass-winter
+  spawn: FloorTileItemVoreFloorGrassWinter
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBeeFloorRedIce
+  name: tiles-wf-bee-floor-red-ice
+  spawn: FloorTileItemBeeFloorRedIce
+  maxCount: 30
+
+- type: stack
+  id: FloorTileMojaveFloorIce
+  name: tiles-wf-mojave-floor-ice
+  spawn: FloorTileItemMojaveFloorIce
+  maxCount: 30
+
+- type: stack
+  id: FloorTileShiptestFloorObsidian
+  name: tiles-wf-shiptest-floor-obsidian
+  spawn: FloorTileItemShiptestFloorObsidian
+  maxCount: 30
+
+- type: stack
+  id: FloorTileBayFloorExoplanetVolcanic
+  name: tiles-wf-bay-floor-exoplanet-volcanic
+  spawn: FloorTileItemBayFloorExoplanetVolcanic
+  maxCount: 30
+
+- type: stack
+  id: FloorTileNovaFloorMushroom
+  name: tiles-wf-nova-floor-mushroom
+  spawn: FloorTileItemNovaFloorMushroom
+  maxCount: 30
+
+- type: stack
+  id: FloorTileNovaFloorMushroomBlue
+  name: tiles-wf-nova-floor-mushroom-blue
+  spawn: FloorTileItemNovaFloorMushroomBlue
+  maxCount: 30
+
+- type: stack
+  id: FloorTileNovaFloorMushroomGreen
+  name: tiles-wf-nova-floor-mushroom-green
+  spawn: FloorTileItemNovaFloorMushroomGreen
+  maxCount: 30
+
+- type: stack
+  id: FloorTileAuroraFloorExoplanetBasalt
+  name: tiles-wf-aurora-floor-exoplanet-basalt
+  spawn: FloorTileItemAuroraFloorExoplanetBasalt
+  maxCount: 30
+
+- type: stack
+  id: FloorTileCitadelRPFloorCave
+  name: tiles-wf-citadel-rp-floor-cave
+  spawn: FloorTileItemCitadelRPFloorCave
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealm
+  name: tiles-wf-vg-floor-bloodrealm
+  spawn: FloorTileItemVGFloorBloodrealm
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealmAccent
+  name: tiles-wf-vg-floor-bloodrealm-accent
+  spawn: FloorTileItemVGFloorBloodrealmAccent
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealmAccentAlt
+  name: tiles-wf-vg-floor-bloodrealm-accent-alt
+  spawn: FloorTileItemVGFloorBloodrealmAccentAlt
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealmGrease
+  name: tiles-wf-vg-floor-bloodrealm-grease
+  spawn: FloorTileItemVGFloorBloodrealmGrease
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealmGreaseGrey
+  name: tiles-wf-vg-floor-bloodrealm-grease-grey
+  spawn: FloorTileItemVGFloorBloodrealmGreaseGrey
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealmClot
+  name: tiles-wf-vg-floor-bloodrealm-clot
+  spawn: FloorTileItemVGFloorBloodrealmClot
+  maxCount: 30
+
+- type: stack
+  id: FloorTileVGFloorBloodrealmObsidian
+  name: tiles-wf-vg-floor-bloodrealm-obsidian
+  spawn: FloorTileItemVGFloorBloodrealmObsidian
+  maxCount: 30
+
+- type: stack
+  id: FloorTileTauCetiFloorMeatland
+  name: tiles-wf-tau-ceti-floor-meatland
+  spawn: FloorTileItemTauCetiFloorMeatland
+  maxCount: 30
+
+- type: stack
+  id: FloorTileDS13FloorDryFirm
+  name: tiles-wf-ds13-floor-dry-firm
+  spawn: FloorTileItemDS13FloorDryFirm
+  maxCount: 30
+
+- type: stack
+  id: FloorTileDS13FloorDryCracked
+  name: tiles-wf-ds13-floor-dry-cracked
+  spawn: FloorTileItemDS13FloorDryCracked
+  maxCount: 30
+
+- type: stack
+  id: FloorTileTgFloorNecropolis
+  name: tiles-wf-tg-floor-necropolis
+  spawn: FloorTileItemTgFloorNecropolis
   maxCount: 30

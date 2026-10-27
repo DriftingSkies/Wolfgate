@@ -293,7 +293,11 @@ public sealed partial class RadioSystem : EntitySystem
             ("color", channel.Color),
             ("languageColor", languageColor),
             ("fontType", language.SpeechOverride.FontId ?? CompOrNull<WFChatFontComponent>(source)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the speaker's picked font, under a language's own
-            ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
+            // WOLFGATE(ChatFont) START: the picked font's size scale, unless a language's own font wins
+            // ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
+            ("fontSize", WFChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize,
+                language.SpeechOverride.FontId == null ? CompOrNull<WFChatFontComponent>(source) : null)),
+            // WOLFGATE END
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("channel", $"\\[{WFCrewChannelName(source, channel)}\\]"), // WOLFGATE(RoundSetup): show the private crew channel name
             ("name", name),

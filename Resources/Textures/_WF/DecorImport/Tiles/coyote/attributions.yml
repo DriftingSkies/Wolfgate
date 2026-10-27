@@ -32,3 +32,13 @@
   license: CC-BY-SA-3.0
   copyright: "Taken from https://github.com/ARF-SS13/coyote-bayou/blob/af94b33c76dffc30896d97f20bcea09cbed14b22/icons/turf/floors.dmi (state titanium_yellow)."
   source: "https://github.com/ARF-SS13/coyote-bayou"
+
+- files: [ molten.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/ARF-SS13/coyote-bayou/blob/af94b33c76dffc30896d97f20bcea09cbed14b22/icons/fallout/turfs/ultra.dmi (state molten)."
+  source: "https://github.com/ARF-SS13/coyote-bayou"
+
+- files: [ fissurel.png, fissurec.png, fissurer.png ]
+  license: CC-BY-SA-3.0
+  copyright: "Taken from https://github.com/ARF-SS13/coyote-bayou/blob/af94b33c76dffc30896d97f20bcea09cbed14b22/icons/fallout/turfs/ultra.dmi (states fissurel, fissurec, fissurer)."
+  source: "https://github.com/ARF-SS13/coyote-bayou"

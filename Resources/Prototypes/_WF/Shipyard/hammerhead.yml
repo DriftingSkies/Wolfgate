@@ -1,0 +1,37 @@
+# Original Author: Starch70 (Github, Discord)
+# Updated By: Gooorn (Discord)
+- type: vessel
+  id: WFHammerhead
+  parent: BaseVessel
+  name: 'Hammerhead'
+  description: 'A reliable light warship design from the Corporate War era, now finding its second home amongst mercenaries. This "economy" refurbishment version sports two CYREXA cannons, four chainguns and six small PD autocannons. Poorly armed and armored for a warship of its class.'
+  price: 355600 # appraised at 146455
+  category: Large # 863 tiles
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/hammerhead.yml
+  guidebookPage: null
+  class:
+  - Science
+  - Mercenary
+  - Corvette
+  - Brawler
+  engine:
+  - AME
+
+- type: gameMap
+  id: WFHammerhead
+  mapName: 'Hammerhead'
+  mapPath: /SharedMaps/_WF/Shipyard/Shuttles/hammerhead.yml
+  minPlayers: 0
+  stations:
+    WFHammerheadMk2:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Hammerhead {1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

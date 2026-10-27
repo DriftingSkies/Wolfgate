@@ -159,5 +159,18 @@
                 </BoxContainer>
             </BoxContainer>
         </PanelContainer>
+        <!-- Adult description, read from the heart on the examine card by examiners who may read anatomy -->
+        <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
+            <BoxContainer Orientation="Vertical" SeparationOverride="6">
+                <Label Text="{Loc 'wf-genitals-nsfw-text'}" StyleClasses="CreatorHeading" />
+                <RichTextLabel Name="NsfwTextHint" HorizontalExpand="True" />
+                <PanelContainer StyleClasses="CreatorInset" HorizontalExpand="True">
+                    <ScrollContainer HScrollEnabled="False" ReturnMeasure="True" MinHeight="120" MaxHeight="120" HorizontalExpand="True">
+                        <TextEdit Name="NsfwTextEdit" HorizontalExpand="True" />
+                    </ScrollContainer>
+                </PanelContainer>
+                <Label Name="NsfwTextCounter" StyleClasses="CreatorFieldLabel" HorizontalAlignment="Right" />
+            </BoxContainer>
+        </PanelContainer>
     </BoxContainer>
 </wfg:WolfgateGenitalEditor>

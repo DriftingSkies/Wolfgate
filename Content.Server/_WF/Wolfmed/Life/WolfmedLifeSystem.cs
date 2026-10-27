@@ -384,7 +384,7 @@ public sealed class WolfmedLifeSystem : EntitySystem
         !InArrest(body) && !_mobState.IsDead(body) &&
         TryComp(body, out WolfmedConsciousnessComponent? consciousness) &&
         consciousness.State == WolfmedConsciousness.Up &&
-        GetTransfusionGuidance(body).ToBrainSafe <= 0f;
+        GetBlood(body) >= _cfg.GetCVar(WolfmedCVars.BrainBloodStart);
 
     /// <summary>The worst of the four inputs drains; nothing draining at all refills, slowly.</summary>
     private void UpdateOxygenation(EntityUid body, Entity<WolfmedBrainComponent> brain, float seconds)
@@ -945,6 +945,10 @@ public sealed class WolfmedLifeSystem : EntitySystem
     public float GetVolumeLossRate(EntityUid body) =>
         GetBleedRate(body) + _fluidLoss.GetRate(body) + _radiation.GetMarrowLossRate(body); // M5: the marrow too
 
+    /// <summary>The blood fraction the brain-safe transfusion figure aims for: the brain's line plus the margin.</summary>
+    public float BrainSafeTarget =>
+        MathF.Min(1f, _cfg.GetCVar(WolfmedCVars.BrainBloodStart) + MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.TransfuseSafeMargin)));
+
     /// <summary>
     /// The two transfusion numbers (plan §7.1): units to <see cref="WolfmedCVars.PostShockBloodTarget"/> plus
     /// what the current bleed takes over the grace, which keeps the heart going; and units to the line where
@@ -962,10 +966,12 @@ public sealed class WolfmedLifeSystem : EntitySystem
 
         var volume = GetBlood(body) * pool;
         var target = _cfg.GetCVar(WolfmedCVars.PostShockBloodTarget) * pool;
-        var safe = _cfg.GetCVar(WolfmedCVars.BrainBloodStart) * pool;
+        var safe = BrainSafeTarget * pool;
         var bleed = GetVolumeLossRate(body) * MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.PostShockGraceSeconds)); // M1b: burns too
 
-        return (MathF.Max(0f, target - volume) + bleed, MathF.Max(0f, safe - volume));
+        // Revival pass: the brain-safe figure carries the same loss and a margin, or a patient topped up to exactly
+        // the line sits on it, the brain refill never starts and they stay out.
+        return (MathF.Max(0f, target - volume) + bleed, MathF.Max(0f, safe - volume) + (safe > volume ? bleed : 0f));
     }
 
     /// <summary>
@@ -983,7 +989,7 @@ public sealed class WolfmedLifeSystem : EntitySystem
             return null;
 
         return new WolfmedPostShockAdvice(units, safe, GetPostShockGraceSeconds(body),
-            _cfg.GetCVar(WolfmedCVars.BrainBloodStart) * 100f);
+            BrainSafeTarget * 100f);
     }
 
     #endregion

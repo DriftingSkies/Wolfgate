@@ -1,0 +1,165 @@
+# WOLFGATE(DecorImport) START: ported from Goob Station
+- type: entity
+  parent: BaseStructure
+  id: WallFlockBase
+  name: strange glass wall
+  abstract: true
+  description: You can hear faint humming coming from within.
+  components:
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _Goobstation/Flock/Structures/Walls/featherzone.rsi
+    state: full
+    drawdepth: Walls
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb {}
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Damageable
+    damageModifierSet: StructuralMetallicStrong
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Airtight
+  - type: SunShadowCast
+  - type: Occluder
+  - type: Tag
+    tags:
+      - Wall
+  - type: AmbientSound
+    volume: -10
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/gravity_gen_hum.ogg
+  - type: PointLight
+    radius: 4
+    energy: 1.6
+    color: "#0fb79a"
+    castShadows: true
+    netsync: false
+
+- type: entity
+  parent: WallFlockBase
+  id: gridfullWallFlock
+  suffix: "gridfull"
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Flock/Structures/Walls/featherzone.rsi
+    state: gridfull
+
+#Diagonal
+- type: entity
+  parent: BaseStructure
+  id: WallDiagonalFeatherZone
+  suffix: Diagonal
+  name: strange glass wall
+  description: You can hear faint humming coming from within.
+  components:
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _Goobstation/Flock/Structures/Walls/shuttle.rsi
+    state: FZDiagonal
+    drawdepth: BlastDoors
+    noRot: false
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PolygonShape
+            vertices:
+            - "-0.5,-0.5"
+            - "0.5,0.5"
+            - "0.5,-0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Damageable
+    damageModifierSet: StructuralMetallicStrong
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Airtight
+    noAirWhenFullyAirBlocked: false
+    airBlockedDirection:
+    - South
+    - East
+  - type: Tag
+    tags:
+    - Wall
+    - Diagonal
+  - type: AmbientSound
+    volume: -10
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/gravity_gen_hum.ogg
+  - type: PointLight
+    radius: 4
+    energy: 1.6
+    color: "#0fb79a"
+    castShadows: true
+    netsync: false
+
+#Shuttle
+- type: entity
+  parent: WallFlockBase
+  id: WallFeatherZoneShuttle
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Flock/Structures/Walls/shuttle.rsi
+    state: FZ1_Wall
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Physics
+    bodyType: Static
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 600
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalSlam
+
+- type: entity
+  parent: WallFlockBase
+  id: WallFeatherZoneShuttle1
+  name: strange shuttle wall
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Flock/Structures/Walls/shuttle.rsi
+    state: FZShuttle1
+
+- type: entity
+  parent: WallFlockBase
+  id: WallFeatherZoneShuttle2
+  name: strange shuttle wall
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Flock/Structures/Walls/shuttle.rsi
+    state: FZShuttle2
+
+# WOLFGATE END

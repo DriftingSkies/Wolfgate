@@ -25,7 +25,8 @@ the deed when it has none; ERT responders aboard a ship get a crew record so the
 An admin in a ghost gets the admin mass scanner in place of the normal window (the admin ghost's Mass Scanner
 Interface, or any mass scanner console). Its display fills the window, which resizes, maximizes over the game window
 and pops out, and it zooms out to 25.6 km. True IFF (on by default) draws every grid and beacon under its real name and
-colour, whatever its IFF hides and however far off it is. Players marks every player on the viewed map, and Jump to
+colour, whatever its IFF hides and however far off it is, except grids with `WFAdminRadarUnlabelled` (asteroids),
+which it shows without a label. Players marks every player on the viewed map, and Jump to
 player opens a searchable list that warps the ghost to the one picked. While its Teleport toggle is on, a click on the
 scanner moves the ghost to that spot.
 
@@ -65,6 +66,7 @@ Audio.
 ### Shared
 
 - [`Content.Shared/_WF/Administration/AdminRadar/AdminRadarEvents.cs`](../../../Content.Shared/_WF/Administration/AdminRadar/AdminRadarEvents.cs)
+- [`Content.Shared/_WF/Administration/AdminRadar/WFAdminRadarUnlabelledComponent.cs`](../../../Content.Shared/_WF/Administration/AdminRadar/WFAdminRadarUnlabelledComponent.cs)
 - [`Content.Shared/_WF/Administration/Ert/ErtConfig.cs`](../../../Content.Shared/_WF/Administration/Ert/ErtConfig.cs)
 - [`Content.Shared/_WF/Administration/Ert/WolfgateErtSpawnerComponent.cs`](../../../Content.Shared/_WF/Administration/Ert/WolfgateErtSpawnerComponent.cs)
 - [`Content.Shared/_WF/Administration/GhostOffer/GhostOfferEvents.cs`](../../../Content.Shared/_WF/Administration/GhostOffer/GhostOfferEvents.cs)

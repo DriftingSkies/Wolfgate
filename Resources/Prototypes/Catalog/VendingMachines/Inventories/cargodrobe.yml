@@ -18,6 +18,57 @@
     ClothingShoesBootsWinterCargo: 2
     # Frontier
     ClothingNeckScarfStripedBrown: 3
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+    WFMeridianClothingAccessoryArmbandCargo: 2
+    WFMeridianClothingGlovesCargoGauntlet: 2
+    WFMeridianClothingGlovesColorPlasmamanCargo: 2
+    WFMeridianClothingGlovesColorPlasmamanExplorer: 2
+    WFMeridianClothingHeadHoodedWinterhoodCargo: 2
+    WFMeridianClothingHeadHoodedWinterhoodCargoQm: 2
+    WFMeridianClothingHeadHoodedWinterhoodMiner: 2
+    WFMeridianClothingHeadPlaybunnyearsBitrunner: 2
+    WFMeridianClothingHeadPlaybunnyearsCargo: 2
+    WFMeridianClothingHeadPlaybunnyearsQuartermaster: 2
+    WFMeridianClothingNeckMantleQm: 2
+    WFMeridianClothingNeckTieBunnytieBitrunner: 2
+    WFMeridianClothingNeckTieBunnytieCargo: 2
+    WFMeridianClothingNeckTieBunnytieMiner: 2
+    WFMeridianClothingShoesWorkbootsMiningHeeled: 2
+    WFMeridianClothingSuitJacketQuartermaster: 2
+    WFMeridianClothingSuitJacketTailcoatBitrunner: 2
+    WFMeridianClothingSuitJacketTailcoatCargo: 2
+    WFMeridianClothingSuitJacketTailcoatQuartermaster: 2
+    WFMeridianClothingSuitToggleCargoTech: 2
+    WFMeridianClothingUnderAkulaWetsuitJobCargo: 2
+    WFMeridianClothingUnderImperialQuartermaster: 2
+    WFMeridianClothingUnderImperialskirtQuartermaster: 2
+    WFMeridianClothingUnderRankCargoBitrunner: 2
+    WFMeridianClothingUnderRankCargoBitrunnerBunnysuit: 2
+    WFMeridianClothingUnderRankCargoCargoBunnysuit: 2
+    WFMeridianClothingUnderRankCargoMiner: 2
+    WFMeridianClothingUnderRankCargoMinerBunnysuit: 2
+    WFMeridianClothingUnderRankCargoQm: 2
+    WFMeridianClothingUnderRankCargoQmNova: 2
+    WFMeridianClothingUnderRankCargoQmNovaCasual: 2
+    WFMeridianClothingUnderRankCargoQmNovaFormal: 2
+    WFMeridianClothingUnderRankCargoQmNovaFormalSkirt: 2
+    WFMeridianClothingUnderRankCargoQmNovaGorka: 2
+    WFMeridianClothingUnderRankCargoQmNovaTurtleneck: 2
+    WFMeridianClothingUnderRankCargoQmNovaTurtleneckSkirt: 2
+    WFMeridianClothingUnderRankCargoQmSkirt: 2
+    WFMeridianClothingUnderRankCargoQuartermasterBunnysuit: 2
+    WFMeridianClothingUnderRankCargoTech: 2
+    WFMeridianClothingUnderRankCargoTechAlt: 2
+    WFMeridianClothingUnderRankCargoTechNovaCasualman: 2
+    WFMeridianClothingUnderRankCargoTechNovaEvil: 2
+    WFMeridianClothingUnderRankCargoTechNovaGorka: 2
+    WFMeridianClothingUnderRankCargoTechNovaLong: 2
+    WFMeridianClothingUnderRankCargoTechNovaTurtleneck: 2
+    WFMeridianClothingUnderRankCargoTechNovaTurtleneckSkirt: 2
+    WFMeridianClothingUnderRankCargoTechNovaUtility: 2
+    WFMeridianClothingUnderRankCargoTechSkirt: 2
+    WFMeridianClothingUnderRankCargoTechSkirtAlt: 2
+    # WOLFGATE END
 # Salvage:
     ClothingBackpackSalvage: 2
     ClothingBackpackSatchelSalvage: 2

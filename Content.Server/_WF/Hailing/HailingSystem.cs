@@ -6,6 +6,7 @@ using Content.Server._WF.ShipPa;
 using Content.Server.Shuttles.Components;
 using Content.Shared._Mono.Detection;
 using Content.Shared._WF.Hailing;
+using Content.Shared._WF.Newbie;
 using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared.IdentityManagement;
@@ -42,6 +43,7 @@ public sealed partial class HailingSystem : EntitySystem
     [Dependency] private ShipPaSystem _pa = default!;
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private WFNewbieSystem _newbie = default!;
 
     /// <summary>Lines of a call each console keeps.</summary>
     public const int MaxLog = 60;
@@ -325,7 +327,7 @@ public sealed partial class HailingSystem : EntitySystem
             targets.Add(new HailTarget
             {
                 Ship = GetNetEntity(ship),
-                Name = ShipLabel(console, ship),
+                Name = _newbie.TagShipName(ship, ShipLabel(console, ship)),
                 Distance = distance,
                 Busy = !free,
             });
@@ -441,7 +443,7 @@ public sealed partial class HailingSystem : EntitySystem
         var hail = AddComp<HailConsoleComponent>(console);
         hail.State = HailState.Calling;
         hail.Automated = automated;
-        hail.PeerShip = ShipLabel(console, ship);
+        hail.PeerShip = _newbie.TagShipName(ship, ShipLabel(console, ship));
         hail.PeerGrid = ship;
         hail.OperatorUid = user;
         hail.Operator = GetNetEntity(user);
@@ -465,7 +467,7 @@ public sealed partial class HailingSystem : EntitySystem
         {
             var ring = AddComp<HailConsoleComponent>(target);
             ring.State = HailState.Ringing;
-            ring.PeerShip = ShipLabel(target, grid);
+            ring.PeerShip = _newbie.TagShipName(grid, ShipLabel(target, grid));
             ring.Peer = console;
             ring.PeerGrid = grid;
             ring.StateTime = now;
