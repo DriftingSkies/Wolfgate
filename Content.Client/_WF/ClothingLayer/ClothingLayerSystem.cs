@@ -79,15 +79,30 @@ public sealed partial class ClothingLayerSystem : EntitySystem
     /// </summary>
     public bool IsHidden(EntityUid wearer, EntityUid equipment, string slot)
     {
+        return IsHidden(wearer, equipment, slot, 0);
+    }
+
+    /// <summary>
+    /// A hider counts only while it's drawn itself: a costume under a hardsuit doesn't hide the shoes.
+    /// Past <see cref="MaxHideDepth"/> a hider counts regardless, which ends cycles of items hiding each other.
+    /// </summary>
+    private bool IsHidden(EntityUid wearer, EntityUid equipment, string slot, int depth)
+    {
         var enumerator = _inventory.GetSlotEnumerator(wearer);
         while (enumerator.NextItem(out var item, out var itemSlot))
         {
-            if (item != equipment && Covers(item, itemSlot).Contains(slot))
+            if (item != equipment
+                && Covers(item, itemSlot).Contains(slot)
+                && (depth >= MaxHideDepth || !IsHidden(wearer, item, itemSlot.Name, depth + 1)))
+            {
                 return true;
+            }
         }
 
         return false;
     }
+
+    private const int MaxHideDepth = 3;
 
     /// <summary>
     /// The slots an item hides while it's in this slot. Only when worn where it's made to be, and as made: a coat
@@ -193,13 +208,29 @@ public sealed partial class ClothingLayerSystem : EntitySystem
         if (_redrawing || slots.Count == 0)
             return;
 
+        // A redrawn slot that hides others can change what they show too, so take in what it could cover as well.
+        var pending = new Queue<string>(slots);
+        var seen = new HashSet<string>(slots);
+        var items = new List<EntityUid>();
+        while (pending.TryDequeue(out var slot))
+        {
+            if (!_inventory.TryGetSlotEntity(wearer, slot, out var item))
+                continue;
+
+            items.Add(item.Value);
+            foreach (var covered in CouldCover(item.Value, slot))
+            {
+                if (seen.Add(covered))
+                    pending.Enqueue(covered);
+            }
+        }
+
         _redrawing = true;
         try
         {
-            foreach (var slot in slots)
+            foreach (var item in items)
             {
-                if (_inventory.TryGetSlotEntity(wearer, slot, out var item))
-                    _item.VisualsChanged(item.Value);
+                _item.VisualsChanged(item);
             }
         }
         finally

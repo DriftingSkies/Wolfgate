@@ -874,7 +874,8 @@
       - state: inhand-right-2-c2
         color: "#EEEEEE"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#494955"
@@ -1016,7 +1017,8 @@
       - state: equipped-INNERCLOTHING-5-c5
         color: "#EEEEEE"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#A52F29"
@@ -1117,7 +1119,8 @@
       - state: equipped-INNERCLOTHING-2-c2
         color: "#EEEEEE"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#2B2B31"
@@ -1143,7 +1146,8 @@
       - state: equipped-INNERCLOTHING-2-c2
         color: "#EEEEEE"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#2B2B31"
@@ -1555,7 +1559,8 @@
       - state: inhand-right-3-c3
         color: "#EBEBEB"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#942737"
@@ -1724,7 +1729,8 @@
       - state: equipped-INNERCLOTHING-1-c1
         color: "#E11F1F"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#E11F1F"
@@ -2072,7 +2078,8 @@
       right:
       - state: inhand-right-1
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#0000FF"
@@ -2583,7 +2590,8 @@
       - state: equipped-INNERCLOTHING-2-c2
         color: "#1C1C1C"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFGags
     colors:
     - "#FF0000"
@@ -2605,7 +2613,8 @@
       - state: equipped-INNERCLOTHING-1-c1
         color: "#FFFFFF"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFHideClothingSlots
     slots: [shoes]
   - type: WFGags
@@ -2632,7 +2641,8 @@
       - state: equipped-INNERCLOTHING-2-c2
         color: "#FF0000"
   - type: WFClothingLayer
-    layer: id
+    layer: outerClothing
+    below: true
   - type: WFHideClothingSlots
     slots: [shoes]
   - type: WFGags

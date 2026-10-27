@@ -92,7 +92,7 @@ PULLABLE = {"ClothingMaskGas", "ClothingMaskBreath"}
 # under the uniform are left out: the feet draw over the jumpsuit here, so they would draw over the boots.
 WORN_LAYERS = {
     ("jumpsuit", "ABOVE_SHOES_LAYER"): ("shoes", False),
-    ("jumpsuit", "UNDER_SUIT_LAYER"): ("id", False),
+    ("jumpsuit", "UNDER_SUIT_LAYER"): ("outerClothing", True),
     ("jumpsuit", "LOW_FACEMASK_LAYER"): ("shoes", False),
     ("mask", "LOW_FACEMASK_LAYER"): ("ears", True),
     ("mask", "BENEATH_HAIR_LAYER"): ("enum.HumanoidVisualLayers.FacialHair", True),

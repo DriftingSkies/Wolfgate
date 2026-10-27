@@ -28,6 +28,9 @@ public sealed class ClothingLayerTest : InteractionTest
     private const string Gaiter = "WFMeridianClothingMaskNeckGaiterSyndicateTacticool";
     private const string GasMask = "WFMeridianClothingMaskGasAtmosAdmin";
     private const string Glasses = "ClothingEyesGlassesSunglasses";
+    private const string Labcoat = "ClothingOuterCoatLab";
+    private const string Henchmen = "WFMeridianClothingUnderCostumeHenchmen";
+    private const string EveningGown = "WFMeridianClothingUnderDressEveninggown";
 
     [TestCase(Jumpsuit)]
     [TestCase(Skirt)]
@@ -139,6 +142,35 @@ public sealed class ClothingLayerTest : InteractionTest
         await Server.WaitAssertion(() => SEntMan.System<MaskSystem>().SetToggled(mask[1], false));
         await RunTicks(10);
         await AssertDrawn(target, "eyes", false);
+    }
+
+    // The lobby dummy and some species put the id layer above the suit, so "under the suit" can't mean "over the id".
+    [TestCase("MobHuman")]
+    [TestCase("MobHumanDummy")]
+    [TestCase("MobChitinid")]
+    public async Task UnderSuitUniformDrawsUnderSuit(string mob)
+    {
+        var target = await SpawnTarget(mob);
+
+        await Equip(target, (Shoes, "shoes"), (EveningGown, "jumpsuit"), (Labcoat, "outerClothing"));
+        await AssertAbove(target, "outerClothing", "jumpsuit");
+        await AssertAbove(target, "jumpsuit", "shoes");
+    }
+
+    [Test]
+    public async Task HiddenUniformHidesNothing()
+    {
+        var target = await SpawnTarget("MobHuman");
+
+        await Equip(target, (Shoes, "shoes"), (Henchmen, "jumpsuit"));
+        await AssertDrawn(target, "shoes", false);
+
+        await Equip(target, (Hardsuit, "outerClothing"));
+        await AssertDrawn(target, "jumpsuit", false);
+        await AssertDrawn(target, "shoes", true);
+
+        await Strip(target, "outerClothing");
+        await AssertDrawn(target, "shoes", false);
     }
 
     [Test]
