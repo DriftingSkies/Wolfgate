@@ -4,6 +4,7 @@ using System.Numerics;
 using Content.Client.DisplacementMap;
 using Content.Client.Inventory;
 using Content.Client._WF.LegStyle; // WOLFGATE(LegStyle)
+using Content.Client._WF.ClothingLayer; // WOLFGATE(ClothingLayer)
 using Content.Shared.Clothing;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
@@ -56,6 +57,7 @@ public sealed partial class ClientClothingSystem : ClothingSystem
     [Dependency] private InventorySystem _inventorySystem = default!;
     [Dependency] private DisplacementMapSystem _displacement = default!;
     [Dependency] private LegStyleSystem _legStyle = default!; // WOLFGATE(LegStyle)
+    [Dependency] private ClothingLayerSystem _clothingLayer = default!; // WOLFGATE(ClothingLayer)
 
     public override void Initialize()
     {
@@ -263,6 +265,10 @@ public sealed partial class ClientClothingSystem : ClothingSystem
 
         var ev = new GetEquipmentVisualsEvent(equipee, slot);
         RaiseLocalEvent(equipment, ev);
+        // WOLFGATE(ClothingLayer) START: clothing covered by other clothing isn't drawn, like SS13's flags_inv
+        if (_clothingLayer.IsHidden(equipee, equipment, slot))
+            ev.Layers.Clear();
+        // WOLFGATE END
 
         if (ev.Layers.Count == 0)
         {
@@ -273,6 +279,10 @@ public sealed partial class ClientClothingSystem : ClothingSystem
         // temporary, until layer draw depths get added. Basically: a layer with the key "slot" is being used as a
         // bookmark to determine where in the list of layers we should insert the clothing layers.
         bool slotLayerExists = sprite.LayerMapTryGet(slot, out var index);
+        // WOLFGATE(ClothingLayer) START: an item may draw at another layer's place, like SS13's alternate_worn_layer
+        if (_clothingLayer.TryGetIndex((equipee, sprite), equipment, slot, inventorySlots, out var layerIndex))
+            (slotLayerExists, index) = (true, layerIndex);
+        // WOLFGATE END
 
         // Select displacement maps
         var displacementData = inventory.Displacements.GetValueOrDefault(slot); //Default unsexed map

@@ -769,6 +769,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/costume_henchmen.rsi
+  - type: WFHideClothingSlots
+    slots: [shoes, gloves, ears, eyes]
 
 - type: entity
   parent: ClothingUniformBase
@@ -871,6 +873,8 @@
         color: "#494955"
       - state: inhand-right-2-c2
         color: "#EEEEEE"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#494955"
@@ -1011,6 +1015,8 @@
         color: "#88242D"
       - state: equipped-INNERCLOTHING-5-c5
         color: "#EEEEEE"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#A52F29"
@@ -1110,6 +1116,8 @@
         color: "#2B2B31"
       - state: equipped-INNERCLOTHING-2-c2
         color: "#EEEEEE"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#2B2B31"
@@ -1134,6 +1142,8 @@
         color: "#2B2B31"
       - state: equipped-INNERCLOTHING-2-c2
         color: "#EEEEEE"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#2B2B31"
@@ -1544,6 +1554,8 @@
         color: "#4A518D"
       - state: inhand-right-3-c3
         color: "#EBEBEB"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#942737"
@@ -1559,6 +1571,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/costume_singer_blue.rsi
+  - type: WFClothingLayer
+    layer: shoes
 
 - type: entity
   parent: ClothingUniformBase
@@ -1569,6 +1583,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/costume_singer_red.rsi
+  - type: WFClothingLayer
+    layer: shoes
 
 - type: entity
   parent: ClothingUniformBase
@@ -1579,6 +1595,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/costume_singer_yellow.rsi
+  - type: WFClothingLayer
+    layer: shoes
 
 - type: entity
   parent: ClothingUniformBase
@@ -1705,6 +1723,8 @@
       jumpsuit:
       - state: equipped-INNERCLOTHING-1-c1
         color: "#E11F1F"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#E11F1F"
@@ -1726,6 +1746,8 @@
       - state: equipped-INNERCLOTHING-1-c1
         color: "#880000"
       - state: equipped-INNERCLOTHING-2
+  - type: WFHideClothingSlots
+    slots: [shoes]
   - type: WFGags
     colors:
     - "#880000"
@@ -1813,6 +1835,8 @@
       jumpsuit:
       - state: equipped-INNERCLOTHING-1-c1
         color: "#1D253B"
+  - type: WFClothingLayer
+    layer: shoes
   - type: WFGags
     colors:
     - "#1D253B"
@@ -1874,6 +1898,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/dress_nova_redformal.rsi
+  - type: WFHideClothingSlots
+    slots: [shoes]
 
 - type: entity
   parent: ClothingUniformBase
@@ -2045,6 +2071,8 @@
       - state: inhand-left-1
       right:
       - state: inhand-right-1
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#0000FF"
@@ -2224,6 +2252,8 @@
       - state: inhand-left-1
       right:
       - state: inhand-right-1
+  - type: WFClothingLayer
+    layer: shoes
   - type: WFGags
     colors:
     - "#3A3C45"
@@ -2552,6 +2582,8 @@
         color: "#FF0000"
       - state: equipped-INNERCLOTHING-2-c2
         color: "#1C1C1C"
+  - type: WFClothingLayer
+    layer: id
   - type: WFGags
     colors:
     - "#FF0000"
@@ -2572,6 +2604,10 @@
       jumpsuit:
       - state: equipped-INNERCLOTHING-1-c1
         color: "#FFFFFF"
+  - type: WFClothingLayer
+    layer: id
+  - type: WFHideClothingSlots
+    slots: [shoes]
   - type: WFGags
     colors:
     - "#FFFFFF"
@@ -2595,6 +2631,10 @@
         color: "#FFFFFF"
       - state: equipped-INNERCLOTHING-2-c2
         color: "#FF0000"
+  - type: WFClothingLayer
+    layer: id
+  - type: WFHideClothingSlots
+    slots: [shoes]
   - type: WFGags
     colors:
     - "#FFFFFF"
@@ -3331,6 +3371,8 @@
       jumpsuit:
       - state: equipped-INNERCLOTHING-1-c1
         color: "#874F16"
+  - type: WFClothingLayer
+    layer: shoes
   - type: WFGags
     colors:
     - "#874F16"
@@ -3387,6 +3429,8 @@
         color: "#FFFFFF"
       - state: equipped-INNERCLOTHING-3-c3
         color: "#FF0000"
+  - type: WFClothingLayer
+    layer: shoes
   - type: WFGags
     colors:
     - "#292929"
@@ -3482,6 +3526,8 @@
         color: "#666633"
       - state: equipped-INNERCLOTHING-3-c3
         color: "#C0C0C0"
+  - type: WFClothingLayer
+    layer: shoes
   - type: WFGags
     colors:
     - "#4D4D4D"
@@ -3556,6 +3602,8 @@
       jumpsuit:
       - state: equipped-INNERCLOTHING-1-c1
         color: "#BA917D"
+  - type: WFClothingLayer
+    layer: shoes
   - type: WFGags
     colors:
     - "#BA917D"
@@ -5109,6 +5157,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/rank_medical_doctor_nurse.rsi
+  - type: WFClothingLayer
+    layer: shoes
 
 - type: entity
   parent: ClothingUniformBase
@@ -5119,6 +5169,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Uniforms/rank_medical_doctor_nurse_seriouser.rsi
+  - type: WFClothingLayer
+    layer: shoes
 
 - type: entity
   parent: ClothingUniformBase

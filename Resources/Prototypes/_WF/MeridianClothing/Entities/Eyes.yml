@@ -474,6 +474,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_gars.rsi
+  - type: WFClothingLayer
+    layer: head
   - type: FlashImmunity
   - type: EyeProtection
 
@@ -486,6 +488,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Eyes/hud_security_sunglasses_gars_giga.rsi
+  - type: WFClothingLayer
+    layer: head
   - type: FlashImmunity
   - type: EyeProtection
 
@@ -800,6 +804,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Eyes/sunglasses_gar.rsi
+  - type: WFClothingLayer
+    layer: head
   - type: FlashImmunity
   - type: EyeProtection
 
@@ -812,6 +818,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Eyes/sunglasses_gar_giga.rsi
+  - type: WFClothingLayer
+    layer: head
   - type: FlashImmunity
   - type: EyeProtection
 
@@ -885,5 +893,7 @@
     state: icon
   - type: Clothing
     sprite: _WF/MeridianClothing/Eyes/welding.rsi
+  - type: WFClothingLayer
+    layer: head
   - type: FlashImmunity
   - type: EyeProtection

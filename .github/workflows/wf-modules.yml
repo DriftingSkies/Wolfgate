@@ -28,10 +28,15 @@ jobs:
         python-version: "3.10"
 
     - name: Install dependencies
-      run: pip install pyyaml
+      run: pip install pyyaml pillow # WOLFGATE(ClothingLayer): shapes.py reads the clothing sprites
 
     - name: Check module docs and markers
       run: python3 Tools/_WF/Ci/modules.py --check
+
+    # WOLFGATE(ClothingLayer): fails when a clothing sprite was added or changed without regenerating the shapes list
+    - name: Check clothing shapes
+      if: ${{ !cancelled() }}
+      run: python3 Tools/_WF/ClothingLayer/shapes.py --check
 
     # Runs even when the check above failed; skipped for Monolith ports, whose upstream edits carry no markers.
     - name: Check edits outside _WF

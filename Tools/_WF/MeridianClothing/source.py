@@ -102,6 +102,7 @@ class Item:
         self.player_colorable = False
         self.worn_offset = (0, 0)       # BYOND pixel offset of the worn sprite from the tile's corner
         self.inhand_offset = (0, 0)
+        self.worn_layer = None          # SS13 alternate_worn_layer define, when the item draws off its slot's layer
 
     @property
     def gags(self):
@@ -439,6 +440,7 @@ class Source:
         item.worn_offset = byond_offset(num("worn_x_dimension", TILE), num("worn_y_dimension", TILE),
                                         num("worn_x_offset", 0), num("worn_y_offset", 0))
         item.inhand_offset = byond_offset(num("inhand_x_dimension", TILE), num("inhand_y_dimension", TILE))
+        item.worn_layer = (self.datums.raw(t, "alternate_worn_layer") or "").strip() or None
 
         config = v("greyscale_config")
         colors = parse_colors(v("greyscale_colors"))

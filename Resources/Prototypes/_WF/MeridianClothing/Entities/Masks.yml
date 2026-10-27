@@ -45,6 +45,8 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
 
 - type: entity
   parent: ClothingMaskBase
@@ -91,6 +93,9 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
 
 - type: entity
   parent: ClothingMaskBase
@@ -107,6 +112,9 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
 
 - type: entity
   parent: ClothingMaskBase
@@ -122,6 +130,9 @@
       Hair: MASK
       FacialHair: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
 
 - type: entity
   parent: ClothingMaskBase
@@ -137,6 +148,9 @@
       Hair: MASK
       FacialHair: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
 
 - type: entity
   parent: ClothingMaskBase
@@ -312,6 +326,9 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
 
 - type: entity
   parent: ClothingMaskGas
@@ -327,7 +344,10 @@
       Hair: MASK
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: Armor
     modifiers:
       coefficients:
@@ -352,7 +372,10 @@
       Hair: MASK
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: Armor
     modifiers:
       coefficients:
@@ -376,7 +399,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -409,6 +435,7 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: BreathMask
   - type: IngestionBlocker
   - type: WFGags
@@ -429,7 +456,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
 
 - type: entity
@@ -469,7 +499,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: WFGags
     colors:
@@ -491,7 +524,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
 
 - type: entity
@@ -507,7 +543,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -523,6 +562,7 @@
   - type: HideLayerClothing
     layers:
       FacialHair: MASK
+    hideOnToggle: true
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -540,7 +580,10 @@
       Hair: MASK
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -601,6 +644,7 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
   - type: BreathMask
   - type: IngestionBlocker
@@ -618,7 +662,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -636,7 +683,10 @@
       Hair: MASK
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -653,7 +703,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
 
 - type: entity
@@ -669,7 +722,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
 
 - type: entity
@@ -685,7 +741,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
 
 - type: entity
@@ -700,6 +759,7 @@
   - type: HideLayerClothing
     layers:
       Hair: MASK
+    hideOnToggle: true
   - type: BreathMask
 
 - type: entity
@@ -715,7 +775,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
 
 - type: entity
   parent: ClothingMaskGas
@@ -742,6 +805,7 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: BreathMask
   - type: IngestionBlocker
   - type: WFGags
@@ -761,6 +825,7 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
   - type: BreathMask
   - type: IngestionBlocker
@@ -779,7 +844,10 @@
       Hair: MASK
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -797,7 +865,10 @@
       Hair: MASK
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -814,7 +885,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
 
 - type: entity
@@ -830,7 +904,11 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: enum.HumanoidVisualLayers.FacialHair
+    below: true
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -846,7 +924,13 @@
   - type: HideLayerClothing
     layers:
       FacialHair: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
+  - type: WFHideClothingSlots
+    slots: [ears]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -863,7 +947,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -880,7 +967,10 @@
     layers:
       FacialHair: MASK
       Snout: MASK
+    hideOnToggle: true
   - type: IdentityBlocker
+  - type: WFHideClothingSlots
+    slots: [ears, eyes]
   - type: BreathMask
   - type: IngestionBlocker
 
@@ -1015,6 +1105,8 @@
       mask:
       - state: equipped-MASK-1-c1
         color: "#ECECEC"
+  - type: WFClothingLayer
+    layer: head
   - type: BreathMask
   - type: WFGags
     colors:
@@ -1039,6 +1131,8 @@
         color: "#ECECEC"
       - state: equipped-MASK-2-c2
         color: "#9B1E1E"
+  - type: WFClothingLayer
+    layer: head
   - type: BreathMask
   - type: WFGags
     colors:
@@ -1064,6 +1158,8 @@
         color: "#ECECEC"
       - state: equipped-MASK-2-c2
         color: "#333333"
+  - type: WFClothingLayer
+    layer: head
   - type: BreathMask
   - type: WFGags
     colors:
@@ -1093,6 +1189,8 @@
         color: "#333333"
       - state: equipped-MASK-3-c3
         color: "#9B1E1E"
+  - type: WFClothingLayer
+    layer: head
   - type: BreathMask
   - type: WFGags
     colors:
@@ -1255,6 +1353,9 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: jumpsuit
+    below: true
   - type: BreathMask
   - type: IngestionBlocker
   - type: WFGags
@@ -1306,6 +1407,9 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: enum.HumanoidVisualLayers.FacialHair
+    below: true
   - type: WFGags
     colors:
     - "#EEEEEE"
@@ -1325,6 +1429,9 @@
       FacialHair: MASK
       Snout: MASK
   - type: IdentityBlocker
+  - type: WFClothingLayer
+    layer: ears
+    below: true
 
 - type: entity
   parent: ClothingMaskBase

@@ -1,0 +1,15 @@
+# Sprites shapes.py measures wrong. It applies these on top of what it measures, then writes shapes.yml.
+# Each entry is an RSI path under Resources/Textures and the reason, as path: reason. An entry for a sprite that no
+# longer exists fails the run. See Content.Shared/_WF/ClothingLayer/README.md.
+
+drapes:
+  # Uniforms to draw over the shoes although the measurement says they don't drape.
+  add: {}
+  # Uniforms to keep under the shoes although the measurement says they drape.
+  remove: {}
+
+encloses:
+  # Outer suits to hide the uniform under although the measurement says they don't cover the body.
+  add: {}
+  # Outer suits to leave the uniform drawn under although the measurement says they cover the body.
+  remove: {}
