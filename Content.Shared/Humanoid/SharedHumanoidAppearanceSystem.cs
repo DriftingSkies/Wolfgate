@@ -496,6 +496,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
 
         ApplyLegStyle(profile, humanoid); // WOLFGATE(LegStyle): the picked legs replace the species' leg layers
         _biotype.Apply(uid, profile, humanoid); // WOLFGATE(Biotype): converts the body before the profile-load handlers see it
+        ApplyAugments(uid, profile, humanoid); // WOLFGATE(Augments): swaps in the augmented parts and draws their styles
         RaiseLocalEvent(uid, new ProfileLoadFinishedEvent { Profile = profile }); // Shitmed Change, WOLFGATE(Genitals): pass profile
         Dirty(uid, humanoid);
     }

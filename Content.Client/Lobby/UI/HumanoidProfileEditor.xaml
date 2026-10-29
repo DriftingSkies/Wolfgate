@@ -3,6 +3,7 @@
          xmlns:humanoid="clr-namespace:Content.Client.Humanoid"
          xmlns:wfh="clr-namespace:Content.Client._WF.Humanoid"
          xmlns:wfg="clr-namespace:Content.Client._WF.Genitals.UI"
+         xmlns:wfa="clr-namespace:Content.Client._WF.Augments.UI"
          HorizontalExpand="True"
          SeparationOverride="0">
     <!-- WOLFGATE(Stylesheets) START: creator rebuilt as cards with a preview column (also covers the root tag above, which
@@ -399,6 +400,12 @@
             <BoxContainer Name="GenitalsTab" Orientation="Vertical" Margin="8">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
                     <wfg:WolfgateGenitalEditor Name="GenitalEditor" HorizontalExpand="True" />
+                </ScrollContainer>
+            </BoxContainer>
+            <!-- WOLFGATE(Augments): augments tab (xmlns:wfa), after anatomy so earlier tabs keep their indices -->
+            <BoxContainer Name="AugmentsTab" Orientation="Vertical" Margin="8">
+                <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                    <wfa:WFAugmentEditor Name="AugmentEditor" HorizontalExpand="True" />
                 </ScrollContainer>
             </BoxContainer>
         </TabContainer>

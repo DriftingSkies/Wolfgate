@@ -623,6 +623,7 @@ namespace Content.Client.Lobby.UI
             InitializeChatFont(); // WOLFGATE(ChatFont)
             InitializeTypingBubble(); // WOLFGATE(TypingBubble)
             InitializeLegStyle(); // WOLFGATE(LegStyle)
+            InitializeAugments(); // WOLFGATE(Augments)
 
             #region Dummy
 
@@ -907,6 +908,7 @@ namespace Content.Client.Lobby.UI
                         }
 
                         SetDirty();
+                        UpdateAugments(); // WOLFGATE(Augments): a trait with its own limbs takes those slots
 
                         UpdateTraitIncompatibilityVisibility(allSelectors);
 
@@ -1340,6 +1342,7 @@ namespace Content.Client.Lobby.UI
             UpdateMismatchedParts(); // WOLFGATE(Species)
             UpdateBiotype(); // WOLFGATE(Biotype)
             UpdateLegStyle(); // WOLFGATE(LegStyle)
+            UpdateAugments(); // WOLFGATE(Augments)
             UpdateChatFont(); // WOLFGATE(ChatFont)
             UpdateTypingBubble(); // WOLFGATE(TypingBubble)
             UpdateSexControls();
@@ -2031,6 +2034,7 @@ namespace Content.Client.Lobby.UI
             Profile = Profile?.WithBiotype(WFBiotype.Default); // WOLFGATE(Biotype): a new species starts on its own biotype
             UpdateBiotype(); // WOLFGATE(Biotype)
             UpdateLegStyle(); // WOLFGATE(LegStyle): legs the new species lacks fall back to its own
+            UpdateAugments(); // WOLFGATE(Augments): augments the new species can't take are dropped
             UpdateTypingBubble(); // WOLFGATE(TypingBubble): the species' own bubble changes with it
             // WOLFGATE(Humanoid) START: keep the species picker and dropdown in step, drop hair the new species lacks
             EnforceSpeciesHair();

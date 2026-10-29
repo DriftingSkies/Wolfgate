@@ -245,6 +245,9 @@ public partial class SharedBodySystem
     private void OnBodyPartRemoved(Entity<BodyPartComponent> ent, ref EntRemovedFromContainerMessage args)
     {
         // Body part removed from another body part.
+        if (WfCuttingLoose) // WOLFGATE(Augments): a part cut loose for an augment isn't lost
+            return;
+
         var removedUid = args.Entity;
         var slotId = args.Container.ID;
 

@@ -904,6 +904,16 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("INTEGER")
                         .HasColumnName("age");
 
+                    b.Property<string>("AugmentUnlocks")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("augment_unlocks");
+
+                    b.Property<string>("Augments")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("augments");
+
                     b.Property<int>("BankBalance")
                         .HasColumnType("INTEGER")
                         .HasColumnName("bank_balance");

@@ -23,7 +23,8 @@ These apply to every item, native or ported, with nothing to set:
 
 - **Uniforms draw over the feet** and under the hands, as in SS13. SS14 draws the bare feet over the jumpsuit, which
   shows them through long dresses. This applies on bodies whose feet sit between the uniform and the shoes; a species
-  that draws its feet higher on purpose keeps them there.
+  that draws its feet higher on purpose keeps them there, and so does one that draws its hands before its feet
+  (Vulpkanin, Skrell, Moth and others), where going past the feet would put the sleeves over the hands.
 - **Draping uniforms draw over the shoes**: those with fabric at shoe height that isn't on the legs, such as skirts,
   gowns, robes and baggy trousers. Fitted trousers, tights and short skirts stay under the shoes.
 - **Enclosing outer suits hide the uniform**: those covering the whole body (torso, arms and legs) from all four sides,

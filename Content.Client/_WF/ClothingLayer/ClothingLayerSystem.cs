@@ -71,7 +71,19 @@ public sealed partial class ClothingLayerSystem : EntitySystem
         }
 
         index = Math.Max(left, right);
-        return Math.Min(left, right) > uniform && index < shoes;
+        if (Math.Min(left, right) <= uniform || index >= shoes)
+            return false;
+
+        // Uniforms stay under the hands: where a species draws its hands before its feet, going past the feet would
+        // put the sleeve over them.
+        foreach (var hand in new[] { HumanoidVisualLayers.LHand, HumanoidVisualLayers.RHand })
+        {
+            if (_sprite.LayerMapTryGet(wearer.AsNullable(), hand, out var handIndex, false)
+                && handIndex > uniform && handIndex < index)
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>

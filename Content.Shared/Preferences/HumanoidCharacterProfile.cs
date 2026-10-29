@@ -256,6 +256,8 @@ namespace Content.Shared.Preferences
             CustomMarkings = new(other.CustomMarkings); // WOLFGATE(CustomMarkings)
             LegStance = other.LegStance; // WOLFGATE(LegStyle)
             Biotype = other.Biotype; // WOLFGATE(Biotype)
+            Augments = new(other.Augments); // WOLFGATE(Augments)
+            AugmentUnlocks = new(other.AugmentUnlocks); // WOLFGATE(Augments)
             ChatFont = other.ChatFont; // WOLFGATE(ChatFont)
             TypingIndicator = other.TypingIndicator; // WOLFGATE(TypingBubble)
             BloodColor = other.BloodColor; // WOLFGATE(BloodColour)
@@ -295,6 +297,8 @@ namespace Content.Shared.Preferences
             CustomMarkings = new(other.CustomMarkings); // WOLFGATE(CustomMarkings)
             LegStance = other.LegStance; // WOLFGATE(LegStyle)
             Biotype = other.Biotype; // WOLFGATE(Biotype)
+            Augments = new(other.Augments); // WOLFGATE(Augments)
+            AugmentUnlocks = new(other.AugmentUnlocks); // WOLFGATE(Augments)
             ChatFont = other.ChatFont; // WOLFGATE(ChatFont)
             TypingIndicator = other.TypingIndicator; // WOLFGATE(TypingBubble)
             BloodColor = other.BloodColor; // WOLFGATE(BloodColour)
@@ -641,6 +645,7 @@ namespace Content.Shared.Preferences
             if (!CustomMarkingsEqual(other)) return false; // WOLFGATE(CustomMarkings)
             if (LegStance != other.LegStance) return false; // WOLFGATE(LegStyle)
             if (Biotype != other.Biotype) return false; // WOLFGATE(Biotype)
+            if (!AugmentsEqual(other)) return false; // WOLFGATE(Augments)
             if (ChatFont != other.ChatFont) return false; // WOLFGATE(ChatFont)
             if (TypingIndicator != other.TypingIndicator) return false; // WOLFGATE(TypingBubble)
             if (BloodColor != other.BloodColor) return false; // WOLFGATE(BloodColour)
@@ -855,6 +860,7 @@ namespace Content.Shared.Preferences
             MessageSound = MessageSoundRules.Sanitize(MessageSound, prototypeManager); // WOLFGATE(EmoteVoices): an unknown message sound becomes the species' own
             LegStance = LegStyleRules.Validate(Species, LegStance, prototypeManager); // WOLFGATE(LegStyle): legs the species doesn't have fall back to its own
             Biotype = WFBiotypeRules.Resolve(Biotype, speciesPrototype); // WOLFGATE(Biotype): Default and unknown values become the species' own
+            EnsureAugmentsValid(prototypeManager, collection.Resolve<IComponentFactory>()); // WOLFGATE(Augments): augments the species can't take are dropped
             ChatFont = WFChatFontRules.Validate(ChatFont, prototypeManager); // WOLFGATE(ChatFont): an unknown font becomes the default
             TypingIndicator = WFTypingBubbleRules.Validate(TypingIndicator, prototypeManager); // WOLFGATE(TypingBubble): an unknown or hidden bubble becomes the species' own
             BloodColor = WFBloodColourRules.Validate(BloodColor); // WOLFGATE(BloodColour)
@@ -1014,6 +1020,7 @@ namespace Content.Shared.Preferences
             hashCode.Add(CustomMarkings.Count); // WOLFGATE(CustomMarkings)
             hashCode.Add((int) LegStance); // WOLFGATE(LegStyle)
             hashCode.Add((int) Biotype); // WOLFGATE(Biotype)
+            hashCode.Add(Augments.Count); // WOLFGATE(Augments)
             hashCode.Add(ChatFont); // WOLFGATE(ChatFont)
             hashCode.Add(TypingIndicator); // WOLFGATE(TypingBubble)
             hashCode.Add(BloodColor); // WOLFGATE(BloodColour)
