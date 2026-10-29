@@ -85,18 +85,29 @@ public sealed class TradeMarketTest
             var first = market.Quote(setup.Chute, CrateProto)!.Value;
             Assert.That(first.Amount, Is.EqualTo(first.Base), "A fresh market should pay the chute's base price.");
 
-            for (var i = 0; i < 5; i++)
+            // A good reads as glutted once sales push its price 30% below base.
+            var profile = market.Profile(grid);
+            var gluttedAt = (int) System.MathF.Ceiling(0.3f / profile.PerSale);
+            for (var i = 0; i < gluttedAt - 1; i++)
             {
                 market.Sell(setup.Chute, Crate(entMan, setup.Far, map.GridCoords), setup.User);
             }
 
-            var after = market.Quote(setup.Chute, CrateProto)!.Value;
-            Assert.That(after.Amount, Is.LessThan(first.Amount), "Five sales should lower the price.");
-            Assert.That(market.Delivered(grid, CrateProto), Is.EqualTo(5));
+            var before = market.Quote(setup.Chute, CrateProto)!.Value;
+            Assert.That(before.Amount, Is.LessThan(first.Amount), "Sales should lower the price.");
+            Assert.That(before.Reason, Is.EqualTo((LocId) "wf-trade-reason-steady"), "A dip under 30% shouldn't read as glutted.");
+            market.Sell(setup.Chute, Crate(entMan, setup.Far, map.GridCoords), setup.User);
+
+            Assert.That(market.Quote(setup.Chute, CrateProto)!.Value.Reason, Is.EqualTo((LocId) "wf-trade-reason-glutted"));
+            Assert.That(market.Delivered(grid, CrateProto), Is.EqualTo(gluttedAt));
+
+            // A single supplied crate is named as the reason.
+            var comp = entMan.GetComponent<WFTradeMarketComponent>(grid);
+            comp.Pressure.Remove(CrateProto);
+            market.AddPressure(grid, CrateProto, profile.PerSale, supplied: true);
+            Assert.That(market.Quote(setup.Chute, CrateProto)!.Value.Reason, Is.EqualTo((LocId) "wf-trade-reason-supplied"));
 
             // Pressure stamped a half-life ago has halved.
-            var comp = entMan.GetComponent<WFTradeMarketComponent>(grid);
-            var profile = market.Profile(grid);
             comp.Pressure[CrateProto] = (0.4f, timing.CurTime - profile.HalfLife);
             Assert.That(market.Pressure(grid, CrateProto), Is.EqualTo(0.2f).Within(0.01f));
 

@@ -27,6 +27,21 @@
       - id: FoodTinMRETrash # Frontier
       - id: MysteryFigureBoxTrash # Frontier
       - id: FoodPSBTrash # Frontier
+      # WOLFGATE(BritishFood) START: Luvvit's empties share one trash slot
+      - !type:GroupSelector
+        children:
+        - id: WFTrashPackHuntersChicken
+        - id: WFTrashPackSteakAlePie
+        - id: WFTrashPackSteakAlePieSlice
+        - id: WFTrashPackPorkPie
+        - id: WFTrashPackChickenMushroomPie
+        - id: WFTrashPackCornishPasty
+        - id: WFTrashPackWelshCawl
+        - id: WFTrashPackEtonMess
+        - id: WFTrashPackScones
+        - id: WFTrashPackStickyToffeePudding
+        - id: WFTrashPackCheesyBeanMelt
+      # WOLFGATE END
     - !type:GroupSelector
       weight: 5
       children:

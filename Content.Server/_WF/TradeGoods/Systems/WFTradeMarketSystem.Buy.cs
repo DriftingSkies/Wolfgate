@@ -24,7 +24,7 @@ public sealed partial class WFTradeMarketSystem
     private static readonly TimeSpan VendorInterval = TimeSpan.FromSeconds(5);
 
     /// <summary>Scarcity above which a vendor names it as the reason for a higher price.</summary>
-    private const float ScarceReason = 0.1f;
+    private const float ScarceReason = 0.2f;
 
     private TimeSpan _nextVendorRefresh;
 

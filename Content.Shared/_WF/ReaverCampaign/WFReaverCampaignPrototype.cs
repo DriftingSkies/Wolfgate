@@ -126,6 +126,14 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public TimeSpan ReinforcementInterval = TimeSpan.FromMinutes(12);
 
+    /// <summary>Smuggling crates sold at open chutes that make one funding payout; 0 turns funding off.</summary>
+    [DataField]
+    public int FundingCrates = 5;
+
+    /// <summary>Share of the reinforcement and spread intervals a funding payout takes off every stronghold's next reinforcement and the next spread.</summary>
+    [DataField]
+    public float FundingShare = 0.25f;
+
     /// <summary>The highest stronghold level reinforcements bring it to, by tier.</summary>
     [DataField]
     public List<int> MaxLevelByTier = new() { 0, 1, 2, 2, 3, 4 };

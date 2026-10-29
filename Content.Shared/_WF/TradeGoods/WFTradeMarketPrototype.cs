@@ -13,7 +13,7 @@ public sealed partial class WFTradeMarketPrototype : IPrototype
 
     /// <summary>Pressure each sale adds to its good at that market.</summary>
     [DataField]
-    public float PerSale = 0.035f;
+    public float PerSale = 0.0175f;
 
     /// <summary>Per-good pressure per sale, for goods that print cheaply.</summary>
     [DataField]
@@ -21,7 +21,7 @@ public sealed partial class WFTradeMarketPrototype : IPrototype
 
     /// <summary>Time for pressure to halve.</summary>
     [DataField]
-    public TimeSpan HalfLife = TimeSpan.FromMinutes(25);
+    public TimeSpan HalfLife = TimeSpan.FromMinutes(50);
 
     /// <summary>Lowest price as a fraction of base, unless the good has a floor price.</summary>
     [DataField]
@@ -33,7 +33,7 @@ public sealed partial class WFTradeMarketPrototype : IPrototype
 
     /// <summary>Pressure one console trading crate adds at the station it is sold at.</summary>
     [DataField]
-    public float TradeCratePerSale = 0.05f;
+    public float TradeCratePerSale = 0.025f;
 
     /// <summary>Lowest share of its pallet price a console trading crate keeps at a glutted station.</summary>
     [DataField]
@@ -41,7 +41,7 @@ public sealed partial class WFTradeMarketPrototype : IPrototype
 
     /// <summary>Scarcity one trade good bought from a station's vendor adds there, raising what its vendors charge.</summary>
     [DataField]
-    public float BuyPerPurchase = 0.03f;
+    public float BuyPerPurchase = 0.015f;
 
     /// <summary>Most scarcity can raise a vendor's price, as a fraction of its base.</summary>
     [DataField]

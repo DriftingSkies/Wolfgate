@@ -11,7 +11,7 @@
     size: Normal
   # WOLFGATE(CargoLoad): ore weighs down the ship carrying it
   - type: WFCargoMass
-    perUnit: 0.03
+    perUnit: 0.015
   - type: Tag
     tags:
     - Ore

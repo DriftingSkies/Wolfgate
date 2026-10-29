@@ -9,6 +9,7 @@ using Content.Server._WF.ReaverCampaign.Components;
 using Content.Server._WF.SectorControl;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Server._WF.ShipPa;
+using Content.Server._WF.TradeGoods;
 using Content.Server.Chat.Systems;
 using Content.Server.GameTicking;
 using Content.Server.Radio.EntitySystems;
@@ -165,6 +166,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
         SubscribeLocalEvent<WFSectorCellClearingEvent>(OnClearing);
         SubscribeLocalEvent<WFSectorCellContestedEvent>(OnCellContested);
         SubscribeLocalEvent<WFSectorContestResolvedEvent>(OnContestResolved);
+        SubscribeLocalEvent<WFTradeSaleEvent>(OnTradeSale);
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
     }
 
@@ -257,6 +259,7 @@ public sealed partial class WFReaverCampaignSystem : EntitySystem
             TickPatrols(campaign, state);
             TickIntercepts(campaign, state, ships);
             TickRaids(campaign, state);
+            TickFunding(campaign, state);
         }
 
         Recompute();

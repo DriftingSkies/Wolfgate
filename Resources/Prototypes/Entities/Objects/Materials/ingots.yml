@@ -11,7 +11,7 @@
     size: Normal
   # WOLFGATE(CargoLoad): ingots weigh down the ship carrying them
   - type: WFCargoMass
-    perUnit: 0.05
+    perUnit: 0.025
   - type: StaticPrice
     price: 0
   - type: Tag

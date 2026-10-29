@@ -50,6 +50,14 @@ public sealed partial class WFReaverCampaignComponent : Component
     [ViewVariables]
     public TimeSpan? NextRaid;
 
+    /// <summary>Smuggling crates sold at open chutes toward the next funding payout.</summary>
+    [ViewVariables]
+    public int Funding;
+
+    /// <summary>Funding payouts the Reavers have spent this round.</summary>
+    [ViewVariables]
+    public int Funded;
+
     /// <summary>Raids launched this round; every third goes for a station.</summary>
     [ViewVariables]
     public int Raids;

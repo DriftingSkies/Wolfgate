@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/21/2026 06:42:38
-  entityCount: 10227
+  entityCount: 10226
 maps:
 - 10196
 grids:
@@ -47173,11 +47173,6 @@ entities:
     - type: Transform
       parent: 1
       pos: -9.5,12.5
-  - uid: 6344
-    components:
-    - type: Transform
-      parent: 1
-      pos: -13.5,14.5
   - uid: 6347
     components:
     - type: Transform
@@ -71060,6 +71055,13 @@ entities:
     missingComponents:
     - InteractionPopup
     - MobCollision
+- proto: WFVendingMachineLuvvits
+  entities:
+  - uid: 10234
+    components:
+    - type: Transform
+      parent: 1
+      pos: -13.5,14.5
 - proto: WFWolfmedIvDrip
   entities:
   - uid: 10186
@@ -71700,14 +71702,6 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -15.5,14.5
-    - type: DeltaPressure
-      gridUid: 1
-  - uid: 10079
-    components:
-    - type: Transform
-      parent: 1
-      rot: 3.141592653589793 rad
-      pos: -13.5,14.5
     - type: DeltaPressure
       gridUid: 1
   - uid: 10080

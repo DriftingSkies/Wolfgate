@@ -223,7 +223,8 @@ public sealed partial class WFEncounterTest
             grid = loaded!.Value.Owner;
             Server.System<WFPirateRetrofitSystem>().Apply(grid, prototypes.Index(band.Retrofit!.Value), 1);
         });
-        await RunTicks(10);
+        // The power net updates receivers every half second, so wait out a whole interval.
+        await RunTicks(20);
         await Server.WaitAssertion(() =>
         {
             var guns = Guns(grid);

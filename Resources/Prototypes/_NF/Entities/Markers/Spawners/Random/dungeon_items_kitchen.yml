@@ -388,5 +388,6 @@
     - VendingMachineCigsFlatpack
     - VendingMachineClothingPunkFlatpack
     - VendingMachineBountyVendPunkFlatpack
+    - WFVendingMachineLuvvitsFlatpack # WOLFGATE(BritishFood): found in ruins, as the vendor is mapped into them on Meridian
     chance: 0.95
     offset: 0.0

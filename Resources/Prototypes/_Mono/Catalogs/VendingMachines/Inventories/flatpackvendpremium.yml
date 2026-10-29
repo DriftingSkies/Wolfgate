@@ -43,3 +43,4 @@
     ResearchAndDevelopmentServerMercFlatpack: 4294967295 # Mono: infinite
     ComputerResearchAndDevelopmentFlatpack: 4294967295 # Mono: infinite
     FTLDriveFlatpack: 4294967295 # Infinite
+    WFVendingMachineLuvvitsFlatpack: 4294967295 # WOLFGATE(BritishFood): the pie vendor is bought here, as tg's imported vendors are by cargo

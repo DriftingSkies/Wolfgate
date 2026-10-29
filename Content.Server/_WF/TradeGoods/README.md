@@ -1,7 +1,7 @@
 # TradeGoods
 
 The trade-crate economy. Every station with a turn-in chute is a market whose prices move: each sale of a good adds
-pressure that lowers its price at that station and decays over about half an hour, and sector events raise prices
+pressure that lowers its price at that station and halves every 50 minutes, and sector events raise prices
 with a reason players can see. Crates must be hauled about 3 km from where they were made before a chute takes them,
 which closes the lathe faucet. The Market PDA app, chute examine and the chute's empty-hand paper show live prices,
 each with its weight and price per tonne. The app's Alerts tab lists every event below with its countdown, plus alerts
@@ -35,7 +35,8 @@ What raises prices (`WFTradeQuoteEvent` subscribers, capped together at `modifie
 - NPC freight (`WFTradeFreightSystem`): a run's crates carry a manifest seal and pay 60% at lawful chutes, full price at
   a fence (the Underground fence chute, PDV Helios) and a bonus at their destination. A freighter docking at a stop
   supplies it (tagged *supplied*); a run lost to attack leaves its remaining stops short. The Underground fence takes
-  sealed freight only (`sealedOnlyChutes`), so it is where pirates unload what they take off haulers.
+  sealed freight only (`sealedOnlyChutes`), so it is where pirates unload what they take off haulers. While the Reaver campaign runs,
+  freight fenced there funds the Reavers (ReaverCampaign `.Funding`).
 
 Contraband (`WFTradeContrabandSystem`, `contrabandGoods`): the smuggling crate is sold by the Underground's fence vendor
 (`WFVendingMachineFence`) and bought well by every open chute, after the usual
@@ -43,7 +44,7 @@ haul, at a fixed street price: sales never glut it, no event raises what chutes 
 the vendor dearer. It shows on radar from other grids like the PDV supply crates. It is Frontier contraband, so security can seize it at their contraband pallet for
 faction credits. Each sale at an open chute has a `contrabandWarrantChance` of customs flagging the seller: a criminal
 warrant (`contrabandWarrant`) goes on the bounty board in their name and security hears who sold it where on
-`contrabandAlertChannel`; a flagged seller isn't flagged again for `contrabandWarrantCooldown`. Hidden markets don't buy it.
+`contrabandAlertChannel`; a flagged seller isn't flagged again for `contrabandWarrantCooldown`. Hidden markets don't buy it. While the Reaver campaign runs, every few crates sold at open chutes fund the Reavers (ReaverCampaign `.Funding`).
 
 Priority deliveries (consignments in code, `WFTradeSpecialCrateSystem`): a crate appears at one station's chute, bound
 for another station at least a haul away, never a wandering merchant or a hidden market, and pays well at that station's chute on time
@@ -77,7 +78,7 @@ it or on a ship docked to it, or stamped within `minHaulDistance` of the chute's
 taken by a chute and waiting for deletion is refused, so one crate can't pay at two chutes in a tick.
 
 Faucet bound: above the floor, steady income per station and good is about `base x ln2 / (perSale x halfLife)` per
-half-life. Fertilizer at 7000 with `perSale` 0.05 and a 25 minute half-life sells about 14 crates per half-life before
+half-life. Fertilizer at 7000 with `perSale` 0.025 and a 50 minute half-life sells about 28 crates per half-life before
 it nears its floor of 1000; printing it costs about 260 in materials and a 3 km haul each way.
 
 <!-- WOLFGATE-GENERATED START -->

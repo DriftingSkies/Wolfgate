@@ -12,7 +12,7 @@
     size: Normal
   # WOLFGATE(CargoLoad): sheets weigh down the ship carrying them
   - type: WFCargoMass
-    perUnit: 0.02
+    perUnit: 0.01
   - type: StaticPrice
     price: 0
   - type: Tag

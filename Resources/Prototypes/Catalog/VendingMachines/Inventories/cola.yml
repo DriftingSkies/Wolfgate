@@ -9,6 +9,10 @@
     DrinkLemonLimeCan: 2
     DrinkLemonLimeCranberryCan: 2
     DrinkFourteenLokoCan: 2
+    # WOLFGATE(BritishFood) START: the British cans stock Robust Softdrinks too
+    WFDrinkIrnBruCan: 2
+    WFDrinkDandelionBurdockCan: 2
+    # WOLFGATE END
   contrabandInventory:
     DrinkColaBottleFull: 2
   emaggedInventory:

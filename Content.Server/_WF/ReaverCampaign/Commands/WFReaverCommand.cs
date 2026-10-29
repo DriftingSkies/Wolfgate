@@ -150,6 +150,11 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 ("population", state.Population),
                 ("live", _campaign.LivePopulation()),
                 ("bracket", _campaign.Bracket(campaign, state).MinPlayers)));
+        if (state != null)
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-funding",
+                ("crates", state.Funding),
+                ("needed", campaign.FundingCrates),
+                ("funded", state.Funded)));
 
         if (_campaign.IsFinished(state))
             shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-finished"));

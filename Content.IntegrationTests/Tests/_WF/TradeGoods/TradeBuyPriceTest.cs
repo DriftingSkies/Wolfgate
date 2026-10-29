@@ -47,14 +47,15 @@ public sealed class TradeBuyPriceTest
             Assert.That(market.BuyPrice(vendor, fabric, fresh.Base), Is.EqualTo(fresh.Amount), "The vend hook should charge the quote.");
 
             // Each crate bought from a vendor makes the good scarcer at the station.
-            for (var i = 0; i < 4; i++)
+            const int bought = 16;
+            for (var i = 0; i < bought; i++)
             {
                 var crate = entMan.SpawnEntity(Fabric, map.GridCoords);
                 entMan.AddComponent<VendingMachinePurchaseComponent>(crate);
             }
 
             var scarce = market.BuyQuote(vendor, Fabric)!.Value;
-            var expected = (int) System.MathF.Round(fresh.Base * (1 + 4 * profile.BuyPerPurchase));
+            var expected = (int) System.MathF.Round(fresh.Base * (1 + bought * profile.BuyPerPurchase));
             Assert.That(scarce.Amount, Is.EqualTo(expected));
             Assert.That(scarce.Reason, Is.EqualTo((LocId) "wf-trade-reason-scarce"));
             Assert.That(entMan.GetComponent<WFTradeVendorComponent>(vendor).Prices[Fabric], Is.EqualTo(expected),
@@ -63,13 +64,13 @@ public sealed class TradeBuyPriceTest
             // Scarcity halves over the half-life.
             var comp = entMan.GetComponent<WFTradeMarketComponent>(grid);
             comp.Scarcity[Fabric] = (comp.Scarcity[Fabric].Scarcity, timing.CurTime - profile.HalfLife);
-            Assert.That(market.Scarcity(grid, Fabric), Is.EqualTo(2 * profile.BuyPerPurchase).Within(0.001f));
+            Assert.That(market.Scarcity(grid, Fabric), Is.EqualTo(bought / 2f * profile.BuyPerPurchase).Within(0.001f));
 
             // A shortage there raises it on top.
             shortages.StartLocal(grid, new HashSet<string> { Fabric }, 2f, System.TimeSpan.FromMinutes(5), "wf-trade-goods-textiles");
             var short_ = market.BuyQuote(vendor, Fabric)!.Value;
             Assert.That(short_.Reason, Is.EqualTo((LocId) "wf-trade-reason-short"));
-            Assert.That(short_.Factor, Is.EqualTo(2f * (1 + 2 * profile.BuyPerPurchase)).Within(0.01f));
+            Assert.That(short_.Factor, Is.EqualTo(2f * (1 + bought / 2f * profile.BuyPerPurchase)).Within(0.01f));
             shortages.Clear();
 
             // Freight supply eases scarcity, but the price never drops below base.

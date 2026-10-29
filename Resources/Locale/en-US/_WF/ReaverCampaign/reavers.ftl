@@ -89,6 +89,7 @@ wf-reaver-clearing = Reaver space at {$cells} is clearing. Drone activity return
        *[other] {$minutes} minutes
     }. Clear the area.
 wf-reaver-defeated = The Ashfall Reavers are broken. Their strongholds are gone and the sector is clear.
+wf-reaver-funded = Smuggling money is reaching the Ashfall Reavers. Their strongholds are reinforcing and spreading faster.
 wf-reaver-retake-name = retaking {$callsign}
 wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. They take the cell in {$minutes} minutes unless traffic keeps the lane.
 
@@ -251,6 +252,7 @@ cmd-wf_reavers-status-counts = { $strongholds ->
     }.
 cmd-wf_reavers-status-clocks = Seconds to next spread: {$spread}. Seconds to next raid: {$raid}.
 cmd-wf_reavers-status-population = Population: {$population} (now {$live}), bracket from {$bracket} players.
+cmd-wf_reavers-status-funding = Smuggling funding: {$crates}/{$needed} crates toward the next payout, {$funded} paid out this round.
 cmd-wf_reavers-no-stronghold = No stronghold stands. Run wf_reavers found to place one now.
 cmd-wf_reavers-status-switch-off = No stronghold stands and none will be founded: {$cvar} is off. Run wf_reavers found to place one anyway.
 cmd-wf_reavers-status-mode-off = No stronghold stands and none will be founded: the Contested Sector game mode is not running. Admins can force it with {$cvar} or by adding the rule (addgamerule WFReaverCampaignRule).

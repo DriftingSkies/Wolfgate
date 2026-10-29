@@ -4134,3 +4134,43 @@ Entries:
   id: 100275
   time: '2026-10-29T06:58:29.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/407
+- author: Balls2zawall
+  changes:
+    - type: Add
+      message: >-
+        A hot new shuttle has entered the shipyards of the Underground. The
+        affectionately named UBM Excelsior is perfect for transporting personnel
+        in both style and safety.
+  id: 100276
+  time: '2026-10-29T18:08:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/409
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: Ore, ingots and sheets now weigh half as much in a ship's hold.
+    - type: Tweak
+      message: >-
+        Trade prices fall about half as fast per crate sold and take about twice
+        as long to recover, so one big haul no longer crashes a market.
+    - type: Add
+      message: >-
+        Selling smuggling crates or fencing stolen freight at the Underground
+        now funds the Ashfall Reavers: their strongholds reinforce and spread
+        faster.
+  id: 100277
+  time: '2026-10-29T18:27:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/411
+- author: vinylspiders
+  changes:
+    - type: Add
+      message: >-
+        Adds Mrs. Luvvit's Pie & Mash, the best locally sourced pies in the
+        sector! Find one in the trade hall at Caelestinus Central, or buy the
+        flatpack. Mrs. Luvvit accepts no liability for scalded tongues.
+    - type: Add
+      message: Adds 12 new cookable British dishes.
+    - type: Add
+      message: Adds Irn-Bru and dandelion & burdock cans.
+  id: 100278
+  time: '2026-10-29T18:36:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/410

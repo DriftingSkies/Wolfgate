@@ -1,0 +1,46 @@
+- type: reagent
+  id: WFIrnBru
+  name: reagent-name-wf-irn-bru
+  parent: BaseSoda
+  desc: reagent-desc-wf-irn-bru
+  physicalDesc: reagent-physical-desc-fizzy
+  flavor: WFIrnBru
+  color: "#F28C1C"
+
+- type: reagent
+  id: WFDandelionBurdock
+  name: reagent-name-wf-dandelion-burdock
+  parent: BaseSoda
+  desc: reagent-desc-wf-dandelion-burdock
+  physicalDesc: reagent-physical-desc-fizzy
+  flavor: WFDandelionBurdock
+  color: "#3B2314"
+
+# The deep fried Mars bar's fat. It skips the stomach and clears from the blood slowly, through the heart, so bars
+# eaten minutes apart add up. Past the threshold it strains the heart for as long as it stays over, and it clears at
+# a fixed rate, so the strain follows how far over the eater goes: about 2 heart health per unit over.
+- type: reagent
+  id: WFSaturatedFat
+  name: reagent-name-wf-saturated-fat
+  group: Foods
+  desc: reagent-desc-wf-saturated-fat
+  physicalDesc: reagent-physical-desc-oily
+  flavor: oily
+  color: "#E8D9A0"
+  metabolisms:
+    Poison:
+      metabolismRate: 0.01
+      effects:
+      - !type:WFStrainHeart
+        conditions:
+        - !type:ReagentThreshold
+          min: 9
+        amount: 0.02
+      - !type:PopupMessage
+        conditions:
+        - !type:ReagentThreshold
+          min: 9
+        type: Local
+        visualType: MediumCaution
+        messages: [ "wf-saturated-fat-chest-tightens" ]
+        probability: 0.05

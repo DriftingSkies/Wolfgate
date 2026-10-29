@@ -1,13 +1,15 @@
 # Chute market tuning. Floors sit near each good's vendor price, so a glutted market still covers a bought crate.
+# Each sale dents a price gently and the dent heals slowly, so one big haul can't crash a market; steady income per
+# station and good stays bounded by base x ln2 / (perSale x halfLife).
 - type: wfTradeMarket
   id: WFTradeMarketDefault
-  perSale: 0.035
+  perSale: 0.0175
   # Goods the economy lathes print cheaply saturate faster.
   perSaleOverrides:
-    TradeGoodFertilizer: 0.05
-    TradeGoodComponents: 0.05
-    TradeGoodScrap: 0.05
-  halfLife: 1500
+    TradeGoodFertilizer: 0.025
+    TradeGoodComponents: 0.025
+    TradeGoodScrap: 0.025
+  halfLife: 3000
   floor: 0.2
   floorPrices:
     TradeGoodFertilizer: 1000
@@ -27,10 +29,10 @@
     TradeGoodFissionFuel: 6000
     TradeGoodFusionFuel: 3000
   # Cargo-console trading crates share one demand per station; the floor still covers the console price.
-  tradeCratePerSale: 0.05
+  tradeCratePerSale: 0.025
   tradeCrateFloor: 0.3
   # Each trade good bought from a station's vendor makes it scarcer there; vendors never charge below base.
-  buyPerPurchase: 0.03
+  buyPerPurchase: 0.015
   buyScarcityCap: 0.6
   modifierCap: 2.5
   minHaulDistance: 3000

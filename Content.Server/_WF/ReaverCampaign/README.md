@@ -118,6 +118,12 @@ and counted for the round summary. `wf_reavers respond <q> <r>` sends one by han
 
 `Docs/_WF/ReaverCampaign/design.md` is the design.
 
+Smuggling funds the Reavers (`.Funding`). Each smuggling crate (the market's `contrabandGoods`) sold at an open chute,
+and each crate of NPC freight (a manifest seal) fenced at a `sealedOnlyChutes` chute (the Underground fence), banks
+toward a war chest; every `fundingCrates` (5) pays out, bringing every stronghold's next reinforcement and the next
+spread forward by `fundingShare` (a quarter) of their intervals, announced as a routine radio line. The chest holds one
+payout at most and spends it once a stronghold stands and the campaign isn't held; `wf_reavers status` shows it.
+
 Ship raids favour laden ships (up to three times the weight for a hold worth 100,000, through
 `WFCargoValueQueryEvent`), and `RecentlyRaided` tells the market which stations a raid was just sent at.
 
@@ -148,6 +154,7 @@ Ship raids favour laden ships (up to three times the weight for a hold worth 100
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.cs`](Systems/WFReaverCampaignSystem.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Disputes.cs`](Systems/WFReaverCampaignSystem.Disputes.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.FriendlyFire.cs`](Systems/WFReaverCampaignSystem.FriendlyFire.cs)
+- [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Funding.cs`](Systems/WFReaverCampaignSystem.Funding.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hold.cs`](Systems/WFReaverCampaignSystem.Hold.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Hub.cs`](Systems/WFReaverCampaignSystem.Hub.cs)
 - [`Content.Server/_WF/ReaverCampaign/Systems/WFReaverCampaignSystem.Intercepts.cs`](Systems/WFReaverCampaignSystem.Intercepts.cs)
@@ -179,6 +186,7 @@ Ship raids favour laden ships (up to three times the weight for a hold worth 100
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverEndingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverEndingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFightTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFoundingTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFundingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverFundingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGameModeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGameModeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGunPlatformTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverGunPlatformTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ReaverCampaign/WFReaverInterceptTest.cs)

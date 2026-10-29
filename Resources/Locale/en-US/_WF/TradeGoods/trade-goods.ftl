@@ -18,7 +18,7 @@ wf-trade-sale-low = Paying {$amount}. Best now: {$station}, {$best}.
 wf-trade-examine-header = [color=#d9a441]Live prices:[/color]
 wf-trade-price-line = {$good}: {$amount} {$trend} ({$reason}), {$tonnes}t, {$perTonne}/t
 wf-trade-paper-header = [bold]{$station}: live turn-in prices[/bold]
-wf-trade-paper-footer = Prices fall as crates come in and win back half the drop every 25 minutes. Sector events raise them. The Market app on your PDA has every station's prices.
+wf-trade-paper-footer = Prices fall as crates come in and win back half the drop every 50 minutes. Sector events raise them. The Market app on your PDA has every station's prices.
 
 wf-trade-reason-steady = steady
 wf-trade-reason-glutted = glutted

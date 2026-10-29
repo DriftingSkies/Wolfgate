@@ -44,8 +44,11 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
     /// <summary>Quotes this far below base suggest a better station in the sale popup.</summary>
     private const float LowQuote = 0.7f;
 
-    /// <summary>Pressure above which a freighter's recent supply is named as the reason for a lower price.</summary>
-    private const float SuppliedPressure = 0.02f;
+    /// <summary>Sales' worth of pressure above which a freighter's recent supply is named as the reason for a lower price.</summary>
+    private const float SuppliedSales = 0.5f;
+
+    /// <summary>Pressure at which a good reads as glutted rather than steady: its price this far below base.</summary>
+    private const float GluttedPressure = 0.3f;
 
     private readonly Dictionary<string, int?> _cashValues = new();
 
@@ -197,8 +200,8 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
         var reason = lowerReason
                      ?? raiseReason
                      ?? (crate == null && IsSealedOnly(chute) ? "wf-trade-reason-sealed-only"
-                         : supplied && pressure >= SuppliedPressure ? "wf-trade-reason-supplied"
-                         : pressure < 0.15f ? "wf-trade-reason-steady"
+                         : supplied && pressure >= SuppliedSales * profile.PerSale ? "wf-trade-reason-supplied"
+                         : pressure < GluttedPressure ? "wf-trade-reason-steady"
                          : "wf-trade-reason-glutted");
         return new WFTradeQuote(basePrice, amount, amount / (float) basePrice, reason);
     }
