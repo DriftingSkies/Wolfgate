@@ -42,6 +42,8 @@ public sealed partial class ReactiveSystem : EntitySystem
         // WOLFGATE(ArmorSpecialization) START: a decon coating keeps splashed, sprayed and spilled chemicals off the wearer.
         if (method == ReactionMethod.Touch && _wfSpecs.BlocksTouch(uid, proto))
             return;
+        // WOLFGATE END
+
         // WOLFGATE(Xenoarch) START: lets artifact triggers react to reagents
         // custom event for bypassing reactivecomponent stuff
         var ev = new ReactionEntityEvent(method, proto, reagentQuantity, source);
