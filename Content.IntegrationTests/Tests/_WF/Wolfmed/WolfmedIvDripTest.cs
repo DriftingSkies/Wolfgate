@@ -255,6 +255,9 @@ public sealed class WolfmedIvDripTest : WolfmedGameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(drip.Comp.Patient, Is.EqualTo(patient), "the needle came out of a patient who stayed put.");
+            Assert.That(SEntMan.GetComponent<Content.Shared.Physics.JointVisualsComponent>(drip).Target,
+                Is.EqualTo(SEntMan.GetNetEntity(patient)), "no line is drawn from the stand to the patient.");
+            Assert.That(SEntMan.HasComponent<WolfmedIvLinedComponent>(patient), Is.True, "the patient has no IV Connected alert.");
             SEntMan.System<SharedTransformSystem>().SetCoordinates(patient, map.GridCoords.Offset(new Vector2(2f, 0f)));
         });
 
@@ -264,6 +267,9 @@ public sealed class WolfmedIvDripTest : WolfmedGameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(drip.Comp.Patient, Is.Null, "the needle stayed in a patient two tiles away.");
+            Assert.That(SEntMan.HasComponent<Content.Shared.Physics.JointVisualsComponent>(drip), Is.False,
+                "the line is still drawn after the needle came out.");
+            Assert.That(SEntMan.HasComponent<WolfmedIvLinedComponent>(patient), Is.False, "the IV Connected alert stayed.");
             Assert.That(ArmPunctures(patient), Is.EqualTo(1), "ripping the needle out opened no puncture on an arm.");
 
             var wound = ArmWounds(patient).First(wound => wound.Comp.Prototype == "PiercingWound");

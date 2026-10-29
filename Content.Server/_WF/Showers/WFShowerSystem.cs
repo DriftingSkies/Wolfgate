@@ -55,6 +55,7 @@ public sealed partial class WFShowerSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private PuddleSystem _puddle = default!;
     [Dependency] private ReactiveSystem _reactive = default!;
+    [Dependency] private Content.Shared._WF.ArmorSpecialization.WFCivilianSpecializationSystem _wfSpecs = default!;
     [Dependency] private SharedSolutionContainerSystem _solution = default!;
     [Dependency] private StaminaSystem _stamina = default!;
     [Dependency] private TemperatureSystem _temperature = default!;
@@ -260,7 +261,8 @@ public sealed partial class WFShowerSystem : EntitySystem
             if (TerminatingOrDeleted(target))
                 continue;
 
-            _reactive.DoEntityReaction(target, exposure, ReactionMethod.Touch);
+            // A decon coating is meant to be washed down, so the shower reaches through it.
+            _wfSpecs.BypassDecon(() => _reactive.DoEntityReaction(target, exposure, ReactionMethod.Touch));
             if (clean)
                 Scrub(target);
 

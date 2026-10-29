@@ -306,7 +306,7 @@ public sealed partial class PainSystem : EntitySystem
         shockTarget.Armed = false;
         Dirty(entity.Owner, shockTarget);
 
-        if (mobState.CurrentState == MobState.Alive) // WOLFGATE(Wolfmed): an unconscious body does not scream.
+        if (mobState.CurrentState == MobState.Alive && WfMayCryOut(entity)) // WOLFGATE(Wolfmed): an unconscious body does not scream, nor one whose gear silences it.
         _chat.TryEmoteWithChat(entity, "Scream", ChatTransmitRange.HideChat,
             ignoreActionBlocker: true, forceEmote: true);
         _jitter.DoJitter(entity, PainShockStunTime, true, 20f, 7f);
@@ -486,4 +486,13 @@ public sealed partial class PainSystem : EntitySystem
 
         return Math.Max(1f, weightedMultiplier / pain.Suppression.Float());
     }
+
+    // WOLFGATE(ArmorSpecialization) START: worn gear may silence the pain-shock scream (the mime's vow).
+    private bool WfMayCryOut(EntityUid body)
+    {
+        var ev = new Content.Shared._WF.Wolfmed.Wounds.WolfmedPainNoiseAttemptEvent();
+        RaiseLocalEvent(body, ref ev);
+        return !ev.Cancelled;
+    }
+    // WOLFGATE END
 }

@@ -105,6 +105,9 @@
   name: paramedic voidsuit # Goob edit
   description: A voidsuit made for paramedics. # Goob edit
   components:
+  # WOLFGATE(ArmorSpecialization): plasma reserve and steady hands.
+  - type: WFSteadyHands
+  - type: WFPlasmaReserve
   # WOLFGATE(SuitTank) START: both parents bring a ContainerContainer; keep the helmet and tank storage containers
   - type: ContainerContainer
     containers:
