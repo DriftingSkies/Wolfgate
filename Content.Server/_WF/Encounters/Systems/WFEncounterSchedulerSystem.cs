@@ -315,6 +315,34 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
         return TryPlaceAtStations(prototype, _ticker.DefaultMap, out origin, out stops);
     }
 
+    /// <summary>A station picked at random, each as likely as the weight <see cref="WFEncounterStationWeightEvent"/> gives it.</summary>
+    private Entity<MapGridComponent> PickWeightedStation(WFEncounterPrototype prototype, List<Entity<MapGridComponent>> stations)
+    {
+        var weights = new List<float>(stations.Count);
+        var total = 0f;
+        foreach (var station in stations)
+        {
+            var ev = new WFEncounterStationWeightEvent(prototype, station, 1f);
+            RaiseLocalEvent(ref ev);
+            var weight = MathF.Max(0f, ev.Weight);
+            weights.Add(weight);
+            total += weight;
+        }
+
+        if (total <= 0f)
+            return _random.Pick(stations);
+
+        var roll = _random.NextFloat() * total;
+        for (var i = 0; i < stations.Count; i++)
+        {
+            roll -= weights[i];
+            if (roll <= 0f)
+                return stations[i];
+        }
+
+        return stations[^1];
+    }
+
     /// <summary>
     /// Chooses the stations an encounter is placed by and flies to, and its origin: beside the first for a
     /// station or a route, out at the approach distance from the first for a circuit.
@@ -360,7 +388,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
             if (prototype.Placement == WFEncounterPlacement.Station && StationsWithoutShips(anchors) is { Count: > 0 } free)
                 first = _random.Pick(free);
             else
-                first = _random.Pick(anchors);
+                first = PickWeightedStation(prototype, anchors);
             anchors.Remove(first);
 
             if (!TryPlaceBeside(prototype, first, room, avoided, out origin))

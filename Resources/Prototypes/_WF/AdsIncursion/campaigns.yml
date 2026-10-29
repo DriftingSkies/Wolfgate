@@ -24,6 +24,7 @@
   challengeInterval: 35m
   challengeDeadline: 10m
   maxChallenges: 1
+  maxPickets: 3
   tierThresholds: [ 10, 22, 40, 60, 80 ]
   nodeBounty: [ 50000, 75000, 100000, 130000, 170000, 220000 ]
   sweepBounty: 18000
@@ -73,6 +74,7 @@
   challengeInterval: 25m
   challengeDeadline: 10m
   maxChallenges: 1
+  maxPickets: 3
   tierThresholds: [ 10, 25, 45, 70, 95 ]
   nodeBounty: [ 50000, 75000, 100000, 130000, 170000, 220000 ]
   sweepBounty: 18000
@@ -122,6 +124,7 @@
   challengeInterval: 15m
   challengeDeadline: 10m
   maxChallenges: 2
+  maxPickets: 3
   tierThresholds: [ 12, 30, 55, 85, 115 ]
   nodeBounty: [ 50000, 75000, 100000, 130000, 170000, 220000 ]
   sweepBounty: 18000

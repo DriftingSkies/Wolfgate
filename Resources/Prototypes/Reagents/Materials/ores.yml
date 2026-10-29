@@ -4,7 +4,7 @@
   name: materials-raw-iron
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: iron }
-  price: 0.05
+  price: 0.03 # WOLFGATE(Mining): was 0.05; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawQuartz
@@ -13,7 +13,7 @@
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: spacequartz }
   color: "#a8ccd7"
-  price: 0.075
+  price: 0.045 # WOLFGATE(Mining): was 0.075; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawGold
@@ -22,7 +22,7 @@
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: gold }
   color: "#FFD700"
-  price: 0.2
+  price: 0.12 # WOLFGATE(Mining): was 0.2; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawDiamond
@@ -40,7 +40,7 @@
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: silver }
   color: "#C0C0C0"
-  price: 0.15
+  price: 0.09 # WOLFGATE(Mining): was 0.15; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawPlasma
@@ -49,7 +49,7 @@
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: plasma }
   color: "#7e009e"
-  price: 0.2
+  price: 0.12 # WOLFGATE(Mining): was 0.2; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawUranium
@@ -58,7 +58,7 @@
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: uranium }
   color: "#32a852"
-  price: 0.2
+  price: 0.12 # WOLFGATE(Mining): was 0.2; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawBananium
@@ -67,7 +67,7 @@
   unit: materials-unit-chunk
   icon: { sprite: Objects/Materials/ore.rsi, state: bananium }
   color: "#32a852"
-  price: 0.2
+  price: 0.12 # WOLFGATE(Mining): was 0.2; raw ore is worth 60% of what smelting it makes
 
 - type: material
   id: RawSalt

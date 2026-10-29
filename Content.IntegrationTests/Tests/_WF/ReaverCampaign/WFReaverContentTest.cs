@@ -192,6 +192,20 @@ public sealed class WFReaverContentTest
                 Assert.That(campaign.MaxLevelByTier[0], Is.Zero, $"{id}: no reinforcements at tier 0");
                 Assert.That(campaign.Reinforcements, Has.Count.GreaterThanOrEqualTo(campaign.MaxLevelByTier.Max()), $"{id}: a convoy for every level");
                 Assert.That(campaign.ReinforcementInterval, Is.GreaterThan(TimeSpan.Zero), $"{id}");
+
+                Assert.That(campaign.Population.Select(bracket => bracket.MinPlayers), Is.Unique.And.Ordered.Ascending, $"{id}: brackets climb");
+                foreach (var bracket in campaign.Population)
+                {
+                    Assert.That(bracket.ReinforcementScale, Is.InRange(0.1f, 1f), $"{id}: a bracket never slows reinforcements");
+                    Assert.That(bracket.BountyScale, Is.GreaterThanOrEqualTo(1f), $"{id}: a bracket never cuts the bounty");
+                }
+
+                Assert.That(campaign.Population.Select(bracket => bracket.Batteries), Is.Ordered.Ascending, $"{id}: more players, no fewer batteries");
+                var battery = prototypes.Index(campaign.Battery);
+                Assert.That(battery.Start, Is.EqualTo(WFEncounterStart.Manual), $"{campaign.Battery}");
+                Assert.That(battery.Lifetime, Is.EqualTo(WFEncounterLifetime.Persistent), $"{campaign.Battery}: it stays with the hub");
+                Assert.That(battery.Ships, Has.Count.EqualTo(1), $"{campaign.Battery}");
+                Assert.That(battery.Ships[0].Platform, Is.True, $"{campaign.Battery}: it holds station");
                 foreach (var reinforcementId in campaign.Reinforcements)
                 {
                     var reinforcement = prototypes.Index(reinforcementId);

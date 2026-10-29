@@ -114,6 +114,54 @@ public sealed class WolfmedWoundLadderTest : WolfmedGameTest
         });
     }
 
+    /// <summary>
+    /// Bug report 234: a gunshot that only got worse climbed into shrapnel and a lodged round with nothing in them, which
+    /// a hemostat can't pull and never close. It now stays a gunshot; a wound that does hold fragments still climbs.
+    /// </summary>
+    [Test]
+    public async Task OnlyLodgedObjectsClimbIntoObjectRungsTest()
+    {
+        var map = await CreateTestMap();
+        await Server.WaitAssertion(() =>
+        {
+            var body = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            var torso = Part(body, BodyPartType.Torso);
+            var arm = Part(body, BodyPartType.Arm);
+
+            Create(torso, "WFWolfmedGunshotWound", 190);
+            Create(torso, "WFWolfmedGunshotWound", 50);
+
+            var shrapnel = Create(arm, "WFWolfmedShrapnelWound", 140)!.Value;
+            SEntMan.System<WolfmedEmbeddedObjectSystem>().Add(shrapnel, "WFWolfmedShrapnelFragment", 2, 5);
+            Create(arm, "WFWolfmedShrapnelWound", 30);
+            var climbed = SEntMan.System<WolfmedEmbeddedObjectSystem>().GetEmbeddedWound(arm);
+
+            // A full gunshot on a limb held back from the object rungs is not the top of the ladder, so it arms nothing.
+            var leg = Part(body, BodyPartType.Leg);
+            Create(leg, "WFWolfmedGunshotWound", 190);
+            Create(leg, "WFWolfmedGunshotWound", 50);
+
+            // A fragment hit onto a nearly full gunshot overflows the shrapnel it makes; the fragment comes with it.
+            var otherArm = SEntMan.System<SharedBodySystem>().GetBodyChildren(body)
+                .First(p => p.Component.PartType == BodyPartType.Arm && p.Id != arm).Id;
+            Create(otherArm, "WFWolfmedGunshotWound", 190);
+            Create(otherArm, "WFWolfmedShrapnelWound", 140);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(SEntMan.GetComponent<WoundableComponent>(leg).Severable, Is.False,
+                    "a gunshot kept from the object rungs armed the limb as if it topped the ladder.");
+                Assert.That(Wounds(otherArm).Select(w => w.Id), Is.EqualTo(new[] { "WFWolfmedLodgedRoundWound" }),
+                    "a fragment hit that overflowed its shrapnel wound did not climb.");
+                Assert.That(Wounds(torso).Select(w => w.Id), Is.EqualTo(new[] { "WFWolfmedGunshotWound" }),
+                    "a worsening gunshot became a wound that holds an object it doesn't have.");
+                Assert.That(Wounds(arm).Select(w => w.Id), Is.EqualTo(new[] { "WFWolfmedLodgedRoundWound" }),
+                    "a full shrapnel wound with fragments in it did not climb.");
+                Assert.That(climbed?.Comp.Count, Is.EqualTo(2), "the fragments did not move with the wound.");
+            });
+        });
+    }
+
     /// <summary><c>wolfmed.wound_ladders</c> off is the old stacking.</summary>
     [Test]
     public async Task LaddersOffStackTest()

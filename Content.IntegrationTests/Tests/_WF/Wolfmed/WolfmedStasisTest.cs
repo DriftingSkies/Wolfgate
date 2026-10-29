@@ -223,4 +223,38 @@ public sealed class WolfmedStasisTest : WolfmedGameTest
 
         return total;
     }
+
+    /// <summary>
+    /// Bug report: an Avali that died during the wind-up still entered stasis, so the body lay invisible inside a shell.
+    /// Dying cancels it the way going critical does.
+    /// </summary>
+    [Test]
+    public async Task DyingDuringWindUpCancelsStasisTest()
+    {
+        var map = await CreateTestMap();
+        EntityUid body = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            body = Avali(map.GridCoords);
+            SEntMan.EventBus.RaiseLocalEvent(body, new PrepareStasisActionEvent());
+            var mobs = SEntMan.System<Content.Shared.Mobs.Systems.MobStateSystem>();
+            mobs.ChangeMobState(body, Content.Shared.Mobs.MobState.Dead);
+            // Revived before the wind-up ends: the cancelled wind-up must not still put the body in stasis.
+            mobs.ChangeMobState(body, Content.Shared.Mobs.MobState.Alive);
+        });
+
+        await RunSeconds(3);
+
+        await Server.WaitAssertion(() =>
+        {
+            var stasis = SEntMan.GetComponent<StasisComponent>(body);
+            Assert.Multiple(() =>
+            {
+                Assert.That(stasis.IsInStasis, Is.False, "a dead Avali entered stasis.");
+                Assert.That(stasis.IsVisible, Is.True, "a dead Avali was left invisible.");
+                Assert.That(SEntMan.HasComponent<StasisFrozenComponent>(body), Is.False, "a dead Avali stayed frozen.");
+            });
+        });
+    }
 }

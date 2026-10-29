@@ -474,6 +474,8 @@ namespace Content.Client.Chemistry.UI
             Amount = amount;
             Id = id;
             IsBuffer = isBuffer;
+            // WOLFGATE: fire on mouse down; every update rebuilds these buttons, so one between press and release ate the click
+            Mode = ActionMode.Press;
         }
     }
 }

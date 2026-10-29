@@ -76,6 +76,16 @@ public sealed partial class WFAsteroidVisualsSystem : EntitySystem
         return visuals.Rock is { } rock && _farRsis.TryGetValue((rock, visuals.Look), out var rsi) ? rsi : null;
     }
 
+    /// <summary>The out-of-view-range RSI for a rock prototype and look, queuing it to load if it hasn't yet.</summary>
+    public RSI? FarRsi(EntProtoId rock, string? look)
+    {
+        if (_farRsis.TryGetValue((rock, look), out var rsi))
+            return rsi;
+
+        _pendingRsis.Add((rock, look));
+        return null;
+    }
+
     private void Apply(Entity<WFAsteroidComponent> ent)
     {
         if (ent.Comp.Charge > 0f)

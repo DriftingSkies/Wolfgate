@@ -26,6 +26,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using PullableComponent = Content.Shared.Movement.Pulling.Components.PullableComponent;
 using Content.Shared.StepTrigger.Components; // Delta V-NoShoesSilentFootstepsComponent
+using Content.Shared._WF.Performance; // WOLFGATE(Performance)
 
 namespace Content.Shared.Movement.Systems;
 
@@ -256,7 +257,7 @@ public abstract partial class SharedMoverController : VirtualController
 
             // If we're not on a grid, and not able to move in space check if we're close enough to a grid to touch.
             if (!touching && MobMoverQuery.TryComp(uid, out var mobMover))
-                touching |= IsAroundCollider(_lookup, (uid, physicsComponent, mobMover, xform));
+                touching |= WfIsAroundCollider(_lookup, (uid, physicsComponent, mobMover, xform)); // WOLFGATE(Performance): reuse a still mob's result for a few ticks
 
             // If we're touching then use the weightless values
             if (touching)
@@ -475,8 +476,10 @@ public abstract partial class SharedMoverController : VirtualController
         var (uid, collider, mover, transform) = entity;
         var enlargedAABB = _lookup.GetWorldAABB(entity.Owner, transform).Enlarged(mover.GrabRange);
 
-        _aroundColliderSet.Clear();
-        lookupSystem.GetEntitiesIntersecting(transform.MapID, enlargedAABB, _aroundColliderSet);
+        // WOLFGATE(Performance) START: only static bodies count below, so skip the rest of the lookup and keep the set small
+        _aroundColliderSet.ClearAndTrim();
+        lookupSystem.GetEntitiesIntersecting(transform.MapID, enlargedAABB, _aroundColliderSet, LookupFlags.Static);
+        // WOLFGATE END
         foreach (var otherEntity in _aroundColliderSet)
         {
             if (otherEntity == uid)

@@ -145,6 +145,16 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
         shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-clocks",
             ("spread", Seconds(state?.NextSpread, now)),
             ("raid", Seconds(state?.NextRaid, now))));
+        if (state != null)
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-population",
+                ("population", state.Population),
+                ("live", _campaign.LivePopulation()),
+                ("bracket", _campaign.Bracket(campaign, state).MinPlayers)));
+        if (state != null)
+            shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-funding",
+                ("crates", state.Funding),
+                ("needed", campaign.FundingCrates),
+                ("funded", state.Funded)));
 
         if (_campaign.IsFinished(state))
             shell.WriteLine(Loc.GetString("cmd-wf_reavers-status-finished"));
@@ -165,6 +175,8 @@ public sealed partial class WFReaverCommand : LocalizedEntityCommands
                 ("hits", stronghold.Hits),
                 ("patrols", patrols.Count(patrol => patrol.Comp1.Stronghold == uid)),
                 ("reinforcements", stronghold.Reinforcements.Count),
+                ("batteries", _campaign.BatteriesOf(uid).Count),
+                ("slots", stronghold.BatterySlots),
                 ("state", (stronghold.Citadel ? Loc.GetString("cmd-wf_reavers-status-stronghold-citadel") : string.Empty)
                     + (stronghold.Inbound != null ? Loc.GetString("cmd-wf_reavers-status-stronghold-inbound") : string.Empty)
                     + (stronghold.Scattered ? Loc.GetString("cmd-wf_reavers-status-stronghold-scattered") : string.Empty))));

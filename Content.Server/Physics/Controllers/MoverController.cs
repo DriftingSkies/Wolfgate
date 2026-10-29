@@ -445,7 +445,7 @@ public sealed partial class MoverController : SharedMoverController
             dir = dir - dirCompVel + scaledComp;
         }
 
-        return dir * shuttle.AccelerationMultiplier * WfAtmosphereManeuvering(xform.Owner); // WOLFGATE(Planets): reserve thrust for planetary lift.
+        return dir * shuttle.AccelerationMultiplier * WfAtmosphereManeuvering(xform.Owner); // WOLFGATE(Planets): planet lift and cargo load scale thrust
     }
 
     /// <summary>
@@ -743,7 +743,7 @@ public sealed partial class MoverController : SharedMoverController
                 var totalForce = GetDirectionThrust(linearInput, shuttle, body, xform);
 
                 // Won't just do cardinal directions.
-                foreach (DirectionFlag dir in Enum.GetValues(typeof(DirectionFlag)))
+                foreach (var dir in ThrusterSystem.WFCardinalFlags) // WOLFGATE(Performance): Enum.GetValues allocated every tick per shuttle
                 {
                     // Brain no worky but I just want cardinals
                     switch (dir)

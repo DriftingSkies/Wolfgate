@@ -444,6 +444,8 @@
       groups:
         Brute: -1.5
         Burn: -2
+    # WOLFGATE(Wolfmed): the drones repair a chassis too; flesh-only mending left every chassis wound open
+    mendCapabilities: [ Biological, Mechanical, Electrical ]
 
 - type: trait
   id: Helmsmanship
@@ -465,6 +467,7 @@
   description: trait-heretic-desc
   category: Physical
   cost: 0 # no points because it's free points for members of the PDV and arguably TSF too.
+  newbieBlocked: true # WOLFGATE(Newbie): it makes them a kill target, which the newbie rules forbid
   blacklist:
     components:
     - BorgChassis

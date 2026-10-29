@@ -1,0 +1,121 @@
+# The empty containers Mrs. Luvvit's packs leave behind.
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: FoodPacketTrash
+  id: WFTrashBritishPackBase
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/BritishFood/packs.rsi
+  - type: Item
+    size: Small
+  - type: PhysicalComposition
+    materialComposition:
+      Plastic: 50
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackHuntersChicken
+  components:
+  - type: Sprite
+    state: hunters_chicken_empty
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackSteakAlePie
+  components:
+  - type: Sprite
+    state: steak_ale_pie_empty
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 100
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackSteakAlePieSlice
+  components:
+  - type: Sprite
+    state: steak_ale_pie_slice_empty
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackPorkPie
+  components:
+  - type: Sprite
+    state: pork_pie_empty
+  - type: PhysicalComposition
+    materialComposition:
+      Paper: 50
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackChickenMushroomPie
+  components:
+  - type: Sprite
+    state: chicken_mushroom_pie_empty
+  - type: PhysicalComposition
+    materialComposition:
+      Paper: 50
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackCornishPasty
+  components:
+  - type: Sprite
+    state: cornish_pasty_empty
+  - type: PhysicalComposition
+    materialComposition:
+      Paper: 50
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackWelshCawl
+  components:
+  - type: Sprite
+    state: welsh_cawl_empty
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackEtonMess
+  components:
+  - type: Sprite
+    state: eton_mess_empty
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackScones
+  components:
+  - type: Sprite
+    state: scones_empty
+  - type: PhysicalComposition
+    materialComposition:
+      Cardboard: 50
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackStickyToffeePudding
+  components:
+  - type: Sprite
+    state: sticky_toffee_pudding_empty
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: WFTrashBritishPackBase
+  id: WFTrashPackCheesyBeanMelt
+  components:
+  - type: Sprite
+    state: cheesy_bean_melt_empty
+  - type: PhysicalComposition
+    materialComposition:
+      Paper: 50

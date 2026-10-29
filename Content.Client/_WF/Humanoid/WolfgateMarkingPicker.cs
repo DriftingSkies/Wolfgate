@@ -359,7 +359,13 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
     private IEnumerable<MarkingPrototype> PartMarkings(HumanoidVisualLayers part)
     {
-        return ValidMarkings().Where(m => m.BodyPart == part);
+        return ValidMarkings().Where(m => Tab(m) == part);
+    }
+
+    /// <summary>The tab a marking is listed under: its body part, or Special for markings that only borrow a part's layer.</summary>
+    private static HumanoidVisualLayers Tab(MarkingPrototype marking)
+    {
+        return marking.MarkingCategory == MarkingCategories.Special ? HumanoidVisualLayers.Special : marking.BodyPart;
     }
 
     private static int PartRank(HumanoidVisualLayers part)
@@ -376,7 +382,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     /// <summary>One toggle per body part that has markings; only rebuilt when that list changes.</summary>
     private void SetupPartButtons()
     {
-        var valid = ValidMarkings().Select(m => m.BodyPart).Distinct().OrderBy(PartRank).ToList();
+        var valid = ValidMarkings().Select(Tab).Distinct().OrderBy(PartRank).ToList();
         if (!valid.Contains(_part))
             _part = valid.Count > 0 ? valid[0] : HumanoidVisualLayers.Chest;
         if (!valid.SequenceEqual(_partButtons.Keys))
@@ -630,14 +636,19 @@ public sealed class WolfgateMarkingPicker : BoxContainer
             var stack = new List<(Marking marking, MarkingPrototype proto)>();
             foreach (var marking in _current.GetReverseEnumerator(category))
             {
-                if (_markingManager.TryGetMarking(marking, out var proto) && proto.BodyPart == _part)
+                if (_markingManager.TryGetMarking(marking, out var proto) && Tab(proto) == _part)
                     stack.Add((marking, proto));
             }
 
             for (var i = 0; i < stack.Count; i++)
             {
                 any = true;
-                _applied.AddChild(BuildAppliedCard(stack[i].marking, stack[i].proto, i == 0, i == stack.Count - 1));
+                // Draw order only changes among markings on one layer, so the move buttons stop at that layer's ends;
+                // the Special tab lists markings that borrow several.
+                var part = stack[i].proto.BodyPart;
+                var first = !stack.Take(i).Any(s => s.proto.BodyPart == part);
+                var last = !stack.Skip(i + 1).Any(s => s.proto.BodyPart == part);
+                _applied.AddChild(BuildAppliedCard(stack[i].marking, stack[i].proto, first, last));
             }
         }
 
@@ -735,7 +746,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         var target = -1;
         for (var i = index + step; i >= 0 && i < list.Count; i += step)
         {
-            if (_markingManager.TryGetMarking(list[i], out var other) && other.BodyPart == _part)
+            if (_markingManager.TryGetMarking(list[i], out var other) && Tab(other) == _part && other.BodyPart == proto.BodyPart)
             {
                 target = i;
                 break;

@@ -1,5 +1,6 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Decals;
+using Content.Shared._WF.Performance; // WOLFGATE(Performance)
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Reactions;
@@ -230,7 +231,7 @@ namespace Content.Server.Atmos.EntitySystems
             }
 
             var fireEvent = new TileFireEvent(tile.Hotspot.Temperature, tile.Hotspot.Volume);
-            _entSet.Clear();
+            _entSet.ClearAndTrim(); // WOLFGATE(Performance): a crowded tile left the set huge and slowed every clear
             _lookup.GetLocalEntitiesIntersecting(tile.GridIndex, tile.GridIndices, _entSet, 0f);
 
             foreach (var entity in _entSet)

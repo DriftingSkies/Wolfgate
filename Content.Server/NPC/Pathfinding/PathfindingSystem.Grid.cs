@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Content.Server._WF.AsteroidMining; // WOLFGATE(Performance)
 using Content.Shared.NPC;
 using Content.Shared.Physics;
 using Robust.Shared.Collections;
@@ -298,6 +299,11 @@ public sealed partial class PathfindingSystem
 
     private void OnGridInit(GridInitializeEvent ev)
     {
+        // WOLFGATE(Performance) START: no NPC walks a mining rock, and building its nav chunks cost ~2.6 ms per new rock grid
+        if (HasComp<WFAsteroidGridComponent>(ev.EntityUid))
+            return;
+        // WOLFGATE END
+
         EnsureComp<GridPathfindingComponent>(ev.EntityUid);
 
         // Pathfinder refactor

@@ -36,6 +36,10 @@ public readonly record struct WFPilotOrdersCompletedEvent(EntityUid Mob);
 [ByRefEvent]
 public readonly record struct WFPilotDockedEvent(EntityUid Mob, EntityUid Grid, EntityUid TargetGrid);
 
+/// <summary>Raised broadcast when a ship flown by the simulation, with no crew aboard, docks at a target for a Dock order.</summary>
+[ByRefEvent]
+public readonly record struct WFCrewVirtualDockedEvent(EntityUid Grid, EntityUid TargetGrid);
+
 /// <summary>
 /// Raised on a crew pilot and broadcast when a Dock order is given up and the pilot holds. The target may no longer
 /// exist.

@@ -39,6 +39,7 @@ public sealed partial class WFReaverCampaignSystem
         {
             comp.NextPatrol += span;
             comp.NextReinforcement += span;
+            comp.NextBattery += span;
             if (comp.NextSortie != TimeSpan.Zero)
                 comp.NextSortie += span;
             if (comp.Hits > 0)

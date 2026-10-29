@@ -3,7 +3,7 @@
 Lets a ship hold, reel in or lock another ship or loose debris with a powered dish and console instead of docking.
 Crews put a `WFTractorBeamEmitter` (or the small dish) on the arrestor and a `WFComputerTractorBeam` on the same grid,
 then pick a radar contact to hold, reel to a set range or lock in place. A captured ship's helm shows who is holding
-it. Admins can spawn the `WFTractorTest` craft from the Wolfgate ship menu; the Roswell vessel ships with a dish.
+it. The Roswell vessel ships with a dish.
 
 Entry points: `TractorBeamSystem` and its `.Audio`, `.AutoCatch`, `.Collection` and `.Visuals` partials (physics, power and debris
 collection), `TractorBeamPhysics` (force and power maths), `TractorBeamStationKeepingSystem` and
@@ -90,15 +90,8 @@ toward the dish, with no collection speed cap or arrival brake. The dish's offse
 also applies rotational recoil to the arrestor. Debris can strike and damage
 equipment through normal collision and impact behavior; this is an intentional risk
 of collecting the wrong objects. The selected vessel uses the separate range control.
-
-### Test vessel
-
-Choose **TRACTOR TEST** (`WFTractorTest`) in the Wolfgate ship spawn menu. It is a
-small, flyable arrestor test craft with a foredeck dish, both control computers,
-thrusters, gyroscope, breathable cabin, port airlock, and a wired 2 MW test supply.
-The administrative vessel is not sold by normal shipyards. The power source is
-deliberately fuel-free for repeatable tests. Spawn another ship or grid ahead,
-lock it, and put loose objects between the dish and target to test collection.
+Collected trade crates land in the collecting ship's hold and count toward its cargo weight (CargoLoad). A beam-held
+grid's cargo is not added to the holding ship's thrust penalty: towing a loaded barge is a tug role for now.
 
 Default per-dish tuning (prototype fields):
 
@@ -240,7 +233,6 @@ piloted thrust/braking, crowded battles and the appearance of long beams.
 
 - [`Resources/Prototypes/_WF/TractorBeam/Entities/Structures/Machines/tractor_beam.yml`](../../../Resources/Prototypes/_WF/TractorBeam/Entities/Structures/Machines/tractor_beam.yml)
 - [`Resources/Prototypes/_WF/TractorBeam/Shipyard/roswell.yml`](../../../Resources/Prototypes/_WF/TractorBeam/Shipyard/roswell.yml)
-- [`Resources/Prototypes/_WF/TractorBeam/Shipyard/tractor_test.yml`](../../../Resources/Prototypes/_WF/TractorBeam/Shipyard/tractor_test.yml)
 
 ### Localization
 
@@ -264,7 +256,6 @@ piloted thrust/braking, crowded battles and the appearance of long beams.
 ### Shared maps
 
 - [`Resources/SharedMaps/_WF/TractorBeam/Shuttles/roswell.yml`](../../../Resources/SharedMaps/_WF/TractorBeam/Shuttles/roswell.yml)
-- [`Resources/SharedMaps/_WF/TractorBeam/Shuttles/tractor_test.yml`](../../../Resources/SharedMaps/_WF/TractorBeam/Shuttles/tractor_test.yml)
 
 ## Non-modular edits
 

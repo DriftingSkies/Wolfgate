@@ -33,6 +33,8 @@ public sealed partial class WFOreMagnetSystem : EntitySystem
     private readonly HashSet<Entity<ItemComponent>> _nearby = new();
     /// <summary>Stack types the scanning magnet holds a stack of with room left.</summary>
     private readonly HashSet<string> _openStacks = new();
+    /// <summary>Whether an ore prototype of a given area found a storage slot this scan; nothing is stored mid-scan.</summary>
+    private readonly Dictionary<(string? Proto, int Area), bool> _fits = new();
 
     public override void Initialize()
     {
@@ -150,10 +152,11 @@ public sealed partial class WFOreMagnetSystem : EntitySystem
         // The smallest ore that found no slot this scan; ore as big skips the storage grid search, which is costly.
         var noRoom = int.MaxValue;
         _nearby.Clear();
+        _fits.Clear();
         _lookup.GetEntitiesInRange(xform.Coordinates, magnet.Range, _nearby, LookupFlags.Dynamic | LookupFlags.Sundries);
         foreach (var (ore, item) in _nearby)
         {
-            if (magnet.Pulling.Count >= magnet.MaxPulls)
+            if (magnet.Pulling.Count >= magnet.MaxPulls || (free <= 0 && _openStacks.Count == 0))
                 break;
 
             if (HasComp<WFOreMagnetPulledComponent>(ore) ||
@@ -165,10 +168,12 @@ public sealed partial class WFOreMagnetSystem : EntitySystem
             if (size > free || (size > 0 && size >= noRoom))
                 continue;
 
-            if (!_storage.CanInsert(uid, ore, out var reason, storage, item))
+            if (!_storage.CanInsert(uid, ore, out _, storage, item, ignoreLocation: true))
+                continue;
+
+            if (size > 0 && !FitsGrid((uid, storage), (ore, item), size))
             {
-                if (size > 0 && reason == "comp-storage-insufficient-capacity")
-                    noRoom = size;
+                noRoom = size;
                 continue;
             }
 
@@ -184,6 +189,19 @@ public sealed partial class WFOreMagnetSystem : EntitySystem
             Dirty(ore, pulled);
             magnet.Pulling.Add(ore);
         }
+    }
+
+    /// <summary>Whether storage has a slot for the ore, searched once per prototype and size each scan.</summary>
+    private bool FitsGrid(Entity<StorageComponent> storage, Entity<ItemComponent> ore, int size)
+    {
+        var key = (Prototype(ore)?.ID, size);
+        if (!_fits.TryGetValue(key, out var fits))
+        {
+            fits = _storage.TryGetAvailableGridSpace((storage.Owner, storage.Comp), (ore.Owner, ore.Comp), out _);
+            _fits[key] = fits;
+        }
+
+        return fits;
     }
 
     /// <summary>Whether the ore is in range and nothing that blocks sight, such as a wall, stands between them.</summary>

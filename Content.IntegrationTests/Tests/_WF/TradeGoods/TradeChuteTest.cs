@@ -2,8 +2,10 @@
 using System.Numerics;
 using Content.Server._Crescent.Dispenser;
 using Content.Server._Mono.VendingMachine;
+using Content.Server._WF.TradeGoods.Components;
 using Content.Shared._Crescent.Dispenser;
 using Content.Shared.Interaction;
+using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
@@ -11,7 +13,8 @@ using Robust.Shared.Maths;
 namespace Content.IntegrationTests.Tests._WF.TradeGoods;
 
 /// <summary>
-/// A cargo chute refuses trade goods bought on its own grid and still pays for goods bought on another.
+/// A cargo chute refuses trade goods bought on its own grid and still pays for goods bought on another station and
+/// hauled in.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(DispenserSystem))]
@@ -40,43 +43,31 @@ public sealed class TradeChuteTest
         var user = EntityUid.Invalid;
         var local = EntityUid.Invalid;
         var imported = EntityUid.Invalid;
-        var payout = string.Empty;
-
-        int CountPayouts()
-        {
-            var count = 0;
-            var query = entMan.AllEntityQueryEnumerator<MetaDataComponent>();
-            while (query.MoveNext(out _, out var meta))
-            {
-                if (meta.EntityPrototype?.ID == payout)
-                    count++;
-            }
-
-            return count;
-        }
 
         await server.WaitAssertion(() =>
         {
+            entMan.AddComponent<WFTradeMarketMapComponent>(map.MapUid);
             var coords = map.GridCoords;
             chute = entMan.SpawnEntity(ChuteProto, coords);
             user = entMan.SpawnEntity(null, coords);
 
             var chuteComp = entMan.GetComponent<DispenserComponent>(chute);
-            Assert.That(chuteComp.Inventory.TryGetValue(CrateProto, out var cash), Is.True,
+            Assert.That(chuteComp.Inventory.ContainsKey(CrateProto), Is.True,
                 $"{ChuteProto} no longer takes {CrateProto}; pick a crate it does take.");
-            payout = cash!;
 
             var vendor = entMan.SpawnEntity(VendorProto, coords);
             local = entMan.SpawnEntity(CrateProto, coords);
             purchase.MarkAsPurchased(local, vendor, 1000);
 
+            // Another station well past the haul distance: its crate is stamped there, then carried to the chute.
             var otherGrid = mapMan.CreateGridEntity(map.MapId);
             mapSys.SetTile(otherGrid.Owner, otherGrid.Comp, Vector2i.Zero, map.Tile.Tile);
-            xformSys.SetLocalPosition(otherGrid.Owner, new Vector2(50f, 0f));
+            xformSys.SetLocalPosition(otherGrid.Owner, new Vector2(4000f, 0f));
 
             var otherVendor = entMan.SpawnEntity(VendorProto, new EntityCoordinates(otherGrid.Owner, 0.5f, 0.5f));
-            imported = entMan.SpawnEntity(CrateProto, coords);
+            imported = entMan.SpawnEntity(CrateProto, new EntityCoordinates(otherGrid.Owner, 0.5f, 0.5f));
             purchase.MarkAsPurchased(imported, otherVendor, 1000);
+            xformSys.SetCoordinates(imported, coords);
             Assert.That(purchase.WasPurchasedOnGrid(imported, otherGrid.Owner), Is.True,
                 "The imported crate wasn't stamped with the other grid, so it can't test goods bought elsewhere.");
 
@@ -89,7 +80,7 @@ public sealed class TradeChuteTest
         await server.WaitAssertion(() =>
         {
             Assert.That(entMan.Deleted(local), Is.False, "The chute took a crate bought on its own grid.");
-            Assert.That(CountPayouts(), Is.Zero, "The chute paid for a crate bought on its own grid.");
+            Assert.That(TradeTestHelpers.CashOnMap(entMan, map.MapId), Is.Zero, "The chute paid for a crate bought on its own grid.");
 
             Assert.That(interaction.InteractUsing(user, imported, chute, map.GridCoords, false, false), Is.True);
         });
@@ -98,10 +89,28 @@ public sealed class TradeChuteTest
 
         await server.WaitAssertion(() =>
         {
-            Assert.That(entMan.Deleted(imported), Is.True, "The chute refused a crate bought on another grid.");
-            Assert.That(CountPayouts(), Is.EqualTo(1), "The chute didn't pay for a crate bought on another grid.");
+            Assert.That(entMan.Deleted(imported), Is.True, "The chute refused a crate bought on another station.");
+            Assert.That(TradeTestHelpers.CashOnMap(entMan, map.MapId), Is.GreaterThan(0), "The chute didn't pay for a crate bought on another station.");
         });
 
         await pair.CleanReturnAsync();
+    }
+}
+
+/// <summary>Shared bits for the trade-goods tests.</summary>
+public static class TradeTestHelpers
+{
+    /// <summary>Spesos lying loose on a map, as cash stacks.</summary>
+    public static int CashOnMap(IEntityManager entMan, MapId map)
+    {
+        var total = 0;
+        var query = entMan.AllEntityQueryEnumerator<StackComponent, TransformComponent, MetaDataComponent>();
+        while (query.MoveNext(out _, out var stack, out var xform, out var meta))
+        {
+            if (xform.MapID == map && meta.EntityPrototype?.ID.StartsWith("SpaceCash") == true)
+                total += stack.Count;
+        }
+
+        return total;
     }
 }

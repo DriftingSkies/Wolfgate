@@ -1,3 +1,4 @@
+using System.Linq; // WOLFGATE(Drydock)
 using Content.Server._Mono.FireControl;
 using Content.Server._Mono.SpaceArtillery;
 using Content.Server._Mono.SpaceArtillery.Components;
@@ -101,18 +102,17 @@ public class HardpointSystem : SharedHardpointSystem
         if (InternalTimer < UpdateDelay)
             return;
         InternalTimer = 0;
-        foreach(var grid in QueuedGrids)
+        // WOLFGATE(Drydock) START: a queued grid with no fire control (a station, debris) returned instead of skipping,
+        // so the queue never cleared and no ship's rebuilt or reanchored guns registered again.
+        // Removing from the set mid-loop also threw once a queued grid was deleted.
+        var queued = QueuedGrids.ToList();
+        QueuedGrids.Clear();
+        foreach (var grid in queued)
         {
-            if (TerminatingOrDeleted(grid))
-            {
-                QueuedGrids.Remove(grid);
+            if (TerminatingOrDeleted(grid) || !HasComp<FireControlGridComponent>(grid))
                 continue;
-            }
-            HashSet<Entity<HardpointComponent>> lookupList = new();
-            if (!TryComp<FireControlGridComponent>(grid, out var gridFireControlComp))
-                return;
             _fcsSystem.RefreshControllables(grid);
         }
-        QueuedGrids.Clear();
+        // WOLFGATE END
     }
 }

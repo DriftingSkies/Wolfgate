@@ -47,9 +47,11 @@ binds:
 - function: ToggleStanding
   type: State
   key: R
-- function: ToggleFocus
-  type: State
-  key: Space
+# WOLFGATE START: camera focus toggle unbound by default; players hit it with Space by accident
+# - function: ToggleFocus
+#   type: State
+#   key: Space
+# WOLFGATE END
 # Shuttle
 - function: ShuttleStrafeUp
   type: State

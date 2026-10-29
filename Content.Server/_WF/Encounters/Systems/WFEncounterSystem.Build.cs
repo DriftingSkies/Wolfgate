@@ -61,6 +61,9 @@ public sealed partial class WFEncounterSystem
         public WFCrewMission? Mission;
         public bool ProfileSkills;
 
+        /// <summary>The retrofit under way, a step a tick for a staged hull.</summary>
+        public WFPirateRetrofitRun? Refit;
+
         /// <summary>Entities of a staged hull still to map-initialise, parents first.</summary>
         public readonly Stack<EntityUid> Uninitialised = new();
 
@@ -291,9 +294,18 @@ public sealed partial class WFEncounterSystem
     private bool BuildRefit(ShipBuild build)
     {
         var state = build.State;
-        // The seed keeps the same refit each time a simulated ship is spawned.
+        // The seed keeps the same refit each time a simulated ship is spawned. A staged hull takes a step a tick.
         if (state.Retrofit is { } retrofitId && _prototypes.TryIndex(retrofitId, out var retrofit))
-            state.Retrofitted = _retrofit.Apply(build.Grid, retrofit, state.Seed);
+        {
+            build.Refit ??= _retrofit.Begin(state.Seed);
+            while (!_retrofit.Step(build.Grid, retrofit, build.Refit))
+            {
+                if (build.Staged)
+                    return true;
+            }
+
+            state.Retrofitted = build.Refit.Armed;
+        }
 
         // Boarders come for the ship, not to shoot it up: their guns answer ship guns only. Docked, their clamps hold it.
         if (state.Hunt)
@@ -357,7 +369,9 @@ public sealed partial class WFEncounterSystem
 
         foreach (var tile in _planner.CargoTiles(build.Grid, build.Ship.Cargo))
         {
-            Spawn(_random.Pick(manifest.Crates), tile);
+            var crate = Spawn(_random.Pick(manifest.Crates), tile);
+            var loaded = new WFEncounterCargoLoadedEvent(build.Encounter, build.Grid, crate);
+            RaiseLocalEvent(ref loaded);
         }
     }
 

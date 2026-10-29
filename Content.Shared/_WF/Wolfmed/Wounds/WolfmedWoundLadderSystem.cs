@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared.FixedPoint;
@@ -153,10 +154,13 @@ public sealed class WolfmedWoundLadderSystem : EntitySystem
             _wounds.ChangeSeverity(wound.AsNullable(), room);
 
         var excess = add - FixedPoint2.Max(room, FixedPoint2.Zero);
-        var next = NextRung(part, ladder, tier);
+        // A rung that holds an object only exists with one: a rule adds it right after the wound is made.
+        var carrying = CompOrNull<WolfmedEmbeddedObjectComponent>(wound) is { Count: > 0 } || HoldsObject(wound.Comp.Prototype);
+        var next = NextRung(part, ladder, tier, carrying, out var skipped);
         if (next < 0)
         {
-            if (ladder.Dismembers)
+            // Only the real top rung arms a limb; a wound held back from the object rungs just stays full.
+            if (ladder.Dismembers && !skipped)
                 _amputation.MarkSeverable(part);
             return wound;
         }
@@ -204,16 +208,33 @@ public sealed class WolfmedWoundLadderSystem : EntitySystem
     }
 
     /// <summary>The next rung above <paramref name="tier"/> this part can carry, or -1.</summary>
-    private int NextRung(Entity<WoundableComponent> part, WolfmedWoundLadderPrototype ladder, int tier)
+    /// <summary>
+    /// The next rung the part can take, or -1. A rung that holds an object (a lodged round, shrapnel) is only climbed into
+    /// with something to carry; a gunshot that just gets worse used to become a lodged round with nothing to pull out.
+    /// <paramref name="skipped"/> says an object rung was passed over, so a -1 is not the top of the ladder.
+    /// </summary>
+    private int NextRung(Entity<WoundableComponent> part, WolfmedWoundLadderPrototype ladder, int tier, bool carrying,
+        out bool skipped)
     {
+        skipped = false;
         for (var next = tier + 1; next < ladder.Tiers.Count; next++)
         {
+            if (!carrying && HoldsObject(ladder.Tiers[next]))
+            {
+                skipped = true;
+                continue;
+            }
+
             if (_wounds.CanCreateWound(part.AsNullable(), ladder.Tiers[next]))
                 return next;
         }
 
         return -1;
     }
+
+    /// <summary>Whether a wound is defined by an object stuck in it, so it turns into another wound once that is out.</summary>
+    private bool HoldsObject(ProtoId<WoundPrototype> wound) =>
+        _prototypes.Index(wound).Behaviors.Any(behavior => behavior is WolfmedClearedWoundBehavior);
 
     /// <summary>A severity on one wound's scale expressed on another's, by share of each one's maximum.</summary>
     private FixedPoint2 Rescale(FixedPoint2 severity, ProtoId<WoundPrototype> from, ProtoId<WoundPrototype> to)

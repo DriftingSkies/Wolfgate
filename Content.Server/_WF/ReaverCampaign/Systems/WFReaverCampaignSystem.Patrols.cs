@@ -40,7 +40,7 @@ public sealed partial class WFReaverCampaignSystem
 
     /// <summary>One patrol per this many players, campaign-wide, within the cap.</summary>
     private const int PlayersPerPatrol = 5;
-    private const int MaxPatrols = 6;
+    private const int MaxPatrols = 10;
 
     /// <summary>How soon a stronghold tries again after a patrol that could not be sent.</summary>
     private static readonly TimeSpan PatrolRetry = TimeSpan.FromMinutes(1);
@@ -51,7 +51,7 @@ public sealed partial class WFReaverCampaignSystem
         var now = _timing.CurTime;
         var patrols = Patrols();
         var cap = Math.Clamp(Players() / PlayersPerPatrol, 1, MaxPatrols);
-        var each = ByTier(campaign.Patrols, state.Tier, 0);
+        var each = ByTier(campaign.Patrols, state.Tier, 0) + Bracket(campaign, state).Patrols;
         var active = patrols.Count;
         foreach (var stronghold in Strongholds().OrderBy(entry => entry.Comp1.NextPatrol))
         {
@@ -314,7 +314,7 @@ public sealed partial class WFReaverCampaignSystem
         List<Entity<WFReaverPatrolComponent, WFEncounterComponent>> patrols)
     {
         return patrols.Count < Math.Clamp(Players() / PlayersPerPatrol, 1, MaxPatrols)
-            && patrols.Count(patrol => patrol.Comp1.Stronghold == stronghold) < ByTier(campaign.Patrols, state.Tier, 0);
+            && patrols.Count(patrol => patrol.Comp1.Stronghold == stronghold) < ByTier(campaign.Patrols, state.Tier, 0) + Bracket(campaign, state).Patrols;
     }
 
     /// <summary>Lets its stronghold send another; destroyed, it frees the cell its lead died in and pays its bounty.</summary>

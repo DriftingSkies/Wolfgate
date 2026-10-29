@@ -65,7 +65,7 @@ threat tier. State is on `WFReaverStrongholdComponent` (`Level`, `NextReinforcem
 | level | reinforcement | ship |
 |---|---|---|
 | 1, 2 | `WFReaverReinforcementGunship` | Kalisto, Metis or Bastion: pilot, gunner, captain, 2 hands |
-| 3, 4 | `WFReaverReinforcementHeavy` | Saintie, Vulture or Ganymede: 3 hands, 2 guards, a full crew |
+| 3, 4, 5 (5: Standard and Dangerous) | `WFReaverReinforcementHeavy` | Saintie, Vulture or Ganymede: 3 hands, 2 guards, a full crew |
 
 All are `start: Manual`, `lifetime: Persistent`, off budget, `evades: false` and fly the hub's company and faction.
 
@@ -112,6 +112,27 @@ fly `GoTo` the hub (600 m) and `Dock` again, with the same deadline and dock-fai
 are ended with it, and the hits players landed on them are added to the hub's so that those who only shot a
 reinforcement are paid. The bounty is `strongholdBounty[tier]` times `1 + levelBountyScale * level` (credits scale the
 same way), so a level 4 hub pays three times a level 0 one. Ended by an admin or the round, it pays nothing.
+
+## Population and batteries
+
+Playtests at 40 to 70 players found the campaign too easy: only the patrol and raid caps read the player count, and
+both are maxed by 30. Each campaign now has `population` brackets keyed on the living players on the sector map (the
+peak of the last ten minutes, so a dip at shift change does not weaken a hub being founded). A bracket adds gear tiers
+(hull, refit and skill only; the threat score and its announcements stay honest), batteries, level cap, patrols,
+intercepts, strongholds, a shorter reinforcement interval and a bigger bounty, since the bounty is split among more
+ships. Standing hubs never lose what a higher bracket gave them. Standard and Dangerous list a fifth convoy so the
+bracket's extra level still counts at their top tier.
+
+The first stronghold, a regrouped one and the citadel are fortified with fixed gun batteries (gunboats with
+`platform: true`) at `batteryRange`. They hold station rather than orbit: it reads as a fortress, costs the pilot AI
+little and keeps clear of docking reinforcements. A big group can split roles: strip the batteries, which make the
+hub's shield heal faster, then break the hub. A lost battery is rebuilt each reinforcement interval while the hub is
+not under fire. Later strongholds, flown out as convoys, get none, which keeps the NPC count down.
+
+USSP hulls suit the Reavers and join their pools: the Ledokol capital and Buran frigate as hubs (Ledokol listed twice
+from tier 3), Buran as a heavy reinforcement, Natisk, Drakon and Tayfun as batteries and gunships, Natisk and Sulak as
+patrol leads, Natisk and Drakon as raiders, and Svinya and Strayk as wings. The hub refit sets their gun count like
+any other hull's.
 
 ## Founding convoys
 
@@ -435,6 +456,7 @@ stationClearance)` and `Stations(map)` on the scheduler.
 
 - A medevac tender beside a stronghold under assault (`WFEncounterMedicTrader` via `TryStartAt`).
 - A broken stronghold's lead as a claimable hulk (the derelict machinery).
+- A purpose-built battery grid in place of borrowed gunboat hulls; batteries left as salvage when the hub falls.
 - Relief freight to a liberated station; a traffic boost at low tiers.
 - A Wolfgate admin-tab window for the campaign.
 - Storyteller raider placement restricted to held and adjacent cells.

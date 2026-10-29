@@ -88,7 +88,7 @@ public sealed partial class WFReaverCampaignSystem
         if (!stronghold.Citadel)
             return LevelCap(campaign, state);
 
-        return campaign.Reinforcements.Count == 0 ? 0 : ByTier(campaign.MaxLevelByTier, state.Tier, 0) + campaign.CitadelExtraLevels;
+        return campaign.Reinforcements.Count == 0 ? 0 : ByTier(campaign.MaxLevelByTier, state.Tier, 0) + Bracket(campaign, state).Levels + campaign.CitadelExtraLevels;
     }
 
     /// <summary>The factor a stronghold's bounty and credits are scaled by: its level, and the citadel's scale.</summary>

@@ -1,0 +1,505 @@
+# Home-cooked British dishes. Ported from Meridian Rift PR #242. Cooking them earns Flavorol; the vendor versions in
+# packs.yml have none and come salted or sugared instead.
+
+- type: entity
+  parent: FoodInjectableBase
+  id: WFFoodBritishDishBase
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WF/BritishFood/dishes.rsi
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodHuntersChicken
+  components:
+  - type: Sprite
+    state: hunters_chicken
+  - type: FlavorProfile
+    flavors:
+    - chicken
+    - bacon
+    - WFBarbecueSauce
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 40
+        reagents:
+        - ReagentId: Protein
+          Quantity: 10
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Vitamin
+          Quantity: 4
+        - ReagentId: BbqSauce
+          Quantity: 5
+        - ReagentId: Flavorol
+          Quantity: 10
+  - type: Tag
+    tags:
+    - Meat
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodBeansOnToast
+  components:
+  - type: Sprite
+    state: beans_on_toast
+  - type: FlavorProfile
+    flavors:
+    - WFBakedBeans
+    - bread
+    - butter
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: Protein
+          Quantity: 8
+        - ReagentId: Vitamin
+          Quantity: 3
+        - ReagentId: Ketchup
+          Quantity: 3
+        - ReagentId: Flavorol
+          Quantity: 5
+
+# Eating it leaves the drinking glass the recipe took, as soups leave their bowls.
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodEtonMess
+  components:
+  - type: Sprite
+    state: eton_mess
+  - type: Food
+    trash:
+    - DrinkGlass
+    utensil: Spoon
+  - type: FlavorProfile
+    flavors:
+    - WFMeringue
+    - creamy
+    - berry
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Sugar
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 2
+        - ReagentId: Cream
+          Quantity: 2
+        - ReagentId: Flavorol
+          Quantity: 5
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodScones
+  components:
+  - type: Sprite
+    state: scones
+  - type: FlavorProfile
+    flavors:
+    - bread
+    - jelly
+    - WFClottedCream
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Sugar
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 2
+        - ReagentId: Flavorol
+          Quantity: 5
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodStickyToffeePudding
+  components:
+  - type: Sprite
+    state: sticky_toffee_pudding
+  - type: Food
+    utensil: Spoon
+  - type: FlavorProfile
+    flavors:
+    - sweetdough
+    - WFToffee
+    - WFDates
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: Sugar
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 1
+        - ReagentId: Flavorol
+          Quantity: 6
+
+# Battered in the assembler, then fried in the deep fryer.
+- type: entity
+  parent: FoodSnackChocolateBar
+  id: WFFoodMarsBarBattered
+  components:
+  - type: Sprite
+    sprite: _WF/BritishFood/dishes.rsi
+    state: deep_fried_mars_bar_battered
+  - type: FlavorProfile
+    flavors:
+    - chocolate
+    - batter
+  - type: DeepFrySpawn
+    output: WFFoodDeepFriedMarsBar
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodDeepFriedMarsBar
+  components:
+  - type: Sprite
+    state: deep_fried_mars_bar
+  - type: Item
+    size: Tiny
+  - type: FlavorProfile
+    flavors:
+    - chocolate
+    - WFToffee
+    - batter
+  # The fat clears from the blood slowly. One now and then never hurts; three in a few minutes strain the heart.
+  # The fat skips the stomach, so its share of the filling is in the nutriment.
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Sugar
+          Quantity: 4
+        - ReagentId: CocoaPowder
+          Quantity: 1
+        - ReagentId: Theobromine
+          Quantity: 3
+        - ReagentId: WFSaturatedFat
+          Quantity: 4
+        - ReagentId: Flavorol
+          Quantity: 3
+  - type: Tag
+    tags:
+    - FoodSnack
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodCornishPasty
+  components:
+  - type: Sprite
+    state: cornish_pasty
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - meaty
+    - potatoes
+    - peppery
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Protein
+          Quantity: 7
+        - ReagentId: Vitamin
+          Quantity: 3
+        - ReagentId: Flavorol
+          Quantity: 10
+  - type: Tag
+    tags:
+    - Meat
+
+# The bitten sprite shows once someone has had a go at it. Its volume must stay full to show whole.
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodCheesyBeanMelt
+  components:
+  - type: Sprite
+    layers:
+    - state: cheesy_bean_melt-2
+      map: [ "enum.SolutionContainerLayers.Fill" ]
+  - type: Appearance
+  - type: SolutionContainerVisuals
+    maxFillLevels: 2
+    fillBaseName: cheesy_bean_melt-
+    changeColor: false
+    solutionName: food
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - meaty
+    - WFBakedBeans
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 33
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Protein
+          Quantity: 8
+        - ReagentId: Vitamin
+          Quantity: 2
+        - ReagentId: Ketchup
+          Quantity: 3
+        - ReagentId: Flavorol
+          Quantity: 10
+  - type: Tag
+    tags:
+    - Meat
+
+# Pies
+
+- type: entity
+  parent: FoodPieBase
+  id: WFFoodPieSteakAle
+  components:
+  - type: Sprite
+    sprite: _WF/BritishFood/dishes.rsi
+    state: steak_ale_pie
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - meaty
+    - WFAleGravy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 45
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 15
+        - ReagentId: Protein
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Flavorol
+          Quantity: 10
+  - type: SliceableFood
+    count: 5
+    slice: WFFoodPieSteakAleSlice
+  - type: Tag
+    tags:
+    - Meat
+    - Pie
+
+- type: entity
+  parent: FoodPieSliceBase
+  id: WFFoodPieSteakAleSlice
+  components:
+  - type: Sprite
+    sprite: _WF/BritishFood/dishes.rsi
+    state: steak_ale_pie_slice
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - meaty
+    - WFAleGravy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: Vitamin
+          Quantity: 1
+        - ReagentId: Flavorol
+          Quantity: 2
+  - type: Tag
+    tags:
+    - Meat
+    - Pie
+    - Slice
+
+# Hand-raised pies: single servings with no tin, which cut into quarters.
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodPiePork
+  components:
+  - type: Sprite
+    state: pork_pie
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - meaty
+    - WFSavouryJelly
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 7
+        - ReagentId: Protein
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 1
+        - ReagentId: Flavorol
+          Quantity: 4
+  - type: SliceableFood
+    count: 4
+    slice: WFFoodPiePorkSlice
+  - type: Tag
+    tags:
+    - Meat
+    - Pie
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodPiePorkSlice
+  components:
+  - type: Sprite
+    state: pork_pie_slice
+  - type: Item
+    size: Tiny
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - meaty
+    - WFSavouryJelly
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1.75
+        - ReagentId: Protein
+          Quantity: 1
+        - ReagentId: Vitamin
+          Quantity: 0.25
+        - ReagentId: Flavorol
+          Quantity: 1
+  - type: Tag
+    tags:
+    - Meat
+    - Pie
+    - Slice
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodPieChickenMushroom
+  components:
+  - type: Sprite
+    state: chicken_mushroom_pie
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - chicken
+    - mushroom
+    - creamy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 7
+        - ReagentId: Protein
+          Quantity: 3
+        - ReagentId: Vitamin
+          Quantity: 2
+        - ReagentId: Flavorol
+          Quantity: 4
+  - type: SliceableFood
+    count: 4
+    slice: WFFoodPieChickenMushroomSlice
+  - type: Tag
+    tags:
+    - Meat
+    - Pie
+
+- type: entity
+  parent: WFFoodBritishDishBase
+  id: WFFoodPieChickenMushroomSlice
+  components:
+  - type: Sprite
+    state: chicken_mushroom_pie_slice
+  - type: Item
+    size: Tiny
+  - type: FlavorProfile
+    flavors:
+    - WFPastry
+    - chicken
+    - mushroom
+    - creamy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1.75
+        - ReagentId: Protein
+          Quantity: 0.75
+        - ReagentId: Vitamin
+          Quantity: 0.5
+        - ReagentId: Flavorol
+          Quantity: 1
+  - type: Tag
+    tags:
+    - Meat
+    - Pie
+    - Slice
+
+# Soup
+
+- type: entity
+  parent: FoodBowlBase
+  id: WFFoodSoupWelshCawl
+  components:
+  - type: Sprite
+    sprite: _WF/BritishFood/dishes.rsi
+    state: welsh_cawl
+  - type: FlavorProfile
+    flavors:
+    - richbroth
+    - meaty
+    - vegetables
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 35
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Protein
+          Quantity: 6
+        - ReagentId: Vitamin
+          Quantity: 6
+        - ReagentId: Water
+          Quantity: 5
+        - ReagentId: Flavorol
+          Quantity: 8
+  - type: Tag
+    tags:
+    - Soup
+    - Meat

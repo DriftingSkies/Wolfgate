@@ -45,6 +45,9 @@ public sealed partial class TraitSystem : EntitySystem
                 _whitelistSystem.IsBlacklistPass(traitPrototype.Blacklist, args.Mob))
                 continue;
 
+            if (_wfNewbie.TraitBlocked(traitPrototype, args.Player)) // WOLFGATE(Newbie): new players can't spawn with a kill-target trait
+                continue;
+
             // Add all components required by the prototype
             EntityManager.AddComponents(args.Mob, traitPrototype.Components, false);
 

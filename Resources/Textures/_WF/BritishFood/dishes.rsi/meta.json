@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Drawn by Mal (GitHub vinylspiders) for Meridian Rift, https://github.com/Aphelion-Moon/Meridian-Rift/pull/242; deep_fried_mars_bar_battered drawn by Mal for Wolfgate",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "hunters_chicken"
+    },
+    {
+      "name": "steak_ale_pie"
+    },
+    {
+      "name": "steak_ale_pie_slice"
+    },
+    {
+      "name": "pork_pie"
+    },
+    {
+      "name": "pork_pie_slice"
+    },
+    {
+      "name": "chicken_mushroom_pie"
+    },
+    {
+      "name": "chicken_mushroom_pie_slice"
+    },
+    {
+      "name": "cornish_pasty"
+    },
+    {
+      "name": "beans_on_toast"
+    },
+    {
+      "name": "welsh_cawl"
+    },
+    {
+      "name": "eton_mess"
+    },
+    {
+      "name": "scones"
+    },
+    {
+      "name": "sticky_toffee_pudding"
+    },
+    {
+      "name": "deep_fried_mars_bar"
+    },
+    {
+      "name": "cheesy_bean_melt-2"
+    },
+    {
+      "name": "cheesy_bean_melt-1"
+    },
+    {
+      "name": "deep_fried_mars_bar_battered"
+    }
+  ]
+}

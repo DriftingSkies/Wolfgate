@@ -125,6 +125,7 @@ public abstract partial class SharedRoofSystem : EntitySystem
         }
 
         roof.Data[chunkOrigin] = chunkData;
+        WFMarkChunk(roof, chunkOrigin); // WOLFGATE(Performance): delta state sends only changed chunks
         Dirty(grid.Owner, roof);
     }
 }

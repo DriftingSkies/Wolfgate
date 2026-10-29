@@ -99,6 +99,7 @@ public sealed partial class SymphonyPlayersSystem : EntitySystem
                 Ping = session.Channel?.Ping ?? 0,
                 IsAdmin = admin != null,
                 Deadminned = admin is { Active: false },
+                Stealth = admin is { Stealth: true },
                 AdminRank = admin?.Title ?? "",
                 IsAntag = antag,
                 Antags = antags,
@@ -140,6 +141,8 @@ public sealed partial class SymphonyPlayersSystem : EntitySystem
         [JsonPropertyName("ping")] public int Ping { get; set; }
         [JsonPropertyName("is_admin")] public bool IsAdmin { get; set; }
         [JsonPropertyName("deadminned")] public bool Deadminned { get; set; }
+        // Hidden from adminwho: the panel must not count or name them anywhere players can see.
+        [JsonPropertyName("stealth")] public bool Stealth { get; set; }
         [JsonPropertyName("admin_rank")] public string AdminRank { get; set; } = "";
         [JsonPropertyName("is_antag")] public bool IsAntag { get; set; }
         [JsonPropertyName("antags")] public List<string> Antags { get; set; } = new();

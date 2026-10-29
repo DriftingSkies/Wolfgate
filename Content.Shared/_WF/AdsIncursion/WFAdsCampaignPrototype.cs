@@ -96,6 +96,10 @@ public sealed partial class WFAdsCampaignPrototype : IPrototype
     [DataField]
     public int MaxChallenges = 1;
 
+    /// <summary>Pickets standing at once; no challenge is launched while pickets and challenges out reach it, and the oldest over it go home.</summary>
+    [DataField]
+    public int MaxPickets = 3;
+
     /// <summary>The threat score each tier from 1 to 5 starts at.</summary>
     [DataField]
     public List<float> TierThresholds = new() { 10f, 25f, 45f, 70f, 95f };

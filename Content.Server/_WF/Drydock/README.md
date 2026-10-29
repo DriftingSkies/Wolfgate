@@ -6,7 +6,8 @@ dockmaster from their helm (Hailing module) and books a berth. Any ship can also
 materials instead of credits. A `WFDrydockRepairVoucher` on the payer, in hand or a worn slot, pays for one whole
 repair at a console that takes credits; it is used up when the work starts and handed back if the job aborts
 (`WFDrydockSystem.Vouchers.cs`). `IssueShipVouchers` (used by Reaver bounties) binds one to each helping ship, which it
-alone can repair, and skips a ship that still holds an unused one.
+alone can repair, and skips a ship that still holds an unused one. A helper's ship is the deeded ship their player
+owns, or else the one they are aboard, and its owner holds the voucher when they are among the helpers.
 
 Entry points: `WFDrydockSystem` (berths, quotes, payment; `.Job.cs` for jobs and cranes, `.Booking.cs` for the hail
 service, bookings and guides, `.Materials.cs` for material bills), `WFShipRefitSystem` and `WFPartRefitSystem` (refit
@@ -45,7 +46,8 @@ A job restores missing hull tiles and entities and heals damage, from the ship's
 full power a repair takes at most 6 minutes (`maxDuration`) and a refit 2 (`maxRefitDuration`), crane deploy and
 travel included; longer work is sped up to fit, and lost power adds the time it costs. When a job ends, the console
 announces it at the console and to a payer elsewhere; it can also use a radio channel (`noticeChannel`), which no
-console sets.
+console sets. A rebuilt gun mounts on its hardpoint and rejoins the ship's fire control at the next hardpoint
+refresh, within a minute.
 
 ## Pricing
 
@@ -307,6 +309,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 
 ## Non-modular edits
 
+- [`Content.Server/_Crescent/Hardpoint/HardpointSystem.cs`](../../_Crescent/Hardpoint/HardpointSystem.cs): a queued grid with no fire control (a station, debris) returned instead of skipping,
 - [`Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs`](../../../Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs): a destroyed gun leaves a dead entry behind, which blocked rebuilt guns
 - [`Content.Shared/Construction/SharedFlatpackSystem.cs`](../../../Content.Shared/Construction/SharedFlatpackSystem.cs): salvaged hardware unpacks damaged
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml): single use, so a drydock repair undercuts printing another card

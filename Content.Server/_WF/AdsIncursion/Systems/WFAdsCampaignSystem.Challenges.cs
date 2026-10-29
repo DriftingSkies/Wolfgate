@@ -35,7 +35,8 @@ public sealed partial class WFAdsCampaignSystem
             return;
 
         state.NextChallenge = now + campaign.ChallengeInterval;
-        if (state.Tier < campaign.ChallengeTier || Interdictors().Count >= campaign.MaxChallenges)
+        var launched = Interdictors().Count;
+        if (state.Tier < campaign.ChallengeTier || launched >= campaign.MaxChallenges || launched + Pickets().Count >= campaign.MaxPickets)
             return;
 
         TryChallenge(out _);
@@ -254,7 +255,7 @@ public sealed partial class WFAdsCampaignSystem
         }
     }
 
-    /// <summary>Breaks pickets whose lead is out of the fight.</summary>
+    /// <summary>Breaks pickets whose lead is out of the fight, then sends home those no longer needed and the oldest over the cap.</summary>
     private void TendPickets()
     {
         foreach (var (uid, comp, encounter) in Pickets())
@@ -262,6 +263,60 @@ public sealed partial class WFAdsCampaignSystem
             if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
                 _encounters.Resolve(uid, LostResolution(encounter, comp.Lead));
         }
+
+        if (CampaignFor(State()) is not { } campaign)
+            return;
+
+        var standing = new List<Entity<WFAdsPicketComponent, WFEncounterComponent>>();
+        foreach (var picket in Pickets())
+        {
+            if (Redundant(campaign, picket))
+                RetirePicket(picket, "its cell is held without it");
+            else
+                standing.Add(picket);
+        }
+
+        foreach (var picket in standing.OrderBy(entry => entry.Comp1.Since).Take(standing.Count - campaign.MaxPickets))
+        {
+            RetirePicket(picket, "too many pickets stand");
+        }
+    }
+
+    /// <summary>
+    /// Whether a picket's cell stays ADS without it: another source holds it too, or ADS space surrounds it and the
+    /// nearest node takes it over.
+    /// </summary>
+    private bool Redundant(WFAdsCampaignPrototype campaign, Entity<WFAdsPicketComponent, WFEncounterComponent> picket)
+    {
+        var map = _territory.SectorMap;
+        var cell = picket.Comp1.Cell;
+        if (_territory.Owner(map, cell) != campaign.Faction)
+            return false;
+
+        if (_territory.Sources(map, cell).Any(source => source != picket.Owner))
+            return true;
+
+        for (var direction = 0; direction < 6; direction++)
+        {
+            var neighbour = cell.Neighbour(direction);
+            if (WFSectorHex.InSector(neighbour, _territory.CellSize) && _territory.Owner(map, neighbour) != campaign.Faction)
+                return false;
+        }
+
+        var nodes = Nodes();
+        if (nodes.Count == 0)
+            return false;
+
+        var nearest = nodes.MinBy(node => WFSectorHex.Distance(node.Comp1.Cell, cell));
+        return _territory.TryClaim(map, cell, campaign.Faction, nearest.Owner);
+    }
+
+    /// <summary>Sends a picket home: it is resolved completed and jumps out, freeing its cell unless something else holds it.</summary>
+    private void RetirePicket(Entity<WFAdsPicketComponent, WFEncounterComponent> picket, string reason)
+    {
+        Log.Info($"ADS picket {ToPrettyString(picket.Owner)} at {WFSectorHex.Callsign(picket.Comp1.Cell)} goes home: {reason}.");
+        _encounters.Resolve(picket.Owner, WFEncounterResolution.Completed);
+        _encounters.End(picket.Owner);
     }
 
     /// <summary>Settles an ADS challenge: won, its interdictor stays as a picket; lost or dropped, it withdraws.</summary>
@@ -294,6 +349,7 @@ public sealed partial class WFAdsCampaignSystem
         picket.Cell = cell;
         picket.Lead = comp.Lead;
         picket.Holder = comp.Holder;
+        picket.Since = _timing.CurTime;
         RemComp<WFAdsInterdictorComponent>(uid);
         _encounters.SetOrders(uid, picket.Lead, new List<WFCrewObjective> { new() { Kind = WFCrewObjectiveKind.Hold } });
         if (State() is { } state)

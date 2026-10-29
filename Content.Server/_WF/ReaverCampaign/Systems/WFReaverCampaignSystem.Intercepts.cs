@@ -65,7 +65,7 @@ public sealed partial class WFReaverCampaignSystem
 
         var patrols = Patrols();
         var active = patrols.Count(patrol => patrol.Comp1.Intercepting != null);
-        var cap = ByTier(campaign.Intercepts, state.Tier, 0);
+        var cap = ByTier(campaign.Intercepts, state.Tier, 0) + Bracket(campaign, state).Intercepts;
         foreach (var (ship, since) in state.InsideSince.OrderBy(entry => entry.Value).ToList())
         {
             if (active >= cap)

@@ -57,7 +57,7 @@ public sealed partial class WFReaverCampaignSystem
         var ordinary = OrdinaryConvoys();
         if (ordinary > 0
             || state.Finished
-            || standing.Count(stronghold => !stronghold.Comp1.Citadel) + ordinary >= campaign.MaxStrongholds
+            || standing.Count(stronghold => !stronghold.Comp1.Citadel) + ordinary >= campaign.MaxStrongholds + Bracket(campaign, state).Strongholds
             || _territory.Held(_territory.SectorMap, campaign.Faction).Count < campaign.CellsPerStronghold * standing.Count
             || state.LastFounded is { } last && now < last + campaign.FoundInterval
             || now < _nextFoundTry)
@@ -108,12 +108,15 @@ public sealed partial class WFReaverCampaignSystem
             || !WFSectorHex.InSector(_territory.CellOf(at), _territory.CellSize))
             return false;
 
-        var regroup = state.Founded > 0 && Strongholds().Count == 0;
+        SamplePopulation(state);
+        // The first stronghold and a regrouped one stand alone far out, so they are ringed with batteries.
+        var alone = Strongholds().Count == 0;
+        var regroup = state.Founded > 0 && alone;
         if (!SpawnEncounter(encounterPrototype, at, out var uid))
             return false;
 
         ShieldHub(campaign, uid, encounterPrototype.Ships[0].Key);
-        Establish(campaign, state, uid, encounterPrototype.Ships[0].Key, _territory.CellOf(at), at, regroup);
+        Establish(campaign, state, uid, encounterPrototype.Ships[0].Key, _territory.CellOf(at), at, regroup, fortified: alone);
         stronghold = uid;
         return true;
     }
@@ -127,7 +130,7 @@ public sealed partial class WFReaverCampaignSystem
 
     /// <summary>Makes an encounter a stronghold, or the citadel, in a cell: claims the cell and its rings, counts the founding and announces it at a point.</summary>
     private void Establish(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state, EntityUid uid, string lead,
-        WFSectorCell cell, MapCoordinates at, bool regroup, bool citadel = false)
+        WFSectorCell cell, MapCoordinates at, bool regroup, bool citadel = false, bool fortified = false)
     {
         var now = _timing.CurTime;
         var comp = EnsureComp<WFReaverStrongholdComponent>(uid);
@@ -135,7 +138,7 @@ public sealed partial class WFReaverCampaignSystem
         comp.Tier = state.Tier;
         comp.Lead = lead;
         comp.NextPatrol = now + FirstPatrolDelay;
-        comp.NextReinforcement = now + campaign.ReinforcementInterval;
+        comp.NextReinforcement = now + ReinforcementInterval(campaign);
         comp.Citadel = citadel;
         if (citadel)
             comp.BaseName = Loc.GetString("wf-reaver-name-citadel", ("designation", WFSectorHex.Callsign(cell)));
@@ -144,6 +147,9 @@ public sealed partial class WFReaverCampaignSystem
             SetLevel((uid, comp, encounter), 0);
 
         ClaimCells(campaign, at.MapId, cell, uid, citadel ? campaign.CitadelRings : 1);
+        if (fortified || citadel)
+            Fortify(campaign, state, uid);
+
         state.Founded++;
         state.NoStrongholdSince = null;
         state.Defeated = false;
@@ -155,7 +161,7 @@ public sealed partial class WFReaverCampaignSystem
             state.LastFounded = now;
 
         Recompute();
-        var bounty = ByTier(campaign.StrongholdBounty, state.Tier, 0);
+        var bounty = Scaled(ByTier(campaign.StrongholdBounty, state.Tier, 0));
         AnnouncePlace(campaign, citadel ? "wf-reaver-citadel-raised" : regroup ? "wf-reaver-regrouped" : "wf-reaver-founded", true,
             at.MapId, at.Position,
             ("callsign", WFSectorHex.Callsign(cell)),
@@ -438,12 +444,14 @@ public sealed partial class WFReaverCampaignSystem
             || !TryComp<WFEncounterComponent>(uid, out var encounter))
         {
             SweepReinforcements(stronghold, false);
+            SweepBatteries(uid, false);
             _territory.Release(uid);
             AfterStrongholdGone(state);
             return;
         }
 
         SweepReinforcements(stronghold, true);
+        SweepBatteries(uid, true);
         var (bounty, paid) = PayStrongholdBounty(campaign, state, (uid, comp, encounter));
         var freed = _territory.Release(uid);
         state.Broken++;

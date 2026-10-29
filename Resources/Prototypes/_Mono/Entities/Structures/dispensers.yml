@@ -67,6 +67,7 @@
       TradeGoodWeaponParts: SpaceCash6000
       TradeGoodFertilizer: SpaceCash5000
       TradeGoodShipComponents: SpaceCash6000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   id: PaperWrittenDispenserZvezdaRequesting
@@ -97,6 +98,7 @@
       TradeGoodFissionFuel: SpaceCash24000
       TradeGoodScrap: SpaceCash3000
       TradeGoodComponents: SpaceCash8000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   id: PaperWrittenDispenserCargoDepotRequesting
@@ -127,6 +129,7 @@
       TradeGoodLuxuries: SpaceCash18000
       TradeGoodFertilizer: SpaceCash5000
       TradeGoodShipComponents: SpaceCash8000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   id: PaperWrittenDispenserCargoDepotAltRequesting
@@ -165,6 +168,7 @@
       # TradeGoodMetals: SpaceCash2500
       TradeGoodMetals: SpaceCash5000
       # WOLFGATE END
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   id: PaperWrittenDispenserTradeMallRequesting
@@ -199,6 +203,7 @@
       TradeGoodShipComponents: SpaceCash6000
       TradeGoodFabric: SpaceCash4000
       TradeGoodMetals: SpaceCash3500
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   id: PaperWrittenDispenserCamelotRequesting
@@ -238,6 +243,7 @@
       # WOLFGATE END
       TradeGoodFabric: SpaceCash2500
       TradeGoodMetals: SpaceCash5000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   id: PaperWrittenDispenserHalcyonRequesting
@@ -312,6 +318,7 @@
       TradeGoodShipComponents: SpaceCash2000
       TradeGoodFabric: SpaceCash4000
       TradeGoodMetals: SpaceCash2000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   parent: BaseCargoChute
@@ -331,6 +338,7 @@
       TradeGoodShipComponents: SpaceCash4500
       TradeGoodFabric: SpaceCash4000
       TradeGoodMetals: SpaceCash3000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband
 
 - type: entity
   parent: BaseCargoChute
@@ -349,3 +357,4 @@
       TradeGoodShipComponents: SpaceCash4500
       TradeGoodFabric: SpaceCash3000
       TradeGoodMetals: SpaceCash4000
+      WFTradeGoodContraband: WFSpaceCash40000 # WOLFGATE(TradeGoods): open stations pay well for contraband

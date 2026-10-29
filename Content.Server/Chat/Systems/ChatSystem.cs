@@ -677,6 +677,9 @@ public sealed partial class ChatSystem : SharedChatSystem
             if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
                 continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
 
+            if (WfCantHear(listener, source, language)) // WOLFGATE(RMCCore): the deaf hear no whispers
+                continue;
+
             // Einstein Engines - Language begin
             var canUnderstandLanguage = _language.CanUnderstand(listener, language.ID);
             // How the entity perceives the message depends on whether it can understand its language
@@ -978,6 +981,15 @@ public sealed partial class ChatSystem : SharedChatSystem
                 continue;
             EntityUid listener = session.AttachedEntity.Value;
             var bubbleSource = channel is ChatChannel.Local or ChatChannel.Emotes ? data.BubbleSource ?? source : source; // WOLFGATE(Vehicles): a listener may see the speech bubble on another entity
+
+            // WOLFGATE(RMCCore) START: the deaf catch only a few letters of nearby speech
+            if (channel == ChatChannel.Local && WfCantHear(listener, source, language))
+            {
+                var deaf = WfDeafHeard(source, name, _language.CanUnderstand(listener, language.ID) ? message : obfuscated, language);
+                _chatManager.ChatMessageToOne(channel, deaf.Message, deaf.Wrapped, bubbleSource, entHideChat, session.Channel, author: author);
+                continue;
+            }
+            // WOLFGATE END
 
             // If the channel does not support languages, or the entity can understand the message, send the original message, otherwise send the obfuscated version
             if (channel == ChatChannel.LOOC || channel == ChatChannel.Emotes || _language.CanUnderstand(listener, language.ID))

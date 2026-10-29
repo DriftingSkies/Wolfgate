@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Drawn by Mal (GitHub vinylspiders) for Meridian Rift, https://github.com/Aphelion-Moon/Meridian-Rift/pull/242",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "hunters_chicken"
+    },
+    {
+      "name": "hunters_chicken_empty"
+    },
+    {
+      "name": "steak_ale_pie"
+    },
+    {
+      "name": "steak_ale_pie_empty"
+    },
+    {
+      "name": "steak_ale_pie_slice"
+    },
+    {
+      "name": "steak_ale_pie_slice_empty"
+    },
+    {
+      "name": "pork_pie"
+    },
+    {
+      "name": "pork_pie_empty"
+    },
+    {
+      "name": "chicken_mushroom_pie"
+    },
+    {
+      "name": "chicken_mushroom_pie_empty"
+    },
+    {
+      "name": "cornish_pasty"
+    },
+    {
+      "name": "cornish_pasty_empty"
+    },
+    {
+      "name": "welsh_cawl"
+    },
+    {
+      "name": "welsh_cawl_empty"
+    },
+    {
+      "name": "eton_mess"
+    },
+    {
+      "name": "eton_mess_empty"
+    },
+    {
+      "name": "scones"
+    },
+    {
+      "name": "scones_empty"
+    },
+    {
+      "name": "sticky_toffee_pudding"
+    },
+    {
+      "name": "sticky_toffee_pudding_empty"
+    },
+    {
+      "name": "cheesy_bean_melt"
+    },
+    {
+      "name": "cheesy_bean_melt_empty"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-﻿using Content.Shared.CCVar;
+﻿using Content.Shared._WF.SsdIndicator; // WOLFGATE(SsdIndicator)
+using Content.Shared.CCVar;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC;
@@ -30,7 +31,7 @@ public sealed partial class SSDIndicatorSystem : EntitySystem
     {
         if (component.IsSSD &&
             _cfg.GetCVar(CCVars.ICShowSSDIndicator) &&
-            !_mobState.IsDead(uid) &&
+            (!_mobState.IsDead(uid) || HasComp<WFDiedSsdComponent>(uid)) && // WOLFGATE(SsdIndicator): bodies that died while SSD keep the icon
             !HasComp<ActiveNPCComponent>(uid) &&
             TryComp<MindContainerComponent>(uid, out var mindContainer) &&
             mindContainer.ShowExamineInfo)

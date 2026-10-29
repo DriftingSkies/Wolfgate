@@ -3,7 +3,7 @@ using Content.Shared._WF.RMCCore.Deafness;
 
 namespace Content.Server._WF.RMCCore.Deafness;
 
-// WOLFGATE: RMC garbles heard speech for the deaf through a ChatSystem hook (ChatMessageOverrideInVoiceRangeEvent) that isn't ported; deaf mobs still can't hear radios.
+/// <summary>Deaf mobs hear no radio. Nearby speech is garbled for them in <c>ChatSystem.Deafness.cs</c>.</summary>
 public sealed partial class DeafnessSystem : SharedDeafnessSystem
 {
     public override void Initialize()

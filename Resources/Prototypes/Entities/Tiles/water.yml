@@ -28,12 +28,14 @@
         reagents:
         - ReagentId: Water
           Quantity: 9999999
-  - type: SolutionRegeneration
-    solution: tank
-    generated:
-      reagents:
-      - ReagentId: Water
-        Quantity: 100
+  # WOLFGATE(Performance) START: bottomless pools never need refilling, and each tile cost a check every tick
+  # - type: SolutionRegeneration
+  #   solution: tank
+  #   generated:
+  #     reagents:
+  #     - ReagentId: Water
+  #       Quantity: 100
+  # WOLFGATE END
   - type: DrainableSolution
     solution: pool
   - type: SpeedModifierContacts
@@ -102,12 +104,14 @@
         reagents:
         - ReagentId: Water
           Quantity: 9999999
-  - type: SolutionRegeneration
-    solution: tank
-    generated:
-      reagents:
-      - ReagentId: Water
-        Quantity: 100
+  # WOLFGATE(Performance) START: bottomless pools never need refilling, and each tile cost a check every tick
+  # - type: SolutionRegeneration
+  #   solution: tank
+  #   generated:
+  #     reagents:
+  #     - ReagentId: Water
+  #       Quantity: 100
+  # WOLFGATE END
   - type: DrainableSolution
     solution: pool
   - type: SpeedModifierContacts

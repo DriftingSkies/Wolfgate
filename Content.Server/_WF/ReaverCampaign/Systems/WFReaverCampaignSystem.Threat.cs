@@ -117,7 +117,7 @@ public sealed partial class WFReaverCampaignSystem
             ("tier", TierName(tier)),
             ("strongholds", Strongholds().Count),
             ("cells", _territory.Held(_territory.SectorMap, campaign.Faction).Count),
-            ("bounty", ByTier(campaign.StrongholdBounty, tier, 0))), rising);
+            ("bounty", Scaled(ByTier(campaign.StrongholdBounty, tier, 0)))), rising);
     }
 
     /// <summary>Sends the campaign's legend line for the sector map.</summary>
@@ -153,7 +153,7 @@ public sealed partial class WFReaverCampaignSystem
             ("tier", TierName(state.Tier)),
             ("strongholds", strongholds),
             ("cells", cells),
-            ("bounty", ByTier(campaign.StrongholdBounty, state.Tier, 0)),
+            ("bounty", Scaled(ByTier(campaign.StrongholdBounty, state.Tier, 0))),
             ("levels", LevelsText()),
             ("citadel", CitadelText())));
         _legend = campaign.Faction;

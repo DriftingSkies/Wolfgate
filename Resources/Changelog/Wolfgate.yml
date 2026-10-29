@@ -3992,3 +3992,185 @@ Entries:
   id: 100271
   time: '2026-10-29T02:16:08.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/405
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Reavers get stronger the more players are on: better ships, more
+        patrols, faster reinforcements and bigger bounties.
+    - type: Add
+      message: >-
+        The first Reaver stronghold is guarded by gun batteries that strengthen
+        its shield and are rebuilt over time.
+    - type: Add
+      message: Reavers now fly USSP ships, including the Ledokol as a stronghold.
+  id: 100272
+  time: '2026-10-29T05:35:50.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/400
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Fires no longer stop burning for a moment when something burns to
+        pieces.
+    - type: Fix
+      message: >-
+        Pirate ships no longer spawn with their guns offline for the first few
+        seconds.
+    - type: Tweak
+      message: >-
+        Reduced server lag from pirate ship refits, gravity changes, space wind
+        and shuttle movement.
+    - type: Tweak
+      message: >-
+        Reduced lag from asteroid fields, mining and ore magnets. Far-off
+        asteroids still show on radar.
+    - type: Tweak
+      message: >-
+        Reduced lag from buying ships, drydock shipbreaking, ships landed on
+        planets and planet water.
+    - type: Tweak
+      message: >-
+        The client now buffers a little more network state by default, so server
+        hitches are smoother.
+  id: 100273
+  time: '2026-10-29T06:05:50.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/397
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Trade-good prices now change during the round. Selling lowers a
+        station's price for a while, and shortages, booms, blockades, war
+        demand, raids and rush orders raise it.
+    - type: Add
+      message: >-
+        Every PDA has a Market app showing sell and buy prices for every
+        station, with alerts for market events. The best price for each good is
+        starred.
+    - type: Add
+      message: >-
+        Priority deliveries: a crate to carry from one station to another within
+        a deadline.
+    - type: Add
+      message: >-
+        NPC freighters carry sealed freight. Fences pay full price for it,
+        lawful chutes pay 60%.
+    - type: Add
+      message: >-
+        The Underground has a fence chute and sells smuggling crates. Open
+        chutes pay well for them, but customs may issue a warrant.
+    - type: Add
+      message: A wandering merchant encounter buys a few goods at a premium.
+    - type: Add
+      message: >-
+        Cargo has weight. A loaded ship loses thrust, lift and gravgen support,
+        and spools FTL slower. The helm shows a CARGO gauge.
+    - type: Tweak
+      message: >-
+        Trade crates must be hauled at least 3 km from where they were made
+        before a chute takes them.
+    - type: Tweak
+      message: >-
+        Station trade vendors charge more for goods that are scarce at that
+        station.
+    - type: Tweak
+      message: Cargo-console trading crates pay according to the destination's demand.
+    - type: Tweak
+      message: >-
+        Raiders and extorters go after ships with valuable cargo, and extortion
+        tolls grow with the cargo's value.
+  id: 100274
+  time: '2026-10-29T06:19:00.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/402
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: New players can no longer pick the Heretic trait.
+    - type: Fix
+      message: Bodies that die while SSD keep their SSD icon.
+    - type: Fix
+      message: >-
+        Drydock vouchers go to your own ship instead of whatever ship you were
+        standing on.
+    - type: Fix
+      message: The plant analyzer no longer fails to scan when you move slightly.
+    - type: Fix
+      message: Species visor markings show under a Special tab instead of Right Foot.
+    - type: Tweak
+      message: Cargo chutes tell you when they don't buy something.
+    - type: Tweak
+      message: Smelted ore is worth more than raw ore, so running a smeltery pays.
+    - type: Fix
+      message: >-
+        Lodged rounds no longer appear in gunshot wounds with nothing inside to
+        pull out.
+    - type: Tweak
+      message: >-
+        Space no longer toggles camera focus by default. You can still bind it
+        in the controls menu.
+    - type: Fix
+      message: >-
+        Deaf characters now only catch a few letters of nearby speech, and no
+        whispers.
+    - type: Fix
+      message: Nanite Repair Drones now repair chassis wounds.
+    - type: Fix
+      message: Avali who die while entering stasis no longer lie there invisible.
+    - type: Fix
+      message: The ChemMaster no longer drops clicks.
+    - type: Fix
+      message: Unanswered ahelps now ping staff on Discord.
+    - type: Fix
+      message: >-
+        A toggled item's hum stops for its holder when someone else turns it
+        off.
+    - type: Fix
+      message: Ship guns rebuilt at a drydock link back to the gunnery consoles.
+    - type: Remove
+      message: Removed the TRACTOR TEST vessel.
+    - type: Tweak
+      message: Feroxi no longer need to drink water.
+  id: 100275
+  time: '2026-10-29T06:58:29.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/407
+- author: Balls2zawall
+  changes:
+    - type: Add
+      message: >-
+        A hot new shuttle has entered the shipyards of the Underground. The
+        affectionately named UBM Excelsior is perfect for transporting personnel
+        in both style and safety.
+  id: 100276
+  time: '2026-10-29T18:08:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/409
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: Ore, ingots and sheets now weigh half as much in a ship's hold.
+    - type: Tweak
+      message: >-
+        Trade prices fall about half as fast per crate sold and take about twice
+        as long to recover, so one big haul no longer crashes a market.
+    - type: Add
+      message: >-
+        Selling smuggling crates or fencing stolen freight at the Underground
+        now funds the Ashfall Reavers: their strongholds reinforce and spread
+        faster.
+  id: 100277
+  time: '2026-10-29T18:27:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/411
+- author: vinylspiders
+  changes:
+    - type: Add
+      message: >-
+        Adds Mrs. Luvvit's Pie & Mash, the best locally sourced pies in the
+        sector! Find one in the trade hall at Caelestinus Central, or buy the
+        flatpack. Mrs. Luvvit accepts no liability for scalded tongues.
+    - type: Add
+      message: Adds 12 new cookable British dishes.
+    - type: Add
+      message: Adds Irn-Bru and dandelion & burdock cans.
+  id: 100278
+  time: '2026-10-29T18:36:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/410

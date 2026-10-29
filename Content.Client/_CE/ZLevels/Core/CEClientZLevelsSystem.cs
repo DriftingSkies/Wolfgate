@@ -87,7 +87,8 @@ internal sealed partial class CEClientZLevelsPreAnimSystem : EntitySystem
         while (query.MoveNext(out var uid, out var zPhys, out var sprite))
         {
             var localPosition = zPhys.LocalPosition;
-            _sprite.SetOffset((uid, sprite), zPhys.SpriteOffsetDefault);
+            if (zPhys.WFHeightOffset || localPosition != 0) // WOLFGATE(Performance): nothing to strip at height 0
+                _sprite.SetOffset((uid, sprite), zPhys.SpriteOffsetDefault);
 
             // WOLFGATE(Species) START: only touch the draw depth when the entity takes off or lands
             // Writing it every frame silently undid every other client-side depth change (sneaking under tables,
@@ -151,6 +152,12 @@ internal sealed partial class CEClientZLevelsPostAnimSystem : EntitySystem
         var query = EntityQueryEnumerator<CEZPhysicsComponent, SpriteComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var zPhys, out var sprite, out var xform))
         {
+            // WOLFGATE(Performance) START: height 0 adds nothing, so skip the world rotation and the offset write
+            zPhys.WFHeightOffset = zPhys.LocalPosition != 0;
+            if (!zPhys.WFHeightOffset)
+                continue;
+            // WOLFGATE END
+
             var rawZ = new Vector2(0, zPhys.LocalPosition * CESharedZLevelsSystem.ZLevelOffset);
             Vector2 zOffset;
             if (sprite.NoRotation)

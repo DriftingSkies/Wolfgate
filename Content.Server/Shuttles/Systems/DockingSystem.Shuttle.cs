@@ -263,6 +263,10 @@ public sealed partial class DockingSystem
                                 continue;
                             // End Frontier
 
+                            // WOLFGATE(Performance) START: rule out pairs that land elsewhere before the tile walk, not after
+                            // This loop runs for every valid placement, so walking tiles first went quadratic in dock
+                            // pairs: a six-dock ship at a 77-dock station took seconds. Same pairs pass as before.
+                            /*
                             if (!CanDock(
                                     other,
                                     _xformQuery.GetComponent(otherUid),
@@ -288,6 +292,29 @@ public sealed partial class DockingSystem
                             {
                                 continue;
                             }
+                            */
+                            if (!WFTryGetDockPlacement(
+                                    other,
+                                    _xformQuery.GetComponent(otherUid),
+                                    otherGrid,
+                                    _xformQuery.GetComponent(otherGridUid),
+                                    shuttleAABB,
+                                    out var otherMatty,
+                                    out var otherdockedAABB,
+                                    out var otherOffset))
+                            {
+                                continue;
+                            }
+
+                            otherdockedAABB = otherdockedAABB.Rounded(DockRoundingDigits);
+
+                            if (!targetAngle.Equals(otherOffset.Reduced()) ||
+                                !dockedAABB.Equals(otherdockedAABB) ||
+                                !ValidSpawn((targetGrid, targetGridGrid), otherMatty, otherOffset, shuttleFixturesComp, isMap))
+                            {
+                                continue;
+                            }
+                            // WOLFGATE END
 
                             dockedPorts.Add((otherUid, otherGridUid, other, otherGrid));
                         }
@@ -381,8 +408,11 @@ public sealed partial class DockingSystem
             // If it's not a map check it doesn't overlap the grid.
             else
             {
-                if (_mapSystem.GetLocalTilesIntersecting(gridEntity.Owner, gridEntity.Comp, aabb).Any())
+                // WOLFGATE(Performance) START: chunk-first walk, same result; this ran per dock pair for every fixture
+                // if (_mapSystem.GetLocalTilesIntersecting(gridEntity.Owner, gridEntity.Comp, aabb).Any())
+                if (WFAnyTileIntersecting(gridEntity, aabb))
                     return false;
+                // WOLFGATE END
             }
         }
 

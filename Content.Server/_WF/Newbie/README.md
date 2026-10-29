@@ -10,6 +10,8 @@ cvar). A hidden tag means the newbie rules don't cover them. The tag clears by i
 Admins still see the ⏲ mark in the ahelp list, which uses the separate `admin.new_player_threshold`.
 
 The rules that go with the tag are Conflict Rule 6 (`WFRuleConflictSixNewPlayers`), linked from the Monolith ruleset.
+A trait with `newbieBlocked: true` (Heretic, which makes its holder a kill target) is hidden in a tagged player's
+character editor and skipped by `TraitSystem` when they spawn.
 
 Once per join, a new player gets a welcome popup: a short introduction, a button to the rule and "Don't show this
 again" (`wf.newbie.show_welcome`, client only). A player under `wf.newbie.fresh_hours` (1 by default) then gets a
@@ -30,11 +32,13 @@ the icon. `Tools/_WF/Newbie/gen_newbie_icon.py` draws the plate.
 
 ### Server
 
+- [`Content.Server/_WF/Newbie/TraitSystem.Newbie.cs`](TraitSystem.Newbie.cs)
 - [`Content.Server/_WF/Newbie/WFNewbieTagSystem.cs`](WFNewbieTagSystem.cs)
 - [`Content.Server/_WF/Newbie/WFNewbieWelcomeSystem.cs`](WFNewbieWelcomeSystem.cs)
 
 ### Shared
 
+- [`Content.Shared/_WF/Newbie/TraitPrototype.Newbie.cs`](../../../Content.Shared/_WF/Newbie/TraitPrototype.Newbie.cs)
 - [`Content.Shared/_WF/Newbie/WFNewbieComponent.cs`](../../../Content.Shared/_WF/Newbie/WFNewbieComponent.cs)
 - [`Content.Shared/_WF/Newbie/WFNewbieCVars.cs`](../../../Content.Shared/_WF/Newbie/WFNewbieCVars.cs)
 - [`Content.Shared/_WF/Newbie/WFNewbieSystem.cs`](../../../Content.Shared/_WF/Newbie/WFNewbieSystem.cs)
@@ -42,6 +46,7 @@ the icon. `Tools/_WF/Newbie/gen_newbie_icon.py` draws the plate.
 
 ### Client
 
+- [`Content.Client/_WF/Newbie/HumanoidProfileEditor.Newbie.cs`](../../../Content.Client/_WF/Newbie/HumanoidProfileEditor.Newbie.cs)
 - [`Content.Client/_WF/Newbie/WFNewbieCrewWindow.xaml`](../../../Content.Client/_WF/Newbie/WFNewbieCrewWindow.xaml)
 - [`Content.Client/_WF/Newbie/WFNewbieCrewWindow.xaml.cs`](../../../Content.Client/_WF/Newbie/WFNewbieCrewWindow.xaml.cs)
 - [`Content.Client/_WF/Newbie/WFNewbieIconSystem.cs`](../../../Content.Client/_WF/Newbie/WFNewbieIconSystem.cs)
@@ -77,9 +82,14 @@ the icon. `Tools/_WF/Newbie/gen_newbie_icon.py` draws the plate.
 
 ## Non-modular edits
 
+- [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
+  - say why a newbie's saved pick won't apply
+  - new players can't take kill-target traits
 - [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs): welcome popups would open over other tests' windows
+- [`Content.Server/Traits/TraitSystem.cs`](../../Traits/TraitSystem.cs): new players can't spawn with a kill-target trait
 - [`Content.Shared/Shuttles/Systems/SharedShuttleSystem.IFF.cs`](../../../Content.Shared/Shuttles/Systems/SharedShuttleSystem.IFF.cs): tag a new player's ship
 - [`Resources/Prototypes/_Mono/Guidebook/rules.yml`](../../../Resources/Prototypes/_Mono/Guidebook/rules.yml)
+- [`Resources/Prototypes/_Mono/Traits/physical.yml`](../../../Resources/Prototypes/_Mono/Traits/physical.yml): it makes them a kill target, which the newbie rules forbid
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml): the new player rule
 
 <!-- WOLFGATE-GENERATED END -->

@@ -37,6 +37,9 @@ public sealed class WFExtortState
     /// <summary>The ship it is after.</summary>
     public EntityUid? Mark;
 
+    /// <summary>The toll named to the current mark, which rises with the cargo aboard.</summary>
+    public int? Toll;
+
     /// <summary>Hails the mark has had: those that rang aboard, and those that could not ring with it alongside.</summary>
     public int Attempts;
 

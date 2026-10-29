@@ -1,0 +1,39 @@
+- type: entity
+  parent: DrinkCanBaseFull
+  id: WFDrinkIrnBruCan
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: WFIrnBru
+          Quantity: 30
+  - type: Sprite
+    sprite: _WF/BritishFood/irn_bru.rsi
+  - type: Item
+    sprite: _WF/BritishFood/irn_bru.rsi
+  - type: Tag
+    tags:
+    - DrinkCan
+    - Recyclable
+
+- type: entity
+  parent: DrinkCanBaseFull
+  id: WFDrinkDandelionBurdockCan
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: WFDandelionBurdock
+          Quantity: 30
+  - type: Sprite
+    sprite: _WF/BritishFood/dandelion_burdock.rsi
+  - type: Item
+    sprite: _WF/BritishFood/dandelion_burdock.rsi
+  - type: Tag
+    tags:
+    - DrinkCan
+    - Recyclable

@@ -16,7 +16,8 @@
   - WFWolfmedAvulsionWound
 
 # Melee punctures and gunfire share one hole: a bullet into a stab wound makes it a gunshot wound. The two rungs that
-# hold an object sit at the top so a lodged round or fragment is never folded away.
+# hold an object sit at the top so a lodged round or fragment is never folded away. A wound only climbs into them while
+# something is lodged in it, so a gunshot that keeps getting worse stays a gunshot.
 - type: wolfmedWoundLadder
   id: WFWolfmedLadderPuncture
   tiers:

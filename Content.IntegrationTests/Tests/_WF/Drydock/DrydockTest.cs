@@ -393,6 +393,60 @@ public sealed class DrydockTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>
+    /// A rebuilt gun rejoins the ship's fire control. A queued grid with no fire control (here a station with a fresh
+    /// wall) used to stop the hardpoint refresh for good, so guns rebuilt at the drydock never linked to the consoles.
+    /// </summary>
+    [Test]
+    public async Task RebuiltGunRejoinsFireControl()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var station = await pair.CreateTestMap();
+        var map = await pair.CreateTestMap();
+        var grid = map.Grid;
+        var drydock = server.System<WFDrydockSystem>();
+        var console = new WFDrydockConsoleComponent { Berth = "T" };
+        EntityUid hardpoint = default, serverUid = default;
+
+        await server.WaitAssertion(() =>
+        {
+            SetFloor(pair, station.Grid, 2);
+            SpawnAnchored(pair, station.Grid, "WallSolid", new Vector2i(1, 1));
+
+            SetFloor(pair, grid, 5);
+            serverUid = em.SpawnEntity(null, map.GridCoords);
+            var fireServer = em.AddComponent<Content.Server._Mono.FireControl.FireControlServerComponent>(serverUid);
+            fireServer.ConnectedGrid = grid;
+            fireServer.ProcessingPower = 100;
+            em.EnsureComponent<Content.Server._Mono.FireControl.FireControlGridComponent>(grid).ControllingServer = serverUid;
+
+            hardpoint = SpawnAnchored(pair, grid, "HardpointEnergyHeavy", new Vector2i(2, 2));
+            var gun = SpawnAnchored(pair, grid, "WeaponTurretSunder", new Vector2i(2, 2));
+            server.System<ShipRepairSystem>().GenerateRepairData(grid);
+
+            em.DeleteEntity(gun);
+            foreach (var item in drydock.BuildRepairItems(grid, console))
+            {
+                drydock.ApplyItem(grid, item);
+            }
+        });
+
+        // The hardpoint system refreshes queued grids once a minute.
+        await server.WaitRunTicks(server.Timing.TickRate * 65);
+
+        await server.WaitAssertion(() =>
+        {
+            var rebuilt = em.GetComponent<HardpointComponent>(hardpoint).anchoring;
+            Assert.That(rebuilt, Is.Not.Null, "The gun was not rebuilt.");
+            Assert.That(em.GetComponent<Content.Server._Mono.FireControl.FireControllableComponent>(rebuilt!.Value).ControllingServer,
+                Is.EqualTo(serverUid), "The rebuilt gun did not rejoin the ship's fire control.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>Spawns and anchors a prototype on a grid tile.</summary>
     internal static EntityUid SpawnAnchored(TestPair pair, EntityUid grid, string proto, Vector2i tile)
     {
@@ -1642,6 +1696,46 @@ public sealed class DrydockTest
 
             em.DeleteEntity(voucher.Owner);
             Assert.That(drydock.IssueShipVouchers("WFDrydockRepairVoucher", crew), Is.EqualTo(1), "Once it is spent the ship can earn another.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A player's voucher goes to the ship they own, not the one they happen to be aboard, and the owner holds it.</summary>
+    [Test]
+    public async Task ShipVouchersGoToTheOwnersShip()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var drydock = server.System<WFDrydockSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var owned = CreateShip(pair, map.MapId);
+            var visited = CreateShip(pair, map.MapId, new Vector2(200f, 0f));
+            SetFloor(pair, owned, 2);
+            SetFloor(pair, visited, 2);
+            em.EnsureComponent<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(owned);
+            em.EnsureComponent<Content.Shared._NF.Shipyard.Components.ShuttleDeedComponent>(visited);
+            em.EnsureComponent<Content.Shared._NF.Shipyard.Components.ShipOwnershipComponent>(owned).OwnerUserId = pair.Player!.UserId;
+
+            var aboardOwned = em.SpawnEntity("MobHuman", new EntityCoordinates(owned, new Vector2(0.5f)));
+            var guest = em.SpawnEntity("MobHuman", new EntityCoordinates(visited, new Vector2(0.5f)));
+            var owner = em.SpawnEntity("MobHuman", new EntityCoordinates(visited, new Vector2(0.5f)));
+            server.PlayerMan.SetAttachedEntity(pair.Player, owner);
+
+            Assert.That(drydock.IssueShipVouchers("WFDrydockRepairVoucher", new List<EntityUid> { aboardOwned, guest, owner }), Is.EqualTo(2));
+            var vouchers = em.EntityQuery<WFDrydockRepairVoucherComponent>().ToDictionary(v => v.Ship!.Value, v => em.GetComponent<TransformComponent>(v.Owner).ParentUid);
+            Assert.Multiple(() =>
+            {
+                Assert.That(vouchers.Keys, Is.EquivalentTo(new[] { owned, visited }), "Each ship gets one voucher.");
+                Assert.That(vouchers[owned], Is.EqualTo(owner), "The owner holds their own ship's voucher, though aboard another.");
+                Assert.That(vouchers[visited], Is.EqualTo(guest), "The visited ship's voucher goes to the crew aboard, not the visiting owner.");
+            });
+
+            server.PlayerMan.SetAttachedEntity(pair.Player, null);
         });
 
         await pair.CleanReturnAsync();

@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -97,6 +98,100 @@ public sealed class WFAdsChallengeTest : WFAdsTestBase
             // It dies, and the cell goes with it.
             Server.System<WFEncounterSystem>().Resolve(interdictor, WFEncounterResolution.Destroyed);
             Assert.That(territory.Owner(map, Rival), Is.Null);
+        });
+    }
+
+    /// <summary>Founds a node, gives the Reavers each cell, challenges them all at once and lets every challenge be won.</summary>
+    private async Task<List<EntityUid>> WinChallenges(params WFSectorCell[] cells)
+    {
+        var interdictors = new List<EntityUid>();
+        await Server.WaitAssertion(() =>
+        {
+            var ads = Server.System<WFAdsCampaignSystem>();
+            FoundNode(AdsHome);
+            ads.SetTier(2);
+            foreach (var cell in cells)
+            {
+                ClaimForReavers(cell);
+                Assert.That(ads.TryChallenge(cell, out var interdictor), Is.True, $"Challenge {cell}.");
+                interdictors.Add(interdictor);
+            }
+
+            foreach (var interdictor in interdictors)
+            {
+                Place(LeadOf(interdictor), CentreOf(SEntMan.GetComponent<WFAdsInterdictorComponent>(interdictor).Target));
+            }
+
+            ads.CheckChallenges();
+        });
+
+        await RunTicks(60);
+        await Server.WaitPost(() =>
+        {
+            foreach (var cell in cells)
+            {
+                Server.System<WFSectorTerritorySystem>().SetContestDeadline(MapData.MapId, cell, STiming.CurTime);
+            }
+        });
+        await RunTicks(120);
+        return interdictors;
+    }
+
+    /// <summary>Four challenges won leave three pickets: the oldest over the cap goes home and its cell frees; no new challenge launches at the cap.</summary>
+    [Test]
+    public async Task PicketsAreCappedAtThree()
+    {
+        await StartAds();
+        // Apart from each other and off the sector's edge, so none ends up surrounded by ADS space.
+        var size = SectorControlCVars.CellSize.DefaultValue;
+        var cells = new List<WFSectorCell>();
+        foreach (var cell in WFSectorHex.Ring(AdsHome, 2))
+        {
+            if (WFSectorHex.Ring(cell, 1).All(neighbour => WFSectorHex.InSector(neighbour, size))
+                && cells.All(other => WFSectorHex.Distance(other, cell) >= 2))
+                cells.Add(cell);
+        }
+
+        Assert.That(cells, Has.Count.GreaterThanOrEqualTo(4));
+        cells = cells.Take(4).ToList();
+        await WinChallenges(cells.ToArray());
+        await Server.WaitAssertion(() =>
+        {
+            var ads = Server.System<WFAdsCampaignSystem>();
+            var territory = Server.System<WFSectorTerritorySystem>();
+            Assert.That(AdsState().ChallengesWon, Is.EqualTo(4));
+            var pickets = ads.Pickets();
+            Assert.That(pickets, Has.Count.EqualTo(3));
+            var gone = cells.Single(cell => pickets.All(picket => picket.Comp1.Cell != cell));
+            Assert.That(territory.Owner(MapData.MapId, gone), Is.Null, "The retired picket's cell frees.");
+
+            ClaimForReavers(FarCell(AdsHome, 3));
+            Assert.That(ads.TryChallenge(out _), Is.True, "A manual challenge still goes.");
+        });
+    }
+
+    /// <summary>A picket whose cell ADS space surrounds goes home, and the nearest node keeps the cell.</summary>
+    [Test]
+    public async Task SurroundedPicketHandsItsCellToTheNode()
+    {
+        await StartAds();
+        var picket = (await WinChallenges(Rival)).Single();
+        await Server.WaitAssertion(() =>
+        {
+            var ads = Server.System<WFAdsCampaignSystem>();
+            var territory = Server.System<WFSectorTerritorySystem>();
+            var map = MapData.MapId;
+            Assert.That(ads.Pickets().Select(entry => entry.Owner), Is.EqualTo(new[] { picket }));
+            foreach (var cell in WFSectorHex.Ring(Rival, 1))
+            {
+                territory.TryClaim(map, cell, Ads, null);
+            }
+
+            ads.CheckChallenges();
+            Assert.That(ads.Pickets(), Is.Empty);
+            Assert.That(territory.Owner(map, Rival)?.Id, Is.EqualTo(Ads), "The cell stays ADS.");
+            var node = ads.Nodes().Single().Owner;
+            Assert.That(territory.Sources(map, Rival), Is.EquivalentTo(new[] { node }), "The node holds it now.");
         });
     }
 

@@ -24,6 +24,11 @@ public sealed partial class XAERandomTeleportInvokerSystem : BaseXAESystem<XAERa
         var component = ent.Comp;
 
         var xform = Transform(args.Artifact);
+        // WOLFGATE(Xenoarch) START: an artifact in nullspace has no parent, so it would be parented to itself
+        if (!xform.ParentUid.IsValid())
+            return;
+        // WOLFGATE END
+
         // WOLFGATE(Xenoarch): server-only here, so nobody predicts the popup
         _popup.PopupCoordinates(Loc.GetString("blink-artifact-popup"), xform.Coordinates, PopupType.Medium);
 

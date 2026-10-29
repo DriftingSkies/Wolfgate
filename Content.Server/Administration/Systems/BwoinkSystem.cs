@@ -575,7 +575,7 @@ namespace Content.Server.Administration.Systems
                 if (!string.IsNullOrEmpty(roleMention))
                 {
                     var message = new StringBuilder();
-                    message.AppendLine($"<@&{roleMention}>");
+                    // message.AppendLine($"<@&{roleMention}>"); // WOLFGATE: a mention in an embed never pings; it goes in the content below
                     message.AppendLine("Unanswered SOS");
 
                     // WOLFGATE(AHelpResolve) START: no ahelp embed to link, so quote the messages
@@ -591,6 +591,11 @@ namespace Content.Server.Administration.Systems
                     }
 
                     payload = GeneratePayload(message.ToString(), existingEmbed.Username, userId, existingEmbed.CharacterName);
+                    // WOLFGATE START: only message content pings, and the payload suppresses every mention unless roles are allowed
+                    // Player text stays in the embed, where a mention can't ping; the content is only the configured role.
+                    payload.Content = $"<@&{roleMention}>";
+                    payload.AllowedMentions.AllowRoleMentions();
+                    // WOLFGATE END
 
                     var request = await _httpClient.PostAsync($"{_onCallUrl}?wait=true",
                         new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json"));

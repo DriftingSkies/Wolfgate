@@ -191,6 +191,8 @@
     # WOLFGATE END
   - type: MarketModifier
     mod: 8
+  # WOLFGATE(TradeGoods): trade goods cost the station's live price
+  - type: WFTradeVendor
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/robotics.rsi
     layers:

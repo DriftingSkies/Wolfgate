@@ -26,25 +26,26 @@
     vessels: [ Saintie ]
     # Hulls of several makes with docking ports for reinforcements. A fixed gun count keeps them alike; the campaign
     # anchors a shield on any without one. From tier 3 only hulls with six hardpoints or more.
+    # The USSP Ledokol capital and Buran frigate are favoured hubs: Ledokol is listed twice from tier 3.
     tiers:
     - minTier: 0
-      vessels: [ Balor, MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Pelican, Saintie ]
+      vessels: [ Balor, MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Pelican, Saintie, Ledokol, Buran ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitHubLight
     - minTier: 2
-      vessels: [ Balor, MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Pelican, Saintie ]
+      vessels: [ Balor, MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Pelican, Saintie, Ledokol, Buran ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitHubMedium
     - minTier: 3
-      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie ]
+      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie, Ledokol, Ledokol, Buran ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHubHeavy
     - minTier: 4
-      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie ]
+      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie, Ledokol, Ledokol, Buran ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitHubSiege
     - minTier: 5
-      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie ]
+      vessels: [ MClass, Intermission, WFHammerhead, Arkansaw, Claymore, Saintie, Ledokol, Ledokol, Buran ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitHubSiege
     deckhands: 4
@@ -100,6 +101,55 @@
     objectives:
     - kind: Hold
 
+# A gun battery: a gunboat that holds station round a fortified hub (the first stronghold, a regrouped one and the
+# citadel) and turns its guns on what comes near. The campaign places one per slot of the population bracket and
+# rebuilds a lost one each reinforcement interval; while any stands, the hub's shield heals faster.
+- type: wfEncounter
+  id: WFReaverBattery
+  name: wf-reaver-name-battery
+  start: Manual
+  lifetime: Persistent
+  category: Threat
+  icon: Skull
+  leash: 600
+  ships:
+  - key: lead
+    navigation: WFCrewNavigationRaider
+    side: reavers
+    faction: WFAshfallReavers
+    distress: false
+    company: WFAshfallReavers
+    profile: WFCrewProfilePirate
+    vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+    tiers:
+    - minTier: 0
+      vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+      skills: [ Green, Regular ]
+      retrofit: WFPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    deckhands: 0
+    captain: false
+    engineer: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    fuelStores: 6
+    skill: Regular
+    evades: false
+    platform: true
+    warnRange: 1200
+    attackRange: 800
+    zoneLines: wf-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+    objectives:
+    - kind: Hold
+
 # A gunship that flies in from the sector edge to dock with a hub and raise it to level 1 or 2. The campaign gives it
 # its orders: go to the hub, then dock.
 - type: wfEncounter
@@ -117,7 +167,7 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Kalisto, Metis, Bastion ]
+    vessels: [ Kalisto, Metis, Bastion, Sulak, Drakon, Tayfun ]
     deckhands: 2
     engineer: false
     skill: Regular
@@ -144,7 +194,7 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Saintie, Vulture, Ganymede ]
+    vessels: [ Saintie, Vulture, Ganymede, Buran ]
     deckhands: 3
     guards: 2
     fuelStores: 12
@@ -173,7 +223,7 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Kalisto, Metis, Bastion, Garm ]
+    vessels: [ Kalisto, Metis, Bastion, Garm, Natisk, Sulak ]
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
@@ -189,11 +239,11 @@
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Kalisto, Metis, Bastion, Garm ]
+      vessels: [ Kalisto, Metis, Bastion, Garm, Natisk, Sulak ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Kalisto, Metis, Bastion, Garm ]
+      vessels: [ Kalisto, Metis, Bastion, Garm, Natisk, Sulak ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 2
@@ -211,26 +261,26 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
     tiers:
     - minTier: 0
       vessels: [ Horsefly, Tick ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Horsefly, Tick, Carrion ]
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 0
@@ -266,7 +316,7 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
@@ -282,11 +332,11 @@
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 3
@@ -300,26 +350,26 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
     tiers:
     - minTier: 0
       vessels: [ Horsefly, Tick ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Horsefly, Tick, Carrion ]
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 0
@@ -353,7 +403,7 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
@@ -369,11 +419,11 @@
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 3
@@ -390,26 +440,26 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
     tiers:
     - minTier: 0
       vessels: [ Horsefly, Tick ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Horsefly, Tick, Carrion ]
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 0
@@ -485,7 +535,7 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
@@ -501,11 +551,11 @@
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 3
@@ -519,26 +569,26 @@
     distress: false
     company: WFAshfallReavers
     profile: WFCrewProfilePirate
-    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
     tiers:
     - minTier: 0
       vessels: [ Horsefly, Tick ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Horsefly, Tick, Carrion ]
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 0

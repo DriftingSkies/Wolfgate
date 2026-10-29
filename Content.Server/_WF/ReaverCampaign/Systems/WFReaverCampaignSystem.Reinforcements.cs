@@ -320,7 +320,7 @@ public sealed partial class WFReaverCampaignSystem
             home.Inbound = null;
 
         home.Reinforcements.Add(reinforcement);
-        home.NextReinforcement = _timing.CurTime + campaign.ReinforcementInterval;
+        home.NextReinforcement = _timing.CurTime + ReinforcementInterval(campaign);
         SetLevel((comp.Stronghold, home, hubEncounter), comp.Level);
         AnnounceRadio(Loc.GetString("wf-reaver-grown",
             ("callsign", WFSectorHex.Callsign(home.Cell)),
@@ -534,7 +534,7 @@ public sealed partial class WFReaverCampaignSystem
             if (home.Inbound == uid)
             {
                 home.Inbound = null;
-                home.NextReinforcement = _timing.CurTime + (campaign?.ReinforcementInterval ?? ReinforceRetry);
+                home.NextReinforcement = _timing.CurTime + (campaign != null ? ReinforcementInterval(campaign) : ReinforceRetry);
             }
         }
 

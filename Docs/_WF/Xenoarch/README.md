@@ -85,7 +85,9 @@ doesn't occur.
 - [`Content.Server/Xenoarchaeology/Artifact/XAE/XAELightFlickerSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAELightFlickerSystem.cs): wizden's xenoarch rework
 - [`Content.Server/Xenoarchaeology/Artifact/XAE/XAEPolymorphSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAEPolymorphSystem.cs): wizden's xenoarch rework
 - [`Content.Server/Xenoarchaeology/Artifact/XAE/XAEPortalSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAEPortalSystem.cs): wizden's xenoarch rework
-- [`Content.Server/Xenoarchaeology/Artifact/XAE/XAERandomTeleportInvokerSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAERandomTeleportInvokerSystem.cs): server-only here, so nobody predicts the popup
+- [`Content.Server/Xenoarchaeology/Artifact/XAE/XAERandomTeleportInvokerSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAERandomTeleportInvokerSystem.cs)
+  - an artifact in nullspace has no parent, so it would be parented to itself
+  - server-only here, so nobody predicts the popup
 - [`Content.Server/Xenoarchaeology/Artifact/XAE/XAEShuffleSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAEShuffleSystem.cs): wizden's xenoarch rework
 - [`Content.Server/Xenoarchaeology/Artifact/XAE/XAETelepathicSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAETelepathicSystem.cs): wizden's xenoarch rework
 - [`Content.Server/Xenoarchaeology/Artifact/XAE/XAETemperatureSystem.cs`](../../../Content.Server/Xenoarchaeology/Artifact/XAE/XAETemperatureSystem.cs): wizden's xenoarch rework

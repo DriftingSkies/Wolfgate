@@ -40,7 +40,7 @@ public sealed partial class WFReaverCampaignSystem
         Entity<WFReaverStrongholdComponent, WFEncounterComponent> stronghold)
     {
         var (uid, comp, encounter) = stronghold;
-        var factor = BountyFactor(campaign, comp);
+        var factor = BountyFactor(campaign, comp) * Bracket(campaign, state).BountyScale;
         var bounty = (int) (ByTier(campaign.StrongholdBounty, Math.Max(comp.Tier, state.Tier), 0) * factor);
         var attackers = encounter.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
         var supporters = new List<EntityUid>();
@@ -60,28 +60,38 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>Pays a destroyed patrol's bounty to those who hit it; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PayPatrolBounty(WFReaverCampaignPrototype campaign, EntityUid patrol)
     {
-        var (reward, extra) = Rewards(campaign, campaign.PatrolBounty, grant => grant.Patrol);
-        var helpers = new List<EntityUid>();
-        var paid = _rewards.PayBounty(patrol, reward, "destroying the Reaver patrol", null, extra, helpers);
-        _drydock.IssueShipVouchers(campaign.PatrolVoucher, helpers);
-        return (campaign.PatrolBounty, paid);
+        return PayMinorBounty(campaign, patrol, campaign.PatrolBounty, "destroying the Reaver patrol");
     }
 
     /// <summary>Pays a destroyed reinforcement's bounty, the patrol bounty, to those who hit it; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PayReinforcementBounty(WFReaverCampaignPrototype campaign, EntityUid reinforcement)
     {
-        var (reward, extra) = Rewards(campaign, campaign.PatrolBounty, grant => grant.Patrol);
+        return PayMinorBounty(campaign, reinforcement, campaign.PatrolBounty, "destroying the Reaver reinforcements");
+    }
+
+    /// <summary>Pays a destroyed battery's bounty to those who hit it; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayBatteryBounty(WFReaverCampaignPrototype campaign, EntityUid battery)
+    {
+        return PayMinorBounty(campaign, battery, campaign.BatteryBounty, "destroying the Reaver battery");
+    }
+
+    /// <summary>Pays a patrol-sized bounty, scaled by the bracket, with the patrol credits and voucher; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayMinorBounty(WFReaverCampaignPrototype campaign, EntityUid encounter, int spesos, string reason)
+    {
+        var scale = Bracket().BountyScale;
+        var bounty = (int) (spesos * scale);
+        var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Patrol * scale));
         var helpers = new List<EntityUid>();
-        var paid = _rewards.PayBounty(reinforcement, reward, "destroying the Reaver reinforcements", null, extra, helpers);
+        var paid = _rewards.PayBounty(encounter, reward, reason, null, extra, helpers);
         _drydock.IssueShipVouchers(campaign.PatrolVoucher, helpers);
-        return (campaign.PatrolBounty, paid);
+        return (bounty, paid);
     }
 
     /// <summary>Pays half the current tier's stronghold bounty, or half a level 0 citadel's, credits included, to those who hit a destroyed convoy; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PayConvoyBounty(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state, EntityUid convoy,
         bool citadel)
     {
-        var scale = citadel ? campaign.CitadelBountyScale : 1f;
+        var scale = (citadel ? campaign.CitadelBountyScale : 1f) * Bracket(campaign, state).BountyScale;
         var bounty = (int) (ByTier(campaign.StrongholdBounty, state.Tier, 0) * scale) / 2;
         var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * scale) / 2);
         var helpers = new List<EntityUid>();

@@ -46,7 +46,9 @@ public sealed partial class WFReaverCampaignSystem
     /// </summary>
     private bool SpawnEncounter(WFEncounterPrototype prototype, MapCoordinates at, out EntityUid uid, bool offBudget = false)
     {
-        if (!_encounters.TrySpawn(prototype, at, out uid, offBudget: offBudget))
+        // The bracket's gear goes on the tier the ships are picked by, not on the threat score.
+        var tier = State() is { } state ? GearTier(state) : (int?) null;
+        if (!_encounters.TrySpawn(prototype, at, out uid, offBudget: offBudget, tier: tier))
             return false;
         if (!TryComp<WFEncounterComponent>(uid, out var encounter))
             return true;

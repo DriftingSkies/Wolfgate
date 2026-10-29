@@ -43,6 +43,7 @@ public abstract partial class SharedGravitySystem : EntitySystem
     {
         base.Update(frameTime);
         UpdateShake();
+        WFUpdateGravityRefresh(); // WOLFGATE(Performance): batched weightlessness refresh
     }
 
     public bool IsWeightless(Entity<GravityAffectedComponent?> entity)
@@ -173,6 +174,11 @@ public abstract partial class SharedGravitySystem : EntitySystem
 
     private void OnGravityChange(ref GravityChangedEvent args)
     {
+        // WOLFGATE(Performance) START: batch per grid and walk only its entities, not every gravity-affected entity
+        WFQueueGravityRefresh(args.ChangedGridIndex);
+        return;
+        // WOLFGATE END
+#pragma warning disable CS0162 // WOLFGATE(Performance): upstream loop kept for merges
         var gravity = AllEntityQuery<GravityAffectedComponent, TransformComponent>();
         while(gravity.MoveNext(out var uid, out var weightless, out var xform))
         {
@@ -181,6 +187,7 @@ public abstract partial class SharedGravitySystem : EntitySystem
 
             RefreshWeightless((uid, weightless), !args.HasGravity);
         }
+#pragma warning restore CS0162 // WOLFGATE(Performance)
     }
 
     private void OnAlertsSync(AlertSyncEvent ev)

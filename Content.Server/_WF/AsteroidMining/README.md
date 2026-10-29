@@ -85,10 +85,11 @@ asteroids instead: plain rock with no ore, but the same gas deposits, anomaly ro
 and lights the cracks with heat, `WFMiningBeamOverlay` draws the beams, `WFAsteroidCrackOverlay` draws rocks breaking
 and `WFMiningBeamVisualizerSystem` spins the fork.
 
-Grids reach every client but a rock only reaches those within view range, and an asteroid's tiles are invisible, so a
-zoomed-out camera would see rocks pop in and out. Each asteroid grid carries a copy of its rock's look
-(`WFAsteroidGridVisuals`, kept in step by `WFAsteroidSystem`), and `WFAsteroidFarOverlay` draws the rock from it
-whenever the rock itself hasn't been sent.
+A rock only reaches clients within view range, and an asteroid's tiles are invisible, so a zoomed-out camera would see
+rocks pop in and out. Each asteroid grid carries a copy of its rock's look (`WFAsteroidGridVisuals`, kept in step by
+`WFAsteroidSystem`), and `WFAsteroidFarOverlay` draws the rock from it whenever the rock itself hasn't been sent.
+Worldgen rock grids themselves only reach players who have come within 128 m of them (Performance module,
+`WFAsteroidCullSystem`); for the rest, the overlay and radar draw the rock from its chunk's field list.
 
 Balance knobs: which kinds swap and the size budgets in `replacement.yml`, rock masses, shatter damage, fragment and
 boulder shares in `asteroids.yml`, ore weights and rock stats in `compositions.yml`, the bands in `WFAsteroidHeat`,

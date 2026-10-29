@@ -68,7 +68,7 @@ namespace Content.IntegrationTests.Tests.Gravity
             });
 
             // Let WeightlessSystem and GravitySystem tick
-            await pair.RunTicksSync(30);
+            await pair.RunTicksSync(60); // WOLFGATE(Performance): weightlessness now refreshes half a second after gravity changes
 
             await server.WaitAssertion(() =>
             {
@@ -78,7 +78,7 @@ namespace Content.IntegrationTests.Tests.Gravity
                 entityManager.DeleteEntity(generatorUid);
             });
 
-            await pair.RunTicksSync(30);
+            await pair.RunTicksSync(60); // WOLFGATE(Performance): batched weightlessness refresh
 
             await server.WaitAssertion(() =>
             {

@@ -271,9 +271,15 @@ unmarked:
   - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
     module: Traders
     reason: NPC traders, ATMs, deposit consoles and vents placed on the Central Command map.
+  - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
+    module: BritishFood
+    reason: Mrs. Luvvit's Pie & Mash in the trade hall kiosk row, in place of a potted plant and its front pane.
   - path: Resources/Maps/_Mono/POI/underground.yml
     module: LockableButtons
     reason: The two blast door buttons take Underground access; the station's crew has no Pirate access.
+  - path: Resources/Maps/_Mono/POI/underground.yml
+    module: TradeGoods
+    reason: The fence chute and the smuggling-crate vendor in the cargo bay, beside the sell pallets.
   - path: Resources/Maps/_Mono/POI/tsfmc_industry.yml
     module: null
     reason: Stellar Blessing lighting, colour-coded distro, fire suit lockers and extinguishers.

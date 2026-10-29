@@ -18,3 +18,6 @@ wf-newbie-crew-text = You've only just started. Don't buy your own ship yet: joi
 
     Pick a job from the [bold]Crew[/bold] list when you join, or start at a station and ask on the radio for a crew that needs a hand. Captains will show you how things work.
 wf-newbie-crew-ok = Okay
+
+# Character editor
+wf-newbie-trait-blocked = [color=#ff8c00]New players can't take this. You won't spawn with it while you have the newbie tag.[/color]

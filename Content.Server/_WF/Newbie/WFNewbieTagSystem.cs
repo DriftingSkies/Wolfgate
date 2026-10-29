@@ -3,6 +3,7 @@ using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Newbie;
 using Content.Shared.Ghost;
 using Content.Shared.Players.PlayTimeTracking;
+using Content.Shared.Traits;
 using Robust.Server.Player;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
@@ -79,6 +80,14 @@ public sealed partial class WFNewbieTagSystem : EntitySystem
             return false;
 
         return _netCfg.GetClientCVar(session.Channel, WFNewbieCVars.ShowTag);
+    }
+
+    /// <summary>
+    /// Whether a tagged player is barred from a trait marked <see cref="TraitPrototype.NewbieBlocked"/>.
+    /// </summary>
+    public bool TraitBlocked(TraitPrototype trait, ICommonSession session)
+    {
+        return trait.NewbieBlocked && IsTagged(session);
     }
 
     /// <summary>

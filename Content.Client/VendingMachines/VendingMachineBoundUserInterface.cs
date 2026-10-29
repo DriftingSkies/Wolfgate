@@ -64,6 +64,7 @@ namespace Content.Client.VendingMachines
                 _menu.Title = Loc.GetString("vending-machine-nf-fallback-title");
             // End Frontier: no exceptions
             _menu.OnItemSelected += OnItemSelected;
+            _menu.WfVendor = Owner; // WOLFGATE(TradeGoods): the menu reads the vendor's live trade-good prices
             Update();
         }
 

@@ -124,7 +124,7 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>The cap on a stronghold's level at the current tier, and the length of the reinforcement list.</summary>
     private int LevelCap(WFReaverCampaignPrototype campaign, WFReaverCampaignComponent state)
     {
-        return Math.Min(ByTier(campaign.MaxLevelByTier, state.Tier, 0), campaign.Reinforcements.Count);
+        return Math.Min(ByTier(campaign.MaxLevelByTier, state.Tier, 0) + Bracket(campaign, state).Levels, campaign.Reinforcements.Count);
     }
 
     /// <summary>The factor a stronghold's bounty is scaled by for its level.</summary>

@@ -1,0 +1,35 @@
+#Author: Gooorn (Discord)
+- type: vessel
+  id: WFUBMExcelsior
+  parent: BaseVessel
+  name: 'UBM Excelsior'
+  description: 'A sleek transport shuttle with an elegant backroom for all your executive needs, furbished with dispensers, a drinks cabinet and a RealLeather™ long sofa! Lightly armed and armored, with both a basic FTL drive and a shield.'
+  price: 57400 # appraised at 42023
+  category: Small # 234 tiles
+  group: Syndicate # Underground
+  shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/ubm_excelsior.yml
+  guidebookPage: null
+  class:
+  - Fighter
+  - Mercenary
+  - Escort
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WFUBMExcelsior
+  mapName: 'UBM Excelsior'
+  mapPath: /SharedMaps/_WF/Shipyard/Shuttles/ubm_excelsior.yml
+  minPlayers: 0
+  stations:
+    WFUBMExcelsior:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'UBM Excelsior {1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

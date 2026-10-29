@@ -5,6 +5,7 @@
 
 using System.Numerics;
 using Content.Shared._CE.ZLevels.Core.Components;
+using Content.Shared._WF.Performance; // WOLFGATE(Performance)
 using Content.Shared.Chasm;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
@@ -16,6 +17,7 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 public abstract partial class CESharedZLevelsSystem
 {
     private readonly List<EntityUid> _dirtyMovementBodies = new();
+    private readonly HashSet<EntityUid> _wfDirtyMovementSet = new(); // WOLFGATE(Performance): List.Contains per MoveEvent went quadratic in battles
 
     private void InitializeMovement()
     {
@@ -144,7 +146,7 @@ public abstract partial class CESharedZLevelsSystem
 
     private void OnMoveEvent(Entity<CEZPhysicsComponent> entity, ref MoveEvent args)
     {
-        if (_dirtyMovementBodies.Contains(entity))
+        if (!_wfDirtyMovementSet.Add(entity)) // WOLFGATE(Performance): set lookup instead of List.Contains
             return;
 
         _dirtyMovementBodies.Add(entity);
@@ -522,6 +524,7 @@ public abstract partial class CESharedZLevelsSystem
         }
 
         _dirtyMovementBodies.Clear();
+        _wfDirtyMovementSet.ClearAndTrim(); // WOLFGATE(Performance): release a battle's oversized set afterwards
     }
 }
 

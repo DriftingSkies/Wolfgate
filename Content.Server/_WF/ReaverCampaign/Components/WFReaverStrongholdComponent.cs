@@ -97,4 +97,24 @@ public sealed partial class WFReaverStrongholdComponent : Component
     /// <summary>Whether it is the tier 5 citadel: more rings, a higher level cap, a scaled bounty, and the Reavers finished when it falls.</summary>
     [ViewVariables]
     public bool Citadel;
+
+    /// <summary>Whether gun batteries hold station round it: the first stronghold, a regrouped one and the citadel.</summary>
+    [ViewVariables]
+    public bool Fortified;
+
+    /// <summary>How many batteries it keeps; it only grows, with the population.</summary>
+    [ViewVariables]
+    public int BatterySlots;
+
+    /// <summary>The bearing of its first battery, in radians; the rest are spaced evenly round the hub.</summary>
+    [ViewVariables]
+    public float BatteryBearing;
+
+    /// <summary>When it may next rebuild a lost battery.</summary>
+    [ViewVariables]
+    public TimeSpan NextBattery;
+
+    /// <summary>What its shield healed per second before its batteries strengthened it.</summary>
+    [ViewVariables]
+    public float? ShieldHeal;
 }

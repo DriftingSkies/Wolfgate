@@ -35,7 +35,8 @@ public sealed partial class WFReaverCampaignSystem
     {
         return HasComp<WFReaverStrongholdComponent>(uid) || HasComp<WFReaverReinforcementComponent>(uid)
             || HasComp<WFReaverPatrolComponent>(uid) || HasComp<WFReaverRaidComponent>(uid)
-            || HasComp<WFReaverConvoyComponent>(uid) || HasComp<WFReaverResponseComponent>(uid);
+            || HasComp<WFReaverConvoyComponent>(uid) || HasComp<WFReaverResponseComponent>(uid)
+            || HasComp<WFReaverBatteryComponent>(uid);
     }
 
     /// <summary>Whether a campaign encounter's lead ship is in a disputed cell.</summary>

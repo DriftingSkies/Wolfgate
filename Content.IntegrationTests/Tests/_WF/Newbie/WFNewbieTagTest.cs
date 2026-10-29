@@ -13,6 +13,7 @@ using Content.Shared.Mind;
 using Content.Shared.Players;
 using Content.Shared.Shuttles.Systems;
 using Content.Shared.StatusIcon;
+using Content.Shared.Traits;
 using NUnit.Framework;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
@@ -118,6 +119,39 @@ public sealed class WFNewbieTagTest : GameTest
             Assert.That(shown, Is.EqualTo((true, true)), "the tag did not come back when turned on again.");
             Assert.That(left, Is.False, "a body kept the tag after its player left it.");
             Assert.That(veteran, Is.EqualTo((false, false)), "a player past the threshold is still tagged.");
+        });
+    }
+
+    /// <summary>A tagged player can't take Heretic, which makes them a kill target; untagged players and other traits are unaffected.</summary>
+    [Test]
+    public async Task HereticBlockedForNewbiesTest()
+    {
+        Assert.That(ServerSession, Is.Not.Null, "This test needs a connected pair.");
+        var newbie = SEntMan.System<WFNewbieTagSystem>();
+        var heretic = Server.ProtoMan.Index<TraitPrototype>("Heretic");
+        var plain = Server.ProtoMan.Index<TraitPrototype>("Blindness");
+
+        // Far above any playtime the pooled session may have built up.
+        await OverrideCVar(Side.Server, WFNewbieCVars.Hours, 100000f);
+        bool tagged = false, blocked = false, plainBlocked = true;
+        await Server.WaitPost(() =>
+        {
+            tagged = newbie.IsTagged(ServerSession!);
+            blocked = newbie.TraitBlocked(heretic, ServerSession!);
+            plainBlocked = newbie.TraitBlocked(plain, ServerSession!);
+        });
+
+        await OverrideCVar(Side.Server, WFNewbieCVars.Hours, 0f);
+        var veteranBlocked = true;
+        await Server.WaitPost(() => veteranBlocked = newbie.TraitBlocked(heretic, ServerSession!));
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(heretic.NewbieBlocked, Is.True, "Heretic is not marked as closed to new players.");
+            Assert.That(tagged, Is.True, "the player was not tagged, so the test proves nothing.");
+            Assert.That(blocked, Is.True, "a tagged player can still take Heretic.");
+            Assert.That(plainBlocked, Is.False, "a trait with no newbie flag was blocked.");
+            Assert.That(veteranBlocked, Is.False, "an untagged player was blocked from Heretic.");
         });
     }
 

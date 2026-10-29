@@ -5,3 +5,5 @@
   minDepthToProcess: 25
   # 2 ms a tick per 100 rocks waiting, so a field unloads over a few seconds.
   timeDeletePerObject: 0.02
+  # Rocks wait a minute before deletion, so a chunk a ship comes back to keeps its field instead of respawning it.
+  minAge: 60

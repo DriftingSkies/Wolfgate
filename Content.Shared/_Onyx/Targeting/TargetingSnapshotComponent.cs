@@ -9,6 +9,7 @@ public sealed partial class TargetingSnapshotComponent : Component
     [DataField, AutoNetworkedField]
     public TargetBodyPart RequestedTarget = TargetBodyPart.Torso; // WOLFGATE(Wolfmed): D9: TargetBodyPart.Chest does not exist
 
-    [DataField, AutoNetworkedField]
+    // WOLFGATE(Performance): not networked; a thrown item outlives its thrower and sent a deleted entity every state
+    [DataField]
     public EntityUid? Shooter;
 }

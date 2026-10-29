@@ -59,7 +59,10 @@ namespace Content.Server.Atmos.EntitySystems
 
         private static readonly TimeSpan UpdateTime = TimeSpan.FromSeconds(1);
 
-        private readonly Dictionary<Entity<FlammableComponent>, float> _fireEvents = new();
+        // WOLFGATE(Performance): double buffer, so fire events queued while igniting cannot break the loop
+        private Dictionary<Entity<FlammableComponent>, float> _fireEvents = new();
+        private Dictionary<Entity<FlammableComponent>, float> _processingFireEvents = new(); // WOLFGATE(Performance)
+        private readonly List<Entity<FlammableComponent>> _wfDueFlammables = new(); // WOLFGATE(Performance): see Update
 
         public override void Initialize()
         {
@@ -459,8 +462,14 @@ namespace Content.Server.Atmos.EntitySystems
         public override void Update(float frameTime)
         {
             // process all fire events
-            foreach (var (flammable, deltaTemp) in _fireEvents)
+            // WOLFGATE(Performance) START: swap buffers so events raised while igniting wait for the next tick
+            (_fireEvents, _processingFireEvents) = (_processingFireEvents, _fireEvents);
+            foreach (var (flammable, deltaTemp) in _processingFireEvents)
             {
+                // Held over from last tick, so the entity may be gone by now.
+                if (flammable.Comp.Deleted || TerminatingOrDeleted(flammable.Owner))
+                    continue;
+            // WOLFGATE END
                 // 100 -> 1, 200 -> 2, 400 -> 3...
                 var fireStackMod = Math.Max(MathF.Log2(deltaTemp / 100) + 1, 0);
                 var fireStackDelta = fireStackMod - flammable.Comp.FireStacks;
@@ -471,14 +480,25 @@ namespace Content.Server.Atmos.EntitySystems
                 }
                 Ignite(flammableEntity, flammableEntity, flammable);
             }
-            _fireEvents.Clear();
+            _processingFireEvents.Clear(); // WOLFGATE(Performance): clear the processed buffer
 
             var curTime = _timing.CurTime;
 
             // TODO: This needs cleanup to take off the crust from TemperatureComponent and shit.
+            // WOLFGATE(Performance) START: burning can destroy things and spawn flammable debris, which broke the live query
+            _wfDueFlammables.Clear();
             var query = EntityQueryEnumerator<FlammableComponent, TransformComponent>();
-            while (query.MoveNext(out var uid, out var flammable, out _))
+            while (query.MoveNext(out var dueUid, out var dueFlammable, out _))
             {
+                if (curTime >= dueFlammable.NextUpdate)
+                    _wfDueFlammables.Add((dueUid, dueFlammable));
+            }
+
+            foreach (var (uid, flammable) in _wfDueFlammables)
+            {
+                if (flammable.Deleted || TerminatingOrDeleted(uid))
+                    continue;
+            // WOLFGATE END
                 if (curTime < flammable.NextUpdate)
                     continue;
 

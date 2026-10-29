@@ -124,6 +124,7 @@ public sealed partial class CEZLevelsSystem
         // Coverage is only ever valid for the tick it was taken on, and grids die; drop the lot
         // rather than carrying stale entries for deleted hulls.
         _groundCoverageCache.Clear();
+        WfPruneGroundSamples(); // WOLFGATE(Performance)
 
         var query = EntityQueryEnumerator<CEZGridFallerComponent, MapGridComponent>();
         while (query.MoveNext(out var uid, out _, out _))
@@ -158,7 +159,10 @@ public sealed partial class CEZLevelsSystem
         if (_groundCoverageCache.TryGetValue(grid, out var cached) && cached.Tick == _timing.CurTick)
             return (cached.Grip, cached.Contact);
 
-        var sample = ComputeGroundSample(grid);
+        // WOLFGATE(Performance) START: reuse a parked grid's sample instead of re-walking its hull every tick
+        // var sample = ComputeGroundSample(grid);
+        var sample = WfGroundSample(grid);
+        // WOLFGATE END
         _groundCoverageCache[grid] = (_timing.CurTick, sample.Grip, sample.Contact);
         return sample;
     }

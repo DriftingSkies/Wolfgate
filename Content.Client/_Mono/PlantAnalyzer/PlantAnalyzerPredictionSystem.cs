@@ -38,7 +38,7 @@ public sealed partial class PlantAnalyzerPredictionSystem : EntitySystem
             NeedHand = true,
             BreakOnDamage = true,
             BreakOnMove = true,
-            MovementThreshold = 0.01f
+            MovementThreshold = 0.3f // WOLFGATE: was 0.01, so the slightest drift silently cancelled the scan
         };
         _doAfter.TryStartDoAfter(doAfter, out ent.Comp.DoAfter);
     }

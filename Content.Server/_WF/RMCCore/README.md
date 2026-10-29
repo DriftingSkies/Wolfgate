@@ -23,6 +23,7 @@ each cut is a `// WOLFGATE:` line where the code changed. The xeno types it refe
 - [`Content.Server/_WF/RMCCore/Aura/AuraSystem.cs`](Aura/AuraSystem.cs)
 - [`Content.Server/_WF/RMCCore/Chat/CMChatSystem.cs`](Chat/CMChatSystem.cs)
 - [`Content.Server/_WF/RMCCore/Damage/RMCDamageableSystem.cs`](Damage/RMCDamageableSystem.cs)
+- [`Content.Server/_WF/RMCCore/Deafness/ChatSystem.Deafness.cs`](Deafness/ChatSystem.Deafness.cs)
 - [`Content.Server/_WF/RMCCore/Deafness/DeafnessSystem.cs`](Deafness/DeafnessSystem.cs)
 - [`Content.Server/_WF/RMCCore/Decals/RMCDecalSystem.cs`](Decals/RMCDecalSystem.cs)
 - [`Content.Server/_WF/RMCCore/Emote/RecentlyEmotedComponent.cs`](Emote/RecentlyEmotedComponent.cs)
@@ -366,6 +367,7 @@ each cut is a `// WOLFGATE:` line where the code changed. The xeno types it refe
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/RMCCore/CMArmorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RMCCore/CMArmorTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/RMCCore/DeafSpeechTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RMCCore/DeafSpeechTest.cs)
 
 ### Prototypes
 
@@ -392,6 +394,9 @@ each cut is a `// WOLFGATE:` line where the code changed. The xeno types it refe
 
 ## Non-modular edits
 
+- [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Chat/Systems/ChatSystem.cs)
+  - the deaf hear no whispers
+  - the deaf catch only a few letters of nearby speech
 - [`Content.Server/Explosion/EntitySystems/ExplosionSystem.cs`](../../Explosion/EntitySystems/ExplosionSystem.cs): RMC explosion effects (CMExplosionEffect, wall charges) run when the explosive goes off
 - [`Content.Server/Explosion/EntitySystems/ExplosionSystem.Processing.cs`](../../Explosion/EntitySystems/ExplosionSystem.Processing.cs): RMC explosion reactions (stun on explosion, destroyed or gibbed by explosion type)
 - [`Content.Server/Explosion/EntitySystems/ProjectileGrenadeSystem.cs`](../../Explosion/EntitySystems/ProjectileGrenadeSystem.cs)

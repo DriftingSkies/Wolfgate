@@ -66,7 +66,7 @@ public sealed partial class PlateletFactoriesSystem : EntitySystem
             var healed = comp.DamagePerInterval.DamageDict.Where(pair => pair.Value < 0).ToList();
             _woundMend.Mend(uid, healed.Select(pair => pair.Key).ToList(),
                 -healed.Aggregate(FixedPoint2.Zero, (sum, pair) => sum + pair.Value) * multiplier,
-                new HashSet<TreatmentCapability> { TreatmentCapability.Biological });
+                comp.MendCapabilities);
         }
         // WOLFGATE END
     }

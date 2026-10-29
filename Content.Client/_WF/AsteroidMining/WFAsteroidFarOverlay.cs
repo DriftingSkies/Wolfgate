@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WF.Performance;
 using Content.Shared._WF.AsteroidMining;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
@@ -8,8 +9,9 @@ using Robust.Shared.Map.Components;
 namespace Content.Client._WF.AsteroidMining;
 
 /// <summary>
-/// Draws asteroid rocks the client hasn't been sent, from their grid's copy of the rock's look. Grids reach every client
-/// but rocks only reach those in view range, so without this a zoomed-out view would show asteroids popping in and out.
+/// Draws asteroid rocks the client hasn't been sent: from their grid's copy of the rock's look when the grid is here but
+/// the rock is out of view range, and from the field lists when the grid itself is too far to have been sent. Without
+/// this a zoomed-out view would show asteroids popping in and out.
 /// </summary>
 public sealed class WFAsteroidFarOverlay : Overlay
 {
@@ -23,6 +25,8 @@ public sealed class WFAsteroidFarOverlay : Overlay
     private readonly SharedMapSystem _map;
     private readonly SharedTransformSystem _transform;
     private readonly WFAsteroidVisualsSystem _visuals;
+    private readonly WFAsteroidFieldSystem _fields;
+    private readonly List<WFFarRock> _farRocks = new();
     private readonly EntityQuery<WFAsteroidGridVisualsComponent> _gridVisuals;
     private readonly EntityQuery<WFAsteroidComponent> _rocks;
     private readonly EntityQuery<TransformComponent> _xforms;
@@ -36,6 +40,7 @@ public sealed class WFAsteroidFarOverlay : Overlay
         _map = entities.System<SharedMapSystem>();
         _transform = entities.System<SharedTransformSystem>();
         _visuals = visuals;
+        _fields = entities.System<WFAsteroidFieldSystem>();
         _gridVisuals = entities.GetEntityQuery<WFAsteroidGridVisualsComponent>();
         _rocks = entities.GetEntityQuery<WFAsteroidComponent>();
         _xforms = entities.GetEntityQuery<TransformComponent>();
@@ -60,6 +65,19 @@ public sealed class WFAsteroidFarOverlay : Overlay
             handle.SetTransform(position + rotation.RotateVec(new Vector2(0.5f, 0.5f)), rotation);
             DrawState(handle, rsi, RockStates[visuals.Variant], visuals.RockColor);
             DrawState(handle, rsi, VeinStates[visuals.Variant], visuals.VeinColor);
+        }
+
+        _farRocks.Clear();
+        _fields.GetFarRocks(args.MapId, args.WorldAABB.Enlarged(SpriteMargin), _farRocks);
+        foreach (var far in _farRocks)
+        {
+            var rock = far.Rock;
+            if (rock.Variant >= RockStates.Length || _visuals.FarRsi(far.Proto, far.Look) is not { } rsi)
+                continue;
+
+            handle.SetTransform(rock.Position, new Angle(rock.Rotation));
+            DrawState(handle, rsi, RockStates[rock.Variant], rock.RockColor);
+            DrawState(handle, rsi, VeinStates[rock.Variant], rock.VeinColor);
         }
 
         handle.SetTransform(Matrix3x2.Identity);

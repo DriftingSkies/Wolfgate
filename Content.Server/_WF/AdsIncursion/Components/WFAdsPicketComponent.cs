@@ -18,4 +18,8 @@ public sealed partial class WFAdsPicketComponent : Component
     /// <summary>The faction it took the cell from.</summary>
     [ViewVariables]
     public ProtoId<WFSectorFactionPrototype>? Holder;
+
+    /// <summary>When it took the cell; the oldest go home first when there are too many.</summary>
+    [ViewVariables]
+    public TimeSpan Since;
 }

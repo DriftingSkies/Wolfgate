@@ -24,9 +24,10 @@ public static class SharedSymphony
     /// /symphony/commands: every console, Toolshed and client command with its description, help and the admin flags it
     /// needs, for the panel's staff handbook. Version 11 added /symphony/lobby/shenanigans, which sets a lobby shenanigan
     /// off for every client, and the list of them in /symphony/lobby. Version 12 added {"clear": true} there, which takes
-    /// them all away.
+    /// them all away. Version 13 added stealth to each player in /symphony/players, so the panel can count the staff on
+    /// for players without giving a stealthed admin away.
     /// </summary>
-    public const int ModuleVersion = 12;
+    public const int ModuleVersion = 13;
 
     /// <summary>
     /// Key of the one-time Discord link URL in a whitelist refusal's structured properties.

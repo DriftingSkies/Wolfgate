@@ -606,9 +606,18 @@ public sealed partial class ThrusterSystem : EntitySystem
         }
     }
 
+    // WOLFGATE(Performance): fixed list instead of Enum.GetValues on every call
+    public static readonly DirectionFlag[] WFCardinalFlags =
+        { DirectionFlag.South, DirectionFlag.East, DirectionFlag.North, DirectionFlag.West };
+
     public void DisableLinearThrusters(ShuttleComponent component)
     {
-        foreach (DirectionFlag dir in Enum.GetValues(typeof(DirectionFlag)))
+        // WOLFGATE(Performance) START: idle shuttles call this every tick with everything already off
+        if (component.ThrustDirections == DirectionFlag.None)
+            return;
+
+        foreach (var dir in WFCardinalFlags)
+        // WOLFGATE END
         {
             DisableLinearThrustDirection(component, dir);
         }

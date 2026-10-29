@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Content.IntegrationTests.Pair;
+using Content.Server._WF.CargoLoad;
 using Content.Server._WF.Drydock;
 using Content.Server._WF.GridSettle;
 using Content.Shared._WF.Drydock;
@@ -59,8 +60,8 @@ public sealed class MobileDrydockBerthTest
         track.Parents.Add(em.GetComponent<TransformComponent>(uid).ParentUid);
         if (em.TryGetComponent(uid, out MapGridComponent grid))
             track.GridTicks.Add(grid.LastModifiedTick.Value);
-        // The grid settle marker is server-only and comes and goes on its own once-a-second scan.
-        track.ComponentSets.Add(string.Join(",", em.GetComponents(uid).Where(c => c is not WFGridSettleComponent)
+        // The grid settle marker and the cargo load are server-only and come and go on their own once-a-second scans.
+        track.ComponentSets.Add(string.Join(",", em.GetComponents(uid).Where(c => c is not (WFGridSettleComponent or WFCargoLoadComponent))
             .Select(c => c.GetType().Name).OrderBy(n => n)));
     }
 
