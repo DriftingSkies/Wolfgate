@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using Content.Client._WF.LobbyShenanigans;
 using NUnit.Framework;
@@ -54,5 +55,62 @@ public sealed class MoproachPileTest
             var b = pile.Bodies[j];
             Assert.That((a.Pos - b.Pos).Length(), Is.GreaterThan((a.Radius + b.Radius) * 0.8f), "no deep overlaps");
         }
+    }
+
+    [Test]
+    public void AHeldOneFollowsTheMouseShovesTheRestAndFliesWhenLetGo()
+    {
+        var pile = Drop(20);
+        var held = pile.Bodies[0];
+        pile.Grab(held, held.Pos);
+        var start = held.Pos;
+        for (var i = 1; i <= 30; i++)
+        {
+            pile.Drag(start + new Vector2(0, -10f * i), 1f / 60f);
+            pile.Step(1f / 60f, Bounds);
+        }
+        Assert.That(held.Pos.Y, Is.EqualTo(start.Y - 300).Within(1f), "it stays where the mouse put it");
+        foreach (var other in pile.Bodies)
+        {
+            if (other != held)
+                Assert.That((other.Pos - held.Pos).Length(), Is.GreaterThan((other.Radius + held.Radius) * 0.95f), "the others are shoved aside");
+        }
+
+        pile.Release();
+        Assert.That(held.Vel.Y, Is.LessThan(-300f), "thrown upwards the way it was dragged");
+        Assert.That(pile.Held, Is.Null);
+        for (var t = 0f; t < 6f; t += 1f / 60f)
+            pile.Step(1f / 60f, Bounds);
+        Assert.That(held.Pos.Y, Is.GreaterThan(Bounds.Y - held.Radius * 8), "and falls back down");
+    }
+
+    [Test]
+    public void SomethingSwimmingThroughKnocksThemAside()
+    {
+        var pile = Drop(20);
+        var target = pile.Bodies[5];
+        var at = target.Pos + new Vector2(-5, 0);
+        pile.Shove(at, 30, new Vector2(200, 0));
+        Assert.That((target.Pos - at).Length(), Is.EqualTo(30 + target.Radius).Within(0.01f), "pushed out to the edge");
+        Assert.That(target.Vel.X, Is.GreaterThan(200f), "and sent on the way the swimmer was going");
+    }
+
+    [Test]
+    public void ASingularitySpiralsThemInAndSwallowsTheClosestButNeverTheHeldOne()
+    {
+        var pile = Drop(20);
+        var held = pile.Bodies[0];
+        pile.Grab(held, held.Pos);
+        var at = new Vector2(400, 500);
+        var swallowed = new List<MoproachPile.Body>();
+        for (var t = 0f; t < 4f; t += 1f / 60f)
+        {
+            pile.Drag(held.Pos, 1f / 60f);
+            pile.Pull(at, 600, 30, 6000, 1f / 60f, swallowed);
+            pile.Step(1f / 60f, Bounds);
+        }
+        Assert.That(swallowed, Is.Not.Empty, "it eats");
+        Assert.That(pile.Bodies, Does.Contain(held), "but not what the mouse is holding");
+        Assert.That(pile.Bodies.Count + swallowed.Count, Is.EqualTo(20), "what it eats leaves the pile");
     }
 }

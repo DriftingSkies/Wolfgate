@@ -92,6 +92,7 @@ examiners `CanExamine` allows. `MarkingSet` caps undergarments at one top and on
 - [`Content.IntegrationTests/Tests/_WF/Genitals/AnatomyRequestTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/AnatomyRequestTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/ArousalTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ArousalTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/ConsentMindReentryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ConsentMindReentryTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Genitals/ConsentToggleReopenTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/ConsentToggleReopenTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalAnchorLayerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalAnchorLayerTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalAutosurgeonTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalAutosurgeonTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Genitals/GenitalCloningPolymorphTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Genitals/GenitalCloningPolymorphTest.cs)
@@ -224,7 +225,9 @@ examiners `CanExamine` allows. `MarkingSet` caps undergarments at one top and on
 - [`Content.Client/_Common/Consent/ConsentSystem.cs`](../../../Content.Client/_Common/Consent/ConsentSystem.cs): ported from HardLight (consent system)
 - [`Content.Client/_Common/Consent/IClientConsentManager.cs`](../../../Content.Client/_Common/Consent/IClientConsentManager.cs): ported from HardLight (consent system)
 - [`Content.Client/_Common/Consent/UI/ConsentToggleControl.xaml`](../../../Content.Client/_Common/Consent/UI/ConsentToggleControl.xaml): the name takes the spare width and wraps, and the buttons keep their size, so a long name in a narrow pane no longer squashes them.
-- [`Content.Client/_Common/Consent/UI/ConsentToggleControl.xaml.cs`](../../../Content.Client/_Common/Consent/UI/ConsentToggleControl.xaml.cs): ported from HardLight (consent system)
+- [`Content.Client/_Common/Consent/UI/ConsentToggleControl.xaml.cs`](../../../Content.Client/_Common/Consent/UI/ConsentToggleControl.xaml.cs)
+  - ported from HardLight (consent system)
+  - rejoin the button group, which BaseButton.ExitedTree clears when Options closes
 - [`Content.Client/_Common/Consent/UI/ConsentUiController.cs`](../../../Content.Client/_Common/Consent/UI/ConsentUiController.cs): the consent preferences live in a Game Options tab rather than their own window
 - [`Content.Client/_Shitmed/Medical/Surgery/SurgeryBui.cs`](../../../Content.Client/_Shitmed/Medical/Surgery/SurgeryBui.cs)
   - the last state's choices without anatomy surgeries for viewers who lack adult content; every read uses this.

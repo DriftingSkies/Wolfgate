@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/14/2026 14:42:41
-  entityCount: 573
+  entityCount: 574
 maps: []
 grids:
 - 1
@@ -3606,6 +3606,14 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 0.5,12.5
+      parent: 1
+- proto: PoweredlightExterior
+  entities:
+  - uid: 574
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 5.5,9.5
       parent: 1
 - proto: PoweredlightLED
   entities:

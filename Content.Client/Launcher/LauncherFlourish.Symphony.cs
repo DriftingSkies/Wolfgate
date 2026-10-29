@@ -53,6 +53,8 @@ public sealed class SymphonyMoproach : Control
     private const float MopSeconds = 2.6f;
     private const float WetSeconds = 1.8f;
     private const int MaxSpills = 4;
+    // A loading hitch would otherwise throw it across the screen in one frame.
+    private const float MaxFrame = 0.1f;
     // Water, blood, slime, coffee and space lube, see-through like a real puddle.
     private static readonly Color[] SpillColors =
     [
@@ -61,7 +63,7 @@ public sealed class SymphonyMoproach : Control
 
     private readonly IRsiStateLike _state;
     private readonly IRsiStateLike _sparkles;
-    private readonly List<Texture> _splats = new();
+    private readonly List<(Texture Texture, bool Tinted)> _splats = new();
     private readonly List<Spill> _spills = new();
     private readonly Control[] _avoid;
     private readonly System.Random _random = new();
@@ -95,12 +97,18 @@ public sealed class SymphonyMoproach : Control
         var rsi = cache.GetResource<RSIResource>("/Textures/Mobs/Animals/mothroach/moproach.rsi").RSI;
         _state = rsi.TryGetState("mothroach-moving", out var moving) ? moving : rsi["icon"];
         _sparkles = cache.GetResource<RSIResource>("/Textures/Fluids/wet_floor_sparkles.rsi").RSI["sparkles"];
-        var puddle = cache.GetResource<RSIResource>("/Textures/Fluids/puddle.rsi").RSI;
-        for (var i = 0; i <= 15; i++)
-            _splats.Add(puddle[$"splat{i}"].GetFrame(RsiDirection.South, 0));
-        var splatter = cache.GetResource<RSIResource>("/Textures/Fluids/splatter.rsi").RSI;
-        for (var i = 0; i <= 5; i++)
-            _splats.Add(splatter[$"splatter-{i}"].GetFrame(RsiDirection.South, 0));
+        // Only the free-standing decals: puddle.rsi's splat1 to splat15 are tile pieces and look like squares alone.
+        void Add(string path, bool tinted, params string[] states)
+        {
+            var decals = cache.GetResource<RSIResource>(path).RSI;
+            foreach (var state in states)
+                _splats.Add((decals[state].GetFrame(RsiDirection.South, 0), tinted));
+        }
+        Add("/Textures/Fluids/puddle.rsi", true, "splata", "splatb", "splat0");
+        Add("/Textures/Fluids/splatter.rsi", true, "splatter-0", "splatter-1", "splatter-2", "splatter-3", "splatter-4", "splatter-5");
+        Add("/Textures/Fluids/smear.rsi", true, "smear-0", "smear-1", "smear-2", "smear-3", "smear-4", "smear-5", "smear-6");
+        Add("/Textures/Fluids/vomit.rsi", false, "vomit-0", "vomit-1", "vomit-2", "vomit-3");
+        Add("/Textures/Fluids/tomato_splat.rsi", false, "puddle-0", "puddle-1", "puddle-2");
         _vel = Heading(_random.NextSingle() * MathF.Tau);
     }
 
@@ -113,7 +121,10 @@ public sealed class SymphonyMoproach : Control
         base.FrameUpdate(args);
         if (!VisibleInTree)
             return;
-        var dt = args.DeltaSeconds;
+        // Until the screen has room for it there is nowhere to go; bouncing in a zero-sized box made it twitch.
+        if (PixelSize.X < Size * 2 || PixelSize.Y < Size * 2)
+            return;
+        var dt = MathF.Min(args.DeltaSeconds, MaxFrame);
         _time += dt;
 
         // Somebody keeps spilling things, a few at a time.
@@ -206,16 +217,12 @@ public sealed class SymphonyMoproach : Control
         var size = Size;
         var bounds = PixelSize;
         _pos += _vel * dt * UIScale;
-        if (_pos.X < 0 || _pos.X > bounds.X - size)
-        {
+        // Turn only when heading into the edge, so one past it after a resize walks back instead of flipping each frame.
+        if ((_pos.X < 0 && _vel.X < 0) || (_pos.X > bounds.X - size && _vel.X > 0))
             _vel.X = -_vel.X;
-            _pos.X = Math.Clamp(_pos.X, 0, Math.Max(0, bounds.X - size));
-        }
-        if (_pos.Y < 0 || _pos.Y > bounds.Y - size)
-        {
+        if ((_pos.Y < 0 && _vel.Y < 0) || (_pos.Y > bounds.Y - size && _vel.Y > 0))
             _vel.Y = -_vel.Y;
-            _pos.Y = Math.Clamp(_pos.Y, 0, Math.Max(0, bounds.Y - size));
-        }
+        _pos = Vector2.Clamp(_pos, Vector2.Zero, new Vector2(bounds.X - size, bounds.Y - size));
         _facing = Facing(_vel);
     }
 
@@ -236,11 +243,12 @@ public sealed class SymphonyMoproach : Control
             var box = UIBox2.FromDimensions(pos, new Vector2(size, size));
             if (_avoid.Any(c => c.VisibleInTree && Covers(c, box)) || _spills.Any(s => (s.Pos - pos).Length() < size))
                 continue;
+            var (texture, tinted) = _splats[_random.Next(_splats.Count)];
             _spills.Add(new Spill
             {
                 Pos = pos,
-                Texture = _splats[_random.Next(_splats.Count)],
-                Color = SpillColors[_random.Next(SpillColors.Length)],
+                Texture = texture,
+                Color = tinted ? SpillColors[_random.Next(SpillColors.Length)] : Color.White.WithAlpha(0.85f),
             });
             return;
         }

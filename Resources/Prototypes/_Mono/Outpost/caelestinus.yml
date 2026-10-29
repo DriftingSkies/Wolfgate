@@ -18,8 +18,10 @@
         readOnly: true # mono
       - type: StationCargoOrderDatabase
         capacity: 240 # has to be large to compensate for playerbase
-      - type: TradeCrateDestination
-        destinationProto: Trade
+      # WOLFGATE START: trade crate destinations must be on the station entity, not the grid
+      # - type: TradeCrateDestination
+      #   destinationProto: Trade
+      # WOLFGATE END
       - type: VesselMusic
         ambientMusicPrototype: ColossusCentralMusic
       - type: VesselInfo
@@ -31,6 +33,10 @@
           mapNameTemplate: 'Caelestinus Central'
         - type: StationDeadDrop
           maxDeadDrops: 2
+        # WOLFGATE START: moved from gridComponents so crates sold here count as delivered
+        - type: TradeCrateDestination
+          destinationProto: Trade
+        # WOLFGATE END
         - type: ExtraStationInformation
           icon: /Textures/_Mono/Logo/icon/icon-256x256.png # used the biggest one, looks better when downscaling than upscaling
           stationSubtext: 'frontier-lobby-frontier-subtext'

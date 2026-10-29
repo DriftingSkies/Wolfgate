@@ -10,9 +10,11 @@ using System.Text.RegularExpressions;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
+using Content.Server._WF.LobbyShenanigans;
 using Content.Server.Audio;
 using Content.Server.Chat.Managers;
 using Content.Server.GameTicking;
+using Content.Shared._WF.LobbyShenanigans;
 using Content.Shared.GameTicking;
 using Content.Shared.Symphony;
 using Robust.Server.Player;
@@ -60,6 +62,9 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     /// <summary>POST {"message", "color"}: a server announcement in everyone's chat, as the update notice is sent.</summary>
     public const string AnnouncePath = "/symphony/announce";
 
+    /// <summary>POST {"trigger": id} sets a lobby shenanigan off for every client, the only way one is; {"clear": true} takes them all away.</summary>
+    public const string ShenanigansPath = "/symphony/lobby/shenanigans";
+
     private const int MaxNoticeTitle = 120;
     private const int MaxNoticeBody = 1500;
     private const int MaxAnnouncement = 1000;
@@ -84,6 +89,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     [Dependency] private GameTicker _ticker = default!;
     [Dependency] private ContentAudioSystem _audio = default!;
     [Dependency] private IChatManager _chat = default!;
+    [Dependency] private LobbyShenanigansSystem _shenanigans = default!;
 
     /// <summary>The lobby notice now, or an empty one.</summary>
     private SymphonyLobbyNoticeEvent _notice = new(null, null, "info");
@@ -109,7 +115,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     private async Task<bool> HandleAsync(IStatusHandlerContext context)
     {
         var path = context.Url.AbsolutePath;
-        if (path != StatePath && path != FilePath && path != UploadPath && path != BackgroundPath && path != MusicPath && path != NoticePath && path != AnnouncePath)
+        if (path != StatePath && path != FilePath && path != UploadPath && path != BackgroundPath && path != MusicPath && path != NoticePath && path != AnnouncePath && path != ShenanigansPath)
             return false;
         if (!await SymphonyApi.AuthorisedAsync(_cfg, context))
             return true;
@@ -140,6 +146,9 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
                 break;
             case AnnouncePath:
                 await RespondAnnounce(context);
+                break;
+            case ShenanigansPath:
+                await RespondShenanigan(context);
                 break;
             default:
                 await RespondMusic(context);
@@ -175,7 +184,46 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
             },
             Uploads = _uploads.Select(kv => new UploadState { Path = kv.Key, Size = kv.Value }).ToList(),
             Notice = _notice.IsEmpty ? null : new NoticeBody { Title = _notice.Title, Body = _notice.Body, Style = _notice.Style },
+            Shenanigans = LobbyShenaniganIds.All.Select(id => new ShenaniganChoice
+            {
+                Id = id,
+                Name = Loc.GetString(LobbyShenaniganIds.Name(id)),
+                Description = Loc.GetString($"{LobbyShenaniganIds.Name(id)}-tooltip"),
+            }).ToList(),
         };
+    }
+
+    private async Task RespondShenanigan(IStatusHandlerContext context)
+    {
+        ShenaniganBody? body;
+        try
+        {
+            body = await context.RequestBodyJsonAsync<ShenaniganBody>();
+        }
+        catch (Exception)
+        {
+            body = null;
+        }
+        var clear = body?.Clear == true;
+        var id = body?.Trigger;
+        if (body == null || clear == (id != null) || (id != null && !LobbyShenaniganIds.All.Contains(id)))
+        {
+            await context.RespondAsync($"expected {{\"trigger\": \"{string.Join("|", LobbyShenaniganIds.All)}\"}} or {{\"clear\": true}}", HttpStatusCode.BadRequest);
+            return;
+        }
+        var outcome = await _tasks.OnMainThread(() =>
+        {
+            var inLobby = 0;
+            if (clear)
+                inLobby = _shenanigans.Clear();
+            else
+                _shenanigans.Trigger(id!, out inLobby);
+            return new ApplyResponse { SymphonyModule = SharedSymphony.ModuleVersion, Players = _players.PlayerCount, InLobby = inLobby };
+        });
+        Log.Info(clear
+            ? $"{body.Actor ?? "The panel"} cleared the lobby shenanigans ({outcome.InLobby} in the lobby)"
+            : $"{body.Actor ?? "The panel"} set off {id} for everyone ({outcome.InLobby} in the lobby)");
+        await context.RespondJsonAsync(outcome);
     }
 
     private async Task RespondNotice(IStatusHandlerContext context)
@@ -623,6 +671,21 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
         [JsonPropertyName("music")] public MusicState Music { get; set; } = new();
         [JsonPropertyName("uploads")] public List<UploadState> Uploads { get; set; } = [];
         [JsonPropertyName("notice")] public NoticeBody? Notice { get; set; }
+        [JsonPropertyName("shenanigans")] public List<ShenaniganChoice> Shenanigans { get; set; } = [];
+    }
+
+    private sealed class ShenaniganChoice
+    {
+        [JsonPropertyName("id")] public string Id { get; set; } = "";
+        [JsonPropertyName("name")] public string Name { get; set; } = "";
+        [JsonPropertyName("description")] public string Description { get; set; } = "";
+    }
+
+    private sealed class ShenaniganBody
+    {
+        [JsonPropertyName("trigger")] public string? Trigger { get; set; }
+        [JsonPropertyName("clear")] public bool? Clear { get; set; }
+        [JsonPropertyName("actor")] public string? Actor { get; set; }
     }
 
     private sealed class NoticeBody

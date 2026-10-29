@@ -88,6 +88,18 @@ public sealed partial class HitscanBasicRaycastSystem : EntitySystem
                 + $" using {ToPrettyString(args.Gun):entity}.");
         }
         // WOLFGATE END
+
+        // WOLFGATE(Xenoarch) START: let struck entities react, such as artifact laser triggers
+        if (!trace.Canceled)
+        {
+            foreach (var hitEntity in trace.HitEntities)
+            {
+                var strike = new HitscanRaycastStrikeEvent(ent.Owner, trace.Gun, trace.Shooter);
+                RaiseLocalEvent(hitEntity, ref strike);
+            }
+        }
+        // WOLFGATE END
+
         RaiseLocalEvent(ent, ref trace);
     }
 }

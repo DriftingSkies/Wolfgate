@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
+using Content.Shared._WF.LobbyShenanigans;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Graphics.RSI;
@@ -9,10 +10,10 @@ using Robust.Shared.Maths;
 namespace Content.Client._WF.LobbyShenanigans;
 
 /// <summary>
-/// Moproaches tumble in from the top of the screen and pile up at the bottom. The oldest fade away once the pile
-/// is full.
+/// Moproaches tumble in from the top of the screen and pile up at the bottom. Players can pick one up, drag it about
+/// to shove the others and throw it. The oldest fade away once the pile is full.
 /// </summary>
-public sealed class MoproachRain : LobbyShenanigan
+public sealed class MoproachRain : LobbyShenanigan, ILobbyShovable, ILobbyPullable
 {
     private const float Scale = 2f;
     private const int PerPress = 12;
@@ -23,12 +24,12 @@ public sealed class MoproachRain : LobbyShenanigan
     private readonly MoproachPile _pile = new();
     private readonly List<Texture> _looks = new();
     private readonly Dictionary<MoproachPile.Body, float> _fading = new();
+    private readonly List<MoproachPile.Body> _swallowed = new();
     private readonly System.Random _random = new();
     private int _queued;
     private float _spawnIn;
 
-    public override string Name => "wf-lobby-shenanigans-moproach-rain";
-    public override string Description => "wf-lobby-shenanigans-moproach-rain-tooltip";
+    public override string Id => LobbyShenaniganIds.MoproachRain;
 
     public MoproachRain()
     {
@@ -59,7 +60,7 @@ public sealed class MoproachRain : LobbyShenanigan
         var over = _pile.Bodies.Count - _fading.Count - MaxBodies;
         for (var i = 0; over > 0 && i < _pile.Bodies.Count; i++)
         {
-            if (_fading.TryAdd(_pile.Bodies[i], FadeSeconds))
+            if (_pile.Bodies[i] != _pile.Held && _fading.TryAdd(_pile.Bodies[i], FadeSeconds))
                 over--;
         }
         foreach (var body in new List<MoproachPile.Body>(_fading.Keys))
@@ -67,12 +68,45 @@ public sealed class MoproachRain : LobbyShenanigan
             if ((_fading[body] -= dt) > 0)
                 continue;
             _fading.Remove(body);
-            _pile.Bodies.Remove(body);
+            _pile.Remove(body);
         }
 
         if (_pile.Bodies.Count > 0)
             _pile.Step(dt, bounds, scale);
     }
+
+    public override void Clear()
+    {
+        _queued = 0;
+        _pile.Release();
+        foreach (var body in _pile.Bodies)
+            _fading.TryAdd(body, FadeSeconds);
+    }
+
+    public override bool HitTest(Vector2 pos) => _pile.At(pos) is { } body && !_fading.ContainsKey(body);
+
+    public override bool TryGrab(Vector2 pos)
+    {
+        if (_pile.At(pos) is not { } body || _fading.ContainsKey(body))
+            return false;
+        _pile.Grab(body, pos);
+        return true;
+    }
+
+    public override void Drag(Vector2 pos, float dt) => _pile.Drag(pos, dt);
+
+    public void Shove(Vector2 at, float radius, Vector2 velocity) => _pile.Shove(at, radius, velocity);
+
+    public int Pull(Vector2 at, float reach, float swallow, float strength, float dt)
+    {
+        _swallowed.Clear();
+        _pile.Pull(at, reach, swallow, strength, dt, _swallowed);
+        foreach (var body in _swallowed)
+            _fading.Remove(body);
+        return _swallowed.Count;
+    }
+
+    public override void Release() => _pile.Release();
 
     private void Spawn(Vector2 bounds, float scale)
     {

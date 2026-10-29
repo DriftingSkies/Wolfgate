@@ -225,9 +225,11 @@ and each laser's strength, crack rate, range, fire rate and battery in `mining_b
 - [`Resources/Prototypes/Research/industrial.yml`](../../../Resources/Prototypes/Research/industrial.yml)
   - light mining laser board
   - mining laser board
+- [`Resources/SharedMaps/_Mono/Shuttles/Civilian/arribane.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/Civilian/arribane.yml): Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
 - [`Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml): Its Apollo mining laser is swapped for the M40 Prospector, the heavy asteroid mining laser.
 - [`Resources/SharedMaps/_Mono/Shuttles/Civilian/noble.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/Civilian/noble.yml): Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
 - [`Resources/SharedMaps/_Mono/Shuttles/Civilian/peregrine.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/Civilian/peregrine.yml): Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.
+- [`Resources/SharedMaps/_Mono/Shuttles/Civilian/rosetta.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/Civilian/rosetta.yml): Its Apollo mining laser is swapped for the M40 Prospector, the heavy asteroid mining laser.
 - [`Resources/SharedMaps/_Mono/Shuttles/CivilianExp/pelican.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/CivilianExp/pelican.yml): Its M25 mining pulsar is swapped for the M12 Prospector, the light asteroid mining laser.
 - [`Resources/SharedMaps/_Mono/Shuttles/MMC/akasono.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/MMC/akasono.yml): Its M25 mining pulsar is swapped for the M12 Prospector, the light asteroid mining laser.
 - [`Resources/SharedMaps/_Mono/Shuttles/MMC/kami.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/MMC/kami.yml): Its M25 mining pulsars are swapped for M12 Prospectors, the light asteroid mining laser.

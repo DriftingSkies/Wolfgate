@@ -8557,7 +8557,7 @@ entities:
     - type: Transform
       pos: 0.5,-18.5
       parent: 1
-- proto: WeaponTurretM25
+- proto: WFWeaponTurretMiningLaserSmall
   entities:
   - uid: 1259
     components:

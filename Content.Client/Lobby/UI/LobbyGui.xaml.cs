@@ -24,7 +24,6 @@ namespace Content.Client.Lobby.UI
             SetAnchorPreset(AnimatedBackground, LayoutPreset.Wide); // WOLFGATE(Symphony): the GIF background covers the screen as the still one does
             SetAnchorPreset(SkinScanlines, LayoutPreset.Wide); // WOLFGATE(Stylesheets): skin scanlines cover the whole screen
             SetAnchorPreset(ShenaniganLayer, LayoutPreset.Wide); // WOLFGATE(LobbyShenanigans): the lobby fun plays over the whole screen
-            ShenaniganButtons.Layer = ShenaniganLayer; // WOLFGATE(LobbyShenanigans): each button sets off its shenanigan on that layer
             InitializeRoundSetupHome(); // WOLFGATE(RoundSetup): unify character and crew preparation controls
 
             LobbySong.SetMarkup(Loc.GetString("lobby-state-song-no-song-text"));

@@ -278,6 +278,7 @@
     # Einstein Engines Packs
     - Translators
     - RCD # Mono!
+    - WFXenobiologyTools # WOLFGATE(Xenobiology): slime scanner and xenovac
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - DynamicAmmoRecipePack
@@ -354,6 +355,7 @@
     - EngineeringBoardsGoob #Goob Factorio port
     - ReactorCircuitboards # FH edit\
     - ServiceBoardsGoob #Forge-Change
+    - WFXenobiologyBoards # WOLFGATE(Xenobiology): slime grinder and bounty console boards
   - type: MaterialStorage
     whitelist:
       tags:

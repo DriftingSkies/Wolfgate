@@ -9,6 +9,9 @@ The hooks for the SSymphony panel. It is the one module outside `_WF`: its files
   and `/symphony/cvars` lists every CVar and sets one while the server runs (confidential ones are never shown or set).
   `/symphony/commands` lists every console, Toolshed and client command with its description, help and the admin
   flags it needs, read the way the admin manager reads them, for the panel's staff handbook.
+  `/symphony/lobby/shenanigans` sets a lobby shenanigan off for every client, the only way one is set off, or clears
+  them all (the
+  [LobbyShenanigans module](../_WF/LobbyShenanigans/README.md)).
 - Player feedback: the panel reads bug reports and suggestions straight from `wolfgate_feedback_report`.
   `/symphony/feedback/status` sets a report's status and message and tells its player in game;
   `/symphony/feedback/refresh` does the telling after the panel wrote the row itself. The table, the context JSON and

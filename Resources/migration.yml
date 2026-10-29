@@ -783,6 +783,14 @@ CoolCoyoteClothesSexyclown: WFCoolCoyoteClothesSexyclown
 CoolCoyoteClothesSexymime: WFCoolCoyoteClothesSexymime
 # WOLFGATE END
 
+# WOLFGATE(Xenoarch) START: wizden xenoarch rework replaced the old artifact types
+SimpleXenoArtifact: ComplexXenoArtifact
+MediumXenoArtifact: ComplexXenoArtifact
+SimpleXenoArtifactItem: ComplexXenoArtifactItem
+MediumXenoArtifactItem: ComplexXenoArtifactItem
+VariedXenoArtifactItem: ComplexXenoArtifactItem
+# WOLFGATE END
+
 # WOLFGATE(DecorImport) START: duplicate flesh wall art merged into the TauCeti meatland wall
 # 2026-10-26
 GoonSetpiecesBloodwall: TauCetiMeatlandWall

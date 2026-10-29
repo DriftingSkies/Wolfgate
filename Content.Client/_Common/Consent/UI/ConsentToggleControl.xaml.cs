@@ -69,6 +69,22 @@ public sealed partial class ConsentToggleControl : Control
         //todo
     }
 
+    // WOLFGATE(Genitals) START: rejoin the button group, which BaseButton.ExitedTree clears when Options closes
+    protected override void EnteredTree()
+    {
+        base.EnteredTree();
+
+        ConsentToggleOffButton.Group = Group;
+        ConsentToggleOnButton.Group = Group;
+
+        // Joining an empty group unpresses the button, so press the current state again.
+        if (State == "on")
+            ConsentToggleOnButton.Pressed = true;
+        else if (State == "off")
+            ConsentToggleOffButton.Pressed = true;
+    }
+    // WOLFGATE END
+
     private void OnButtonToggled(BaseButton.ButtonToggledEventArgs args)
     {
         if (Group.Pressed is null)

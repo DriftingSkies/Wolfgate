@@ -3910,3 +3910,85 @@ Entries:
   id: 100265
   time: '2026-10-28T00:06:44.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/398
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added xenobiology: breed slimes through five tiers of mutations, grind
+        them into extracts and inject those for reagents, items and worse.
+    - type: Add
+      message: >-
+        Added the xenovac, the slime grinder, the slime scanner and the
+        xenobiological bounty console, which pays research points for extracts.
+    - type: Add
+      message: >-
+        Added the Xenobiology research, a xenobiology starter crate in cargo,
+        and slime gear and grey slimes at John Wolfgate and the Wolfgate vendor.
+    - type: Add
+      message: Slimes and amanita jelly now jiggle.
+  id: 100266
+  time: '2026-10-28T00:43:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/395
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: >-
+        Trading crates delivered to Caelestinus Central or Zvezda now pay their
+        full destination value and express bonus.
+  id: 100267
+  time: '2026-10-28T01:13:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/399
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Xenoarchaeology rework: artifacts are now node graphs. Perform the
+        listed triggers to unlock nodes, then read and extract research points
+        from the analysis console.
+    - type: Add
+      message: >-
+        New artifact triggers (microwave, offerings, shock, exhaustion,
+        particles, lasers) and effects (lamps, plus BZ, healium, nitrium and
+        pluoxium gas).
+    - type: Add
+      message: >-
+        Artifact glue, made from space glue and artifexium, restores artifact
+        node durability.
+    - type: Add
+      message: >-
+        New guidebook pages for xenoarchaeology, the analysis console and
+        unlocking nodes.
+    - type: Remove
+      message: The traversal distorter and printed artifact reports.
+    - type: Tweak
+      message: Artifexium now starts unlocking an artifact instead of activating it.
+  id: 100268
+  time: '2026-10-28T08:01:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/394
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Consent Off and On buttons work again after reopening Game Options.
+  id: 100269
+  time: '2026-10-28T21:57:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/403
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: >-
+        The Arribane and Phaeron now come with M12 Prospector mining lasers, and
+        the Rosetta with an M40 Prospector.
+    - type: Fix
+      message: The Carabela's drydock bay now has a light.
+  id: 100270
+  time: '2026-10-28T22:33:33.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/401
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: Fixed the hammerhead's autoloader not being linked.
+    - type: Fix
+      message: fixed the hammerhead not having a manufacturer name in the shipyard.
+  id: 100271
+  time: '2026-10-29T02:16:08.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/405

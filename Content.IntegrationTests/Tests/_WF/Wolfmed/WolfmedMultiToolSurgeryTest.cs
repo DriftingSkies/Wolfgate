@@ -19,8 +19,8 @@ namespace Content.IntegrationTests.Tests._WF.Wolfmed;
 [TestFixture]
 public sealed class WolfmedMultiToolSurgeryTest : WolfmedGameTest
 {
-    /// <summary>Tools with a mode that is not really that tool: an artifact effect, a jack, a shovel.</summary>
-    private static readonly HashSet<string> Excluded = ["EffectIntercom", "MaintenanceJack", "NFShovel"];
+    /// <summary>Tools with a mode that is not really that tool: a jack, a shovel.</summary>
+    private static readonly HashSet<string> Excluded = ["MaintenanceJack", "NFShovel"];
 
     [Test]
     public async Task EveryModeCarriesItsSurgeryTest()
