@@ -56,7 +56,7 @@ public static class WFAugmentRules
     {
         if (!proto.TryIndex<SpeciesPrototype>(species, out var speciesProto)
             || !proto.TryIndex(speciesProto.Prototype, out var mob)
-            || !mob.TryGetComponent(out BodyComponent? body, factory)
+            || !mob.TryComp(out BodyComponent? body, factory)
             || body.Prototype is not { } bodyId
             || !proto.TryIndex<BodyPrototype>(bodyId, out var bodyProto)
             || !bodyProto.Slots.TryGetValue(PartSlot(slot), out var part))

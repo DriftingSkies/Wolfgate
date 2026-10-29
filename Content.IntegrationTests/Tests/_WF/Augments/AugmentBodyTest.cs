@@ -101,7 +101,7 @@ public sealed class AugmentBodyTest : InteractionTest
             var before = SEntMan.GetComponent<DamageableComponent>(SPlayer).TotalDamage;
             humanoids.LoadProfile(SPlayer, Augmented());
             var parts = bodies.GetBodyChildren(SPlayer).ToList();
-            string? Proto(EntityUid uid) => SEntMan.GetComponent<MetaDataComponent>(uid).EntityPrototype?.ID;
+            string Proto(EntityUid uid) => SEntMan.GetComponent<MetaDataComponent>(uid).EntityPrototype?.ID;
 
             arm = parts.Single(p => p.Component.PartType == BodyPartType.Arm && p.Component.Symmetry == BodyPartSymmetry.Right).Id;
             Assert.That(Proto(arm), Is.EqualTo("WFAugmentRightArm"));
