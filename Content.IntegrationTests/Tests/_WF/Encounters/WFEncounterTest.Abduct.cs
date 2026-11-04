@@ -62,6 +62,32 @@ public sealed partial class WFEncounterTest
       markMin: 100000
       markMax: 100000
       holdTime: 100000
+
+- type: wfEncounter
+  id: WFTestAbductorBastion
+  name: wf-encounter-name-convoy
+  start: Manual
+  lifetime: Persistent
+  bounty:
+    ship: abductor
+    target: Crew
+    spesos: 10000
+    title: wf-bounty-title-abductor-medium
+    description: wf-bounty-desc-abductor-medium
+  ships:
+  - key: abductor
+    vessel: Bastion
+    side: pirates
+    profile: WFCrewProfileAbductor
+    captain: false
+    deckhands: 2
+    guards: 0
+    evades: false
+    abduct:
+      ransom: 5000
+      markMin: 100000
+      markMax: 100000
+      holdTime: 100000
 ";
 
     /// <summary>Every hull an abductor can fly has a cell chair with a door to bolt.</summary>
@@ -96,14 +122,15 @@ public sealed partial class WFEncounterTest
     }
 
     /// <summary>A scene: a real abductor with a free tile for the test player on its own deck.</summary>
-    private async Task<(EntityUid Encounter, WFEncounterShipState Ship, WFAbductState Abduct, EntityUid Cell)> StartAbductor(Vector2 at)
+    private async Task<(EntityUid Encounter, WFEncounterShipState Ship, WFAbductState Abduct, EntityUid Cell)> StartAbductor(Vector2 at,
+        string prototype = "WFTestAbductor")
     {
         EntityUid encounter = default;
         WFEncounterShipState ship = default!;
         EntityUid cell = default;
         await Server.WaitAssertion(() =>
         {
-            var proto = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>("WFTestAbductor");
+            var proto = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>(prototype);
             Assert.That(Server.System<WFEncounterSystem>().TrySpawn(proto, new MapCoordinates(at, MapData.MapId), out encounter), Is.True);
             ship = SEntMan.GetComponent<WFEncounterComponent>(encounter).Ships["abductor"];
         });
@@ -120,17 +147,21 @@ public sealed partial class WFEncounterTest
         return (encounter, ship, ship.Abduct!, cell);
     }
 
-    /// <summary>Crew stun, cuff and drag a mob to the chair across a real hull, door included, and it stays alive.</summary>
-    [Test]
-    public async Task GrabbersStunCuffAndStrapSomeoneIn()
+    /// <summary>
+    /// Crew stun, cuff and drag a mob to the chair across each abductor hull, door included, and it stays alive. On the
+    /// Bastion the drag comes in through the engineering hatch.
+    /// </summary>
+    [TestCase("WFTestAbductor", 4.5f, -3.5f)]
+    [TestCase("WFTestAbductorBastion", 0.5f, -1.5f)]
+    public async Task GrabbersStunCuffAndStrapSomeoneIn(string prototype, float x, float y)
     {
-        var (_, ship, _, cell) = await StartAbductor(new Vector2(3000f, 3000f));
+        var (_, ship, _, cell) = await StartAbductor(new Vector2(3000f, 3000f), prototype);
         EntityUid captive = default;
         await Server.WaitAssertion(() =>
         {
-            // Outside the cell, by the door; the player stands aboard too, or the crew's AI stays asleep.
-            captive = SEntMan.SpawnEntity("MobHuman", Transform(ship.Grid, new Vector2(4.5f, -3.5f)));
-            Server.System<SharedTransformSystem>().SetCoordinates(SPlayer, Transform(ship.Grid, new Vector2(4.5f, -3.5f)));
+            // Outside the cell; the player stands aboard too, or the crew's AI stays asleep.
+            captive = SEntMan.SpawnEntity("MobHuman", Transform(ship.Grid, new Vector2(x, y)));
+            Server.System<SharedTransformSystem>().SetCoordinates(SPlayer, Transform(ship.Grid, new Vector2(x, y)));
             var grabbers = Server.System<WFCrewGrabberSystem>();
             var crew = SEntMan.EntityQueryEnumerator<WFCrewComponent>();
             var sent = 0;

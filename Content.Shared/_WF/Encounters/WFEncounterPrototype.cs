@@ -81,6 +81,14 @@ public sealed partial class WFEncounterPrototype : IPrototype
     [DataField]
     public List<ProtoId<WFEncounterManifestPrototype>> Manifests = new();
 
+    /// <summary>A freight run: it keeps its own schedule and cap, outside the storyteller's, so it never crowds out the sector's events.</summary>
+    [DataField]
+    public bool Freight;
+
+    /// <summary>While it runs, the station it is placed at counts as blockaded.</summary>
+    [DataField]
+    public bool Blockades;
+
     /// <summary>Who starts it: the storyteller at round start, the storyteller during the round, or only admins and code.</summary>
     [DataField]
     public WFEncounterStart Start = WFEncounterStart.Scheduled;
@@ -220,6 +228,13 @@ public sealed partial class WFEncounterShip
     /// </summary>
     [DataField]
     public WFEncounterAbduct? Abduct;
+
+    /// <summary>
+    /// Guns mounted on its hardpoints at spawn to stop a ship before it boards: an ion disruptor knocks out the
+    /// target's engines and a hacking harpoon parks it and drops its FTL. The encounter fires them itself.
+    /// </summary>
+    [DataField]
+    public List<EntProtoId> Disablers = new();
 
     /// <summary>Only these roles of the planned crew are spawned. Empty spawns the whole plan.</summary>
     [DataField]

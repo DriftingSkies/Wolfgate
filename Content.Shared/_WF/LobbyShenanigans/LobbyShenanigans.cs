@@ -8,8 +8,9 @@ public static class LobbyShenaniganIds
     public const string MoproachRain = "moproach-rain";
     public const string CarpMigration = "carp-migration";
     public const string Singularity = "singularity";
+    public const string MeteorShower = "meteor-shower";
 
-    public static readonly string[] All = [MoproachRain, CarpMigration, Singularity];
+    public static readonly string[] All = [MoproachRain, CarpMigration, Singularity, MeteorShower];
 
     /// <summary>Fluent ID of a shenanigan's name; its tooltip adds -tooltip.</summary>
     public static string Name(string id) => $"wf-lobby-shenanigans-{id}";

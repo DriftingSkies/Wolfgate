@@ -1,7 +1,8 @@
 # Abductors: Ashfall Reaver ships that take people for ransom. Now and then one docks with a lightly crewed player ship.
 # Its guards hold the port with stun batons, its hands stun, cuff and drag someone back to the chair in its cell, and it
 # casts off to wait. Word goes out to the sector and the ransom goes on its warrant. Only hulls with a WFAbductCellChair
-# work: AbductorHullsHaveACell fails any other. No guns aboard: a crew sent to take people alive carries nothing else.
+# work: AbductorHullsHaveACell fails any other. Before docking it stops the mark: an ion disruptor knocks out its engines
+# and an ARACHNE harpoon drops its FTL and parks it.
 
 - type: wfEncounter
   id: WFEncounterAbductorLight
@@ -26,6 +27,7 @@
   ships:
   - key: abductor
     stealth: true
+    disablers: [ WFIonDisruptor, WFHackHarpoonGunRaider ]
     navigation: WFCrewNavigationHunter
     vessels: [ Hazel ]
     side: pirates
@@ -42,7 +44,7 @@
     wanderRadius: 4000
     wanderPause: 30
     abduct:
-      ransom: 10000
+      ransom: 40000
       maxCrew: 1
       grabbers: 2
 
@@ -69,6 +71,7 @@
   ships:
   - key: abductor
     stealth: true
+    disablers: [ WFIonDisruptor, WFHackHarpoonGunRaider ]
     navigation: WFCrewNavigationHunter
     vessels: [ Bastion ]
     side: pirates
@@ -84,7 +87,7 @@
     wanderRadius: 4000
     wanderPause: 30
     abduct:
-      ransom: 25000
+      ransom: 100000
       maxCrew: 2
       grabbers: 2
 

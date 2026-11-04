@@ -285,6 +285,20 @@ public sealed partial class WFEncounterSystem : EntitySystem
         return count;
     }
 
+    /// <summary>Freight runs that have not resolved yet, which count against their own cap.</summary>
+    public int ActiveFreight()
+    {
+        var count = 0;
+        var query = EntityQueryEnumerator<WFEncounterComponent>();
+        while (query.MoveNext(out _, out var encounter))
+        {
+            if (encounter.Resolution == null && encounter.Freight)
+                count++;
+        }
+
+        return count;
+    }
+
     /// <summary>The summed cost of the encounters <see cref="ActiveCount"/> counts.</summary>
     public int ActiveCost()
     {
@@ -310,6 +324,34 @@ public sealed partial class WFEncounterSystem : EntitySystem
         }
 
         return false;
+    }
+
+    /// <summary>A manifest picked at random, each as likely as <see cref="WFEncounterManifestWeightEvent"/> weighs it.</summary>
+    private WFEncounterManifestPrototype? PickManifest(WFEncounterPrototype prototype, IReadOnlyList<EntityUid>? stops)
+    {
+        var weighed = new List<(WFEncounterManifestPrototype Manifest, float Weight)>();
+        var total = 0f;
+        foreach (var id in prototype.Manifests)
+        {
+            if (!_prototypes.TryIndex(id, out var manifest))
+                continue;
+
+            var ev = new WFEncounterManifestWeightEvent(manifest, stops ?? Array.Empty<EntityUid>(), 1f);
+            RaiseLocalEvent(ref ev);
+            var weight = MathF.Max(0f, ev.Weight);
+            weighed.Add((manifest, weight));
+            total += weight;
+        }
+
+        var roll = _random.NextFloat() * total;
+        foreach (var (manifest, weight) in weighed)
+        {
+            roll -= weight;
+            if (roll <= 0f)
+                return manifest;
+        }
+
+        return weighed.LastOrDefault().Manifest;
     }
 
     /// <summary>
@@ -351,7 +393,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
         comp.Cost = prototype.Cost;
         comp.Lifetime = prototype.Lifetime;
         comp.OffBudget = prototype.Lifetime == WFEncounterLifetime.Persistent || prototype.Start == WFEncounterStart.RoundStart;
-        comp.OffBudget |= offBudget;
+        comp.OffBudget |= offBudget || prototype.Freight;
+        comp.Freight = prototype.Freight;
+        comp.Blockades = prototype.Blockades;
         // A pinned encounter is the admin's to end: no clock, no slot under the cap, and its ships stay however it goes.
         comp.Pinned = pinned;
         if (comp.Pinned)
@@ -374,9 +418,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         comp.Simulated = _simulate && prototype.Bounty is not { Target: WFEncounterBountyTarget.Captain };
         comp.Threat = prototype.Threat ?? comp.Tier;
 
-        WFEncounterManifestPrototype? manifest = null;
-        if (prototype.Manifests.Count > 0)
-            _prototypes.TryIndex(_random.Pick(prototype.Manifests), out manifest);
+        var manifest = PickManifest(prototype, stops);
         comp.Manifest = manifest?.ID;
         foreach (var ship in prototype.Ships)
         {
@@ -688,6 +730,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
             Hunt = ship.Hunt || ship.Extort != null || ship.Abduct != null,
             Extort = ship.Extort is { } extort ? NewExtort(extort) : null,
             Abduct = ship.Abduct is { } abduct ? NewAbduct(abduct) : null,
+            Disablers = ship.Disablers,
             Distress = ship.Distress,
             Evades = ship.Evades,
             Flees = ship.Flees,
@@ -759,6 +802,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
         foreach (var ship in encounter.Comp.Ships.Values)
         {
             EndAbduction(ship);
+            _disablers.SetTarget(ship.Grid, null);
         }
         if (resolution is WFEncounterResolution.Completed or WFEncounterResolution.Expired
             && encounter.Comp.Lifetime == WFEncounterLifetime.Transient && !encounter.Comp.Pinned)
@@ -1016,6 +1060,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
                 Extort(encounter, key, ship, ship.Extort);
             else if (ship.Hunt && encounter.Comp.Begun)
                 Hunt(ship);
+            if (ship.Hunt && ship.Disablers.Count > 0)
+                AimDisablers(ship, encounter.Comp.Begun);
             else if (encounter.Comp.Leash > 0f && ship.HasOrders)
                 Recall(encounter.Comp, ship);
 

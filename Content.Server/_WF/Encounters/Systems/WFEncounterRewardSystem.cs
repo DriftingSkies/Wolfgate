@@ -397,6 +397,13 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         }
 
         encounter.Allies.Clear();
+        // No side is left to win a blockade: whoever broke it shares the reward.
+        if (args.Resolution == WFEncounterResolution.Destroyed && encounter.Blockades)
+        {
+            PayBreakers(args.Encounter, encounter);
+            return;
+        }
+
         if (args.Resolution != WFEncounterResolution.Decided || !_prototypes.TryIndex(encounter.Prototype, out var prototype))
             return;
 
@@ -420,6 +427,17 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
                     break;
             }
         }
+    }
+
+    /// <summary>Pays a destroyed blockade's reward to the players who broke it.</summary>
+    private void PayBreakers(EntityUid uid, WFEncounterComponent encounter)
+    {
+        if (!_prototypes.TryIndex(encounter.Prototype, out var prototype) || prototype.Rewards.FirstOrDefault() is not { } reward)
+            return;
+
+        var breakers = GetHelpers(encounter, encounter.Ships.Values.Select(ship => ship.Side).ToHashSet());
+        if (breakers.Count > 0)
+            Pay(uid, encounter, reward, breakers, "breaking a blockade");
     }
 
     /// <summary>

@@ -352,6 +352,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Audio/_Mono/Weapons/Guns/Gunshots/attributions.yml`](../../Resources/Audio/_Mono/Weapons/Guns/Gunshots/attributions.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Audio/Effects/Gasp/attributions.yml`](../../Resources/Audio/Effects/Gasp/attributions.yml): Goon-sourced audio is CC-BY-NC-SA-3.0, not the label it was imported with
 - [`Resources/keybinds.yml`](../../Resources/keybinds.yml): camera focus toggle unbound by default; players hit it with Space by accident
+- [`Resources/Locale/en-US/_Everdream/accessories/hair.ftl`](../../Resources/Locale/en-US/_Everdream/accessories/hair.ftl): Everdream hair port
 - [`Resources/Locale/en-US/_Goobstation/guidebook/guides.ftl`](../../Resources/Locale/en-US/_Goobstation/guidebook/guides.ftl): restore the licence header removed by Kill Spdx
 - [`Resources/Locale/en-US/_Mono/guidebook/guides.ftl`](../../Resources/Locale/en-US/_Mono/guidebook/guides.ftl): was Monolith Rules
 - [`Resources/Locale/en-US/_Mono/poi/stations.ftl`](../../Resources/Locale/en-US/_Mono/poi/stations.ftl)

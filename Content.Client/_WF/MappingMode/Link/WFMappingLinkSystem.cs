@@ -233,14 +233,50 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
                 return;
             }
 
-            Popup("wf-mapping-link-not-sink");
+            if (!TrySwitchToDevices(coords, clicked))
+                Popup("wf-mapping-link-not-sink");
             return;
         }
 
         if (FindAt(coords, clicked, HasComp<DeviceLinkSourceComponent>) is { } found)
             SetSource(found);
-        else
+        else if (!TrySwitchToDevices(coords, clicked))
             Popup("wf-mapping-link-not-source");
+    }
+
+    /// <summary>
+    /// A Signals click on a device list or a network device: switches to Devices and selects the list, or the list
+    /// that already holds the device.
+    /// </summary>
+    private bool TrySwitchToDevices(EntityCoordinates coords, EntityUid clicked)
+    {
+        EntityUid? holder;
+        if (FindAt(coords, clicked, HasComp<DeviceListComponent>) is { } list)
+            holder = list;
+        else if (FindAt(coords, clicked, IsDevice) is { } device)
+            holder = HolderOf(device);
+        else
+            return false;
+
+        SetTool(WFMappingLinkTool.Devices);
+        Holder = holder;
+        Changed?.Invoke();
+        Popup(holder == null ? "wf-mapping-link-switched-devices-pick" : "wf-mapping-link-switched-devices");
+        return true;
+    }
+
+    /// <summary>The first device list that holds a device, or null.</summary>
+    private EntityUid? HolderOf(EntityUid device)
+    {
+        var query = AllEntityQuery<DeviceListComponent>();
+        while (query.MoveNext(out var uid, out var list))
+        {
+            var devices = list.Devices;
+            if (devices.Contains(device))
+                return uid;
+        }
+
+        return null;
     }
 
     private void SetSource(EntityUid? source)

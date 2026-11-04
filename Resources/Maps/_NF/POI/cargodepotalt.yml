@@ -3503,6 +3503,14 @@ entities:
     - type: Transform
       pos: 4.5,10.5
       parent: 1
+- proto: ComputerMarketConsoleNFNormal
+  entities:
+  - uid: 1121
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 5.5,-3.5
+      parent: 1
 - proto: ComputerPalletConsoleNFHighMarket
   entities:
   - uid: 509
@@ -3679,6 +3687,13 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 9.5,-1.5
+      parent: 1
+- proto: CrateMachine
+  entities:
+  - uid: 1122
+    components:
+    - type: Transform
+      pos: 7.5,-3.5
       parent: 1
 - proto: DisposalUnit
   entities:

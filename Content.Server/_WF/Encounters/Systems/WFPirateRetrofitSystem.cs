@@ -161,6 +161,57 @@ public sealed partial class WFPirateRetrofitSystem : EntitySystem
     }
 
     /// <summary>
+    /// Mounts each gun on the smallest hardpoint it fits, an empty one first, else in place of the gun there. A gun no
+    /// hardpoint takes is left out. Returns the guns mounted.
+    /// </summary>
+    public List<EntityUid> Mount(EntityUid grid, IReadOnlyList<EntProtoId> guns)
+    {
+        var used = new HashSet<EntityUid>();
+        var spawnedGuns = new List<EntityUid>();
+        foreach (var gun in guns)
+        {
+            (EntityUid Uid, HardpointComponent Comp)? best = null;
+            var bestFree = false;
+            var children = Transform(grid).ChildEnumerator;
+            while (children.MoveNext(out var uid))
+            {
+                if (used.Contains(uid) || !TryComp<HardpointComponent>(uid, out var hardpoint) || !Transform(uid).Anchored
+                    || !Fits(gun, hardpoint))
+                    continue;
+
+                var free = hardpoint.anchoring is not { } current || TerminatingOrDeleted(current);
+                if (best is { } kept && (bestFree && !free
+                    || bestFree == free && (kept.Comp.CompatibleSizes < hardpoint.CompatibleSizes
+                        || kept.Comp.CompatibleSizes == hardpoint.CompatibleSizes && Order(kept.Uid, uid) <= 0)))
+                    continue;
+
+                best = (uid, hardpoint);
+                bestFree = free;
+            }
+
+            if (best is not { } pick)
+                continue;
+
+            if (pick.Comp.anchoring is { } old && !TerminatingOrDeleted(old))
+                Del(old);
+
+            var xform = Transform(pick.Uid);
+            var spawned = Spawn(gun, xform.Coordinates);
+            _transform.SetLocalRotation(spawned, xform.LocalRotation);
+            used.Add(pick.Uid);
+            spawnedGuns.Add(spawned);
+        }
+
+        if (used.Count == 0)
+            return spawnedGuns;
+
+        ChargeServers(grid);
+        if (TryComp<FireControlGridComponent>(grid, out var control))
+            _fireControl.RefreshControllables(grid, control);
+        return spawnedGuns;
+    }
+
+    /// <summary>
     /// Fills the fire control servers' batteries. Hulls are saved with them empty, and an empty one only comes up once
     /// its APC has ramped up to its recharge draw, which left a fresh raider's guns dead for its first seconds.
     /// </summary>

@@ -43,6 +43,10 @@ public sealed partial class LauncherConnectingGui
     private Control _joinOverallDivider = default!;
     private Label _joinCursorRow = default!;
 
+    /// <summary>Wrapping copy of upstream's single-line disconnect reason.</summary>
+    private RichTextLabel _joinDisconnectReason = default!;
+    private string? _joinDisconnectText;
+
     private JoinConsoleStyle _joinStyle = default!;
     private float _joinUpdateTimer;
     private bool _joinStuckLogged;
@@ -98,6 +102,11 @@ public sealed partial class LauncherConnectingGui
         ConnectStatus.Visible = false;
 
         BuildJoinRows();
+
+        _joinDisconnectReason = new RichTextLabel { HorizontalAlignment = HAlignment.Center };
+        Disconnected.AddChild(_joinDisconnectReason);
+        _joinDisconnectReason.SetPositionInParent(DisconnectReason.GetPositionInParent() + 1);
+        DisconnectReason.Visible = false;
 
         JoinStuckWarning.SetMessage(Loc.GetString("join-progress-stuck"), _joinStyle.Warn);
         JoinReconnectButton.OnPressed += _ => _state.ReconnectJoin();
@@ -178,6 +187,12 @@ public sealed partial class LauncherConnectingGui
         // Upstream sets these every frame in its own words, so this runs after it.
         RetryButton.Text = RetryButton.Text?.ToUpperInvariant();
         ReconnectButton.Text = ReconnectButton.Text?.ToUpperInvariant();
+
+        if (DisconnectReason.Text != _joinDisconnectText)
+        {
+            _joinDisconnectText = DisconnectReason.Text;
+            _joinDisconnectReason.SetMessage(FormattedMessage.FromUnformatted(_joinDisconnectText ?? ""));
+        }
 
         // Upstream picks the tip after this file's setup has run.
         if (!_joinTipCentered)

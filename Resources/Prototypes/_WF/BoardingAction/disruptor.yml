@@ -1,0 +1,66 @@
+# The ion disruptor: a ship gun whose bolt EMPs every thruster and gyroscope on the hull it hits. Shields stop it.
+# Not sold; the Reaver abductors and extorters carry it to stop a ship before they board.
+
+- type: entity
+  id: WFIonDisruptorBolt
+  parent: BaseBullet
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Heat: 5
+  - type: Sprite
+    sprite: _Mono/Objects/Weapons/Guns/Projectiles/ship_projectiles.rsi
+    layers:
+    - state: ion_blast
+  - type: Ammo
+    muzzleFlash: MuzzleFlashEffectTempCold
+  - type: ShipWeaponProjectile
+  - type: WFEngineDisruptor
+    duration: 20
+  - type: RadarBlip
+    radarColor: "#6c00d6"
+    scale: 3
+    shape: circle
+  - type: TimedDespawn
+    lifetime: 8
+  - type: PointLight
+    color: "#b46cff"
+
+- type: entity
+  id: WFIonDisruptor
+  parent: WeaponTurretM220
+  suffix: Small, Raider
+  components:
+  - type: Gun
+    fireRate: 0.125
+    projectileSpeed: 120
+  - type: ProjectileBatteryAmmoProvider
+    proto: WFIonDisruptorBolt
+    fireCost: 4000
+  - type: Battery
+    maxCharge: 16000
+    startingCharge: 16000
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 500
+  - type: ShipGunClass
+    shipClass: Light
+  - type: HardpointAnchorableOnly
+    class: Universal
+    size: Light
+
+# The ARACHNE as raiders fit it: its dart reloads itself, so the encounter can fire it again after a miss.
+- type: entity
+  id: WFHackHarpoonGunRaider
+  parent: WFHackHarpoonGun
+  suffix: Small, Raider
+  components:
+  - type: BallisticAmmoProvider
+    proto: WFHackDart
+    capacity: 1
+    cycleable: false
+    whitelist:
+      tags:
+      - WFHackDart

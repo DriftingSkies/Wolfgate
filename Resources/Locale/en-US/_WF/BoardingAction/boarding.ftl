@@ -13,3 +13,8 @@ wf-boarding-helm-release = Release cable
 
 wf-boarding-gunner-locked = Ship guns locked: hacking cable out.
 wf-boarding-gunner-lockout = Guns locked out: that line crosses the ship hacking you.
+wf-boarding-engines-disrupted = ION STRIKE: engines and gyroscopes down!
+
+ent-WFIonDisruptorBolt = ion disruptor bolt
+ent-WFIonDisruptor = SHRIKE ion disruptor
+    .desc = Fires an ion bolt that knocks out every thruster and gyroscope on the ship it hits for twenty seconds. Shields stop it.

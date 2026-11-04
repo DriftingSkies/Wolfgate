@@ -128,15 +128,13 @@ public sealed class TradeRewardsTest
             var far = TradeTestWorld.Grid(entMan, map, new Vector2(5000f, 0f), "WF test far yard");
             var seller = entMan.SpawnEntity(null, map.GridCoords);
 
-            market.AddPressure(map.Grid.Owner, Metals, 0.3f);
-            market.AddPressure(map.Grid.Owner, Fabric, 0.3f);
+            var profile = market.Profile(map.Grid.Owner);
+            market.SetVendorStock(map.Grid.Owner, Metals, (int) (profile.StockTarget * 1.2f));
 
             var bulk = rushes.Start(IndustrialBulk)!;
             Assert.That(bulk, Is.Not.Null, "No station could post an industrial bulk order.");
             Assert.That(bulk.Bulk, Is.True);
             Assert.That(bulk.Total, Is.InRange(25, 45));
-            Assert.That(market.Pressure(map.Grid.Owner, Metals), Is.Zero, "Posting a bulk order left its goods glutted.");
-            Assert.That(market.Pressure(map.Grid.Owner, Fabric), Is.GreaterThan(0f), "Posting a bulk order cleared a good outside it.");
 
             var quote = market.Quote(chute, Metals)!.Value;
             Assert.That(quote.Reason, Is.EqualTo((LocId) "wf-trade-reason-bulk"));
@@ -150,11 +148,10 @@ public sealed class TradeRewardsTest
 
             Assert.That(bulk.Remaining, Is.Zero, "A hold's worth of crates didn't fill the order.");
             Assert.That(rushes.Active, Does.Not.Contain(bulk), "A filled bulk order stayed open.");
-            Assert.That(market.Pressure(map.Grid.Owner, Metals), Is.Zero, "A bulk order's crates glutted the market.");
+            Assert.That(market.Delivered(map.Grid.Owner, Metals), Is.EqualTo(bulk.Total));
 
-            // Past the order, sales dent the price as usual.
-            market.Sell(chute, TradeTestWorld.Hauled(entMan, far, map.GridCoords, Metals), seller);
-            Assert.That(market.Pressure(map.Grid.Owner, Metals), Is.GreaterThan(0f), "A sale after the order added no pressure.");
+            // Past the order, the crates it brought weigh on the price again.
+            Assert.That(market.Quote(chute, Metals)!.Value.Factor, Is.LessThan(1f), "An order's crates should still fill the shelf.");
 
             // Unforced rolls keep the two kinds apart.
             Assert.That(rushes.Start()!.Bulk, Is.False, "A rush roll posted a bulk order.");

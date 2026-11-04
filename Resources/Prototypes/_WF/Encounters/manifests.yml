@@ -3,10 +3,13 @@
 # every station's turn-in chute pays for, two to ten thousand each depending on where they are taken, with the dear and
 # dangerous ones (reactor fuel, ammunition, luxuries) rare. The rest is the cargo catalogue's crates, which sell at a
 # pallet for what is in them, and the lots in crates.yml that no catalogue has.
+# A stop restocks only the trade goods aboard and the manifest's materials. Every good a station vendor sells has to be
+# on a manifest that runs at any player count. Plasma, uranium, lithium and precious metals stay with the miners.
 
 - type: wfEncounterManifest
   id: WFManifestGeneral
   name: wf-encounter-cargo-general
+  materials: [ SheetSteel1, SheetGlass1, SheetPlastic1 ]
   crates:
   - TradeGoodSupplies
   - TradeGoodSupplies
@@ -79,6 +82,7 @@
 - type: wfEncounterManifest
   id: WFManifestIndustrial
   name: wf-encounter-cargo-industrial
+  materials: [ SheetSteel1, SheetPlasteel1, SheetCopper1 ]
   crates:
   - TradeGoodMetals
   - TradeGoodMetals
@@ -89,6 +93,7 @@
   - TradeGoodComponents
   - TradeGoodEquipment
   - TradeGoodFissionFuel
+  - TradeGoodAmmo
   - CrateMaterialSteel
   - CrateMaterialSteel
   - CrateMaterialPlasteel
@@ -103,6 +108,7 @@
 - type: wfEncounterManifest
   id: WFManifestParts
   name: wf-encounter-cargo-parts
+  materials: [ SheetGlass1, SheetPlastic1, SheetCopper1 ]
   crates:
   - TradeGoodShipComponents
   - TradeGoodShipComponents
@@ -113,6 +119,7 @@
   - TradeGoodEquipment
   - TradeGoodEquipment
   - TradeGoodFusionFuel
+  - TradeGoodWeaponParts
   - CrateEngineeringThruster
   - CrateEngineeringSmallThruster
   - CrateEngineeringGyroscope
@@ -148,6 +155,7 @@
 - type: wfEncounterManifest
   id: WFManifestSalvage
   name: wf-encounter-cargo-salvage
+  materials: [ ScrapOre1, SteelOre1, Salt1 ]
   crates:
   - TradeGoodScrap
   - TradeGoodScrap

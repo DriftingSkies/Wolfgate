@@ -18,6 +18,7 @@
   completetime: 50
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 20000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 5000
     Copper: 5000
     Plasteel: 2500
@@ -34,6 +35,7 @@
   completetime: 100
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 10000
     Copper: 10000
     Plasteel: 5000
@@ -50,6 +52,7 @@
   result: ShipVoucherZephyr
   completetime: 130
   materials:
+    WFShipParts: 20000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 6500
     Plasteel: 4500
     Plastic: 3000
@@ -66,6 +69,7 @@
   completetime: 100
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 100000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 15000
     Copper: 15000
     Plasteel: 12000
@@ -85,6 +89,7 @@
   completetime: 240
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 200000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 30000
     Copper: 15000
     Plasteel: 25000
@@ -196,6 +201,7 @@
   completetime: 10
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 10000
     Copper: 10000
     Plasteel: 5000
@@ -213,6 +219,7 @@
   completetime: 10
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 10000
     Copper: 10000
     Plasteel: 5000
@@ -230,6 +237,7 @@
   completetime: 25
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 10000
     Copper: 10000
     Plasteel: 5000
@@ -250,6 +258,7 @@
   completetime: 30
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 10000
     Copper: 10000
     Plasteel: 5000
@@ -266,6 +275,7 @@
   completetime: 30
   materialDiscountScale: 0.2
   materials: # more steel less copper/lithium
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 20000
     Copper: 5000
     Plasteel: 5000
@@ -284,6 +294,7 @@
   completetime: 100
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 50000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 10000
     Copper: 10000
     Plasteel: 5000
@@ -302,6 +313,7 @@
   completetime: 180
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 100000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 15000
     Copper: 10000
     Plasteel: 24000
@@ -321,6 +333,7 @@
   completetime: 180
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 100000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 15000
     Copper: 20000
     Plasteel: 12000
@@ -340,6 +353,7 @@
   completetime: 240
   materialDiscountScale: 0.2
   materials:
+    WFShipParts: 200000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 30000
     Copper: 10000
     Plasteel: 30000
@@ -381,6 +395,7 @@
   completetime: 50
   materialDiscountScale: 0.2
   materials: # Make cheaper once it requires research!
+    WFShipParts: 20000 # WOLFGATE(TradeGoods): ship vouchers use ship parts from ship component crates
     Steel: 7500
     Copper: 7500
     Plasteel: 4000

@@ -4916,3 +4916,82 @@ Entries:
   id: 100327
   time: '2026-11-03T02:29:35.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/454
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: >-
+        The Foxtrot-II's missile ejection system has been refurbished and should
+        now launch ordnance properly.
+  id: 100328
+  time: '2026-11-03T08:21:57.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/467
+- author: Sushiburger
+  changes:
+    - type: Add
+      message: 'Three Hairstyles: Eve, Impish (Short), Remilia'
+  id: 100329
+  time: '2026-11-03T08:43:59.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/464
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Abductors and extorters now carry an ion disruptor that knocks out a
+        ship's engines, then harpoon it before they board.
+    - type: Tweak
+      message: Abductor ransoms and extorter tolls are much higher.
+    - type: Fix
+      message: >-
+        Abductors on the Bastion no longer get stuck dragging someone to the
+        cell.
+  id: 100330
+  time: '2026-11-03T11:03:05.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/468
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Stations now make, use and run short of trade goods. Prices at chutes
+        and vendors follow how full each station's shelves are.
+    - type: Add
+      message: >-
+        Freighters now deliver what stations are owed. Stealing their cargo or
+        destroying them leaves those stations short.
+    - type: Add
+      message: >-
+        Raiders can now blockade a station, cutting off its imports. Destroy
+        them to lift the blockade and get paid.
+    - type: Add
+      message: >-
+        The Market app has new Sector and Materials tabs, showing what each
+        station is short of and where to trade materials.
+    - type: Add
+      message: >-
+        Ore and material prices at pallets and market consoles now depend on how
+        much a station holds, and stations with materials produce more.
+    - type: Add
+      message: >-
+        Medical, ammo, fission fuel, weapon part and ship component crates can
+        now go into lathes. Blank medipens, researched ship ammo, uranium fuel
+        rods, ASMGT turrets and many ship vouchers now need them.
+    - type: Add
+      message: >-
+        Cargo depots and the Lantern now have a market console and crate
+        machine.
+    - type: Tweak
+      message: >-
+        Shortages now come from real gaps in a station's stock, and their
+        announcements say why.
+    - type: Tweak
+      message: Trade crates cost much more material to print.
+    - type: Tweak
+      message: >-
+        Chutes pay about 10% less at normal stock, and pay more when a station
+        is short.
+    - type: Tweak
+      message: Drydock work at Anvilhold costs more when it's short of ship components.
+    - type: Tweak
+      message: Patrols are scheduled less often when the sector is short of ammo.
+  id: 100331
+  time: '2026-11-03T11:15:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/457

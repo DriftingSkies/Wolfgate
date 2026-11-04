@@ -1,8 +1,8 @@
 # Extorters: Ashfall Reaver ships that roam the sector for as long as they live. Now and then one runs down a player
 # ship, keeps station a few hundred metres off and hails it for a toll. A ship that pays is left alone for half an hour
 # and its toll is added to the warrant on the extorter. A ship that refuses, cannot pay, or lets three hails ring out is
-# boarded as the pirate boarders board: guards hold the port, hands loot, and the ship casts off. Its guns answer ship
-# guns only. Three tiers by hull, crew and skill; the scheduler keeps at most one of each alive.
+# boarded as the pirate boarders board: guards hold the port, hands loot, and the ship casts off. Before boarding it
+# stops the mark with an ion disruptor and an ARACHNE harpoon. Its guns answer ship guns only. Three tiers by hull, crew and skill; the scheduler keeps at most one of each alive.
 
 # A scrap shuttle with a green crew. A small toll and a small price on it.
 - type: wfEncounter
@@ -28,6 +28,7 @@
   ships:
   - key: extorter
     stealth: true
+    disablers: [ WFIonDisruptor, WFHackHarpoonGunRaider ]
     navigation: WFCrewNavigationHunter
     vessels: [ Hazel ]
     side: pirates
@@ -44,7 +45,7 @@
     wanderRadius: 4000
     wanderPause: 30
     extort:
-      toll: 6000
+      toll: 25000
       reach: 4000
 
 # An armed corvette with a steady crew and a captain to do the talking.
@@ -71,6 +72,7 @@
   ships:
   - key: extorter
     stealth: true
+    disablers: [ WFIonDisruptor, WFHackHarpoonGunRaider ]
     navigation: WFCrewNavigationHunter
     vessels: [ Metis, Mudskipper ]
     side: pirates
@@ -86,7 +88,7 @@
     wanderRadius: 4500
     wanderPause: 30
     extort:
-      toll: 15000
+      toll: 60000
       reach: 4500
 
 # A gunship with a veteran crew and a full boarding party. It turns on a ship that fires on it.
@@ -113,6 +115,7 @@
   ships:
   - key: extorter
     stealth: true
+    disablers: [ WFIonDisruptor, WFHackHarpoonGunRaider ]
     navigation: WFCrewNavigationHunter
     vessels: [ Kalisto, Scallywag ]
     side: pirates
@@ -127,5 +130,5 @@
     wanderRadius: 5000
     wanderPause: 30
     extort:
-      toll: 40000
+      toll: 150000
       reach: 5000

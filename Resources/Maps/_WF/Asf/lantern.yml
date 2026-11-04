@@ -1,7 +1,7 @@
 meta:
   format: 6
   postmapinit: false
-  entityCount: 3568
+  entityCount: 3570
 tilemap:
   0: Space
   3: FloorCarpetOffice
@@ -8905,6 +8905,13 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 4.5,32.5
       parent: 1
+- proto: ComputerMarketConsoleNFNormal
+  entities:
+  - uid: 3592
+    components:
+    - type: Transform
+      pos: 9.5,-6.5
+      parent: 1
 - proto: ComputerMedicalRecords
   entities:
   - uid: 1346
@@ -9054,6 +9061,13 @@ entities:
     components:
     - type: Transform
       pos: 4.5,-31.5
+      parent: 1
+- proto: CrateMachine
+  entities:
+  - uid: 3593
+    components:
+    - type: Transform
+      pos: 11.5,-7.5
       parent: 1
 - proto: CrowbarRed
   entities:

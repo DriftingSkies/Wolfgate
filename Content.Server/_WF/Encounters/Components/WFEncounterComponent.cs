@@ -55,6 +55,12 @@ public sealed partial class WFEncounterComponent : Component
     [DataField]
     public bool OffBudget;
 
+    /// <summary>A freight run, on its own schedule.</summary>
+    public bool Freight;
+
+    /// <summary>While it runs, its station counts as blockaded.</summary>
+    public bool Blockades;
+
     /// <summary>Whether it is kept off the sector markers.</summary>
     [DataField]
     public bool Hidden;
@@ -294,6 +300,10 @@ public sealed partial class WFEncounterShipState
     /// <summary>The ship it is trying to dock with.</summary>
     [DataField]
     public EntityUid? Prey;
+
+    /// <summary>Guns mounted at spawn to stop the ship it means to board.</summary>
+    [DataField]
+    public List<EntProtoId> Disablers = new();
 
     /// <summary>Set on an extorter: where it is in its round of tolls.</summary>
     public WFExtortState? Extort;

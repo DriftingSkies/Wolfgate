@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._NF.Bank;
+using Content.Server._WF.TradeGoods.Systems;
 using Content.Server.Cargo.Systems;
 using Content.Server.Destructible;
 using Content.Server.Popups;
@@ -54,6 +55,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedMaterialStorageSystem _materials = default!;
     [Dependency] private DestructibleSystem _destructible = default!;
+    [Dependency] private WFTradeMarketSystem _tradeMarket = default!;
 
     /// <summary>Upper bound on ship tiles kept for ambient sparks.</summary>
     private const int MaxSparkTiles = 512;
@@ -593,7 +595,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
                 }
                 else
                 {
-                    state.RepairPrice = WorkPrice(berthed, comp, null, items);
+                    state.RepairPrice = WorkPrice(console, berthed, comp, null, items);
                 }
             }
         }
@@ -734,7 +736,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
         if (upgrade == null && TryStartVoucherRepair(console, comp, ship, actor, items))
             return true;
 
-        var price = WorkPrice(ship, comp, upgrade, items);
+        var price = WorkPrice(console, ship, comp, upgrade, items);
         if (!TryCharge(console, comp, actor, price))
             return false;
 

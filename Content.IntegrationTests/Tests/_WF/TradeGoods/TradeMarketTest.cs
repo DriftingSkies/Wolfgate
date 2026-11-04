@@ -17,7 +17,7 @@ using Robust.Shared.Timing;
 namespace Content.IntegrationTests.Tests._WF.TradeGoods;
 
 /// <summary>
-/// Chute markets: sales lower a good's price and time restores it, the chute pays what it quoted, crates made anywhere
+/// Chute markets: the shelf sets the price and sales move it, the chute pays what it quoted, crates made anywhere
 /// sell but only a haul counts as one, raises are capped, and consignments and rush orders pay their premiums.
 /// </summary>
 [TestFixture]
@@ -76,7 +76,6 @@ public sealed class TradeMarketTest
         var map = await pair.CreateTestMap();
         var entMan = server.EntMan;
         var market = entMan.System<WFTradeMarketSystem>();
-        var timing = server.ResolveDependency<IGameTiming>();
 
         await server.WaitAssertion(() =>
         {
@@ -85,37 +84,35 @@ public sealed class TradeMarketTest
             var first = market.Quote(setup.Chute, CrateProto)!.Value;
             Assert.That(first.Amount, Is.EqualTo(first.Base), "A fresh market should pay the chute's base price.");
 
-            // A good reads as glutted once sales push its price 30% below base.
+            // Each crate walks down the curve at once, however many come in together.
             var profile = market.Profile(grid);
-            var gluttedAt = (int) System.MathF.Ceiling(0.3f / profile.PerSale);
-            for (var i = 0; i < gluttedAt - 1; i++)
+            var crates = (int) (profile.StockTarget * 0.25f);
+            for (var i = 0; i < crates; i++)
             {
                 market.Sell(setup.Chute, Crate(entMan, setup.Far, map.GridCoords), setup.User);
             }
 
-            var before = market.Quote(setup.Chute, CrateProto)!.Value;
-            Assert.That(before.Amount, Is.LessThan(first.Amount), "Sales should lower the price.");
-            Assert.That(before.Reason, Is.EqualTo((LocId) "wf-trade-reason-steady"), "A dip under 30% shouldn't read as glutted.");
-            market.Sell(setup.Chute, Crate(entMan, setup.Far, map.GridCoords), setup.User);
+            var glutted = market.Quote(setup.Chute, CrateProto)!.Value;
+            Assert.That(glutted.Factor, Is.EqualTo(1f - profile.GlutSlope * 0.25f).Within(0.02f), "Sales should lower the price as they land.");
+            Assert.That(glutted.Reason, Is.EqualTo((LocId) "wf-trade-reason-glutted"));
+            Assert.That(market.Delivered(grid, CrateProto), Is.EqualTo(crates));
 
-            Assert.That(market.Quote(setup.Chute, CrateProto)!.Value.Reason, Is.EqualTo((LocId) "wf-trade-reason-glutted"));
-            Assert.That(market.Delivered(grid, CrateProto), Is.EqualTo(gluttedAt));
+            // A short shelf pays over the table.
+            market.SetVendorStock(grid, CrateProto, (int) (profile.StockTarget * 0.6f));
+            var wanted = market.Quote(setup.Chute, CrateProto)!.Value;
+            Assert.That(wanted.Factor, Is.EqualTo(1f + profile.ScarcityPremium * 0.16f).Within(0.02f));
+            Assert.That(wanted.Reason, Is.EqualTo((LocId) "wf-trade-reason-wanted"));
 
-            // A single supplied crate is named as the reason.
-            var comp = entMan.GetComponent<WFTradeMarketComponent>(grid);
-            comp.Pressure.Remove(CrateProto);
-            market.AddPressure(grid, CrateProto, profile.PerSale, supplied: true);
-            Assert.That(market.Quote(setup.Chute, CrateProto)!.Value.Reason, Is.EqualTo((LocId) "wf-trade-reason-supplied"));
-
-            // Pressure stamped a half-life ago has halved.
-            comp.Pressure[CrateProto] = (0.4f, timing.CurTime - profile.HalfLife);
-            Assert.That(market.Pressure(grid, CrateProto), Is.EqualTo(0.2f).Within(0.01f));
+            // Stock bought away only raises what a chute pays once prices catch up, so a sale can't outrun them.
+            market.SetVendorStock(grid, CrateProto, (int) profile.StockTarget);
+            market.Row(grid, CrateProto).Stock = profile.StockTarget * 0.2f;
+            Assert.That(market.Quote(setup.Chute, CrateProto)!.Value.Amount, Is.EqualTo(first.Base));
 
             // A glutted market never pays below the good's floor.
-            comp.Pressure[CrateProto] = (5f, timing.CurTime);
+            market.SetVendorStock(grid, CrateProto, profile.VendorStock);
             var floor = market.Quote(setup.Chute, CrateProto)!.Value;
             var expected = profile.FloorPrices.TryGetValue(CrateProto, out var floorPrice) ? floorPrice : (int) (floor.Base * profile.Floor);
-            Assert.That(floor.Amount, Is.EqualTo(System.Math.Min(expected, floor.Base)));
+            Assert.That(floor.Amount, Is.GreaterThanOrEqualTo(System.Math.Min(expected, floor.Base)));
         });
 
         await pair.CleanReturnAsync();

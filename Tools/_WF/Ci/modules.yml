@@ -2239,6 +2239,12 @@ unmarked:
   - path: Resources/Maps/_NF/POI/medical.yml
     module: Wolfmed
     reason: An autodoc pod placed in the medical POI.
+  - path: Resources/Maps/_NF/POI/cargodepot.yml
+    module: TradeGoods
+    reason: A market console and crate machine, so what a depot buys can be bought back there.
+  - path: Resources/Maps/_NF/POI/cargodepotalt.yml
+    module: TradeGoods
+    reason: A market console and crate machine, so what a depot buys can be bought back there.
   - path: Resources/Textures/Effects/fire.rsi/
     module: BetterFire
     reason: Object fire state (fire) replaced with TauCeti generic_overlay.

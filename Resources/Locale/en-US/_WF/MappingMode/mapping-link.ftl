@@ -33,6 +33,8 @@ wf-mapping-link-readout-access = Link: access, click a reader
 
 wf-mapping-link-not-source = That doesn't send signals.
 wf-mapping-link-not-sink = That doesn't take signals.
+wf-mapping-link-switched-devices = Switched to Devices.
+wf-mapping-link-switched-devices-pick = Switched to Devices. Click an air alarm, fire alarm or console.
 wf-mapping-link-not-holder = That has no device list.
 wf-mapping-link-not-device = That can't go in a device list.
 wf-mapping-link-not-reader = That has no access reader.

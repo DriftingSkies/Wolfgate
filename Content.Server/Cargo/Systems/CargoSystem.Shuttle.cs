@@ -487,6 +487,9 @@ public sealed partial class CargoSystem
                 if (IsBountyComplete(ent, out var turnedIn))
                     price -= turnedIn.Sum(item => _pricing.GetPriceWithVendingDiscount(item, gridUid, false));
                 // WOLFGATE END
+                // WOLFGATE(TradeGoods): materials pay what the station's stock makes them worth
+                else
+                    price += _wfMaterials.WfPalletAdjustment(ent, gridUid);
 
                 var station = _station.GetOwningStation(ent);
                 double multiplier = 1;

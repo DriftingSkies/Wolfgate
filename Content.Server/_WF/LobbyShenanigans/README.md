@@ -30,6 +30,7 @@ and description; `LobbyShenanigansLayer` finds it by reflection and the panel li
 - [`Content.Client/_WF/LobbyShenanigans/LobbyShenanigan.cs`](../../../Content.Client/_WF/LobbyShenanigans/LobbyShenanigan.cs)
 - [`Content.Client/_WF/LobbyShenanigans/LobbyShenanigansLayer.cs`](../../../Content.Client/_WF/LobbyShenanigans/LobbyShenanigansLayer.cs)
 - [`Content.Client/_WF/LobbyShenanigans/LobbyShenanigansSystem.cs`](../../../Content.Client/_WF/LobbyShenanigans/LobbyShenanigansSystem.cs)
+- [`Content.Client/_WF/LobbyShenanigans/MeteorShower.cs`](../../../Content.Client/_WF/LobbyShenanigans/MeteorShower.cs)
 - [`Content.Client/_WF/LobbyShenanigans/MoproachPile.cs`](../../../Content.Client/_WF/LobbyShenanigans/MoproachPile.cs)
 - [`Content.Client/_WF/LobbyShenanigans/MoproachRain.cs`](../../../Content.Client/_WF/LobbyShenanigans/MoproachRain.cs)
 - [`Content.Client/_WF/LobbyShenanigans/Singularity.cs`](../../../Content.Client/_WF/LobbyShenanigans/Singularity.cs)

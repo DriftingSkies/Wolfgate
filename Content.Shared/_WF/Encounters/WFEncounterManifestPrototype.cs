@@ -16,4 +16,8 @@ public sealed partial class WFEncounterManifestPrototype : IPrototype
     /// <summary>Crates to pick from for each cargo tile. List one more often to make it more common.</summary>
     [DataField]
     public List<EntProtoId> Crates = new();
+
+    /// <summary>The single-unit materials it tops up at each stop's cargo market.</summary>
+    [DataField]
+    public List<EntProtoId> Materials = new();
 }

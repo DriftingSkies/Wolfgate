@@ -307,6 +307,10 @@ public sealed partial class WFEncounterSystem
             state.Retrofitted = build.Refit.Armed;
         }
 
+        // Raiders that stop a ship before boarding it carry their disruptors and harpoon on its hardpoints.
+        if (state.Disablers.Count > 0)
+            EnsureComp<WFShipDisablerComponent>(build.Grid).Guns = _retrofit.Mount(build.Grid, state.Disablers);
+
         // Boarders come for the ship, not to shoot it up: their guns answer ship guns only. Docked, their clamps hold it.
         if (state.Hunt)
         {

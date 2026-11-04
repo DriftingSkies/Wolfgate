@@ -125,6 +125,7 @@ book-text-cargo-depot-tradecrates = MANIFEST
       This paper will automatically disintegrate after 2 minutes.
 
 
+# WOLFGATE(TradeGoods): the alt depot manifest lists the chemical supplies it makes medical supplies from
 book-text-cargo-depot-tradecrates-alt = MANIFEST
       AT THIS CHUTE (PER CRATE):
       - AMMO : $10000
@@ -134,6 +135,7 @@ book-text-cargo-depot-tradecrates-alt = MANIFEST
       - FIS. FUEL : $24000
       - SCRAP : $3000
       - SHIP COMPONENTS : $8000
+      - CHEMICAL SUPPLIES : $2000
 
       This paper will automatically disintegrate after 2 minutes.
 
