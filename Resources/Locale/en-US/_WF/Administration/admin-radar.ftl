@@ -12,6 +12,9 @@ wf-admin-radar-players = Players
 wf-admin-radar-players-tooltip = Mark every player on this map.
 wf-admin-radar-player-group = { $name } +{ $count }
 
+wf-admin-radar-encounters = Encounters
+wf-admin-radar-encounters-tooltip = Show encounter markers, their warning and attack zones, and NPC crew tags.
+
 wf-admin-radar-jump = Jump to player
 wf-admin-radar-jump-tooltip = Pick a player to warp to. Enter takes the first match.
 wf-admin-radar-jump-search = Search players

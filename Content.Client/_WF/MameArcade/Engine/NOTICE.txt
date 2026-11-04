@@ -1,0 +1,15 @@
+This folder is MAME.NET's emulation core (https://github.com/JavierCanon/MAME.NET, commit 4736ac3e, GPL-3.0, see
+LICENSE.txt), a C# port of MAME. It carries no BIOS, MCU or game data; players supply their own.
+
+Modified for Wolfgate on 2026-11-03:
+- Only cpu/, sound/, mame/ and emu/ are kept. The WinForms frontend, the GDI debug viewers, DirectX input and
+  sound, and the bundled BIOS and MCU files are removed.
+- Namespaces moved under Content.Client._WF.MameArcade.Engine, and every file starts with #nullable disable.
+- emu/Keyboard.cs, Mouse.cs, Wintime.cs, Window.cs and Crosshair.cs are rewritten so the frontend supplies input and
+  pacing; Mame.cs runs one frame at a time; Video.cs, Sound.cs and Machine.cs hand frames, sound and ROM requests to
+  the frontend; UI.cs keeps only the frame-buffer conversion.
+- Client sandbox fixes: explicit-layout register unions became properties over one field, emu/BinaryWriter.cs
+  replaces System.IO.BinaryWriter, string.Format calls with four or more arguments pass an object array, and debug
+  trace files and console output are gone.
+- Neo Geo, PGM and Namco System 1 load their BIOS and MCU from the player's files and keep battery RAM through
+  Machine.Nvram. The Neo Geo sound CPU's banks are masked to the M1 ROM size, as MAME does.

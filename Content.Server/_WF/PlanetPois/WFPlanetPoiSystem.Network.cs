@@ -1022,6 +1022,9 @@ public sealed partial class WFPlanetPoiSystem
     /// <summary>Writes and pins the full road batch with open sky; whatever the biome grew on an unpinned tile goes first.</summary>
     private async Task PaintRoadAsync(EntityUid ground, MapGridComponent grid, BiomeComponent biome, IEnumerable<Vector2i> positions, string prototype)
     {
+        // Roads are open ground: they share the world's air and don't keep their chunks from being stashed.
+        prototype = _terrainAtmos.RoadTile(prototype);
+        _terrainAtmos.AddRoadTile(ground, prototype);
         var tiles = positions.ToHashSet();
         var tile = new Tile(_tiles[prototype].TileId);
         var anchored = new List<EntityUid>();

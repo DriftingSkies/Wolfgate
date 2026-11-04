@@ -56,6 +56,7 @@ public sealed partial class ShipShieldsSystem
     {
         UpdateWolfgateFtlShields();
         UpdateWolfgateShieldTails();
+        UpdateWolfgateShieldPvs(frameTime);
         var query = EntityQueryEnumerator<WFShipShieldVisualsComponent, ShipShieldComponent>();
         while (query.MoveNext(out var uid, out var visuals, out var shield))
             UpdateWolfgateShieldHealth(uid, visuals, shield.Source);
@@ -111,6 +112,12 @@ public sealed partial class ShipShieldsSystem
         FollowWolfgateShieldGrid(shield, grid);
         var visuals = EnsureComp<WFShipShieldVisualsComponent>(shield);
         var contours = existingContours ?? WFShipShieldGeometry.CreateContours(_wfShieldMap.GetAllTiles(grid, mapGrid).Select(t => t.GridIndices), mapGrid.TileSize);
+        // A tile loss inside the same bounding fit leaves the perimeter unchanged: keep the fixtures and skip the resend.
+        if (existingContours == null && TryComp<WFShipShieldShuntComponent>(shield, out var previous) &&
+            previous.Center == mapGrid.LocalAABB.Center && ContoursMatch(visuals.Contours, contours) &&
+            TryComp<FixturesComponent>(shield, out var current) &&
+            current.Fixtures.Keys.Any(n => n.StartsWith("wfShield", StringComparison.Ordinal)))
+            return;
         if (TryComp<FixturesComponent>(shield, out var fixtures))
         {
             foreach (var name in fixtures.Fixtures.Keys.Where(n => n.StartsWith("wfShield", StringComparison.Ordinal)).ToArray())
@@ -150,6 +157,24 @@ public sealed partial class ShipShieldsSystem
                 nameof(WFShipShieldVisualsComponent.Grid),
                 nameof(WFShipShieldVisualsComponent.Health));
         }
+    }
+
+    /// <summary>Compares contour sets vertex by vertex within a small tolerance.</summary>
+    private static bool ContoursMatch(Vector2[][] a, Vector2[][] b)
+    {
+        if (a.Length != b.Length)
+            return false;
+        for (var i = 0; i < a.Length; i++)
+        {
+            if (a[i].Length != b[i].Length)
+                return false;
+            for (var j = 0; j < a[i].Length; j++)
+            {
+                if (Math.Abs(a[i][j].X - b[i][j].X) > 1e-3f || Math.Abs(a[i][j].Y - b[i][j].Y) > 1e-3f)
+                    return false;
+            }
+        }
+        return true;
     }
 
     private void UpdateWolfgateShieldHealth(EntityUid uid, WFShipShieldVisualsComponent visuals, EntityUid? source)
@@ -230,7 +255,7 @@ public sealed partial class ShipShieldsSystem
         if (strength <= 0f || !HasComp<WFShipShieldVisualsComponent>(shield))
             return;
         PlayWolfgateShieldImpact(shield, position);
-        // Shield entities are globally visible, including edges outside their origin's PVS.
-        RaiseNetworkEvent(new WFShipShieldImpactEvent(GetNetEntity(shield), position, strength), Filter.Broadcast());
+        // Shield entities are visible on their whole map, including edges outside their origin's PVS.
+        RaiseNetworkEvent(new WFShipShieldImpactEvent(GetNetEntity(shield), position, strength), Filter.BroadcastMap(Transform(shield).MapID));
     }
 }

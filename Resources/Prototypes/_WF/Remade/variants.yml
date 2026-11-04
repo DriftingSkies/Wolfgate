@@ -1,0 +1,381 @@
+# Variants of the common Remade: same body and abilities as their base, another skin. In DS13 most of these are visual variants
+# of one species picked by weight. The base's weights are cut by the same shares in roster.yml, elites.yml and mobs.yml.
+# Art: slasher_desiccated, slasher_carrion, brute_flesh and puker_flayed from DS13-2.0, lurker_malo from DS13-2.0, fennec from DS13-1.0.
+
+# Desiccated slasher. DS13: the old default slasher, now uncommon (weight 2 against 8).
+
+- type: entity
+  parent: WFRemadeSlasher
+  id: WFRemadeSlasherDesiccated
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/slasher_desiccated.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "l_leg" ]
+      state: l_leg
+    - map: [ "r_leg" ]
+      state: r_leg
+    - map: [ "chest" ]
+      state: torso
+    - map: [ "l_arm" ]
+      state: l_arm
+    - map: [ "r_arm" ]
+      state: r_arm
+    - map: [ "head" ]
+      state: head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/slasher_desiccated.rsi
+
+- type: wfRemadeMob
+  id: WFRemadeSlasherDesiccated
+  entity: WFRemadeSlasherDesiccated
+  cost: 50
+  minStage: Growth
+  spawnWeight: 1.2
+  conversionWeight: 1.9
+  compatibilityPower: -1
+
+# Carrion slasher. DS13: a rare, different shape (weight 0.1 against 8) that can't wear a slasher's clothes. Its art has no lying
+# limbs: DS13 turns the whole mob on its side, so port_assets.py turns each limb a quarter.
+
+- type: entity
+  parent: WFRemadeSlasher
+  id: WFRemadeSlasherCarrion
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/slasher_carrion.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "l_leg" ]
+      state: l_leg
+    - map: [ "r_leg" ]
+      state: r_leg
+    - map: [ "chest" ]
+      state: torso
+    - map: [ "l_arm" ]
+      state: l_arm
+    - map: [ "r_arm" ]
+      state: r_arm
+    - map: [ "head" ]
+      state: head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/slasher_carrion.rsi
+
+- type: wfRemadeMob
+  id: WFRemadeSlasherCarrion
+  entity: WFRemadeSlasherCarrion
+  cost: 50
+  minStage: Harvest
+  spawnWeight: 0.06
+  conversionWeight: 0.1
+  compatibilityPower: -1
+
+# Flesh brute. DS13: half of all brutes (weight 1 against 1). DS13-2.0's art is one finished body in the chest and blank limbs,
+# so its limbs can't be seen coming off and don't come off: shoot them for full damage instead.
+
+- type: entity
+  parent: WFRemadeBrute
+  id: WFRemadeBruteFlesh
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/brute_flesh.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "l_leg" ]
+      state: brutef_l_leg
+    - map: [ "r_leg" ]
+      state: brutef_r_leg
+    - map: [ "chest" ]
+      state: brutef_chest
+    - map: [ "l_arm" ]
+      state: brutef_l_arm
+    - map: [ "r_arm" ]
+      state: brutef_r_arm
+    - map: [ "head" ]
+      state: brutef_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/brute_flesh.rsi
+    floors: { Melee: 0.25, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 80
+      weight: 1.5
+      severable: false
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 80
+      weight: 1.5
+      severable: false
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+    - id: chest
+      health: 400
+      weight: 3
+      scale: 0.35
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: brutef_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 70
+      weight: 1.5
+      severable: false
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 70
+      weight: 1.5
+      severable: false
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+    - id: head
+      name: wf-remade-limb-head
+      health: 90
+      weight: 1
+      severable: false
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1, Fire: 1 }
+
+- type: wfRemadeMob
+  id: WFRemadeBruteFlesh
+  entity: WFRemadeBruteFlesh
+  cost: 360
+  minStage: Rapture
+  spawnWeight: 0.75
+  maxAlive: 1
+
+# Flayed puker. DS13: the old default puker (weight 1 against 2). Like the puker, its sheet has no lying states: the dead layer is
+# its standing sprite laid on its side and greyed.
+
+- type: entity
+  parent: WFRemadePuker
+  id: WFRemadePukerFlayed
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/puker_flayed.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "l_leg" ]
+      state: l_leg
+    - map: [ "r_leg" ]
+      state: r_leg
+    - map: [ "chest" ]
+      state: torso
+    - map: [ "l_arm" ]
+      state: l_arm
+    - map: [ "r_arm" ]
+      state: r_arm
+    - map: [ "head" ]
+      state: head
+    - map: [ "dead" ]
+      state: full
+      rotation: 90
+      color: "#777777"
+      visible: false
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/puker_flayed.rsi
+
+- type: wfRemadeMob
+  id: WFRemadePukerFlayed
+  entity: WFRemadePukerFlayed
+  cost: 125
+  minStage: Rapture
+  spawnWeight: 0.67
+  conversionWeight: 0.67
+  minPoison: 60
+
+# Hound lurker. DS13: a rare lurker (weight 0.1 against 1) with a four-legged body. A dead animal still rises as the plain lurker.
+
+- type: entity
+  parent: WFRemadeLurker
+  id: WFRemadeLurkerMalo
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/lurker_malo.rsi
+    noRot: true
+    offset: 0,0.2
+    layers:
+    - map: [ "chest" ]
+      state: torso
+    - map: [ "tentacle_1" ]
+      state: tentacle_1
+    - map: [ "tentacle_2" ]
+      state: tentacle_2
+    - map: [ "tentacle_3" ]
+      state: tentacle_3
+    - map: [ "shell" ]
+      state: shell
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/lurker_malo.rsi
+    floors: { Sight: 0.4 }
+    limbs:
+    - id: chest
+      health: 150
+      weight: 3
+      scale: 0.5
+      severable: false
+      zones: [ Torso, Groin, LeftLeg, LeftFoot, RightLeg, RightFoot ]
+      lying: torso_lying
+    - id: tentacle_1
+      name: wf-remade-limb-tentacle
+      health: 18
+      weight: 1.5
+      loss: 12
+      zones: [ LeftArm, LeftHand ]
+      provides: { Fire: 0.34 }
+    - id: tentacle_2
+      name: wf-remade-limb-tentacle
+      health: 18
+      weight: 1.5
+      loss: 12
+      zones: [ Head ]
+      provides: { Fire: 0.33 }
+    - id: tentacle_3
+      name: wf-remade-limb-tentacle
+      health: 18
+      weight: 1.5
+      loss: 12
+      zones: [ RightArm, RightHand ]
+      provides: { Fire: 0.33 }
+
+- type: wfRemadeMob
+  id: WFRemadeLurkerMalo
+  entity: WFRemadeLurkerMalo
+  cost: 55
+  minStage: Harvest
+  spawnWeight: 0.18
+
+# Fennec. DS13-1.0's tougher hopper: 100 health to the hopper's 65, a touch faster, claws that hit twice as hard and a weaker
+# leap. DS13 raises it from small animals; here the hopper keeps those, so the Director is the only one that sends it.
+
+- type: entity
+  parent: WFRemadeHopper
+  id: WFRemadeHopperFennec
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/fennec.rsi
+    noRot: true
+    layers:
+    - map: [ "tail" ]
+      state: tail
+    - map: [ "chest" ]
+      state: torso
+    - map: [ "l_leg" ]
+      state: l_arm
+    - map: [ "r_leg" ]
+      state: r_arm
+    - map: [ "head" ]
+      state: head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.6
+    baseSprintSpeed: 4.6
+  - type: MeleeWeapon
+    damage:
+      types:
+        Slash: 12
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/fennec.rsi
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 22
+      weight: 1.5
+      loss: 12
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: l_arm_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 22
+      weight: 1.5
+      loss: 12
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: r_arm_lying
+    - id: chest
+      health: 150
+      weight: 3
+      scale: 0.4
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: torso_lying
+    - id: tail
+      name: wf-remade-limb-tail
+      health: 18
+      weight: 1
+      loss: 9
+      zones: [ LeftArm, LeftHand, RightArm, RightHand ]
+      lying: tail_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 30
+      weight: 1
+      loss: 30
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 10
+      range: 16
+      radius: 5
+      shakeTime: 1.5
+      sound:
+        collection: WFRemadeLeaperShout
+    - !type:WFLeapAbility
+      cooldown: 15
+      minRange: 2.5
+      range: 7
+      windUp: 0.5
+      speed: 12
+      overshoot: 0.8
+      knockdownTime: 0.7
+      damage:
+        types:
+          Slash: 7
+      sound:
+        collection: WFRemadeLeaperShout
+      hitSound:
+        collection: WFRemadeLeaperClaw
+
+- type: wfRemadeMob
+  id: WFRemadeHopperFennec
+  entity: WFRemadeHopperFennec
+  cost: 55
+  minStage: Growth
+  spawnWeight: 3.5

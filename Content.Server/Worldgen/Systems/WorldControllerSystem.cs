@@ -41,6 +41,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         SubscribeLocalEvent<LoadedChunkComponent, ComponentShutdown>(OnChunkUnloadedCore);
         SubscribeLocalEvent<WorldChunkComponent, ComponentShutdown>(OnChunkShutdown);
         WFInitializeUnloadGrace(); // WOLFGATE(Performance): chunk unload grace
+        WFInitializeIdleHelms(); // WOLFGATE(Performance): idle helms load nothing
     }
 
     /// <summary>
@@ -113,12 +114,18 @@ public sealed partial class WorldControllerSystem : EntitySystem
         if (_chunksToLoad.Count == 0)
             return; // Just bail early.
 
+        WFCollectActiveGrids(); // WOLFGATE(Performance): grids that have a player or pilot
+
         var loaderEnum = EntityQueryEnumerator<WorldLoaderComponent, TransformComponent>();
 
         while (loaderEnum.MoveNext(out var uid, out var worldLoader, out var xform))
         {
             if (worldLoader.Disabled) // Frontier: disable world loading
                 continue; // Frontier
+
+            // WOLFGATE(Performance): parked, empty helms don't load worldgen
+            if (WFIdleHelm(uid, xform))
+                continue;
 
             // Mono edit
             TryAddChunkLoader(uid, xform, (int) Math.Ceiling(worldLoader.Radius / (float) WorldGen.ChunkSize) + 1);
@@ -173,6 +180,8 @@ public sealed partial class WorldControllerSystem : EntitySystem
 
         if (chunksUnloaded > 0)
             _sawmill.Debug($"Queued {chunksUnloaded} chunks for unload.");
+
+        WFLogChunkCount(); // WOLFGATE(Performance): loaded-chunk counter
 
         if (_chunksToLoad.All(x => x.Value.Count == 0))
             return;

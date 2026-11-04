@@ -1,0 +1,20 @@
+# Judge starting voucher: one free Lightning or Hornet from the station shipyard.
+# Parented to the base voucher, not the guard one, so it does not inherit Brig access to every judge hull.
+- type: entity
+  parent: BaseShipVoucher
+  id: WFShipVoucherJudge
+  name: judge ship voucher
+  description: Allows for one free CASC Lightning or Hornet purchase from the Frontier Staff Shipyard. Destroyed on sale.
+  components:
+  - type: Sprite
+    layers:
+    - state: blue
+    - state: voucherstationguard
+  - type: Item
+    heldPrefix: blue
+  - type: ShipyardVoucher
+    destroyOnEmpty: true
+    consoleType: Sr
+    vessels:
+    - Lightning
+    - Hornet

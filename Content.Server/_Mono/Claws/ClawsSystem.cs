@@ -53,7 +53,7 @@ public sealed class ClawsSystem : SharedClawsSystem
             if (comp.GrowTimer < claw.GrowCooldown)
             {
                 UpdateClaws(uid, comp); // Pretty sure we can afford that.
-                Dirty(uid, comp);
+                // Dirty(uid, comp); // WOLFGATE(Performance): GrowTimer is not networked and the stage did not change
                 continue;
             }
 

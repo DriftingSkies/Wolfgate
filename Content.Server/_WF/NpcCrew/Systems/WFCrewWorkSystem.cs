@@ -55,6 +55,8 @@ public sealed partial class WFCrewWorkSystem : EntitySystem
     private readonly List<EntityUid> _workers = new();
     private readonly List<(EntityUid Item, EntityUid Place)> _lootCandidates = new();
     private float _timer;
+    private bool _phased;
+    [Dependency] private Robust.Shared.Random.IRobustRandom _random = default!;
 
     /// <summary>How long a worker may be away from a home grid it is not docked to before the job is dropped.</summary>
     private static readonly TimeSpan StrandedAfter = TimeSpan.FromSeconds(10);
@@ -112,6 +114,11 @@ public sealed partial class WFCrewWorkSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        if (!_phased)
+        {
+            _phased = true;
+            _timer = _random.NextFloat(); // random phase so the 1 Hz crew sweeps don't share a tick
+        }
         _timer += frameTime;
         if (_timer < 1f)
             return;

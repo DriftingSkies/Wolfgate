@@ -44,6 +44,13 @@ public sealed partial class LarvaQueueSystem : EntitySystem
     private readonly Dictionary<EntityUid, int> _pendingBurrowedCount = new();
     private readonly Dictionary<NetUserId, TimeSpan> _disconnectExpiresAt = new();
 
+    // Scratch lists for Update, reused so an idle queue allocates nothing.
+    private readonly List<NetUserId> _updateExpiredDisconnected = new();
+    private readonly List<EntityUid> _updateEmptyPreQueues = new();
+    private readonly List<NetUserId> _updateToPromote = new();
+    private readonly List<NetUserId> _updateExpiredOffers = new();
+    private readonly List<(NetUserId UserId, EntityUid DeadLarva)> _updateEntityDiedOffers = new();
+
     private sealed partial class PendingOffer
     {
         public required EntityUid? TargetLarva;
@@ -705,9 +712,13 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (_net.IsClient)
             return;
 
+        if (_disconnectExpiresAt.Count == 0 && PreQueue.Count == 0 && _pendingOffers.Count == 0)
+            return;
+
         var time = _gameTiming.CurTime;
 
-        var expiredDisconnected = new List<NetUserId>();
+        var expiredDisconnected = _updateExpiredDisconnected;
+        expiredDisconnected.Clear();
         foreach (var (userId, expiry) in _disconnectExpiresAt)
         {
             if (time >= expiry)
@@ -720,13 +731,15 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             RemoveFromAllQueues(userId);
         }
 
-        var emptyPreQueues = new List<EntityUid>();
+        var emptyPreQueues = _updateEmptyPreQueues;
+        emptyPreQueues.Clear();
         foreach (var (hive, hivePreQueue) in PreQueue)
         {
             if (!TryComp(hive, out HiveComponent? hiveComp))
                 continue;
 
-            var toPromote = new List<NetUserId>();
+            var toPromote = _updateToPromote;
+            toPromote.Clear();
             foreach (var (userId, userTime) in hivePreQueue)
             {
                 if (userTime <= time.TotalSeconds)
@@ -757,8 +770,10 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         foreach (var hive in emptyPreQueues)
             PreQueue.Remove(hive);
 
-        var expiredOffers = new List<NetUserId>();
-        var entityDiedOffers = new List<(NetUserId UserId, EntityUid DeadLarva)>();
+        var expiredOffers = _updateExpiredOffers;
+        var entityDiedOffers = _updateEntityDiedOffers;
+        expiredOffers.Clear();
+        entityDiedOffers.Clear();
         foreach (var (userId, offer) in _pendingOffers)
         {
             if (time.TotalSeconds >= offer.ExpiresAt)

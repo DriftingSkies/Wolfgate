@@ -22,6 +22,7 @@ using Content.Shared.Power.Components;
 using Content.Shared.Alert;
 using Content.Server._EinsteinEngines.Silicon.Death;
 using Content.Server._EinsteinEngines.Power.Components;
+using Robust.Shared.Containers; // WOLFGATE(Performance)
 
 namespace Content.Server._EinsteinEngines.Silicon.Charge;
 
@@ -36,11 +37,19 @@ public sealed partial class SiliconChargeSystem : EntitySystem
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private PowerCellSystem _powerCell = default!;
     [Dependency] private AlertsSystem _alerts = default!;
+    // WOLFGATE(Performance) START: drain pass timing
+    private static readonly TimeSpan DrainInterval = TimeSpan.FromSeconds(1);
+    private static readonly TimeSpan MaxDrainStep = TimeSpan.FromSeconds(5);
+    // WOLFGATE END
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<SiliconComponent, ComponentStartup>(OnSiliconStartup);
+        // WOLFGATE(Performance) START: a battery swap is handled on the next tick instead of waiting for the 1 s pass
+        SubscribeLocalEvent<SiliconComponent, EntInsertedIntoContainerMessage>(OnSiliconContainerChanged);
+        SubscribeLocalEvent<SiliconComponent, EntRemovedFromContainerMessage>(OnSiliconContainerChanged);
+        // WOLFGATE END
     }
 
     public bool TryGetSiliconBattery(EntityUid silicon, [NotNullWhen(true)] out BatteryComponent? batteryComp)
@@ -59,6 +68,13 @@ public sealed partial class SiliconChargeSystem : EntitySystem
         //DebugTools.Assert("SiliconComponent does not contain Battery");
         return false;
     }
+
+    // WOLFGATE(Performance) START: make the next drain pass due immediately
+    private void OnSiliconContainerChanged(EntityUid uid, SiliconComponent component, ContainerModifiedMessage args)
+    {
+        component.LastDrainTime = TimeSpan.Zero;
+    }
+    // WOLFGATE END
 
     private void OnSiliconStartup(EntityUid uid, SiliconComponent component, ComponentStartup args)
     {
@@ -82,14 +98,20 @@ public sealed partial class SiliconChargeSystem : EntitySystem
                 continue;
 
             // Check if the Silicon is an NPC, and if so, follow the delay as specified in the CVAR.
-            if (siliconComp.EntityType.Equals(SiliconType.Npc))
-            {
-                var updateTime = _config.GetCVar(CCVars.SiliconNpcUpdateTime);
-                if (_timing.CurTime - siliconComp.LastDrainTime < TimeSpan.FromSeconds(updateTime))
-                    continue;
+            // WOLFGATE(Performance) START: every silicon drains on a 1 s accumulator; NPCs keep their cvar delay
+            var isNpc = siliconComp.EntityType.Equals(SiliconType.Npc);
+            var interval = isNpc ? TimeSpan.FromSeconds(_config.GetCVar(CCVars.SiliconNpcUpdateTime)) : DrainInterval;
+            var sinceLast = _timing.CurTime - siliconComp.LastDrainTime;
+            if (sinceLast < interval)
+                continue;
 
-                siliconComp.LastDrainTime = _timing.CurTime;
-            }
+            // A reset timer (new silicon, battery swap) counts as one interval.
+            var elapsed = siliconComp.LastDrainTime == TimeSpan.Zero || sinceLast > MaxDrainStep
+                ? (float) interval.TotalSeconds
+                : (float) sinceLast.TotalSeconds;
+            siliconComp.LastDrainTime = _timing.CurTime;
+            var drainTime = isNpc ? frameTime : elapsed;
+            // WOLFGATE END
 
             // If you can't find a battery, set the indicator and skip it.
             if (!TryGetSiliconBattery(silicon, out var batteryComp))
@@ -118,19 +140,22 @@ public sealed partial class SiliconChargeSystem : EntitySystem
             // Maybe use something similar to refreshmovespeedmodifiers, where it's stored in the component.
             // Maybe it doesn't matter, and stuff should just use static drain?
             if (!siliconComp.EntityType.Equals(SiliconType.Npc)) // Don't bother checking heat if it's an NPC. It's a waste of time, and it'd be delayed due to the update time.
-                drainRateFinalAddi += SiliconHeatEffects(silicon, siliconComp, frameTime) - 1; // This will need to be changed at some point if we allow external batteries, since the heat of the Silicon might not be applicable.
+                // WOLFGATE(Performance): drainTime replaces frameTime
+                drainRateFinalAddi += SiliconHeatEffects(silicon, siliconComp, drainTime) - 1; // This will need to be changed at some point if we allow external batteries, since the heat of the Silicon might not be applicable.
 
             // Ensures that the drain rate is at least 10% of normal,
             // and would allow at least 4 minutes of life with a max charge, to prevent cheese.
             drainRate += Math.Clamp(drainRateFinalAddi, drainRate * -0.9f, batteryComp.MaxCharge / 240);
 
             // Drain the battery.
-            _powerCell.TryUseCharge(silicon, frameTime * drainRate);
+            _powerCell.TryUseCharge(silicon, drainTime * drainRate); // WOLFGATE(Performance): drainTime replaces frameTime
 
             // Figure out the current state of the Silicon.
             var chargePercent = (short) MathF.Round(batteryComp.CurrentCharge / batteryComp.MaxCharge * 10f);
 
-            UpdateChargeState(silicon, chargePercent, siliconComp);
+            // WOLFGATE(Performance): the event fan-out and speed refresh only matter when the state changes
+            if (chargePercent != siliconComp.ChargeState)
+                UpdateChargeState(silicon, chargePercent, siliconComp);
         }
     }
 

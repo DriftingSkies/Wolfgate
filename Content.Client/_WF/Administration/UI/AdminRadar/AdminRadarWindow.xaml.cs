@@ -64,6 +64,9 @@ public sealed partial class AdminRadarWindow : FancyWindow
                 _radar.RequestPlayers(true);
         };
 
+        EncountersToggle.Pressed = RadarScreen.WfShowEncounters = _radar.ShowEncounters;
+        EncountersToggle.OnToggled += args => _radar.ShowEncounters = RadarScreen.WfShowEncounters = args.Pressed;
+
         JumpToggle.OnToggled += args => SetJumpOpen(args.Pressed);
         JumpSearch.OnTextChanged += _ => PopulateJumpList();
         JumpSearch.OnTextEntered += _ =>

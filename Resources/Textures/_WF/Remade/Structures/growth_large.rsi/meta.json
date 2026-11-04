@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at https://github.com/DS-13-Dev-Team/DS13-2.0 (deadspace/icons/effects/corruption96x96.dmi)",
+  "size": {
+    "x": 96,
+    "y": 96
+  },
+  "states": [
+    {
+      "name": "whole"
+    },
+    {
+      "name": "beak_closed"
+    },
+    {
+      "name": "beak",
+      "delays": [
+        [
+          4.1,
+          0.3,
+          0.3,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "tentacle_1",
+      "delays": [
+        [
+          0.35,
+          0.4,
+          0.4,
+          0.35,
+          0.4,
+          0.4,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "tentacle_2",
+      "delays": [
+        [
+          0.35,
+          0.4,
+          0.4,
+          0.35,
+          0.4,
+          0.4,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "tentacle_3",
+      "delays": [
+        [
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "tentacle_4",
+      "delays": [
+        [
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.5,
+          0.6
+        ]
+      ]
+    },
+    {
+      "name": "harvester",
+      "delays": [
+        [
+          2.5,
+          2.5
+        ]
+      ]
+    }
+  ]
+}

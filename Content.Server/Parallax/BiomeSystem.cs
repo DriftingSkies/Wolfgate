@@ -121,6 +121,10 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
             return;
         }
 
+        // WOLFGATE(Planets): a biome grid being deleted needs no bookkeeping; the chunk walk below is per entity
+        if (MetaData(gridUid).EntityLifeStage >= EntityLifeStage.Terminating)
+            return;
+
         var tile = _mapSystem.LocalToTile(gridUid, grid, xform.Coordinates);
         var chunk = SharedMapSystem.GetChunkIndices(tile, ChunkSize) * ChunkSize;
 

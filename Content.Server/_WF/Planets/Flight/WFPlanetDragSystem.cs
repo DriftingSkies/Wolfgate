@@ -27,6 +27,17 @@ public sealed partial class WFPlanetDragSystem : EntitySystem
 
     private readonly List<EntityUid> _leaving = new();
 
+    private EntityQuery<WFPlanetLayerComponent> _layerQuery;
+    private EntityQuery<CEZTransitMapComponent> _transitQuery;
+
+    /// <inheritdoc/>
+    public override void Initialize()
+    {
+        base.Initialize();
+        _layerQuery = GetEntityQuery<WFPlanetLayerComponent>();
+        _transitQuery = GetEntityQuery<CEZTransitMapComponent>();
+    }
+
     /// <inheritdoc/>
     public override void Update(float frameTime)
     {
@@ -37,17 +48,21 @@ public sealed partial class WFPlanetDragSystem : EntitySystem
         var grids = EntityQueryEnumerator<MapGridComponent, PhysicsComponent, TransformComponent>();
         while (grids.MoveNext(out var uid, out _, out var body, out var xform))
         {
+            // Only hulls that move under their own power are turned back or dragged.
+            if (body.BodyType != BodyType.Dynamic)
+                continue;
+
             if (xform.ParentUid != xform.MapUid || xform.MapUid is not { } map || map == uid)
                 continue;
 
             // The gaps between layers have no layer marker, and turn hulls back as well.
-            if (HasComp<CEZTransitMapComponent>(map))
+            if (_transitQuery.HasComp(map))
             {
                 TurnBack(uid, body, xform);
                 continue;
             }
 
-            if (!HasComp<WFPlanetLayerComponent>(map))
+            if (!_layerQuery.HasComp(map))
                 continue;
 
             // Every layer of a bounded world turns hulls back at its edge, the ground too.
@@ -120,7 +135,7 @@ public sealed partial class WFPlanetDragSystem : EntitySystem
         damping = 0f;
 
         // Transit gaps have no layer marker, so falls are never dragged.
-        if (xform.MapUid is not { } mapUid || !TryComp<WFPlanetLayerComponent>(mapUid, out var layer))
+        if (xform.MapUid is not { } mapUid || !_layerQuery.TryComp(mapUid, out var layer))
             return false;
 
         // The ground layer is left to CE friction and skids.

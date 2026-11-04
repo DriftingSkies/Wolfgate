@@ -1,3 +1,5 @@
+using Content.Server._NF.Worldgen.Components.Debris;
+using Content.Server._WF.AsteroidMining;
 using Content.Server._WF.Planets;
 using Content.Server._WF.Planets.Bounds;
 using Content.Shared._WF.CCVar;
@@ -24,6 +26,8 @@ public sealed partial class BiomeSystem
 {
     [Dependency] private IGameTiming _wfTiming = default!;
     [Dependency] private WFPlanetPreloadSystem _wfPreload = default!;
+    [Dependency] private EntityQuery<WFAsteroidGridComponent> _wfAsteroidQuery = default!;
+    [Dependency] private EntityQuery<SpaceDebrisComponent> _wfDebrisQuery = default!;
 
     /// <summary>How many chunks past the loaded area stay loaded, so its edge doesn't reload at every step back.</summary>
     public const int WfKeepRing = 2;
@@ -256,7 +260,7 @@ public sealed partial class BiomeSystem
 
         while (grids.MoveNext(out var uid, out var hull, out var xform))
         {
-            if (uid == map || xform.MapUid != map)
+            if (uid == map || xform.MapUid != map || WfSkipHull(uid))
                 continue;
 
             var bounds = _transform.GetWorldMatrix(xform).TransformBox(hull.LocalAABB).Enlarged(WfHullRing * ChunkSize);
@@ -267,6 +271,12 @@ public sealed partial class BiomeSystem
                 _wfKeep.Add(index.Value * ChunkSize);
             }
         }
+    }
+
+    /// <summary>Whether a grid is an asteroid rock or space debris, which never keeps or hurries planet ground.</summary>
+    private bool WfSkipHull(EntityUid grid)
+    {
+        return _wfAsteroidQuery.HasComp(grid) || _wfDebrisQuery.HasComp(grid);
     }
 
     /// <summary>Unloads a layer's due chunks, oldest first, until the pass's time is spent; one always goes.</summary>

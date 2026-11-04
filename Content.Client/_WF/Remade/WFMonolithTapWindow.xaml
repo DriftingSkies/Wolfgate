@@ -1,0 +1,25 @@
+﻿<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      MinSize="540 600"
+                      MaxWidth="540"
+                      Title="{Loc 'wf-monolith-tap-title'}">
+    <PanelContainer Name="Body" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" Margin="14 6 14 8" SeparationOverride="5">
+            <Label Name="GlyphTop" HorizontalExpand="True" Align="Center" ClipText="True"/>
+            <Label Name="StageLabel" HorizontalAlignment="Center"/>
+            <Label Name="GlyphStage" HorizontalExpand="True" Align="Center" ClipText="True"/>
+            <BoxContainer Orientation="Horizontal">
+                <Label Name="ResonanceLabel"/>
+                <Control HorizontalExpand="True"/>
+                <Label Name="ClimbLabel"/>
+            </BoxContainer>
+            <ProgressBar Name="ResonanceBar" MinValue="0" MaxValue="100" MinHeight="14" HorizontalExpand="True"/>
+            <BoxContainer Name="GiftRows" Orientation="Vertical" SeparationOverride="4" Margin="0 4 0 0"/>
+            <PanelContainer Name="WarningPanel" Margin="0 4 0 0">
+                <RichTextLabel Name="WarningLabel" HorizontalExpand="True" MaxWidth="490"/>
+            </PanelContainer>
+            <Label Name="NoteLabel" HorizontalAlignment="Center"/>
+            <Label Name="GlyphBottom" HorizontalExpand="True" Align="Center" ClipText="True"/>
+        </BoxContainer>
+    </PanelContainer>
+</controls:FancyWindow>

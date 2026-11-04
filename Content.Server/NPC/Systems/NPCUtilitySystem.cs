@@ -75,6 +75,8 @@ public sealed partial class NPCUtilitySystem : EntitySystem
     [Dependency] private NPCCombatSystem _npcCombat = default!;
     [Dependency] private TurretTargetSettingsSystem _turretTargetSettings = default!;
 
+    private readonly List<EntityUid> _wfHostileScratch = new(); // WOLFGATE(Performance): reused by NearbyHostilesQuery
+
     private EntityQuery<PuddleComponent> _puddleQuery;
     private EntityQuery<TransformComponent> _xformQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery; // Mono
@@ -545,10 +547,15 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             }
             case NearbyHostilesQuery:
             {
-                foreach (var ent in _npcFaction.GetNearbyHostiles(owner, vision))
+                // WOLFGATE(Performance) START: scratch-list overload avoids LINQ and per-call allocation
+                _wfHostileScratch.Clear();
+                _npcFaction.GetNearbyHostiles(owner, vision, _wfHostileScratch);
+                foreach (var ent in _wfHostileScratch)
                 {
                     entities.Add(ent);
                 }
+                _wfHostileScratch.Clear();
+                // WOLFGATE END
                 break;
             }
             // Mono - TODO: consider factions

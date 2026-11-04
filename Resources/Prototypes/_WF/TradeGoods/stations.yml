@@ -1,0 +1,76 @@
+# Station chutes and trade vendors that Monolith's maps lack. Each vendor sells what its station's chute doesn't buy.
+
+# MMC Hokkaido: a mining company's hub buys what its crews use up and what it can't dig.
+- type: entity
+  parent: BaseCargoChute
+  id: WFCargoChuteHokkaido
+  name: MMC Hokkaido turn-in chute
+  description: A machine with piping systems that lead into the bowels of the station, accepting export goods for trade deeds.
+  components:
+  - type: Dispenser
+    defaultItem: PaperWrittenDispenserInstructions
+    inventory:
+      TradeGoodSupplies: SpaceCash3500
+      TradeGoodMedicalSupplies: SpaceCash4500
+      TradeGoodChemicalsVolatile: SpaceCash7000
+      TradeGoodEquipment: SpaceCash4000
+      TradeGoodFabric: SpaceCash4000
+      TradeGoodFertilizer: SpaceCash6000
+      TradeGoodLuxuries: SpaceCash16000
+      TradeGoodShipComponents: SpaceCash7000
+      TradeGoodFusionFuel: SpaceCash13000
+      WFTradeGoodContraband: WFSpaceCash40000
+
+# Anvilhold Drydock: a shipyard buys hull stock, parts and reactor fuel.
+- type: entity
+  parent: BaseCargoChute
+  id: WFCargoChuteAnvilhold
+  name: Anvilhold drydock turn-in chute
+  description: A machine with piping systems that lead into the drydock's stores, accepting export goods for trade deeds.
+  components:
+  - type: Dispenser
+    defaultItem: PaperWrittenDispenserInstructions
+    inventory:
+      TradeGoodSupplies: SpaceCash3000
+      TradeGoodChemicalSupplies: SpaceCash3500
+      TradeGoodMetals: SpaceCash5500
+      TradeGoodScrap: SpaceCash4500
+      TradeGoodComponents: SpaceCash6000
+      TradeGoodEquipment: SpaceCash3500
+      TradeGoodShipComponents: SpaceCash8000
+      TradeGoodFissionFuel: SpaceCash20000
+      TradeGoodFusionFuel: SpaceCash12000
+      WFTradeGoodContraband: WFSpaceCash40000
+
+- type: entity
+  parent: VendingMachineTraderBaikal
+  id: WFVendingMachineTraderHalcyon
+  name: Halcyon Trade Goods Vendor
+  components:
+  - type: VendingMachine
+    pack: WFTraderHalcyon
+
+- type: vendingMachineInventory
+  id: WFTraderHalcyon
+  startingInventory:
+    TradeGoodScrap: 4294967295 # Infinite
+    TradeGoodComponents: 4294967295 # Infinite
+    TradeGoodFissionFuel: 4294967295 # Infinite
+    PaperWrittenDispenserInstructions: 4294967295 # Infinite
+
+- type: entity
+  parent: VendingMachineTraderBaikal
+  id: WFVendingMachineTraderZvezda
+  name: Zvezda Trade Goods Vendor
+  components:
+  - type: VendingMachine
+    pack: WFTraderZvezda
+
+- type: vendingMachineInventory
+  id: WFTraderZvezda
+  startingInventory:
+    TradeGoodMetals: 4294967295 # Infinite
+    TradeGoodFabric: 4294967295 # Infinite
+    TradeGoodEquipment: 4294967295 # Infinite
+    TradeGoodFusionFuel: 4294967295 # Infinite
+    PaperWrittenDispenserInstructions: 4294967295 # Infinite

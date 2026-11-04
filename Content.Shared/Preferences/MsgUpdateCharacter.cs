@@ -1,4 +1,5 @@
 using System.IO;
+using Content.Shared._WF.NetGuard; // WOLFGATE(NetGuard)
 using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -18,7 +19,7 @@ namespace Content.Shared.Preferences
         public override void ReadFromBuffer(NetIncomingMessage buffer, IRobustSerializer serializer)
         {
             Slot = buffer.ReadInt32();
-            var length = buffer.ReadVariableInt32();
+            var length = buffer.ReadGuardedLength(); // WOLFGATE(NetGuard): reject lengths past the packet end
             using var stream = new MemoryStream(length);
             buffer.ReadAlignedMemory(stream, length);
             Profile = serializer.Deserialize<ICharacterProfile>(stream);

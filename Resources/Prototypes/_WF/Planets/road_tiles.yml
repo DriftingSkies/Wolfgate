@@ -1,0 +1,9 @@
+# Road surfaces painted between a world's sites. Copies of floors players can also lay, so the road can count as open
+# ground (sharing the world's air) without opening every floor a player builds with the same look.
+- type: tile
+  id: WFRoadFloorDirt
+  parent: FloorDirt
+
+- type: tile
+  id: WFRoadFloorDarkPavement
+  parent: FloorDarkPavement

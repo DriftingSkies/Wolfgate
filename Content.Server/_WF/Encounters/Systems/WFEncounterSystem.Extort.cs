@@ -5,6 +5,7 @@ using Content.Server._NF.Bank;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.Hailing;
 using Content.Server._WF.NpcCrew.Components;
+using Content.Server._WF.NpcDialogue;
 using Content.Server.Administration.Logs;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
@@ -147,8 +148,9 @@ public sealed partial class WFEncounterSystem
         if (_objectives.QueueStatus(ship.Grid, ship.Group) is null or "complete" or "target-lost" or "dock-failed")
             Roam(encounter, key, ship, extort);
 
-        // A ship that turns on its attackers is left to its captain while it is alerted.
-        if (now < extort.NextMark || ship.Evades && _alerts.IsAlerted(ship.Grid, ship.Group))
+        // A ship that turns on its attackers is left to its captain while it is alerted, and one licking its wounds
+        // makes no demands.
+        if (now < extort.NextMark || ship.Evades && _alerts.IsAlerted(ship.Grid, ship.Group) || ship.Mood >= WFShipMood.Hurt)
             return;
 
         PruneSpared(extort);

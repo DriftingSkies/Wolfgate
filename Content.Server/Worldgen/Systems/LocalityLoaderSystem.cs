@@ -100,19 +100,27 @@ public sealed partial class LocalityLoaderSystem : BaseWorldSystem
     {
         if (entity != null)
         {
+            // WOLFGATE(Performance) START: restrictions come from a per-tick index, and the player scans run only if the grid holds one
             // Handle mobrestrictions getting deleted
-            var query = AllEntityQuery<NFSalvageMobRestrictionsComponent>();
+            // var query = AllEntityQuery<NFSalvageMobRestrictionsComponent>();
+            //
+            // while (query.MoveNext(out var salvUid, out var salvMob))
+            // {
+            //     if (entity == salvMob.LinkedGridEntity && salvMob.DespawnIfOffLinkedGrid) // Mono - fix
+            //     {
+            //         QueueDel(salvUid);
+            //     }
+            // }
+            //
+            // _linkedLifecycleGrid.UnparentPlayersFromGrid(grid: entity, deleteGrid: false, ignoreLifeStage: true);
+            WFDespawnRestrictions(entity);
 
-            while (query.MoveNext(out var salvUid, out var salvMob))
+            if (WFMayHoldPlayers(entity))
             {
-                if (entity == salvMob.LinkedGridEntity && salvMob.DespawnIfOffLinkedGrid) // Mono - fix
-                {
-                    QueueDel(salvUid);
-                }
+                // Do not delete the grid, it is being deleted.
+                _linkedLifecycleGrid.UnparentPlayersFromGrid(grid: entity, deleteGrid: false, ignoreLifeStage: true);
             }
-
-            // Do not delete the grid, it is being deleted.
-            _linkedLifecycleGrid.UnparentPlayersFromGrid(grid: entity, deleteGrid: false, ignoreLifeStage: true);
+            // WOLFGATE END
         }
     }
     // Frontier

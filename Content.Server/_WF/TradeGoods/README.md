@@ -18,6 +18,8 @@ full state goes to the viewers alone (`WFMarketPrivateStateEvent`, kept by the c
 naming a hidden market go only to the underground companies (`WFTradeMarketSystem.Announce`), and a low sale's "best now"
 hint never names one.
 A chute offered something it doesn't buy says so instead of only buzzing.
+`stations.yml` adds the chutes and vendors Monolith's maps lack: chutes at MMC Hokkaido and Anvilhold Drydock, and
+vendors at TSFMC Halcyon and Zvezda that sell what their station's chute doesn't buy.
 
 The sector economy (`WFTradeEconomySystem`, `WFTradeMarketSystem.Ledger`, `economy.yml`): each station keeps a ledger, a row per
 good with its stock, the level prices see and the crates it's owed. Roles (`wfTradeStation`) name a station's industries
@@ -226,6 +228,7 @@ still well over the roughly 260 in materials it costs to print.
 - [`Resources/Prototypes/_WF/TradeGoods/market.yml`](../../../Resources/Prototypes/_WF/TradeGoods/market.yml)
 - [`Resources/Prototypes/_WF/TradeGoods/materials.yml`](../../../Resources/Prototypes/_WF/TradeGoods/materials.yml)
 - [`Resources/Prototypes/_WF/TradeGoods/merchant.yml`](../../../Resources/Prototypes/_WF/TradeGoods/merchant.yml)
+- [`Resources/Prototypes/_WF/TradeGoods/stations.yml`](../../../Resources/Prototypes/_WF/TradeGoods/stations.yml)
 
 ### Localization
 
@@ -256,6 +259,10 @@ still well over the roughly 260 in materials it costs to print.
   - the alt depot manifest lists the chemical supplies it makes medical supplies from
   - the CC manifest lists the merged Caelestinus chute table
 - [`Resources/Maps/_Mono/Outpost/caelestinus_central.yml`](../../../Resources/Maps/_Mono/Outpost/caelestinus_central.yml): Both Exped chutes become CC chutes, so every chute on the station pays from one table.
+- [`Resources/Maps/_Mono/POI/Dungeons/zvezda.yml`](../../../Resources/Maps/_Mono/POI/Dungeons/zvezda.yml): A trade-goods vendor in the cargo bay, beside the turn-in chute.
+- [`Resources/Maps/_Mono/POI/hokkaido.yml`](../../../Resources/Maps/_Mono/POI/hokkaido.yml): A turn-in chute in the north cargo room, so the station is a market.
+- [`Resources/Maps/_Mono/POI/tsfmchalcyon.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon.yml): A trade-goods vendor in the reception lobby, by the turn-in chute.
+- [`Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml): A trade-goods vendor in the reception lobby, by the turn-in chute.
 - [`Resources/Maps/_Mono/POI/underground.yml`](../../../Resources/Maps/_Mono/POI/underground.yml): The fence chute and the smuggling-crate vendor in the cargo bay, beside the sell pallets.
 - [`Resources/Maps/_NF/POI/cargodepot.yml`](../../../Resources/Maps/_NF/POI/cargodepot.yml): A market console and crate machine, so what a depot buys can be bought back there.
 - [`Resources/Maps/_NF/POI/cargodepotalt.yml`](../../../Resources/Maps/_NF/POI/cargodepotalt.yml): A market console and crate machine, so what a depot buys can be bought back there.

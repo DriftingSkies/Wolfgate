@@ -312,26 +312,30 @@ public sealed partial class ShipStatusSystem : EntitySystem
 
     private void GatherPower(HashSet<EntityUid> grids)
     {
-        var query = EntityQueryEnumerator<ApcPowerReceiverComponent, TransformComponent>();
+        var receivers = GetEntityQuery<ApcPowerReceiverComponent>();
+        var xforms = GetEntityQuery<TransformComponent>();
 
-        while (query.MoveNext(out _, out var receiver, out var xform))
+        foreach (var grid in grids)
         {
-            if (receiver.Powered || !xform.Anchored)
+            if (!TryComp(grid, out MapGridComponent? gridComp) || !xforms.TryGetComponent(grid, out var gridXform))
                 continue;
 
-            if (xform.GridUid is not { } grid || !grids.Contains(grid))
-                continue;
-
-            if (!TryComp(grid, out MapGridComponent? gridComp))
-                continue;
-
-            var index = _maps.TileIndicesFor(grid, gridComp, xform.Coordinates);
             var tiles = _gridTiles[grid];
-            var status = tiles.GetValueOrDefault(index);
+            var children = gridXform.ChildEnumerator;
 
-            status.Index = index;
-            status.Flags |= ShipTileFlags.Unpowered;
-            tiles[index] = status;
+            while (children.MoveNext(out var uid))
+            {
+                if (!receivers.TryGetComponent(uid, out var receiver) || receiver.Powered
+                    || !xforms.TryGetComponent(uid, out var xform) || !xform.Anchored)
+                    continue;
+
+                var index = _maps.TileIndicesFor(grid, gridComp, xform.Coordinates);
+                var status = tiles.GetValueOrDefault(index);
+
+                status.Index = index;
+                status.Flags |= ShipTileFlags.Unpowered;
+                tiles[index] = status;
+            }
         }
     }
 

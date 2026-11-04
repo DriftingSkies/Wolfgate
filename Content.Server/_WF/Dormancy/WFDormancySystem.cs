@@ -1,10 +1,15 @@
 using System.Numerics;
 using Content.Server._WF.Planets;
+using Content.Server._WF.Wolfmed.Life;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared.Body.Organ;
 using Content.Shared.Mind.Components;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.Shuttles.Components;
 using Content.Shared._WF.Planets;
 using Content.Shared._WF.Vehicles.Core;
+using Content.Shared._WF.Wolfmed.CCVar;
+using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
@@ -22,6 +27,9 @@ public sealed class WFDormancySystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private ISharedPlayerManager _players = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private WolfmedLifeSystem _life = default!;
 
     /// <summary>Side of an activity chunk, in metres.</summary>
     public const float ChunkSize = 16f;
@@ -36,6 +44,15 @@ public sealed class WFDormancySystem : EntitySystem
     private readonly Dictionary<EntityUid, List<Vector2>> _viewers = new();
     private readonly Dictionary<EntityUid, EntityUid?> _networkOf = new();
     private TimeSpan _nextRefresh;
+
+    private static readonly TimeSpan OffPlanetLogEvery = TimeSpan.FromSeconds(10);
+    private readonly HashSet<(EntityUid Map, Vector2i Chunk)> _offPlanetActive = new();
+    private readonly HashSet<EntityUid> _pilotedGrids = new();
+    private readonly Dictionary<EntityUid, bool> _offPlanetSleeps = new();
+    private bool _offPlanetDormancy;
+    private int _offPlanetSlept;
+    private TimeSpan _nextOffPlanetLog;
+    private EntityQuery<FTLComponent> _ftlQuery;
 
     private EntityQuery<CEZMapComponent> _zMapQuery;
     private EntityQuery<WFPlanetNetworkComponent> _networkQuery;
@@ -58,7 +75,9 @@ public sealed class WFDormancySystem : EntitySystem
         _organQuery = GetEntityQuery<OrganComponent>();
         _mindQuery = GetEntityQuery<MindContainerComponent>();
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
+        _ftlQuery = GetEntityQuery<FTLComponent>();
 
+        Subs.CVar(_cfg, WolfmedCVars.OffPlanetDormancy, value => _offPlanetDormancy = value, true);
         SubscribeLocalEvent<PlayerAttachedEvent>(_ => _nextRefresh = TimeSpan.Zero);
     }
 
@@ -86,14 +105,53 @@ public sealed class WFDormancySystem : EntitySystem
 
     /// <summary>
     /// Whether a body, or an organ in one, may skip its life upkeep (breath, blood, metabolism): an NPC on planet ground
-    /// no player is near. A body with a mind keeps going wherever it is.
+    /// no player is near, or with wolfmed.off_planet_dormancy one off-planet (see <see cref="OffPlanetSleeps"/>). A body
+    /// with a mind keeps going wherever it is.
     /// </summary>
     public bool BodySleeps(EntityUid uid)
     {
         if (_organQuery.TryComp(uid, out var organ) && organ.Body is { } body)
             uid = body;
 
-        return !IsActive(uid) && !(_mindQuery.TryComp(uid, out var mind) && mind.HasMind);
+        if (_mindQuery.TryComp(uid, out var mind) && mind.HasMind)
+            return false;
+
+        if (!IsActive(uid))
+            return true;
+
+        return _offPlanetDormancy && OffPlanetSleeps(uid);
+    }
+
+    /// <summary>
+    /// Off-planet: a mindless body no player is near, on a grid nobody is flying, that is neither bleeding nor
+    /// critical. Decided once per refresh, so a body asked about by every upkeep system pays for it once.
+    /// </summary>
+    private bool OffPlanetSleeps(EntityUid uid)
+    {
+        Refresh();
+        if (_offPlanetSleeps.TryGetValue(uid, out var cached))
+            return cached;
+
+        var sleeps = DecideOffPlanet(uid);
+        _offPlanetSleeps[uid] = sleeps;
+        if (sleeps)
+            _offPlanetSlept++;
+
+        return sleeps;
+    }
+
+    private bool DecideOffPlanet(EntityUid uid)
+    {
+        if (!_xformQuery.TryComp(uid, out var xform) || xform.MapUid is not { } map)
+            return false;
+
+        if (xform.GridUid is { } grid && (_pilotedGrids.Contains(grid) || _ftlQuery.HasComp(grid)))
+            return false;
+
+        if (_offPlanetActive.Contains((map, ChunkOf(_transform.GetWorldPosition(xform)))))
+            return false;
+
+        return !_mobState.IsCritical(uid) && _life.GetBleedRate(uid) <= 0f;
     }
 
     /// <summary>Whether a mover's body is at rest on planet ground no player is near, so its movement needs no handling.</summary>
@@ -166,19 +224,26 @@ public sealed class WFDormancySystem : EntitySystem
         }
 
         var reach = (int) MathF.Ceiling(Range / ChunkSize);
+        RefreshOffPlanet();
         foreach (var session in _players.Sessions)
         {
             if (session.Status != SessionStatus.InGame || session.AttachedEntity is not { } body)
                 continue;
 
-            AddEyes(session);
+            AddEyes(session, reach);
 
             // In a vehicle's cabin a player is wherever the vehicle is.
             if (_occupantQuery.TryComp(body, out var occupant) && Exists(occupant.Vehicle))
                 body = occupant.Vehicle;
 
-            if (!_xformQuery.TryComp(body, out var xform) || xform.MapUid is not { } map || NetworkOf(map) is not { } network)
+            if (!_xformQuery.TryComp(body, out var xform) || xform.MapUid is not { } map)
                 continue;
+
+            if (NetworkOf(map) is not { } network)
+            {
+                AddOffPlanetViewer(map, _transform.GetWorldPosition(xform), reach);
+                continue;
+            }
 
             _activeNetworks.Add(network);
             var position = _transform.GetWorldPosition(xform);
@@ -193,12 +258,61 @@ public sealed class WFDormancySystem : EntitySystem
     }
 
     /// <summary>Notes the eyes a player watches through, such as a camera, as viewers of their planet.</summary>
-    private void AddEyes(ICommonSession session)
+    private void AddEyes(ICommonSession session, int reach)
     {
         foreach (var eye in session.ViewSubscriptions)
         {
-            if (_xformQuery.TryComp(eye, out var xform) && xform.MapUid is { } map && NetworkOf(map) is { } network)
+            if (!_xformQuery.TryComp(eye, out var xform) || xform.MapUid is not { } map)
+                continue;
+
+            if (NetworkOf(map) is { } network)
                 _viewers.GetOrNew(network).Add(_transform.GetWorldPosition(xform));
+            else
+                AddOffPlanetViewer(map, _transform.GetWorldPosition(xform), reach);
+        }
+    }
+
+    /// <summary>Starts a refresh window for the off-planet rule: piloted grids, and the counter's log line.</summary>
+    private void RefreshOffPlanet()
+    {
+        _offPlanetActive.Clear();
+        _offPlanetSleeps.Clear();
+        _pilotedGrids.Clear();
+        if (!_offPlanetDormancy)
+            return;
+
+        var pilots = EntityQueryEnumerator<PilotComponent, TransformComponent>();
+        while (pilots.MoveNext(out _, out var pilot, out var pilotXform))
+        {
+            var xform = pilot.Console is { } console && _xformQuery.TryComp(console, out var consoleXform)
+                ? consoleXform
+                : pilotXform;
+
+            if (xform.GridUid is { } grid)
+                _pilotedGrids.Add(grid);
+        }
+
+        if (_timing.CurTime < _nextOffPlanetLog)
+            return;
+
+        _nextOffPlanetLog = _timing.CurTime + OffPlanetLogEvery;
+        if (_offPlanetSlept > 0)
+            Log.Debug($"Off-planet dormancy slept {_offPlanetSlept} body decisions in the last {OffPlanetLogEvery.TotalSeconds:0} s.");
+
+        _offPlanetSlept = 0;
+    }
+
+    /// <summary>Marks the chunks round an off-planet viewer awake.</summary>
+    private void AddOffPlanetViewer(EntityUid map, Vector2 position, int reach)
+    {
+        if (!_offPlanetDormancy)
+            return;
+
+        var centre = ChunkOf(position);
+        for (var x = -reach; x <= reach; x++)
+        for (var y = -reach; y <= reach; y++)
+        {
+            _offPlanetActive.Add((map, centre + new Vector2i(x, y)));
         }
     }
 

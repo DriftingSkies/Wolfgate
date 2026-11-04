@@ -9,6 +9,7 @@ using Robust.Shared.Collections;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Components; // WOLFGATE(Performance)
 using Robust.Shared.Physics.Dynamics; // WOLFGATE(Performance)
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
@@ -24,6 +25,8 @@ public sealed partial class PathfindingSystem
     // Stuff like chairs have collision but aren't relevant for mobs.
     public const int PathfindingCollisionMask = (int) CollisionGroup.MobMask;
     public const int PathfindingCollisionLayer = (int) CollisionGroup.MobLayer;
+
+    [Dependency] private EntityQuery<PhysicsComponent> _wfPhysicsQuery = default!; // WOLFGATE(Performance): aggregate pre-reject in OnMoveEvent
 
     /// <summary>
     ///     If true, UpdateGrid() will not process grids.
@@ -281,6 +284,16 @@ public sealed partial class PathfindingSystem
 
     private void OnMoveEvent(ref MoveEvent ev)
     {
+        // WOLFGATE(Performance) START: the body's aggregate layer, mask and hard bound every fixture's, so skip the fixture walk
+        if (_wfPhysicsQuery.TryGetComponent(ev.Sender, out var wfBody) &&
+            (!wfBody.Hard ||
+             ((wfBody.CollisionMask & PathfindingCollisionLayer) == 0x0 &&
+              (wfBody.CollisionLayer & PathfindingCollisionMask) == 0x0)))
+        {
+            return;
+        }
+        // WOLFGATE END
+
         if (!_fixturesQuery.TryGetComponent(ev.Sender, out var fixtures) ||
             !IsBodyRelevant(fixtures) ||
             _gridQuery.HasComponent(ev.Sender))

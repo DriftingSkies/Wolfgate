@@ -178,7 +178,8 @@ public sealed partial class PainSystem : EntitySystem
 
         var suppression = entity.Comp.Suppression;
         if (TryComp(entity, out BodyPartComponent? part) && part.Body is { } body &&
-            TryComp(body, out PainComponent? bodyPain) && bodyPain.Value > FixedPoint2.Zero)
+            TryComp(body, out PainComponent? bodyPain) && bodyPain.Value > FixedPoint2.Zero // WOLFGATE(Wolfmed): closing paren moved below.
+            && bodyPain.Suppression != FixedPoint2.Zero) // WOLFGATE(Wolfmed): no suppression means no share to walk the body for.
         {
             // WOLFGATE(Wolfmed): M1a: P13, the share is of the sum of the parts, not of the capped body value, so the
             // body's suppression is taken off once in total rather than once per part.

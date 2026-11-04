@@ -162,10 +162,12 @@ namespace Content.Server.NPC.Systems
                 if (_playerDistanceCheckTimer >= PlayerDistanceCheckInterval)
                 {
                     _playerDistanceCheckTimer = 0f;
-                    CheckPlayerDistancesAndPauseNPCs();
+                    // CheckPlayerDistancesAndPauseNPCs(); // WOLFGATE(Performance): replaced by a snapshot pass spread over ~60 ticks
+                    WfStartSleepPass(); // WOLFGATE(Performance): see above
                 }
             }
 
+            WfStepSleepPass(frameTime); // WOLFGATE(Performance): process the next slice of the sleep/wake snapshot
             // Add your system here.
             _htn.UpdateNPC(ref _count, _maxUpdates, frameTime);
 

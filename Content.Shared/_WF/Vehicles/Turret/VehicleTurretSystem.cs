@@ -37,6 +37,19 @@ public sealed partial class VehicleTurretSystem : EntitySystem
     private readonly HashSet<(EntityUid Gun, GameTick Tick)> _refusedShots = new();
     private readonly Queue<(EntityUid Gun, GameTick Tick)> _refusalOrder = new();
 
+    /// <summary>Everything a turret's pose is worked out from; a pose is redone only when it changes.</summary>
+    private readonly record struct PoseKey(
+        EntityUid Vehicle,
+        EntityUid Anchor,
+        EntityUid Parent,
+        EntityUid? Visual,
+        Angle VehicleRot,
+        Angle FrameRot,
+        Angle Facing,
+        Angle AnchorRot);
+
+    private readonly Dictionary<EntityUid, PoseKey> _poses = new();
+
     [Dependency] private SharedContainerSystem _container = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private ISharedPlayerManager _player = default!;
@@ -90,8 +103,37 @@ public sealed partial class VehicleTurretSystem : EntitySystem
 
             EnsureVisual(uid, turret, vehicle);
             InitializeRotation(anchorUid, anchorTurret, vehicle);
+            if (PoseUnchanged(uid, turret, vehicle, anchorUid, anchorTurret))
+                continue;
+
             UpdateTurretTransforms(uid, turret, vehicle, anchorUid, anchorTurret);
         }
+    }
+
+    /// <summary>Whether a turret's pose inputs are the ones its last pose was worked out from; records them if not.</summary>
+    private bool PoseUnchanged(
+        EntityUid turretUid,
+        VehicleTurretComponent turret,
+        EntityUid vehicle,
+        EntityUid anchorUid,
+        VehicleTurretComponent anchorTurret)
+    {
+        var vehicleRot = _transform.GetWorldRotation(vehicle);
+        var key = new PoseKey(
+            vehicle,
+            anchorUid,
+            Transform(turretUid).ParentUid,
+            turret.VisualEntity,
+            vehicleRot,
+            GetFrameRotation(vehicle),
+            GetVehicleFacingAngle(vehicle, vehicleRot),
+            anchorTurret.WorldRotation);
+
+        if (_poses.TryGetValue(turretUid, out var last) && last == key)
+            return true;
+
+        _poses[turretUid] = key;
+        return false;
     }
 
     private void OnInserted(Entity<VehicleTurretComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -122,6 +164,7 @@ public sealed partial class VehicleTurretSystem : EntitySystem
     {
         CleanupVisual(ent.Comp);
         ForgetRefusals(ent.Owner);
+        _poses.Remove(ent.Owner);
     }
 
     private void OnRotateEvent(VehicleTurretRotateEvent args, EntitySessionEventArgs session)

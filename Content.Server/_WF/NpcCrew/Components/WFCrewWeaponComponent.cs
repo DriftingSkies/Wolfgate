@@ -9,4 +9,8 @@ public sealed partial class WFCrewWeaponComponent : Component
 
     [ViewVariables]
     public string? HolsterSlot;
+
+    /// <summary>When the reload/holster sweep next looks at this crewman; jittered so the crew don't share a tick.</summary>
+    [ViewVariables]
+    public TimeSpan NextCheck;
 }

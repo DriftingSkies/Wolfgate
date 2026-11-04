@@ -163,6 +163,38 @@ public sealed partial class WFCrewShipStatusSystem : EntitySystem
         return false;
     }
 
+    /// <summary>The share of the most tiles a hull was seen with that it still has; 1 for one never seen whole.</summary>
+    public float HullShare(EntityUid grid)
+    {
+        if (TerminatingOrDeleted(grid) || !TryComp<MapGridComponent>(grid, out var hull))
+            return 0f;
+
+        // A first look starts the watch, so the peak is known from then on.
+        Read(grid);
+        var peak = _peakTiles.GetValueOrDefault(grid);
+        return peak <= 0 ? 1f : Math.Clamp(_maps.GetFilledTileCount((grid, hull)) / (float) peak, 0f, 1f);
+    }
+
+    /// <summary>Ship weapons aboard that have power: a rough measure of how hard a ship hits.</summary>
+    public int GunCount(EntityUid grid)
+    {
+        var count = 0;
+        var weapons = EntityQueryEnumerator<FireControllableComponent, TransformComponent>();
+        while (weapons.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid == grid && _power.IsPowered(uid))
+                count++;
+        }
+
+        return count;
+    }
+
+    /// <summary>Whether any ship weapon aboard can be fired right now.</summary>
+    public bool CanFire(EntityUid grid)
+    {
+        return !TerminatingOrDeleted(grid) && CanShoot(grid);
+    }
+
     /// <summary>Whether a ship has no working thruster at all right now.</summary>
     public bool IsAdrift(EntityUid grid)
     {

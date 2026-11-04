@@ -1,0 +1,25 @@
+// Fallout haze. A soft, slowly drifting green cloud filling the drawn rect; the draw colour tints it and its alpha carries how
+// much of the fallout is left.
+
+light_mode unshaded;
+
+highp float fhNoise(highp vec2 p) {
+    highp vec2 i = floor(p);
+    highp vec2 f = fract(p);
+    highp vec2 u = f * f * (3.0 - 2.0 * f);
+    highp float a = fract(sin(dot(i, vec2(127.1, 311.7))) * 43758.5453);
+    highp float b = fract(sin(dot(i + vec2(1.0, 0.0), vec2(127.1, 311.7))) * 43758.5453);
+    highp float c = fract(sin(dot(i + vec2(0.0, 1.0), vec2(127.1, 311.7))) * 43758.5453);
+    highp float d = fract(sin(dot(i + vec2(1.0, 1.0), vec2(127.1, 311.7))) * 43758.5453);
+    return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+}
+
+void fragment() {
+    highp vec2 p = UV * 2.0 - 1.0;
+    highp float r = length(p);
+    highp float drift = fhNoise(UV * 5.0 + vec2(TIME * 0.05, TIME * 0.03)) * 0.6
+                      + fhNoise(UV * 11.0 - vec2(TIME * 0.08, 0.0)) * 0.4;
+    highp float falloff = 1.0 - smoothstep(0.2, 1.0, r);
+    highp float alpha = falloff * (0.45 + 0.55 * drift) * 0.28;
+    COLOR = vec4(1.0, 1.0, 1.0, alpha);
+}

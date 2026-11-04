@@ -70,6 +70,7 @@ namespace Content.Client.IoC
             collection.Register<MidiFileCollectionManager>(); // WOLFGATE(Instruments): wizden#44469 MIDI file collection.
             collection.Register<_WF.JoinProgress.JoinProgressManager>(); // WOLFGATE(JoinProgress): holds the server's download size
             collection.Register<_WF.GameHub.WFGameDataManager>(); // WOLFGATE(GameHub): downloads and caches game data
+            collection.Register<_WF.MameArcade.MameArcadeNetManager>(); // WOLFGATE(MameArcade): relays 2-player inputs
         }
     }
 }

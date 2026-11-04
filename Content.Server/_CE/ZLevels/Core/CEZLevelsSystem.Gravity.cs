@@ -539,9 +539,14 @@ public sealed partial class CEZLevelsSystem
         // whole by GetAllDockedShuttles) and a network are each walked exactly once, instead of
         // re-walking the same cluster once per member.
         var set = new HashSet<EntityUid>();
-        var queue = new Queue<EntityUid>();
-        var dockWalked = new HashSet<EntityUid>();
-        var netWalked = new HashSet<EntityUid>();
+        // WOLFGATE(Performance) START: scratch collections instead of three allocations per call
+        var queue = _wfRigidQueue;
+        var dockWalked = _wfRigidDockWalked;
+        var netWalked = _wfRigidNetWalked;
+        queue.Clear();
+        dockWalked.Clear();
+        netWalked.Clear();
+        // WOLFGATE END
 
         void Add(EntityUid g)
         {
@@ -577,6 +582,12 @@ public sealed partial class CEZLevelsSystem
 
         return set;
     }
+
+    // WOLFGATE(Performance) START: scratch state for CollectRigidSet
+    private readonly Queue<EntityUid> _wfRigidQueue = new();
+    private readonly HashSet<EntityUid> _wfRigidDockWalked = new();
+    private readonly HashSet<EntityUid> _wfRigidNetWalked = new();
+    // WOLFGATE END
 
     /// <summary>
     /// Whether a grid's whole rigid set is held aloft: its generators' pooled capacity covers

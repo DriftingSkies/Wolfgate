@@ -160,6 +160,26 @@ public sealed class TraitsUiTest
             Assert.That(hereticTip?.Text, Does.Contain("New players can't take this"),
                 "The popup should carry the newbie warning.");
 
+            // Incompatibilities show under the trait even before either one is picked.
+            var clown = entries.First(entry => entry.Trait.ID == "Clown");
+            Assert.That(clown.NotesText, Does.Contain("Incompatible with").And.Contain("Mime"));
+            Assert.That(nanite.NotesText, Does.Contain("You must not be"),
+                "A blocking species restriction should be shown inline.");
+
+            // Traits sit in their layout subgroup, and sorting by points orders each subgroup by cost.
+            var vigor = entries.First(entry => entry.Trait.ID == "Vigor");
+            var tenacity = entries.First(entry => entry.Trait.ID == "Tenacity");
+            Assert.That(vigor.Parent, Is.SameAs(tenacity.Parent), "Toughness traits should share a subgroup.");
+            Assert.That(vigor.Parent, Is.Not.SameAs(clown.Parent), "Different subgroups should be separate.");
+
+            traitsTab.SetSort(TraitSortMode.CostHigh);
+            var costs = vigor.Parent!.Children.OfType<TraitEntry>().Select(e => e.Trait.Cost).ToList();
+            Assert.That(costs, Is.Ordered.Descending, "Most points first should order a subgroup by cost.");
+            traitsTab.SetSort(TraitSortMode.CostLow);
+            costs = vigor.Parent!.Children.OfType<TraitEntry>().Select(e => e.Trait.Cost).ToList();
+            Assert.That(costs, Is.Ordered.Ascending, "Fewest points first should order a subgroup by cost.");
+            traitsTab.SetSort(TraitSortMode.Name);
+
             var pacifist = entries.First(entry => entry.Trait.ID == "Pacifist");
             var checkbox = pacifist.FindControl<CheckBox>("TraitCheckbox");
             Assert.That(checkbox, Is.Not.Null);

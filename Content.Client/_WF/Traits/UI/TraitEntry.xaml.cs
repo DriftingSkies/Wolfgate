@@ -17,6 +17,12 @@ public sealed partial class TraitEntry : PanelContainer
 
     public event Action<TraitEntry, bool>? Toggled;
 
+    /// <summary>Whether this character can't pick the trait right now.</summary>
+    public bool Unavailable { get; set; }
+
+    /// <summary>The markup shown under the description.</summary>
+    public string NotesText { get; private set; } = string.Empty;
+
     private bool _updating;
 
     public TraitEntry(TraitPrototype trait)
@@ -36,9 +42,9 @@ public sealed partial class TraitEntry : PanelContainer
         var cost = trait.Cost;
         TraitCostLabel.Text = cost switch
         {
-            > 0 => $"-{cost}",
-            < 0 => $"+{-cost}",
-            _ => "0",
+            > 0 => _loc.GetString("trait-editor-cost-spend", ("points", cost)),
+            < 0 => _loc.GetString("trait-editor-cost-gain", ("points", -cost)),
+            _ => _loc.GetString("trait-editor-cost-free"),
         };
         TraitCostLabel.ModulateSelfOverride = cost switch
         {
@@ -67,6 +73,15 @@ public sealed partial class TraitEntry : PanelContainer
     {
         TraitCheckbox.Disabled = disabled;
         ModulateSelfOverride = disabled ? Color.FromHex("#888888") : null;
+    }
+
+    /// <summary>Shows requirement and conflict lines under the description; markup is allowed.</summary>
+    public void SetNotes(IReadOnlyList<string> lines)
+    {
+        NotesText = string.Join('\n', lines);
+        TraitNotesLabel.Visible = lines.Count > 0;
+        if (lines.Count > 0)
+            TraitNotesLabel.SetMessage(FormattedMessage.FromMarkupPermissive(NotesText));
     }
 
     public void SetTooltip(string? text)

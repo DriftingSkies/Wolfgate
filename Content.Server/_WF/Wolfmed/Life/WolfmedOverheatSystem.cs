@@ -3,6 +3,7 @@ using Content.Server._WF.Wolfmed.Consciousness;
 using Content.Server.Temperature.Components;
 using Content.Shared._Onyx.Body.Systems;
 using Content.Shared._Shitmed.Body.Organ;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.Body;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared._WF.Wolfmed.Compat;
@@ -45,6 +46,7 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
     private const float CoolingFloor = Atmospherics.T0C + Atmospherics.NormalBodyTemperature;
 
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private MobStateSystem _mobState = default!;
@@ -59,11 +61,24 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
     [Dependency] private WolfmedShutdownSystem _shutdown = default!;
 
     private readonly List<EntityUid> _due = new();
-    private TimeSpan _nextTick;
+
+    // Cached cvars, kept current by Subs.CVar.
+    private float _ipcCoreHeatK;
+    private float _ipcCoreHeatRate;
+    private float _ipcCoreHeatSoak;
+    private float _ipcCoreHeatWakeK;
+    private float _ipcCoreHeatWarnK;
+    private float _ipcPumpCooling;
 
     public override void Initialize()
     {
         base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.IpcCoreHeatK, value => _ipcCoreHeatK = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.IpcCoreHeatRate, value => _ipcCoreHeatRate = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.IpcCoreHeatSoak, value => _ipcCoreHeatSoak = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.IpcCoreHeatWakeK, value => _ipcCoreHeatWakeK = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.IpcCoreHeatWarnK, value => _ipcCoreHeatWarnK = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.IpcPumpCooling, value => _ipcPumpCooling = value, true);
         SubscribeLocalEvent<WolfmedRejuvenateEvent>(OnRejuvenate);
     }
 
@@ -110,20 +125,24 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _nextTick)
-            return;
 
-        _nextTick = _timing.CurTime + TickInterval;
-
+        // Each body takes its own tick of the interval, so a full server doesn't tick every body at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var seconds = period / (float) _timing.TickRate;
+        var curTick = _timing.CurTick;
         _due.Clear();
         var query = EntityQueryEnumerator<WolfmedConsciousnessComponent, TemperatureComponent>();
         while (query.MoveNext(out var uid, out _, out _))
-            _due.Add(uid);
+        {
+            if (WFTickSpread.Due(uid, curTick, period))
+                _due.Add(uid);
+        }
 
         foreach (var body in _due)
         {
-            if (!TerminatingOrDeleted(body))
-                Tick(body, (float) TickInterval.TotalSeconds);
+            // An NPC body no player is near holds still until someone comes, as the life tick does.
+            if (!TerminatingOrDeleted(body) && !_dormancy.BodySleeps(body))
+                Tick(body, seconds);
         }
     }
 
@@ -134,7 +153,7 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
     /// <summary>The core is past its line and losing health right now: the route the analyzer lists.</summary>
     public bool CoreCooking(EntityUid body) =>
         TryComp(body, out WolfmedCoreHeatComponent? heat) && !_mobState.IsDead(body) &&
-        heat.CoreTemperature > _cfg.GetCVar(WolfmedCVars.IpcCoreHeatK) &&
+        heat.CoreTemperature > _ipcCoreHeatK &&
         _life.GetBrainOrgan(body) is { } core && core.Comp.Health > FixedPoint2.Zero;
 
     /// <summary>
@@ -151,7 +170,7 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
             if (!HasComp<HeartComponent>(organ))
                 continue;
 
-            var rate = MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.IpcPumpCooling));
+            var rate = MathF.Max(0f, _ipcPumpCooling);
             if (!TryComp(organ, out WolfmedOrganComponent? health))
                 return rate;
 
@@ -196,7 +215,7 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
         }
 
         var core = heat.CoreTemperature;
-        core += (chassis - core) * Math.Clamp(_cfg.GetCVar(WolfmedCVars.IpcCoreHeatSoak) * seconds, 0f, 1f);
+        core += (chassis - core) * Math.Clamp(_ipcCoreHeatSoak * seconds, 0f, 1f);
         if (core > CoolingFloor)
             core = MathF.Max(CoolingFloor, core - PumpCooling(body) * seconds);
 
@@ -208,17 +227,17 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
             return;
         }
 
-        var line = _cfg.GetCVar(WolfmedCVars.IpcCoreHeatK);
+        var line = _ipcCoreHeatK;
         if (core > line && _life.GetBrainOrgan(body) is { } organ && organ.Comp.Health > FixedPoint2.Zero)
         {
-            var loss = MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.IpcCoreHeatRate)) * (core - line) / 100f * seconds;
+            var loss = MathF.Max(0f, _ipcCoreHeatRate) * (core - line) / 100f * seconds;
             if (loss > 0f)
                 _organs.ChangeHealth(organ, FixedPoint2.New(-loss));
         }
 
         if (!heat.ThermalShutdown && core >= line)
             SetThermalShutdown((body, heat), true);
-        else if (heat.ThermalShutdown && core < _cfg.GetCVar(WolfmedCVars.IpcCoreHeatWakeK))
+        else if (heat.ThermalShutdown && core < _ipcCoreHeatWakeK)
             SetThermalShutdown((body, heat), false);
         else if (heat.ThermalShutdown)
             _consciousness.SetExternalPressure(body, CoreHeatPressure, 1f); // a rejuvenate may have cleared it
@@ -237,7 +256,7 @@ public sealed partial class WolfmedOverheatSystem : EntitySystem
     private void SetTemperatures(Entity<WolfmedCoreHeatComponent> heat, float core, float chassis)
     {
         heat.Comp.ChassisTemperature = chassis;
-        var warn = _cfg.GetCVar(WolfmedCVars.IpcCoreHeatWarnK);
+        var warn = _ipcCoreHeatWarnK;
         var hot = core >= warn || chassis >= warn;
         var moved = MathF.Abs(heat.Comp.CoreTemperature - core) >= 1f || hot != heat.Comp.Hot;
         heat.Comp.CoreTemperature = core;

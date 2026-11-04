@@ -4,6 +4,7 @@ using Content.Server._WF.Wolfmed.Autodoc;
 using Content.Server._WF.Wolfmed.Consciousness;
 using Content.Server._WF.Wolfmed.Medical;
 using Content.Shared._Shitmed.Body.Organ;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.Body;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared._WF.Wolfmed.Consciousness;
@@ -31,6 +32,7 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
     private static readonly ProtoId<DamageTypePrototype> Asphyxiation = "Asphyxiation";
 
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobState = default!;
@@ -43,7 +45,19 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
     private static readonly TimeSpan RecoveryInterval = TimeSpan.FromSeconds(2);
 
     private readonly List<EntityUid> _breathless = new();
-    private TimeSpan _nextRecovery;
+    private readonly List<EntityUid> _lungScratch = new();
+
+    private float _breathlessRecovery;
+    private float _airlossFull;
+    private float _lungDamageFactor;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.BreathlessRecovery, value => _breathlessRecovery = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.AirlossFull, value => _airlossFull = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.LungDamageFactor, value => _lungDamageFactor = value, true);
+    }
 
     /// <summary>
     /// A body that does not breathe sheds its Asphyxiation as a breathing one does. Only the respirator ever took
@@ -52,24 +66,29 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _nextRecovery)
-            return;
-
-        _nextRecovery = _timing.CurTime + RecoveryInterval;
-        var rate = _cfg.GetCVar(WolfmedCVars.BreathlessRecovery);
+        var rate = _breathlessRecovery;
         if (rate <= 0f)
             return;
 
+        // Each body takes its own tick of the interval, so a full server doesn't recover every body at once.
+        var period = WFTickSpread.Period(_timing, (float) RecoveryInterval.TotalSeconds);
+        var seconds = period / (float) _timing.TickRate;
+        var curTick = _timing.CurTick;
         _breathless.Clear();
         var query = EntityQueryEnumerator<WolfmedConsciousnessComponent, DamageableComponent>();
         while (query.MoveNext(out var uid, out _, out var damageable))
         {
-            if (damageable.Damage.DamageDict.GetValueOrDefault(Asphyxiation) > FixedPoint2.Zero && IsBreathless(uid))
+            if (WFTickSpread.Due(uid, curTick, period) &&
+                damageable.Damage.DamageDict.GetValueOrDefault(Asphyxiation) > FixedPoint2.Zero &&
+                IsBreathless(uid) && !_dormancy.BodySleeps(uid))
                 _breathless.Add(uid);
         }
 
+        if (_breathless.Count == 0)
+            return;
+
         var recovery = new DamageSpecifier();
-        recovery.DamageDict[Asphyxiation] = FixedPoint2.New(-rate * (float) RecoveryInterval.TotalSeconds);
+        recovery.DamageDict[Asphyxiation] = FixedPoint2.New(-rate * seconds);
         foreach (var body in _breathless)
             _damageable.TryChangeDamage(body, recovery, ignoreResistances: true, interruptsDoAfters: false);
     }
@@ -111,7 +130,7 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
         if (!TryComp(body, out RespiratorComponent? respirator) || !IsSuffocating(respirator))
             return 0f;
 
-        var full = _cfg.GetCVar(WolfmedCVars.AirlossFull);
+        var full = _airlossFull;
         if (full <= 0f)
             return 1f;
 
@@ -129,15 +148,24 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
     /// </summary>
     public float LungDamageLevel(EntityUid body)
     {
-        var factor = _cfg.GetCVar(WolfmedCVars.LungDamageFactor);
-        if (factor <= 0f || !TryComp(body, out BodyComponent? bodyComp))
+        if (_lungDamageFactor <= 0f)
+            return 0f;
+
+        return LungDamageLevel(CollectLungs(body));
+    }
+
+    /// <summary><see cref="LungDamageLevel(EntityUid)"/> over lungs already collected; null is a body with no body component.</summary>
+    public float LungDamageLevel(IReadOnlyList<EntityUid>? lungs)
+    {
+        var factor = _lungDamageFactor;
+        if (factor <= 0f || lungs == null)
             return 0f;
 
         var total = 0f;
         var count = 0;
-        foreach (var lung in _body.GetBodyOrganEntityComps<LungComponent>((body, bodyComp)))
+        foreach (var lung in lungs)
         {
-            if (!TryComp(lung.Owner, out WolfmedOrganComponent? health) || health.ImpairedBelow <= 0f)
+            if (!TryComp(lung, out WolfmedOrganComponent? health) || health.ImpairedBelow <= 0f)
                 continue;
 
             total += Math.Clamp((health.ImpairedBelow - health.Fraction) / health.ImpairedBelow, 0f, 1f);
@@ -159,11 +187,34 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
     /// <summary>A body that needs lungs and has none in it.</summary>
     public bool HasNoLungs(EntityUid body) =>
         HasComp<RespiratorComponent>(body) && !HasComp<BreathingImmunityComponent>(body) &&
-        TryComp(body, out BodyComponent? bodyComp) &&
-        _body.GetBodyOrganEntityComps<LungComponent>((body, bodyComp)).Count == 0;
+        CollectLungs(body) is { Count: 0 };
+
+    /// <summary>The body's lung organs in a reused list, or null for an entity with no body component.</summary>
+    public IReadOnlyList<EntityUid>? CollectLungs(EntityUid body)
+    {
+        if (!TryComp(body, out BodyComponent? bodyComp))
+            return null;
+
+        _lungScratch.Clear();
+        foreach (var (organ, _) in _body.GetBodyOrgans(body, bodyComp))
+        {
+            if (HasComp<LungComponent>(organ))
+                _lungScratch.Add(organ);
+        }
+
+        return _lungScratch;
+    }
 
     /// <summary>What the chest is doing and why, in the order a medic would rule things out.</summary>
-    public (WolfmedBreathing Breathing, WolfmedBreathingSource Source) Assess(EntityUid body)
+    public (WolfmedBreathing Breathing, WolfmedBreathingSource Source) Assess(EntityUid body) =>
+        Assess(body, null, false);
+
+    /// <summary>
+    /// <see cref="Assess(EntityUid)"/> with the lungs already collected when <paramref name="known"/> is set (null
+    /// then means no body component), so a caller that walked the body does not walk it again.
+    /// </summary>
+    public (WolfmedBreathing Breathing, WolfmedBreathingSource Source) Assess(EntityUid body,
+        IReadOnlyList<EntityUid>? lungs, bool known)
     {
         if (_mobState.IsDead(body))
             return (WolfmedBreathing.None, WolfmedBreathingSource.Dead);
@@ -177,7 +228,10 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
         if (HasComp<DebrainedComponent>(body))
             return (WolfmedBreathing.None, WolfmedBreathingSource.NoBrain);
 
-        var unaided = AssessUnaided(body, respirator);
+        if (!known)
+            lungs = CollectLungs(body);
+
+        var unaided = AssessUnaided(body, respirator, lungs);
         return unaided.Breathing != WolfmedBreathing.Normal && IsVentilated(body)
             ? (WolfmedBreathing.Ventilated, unaided.Source)
             : unaided;
@@ -185,17 +239,16 @@ public sealed partial class WolfmedBreathingSystem : EntitySystem
 
     /// <summary>What a beating heart's chest does by itself, before any machine breathing for it.</summary>
     private (WolfmedBreathing Breathing, WolfmedBreathingSource Source) AssessUnaided(EntityUid body,
-        RespiratorComponent respirator)
+        RespiratorComponent respirator, IReadOnlyList<EntityUid>? lungs)
     {
-        if (TryComp(body, out BodyComponent? bodyComp) &&
-            _body.GetBodyOrganEntityComps<LungComponent>((body, bodyComp)).Count == 0)
+        if (lungs is { Count: 0 })
             return (WolfmedBreathing.None, WolfmedBreathingSource.Lungs);
 
         if (IsSuffocating(respirator))
             return (WolfmedBreathing.Gasping, WolfmedBreathingSource.NoAir);
 
         // M3: impaired lungs breathe, but not enough (plan §3.3, §8).
-        if (LungDamageLevel(body) > 0f)
+        if (LungDamageLevel(lungs) > 0f)
             return (WolfmedBreathing.Laboured, WolfmedBreathingSource.LungsDamaged);
 
         if (_relief.GetRespiratoryDepression(body) > 0f)

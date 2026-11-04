@@ -81,7 +81,7 @@ public sealed partial class ShipShieldsSystem : EntitySystem
             if (parent == null)
                 continue;
 
-            var filter = _station.GetInOwningStation(uid);
+            // var filter = _station.GetInOwningStation(uid); // WOLFGATE(Performance): unused, and the lookup is costly
 
             if (emitter.Damage > emitter.DamageLimit)
                 emitter.OverloadAccumulator = emitter.DamageOverloadTimePunishment;
@@ -268,7 +268,10 @@ public sealed partial class ShipShieldsSystem : EntitySystem
         _physicsSystem.WakeBody(shield, body: shieldPhysics);
         _physicsSystem.SetSleepingAllowed(shield, shieldPhysics, false);
 
-        _pvsSys.AddGlobalOverride(shield);
+        // WOLFGATE(Performance) START: nearby sessions only, not a global override
+        // _pvsSys.AddGlobalOverride(shield);
+        AddWolfgateShieldPvs(shield, entity);
+        // WOLFGATE END
 
         var shieldedComp = EnsureComp<ShipShieldedComponent>(entity);
         shieldedComp.Shield = shield;

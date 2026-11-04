@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Numerics;
-using Content.Shared._WF.CCVar;
 
 namespace Content.Server.NPC.Pathfinding;
 
@@ -40,7 +39,8 @@ public sealed partial class PathfindingSystem
     private void WfHoldForGround(int amount)
     {
         _wfHeld.Clear();
-        if (!_wfCfg.GetCVar(PlanetCVars.PathfindingLazy))
+        WfBindCVars();
+        if (!_wfLazy)
         {
             _wfWaiting.Clear();
             return;

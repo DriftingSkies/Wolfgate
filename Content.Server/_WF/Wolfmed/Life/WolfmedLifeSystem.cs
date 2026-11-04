@@ -93,9 +93,99 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
 
     private readonly List<EntityUid> _due = new();
 
+    // Consciousness bodies due and the dormant share, logged at most every StatLogEvery.
+    private static readonly TimeSpan StatLogEvery = TimeSpan.FromSeconds(10);
+    private int _statBodies;
+    private int _statSleeping;
+    private TimeSpan _nextStatLog;
+
+    // Organ membership of the body being ticked, or null outside a tick.
+    private EntityUid? _organsBody;
+    private bool _tickHasBody;
+    private Entity<WolfmedBrainComponent>? _tickBrain;
+    private Entity<WolfmedOrganComponent>? _tickBrainOrgan;
+    private readonly List<EntityUid> _tickHearts = new();
+    private readonly List<EntityUid> _tickLungs = new();
+
+    // Cached cvars, kept current by Subs.CVar.
+    private float _arrestBlood;
+    private float _arrestCauseMemorySeconds;
+    private float _arrestOxygenation;
+    private float _arrestSepsis;
+    private float _arrestSepsisChance;
+    private float _arrestShockBlood;
+    private float _arrestShockDamage;
+    private float _bloodBandPale;
+    private float _brainAirlossSeconds;
+    private float _brainArrestSeconds;
+    private float _brainBloodFull;
+    private float _brainBloodSeconds;
+    private float _brainBloodStart;
+    private float _brainColdFactor;
+    private float _brainCprFactor;
+    private float _brainCprFloor;
+    private float _brainDamageOxygenation;
+    private float _brainDamageRate;
+    private float _brainPressureOut;
+    private float _brainPressureStart;
+    private float _brainRefillFactor;
+    private float _brainSepsisSeconds;
+    private float _brainStimulantFactor;
+    private float _brainTraumaMinutes;
+    private float _brainVacuumBreathingFactor;
+    private float _brainVacuumSeconds;
+    private float _brainWeakBreathSeconds;
+    private float _consciousnessBloodDown;
+    private float _consciousnessBloodOut;
+    private float _consciousnessBrainDown;
+    private float _consciousnessCoreDown;
+    private float _injuryDownPressure;
+    private float _postShockBloodTarget;
+    private float _postShockGraceSeconds;
+    private float _postShockOxygenation;
+    private float _postShockRepeatSeconds;
+    private float _transfuseSafeMargin;
+
     public override void Initialize()
     {
         base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.ArrestBlood, value => _arrestBlood = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestCauseMemorySeconds, value => _arrestCauseMemorySeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestOxygenation, value => _arrestOxygenation = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestSepsis, value => _arrestSepsis = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestSepsisChance, value => _arrestSepsisChance = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestShockBlood, value => _arrestShockBlood = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestShockDamage, value => _arrestShockDamage = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BloodBandPale, value => _bloodBandPale = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainAirlossSeconds, value => _brainAirlossSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainArrestSeconds, value => _brainArrestSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainBloodFull, value => _brainBloodFull = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainBloodSeconds, value => _brainBloodSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainBloodStart, value => _brainBloodStart = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainColdFactor, value => _brainColdFactor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainCprFactor, value => _brainCprFactor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainCprFloor, value => _brainCprFloor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainDamageOxygenation, value => _brainDamageOxygenation = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainDamageRate, value => _brainDamageRate = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainPressureOut, value => _brainPressureOut = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainPressureStart, value => _brainPressureStart = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainRefillFactor, value => _brainRefillFactor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainSepsisSeconds, value => _brainSepsisSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainStimulantFactor, value => _brainStimulantFactor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainTraumaMinutes, value => _brainTraumaMinutes = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainVacuumBreathingFactor, value => _brainVacuumBreathingFactor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainVacuumSeconds, value => _brainVacuumSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.BrainWeakBreathSeconds, value => _brainWeakBreathSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessBloodDown, value => _consciousnessBloodDown = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessBloodOut, value => _consciousnessBloodOut = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessBrainDown, value => _consciousnessBrainDown = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessCoreDown, value => _consciousnessCoreDown = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.InjuryDownPressure, value => _injuryDownPressure = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PostShockBloodTarget, value => _postShockBloodTarget = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PostShockGraceSeconds, value => _postShockGraceSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PostShockOxygenation, value => _postShockOxygenation = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PostShockRepeatSeconds, value => _postShockRepeatSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.TransfuseSafeMargin, value => _transfuseSafeMargin = value, true);
 
         // The organ events are keyed on WolfmedOrganComponent: BrainComponent and HeartComponent already
         // have their pairs taken by BrainSystem and HeartSystem, and one health component covers both.
@@ -118,6 +208,9 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// <summary>The brain organ's oxygenation clock, or null for a body that has no brain to run one.</summary>
     public Entity<WolfmedBrainComponent>? GetBrain(EntityUid body)
     {
+        if (_organsBody == body)
+            return _tickBrain;
+
         foreach (var (organ, _) in _body.GetBodyOrgans(body))
         {
             if (TryComp(organ, out WolfmedBrainComponent? brain))
@@ -130,6 +223,9 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// <summary>The brain organ's health, whether or not it still runs a clock.</summary>
     public Entity<WolfmedOrganComponent>? GetBrainOrgan(EntityUid body)
     {
+        if (_organsBody == body)
+            return _tickBrainOrgan;
+
         foreach (var (organ, _) in _body.GetBodyOrgans(body))
         {
             if (HasComp<BrainComponent>(organ) && TryComp(organ, out WolfmedOrganComponent? health))
@@ -177,6 +273,13 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// <summary>The heart's health, or null when there is no heart in the body at all.</summary>
     public FixedPoint2? GetHeartHealth(EntityUid body)
     {
+        if (_organsBody == body)
+        {
+            return _tickHearts.Count == 0
+                ? null
+                : CompOrNull<WolfmedOrganComponent>(_tickHearts[0])?.Health ?? FixedPoint2.New(1);
+        }
+
         foreach (var (organ, _) in _body.GetBodyOrgans(body))
         {
             if (HasComp<HeartComponent>(organ))
@@ -189,7 +292,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     public float GetOxygenation(EntityUid body) => GetBrain(body)?.Comp.Oxygenation ?? 1f;
 
     /// <summary>Oxygenation a successful shock or a brain repair leaves at the least (M1a, plan §7.1).</summary>
-    public float PostShockOxygenation => Math.Clamp(_cfg.GetCVar(WolfmedCVars.PostShockOxygenation), 0f, 1f);
+    public float PostShockOxygenation => Math.Clamp(_postShockOxygenation, 0f, 1f);
 
     /// <summary>A successful shock is holding off the blood and oxygen arrest triggers right now.</summary>
     public bool InPostShockGrace(EntityUid body) => GetPostShockGraceSeconds(body) > 0f;
@@ -202,7 +305,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// The time a successful shock restores anything again: another success inside it only restarts the
     /// heart (<see cref="WolfmedCVars.PostShockRepeatSeconds"/>).
     /// </summary>
-    public float PostShockRepeatSeconds => MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.PostShockRepeatSeconds));
+    public float PostShockRepeatSeconds => MathF.Max(0f, _postShockRepeatSeconds);
 
     /// <summary>
     /// The brain is gone: either the organ is destroyed or the body has died some other way. What separates
@@ -264,10 +367,32 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
 
         foreach (var body in _due)
         {
+            if (TerminatingOrDeleted(body))
+                continue;
+
+            _statBodies++;
+
             // An NPC on planet ground no player is near holds still until someone comes.
-            if (!TerminatingOrDeleted(body) && !_dormancy.BodySleeps(body))
-                Tick(body, (float) TickInterval.TotalSeconds);
+            if (_dormancy.BodySleeps(body))
+            {
+                _statSleeping++;
+                continue;
+            }
+
+            Tick(body, (float) TickInterval.TotalSeconds);
         }
+
+        if (_timing.CurTime < _nextStatLog)
+            return;
+
+        // Each body is due once a second, so the totals over the window divided by its length are body counts.
+        var window = (float) StatLogEvery.TotalSeconds;
+        if (_statBodies > 0)
+            Log.Debug($"Life ticks: {_statBodies / window:0} bodies, {_statSleeping * 100f / _statBodies:0}% dormant.");
+
+        _nextStatLog = _timing.CurTime + StatLogEvery;
+        _statBodies = 0;
+        _statSleeping = 0;
     }
 
     /// <summary>
@@ -289,6 +414,53 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         _toxin.Clear(body, seconds);
         _radiation.Tick(body, seconds);
 
+        // The rest of the tick reads the organs a dozen times; walk the body once and hold the result.
+        ResolveOrgans(body);
+        try
+        {
+            TickOrgans(body, seconds);
+        }
+        finally
+        {
+            _organsBody = null;
+        }
+    }
+
+    /// <summary>Records which organs the body holds; health and bands are still read live from the components.</summary>
+    private void ResolveOrgans(EntityUid body)
+    {
+        _tickBrain = null;
+        _tickBrainOrgan = null;
+        _tickHearts.Clear();
+        _tickLungs.Clear();
+        _tickHasBody = TryComp(body, out BodyComponent? bodyComp);
+        if (_tickHasBody)
+        {
+            foreach (var (organ, _) in _body.GetBodyOrgans(body, bodyComp))
+            {
+                if (_tickBrain == null && TryComp(organ, out WolfmedBrainComponent? brain))
+                    _tickBrain = (organ, brain);
+
+                if (_tickBrainOrgan == null && HasComp<BrainComponent>(organ) &&
+                    TryComp(organ, out WolfmedOrganComponent? health))
+                    _tickBrainOrgan = (organ, health);
+
+                if (HasComp<HeartComponent>(organ))
+                    _tickHearts.Add(organ);
+
+                if (HasComp<LungComponent>(organ))
+                    _tickLungs.Add(organ);
+            }
+        }
+
+        _organsBody = body;
+    }
+
+    private IReadOnlyList<EntityUid>? TickLungs => _tickHasBody ? _tickLungs : null;
+
+    /// <summary>The part of <see cref="Tick"/> that reads organs, run with them resolved.</summary>
+    private void TickOrgans(EntityUid body, float seconds)
+    {
         if (GetBrain(body) is not { } brain)
         {
             // No clock to run. Mechanical bodies live here, and so does every brainless test fixture.
@@ -297,7 +469,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             TryEndHeartArrest(body);
             _consciousness.SetExternalPressure(body, HypoxiaPressure, 0f);
             // M3: a chassis's positronic core under its line holds it Downed, cause Core (plan §3.6).
-            UpdateInjury(body, WolfmedCVars.ConsciousnessCoreDown);
+            UpdateInjury(body, _consciousnessCoreDown);
             UpdateVitalSigns(body);
             UpdateCoreRestored(body); // M2
             return;
@@ -336,7 +508,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     private void ExpireArrestMemory(EntityUid body)
     {
         if (TryComp(body, out WolfmedArrestMemoryComponent? memory) &&
-            _timing.CurTime - memory.RestartedAt >= TimeSpan.FromSeconds(MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.ArrestCauseMemorySeconds))))
+            _timing.CurTime - memory.RestartedAt >= TimeSpan.FromSeconds(MathF.Max(0f, _arrestCauseMemorySeconds)))
             RemComp<WolfmedArrestMemoryComponent>(body);
     }
 
@@ -348,16 +520,16 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     public (WolfmedCauseSource Cause, bool Present)? GetRestartMemory(EntityUid body)
     {
         if (!TryComp(body, out WolfmedArrestMemoryComponent? memory) || InArrest(body) || _mobState.IsDead(body) ||
-            _timing.CurTime - memory.RestartedAt >= TimeSpan.FromSeconds(MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.ArrestCauseMemorySeconds))))
+            _timing.CurTime - memory.RestartedAt >= TimeSpan.FromSeconds(MathF.Max(0f, _arrestCauseMemorySeconds)))
             return null;
 
         var present = memory.Cause switch
         {
-            "blood" => HasComp<BloodstreamComponent>(body) && GetBlood(body) < _cfg.GetCVar(WolfmedCVars.BrainBloodStart),
+            "blood" => HasComp<BloodstreamComponent>(body) && GetBlood(body) < _brainBloodStart,
             // Every breath input DrainRate folds together, M3's damaged lungs included.
             "oxygen" => BreathingLevel(body) > 0f || _relief.GetRespiratoryDepression(body) > 0f || LungDamageLevel(body) > 0f,
             "heart" => GetHeartHealth(body) is not { } heart || heart <= FixedPoint2.Zero,
-            "sepsis" => _infection.GetSepsis(body) >= _cfg.GetCVar(WolfmedCVars.ArrestSepsis),
+            "sepsis" => _infection.GetSepsis(body) >= _arrestSepsis,
             "cold" => _temperature.IsColdArrest(body), // M5
             "toxin" => _toxin.InComa(body),
             "heat" => _temperature.InHeatStroke(body),
@@ -389,7 +561,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         !InArrest(body) && !_mobState.IsDead(body) &&
         TryComp(body, out WolfmedConsciousnessComponent? consciousness) &&
         consciousness.State == WolfmedConsciousness.Up &&
-        GetBlood(body) >= _cfg.GetCVar(WolfmedCVars.BrainBloodStart);
+        GetBlood(body) >= _brainBloodStart;
 
     /// <summary>The worst of the four inputs drains; nothing draining at all refills, slowly.</summary>
     private void UpdateOxygenation(EntityUid body, Entity<WolfmedBrainComponent> brain, float seconds)
@@ -408,7 +580,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         // Playtest 5: compressions on a living arrested body hold the brain at wolfmed.brain_cpr_floor, the damage
         // line: the drain stops there, and a brain already under it comes back up at the corpse rate. A rescuer who
         // keeps going keeps the brain alive for as long as they keep going.
-        var floor = _cfg.GetCVar(WolfmedCVars.BrainCprFloor);
+        var floor = _brainCprFloor;
         if (floor > 0f && InCpr(body) && InArrest(body))
         {
             var held = brain.Comp.Oxygenation < floor
@@ -430,8 +602,8 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
 
     private float RefillRate()
     {
-        var arrestSeconds = _cfg.GetCVar(WolfmedCVars.BrainArrestSeconds);
-        return arrestSeconds <= 0f ? 0f : _cfg.GetCVar(WolfmedCVars.BrainRefillFactor) / arrestSeconds;
+        var arrestSeconds = _brainArrestSeconds;
+        return arrestSeconds <= 0f ? 0f : _brainRefillFactor / arrestSeconds;
     }
 
     /// <summary>Oxygenation lost per second right now, with every multiplier already applied.</summary>
@@ -449,7 +621,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
 
         var arrest = InArrest(body);
         if (arrest)
-            worst = MathF.Max(worst, Per(_cfg.GetCVar(WolfmedCVars.BrainArrestSeconds)));
+            worst = MathF.Max(worst, Per(_brainArrestSeconds));
 
         // CPR is rescue breaths as well as compressions, so it answers for the airway while it lasts. So does a
         // ventilator or a sealed autodoc.
@@ -462,8 +634,8 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             var lungs = Math.Clamp(LungDamageLevel(body), 0f, 1f); // M3: damaged lungs (plan §3.3)
 
             // No air at all runs on its own clock; breathing that falls short keeps the slower one.
-            var noAir = suffocation * Per(_cfg.GetCVar(WolfmedCVars.BrainAirlossSeconds));
-            var weak = Per(_cfg.GetCVar(WolfmedCVars.BrainWeakBreathSeconds));
+            var noAir = suffocation * Per(_brainAirlossSeconds);
+            var weak = Per(_brainWeakBreathSeconds);
             var lungRate = lungs * weak;
             var depressionRate = depression * weak;
             var rate = MathF.Max(noAir, MathF.Max(lungRate, depressionRate));
@@ -472,7 +644,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
                 worst = rate;
                 source = lungRate > noAir && lungRate >= depressionRate ? WolfmedCauseSource.Lungs
                     : depressionRate > noAir ? WolfmedCauseSource.Sedation
-                    : _breathing.Assess(body).Source == WolfmedBreathingSource.Lungs ? WolfmedCauseSource.Lungs
+                    : AssessBreathing(body).Source == WolfmedBreathingSource.Lungs ? WolfmedCauseSource.Lungs
                     : WolfmedCauseSource.Airway;
             }
         }
@@ -483,8 +655,8 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         {
             var level = _breathing.IsSuffocating(body)
                 ? 1f
-                : Math.Clamp(_cfg.GetCVar(WolfmedCVars.BrainVacuumBreathingFactor), 0f, 1f);
-            var rate = level * Per(_cfg.GetCVar(WolfmedCVars.BrainVacuumSeconds));
+                : Math.Clamp(_brainVacuumBreathingFactor, 0f, 1f);
+            var rate = level * Per(_brainVacuumSeconds);
             if (rate > worst)
             {
                 worst = rate;
@@ -492,8 +664,8 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             }
         }
 
-        var start = _cfg.GetCVar(WolfmedCVars.BrainBloodStart);
-        var full = _cfg.GetCVar(WolfmedCVars.BrainBloodFull);
+        var start = _brainBloodStart;
+        var full = _brainBloodFull;
         var blood = GetBlood(body);
         if (cpr && blood > full)
             blood = MathF.Max(blood, CprCirculation);
@@ -501,7 +673,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         if (blood < start && start > full)
         {
             var level = Math.Clamp((start - blood) / (start - full), 0f, 1f);
-            var rate = level * Per(_cfg.GetCVar(WolfmedCVars.BrainBloodSeconds));
+            var rate = level * Per(_brainBloodSeconds);
             if (rate > worst)
             {
                 worst = rate;
@@ -509,9 +681,9 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             }
         }
 
-        if (_infection.GetSepsis(body) >= _cfg.GetCVar(WolfmedCVars.ArrestSepsis))
+        if (_infection.GetSepsis(body) >= _arrestSepsis)
         {
-            var rate = Per(_cfg.GetCVar(WolfmedCVars.BrainSepsisSeconds));
+            var rate = Per(_brainSepsisSeconds);
             if (rate > worst)
             {
                 worst = rate;
@@ -540,10 +712,10 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         worst *= ColdFactor(brain, body);
 
         if (cpr)
-            worst *= _cfg.GetCVar(WolfmedCVars.BrainCprFactor);
+            worst *= _brainCprFactor;
 
         if (_relief.GetTier(body) == WolfmedPainReliefTier.Stimulant)
-            worst *= _cfg.GetCVar(WolfmedCVars.BrainStimulantFactor);
+            worst *= _brainStimulantFactor;
 
         return worst;
     }
@@ -573,7 +745,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             }
         }
 
-        return Math.Clamp(factor * _cfg.GetCVar(WolfmedCVars.BrainColdFactor), 0f, 1f);
+        return Math.Clamp(factor * _brainColdFactor, 0f, 1f);
     }
 
     /// <summary>
@@ -589,11 +761,11 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         if (!TryComp(brain, out WolfmedOrganComponent? organ) || organ.Health <= FixedPoint2.Zero)
             return;
 
-        var threshold = _cfg.GetCVar(WolfmedCVars.BrainDamageOxygenation);
+        var threshold = _brainDamageOxygenation;
         if (threshold > 0f && brain.Comp.Oxygenation < threshold)
         {
             // M2 (P24): a cold brain loses tissue as slowly as it loses oxygen, on the same curve.
-            var rate = _cfg.GetCVar(WolfmedCVars.BrainDamageRate) *
+            var rate = _brainDamageRate *
                        Math.Clamp((threshold - brain.Comp.Oxygenation) / threshold, 0f, 1f) *
                        ColdFactor(brain, body);
             if (rate > 0f)
@@ -660,13 +832,13 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             return;
         }
 
-        if (!grace && blood <= _cfg.GetCVar(WolfmedCVars.ArrestBlood))
+        if (!grace && blood <= _arrestBlood)
         {
             StartArrest(body, "blood");
             return;
         }
 
-        if (!grace && brain.Comp.Oxygenation <= _cfg.GetCVar(WolfmedCVars.ArrestOxygenation))
+        if (!grace && brain.Comp.Oxygenation <= _arrestOxygenation)
         {
             // M2 (OD15): late sepsis stops the heart through this trigger, on its own drain, and is named for it.
             // M5: so do a toxic coma and heat stroke.
@@ -688,8 +860,8 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             return;
         }
 
-        if (_infection.GetSepsis(body) >= _cfg.GetCVar(WolfmedCVars.ArrestSepsis) &&
-            _random.Prob(Math.Clamp(_cfg.GetCVar(WolfmedCVars.ArrestSepsisChance) * seconds, 0f, 1f)))
+        if (_infection.GetSepsis(body) >= _arrestSepsis &&
+            _random.Prob(Math.Clamp(_arrestSepsisChance * seconds, 0f, 1f)))
             StartArrest(body, "sepsis");
     }
 
@@ -701,7 +873,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     {
         if (!TryComp(body, out WolfmedCardiacArrestComponent? arrest) || arrest.Cause != "heart" ||
             GetHeartHealth(body) is not { } health || health <= FixedPoint2.Zero ||
-            GetBlood(body) <= _cfg.GetCVar(WolfmedCVars.ArrestBlood))
+            GetBlood(body) <= _arrestBlood)
             return false;
 
         return EndArrest(body);
@@ -712,8 +884,8 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     {
         _consciousness.SetExternalPressure(body, ArrestPressure, !dead && InArrest(body) ? 1f : 0f);
 
-        var start = _cfg.GetCVar(WolfmedCVars.BrainPressureStart);
-        var outAt = _cfg.GetCVar(WolfmedCVars.BrainPressureOut);
+        var start = _brainPressureStart;
+        var outAt = _brainPressureOut;
         var level = 0f;
         if (!dead && start > outAt && brain.Comp.Oxygenation < start)
             level = Math.Clamp((start - brain.Comp.Oxygenation) / (start - outAt), 0f, 1f);
@@ -727,7 +899,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         }
 
         _consciousness.SetExternalPressure(body, HypoxiaPressure, level);
-        UpdateInjury(body, WolfmedCVars.ConsciousnessBrainDown); // M3: brain injury (plan §3.6)
+        UpdateInjury(body, _consciousnessBrainDown); // M3: brain injury (plan §3.6)
 
         if (TryComp(body, out WolfmedConsciousnessComponent? consciousness) &&
             MathF.Abs(consciousness.Oxygenation - brain.Comp.Oxygenation) >= 0.005f)
@@ -741,18 +913,23 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// M3 (plan §3.6): a brain, or a chassis's positronic core, under its Downed line writes the injury pressure.
     /// It Downs and never knocks out, and nothing heals an organ on its own, so it holds until surgery.
     /// </summary>
-    private void UpdateInjury(EntityUid body, CVarDef<float> line)
+    private void UpdateInjury(EntityUid body, float line)
     {
         var level = 0f;
         if (!_mobState.IsDead(body) && GetBrainOrgan(body) is { } organ && organ.Comp.Health > FixedPoint2.Zero &&
-            organ.Comp.Fraction < _cfg.GetCVar(line))
-            level = Math.Clamp(_cfg.GetCVar(WolfmedCVars.InjuryDownPressure), 0f, 1f);
+            organ.Comp.Fraction < line)
+            level = Math.Clamp(_injuryDownPressure, 0f, 1f);
 
         _consciousness.SetExternalPressure(body, InjuryPressure, level);
     }
 
     /// <summary>M3 (plan §3.3): damaged lungs as a breathing input, 0 to 1. See <see cref="WolfmedBreathingSystem.LungDamageLevel"/>.</summary>
-    public float LungDamageLevel(EntityUid body) => _breathing.LungDamageLevel(body);
+    public float LungDamageLevel(EntityUid body) =>
+        _organsBody == body ? _breathing.LungDamageLevel(TickLungs) : _breathing.LungDamageLevel(body);
+
+    /// <summary>Breathing assessment, reusing the ticked body's lungs when it is the one being ticked.</summary>
+    private (WolfmedBreathing Breathing, WolfmedBreathingSource Source) AssessBreathing(EntityUid body) =>
+        _organsBody == body ? _breathing.Assess(body, TickLungs, true) : _breathing.Assess(body);
 
     /// <summary>
     /// M3 (plan §8): blood regeneration multiplier from the organs, the heart's impaired band (× its
@@ -783,7 +960,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         if (!TryComp(body, out WolfmedConsciousnessComponent? consciousness))
             return;
 
-        var (breathing, source) = _breathing.Assess(body);
+        var (breathing, source) = AssessBreathing(body);
         var band = GetBloodBand(body);
         var irregular = band != WolfmedBloodBand.None && HeartImpaired(body); // M3
         if (consciousness.Breathing == breathing && consciousness.BreathingSource == source &&
@@ -800,6 +977,17 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// <summary>M3 (plan §8): a heart under its impaired line, still beating.</summary>
     public bool HeartImpaired(EntityUid body)
     {
+        if (_organsBody == body)
+        {
+            foreach (var heart in _tickHearts)
+            {
+                if (TryComp(heart, out WolfmedOrganComponent? health) && health.Band == WolfmedOrganBand.Impaired)
+                    return true;
+            }
+
+            return false;
+        }
+
         foreach (var (organ, _) in _body.GetBodyOrgans(body))
         {
             if (HasComp<HeartComponent>(organ) && TryComp(organ, out WolfmedOrganComponent? health) &&
@@ -820,13 +1008,13 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             return WolfmedBloodBand.Normal;
 
         var blood = GetBlood(body);
-        if (blood <= _cfg.GetCVar(WolfmedCVars.ConsciousnessBloodOut))
+        if (blood <= _consciousnessBloodOut)
             return WolfmedBloodBand.Critical;
 
-        if (blood <= _cfg.GetCVar(WolfmedCVars.ConsciousnessBloodDown))
+        if (blood <= _consciousnessBloodDown)
             return WolfmedBloodBand.Weak;
 
-        return blood <= _cfg.GetCVar(WolfmedCVars.BloodBandPale) ? WolfmedBloodBand.Low : WolfmedBloodBand.Normal;
+        return blood <= _bloodBandPale ? WolfmedBloodBand.Low : WolfmedBloodBand.Normal;
     }
 
     /// <summary>
@@ -907,7 +1095,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         if (_temperature.InHeatStroke(body))
             routes |= WolfmedRoutes.HeatStroke;
 
-        if (_vacuum.IsExposed(body) && _cfg.GetCVar(WolfmedCVars.BrainVacuumSeconds) > 0f)
+        if (_vacuum.IsExposed(body) && _brainVacuumSeconds > 0f)
             routes |= WolfmedRoutes.Vacuum;
 
         if (InArrest(body))
@@ -917,7 +1105,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         {
             var suffocation = BreathingLevel(body);
             if (suffocation > 0f)
-                routes |= _breathing.Assess(body).Source == WolfmedBreathingSource.Lungs
+                routes |= AssessBreathing(body).Source == WolfmedBreathingSource.Lungs
                     ? WolfmedRoutes.Lungs
                     : WolfmedRoutes.Airway;
 
@@ -929,14 +1117,14 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
                 routes |= WolfmedRoutes.Sedation;
         }
 
-        var start = _cfg.GetCVar(WolfmedCVars.BrainBloodStart);
-        if (HasComp<BloodstreamComponent>(body) && GetBlood(body) < start && start > _cfg.GetCVar(WolfmedCVars.BrainBloodFull))
+        var start = _brainBloodStart;
+        if (HasComp<BloodstreamComponent>(body) && GetBlood(body) < start && start > _brainBloodFull)
             routes |= WolfmedRoutes.Circulation;
 
-        if (_infection.GetSepsis(body) >= _cfg.GetCVar(WolfmedCVars.ArrestSepsis))
+        if (_infection.GetSepsis(body) >= _arrestSepsis)
             routes |= WolfmedRoutes.Sepsis;
 
-        if (brain.Comp.Oxygenation < _cfg.GetCVar(WolfmedCVars.BrainDamageOxygenation) &&
+        if (brain.Comp.Oxygenation < _brainDamageOxygenation &&
             TryComp(brain, out WolfmedOrganComponent? organ) && organ.Health > FixedPoint2.Zero)
             routes |= WolfmedRoutes.TissueLoss;
 
@@ -952,7 +1140,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
 
     /// <summary>The blood fraction the brain-safe transfusion figure aims for: the brain's line plus the margin.</summary>
     public float BrainSafeTarget =>
-        MathF.Min(1f, _cfg.GetCVar(WolfmedCVars.BrainBloodStart) + MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.TransfuseSafeMargin)));
+        MathF.Min(1f, _brainBloodStart + MathF.Max(0f, _transfuseSafeMargin));
 
     /// <summary>
     /// The two transfusion numbers (plan §7.1): units to <see cref="WolfmedCVars.PostShockBloodTarget"/> plus
@@ -970,9 +1158,9 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             return (0f, 0f);
 
         var volume = GetBlood(body) * pool;
-        var target = _cfg.GetCVar(WolfmedCVars.PostShockBloodTarget) * pool;
+        var target = _postShockBloodTarget * pool;
         var safe = BrainSafeTarget * pool;
-        var bleed = GetVolumeLossRate(body) * MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.PostShockGraceSeconds)); // M1b: burns too
+        var bleed = GetVolumeLossRate(body) * MathF.Max(0f, _postShockGraceSeconds); // M1b: burns too
 
         // Revival pass: the brain-safe figure carries the same loss and a margin, or a patient topped up to exactly
         // the line sits on it, the brain refill never starts and they stay out.
@@ -1099,12 +1287,12 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         if (_shutdown.IsMechanical(body))
         {
             var restored = EnsureComp<WolfmedCoreRestoredComponent>(body);
-            restored.Ends = _timing.CurTime + TimeSpan.FromMinutes(_cfg.GetCVar(WolfmedCVars.BrainTraumaMinutes));
+            restored.Ends = _timing.CurTime + TimeSpan.FromMinutes(_brainTraumaMinutes);
             Dirty(body, restored);
             return;
         }
 
-        var minutes = _cfg.GetCVar(WolfmedCVars.BrainTraumaMinutes);
+        var minutes = _brainTraumaMinutes;
         var trauma = EnsureComp<WolfmedBrainTraumaComponent>(body);
         trauma.Ends = _timing.CurTime + TimeSpan.FromMinutes(minutes);
         Dirty(body, trauma);
@@ -1127,6 +1315,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     private void OnOrganRemoved(Entity<WolfmedOrganComponent> organ, ref OrganRemovedFromBodyEvent args)
     {
         var body = args.OldBody;
+        _organsBody = null; // the ticked body's organs may have changed
         if (TerminatingOrDeleted(body) || !OwnsDeath(body))
             return;
 
@@ -1146,6 +1335,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// <summary>A heart back in its slot gets one tick straight away, which is what ends the arrest.</summary>
     private void OnOrganAdded(Entity<WolfmedOrganComponent> organ, ref OrganAddedToBodyEvent args)
     {
+        _organsBody = null; // the ticked body's organs may have changed
         if (TerminatingOrDeleted(args.Body) || !OwnsDeath(args.Body))
             return;
 
@@ -1241,7 +1431,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// </summary>
     private void OnPainShock(ref WolfmedPainShockEvent args)
     {
-        var threshold = _cfg.GetCVar(WolfmedCVars.ArrestShockBlood);
+        var threshold = _arrestShockBlood;
         if (threshold <= 0f || !OwnsDeath(args.Body) || GetBlood(args.Body) > threshold)
             return;
 
@@ -1254,7 +1444,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     /// </summary>
     private void OnElectrocuted(ElectrocutedEvent args)
     {
-        var threshold = _cfg.GetCVar(WolfmedCVars.ArrestShockDamage);
+        var threshold = _arrestShockDamage;
         if (threshold <= 0f || args.ShockDamage is not { } raw || !OwnsDeath(args.TargetUid))
             return;
 
@@ -1304,14 +1494,14 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             return null;
 
         var rate = DrainRate(body, brain);
-        var threshold = _cfg.GetCVar(WolfmedCVars.BrainDamageOxygenation);
-        var damageRate = _cfg.GetCVar(WolfmedCVars.BrainDamageRate) * ColdFactor(brain, body); // M2 (P24)
+        var threshold = _brainDamageOxygenation;
+        var damageRate = _brainDamageRate * ColdFactor(brain, body); // M2 (P24)
         if (rate <= 0f || threshold <= 0f || damageRate <= 0f)
             return null;
 
         // Playtest 5: under compressions the brain holds at wolfmed.brain_cpr_floor; at or over the damage line there
         // is no death coming, and the analyzer's estimate says so by saying nothing.
-        var floor = InCpr(body) && InArrest(body) ? MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.BrainCprFloor)) : 0f;
+        var floor = InCpr(body) && InArrest(body) ? MathF.Max(0f, _brainCprFloor) : 0f;
         if (floor >= threshold)
             return null;
 

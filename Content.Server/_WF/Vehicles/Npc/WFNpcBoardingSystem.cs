@@ -186,6 +186,10 @@ public sealed class WFNpcBoardingSystem : EntitySystem
     /// <summary>The nearest unlocked vehicle with someone inside he's hostile to, or the vehicle itself is.</summary>
     private EntityUid? FindVehicle(Entity<WFVehicleBoarderComponent> ent)
     {
+        var anyOccupied = EntityQueryEnumerator<WFOccupiedVehicleComponent>();
+        if (!anyOccupied.MoveNext(out _, out _))
+            return null;
+
         var hostiles = _factions.GetNearbyHostiles(ent.Owner, ent.Comp.Range).ToHashSet();
         if (hostiles.Count == 0 && !HasComp<FactionExceptionComponent>(ent))
             return null;

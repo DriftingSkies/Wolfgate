@@ -37,6 +37,8 @@ public partial class SharedBodySystem
     private readonly string[] _severingDamageTypes = { "Slash", "Piercing", "Blunt" };
     private const double IntegrityJobTime = 0.005;
     private readonly JobQueue _integrityJobQueue = new(IntegrityJobTime);
+    private const float IntegrityScanInterval = 1f; // WOLFGATE(Wolfmed): part self-heal scan cadence.
+    private float _integrityAccumulator; // WOLFGATE(Wolfmed)
     public sealed class IntegrityJob : Job<object>
     {
         private readonly SharedBodySystem _self;
@@ -97,16 +99,33 @@ public partial class SharedBodySystem
         if (!_timing.IsFirstTimePredicted)
             return;
 
+        // WOLFGATE(Wolfmed) START: scan parts once per second with the accumulated time, skipping parts that never heal.
+        _integrityAccumulator += frameTime;
+        if (_integrityAccumulator < IntegrityScanInterval)
+            return;
+
+        var elapsed = _integrityAccumulator;
+        _integrityAccumulator = 0f;
+        // WOLFGATE END
+
         using var query = EntityQueryEnumerator<BodyPartComponent>();
         while (query.MoveNext(out var ent, out var part))
         {
-            part.HealingTimer += frameTime;
+            // WOLFGATE(Wolfmed) START: only Targeting bodies that are not wound hosts self-heal parts.
+            if (part.Body is not { } body
+                || _queryWoundHost.HasComp(body)
+                || !_queryTargeting.HasComp(body))
+                continue;
+
+            part.HealingTimer += elapsed;
+            // part.HealingTimer += frameTime;
+            // WOLFGATE END
 
             if (part.HealingTimer >= part.HealingTime)
             {
                 part.HealingTimer = 0;
-                // WOLFGATE(Wolfmed) START: GUARD C, do not burn the job queue on wound hosts.
-                if (_queryWoundHost.HasComp(part.Body))
+                // WOLFGATE(Wolfmed) START: GUARD C, do not burn the job queue on wound hosts or dead bodies.
+                if (_mobState.IsDead(body))
                     continue;
                 // WOLFGATE END
                 _integrityJobQueue.EnqueueJob(new IntegrityJob(this, (ent, part), IntegrityJobTime));

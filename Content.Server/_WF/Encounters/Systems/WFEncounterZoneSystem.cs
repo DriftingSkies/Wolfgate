@@ -3,6 +3,8 @@ using System.Numerics;
 using Content.Server._Mono.AlertLevel;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.NpcCrew.Systems;
+using Content.Server._WF.NpcDialogue;
+using Content.Server._WF.NpcDialogue.Systems;
 using Content.Shared._Mono.Company;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Encounters;
@@ -28,7 +30,6 @@ namespace Content.Server._WF.Encounters.Systems;
 public sealed partial class WFEncounterZoneSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private WFEncounterSystem _encounters = default!;
     [Dependency] private WFCrewAlertSystem _alerts = default!;
@@ -39,6 +40,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     [Dependency] private WarLevelSystem _warLevel = default!;
     [Dependency] private WFCrewStealthSystem _stealth = default!;
     [Dependency] private WFCrewSparedSystem _spared = default!;
+    [Dependency] private WFNpcDialogueSystem _dialogue = default!;
 
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
     private static readonly TimeSpan WarnCooldown = TimeSpan.FromSeconds(45);
@@ -46,7 +48,6 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     /// <summary>How long after a side calls its guns onto a vessel it may call them again, if it never let the vessel go.</summary>
     private static readonly TimeSpan CallCooldown = TimeSpan.FromSeconds(60);
     private static readonly ProtoId<RadioChannelPrototype> Channel = "Traffic";
-    private const int WarnLines = 3;
 
     /// <summary>Starts part way through the second, off the tick other one-second systems run on.</summary>
     private TimeSpan _next = TimeSpan.FromSeconds(0.2);
@@ -183,7 +184,11 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                 _alerts.ReportZoneThreat(ship.Grid, ship.Group, rival.Grid);
                 _alerts.ReportZoneThreat(rival.Grid, rival.Group, ship.Grid);
                 if (_rivals.Add(key))
-                    CallOut(Comp<WFEncounterComponent>(uid), ship, rival.Grid, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", Name(rival.Grid))));
+                {
+                    var encounter = Comp<WFEncounterComponent>(uid);
+                    var rivalGrid = rival.Grid;
+                    CallOut(encounter, ship, rivalGrid, () => _dialogue.AttackLine(encounter, ship, rivalGrid, Name(rivalGrid), false));
+                }
             }
         }
     }
@@ -236,10 +241,13 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
         return HasComp<ShuttleDeedComponent>(grid) || !HasComp<StationMemberComponent>(grid);
     }
 
-    /// <summary>Whether a ship is out of the fight, a derelict aside: a disabled one no longer hails, fires or answers rivals.</summary>
+    /// <summary>
+    /// Whether a ship is out of the fight, a derelict aside: a disabled or surrendered one no longer hails, fires or
+    /// answers rivals.
+    /// </summary>
     private bool Disabled(WFEncounterShipState ship)
     {
-        return !ship.Derelict && _status.IsDisabled(ship.Grid);
+        return ship.Surrendered || !ship.Derelict && _status.IsDisabled(ship.Grid);
     }
 
     /// <summary>Whether any port of a grid is docked to another, a ship of its own company and encounter fleet aside: its garrison is not a berth.</summary>
@@ -493,7 +501,10 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             if (idle)
                 _alerts.EndZoneWarning(ship.Grid, intruder);
 
-            if (ship.AttackRange > 0f && distance <= ship.AttackRange && !idle
+            // A ship badly hurt picks no new fights: it only answers one that is on it.
+            var holdsBack = ship.Mood >= WFShipMood.Desperate && !ship.Engaged.Contains(intruder)
+                            && !_alerts.IsAttacker(ship.Grid, intruder);
+            if (ship.AttackRange > 0f && distance <= ship.AttackRange && !idle && !holdsBack
                 && (!ceasefire || ship.Engaged.Contains(intruder) || _alerts.IsAttacker(ship.Grid, intruder)))
             {
                 _alerts.EndZoneWarning(ship.Grid, intruder);
@@ -501,7 +512,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                 {
                     // The ship turns to fight what is inside its attack zone; its side says so once.
                     _alerts.ReportZoneEngagement(ship.Grid, ship.Group, intruder);
-                    CallOut(encounter, ship, intruder, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", name)));
+                    CallOut(encounter, ship, intruder, () => _dialogue.AttackLine(encounter, ship, intruder, name, false));
                 }
                 else
                     _alerts.ReportZoneThreat(ship.Grid, ship.Group, intruder);
@@ -521,15 +532,17 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
                     continue;
 
                 ship.Warned[intruder] = now + WarnCooldown;
-                // One hail for the side: a dozen ships warning in chorus is noise, not a warning.
+                // One hail for the side: a dozen ships warning in chorus is noise, not a warning. The side warns once,
+                // then once more, then holds its peace until the vessel leaves and comes back.
                 HailOut(encounter, ship, intruder, challenged
-                    ? Loc.GetString("wf-encounter-zone-identify", ("distance", (int) distance))
-                    : Loc.GetString($"{ship.ZoneLines}-warn-{_random.Next(1, WarnLines + 1)}",
-                        ("intruder", name), ("distance", (int) distance)));
+                    ? () => Loc.GetString("wf-encounter-zone-identify", ("distance", (int) distance))
+                    : () => _dialogue.WarnLine(encounter, ship, intruder, name, (int) distance));
             }
             else if (distance > ship.WarnRange)
             {
-                // Out and back in is a fresh trespass.
+                // Out and back in is a fresh trespass, and the side remembers it.
+                if (ship.Warned.ContainsKey(intruder) || ship.Engaged.Contains(intruder))
+                    _dialogue.Left(encounter, ship, intruder, ship.Engaged.Contains(intruder));
                 Release(encounter, ship, intruder);
                 _alerts.EndZoneWarning(ship.Grid, intruder);
             }
@@ -594,7 +607,8 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             if (fresh)
             {
                 var name = IffMasked(shot.Shooter) ? Loc.GetString("wf-encounter-zone-unknown") : Name(shot.Shooter);
-                CallOut(encounter, ship, shot.Shooter, Loc.GetString($"{ship.ZoneLines}-attack", ("intruder", name)));
+                var shooter = shot.Shooter;
+                CallOut(encounter, ship, shooter, () => _dialogue.AttackLine(encounter, ship, shooter, name, true));
             }
         }
     }
@@ -603,7 +617,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     /// Hails a vessel for the side, once per cooldown whichever of its ships speaks. A ship with nobody to speak gives
     /// the side's turn back, so the next ship takes it.
     /// </summary>
-    private void HailOut(WFEncounterComponent encounter, WFEncounterShipState ship, EntityUid intruder, string line)
+    private void HailOut(WFEncounterComponent encounter, WFEncounterShipState ship, EntityUid intruder, Func<string?> line)
     {
         Speak(encounter.Hailed, ship, intruder, WarnCooldown, line);
     }
@@ -612,22 +626,29 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     /// Calls the side's guns onto a vessel, once for the side while any of its ships holds the vessel in its attack zone
     /// and once per cooldown otherwise, since a shooter answered or a rival crew may never enter a zone to be let go of.
     /// </summary>
-    private void CallOut(WFEncounterComponent encounter, WFEncounterShipState ship, EntityUid intruder, string line)
+    private void CallOut(WFEncounterComponent encounter, WFEncounterShipState ship, EntityUid intruder, Func<string?> line)
     {
         Speak(encounter.Called, ship, intruder, CallCooldown, line);
     }
 
-    /// <summary>Takes the side's turn to speak of a vessel if it is free, and gives it back if nobody aboard could.</summary>
+    /// <summary>
+    /// Takes the side's turn to speak of a vessel if it is free, and gives it back if nobody aboard could or the air
+    /// was too busy. The line is made only once the turn is the side's; null says nothing. It is heard around the
+    /// ship and the vessel, not across the sector.
+    /// </summary>
     private void Speak(Dictionary<(string Side, EntityUid Intruder), TimeSpan> turns, WFEncounterShipState ship, EntityUid intruder,
-        TimeSpan cooldown, string line)
+        TimeSpan cooldown, Func<string?> line)
     {
         var key = (ship.Side, intruder);
         var now = _timing.CurTime;
         if (turns.TryGetValue(key, out var until) && now < until)
             return;
 
+        if (line() is not { } text)
+            return;
+
         turns[key] = now + cooldown;
-        if (!_encounters.TrySay(ship, Channel, line))
+        if (!_encounters.TrySay(ship, Channel, text, intruder))
             turns.Remove(key);
     }
 

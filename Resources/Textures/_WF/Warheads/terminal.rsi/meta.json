@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Skyrat-tg at commit e507f9120b, icons/obj/machines/nuke_terminal.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "nuclearbomb_safetyoff"
+    },
+    {
+      "name": "nuclearbomb_timing",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "nuclearbomb_exploding",
+      "delays": [
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "nuclearbomb_base"
+    },
+    {
+      "name": "lights-safety"
+    },
+    {
+      "name": "lights-timing",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "lights-exploding",
+      "delays": [
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

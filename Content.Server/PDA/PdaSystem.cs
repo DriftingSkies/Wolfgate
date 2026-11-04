@@ -70,6 +70,7 @@ namespace Content.Server.PDA
             SubscribeLocalEvent<EntityRenamedEvent>(OnEntityRenamed, after: new[] { typeof(IdCardSystem) });
             SubscribeLocalEvent<AlertLevelChangedEvent>(OnAlertLevelChanged);
             SubscribeLocalEvent<WarLevelChangedEvent>(OnWarLevelChanged);
+            InitializeDefcon(); // WOLFGATE(Defcon): refresh PDAs on a DEFCON change
 
             // Begin DeltaV additions
             Subs.CVar(_config,
@@ -382,6 +383,7 @@ namespace Content.Server.PDA
             if (!TryComp(station, out WarLevelComponent? warComp))
                 return;
             pda.WarLevel = warComp.PostWar ? Loc.GetString("comp-pda-ui-station-war-level-post") : Loc.GetString("comp-pda-ui-station-war-level-pre");
+            pda.WarLevel = WithDefcon(pda.WarLevel); // WOLFGATE(Defcon): DEFCON line under the war level
         }
 
         private string? GetDeviceNetAddress(EntityUid uid)

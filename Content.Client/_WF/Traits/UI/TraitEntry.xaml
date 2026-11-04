@@ -13,6 +13,10 @@
             <RichTextLabel Name="TraitDescriptionLabel"
                            HorizontalExpand="True"
                            Margin="0 2 0 0" />
+            <RichTextLabel Name="TraitNotesLabel"
+                           HorizontalExpand="True"
+                           Visible="False"
+                           Margin="0 4 0 0" />
         </BoxContainer>
     </BoxContainer>
 </PanelContainer>

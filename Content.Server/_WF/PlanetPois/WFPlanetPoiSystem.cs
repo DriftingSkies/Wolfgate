@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Content.Server._WF.Caverns;
 using Content.Server._WF.Planets;
+using Content.Server._WF.Planets.Atmosphere;
 using Content.Server._WF.Planets.Bounds;
 using Content.Server.Parallax;
 using Content.Server.Popups;
@@ -38,6 +39,7 @@ public sealed partial class WFPlanetPoiSystem : EntitySystem
     [Dependency] private SharedRoofSystem _roof = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WFPlanetPreloadSystem _preload = default!;
+    [Dependency] private WFTerrainAtmosphereSystem _terrainAtmos = default!;
 
     /// <summary>The orbit-layer marker over a site.</summary>
     public const string SignalProto = "WFPoiSignal";

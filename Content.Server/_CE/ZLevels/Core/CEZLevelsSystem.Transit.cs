@@ -487,8 +487,10 @@ public sealed partial class CEZLevelsSystem
                 var zPhys = EnsureComp<CEZPhysicsComponent>(gridUid);
                 SetZPosition((gridUid, zPhys), progress);
 
+                // WOLFGATE(Performance) START: grids are force-sent and nearby viewers get transit z-eyes; a global override recursed every hull child each tick
                 // Everyone gets to watch, not just PVS neighbours.
-                _pvsOverride.AddGlobalOverride(gridUid);
+                // _pvsOverride.AddGlobalOverride(gridUid);
+                // WOLFGATE END
 
                 // In transit = airborne: engines are live regardless of direction. Grids mapped
                 // in Static (station anchors and the like) need this to fly at all.
@@ -817,7 +819,8 @@ public sealed partial class CEZLevelsSystem
                     SetZVelocity((gridUid, zPhys), 0f);
                 }
 
-                _pvsOverride.RemoveGlobalOverride(gridUid);
+                // WOLFGATE(Performance): the matching add was removed
+                // _pvsOverride.RemoveGlobalOverride(gridUid);
 
                 // Landing on a grid causes an explosion. Don't do that.
                 _shuttle.Smimsh(gridUid, explodeGrids: true, ignoredGrids: movedGrids);

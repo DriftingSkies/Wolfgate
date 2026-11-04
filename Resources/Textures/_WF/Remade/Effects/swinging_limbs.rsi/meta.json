@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at https://github.com/DS-13-Dev-Team/DS13-2.0 (deadspace/icons/necromorphs/swinging_limbs.dmi)",
+  "size": {
+    "x": 128,
+    "y": 128
+  },
+  "states": [
+    {
+      "name": "tongue"
+    },
+    {
+      "name": "tripod_left"
+    },
+    {
+      "name": "tripod_right"
+    },
+    {
+      "name": "harvester_tentacle"
+    },
+    {
+      "name": "divider_left"
+    },
+    {
+      "name": "divider_right"
+    },
+    {
+      "name": "hunter_left"
+    },
+    {
+      "name": "hunter_right"
+    }
+  ]
+}

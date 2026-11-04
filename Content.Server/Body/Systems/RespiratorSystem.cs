@@ -318,13 +318,20 @@ public sealed partial class RespiratorSystem : EntitySystem
         if (ent.Comp.SuffocationCycles >= 2)
             _adminLogger.Add(LogType.Asphyxiation, $"{ToPrettyString(ent):entity} stopped suffocating");
 
+        // WOLFGATE(Wolfmed) START: the lung alert is only shown at the threshold, so a breathing body skips the walk.
+        if (ent.Comp.SuffocationCycles >= ent.Comp.SuffocationCycleThreshold)
+        {
+        // WOLFGATE END
         // TODO: This is not going work with multiple different lungs, if that ever becomes a possibility
         var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
         foreach (var entity in organs)
         {
             _alertsSystem.ClearAlert(ent, entity.Comp1.Alert);
         }
+        } // WOLFGATE(Wolfmed)
 
+        // WOLFGATE(Wolfmed): skip the damage pipeline when there is no suffocation damage to recover.
+        if (Content.Server._WF.Wolfmed.Damage.WolfmedHealCheck.WouldHeal(CompOrNull<DamageableComponent>(ent), ent.Comp.DamageRecovery))
         _damageableSys.TryChangeDamage(ent, ent.Comp.DamageRecovery);
     }
 

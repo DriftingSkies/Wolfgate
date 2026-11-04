@@ -5500,3 +5500,145 @@ Entries:
   id: 100339
   time: '2026-11-04T04:50:42.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/476
+- author: DriftingSkies
+  changes:
+    - type: Add
+      message: Sol Common to TSF Contractors by default. (Again.)
+  id: 100340
+  time: '2026-11-04T08:37:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/482
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Server performance pass: planet drag, climate, NPC and body simulation,
+        auto-fire, silicon charge and mass-delete costs are reduced.
+    - type: Tweak
+      message: >-
+        Planets form in the lobby at a lower budget so the lobby stays
+        responsive.
+  id: 100341
+  time: '2026-11-04T08:38:23.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/479
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: The remade....
+  id: 100342
+  time: '2026-11-04T08:48:50.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/472
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Fixed a way to crash the server from the lobby.
+  id: 100343
+  time: '2026-11-04T09:52:47.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/487
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        The sector now has a DEFCON level from 5 to 1 that rises and falls with
+        the threat, announced with an alarm and shown on your PDA.
+    - type: Add
+      message: >-
+        Admins can set, lock and bias the sector DEFCON from a new panel on the
+        Wolfgate admin tab.
+  id: 100344
+  time: '2026-11-04T21:10:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/483
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Judges now start with a voucher for a free Lightning or Hornet.
+    - type: Add
+      message: Janitors are back on Caelestinus Central.
+  id: 100345
+  time: '2026-11-04T21:27:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/485
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added nuclear warheads in four sizes with timer, two-key, remote and
+        dead-man switch arming.
+    - type: Add
+      message: >-
+        Nuclear detonations now flash, send out a shockwave, leave a fireball or
+        mushroom cloud and spread radioactive fallout.
+    - type: Tweak
+      message: >-
+        The station nuke uses new sprites, a floating countdown and a voiced
+        final countdown.
+    - type: Add
+      message: Admins can design and spawn custom nukes with the nuke designer.
+  id: 100346
+  time: '2026-11-04T22:07:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/484
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        MMC Hokkaido and Anvilhold Drydock now have cargo turn-in chutes for
+        trade crates.
+    - type: Add
+      message: TSFMC Halcyon and Zvezda now have trade-goods vendors.
+  id: 100347
+  time: '2026-11-04T22:09:46.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/493
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        NPC ships now talk based on how the fight is going, and a badly hurt
+        ship no longer demands your cargo.
+    - type: Tweak
+      message: >-
+        NPC ships warn you once, then a final time, then go quiet instead of
+        repeating themselves.
+    - type: Tweak
+      message: >-
+        NPC ships remember if you ran, came back, or shot first, and bring it
+        up.
+    - type: Tweak
+      message: Badly hurt NPC ships stop picking fights and may run.
+    - type: Add
+      message: >-
+        Beaten NPC ships may rarely surrender. Accept over the hail and their
+        crew stand down. Fire on a white flag and they fight to the end.
+  id: 100348
+  time: '2026-11-04T22:50:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/494
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Added the retro arcade, a cabinet that plays your own Neo Geo and CPS2
+        MAME ROMs, alone or with a second player.
+  id: 100349
+  time: '2026-11-04T22:55:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/490
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Traits are split into subgroups like Toughness, Healing and Accents.
+    - type: Add
+      message: >-
+        You can sort traits by how many points they cost and hide the ones you
+        can't take.
+    - type: Tweak
+      message: >-
+        Each trait now lists its requirements and what it conflicts with, in red
+        when it blocks you.
+  id: 100350
+  time: '2026-11-04T22:58:56.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/492
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: Fixed some missing atmos markers on Zvezda
+    - type: Fix
+      message: Changed some misplaced passive vents on new CC areas to scrubbers
+  id: 100351
+  time: '2026-11-04T23:10:05.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/495

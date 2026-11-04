@@ -37,6 +37,7 @@ public sealed partial class ThrusterSystem
     }
     [Dependency] private PowerNetSystem _wfPowerNet = default!;
     [Dependency] private CEZLevelsSystem _wfFlightLevels = default!;
+    [Dependency] private WFThrusterIndexSystem _wfThrusterIndex = default!;
 
     private void WfExamineAtmosphere(EntityUid uid, ExaminedEvent args)
     {
@@ -164,8 +165,10 @@ public sealed partial class ThrusterSystem
         var extraByNet = new Dictionary<PowerState.Network, float>();
         foreach (var grid in grids)
         {
-            var children = Transform(grid).ChildEnumerator;
-            while (children.MoveNext(out var uid))
+            if (_wfThrusterIndex.ThrustersOn(grid) is not { } gridThrusters)
+                continue;
+
+            foreach (var uid in gridThrusters)
             {
                 if (!TryComp<ThrusterComponent>(uid, out var thruster) || thruster.Type != ThrusterType.Linear
                     || !thruster.Enabled || !Transform(uid).Anchored

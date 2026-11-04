@@ -22,6 +22,7 @@ public sealed partial class XenoFireSystem : EntitySystem
     private EntityQuery<FlammableComponent> _flammableQuery;
     private EntityQuery<XenoWeedsBurnComponent> _weedsBurnQuery;
     private TimeSpan _nextCheck;
+    private readonly List<(EntityUid Weeds, EntityUid Source)> _toIgnite = new();
 
     public override void Initialize()
     {
@@ -30,6 +31,20 @@ public sealed partial class XenoFireSystem : EntitySystem
 
         SubscribeLocalEvent<RMCImmuneToIgnitionComponent, TryIgniteEvent>(OnImmuneTryIgnite);
         SubscribeLocalEvent<RMCImmuneToFireTileDamageComponent, GetFireProtectionEvent>(OnImmuneGetFireProtection);
+        SubscribeLocalEvent<XenoWeedsBurnComponent, IgnitedEvent>(OnWeedsIgnited);
+        SubscribeLocalEvent<XenoWeedsBurnComponent, ExtinguishedEvent>(OnWeedsExtinguished);
+    }
+
+    private void OnWeedsIgnited(Entity<XenoWeedsBurnComponent> ent, ref IgnitedEvent args)
+    {
+        EnsureComp<XenoWeedsBurningComponent>(ent);
+    }
+
+    private void OnWeedsExtinguished(Entity<XenoWeedsBurnComponent> ent, ref ExtinguishedEvent args)
+    {
+        ent.Comp.SpreadAt = null;
+        ent.Comp.Spread = false;
+        RemCompDeferred<XenoWeedsBurningComponent>(ent);
     }
 
     private void OnImmuneTryIgnite(Entity<RMCImmuneToIgnitionComponent> ent, ref TryIgniteEvent args)
@@ -58,13 +73,17 @@ public sealed partial class XenoFireSystem : EntitySystem
                 _flammable.Extinguish(uid, flammable);
         }
 
-        var weeds = EntityQueryEnumerator<XenoWeedsBurnComponent, FlammableComponent, TransformComponent>();
-        while (weeds.MoveNext(out var uid, out var burn, out var flammable, out var xform))
+        // Only weeds on fire carry the burning marker; unlit weeds are skipped. Igniting adds the marker, so
+        // neighbours are lit after the walk.
+        _toIgnite.Clear();
+        var weeds = EntityQueryEnumerator<XenoWeedsBurningComponent, XenoWeedsBurnComponent, FlammableComponent, TransformComponent>();
+        while (weeds.MoveNext(out var uid, out _, out var burn, out var flammable, out var xform))
         {
             if (!flammable.OnFire)
             {
                 burn.SpreadAt = null;
                 burn.Spread = false;
+                RemCompDeferred<XenoWeedsBurningComponent>(uid);
                 continue;
             }
 
@@ -88,10 +107,18 @@ public sealed partial class XenoFireSystem : EntitySystem
                         continue;
                     }
 
-                    _flammable.SetFireStacks(neighbour, other.MaximumFireStacks, other);
-                    _flammable.Ignite(neighbour, uid, other);
+                    _toIgnite.Add((neighbour, uid));
                 }
             }
+        }
+
+        foreach (var (target, source) in _toIgnite)
+        {
+            if (!_flammableQuery.TryComp(target, out var other) || other.OnFire)
+                continue;
+
+            _flammable.SetFireStacks(target, other.MaximumFireStacks, other);
+            _flammable.Ignite(target, source, other);
         }
     }
 }

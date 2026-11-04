@@ -182,6 +182,12 @@ public sealed partial class WFPlanetCommsSystem : EntitySystem
         return !Gates(channel) || IsHandheld(radio) || HasComp<GhostComponent>(radio) || IsCommsUp(radio);
     }
 
+    /// <summary>Whether a radio stands on a planet whose mass transceiver relays in place of a telecom server.</summary>
+    public bool RelaysTelecom(EntityUid radio)
+    {
+        return NetworkOf(Transform(radio).MapUid) is { } network && (!_enabled || IsNetworkUp(network));
+    }
+
     private void OnRadioSend(ref RadioSendAttemptEvent args)
     {
         if (args.Cancelled || CanTransmit(args.Channel, args.RadioSource))

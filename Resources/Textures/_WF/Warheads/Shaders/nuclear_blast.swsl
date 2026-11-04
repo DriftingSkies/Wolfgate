@@ -1,0 +1,162 @@
+// Nuclear detonation. Bends the screen along an expanding shockwave ring, then paints a procedural fireball (in
+// vacuum) or a rising mushroom cloud (on a planet) over it. All distances are in tiles, measured from ground zero
+// with y pointing up the screen, so the cloud always rises on screen whatever the eye's rotation.
+
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+uniform highp vec2 center;        // Ground zero in fragment pixels.
+uniform highp float pxPerTile;
+uniform highp float age;          // Seconds since detonation.
+uniform highp float fireball;     // Largest fireball radius, tiles.
+uniform highp float shockRange;   // Tiles the shockwave travels.
+uniform highp float shockSpeed;   // Tiles per second.
+uniform highp float duration;     // Seconds the fireball or cloud lasts.
+uniform highp float mushroom;     // 1 on a planet.
+uniform highp float seed;
+
+highp vec2 nbHash(highp vec2 p) {
+    highp vec3 q = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
+    q += dot(q, q.yzx + 33.33);
+    return fract((q.xx + q.yz) * q.zy) * 2.0 - 1.0;
+}
+
+highp float nbNoise(highp vec2 p) {
+    highp vec2 i = floor(p);
+    highp vec2 f = p - i;
+    highp vec2 u = f * f * (3.0 - 2.0 * f);
+    highp float a = dot(nbHash(i), f);
+    highp float b = dot(nbHash(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0));
+    highp float c = dot(nbHash(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0));
+    highp float d = dot(nbHash(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0));
+    return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+}
+
+// Four octaves of noise, roughly -1 to 1.
+highp float nbFbm(highp vec2 p) {
+    highp float total = 0.0;
+    highp float amp = 0.55;
+    for (int i = 0; i < 4; i++) {
+        total += nbNoise(p) * amp;
+        p = p * 2.03 + vec2(17.1, 9.7);
+        amp *= 0.5;
+    }
+    return total * 1.6;
+}
+
+// Blackbody-ish ramp: 0 is cold smoke, 1 is white hot.
+highp vec3 nbHeat(highp float t) {
+    highp vec3 smoke = vec3(0.22, 0.2, 0.19);
+    highp vec3 ember = vec3(0.55, 0.12, 0.04);
+    highp vec3 orange = vec3(1.0, 0.45, 0.08);
+    highp vec3 yellow = vec3(1.0, 0.85, 0.35);
+    highp vec3 white = vec3(1.0, 0.98, 0.92);
+    if (t < 0.25) return mix(smoke, ember, t / 0.25);
+    if (t < 0.5) return mix(ember, orange, (t - 0.25) / 0.25);
+    if (t < 0.75) return mix(orange, yellow, (t - 0.5) / 0.25);
+    return mix(yellow, white, clamp((t - 0.75) / 0.25, 0.0, 1.0));
+}
+
+// Fireball in vacuum: a turbulent sphere that swells, cools from white to red and thins into a dim cloud.
+highp vec4 nbFireball(highp vec2 d) {
+    highp float life = age / duration;
+    highp float r = length(d);
+    highp float grow = 1.0 - exp(-age * 3.0);
+    highp float radius = fireball * (0.25 + 0.75 * grow) * (1.0 + 0.35 * life);
+
+    highp vec2 swirl = d / fireball * 1.8 + vec2(seed, -seed);
+    highp float n = nbFbm(swirl + vec2(age * 0.15, -age * 0.1));
+    highp float edge = radius * (0.85 + 0.25 * n);
+
+    highp float density = 1.0 - smoothstep(edge * 0.55, edge, r);
+    highp float heat = clamp((1.0 - r / max(edge, 0.001)) * exp(-age * 0.3) * 1.4 + n * 0.15, 0.0, 1.0);
+    highp vec3 col = nbHeat(heat);
+
+    // Glow bleeding past the edge while it is hot.
+    highp float halo = exp(-r / max(radius, 0.001) * 1.5) * exp(-age * 0.7) * 0.7;
+    highp float fade = 1.0 - smoothstep(0.55, 1.0, life);
+    highp float alpha = clamp((density * mix(1.0, 0.55, life) + halo) * fade, 0.0, 1.0);
+    return vec4(mix(vec3(1.0, 0.7, 0.35), col, density), alpha);
+}
+
+// Mushroom cloud: a column of smoke under a rolling cap, with a dust skirt spreading along the ground.
+highp vec4 nbMushroom(highp vec2 d) {
+    highp float life = age / duration;
+    highp float s = fireball;
+    highp float rise = smoothstep(0.0, 1.0, clamp(age / (duration * 0.4), 0.0, 1.0));
+    highp float height = s * 5.0 * rise;
+    highp vec2 cap = vec2(0.0, height + s * 0.4);
+
+    highp vec2 flow = d / s * 1.6 + vec2(seed, seed * 0.5);
+    highp float n = nbFbm(flow + vec2(0.0, -age * 0.35));
+    highp float n2 = nbFbm(flow * 1.7 + vec2(age * 0.1, 0.0));
+
+    // Cap: a flattened ball that grows and rolls; hotter on its underside.
+    highp vec2 capRadii = vec2(s * (1.0 + 1.1 * rise), s * (0.7 + 0.45 * rise));
+    highp float e = length((d - cap) / capRadii);
+    highp float capDensity = 1.0 - smoothstep(0.75 + 0.2 * n, 1.05 + 0.25 * n, e);
+    highp float underside = clamp((cap.y - d.y) / capRadii.y, 0.0, 1.0);
+
+    // Stem: narrows as it climbs, flares out at the ground.
+    highp float along = clamp(d.y / max(height, 0.001), 0.0, 1.0);
+    highp float width = s * (0.28 + 0.12 * rise) * (1.0 + 1.4 * pow(1.0 - along, 4.0));
+    highp float inStem = step(-s * 0.2, d.y) * step(d.y, height + s * 0.2);
+    highp float stemDensity = inStem * (1.0 - smoothstep(width * (0.6 + 0.3 * n2), width * (1.0 + 0.3 * n2), abs(d.x)));
+
+    // Dust skirt along the ground.
+    highp vec2 skirtRadii = vec2(s * (1.2 + 3.0 * rise), s * (0.35 + 0.5 * rise));
+    highp float sk = length(d / skirtRadii);
+    highp float skirtDensity = (1.0 - smoothstep(0.6 + 0.25 * n2, 1.0 + 0.2 * n2, sk)) * (0.55 + 0.3 * rise);
+
+    // Early on the whole thing is one hot ball at ground zero.
+    highp float ballR = s * (0.4 + 0.8 * (1.0 - exp(-age * 2.5)));
+    highp float ball = (1.0 - smoothstep(ballR * 0.6, ballR * (1.0 + 0.2 * n), length(d - vec2(0.0, height * 0.5)))) * exp(-age * 0.8);
+
+    highp float cooling = exp(-age * 0.12);
+    highp float capHeat = clamp(cooling * (0.35 + 0.65 * underside) * (1.0 - e * 0.6) + n * 0.1, 0.0, 1.0);
+    highp float stemHeat = clamp(cooling * 0.45 * (1.0 - along) + n2 * 0.08, 0.0, 1.0);
+
+    highp vec3 dust = vec3(0.42, 0.34, 0.26);
+    highp vec3 col = vec3(0.0);
+    highp float density = 0.0;
+
+    density = max(density, skirtDensity);
+    col = mix(col, dust * (0.85 + 0.2 * n2), skirtDensity);
+
+    col = mix(col, nbHeat(stemHeat) * (0.85 + 0.2 * n2), stemDensity);
+    density = max(density, stemDensity);
+
+    // Light from above, so the top of the cap reads as rounded.
+    highp float shade = 0.75 + 0.35 * clamp((d.y - cap.y) / capRadii.y, -1.0, 1.0);
+    col = mix(col, nbHeat(capHeat) * shade, capDensity);
+    density = max(density, capDensity);
+
+    col = mix(col, nbHeat(1.0), clamp(ball, 0.0, 1.0));
+    density = max(density, ball);
+
+    highp float fade = 1.0 - smoothstep(0.6, 1.0, life);
+    return vec4(col, clamp(density, 0.0, 1.0) * fade);
+}
+
+void fragment() {
+    highp vec2 d = (FRAGCOORD.xy - center) / pxPerTile;
+    highp float r = length(d);
+
+    // Shockwave: a ring that displaces the screen outward as it passes, and fades as it nears its range.
+    highp float front = age * shockSpeed;
+    highp float shockLife = clamp(front / max(shockRange, 0.001), 0.0, 1.0);
+    highp float ringWidth = 1.0 + front * 0.04;
+    highp float ring = exp(-pow((r - front) / ringWidth, 2.0)) * (1.0 - shockLife) * step(0.0, shockRange);
+    highp vec2 dir = r > 0.0001 ? d / r : vec2(0.0);
+    highp vec2 offset = dir * ring * pxPerTile * 0.45;
+
+    highp vec4 base = zTextureSpec(SCREEN_TEXTURE, (FRAGCOORD.xy - offset) * SCREEN_PIXEL_SIZE);
+    base.rgb += vec3(1.0, 0.92, 0.8) * ring * 0.12;
+
+    highp vec4 cloud = vec4(0.0);
+    if (age < duration) {
+        cloud = mushroom > 0.5 ? nbMushroom(d) : nbFireball(d);
+    }
+
+    COLOR = vec4(mix(base.rgb, cloud.rgb, cloud.a), base.a);
+}

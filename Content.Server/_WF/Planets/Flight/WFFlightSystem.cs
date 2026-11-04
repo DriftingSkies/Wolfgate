@@ -50,6 +50,9 @@ public sealed partial class WFFlightSystem : EntitySystem
     /// <summary>The bottom gap, last seconds; the one callout that repeats.</summary>
     public const string AlertPullUp = "WFAlertPullUp";
 
+    /// <summary>Smallest lift-ratio change worth networking.</summary>
+    private const float LiftRatioStep = 0.02f;
+
     /// <summary>Fraction of planar speed a gliding hull gains per layer fallen, compounded.</summary>
     public const float GlideGainPerLayer = 0.25f;
 
@@ -159,8 +162,7 @@ public sealed partial class WFFlightSystem : EntitySystem
 
         if (TryComp<WFLiftLostComponent>(grid, out var existing))
         {
-            existing.Ratio = ratio;
-            Dirty(grid, existing);
+            SetLiftRatio(grid, existing, ratio);
             return;
         }
 
@@ -250,6 +252,16 @@ public sealed partial class WFFlightSystem : EntitySystem
         // The grind loop is started per section by the moving-ground sweep.
     }
 
+    /// <summary>Stores the ratio and networks it only when it moved by a visible step, so a hull falling steadily is not dirtied every tick.</summary>
+    private void SetLiftRatio(EntityUid grid, WFLiftLostComponent comp, float ratio)
+    {
+        if (comp.Ratio.Equals(ratio) || MathF.Abs(comp.Ratio - ratio) < LiftRatioStep)
+            return;
+
+        comp.Ratio = ratio;
+        Dirty(grid, comp);
+    }
+
     /// <summary>Advances callouts and glide for falling hulls and ends lift-lost on recovery or arrival.</summary>
     private void UpdateLiftLost()
     {
@@ -268,8 +280,7 @@ public sealed partial class WFFlightSystem : EntitySystem
 
             if (_zLevels.WfTryGetLiftRatio(grid, out var ratio))
             {
-                comp.Ratio = ratio;
-                Dirty(grid, comp);
+                SetLiftRatio(grid, comp, ratio);
 
                 if (ratio >= CEZLevelsSystem.WFFullLiftRatio)
                 {

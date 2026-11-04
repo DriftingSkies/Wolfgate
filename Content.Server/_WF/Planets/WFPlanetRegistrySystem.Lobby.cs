@@ -3,6 +3,7 @@ using Content.Server._FarHorizons.StarSystem;
 using Content.Server.GameTicking;
 using Content.Shared._FarHorizons.StarSystem.Prototypes;
 using Content.Shared._WF.CCVar;
+using Content.Shared._WF.Planets;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
@@ -25,6 +26,14 @@ public sealed partial class WFPlanetRegistrySystem
     private bool _prebuildPending;
     private TimeSpan? _orphanSweep;
 
+    /// <summary>Round-start worlds still to build, one a tick so no lobby tick builds them all.</summary>
+    private readonly Queue<(WFPlanetSurfacePrototype Surface, Vector2 Centre, string Name)> _prebuildQueue = new();
+    private int _prebuildBuilt;
+    private string? _prebuildPreset;
+
+    /// <summary>Whether lobby worlds are still waiting their turn to be built.</summary>
+    public bool PrebuildQueued => _prebuildQueue.Count > 0;
+
     private void InitializeLobby()
     {
         SubscribeLocalEvent<GameRunLevelChangedEvent>(OnRunLevelChanged);
@@ -37,11 +46,14 @@ public sealed partial class WFPlanetRegistrySystem
             // Next tick: the lobby's preset is settled after the run level changes.
             case GameRunLevel.PreRoundLobby:
                 _prebuildPending = true;
+                _prebuildQueue.Clear();
                 // A round restarted inside the grace would otherwise sweep the new lobby's worlds away.
                 _orphanSweep = null;
                 break;
             case GameRunLevel.InRound:
                 _prebuildPending = false;
+                // What never got its turn is built by the star system as the round starts, as without prebuilding.
+                _prebuildQueue.Clear();
                 _orphanSweep = _timing.CurTime + OrphanGrace;
                 break;
         }
@@ -56,6 +68,16 @@ public sealed partial class WFPlanetRegistrySystem
             _prebuildPending = false;
             Prebuild();
         }
+        else if (_prebuildQueue.TryDequeue(out var next))
+        {
+            if (_ticker.RunLevel != GameRunLevel.PreRoundLobby)
+                _prebuildQueue.Clear();
+            else if (_networks.Prebuild(next.Surface, next.Centre, next.Name))
+                _prebuildBuilt++;
+
+            if (_prebuildQueue.Count == 0 && _prebuildBuilt > 0)
+                Log.Info($"Prebuilt {_prebuildBuilt} planet networks for preset \"{_prebuildPreset}\" in the lobby.");
+        }
 
         if (_orphanSweep is { } due && _timing.CurTime >= due)
         {
@@ -67,7 +89,7 @@ public sealed partial class WFPlanetRegistrySystem
         }
     }
 
-    /// <summary>Builds every round-start world of the lobby preset's star system.</summary>
+    /// <summary>Queues every round-start world of the lobby preset's star system to be built, one a tick.</summary>
     private void Prebuild()
     {
         if (!_cfg.GetCVar(PlanetCVars.PlanetNetworks) || !_cfg.GetCVar(PlanetCVars.Prebuild))
@@ -77,7 +99,9 @@ public sealed partial class WFPlanetRegistrySystem
             return;
 
         _networks.ClearPrebuilt();
-        var built = 0;
+        _prebuildQueue.Clear();
+        _prebuildBuilt = 0;
+        _prebuildPreset = preset.ID;
 
         foreach (var ruleId in preset.Rules)
         {
@@ -97,12 +121,8 @@ public sealed partial class WFPlanetRegistrySystem
                 // The same spot the star system builder spawns the body at.
                 var centre = new Vector2(MathF.Cos(entry.Angle), MathF.Sin(entry.Angle)) * entry.Distance;
 
-                if (_networks.Prebuild(surface, centre, type.Name))
-                    built++;
+                _prebuildQueue.Enqueue((surface, centre, type.Name));
             }
         }
-
-        if (built > 0)
-            Log.Info($"Prebuilt {built} planet networks for preset \"{preset.ID}\" in the lobby.");
     }
 }

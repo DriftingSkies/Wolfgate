@@ -1,3 +1,4 @@
+using Content.Server.Atmos.Components;
 using Content.Shared._WF.GroundCover;
 using Content.Shared._WF.WolfWeather;
 using Content.Shared.Atmos;
@@ -42,7 +43,7 @@ public sealed partial class WFGroundCoverSystem
             foreach (var session in _player.Sessions)
             {
                 _view.Clear();
-                CollectView(session, _view);
+                CollectViewCached(session, _view);
                 foreach (var key in _view)
                 {
                     if (_queued.Add(key))
@@ -262,8 +263,40 @@ public sealed partial class WFGroundCoverSystem
         RemComp<WFSnowCoverComponent>(grid);
     }
 
+    /// <summary>How long a session's collected view is reused by the snow, decal, send and ice scans.</summary>
+    private static readonly TimeSpan ViewCacheTime = TimeSpan.FromSeconds(0.5);
+
+    private readonly Dictionary<(Robust.Shared.Player.ICommonSession Session, bool Ice), (TimeSpan At, List<(EntityUid Grid, Vector2i Chunk)> Keys)> _viewCache = new();
+
+    /// <summary>
+    /// <see cref="CollectView"/> reused for half a second per session, so the four scans share one lookup. The ice view
+    /// skips sessions not under outdoor air.
+    /// </summary>
+    private void CollectViewCached(Robust.Shared.Player.ICommonSession session, List<(EntityUid Grid, Vector2i Chunk)> into, bool ice = false)
+    {
+        var now = _timing.CurTime;
+        var key = (session, ice);
+        var found = _viewCache.TryGetValue(key, out var cached);
+        if (!found)
+            cached = (TimeSpan.Zero, new List<(EntityUid Grid, Vector2i Chunk)>());
+
+        if (!found || now - cached.At >= ViewCacheTime || cached.At > now)
+        {
+            cached.Keys.Clear();
+            if (ice)
+                CollectView(session, cached.Keys, weatherOnly: false, outdoorAirOnly: true);
+            else
+                CollectView(session, cached.Keys);
+
+            cached.At = now;
+            _viewCache[key] = cached;
+        }
+
+        into.AddRange(cached.Keys);
+    }
+
     /// <summary>The snow chunks of grids near a session's body, by default only on maps that have had weather.</summary>
-    private void CollectView(Robust.Shared.Player.ICommonSession session, List<(EntityUid Grid, Vector2i Chunk)> into, bool weatherOnly = true)
+    private void CollectView(Robust.Shared.Player.ICommonSession session, List<(EntityUid Grid, Vector2i Chunk)> into, bool weatherOnly = true, bool outdoorAirOnly = false)
     {
         if (session.AttachedEntity is not { } ent)
             return;
@@ -274,6 +307,10 @@ public sealed partial class WFGroundCoverSystem
 
         if (!TryComp(ent, out TransformComponent? xform) || xform.MapUid is not { } map
             || weatherOnly && !HasComp<WFGroundWeatherComponent>(map))
+            return;
+
+        // Ice only forms under outdoor air, so a session in space has nothing to look at.
+        if (outdoorAirOnly && (!TryComp<MapAtmosphereComponent>(map, out var mapAir) || mapAir.Space))
             return;
 
         var position = _transform.GetWorldPosition(xform);

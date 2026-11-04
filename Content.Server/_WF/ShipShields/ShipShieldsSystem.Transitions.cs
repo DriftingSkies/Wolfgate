@@ -62,7 +62,7 @@ public sealed partial class ShipShieldsSystem
             Dirty(tail, target);
         }
         EnsureComp<TimedDespawnComponent>(tail).Lifetime = WFShipShieldTransitionEffects.Duration(visuals.Transition);
-        _pvsSys.AddGlobalOverride(tail);
+        AddWolfgateShieldPvs(tail, grid);
         _wfShieldTails[grid] = tail;
     }
 

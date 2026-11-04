@@ -5,6 +5,7 @@ using Content.Shared.Body.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Configuration;
+using Robust.Shared.Network;
 using Robust.Shared.Timing;
 
 namespace Content.Shared._WF.Wolfmed.Consciousness;
@@ -18,24 +19,58 @@ public sealed partial class WolfmedBodyPainSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MovementSpeedModifierSystem _movement = default!;
     [Dependency] private SharedBodySystem _body = default!;
+    [Dependency] private INetManager _net = default!;
 
-    public FixedPoint2 ShockThreshold => FixedPoint2.New(_cfg.GetCVar(WolfmedCVars.PainShockThreshold));
+    // Cached cvars. The server-only ones exist on the server alone; elsewhere they stay null and are read as before.
+    private float _painShockThreshold;
+    private float _painShockRearm;
+    private float _adrenalineSeconds;
+    private float _adrenalineCrawlMultiplier;
+    private float _partPainCapArm;
+    private float _partPainCapHand;
+    private float _partPainCapLeg;
+    private float _partPainCapFoot;
+    private float _painSpreadFalloff;
+    private float? _painLooseRecovery;
+    private float? _painScale;
+    private float? _painFloorRest;
+    private float? _painFloorSettleSeconds;
+    private readonly List<float> _partPains = new();
 
-    public FixedPoint2 ShockRearm => FixedPoint2.New(_cfg.GetCVar(WolfmedCVars.PainShockRearm));
+    public FixedPoint2 ShockThreshold => FixedPoint2.New(_painShockThreshold);
 
-    public TimeSpan AdrenalineTime => TimeSpan.FromSeconds(MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.AdrenalineSeconds)));
+    public FixedPoint2 ShockRearm => FixedPoint2.New(_painShockRearm);
 
-    public float AdrenalineCrawlMultiplier => MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.AdrenalineCrawlMultiplier));
+    public TimeSpan AdrenalineTime => TimeSpan.FromSeconds(MathF.Max(0f, _adrenalineSeconds));
+
+    public float AdrenalineCrawlMultiplier => MathF.Max(0f, _adrenalineCrawlMultiplier);
 
     /// <summary>Pain a second a part sheds from the share no open wound backs (playtest 4).</summary>
-    public FixedPoint2 LooseRecovery => FixedPoint2.New(MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.PainLooseRecovery)));
+    public FixedPoint2 LooseRecovery => FixedPoint2.New(MathF.Max(0f, (_painLooseRecovery ?? _cfg.GetCVar(WolfmedCVars.PainLooseRecovery))));
 
     /// <summary>Playtest 5: wolfmed.pain_scale, on every gain and every floor.</summary>
-    public float PainScale => MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.PainScale));
+    public float PainScale => MathF.Max(0f, (_painScale ?? _cfg.GetCVar(WolfmedCVars.PainScale)));
 
     public override void Initialize()
     {
         base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.PainShockThreshold, value => _painShockThreshold = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PainShockRearm, value => _painShockRearm = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.AdrenalineSeconds, value => _adrenalineSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.AdrenalineCrawlMultiplier, value => _adrenalineCrawlMultiplier = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PartPainCapArm, value => _partPainCapArm = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PartPainCapHand, value => _partPainCapHand = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PartPainCapLeg, value => _partPainCapLeg = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PartPainCapFoot, value => _partPainCapFoot = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.PainSpreadFalloff, value => _painSpreadFalloff = value, true);
+        if (_net.IsServer)
+        {
+            Subs.CVar(_cfg, WolfmedCVars.PainLooseRecovery, value => _painLooseRecovery = value, true);
+            Subs.CVar(_cfg, WolfmedCVars.PainScale, value => _painScale = value, true);
+            Subs.CVar(_cfg, WolfmedCVars.PainFloorRest, value => _painFloorRest = value, true);
+            Subs.CVar(_cfg, WolfmedCVars.PainFloorSettleSeconds, value => _painFloorSettleSeconds = value, true);
+        }
+
         SubscribeLocalEvent<PainComponent, ComponentInit>(OnPainInit);
         SubscribeLocalEvent<WoundHostComponent, ModifyPainGainEvent>(OnModifyPainGain);
     }
@@ -68,8 +103,8 @@ public sealed partial class WolfmedBodyPainSystem : EntitySystem
         if (floor <= FixedPoint2.Zero)
             return floor;
 
-        var rest = Math.Clamp(_cfg.GetCVar(WolfmedCVars.PainFloorRest), 0f, 1f);
-        var settle = _cfg.GetCVar(WolfmedCVars.PainFloorSettleSeconds);
+        var rest = Math.Clamp((_painFloorRest ?? _cfg.GetCVar(WolfmedCVars.PainFloorRest)), 0f, 1f);
+        var settle = (_painFloorSettleSeconds ?? _cfg.GetCVar(WolfmedCVars.PainFloorSettleSeconds));
         if (rest >= 1f)
             return floor;
 
@@ -102,10 +137,10 @@ public sealed partial class WolfmedBodyPainSystem : EntitySystem
     {
         return type switch
         {
-            BodyPartType.Arm => _cfg.GetCVar(WolfmedCVars.PartPainCapArm),
-            BodyPartType.Hand => _cfg.GetCVar(WolfmedCVars.PartPainCapHand),
-            BodyPartType.Leg => _cfg.GetCVar(WolfmedCVars.PartPainCapLeg),
-            BodyPartType.Foot => _cfg.GetCVar(WolfmedCVars.PartPainCapFoot),
+            BodyPartType.Arm => _partPainCapArm,
+            BodyPartType.Hand => _partPainCapHand,
+            BodyPartType.Leg => _partPainCapLeg,
+            BodyPartType.Foot => _partPainCapFoot,
             _ => 0f,
         };
     }
@@ -120,7 +155,8 @@ public sealed partial class WolfmedBodyPainSystem : EntitySystem
         if (HasComp<BodyPartComponent>(uid))
             return false;
 
-        var parts = new List<float>();
+        var parts = _partPains;
+        parts.Clear();
         var any = false;
         foreach (var (part, _) in _body.GetBodyChildren(uid))
         {
@@ -146,7 +182,7 @@ public sealed partial class WolfmedBodyPainSystem : EntitySystem
     /// </summary>
     public float Combine(List<float> parts)
     {
-        var falloff = Math.Clamp(_cfg.GetCVar(WolfmedCVars.PainSpreadFalloff), 0f, 1f);
+        var falloff = Math.Clamp(_painSpreadFalloff, 0f, 1f);
         parts.Sort((a, b) => b.CompareTo(a));
         var total = 0f;
         var weight = 1f;

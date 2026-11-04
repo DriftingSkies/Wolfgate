@@ -36225,6 +36225,13 @@ entities:
     - type: Transform
       parent: 1
       pos: 5.5,24.5
+- proto: WFVendingMachineTraderHalcyon
+  entities:
+  - uid: 10711
+    components:
+    - type: Transform
+      parent: 1
+      pos: -10.5,-6.5
 - proto: filingCabinetDrawer
   entities:
   - uid: 5614

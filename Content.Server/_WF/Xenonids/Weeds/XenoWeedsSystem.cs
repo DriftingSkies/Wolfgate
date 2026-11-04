@@ -92,9 +92,13 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
         base.Update(frameTime);
 
         var time = _timing.CurTime;
+
+        // CurTime is constant within a tick, so the budget is measured with a real clock; at least one entry runs.
+        var clock = System.Diagnostics.Stopwatch.StartNew();
+        var processed = 0;
         for (var i = _spread.Count - 1; i >= 0; i--)
         {
-            if (_timing.CurTime - time > _maxProcessTime)
+            if (processed++ > 0 && clock.Elapsed > _maxProcessTime)
                 return;
 
             var (uid, weeds) = _spread[i];

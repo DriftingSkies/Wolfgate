@@ -1,0 +1,61 @@
+# Marks the Director leaves on the floor to frighten the crew.
+- type: entity
+  id: WFRemadeScrawl
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: Transform
+    noRot: true
+  - type: Sprite
+    sprite: Fluids/writing.rsi
+    drawdepth: FloorObjects
+    color: "#7a0a0a"
+    layers:
+    - state: writing-0
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        writing-0: ""
+        writing-1: ""
+        writing-2: ""
+        writing-3: ""
+        writing-4: ""
+  - type: TimedDespawn
+    lifetime: 900
+  - type: WFRemadeScrawl
+
+- type: entity
+  id: WFRemadeRune
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: Transform
+    noRot: true
+  - type: Sprite
+    sprite: _WF/Remade/Effects/runes.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: rune-1
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        rune-1: ""
+        rune-2: ""
+        rune-3: ""
+        rune-4: ""
+        rune-5: ""
+        rune-6: ""
+        rune-7: ""
+        rune-8: ""
+        rune-9: ""
+        rune-10: ""
+  - type: PointLight
+    radius: 1.6
+    energy: 0.5
+    color: "#aa1111"
+  - type: TimedDespawn
+    lifetime: 900

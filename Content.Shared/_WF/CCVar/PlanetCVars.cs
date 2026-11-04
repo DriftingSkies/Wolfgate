@@ -78,9 +78,13 @@ public sealed class PlanetCVars
     public static readonly CVarDef<float> PreloadBudget =
         CVarDef.Create("wf.planet_preload_budget", 20f, CVar.SERVERONLY);
 
-    /// <summary>Milliseconds a tick the preload may spend while the round is still in the lobby, where nobody feels it.</summary>
+    /// <summary>Milliseconds a tick the preload may spend during the lobby countdown, low enough to keep the lobby responsive.</summary>
     public static readonly CVarDef<float> PreloadBudgetLobby =
-        CVarDef.Create("wf.planet_preload_budget_lobby", 250f, CVar.SERVERONLY);
+        CVarDef.Create("wf.planet_preload_budget_lobby", 40f, CVar.SERVERONLY);
+
+    /// <summary>Milliseconds a tick the preload may spend while the round start is held for the worlds to form.</summary>
+    public static readonly CVarDef<float> PreloadBudgetHold =
+        CVarDef.Create("wf.planet_preload_budget_hold", 250f, CVar.SERVERONLY);
 
     /// <summary>
     /// Milliseconds a tick world generation may spend on the rest: sites, cities, roads, camps, the boundary ring and
@@ -89,9 +93,13 @@ public sealed class PlanetCVars
     public static readonly CVarDef<float> GenerationBudget =
         CVarDef.Create("wf.planet_generation_budget", 8f, CVar.SERVERONLY);
 
-    /// <summary>Milliseconds a tick world generation may spend on the rest while the round is still in the lobby.</summary>
+    /// <summary>Milliseconds a tick world generation may spend on the rest during the lobby countdown.</summary>
     public static readonly CVarDef<float> GenerationBudgetLobby =
-        CVarDef.Create("wf.planet_generation_budget_lobby", 200f, CVar.SERVERONLY);
+        CVarDef.Create("wf.planet_generation_budget_lobby", 40f, CVar.SERVERONLY);
+
+    /// <summary>Milliseconds a tick world generation may spend on the rest while the round start is held for it.</summary>
+    public static readonly CVarDef<float> GenerationBudgetHold =
+        CVarDef.Create("wf.planet_generation_budget_hold", 200f, CVar.SERVERONLY);
 
     /// <summary>
     /// Whether the round-start worlds of the lobby's preset are built, and preloaded, while the lobby is open; the
@@ -159,7 +167,7 @@ public sealed class PlanetCVars
 
     /// <summary>Tiles round a player or an awake NPC within which a planet layer's navmesh is built.</summary>
     public static readonly CVarDef<float> PathfindingRange =
-        CVarDef.Create("wf.planet_pathfinding_range", 96f, CVar.SERVERONLY);
+        CVarDef.Create("wf.planet_pathfinding_range", 48f, CVar.SERVERONLY);
 
     /// <summary>Navmesh chunks of one planet layer built in one pathfinding update, nearest first.</summary>
     public static readonly CVarDef<int> PathfindingChunkBudget =

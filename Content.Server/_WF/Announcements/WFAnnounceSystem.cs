@@ -44,6 +44,15 @@ public sealed partial class WFAnnounceSystem : EntitySystem
                 break;
         }
 
+        return Send(request, filter, $"{admin:player}");
+    }
+
+    /// <summary>Checks and sends an announcement to a filter, for systems with no admin behind them.</summary>
+    public string? Send(WFAnnounceRequest request, Filter filter, string by)
+    {
+        if (Validate(request) is { } error)
+            return error;
+
         if (request.PostToChat)
         {
             _chat.ChatMessageToManyFiltered(filter,
@@ -80,7 +89,7 @@ public sealed partial class WFAnnounceSystem : EntitySystem
         }
 
         _adminLog.Add(LogType.Chat, LogImpact.Medium,
-            $"{admin:player} sent a roleplay announcement to {request.Target} as {request.Sender}: {WFAnnounceFormat.PlainText(request)} (chip: {(request.ShowChip ? request.ChipText : "none")}, sound: {sound ?? "none"})");
+            $"{by} sent a roleplay announcement to {request.Target} as {request.Sender}: {WFAnnounceFormat.PlainText(request)} (chip: {(request.ShowChip ? request.ChipText : "none")}, sound: {sound ?? "none"})");
         return null;
     }
 

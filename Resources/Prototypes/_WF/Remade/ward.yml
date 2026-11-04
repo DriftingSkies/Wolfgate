@@ -1,0 +1,5 @@
+# The Ward's field: a veined membrane drawn in place of the ship shield's look. Unverified in a real client; see the README.
+- type: shader
+  id: WFRemadeWardField
+  kind: source
+  path: "/Textures/_WF/Remade/Shaders/ward.swsl"

@@ -97,10 +97,12 @@ public sealed partial class SuitSensorSystem : EntitySystem
             // TODO: This would cause imprecision at different tick rates.
             sensor.NextUpdate = curTime + sensor.UpdateRate;
 
-            // get sensor status
-            var status = GetSensorState(uid, sensor);
-            if (status == null)
-                continue;
+            // WOLFGATE(Performance) START: the status is built below, once a server is known to be there to take it.
+            // // get sensor status
+            // var status = GetSensorState(uid, sensor);
+            // if (status == null)
+            //     continue;
+            // WOLFGATE END
 
             //Retrieve active server address if the sensor isn't connected to a server
             if (sensor.ConnectedServer == null)
@@ -114,8 +116,10 @@ public sealed partial class SuitSensorSystem : EntitySystem
                 sensor.ConnectedServer = address;
             }
 
-            // Send it to the connected server
-            var payload = SuitSensorToPacket(status);
+            // WOLFGATE(Performance) START: check the server before building the status and its packet.
+            // // Send it to the connected server
+            // var payload = SuitSensorToPacket(status);
+            // WOLFGATE END
 
             // Clear the connected server if its address isn't on the network
             if (!_deviceNetworkSystem.IsAddressPresent(device.DeviceNetId, sensor.ConnectedServer))
@@ -123,6 +127,14 @@ public sealed partial class SuitSensorSystem : EntitySystem
                 sensor.ConnectedServer = null;
                 continue;
             }
+
+            // WOLFGATE(Performance) START: the status and packet, moved here from above.
+            var status = GetSensorState(uid, sensor);
+            if (status == null)
+                continue;
+
+            var payload = SuitSensorToPacket(status);
+            // WOLFGATE END
 
             _deviceNetworkSystem.QueuePacket(uid, sensor.ConnectedServer, payload, device: device);
         }

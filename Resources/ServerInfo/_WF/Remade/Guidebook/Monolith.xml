@@ -1,0 +1,42 @@
+<Document>
+  # The Monolith and its Gifts
+
+  ## The Scion
+
+  A [bold]Scion[/bold] is a black stone about the size of a person. Wrench it down on an HV cable and it feeds power for nothing. Stand a [bold]Tap[/bold] within 4 metres and set how hard you draw.
+
+  The Tap comes as a flatpack from the autolathe. Unpack it, bolt it down, and open it.
+
+  ## Resonance
+
+  Drawing on the Scion raises its [bold]resonance[/bold] from 0 to 100. The higher it is, the faster it climbs. Dead bodies near the stone speed it up too.
+
+  - [bold]Quiet[/bold], under 15: nothing happens.
+  - [bold]Hymn[/bold], 15: whispers, and now and then something at the edge of your sight.
+  - [bold]Growth[/bold], 35: corruption starts to spread and the Remade come in waves.
+  - [bold]Harvest[/bold], 55: more corruption, bigger waves, tougher Remade.
+  - [bold]Rapture[/bold], 80: more again, and the worst of them.
+  - [bold]Crescendo[/bold], 100: the stone roots in place as the [bold]Prime[/bold]. The whole sector is told, and everyone in it starts to hear the song.
+
+  The only way down is to drag a dead body onto the Tap. Each one takes 5 off. Once the Prime has rooted nothing quiets it.
+
+  ## Gifts
+
+  Each Gift is a dial on the Tap. The dials add together and drive the climb.
+
+  - [bold]Power[/bold]: free electricity.
+  - [bold]Matter[/bold]: fills a silo on the Scion's ship with steel, glass and plastic. You can't eject it as sheets, and anything a lathe makes from it sells for nothing.
+  - [bold]Flesh[/bold]: heals the living nearby and slowly raises the dead. Anyone raised this way gets back up as one of the Remade the moment they die again.
+  - [bold]Reach[/bold]: shorter jumps and longer sensors on the Scion's ship. Every jump adds resonance.
+  - [bold]Ward[/bold]: a ship shield round the Scion's ship, far stronger than any generator and free to run. The dial and the resonance set how much it takes.
+
+  A Prime holds Matter, Flesh, Reach and Ward at full and you can't turn them down. Its shield can't be broken and ship guns can't get through it. Other ships can't enter it either, so the only way aboard is on foot: in a suit or with a jetpack.
+
+  ## Shards
+
+  A sharp tool or a welder on a bolted-down Scion chips off a [bold]shard[/bold]. It is a power cell that never runs down. Chipping adds resonance. Once its Scion reaches Growth a shard that is set down starts to grow corruption in small patches, until you cut it free. A Scion that is still quiet can be sold, and so can its shards. Past that, nobody will buy.
+
+  ## Corruption
+
+  Corruption is living tissue that spreads across the deck from the stone. It slows the crew. A dead body that lies on it for 90 seconds turns into one of the Remade, unless it has no head. Fire kills it.
+</Document>

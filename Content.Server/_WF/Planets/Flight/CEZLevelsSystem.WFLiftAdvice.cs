@@ -39,8 +39,10 @@ public sealed partial class CEZLevelsSystem
 
             mass += GetWFVirtualMass(member);
 
-            var children = Transform(member).ChildEnumerator;
-            while (children.MoveNext(out var uid))
+            if (_wfThrusterIndex.ThrustersOn(member) is not { } memberThrusters)
+                continue;
+
+            foreach (var uid in memberThrusters)
             {
                 if (!TryComp<ThrusterComponent>(uid, out var thruster)
                     || thruster.Type != ThrusterType.Linear

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._WF.Dormancy;
 using Content.Server._WF.Planets;
 using Content.Server._WF.Tether;
 using Content.Server.Atmos.EntitySystems;
@@ -40,6 +41,7 @@ public sealed class WFSandMawSystem : EntitySystem
 {
     [Dependency] private AtmosphereSystem _atmos = default!;
     [Dependency] private BiomeSystem _biome = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private EntityTableSystem _tables = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -55,7 +57,7 @@ public sealed class WFSandMawSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 
-    private const float Interval = 0.1f;
+    private const float Interval = 0.25f;
 
     /// <summary>Metres from a tear at which someone climbs out through it.</summary>
     private const float ExitReach = 0.5f;
@@ -109,6 +111,8 @@ public sealed class WFSandMawSystem : EntitySystem
         while (query.MoveNext(out var uid, out var maw, out var xform))
         {
             if (xform.MapUid is not { } map || Paused(map))
+                continue;
+            if (maw.Grabs.Count == 0 && !_dormancy.IsActive(uid, xform))
                 continue;
             var centre = _transform.GetWorldPosition(xform);
             if (_timing.CurTime >= maw.NextGrab && maw.Grabs.Count == 0)

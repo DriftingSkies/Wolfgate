@@ -161,19 +161,11 @@ public sealed partial class VehicleSafetySystem : EntitySystem
 
         _strays.Clear();
         _occupiedVehicles.Clear();
-        var mobs = EntityQueryEnumerator<MobStateComponent, TransformComponent>();
-        while (mobs.MoveNext(out var mob, out _, out var xform))
+        foreach (var interior in _interiors.Values)
         {
-            if (!_interiors.TryGetValue(xform.MapID, out var interior) || HasComp<GhostComponent>(mob))
-                continue;
-
-            if (TryComp(mob, out MindContainerComponent? mind) && mind.HasMind)
-                _occupiedVehicles.Add(interior.Owner);
-
-            if (IsInsideCabin(interior, mob))
-                continue;
-
-            _strays.Add((mob, interior));
+            var map = interior.Comp.Map;
+            if (map.IsValid() && !TerminatingOrDeleted(map))
+                SweepMobs(map, interior);
         }
 
         foreach (var (mob, interior) in _strays)
@@ -189,6 +181,33 @@ public sealed partial class VehicleSafetySystem : EntitySystem
         }
 
         _occupiedVehicles.Clear();
+    }
+
+    /// <summary>Walks an interior's tree, into grids and containers only, for the mobs in it.</summary>
+    private void SweepMobs(EntityUid parent, Entity<VehicleInteriorComponent> interior)
+    {
+        var children = Transform(parent).ChildEnumerator;
+        while (children.MoveNext(out var child))
+        {
+            if (!HasComp<MobStateComponent>(child))
+            {
+                if (HasComp<MapGridComponent>(child) || HasComp<ContainerManagerComponent>(child))
+                    SweepMobs(child, interior);
+
+                continue;
+            }
+
+            if (HasComp<GhostComponent>(child))
+                continue;
+
+            if (TryComp(child, out MindContainerComponent? mind) && mind.HasMind)
+                _occupiedVehicles.Add(interior.Owner);
+
+            if (IsInsideCabin(interior, child))
+                continue;
+
+            _strays.Add((child, interior));
+        }
     }
 
     /// <summary>Puts the cleanup timer of a hull back to zero while someone is inside a vehicle parked on it.</summary>

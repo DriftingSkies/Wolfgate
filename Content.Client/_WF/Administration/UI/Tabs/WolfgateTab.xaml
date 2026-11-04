@@ -20,10 +20,12 @@
             <cc:UICommandButton Command="spawnvessel" Text="{Loc wf-admin-tab-spawn-vessel}" WindowType="{x:Type vessel:VesselSpawnWindow}" />
             <cc:UICommandButton Command="playinternetsound" Text="{Loc wf-admin-tab-internet-sound}" WindowType="{x:Type internet:InternetSoundAdminWindow}" />
             <cc:CommandButton Command="rpannounce" Text="{Loc wf-announce-button}" />
+            <cc:CommandButton Command="wf_defconpanel" Text="{Loc wf-defcon-panel-button}" />
             <cc:UICommandButton Command="gridpower" Text="{Loc wf-admin-tab-grid-power}" WindowType="{x:Type power:GridPowerWindow}" />
             <cc:UICommandButton Command="ertbuilder" Text="{Loc wf-admin-tab-ert}" WindowType="{x:Type ert:ErtBuilderWindow}" />
             <cc:UICommandButton Command="planetcontrol" Text="{Loc wf-admin-tab-planet-control}" WindowType="{x:Type planets:PlanetControlWindow}" />
             <cc:CommandButton Command="testdummies" Text="{Loc wf-test-dummy-button}" />
+            <cc:CommandButton Command="nukedesigner" Text="{Loc wf-nuke-designer-button}" />
         </GridContainer>
     </BoxContainer>
 </Control>

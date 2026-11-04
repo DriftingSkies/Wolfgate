@@ -68,7 +68,11 @@ public sealed partial class WFGroundCoverSystem
     private void OnPlayerStatusChanged(object? sender, SessionStatusEventArgs args)
     {
         if (args.NewStatus is SessionStatus.Disconnected or SessionStatus.Connected)
+        {
             _sent.Remove(args.Session);
+            _viewCache.Remove((args.Session, false));
+            _viewCache.Remove((args.Session, true));
+        }
     }
 
     private void UpdateNetwork(TimeSpan now)
@@ -97,7 +101,7 @@ public sealed partial class WFGroundCoverSystem
                 Prune(sent);
 
             _view.Clear();
-            CollectView(session, _view);
+            CollectViewCached(session, _view);
             SendView(session, sent);
         }
     }

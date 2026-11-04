@@ -24,7 +24,21 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private WFCrewAlertSystem _alerts = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private Robust.Shared.Random.IRobustRandom _random = default!;
+    [Dependency] private WFCrewSystem _crews = default!;
+    [Dependency] private WFCrewWeaponSystem _weapons = default!;
+    [Dependency] private WFCrewCommsSystem _comms = default!;
     private float _timer;
+
+    // Scratch collections for the 1 Hz sweep, cleared at the start of each pass.
+    private readonly HashSet<(EntityUid Crew, EntityUid Visitor)> _present = new();
+    private readonly HashSet<(EntityUid Grid, string Group, EntityUid Visitor)> _strangers = new();
+    private readonly HashSet<(EntityUid Grid, string Group, EntityUid Visitor)> _seen = new();
+    private readonly List<(EntityUid Uid, EntityUid Grid, string Group, WFCrewSecurityComponent Rules)> _guards = new();
+    private readonly Dictionary<EntityUid, List<EntityUid>> _people = new();
+    private readonly Stack<List<EntityUid>> _peopleLists = new();
+    private readonly List<KeyValuePair<(EntityUid Grid, string Group, EntityUid Visitor), TimeSpan>> _dockScratch = new();
+    private readonly List<(EntityUid Crew, EntityUid Visitor)> _staleHostiles = new();
     private readonly HashSet<(EntityUid Crew, EntityUid Visitor)> _boarders = new();
     private readonly HashSet<(EntityUid Crew, EntityUid Visitor)> _ownedHostiles = new();
     private readonly Dictionary<(EntityUid Grid, string Group, EntityUid Visitor), TimeSpan> _hostileDocks = new();
@@ -127,6 +141,7 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<DockEvent>(OnDock);
+        _timer = _random.NextFloat(); // random phase so the 1 Hz crew sweeps don't share a tick
     }
 
     /// <summary>Orders to dock authorize that destination, not other ships arriving at this crew.</summary>
@@ -180,15 +195,24 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
         if (_timer < 1f)
             return;
         _timer = 0;
-        foreach (var (key, until) in _hostileDocks.ToArray())
+        if (_hostileDocks.Count > 0)
         {
-            if (_timing.CurTime >= until || TerminatingOrDeleted(key.Grid) || TerminatingOrDeleted(key.Visitor))
-                _hostileDocks.Remove(key);
+            _dockScratch.Clear();
+            _dockScratch.AddRange(_hostileDocks);
+            foreach (var (key, until) in _dockScratch)
+            {
+                if (_timing.CurTime >= until || TerminatingOrDeleted(key.Grid) || TerminatingOrDeleted(key.Visitor))
+                    _hostileDocks.Remove(key);
+            }
         }
-        var present = new HashSet<(EntityUid Crew, EntityUid Visitor)>();
-        var strangers = new HashSet<(EntityUid Grid, string Group, EntityUid Visitor)>();
-        var seen = new HashSet<(EntityUid Grid, string Group, EntityUid Visitor)>();
-        var guards = new List<(EntityUid Uid, EntityUid Grid, string Group, WFCrewSecurityComponent Rules)>();
+        var present = _present;
+        var strangers = _strangers;
+        var seen = _seen;
+        var guards = _guards;
+        present.Clear();
+        strangers.Clear();
+        seen.Clear();
+        guards.Clear();
         var query = EntityQueryEnumerator<WFCrewComponent, WFCrewSecurityComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var crew, out var rules, out var xform))
         {
@@ -198,11 +222,17 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
             guards.Add((uid, grid, crew.Group, rules));
         }
         // Visitors are bucketed by grid once, and only on grids that some crew guards.
-        var people = new Dictionary<EntityUid, List<EntityUid>>();
+        var people = _people;
+        foreach (var list in people.Values)
+        {
+            list.Clear();
+            _peopleLists.Push(list);
+        }
+        people.Clear();
         foreach (var guard in guards)
         {
             if (!people.ContainsKey(guard.Grid))
-                people[guard.Grid] = new List<EntityUid>();
+                people[guard.Grid] = _peopleLists.Count > 0 ? _peopleLists.Pop() : new List<EntityUid>();
         }
         if (guards.Count > 0)
         {
@@ -214,7 +244,7 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
                     && IsBoardingCandidate(person, aiRemotes))
                     aboard.Add(person);
             }
-            var crews = EntityManager.System<WFCrewSystem>();
+            var crews = _crews;
             foreach (var (uid, grid, group, rules) in guards)
             {
                 foreach (var visitor in people[grid])
@@ -223,21 +253,30 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
                         continue;
                     present.Add((uid, visitor));
                     strangers.Add((grid, group, visitor));
-                    if (!EntityManager.System<WFCrewWeaponSystem>().CanSee(uid, visitor))
+                    if (!_weapons.CanSee(uid, visitor))
                         continue;
                     seen.Add((grid, group, visitor));
                     ReceiveSighting(uid, visitor, aiRemotes);
                     if (rules.Boarding != WFCrewSecurityResponse.Ignore)
-                        EntityManager.System<WFCrewCommsSystem>().Report(uid, visitor);
+                        _comms.Report(uid, visitor);
                 }
             }
         }
         CheckWarnings(strangers, seen);
-        foreach (var pair in _ownedHostiles.Where(pair => !present.Contains(pair)).ToArray())
+        if (_ownedHostiles.Count > 0)
         {
-            if (!TerminatingOrDeleted(pair.Crew))
-                _factions.DeAggroEntity(pair.Crew, pair.Visitor);
-            _ownedHostiles.Remove(pair);
+            _staleHostiles.Clear();
+            foreach (var pair in _ownedHostiles)
+            {
+                if (!present.Contains(pair))
+                    _staleHostiles.Add(pair);
+            }
+            foreach (var pair in _staleHostiles)
+            {
+                if (!TerminatingOrDeleted(pair.Crew))
+                    _factions.DeAggroEntity(pair.Crew, pair.Visitor);
+                _ownedHostiles.Remove(pair);
+            }
         }
         _boarders.RemoveWhere(pair => !present.Contains(pair));
     }

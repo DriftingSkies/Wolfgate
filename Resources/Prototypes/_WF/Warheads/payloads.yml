@@ -1,0 +1,114 @@
+# Payload presets. The admin nuke designer starts from these.
+
+- type: wfWarheadPayload
+  id: WFPayloadStationNuke
+  payload:
+    # The station nuke runs its own blast; this adds the rest.
+    flashRange: 90
+    fireballRadius: 8
+    shockwaveRange: 140
+    shockwaveSpeed: 55
+    shakeStrength: 4
+    effectDuration: 30
+    promptRadiation: 250
+    promptRadiationSlope: 0.03
+    falloutCount: 8
+    falloutSpread: 25
+    falloutIntensity: 6
+    falloutHalfLife: 180
+    falloutRadius: 8
+    empRange: 40
+
+- type: wfWarheadPayload
+  id: WFPayloadTactical
+  payload:
+    explosionType: WFNuclear
+    totalIntensity: 40000
+    intensitySlope: 4
+    maxIntensity: 60
+    flashRange: 35
+    fireballRadius: 3
+    shockwaveRange: 45
+    shockwaveSpeed: 35
+    shakeStrength: 2
+    effectDuration: 16
+    promptRadiation: 80
+    promptRadiationSlope: 0.08
+    falloutCount: 3
+    falloutSpread: 6
+    falloutIntensity: 3
+    falloutHalfLife: 90
+    falloutRadius: 5
+    empRange: 10
+
+- type: wfWarheadPayload
+  id: WFPayloadField
+  payload:
+    explosionType: WFNuclear
+    totalIntensity: 400000
+    intensitySlope: 5
+    maxIntensity: 120
+    tileBreakScale: 1.5
+    flashRange: 80
+    fireballRadius: 7
+    shockwaveRange: 110
+    shockwaveSpeed: 50
+    shakeStrength: 3
+    effectDuration: 25
+    promptRadiation: 180
+    promptRadiationSlope: 0.04
+    falloutCount: 6
+    falloutSpread: 18
+    falloutIntensity: 5
+    falloutHalfLife: 150
+    falloutRadius: 7
+    empRange: 30
+
+- type: wfWarheadPayload
+  id: WFPayloadStrategic
+  payload:
+    # Deletes the grid it sits on, then the blast runs through the space it leaves.
+    deleteGrid: true
+    explosionType: WFNuclear
+    totalIntensity: 1500000
+    intensitySlope: 3
+    maxIntensity: 150
+    tileBreakScale: 2
+    flashRange: 250
+    fireballRadius: 16
+    shockwaveRange: 320
+    shockwaveSpeed: 85
+    shakeStrength: 6
+    effectDuration: 40
+    promptRadiation: 400
+    promptRadiationSlope: 0.02
+    falloutCount: 14
+    falloutSpread: 40
+    falloutIntensity: 8
+    falloutHalfLife: 240
+    falloutRadius: 10
+    empRange: 90
+
+- type: wfWarheadPayload
+  id: WFPayloadMissile
+  payload:
+    # Mono's Atlant numbers, plus the nuclear effects.
+    explosionType: HardBomb
+    totalIntensity: 500000
+    intensitySlope: 30
+    maxIntensity: 5000
+    tileBreakScale: 3
+    flashRange: 80
+    fireballRadius: 6
+    shockwaveRange: 100
+    shockwaveSpeed: 50
+    shakeStrength: 3
+    effectDuration: 22
+    promptRadiation: 150
+    promptRadiationSlope: 0.05
+    falloutCount: 5
+    falloutSpread: 15
+    falloutIntensity: 4
+    falloutHalfLife: 120
+    falloutRadius: 6
+    empRange: 25

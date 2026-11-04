@@ -34,6 +34,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     private readonly Dictionary<(EntityUid Grid, string Group), Alert> _alerts = new();
     private readonly List<EntityUid> _expired = new();
     private TimeSpan _nextPoll;
+    [Dependency] private Robust.Shared.Random.IRobustRandom _random = default!;
 
     private bool _zoneReport;
 
@@ -52,6 +53,7 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WFCrewHullHitEvent>(OnHullHit);
         SubscribeLocalEvent<WFShipShieldAttackedEvent>(OnShieldHit);
+        _nextPoll = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat()); // random phase so the 1 Hz crew sweeps don't share a tick
     }
 
     /// <summary>Returns vessels with unexpired incoming fire or an active hostile docking response.</summary>
@@ -407,6 +409,13 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
         return false;
     }
 
+    /// <summary>Ends every alert a crew aboard a ship holds, as when it surrenders.</summary>
+    public void StandDown(EntityUid grid, string group)
+    {
+        if (_alerts.TryGetValue((grid, group), out var alert))
+            Clear((grid, group), alert);
+    }
+
     /// <summary>Raises a local docking alert without treating a changeable security policy as incoming fire.</summary>
     public void ReportDockingThreat(EntityUid grid, string group, EntityUid visitor) => AlertShip(grid, group, visitor, false);
 
@@ -414,6 +423,9 @@ public sealed partial class WFCrewAlertSystem : EntitySystem
     {
         if (grid == attacker || !HasComp<MapGridComponent>(grid) || !IsVessel(attacker)
             || Transform(grid).MapID != Transform(attacker).MapID)
+            return;
+        // A crew that surrendered raises no alarm, whoever fires on it.
+        if (HasComp<WFCrewSurrenderedComponent>(grid))
             return;
         // Only its own gunfire, past the stray allowance, turns a crew on a player vessel of its faction.
         if (!gunfire && _spared.Spared(grid, attacker))

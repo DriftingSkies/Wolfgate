@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Shared._Crescent.ShipShields;
+using Content.Shared._WF.Remade.Ward;
 using Content.Shared._WF.ShipShields;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
@@ -56,6 +57,10 @@ public sealed class WFShipShieldOverlay : Overlay
         var query = _entities.EntityQueryEnumerator<WFShipShieldVisualsComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var shield, out var xform))
         {
+            // The Remade module's Ward draws its own field.
+            if (_entities.HasComponent<WFWardFieldComponent>(uid))
+                continue;
+
             var elapsed = MathF.Max(0f, (float) (_timing.CurTime - shield.TransitionStarted).TotalSeconds);
             var transition = elapsed < WFShipShieldTransitionEffects.Duration(shield.Transition)
                 ? shield.Transition : WFShipShieldTransition.None;

@@ -40,7 +40,7 @@ public sealed partial class WFGroundCoverSystem
             foreach (var session in _player.Sessions)
             {
                 _decalView.Clear();
-                CollectView(session, _decalView);
+                CollectViewCached(session, _decalView);
                 foreach (var key in _decalView)
                 {
                     _decalQueue.Enqueue(key);

@@ -32,7 +32,22 @@ public abstract partial class SharedGunSystem
         SubscribeLocalEvent<BallisticAmmoProviderComponent, AfterInteractEvent>(OnBallisticAfterInteract);
         SubscribeLocalEvent<BallisticAmmoProviderComponent, AmmoFillDoAfterEvent>(OnBallisticAmmoFillDoAfter);
         SubscribeLocalEvent<BallisticAmmoProviderComponent, UseInHandEvent>(OnBallisticUse);
+        SubscribeLocalEvent<BallisticAmmoProviderComponent, EntRemovedFromContainerMessage>(OnBallisticEntRemoved); // WOLFGATE(Performance): drop stale uids
     }
+
+    // WOLFGATE(Performance) START: a cartridge that left the container by other means must not stay in Entities
+    private void OnBallisticEntRemoved(EntityUid uid, BallisticAmmoProviderComponent component, EntRemovedFromContainerMessage args)
+    {
+        if (Timing.ApplyingState || args.Container.ID != "ballistic-ammo")
+            return;
+
+        if (component.Entities.Remove(args.Entity))
+        {
+            UpdateBallisticAppearance(uid, component);
+            DirtyField(uid, component, nameof(BallisticAmmoProviderComponent.Entities));
+        }
+    }
+    // WOLFGATE END
 
     private void OnBallisticUse(EntityUid uid, BallisticAmmoProviderComponent component, UseInHandEvent args)
     {

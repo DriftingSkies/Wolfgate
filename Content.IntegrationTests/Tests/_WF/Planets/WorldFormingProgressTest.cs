@@ -154,6 +154,8 @@ public sealed class WorldFormingProgressTest
             {
                 server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetLobby, 1000f);
                 server.CfgMan.SetCVar(PlanetCVars.GenerationBudgetLobby, 200f);
+                server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetHold, 1000f);
+                server.CfgMan.SetCVar(PlanetCVars.GenerationBudgetHold, 200f);
             });
             await PlanetBoundsTest.WaitPreloaded(pair, ground);
             await pair.RunTicksSync(pair.SecondsToTicks(1f));
@@ -194,6 +196,8 @@ public sealed class WorldFormingProgressTest
             cfg.SetCVar(PlanetCVars.PreloadBudgetLobby, 0.2f);
             cfg.SetCVar(PlanetCVars.GenerationBudget, 1f);
             cfg.SetCVar(PlanetCVars.GenerationBudgetLobby, 1f);
+            cfg.SetCVar(PlanetCVars.PreloadBudgetHold, 0.2f);
+            cfg.SetCVar(PlanetCVars.GenerationBudgetHold, 1f);
             cfg.SetCVar(PlanetCVars.RoundHoldMax, 600f);
         });
     }

@@ -55,7 +55,11 @@ public sealed class PlanetRoundHoldTest
             Assert.That(hold.Holding, Is.True, "Nothing holds the round start.");
 
             // Let the world finish; the held start then goes ahead by itself.
-            await server.WaitPost(() => server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetLobby, 1000f));
+            await server.WaitPost(() =>
+            {
+                server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetLobby, 1000f);
+                server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetHold, 1000f);
+            });
             for (var i = 0; i < 3000 && ticker.RunLevel == GameRunLevel.PreRoundLobby; i++)
             {
                 await pair.RunTicksSync(1);
@@ -132,7 +136,11 @@ public sealed class PlanetRoundHoldTest
             var refusal = await EnterAtmosphere(pair, hull, settle: 0f);
             Assert.That(refusal, Is.EqualTo(forming), "A hull descended onto a world still forming.");
 
-            await server.WaitPost(() => server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetLobby, 1000f));
+            await server.WaitPost(() =>
+            {
+                server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetLobby, 1000f);
+                server.CfgMan.SetCVar(PlanetCVars.PreloadBudgetHold, 1000f);
+            });
             await PlanetBoundsTest.WaitPreloaded(pair, ground);
 
             refusal = await EnterAtmosphere(pair, hull, settle: 0f);
@@ -157,6 +165,7 @@ public sealed class PlanetRoundHoldTest
             cfg.SetCVar(PlanetCVars.Radius, Radius);
             cfg.SetCVar(PlanetCVars.Preload, true);
             cfg.SetCVar(PlanetCVars.PreloadBudgetLobby, 0.01f);
+            cfg.SetCVar(PlanetCVars.PreloadBudgetHold, 0.01f);
             cfg.SetCVar(PlanetCVars.PreloadBudget, 0.01f);
             cfg.SetCVar(PlanetCVars.RoundHoldMax, cap);
         });

@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: Copyright (c) 2024-2025 Space Wizards Federation
 // SPDX-License-Identifier: MIT
 
+using Content.Shared._WF.NetGuard; // WOLFGATE(NetGuard)
 using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -22,7 +23,7 @@ public sealed class MsgUpdateConsent : NetMessage
 
     public override void ReadFromBuffer(NetIncomingMessage buffer, IRobustSerializer serializer)
     {
-        var length = buffer.ReadVariableInt32();
+        var length = buffer.ReadGuardedLength(); // WOLFGATE(NetGuard): reject lengths past the packet end
         using var stream = new MemoryStream(length);
         buffer.ReadAlignedMemory(stream, length);
         serializer.DeserializeDirect(stream, out Consent);

@@ -1,0 +1,36 @@
+// Dread. What the stone does to a player's sight: the screen wobbles and breathes, splits into colour, loses its colour,
+// and closes in dark red at the edges. Each part is a strength from 0 to 1.
+
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+uniform highp float wobble;
+uniform highp float split;
+uniform highp float vignette;
+uniform highp float drain;
+
+void fragment() {
+    highp vec2 coord = FRAGCOORD.xy * SCREEN_PIXEL_SIZE;
+    highp vec2 centred = coord - vec2(0.5);
+    // 0 at the middle of the screen, about 1 in the corners.
+    highp float edge = clamp(length(centred) * 1.45, 0.0, 1.0);
+
+    highp vec2 warp = vec2(sin(coord.y * 17.0 + TIME * 1.7), cos(coord.x * 13.0 + TIME * 1.3)) * 0.0065 * wobble * (0.3 + edge);
+    warp += centred * sin(TIME * 0.9) * 0.014 * wobble;
+    highp vec2 at = coord + warp;
+
+    highp vec2 away = centred / max(length(centred), 0.0001);
+    highp float shift = 0.012 * split * (0.2 + edge);
+    highp float red = zTextureSpec(SCREEN_TEXTURE, at + away * shift).r;
+    highp float green = zTextureSpec(SCREEN_TEXTURE, at).g;
+    highp float blue = zTextureSpec(SCREEN_TEXTURE, at - away * shift).b;
+    highp vec3 colour = vec3(red, green, blue);
+
+    highp float grey = dot(colour, vec3(0.299, 0.587, 0.114));
+    colour = mix(colour, vec3(grey * 1.06, grey * 0.9, grey * 0.9), drain);
+
+    highp float closing = smoothstep(0.3, 1.0, edge);
+    colour = mix(colour, colour * vec3(0.55, 0.22, 0.22), closing * vignette);
+
+    COLOR = vec4(colour, 1.0);
+}

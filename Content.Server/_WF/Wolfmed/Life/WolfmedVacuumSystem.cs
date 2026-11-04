@@ -1,5 +1,6 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared._WF.Wolfmed.Consciousness;
 using Content.Shared.Atmos;
@@ -21,6 +22,7 @@ public sealed partial class WolfmedVacuumSystem : EntitySystem
     [Dependency] private AtmosphereSystem _atmosphere = default!;
     [Dependency] private BarotraumaSystem _barotrauma = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -38,20 +40,31 @@ public sealed partial class WolfmedVacuumSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _nextTick)
-            return;
 
-        _nextTick = _timing.CurTime + TickInterval;
+        // Each body takes its own tick of the interval, so a full server doesn't read every body at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var curTick = _timing.CurTick;
         _read.Clear();
         var query = EntityQueryEnumerator<WolfmedConsciousnessComponent, BarotraumaComponent>();
         while (query.MoveNext(out var uid, out _, out var barotrauma))
+        {
+            // An NPC body no player is near holds still until someone comes, as the life tick does.
+            if (!WFTickSpread.Due(uid, curTick, period) || _dormancy.BodySleeps(uid))
+                continue;
+
             _read.Add((uid, !_mobState.IsDead(uid) && FeelsVacuum(uid, barotrauma)));
+        }
 
         foreach (var (body, exposed) in _read)
         {
             if (!TerminatingOrDeleted(body))
                 Set(body, exposed);
         }
+
+        if (_timing.CurTime < _nextTick)
+            return;
+
+        _nextTick = _timing.CurTime + TickInterval;
 
         // A body that lost its BarotraumaComponent while exposed (a zombie's, a trader's) is not read above any more,
         // and would stay marked, and drained, for good.

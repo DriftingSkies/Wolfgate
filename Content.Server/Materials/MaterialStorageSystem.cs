@@ -17,6 +17,7 @@ using Robust.Shared.Prototypes;
 
 // Mono
 using Content.Shared.Destructible;
+using Content.Server._WF.Remade.Gifts; // WOLFGATE(Remade)
 
 namespace Content.Server.Materials;
 
@@ -114,6 +115,13 @@ public sealed partial class MaterialStorageSystem : SharedMaterialStorageSystem
 
             volume = sheetsToExtract * volumePerSheet;
         }
+
+        // WOLFGATE(Remade) START: Monolith-made material stays in the silo, or it would sell as sheets
+        var matterEv = new WFMatterEjectAttemptEvent(player, uid, msg.Material, volume);
+        RaiseLocalEvent(ref matterEv);
+        if (matterEv.Cancelled)
+            return;
+        // WOLFGATE END
 
         if (volume <= 0 || !TryChangeMaterialAmount(uid, msg.Material, -volume))
             return;

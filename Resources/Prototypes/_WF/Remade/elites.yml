@@ -1,0 +1,1842 @@
+# The elite Remade: brute, twitcher, oracle twitcher, hunter, divider (and its parts), tripod, the Undying and the
+# enhanced infector. Health, speed, armour and costs from DS13-2.0's subtypes, the divider, tripod, hunter and Undying
+# rules from DS13-1.0. Armour is 1 - the DS percentage, softened where DS13's would make a gun useless.
+
+- type: damageModifierSet
+  id: WFRemadeBrute
+  coefficients:
+    Blunt: 0.65
+    Piercing: 0.4
+    Slash: 0.55
+    Heat: 0.7
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeTwitcher
+  coefficients:
+    Blunt: 0.55
+    Piercing: 0.45
+    Slash: 0.7
+    Heat: 1
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeTwitcherOracle
+  coefficients:
+    Blunt: 0.5
+    Piercing: 0.4
+    Slash: 0.65
+    Heat: 0.75
+    Caustic: 0.05
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+# Blades barely cut the hunter and clubs barely bruise it. Fire is what it fears.
+- type: damageModifierSet
+  id: WFRemadeHunter
+  coefficients:
+    Blunt: 0.35
+    Piercing: 0.5
+    Slash: 0.85
+    Heat: 1.3
+    Caustic: 0.05
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeDivider
+  coefficients:
+    Blunt: 0.8
+    Piercing: 0.75
+    Slash: 0.9
+    Heat: 1
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeTripod
+  coefficients:
+    Blunt: 0.7
+    Piercing: 0.65
+    Slash: 0.8
+    Heat: 1
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+# Heat and lasers do little: the Undying is stopped by dismembering it, not by burning it.
+- type: damageModifierSet
+  id: WFRemadeUndying
+  coefficients:
+    Blunt: 0.35
+    Piercing: 0.5
+    Slash: 0.85
+    Heat: 0.5
+    Caustic: 0
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+# Projectiles and effects
+
+- type: entity
+  parent: BaseBullet
+  id: WFRemadeBioBomb
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Effects/projectiles.rsi
+    scale: 1.6, 1.6
+    layers:
+    - state: pukeshot
+      shader: unshaded
+  - type: Projectile
+    damage:
+      types:
+        Caustic: 14
+  - type: Tracer
+    color: "#7CA03CFF"
+    length: 1.5
+  - type: TimedDespawn
+    lifetime: 2.5
+  - type: WFRemadeProjectile
+
+# The tripod's tongue: segments of a beam that fade after a moment.
+- type: entity
+  id: WFRemadeTongueBeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: /Textures/Effects/lightning.rsi
+    drawdepth: Effects
+    color: "#8a2323"
+    layers:
+    - state: lightning_1
+      shader: unshaded
+  - type: Physics
+    canCollide: false
+  - type: Beam
+  - type: TimedDespawn
+    lifetime: 1
+
+# Brute
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeBrute
+  components:
+  # A brute will go through a wall that is the only way to its prey.
+  - type: WFStuckBreaker
+    breaksWalls: true
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/brute.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "l_leg" ]
+      state: brute_l_leg
+    - map: [ "r_leg" ]
+      state: brute_r_leg
+    - map: [ "chest" ]
+      state: brute_chest
+    - map: [ "l_arm" ]
+      state: brute_l_arm
+    - map: [ "r_arm" ]
+      state: brute_r_arm
+    - map: [ "head" ]
+      state: brute_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeBrute
+  # No gibbing: the 400 blunt that gibs an animal would end this one for good.
+  - type: Destructible
+    thresholds: []
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      450: Dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.5
+        density: 350
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  # DS13: speedmod 4, with a charge that climbs to about twice that. Slower than a crewman at a run, even charging.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.4
+    animation: WeaponArcFist
+    soundSwing:
+      collection: WFRemadeBruteAttack
+    soundHit:
+      path: /Audio/Effects/hit_kick.ogg
+    damage:
+      types:
+        Blunt: 26
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeBruteStep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeBruteShout
+    pain:
+      collection: WFRemadeBrutePain
+    death:
+      collection: WFRemadeBruteDeath
+    shout:
+      collection: WFRemadeBruteShoutLong
+  - type: WFBruteArmour
+  - type: WFFlingOnHit
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/brute.rsi
+    floors: { Melee: 0.25, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 80
+      weight: 1.5
+      loss: 28
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: brute_l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 80
+      weight: 1.5
+      loss: 28
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: brute_r_leg_lying
+    - id: chest
+      health: 400
+      weight: 3
+      scale: 0.35
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: brute_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 70
+      weight: 1.5
+      loss: 22
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: brute_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 70
+      weight: 1.5
+      loss: 22
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: brute_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 90
+      weight: 1
+      loss: 40
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1, Fire: 1 }
+      lying: brute_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 10
+      range: 20
+      sound:
+        collection: WFRemadeBruteShoutLong
+    # Slam: a long rearing up, then everything around it is flattened.
+    - !type:WFSwingAbility
+      cooldown: 8
+      range: 2.6
+      windUp: 2
+      arc: 360
+      reach: 2.8
+      knockdownTime: 3
+      structureDamage: 250
+      damage:
+        types:
+          Blunt: 15
+      sound:
+        collection: WFRemadeBruteShout
+      strikeSound:
+        collection: MetalThud
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+    # Long charge: builds speed, breaks doors and windows, throws people aside.
+    - !type:WFRamAbility
+      cooldown: 18
+      minRange: 5
+      range: 14
+      windUp: 1.2
+      duration: 5
+      topSpeed: 2
+      rampTime: 3
+      structureDamage: 600
+      damage:
+        types:
+          Blunt: 20
+      sound:
+        collection: WFRemadeBruteShoutLong
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+      smashSound:
+        collection: MetalBreak
+    # Bio-bomb: a slow lob of acid from range.
+    - !type:WFShootAbility
+      cooldown: 12
+      minRange: 4
+      range: 16
+      windUp: 1.25
+      projectile: WFRemadeBioBomb
+      projectileSpeed: 9
+      sound:
+        collection: WFRemadeBruteShout
+      fireSound:
+        collection: WFRemadeBruteAttack
+
+# Twitcher
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeTwitcher
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/twitcher.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "l_leg" ]
+      state: twitcher_l_leg
+    - map: [ "r_leg" ]
+      state: twitcher_r_leg
+    - map: [ "chest" ]
+      state: twitcher_chest
+    - map: [ "l_arm" ]
+      state: twitcher_l_arm
+    - map: [ "r_arm" ]
+      state: twitcher_r_arm
+    - map: [ "head" ]
+      state: twitcher_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeTwitcher
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      175: Dead
+  # DS13: speedmod 0.8.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeTwitcherAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 13
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeTwitcherFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeTwitcherSpeech
+    pain:
+      collection: WFRemadeTwitcherPain
+    death:
+      collection: WFRemadeTwitcherDeath
+    shout:
+      collection: WFRemadeTwitcherShoutLong
+  - type: WFDodgePool
+    pool: 100
+    max: 100
+    drainChance: 0.55
+    usage: 8
+    regen: 0.6
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/twitcher.rsi
+    floors: { Melee: 0.2, Speed: 0.15, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 40
+      weight: 1.5
+      loss: 20
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+      lying: twitcher_l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 40
+      weight: 1.5
+      loss: 20
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+      lying: twitcher_r_leg_lying
+    - id: chest
+      health: 200
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: twitcher_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 30
+      weight: 1.5
+      loss: 14
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: twitcher_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 30
+      weight: 1.5
+      loss: 14
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: twitcher_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 40
+      weight: 1
+      loss: 30
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: twitcher_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeTwitcherShout
+    # Stepstrike: a very fast, short charge.
+    - !type:WFChargeAbility
+      cooldown: 8
+      minRange: 3.5
+      range: 12
+      windUp: 0.1
+      duration: 1.2
+      speed: 3
+      knockdownTime: 2
+      sound:
+        collection: WFRemadeTwitcherShoutLong
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+    - !type:WFBlinkAbility
+      cooldown: 6
+      minRange: 4
+      range: 12
+      distance: 3.2
+      evadeDistance: 2.5
+      sound:
+        collection: WFRemadeTwitcherSpeech
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeTwitcherOracle
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/twitcher_oracle.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "l_leg" ]
+      state: oracle_twitcher_l_leg
+    - map: [ "r_leg" ]
+      state: oracle_twitcher_r_leg
+    - map: [ "chest" ]
+      state: oracle_twitcher_chest
+    - map: [ "l_arm" ]
+      state: oracle_twitcher_l_arm
+    - map: [ "r_arm" ]
+      state: oracle_twitcher_r_arm
+    - map: [ "head" ]
+      state: oracle_twitcher_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeTwitcherOracle
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      210: Dead
+  # DS13: speedmod 0.5, close to a person.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.2
+    baseSprintSpeed: 4.2
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeTwitcherAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 20
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeTwitcherFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeTwitcherSpeech
+    pain:
+      collection: WFRemadeTwitcherPain
+    death:
+      collection: WFRemadeTwitcherDeath
+    shout:
+      collection: WFRemadeTwitcherShoutLong
+  - type: WFDodgePool
+    pool: 100
+    max: 100
+    drainChance: 0.4
+    usage: 5
+    regen: 0.6
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/twitcher_oracle.rsi
+    floors: { Melee: 0.2, Speed: 0.15, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 45
+      weight: 1.5
+      loss: 22
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+      lying: oracle_twitcher_l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 45
+      weight: 1.5
+      loss: 22
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+      lying: oracle_twitcher_r_leg_lying
+    - id: chest
+      health: 240
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: oracle_twitcher_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 35
+      weight: 1.5
+      loss: 16
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: oracle_twitcher_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 35
+      weight: 1.5
+      loss: 16
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: oracle_twitcher_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 45
+      weight: 1
+      loss: 30
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: oracle_twitcher_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeTwitcherShout
+    - !type:WFChargeAbility
+      cooldown: 6
+      minRange: 3.5
+      range: 12
+      windUp: 0.1
+      duration: 1.2
+      speed: 3
+      knockdownTime: 2
+      sound:
+        collection: WFRemadeTwitcherShoutLong
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+    - !type:WFBlinkAbility
+      cooldown: 4
+      minRange: 4
+      range: 12
+      distance: 3.6
+      evadeDistance: 2.8
+      sound:
+        collection: WFRemadeTwitcherSpeech
+
+# Hunter
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeHunter
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/hunter.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "l_leg" ]
+      state: hunter_l_leg
+    - map: [ "r_leg" ]
+      state: hunter_r_leg
+    - map: [ "chest" ]
+      state: hunter_chest
+    - map: [ "l_arm" ]
+      state: hunter_l_arm
+    - map: [ "r_arm" ]
+      state: hunter_r_arm
+    - map: [ "head" ]
+      state: hunter_head
+    - map: [ "eyes" ]
+      state: eyes
+      shader: unshaded
+    # No dead sprite: the standing one on its back.
+    # Lowered so it lies on the floor, not half a tile above it.
+    - map: [ "dead" ]
+      state: full
+      rotation: 90
+      offset: 0,-0.3
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeHunter
+  # No gibbing: the 400 blunt that gibs an animal would end this one for good.
+  - type: Destructible
+    thresholds: []
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      275: Dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 220
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  # DS13: speedmod 1.6.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.2
+    baseSprintSpeed: 3.2
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeUndyingAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 20
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeUndyingFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeUndyingSpeech
+    pain:
+      collection: WFRemadeUndyingPain
+    death:
+      collection: WFRemadeUndyingPain
+    shout:
+      collection: WFRemadeUndyingShoutLong
+  # DS13-1.0: healing 2 a second, burns at a third of that; false death for 15 seconds, then up with 100 healed and two
+  # limbs back, once every two minutes. Fire past half its health, a missing head or most limbs gone, or dying again
+  # too soon, keeps it down.
+  - type: WFRegen
+    healPerSecond: 2
+    heatFactor: 0.33
+    limbInterval: 20
+    sound:
+      collection: WFRemadeUndyingRegen
+  - type: WFRises
+    riseDelay: 15
+    cooldown: 120
+    burnKill: 0.5
+    severedKill: 4
+    headKills: true
+    riseHealth: 0.55
+    regrow: 3
+    riseSound:
+      collection: WFRemadeUndyingRegen
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/hunter.rsi
+    floors: { Melee: 0.2, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 60
+      weight: 1.5
+      loss: 20
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+      regen: l_leg_regen
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 60
+      weight: 1.5
+      loss: 20
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+      regen: r_leg_regen
+    - id: chest
+      health: 250
+      weight: 3
+      scale: 0.5
+      severable: false
+      zones: [ Torso, Groin ]
+    - id: l_arm
+      name: wf-remade-limb-blade-left
+      health: 50
+      weight: 1.5
+      loss: 16
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      regen: l_arm_regen
+    - id: r_arm
+      name: wf-remade-limb-blade-right
+      health: 50
+      weight: 1.5
+      loss: 16
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      regen: r_arm_regen
+    - id: head
+      name: wf-remade-limb-head
+      layers: [ head, eyes ]
+      health: 60
+      weight: 1
+      loss: 35
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      regen: head_regen
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 10
+      range: 20
+      sound:
+        collection: WFRemadeUndyingShout
+    - !type:WFTauntAbility
+      cooldown: 30
+      range: 12
+      duration: 20
+      radius: 10
+      selfMultiplier: 0.85
+      allyMultiplier: 0.7
+      speed: 1.2
+      sound:
+        collection: WFRemadeUndyingShoutLong
+    # Hookblade: a short lunge and a wide swing that pulls everyone in.
+    - !type:WFSwingAbility
+      cooldown: 6
+      range: 5
+      windUp: 0.25
+      lunge: 2
+      lungeSpeed: 8
+      arc: 150
+      reach: 3
+      pull: 2.5
+      damage:
+        types:
+          Slash: 15
+      sound:
+        collection: WFRemadeUndyingAttack
+      hitSound:
+        path: /Audio/Weapons/slash.ogg
+
+# Mender: the hunter's body, bleached. It doesn't grow limbs back; down with three off, it drags the severed ones back onto
+# itself with tentacles and gets up once whole. Burn a limb, blow it apart, or carry it out of reach and it stays down.
+
+- type: entity
+  parent: WFRemadeHunter
+  id: WFRemadeMender
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/mender.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "l_leg" ]
+      state: hunter_l_leg
+    - map: [ "r_leg" ]
+      state: hunter_r_leg
+    - map: [ "chest" ]
+      state: hunter_chest
+    - map: [ "l_arm" ]
+      state: hunter_l_arm
+    - map: [ "r_arm" ]
+      state: hunter_r_arm
+    - map: [ "head" ]
+      state: hunter_head
+    - map: [ "eyes" ]
+      state: eyes
+      shader: unshaded
+    - map: [ "dead" ]
+      state: full
+      rotation: 90
+      offset: 0,-0.3
+      visible: false
+  # Heals as it walks, but grows nothing back: what comes off has to be dragged back on.
+  - type: WFRegen
+    healPerSecond: 2
+    heatFactor: 0.33
+    limbInterval: 100000
+  - type: WFRises
+    riseDelay: 15
+    burnKill: 0.5
+    collapseSevered: 3
+    riseHealth: 0.6
+    regrow: 0
+    burnDown: 100
+    riseSound:
+      collection: WFRemadeUndyingRegen
+  - type: WFReclaim
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/mender.rsi
+    floors: { Melee: 0.2, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 60
+      weight: 1.5
+      loss: 20
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+      dropped: l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 60
+      weight: 1.5
+      loss: 20
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+      dropped: r_leg_lying
+    - id: chest
+      health: 250
+      weight: 3
+      scale: 0.5
+      severable: false
+      zones: [ Torso, Groin ]
+    - id: l_arm
+      name: wf-remade-limb-blade-left
+      health: 50
+      weight: 1.5
+      loss: 16
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      dropped: l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-blade-right
+      health: 50
+      weight: 1.5
+      loss: 16
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      dropped: r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      layers: [ head, eyes ]
+      health: 60
+      weight: 1
+      loss: 35
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      dropped: head_lying
+
+# Divider and its parts
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeDivider
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/divider.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "l_leg" ]
+      state: divider_l_leg
+    - map: [ "r_leg" ]
+      state: divider_r_leg
+    - map: [ "chest" ]
+      state: divider_chest
+    - map: [ "l_arm" ]
+      state: divider_l_arm
+    - map: [ "r_arm" ]
+      state: divider_r_arm
+    - map: [ "head" ]
+      state: divider_head
+    # What's left lying when the rest has crawled away.
+    # Centred on the body: the chest piece sits off to one side of its own image.
+    - map: [ "dead" ]
+      state: divider_chest
+      rotation: 90
+      offset: 0.43,-0.5
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeDivider
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 250
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  # DS13: speedmod 1.4, and slowdown 3 in 1.0. It's meant to be slow.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.4
+    baseSprintSpeed: 2.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.6
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeDividerAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 13
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeDividerShoutLong
+    pain:
+      collection: WFRemadeDividerPain
+    death:
+      collection: WFRemadeDividerDeath
+    shout:
+      collection: WFRemadeDividerShoutLong
+  - type: WFDivider
+    splitSound:
+      collection: WFRemadeDividerSplit
+    parts:
+      head: WFRemadeDividerHead
+      l_arm: WFRemadeDividerArm
+      r_arm: WFRemadeDividerArm
+      l_leg: WFRemadeDividerLeg
+      r_leg: WFRemadeDividerLeg
+  # No severed limb drops: each limb that comes off crawls away as a mob.
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/divider.rsi
+    floors: { Melee: 0.2, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 35
+      weight: 1.5
+      loss: 10
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 35
+      weight: 1.5
+      loss: 10
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+    # It has a hole through it, so it's harder to land a bullet on.
+    - id: chest
+      health: 250
+      weight: 3
+      scale: 0.5
+      severable: false
+      zones: [ Torso, Groin ]
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 35
+      weight: 1.5
+      loss: 10
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 35
+      weight: 1.5
+      loss: 10
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+    - id: head
+      name: wf-remade-limb-head
+      health: 40
+      weight: 1
+      loss: 15
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 12
+      range: 20
+      sound:
+        collection: WFRemadeDividerShout
+    # Swipe.
+    - !type:WFSwingAbility
+      cooldown: 3.5
+      range: 3
+      windUp: 0.25
+      arc: 130
+      reach: 3
+      damage:
+        types:
+          Slash: 20
+      sound:
+        collection: WFRemadeDividerAttack
+      hitSound:
+        path: /Audio/Weapons/slash.ogg
+
+- type: entity
+  abstract: true
+  parent: WFRemadeBase
+  id: WFRemadeDividerPart
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/divider_components_large.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: arm
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.25
+        density: 40
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: ProtectedFromStepTriggers
+
+- type: entity
+  parent: WFRemadeDividerPart
+  id: WFRemadeDividerArm
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: arm
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: arm
+      Dead:
+        Base: arm_dead_1
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1.3
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeDividerArmAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 3
+  - type: WFRemadeVoice
+    pain:
+      collection: WFRemadeDividerArmPain
+    death:
+      collection: WFRemadeDividerArmPain
+    shout:
+      collection: WFRemadeDividerArmAttack
+  # Parasite grip: it leaps at someone, clings and tears at them, staggering them about.
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFLatchAbility
+      cooldown: 8
+      minRange: 1.5
+      range: 5
+      windUp: 0.8
+      speed: 9
+      hold: 12
+      interval: 1
+      slow: 0.7
+      damage:
+        types:
+          Slash: 3
+      sound:
+        collection: WFRemadeDividerArmAttack
+      biteSound:
+        collection: WFRemadeDividerArmAttack
+
+- type: entity
+  parent: WFRemadeDividerPart
+  id: WFRemadeDividerLeg
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: leg
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: leg
+      Dead:
+        Base: leg_dead_1
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      35: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1.2
+    animation: WeaponArcKick
+    soundSwing:
+      collection: WFRemadeDividerLegAttack
+    soundHit:
+      path: /Audio/Effects/hit_kick.ogg
+    damage:
+      types:
+        Blunt: 3
+  - type: WFRemadeVoice
+    pain:
+      collection: WFRemadeDividerLegPain
+    death:
+      collection: WFRemadeDividerLegPain
+    shout:
+      collection: WFRemadeDividerLegAttack
+  # Dropkick: a hard leap that knocks the victim down.
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFLeapAbility
+      cooldown: 4
+      minRange: 2
+      range: 6
+      windUp: 0.6
+      speed: 11
+      overshoot: 0.6
+      knockdownTime: 1.5
+      damage:
+        types:
+          Blunt: 15
+      sound:
+        collection: WFRemadeDividerLegAttack
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+
+- type: entity
+  parent: WFRemadeDividerPart
+  id: WFRemadeDividerHead
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: head
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: head
+      Dead:
+        Base: head_dead_1
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.4
+    baseSprintSpeed: 3.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcBite
+    soundSwing:
+      collection: WFRemadeDividerHeadAttack
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    damage:
+      types:
+        Blunt: 5
+  - type: WFRemadeVoice
+    pain:
+      collection: WFRemadeDividerHeadPain
+    death:
+      collection: WFRemadeDividerHeadPain
+    shout:
+      collection: WFRemadeDividerHeadAttack
+  # It goes into a body it turns, and looks for one when it has nobody to fight.
+  - type: WFTakesBody
+  - type: HTN
+    rootTask:
+      task: WFRemadeHeadCompound
+  # It goes for the throat: it leaps, wraps itself round the neck and chokes.
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFLatchAbility
+      cooldown: 10
+      minRange: 1.5
+      range: 4
+      windUp: 0.8
+      speed: 8
+      hold: 15
+      interval: 1
+      slow: 0.6
+      turnsBody: true
+      damage:
+        types:
+          Asphyxiation: 4
+          Blunt: 1
+      sound:
+        collection: WFRemadeDividerHeadAttack
+      biteSound:
+        collection: WFRemadeDividerHeadAttack
+
+# Tripod
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeTripod
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/tripod.rsi
+    noRot: true
+    offset: 0,1
+    layers:
+    - map: [ "chest" ]
+      state: tripod_chest
+    - map: [ "l_arm" ]
+      state: tripod_l_arm
+    - map: [ "r_arm" ]
+      state: tripod_r_arm
+    - map: [ "head" ]
+      state: tripod_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeTripod
+  # No gibbing: the 400 blunt that gibs an animal would end this one for good.
+  - type: Destructible
+    thresholds: []
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      475: Dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.7
+        density: 450
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  # DS13: speedmod 1.5.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.4
+    baseSprintSpeed: 3.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeTripodAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 13
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeTripodFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeTripodShout
+    pain:
+      collection: WFRemadeTripodPain
+    death:
+      collection: WFRemadeTripodDeath
+    shout:
+      collection: WFRemadeTripodShoutLong
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/tripod.rsi
+    floors: { Melee: 0.2, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: chest
+      health: 300
+      weight: 3
+      scale: 0.65
+      severable: false
+      zones: [ Torso, Groin, LeftLeg, LeftFoot, RightLeg, RightFoot ]
+      lying: torso_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 120
+      weight: 2
+      loss: 40
+      zones: [ LeftArm, LeftHand ]
+      provides: { Speed: 0.5, Leap: 0.5, Melee: 0.5 }
+      lying: l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 120
+      weight: 2
+      loss: 40
+      zones: [ RightArm, RightHand ]
+      provides: { Speed: 0.5, Leap: 0.5, Melee: 0.5 }
+      lying: r_arm_lying
+    - id: head
+      name: wf-remade-elite-limb-tongue
+      health: 60
+      weight: 1
+      loss: 25
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1, Grab: 1 }
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 10
+      range: 20
+      sound:
+        collection: WFRemadeTripodShoutLong
+    # The tongue hauls someone in from across the room, then it stabs.
+    - !type:WFTongueAbility
+      cooldown: 14
+      minRange: 3
+      range: 10
+      windUp: 0.5
+      pullTime: 0.8
+      hold: 1.3
+      pullSpeed: 12
+      stabReach: 2.4
+      knockdownTime: 1.5
+      damage:
+        types:
+          Piercing: 28
+      sound:
+        collection: WFRemadeTripodTongueExtract
+      pullSound:
+        collection: WFRemadeTripodTongueforce
+      hitSound:
+        collection: WFRemadeTripodTongueLash
+    # High leap: over everything, and it lands hard.
+    - !type:WFPounceAbility
+      cooldown: 6
+      minRange: 3
+      range: 12
+      windUp: 0.8
+      speed: 7
+      radius: 2.2
+      knockdownTime: 2.5
+      damage:
+        types:
+          Blunt: 12
+      sound:
+        collection: WFRemadeTripodShout
+      landSound:
+        path: /Audio/Effects/hit_kick.ogg
+    # Arm swing.
+    - !type:WFSwingAbility
+      cooldown: 3.5
+      range: 3
+      windUp: 0.6
+      arc: 150
+      reach: 3
+      push: 2.5
+      damage:
+        types:
+          Slash: 20
+      sound:
+        collection: WFRemadeTripodAttack
+      hitSound:
+        path: /Audio/Weapons/slash.ogg
+
+# The Undying
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeUndying
+  components:
+  - type: WFStuckBreaker
+    breaksWalls: true
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/undying.rsi
+    noRot: true
+    offset: 0,0.55
+    layers:
+    - map: [ "l_leg" ]
+      state: ubermorph_l_leg
+    - map: [ "r_leg" ]
+      state: ubermorph_r_leg
+    - map: [ "chest" ]
+      state: ubermorph_chest
+    - map: [ "l_arm" ]
+      state: ubermorph_l_arm
+    - map: [ "r_arm" ]
+      state: ubermorph_r_arm
+    - map: [ "head" ]
+      state: ubermorph_head
+    - map: [ "eyes" ]
+      state: eyes
+      shader: unshaded
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeUndying
+  # No gibbing: the 400 blunt that gibs an animal would end this one for good.
+  - type: Destructible
+    thresholds: []
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      1200: Dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 220
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  # DS13: speedmod 1.2. It never runs: walking and sprinting are the same.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.4
+    baseSprintSpeed: 3.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcThrust
+    soundSwing:
+      collection: WFRemadeUndyingAttack
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    damage:
+      types:
+        Piercing: 20
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeUndyingFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeUndyingSpeech
+    pain:
+      collection: WFRemadeUndyingPain
+    death:
+      collection: WFRemadeUndyingPain
+    shout:
+      collection: WFRemadeUndyingShoutLong
+  - type: WFUndying
+  # DS13: it regenerates 4 a second and nothing keeps it down. Here, damage past its limit or losing every limb folds it up
+  # for a minute and it forms again whole.
+  - type: WFRegen
+    healPerSecond: 4
+    heatFactor: 0.5
+    limbInterval: 8
+    sound:
+      collection: WFRemadeUndyingRegen
+  - type: WFRises
+    riseDelay: 60
+    cooldown: 0
+    collapseSevered: 5
+    riseHealth: 1
+    regrow: 99
+    # It can't get back up on a powered stasis bed, and fire while it lies there ends it.
+    stasisRange: 0.9
+    burnDown: 150
+    riseSound:
+      collection: WFRemadeUndyingRegen
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/undying.rsi
+    floors: { Melee: 0.3, Speed: 0.3, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 100
+      weight: 1.5
+      loss: 20
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+      lying: l_leg_lying
+      regen: l_leg_regen
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 100
+      weight: 1.5
+      loss: 20
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+      lying: r_leg_lying
+      regen: r_leg_regen
+    - id: chest
+      health: 500
+      weight: 3
+      scale: 0.6
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: torso_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 80
+      weight: 1.5
+      loss: 15
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: l_arm_lying
+      regen: l_arm_regen
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 80
+      weight: 1.5
+      loss: 15
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: r_arm_lying
+      regen: r_arm_regen
+    - id: head
+      name: wf-remade-limb-head
+      layers: [ head, eyes ]
+      health: 100
+      weight: 1
+      loss: 25
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: head_lying
+      regen: head_regen
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 12
+      range: 20
+      sound:
+        collection: WFRemadeUndyingShout
+    # Lunge: a short stab forward through whatever is in the way, doors included.
+    - !type:WFSwingAbility
+      cooldown: 5
+      range: 4
+      windUp: 0.5
+      lunge: 2
+      lungeSpeed: 8
+      arc: 50
+      reach: 2.8
+      structureDamage: 400
+      damage:
+        types:
+          Piercing: 28
+      sound:
+        collection: WFRemadeUndyingAttack
+      hitSound:
+        path: /Audio/Weapons/pierce.ogg
+
+# Enhanced infector
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeInfectorEnhanced
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/infector_enhanced.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "l_leg" ]
+      state: enhanced_infector_l_leg
+    - map: [ "r_leg" ]
+      state: enhanced_infector_r_leg
+    - map: [ "chest" ]
+      state: enhanced_infector_chest
+    - map: [ "l_arm" ]
+      state: enhanced_infector_l_arm
+    - map: [ "r_arm" ]
+      state: enhanced_infector_r_arm
+    - map: [ "head" ]
+      state: enhanced_infector_head
+    - map: [ "proboscis" ]
+      state: enhanced_infector_proboscis
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: HTN
+    rootTask:
+      task: WFRemadeInfectorCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        14
+      AggroVisionRadius: !type:Single
+        20
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      185: Dead
+  # DS13: speedmod 1.8, against the plain infector's 2.4.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.6
+    baseSprintSpeed: 2.6
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.7
+    animation: WeaponArcThrust
+    soundSwing:
+      collection: WFRemadeInfectorAttack
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    damage:
+      types:
+        Piercing: 16
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeInfectorFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeInfectorSpeech
+    pain:
+      collection: WFRemadeInfectorPain
+    death:
+      collection: WFRemadeInfectorDeath
+    shout:
+      collection: WFRemadeInfectorShoutLong
+  - type: WFReanimateHaste
+    share: 0.55
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/infector_enhanced.rsi
+    floors: { Melee: 0.2, Speed: 0.15, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 50
+      weight: 1
+      loss: 14
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.3 }
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 50
+      weight: 1
+      loss: 14
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.3 }
+    - id: chest
+      health: 250
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: enhanced_infector_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 40
+      weight: 1.5
+      loss: 15
+      zones: [ LeftArm, LeftHand ]
+      provides: { Speed: 0.2 }
+      lying: enhanced_infector_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 40
+      weight: 1.5
+      loss: 15
+      zones: [ RightArm, RightHand ]
+      provides: { Speed: 0.2 }
+      lying: enhanced_infector_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 70
+      weight: 1
+      loss: 30
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+    - id: proboscis
+      name: wf-remade-limb-proboscis
+      health: 40
+      weight: 1.5
+      loss: 30
+      zones: [  ]
+      provides: { Melee: 1, Reanimate: 1 }
+      lying: enhanced_infector_proboscis_lying
+
+# The Director's and conversion's data. Costs are DS13's biomass costs (divider and tripod from DS13-1.0).
+
+- type: wfRemadeMob
+  id: WFRemadeTwitcher
+  entity: WFRemadeTwitcher
+  cost: 150
+  minStage: Harvest
+  spawnWeight: 2.5
+
+- type: wfRemadeMob
+  id: WFRemadeTwitcherOracle
+  entity: WFRemadeTwitcherOracle
+  cost: 210
+  minStage: Rapture
+  spawnWeight: 0.6
+  maxAlive: 1
+
+- type: wfRemadeMob
+  id: WFRemadeDivider
+  entity: WFRemadeDivider
+  cost: 145
+  minStage: Harvest
+  spawnWeight: 2
+  # DS13: command, engineering, medical, mining, science and security staff can be a divider, at 3. Mining is Cargo here.
+  # With no job to read off the body it is a long shot.
+  conversionWeight: 3
+  departments: [ Command, Engineering, Medical, Science, Security, Cargo ]
+  unknownJobWeight: 0.3
+
+- type: wfRemadeMob
+  id: WFRemadeBrute
+  entity: WFRemadeBrute
+  cost: 360
+  minStage: Rapture
+  # DS13 picks a brute's look at 1 to 1 (plain, flesh); the flesh one is in variants.yml.
+  spawnWeight: 0.75
+  maxAlive: 2
+
+- type: wfRemadeMob
+  id: WFRemadeHunter
+  entity: WFRemadeHunter
+  cost: 400
+  minStage: Rapture
+  spawnWeight: 0.8
+  maxAlive: 1
+
+- type: wfRemadeMob
+  id: WFRemadeMender
+  entity: WFRemadeMender
+  cost: 420
+  minStage: Rapture
+  spawnWeight: 0.5
+  maxAlive: 1
+
+- type: wfRemadeMob
+  id: WFRemadeTripod
+  entity: WFRemadeTripod
+  cost: 360
+  minStage: Rapture
+  spawnWeight: 0.8
+  maxAlive: 1
+
+- type: wfRemadeMob
+  id: WFRemadeUndying
+  entity: WFRemadeUndying
+  cost: 800
+  minStage: Rapture
+  spawnWeight: 0.5
+  maxAlive: 1
+
+- type: wfRemadeMob
+  id: WFRemadeInfectorEnhanced
+  entity: WFRemadeInfectorEnhanced
+  cost: 175
+  minStage: Rapture
+  spawnWeight: 0.5
+  maxAlive: 1
+  needsCorpses: true

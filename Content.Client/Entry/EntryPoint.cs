@@ -179,6 +179,7 @@ namespace Content.Client.Entry
             _clientConsentManager.Initialize(); // WOLFGATE(Genitals): consent system
             IoCManager.Resolve<_WF.JoinProgress.JoinProgressManager>().Initialize(); // WOLFGATE(JoinProgress): register the download size message
             IoCManager.Resolve<_WF.GameHub.WFGameDataManager>().Initialize(); // WOLFGATE(GameHub): register the game data transfer
+            IoCManager.Resolve<_WF.MameArcade.MameArcadeNetManager>().Initialize(); // WOLFGATE(MameArcade): register the 2-player input message
             _euiManager.Initialize();
             _voteManager.Initialize();
             _userInterfaceManager.SetDefaultTheme("WFTheme"); // WOLFGATE(Stylesheets): Wolfgate HUD theme by default

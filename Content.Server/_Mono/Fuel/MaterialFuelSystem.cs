@@ -32,7 +32,7 @@ public sealed partial class MaterialFuelSystem : EntitySystem
         while (eqe.MoveNext(out var uid, out var fuel, out var flame, out var composition))
         {
             if (!flame.OnFire)
-                return;
+                continue; // WOLFGATE(Performance): was return, which skipped every later burning fuel entity
 
             Burn(uid, fuel, composition);
         }

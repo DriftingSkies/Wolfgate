@@ -1,3 +1,4 @@
+using Content.Server._WF.Dormancy;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server.Atmos.Components;
@@ -30,6 +31,7 @@ public sealed class WFPlanetNpcGearSystem : EntitySystem
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedGasTankSystem _tanks = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
 
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
@@ -72,6 +74,10 @@ public sealed class WFPlanetNpcGearSystem : EntitySystem
 
             if (!HasComp<WFPlanetLayerComponent>(map) || !TryComp(map, out MapAtmosphereComponent? atmosphere)
                 || atmosphere.Space || !_mobs.IsAlive(uid))
+                continue;
+
+            // A dormant NPC's body doesn't breathe or feel the air; he's dressed once a player comes near and wakes him.
+            if (!_dormancy.IsActive(uid, xform))
                 continue;
             Dress(uid, map, atmosphere.Mixture);
         }

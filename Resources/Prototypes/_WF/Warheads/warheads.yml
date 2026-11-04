@@ -1,0 +1,216 @@
+- type: entity
+  abstract: true
+  parent: BaseStructure
+  id: WFBaseWarhead
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.45
+        density: 255
+        mask:
+        - MachineMask
+        layer:
+        - HalfWallLayer
+  - type: Appearance
+  - type: InteractionOutline
+  - type: ActivatableUI
+    key: enum.WFWarheadUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WFWarheadUiKey.Key:
+        type: WFWarheadBoundUserInterface
+  - type: Anchorable
+    delay: 5
+  - type: Pullable
+  - type: AccessReader
+    access: [["SyndicateAgent"], ["NuclearOperative"]]
+    breakOnAccessBreaker: false
+  - type: StaticPrice
+    price: 50000
+  - type: CargoSellBlacklist
+  - type: ArrivalsBlacklist
+  - type: FTLSmashImmune
+  - type: WarpPoint
+    follow: true
+    location: nuclear warhead
+  - type: ShipyardSellCondition
+    blockSale: true
+    reason: shipyard-console-dangerous-materials
+    allowedShipyardTypes:
+    - Syndicate
+    - BlackMarket
+
+- type: entity
+  parent: WFBaseWarhead
+  id: WFWarheadTactical
+  name: tactical demolition warhead
+  description: A compact sub-kiloton device on a hand cart. Set the timer, flip the switch, walk away briskly.
+  components:
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Dynamic
+  - type: Sprite
+    sprite: Objects/Devices/nuke.rsi
+    noRot: true
+    layers:
+    - state: nuclearbomb_base
+    - state: nuclearbomb_deployed_unlit
+      map: ["enum.WFWarheadVisuals.State"]
+      shader: unshaded
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.WFWarheadVisuals.State:
+        enum.WFWarheadVisuals.State:
+          Safe: { visible: false }
+          Armed: { visible: true, state: nuclearbomb_deployed_unlit }
+          Countdown: { visible: true, state: nuclearbomb_timing }
+          Final: { visible: true, state: nuclearbomb_exploding }
+  - type: WFWarhead
+    payload: WFPayloadTactical
+    yieldClass: wf-warhead-class-tactical
+    timer: 60
+    disarmDelay: 15
+  - type: WFTimerFuze
+    options: [ 10, 30, 60, 120, 300 ]
+  - type: WFRemoteFuze
+  - type: DeviceLinkSink
+    ports:
+    - WFWarheadDetonate
+
+- type: entity
+  parent: WFBaseWarhead
+  id: WFWarheadField
+  name: field nuclear warhead
+  description: A wheeled multi-kiloton warhead. Two keyholders have to turn their keys together.
+  components:
+  - type: Sprite
+    sprite: _WF/Warheads/field.rsi
+    noRot: true
+    layers:
+    - state: nuclearbomb_base
+      map: ["base"]
+    - state: lights-safety
+      map: ["lights"]
+      shader: unshaded
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.WFWarheadVisuals.State:
+        base:
+          Safe: { state: nuclearbomb_base }
+          Armed: { state: nuclearbomb_safetyoff }
+          Countdown: { state: nuclearbomb_timing }
+          Final: { state: nuclearbomb_exploding }
+        lights:
+          Safe: { visible: false }
+          Armed: { visible: true, state: lights-safety }
+          Countdown: { visible: true, state: lights-timing }
+          Final: { visible: true, state: lights-exploding }
+  - type: WFWarhead
+    payload: WFPayloadField
+    timer: 180
+    yieldClass: wf-warhead-class-field
+  - type: WFTimerFuze
+    options: [ 60, 120, 180, 300, 600 ]
+  - type: WFTwoPersonArming
+
+- type: entity
+  parent: WFBaseWarhead
+  id: WFWarheadStrategic
+  name: strategic nuclear device
+  description: A megaton-class device on a launch cradle. It does not damage a station so much as remove it.
+  components:
+  - type: Sprite
+    sprite: _WF/Warheads/strategic.rsi
+    noRot: true
+    offset: 0, 0.5
+    layers:
+    - state: nuke
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.95,-0.45,0.95,0.45"
+        density: 1000
+        mask:
+        - MachineMask
+        layer:
+        - HalfWallLayer
+  - type: WFWarhead
+    payload: WFPayloadStrategic
+    yieldClass: wf-warhead-class-strategic
+    timer: 300
+    disarmDelay: 60
+  - type: WFTwoPersonArming
+    window: 5
+
+- type: entity
+  parent: WFBaseWarhead
+  id: WFWarheadScuttleTerminal
+  name: scuttling warhead terminal
+  description: A ship self-destruct charge. Arm it with two keys, or take the safety off and wire it to a detonator.
+  components:
+  - type: Anchorable
+    flags: Unanchorable
+    delay: 10
+  - type: Sprite
+    sprite: _WF/Warheads/terminal.rsi
+    noRot: true
+    layers:
+    - state: nuclearbomb_base
+      map: ["base"]
+    - state: lights-safety
+      map: ["lights"]
+      shader: unshaded
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.WFWarheadVisuals.State:
+        base:
+          Safe: { state: nuclearbomb_base }
+          Armed: { state: nuclearbomb_safetyoff }
+          Countdown: { state: nuclearbomb_timing }
+          Final: { state: nuclearbomb_exploding }
+        lights:
+          Safe: { visible: false }
+          Armed: { visible: true, state: lights-safety }
+          Countdown: { visible: true, state: lights-timing }
+          Final: { visible: true, state: lights-exploding }
+  - type: WFWarhead
+    payload: WFPayloadField
+    timer: 120
+    yieldClass: wf-warhead-class-scuttle
+  - type: WFTwoPersonArming
+  - type: WFRemoteFuze
+    signalTimer: 30
+  - type: DeviceLinkSink
+    ports:
+    - WFWarheadDetonate
+
+- type: entity
+  parent: BaseItem
+  id: WFDeadManSwitch
+  name: dead-man switch
+  description: A grip trigger. Once squeezed, letting go for any reason sets off whatever it is linked to.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/signaltrigger.rsi
+    state: signaltrigger
+  - type: Item
+    size: Small
+  - type: WFDeadManTrigger
+  - type: DeviceLinkSource
+    ports:
+    - WFDeadManReleased
+  - type: StaticPrice
+    price: 500

@@ -1,0 +1,621 @@
+# Growths: structures the Director grows on corruption. Rules and numbers from DS13-2.0's corruption/structures.
+
+# DS13 takes a quarter of brute and doubles burn; this is milder, since a crew has fewer tools.
+- type: damageModifierSet
+  id: WFRemadeGrowth
+  coefficients:
+    Blunt: 0.5
+    Slash: 0.5
+    Piercing: 0.5
+    Heat: 2
+    Cold: 0.5
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: entity
+  abstract: true
+  id: WFRemadeGrowthBase
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  # Soft, like kudzu: walked over, but a body for the physics to keep.
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        density: 7
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        layer:
+        - MidImpassable
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Appearance
+  - type: Damageable
+    damageModifierSet: WFRemadeGrowth
+  - type: Temperature
+    heatDamage:
+      types:
+        Heat: 5
+    coldDamage: {}
+    coldDamageThreshold: 0
+  - type: Flammable
+    damage:
+      types:
+        Heat: 3
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+
+# Nodes. Each feeds corruption within its reach up to its capacity (WFCorruptionNode).
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFCorruptionBranch
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: SmallObjects
+    layers:
+    - map: [ "base" ]
+      state: minigrowth3
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth1 }
+          Idle: { state: minigrowth3 }
+          Active: { state: minigrowth3 }
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 60
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFCorruptionBranch
+  - type: WFCorruptionNode
+    capacity: 32
+    reach: 5
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFCorruptionRoot
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: SmallObjects
+    layers:
+    - map: [ "base" ]
+      state: minigrowth1
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth2 }
+          Idle: { state: minigrowth1 }
+          Active: { state: minigrowth1 }
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFCorruptionRoot
+  - type: WFCorruptionNode
+    capacity: 24
+    reach: 8
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFCorruptionPropagator
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: SmallObjects
+    layers:
+    - map: [ "base" ]
+      state: growth
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth4 }
+          Idle: { state: growth }
+          Active: { state: growth }
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFCorruptionPropagator
+  - type: WFCorruptionNode
+    capacity: 120
+    reach: 12
+
+# Dim, sickly light along the corruption.
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeLamp
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: SmallObjects
+    layers:
+    - map: [ "base" ]
+      state: light
+      shader: unshaded
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth2 }
+          Idle: { state: light }
+          Active: { state: light }
+  - type: PointLight
+    radius: 3.5
+    energy: 0.7
+    color: "#b9ab2d"
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 25
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeLamp
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeEye
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    drawdepth: SmallObjects
+    layers:
+    - map: [ "base" ]
+      state: minieye
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth4 }
+          Idle: { state: minieye }
+          Active: { state: eye }
+  - type: PointLight
+    radius: 2.5
+    energy: 0.5
+    color: "#e08a2c"
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeEye
+  - type: WFEye
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeCyst
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: SmallObjects
+    layers:
+    - map: [ "base" ]
+      state: cyst-empty
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth3 }
+          Idle: { state: cyst-empty }
+          Active: { state: cyst-full }
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 60
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeCyst
+  - type: WFCyst
+
+- type: entity
+  id: WFRemadeCystBomb
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    layers:
+    - state: cyst-bomb
+      shader: unshaded
+  - type: Physics
+    bodyType: Dynamic
+    linearDamping: 0
+    angularDamping: 0
+  - type: Fixtures
+    fixtures:
+      projectile:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.15,-0.15,0.15,0.15"
+        hard: false
+        mask:
+        - Impassable
+        - BulletImpassable
+  - type: Projectile
+    damage:
+      types:
+        Caustic: 18
+  - type: TimedDespawn
+    lifetime: 2.5
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeSnare
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: FloorObjects
+    layers:
+    - map: [ "base" ]
+      state: snare
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth2 }
+          Idle: { state: snare }
+          Active: { state: snare }
+  - type: Fixtures
+    fixtures:
+      snare:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        hard: false
+        layer:
+        - SlipLayer
+  - type: StepTrigger
+    stepOn: true
+    intersectRatio: 0.4
+  - type: SpeedModifierContacts
+    walkSpeedModifier: 0.7
+    sprintSpeedModifier: 0.7
+    ignoreWhitelist:
+      tags:
+      - WFRemade
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 60
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeSnare
+  - type: WFSnare
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeMaw
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: FloorObjects
+    layers:
+    - map: [ "base" ]
+      state: maw_new
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { state: minigrowth4 }
+          Idle: { state: maw_new }
+          Active: { state: maw_new_active }
+  - type: Strap
+    position: Down
+    size: 200
+    buckleOnInteractHand: false
+    buckleDoafterTime: 3
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeMaw
+  - type: WFMaw
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeNest
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    noRot: true
+    drawdepth: Objects
+    layers:
+    - map: [ "base" ]
+      sprite: _WF/Remade/Structures/nest.rsi
+      state: nest
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { sprite: _WF/Remade/Structures/growths.rsi, state: minigrowth4 }
+          Idle: { sprite: _WF/Remade/Structures/nest.rsi, state: nest }
+          Active: { sprite: _WF/Remade/Structures/nest.rsi, state: nest }
+  - type: PointLight
+    radius: 3.5
+    energy: 0.7
+    color: "#bcb10d"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 250
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeNest
+  - type: WFNest
+
+- type: entity
+  parent: WFRemadeGrowthBase
+  id: WFRemadeHarvester
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/harvester.rsi
+    noRot: true
+    drawdepth: Objects
+    layers:
+    - map: [ "base" ]
+      state: closed
+  - type: GenericVisualizer
+    visuals:
+      enum.WFGrowthVisuals.State:
+        base:
+          Growing: { sprite: _WF/Remade/Structures/growths.rsi, state: minigrowth4 }
+          Idle: { sprite: _WF/Remade/Structures/harvester.rsi, state: closed }
+          Active: { sprite: _WF/Remade/Structures/harvester.rsi, state: active }
+  - type: PointLight
+    enabled: false
+    radius: 6
+    energy: 1.4
+    color: "#c9b81a"
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 220
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFGrowth
+    kind: WFRemadeHarvester
+  - type: WFHarvester
+
+# What the Director may raise. Costs are biomass.
+- type: wfRemadeGrowth
+  id: WFCorruptionBranch
+  entity: WFCorruptionBranch
+  cost: 12
+  minStage: Growth
+  site: Frontier
+  weight: 3
+  maxAlive: 2
+  alivePerStage: 2
+  sameDistance: 3
+  workSeconds: 3
+  growSeconds: 45
+
+- type: wfRemadeGrowth
+  id: WFCorruptionRoot
+  entity: WFCorruptionRoot
+  cost: 20
+  minStage: Growth
+  site: Frontier
+  weight: 2
+  maxAlive: 1
+  alivePerStage: 1
+  sameDistance: 4
+  workSeconds: 4
+  growSeconds: 60
+
+- type: wfRemadeGrowth
+  id: WFCorruptionPropagator
+  entity: WFCorruptionPropagator
+  cost: 45
+  minStage: Growth
+  site: Frontier
+  weight: 1
+  maxAlive: 1
+  alivePerStage: 1
+  sameDistance: 8
+  workSeconds: 6
+  growSeconds: 90
+
+- type: wfRemadeGrowth
+  id: WFRemadeLamp
+  entity: WFRemadeLamp
+  cost: 6
+  minStage: Growth
+  site: Near
+  weight: 4
+  maxAlive: 3
+  alivePerStage: 2
+  sameDistance: 4
+  inSight: true
+  workSeconds: 2
+  growSeconds: 30
+
+- type: wfRemadeGrowth
+  id: WFRemadeEye
+  entity: WFRemadeEye
+  cost: 15
+  minStage: Harvest
+  site: Near
+  weight: 2
+  maxAlive: 2
+  alivePerStage: 1
+  sameDistance: 6
+  inSight: true
+  workSeconds: 3
+  growSeconds: 45
+
+- type: wfRemadeGrowth
+  id: WFRemadeCyst
+  entity: WFRemadeCyst
+  cost: 20
+  minStage: Harvest
+  site: Choke
+  weight: 3
+  maxAlive: 2
+  alivePerStage: 1
+  sameDistance: 3
+  requireWall: true
+  workSeconds: 3
+  growSeconds: 60
+
+- type: wfRemadeGrowth
+  id: WFRemadeSnare
+  entity: WFRemadeSnare
+  cost: 25
+  minStage: Harvest
+  site: Choke
+  weight: 3
+  maxAlive: 2
+  alivePerStage: 1
+  sameDistance: 3
+  inSight: true
+  workSeconds: 3
+  growSeconds: 60
+
+- type: wfRemadeGrowth
+  id: WFRemadeMaw
+  entity: WFRemadeMaw
+  cost: 40
+  minStage: Harvest
+  site: Choke
+  weight: 2
+  maxAlive: 1
+  alivePerStage: 1
+  sameDistance: 6
+  workSeconds: 5
+  growSeconds: 90
+
+- type: wfRemadeGrowth
+  id: WFRemadeHarvester
+  entity: WFRemadeHarvester
+  cost: 60
+  minStage: Harvest
+  site: Rear
+  weight: 1
+  maxAlive: 1
+  alivePerStage: 1
+  sameDistance: 10
+  workSeconds: 8
+  growSeconds: 120
+
+- type: wfRemadeGrowth
+  id: WFRemadeNest
+  entity: WFRemadeNest
+  cost: 110
+  minStage: Rapture
+  site: Rear
+  weight: 1
+  maxAlive: 1
+  alivePerStage: 1
+  sameDistance: 8
+  workSeconds: 10
+  growSeconds: 150

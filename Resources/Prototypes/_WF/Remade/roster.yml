@@ -1,0 +1,1449 @@
+# The common Remade: hopper, leaper, spitter, exploder, puker, lurker and the enhanced leaper and exploder.
+# Health, speed, armour and costs from DS13-2.0's subtypes (the lurker from DS13-1.0). Armour is 1 - the DS percentage.
+
+- type: damageModifierSet
+  id: WFRemadeHopper
+  coefficients:
+    Blunt: 0.75
+    Piercing: 0.7
+    Slash: 0.9
+    Heat: 1.2
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeLeaper
+  coefficients:
+    Blunt: 0.5
+    Piercing: 0.65
+    Slash: 0.75
+    Heat: 1.2
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeLeaperEnhanced
+  coefficients:
+    Blunt: 0.35
+    Piercing: 0.55
+    Slash: 0.7
+    Heat: 0.8
+    Caustic: 0.05
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeSpitter
+  coefficients:
+    Blunt: 0.6
+    Piercing: 0.55
+    Slash: 0.8
+    Heat: 1.2
+    Caustic: 0.1
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeExploder
+  coefficients:
+    Blunt: 0.75
+    Piercing: 0.7
+    Slash: 0.95
+    Heat: 1.2
+    Caustic: 0
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeExploderEnhanced
+  coefficients:
+    Blunt: 0.6
+    Piercing: 0.6
+    Slash: 0.85
+    Heat: 0.9
+    Caustic: 0
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadePuker
+  coefficients:
+    Blunt: 0.5
+    Piercing: 0.5
+    Slash: 0.8
+    Heat: 1
+    Caustic: 0
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+# The lurker's shell shut: armoured all over. Open it is soft.
+- type: damageModifierSet
+  id: WFRemadeLurkerShell
+  coefficients:
+    Blunt: 0.4
+    Piercing: 0.35
+    Slash: 0.5
+    Heat: 0.8
+    Caustic: 0.2
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+- type: damageModifierSet
+  id: WFRemadeLurkerOpen
+  coefficients:
+    Blunt: 0.9
+    Piercing: 0.9
+    Slash: 1
+    Heat: 1.2
+    Caustic: 0.5
+    Cold: 0
+    Poison: 0
+    Radiation: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+# Projectiles
+
+- type: entity
+  parent: BaseBullet
+  id: WFRemadeSpitSnap
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Effects/projectiles.rsi
+    layers:
+    - state: pukeshot
+      shader: unshaded
+  - type: Projectile
+    damage:
+      types:
+        Caustic: 6
+  - type: Tracer
+    color: "#7CA03CFF"
+    length: 1.5
+  - type: TimedDespawn
+    lifetime: 1.5
+  - type: WFRemadeProjectile
+
+- type: entity
+  parent: WFRemadeSpitSnap
+  id: WFRemadeSpitLong
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Caustic: 10
+  - type: TimedDespawn
+    lifetime: 1.2
+
+- type: entity
+  parent: BaseBullet
+  id: WFRemadeSpine
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Mobs/lurker.rsi
+    layers:
+    - state: spine_projectile
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 10
+  - type: Tracer
+    color: "#C8B89AFF"
+    length: 1
+  - type: TimedDespawn
+    lifetime: 1.2
+  - type: WFRemadeProjectile
+
+# Hopper
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeHopper
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/hopper.rsi
+    noRot: true
+    layers:
+    - map: [ "l_leg" ]
+      state: hopper_l_leg
+    - map: [ "r_leg" ]
+      state: hopper_r_leg
+    - map: [ "chest" ]
+      state: hopper_chest
+    - map: [ "tail" ]
+      state: hopper_r_arm
+    - map: [ "head" ]
+      state: hopper_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: HTN
+    rootTask:
+      task: WFRemadeHopperCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        14
+      AggroVisionRadius: !type:Single
+        20
+  # Sneaking flags it for the client to draw under a table, as for Rodentia; a hider sets it itself.
+  - type: CrawlUnderObjects
+    sneakSpeedModifier: 1
+  - type: WFHider
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeHopper
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      65: Dead
+  # DS13: speedmod 0.5, almost as fast as a person.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.2
+    baseSprintSpeed: 4.2
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeLeaperAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 8
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeLeaperFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeLeaperSpeech
+    pain:
+      collection: WFRemadeLeaperPain
+    death:
+      collection: WFRemadeLeaperDeath
+    shout:
+      collection: WFRemadeLeaperShoutLong
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/hopper.rsi
+    floors: { Melee: 0.2, Speed: 0.15, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 15
+      weight: 1.5
+      loss: 8
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: l_arm_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 15
+      weight: 1.5
+      loss: 8
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: r_arm_lying
+    - id: chest
+      health: 100
+      weight: 3
+      scale: 0.4
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: hopper_chest_lying
+    - id: tail
+      name: wf-remade-limb-tail
+      health: 12
+      weight: 1
+      loss: 6
+      zones: [ LeftArm, LeftHand, RightArm, RightHand ]
+      lying: tail_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 20
+      weight: 1
+      loss: 20
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 10
+      range: 16
+      radius: 5
+      shakeTime: 1.5
+      sound:
+        collection: WFRemadeLeaperShout
+    - !type:WFLeapAbility
+      cooldown: 15
+      minRange: 2.5
+      range: 7
+      windUp: 0.5
+      speed: 12
+      overshoot: 0.8
+      knockdownTime: 1
+      damage:
+        types:
+          Slash: 12
+      sound:
+        collection: WFRemadeLeaperShout
+      hitSound:
+        collection: WFRemadeLeaperClaw
+
+# Leaper
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeLeaper
+  components:
+  - type: HTN
+    rootTask:
+      task: WFRemadeLeaperCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        14
+      AggroVisionRadius: !type:Single
+        20
+  - type: WFWallHugger
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/leaper.rsi
+    noRot: true
+    offset: 0,0
+    layers:
+    - map: [ "l_leg" ]
+      state: leaper_l_leg
+    - map: [ "r_leg" ]
+      state: leaper_r_leg
+    - map: [ "chest" ]
+      state: leaper_chest
+    - map: [ "l_arm" ]
+      state: leaper_l_arm
+    - map: [ "r_arm" ]
+      state: leaper_r_arm
+    - map: [ "head" ]
+      state: leaper_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeLeaper
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      110: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.4
+    baseSprintSpeed: 3.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeLeaperAttack
+    soundHit:
+      collection: WFRemadeLeaperClaw
+    damage:
+      types:
+        Slash: 10
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeLeaperFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeLeaperSpeech
+    pain:
+      collection: WFRemadeLeaperPain
+    death:
+      collection: WFRemadeLeaperDeath
+    shout:
+      collection: WFRemadeLeaperShoutLong
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/leaper.rsi
+    floors: { Melee: 0.2, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    # The tail is the two legs fused: cut both off and it can't leap or stab.
+    - id: l_leg
+      name: wf-remade-limb-tail-left
+      health: 28
+      weight: 1.5
+      loss: 16
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: leaper_l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-tail-right
+      health: 28
+      weight: 1.5
+      loss: 16
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: leaper_r_leg_lying
+    - id: chest
+      health: 200
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: leaper_torso_lying
+    - id: l_arm
+      name: wf-remade-limb-claw-left
+      health: 25
+      weight: 1.5
+      loss: 12
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: leaper_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-claw-right
+      health: 25
+      weight: 1.5
+      loss: 12
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: leaper_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 30
+      weight: 1
+      loss: 30
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: leaper_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeLeaperShout
+    - !type:WFTailStabAbility
+      cooldown: 9
+      windUp: 0.6
+      arc: 90
+      reach: 1.8
+      damage:
+        types:
+          Slash: 24
+      sound:
+        collection: WFRemadeLeaperTailswing
+      hitSound:
+        path: /Audio/Weapons/slash.ogg
+    - !type:WFLeapAbility
+      cooldown: 14
+      minRange: 4
+      range: 12
+      windUp: 1.2
+      # From against a wall: 4 tiles further, a faster crouch, harder landing.
+      wallRange: 4
+      wallWindUp: 0.6
+      wallDamage: 1.25
+      speed: 15
+      knockdownTime: 2
+      damage:
+        types:
+          Slash: 24
+      sound:
+        collection: WFRemadeLeaperShoutLong
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeLeaperEnhanced
+  components:
+  - type: HTN
+    rootTask:
+      task: WFRemadeLeaperCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        14
+      AggroVisionRadius: !type:Single
+        20
+  - type: WFWallHugger
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/leaper_enhanced.rsi
+    noRot: true
+    offset: 0,0
+    layers:
+    - map: [ "l_leg" ]
+      state: enhanced_leaper_l_leg
+    - map: [ "r_leg" ]
+      state: enhanced_leaper_r_leg
+    - map: [ "chest" ]
+      state: enhanced_leaper_chest
+    - map: [ "l_arm" ]
+      state: enhanced_leaper_l_arm
+    - map: [ "r_arm" ]
+      state: enhanced_leaper_r_arm
+    - map: [ "head" ]
+      state: enhanced_leaper_head
+    # Its dead art has less empty room below it than its standing art, so it sits half a tile higher.
+    - map: [ "dead" ]
+      state: dead
+      offset: 0,0.5
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeLeaperEnhanced
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      195: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.4
+    baseSprintSpeed: 3.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeLeaperAttack
+    soundHit:
+      collection: WFRemadeLeaperClaw
+    damage:
+      types:
+        Slash: 20
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeLeaperFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeLeaperSpeech
+    pain:
+      collection: WFRemadeLeaperPain
+    death:
+      collection: WFRemadeLeaperDeath
+    shout:
+      collection: WFRemadeLeaperShoutLong
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/leaper_enhanced.rsi
+    floors: { Melee: 0.2, Speed: 0.2, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-tail-left
+      health: 45
+      weight: 1.5
+      loss: 25
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: enhanced_leaper_l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-tail-right
+      health: 45
+      weight: 1.5
+      loss: 25
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5, Leap: 0.5 }
+      lying: enhanced_leaper_r_leg_lying
+    - id: chest
+      health: 300
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: enhanced_leaper_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-claw-left
+      health: 40
+      weight: 1.5
+      loss: 20
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: enhanced_leaper_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-claw-right
+      health: 40
+      weight: 1.5
+      loss: 20
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: enhanced_leaper_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 50
+      weight: 1
+      loss: 45
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: enhanced_leaper_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeLeaperShout
+    - !type:WFTailStabAbility
+      cooldown: 8
+      windUp: 0.5
+      arc: 110
+      reach: 2
+      knockdownTime: 0.5
+      damage:
+        types:
+          Slash: 36
+      sound:
+        collection: WFRemadeLeaperTailswing
+      hitSound:
+        path: /Audio/Weapons/slash.ogg
+    - !type:WFLeapAbility
+      cooldown: 12
+      minRange: 4
+      range: 13
+      windUp: 1
+      wallRange: 4
+      wallWindUp: 0.6
+      wallDamage: 1.25
+      speed: 17
+      knockdownTime: 2
+      damage:
+        types:
+          Slash: 36
+      sound:
+        collection: WFRemadeLeaperShoutLong
+      hitSound:
+        path: /Audio/Effects/hit_kick.ogg
+
+# Spitter
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeSpitter
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/spitter.rsi
+    noRot: true
+    offset: 0,0.125
+    layers:
+    - map: [ "l_leg" ]
+      state: spitter_l_leg
+    - map: [ "r_leg" ]
+      state: spitter_r_leg
+    - map: [ "chest" ]
+      state: spitter_chest
+    - map: [ "l_arm" ]
+      state: spitter_l_arm
+    - map: [ "r_arm" ]
+      state: spitter_r_arm
+    - map: [ "head" ]
+      state: spitter_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: HTN
+    rootTask:
+      task: WFRemadeSkirmishHuntCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        14
+      AggroVisionRadius: !type:Single
+        20
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeSpitter
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      90: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.4
+    baseSprintSpeed: 3.4
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeSpitterAttack
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    damage:
+      types:
+        Slash: 11
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeSpitterSpeech
+    pain:
+      collection: WFRemadeSpitterPain
+    death:
+      collection: WFRemadeSpitterDeath
+    shout:
+      collection: WFRemadeSpitterShoutLong
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/spitter.rsi
+    floors: { Melee: 0.2, Speed: 0.15, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 25
+      weight: 1.5
+      loss: 14
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+      lying: spitter_l_leg_lying
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 25
+      weight: 1.5
+      loss: 14
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+      lying: spitter_r_leg_lying
+    - id: chest
+      health: 160
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+      lying: spitter_torso_lying
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 22
+      weight: 1.5
+      loss: 10
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+      lying: spitter_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 22
+      weight: 1.5
+      loss: 10
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+      lying: spitter_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 28
+      weight: 1
+      loss: 28
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1, Fire: 1 }
+      lying: spitter_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeSpitterShout
+    # A quick bolt while it's close, a heavier one with a pause to aim from further off.
+    - !type:WFShootAbility
+      projectile: WFRemadeSpitSnap
+      cooldown: 3
+      minRange: 0
+      range: 5
+      windUp: 0
+      projectileSpeed: 14
+      sound:
+        collection: WFRemadeSpitterAttack
+    - !type:WFShootAbility
+      projectile: WFRemadeSpitLong
+      cooldown: 3.5
+      minRange: 5
+      range: 11
+      windUp: 0.5
+      projectileSpeed: 18
+      sound:
+        collection: WFRemadeSpitterAttackExtreme
+      fireSound:
+        collection: WFRemadeSpitterAttack
+
+# Exploder
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeExploder
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/exploder.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "chest" ]
+      state: exploder_chest
+    - map: [ "l_arm" ]
+      state: exploder_l_arm
+    - map: [ "r_arm" ]
+      state: exploder_r_arm
+    - map: [ "head" ]
+      state: exploder_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeExploder
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeExploderAttack
+    soundHit:
+      path: /Audio/Weapons/genhit1.ogg
+    damage:
+      types:
+        Blunt: 6
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeExploderFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeExploderSpeech
+    pain:
+      collection: WFRemadeExploderPain
+    death:
+      collection: WFRemadeExploderDeath
+    shout:
+      collection: WFRemadeExploderShoutLong
+  # DS13: dev 0, heavy 2, light 3, flame 2. About a 2.7 tile blast.
+  - type: WFRemadeExploder
+    pustule: l_arm
+    intensity: 80
+    slope: 4
+    maxIntensity: 12
+    burstSound:
+      collection: WFRemadeExploderBlast
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/exploder.rsi
+    floors: { Melee: 0.2, Sight: 0.4 }
+    limbs:
+    - id: chest
+      health: 160
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin, LeftLeg, LeftFoot, RightLeg, RightFoot ]
+      lying: exploder_chest_lying
+    # The pustule is the left arm. Shot off it bursts where it stands; cut off it just comes away.
+    - id: l_arm
+      name: wf-remade-limb-pustule
+      health: 18
+      weight: 2
+      loss: 0
+      zones: [ LeftArm, LeftHand ]
+      provides: { Burst: 1 }
+      lying: exploder_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-claw-right
+      health: 25
+      weight: 1.5
+      loss: 12
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 1 }
+      lying: exploder_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 30
+      weight: 1
+      loss: 30
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: exploder_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeExploderShout
+    - !type:WFExplodeAbility
+      cooldown: 12
+      range: 3.5
+      fuse: 2.2
+      walkSpeed: 0.6
+      sound:
+        collection: WFRemadeExploderShoutLong
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeExploderEnhanced
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/exploder_enhanced.rsi
+    noRot: true
+    offset: 0,0.34
+    layers:
+    - map: [ "chest" ]
+      state: enhanced_exploder_chest
+    - map: [ "l_arm" ]
+      state: enhanced_exploder_l_arm
+    - map: [ "r_arm" ]
+      state: enhanced_exploder_r_arm
+    - map: [ "head" ]
+      state: enhanced_exploder_head
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeExploderEnhanced
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.2
+    baseSprintSpeed: 3.2
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadeExploderAttack
+    soundHit:
+      path: /Audio/Weapons/genhit1.ogg
+    damage:
+      types:
+        Blunt: 13
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeExploderFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeExploderSpeech
+    pain:
+      collection: WFRemadeExploderPain
+    death:
+      collection: WFRemadeExploderDeath
+    shout:
+      collection: WFRemadeExploderShoutLong
+  # DS13: dev 0, heavy 3, light 4, flame 5. About a 4 tile blast.
+  - type: WFRemadeExploder
+    pustule: l_arm
+    intensity: 250
+    slope: 4
+    maxIntensity: 18
+    burstSound:
+      collection: WFRemadeExploderBlast
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/exploder_enhanced.rsi
+    floors: { Melee: 0.2, Sight: 0.4 }
+    limbs:
+    - id: chest
+      health: 300
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin, LeftLeg, LeftFoot, RightLeg, RightFoot ]
+      lying: enhanced_exploder_chest_lying
+    - id: l_arm
+      name: wf-remade-limb-pustule
+      health: 28
+      weight: 2
+      loss: 0
+      zones: [ LeftArm, LeftHand ]
+      provides: { Burst: 1 }
+      lying: enhanced_exploder_l_arm_lying
+    - id: r_arm
+      name: wf-remade-limb-claw-right
+      health: 40
+      weight: 1.5
+      loss: 20
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 1 }
+      lying: enhanced_exploder_r_arm_lying
+    - id: head
+      name: wf-remade-limb-head
+      health: 50
+      weight: 1
+      loss: 45
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1 }
+      lying: enhanced_exploder_head_lying
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeExploderShout
+    - !type:WFExplodeAbility
+      cooldown: 12
+      range: 4
+      fuse: 2.2
+      walkSpeed: 0.6
+      sound:
+        collection: WFRemadeExploderShoutLong
+
+# Puker. Its sprite sheet has no lying or dead states, so the dead layer is its living state laid on its side and greyed.
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadePuker
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/puker.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "l_leg" ]
+      state: puker_l_leg
+    - map: [ "r_leg" ]
+      state: puker_r_leg
+    - map: [ "chest" ]
+      state: puker_chest
+    - map: [ "l_arm" ]
+      state: puker_l_arm
+    - map: [ "r_arm" ]
+      state: puker_r_arm
+    - map: [ "head" ]
+      state: puker_head
+    - map: [ "dead" ]
+      state: full
+      rotation: 90
+      color: "#777777"
+      visible: false
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadePuker
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.2
+    baseSprintSpeed: 3.2
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcClaw
+    soundSwing:
+      collection: WFRemadePukerAttack
+    soundHit:
+      path: /Audio/Weapons/genhit1.ogg
+    damage:
+      types:
+        Blunt: 8
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadePukerFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadePukerSpeech
+    pain:
+      collection: WFRemadePukerPain
+    death:
+      collection: WFRemadePukerDeath
+    shout:
+      collection: WFRemadePukerShoutLong
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/puker.rsi
+    floors: { Melee: 0.2, Speed: 0.15, Sight: 0.4 }
+    limbs:
+    - id: l_leg
+      name: wf-remade-limb-leg-left
+      health: 35
+      weight: 1.5
+      loss: 18
+      zones: [ LeftLeg, LeftFoot ]
+      provides: { Speed: 0.5 }
+    - id: r_leg
+      name: wf-remade-limb-leg-right
+      health: 35
+      weight: 1.5
+      loss: 18
+      zones: [ RightLeg, RightFoot ]
+      provides: { Speed: 0.5 }
+    - id: chest
+      health: 200
+      weight: 3
+      scale: 0.3
+      severable: false
+      zones: [ Torso, Groin ]
+    - id: l_arm
+      name: wf-remade-limb-arm-left
+      health: 30
+      weight: 1.5
+      loss: 12
+      zones: [ LeftArm, LeftHand ]
+      provides: { Melee: 0.5 }
+    - id: r_arm
+      name: wf-remade-limb-arm-right
+      health: 30
+      weight: 1.5
+      loss: 12
+      zones: [ RightArm, RightHand ]
+      provides: { Melee: 0.5 }
+    - id: head
+      name: wf-remade-limb-head
+      health: 40
+      weight: 1
+      loss: 35
+      zones: [ Head ]
+      provides: { Voice: 1, Sight: 1, Fire: 1 }
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadePukerShout
+    - !type:WFVomitAbility
+      cooldown: 7
+      range: 4.5
+      windUp: 0.8
+      arc: 70
+      slowTime: 4
+      slowSpeed: 0.5
+      spill: 3
+      damage:
+        types:
+          Caustic: 16
+      sound:
+        collection: WFRemadePukerShoutLong
+      vomitSound:
+        collection: WFRemadePukerAttack
+
+# Lurker
+
+- type: entity
+  parent: WFRemadeBase
+  id: WFRemadeLurker
+  components:
+  - type: Appearance
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Remade/Mobs/lurker.rsi
+    noRot: true
+    offset: 0,0.25
+    layers:
+    - map: [ "chest" ]
+      state: lurker_chest
+    - map: [ "tentacle_1" ]
+      state: lurker_tentacle_1
+    - map: [ "tentacle_2" ]
+      state: lurker_tentacle_2
+    - map: [ "tentacle_3" ]
+      state: lurker_tentacle_3
+    - map: [ "shell" ]
+      state: lurker_lurker_shell
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.WFRemadeShellVisuals.Open:
+        shell:
+          True: { visible: false }
+          False: { visible: true }
+  - type: HTN
+    rootTask:
+      task: WFRemadeSkirmishHuntCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        14
+      AggroVisionRadius: !type:Single
+        20
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WFRemadeLurkerShell
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      65: Dead
+  # DS13-2.0: speedmod 1.4. Open, the shell cuts it to a third.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.6
+    baseSprintSpeed: 3.6
+  # A bite, only if something gets in close. The spines are its weapon.
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    attackRate: 0.8
+    animation: WeaponArcBite
+    soundSwing:
+      collection: WFRemadeLurkerAttack
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    damage:
+      types:
+        Piercing: 4
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: WFRemadeLurkerFootstep
+  - type: WFRemadeVoice
+    speech:
+      collection: WFRemadeLurkerSpeech
+    pain:
+      collection: WFRemadeLurkerPain
+    death:
+      collection: WFRemadeLurkerDeath
+    shout:
+      collection: WFRemadeLurkerShoutLong
+  - type: WFRemadeShell
+    covered: [ tentacle_1, tentacle_2, tentacle_3 ]
+  # DS13: with all three tentacles gone it dies.
+  - type: WFDiesWithoutLimbs
+    limbs: [ tentacle_1, tentacle_2, tentacle_3 ]
+  - type: WFRemadeLimbs
+    rsi: _WF/Remade/Mobs/lurker.rsi
+    floors: { Sight: 0.4 }
+    limbs:
+    - id: chest
+      health: 150
+      weight: 3
+      scale: 0.5
+      severable: false
+      zones: [ Torso, Groin, LeftLeg, LeftFoot, RightLeg, RightFoot ]
+      lying: lurker_chest_lying
+    # The tentacles are the weak point: they fire the spines, and all three off kills it.
+    - id: tentacle_1
+      name: wf-remade-limb-tentacle
+      health: 18
+      weight: 1.5
+      loss: 12
+      zones: [ LeftArm, LeftHand ]
+      provides: { Fire: 0.34 }
+    - id: tentacle_2
+      name: wf-remade-limb-tentacle
+      health: 18
+      weight: 1.5
+      loss: 12
+      zones: [ Head ]
+      provides: { Fire: 0.33 }
+    - id: tentacle_3
+      name: wf-remade-limb-tentacle
+      health: 18
+      weight: 1.5
+      loss: 12
+      zones: [ RightArm, RightHand ]
+      provides: { Fire: 0.33 }
+  - type: WFRemadeAbilities
+    abilities:
+    - !type:WFShoutAbility
+      cooldown: 8
+      range: 20
+      sound:
+        collection: WFRemadeLurkerShout
+    - !type:WFSpineAbility
+      cooldown: 6
+      minRange: 3
+      range: 13
+      projectile: WFRemadeSpine
+      projectileSpeed: 18
+      windUp: 0.85
+      openTime: 1
+      volleyCooldown: 3
+      curlTime: 4
+      giveUp: 5
+      spread: 14
+      openSpeed: 0.35
+      spines: [ tentacle_1, tentacle_2, tentacle_3 ]
+      sound:
+        collection: WFRemadeLurkerAttack
+      openSound:
+        collection: WFRemadeLurkerShoutLong
+      fireSound:
+        collection: WFRemadeLurkerSpineFire
+
+# The mobs the Director buys and corpses rise as. Costs are DS13-2.0's biomass costs.
+
+- type: wfRemadeMob
+  id: WFRemadeHopper
+  entity: WFRemadeHopper
+  cost: 38
+  minStage: Growth
+  spawnWeight: 7
+  # A dead animal under 30 kg rises as this.
+  animalWeight: 1
+  animalMaxMass: 29.9
+
+- type: wfRemadeMob
+  id: WFRemadeLeaper
+  entity: WFRemadeLeaper
+  cost: 65
+  minStage: Growth
+  spawnWeight: 3
+  conversionWeight: 2
+  lightArmourAndLegs: true
+
+- type: wfRemadeMob
+  id: WFRemadeLeaperEnhanced
+  entity: WFRemadeLeaperEnhanced
+  cost: 140
+  minStage: Rapture
+  spawnWeight: 1.5
+
+- type: wfRemadeMob
+  id: WFRemadeSpitter
+  entity: WFRemadeSpitter
+  cost: 45
+  minStage: Growth
+  spawnWeight: 4
+  conversionWeight: 3
+  conversionSex: Female
+
+- type: wfRemadeMob
+  id: WFRemadeExploder
+  entity: WFRemadeExploder
+  cost: 75
+  minStage: Harvest
+  spawnWeight: 3
+  conversionWeight: 2.5
+  conversionSex: Male
+
+- type: wfRemadeMob
+  id: WFRemadeExploderEnhanced
+  entity: WFRemadeExploderEnhanced
+  cost: 165
+  minStage: Rapture
+  spawnWeight: 1
+  conversionWeight: 0.5
+  conversionSex: Male
+
+- type: wfRemadeMob
+  id: WFRemadePuker
+  entity: WFRemadePuker
+  cost: 125
+  minStage: Rapture
+  # DS13 picks a puker's look at 2 to 1 (plain, flayed); the flayed one is in variants.yml.
+  spawnWeight: 1.33
+  conversionWeight: 1.33
+  minPoison: 60
+
+- type: wfRemadeMob
+  id: WFRemadeLurker
+  entity: WFRemadeLurker
+  cost: 55
+  minStage: Harvest
+  # DS13 picks a lurker's look at 1 to 0.1 (plain, hound); the hound is in variants.yml.
+  spawnWeight: 1.82
+  # One of 30 kg or more rises as this.
+  animalWeight: 1
+  animalMinMass: 30
+
+# AI
+
+# Closes in until it sees the target from the hold range, then stands and lets its abilities fire, backing off when pressed.
+- type: htnCompound
+  id: WFRemadeSkirmishCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      operator: !type:WFSkirmishOperator
+        targetKey: Target
+        holdRange: 9
+        backOffRange: 4
+        retreatStep: 3
+      services:
+      - !type:UtilityService
+        id: MeleeService
+        proto: NearbyMeleeTargets
+        key: Target
+
+- type: htnCompound
+  id: WFRemadeSkirmishHuntCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WFRemadeSkirmishCompound
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFRemadeHunt
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRemadeHunt
+        shutdownState: PlanFinished
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound

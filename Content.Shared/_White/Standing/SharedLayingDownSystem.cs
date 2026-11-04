@@ -72,7 +72,7 @@ public abstract partial class SharedLayingDownSystem : EntitySystem
             return;
         }
 
-        RaiseNetworkEvent(new CheckAutoGetUpEvent(GetNetEntity(uid)));
+        RaiseNetworkEvent(new CheckAutoGetUpEvent(GetNetEntity(uid)), Filter.Pvs(uid, entityManager: EntityManager)); // WOLFGATE(Performance): only viewers of the body need it
 
         if (HasComp<KnockedDownComponent>(uid) || !_mobState.IsAlive(uid))
             return;

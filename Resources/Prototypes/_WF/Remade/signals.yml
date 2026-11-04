@@ -1,0 +1,361 @@
+# Signals: dead players a Monolith holds as unseen eyes. They fly near the stone, play tricks on the living and drive its Remade.
+
+- type: entity
+  parent: Incorporeal
+  id: WFSignal
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Mobs/Ghosts/ghost_human.rsi
+    color: "#a8301f99"
+    layers:
+    - state: animated
+      shader: unshaded
+  - type: ContentEye
+    maxZoom: 1.44,1.44
+  - type: Eye
+    drawFov: false
+    drawLight: false
+  - type: Input
+    context: "ghost"
+  - type: Examiner
+    skipChecks: true
+  - type: Actions
+  - type: WFSignal
+
+# The ghost role a Monolith offers. It is paused while the stone is full or can't take Signals.
+- type: entity
+  id: WFSignalGate
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: GhostRole
+    name: wf-signal-role-name
+    description: wf-signal-role-description
+    rules: wf-signal-role-rules
+    makeSentient: true
+    allowSpeech: false
+    allowMovement: true
+  - type: GhostRoleMobSpawner
+    prototype: WFSignal
+    deleteOnSpawn: false
+    availableTakeovers: 1000000
+  - type: WFSignalGate
+
+# Tricks: point at a thing. The cooldown comes from WFSignalMath.
+
+- type: entity
+  id: WFSignalActionFlicker
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: flicker }
+    event: !type:WFSignalTrickEvent
+      trick: Flicker
+    canTargetSelf: false
+    range: 14
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionWhisper
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: whisper }
+    event: !type:WFSignalTrickEvent
+      trick: Whisper
+    canTargetSelf: false
+    range: 14
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionFalseSound
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: false_sound }
+    event: !type:WFSignalTrickEvent
+      trick: FalseSound
+    canTargetSelf: false
+    range: 14
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionScrawl
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: writing }
+    event: !type:WFSignalTrickEvent
+      trick: Scrawl
+    canTargetSelf: false
+    range: 14
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionDoor
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: meddle }
+    event: !type:WFSignalTrickEvent
+      trick: Door
+    canTargetSelf: false
+    range: 14
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionBolt
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: blowout }
+    event: !type:WFSignalTrickEvent
+      trick: Bolt
+    canTargetSelf: false
+    range: 14
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionPossess
+  components:
+  - type: EntityTargetAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: scry }
+    event: !type:WFSignalPossessEvent
+    canTargetSelf: false
+    range: 8
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionRelease
+  components:
+  - type: InstantAction
+    icon: { sprite: _WF/Remade/Interface/signal_actions.rsi, state: tracer }
+    event: !type:WFSignalReleaseEvent
+    raiseOnUser: true
+    checkCanInteract: false
+    checkConsciousness: false
+
+# A driven Remade's abilities. The ability class is WF<Name>Ability; the cooldown comes from the ability.
+
+- type: entity
+  id: WFSignalActionLeap
+  components:
+  - type: WorldTargetAction
+    icon: { sprite: Interface/Actions/jump.rsi, state: icon }
+    event: !type:WFSignalAbilityEvent
+      ability: WFLeapAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionPounce
+  components:
+  - type: WorldTargetAction
+    icon: { sprite: Interface/Actions/jump.rsi, state: icon }
+    event: !type:WFSignalAbilityEvent
+      ability: WFPounceAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionBlink
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/manifest.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFBlinkAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionCharge
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/harm.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFChargeAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionRam
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/harmOff.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFRamAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionDodge
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/eyeopen.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFDodgeAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionShout
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/scream.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFShoutAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionTaunt
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/zombie-turn.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFTauntAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionTailStab
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/disarm.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFTailStabAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionSwing
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/disarmOff.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFSwingAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionShoot
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/blight.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFShootAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionVomit
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/defile.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFVomitAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionSpine
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/web.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFSpineAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionTongue
+  components:
+  - type: WorldTargetAction
+    icon: { sprite: Interface/Actions/devour.rsi, state: icon }
+    event: !type:WFSignalAbilityEvent
+      ability: WFTongueAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionLatch
+  components:
+  - type: WorldTargetAction
+    icon: { sprite: Interface/Actions/devour.rsi, state: icon-on }
+    event: !type:WFSignalAbilityEvent
+      ability: WFLatchAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false
+
+- type: entity
+  id: WFSignalActionExplode
+  components:
+  - type: WorldTargetAction
+    icon: Interface/Actions/malfunction.png
+    event: !type:WFSignalAbilityEvent
+      ability: WFExplodeAbility
+    range: 40
+    raiseOnUser: true
+    checkCanAccess: false
+    checkCanInteract: false
+    checkConsciousness: false

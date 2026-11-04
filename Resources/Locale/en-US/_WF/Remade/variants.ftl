@@ -1,0 +1,12 @@
+ent-WFRemadeSlasherDesiccated = desiccated slasher
+    .desc = A slasher dried out and gone brittle. It still cuts.
+ent-WFRemadeSlasherCarrion = carrion slasher
+    .desc = Stooped, long in the arm and wrong in the joints. Whatever this was, it wasn't dressed.
+ent-WFRemadeBruteFlesh = flesh brute
+    .desc = A brute with no armour plates, only slabs of raw meat. Shoot the limbs, since nothing comes off.
+ent-WFRemadePukerFlayed = flayed puker
+    .desc = Skinned by its own acid. It keeps spitting anyway.
+ent-WFRemadeLurkerMalo = hound lurker
+    .desc = Four legs, a hard shell and tentacles folded inside. It runs you down, then opens up.
+ent-WFRemadeHopperFennec = fennec
+    .desc = A small, quick thing with a thick tail and long claws. Tougher than a hopper.

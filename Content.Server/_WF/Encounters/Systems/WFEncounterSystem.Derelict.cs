@@ -68,10 +68,8 @@ public sealed partial class WFEncounterSystem
         if (distance <= encounter.Leash)
             return;
 
-        var net = GetNetEntity(ship.Grid);
-        var rest = _objectives.Snapshot().FirstOrDefault(crew => crew.Grid == net && crew.Group == ship.Group)?.Objectives;
         // With nothing left to fly it is going nowhere further.
-        if (rest == null || rest.Count == 0)
+        if (!_objectives.TryGetQueue(ship.Grid, ship.Group, out var rest) || rest.Count == 0)
             return;
 
         var queue = new List<WFCrewObjective>(rest);

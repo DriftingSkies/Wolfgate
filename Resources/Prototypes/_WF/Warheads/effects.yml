@@ -1,0 +1,60 @@
+- type: explosion
+  id: WFNuclear
+  damagePerIntensity:
+    types:
+      Heat: 8
+      Blunt: 5
+      Piercing: 3
+      Radiation: 4
+      Structural: 25
+  tileBreakChance: [0, 0.5, 1]
+  tileBreakIntensity: [0, 8, 25]
+  tileBreakRerollReduction: 15
+  lightColor: Orange
+  fireColor: Orange
+  texturePath: /Textures/Effects/fire.rsi
+  fireStates: 3
+  temperature: 3000
+
+- type: shader
+  id: WFNuclearBlast
+  kind: source
+  path: "/Textures/_WF/Warheads/Shaders/nuclear_blast.swsl"
+
+- type: shader
+  id: WFFalloutHaze
+  kind: source
+  path: "/Textures/_WF/Warheads/Shaders/fallout_haze.swsl"
+
+- type: entity
+  id: WFNuclearPromptRadiation
+  name: radiation burst
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RadiationSource
+    intensity: 100
+    slope: 0.05
+  - type: TimedDespawn
+    lifetime: 5
+
+- type: entity
+  id: WFNuclearFallout
+  name: nuclear fallout
+  description: Settled radioactive dust. Don't breathe it.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RadiationSource
+    intensity: 5
+    slope: 0.15
+  - type: WFFallout
+
+- type: sinkPort
+  id: WFWarheadDetonate
+  name: wf-signal-port-name-warhead-detonate
+  description: wf-signal-port-description-warhead-detonate
+
+- type: sourcePort
+  id: WFDeadManReleased
+  name: wf-signal-port-name-deadman-released
+  description: wf-signal-port-description-deadman-released
+  defaultLinks: [ WFWarheadDetonate ]

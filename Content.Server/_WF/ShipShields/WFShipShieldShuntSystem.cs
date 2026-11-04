@@ -62,18 +62,39 @@ public sealed partial class WFShipShieldShuntSystem : EntitySystem
         if (_generatorUiAccumulator < 0.2f)
             return;
         _generatorUiAccumulator = 0f;
-        var open = new HashSet<EntityUid>();
-        var query = EntityQueryEnumerator<ShipShieldEmitterComponent>();
-        while (query.MoveNext(out var uid, out _))
+        // Consoles on one ship share a single scan of its emitters and FTL state per pass.
+        _passStates = new Dictionary<EntityUid, WFShipShieldShuntState>();
+        try
         {
-            if (!_ui.IsUiOpen(uid, WFShipShieldUiKey.Key))
-                continue;
-            open.Add(uid);
-            UpdateGeneratorUi(uid);
+            var open = new HashSet<EntityUid>();
+            var query = EntityQueryEnumerator<ShipShieldEmitterComponent>();
+            while (query.MoveNext(out var uid, out _))
+            {
+                if (!_ui.IsUiOpen(uid, WFShipShieldUiKey.Key))
+                    continue;
+                open.Add(uid);
+                UpdateGeneratorUi(uid);
+            }
+            foreach (var uid in _generatorStates.Keys.Where(uid => !open.Contains(uid)).ToArray())
+                _generatorStates.Remove(uid);
+            UpdateGunneryConsoles();
         }
-        foreach (var uid in _generatorStates.Keys.Where(uid => !open.Contains(uid)).ToArray())
-            _generatorStates.Remove(uid);
-        UpdateGunneryConsoles();
+        finally
+        {
+            _passStates = null;
+        }
+    }
+
+    /// <summary>Shield state per grid for the current pass; null outside a pass.</summary>
+    private Dictionary<EntityUid, WFShipShieldShuntState>? _passStates;
+
+    private WFShipShieldShuntState GetStateForPass(EntityUid? grid)
+    {
+        if (_passStates == null || grid is not { } key)
+            return GetState(grid);
+        if (!_passStates.TryGetValue(key, out var state))
+            _passStates[key] = state = GetState(grid);
+        return state;
     }
 
     /// <summary>Sends each open gunnery console its ship's shield state when it changes or someone new looks.</summary>
@@ -83,11 +104,13 @@ public sealed partial class WFShipShieldShuntSystem : EntitySystem
         var query = EntityQueryEnumerator<FireControlConsoleComponent>();
         while (query.MoveNext(out var uid, out _))
         {
+            if (!_ui.IsUiOpen(uid, FireControlConsoleUiKey.Key))
+                continue;
             var viewers = _ui.GetActors(uid, FireControlConsoleUiKey.Key).ToHashSet();
             if (viewers.Count == 0)
                 continue;
             open.Add(uid);
-            var state = GetState(GunneryGrid(uid));
+            var state = GetStateForPass(GunneryGrid(uid));
             // Who, not how many: one gunner leaving as another arrives still leaves the newcomer with nothing.
             if (_gunneryStates.TryGetValue(uid, out var previous) && previous.Viewers.SetEquals(viewers) && Unchanged(previous.State, state))
                 continue;
@@ -145,7 +168,7 @@ public sealed partial class WFShipShieldShuntSystem : EntitySystem
 
     private void UpdateGeneratorUi(EntityUid uid, bool force = false)
     {
-        var state = GetState(Transform(uid).Anchored ? Transform(uid).GridUid : null);
+        var state = GetStateForPass(Transform(uid).Anchored ? Transform(uid).GridUid : null);
         if (!force && _generatorStates.TryGetValue(uid, out var previous) && Unchanged(previous, state))
             return;
         _generatorStates[uid] = state;

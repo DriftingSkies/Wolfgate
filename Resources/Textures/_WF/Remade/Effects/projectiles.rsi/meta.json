@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at https://github.com/DS-13-Dev-Team/DS13-2.0 (deadspace/icons/necromorphs/necroprojectiles.dmi)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "pukeshot"
+    },
+    {
+      "name": "blastoise"
+    },
+    {
+      "name": "use"
+    },
+    {
+      "name": "pukepump"
+    }
+  ]
+}

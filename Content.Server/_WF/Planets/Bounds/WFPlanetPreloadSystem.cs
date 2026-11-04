@@ -130,7 +130,7 @@ public sealed partial class WFPlanetPreloadSystem : EntitySystem
     /// <summary>Loads chunks until the tick's budget is spent, the lobby's while the round hasn't started; one always goes.</summary>
     private void Load(Preload preload, Entity<BiomeComponent, MapGridComponent> ground)
     {
-        var budget = _cfg.GetCVar(_ticker.RunLevel == GameRunLevel.PreRoundLobby ? PlanetCVars.PreloadBudgetLobby : PlanetCVars.PreloadBudget);
+        var budget = PhaseBudget(PlanetCVars.PreloadBudget, PlanetCVars.PreloadBudgetLobby, PlanetCVars.PreloadBudgetHold);
         // Generation already done this tick counts against it, and what is loaded here against generation's.
         var spent = TickWork();
         _watch.Restart();
@@ -138,11 +138,19 @@ public sealed partial class WFPlanetPreloadSystem : EntitySystem
         while (preload.Next < preload.Chunks!.Count)
         {
             // Not held: once formed, what nobody is near is stashed (BiomeSystem.WFStash).
-            _biome.WfLoadChunk(ground, preload.Chunks[preload.Next++], hold: false);
+            var chunk = preload.Chunks[preload.Next++];
+            _biome.WfLoadChunk(ground, chunk, hold: false);
 
-            if (spent + _watch.Elapsed.TotalMilliseconds >= budget)
+            // A 16-tile grid chunk is finished before stopping, so it goes to the lobby once, not once per part.
+            if (spent + _watch.Elapsed.TotalMilliseconds >= budget
+                && (preload.Next >= preload.Chunks.Count || BlockOf(preload.Chunks[preload.Next]) != BlockOf(chunk)))
                 break;
         }
+    }
+
+    private static Vector2i BlockOf(Vector2i chunk)
+    {
+        return SharedMapSystem.GetChunkIndices(chunk, BiomeSystem.WfLoadBlock);
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using Content.Server._WF.NpcDialogue.Systems;
 using System.Globalization;
 using System.Linq;
 using Content.Server._WF.NpcCrew.Components;
@@ -59,7 +60,7 @@ public sealed partial class WFRadioOperatorSystem : EntitySystem
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private NpcFactionSystem _faction = default!;
-    [Dependency] private RadioSystem _radio = default!;
+    [Dependency] private WFNpcRadioSystem _npcRadio = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WFCrewSecuritySystem _security = default!;
 
@@ -493,16 +494,21 @@ public sealed partial class WFRadioOperatorSystem : EntitySystem
 
         var callsign = string.IsNullOrWhiteSpace(radio.Callsign) ? NameOrUnknown(grid) : radio.Callsign;
         var text = _loc.GetString($"{id}-{_random.Next(1, variants + 1)}", args.Append(("callsign", callsign)).ToArray());
-        radio.LastSent[line] = now;
 
         // Each line goes out once. A warning is for the ship alongside, so it is always local; the rest is the
         // faction's own business when the ship has a faction channel, else alerts go wide and routine stays local.
+        // Routine traffic is the first thing the radio budget drops when the air is busy.
+        bool sent;
         if (line is WFRadioLine.DockWarning or WFRadioLine.BoardWarning or WFRadioLine.Approach)
-            Transmit(ent, line, radio.LocalChannel, text);
+            sent = Transmit(ent, line, radio.LocalChannel, text);
         else if (radio.FactionChannel is { } faction)
-            Transmit(ent, line, faction, text);
+            sent = Transmit(ent, line, faction, text);
         else
-            Transmit(ent, line, IsAlert(line) ? radio.AlertChannel : radio.LocalChannel, text);
+            sent = Transmit(ent, line, IsAlert(line) ? radio.AlertChannel : radio.LocalChannel, text);
+        if (!sent)
+            return false;
+
+        radio.LastSent[line] = now;
 
         if (radio.SpeakAloud)
             _chat.TrySendInGameICMessage(uid, text, InGameICChatType.Speak, hideChat: false, checkRadioPrefix: false);
@@ -510,15 +516,30 @@ public sealed partial class WFRadioOperatorSystem : EntitySystem
         return true;
     }
 
-    private void Transmit(Entity<WFRadioOperatorComponent> ent,
+    private bool Transmit(Entity<WFRadioOperatorComponent> ent,
         WFRadioLine line,
         ProtoId<RadioChannelPrototype> channel,
         string text)
     {
-        _radio.SendRadioMessage(ent, text, channel, ent);
+        if (!_npcRadio.Send(ent, text, channel, Priority(line)))
+            return false;
+
         ent.Comp.Sent.Add(new WFRadioTransmission(line, channel, text));
         if (ent.Comp.Sent.Count > SentKept)
             ent.Comp.Sent.RemoveAt(0);
+        return true;
+    }
+
+    /// <summary>How much a line matters on a busy channel: calls for help always go out, comings and goings first give way.</summary>
+    private static WFNpcRadioPriority Priority(WFRadioLine line)
+    {
+        return line switch
+        {
+            WFRadioLine.Mayday or WFRadioLine.Boarded or WFRadioLine.CaptainDown or WFRadioLine.HelmDown => WFNpcRadioPriority.High,
+            WFRadioLine.Docking or WFRadioLine.Undocking or WFRadioLine.Jumping or WFRadioLine.Arriving
+                or WFRadioLine.OnStation or WFRadioLine.DockAborted => WFNpcRadioPriority.Routine,
+            _ => WFNpcRadioPriority.Normal,
+        };
     }
 
     /// <summary>

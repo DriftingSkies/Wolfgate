@@ -537,7 +537,7 @@ public sealed partial class HTNSystem : EntitySystem
         var branchTraversal = component.Plan?.BranchTraversalRecord;
 
         var job = new HTNPlanJob(
-            0.02,
+            0.003, // WOLFGATE(Performance): was 0.02; keeps one planning slice under the 0.004 queue budget
             _prototypeManager,
             component.RootTask,
             component.Blackboard.ShallowClone(), branchTraversal, cancelToken.Token);

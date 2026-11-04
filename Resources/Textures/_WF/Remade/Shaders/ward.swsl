@@ -1,0 +1,54 @@
+// Ward. The stone's field, drawn over a band of vertex colour: a membrane of veined cells whose borders creep and whose
+// brightness pulses slowly. `hardness` is 0 for a loose, breathing skin and 1 for the rooted Crescendo, which sets hard, thick
+// and bright. `motion` is 0 when reduced motion holds everything still.
+
+light_mode unshaded;
+
+uniform highp float hardness;
+uniform highp float motion;
+
+highp vec2 hash22(highp vec2 p) {
+    p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+    return fract(sin(p) * 43758.5453);
+}
+
+void fragment() {
+    highp float time = TIME * motion;
+    highp vec2 scaled = UV * 0.5;
+    highp vec2 cell = floor(scaled);
+    highp vec2 local = fract(scaled);
+
+    // Distance to the nearest and second nearest cell centre: where they meet, the cells touch, and that seam is the vein.
+    highp float nearest = 8.0;
+    highp float second = 8.0;
+    for (int y = -1; y <= 1; y++) {
+        for (int x = -1; x <= 1; x++) {
+            highp vec2 across = vec2(float(x), float(y));
+            highp vec2 seed = hash22(cell + across);
+            highp vec2 centre = 0.5 + 0.4 * sin(time * (0.25 + 0.2 * seed.x) + 6.2831 * seed);
+            highp float d = length(across + centre - local);
+            if (d < nearest) {
+                second = nearest;
+                nearest = d;
+            } else if (d < second) {
+                second = d;
+            }
+        }
+    }
+
+    highp float seam = second - nearest;
+    highp float vein = 1.0 - smoothstep(0.0, mix(0.10, 0.17, hardness), seam);
+
+    // A slow swell that crosses the field. The rooted stone barely breathes.
+    highp float swell = 0.5 + 0.5 * sin(time * 0.8 + UV.x * 0.15 + UV.y * 0.11);
+    highp float pulse = mix(0.62 + 0.38 * swell, 0.92 + 0.08 * swell, hardness);
+
+    // Blood runs along the veins.
+    highp float run = 0.5 + 0.5 * sin(nearest * 9.0 - time * 2.2 + hash22(cell).x * 6.2831);
+
+    highp float skin = 0.5 + 0.25 * (1.0 - nearest);
+    highp float brightness = pulse * (skin + vein * (0.8 + 0.5 * run)) * (1.0 + 0.4 * hardness);
+    highp float alpha = clamp(0.45 + vein * 0.55 + 0.25 * hardness, 0.0, 1.0);
+
+    COLOR = vec4(vec3(min(brightness, 1.5)), alpha);
+}

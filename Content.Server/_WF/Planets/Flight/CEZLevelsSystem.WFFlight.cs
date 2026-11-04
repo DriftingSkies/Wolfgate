@@ -11,6 +11,7 @@ using Content.Shared.Destructible;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Timing;
 
 namespace Content.Server._CE.ZLevels.Core;
 
@@ -26,6 +27,7 @@ public sealed partial class CEZLevelsSystem
     [Dependency] private WFFlightSystem _wfFlight = default!;
     [Dependency] private WFOrbitEntrySystem _wfOrbitEntry = default!;
     [Dependency] private ThrusterSystem _wfThrusters = default!;
+    [Dependency] private WFThrusterIndexSystem _wfThrusterIndex = default!;
 
     /// <summary>Lift ratio at or above which a hull flies normally; below it the hull is lift-lost.</summary>
     public const float WFFullLiftRatio = 1f;
@@ -53,6 +55,11 @@ public sealed partial class CEZLevelsSystem
     private readonly HashSet<EntityUid> _wfPloughed = new();
 
     private readonly Dictionary<(float Gravity, float Terminal), float> _wfFreeFallSpeeds = new();
+
+    // Lift ratios computed this tick, so one hull walk serves every caller; dropped when the tick or thruster set changes.
+    private readonly Dictionary<EntityUid, (bool Ok, float Ratio)> _wfLiftRatioMemo = new();
+    private GameTick _wfLiftRatioTick;
+    private uint _wfLiftRatioVersion;
 
     /// <summary>Surface gravity of the planet a grid is over; a transit gap uses the layer below it.</summary>
     public bool WfTryGetPlanetGravity(EntityUid grid, out float gravity)
@@ -87,8 +94,10 @@ public sealed partial class CEZLevelsSystem
     public float WfGetLandingThrust(EntityUid grid)
     {
         var lift = 0f;
-        var children = Transform(grid).ChildEnumerator;
-        while (children.MoveNext(out var uid))
+        if (_wfThrusterIndex.ThrustersOn(grid) is not { } thrusters)
+            return lift;
+
+        foreach (var uid in thrusters)
         {
             if (TryComp<ThrusterComponent>(uid, out var thruster))
                 lift += _wfThrusters.WfAtmosphericForce(uid, thruster) / ThrusterSystem.WfStandardGravity;
@@ -120,6 +129,26 @@ public sealed partial class CEZLevelsSystem
     /// <param name="grid">Any member of the rigid body.</param>
     /// <param name="ratio">Lift over weight, or positive infinity for a weightless or force-anchored set.</param>
     public bool WfTryGetLiftRatio(EntityUid grid, out float ratio)
+    {
+        if (_wfLiftRatioTick != _timing.CurTick || _wfLiftRatioVersion != _wfThrusterIndex.Version)
+        {
+            _wfLiftRatioMemo.Clear();
+            _wfLiftRatioTick = _timing.CurTick;
+            _wfLiftRatioVersion = _wfThrusterIndex.Version;
+        }
+
+        if (_wfLiftRatioMemo.TryGetValue(grid, out var memo))
+        {
+            ratio = memo.Ratio;
+            return memo.Ok;
+        }
+
+        var ok = WfComputeLiftRatio(grid, out ratio);
+        _wfLiftRatioMemo[grid] = (ok, ratio);
+        return ok;
+    }
+
+    private bool WfComputeLiftRatio(EntityUid grid, out float ratio)
     {
         ratio = 0f;
 

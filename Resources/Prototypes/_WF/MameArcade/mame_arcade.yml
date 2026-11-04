@@ -1,0 +1,42 @@
+- type: entity
+  parent: ArcadeBase
+  id: WFMameArcade
+  name: retro arcade
+  description: An arcade cabinet that runs your own MAME ROM sets, for one player or two side by side.
+  components:
+  - type: ActivatableUI
+    key: enum.MameArcadeUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.MameArcadeUiKey.Key:
+        type: MameArcadeBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: WFMameArcade
+  - type: Computer
+    board: WFMameArcadeComputerCircuitboard
+
+# Sold by John Wolfgate and the Wolfgate vendor.
+- type: entity
+  parent: BaseNFFlatpack
+  id: WFMameArcadeFlatpack
+  name: retro arcade flatpack
+  description: A flatpack used for constructing a retro arcade cabinet.
+  components:
+  - type: Flatpack
+    entity: WFMameArcade
+  - type: Sprite
+    layers:
+    - state: service_music
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: WFMameArcadeComputerCircuitboard
+  name: retro arcade board
+  description: A computer printed circuit board for a retro arcade cabinet.
+  components:
+  - type: ComputerBoard
+    prototype: WFMameArcade

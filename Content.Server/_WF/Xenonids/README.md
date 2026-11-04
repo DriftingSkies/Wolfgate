@@ -64,6 +64,7 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Content.Server/_WF/Xenonids/Evolution/EvolutionPointsCommand.cs`](Evolution/EvolutionPointsCommand.cs)
 - [`Content.Server/_WF/Xenonids/Evolution/WithXenoTierCommand.cs`](Evolution/WithXenoTierCommand.cs)
 - [`Content.Server/_WF/Xenonids/Fire/XenoFireSystem.cs`](Fire/XenoFireSystem.cs)
+- [`Content.Server/_WF/Xenonids/Fire/XenoWeedsBurningComponent.cs`](Fire/XenoWeedsBurningComponent.cs)
 - [`Content.Server/_WF/Xenonids/FirePat/XenoFirePatSystem.cs`](FirePat/XenoFirePatSystem.cs)
 - [`Content.Server/_WF/Xenonids/ForTheHive/XenoForTheHiveSystem.cs`](ForTheHive/XenoForTheHiveSystem.cs)
 - [`Content.Server/_WF/Xenonids/Heal/XenoHealSystem.cs`](Heal/XenoHealSystem.cs)

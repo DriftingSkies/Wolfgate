@@ -75,6 +75,12 @@ public sealed partial class DebrisFeaturePlacerSystem : BaseWorldSystem
             return;
         }
 
+        // WOLFGATE(Performance) START: still in its chunk, so the index needs no churn
+        if (TryComp<WorldChunkComponent>(component.OwningController, out var ownerChunk) &&
+            ownerChunk.Coordinates == GetChunkCoords(uid, xform))
+            return;
+        // WOLFGATE END
+
         placer.OwnedDebris.Remove(component.LastKey);
         var newChunk = GetOrCreateChunk(GetChunkCoords(uid), xform.MapUid!.Value);
         if (newChunk is null || !TryComp<DebrisFeaturePlacerControllerComponent>(newChunk, out var newPlacer))

@@ -9,6 +9,9 @@ namespace Content.Client.Shuttles.UI;
 
 public partial class ShuttleNavControl
 {
+    /// <summary>Whether encounter markers, zones and NPC crew tags are drawn. The admin scanner can turn them off.</summary>
+    public bool WfShowEncounters = true;
+
     /// <summary>The labels placed so far this frame, so ships of one encounter do not draw over each other.</summary>
     private readonly List<Box2> _encounterLabels = new();
 
@@ -45,7 +48,7 @@ public partial class ShuttleNavControl
     private void DrawEncounterMarkers(DrawingHandleScreen handle, TransformComponent consoleXform, Matrix3x2 worldToView)
     {
         var system = EntManager.System<WFEncounterMarkerClientSystem>();
-        if (system.Markers.Count == 0)
+        if (!WfShowEncounters || system.Markers.Count == 0)
             return;
 
         var centre = MidPointVector;

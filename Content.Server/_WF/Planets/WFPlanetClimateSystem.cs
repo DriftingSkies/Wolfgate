@@ -26,7 +26,7 @@ public sealed partial class WFPlanetClimateSystem : EntitySystem
     public const float MaxRate = 0.1f;
 
     /// <summary>The smallest change written to the layers' air.</summary>
-    public const float ApplyThreshold = 0.25f;
+    public const float ApplyThreshold = 2f;
 
     private TimeSpan _nextUpdate;
 
@@ -82,6 +82,7 @@ public sealed partial class WFPlanetClimateSystem : EntitySystem
             return;
 
         state.Temperature = float.NaN;
+        state.AppliedTemperature = float.NaN;
         _nextUpdate = TimeSpan.Zero;
     }
 
@@ -169,7 +170,8 @@ public sealed partial class WFPlanetClimateSystem : EntitySystem
 
             var old = atmosphere.Mixture;
             var mixture = new GasMixture(old) { Temperature = temperature };
-            _atmos.SetMapGasMixture(layer, mixture, atmosphere);
+            mixture.MarkImmutable();
+            _atmos.WfSwapMapAir(layer, mixture, atmosphere);
         }
     }
 

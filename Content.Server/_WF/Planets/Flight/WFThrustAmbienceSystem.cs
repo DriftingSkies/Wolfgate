@@ -12,6 +12,7 @@ public sealed partial class WFThrustAmbienceSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private WFGridAudienceSystem _audience = default!;
+    [Dependency] private WFThrusterIndexSystem _thrusterIndex = default!;
 
     /// <summary>Looping engine sound.</summary>
     public static readonly SoundSpecifier ThrustLoop = new SoundPathSpecifier("/Audio/_WF/Planets/Flight/thrust_loop.ogg");
@@ -42,14 +43,28 @@ public sealed partial class WFThrustAmbienceSystem : EntitySystem
         _nextSweep = _timing.CurTime + SweepInterval;
         _thrusting.Clear();
 
-        var thrusters = EntityQueryEnumerator<ThrusterComponent, TransformComponent>();
-        while (thrusters.MoveNext(out var uid, out var thruster, out var xform))
+        // Walk each shuttle's indexed thrusters rather than every thruster in the world.
+        var shuttles = EntityQueryEnumerator<ShuttleComponent>();
+        while (shuttles.MoveNext(out var shuttleGrid, out _))
         {
-            if (thruster.Type != ThrusterType.Linear || !thruster.Enabled || !thruster.IsOn || !thruster.Firing)
+            if (_thrusterIndex.ThrustersOn(shuttleGrid) is not { } onGrid)
                 continue;
 
-            if (xform.GridUid is { } grid && (HasComp<ShuttleComponent>(grid) ||
-                TryComp<WFCrashThrustComponent>(uid, out var crashThrust) && crashThrust.Detached))
+            foreach (var uid in onGrid)
+            {
+                if (IsFiring(uid))
+                {
+                    _thrusting.Add(shuttleGrid);
+                    break;
+                }
+            }
+        }
+
+        // Thrusters torn off their hull still roar.
+        var crashed = EntityQueryEnumerator<WFCrashThrustComponent, TransformComponent>();
+        while (crashed.MoveNext(out var uid, out var crashThrust, out var xform))
+        {
+            if (crashThrust.Detached && xform.GridUid is { } grid && IsFiring(uid))
                 _thrusting.Add(grid);
         }
 
@@ -81,6 +96,12 @@ public sealed partial class WFThrustAmbienceSystem : EntitySystem
             comp.Stream = _audio.PlayGlobal(ThrustLoop, _audience.Aboard(grid), true, AudioParams.Default.WithLoop(true).WithVolume(ThrustVolume))?.Entity;
             comp.NextRecut = _timing.CurTime + RecutInterval;
         }
+    }
+
+    private bool IsFiring(EntityUid uid)
+    {
+        return TryComp<ThrusterComponent>(uid, out var thruster)
+               && thruster.Type == ThrusterType.Linear && thruster.Enabled && thruster.IsOn && thruster.Firing;
     }
 
     private void OnAmbienceShutdown(EntityUid uid, WFThrustAmbienceComponent component, ComponentShutdown args)

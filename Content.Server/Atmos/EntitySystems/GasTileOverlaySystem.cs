@@ -446,7 +446,6 @@ namespace Content.Server.Atmos.EntitySystems
                         continue;
 
                     List<GasOverlayChunk> dataToSend = new();
-                    ev.UpdatedChunks[netGrid] = dataToSend;
 
                     previouslySent.TryGetValue(netGrid, out var previousChunks);
 
@@ -466,6 +465,9 @@ namespace Content.Server.Atmos.EntitySystems
                         if (previousChunks == null || !previousChunks.Contains(gIndex))
                             dataToSend.Add(value);
                     }
+
+                    if (dataToSend.Count != 0) // WOLFGATE(Performance): don't send empty chunk lists
+                        ev.UpdatedChunks[netGrid] = dataToSend;
 
                     previouslySent[netGrid] = gridChunks;
                     if (previousChunks != null)

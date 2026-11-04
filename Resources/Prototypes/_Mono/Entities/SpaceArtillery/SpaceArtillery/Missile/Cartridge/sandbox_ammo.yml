@@ -155,7 +155,12 @@
     radius: 5
     color: orange
     energy: 2
-  - type: ExplodeOnTrigger
+  # WOLFGATE(Warheads) START: impact sets off a nuclear payload; Explosive stays for when it is shot down
+  # - type: ExplodeOnTrigger
+  - type: WFWarhead
+    payload: WFPayloadMissile
+  - type: WFImpactFuze
+  # WOLFGATE END
   - type: Explosive
     explosionType: HardBomb
     maxIntensity: 5000

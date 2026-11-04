@@ -1,0 +1,83 @@
+# Critters: what the small Remade do between fights. Hoppers hide under tables and leapers stand against walls.
+# Dead animals rising as Remade is data on the hopper and lurker in roster.yml (animalWeight and the mass range).
+
+# A hopper with no prey in sight goes to a table, climbs under it and waits. Its sight shrinks while it is there, so it lets the
+# prey come close, and any better plan (prey in reach, a hunt order) brings it out.
+- type: htnCompound
+  id: WFRemadeHideCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WFPickCoverOperator
+        targetKey: WFRemadeCover
+        coordinatesKey: WFRemadeCoverCoordinates
+        rangeKey: WFRemadeCoverRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRemadeCoverCoordinates
+        rangeKey: WFRemadeCoverRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WFHideOperator
+        targetKey: WFRemadeCover
+
+- type: htnCompound
+  id: WFRemadeHopperCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFRemadeHunt
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRemadeHunt
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WFRemadeHideCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# A leaper with no prey in sight goes to the nearest wall and stands against it.
+- type: htnCompound
+  id: WFRemadeWallCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WFPickWallOperator
+        coordinatesKey: WFRemadeWallCoordinates
+        rangeKey: WFRemadeWallRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRemadeWallCoordinates
+        rangeKey: WFRemadeWallRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WFHoldOperator
+
+- type: htnCompound
+  id: WFRemadeLeaperCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFRemadeHunt
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRemadeHunt
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WFRemadeWallCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound

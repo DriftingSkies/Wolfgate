@@ -1,0 +1,153 @@
+- type: wfTraitLayout
+  id: Physical
+  priority: 0
+  groups:
+  - name: wf-trait-group-toughness
+    traits:
+    - Vigor
+    - Tenacity
+    - WillToLive
+    - Steadfast
+    - DermalArmor
+  - name: wf-trait-group-healing
+    traits:
+    - PlateletFactories
+    - NaniteRepairDrones
+    - LiquorLifeline
+    - ShadekinRegeneration
+    - ExtremeShadekinRegeneration
+  - name: wf-trait-group-resistances
+    traits:
+    - HardenedLymphocytes
+    - WFRadFiend
+    - TemperatureTolerance
+    - AlcoholTolerance
+    - WFHardenedSoles
+  - name: wf-trait-group-augments
+    traits:
+    - PrybarProsthetics
+    - BionicLegs
+    - BionicSpinarette
+    - StrikingCalluses
+  - name: wf-trait-group-skills
+    traits:
+    - Thieving
+    - TrapAvoider
+    - SelfAware
+    - Voracious
+    - Helmsmanship
+  - name: wf-trait-group-training
+    traits:
+    - Clown
+    - Mime
+  - name: wf-trait-group-frailties
+    traits:
+    - Lethargy
+    - GlassJaw
+    - WillToDie
+    - Feeble
+    - OsteogenesisImperfecta
+    - Hemophilia
+    - WFFragility
+    - Redshirt
+    - Uncloneable
+  - name: wf-trait-group-light-sensitivity
+    traits:
+    - MildLightSensitivity
+    - LightSensitivity
+    - ExtremeLightSensitivity
+  - name: wf-trait-group-background
+    traits:
+    - Ironman
+    - Heretic
+
+- type: wfTraitLayout
+  id: Disabilities
+  priority: 1
+  groups:
+  - name: wf-trait-group-sight
+    traits:
+    - Blindness
+    - PoorVision
+    - UltraVision
+    - DogVision
+  - name: wf-trait-group-hearing-feeling
+    traits:
+    - WFDeaf
+    - Paracusia
+    - PainNumbness
+  - name: wf-trait-group-body-mind
+    traits:
+    - Muted
+    - Narcolepsy
+    - Clumsy
+    - WheelchairBound
+    - Unrevivable
+
+- type: wfTraitLayout
+  id: Quirks
+  priority: 2
+  groups:
+  - name: wf-trait-group-behaviour
+    traits:
+    - Pacifist
+    - Pious
+    - WFPseudobulbarAffect
+    - Snoring
+  - name: wf-trait-group-body
+    traits:
+    - HighPainThreshold
+    - LightweightDrunk
+    - WFIlluminated
+
+- type: wfTraitLayout
+  id: SpeechTraits
+  priority: 3
+  name: wf-trait-category-speech
+  groups:
+  - name: wf-trait-group-accents
+    traits:
+    - SouthernAccent
+    - CowboyAccent
+    - PirateAccent
+    - BoganAccent
+    - StreetpunkAccent
+    - GoblinAccent
+    - ScottishAccent
+    - GermanAccent
+    - FrenchAccent
+    - WFNeoFrenchAccent
+    - ItalianAccent
+    - SpanishAccent
+    - RussianAccent
+  - name: wf-trait-group-speech-patterns
+    traits:
+    - Accentless
+    - FrontalLisp
+    - SocialAnxiety
+    - Liar
+    - WFCanineTraits
+    - WFAvianTraits
+
+- type: wfTraitLayout
+  id: LanguageTraits
+  priority: 4
+  groups:
+  - name: wf-trait-group-extra-languages
+    traits:
+    - Tradeband
+    - SignLanguage
+    - SiikMaas
+    - NovuNederic
+    - MonoNekomimetic
+    - MonoElyran
+    - MonoCanilunzt
+    - MonoFelyaic
+    - MonoClassical
+  - name: wf-trait-group-language-drawbacks
+    traits:
+    - Foreigner
+
+- type: wfTraitLayout
+  id: Height
+  priority: 5

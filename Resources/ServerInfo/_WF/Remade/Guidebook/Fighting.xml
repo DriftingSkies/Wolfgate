@@ -1,0 +1,44 @@
+<Document>
+  # Fighting the Remade
+
+  ## Limbs
+
+  Every Remade is built of limbs. The torso takes only a fraction of a hit, so shooting the body barely works. Take the limbs off.
+
+  - Slashing and piercing sever a limb easily. Blunt and heat sever it poorly.
+  - Aim at a limb with the target selector. Unaimed hits land on a random one.
+  - Legs give speed, arms give melee damage, the head gives sight and voice. A limb that comes off also costs the Remade a chunk of its health.
+  - A Remade with no legs crawls. With no arms it can barely hurt anyone.
+
+  ## Fire
+
+  Fire kills corruption. Set it alight with a flamethrower, a welder or an explosion.
+
+  - Corruption that burns away leaves the tile [bold]scorched[/bold] for about 10 minutes. Nothing grows back on a scorched tile until that runs out.
+  - Remade take extra from heat.
+  - A hunter that was burned does not get back up.
+
+  ## Stopping the dead getting up
+
+  A dead body on corruption turns after 90 seconds. Move it off the corruption, burn it, or take the head. A body with no head never turns.
+
+  [bold]Necrotoxin[/bold] works too. A body with at least one unit of it in the blood never turns. Inject a corpse with a necrotoxin pen and it stays down.
+
+  ## Necrotoxin
+
+  A thick brown poison. It is hard on the Remade and mild on the living.
+
+  - Make it in a chemical reactor: one part mercury, one part sulfur and one part ammonia make three parts necrotoxin.
+  - A Remade with it in the blood takes poison damage every second, more with more in it, until it clears. A full pen is close to a dead slasher on its own.
+  - Splashed or sprayed on a Remade it burns where it lands.
+  - A living crewman only takes a little poison from it. It still hurts. Don't inject yourself.
+
+  ## The plasma cutter
+
+  A short arc of plasma, made for hull plating. It takes limbs off the Remade in two or three shots on a limb.
+
+  - Print it in an autolathe: steel, glass, plasma and plastic.
+  - It reaches 7 tiles and holds about 40 shots. Recharge it in a wall charger.
+  - The arc also burns corruption away.
+  - Against the Prime it is one of the few things that works. See [textlink="Ending an outbreak" link="WFRemadeEnding"].
+</Document>

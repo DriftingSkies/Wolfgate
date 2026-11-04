@@ -27,6 +27,13 @@
 #   - SolCommon
 #   languagesUnderstood:
 #   - SolCommon
+  # WOLFGATE START: TSF contractors speak and understand Sol Common
+  - !type:AddLanguageSpecial
+    languagesSpoken:
+    - SolCommon
+    languagesUnderstood:
+    - SolCommon
+  # WOLFGATE END
   - !type:GiveItemOnHolidaySpecial
     holiday: FrontierBirthday
     prototype: FrontierBirthdayGift

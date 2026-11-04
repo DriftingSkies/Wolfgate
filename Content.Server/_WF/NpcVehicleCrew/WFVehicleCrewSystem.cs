@@ -274,32 +274,39 @@ public sealed partial class WFVehicleCrewSystem : EntitySystem
         driverGuns = false;
         seats = new List<EntityUid>();
 
-        var query = EntityQueryEnumerator<StrapComponent, TransformComponent>();
-        while (query.MoveNext(out var seat, out _, out var xform))
+        // The seats are children of the interior's grid; a loose one on the map is found too.
+        foreach (var parent in new[] { interior.Grid, interior.Map })
         {
-            if (xform.MapID != interior.MapId)
+            if (!parent.IsValid() || TerminatingOrDeleted(parent))
                 continue;
 
-            TryComp<VehicleWeaponsSeatComponent>(seat, out var weaponsSeat);
-            if (HasComp<VehicleDriverSeatComponent>(seat))
+            var children = Transform(parent).ChildEnumerator;
+            while (children.MoveNext(out var seat))
             {
-                if (driver != null)
+                if (!HasComp<StrapComponent>(seat))
                     continue;
 
-                driver = seat;
-                driverGuns = weaponsSeat is { IsPrimaryOperatorSeat: true };
-                continue;
+                TryComp<VehicleWeaponsSeatComponent>(seat, out var weaponsSeat);
+                if (HasComp<VehicleDriverSeatComponent>(seat))
+                {
+                    if (driver != null)
+                        continue;
+
+                    driver = seat;
+                    driverGuns = weaponsSeat is { IsPrimaryOperatorSeat: true };
+                    continue;
+                }
+
+                if (weaponsSeat != null)
+                {
+                    if (weaponsSeat.IsPrimaryOperatorSeat && gunnerSeat == null)
+                        gunnerSeat = seat;
+
+                    continue;
+                }
+
+                seats.Add(seat);
             }
-
-            if (weaponsSeat != null)
-            {
-                if (weaponsSeat.IsPrimaryOperatorSeat && gunnerSeat == null)
-                    gunnerSeat = seat;
-
-                continue;
-            }
-
-            seats.Add(seat);
         }
 
         driverSeat = driver ?? EntityUid.Invalid;

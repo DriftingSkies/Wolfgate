@@ -17,6 +17,7 @@
   - WeaponsSystems # mono
   - Creatures # mono
   - MonoMisc # mono
+  - WFRemadeGuide # WOLFGATE(Remade): the Monolith, the Remade and how to end an outbreak
 
 - type: guideEntry
   id: Bank

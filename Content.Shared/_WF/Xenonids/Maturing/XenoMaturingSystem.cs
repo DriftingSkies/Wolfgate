@@ -82,7 +82,7 @@ public sealed partial class XenoMaturingSystem : EntitySystem
         while (query.MoveNext(out var uid, out var comp))
         {
             if (time < comp.MatureAt)
-                return;
+                continue;
 
             _mobThreshold.SetMobStateThreshold(uid, comp.DeadThreshold, MobState.Dead);
             _mobThreshold.SetMobStateThreshold(uid, comp.CritThreshold, MobState.Critical);

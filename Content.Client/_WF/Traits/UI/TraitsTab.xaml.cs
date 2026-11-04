@@ -1,6 +1,8 @@
 using System.Linq;
 using Content.Client._WF.Newbie;
 using Content.Client.Players.PlayTimeTracking;
+using Content.Shared._WF.Traits;
+using Content.Shared._WF.Traits.Conditions;
 using Content.Shared._WF.Biotype;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
@@ -17,7 +19,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Client._WF.Traits.UI;
 
 /// <summary>
-/// Card-based trait editor: search, collapsible categories and trait descriptions.
+/// Card-based trait editor: search, sorting, collapsible categories with subgroups, and inline requirements.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class TraitsTab : BoxContainer
@@ -26,6 +28,7 @@ public sealed partial class TraitsTab : BoxContainer
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private JobRequirementsManager _requirements = default!;
     [Dependency] private IComponentFactory _componentFactory = default!;
+    [Dependency] private ILocalizationManager _loc = default!;
 
     /// <summary>Raised when the editor changes the profile's trait selection.</summary>
     public event Action<HumanoidCharacterProfile>? OnProfileChanged;
@@ -36,12 +39,25 @@ public sealed partial class TraitsTab : BoxContainer
     private readonly List<TraitCategory> _categories = new();
     private readonly Dictionary<ProtoId<TraitPrototype>, TraitEntry> _entries = new();
     private readonly HashSet<ProtoId<TraitPrototype>> _selected = new();
+    private readonly Dictionary<string, HashSet<string>> _conflicts = new();
+
+    private static readonly LocId[] SortNames =
+    {
+        "trait-editor-sort-name",
+        "trait-editor-sort-cost-high",
+        "trait-editor-sort-cost-low",
+    };
+
+    private const string BlockedColor = "#ff5555";
+    private const string InfoColor = "#8a94a3";
 
     private HumanoidCharacterProfile? _profile;
     private bool _updating;
     private bool _pendingRebuild = true;
     private bool _resetScroll;
     private string _search = string.Empty;
+    private TraitSortMode _sort = TraitSortMode.Name;
+    private bool _hideUnavailable;
 
     public TraitsTab()
     {
@@ -55,6 +71,20 @@ public sealed partial class TraitsTab : BoxContainer
         };
 
         ClearButton.OnPressed += _ => ClearAll();
+
+        for (var i = 0; i < SortNames.Length; i++)
+            SortSelect.AddItem(Loc.GetString(SortNames[i]), i);
+
+        SortSelect.OnItemSelected += args =>
+        {
+            SetSort((TraitSortMode) args.Id);
+        };
+
+        HideUnavailableCheck.OnToggled += args =>
+        {
+            _hideUnavailable = args.Pressed;
+            ApplySearch();
+        };
     }
 
     protected override void EnteredTree()
@@ -157,8 +187,13 @@ public sealed partial class TraitsTab : BoxContainer
             list.Add(trait);
         }
 
+        BuildConflicts();
+
         foreach (var category in _prototype.EnumeratePrototypes<TraitCategoryPrototype>()
-                     .OrderBy(c => Loc.GetString(c.Name)))
+                     .OrderBy(c => _prototype.TryIndex<WFTraitLayoutPrototype>(c.ID, out var layout)
+                         ? layout.Priority
+                         : int.MaxValue)
+                     .ThenBy(c => Loc.GetString(c.Name)))
         {
             if (groups.TryGetValue(category.ID, out var traits))
                 AddCategory(category.ID, category, traits);
@@ -168,6 +203,7 @@ public sealed partial class TraitsTab : BoxContainer
             AddCategory(TraitCategoryPrototype.Default, null, defaultTraits);
 
         _updating = false;
+        ApplySort();
         RefreshEntries();
         InvalidateLayoutTree(this);
 
@@ -181,7 +217,8 @@ public sealed partial class TraitsTab : BoxContainer
 
     private void AddCategory(string id, TraitCategoryPrototype? prototype, IEnumerable<TraitPrototype> traits)
     {
-        var category = new TraitCategory(id, prototype, traits);
+        _prototype.TryIndex<WFTraitLayoutPrototype>(id, out var layout);
+        var category = new TraitCategory(id, prototype, layout, traits);
         foreach (var entry in category.Entries)
         {
             entry.Toggled += OnEntryToggled;
@@ -190,6 +227,63 @@ public sealed partial class TraitsTab : BoxContainer
 
         _categories.Add(category);
         CategoriesContainer.AddChild(category);
+    }
+
+    /// <summary>Collects mutual exclusions in both directions, since a trait may only name the other one.</summary>
+    private void BuildConflicts()
+    {
+        _conflicts.Clear();
+        foreach (var trait in _prototype.EnumeratePrototypes<TraitPrototype>())
+        {
+            foreach (var other in trait.MutuallyExclusiveTraits)
+            {
+                if (other == trait.ID || !_prototype.HasIndex(other))
+                    continue;
+
+                AddConflict(trait.ID, other);
+                AddConflict(other, trait.ID);
+            }
+        }
+    }
+
+    private void AddConflict(string a, string b)
+    {
+        if (!_conflicts.TryGetValue(a, out var set))
+        {
+            set = new HashSet<string>();
+            _conflicts[a] = set;
+        }
+
+        set.Add(b);
+    }
+
+    /// <summary>Changes how traits are ordered inside each subgroup.</summary>
+    public void SetSort(TraitSortMode mode)
+    {
+        _sort = mode;
+        SortSelect.SelectId((int) mode);
+        ApplySort();
+    }
+
+    private void ApplySort()
+    {
+        Comparison<TraitEntry> comparison = _sort switch
+        {
+            TraitSortMode.CostHigh => (a, b) => CompareThenName(b.Trait.Cost.CompareTo(a.Trait.Cost), a, b),
+            TraitSortMode.CostLow => (a, b) => CompareThenName(a.Trait.Cost.CompareTo(b.Trait.Cost), a, b),
+            _ => (a, b) => CompareThenName(0, a, b),
+        };
+
+        foreach (var category in _categories)
+            category.Sort(comparison);
+    }
+
+    private static int CompareThenName(int result, TraitEntry a, TraitEntry b)
+    {
+        return result != 0
+            ? result
+            : string.Compare(Loc.GetString(a.Trait.Name), Loc.GetString(b.Trait.Name),
+                StringComparison.CurrentCultureIgnoreCase);
     }
 
     private void RefreshEntries()
@@ -223,10 +317,13 @@ public sealed partial class TraitsTab : BoxContainer
                 var overLimit = !selected && max is >= 0 && used + trait.Cost > max;
                 var conditionsMet = TraitConditionUi.AllMet(trait, _profile.Species.Id, _prototype);
                 var (restrictionNotes, blocked) = EvaluateRestrictions(trait);
+                var disabled = !selected && (!conditionsMet || blocked || overLimit);
 
                 entry.SetSelected(selected);
-                entry.SetDisabled(!selected && (!conditionsMet || blocked || overLimit));
+                entry.SetDisabled(disabled);
+                entry.Unavailable = disabled;
                 entry.SetTooltip(BuildTooltip(trait, conditionsMet, restrictionNotes, overLimit));
+                entry.SetNotes(BuildNotes(trait, overLimit));
             }
 
             category.UpdateStats(count, used, max);
@@ -383,6 +480,78 @@ public sealed partial class TraitsTab : BoxContainer
         return string.Join(", ", parts);
     }
 
+    /// <summary>
+    /// Inline lines under a trait: every requirement and incompatibility, red where it blocks this character.
+    /// </summary>
+    private List<string> BuildNotes(TraitPrototype trait, bool overLimit)
+    {
+        var lines = new List<string>();
+        if (_profile == null)
+            return lines;
+
+        var ctx = new TraitConditionContext { SpeciesId = _profile.Species.Id, Proto = _prototype };
+        foreach (var condition in trait.Conditions)
+        {
+            var text = condition.GetTooltip(_prototype, _loc);
+            if (!string.IsNullOrEmpty(text))
+                lines.Add(Note(text, !condition.Evaluate(ctx)));
+        }
+
+        if (trait.SpeciesBlacklist.Count > 0)
+        {
+            var names = trait.SpeciesBlacklist
+                .Select(id => _prototype.TryIndex(id, out var species) ? Loc.GetString(species.Name) : id.Id);
+            lines.Add(Note(Loc.GetString("trait-reason-species-blacklist", ("species", string.Join(", ", names))),
+                trait.SpeciesBlacklist.Contains(_profile.Species)));
+        }
+
+        if (trait.BiotypeBlacklist.Count > 0)
+        {
+            var names = trait.BiotypeBlacklist
+                .Select(biotype => Loc.GetString($"wf-biotype-{biotype.ToString().ToLowerInvariant()}"));
+            lines.Add(Note(Loc.GetString("wf-biotype-trait-blocked", ("biotypes", string.Join(", ", names))),
+                WFBiotypeGates.TraitBlocked(trait, _profile, _prototype)));
+        }
+
+        if (_conflicts.TryGetValue(trait.ID, out var conflicts))
+        {
+            var names = conflicts
+                .Select(id => (Name: Loc.GetString(_prototype.Index<TraitPrototype>(id).Name),
+                    Selected: _selected.Contains(id)))
+                .OrderBy(c => c.Name)
+                .Select(c => c.Selected
+                    ? Loc.GetString("trait-editor-incompatible-selected", ("trait", c.Name))
+                    : c.Name);
+            lines.Add(Note(Loc.GetString("trait-editor-incompatible", ("traits", string.Join(", ", names))),
+                false));
+        }
+
+        if (trait.NewbieBlocked)
+            lines.Add(Loc.GetString("wf-newbie-trait-blocked"));
+
+        AddBodyNote(trait.Whitelist, true, lines);
+        AddBodyNote(trait.Blacklist, false, lines);
+
+        if (overLimit)
+            lines.Add(Note(Loc.GetString("trait-editor-not-enough-points"), true));
+
+        return lines;
+    }
+
+    private void AddBodyNote(EntityWhitelist? list, bool isWhitelist, List<string> lines)
+    {
+        var notes = new List<string>();
+        var blocked = false;
+        AddWhitelistNotes(list, isWhitelist, notes, ref blocked);
+        foreach (var note in notes)
+            lines.Add(Note(note, blocked));
+    }
+
+    private static string Note(string text, bool blocking)
+    {
+        return $"[color={(blocking ? BlockedColor : InfoColor)}]{(blocking ? "✗" : "•")} {text}[/color]";
+    }
+
     private string? BuildTooltip(TraitPrototype trait, bool conditionsMet, List<string> restrictionNotes,
         bool overLimit)
     {
@@ -488,7 +657,6 @@ public sealed partial class TraitsTab : BoxContainer
 
         foreach (var category in _categories)
         {
-            var anyVisible = false;
             foreach (var entry in category.Entries)
             {
                 var matches = string.IsNullOrEmpty(_search) ||
@@ -496,11 +664,18 @@ public sealed partial class TraitsTab : BoxContainer
                               (entry.Trait.Description is { } description &&
                                Loc.GetString(description).Contains(_search, StringComparison.OrdinalIgnoreCase));
 
-                entry.Visible = matches;
-                anyVisible |= entry.Visible;
+                entry.Visible = matches && !(_hideUnavailable && entry.Unavailable);
             }
 
-            category.Visible = anyVisible;
+            category.Visible = category.UpdateGroupVisibility();
         }
     }
+}
+
+/// <summary>Trait order inside each subgroup.</summary>
+public enum TraitSortMode
+{
+    Name,
+    CostHigh,
+    CostLow,
 }

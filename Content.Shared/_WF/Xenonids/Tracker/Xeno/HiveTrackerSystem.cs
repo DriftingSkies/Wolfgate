@@ -311,7 +311,7 @@ public sealed partial class HiveTrackerSystem : EntitySystem
             {
                 var trackableQuery = EntityQueryEnumerator<RMCTrackableComponent, HiveMemberComponent>();
                 var trackingComponent = _factory.GetComponent(trackerMode.Component).GetType();
-                while (trackableQuery.MoveNext(out var trackableUid, out _, out var targetMember))
+                while (trackerMode.Component == QueenTrackerComponent && trackableQuery.MoveNext(out var trackableUid, out _, out var targetMember))
                 {
                     if (member.Hive != targetMember.Hive)
                         continue;

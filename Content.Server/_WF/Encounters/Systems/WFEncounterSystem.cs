@@ -6,6 +6,8 @@ using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.NpcCrew;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
+using Content.Server._WF.NpcDialogue;
+using Content.Server._WF.NpcDialogue.Systems;
 using Content.Server.Chat.Systems;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Systems;
@@ -56,7 +58,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     [Dependency] private Content.Server.Shuttles.Systems.ShuttleSystem _shuttles = default!;
     [Dependency] private LinkedLifecycleGridSystem _lifecycle = default!;
     [Dependency] private ChatSystem _chat = default!;
-    [Dependency] private RadioSystem _radio = default!;
+    [Dependency] private WFNpcRadioSystem _npcRadio = default!;
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -233,9 +235,11 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
     /// <summary>
     /// Has someone aboard say something on a channel for the ship: its radio officer, else its captain, else its
-    /// pilot, else any living crewman. False if nobody is left to.
+    /// pilot, else any living crewman. False if nobody is left to, or the radio budget dropped the line. With
+    /// <paramref name="near"/> the line is heard only around the ship and that vessel.
     /// </summary>
-    public bool TrySay(WFEncounterShipState ship, ProtoId<RadioChannelPrototype> channel, string text)
+    public bool TrySay(WFEncounterShipState ship, ProtoId<RadioChannelPrototype> channel, string text,
+        EntityUid? near = null, WFNpcRadioPriority priority = WFNpcRadioPriority.Normal)
     {
         if (TerminatingOrDeleted(ship.Grid))
             return false;
@@ -264,8 +268,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
 
         // Whoever makes the call is heard without a telecom server on the map, as a radio officer is.
         EnsureComp<TelecomExemptComponent>(voice);
-        _radio.SendRadioMessage(voice, text, channel, voice);
-        return true;
+        return _npcRadio.Send(voice, text, channel, priority, near);
     }
 
     /// <summary>
@@ -966,8 +969,7 @@ public sealed partial class WFEncounterSystem : EntitySystem
     {
         Log.Info($"Encounter ship {ToPrettyString(ship.Grid)} could not dock; it loiters a while and moves on.");
         _objectives.Control(ship.Grid, ship.Group, WFCrewSetupAction.Skip);
-        var rest = _objectives.Snapshot().FirstOrDefault(crew => crew.Grid == net && crew.Group == ship.Group)?.Objectives
-                   ?? new List<WFCrewObjective>();
+        _objectives.TryGetQueue(ship.Grid, ship.Group, out var rest);
         var queue = new List<WFCrewObjective>(rest);
         if (queue.Count == 0 || queue[0].Kind != WFCrewObjectiveKind.Hold)
             queue.Insert(0, new WFCrewObjective { Kind = WFCrewObjectiveKind.Hold, Duration = DockFailedLoiter });
@@ -995,8 +997,9 @@ public sealed partial class WFEncounterSystem : EntitySystem
                 continue;
 
             var net = GetNetEntity(ship.Grid);
-            var head = _objectives.Snapshot().FirstOrDefault(crew => crew.Grid == net && crew.Group == ship.Group)
-                ?.Objectives.FirstOrDefault()?.Kind;
+            WFCrewObjectiveKind? head = _objectives.TryGetQueue(ship.Grid, ship.Group, out var headQueue) && headQueue.Count > 0
+                ? headQueue[0].Kind
+                : null;
             var stop = head is WFCrewObjectiveKind.Dock or WFCrewObjectiveKind.Loot or WFCrewObjectiveKind.Resupply
                 or WFCrewObjectiveKind.Salvage;
             if (stop && status == "dock-failed")
@@ -1010,17 +1013,15 @@ public sealed partial class WFEncounterSystem : EntitySystem
             // A stop that is gone is passed over whole: the wait there and the casting off go with it.
             for (var i = 0; stop && i < 2; i++)
             {
-                var crew = _objectives.Snapshot().FirstOrDefault(crew => crew.Grid == net && crew.Group == ship.Group);
-                if (crew == null || crew.Objectives.Count == 0
-                    || crew.Objectives[0].Kind is not (WFCrewObjectiveKind.Hold or WFCrewObjectiveKind.Undock))
+                if (!_objectives.TryGetQueue(ship.Grid, ship.Group, out var next) || next.Count == 0
+                    || next[0].Kind is not (WFCrewObjectiveKind.Hold or WFCrewObjectiveKind.Undock))
                     break;
 
                 _objectives.Control(ship.Grid, ship.Group, WFCrewSetupAction.Skip);
             }
 
             // Skipped to the end: a skip leaves the queue reading "pending", never "complete".
-            var rest = _objectives.Snapshot().FirstOrDefault(crew => crew.Grid == net && crew.Group == ship.Group);
-            if (rest == null || rest.Objectives.Count == 0)
+            if (!_objectives.TryGetQueue(ship.Grid, ship.Group, out var left) || left.Count == 0)
                 ship.Flown = true;
         }
     }
@@ -1051,6 +1052,10 @@ public sealed partial class WFEncounterSystem : EntitySystem
                     Abduct(encounter, key, ship, virtualAbduct);
                 continue;
             }
+
+            // A ship that surrendered holds still and does nothing of its own until it is let go or fights again.
+            if (ship.Surrendered)
+                continue;
 
             if (ship.Flees > 0f && encounter.Comp.Begun)
                 Flee(encounter, key, ship);
@@ -1176,7 +1181,8 @@ public sealed partial class WFEncounterSystem : EntitySystem
         if (ship.Derelict)
             return !TerminatingOrDeleted(ship.Grid);
 
-        return !TerminatingOrDeleted(ship.Grid) && (IsStranded(ship) || !_status.IsDisabled(ship.Grid))
+        // A ship that surrendered is beaten, its crew alive or not.
+        return !ship.Surrendered && !TerminatingOrDeleted(ship.Grid) && (IsStranded(ship) || !_status.IsDisabled(ship.Grid))
             && HasLivingCrew(ship, anywhere: true)
             && (ship.NoPilotSince is not { } since || _timing.CurTime - since < NoPilotGrace);
     }

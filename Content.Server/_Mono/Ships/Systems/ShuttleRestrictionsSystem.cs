@@ -134,7 +134,8 @@ public sealed partial class ShuttleRestrictionsSystem : EntitySystem
             totalPowerEntities++;
         }
 
-        var percentage = totalPowerEntities != 0 && powered != 0 ? powered / totalPowerEntities : 0;
+        // WOLFGATE(Performance): integer division made this 0 or 1, so the 0.5 threshold needed every console powered
+        var percentage = totalPowerEntities != 0 && powered != 0 ? (double) powered / totalPowerEntities : 0;
 
         if (percentage >= PoweredInactivityThreshold)
             return true;

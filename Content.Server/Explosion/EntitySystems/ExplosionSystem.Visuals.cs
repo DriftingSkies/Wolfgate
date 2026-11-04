@@ -5,6 +5,7 @@ using Content.Shared.Explosion.EntitySystems;
 using Robust.Server.GameObjects;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
+using Robust.Shared.Player; // WOLFGATE(Performance)
 
 namespace Content.Server.Explosion.EntitySystems;
 
@@ -57,7 +58,10 @@ public sealed partial class ExplosionSystem
 
         // Light, sound & visuals may extend well beyond normal PVS range. In principle, this should probably still be
         // restricted to something like the same map, but whatever.
-        _pvsSys.AddGlobalOverride(explosionEntity);
+        // WOLFGATE(Performance) START: sessions on the explosion's map instead of every client
+        // _pvsSys.AddGlobalOverride(explosionEntity);
+        _pvsSys.AddSessionOverrides(explosionEntity, Filter.BroadcastMap(epicenter.MapId));
+        // WOLFGATE END
 
         var appearance = AddComp<AppearanceComponent>(explosionEntity);
         _appearance.SetData(explosionEntity, ExplosionAppearanceData.Progress, 1, appearance);

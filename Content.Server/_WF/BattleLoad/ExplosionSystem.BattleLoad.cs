@@ -21,6 +21,9 @@ public sealed partial class ExplosionSystem
         new(0, 0), new(1, 0), new(-1, 0), new(0, 1), new(0, -1),
     };
 
+    private const int WFMicroMaxPerTick = 40;
+    private static readonly TimeSpan WFMicroMaxTime = TimeSpan.FromMilliseconds(3);
+
     private readonly List<WFMicroExplosion> _wfMicroQueue = new();
     private readonly List<WFMicroExplosion> _wfMicroBatch = new();
     private readonly HashSet<EntityUid> _wfMicroProcessed = new();
@@ -72,15 +75,22 @@ public sealed partial class ExplosionSystem
         // A blast set off by one of these, a fuel tank say, waits for the next tick.
         _wfMicroBatch.AddRange(_wfMicroQueue);
         _wfMicroQueue.Clear();
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        var done = 0;
         try
         {
-            foreach (var micro in _wfMicroBatch)
+            // Past the per-tick cap the rest wait, ahead of anything queued by these blasts.
+            while (done < _wfMicroBatch.Count && done < WFMicroMaxPerTick && watch.Elapsed < WFMicroMaxTime)
             {
-                WFApplyMicroExplosion(micro);
+                WFApplyMicroExplosion(_wfMicroBatch[done]);
+                done++;
             }
         }
         finally
         {
+            if (done < _wfMicroBatch.Count)
+                _wfMicroQueue.InsertRange(0, _wfMicroBatch.GetRange(done, _wfMicroBatch.Count - done));
+
             _wfMicroBatch.Clear();
         }
     }

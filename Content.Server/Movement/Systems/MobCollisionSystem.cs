@@ -34,6 +34,10 @@ public sealed class MobCollisionSystem : SharedMobCollisionSystem
             if (_actorQuery.HasComp(uid) || !PhysicsQuery.TryComp(uid, out var physics))
                 continue;
 
+            // WOLFGATE(Performance): a sleeping body is not moving or being moved, so it has nothing to push
+            if (!physics.Awake)
+                continue;
+
             HandleCollisions((uid, comp, physics), frameTime);
         }
 

@@ -64,11 +64,23 @@ public sealed partial class BatteryInterfaceSystem : EntitySystem
         netBattery.MaxSupply = Math.Clamp(args.Rate, ent.Comp.MinSupply, ent.Comp.MaxSupply);
     }
 
+    // WOLFGATE(Performance): UI state is pushed at 4 Hz, and only for interfaces with a viewer
+    private float _wfUiAccumulator;
+    private const float WfUiInterval = 0.25f;
+
     public override void Update(float frameTime)
     {
-        var query = EntityQueryEnumerator<BatteryInterfaceComponent, BatteryComponent, PowerNetworkBatteryComponent>();
+        // WOLFGATE(Performance) START: ActiveUserInterfaceComponent is the engine's open-UI marker
+        _wfUiAccumulator += frameTime;
+        if (_wfUiAccumulator < WfUiInterval)
+            return;
+        _wfUiAccumulator = 0f;
 
-        while (query.MoveNext(out var uid, out var batteryInterface, out var battery, out var netBattery))
+        // var query = EntityQueryEnumerator<BatteryInterfaceComponent, BatteryComponent, PowerNetworkBatteryComponent>();
+        var query = EntityQueryEnumerator<ActiveUserInterfaceComponent, BatteryInterfaceComponent, BatteryComponent, PowerNetworkBatteryComponent>();
+        // WOLFGATE END
+
+        while (query.MoveNext(out var uid, out _, out var batteryInterface, out var battery, out var netBattery)) // WOLFGATE(Performance): skip the ActiveUserInterfaceComponent slot
         {
             UpdateUI(uid, batteryInterface, battery, netBattery);
         }

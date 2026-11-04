@@ -29,6 +29,21 @@ public sealed partial class WolfmedToxinSystem : EntitySystem
     [Dependency] private WolfmedDamageableSystem _damageable = default!;
     [Dependency] private WolfmedShutdownSystem _shutdown = default!;
 
+    // Cached cvars, kept current by Subs.CVar.
+    private float _brainToxinSeconds;
+    private float _consciousnessToxinDown;
+    private float _consciousnessToxinOut;
+    private float _toxinClearance;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.BrainToxinSeconds, value => _brainToxinSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessToxinDown, value => _consciousnessToxinDown = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessToxinOut, value => _consciousnessToxinOut = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ToxinClearance, value => _toxinClearance = value, true);
+    }
+
     /// <summary>Systemic Poison: the toxin load.</summary>
     public float GetLoad(EntityUid body) =>
         CompOrNull<SystemicDamageComponent>(body)?.Damage.DamageDict.GetValueOrDefault(Poison).Float() ?? 0f;
@@ -40,22 +55,22 @@ public sealed partial class WolfmedToxinSystem : EntitySystem
         if (load <= 0f)
             return (0f, 0f);
 
-        var down = _cfg.GetCVar(WolfmedCVars.ConsciousnessToxinDown);
-        var outLine = _cfg.GetCVar(WolfmedCVars.ConsciousnessToxinOut);
+        var down = _consciousnessToxinDown;
+        var outLine = _consciousnessToxinOut;
         return (down > 0f ? load / down : 0f, outLine > 0f ? load / outLine : 0f);
     }
 
     /// <summary>A toxic coma: the load at or past the coma line, where the brain drains.</summary>
     public bool InComa(EntityUid body)
     {
-        var line = _cfg.GetCVar(WolfmedCVars.ConsciousnessToxinOut);
+        var line = _consciousnessToxinOut;
         return line > 0f && GetLoad(body) >= line && !_mobState.IsDead(body);
     }
 
     /// <summary>The toxic coma's brain drain, oxygenation a second.</summary>
     public float DrainRate(EntityUid body)
     {
-        var seconds = _cfg.GetCVar(WolfmedCVars.BrainToxinSeconds);
+        var seconds = _brainToxinSeconds;
         return seconds > 0f && InComa(body) ? 1f / seconds : 0f;
     }
 
@@ -93,7 +108,7 @@ public sealed partial class WolfmedToxinSystem : EntitySystem
         if (_mobState.IsDead(body) || _shutdown.IsMechanical(body))
             return 0f;
 
-        var rate = MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.ToxinClearance));
+        var rate = MathF.Max(0f, _toxinClearance);
         foreach (var (organ, _) in _body.GetBodyOrgans(body))
         {
             if (!HasComp<LiverComponent>(organ))

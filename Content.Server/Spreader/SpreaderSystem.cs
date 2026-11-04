@@ -42,6 +42,8 @@ public sealed partial class SpreaderSystem : EntitySystem
     private EntityQuery<EdgeSpreaderComponent> _spreaderQuery;
     private EntityQuery<SpreaderGridComponent> _spreaderGridQuery;
 
+    private readonly List<EntityUid> _wfPendingSpreaders = new(); // WOLFGATE(Performance): see Update
+
     private AtmosDirection[] _atmosDirections = [AtmosDirection.North, AtmosDirection.East, AtmosDirection.South, AtmosDirection.West];
 
     // Mono - Caps spreadersystem to not run excessively.
@@ -98,7 +100,8 @@ public sealed partial class SpreaderSystem : EntitySystem
 
     private void OnGridInit(GridInitializeEvent ev)
     {
-        InitSpreaderGrid(ev.EntityUid);
+        // WOLFGATE(Performance): SpreaderGrid is created lazily by the first spreader on the grid
+        // InitSpreaderGrid(ev.EntityUid);
     }
 
     private void OnTerminating(Entity<EdgeSpreaderComponent> entity, ref EntityTerminatingEvent args)
@@ -114,12 +117,32 @@ public sealed partial class SpreaderSystem : EntitySystem
     private void InitSpreader(EntityUid spreader)
     {
         var xform = Transform(spreader);
+        // WOLFGATE(Performance) START: create the grid's queues on first use
+        // A grid saved with the component, or one whose queues were never built, gets them now.
+        if (xform.GridUid is { } spreaderGridUid
+            && (!_spreaderGridQuery.TryComp(spreaderGridUid, out var existing) || existing.SpreadQueues.Count != _prototypeUpdates.Count))
+            EnsureSpreaderGrid(spreaderGridUid);
+        // WOLFGATE END
+
         if (_spreaderGridQuery.TryComp(xform.GridUid, out var spreaderGrid)
             && _spreaderQuery.TryComp(spreader, out var comp))
         {
             spreaderGrid.SpreadQueues[comp.Id].Enqueue((spreader, comp));
         }
     }
+
+    // WOLFGATE(Performance) START: empty queues for a grid that just got its first spreader; no scan, so spreaders still waiting for MapInit are not queued twice
+    private void EnsureSpreaderGrid(EntityUid uid)
+    {
+        if (!_mapGridQuery.HasComp(uid) || TerminatingOrDeleted(uid))
+            return;
+
+        var spreaderGrid = EnsureComp<SpreaderGridComponent>(uid);
+        spreaderGrid.SpreadQueues.Clear();
+        foreach (var key in _prototypeUpdates.Keys)
+            spreaderGrid.SpreadQueues.Add(key, new());
+    }
+    // WOLFGATE END
 
     private void InitSpreaderGrid(EntityUid uid)
     {
@@ -146,6 +169,18 @@ public sealed partial class SpreaderSystem : EntitySystem
     public override void Update(float frameTime)
     {
         var startTime = _timing.RealTime;
+
+        // WOLFGATE(Performance) START: queue spreaders deferred from the previous pass
+        if (_wfPendingSpreaders.Count > 0)
+        {
+            foreach (var pending in _wfPendingSpreaders)
+            {
+                if (!TerminatingOrDeleted(pending))
+                    InitSpreader(pending);
+            }
+            _wfPendingSpreaders.Clear();
+        }
+        // WOLFGATE END
 
         // Check which grids are valid for spreading
         var spreadGrids = EntityQueryEnumerator<SpreaderGridComponent, MapGridComponent>();
@@ -176,7 +211,12 @@ public sealed partial class SpreaderSystem : EntitySystem
                     var xform = Transform(ent);
                     if (xform.GridUid != gridUid)
                     {
-                        InitSpreader(ent);
+                        // WOLFGATE(Performance) START: adding a SpreaderGrid mid-query is unsafe, so defer spreaders moving to a grid without one
+                        if (xform.GridUid is { } movedGrid && (!_spreaderGridQuery.TryComp(movedGrid, out var movedSpreaderGrid) || movedSpreaderGrid.SpreadQueues.Count != _prototypeUpdates.Count))
+                            _wfPendingSpreaders.Add(ent);
+                        else
+                        // WOLFGATE END
+                            InitSpreader(ent);
                         continue;
                     }
 

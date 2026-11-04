@@ -232,6 +232,9 @@ unmarked:
   - path: Resources/Fonts/_Starlight/
     module: Species
     reason: Starlight fonts, ported in #14 (Customisation Update).
+  - path: Resources/Fonts/_DS13/
+    module: Remade
+    reason: DS13's Shage Marker-script font (CC-BY 3.0, BlueNexus) for the Monolith Tap's glyphs.
   - path: Resources/Maps/_Mono/ShuttleEvent/Xeno/
     module: Xenoborgs
     reason: Xenoborg shuttle event maps, ported from Monolith #4558.
@@ -337,6 +340,18 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/Dungeons/zvezda.yml
     module: null
     reason: Zvezda lighting re-work and power generation.
+  - path: Resources/Maps/_Mono/POI/Dungeons/zvezda.yml
+    module: TradeGoods
+    reason: A trade-goods vendor in the cargo bay, beside the turn-in chute.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon.yml
+    module: TradeGoods
+    reason: A trade-goods vendor in the reception lobby, by the turn-in chute.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml
+    module: TradeGoods
+    reason: A trade-goods vendor in the reception lobby, by the turn-in chute.
+  - path: Resources/Maps/_Mono/POI/hokkaido.yml
+    module: TradeGoods
+    reason: A turn-in chute in the north cargo room, so the station is a market.
   - path: Resources/Textures/Tiles/exoborg.png
     module: Xenoborgs
     reason: Exoborg floor tile redrawn.

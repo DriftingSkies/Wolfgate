@@ -40,6 +40,9 @@ public sealed partial class WFAsteroidCullSystem : EntitySystem
 
     private static readonly TimeSpan PassInterval = TimeSpan.FromSeconds(0.5);
     private const float MoveThreshold = 0.5f;
+    /// <summary>Metres a view must move before its surroundings are searched again.</summary>
+    private const float SearchMove = 16f;
+    private static readonly TimeSpan SearchRefresh = TimeSpan.FromSeconds(10);
     private const float TurnThreshold = 0.05f;
     /// <summary>Passes a rock grid may go unowned by a chunk before it goes back to being sent to everyone.</summary>
     private const int OwnerPasses = 2;
@@ -59,6 +62,8 @@ public sealed partial class WFAsteroidCullSystem : EntitySystem
     private readonly List<EntityUid> _fresh = new();
     private readonly Dictionary<ICommonSession, HashSet<EntityUid>> _sent = new();
     private readonly List<EntityUid> _scratch = new();
+    /// <summary>Where and when each session's view was last searched, so a view that hasn't moved isn't searched again.</summary>
+    private readonly Dictionary<ICommonSession, Dictionary<EntityUid, (MapId Map, Vector2 Position, TimeSpan At)>> _searched = new();
     private List<Entity<MapGridComponent>> _gridHits = new();
 
     public override void Initialize()
@@ -125,6 +130,7 @@ public sealed partial class WFAsteroidCullSystem : EntitySystem
     {
         if (args.NewStatus == SessionStatus.Disconnected)
             _sent.Remove(args.Session);
+            _searched.Remove(args.Session);
     }
 
     private void Clear()
@@ -137,6 +143,7 @@ public sealed partial class WFAsteroidCullSystem : EntitySystem
         _dirtyFields.Clear();
         _fresh.Clear();
         _sent.Clear();
+        _searched.Clear();
     }
 
     public override void Update(float frameTime)
@@ -389,6 +396,14 @@ public sealed partial class WFAsteroidCullSystem : EntitySystem
         var coordinates = _transform.GetMapCoordinates(viewer);
         if (coordinates.MapId == MapId.Nullspace)
             return;
+
+        var searched = _searched.GetOrNew(session);
+        var now = _timing.CurTime;
+        if (searched.TryGetValue(viewer, out var last) && last.Map == coordinates.MapId && now - last.At < SearchRefresh &&
+            (last.Position - coordinates.Position).LengthSquared() < SearchMove * SearchMove)
+            return;
+
+        searched[viewer] = (coordinates.MapId, coordinates.Position, now);
 
         _gridHits.Clear();
         _map.FindGridsIntersecting(coordinates.MapId, Box2.CenteredAround(coordinates.Position, new Vector2(_range * 2f)),

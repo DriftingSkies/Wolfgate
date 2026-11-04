@@ -245,7 +245,7 @@ public sealed partial class NPCCombatSystem
 
             if (gunUid.Comp.NextFire > _timing.CurTime)
             {
-                return;
+                continue; // WOLFGATE(Performance): was return, which skipped every NPC after one whose gun was cooling down
             }
 
             _gun.SetTarget(gunUid.Comp, comp.Target); // Frontier - This ensures that the bullet won't fly over the target if it's downed

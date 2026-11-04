@@ -16,7 +16,7 @@ public partial class ShuttleNavControl
     private void DrawCrewGroups(DrawingHandleScreen handle, TransformComponent consoleXform, Matrix3x2 worldToView)
     {
         var setup = EntManager.System<WFCrewSetupClientSystem>();
-        if (!setup.WatchRadar() || setup.Crews.Count == 0)
+        if (!WfShowEncounters || !setup.WatchRadar() || setup.Crews.Count == 0)
             return;
 
         _wfCrewAnchors.Clear();

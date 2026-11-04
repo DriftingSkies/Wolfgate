@@ -1,0 +1,49 @@
+# Corruption growing up a wall from the floor beside it. WFCorruptionSystem puts one on each wall that corruption touches and takes it
+# off again, so it has no body, can't be clicked and leaves the wall free to deconstruct. It burns like the floor growth.
+- type: entity
+  id: WFCorruptionWall
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+    noRot: true
+  # No fixtures: it sits on the wall and must not collide, so say so rather than let the engine switch it off on spawn.
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Appearance
+  - type: Sprite
+    sprite: _WF/Remade/Structures/wall_growth.rsi
+    drawdepth: WallTops
+    layers:
+    - map: [ "base" ]
+      state: wall-1
+  - type: WFCorruptionVisuals
+    prefix: wall-
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Temperature
+    heatDamage:
+      types:
+        Heat: 5
+    coldDamage: {}
+    coldDamageThreshold: 0
+  - type: Flammable
+    fireSpread: true
+    damage:
+      types:
+        Heat: 3
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: WFCorruptionWall

@@ -33,6 +33,8 @@ public sealed partial class WFCrewConductSystem : EntitySystem
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(0.5);
 
     private TimeSpan _next;
+    [Dependency] private Robust.Shared.Random.IRobustRandom _random = default!;
+    private readonly Stack<EntityUid> _hullWalk = new();
 
     /// <summary>Players told to put a gun away, by ship and crew: when their time runs out, and whether it has.</summary>
     private readonly Dictionary<(EntityUid Grid, string Group, EntityUid Player), (TimeSpan Deadline, bool Turned)> _warned = new();
@@ -44,20 +46,29 @@ public sealed partial class WFCrewConductSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<WFCrewPropertyComponent, GotEquippedHandEvent>(OnPickedUp);
+        _next = _timing.CurTime + TimeSpan.FromSeconds(0.5 * _random.NextFloat()); // random phase so the 1 Hz crew sweeps don't share a tick
     }
 
     /// <summary>Marks every item aboard a ship, stowed or carried, as its crew's property.</summary>
     public void MarkProperty(EntityUid grid, string group)
     {
-        var query = EntityQueryEnumerator<ItemComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out _, out var xform))
+        // Walks the hull's descendants, containers included, rather than every item in the world.
+        _hullWalk.Clear();
+        _hullWalk.Push(grid);
+        while (_hullWalk.Count > 0)
         {
-            if (xform.GridUid != grid)
-                continue;
+            var parent = _hullWalk.Pop();
+            var children = Transform(parent).ChildEnumerator;
+            while (children.MoveNext(out var child))
+            {
+                _hullWalk.Push(child);
+                if (!HasComp<ItemComponent>(child))
+                    continue;
 
-            var property = EnsureComp<WFCrewPropertyComponent>(uid);
-            property.Grid = grid;
-            property.Group = group;
+                var property = EnsureComp<WFCrewPropertyComponent>(child);
+                property.Grid = grid;
+                property.Group = group;
+            }
         }
     }
 

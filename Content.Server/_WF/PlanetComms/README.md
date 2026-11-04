@@ -67,5 +67,6 @@ handlers) and `ChatSystem.PlanetComms.cs`, which the marked announcement edits i
   - sessions on a world with no mass transceiver up miss it
   - off-world sources miss dark worlds
 - [`Content.Server/Communications/CommunicationsConsoleSystem.cs`](../../Communications/CommunicationsConsoleSystem.cs): a global console on a world with no mass transceiver up has no uplink
+- [`Content.Server/Radio/EntitySystems/RadioSystem.cs`](../../Radio/EntitySystems/RadioSystem.cs): planets have no telecom server; a working mass transceiver relays instead
 
 <!-- WOLFGATE-GENERATED END -->

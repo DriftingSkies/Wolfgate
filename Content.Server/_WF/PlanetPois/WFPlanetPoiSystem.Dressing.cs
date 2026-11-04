@@ -50,7 +50,10 @@ public sealed partial class WFPlanetPoiSystem
             if (!InSite(tile)
                 && WFRoadDressingPlanner.KerbOf(plan.RoadTiles, tile) is { } kerb
                 && dressing.Kerbs.TryGetValue(kerb, out var kerbTile))
+            {
+                _terrainAtmos.AddRoadTile(ground, kerbTile.Id);
                 kerbs.Add((tile, new Tile(_tiles[kerbTile.Id].TileId)));
+            }
         }
 
         _maps.SetTiles(ground, grid, kerbs);

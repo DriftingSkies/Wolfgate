@@ -29,7 +29,8 @@ public sealed partial class SiliconDeathSystem : EntitySystem
     {
         if (!_silicon.TryGetSiliconBattery(uid, out var batteryComp))
         {
-            SiliconDead(uid, siliconDeadComp, batteryComp, uid);
+            if (!siliconDeadComp.Dead) // WOLFGATE(Performance): already dead, nothing to redo
+                SiliconDead(uid, siliconDeadComp, batteryComp, uid);
             return;
         }
 

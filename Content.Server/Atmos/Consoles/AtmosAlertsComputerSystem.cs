@@ -169,11 +169,23 @@ public sealed partial class AtmosAlertsComputerSystem : SharedAtmosAlertsCompute
             var fireAlarmEntriesForEachGrid = new Dictionary<EntityUid, AtmosAlertsComputerEntry[]>();
             var gaslockEntriesForEachGrid = new Dictionary<EntityUid, AtmosAlertsComputerEntry[]>(); // Frontier
 
+            WFResetAlarmBuckets(); // WOLFGATE(Performance): consoles with a closed UI share one sweep of the alarms
+
             var query = AllEntityQuery<AtmosAlertsComputerComponent, TransformComponent>();
             while (query.MoveNext(out var ent, out var entConsole, out var entXform))
             {
                 if (entXform?.GridUid == null)
                     continue;
+
+                // WOLFGATE(Performance) START: closed consoles only need the alert level for their screen
+                if (!_userInterfaceSystem.IsUiOpen(ent, AtmosAlertsComputerUiKey.Key))
+                {
+                    if (TryComp<AppearanceComponent>(ent, out var closedAppearance))
+                        _appearance.SetData(ent, AtmosAlertsComputerVisuals.ComputerLayerScreen, (int) WFHighestAlert(entXform.GridUid.Value, entConsole), closedAppearance);
+
+                    continue;
+                }
+                // WOLFGATE END
 
                 // Make a list of alarm state data for all the air and fire alarms on the grid
                 if (!airAlarmEntriesForEachGrid.TryGetValue(entXform.GridUid.Value, out var airAlarmEntries))

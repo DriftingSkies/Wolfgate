@@ -21,6 +21,14 @@ public sealed partial class AtmosphereSystem
     /// </summary>
     public const int DeltaPressurePreAllocateLength = 1000;
 
+    // WOLFGATE(Performance) START: fixed-size tile buffer for ProcessDeltaPressureEntity
+    [System.Runtime.CompilerServices.InlineArray(Atmospherics.Directions)]
+    private struct DeltaPressureTileBuffer
+    {
+        private TileAtmosphere? _element0;
+    }
+    // WOLFGATE END
+
     /// <summary>
     /// Processes a singular entity, determining the pressures it's experiencing and applying damage based on that.
     /// </summary>
@@ -28,7 +36,8 @@ public sealed partial class AtmosphereSystem
     /// <param name="gridAtmosComp">The <see cref="GridAtmosphereComponent"/> that belongs to the entity's GridUid.</param>
     private void ProcessDeltaPressureEntity(Entity<DeltaPressureComponent> ent, GridAtmosphereComponent gridAtmosComp)
     {
-        if (!_random.Prob(ent.Comp.RandomDamageChance))
+        // WOLFGATE(Performance): skip the shared RNG when the chance is certain (also thread-safe)
+        if (ent.Comp.RandomDamageChance < 1f && !_random.Prob(ent.Comp.RandomDamageChance))
             return;
 
         /*
@@ -39,7 +48,9 @@ public sealed partial class AtmosphereSystem
          so simple vector operations like min/max/abs can be performed on them.
          */
 
-        var tiles = new TileAtmosphere?[Atmospherics.Directions];
+        // WOLFGATE(Performance): stack buffer instead of a per-entity array allocation
+        var tileBuffer = new DeltaPressureTileBuffer();
+        Span<TileAtmosphere?> tiles = tileBuffer;
         for (var i = 0; i < Atmospherics.Directions; i++)
         {
             var direction = (AtmosDirection)(1 << i);
@@ -98,7 +109,7 @@ public sealed partial class AtmosphereSystem
     /// as the tile array.</param>
     /// <remarks>This is for internal use of the DeltaPressure system -
     /// it may not be a good idea to use this generically.</remarks>
-    private static void GetBulkTileAtmospherePressures(TileAtmosphere?[] tiles, Span<float> pressures)
+    private static void GetBulkTileAtmospherePressures(Span<TileAtmosphere?> tiles, Span<float> pressures) // WOLFGATE(Performance): span so callers can use a stack buffer
     {
         #if DEBUG
         // Just in case someone tries to use this method incorrectly.

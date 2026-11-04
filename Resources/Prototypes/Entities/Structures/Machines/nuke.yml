@@ -6,22 +6,26 @@
   components:
   - type: Transform
     anchored: true
+  # WOLFGATE(Warheads) START: Skyrat's nuke sprites; the holiday layers keep the old sheet
   - type: Sprite
-    sprite: Objects/Devices/nuke.rsi
+    sprite: _WF/Warheads/field.rsi
     noRot: true
     layers:
     - state: nuclearbomb_base
       map: ["enum.NukeVisualLayers.Base"]
-    - state: nuclearbomb_deployed_unlit
+    - state: lights-safety
       map: ["enum.NukeVisualLayers.Unlit"]
       shader: unshaded
       visible: false
-    - state: nuclearbomb_gay
+    - sprite: Objects/Devices/nuke.rsi
+      state: nuclearbomb_gay
       map: ["pride"]
       visible: false
-    - state: nukefestive
+    - sprite: Objects/Devices/nuke.rsi
+      state: nukefestive
       map: ["christmas"]
       visible: false
+  # WOLFGATE END
   - type: Appearance
   - type: HolidayVisuals
     holidays:
@@ -36,18 +40,20 @@
           festive: { visible: true }
         pride:
           pride: { visible: true }
+      # WOLFGATE(Warheads) START: Skyrat's nuke states
       enum.NukeVisuals.Deployed:
         enum.NukeVisualLayers.Base:
           False: { state: nuclearbomb_base }
-          True:  { state: nuclearbomb_deployed }
+          True:  { state: nuclearbomb_safetyoff }
         enum.NukeVisualLayers.Unlit:
           True:  { visible: true }
           False: { visible: false }
       enum.NukeVisuals.State:
         enum.NukeVisualLayers.Unlit:
-          Idle:        { state: nuclearbomb_deployed_unlit }
-          Armed:       { state: nuclearbomb_timing }
-          YoureFucked: { state: nuclearbomb_exploding }
+          Idle:        { state: lights-safety }
+          Armed:       { state: lights-timing }
+          YoureFucked: { state: lights-exploding }
+      # WOLFGATE END
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -90,6 +96,12 @@
         - NukeDisk
     alertLevelOnActivate: delta
     alertLevelOnDeactivate: green
+    # WOLFGATE(Warheads) START: Skyrat's final alarm, and the warhead countdown, voice and effects
+    alertSound:
+      path: /Audio/_WF/Warheads/alarm.ogg
+  - type: WFNukePayload
+    payload: WFPayloadStationNuke
+    # WOLFGATE END
   - type: InteractionOutline
   - type: ActivatableUI
     key: enum.NukeUiKey.Key

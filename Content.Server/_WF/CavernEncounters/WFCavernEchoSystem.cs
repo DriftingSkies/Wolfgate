@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._WF.Dormancy;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech;
 using Content.Shared.Chat;
@@ -20,6 +21,7 @@ public sealed partial class WFCavernEchoSystem : EntitySystem
 {
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private MobStateSystem _mobState = default!;
@@ -69,11 +71,11 @@ public sealed partial class WFCavernEchoSystem : EntitySystem
         var query = EntityQueryEnumerator<WFCavernEchoComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var echo, out var xform))
         {
-            if (!_mobState.IsAlive(uid))
+            if (!_mobState.IsAlive(uid) || !_dormancy.IsActive(uid, xform))
                 continue;
 
             _people.Clear();
-            _lookup.GetEntitiesInRange(xform.Coordinates, echo.SpeakRange, _people);
+            _lookup.GetEntitiesInRange(xform.Coordinates, echo.SpeakRange, _people, LookupFlags.Dynamic | LookupFlags.Sundries);
 
             var anyone = false;
             var close = false;

@@ -26,6 +26,11 @@ public sealed partial class ThermalSignatureSystem : EntitySystem
 
     private const float HeatChangeThreshold = 1.02f;
 
+    // WOLFGATE(Performance) START: each pass refreshes one quarter of the signatures, by uid
+    private const int SliceCount = 4;
+    private int _slice;
+    // WOLFGATE END
+
     private List<Entity<ThermalSignatureComponent>> _gridQueue = new();
 
     private EntityQuery<ThermalSignatureComponent> _sigQuery;
@@ -109,14 +114,23 @@ public sealed partial class ThermalSignatureSystem : EntitySystem
         }
 
         _gridQueue.Clear();
+        // WOLFGATE(Performance) START: only this pass's slice is refreshed, over the time since it was last
+        _slice = (_slice + 1) % SliceCount;
+        var sliceSeconds = UpdateIntervalSeconds * SliceCount;
+        // WOLFGATE END
         var query = EntityQueryEnumerator<ThermalSignatureComponent>();
         while (query.MoveNext(out var uid, out var sigComp))
         {
-            var ev = new GetThermalSignatureEvent();
-            RaiseLocalEvent(uid, ref ev);
+            // WOLFGATE(Performance) START: the other slices keep their stored heat and only add to the totals
+            if (uid.Id % SliceCount == _slice)
+            {
+                var ev = new GetThermalSignatureEvent();
+                RaiseLocalEvent(uid, ref ev);
 
-            sigComp.StoredHeat += ev.Signature * UpdateIntervalSeconds;
-            sigComp.StoredHeat *= MathF.Pow(sigComp.HeatDissipation, UpdateIntervalSeconds);
+                sigComp.StoredHeat += ev.Signature * sliceSeconds;
+                sigComp.StoredHeat *= MathF.Pow(sigComp.HeatDissipation, sliceSeconds);
+            }
+            // WOLFGATE END
 
             if (_mapGridQuery.HasComp(uid))
             {

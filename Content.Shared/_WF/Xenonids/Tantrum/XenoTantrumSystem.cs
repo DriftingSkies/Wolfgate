@@ -167,7 +167,7 @@ public sealed partial class XenoTantrumSystem : EntitySystem
         while (tantrumQuery.MoveNext(out var uid, out var tantrum))
         {
             if (time < tantrum.ExpireAt)
-                return;
+                continue;
 
             RemCompDeferred<TantrumingComponent>(uid);
             _speed.RefreshMovementSpeedModifiers(uid);

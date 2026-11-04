@@ -1,0 +1,10 @@
+wf-remade-echo-1 = help... someone... please
+wf-remade-echo-2 = is anyone there? it's quiet now. come find me.
+wf-remade-echo-3 = i'm hurt. i can't move. please hurry.
+wf-remade-echo-4 = it's okay. it's gone. you can come out.
+wf-remade-echo-5 = can anyone hear me? i'm still here.
+wf-remade-echo-6 = don't leave me here. please.
+wf-remade-echo-place-1 = help... i'm at {$place}... please
+wf-remade-echo-place-2 = it's quiet now. come to {$place}.
+wf-remade-echo-place-3 = i'm hurt, {$place}. hurry.
+wf-remade-echo-place-4 = is anyone near {$place}? i can't get up.

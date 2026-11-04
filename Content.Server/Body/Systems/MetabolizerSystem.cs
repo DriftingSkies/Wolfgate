@@ -22,6 +22,7 @@ namespace Content.Server.Body.Systems
     {
         [Dependency] private IGameTiming _gameTiming = default!;
         [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _wfDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
+        private readonly List<(EntityUid Uid, MetabolizerComponent Component)> _wfDue = new(); // WOLFGATE(Wolfmed): reused due list
         [Dependency] private IPrototypeManager _prototypeManager = default!;
         [Dependency] private IRobustRandom _random = default!;
         [Dependency] private ISharedAdminLogManager _adminLogger = default!;
@@ -86,11 +87,16 @@ namespace Content.Server.Body.Systems
         {
             base.Update(frameTime);
 
-            var metabolizers = new ValueList<(EntityUid Uid, MetabolizerComponent Component)>(Count<MetabolizerComponent>());
+            // WOLFGATE(Wolfmed) START: reuse one list and buffer only the metabolizers that are due.
+            // var metabolizers = new ValueList<(EntityUid Uid, MetabolizerComponent Component)>(Count<MetabolizerComponent>());
+            var metabolizers = _wfDue;
+            metabolizers.Clear();
+            // WOLFGATE END
             var query = EntityQueryEnumerator<MetabolizerComponent>();
 
             while (query.MoveNext(out var uid, out var comp))
             {
+                if (_gameTiming.CurTime < comp.NextUpdate) continue; // WOLFGATE(Wolfmed): the loop below skips these anyway.
                 metabolizers.Add((uid, comp));
             }
 

@@ -11,6 +11,8 @@ public sealed partial class CEZCableVerticalSystem
 {
     private readonly HashSet<EntityUid> _wfRefloodGrids = new();
 
+    [Dependency] private EntityQuery<NodeContainerComponent> _wfNodeContainerQuery = default!;
+
     /// <summary>Queues a grid's vertical cables for the batched reflood.</summary>
     private void WFQueueReflood(EntityUid gridUid)
     {
@@ -24,16 +26,23 @@ public sealed partial class CEZCableVerticalSystem
         if (_wfRefloodGrids.Count == 0)
             return;
 
-        var enumerator = EntityQueryEnumerator<NodeContainerComponent, TransformComponent>();
-        while (enumerator.MoveNext(out _, out var nc, out var xform))
+        // Anchored cables are direct children of their grid, so walk the queued grids instead of every node container.
+        foreach (var grid in _wfRefloodGrids)
         {
-            if (xform.GridUid is not { } grid || !_wfRefloodGrids.Contains(grid))
+            if (TerminatingOrDeleted(grid))
                 continue;
 
-            foreach (var node in nc.Nodes.Values)
+            var children = Transform(grid).ChildEnumerator;
+            while (children.MoveNext(out var child))
             {
-                if (node is CECableVerticalNode)
-                    _nodeGroup.QueueReflood(node);
+                if (!_wfNodeContainerQuery.TryComp(child, out var nc))
+                    continue;
+
+                foreach (var node in nc.Nodes.Values)
+                {
+                    if (node is CECableVerticalNode)
+                        _nodeGroup.QueueReflood(node);
+                }
             }
         }
 

@@ -182,6 +182,11 @@ public sealed partial class WoundDamageProjectionSystem : EntitySystem
                 }
             }
             var visual = EnsureComp<PartDamageVisualsComponent>(body);
+            // WOLFGATE(Wolfmed): snapshot the old layers so an unchanged refresh can skip SetDamage and Dirty.
+            _visualSnapshot.Clear();
+            foreach (var (layer, spec) in visual.Damage)
+                _visualSnapshot[layer] = spec;
+
             visual.Damage.Clear();
             foreach (var (part, _) in _body.GetBodyChildren(body))
             {
@@ -199,6 +204,13 @@ public sealed partial class WoundDamageProjectionSystem : EntitySystem
                 }
             }
 
+            // WOLFGATE(Wolfmed) START: a refresh that changes neither the total nor the layers is a no-op.
+            if (TryComp(body, out DamageableComponent? bodyDamageable)
+                && total.Equals(bodyDamageable.Damage)
+                && VisualsUnchanged(visual))
+                return;
+            // WOLFGATE END
+
             _damage.SetDamage(body, total, origin); // WOLFGATE(Wolfmed): origin, for kill credit.
             Dirty(body, visual);
         }
@@ -207,6 +219,25 @@ public sealed partial class WoundDamageProjectionSystem : EntitySystem
             _projecting.Remove(body);
         }
     }
+
+    // WOLFGATE(Wolfmed) START: no-op refresh check.
+    private readonly Dictionary<HumanoidVisualLayers, DamageSpecifier> _visualSnapshot = new();
+
+    /// <summary>True when the rebuilt layer damage matches the snapshot taken before the rebuild.</summary>
+    private bool VisualsUnchanged(PartDamageVisualsComponent visual)
+    {
+        if (visual.Damage.Count != _visualSnapshot.Count)
+            return false;
+
+        foreach (var (layer, spec) in visual.Damage)
+        {
+            if (!_visualSnapshot.TryGetValue(layer, out var old) || !spec.Equals(old))
+                return false;
+        }
+
+        return true;
+    }
+    // WOLFGATE END
 
     private void SetupBody(EntityUid body)
     {

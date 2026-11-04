@@ -52,6 +52,9 @@ public sealed partial class CEZLevelsSystem
             if (body.BodyType == BodyType.Static) // Stopped.
                 continue;
 
+            if (!body.Awake) // WOLFGATE(Performance): a sleeping hull has not moved since its last check
+                continue;
+
             if (xform.MapUid is not { } map
                 || !_zMapQuery.HasComp(map) // wall collision only applies on Z levels
                 || !_mapGridQuery.HasComp(map)) // only relevant if the map has a mapgrid

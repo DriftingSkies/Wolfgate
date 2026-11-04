@@ -1226,4 +1226,12 @@ public sealed class WolfmedCVars
     /// </summary>
     public static readonly CVarDef<float> WoundLadderLowerShare =
         CVarDef.Create("wolfmed.wound_ladder_lower_share", 0f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Lets a mindless body off-planet skip its life upkeep while no player is within about 48-64 m on its map, it is
+    /// not bleeding or critical, and its grid is not piloted or in FTL. Off by default so tests, which have no
+    /// players, keep every body running.
+    /// </summary>
+    public static readonly CVarDef<bool> OffPlanetDormancy =
+        CVarDef.Create("wolfmed.off_planet_dormancy", false, CVar.SERVERONLY);
 }

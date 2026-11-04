@@ -554,6 +554,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         if (gun.SelectedMode == SelectiveFire.Burst)
         {
             gun.BurstActivated = true;
+            OnBurstActivated(gunUid); // WOLFGATE(Performance): lets the server track bursting guns
         }
         if (gun.BurstActivated)
         {
@@ -705,6 +706,11 @@ public abstract partial class SharedGunSystem : EntitySystem
     /// Call this whenever the ammo count for a gun changes.
     /// </summary>
     protected virtual void UpdateAmmoCount(EntityUid uid, bool prediction = true) {}
+
+    // WOLFGATE(Performance) START: server hook so auto-fire only walks bursting guns
+    /// <summary>Called when a gun starts a burst.</summary>
+    protected virtual void OnBurstActivated(EntityUid uid) {}
+    // WOLFGATE END
 
     protected void SetCartridgeSpent(EntityUid uid, CartridgeAmmoComponent cartridge, bool spent, bool despawn = true) // WOLFGATE(Wolfmed): playtest 1: despawn
     {

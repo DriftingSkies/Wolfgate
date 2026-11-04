@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Content.Server.GameTicking;
 using Content.Shared._WF.CCVar;
+using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WF.Planets.Bounds;
@@ -12,6 +13,7 @@ namespace Content.Server._WF.Planets.Bounds;
 public sealed partial class WFPlanetPreloadSystem
 {
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private WFPlanetRoundHoldSystem _hold = default!;
 
     private readonly System.Diagnostics.Stopwatch _slice = new();
     private GameTick _sliceTick;
@@ -30,7 +32,19 @@ public sealed partial class WFPlanetPreloadSystem
 
     /// <summary>Milliseconds a tick world generation may take: the lobby's while the round hasn't started.</summary>
     public float GenerationBudget() =>
-        _cfg.GetCVar(_ticker.RunLevel == GameRunLevel.PreRoundLobby ? PlanetCVars.GenerationBudgetLobby : PlanetCVars.GenerationBudget);
+        PhaseBudget(PlanetCVars.GenerationBudget, PlanetCVars.GenerationBudgetLobby, PlanetCVars.GenerationBudgetHold);
+
+    /// <summary>
+    /// The budget for the round's phase: the low lobby one during the countdown, the high hold one once the start is
+    /// held for the worlds, and the in-round one after.
+    /// </summary>
+    private float PhaseBudget(CVarDef<float> round, CVarDef<float> lobby, CVarDef<float> hold)
+    {
+        if (_ticker.RunLevel != GameRunLevel.PreRoundLobby)
+            return _cfg.GetCVar(round);
+
+        return _cfg.GetCVar(_hold.Holding ? hold : lobby);
+    }
 
     /// <summary>
     /// Milliseconds of planet work, generation and chunk loading together, done so far this tick; the first ask in a tick

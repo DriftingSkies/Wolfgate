@@ -83,6 +83,11 @@ public sealed partial class CollisionWarningSystem : EntitySystem
     private float _calloutInterval;
     private float _updateInterval;
 
+    // Every piloted ship crawling and nothing in sight: sweep once a second instead.
+    private const float SlowSpeed = 3f;
+    private static readonly TimeSpan SlowInterval = TimeSpan.FromSeconds(1);
+    private bool _slow;
+
     private EntityQuery<MapGridComponent> _gridQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
     private EntityQuery<TransformComponent> _xformQuery;
@@ -148,7 +153,8 @@ public sealed partial class CollisionWarningSystem : EntitySystem
         if (_timing.CurTime < _nextUpdate)
             return;
 
-        _nextUpdate = _timing.CurTime + TimeSpan.FromSeconds(_updateInterval);
+        var interval = TimeSpan.FromSeconds(_updateInterval);
+        _nextUpdate = _timing.CurTime + (_slow && SlowInterval > interval ? SlowInterval : interval);
 
         Sweep();
     }
@@ -179,11 +185,15 @@ public sealed partial class CollisionWarningSystem : EntitySystem
         }
 
         var shuttles = EntityQueryEnumerator<ShuttleComponent, TransformComponent, PhysicsComponent>();
+        var calm = true;
 
         while (shuttles.MoveNext(out var uid, out _, out var xform, out var physics))
         {
             if (!_pilotedGrids.Contains(uid) || !_gridQuery.TryComp(uid, out var grid))
                 continue;
+
+            if (physics.LinearVelocity.LengthSquared() > SlowSpeed * SlowSpeed)
+                calm = false;
 
             // A ship with the warning switched off is left alone, warning and alarms included.
             if (HasComp<CollisionWarningDisabledComponent>(uid))
@@ -193,10 +203,14 @@ public sealed partial class CollisionWarningSystem : EntitySystem
             }
 
             if (FindThreat((uid, grid, xform, physics)) is { } threat)
+            {
                 Warn(uid, threat);
+                calm = false;
+            }
         }
 
         ExpireHeldWarnings();
+        _slow = calm && !EntityQueryEnumerator<CollisionWarningComponent>().MoveNext(out _, out _);
     }
 
     /// <summary>Links every pair of ships joined by a docked port, so a sweep checks docked chains without walking them.</summary>

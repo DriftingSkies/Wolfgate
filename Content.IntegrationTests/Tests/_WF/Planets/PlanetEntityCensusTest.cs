@@ -123,8 +123,8 @@ public sealed class PlanetEntityCensusTest
             server.CfgMan.SetCVar(PlanetCVars.Prebuild, false);
             server.CfgMan.SetCVar(PlanetCVars.SiteStash, sites);
             // Formed at the lobby's pace, as a real round's are.
-            server.CfgMan.SetCVar(PlanetCVars.PreloadBudget, server.CfgMan.GetCVar(PlanetCVars.PreloadBudgetLobby));
-            server.CfgMan.SetCVar(PlanetCVars.GenerationBudget, server.CfgMan.GetCVar(PlanetCVars.GenerationBudgetLobby));
+            server.CfgMan.SetCVar(PlanetCVars.PreloadBudget, server.CfgMan.GetCVar(PlanetCVars.PreloadBudgetHold));
+            server.CfgMan.SetCVar(PlanetCVars.GenerationBudget, server.CfgMan.GetCVar(PlanetCVars.GenerationBudgetHold));
 
             foreach (var uid in entMan.GetEntities())
                 before.Add(uid);

@@ -23,9 +23,13 @@ public sealed partial class ForceParentSystem : EntitySystem
             return;
 
         var newPos = args.NewPosition;
+        // WOLFGATE(Performance) START: the second call was outside the if and ran on every move
         if (newPos.EntityId != ent.Comp.Position.EntityId || newPos.Position != ent.Comp.Position.Position)
+        {
             _transform.SetParent(ent, ent.Comp.Position.EntityId);
             _transform.SetLocalPositionNoLerp(ent, ent.Comp.Position.Position);
+        }
+        // WOLFGATE END
     }
 
     public void SetForceParent(EntityUid uid, EntityCoordinates coord)

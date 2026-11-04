@@ -35,6 +35,11 @@ public sealed partial class AdminRadarSystem : EntitySystem
     public bool ShowPlayers;
 
     /// <summary>
+    /// Whether the scanner draws encounter markers, zones and NPC crew tags.
+    /// </summary>
+    public bool ShowEncounters = true;
+
+    /// <summary>
     /// The players as the server last listed them.
     /// </summary>
     public IReadOnlyList<AdminRadarPlayer> Players => _players;

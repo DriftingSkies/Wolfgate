@@ -148,6 +148,21 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
             });
         }
 
+        // WOLFGATE(Performance) START: a replan toward the coordinates steering already walks to keeps that path instead of running A* again
+        if (!doDirectMove
+            && _entManager.TryGetComponent<NPCSteeringComponent>(owner, out var wfSteering)
+            && !wfSteering.DirectMove
+            && wfSteering.Status == SteeringStatus.Moving
+            && wfSteering.CurrentPath.Count > 0
+            && wfSteering.Coordinates.Equals(targetCoordinates))
+        {
+            return (true, new Dictionary<string, object>()
+            {
+                {NPCBlackboard.OwnerCoordinates, targetCoordinates}
+            });
+        }
+        // WOLFGATE END
+
         // Monolith - early port of wizden#38846
         if (!doDirectMove)
         {

@@ -81,8 +81,8 @@ public sealed class PlanetFirstMinuteTest
             server.CfgMan.SetCVar(PlanetCVars.SiteStash, sites);
             server.CfgMan.SetCVar(PlanetCVars.MergeSliceTiles, slice ? PlanetCVars.MergeSliceTiles.DefaultValue : 0);
             // Formed at the lobby's pace, as a real round's are.
-            server.CfgMan.SetCVar(PlanetCVars.PreloadBudget, server.CfgMan.GetCVar(PlanetCVars.PreloadBudgetLobby));
-            server.CfgMan.SetCVar(PlanetCVars.GenerationBudget, server.CfgMan.GetCVar(PlanetCVars.GenerationBudgetLobby));
+            server.CfgMan.SetCVar(PlanetCVars.PreloadBudget, server.CfgMan.GetCVar(PlanetCVars.PreloadBudgetHold));
+            server.CfgMan.SetCVar(PlanetCVars.GenerationBudget, server.CfgMan.GetCVar(PlanetCVars.GenerationBudgetHold));
             entitiesBefore = entMan.GetEntities().Count();
             memoryBefore = GC.GetTotalMemory(true);
             esm.MetricsEnabled = true;

@@ -6,6 +6,7 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Components;
 using Content.Server.Chat.Systems;
 using Content.Server.Temperature.Components;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Warmth;
 using Content.Shared._WF.WolfWeather;
 using Content.Shared.Chat;
@@ -82,15 +83,35 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
 
     private readonly List<EntityUid> _due = new();
     private readonly HashSet<Entity<EntityRadiusHeaterComponent>> _fires = new();
-    private TimeSpan _nextTick;
+    private readonly HashSet<EntityUid> _heaterMaps = new();
+    private TimeSpan _nextHeaterScan;
+
+    // Cached cvars, kept current by Subs.CVar.
+    private float _windChillPerSpeed;
+    private float _windChillMax;
+    private float _wetCooling;
+    private float _drySeconds;
+    private float _warningShare;
 
     public override void Initialize()
     {
         base.Initialize();
+        Subs.CVar(Cfg, WFWarmthCVars.WindChillPerSpeed, value => _windChillPerSpeed = value, true);
+        Subs.CVar(Cfg, WFWarmthCVars.WindChillMax, value => _windChillMax = value, true);
+        Subs.CVar(Cfg, WFWarmthCVars.WetCooling, value => _wetCooling = value, true);
+        Subs.CVar(Cfg, WFWarmthCVars.DrySeconds, value => _drySeconds = value, true);
+        Subs.CVar(Cfg, WFWarmthCVars.WarningShare, value => _warningShare = value, true);
+        SubscribeLocalEvent<EntityRadiusHeaterComponent, ComponentStartup>(OnHeaterStartup);
         SubscribeLocalEvent<WFWarmthComponent, ModifyChangedTemperatureEvent>(OnModifyTemperature);
         SubscribeLocalEvent<WFWarmthComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<WFWarmthComponent, PlayerAttachedEvent>(OnPlayerAttached);
         InitializeClothing();
+    }
+
+    /// <summary>A new heater may be on a map the last scan found empty.</summary>
+    private void OnHeaterStartup(Entity<EntityRadiusHeaterComponent> ent, ref ComponentStartup args)
+    {
+        _nextHeaterScan = TimeSpan.Zero;
     }
 
     /// <summary>A player taking over a body gets its warmth as it stands, since an unplayed body sends none.</summary>
@@ -102,16 +123,17 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        var now = _timing.CurTime;
-        if (now < _nextTick)
-            return;
 
-        _nextTick = now + TickInterval;
+        // Each body takes its own tick of the interval, so a full server doesn't read every body at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var seconds = period / (float) _timing.TickRate;
+        var curTick = _timing.CurTick;
         _due.Clear();
         var query = EntityQueryEnumerator<TemperatureComponent, MobStateComponent>();
         while (query.MoveNext(out var uid, out _, out _))
         {
-            _due.Add(uid);
+            if (WFTickSpread.Due(uid, curTick, period))
+                _due.Add(uid);
         }
 
         foreach (var body in _due)
@@ -119,7 +141,7 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
             if (TerminatingOrDeleted(body) || _dormancy.BodySleeps(body))
                 continue;
 
-            Tick(body, (float) TickInterval.TotalSeconds);
+            Tick(body, seconds);
         }
     }
 
@@ -145,8 +167,8 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
 
         var open = IsOpen(body, xform, out var wetting, out var wind);
         comp.WindChill = open && wind > 0f
-            ? MathF.Min(1f + wind * Cfg.GetCVar(WFWarmthCVars.WindChillPerSpeed),
-                MathF.Max(1f, Cfg.GetCVar(WFWarmthCVars.WindChillMax)))
+            ? MathF.Min(1f + wind * _windChillPerSpeed,
+                MathF.Max(1f, _windChillMax))
             : 1f;
 
         dirty |= UpdateWetness(body, comp, xform, open, wetting, seconds);
@@ -164,7 +186,7 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
         if (args.TemperatureDelta >= 0f)
             return;
 
-        args.TemperatureDelta *= ent.Comp.WindChill * (1f + MathF.Max(0f, Cfg.GetCVar(WFWarmthCVars.WetCooling)) * ent.Comp.Wetness);
+        args.TemperatureDelta *= ent.Comp.WindChill * (1f + MathF.Max(0f, _wetCooling) * ent.Comp.Wetness);
     }
 
     private void OnExamined(Entity<WFWarmthComponent> ent, ref ExaminedEvent args)
@@ -225,7 +247,7 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
         }
         else if (comp.Wetness > 0f)
         {
-            var drySeconds = Cfg.GetCVar(WFWarmthCVars.DrySeconds);
+            var drySeconds = _drySeconds;
             var rate = drySeconds > 0f ? 1f / drySeconds : 1f;
             if (!open)
                 rate *= ShelterDrying;
@@ -241,6 +263,9 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
     /// <summary>Whether a lit fire, or another active radiant heater, reaches the body.</summary>
     public bool NearFire(TransformComponent xform)
     {
+        if (xform.MapUid is not { } map || !MapHasHeater(map))
+            return false;
+
         _fires.Clear();
         _lookup.GetEntitiesInRange(xform.Coordinates, EntityRadiusHeaterSystem.MaxRadius, _fires);
         foreach (var fire in _fires)
@@ -256,12 +281,33 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
         return false;
     }
 
+    /// <summary>
+    /// Whether any radiant heater is on the map, from a scan at most a second old; a new heater forces a rescan.
+    /// Most maps have none, which spares their bodies the range lookup.
+    /// </summary>
+    private bool MapHasHeater(EntityUid map)
+    {
+        if (_timing.CurTime >= _nextHeaterScan)
+        {
+            _nextHeaterScan = _timing.CurTime + TickInterval;
+            _heaterMaps.Clear();
+            var heaters = EntityQueryEnumerator<EntityRadiusHeaterComponent, TransformComponent>();
+            while (heaters.MoveNext(out _, out _, out var heaterXform))
+            {
+                if (heaterXform.MapUid is { } heaterMap)
+                    _heaterMaps.Add(heaterMap);
+            }
+        }
+
+        return _heaterMaps.Contains(map);
+    }
+
     /// <summary>The body feel, and the warning signs once the cold or heat passes the warning line.</summary>
     private bool UpdateFeel(EntityUid body, WFWarmthComponent comp, TemperatureComponent temperature)
     {
         var (cold, heat, normal) = Strain(body, temperature);
         var surface = temperature.CurrentTemperature;
-        var warn = Math.Clamp(Cfg.GetCVar(WFWarmthCVars.WarningShare), 0f, 0.99f);
+        var warn = Math.Clamp(_warningShare, 0f, 0.99f);
 
         // The skin takes damage on its own, long before a slow core moves: warn as it nears either damage line.
         var coldLine = temperature.ParentColdDamageThreshold ?? temperature.ColdDamageThreshold;

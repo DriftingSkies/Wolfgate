@@ -14,7 +14,10 @@ public sealed partial class BiomeSystem
                && !bounds.MeetsSquare(chunkOrigin, ChunkSize);
     }
 
-    /// <summary>Every chunk origin of a bounded layer's circle, nearest the centre first.</summary>
+    /// <summary>
+    /// Every chunk origin of a bounded layer's circle, by 16-tile grid chunk nearest the centre first, so each grid
+    /// chunk fills in one go and is sent to the lobby once.
+    /// </summary>
     public List<Vector2i> WfChunksInBounds(WFPlanetBoundsComponent bounds)
     {
         var chunks = new List<Vector2i>();
@@ -34,9 +37,15 @@ public sealed partial class BiomeSystem
         var centre = bounds.Centre;
         chunks.Sort((a, b) =>
         {
-            var da = (new System.Numerics.Vector2(a.X + ChunkSize / 2f, a.Y + ChunkSize / 2f) - centre).LengthSquared();
-            var db = (new System.Numerics.Vector2(b.X + ChunkSize / 2f, b.Y + ChunkSize / 2f) - centre).LengthSquared();
+            var blockA = WfBlockOf(a);
+            var blockB = WfBlockOf(b);
+            var da = (new System.Numerics.Vector2(blockA.X + WfLoadBlock / 2f, blockA.Y + WfLoadBlock / 2f) - centre).LengthSquared();
+            var db = (new System.Numerics.Vector2(blockB.X + WfLoadBlock / 2f, blockB.Y + WfLoadBlock / 2f) - centre).LengthSquared();
             var order = da.CompareTo(db);
+            if (order == 0)
+                order = blockA.X.CompareTo(blockB.X);
+            if (order == 0)
+                order = blockA.Y.CompareTo(blockB.Y);
             if (order == 0)
                 order = a.X.CompareTo(b.X);
             return order != 0 ? order : a.Y.CompareTo(b.Y);

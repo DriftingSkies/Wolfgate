@@ -123,8 +123,9 @@ public sealed partial class ShuttleCameraListenerSystem : EntitySystem
         }
 
         var parent = xform.ParentUid;
-        var source = (component.Flags & AudioFlags.GridAudio) != 0x0
-            ? _maps.GetGridPosition(parent)
+        // A grid whose physics hasn't arrived (or is mid-teardown) logs an error per sound per frame and resolves to the origin.
+        var source = (component.Flags & AudioFlags.GridAudio) != 0x0 && _physicsQuery.TryGetComponent(parent, out var gridPhysics)
+            ? _maps.GetGridPosition((parent, gridPhysics, null))
             : _xform.GetWorldPosition(entity);
 
         if (!TryPlace(listener.Position, shift, source, component.MaxDistance, _audio.ZOffset,

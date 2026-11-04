@@ -37,6 +37,8 @@ public sealed partial class RadarBlipSystem : EntitySystem
         )
             return;
 
+        WFNoteRequest(args.SenderSession); // WOLFGATE(Performance): removals go only to sessions that asked recently
+
         var sourcesEv = new GetRadarSourcesEvent();
         RaiseLocalEvent(radarUid.Value, ref sourcesEv);
 
@@ -65,8 +67,11 @@ public sealed partial class RadarBlipSystem : EntitySystem
     private void OnBlipShutdown(EntityUid blipUid, RadarBlipComponent component, ComponentShutdown args)
     {
         var netBlipUid = GetNetEntity(blipUid);
-        var removalEv = new BlipRemovalEvent(netBlipUid);
-        RaiseNetworkEvent(removalEv);
+        // WOLFGATE(Performance) START: send removals only to recent radar users, none during round cleanup
+        // var removalEv = new BlipRemovalEvent(netBlipUid);
+        // RaiseNetworkEvent(removalEv);
+        WFSendRemoval(netBlipUid);
+        // WOLFGATE END
     }
 
     private void AssembleBlipsReport(EntityUid uid, List<EntityUid> sources, RadarConsoleComponent? component = null)

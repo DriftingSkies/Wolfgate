@@ -1,6 +1,10 @@
 using System.Numerics;
 using Content.Shared._Mono.Radar;
+using Content.Server.GameTicking;
+
 using Robust.Shared.Map;
+using Robust.Shared.Enums;
+using Robust.Shared.Player;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
 
@@ -65,5 +69,49 @@ public sealed partial class RadarBlipSystem
         }
 
         return false;
+    }
+
+    private static readonly TimeSpan WFRequestWindow = TimeSpan.FromSeconds(3);
+
+    [Dependency] private GameTicker _wfTicker = default!;
+
+    private readonly Dictionary<ICommonSession, TimeSpan> _wfLastRequest = new();
+    private readonly List<ICommonSession> _wfStale = new();
+
+    /// <summary>Records that a session is looking at a radar.</summary>
+    private void WFNoteRequest(ICommonSession session)
+    {
+        _wfLastRequest[session] = _wfTiming.CurTime;
+    }
+
+    /// <summary>Tells recent radar users a blip is gone; nobody else is drawing it.</summary>
+    private void WFSendRemoval(NetEntity blip)
+    {
+        if (_wfTicker.RunLevel == GameRunLevel.PreRoundLobby || _wfLastRequest.Count == 0)
+            return;
+
+        var now = _wfTiming.CurTime;
+        var filter = Filter.Empty();
+        var any = false;
+        _wfStale.Clear();
+        foreach (var (session, last) in _wfLastRequest)
+        {
+            if (now - last > WFRequestWindow || session.Status == SessionStatus.Disconnected)
+            {
+                _wfStale.Add(session);
+                continue;
+            }
+
+            filter.AddPlayer(session);
+            any = true;
+        }
+
+        foreach (var session in _wfStale)
+        {
+            _wfLastRequest.Remove(session);
+        }
+
+        if (any)
+            RaiseNetworkEvent(new BlipRemovalEvent(blip), filter);
     }
 }

@@ -1,0 +1,225 @@
+# What the crew has against the Remade: necrotoxin, the plasma cutter, the Prime's armour and what a fallen Monolith leaves.
+
+# The Prime stands up to guns and blades. Blasts and heavy cutting (the Structural in a cutter's arc) are what hurt it.
+- type: damageModifierSet
+  id: WFPrimeArmour
+  coefficients:
+    Blunt: 0.4
+    Slash: 0.5
+    Piercing: 0.3
+    Heat: 0.6
+    Shock: 0.2
+    Structural: 0.8
+  flatReductions:
+    Blunt: 12
+    Slash: 8
+    Piercing: 15
+    Heat: 4
+
+- type: reagent
+  id: WFNecrotoxin
+  name: reagent-name-wf-necrotoxin
+  group: Toxins
+  desc: reagent-desc-wf-necrotoxin
+  flavor: bitter
+  color: "#4c3b34"
+  physicalDesc: reagent-physical-desc-wf-necrotoxin
+  # Spray, splash or a grenade burns the Remade where the stuff lands.
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+      - !type:HealthChange
+        scaleByQuantity: true
+        damage:
+          types:
+            Poison: 2
+        conditions:
+        - !type:HasTag
+          tag: WFRemade
+  # Crew take a little. The Remade take theirs from WFNecrotoxinSystem, which reads their blood.
+  metabolisms:
+    Poison:
+      metabolismRate: 0.25
+      effects:
+      - !type:HealthChange
+        damage:
+          types:
+            Poison: 0.2
+
+- type: reaction
+  id: WFNecrotoxin
+  reactants:
+    Mercury:
+      amount: 1
+    Sulfur:
+      amount: 1
+    Ammonia:
+      amount: 1
+  products:
+    WFNecrotoxin: 3
+
+- type: entity
+  parent: ChemicalMedipen
+  id: WFNecrotoxinPen
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 15
+        reagents:
+        - ReagentId: WFNecrotoxin
+          Quantity: 15
+
+# A hitscan arc cut short. Slash and heat take limbs off, and the Structural cuts plating and stone.
+- type: entity
+  parent: BaseWeaponBatterySmall
+  id: WFRemadeCutter
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Objects/cutter.rsi
+    state: icon
+  - type: Item
+    sprite: _WF/Remade/Objects/cutter.rsi
+  - type: Clothing
+    sprite: _WF/Remade/Objects/cutter.rsi
+    quickEquip: false
+    slots:
+    - Belt
+  - type: Gun
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    fireRate: 2.5
+    soundGunshot:
+      path: /Audio/_WF/Remade/cutter/plasma_cutter.ogg
+  - type: HitscanBatteryAmmoProvider
+    proto: WFRemadeCutterArc
+    fireCost: 25
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: BasicHitscan
+  id: WFRemadeCutterArc
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicVisuals
+    muzzleFlash:
+      sprite: _WF/Remade/Effects/cutter.rsi
+      state: muzzle
+    travelFlash:
+      sprite: Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: beam_omni
+    impactFlash:
+      sprite: _WF/Remade/Effects/cutter.rsi
+      state: impact
+  - type: HitscanBasicRaycast
+    maxDistance: 7
+  - type: HitscanBasicDamage
+    damage:
+      types:
+        Slash: 6
+        Heat: 3
+        Structural: 14
+
+- type: entity
+  parent: BaseFlatpack
+  id: WFFlatpackMonolithTap
+  components:
+  - type: Flatpack
+    entity: WFMonolithTap
+  - type: StaticPrice
+    price: 1500
+
+- type: latheRecipePack
+  id: WFRemadeStatic
+  recipes:
+  - WFRemadeCutter
+  - WFFlatpackMonolithTap
+
+- type: latheRecipe
+  id: WFRemadeCutter
+  result: WFRemadeCutter
+  categories:
+  - Weapons
+  completetime: 6
+  materials:
+    Steel: 800
+    Glass: 300
+    Plasma: 200
+    Plastic: 100
+
+- type: latheRecipe
+  id: WFFlatpackMonolithTap
+  result: WFFlatpackMonolithTap
+  categories:
+  - Tools
+  completetime: 8
+  materials:
+    Steel: 1000
+    Glass: 500
+    Gold: 100
+
+# What a destroyed Monolith leaves behind.
+- type: entity
+  id: WFMonolithHusk
+  components:
+  - type: Transform
+    noRot: true
+  - type: Clickable
+  - type: Sprite
+    noRot: true
+    sprite: _WF/Remade/Structures/scion.rsi
+    state: marker_normal_dormant
+    offset: 0,0.5
+    color: "#3a3636"
+  - type: TimedDespawn
+    lifetime: 900
+
+- type: entity
+  id: WFMonolithPrimeHusk
+  components:
+  - type: Transform
+    noRot: true
+  - type: Clickable
+  - type: Sprite
+    noRot: true
+    sprite: _WF/Remade/Structures/prime.rsi
+    state: marker_giant_dormant
+    offset: 0,2.56
+    color: "#3a3636"
+  - type: TimedDespawn
+    lifetime: 1800
+
+# The guidebook. The group hangs off the New Frontier page in _NF/Guidebook/nf14.yml.
+- type: guideEntry
+  id: WFRemadeGuide
+  name: guide-entry-wf-remade
+  text: "/ServerInfo/_WF/Remade/Guidebook/Remade.xml"
+  priority: 8
+  children:
+  - WFRemadeMonolith
+  - WFRemadeFighting
+  - WFRemadeEnding
+
+- type: guideEntry
+  id: WFRemadeMonolith
+  name: guide-entry-wf-remade-monolith
+  text: "/ServerInfo/_WF/Remade/Guidebook/Monolith.xml"
+  priority: 0
+
+- type: guideEntry
+  id: WFRemadeFighting
+  name: guide-entry-wf-remade-fighting
+  text: "/ServerInfo/_WF/Remade/Guidebook/Fighting.xml"
+  priority: 1
+
+- type: guideEntry
+  id: WFRemadeEnding
+  name: guide-entry-wf-remade-ending
+  text: "/ServerInfo/_WF/Remade/Guidebook/Ending.xml"
+  priority: 2

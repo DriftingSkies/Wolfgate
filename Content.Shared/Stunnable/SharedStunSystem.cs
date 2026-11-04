@@ -24,6 +24,7 @@ using Content.Shared._White.Standing;
 using Content.Shared.Jittering;
 using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Network; // WOLFGATE(Standing)
+using Robust.Shared.Player; // WOLFGATE(Performance)
 
 namespace Content.Shared.Stunnable;
 
@@ -151,7 +152,7 @@ public abstract partial class SharedStunSystem : EntitySystem
         // WOLFGATE(Standing) START: only the server sends this; a client sent one for every knockdown it saw
         // RaiseNetworkEvent(new CheckAutoGetUpEvent(GetNetEntity(uid))); // WD EDIT
         if (_net.IsServer)
-            RaiseNetworkEvent(new CheckAutoGetUpEvent(GetNetEntity(uid)));
+            RaiseNetworkEvent(new CheckAutoGetUpEvent(GetNetEntity(uid)), Filter.Pvs(uid, entityManager: EntityManager)); // WOLFGATE(Performance): only viewers of the body need it
         // WOLFGATE END
         _layingDown.TryLieDown(uid, null, null, DropHeldItemsBehavior.DropIfStanding); // WD EDIT
     }

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at https://github.com/DS-13-Dev-Team/DS13-2.0 (deadspace/icons/hud/action_corruption.dmi)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "bioluminescence"
+    },
+    {
+      "name": "minigrowth"
+    },
+    {
+      "name": "cyst",
+      "directions": 8
+    },
+    {
+      "name": "eye"
+    },
+    {
+      "name": "harvester"
+    },
+    {
+      "name": "nest"
+    },
+    {
+      "name": "propagator"
+    },
+    {
+      "name": "snare"
+    },
+    {
+      "name": "maw"
+    }
+  ]
+}

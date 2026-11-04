@@ -185,16 +185,25 @@ public sealed partial class BloodstreamSystem : EntitySystem
             else if (!_mobStateSystem.IsDead(uid))
             {
                 // If they're healthy, we'll try and heal some bloodloss instead.
+                // WOLFGATE(Wolfmed) START: skip the damage pipeline when there is no bloodloss to heal.
+                var wfBloodHeal = bloodstream.BloodlossHealDamage * bloodPercentage;
+                if (Content.Server._WF.Wolfmed.Damage.WolfmedHealCheck.WouldHeal(CompOrNull<DamageableComponent>(uid), wfBloodHeal))
+                // WOLFGATE END
                 _damageableSystem.TryChangeDamage(
                     uid,
-                    bloodstream.BloodlossHealDamage * bloodPercentage,
+                    wfBloodHeal, // WOLFGATE(Wolfmed): was BloodlossHealDamage * bloodPercentage, computed above.
                     ignoreResistances: true, interruptsDoAfters: false);
 
+                // WOLFGATE(Wolfmed) START: nothing to remove when low blood added no drunk or stutter time.
+                if (bloodstream.StatusTime > TimeSpan.Zero)
+                {
+                // WOLFGATE END
                 // Remove the drunk effect when healthy. Should only remove the amount of drunk and stutter added by low blood level
                 _drunkSystem.TryRemoveDrunkenessTime(uid, bloodstream.StatusTime.TotalSeconds);
                 _stutteringSystem.DoRemoveStutterTime(uid, bloodstream.StatusTime.TotalSeconds);
                 // Reset the drunk and stutter time to zero
                 bloodstream.StatusTime = TimeSpan.Zero;
+                } // WOLFGATE(Wolfmed)
             }
         }
     }

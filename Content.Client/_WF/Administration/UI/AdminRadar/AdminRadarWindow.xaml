@@ -38,6 +38,13 @@
                 StyleClasses="ButtonSquare"
                 ToggleMode="True"
                 HorizontalAlignment="Left" />
+        <Button Name="EncountersToggle"
+                Text="{Loc 'wf-admin-radar-encounters'}"
+                ToolTip="{Loc 'wf-admin-radar-encounters-tooltip'}"
+                TextAlign="Center"
+                StyleClasses="ButtonSquare"
+                ToggleMode="True"
+                HorizontalAlignment="Left" />
         <Button Name="AdminTeleportToggle"
                 Text="{Loc 'wf-radar-teleport-toggle'}"
                 ToolTip="{Loc 'wf-radar-teleport-tooltip'}"

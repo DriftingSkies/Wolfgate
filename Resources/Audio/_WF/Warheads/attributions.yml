@@ -1,0 +1,10 @@
+# Skyrat's nuke detonation sounds: the alarm and the voiced countdown both play in a warhead's last 10 seconds.
+- files: ["alarm.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Skyrat-tg (tgstation codebase) at commit e507f9120bb0c3beecfe169d14193d90e7229a58."
+  source: "https://github.com/Skyrat-SS13/Skyrat-tg/blob/e507f9120bb0c3beecfe169d14193d90e7229a58/sound/machines/alarm.ogg"
+
+- files: ["delta_countdown.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Skyrat-tg at commit e507f9120bb0c3beecfe169d14193d90e7229a58."
+  source: "https://github.com/Skyrat-SS13/Skyrat-tg/blob/e507f9120bb0c3beecfe169d14193d90e7229a58/modular_skyrat/modules/alerts/sound/misc/delta_countdown.ogg"

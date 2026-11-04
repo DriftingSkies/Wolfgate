@@ -71,7 +71,7 @@ public sealed partial class WFGroundCoverSystem
             foreach (var session in _player.Sessions)
             {
                 _view.Clear();
-                CollectView(session, _view, weatherOnly: false);
+                CollectViewCached(session, _view, ice: true);
                 foreach (var key in _view)
                     QueueIce(key);
             }

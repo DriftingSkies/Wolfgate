@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._WF.Dormancy;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Components;
@@ -17,6 +18,7 @@ namespace Content.Server._WF.CavernEncounters;
 public sealed partial class WFCavernCrawlerSystem : EntitySystem
 {
     [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private NpcFactionSystem _faction = default!;
@@ -65,7 +67,7 @@ public sealed partial class WFCavernCrawlerSystem : EntitySystem
         var query = EntityQueryEnumerator<WFCavernCrawlerComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var crawler, out var xform))
         {
-            if (!_mobState.IsAlive(uid))
+            if (!_mobState.IsAlive(uid) || !_dormancy.IsActive(uid, xform))
                 continue;
 
             Listen((uid, crawler), xform, now);
@@ -76,7 +78,7 @@ public sealed partial class WFCavernCrawlerSystem : EntitySystem
     public void Listen(Entity<WFCavernCrawlerComponent> ent, TransformComponent xform, TimeSpan now)
     {
         _heard.Clear();
-        _lookup.GetEntitiesInRange(xform.Coordinates, ent.Comp.HearingRange, _heard);
+        _lookup.GetEntitiesInRange(xform.Coordinates, ent.Comp.HearingRange, _heard, LookupFlags.Dynamic | LookupFlags.Sundries);
 
         foreach (var mob in _heard)
         {
@@ -87,7 +89,7 @@ public sealed partial class WFCavernCrawlerSystem : EntitySystem
             Hunt(ent, mob, now);
 
             _nest.Clear();
-            _lookup.GetEntitiesInRange(xform.Coordinates, ent.Comp.NestRange, _nest);
+            _lookup.GetEntitiesInRange(xform.Coordinates, ent.Comp.NestRange, _nest, LookupFlags.Dynamic | LookupFlags.Sundries);
             foreach (var mate in _nest)
             {
                 if (mate.Owner != ent.Owner && _mobState.IsAlive(mate))

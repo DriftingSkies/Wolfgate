@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at https://github.com/DS-13-Dev-Team/DS13-2.0 (deadspace/icons/obj/necromorph_organ.dmi)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "brain2"
+    },
+    {
+      "name": "heart"
+    },
+    {
+      "name": "liver"
+    },
+    {
+      "name": "lungs"
+    },
+    {
+      "name": "eyes"
+    },
+    {
+      "name": "tongue"
+    }
+  ]
+}

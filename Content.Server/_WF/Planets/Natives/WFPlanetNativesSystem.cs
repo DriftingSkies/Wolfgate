@@ -4,7 +4,6 @@ using Content.Shared._Shitmed.Body.Components;
 using Content.Shared._WF.Xenobiology.Components;
 using Content.Shared.EntityTable;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Timing;
 
 namespace Content.Server._WF.Planets.Natives;
 
@@ -14,18 +13,63 @@ namespace Content.Server._WF.Planets.Natives;
 /// </summary>
 public sealed class WFPlanetNativesSystem : EntitySystem
 {
-    [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _proto = default!;
-
-    private static readonly TimeSpan Interval = TimeSpan.FromSeconds(0.5);
-
-    private TimeSpan _next;
+    [Dependency] private MetaDataSystem _meta = default!;
 
     public override void Initialize()
     {
         base.Initialize();
         UpdatesBefore.Add(typeof(WFPlanetNpcGearSystem));
         _proto.PrototypesReloaded += OnPrototypesReloaded;
+
+        // RespiratorSystem owns the respirator MapInit subscription, so startup stands in for it.
+        SubscribeLocalEvent<RespiratorComponent, ComponentStartup>(OnRespiratorStartup);
+        SubscribeLocalEvent<RespiratorComponent, MapUidChangedEvent>(OnRespiratorMapChanged);
+        SubscribeLocalEvent<WFPlanetNativesComponent, ComponentStartup>(OnNativesStartup);
+        SubscribeLocalEvent<WFPlanetNativesComponent, MapInitEvent>(OnNativesMapInit);
+    }
+
+    private void OnRespiratorStartup(Entity<RespiratorComponent> ent, ref ComponentStartup args)
+    {
+        _meta.AddFlag(ent, MetaDataFlags.ExtraTransformEvents);
+        TryGrant(ent);
+    }
+
+    private void OnRespiratorMapChanged(Entity<RespiratorComponent> ent, ref MapUidChangedEvent args)
+    {
+        if (args.NewMap is { } map)
+            TryGrant(ent, map);
+    }
+
+    private void OnNativesStartup(Entity<WFPlanetNativesComponent> ent, ref ComponentStartup args)
+    {
+        GrantOnMap(ent);
+    }
+
+    private void OnNativesMapInit(Entity<WFPlanetNativesComponent> ent, ref MapInitEvent args)
+    {
+        GrantOnMap(ent);
+    }
+
+    /// <summary>Gives every native respirator already on a world its immunity.</summary>
+    private void GrantOnMap(Entity<WFPlanetNativesComponent> map)
+    {
+        var query = EntityQueryEnumerator<RespiratorComponent, MetaDataComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var meta, out var xform))
+        {
+            if (xform.MapUid == map.Owner && !HasComp<BreathingImmunityComponent>(uid) && IsNative((uid, meta), map.Comp))
+                AddComp<BreathingImmunityComponent>(uid);
+        }
+    }
+
+    private void TryGrant(EntityUid uid, EntityUid? map = null)
+    {
+        map ??= Transform(uid).MapUid;
+        if (map is not { } mapUid || !TryComp(mapUid, out WFPlanetNativesComponent? natives)
+            || HasComp<BreathingImmunityComponent>(uid) || !IsNative(uid, natives))
+            return;
+
+        AddComp<BreathingImmunityComponent>(uid);
     }
 
     public override void Shutdown()
@@ -40,27 +84,6 @@ public sealed class WFPlanetNativesSystem : EntitySystem
         while (query.MoveNext(out var natives))
         {
             natives.Resolved = null;
-        }
-    }
-
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-        var now = _timing.CurTime;
-        if (now < _next)
-            return;
-        _next = now + Interval;
-
-        var query = EntityQueryEnumerator<RespiratorComponent, MetaDataComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out _, out var meta, out var xform))
-        {
-            if (xform.MapUid is not { } map || !TryComp(map, out WFPlanetNativesComponent? natives) ||
-                HasComp<BreathingImmunityComponent>(uid) || !IsNative((uid, meta), natives))
-            {
-                continue;
-            }
-
-            AddComp<BreathingImmunityComponent>(uid);
         }
     }
 

@@ -1,6 +1,7 @@
 using Content.Server._WF.Wolfmed.Consciousness;
 using Content.Server.Body.Components;
 using Content.Server.Temperature.Components;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared._WF.Wolfmed.Consciousness;
 using Content.Shared.Atmos.Components;
@@ -25,6 +26,7 @@ namespace Content.Server._WF.Wolfmed.Life;
 public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private WolfmedConsciousnessSystem _consciousness = default!;
@@ -35,7 +37,20 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
     /// <summary>Kelvin over its target at which a recovering core counts as arrived.</summary>
     private const float CoreSnap = 0.01f;
     private readonly List<EntityUid> _due = new();
-    private TimeSpan _nextTick;
+
+    // Cached cvars, kept current by Subs.CVar.
+    private float _consciousnessHysteresis;
+    private float _coreCoolingSeconds;
+    private float _coreHeatingSeconds;
+    private float _coreRecoverySeconds;
+    private float _heatFireGraceSeconds;
+    private float _hyperthermiaBrainSeconds;
+    private float _hyperthermiaDownOffset;
+    private float _hypothermiaArrestOffset;
+    private float _hypothermiaDownOffset;
+    private float _hypothermiaOutOffset;
+    private float _temperatureInputFloor;
+    private float _temperatureLineMaxShare;
 
     /// <summary>A species' temperature lines in kelvin. Unreachable lines are infinities.</summary>
     public readonly record struct Lines(
@@ -44,25 +59,42 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessHysteresis, value => _consciousnessHysteresis = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.CoreCoolingSeconds, value => _coreCoolingSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.CoreHeatingSeconds, value => _coreHeatingSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.CoreRecoverySeconds, value => _coreRecoverySeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.HeatFireGraceSeconds, value => _heatFireGraceSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.HyperthermiaBrainSeconds, value => _hyperthermiaBrainSeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.HyperthermiaDownOffset, value => _hyperthermiaDownOffset = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.HypothermiaArrestOffset, value => _hypothermiaArrestOffset = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.HypothermiaDownOffset, value => _hypothermiaDownOffset = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.HypothermiaOutOffset, value => _hypothermiaOutOffset = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.TemperatureInputFloor, value => _temperatureInputFloor = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.TemperatureLineMaxShare, value => _temperatureLineMaxShare = value, true);
         SubscribeLocalEvent<WolfmedBodyTemperatureComponent, RejuvenateEvent>(OnRejuvenate);
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _nextTick)
-            return;
 
-        _nextTick = _timing.CurTime + TickInterval;
+        // Each body takes its own tick of the interval, so a full server doesn't tick every body at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var seconds = period / (float) _timing.TickRate;
+        var curTick = _timing.CurTick;
         _due.Clear();
         var query = EntityQueryEnumerator<WolfmedConsciousnessComponent, TemperatureComponent>();
         while (query.MoveNext(out var uid, out _, out _))
-            _due.Add(uid);
+        {
+            if (WFTickSpread.Due(uid, curTick, period))
+                _due.Add(uid);
+        }
 
         foreach (var body in _due)
         {
-            if (!TerminatingOrDeleted(body))
-                Tick(body, (float) TickInterval.TotalSeconds);
+            // An NPC body no player is near holds still until someone comes, as the life tick does.
+            if (!TerminatingOrDeleted(body) && !_dormancy.BodySleeps(body))
+                Tick(body, seconds);
         }
     }
 
@@ -99,7 +131,7 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
         }
 
         var graced = UpdateGrace(body, comp, lines, seconds);
-        var floor = Math.Clamp(_cfg.GetCVar(WolfmedCVars.TemperatureInputFloor), 0f, 1f);
+        var floor = Math.Clamp(_temperatureInputFloor, 0f, 1f);
 
         var coldDown = Level(lines.Normal - comp.Core, lines.Normal - lines.ColdDown, floor);
         var coldOut = Level(lines.Normal - comp.Core, lines.Normal - lines.ColdOut, floor);
@@ -117,7 +149,7 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
             comp.HeatHeld = true;
         }
 
-        if (heatDown < 1f - _cfg.GetCVar(WolfmedCVars.ConsciousnessHysteresis))
+        if (heatDown < 1f - _consciousnessHysteresis)
             comp.HeatHeld = false;
 
         SetLevels(body, comp, coldDown, coldOut, heatDown, heatOut);
@@ -139,13 +171,13 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
 
         // Over normal and the air is hotter still: the timed limit before overheating.
         if (surface > core)
-            return core + (surface - core) * Fraction(seconds, WolfmedCVars.CoreHeatingSeconds);
+            return core + (surface - core) * Fraction(seconds, _coreHeatingSeconds);
 
         // Over normal and the air is cooler: back toward normal quickly, never below it on this branch.
         if (core > normal)
         {
             var target = MathF.Max(surface, normal);
-            var next = core - (core - target) * Fraction(seconds, WolfmedCVars.CoreRecoverySeconds);
+            var next = core - (core - target) * Fraction(seconds, _coreRecoverySeconds);
 
             // A gap this small is under a float step of the shrinking, so it would never close and the core would
             // stay just above normal, where the cooling below can't start.
@@ -155,13 +187,12 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
         if (held || surface >= core)
             return core;
 
-        return core - (core - surface) * Fraction(seconds, WolfmedCVars.CoreCoolingSeconds);
+        return core - (core - surface) * Fraction(seconds, _coreCoolingSeconds);
     }
 
-    /// <summary>The share of a gap closed in <paramref name="seconds"/> with the time constant the cvar holds.</summary>
-    private float Fraction(float seconds, CVarDef<float> tauCvar)
+    /// <summary>The share of a gap closed in <paramref name="seconds"/> with time constant <paramref name="tau"/>.</summary>
+    private static float Fraction(float seconds, float tau)
     {
-        var tau = _cfg.GetCVar(tauCvar);
         return tau <= 0f ? 1f : 1f - MathF.Exp(-seconds / tau);
     }
 
@@ -185,7 +216,7 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
             if (comp.GraceLeft is { } left)
                 comp.GraceLeft = left - seconds;
             else if (!onFire)
-                comp.GraceLeft = MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.HeatFireGraceSeconds));
+                comp.GraceLeft = MathF.Max(0f, _heatFireGraceSeconds);
         }
 
         var holds = comp.GraceGranted && (comp.GraceLeft is not { } remaining || remaining > 0f);
@@ -218,7 +249,7 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
         if (GetLines(body) is not { } lines || float.IsInfinity(lines.HeatDown))
             return fever;
 
-        var floor = Math.Clamp(_cfg.GetCVar(WolfmedCVars.TemperatureInputFloor), 0f, 1f);
+        var floor = Math.Clamp(_temperatureInputFloor, 0f, 1f);
         return MathF.Min(fever, lines.Normal + floor * (lines.HeatDown - lines.Normal));
     }
 
@@ -253,22 +284,22 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
             ? regulator.NormalBodyTemperature
             : (cold + heat) / 2f;
 
-        var share = Math.Clamp(_cfg.GetCVar(WolfmedCVars.TemperatureLineMaxShare), 0f, 1f);
+        var share = Math.Clamp(_temperatureLineMaxShare, 0f, 1f);
         var coldDown = float.NegativeInfinity;
         var coldOut = float.NegativeInfinity;
         var coldArrest = float.NegativeInfinity;
-        var downOffset = MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.HypothermiaDownOffset));
+        var downOffset = MathF.Max(0f, _hypothermiaDownOffset);
         if (normal > cold && downOffset > 0f)
         {
             var scale = MathF.Min(1f, share * (normal - cold) / downOffset);
             coldDown = cold + downOffset * scale;
-            coldOut = cold + MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.HypothermiaOutOffset)) * scale;
-            coldArrest = cold + MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.HypothermiaArrestOffset)) * scale;
+            coldOut = cold + MathF.Max(0f, _hypothermiaOutOffset) * scale;
+            coldArrest = cold + MathF.Max(0f, _hypothermiaArrestOffset) * scale;
         }
 
         var heatDown = float.PositiveInfinity;
         var heatOut = float.PositiveInfinity;
-        var heatOffset = MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.HyperthermiaDownOffset));
+        var heatOffset = MathF.Max(0f, _hyperthermiaDownOffset);
         if (heat > normal)
         {
             var scale = heatOffset > 0f ? MathF.Min(1f, share * (heat - normal) / heatOffset) : 0f;
@@ -303,7 +334,7 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
     /// <summary>M5: the heat stroke brain drain, oxygenation a second.</summary>
     public float DrainRate(EntityUid body)
     {
-        var seconds = _cfg.GetCVar(WolfmedCVars.HyperthermiaBrainSeconds);
+        var seconds = _hyperthermiaBrainSeconds;
         return seconds > 0f && InHeatStroke(body) ? 1f / seconds : 0f;
     }
 

@@ -178,6 +178,7 @@
     - MonoRestraintsStatic # Mono
     - ReportingStatic # DeltaV
     - WFTetherStatic # WOLFGATE(Tether)
+    - WFRemadeStatic # WOLFGATE(Remade): the plasma cutter and the monolith tap flatpack
   - type: EmagLatheRecipes
     emagStaticPacks:
     - StaticAmmoRecipePack

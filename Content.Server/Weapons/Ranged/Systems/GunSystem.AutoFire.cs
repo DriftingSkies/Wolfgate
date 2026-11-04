@@ -21,6 +21,17 @@ namespace Content.Server.Weapons.Ranged.Systems;
 public sealed partial class GunSystem
 {
     [Dependency] public PopupSystem _popup = default!; // Frontier
+
+    // WOLFGATE(Performance) START: guns mid-burst, filled from OnBurstActivated
+    private readonly HashSet<EntityUid> _burstingGuns = new();
+    private readonly List<EntityUid> _burstScratch = new();
+
+    protected override void OnBurstActivated(EntityUid uid)
+    {
+        _burstingGuns.Add(uid);
+    }
+    // WOLFGATE END
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -30,19 +41,32 @@ public sealed partial class GunSystem
          */
 
         // Automatic firing without stopping if the AutoShootGunComponent component is exist and enabled
-        var query = EntityQueryEnumerator<GunComponent>();
+        // WOLFGATE(Performance) START: only visit bursting guns and auto-shoot guns, not every GunComponent
+        _burstScratch.Clear();
+        _burstScratch.AddRange(_burstingGuns);
+        foreach (var uid in _burstScratch)
+        {
+            if (!TryComp(uid, out GunComponent? burstGun) || !burstGun.BurstActivated)
+            {
+                _burstingGuns.Remove(uid);
+                continue;
+            }
 
-        while (query.MoveNext(out var uid, out var gun))
+            var parent = _transform.GetParentUid(uid);
+            if (_damageableQuery.HasComp(parent))
+                AttemptShoot(parent, uid, burstGun, burstGun.ShootCoordinates ?? new EntityCoordinates(uid, burstGun.DefaultDirection));
+            else
+                AttemptShoot(uid, uid, burstGun);
+        }
+
+        var query = EntityQueryEnumerator<AutoShootGunComponent, GunComponent>();
+
+        while (query.MoveNext(out var uid, out var autoShoot, out var gun))
         {
             if (gun.BurstActivated)
-            {
-                var parent = _transform.GetParentUid(uid);
-                if (_damageableQuery.HasComp(parent))
-                    AttemptShoot(parent, uid, gun, gun.ShootCoordinates ?? new EntityCoordinates(uid, gun.DefaultDirection));
-                else
-                    AttemptShoot(uid, uid, gun);
-            }
-            else if (_autoShootGunQuery.TryComp(uid, out var autoShoot))
+                continue;
+
+            // WOLFGATE END
             {
                 // Mono
                 if (autoShoot.RemainingTime <= TimeSpan.Zero)

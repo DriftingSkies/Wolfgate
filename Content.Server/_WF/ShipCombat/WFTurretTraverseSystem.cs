@@ -158,8 +158,27 @@ public sealed partial class WFTurretTraverseSystem : EntitySystem
         return MathF.Sqrt(x * x + y * y) + 1f;
     }
 
+    /// <summary>Rays are reused within a 3 degree bearing bin, a few metres of range and half a second.</summary>
     private bool ClearBearing(EntityUid uid, Vector2 position, Angle bearing, float range, MapId map)
     {
-        return _fireControl.WfClearShot(uid, position, position + bearing.ToWorldVec() * range, map);
+        var now = _timing.CurTime;
+        var key = (uid, (int) MathF.Round((float) bearing.Reduced().Degrees / BearingBinDegrees));
+        if (_bearingCache.TryGetValue(key, out var cached) && cached.Expires > now &&
+            MathF.Abs(cached.Range - range) <= RangeBinMeters && cached.Map == map)
+            return cached.Clear;
+
+        if (_bearingCache.Count > 2048)
+            _bearingCache.Clear();
+
+        var clear = _fireControl.WfClearShot(uid, position, position + bearing.ToWorldVec() * range, map);
+        _bearingCache[key] = new BearingResult(clear, range, map, now + BearingCacheTime);
+        return clear;
     }
+
+    private const float BearingBinDegrees = 3f;
+    private const float RangeBinMeters = 4f;
+    private static readonly TimeSpan BearingCacheTime = TimeSpan.FromSeconds(0.5);
+    private readonly Dictionary<(EntityUid, int), BearingResult> _bearingCache = new();
+
+    private readonly record struct BearingResult(bool Clear, float Range, MapId Map, TimeSpan Expires);
 }

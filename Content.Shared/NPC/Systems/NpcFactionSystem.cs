@@ -195,6 +195,70 @@ public sealed partial class NpcFactionSystem : EntitySystem
             .Where(target => !WfNativeTruce(ent, target)); // WOLFGATE(PlanetNatives): planet NPCs leave each other alone, even after a stray hit.
     }
 
+    // WOLFGATE(Performance) START: allocation-free hostile search for the NPC utility query
+    private readonly HashSet<Entity<NpcFactionMemberComponent>> _wfNearbyScratch = new();
+
+    /// <summary>Same result as <see cref="GetNearbyHostiles"/>, appended to <paramref name="result"/> without LINQ or per-call allocation.</summary>
+    public void GetNearbyHostiles(Entity<NpcFactionMemberComponent?, FactionExceptionComponent?> ent, float range, List<EntityUid> result)
+    {
+        if (!Resolve(ent, ref ent.Comp1, false))
+            return;
+
+        var hostileFactions = ent.Comp1.HostileFactions;
+        var ownComp = ent.Comp1;
+        var hasException = Resolve(ent, ref ent.Comp2, false);
+        var exception = ent.Comp2;
+        var start = result.Count;
+
+        _wfNearbyScratch.Clear();
+        _lookup.GetEntitiesInRange(_xform.GetMapCoordinates(ent.Owner), range, _wfNearbyScratch);
+        foreach (var other in _wfNearbyScratch)
+        {
+            if (other.Owner == ent.Owner)
+                continue;
+
+            var otherFactions = other.Comp.Factions;
+            if (!hostileFactions.Overlaps(otherFactions))
+                continue;
+
+            if (ownComp.Factions.Overlaps(otherFactions) || ownComp.FriendlyFactions.Overlaps(otherFactions))
+                continue;
+
+            if (hasException && exception!.Ignored.Contains(other.Owner))
+                continue;
+
+            if (WfNativeTruce(ent.Owner, other.Owner))
+                continue;
+
+            result.Add(other.Owner);
+        }
+
+        _wfNearbyScratch.Clear();
+
+        if (!hasException)
+            return;
+
+        foreach (var target in exception!.Hostiles)
+        {
+            if (exception.Ignored.Contains(target) || WfNativeTruce(ent.Owner, target))
+                continue;
+
+            var dupe = false;
+            for (var i = start; i < result.Count; i++)
+            {
+                if (result[i] == target)
+                {
+                    dupe = true;
+                    break;
+                }
+            }
+
+            if (!dupe)
+                result.Add(target);
+        }
+    }
+    // WOLFGATE END
+
     public IEnumerable<EntityUid> GetNearbyFriendlies(Entity<NpcFactionMemberComponent?> ent, float range)
     {
         if (!Resolve(ent, ref ent.Comp, false))

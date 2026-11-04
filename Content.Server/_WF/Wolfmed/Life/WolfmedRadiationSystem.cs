@@ -24,6 +24,21 @@ public sealed partial class WolfmedRadiationSystem : EntitySystem
     [Dependency] private SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private WolfmedShutdownSystem _shutdown = default!;
 
+    // Cached cvars, kept current by Subs.CVar.
+    private float _consciousnessRadiationDown;
+    private float _radiationMarrowBleed;
+    private float _radiationMarrowRate;
+    private float _radiationMarrowStop;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        Subs.CVar(_cfg, WolfmedCVars.ConsciousnessRadiationDown, value => _consciousnessRadiationDown = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.RadiationMarrowBleed, value => _radiationMarrowBleed = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.RadiationMarrowRate, value => _radiationMarrowRate = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.RadiationMarrowStop, value => _radiationMarrowStop = value, true);
+    }
+
     /// <summary>Systemic Radiation on the body.</summary>
     public float GetRadiation(EntityUid body) =>
         CompOrNull<SystemicDamageComponent>(body)?.Damage.DamageDict.GetValueOrDefault(Radiation).Float() ?? 0f;
@@ -31,25 +46,25 @@ public sealed partial class WolfmedRadiationSystem : EntitySystem
     /// <summary>The marrow has stopped: 0 from wolfmed.rad_marrow_stop, else 1. The bloodstream's regeneration reads it.</summary>
     public float RegenFactor(EntityUid body)
     {
-        var line = _cfg.GetCVar(WolfmedCVars.RadiationMarrowStop);
+        var line = _radiationMarrowStop;
         return line > 0f && GetRadiation(body) >= line && !_shutdown.IsMechanical(body) ? 0f : 1f;
     }
 
     /// <summary>Units of blood a second the failing marrow costs, 0 under wolfmed.rad_marrow_bleed.</summary>
     public float GetMarrowLossRate(EntityUid body)
     {
-        var line = _cfg.GetCVar(WolfmedCVars.RadiationMarrowBleed);
+        var line = _radiationMarrowBleed;
         if (line <= 0f || GetRadiation(body) < line || _mobState.IsDead(body) || _shutdown.IsMechanical(body) ||
             !HasComp<BloodstreamComponent>(body))
             return 0f;
 
-        return MathF.Max(0f, _cfg.GetCVar(WolfmedCVars.RadiationMarrowRate));
+        return MathF.Max(0f, _radiationMarrowRate);
     }
 
     /// <summary>Radiation against the Downed line: 1 at the line. Never unconscious; nothing for a machine.</summary>
     public float GetDownLevel(EntityUid body)
     {
-        var line = _cfg.GetCVar(WolfmedCVars.ConsciousnessRadiationDown);
+        var line = _consciousnessRadiationDown;
         var radiation = GetRadiation(body);
         return line > 0f && radiation > 0f ? radiation / line : 0f;
     }

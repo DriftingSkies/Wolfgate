@@ -31,6 +31,8 @@ public sealed class PlanetCommsTest
 {
     /// <summary>A long-range channel, so no telecom server is needed and only the transceiver gates it.</summary>
     private const string Channel = "CentCom";
+    /// <summary>A short-range channel, which needs a telecom server the planet doesn't have, so the transceiver has to stand in.</summary>
+    private const string ServerChannel = "Common";
     private const string Handheld = "WFPlanetCommsTestHandheld";
     private const string Headset = "ClothingHeadsetGrey";
     private const string Mob = "MobHuman";
@@ -92,10 +94,11 @@ public sealed class PlanetCommsTest
             await server.WaitRunTicks(2);
 
             // Each send uses fresh text: the radio system drops a message it is already relaying.
-            async Task<List<EntityUid>> Send(EntityUid source, EntityUid radioSource)
+            async Task<List<EntityUid>> Send(EntityUid source, EntityUid radioSource, string? on = null)
             {
                 spy.Deliveries.Clear();
-                await server.WaitPost(() => radio.SendRadioMessage(source, $"planet comms check {sent++}", channel, radioSource));
+                await server.WaitPost(() => radio.SendRadioMessage(source, $"planet comms check {sent++}",
+                    on == null ? channel : protos.Index<RadioChannelPrototype>(on), radioSource));
                 await server.WaitRunTicks(1);
                 return spy.Deliveries.ToList();
             }
@@ -153,6 +156,8 @@ public sealed class PlanetCommsTest
             Assert.That(heard, Does.Contain(groundSet), "A powered transceiver didn't carry a message across the world.");
             heard = await Send(offSpeaker, offSpeakerSet);
             Assert.That(heard, Does.Contain(groundSet), "A powered transceiver didn't bring a message down.");
+            heard = await Send(speaker, speakerSet, ServerChannel);
+            Assert.That(heard, Does.Contain(listenerSet), "A powered transceiver didn't stand in for a telecom server.");
 
             // Wrecked, it carries nothing, powered or not.
             await server.WaitPost(() =>
@@ -311,7 +316,9 @@ public sealed class PlanetCommsTest
         var mob = entMan.SpawnEntity(Mob, coords);
         var headset = entMan.SpawnEntity(Headset, coords);
         Assert.That(server.System<InventorySystem>().TryEquip(mob, headset, "ears", silent: true, force: true), Is.True);
-        entMan.EnsureComponent<ActiveRadioComponent>(headset).Channels.Add(Channel);
+        var active = entMan.EnsureComponent<ActiveRadioComponent>(headset);
+        active.Channels.Add(Channel);
+        active.Channels.Add(ServerChannel);
         entMan.EnsureComponent<WFPlanetCommsTestReceiverComponent>(headset);
         return (mob, headset);
     }

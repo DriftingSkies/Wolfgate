@@ -103,6 +103,28 @@ public sealed partial class CEZGridConnectorSystem : EntitySystem
 
     private void OnTileChanged(ref TileChangedEvent ev)
     {
+        // WOLFGATE(Performance) START: links only depend on a tile existing, so ignore swaps between solid tiles and runs with no connector
+        if (_dirty)
+            return;
+
+        var flipped = false;
+        foreach (var change in ev.Changes)
+        {
+            if (change.NewTile.IsEmpty != change.OldTile.IsEmpty)
+            {
+                flipped = true;
+                break;
+            }
+        }
+
+        if (!flipped)
+            return;
+
+        var connectors = EntityQueryEnumerator<CEZGridConnectorComponent>();
+        if (!connectors.MoveNext(out _))
+            return;
+        // WOLFGATE END
+
         _dirty = true;
     }
 

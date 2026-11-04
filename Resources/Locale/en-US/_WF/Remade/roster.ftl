@@ -1,0 +1,35 @@
+ent-WFRemadeHopper = hopper
+    .desc = A small, fast thing that jumps at your face. They come in packs. Keep your armour on.
+ent-WFRemadeLeaper = leaper
+    .desc = A long tail and a longer jump. It crouches, screams, and is on you before you can back off.
+ent-WFRemadeLeaperEnhanced = black leaper
+    .desc = A leaper grown hard and heavy. Its tail goes through plating.
+ent-WFRemadeSpitter = spitter
+    .desc = It stays back and lobs acid. Rush it, or take cover.
+ent-WFRemadeExploder = exploder
+    .desc = One arm is a swollen pustule full of something that goes off. Shoot the pustule when it is far from you, not near.
+ent-WFRemadeExploderEnhanced = black exploder
+    .desc = An exploder with a bigger pustule. The blast covers the whole room.
+ent-WFRemadePuker = puker
+    .desc = It vomits acid in a wide cone and walks through it. Don't stand in the puddles.
+ent-WFRemadeLurker = lurker
+    .desc = A shelled thing that creeps in from a distance. When it peels open, shoot the tentacles.
+
+wf-remade-limb-tail = tail
+wf-remade-limb-tail-left = left half of the tail
+wf-remade-limb-tail-right = right half of the tail
+wf-remade-limb-claw-left = left claw
+wf-remade-limb-claw-right = right claw
+wf-remade-limb-arm-left = left arm
+wf-remade-limb-arm-right = right arm
+wf-remade-limb-pustule = pustule
+wf-remade-limb-tentacle = tentacle
+
+wf-remade-leap-hit = {CAPITALIZE(THE($mob))} pounces on {THE($target)}!
+wf-remade-stab-hit = {CAPITALIZE(THE($mob))} stabs {THE($target)} with its tail!
+wf-remade-explode-start = {CAPITALIZE(THE($mob))} swells up and shakes!
+wf-remade-pustule-burst = The pustule on {THE($mob)} bursts!
+wf-remade-vomit-start = {CAPITALIZE(THE($mob))} heaves.
+wf-remade-vomit-hit = Acid from {THE($mob)} burns your skin and your legs feel heavy!
+wf-remade-shell-open = {CAPITALIZE(THE($mob))} peels its shell open.
+wf-remade-shell-shut = {CAPITALIZE(THE($mob))} curls up behind its shell.

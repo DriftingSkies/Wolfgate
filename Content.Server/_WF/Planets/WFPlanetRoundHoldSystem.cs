@@ -20,6 +20,7 @@ public sealed class WFPlanetRoundHoldSystem : EntitySystem
     [Dependency] private GameTicker _ticker = default!;
     [Dependency] private WFPlanetNetworkSystem _networks = default!;
     [Dependency] private WFPlanetPreloadSystem _preload = default!;
+    [Dependency] private WFPlanetRegistrySystem _registry = default!;
 
     /// <summary>When the held start was first asked for; null while nothing is held.</summary>
     private TimeSpan? _heldSince;
@@ -45,6 +46,9 @@ public sealed class WFPlanetRoundHoldSystem : EntitySystem
     {
         if (!_cfg.GetCVar(PlanetCVars.PlanetNetworks))
             return false;
+
+        if (_registry.PrebuildQueued)
+            return true;
 
         foreach (var ground in _networks.PrebuiltGrounds())
         {

@@ -47,3 +47,4 @@
     - EncryptionKeyService
     - EncryptionKeySecurity
   # - ShipVoucherFrontierGuard # Mono
+    - WFShipVoucherJudge # WOLFGATE(Judges): free Lightning or Hornet at spawn

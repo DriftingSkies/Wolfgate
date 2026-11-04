@@ -1,0 +1,44 @@
+# Remade betrayal: the false sounds a client places for one player. DS13 recordings; breaths are synthesised.
+- type: soundCollection
+  id: WFBetrayalKnocks
+  files:
+  - /Audio/_WF/Remade/betrayal/knock_1.ogg
+  - /Audio/_WF/Remade/betrayal/knock_2.ogg
+  - /Audio/_WF/Remade/betrayal/knock_3.ogg
+  - /Audio/_WF/Remade/betrayal/knock_4.ogg
+
+- type: soundCollection
+  id: WFBetrayalScrapes
+  files:
+  - /Audio/_WF/Remade/betrayal/scrape_1.ogg
+  - /Audio/_WF/Remade/betrayal/scrape_2.ogg
+  - /Audio/_WF/Remade/betrayal/scrape_3.ogg
+
+- type: soundCollection
+  id: WFBetrayalBreaths
+  files:
+  - /Audio/_WF/Remade/betrayal/breath_1.ogg
+  - /Audio/_WF/Remade/betrayal/breath_2.ogg
+  - /Audio/_WF/Remade/betrayal/breath_3.ogg
+
+- type: soundCollection
+  id: WFBetrayalSteps
+  files:
+  - /Audio/_WF/Remade/betrayal/step_1.ogg
+  - /Audio/_WF/Remade/betrayal/step_2.ogg
+  - /Audio/_WF/Remade/betrayal/step_3.ogg
+  - /Audio/_WF/Remade/betrayal/step_4.ogg
+  - /Audio/_WF/Remade/betrayal/step_5.ogg
+  - /Audio/_WF/Remade/betrayal/step_6.ogg
+  - /Audio/_WF/Remade/betrayal/step_7.ogg
+  - /Audio/_WF/Remade/betrayal/step_8.ogg
+  - /Audio/_WF/Remade/betrayal/step_9.ogg
+  - /Audio/_WF/Remade/betrayal/step_10.ogg
+
+- type: soundCollection
+  id: WFBetrayalHeavySteps
+  files:
+  - /Audio/_WF/Remade/footstep/twitcher_footstep_1.ogg
+  - /Audio/_WF/Remade/footstep/twitcher_footstep_2.ogg
+  - /Audio/_WF/Remade/footstep/twitcher_footstep_3.ogg
+  - /Audio/_WF/Remade/footstep/twitcher_footstep_4.ogg

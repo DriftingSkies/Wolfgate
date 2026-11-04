@@ -1,0 +1,328 @@
+# Ambient horror: flesh, gore, glyph screens and mist that WFEnvDecorSystem seeds over corruption as a Monolith climbs. Every piece is a
+# plain sprite with no tick of its own, parented to the corruption tile it sits on so it goes when the tile does. Art in
+# Textures/_WF/Remade/Environment (Tools/_WF/Remade/port_environment.py).
+
+- type: soundCollection
+  id: WFEnvSquelch
+  files:
+  - /Audio/_WF/DecorImport/vorestation/squish_01.ogg
+  - /Audio/_WF/DecorImport/vorestation/squish_02.ogg
+  - /Audio/_WF/DecorImport/vorestation/squish_03.ogg
+  - /Audio/_WF/DecorImport/vorestation/squish_04.ogg
+
+- type: soundCollection
+  id: WFEnvCreak
+  files:
+  - /Audio/_Mono/Effects/Ambience/creak1.ogg
+  - /Audio/_Mono/Effects/Ambience/creak2.ogg
+  - /Audio/_Mono/Effects/Ambience/creak3.ogg
+
+# Something knocking from inside a morgue tray.
+- type: soundCollection
+  id: WFEnvKnock
+  files:
+  - /Audio/Effects/metal_slam1.ogg
+  - /Audio/Effects/metal_slam2.ogg
+
+# A vent or tray giving way.
+- type: soundCollection
+  id: WFEnvBurst
+  files:
+  - /Audio/Effects/metal_slam3.ogg
+  - /Audio/Effects/metal_slam4.ogg
+  - /Audio/Effects/metal_slam5.ogg
+
+- type: entity
+  abstract: true
+  id: WFEnvDecorBase
+  components:
+  - type: Transform
+    noRot: true
+  - type: Sprite
+    noRot: true
+    sprite: _WF/Remade/Environment/decor.rsi
+    drawdepth: SmallObjects
+  - type: WFEnvDecor
+
+# Soft growths on the floor.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvSac
+  components:
+  - type: Sprite
+    layers:
+    - state: sac1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvSacBig
+  components:
+  - type: Sprite
+    layers:
+    - state: sac3
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvSacSmall
+  components:
+  - type: Sprite
+    layers:
+    - state: sac2
+
+# A sac with a slow heartbeat in it, heard from a few steps off.
+- type: entity
+  parent: WFEnvSacBig
+  id: WFEnvSacBeating
+  components:
+  - type: AmbientSound
+    enabled: true
+    range: 7
+    volume: -12
+    sound:
+      path: /Audio/_WF/Wolfmed/heartbeat_loop.ogg
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvOrgans
+  components:
+  - type: Sprite
+    layers:
+    - state: organs1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvOrgansB
+  components:
+  - type: Sprite
+    layers:
+    - state: organs2
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvOrgansC
+  components:
+  - type: Sprite
+    layers:
+    - state: organs3
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvSpur
+  components:
+  - type: Sprite
+    layers:
+    - state: spur1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvSpurTall
+  components:
+  - type: Sprite
+    layers:
+    - state: spur2
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvSpurLow
+  components:
+  - type: Sprite
+    layers:
+    - state: spur3
+
+# Roots sprawling over the floor, DS13's own small growths.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvTendril
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: minigrowth1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvTendrilB
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: minigrowth2
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvTendrilC
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: minigrowth3
+
+# Gore, building up on the floor.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvGore
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: gore8
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvGoreSmear
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: gore1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvGoreSpray
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: gore9
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvGoreScraps
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: gore5
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvGoreTrail
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: gore7
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvRemains
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: remains
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvOoze
+  components:
+  - type: Sprite
+    drawdepth: Puddles
+    layers:
+    - state: mucus
+
+# Ooze dripping from above, slowly.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvDrip
+  components:
+  - type: Sprite
+    drawdepth: Effects
+    layers:
+    - state: drip
+
+# Veins over a door, vent or machine.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvWeb
+  components:
+  - type: Sprite
+    drawdepth: Overdoors
+    layers:
+    - state: web1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvWebB
+  components:
+  - type: Sprite
+    drawdepth: Overdoors
+    layers:
+    - state: web2
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvWebC
+  components:
+  - type: Sprite
+    drawdepth: Overdoors
+    layers:
+    - state: web3
+
+# A console face writing the Monolith's glyphs.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvScreen
+  components:
+  - type: Sprite
+    drawdepth: Overdoors
+    layers:
+    - state: screen1
+      shader: unshaded
+  - type: PointLight
+    radius: 1.8
+    energy: 0.6
+    color: "#b02a2a"
+  - type: WFEnvDecor
+    sparks: true
+
+- type: entity
+  parent: WFEnvScreen
+  id: WFEnvScreenB
+  components:
+  - type: Sprite
+    layers:
+    - state: screen2
+      shader: unshaded
+
+# Mist at Rapture and up.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvHaze
+  components:
+  - type: Sprite
+    drawdepth: Effects
+    layers:
+    - state: haze1
+
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvHazeB
+  components:
+  - type: Sprite
+    drawdepth: Effects
+    layers:
+    - state: haze2
+
+# Remains fused into a wall.
+- type: entity
+  parent: WFEnvDecorBase
+  id: WFEnvCocoon
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Environment/cocoon.rsi
+    drawdepth: WallMountedItems
+    offset: 0,0.25
+    layers:
+    - state: cocoon1
+
+- type: entity
+  parent: WFEnvCocoon
+  id: WFEnvCocoonB
+  components:
+  - type: Sprite
+    layers:
+    - state: cocoon2

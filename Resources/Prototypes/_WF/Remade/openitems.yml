@@ -1,0 +1,24 @@
+# A divider's head fights like anything else, and with nobody to fight it goes for a body to turn.
+- type: htnCompound
+  id: WFRemadeHeadCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WFPickCorpseOperator
+        targetKey: WFRemadeCorpse
+        coordinatesKey: WFRemadeCorpseCoordinates
+        range: 14
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRemadeCorpseCoordinates
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WFReanimateOperator
+        targetKey: WFRemadeCorpse
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WFRemadeHuntCompound

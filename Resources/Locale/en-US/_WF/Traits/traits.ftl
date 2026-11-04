@@ -20,3 +20,35 @@ trait-condition-job-not = You must not be a [color={$color}]{$job}[/color].
 
 trait-condition-department-is = You must be in the [color={$color}]{$department}[/color] department.
 trait-condition-department-not = You must not be in the [color={$color}]{$department}[/color] department.
+
+trait-editor-sort-name = Sort: Name
+trait-editor-sort-cost-high = Sort: Most points first
+trait-editor-sort-cost-low = Sort: Fewest points first
+trait-editor-hide-unavailable = Hide unavailable
+trait-editor-group-other = Other
+trait-editor-cost-spend = {$points} pts
+trait-editor-cost-gain = +{$points} pts
+trait-editor-cost-free = Free
+trait-editor-incompatible = Incompatible with: {$traits}
+trait-editor-incompatible-selected = [color=#ff5555]{$trait}[/color]
+
+wf-trait-category-speech = Speech & Accents
+
+wf-trait-group-toughness = Toughness
+wf-trait-group-healing = Healing
+wf-trait-group-resistances = Resistances
+wf-trait-group-augments = Augments
+wf-trait-group-skills = Skills
+wf-trait-group-training = Training
+wf-trait-group-frailties = Frailties
+wf-trait-group-light-sensitivity = Light sensitivity
+wf-trait-group-background = Background
+wf-trait-group-sight = Sight
+wf-trait-group-hearing-feeling = Hearing and feeling
+wf-trait-group-body-mind = Body and mind
+wf-trait-group-behaviour = Behaviour
+wf-trait-group-body = Body
+wf-trait-group-accents = Accents
+wf-trait-group-speech-patterns = Speech patterns
+wf-trait-group-extra-languages = Extra languages
+wf-trait-group-language-drawbacks = Drawbacks

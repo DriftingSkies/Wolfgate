@@ -473,7 +473,7 @@ public sealed class WolfmedTemperatureTest : WolfmedGameTest
         var normal = 0f;
         int? downed = null, unconscious = null, arrest = null;
         float? derivedDowned = null, derivedOut = null, derivedArrest = null;
-        for (var second = 1; second <= 180 && arrest == null; second++)
+        for (var second = 1; second <= 180 && (arrest == null || derivedArrest == null); second++)
         {
             await RunSeconds(1);
             var now = second;

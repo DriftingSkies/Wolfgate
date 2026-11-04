@@ -34,6 +34,9 @@ public sealed class WFRegrowingHarvestSystem : EntitySystem
     private const float RegrowCheckSeconds = 1f;
     private float _accumulator;
 
+    /// <summary>Harvested plants by the time they regrow; stale entries are checked against the component when due.</summary>
+    private readonly PriorityQueue<EntityUid, TimeSpan> _regrowQueue = new();
+
     public override void Initialize()
     {
         base.Initialize();
@@ -47,7 +50,10 @@ public sealed class WFRegrowingHarvestSystem : EntitySystem
     private void OnMapInit(Entity<WFRegrowingHarvestComponent> ent, ref MapInitEvent args)
     {
         if (ent.Comp.Harvested)
+        {
             ent.Comp.RegrowAt = _timing.CurTime + ent.Comp.RegrowTime;
+            _regrowQueue.Enqueue(ent, ent.Comp.RegrowAt);
+        }
         _appearance.SetData(ent, WFRegrowingHarvestVisuals.Harvested, ent.Comp.Harvested);
     }
 
@@ -145,6 +151,7 @@ public sealed class WFRegrowingHarvestSystem : EntitySystem
 
         ent.Comp.Harvested = true;
         ent.Comp.RegrowAt = _timing.CurTime + ent.Comp.RegrowTime;
+        _regrowQueue.Enqueue(ent, ent.Comp.RegrowAt);
         _appearance.SetData(ent, WFRegrowingHarvestVisuals.Harvested, true);
         _audio.PlayPvs(ent.Comp.HarvestSound, ent);
 
@@ -183,10 +190,10 @@ public sealed class WFRegrowingHarvestSystem : EntitySystem
         _accumulator = 0f;
 
         var now = _timing.CurTime;
-        var query = EntityQueryEnumerator<WFRegrowingHarvestComponent>();
-        while (query.MoveNext(out var uid, out var comp))
+        while (_regrowQueue.TryPeek(out var uid, out var due) && due <= now)
         {
-            if (!comp.Harvested || now < comp.RegrowAt)
+            _regrowQueue.Dequeue();
+            if (!TryComp<WFRegrowingHarvestComponent>(uid, out var comp) || !comp.Harvested || now < comp.RegrowAt)
                 continue;
             comp.Harvested = false;
             _appearance.SetData(uid, WFRegrowingHarvestVisuals.Harvested, false);

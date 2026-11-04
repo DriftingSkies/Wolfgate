@@ -75,6 +75,9 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
     private TimeSpan _evolveSameCasteCooldown;
     private TimeSpan _earlyEvoBoostBefore;
     private readonly TimeSpan _raffleGracePeriod = TimeSpan.FromSeconds(30);
+
+    /// <summary>Earliest time any xeno is due its next evolution points; the points pass is skipped before it.</summary>
+    private TimeSpan _nextPointsPass;
     private readonly TimeSpan _raffleBlockedNotifyInterval = TimeSpan.FromSeconds(20);
 
     private readonly HashSet<EntityUid> _climbable = new();
@@ -1219,6 +1222,13 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
             return;
 
         var time = _timing.CurTime;
+        if (time < _nextPointsPass)
+        {
+            ResolveRaffles();
+            return;
+        }
+
+        var nextDue = time + TimeSpan.FromSeconds(1);
         var roundDuration = _gameTicker.RoundDuration();
         UpdateEarlyEvolutionWindow(roundDuration);
         var needsOvipositor = NeedsOvipositor();
@@ -1267,7 +1277,10 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
                 continue;
 
             if (time < comp.LastPointsAt + TimeSpan.FromSeconds(1))
+            {
+                nextDue = TimeSpan.FromTicks(Math.Min(nextDue.Ticks, (comp.LastPointsAt + TimeSpan.FromSeconds(1)).Ticks));
                 continue;
+            }
 
             comp.LastPointsAt = time;
             Dirty(uid, comp);
@@ -1306,6 +1319,7 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
             }
         }
 
+        _nextPointsPass = nextDue;
         ResolveRaffles();
     }
 }

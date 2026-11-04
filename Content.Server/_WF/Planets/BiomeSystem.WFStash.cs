@@ -32,6 +32,17 @@ public sealed partial class BiomeSystem
     private GameTick _wfStashKeepTick;
     private BiomeComponent? _wfRestoreFor;
 
+    /// <summary>Tiles round a landed hull's bounds whose stashed chunks are laid at once.</summary>
+    public const float WfRestoreNowPad = 2f;
+
+    /// <summary>Stashed chunks laid at once in one pass, past the load budget; the rest wait for the budget.</summary>
+    public const int WfRestoreNowCap = 8;
+
+    /// <summary>The bounds of the hulls landed on <see cref="_wfLandedMap"/>, worked out once a tick.</summary>
+    private readonly List<Box2> _wfLanded = new();
+    private EntityUid _wfLandedMap;
+    private GameTick _wfLandedTick;
+
     /// <summary>Whether stashing is on for preloaded grounds.</summary>
     public bool WfStashEnabled => _configManager.GetCVar(PlanetCVars.TerrainStash);
 
@@ -164,7 +175,40 @@ public sealed partial class BiomeSystem
         }
 
         var block = WfBlockOf(chunk);
-        _wfRestores.Add((WfBlockDistance(block, _wfLoadLoaders), chunk, _wfNearBlocks.Contains(block)));
+        var now = _wfNearLoaderBlocks.Contains(block) || WfUnderLandedHull(map, chunk);
+        _wfRestores.Add((WfBlockDistance(block, _wfLoadLoaders), chunk, now));
+    }
+
+    /// <summary>Whether a chunk lies under a hull standing on this layer, or within a tile or two of one.</summary>
+    private bool WfUnderLandedHull(EntityUid map, Vector2i chunk)
+    {
+        if (_wfLandedMap != map || _wfLandedTick != _wfTiming.CurTick)
+        {
+            _wfLandedMap = map;
+            _wfLandedTick = _wfTiming.CurTick;
+            _wfLanded.Clear();
+
+            var grids = EntityQueryEnumerator<MapGridComponent, TransformComponent>();
+            while (grids.MoveNext(out var uid, out var hull, out var xform))
+            {
+                if (uid == map || xform.MapUid != map || WfSkipHull(uid))
+                    continue;
+
+                _wfLanded.Add(_transform.GetWorldMatrix(xform).TransformBox(hull.LocalAABB).Enlarged(WfRestoreNowPad));
+            }
+        }
+
+        if (_wfLanded.Count == 0)
+            return false;
+
+        var box = new Box2(chunk, chunk + new Vector2i(ChunkSize, ChunkSize));
+        foreach (var bounds in _wfLanded)
+        {
+            if (bounds.Intersects(box))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>Lays what a layer's loaders want back: those beside them at once, the rest nearest first within the pass's budget.</summary>
@@ -187,10 +231,15 @@ public sealed partial class BiomeSystem
         try
         {
             var laid = 0;
+            var laidNow = 0;
             foreach (var (_, chunk, now) in _wfRestores)
             {
-                if (!now && laid > 0 && _wfLoadSpentMs >= _wfLoadBudgetMs)
+                var atOnce = now && (_wfLoadBudgetMs <= 0 || laidNow < WfRestoreNowCap);
+                if (!atOnce && laid > 0 && _wfLoadSpentMs >= _wfLoadBudgetMs)
                     break;
+
+                if (atOnce)
+                    laidNow++;
 
                 _wfLoadWatch.Restart();
                 WfRestoreChunk(biome, map, grid, chunk);

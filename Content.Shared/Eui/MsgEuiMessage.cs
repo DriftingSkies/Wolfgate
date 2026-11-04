@@ -1,4 +1,5 @@
 using System.IO;
+using Content.Shared._WF.NetGuard; // WOLFGATE(NetGuard)
 using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -17,7 +18,7 @@ namespace Content.Shared.Eui
         {
             Id = buffer.ReadUInt32();
 
-            var length = buffer.ReadVariableInt32();
+            var length = buffer.ReadGuardedLength(); // WOLFGATE(NetGuard): reject lengths past the packet end
             using var stream = new MemoryStream(length);
             buffer.ReadAlignedMemory(stream, length);
             Message = ser.Deserialize<EuiMessageBase>(stream);

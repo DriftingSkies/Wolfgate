@@ -531,7 +531,7 @@ public sealed partial class HiveBoonSystem : EntitySystem
                 }
 
                 cocoonComp.LastPylons = pylons;
-                return;
+                continue;
             }
 
             cocoonComp.TimeLeft -= TimeSpan.FromSeconds(frameTime);

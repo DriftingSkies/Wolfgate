@@ -33,6 +33,6 @@ public sealed partial class ShipShieldsSystem
             return;
         ReportWolfgateShieldAttack(component, actualDamage, null, gun, shooter);
         PlayWolfgateShieldImpact(shield, position);
-        RaiseNetworkEvent(new WFShipShieldImpactEvent(GetNetEntity(shield), position, impactStrength), Filter.Broadcast());
+        RaiseNetworkEvent(new WFShipShieldImpactEvent(GetNetEntity(shield), position, impactStrength), Filter.BroadcastMap(Transform(shield).MapID));
     }
 }

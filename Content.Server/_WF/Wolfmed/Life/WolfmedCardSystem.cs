@@ -1,4 +1,5 @@
 using Content.Server._WF.Wolfmed.Consciousness;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared._WF.Wolfmed.Consciousness;
 using Content.Shared._WF.Wolfmed.Life;
@@ -17,6 +18,7 @@ public sealed partial class WolfmedCardSystem : EntitySystem
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
 
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private WolfmedConsciousnessSystem _consciousness = default!; // playtest 3
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private MobStateSystem _mobState = default!;
@@ -29,17 +31,22 @@ public sealed partial class WolfmedCardSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+        // Each body takes its own tick of the interval, so a full server doesn't refresh every card at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var curTick = _timing.CurTick;
+        var query = EntityQueryEnumerator<WolfmedConsciousnessComponent>();
+        while (query.MoveNext(out var body, out var consciousness))
+        {
+            if (consciousness.State == WolfmedConsciousness.Unconscious && !_mobState.IsDead(body) &&
+                WFTickSpread.Due(body, curTick, period) && !_dormancy.BodySleeps(body))
+                Refresh(body);
+        }
+
         if (_timing.CurTime < _next)
             return;
 
         _next = _timing.CurTime + TickInterval;
-
-        var query = EntityQueryEnumerator<WolfmedConsciousnessComponent>();
-        while (query.MoveNext(out var body, out var consciousness))
-        {
-            if (consciousness.State == WolfmedConsciousness.Unconscious && !_mobState.IsDead(body))
-                Refresh(body);
-        }
 
         // A card left over on somebody awake or dead says nothing any more.
         _stale.Clear();

@@ -32,6 +32,12 @@ public sealed partial class BiomeSystem
     /// </summary>
     public const int WfLoadNowEyeRing = 1;
 
+    /// <summary>
+    /// Half the side, in tiles, of the box an eye on a cavern loads: about what it sees through a hole, not
+    /// net.pvs_range (the view's whole side) each way.
+    /// </summary>
+    public const float WfCavernEyeHalf = 24f;
+
     /// <summary>The side in tiles of the blocks put-off chunks load in: one grid chunk, which is always sent whole.</summary>
     public const int WfLoadBlock = 16;
 
@@ -48,6 +54,9 @@ public sealed partial class BiomeSystem
 
     private readonly Stack<List<WfLoader>> _wfLoaderPool = new();
     private readonly HashSet<Vector2i> _wfNearBlocks = new();
+
+    /// <summary>The blocks round this pass's loaders only, without those under hulls.</summary>
+    private readonly HashSet<Vector2i> _wfNearLoaderBlocks = new();
     private readonly List<(int Distance, Vector2i Block, Vector2i Chunk)> _wfPending = new();
     private readonly Stopwatch _wfLoadWatch = new();
     private BiomeComponent? _wfLoadFor;
@@ -125,6 +134,18 @@ public sealed partial class BiomeSystem
         return true;
     }
 
+    /// <summary>The box an eye loads round it, or null for the usual load area: smaller on a planet's cavern.</summary>
+    private Box2? WfEyeLoadArea(TransformComponent xform)
+    {
+        if (xform.MapUid is not { } map
+            || !HasComp<WFPlanetLayerComponent>(map)
+            || !TryComp<CEZMapComponent>(map, out var level)
+            || level.Depth >= 0)
+            return null;
+
+        return new Box2(-WfCavernEyeHalf, -WfCavernEyeHalf, WfCavernEyeHalf, WfCavernEyeHalf);
+    }
+
     /// <summary>Works out which blocks of a layer load at once this pass: those round its loaders and under hulls.</summary>
     private void WfBeginLoad(BiomeComponent biome, EntityUid map)
     {
@@ -132,6 +153,7 @@ public sealed partial class BiomeSystem
         _wfLoadLoaders = null;
         _wfPending.Clear();
         _wfNearBlocks.Clear();
+        _wfNearLoaderBlocks.Clear();
 
         if (_wfLoadBudgetMs <= 0
             || _wfLoaderTick != _wfTiming.CurTick
@@ -161,6 +183,8 @@ public sealed partial class BiomeSystem
                     }
                 }
             }
+
+            _wfNearLoaderBlocks.UnionWith(_wfNearBlocks);
 
             // A hull's riders load its ground through eyes that follow it a second late, and it lands on what is there.
             // None goes below the ground, so a cavern has no hull to hurry for.
@@ -285,7 +309,7 @@ public sealed partial class BiomeSystem
 
         while (grids.MoveNext(out var uid, out var hull, out var xform))
         {
-            if (xform.MapUid is not { } map || uid == map || WfNetworkOf(map) is not { } network)
+            if (xform.MapUid is not { } map || uid == map || WfSkipHull(uid) || WfNetworkOf(map) is not { } network)
                 continue;
 
             var bounds = _transform.GetWorldMatrix(xform).TransformBox(hull.LocalAABB).Enlarged(ChunkSize);

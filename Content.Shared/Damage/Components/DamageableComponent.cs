@@ -62,16 +62,40 @@ namespace Content.Shared.Damage
         [ViewVariables]
         public FixedPoint2 TotalDamage;
 
-        [DataField("radiationDamageTypes")]
-        public List<ProtoId<DamageTypePrototype>> RadiationDamageTypeIDs = new() { "Radiation" };
+        // WOLFGATE(Wolfmed) START: one shared default instead of a list and a dictionary on every damageable entity.
+        // A prototype that sets either field still gets its own; nothing writes them at runtime.
+        // [DataField("radiationDamageTypes")]
+        // public List<ProtoId<DamageTypePrototype>> RadiationDamageTypeIDs = new() { "Radiation" };
+        //
+        // [DataField]
+        // public Dictionary<MobState, ProtoId<HealthIconPrototype>> HealthIcons = new()
+        // {
+        //     { MobState.Alive, "HealthIconFine" },
+        //     { MobState.Critical, "HealthIconCritical" },
+        //     { MobState.Dead, "HealthIconDead" },
+        // };
+        private static readonly List<ProtoId<DamageTypePrototype>> DefaultRadiationDamageTypeIDs = new() { "Radiation" };
 
-        [DataField]
-        public Dictionary<MobState, ProtoId<HealthIconPrototype>> HealthIcons = new()
+        private static readonly Dictionary<MobState, ProtoId<HealthIconPrototype>> DefaultHealthIcons = new()
         {
             { MobState.Alive, "HealthIconFine" },
             { MobState.Critical, "HealthIconCritical" },
             { MobState.Dead, "HealthIconDead" },
         };
+
+        [DataField("radiationDamageTypes")]
+        private List<ProtoId<DamageTypePrototype>>? _radiationDamageTypeIDs;
+
+        [DataField("healthIcons")]
+        private Dictionary<MobState, ProtoId<HealthIconPrototype>>? _healthIcons;
+
+        /// <summary>Damage types that count as radiation; the prototype's list, or the shared default.</summary>
+        public List<ProtoId<DamageTypePrototype>> RadiationDamageTypeIDs =>
+            _radiationDamageTypeIDs ?? DefaultRadiationDamageTypeIDs;
+
+        /// <summary>Health icon per mob state; the prototype's map, or the shared default.</summary>
+        public Dictionary<MobState, ProtoId<HealthIconPrototype>> HealthIcons => _healthIcons ?? DefaultHealthIcons;
+        // WOLFGATE END
 
         [DataField]
         public ProtoId<HealthIconPrototype> RottingIcon = "HealthIconRotting";

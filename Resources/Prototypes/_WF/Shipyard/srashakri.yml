@@ -1,0 +1,39 @@
+# Author info
+# Armyguy0 (Discord)
+# Armyguy (Github)
+
+- type: vessel
+  id: WFSrashakri
+  parent: BaseVessel
+  name: 'VOX-Srashakri'
+  description: 'Diven by a need for beefier raider ships in the Colossus sector lead to the creation of the Srashakri pattern raider. A modification of the Vrikaash pattern warships, the Srashakri keeps a lot of the same features but drops two of the 130mm cannons and a lot of the armor and adds on a small cargo bay.'
+  price: 168500 # appraised at 146536, just shy of 15% markup
+  category: Medium # 647 tiles
+  group: Scrap
+  requireCrew: true
+  shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/srashakri.yml
+  guidebookPage: null
+  class:
+  - Pursuit
+  - Scrapyard
+  - Cargo
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WFSrashakri
+  mapName: 'VOX-Srashakri'
+  mapPath: /SharedMaps/_WF/Shipyard/Shuttles/srashakri.yml
+  minPlayers: 0
+  stations:
+    WFSrashakri:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Srashakri MIL-SRP{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

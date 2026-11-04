@@ -1,0 +1,126 @@
+# What the stone does to the crew's heads: voices, glimpses, a warped screen, and marks left on the floor.
+# Every sound here is a DS13 recording in the Remade audio folder; nothing from the stock spooky or ghost sets. The whispers are
+# cuts of DS13's one whisper recording (Tools/_WF/Remade/port_dread.py).
+- type: soundCollection
+  id: WFDreadWhispers
+  files:
+  - /Audio/_WF/Remade/dread/whisper_hit_1.ogg
+  - /Audio/_WF/Remade/dread/whisper_hit_2.ogg
+  - /Audio/_WF/Remade/dread/whisper_hit_3.ogg
+  - /Audio/_WF/Remade/dread/whisper_hit_4.ogg
+  - /Audio/_WF/Remade/dread/whisper_low_1.ogg
+  - /Audio/_WF/Remade/dread/whisper_low_2.ogg
+  - /Audio/_WF/Remade/dread/whisper_low_3.ogg
+  - /Audio/_WF/Remade/dread/whisper_low_4.ogg
+  - /Audio/_WF/Remade/dread/whisper_back_1.ogg
+  - /Audio/_WF/Remade/dread/whisper_back_2.ogg
+  - /Audio/_WF/Remade/dread/whisper_back_3.ogg
+  - /Audio/_WF/Remade/dread/whisper_back_4.ogg
+
+- type: soundCollection
+  id: WFDreadVoices
+  files:
+  - /Audio/_WF/Remade/dread/voice_behind_you_1.ogg
+  - /Audio/_WF/Remade/dread/voice_behind_you_2.ogg
+  - /Audio/_WF/Remade/dread/voice_look_up_1.ogg
+  - /Audio/_WF/Remade/dread/voice_look_up_2.ogg
+  - /Audio/_WF/Remade/dread/voice_over_here_1.ogg
+  - /Audio/_WF/Remade/dread/voice_over_here_2.ogg
+  - /Audio/_WF/Remade/dread/voice_over_here_3.ogg
+  - /Audio/_WF/Remade/dread/voice_turn_around_1.ogg
+  - /Audio/_WF/Remade/dread/voice_turn_around_2.ogg
+
+- type: soundCollection
+  id: WFDreadMenace
+  files:
+  - /Audio/_WF/Remade/dread/menace_growl_1.ogg
+  - /Audio/_WF/Remade/dread/menace_growl_2.ogg
+  - /Audio/_WF/Remade/dread/menace_growl_3.ogg
+  - /Audio/_WF/Remade/dread/menace_far_noise.ogg
+  - /Audio/_WF/Remade/dread/menace_very_far_noise.ogg
+  - /Audio/_WF/Remade/dread/menace_wail.ogg
+
+- type: shader
+  id: WFRemadeDread
+  kind: source
+  path: "/Textures/_WF/Remade/Shaders/dread.swsl"
+
+# Spawned on the player's own client only, for a moment, at the edge of their sight. The sprite is set when it appears.
+- type: entity
+  id: WFRemadeGlimpse
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Mobs/slasher.rsi
+    drawdepth: Mobs
+    layers:
+    - state: full
+      shader: unshaded
+
+# A Remade standing in front of a camera someone is watching, gone in a moment.
+- type: entity
+  id: WFRemadeCameraPhantom
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Remade/Mobs/slasher.rsi
+    drawdepth: Mobs
+    offset: 0,0.25
+    layers:
+    - state: full
+  - type: TimedDespawn
+    lifetime: 3
+
+# Marks the Director leaves on the floor, besides its scrawls and runes.
+- type: entity
+  id: WFRemadeSmear
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: Sprite
+    sprite: Fluids/smear.rsi
+    drawdepth: FloorObjects
+    color: "#5c0909"
+    layers:
+    - state: smear-0
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        smear-0: ""
+        smear-1: ""
+        smear-2: ""
+        smear-3: ""
+        smear-4: ""
+        smear-5: ""
+        smear-6: ""
+  - type: TimedDespawn
+    lifetime: 900
+
+- type: entity
+  id: WFRemadeSplatter
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: Transform
+    noRot: true
+  - type: Sprite
+    sprite: Fluids/splatter.rsi
+    drawdepth: FloorObjects
+    color: "#6a0b0b"
+    layers:
+    - state: splatter-0
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        splatter-0: ""
+        splatter-1: ""
+        splatter-2: ""
+        splatter-3: ""
+        splatter-4: ""
+        splatter-5: ""
+  - type: TimedDespawn
+    lifetime: 900

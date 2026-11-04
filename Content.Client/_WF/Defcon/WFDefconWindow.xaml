@@ -1,0 +1,32 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc wf-defcon-panel-title}"
+               MinSize="460 420"
+               SetSize="520 520">
+    <BoxContainer Orientation="Vertical" SeparationOverride="6">
+        <RichTextLabel Name="LevelLabel" HorizontalAlignment="Center" />
+        <Label Name="StatusLabel" HorizontalAlignment="Center" StyleClasses="LabelSubText" />
+
+        <PanelContainer StyleClasses="LowDivider" Margin="0 4" />
+        <Label Text="{Loc wf-defcon-panel-set}" StyleClasses="LabelHeading" />
+        <BoxContainer Name="LevelButtons" Access="Public" Orientation="Horizontal" SeparationOverride="4" HorizontalExpand="True" />
+        <BoxContainer Orientation="Horizontal" SeparationOverride="12">
+            <CheckBox Name="LockCheck" Text="{Loc wf-defcon-panel-lock}" ToolTip="{Loc wf-defcon-panel-lock-tooltip}" />
+            <CheckBox Name="AnnounceCheck" Text="{Loc wf-defcon-panel-announce}" Pressed="True" />
+            <Control HorizontalExpand="True" />
+            <Button Name="UnlockButton" Text="{Loc wf-defcon-panel-unlock}" />
+        </BoxContainer>
+
+        <PanelContainer StyleClasses="LowDivider" Margin="0 4" />
+        <Label Text="{Loc wf-defcon-panel-threat}" StyleClasses="LabelHeading" />
+        <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+            <Label Text="{Loc wf-defcon-panel-bias}" ToolTip="{Loc wf-defcon-panel-bias-tooltip}" />
+            <LineEdit Name="BiasEdit" MinWidth="80" />
+            <Button Name="BiasButton" Text="{Loc wf-defcon-panel-bias-apply}" />
+            <Control HorizontalExpand="True" />
+            <Button Name="EvaluateButton" Text="{Loc wf-defcon-panel-evaluate}" />
+        </BoxContainer>
+        <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+            <BoxContainer Name="ReasonList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+        </ScrollContainer>
+    </BoxContainer>
+</DefaultWindow>

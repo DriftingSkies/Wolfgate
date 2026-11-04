@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Administration.Logs;
+using Content.Server._WF.Remade.Gifts; // WOLFGATE(Remade)
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Construction; // Frontier
 using Content.Server.Fluids.EntitySystems;
@@ -408,6 +409,11 @@ namespace Content.Server.Lathe
 
                             // Mono: Handle printable contraband
                             _contraband.HandleContrabandValueByCompany(result, prodComp.Actor);
+
+                            // WOLFGATE(Remade) START: lets a print from Monolith-made stock mark its product unsellable
+                            var printedEv = new WFLatheProducedEvent(result);
+                            RaiseLocalEvent(uid, ref printedEv);
+                            // WOLFGATE END
                         }
 
                         _stack.TryMergeToContacts(result);

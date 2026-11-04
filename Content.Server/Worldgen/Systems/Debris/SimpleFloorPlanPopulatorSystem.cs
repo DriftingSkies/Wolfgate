@@ -25,6 +25,11 @@ public sealed partial class SimpleFloorPlanPopulatorSystem : BaseWorldSystem
     private void OnFloorPlanBuilt(EntityUid uid, SimpleFloorPlanPopulatorComponent component,
         LocalStructureLoadedEvent args)
     {
+        // WOLFGATE(Performance) START: spawns are queued and made a few ms per tick instead of in this handler
+        if (WFQueueFloorPlan(uid, component))
+            return;
+        // WOLFGATE END
+
         var placeables = new List<string?>(4);
         var grid = Comp<MapGridComponent>(uid);
         var enumerator = _map.GetAllTilesEnumerator(uid, grid);

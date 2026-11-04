@@ -404,6 +404,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 continue;
             }
 
+            if (IsDormant(uid, mover, vehicle, xform, gridUid))
+            {
+                _movementAccumulator.Remove(uid);
+                continue;
+            }
+
             var input = GetMoverInput(uid, vehicle, xform);
             var accumulator = _movementAccumulator.GetValueOrDefault(uid) + frameTime;
             var maxAccum = MovementFixedStep * MaxFixedStepsPerFrame;
@@ -425,6 +431,32 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
             _movementAccumulator[uid] = accumulator;
         }
+    }
+
+    /// <summary>Whether a vehicle is parked and held in place, so a movement step would change nothing.</summary>
+    private bool IsDormant(EntityUid uid, GridVehicleMoverComponent mover, RMCVehicleComponent vehicle,
+        TransformComponent xform, EntityUid grid)
+    {
+        if (vehicle.Operator != null ||
+            mover.CurrentSpeed != 0f ||
+            mover.AngularVelocityDegrees != 0f ||
+            mover.IsMoving ||
+            mover.IsCommittedToMove ||
+            mover.SmashSlowdownMultiplier != 1f ||
+            mover.TravelVelocity != Vector2.Zero ||
+            mover.ImpactVelocity != Vector2.Zero ||
+            mover.ImpactSpin != 0f)
+        {
+            return false;
+        }
+
+        if (!physicsQ.TryComp(uid, out var body) || body.Awake)
+            return false;
+
+        if (xform.ParentUid != grid || !xform.LocalPosition.EqualsApprox(mover.Position))
+            return false;
+
+        return !TryGetLocalFacing(mover, out var facing) || xform.LocalRotation.EqualsApprox(facing);
     }
 
     /// <summary>A vehicle put elsewhere on its own grid by something other than the mover keeps the place it was put.</summary>

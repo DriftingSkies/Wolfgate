@@ -1,5 +1,6 @@
 using Content.Server._WF.Wolfmed.Consciousness;
 using Content.Shared._WF.Wolfmed.Consciousness;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.Life;
 using Content.Shared.Alert;
 using Content.Shared.Mobs.Systems;
@@ -42,23 +43,27 @@ public sealed partial class WolfmedBreathingAlertSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _next)
-            return;
 
-        _next = _timing.CurTime + TickInterval;
-
+        // Each body takes its own tick of the interval, so a full server doesn't assess every body at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var curTick = _timing.CurTick;
         var query = EntityQueryEnumerator<WolfmedConsciousnessComponent>();
-        while (query.MoveNext(out var body, out _))
+        while (query.MoveNext(out var body, out var consciousness))
         {
-            if (_dormancy.BodySleeps(body))
+            if (!WFTickSpread.Due(body, curTick, period) || _dormancy.BodySleeps(body))
                 continue;
 
-            if (!_mobState.IsDead(body) && _breathing.Assess(body).Source == WolfmedBreathingSource.Lungs)
+            if (!_mobState.IsDead(body) && NoLungsSource(body, consciousness))
             {
                 if (_noLungs.Add(body))
                     _alerts.ShowAlert(body, NoLungs);
             }
         }
+
+        if (_timing.CurTime < _next)
+            return;
+
+        _next = _timing.CurTime + TickInterval;
 
         _gone.Clear();
         foreach (var body in _noLungs)
@@ -69,7 +74,8 @@ public sealed partial class WolfmedBreathingAlertSystem : EntitySystem
                 continue;
             }
 
-            if (!_mobState.IsDead(body) && _breathing.Assess(body).Source == WolfmedBreathingSource.Lungs)
+            if (!_mobState.IsDead(body) && TryComp(body, out WolfmedConsciousnessComponent? consciousness) &&
+                NoLungsSource(body, consciousness))
                 continue;
 
             _gone.Add(body);
@@ -79,4 +85,13 @@ public sealed partial class WolfmedBreathingAlertSystem : EntitySystem
         foreach (var body in _gone)
             _noLungs.Remove(body);
     }
+
+    /// <summary>
+    /// Whether the chest reads "no lungs". A wound host's life tick already wrote that onto its consciousness
+    /// component this second, so only other bodies take a fresh assessment.
+    /// </summary>
+    private bool NoLungsSource(EntityUid body, WolfmedConsciousnessComponent consciousness) =>
+        _consciousness.OwnsMobState(body)
+            ? consciousness.BreathingSource == WolfmedBreathingSource.Lungs
+            : _breathing.Assess(body).Source == WolfmedBreathingSource.Lungs;
 }

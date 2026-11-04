@@ -591,6 +591,7 @@ public sealed partial class FireControlSystem : EntitySystem
         // Calculate distance to target (capped at maximum distance)
         var targetDistance = Vector2.Distance(weaponPos, targetPos);
         var rayDistance = Math.Min(targetDistance, maxDistance);
+        rayDistance = Math.Min(rayDistance, WfGridReach(weaponTransform)); // WOLFGATE(Performance): only the weapon's own grid can block, so the ray ends where it does
 
         // Initialize ray collision
         var ray = new CollisionRay(weaponPos, direction, collisionMask: (int)(CollisionGroup.Opaque | CollisionGroup.Impassable));
@@ -622,10 +623,10 @@ public sealed partial class FireControlSystem : EntitySystem
             IgnoreEntityNotOnSameGrid,
             rayDistance,
             returnOnFirstHit: true // We only need to know if there's ANY obstacle
-        ).ToList();
+        ); // WOLFGATE(Performance): no .ToList(), the result is only tested for emptiness
 
         // Has line of sight if there are no obstacles in the path
-        return raycastResults.Count == 0;
+        return !raycastResults.Any(); // WOLFGATE(Performance): was raycastResults.Count == 0
     }
 
     /// <summary>

@@ -211,7 +211,11 @@ public sealed partial class RadioSystem : EntitySystem
         var canSend = !sendAttemptEv.Cancelled;
 
         var sourceMapId = Transform(radioSource).MapID;
-        var hasActiveServer = HasActiveServer(sourceMapId, channel.ID);
+        // WOLFGATE(PlanetComms) START: planets have no telecom server; a working mass transceiver relays instead
+        // var hasActiveServer = HasActiveServer(sourceMapId, channel.ID);
+        var hasActiveServer = HasActiveServer(sourceMapId, channel.ID)
+            || EntityManager.System<Content.Server._WF.PlanetComms.WFPlanetCommsSystem>().RelaysTelecom(radioSource);
+        // WOLFGATE END
         var sourceServerExempt = _exemptQuery.HasComp(radioSource);
 
         var radioQuery = EntityQueryEnumerator<ActiveRadioComponent, TransformComponent>();

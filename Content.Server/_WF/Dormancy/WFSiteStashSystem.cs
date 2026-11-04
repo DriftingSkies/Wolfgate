@@ -10,6 +10,8 @@ using Content.Shared.Parallax.Biomes;
 using Robust.Shared;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Physics.Components;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
@@ -27,6 +29,7 @@ public sealed partial class WFSiteStashSystem : EntitySystem
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private WFDormancySystem _dormancy = default!;
 
     /// <summary>SharedBiomeSystem.ChunkSize, which is protected.</summary>
@@ -56,6 +59,10 @@ public sealed partial class WFSiteStashSystem : EntitySystem
     private EntityQuery<MetaDataComponent> _metaQuery;
     private EntityQuery<MobStateComponent> _mobQuery;
     private EntityQuery<BiomeComponent> _biomeQuery;
+    private EntityQuery<PhysicsComponent> _physicsQuery;
+
+    /// <summary>Awake bodies put to sleep before being paused, since the round began.</summary>
+    public int BodiesSlept;
 
     /// <summary>Every region being watched, for tests and the admin.</summary>
     public IReadOnlyList<WFStashRegion> Regions => _regions;
@@ -76,6 +83,7 @@ public sealed partial class WFSiteStashSystem : EntitySystem
         _metaQuery = GetEntityQuery<MetaDataComponent>();
         _mobQuery = GetEntityQuery<MobStateComponent>();
         _biomeQuery = GetEntityQuery<BiomeComponent>();
+        _physicsQuery = GetEntityQuery<PhysicsComponent>();
 
         Subs.CVar(_cfg, PlanetCVars.SiteStash, OnEnabled, true);
         Subs.CVar(_cfg, PlanetCVars.SiteStashIdle, value => _idle = value, true);
@@ -279,6 +287,13 @@ public sealed partial class WFSiteStashSystem : EntitySystem
     {
         if (!_metaQuery.TryComp(uid, out var meta) || meta.EntityLifeStage >= EntityLifeStage.Terminating || meta.EntityPaused)
             return;
+
+        // Physics ignores pausing, so an awake body would keep its contacts in the solver forever.
+        if (_physicsQuery.TryComp(uid, out var body) && body.Awake && !body.IgnorePaused)
+        {
+            _physics.SetAwake((uid, body), false);
+            BodiesSlept++;
+        }
 
         _meta.SetEntityPaused(uid, true, meta);
         region.Paused.Add(uid);

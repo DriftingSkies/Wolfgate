@@ -34,7 +34,8 @@ public sealed class WFReaverGameModeTest : WFReaverTestBase
             Assert.That(ashfall.Rules, Is.SupersetOf(standard.Rules));
             Assert.That(ashfall.Rules, Does.Contain("WFReaverCampaignRule"));
             Assert.That(ashfall.Rules, Does.Contain("WFAdsCampaignRule"));
-            Assert.That(ashfall.Rules.Count, Is.EqualTo(standard.Rules.Count + 2));
+            Assert.That(ashfall.Rules, Does.Contain("WFRemadeDiscoveryRule"));
+            Assert.That(ashfall.Rules.Count, Is.EqualTo(standard.Rules.Count + 3));
         });
     }
 

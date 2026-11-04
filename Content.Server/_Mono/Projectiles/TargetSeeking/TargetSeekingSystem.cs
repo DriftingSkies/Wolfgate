@@ -217,6 +217,15 @@ public sealed partial class TargetSeekingSystem : EntitySystem
     /// </summary>
     public void AcquireTarget(EntityUid uid, TargetSeekingComponent component, TransformComponent transform)
     {
+        // WOLFGATE(Performance) START: mines (zero scan arc) never acquire; hoist the per-seeker values out of the loop
+        if (component.ScanArc <= 0f)
+            return;
+
+        var sourceMap = transform.MapID;
+        var sourcePos = _transform.GetWorldPosition(transform);
+        var currentRotation = _transform.GetWorldRotation(transform);
+        // WOLFGATE END
+
         var closestDistance = float.MaxValue;
         EntityUid? bestTarget = null;
 
@@ -227,17 +236,27 @@ public sealed partial class TargetSeekingSystem : EntitySystem
         {
             var targetXform = Transform(targetUid);
 
+            // WOLFGATE(Performance) START: other maps and out-of-range consoles are rejected before the angle math
+            if (targetXform.MapID != sourceMap)
+                continue;
+
+            var targetPos = _transform.GetWorldPosition(targetXform);
+            var distance = Vector2.Distance(sourcePos, targetPos);
+            if (distance > component.DetectionRange)
+                continue;
+            // WOLFGATE END
+
             // If this entity has a grid UID, use that as our actual target
             // This targets the ship grid rather than just the console
             var actualTarget = targetXform.GridUid ?? targetUid;
 
             // Get angle to the target
-            var targetPos = _transform.ToMapCoordinates(targetXform.Coordinates).Position;
-            var sourcePos = _transform.ToMapCoordinates(transform.Coordinates).Position;
+            // var targetPos = _transform.ToMapCoordinates(targetXform.Coordinates).Position; // WOLFGATE(Performance): hoisted above
+            // var sourcePos = _transform.ToMapCoordinates(transform.Coordinates).Position; // WOLFGATE(Performance): hoisted above
             var angleToTarget = (targetPos - sourcePos).ToWorldAngle();
 
             // Get current direction of the projectile
-            var currentRotation = _transform.GetWorldRotation(transform);
+            // var currentRotation = _transform.GetWorldRotation(transform); // WOLFGATE(Performance): hoisted above
 
             // Check if target is within field of view
             var angleDifference = Angle.ShortestDistance(currentRotation, angleToTarget).Degrees;
@@ -247,11 +266,8 @@ public sealed partial class TargetSeekingSystem : EntitySystem
             }
 
             // Calculate distance to target
-            var distance = Vector2.Distance(sourcePos, targetPos);
-
-            // Skip if target is out of range
-            if (distance > component.DetectionRange)
-                continue;
+            // var distance = Vector2.Distance(sourcePos, targetPos); // WOLFGATE(Performance): computed and range-tested above
+            // if (distance > component.DetectionRange) continue; // WOLFGATE(Performance): see above
 
             // Skip if the target is our own launcher (don't target our own ship)
             if (_projectileQuery.TryGetComponent(uid, out var projectile) &&

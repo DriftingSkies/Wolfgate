@@ -16,6 +16,8 @@ Entry points: `TraitPrototype.WF.cs` adds the two prototype fields, `TraitSystem
 the upstream spawn loop, and `TraitsTab`/`TraitCategory`/`TraitEntry` under `Content.Client/_WF/Traits/UI` drive the
 editor, with `TraitConditionUi` supplying condition checks and tooltip lines.
 
+The editor orders categories and splits them into subgroups (Toughness, Healing, Accents, ...) from the `wfTraitLayout` prototypes in `Resources/Prototypes/_WF/Traits/layout.yml`, keyed by category ID, so upstream trait files stay untouched. `TraitLayoutTest` fails when a trait in a grouped category is in no group. Players can sort each subgroup by name or points and hide traits they cannot take; every requirement and incompatibility is listed under the trait, in red when it blocks the current character.
+
 The `Clown` and `Mime` traits are ported from Wayfarer (`a7f18f6fa85`). Players pick them in the lobby under Physical
 for 2 points each, and picking one blocks the other. Their abilities are in the Clown and Mime modules; `ClownComponent`
 marks the Clown trait. `ClownTraining` is renamed `Clown`, and both traits cost points under Physical where Wayfarer had
@@ -45,6 +47,7 @@ them free under Quirks.
 - [`Content.Shared/_WF/Traits/Effects/SpawnItemInHandEffect.cs`](../../../Content.Shared/_WF/Traits/Effects/SpawnItemInHandEffect.cs)
 - [`Content.Shared/_WF/Traits/TraitConditionEvaluator.cs`](../../../Content.Shared/_WF/Traits/TraitConditionEvaluator.cs)
 - [`Content.Shared/_WF/Traits/TraitPrototype.WF.cs`](../../../Content.Shared/_WF/Traits/TraitPrototype.WF.cs)
+- [`Content.Shared/_WF/Traits/WFTraitLayoutPrototype.cs`](../../../Content.Shared/_WF/Traits/WFTraitLayoutPrototype.cs)
 
 ### Client
 
@@ -59,12 +62,14 @@ them free under Quirks.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Traits/ClownMimeTraitTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traits/ClownMimeTraitTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Traits/TraitLayoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traits/TraitLayoutTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Traits/TraitsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traits/TraitsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Traits/TraitsUiTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Traits/TraitsUiTest.cs)
 
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/Traits/clown_mime.yml`](../../../Resources/Prototypes/_WF/Traits/clown_mime.yml)
+- [`Resources/Prototypes/_WF/Traits/layout.yml`](../../../Resources/Prototypes/_WF/Traits/layout.yml)
 
 ### Localization
 

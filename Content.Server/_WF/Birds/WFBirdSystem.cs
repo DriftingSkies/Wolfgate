@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Server._WF.Dormancy;
 using Content.Server.Light.EntitySystems;
 using Content.Shared._WF.Birds;
 using Content.Shared.Audio;
@@ -45,6 +46,7 @@ public sealed class WFBirdSystem : EntitySystem
     [Dependency] private SharedCombatModeSystem _combat = default!;
     [Dependency] private SharedAmbientSoundSystem _ambient = default!;
     [Dependency] private RoofSystem _roof = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
 
     private static readonly TimeSpan ThinkInterval = TimeSpan.FromSeconds(0.25);
     private static readonly TimeSpan IdleThinkInterval = TimeSpan.FromSeconds(2);
@@ -168,6 +170,10 @@ public sealed class WFBirdSystem : EntitySystem
             if (bird.Dead)
                 continue;
 
+            // A flock leader on planet ground nobody is near stays put; its members follow it.
+            if (!bird.Member && (bird.Moving || now >= bird.NextThink) && !_dormancy.IsActive(uid, xform))
+                continue;
+
             if (bird.Moving)
                 Move(uid, bird, xform, frameTime);
 
@@ -239,8 +245,7 @@ public sealed class WFBirdSystem : EntitySystem
         }
 
         var step = MathF.Min(distance, speed * frameTime);
-        _transform.SetLocalPosition(uid, position + delta / distance * step, xform);
-        _transform.SetLocalRotation(uid, delta.ToWorldAngle(), xform);
+        _transform.SetLocalPositionRotation(uid, position + delta / distance * step, delta.ToWorldAngle(), xform);
     }
 
     private bool Arrived(WFBirdComponent bird, TransformComponent xform, float within = 0.3f)
@@ -380,7 +385,7 @@ public sealed class WFBirdSystem : EntitySystem
     public Vector2? FindStartler(EntityUid uid, WFBirdComponent bird, TransformComponent xform)
     {
         _mobs.Clear();
-        _lookup.GetEntitiesInRange(xform.Coordinates, MathF.Max(bird.NearRange, bird.ScareRange), _mobs);
+        _lookup.GetEntitiesInRange(xform.Coordinates, MathF.Max(bird.NearRange, bird.ScareRange), _mobs, LookupFlags.Dynamic | LookupFlags.Sundries);
         var position = _transform.GetWorldPosition(xform);
         foreach (var mob in _mobs)
         {
@@ -565,7 +570,7 @@ public sealed class WFBirdSystem : EntitySystem
     private EntityUid? FindPrey(EntityUid uid, WFBirdHostileComponent hostile, TransformComponent xform)
     {
         _mobs.Clear();
-        _lookup.GetEntitiesInRange(xform.Coordinates, hostile.DiveRange, _mobs);
+        _lookup.GetEntitiesInRange(xform.Coordinates, hostile.DiveRange, _mobs, LookupFlags.Dynamic | LookupFlags.Sundries);
         EntityUid? best = null;
         var bestDistance = float.MaxValue;
         var position = _transform.GetWorldPosition(xform);

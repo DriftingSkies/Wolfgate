@@ -2,6 +2,7 @@ using Content.Server._WF.Wolfmed.Consciousness;
 using Content.Server.Chat.Managers;
 using Content.Server.EUI;
 using Content.Server.Ghost;
+using Content.Shared._WF.Performance;
 using Content.Shared._WF.Wolfmed.CCVar;
 using Content.Shared._WF.Wolfmed.Consciousness;
 using Content.Shared._WF.Wolfmed.Life;
@@ -36,6 +37,7 @@ public sealed partial class WolfmedDormantSystem : EntitySystem
 
     [Dependency] private IChatManager _chat = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private EuiManager _eui = default!;
@@ -50,7 +52,6 @@ public sealed partial class WolfmedDormantSystem : EntitySystem
 
     private readonly Dictionary<EntityUid, WolfmedChoiceEui> _open = new();
     private readonly List<EntityUid> _due = new();
-    private TimeSpan _next;
 
     public override void Initialize()
     {
@@ -62,23 +63,25 @@ public sealed partial class WolfmedDormantSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _next)
-            return;
 
-        _next = _timing.CurTime + TickInterval;
-
+        // Each body takes its own tick of the interval, so a full server doesn't tick every body at once.
+        var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
+        var seconds = period / (float) _timing.TickRate;
+        var curTick = _timing.CurTick;
         _due.Clear();
         var query = EntityQueryEnumerator<WolfmedConsciousnessComponent>();
         while (query.MoveNext(out var body, out var consciousness))
         {
-            if (consciousness.State == WolfmedConsciousness.Unconscious || HasComp<WolfmedDormantComponent>(body))
+            if ((consciousness.State == WolfmedConsciousness.Unconscious || HasComp<WolfmedDormantComponent>(body)) &&
+                WFTickSpread.Due(body, curTick, period))
                 _due.Add(body);
         }
 
         foreach (var body in _due)
         {
-            if (!TerminatingOrDeleted(body))
-                Tick(body, (float) TickInterval.TotalSeconds);
+            // An NPC body no player is near holds still until someone comes, as the life tick does.
+            if (!TerminatingOrDeleted(body) && !_dormancy.BodySleeps(body))
+                Tick(body, seconds);
         }
     }
 
