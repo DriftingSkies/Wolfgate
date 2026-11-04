@@ -62,6 +62,7 @@ public sealed partial class WFDockingClampSystem : EntitySystem
         SubscribeLocalEvent<DockEvent>(OnDock);
         SubscribeLocalEvent<UndockEvent>(OnUndock);
         SubscribeLocalEvent<ConsoleFTLAttemptEvent>(OnFtlAttempt);
+        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopAttemptEvent>(OnHopAttempt);
         SubscribeLocalEvent<GetVerbsEvent<AlternativeVerb>>(OnGetVerbs);
         SubscribeLocalEvent<ShuttleConsoleComponent, ExaminedEvent>(OnConsoleExamined);
         SubscribeLocalEvent<DockingComponent, ExaminedEvent>(OnDockExamined);
@@ -287,6 +288,16 @@ public sealed partial class WFDockingClampSystem : EntitySystem
         }
 
         return false;
+    }
+
+    /// <summary>A clamped ship can't hop into orbit either.</summary>
+    private void OnHopAttempt(ref Content.Server._WF.Planets.Hop.WFPlanetHopAttemptEvent args)
+    {
+        if (args.Cancelled || !IsHeld(args.Uid))
+            return;
+
+        args.Cancelled = true;
+        args.Reason = Loc.GetString("wf-clamps-refuse");
     }
 
     private void OnFtlAttempt(ref ConsoleFTLAttemptEvent args)

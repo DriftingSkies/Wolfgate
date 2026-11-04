@@ -1,12 +1,14 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Audio;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom; // WOLFGATE(Xenoborgs)
 
 namespace Content.Shared.Electrocution;
 
 /// <summary>
 ///     Component for things that shock users on touch.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+// WOLFGATE(Xenoborgs): wizden#44391, AutoGenerateComponentPause for NextShock
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class ElectrifiedComponent : Component
 {
     [DataField, AutoNetworkedField]
@@ -128,4 +130,18 @@ public sealed partial class ElectrifiedComponent : Component
 
     [DataField, AutoNetworkedField]
     public bool IsWireCut = false;
+
+    // WOLFGATE(Xenoborgs) START: wizden#44391 delay between shocks, for the zap xenoborg module
+    /// <summary>
+    /// Delay between consecutive shocks
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public TimeSpan? ShockDelay;
+
+    /// <summary>
+    /// When the entity will be able to shock again
+    /// </summary>
+    [DataField(customTypeSerializer:typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
+    public TimeSpan? NextShock;
+    // WOLFGATE END
 }

@@ -15,6 +15,7 @@ wf-ghost-orbit-category-disconnected = SSD / Catatonic
 wf-ghost-orbit-category-dead = Dead
 wf-ghost-orbit-category-ghost = Ghosts
 wf-ghost-orbit-category-location = Locations
+wf-ghost-orbit-category-planetpoi = Planetary POIs
 wf-ghost-orbit-category-ship = Ships
 wf-ghost-orbit-category-encounter = Encounters
 wf-ghost-orbit-category-npc = NPCs

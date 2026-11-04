@@ -20,7 +20,7 @@
     lightRadius: 15
   - type: ChameleonClothing
     slot: [ eyes ]
-    default: ClothingEyesGlassesDeathsquad
+    default: ClothingEyesGlassesSunglasses # WOLFGATE: an invalid default leaves the chameleon menu empty
   - type: UserInterface
     interfaces:
       enum.ChameleonUiKey.Key:

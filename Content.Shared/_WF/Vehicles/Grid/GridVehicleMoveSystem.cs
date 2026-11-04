@@ -257,6 +257,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         var coords = _transform.WithEntityId(xform.Coordinates, grid);
         var tile = _map.TileIndicesFor(grid, gridComp, coords);
 
+        if (ent.Comp.SyncedGrid is { } previousGrid && !Deleted(previousGrid))
+        {
+            var turn = _transform.GetWorldRotation(previousGrid) - _transform.GetWorldRotation(grid);
+            ent.Comp.TravelVelocity = turn.RotateVec(ent.Comp.TravelVelocity);
+            ent.Comp.ImpactVelocity = turn.RotateVec(ent.Comp.ImpactVelocity);
+        }
         ent.Comp.SyncedGrid = grid;
         ent.Comp.CurrentTile = tile;
         ent.Comp.TargetTile = tile;
@@ -398,7 +404,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 continue;
             }
 
-            var input = GetMoverInput(vehicle);
+            var input = GetMoverInput(uid, vehicle, xform);
             var accumulator = _movementAccumulator.GetValueOrDefault(uid) + frameTime;
             var maxAccum = MovementFixedStep * MaxFixedStepsPerFrame;
             if (accumulator > maxAccum)

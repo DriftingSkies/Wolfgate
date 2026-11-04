@@ -8,6 +8,14 @@
   name: tank turret
   description: A tank turret hardpoint.
   components:
+  - type: StaticPrice
+    price: 10500
+  - type: WFTurretTraverseAudio
+    startSound:
+      collection: WFRcsmElectricTurretStart
+    loopSound: /Audio/_WF/Vehicles/RCSM/turret/electric_loop.ogg
+    stopSound:
+      collection: WFRcsmElectricTurretStop
   - type: Sprite
     sprite: _WF/Vehicles/tank.rsi
     state: tank_turret_0

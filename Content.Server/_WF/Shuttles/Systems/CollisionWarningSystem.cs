@@ -237,7 +237,7 @@ public sealed partial class CollisionWarningSystem : EntitySystem
         var (uid, _, xform, physics) = ship;
 
         // Ships in FTL cannot hit anything, and the hyperspace map holds no traffic.
-        if (HasComp<FTLComponent>(uid) || xform.MapUid == null || HasComp<FTLMapComponent>(xform.MapUid))
+        if (HasComp<FTLComponent>(uid) || HasComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(uid) || xform.MapUid == null || HasComp<FTLMapComponent>(xform.MapUid))
             return null;
 
         var velocity = physics.LinearVelocity;

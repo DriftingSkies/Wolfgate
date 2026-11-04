@@ -664,6 +664,7 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
     private bool IsSector(MapId map, EntityUid? mapUid)
     {
         if (mapUid is not { } uid || HasComp<Content.Shared.Shuttles.Components.FTLMapComponent>(uid)
+            || HasComp<Content.Shared._WF.Planets.WFPlanetHopMapComponent>(uid)
             || HasComp<Content.Shared._WF.Vehicles.Core.VehicleInteriorLinkComponent>(uid)
             || HasComp<Content.Server.Salvage.Expeditions.SalvageExpeditionComponent>(uid)
             || EntityManager.System<Content.Server._NF.Shipyard.Systems.ShipyardSystem>().ShipyardMap == map)

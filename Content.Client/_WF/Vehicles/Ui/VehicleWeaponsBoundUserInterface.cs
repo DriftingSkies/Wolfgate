@@ -25,7 +25,8 @@ public sealed class VehicleWeaponsBoundUserInterface : BoundUserInterface, IRefr
 
         _menu.OnSelect += mountedEntity => SendMessage(new VehicleWeaponsSelectMessage(mountedEntity));
         _menu.OnToggleStabilization += enabled => SendMessage(new VehicleWeaponsStabilizationMessage(enabled));
-        _menu.OpenCenteredAt(new Vector2(0.7f, 0.05f));
+        if (!EntMan.System<WFVehicleHudSystem>().TryEmbedMenu(_menu, Loc.GetString("wf-vehicle-tab-weapons")))
+            _menu.OpenCenteredAt(new Vector2(0.7f, 0.05f));
         Refresh();
     }
 

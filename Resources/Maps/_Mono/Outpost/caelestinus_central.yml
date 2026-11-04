@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/31/2026 13:58:32
-  entityCount: 10893
+  entityCount: 10897
 maps:
 - 10888
 grids:
@@ -25521,7 +25521,7 @@ entities:
       startingCharge: 0
 - proto: computerBodyScanner
   entities:
-  - uid: 10893
+  - uid: 10897
     components:
     - type: Transform
       parent: 1
@@ -32005,6 +32005,13 @@ entities:
     - type: Transform
       parent: 1
       pos: -21.5,13.5
+- proto: WFComputerWeatherForecast
+  entities:
+  - uid: 10893
+    components:
+    - type: Transform
+      parent: 1
+      pos: -8.5,6.5
 - proto: filingCabinetDrawerRandom
   entities:
   - uid: 4174
@@ -45861,7 +45868,7 @@ entities:
       pos: -17.5,0.5
 - proto: GeneticDatabaseServer
   entities:
-  - uid: 10894
+  - uid: 10898
     components:
     - type: Transform
       parent: 1
@@ -74297,7 +74304,7 @@ entities:
       pos: -40.46031,-25.05595
 - proto: WFContractBoard
   entities:
-  - uid: 10895
+  - uid: 10899
     components:
     - type: Transform
       parent: 1
@@ -74309,6 +74316,29 @@ entities:
     - type: Transform
       parent: 1
       pos: 16.042,34.74635
+- proto: WFComputerMilitaryCounter
+  entities:
+  - uid: 10894
+    components:
+    - type: Transform
+      parent: 1
+      pos: -54.5,-15.5
+- proto: WFMinigameDealer
+  entities:
+  - uid: 10895
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      parent: 1
+      pos: 9.5,26.5
+- proto: WFMinigameSage
+  entities:
+  - uid: 10896
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      parent: 1
+      pos: 12.5,22.5
 - proto: WFPlushieMedMoth
   entities:
   - uid: 10194

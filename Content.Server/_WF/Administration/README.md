@@ -29,7 +29,9 @@ An admin in a ghost gets the admin mass scanner in place of the normal window (t
 Interface, or any mass scanner console). Its display fills the window, which resizes, maximizes over the game window
 and pops out, and it zooms out to 25.6 km. True IFF (on by default) draws every grid and beacon under its real name and
 colour, whatever its IFF hides and however far off it is, except grids with `WFAdminRadarUnlabelled` (asteroids),
-which it shows without a label. Players marks every player on the viewed map, and Jump to
+which it shows without a label, and on a planet every site (camps, wrecks, cities and the rest) under its real kind
+and name, identified or not; the names come from the server to admins only (`AdminRadarSitesRequestEvent`) and
+players' radars still show unknown signals. Players marks every player on the viewed map, and Jump to
 player opens a searchable list that warps the ghost to the one picked. While its Teleport toggle is on, a click on the
 scanner moves the ghost to that spot.
 
@@ -125,6 +127,7 @@ Audio.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Administration/AdminFollowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/AdminFollowTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Administration/AdminRadarSitesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/AdminRadarSitesTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/DelayRoundEndTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/DelayRoundEndTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/GhostOfferTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Administration/RadarTeleportTest.cs)

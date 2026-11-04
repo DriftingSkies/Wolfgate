@@ -7,6 +7,8 @@
   name: humvee turret
   description: A roof-mounted humvee turret.
   components:
+  - type: StaticPrice
+    price: 7000
   - type: Sprite
     state: humveeturret
   - type: HardpointItem
@@ -107,6 +109,8 @@
   name: humvee cannon
   description: A fixed forward cannon for a humvee hardpoint.
   components:
+  - type: StaticPrice
+    price: 12600
   - type: Sprite
     state: humveecannon
   - type: HardpointItem
@@ -182,6 +186,8 @@
   name: humvee launcher
   description: A launcher hardpoint for a humvee.
   components:
+  - type: StaticPrice
+    price: 8400
   - type: Sprite
     state: humveelauncher
   - type: HardpointItem

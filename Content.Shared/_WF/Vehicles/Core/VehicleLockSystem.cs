@@ -368,6 +368,7 @@ public sealed partial class VehicleLockSystem : EntitySystem
         {
             switch (key.Comp.Mode)
             {
+                case VehicleKeyMode.Normal:
                 case VehicleKeyMode.Blank:
                     // Imprinting on a locked vehicle would hand over its lock; only someone inside may do it, as the driver can unlock from the seat anyway.
                     if (vehicleLock.Locked && !IsInsideVehicle(user, vehicle))

@@ -157,6 +157,7 @@ still well over the roughly 260 in materials it costs to print.
 - [`Content.Server/_WF/TradeGoods/Components/WFTradeMarketComponent.cs`](Components/WFTradeMarketComponent.cs)
 - [`Content.Server/_WF/TradeGoods/DispenserSystem.TradeGoods.cs`](DispenserSystem.TradeGoods.cs)
 - [`Content.Server/_WF/TradeGoods/MarketSystem.Materials.cs`](MarketSystem.Materials.cs)
+- [`Content.Server/_WF/TradeGoods/Systems/WFChainRadiationExamineSystem.cs`](Systems/WFChainRadiationExamineSystem.cs)
 - [`Content.Server/_WF/TradeGoods/Systems/WFCrateMaterialStorageSystem.cs`](Systems/WFCrateMaterialStorageSystem.cs)
 - [`Content.Server/_WF/TradeGoods/Systems/WFMarketCartridgeSystem.cs`](Systems/WFMarketCartridgeSystem.cs)
 - [`Content.Server/_WF/TradeGoods/Systems/WFTradeContrabandSystem.cs`](Systems/WFTradeContrabandSystem.cs)

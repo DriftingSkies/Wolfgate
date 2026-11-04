@@ -85,9 +85,12 @@
                     <Button Name="LinkDevicesButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenBoth"
                             Text="{Loc 'wf-mapping-link-tool-devices'}"
                             ToolTip="{Loc 'wf-mapping-link-tool-devices-tooltip'}" />
-                    <Button Name="LinkAccessButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenLeft"
+                    <Button Name="LinkAccessButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenBoth"
                             Text="{Loc 'wf-mapping-link-tool-access'}"
                             ToolTip="{Loc 'wf-mapping-link-tool-access-tooltip'}" />
+                    <Button Name="LinkThresholdsButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenLeft"
+                            Text="{Loc 'wf-mapping-link-tool-thresholds'}"
+                            ToolTip="{Loc 'wf-mapping-link-tool-thresholds-tooltip'}" />
                 </BoxContainer>
                 <Label Name="LinkSelectedLabel" ClipText="True" />
                 <Button Name="LinkClearButton" Text="{Loc 'wf-mapping-link-clear'}" />

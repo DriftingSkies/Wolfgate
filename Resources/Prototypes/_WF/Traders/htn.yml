@@ -20,3 +20,33 @@
     - !type:HTNPrimitiveTask
       operator: !type:WaitOperator
         key: IdleTime
+
+# The same, with a hunger: he walks to the body TraderDevourSystem writes to WFTraderMealTarget, unless he is running.
+- type: htnCompound
+  id: WFTraderDevourCompound
+  branches:
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFTraderFleeTarget
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WFTraderFleeTarget
+        rangeKey: MovementRange
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFTraderMealTarget
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WFTraderMealTarget
+        rangeKey: MovementRange
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:RandomOperator
+        targetKey: IdleTime
+        minKey: MinimumIdleTime
+        maxKey: MaximumIdleTime
+    - !type:HTNPrimitiveTask
+      operator: !type:WaitOperator
+        key: IdleTime

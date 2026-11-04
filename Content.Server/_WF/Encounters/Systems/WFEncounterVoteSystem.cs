@@ -89,9 +89,11 @@ public sealed partial class WFEncounterVoteSystem : EntitySystem
             return false;
 
         _config.SetCVar(EncountersCVars.Preset, id);
-        EntityManager.System<Content.Server.Chat.Systems.ChatSystem>().DispatchGlobalAnnouncement(
-            Loc.GetString("wf-encounter-vote-result", ("preset", Loc.GetString(preset.Name))),
-            Loc.GetString("wf-encounter-vote-initiator"), playSound: false);
+        // A vote result is out of character, so it reaches every world.
+        EntityManager.System<Content.Server._WF.PlanetComms.WFPlanetCommsSystem>().Ungated(() =>
+            EntityManager.System<Content.Server.Chat.Systems.ChatSystem>().DispatchGlobalAnnouncement(
+                Loc.GetString("wf-encounter-vote-result", ("preset", Loc.GetString(preset.Name))),
+                Loc.GetString("wf-encounter-vote-initiator"), playSound: false));
         return true;
     }
 }

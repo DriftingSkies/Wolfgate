@@ -1,8 +1,12 @@
 #nullable enable
 using System.Numerics;
 using Content.IntegrationTests.Tests.Interaction;
+using Content.Server._WF.Vehicles.Core;
 using Content.Server.Explosion.EntitySystems;
+using Content.Server.Shuttles.Systems;
 using Content.Shared._WF.Vehicles.Base;
+using Content.Shared._WF.Vehicles.Core;
+using Content.Shared._WF.Vehicles.Grid.Components;
 using Content.Shared._WF.Vehicles.Grid;
 using Content.Shared._WF.Vehicles.Hardpoint;
 using Content.Shared._WF.Vehicles.Weapons;
@@ -29,6 +33,7 @@ public sealed class HardpointTest : InteractionTest
 {
     private const string Bare = "WFHardpointTestVehicleBare";
     private const string Fitted = "WFHardpointTestVehicleFitted";
+    private const string Worn = "WFHardpointTestVehicleWorn";
     private const string Armoured = "WFHardpointTestVehicleArmoured";
     private const string Gunned = "WFHardpointTestVehicleGunned";
 
@@ -89,6 +94,13 @@ public sealed class HardpointTest : InteractionTest
         whitelist:
           components:
           - VehicleWheelItem
+
+- type: entity
+  parent: WFHardpointTestVehicleFitted
+  id: WFHardpointTestVehicleWorn
+  components:
+  - type: VehicleWheelSlots
+    collisionDamagePerSpeed: 0
 
 - type: entity
   parent: WFHardpointTestVehicleFitted
@@ -555,6 +567,81 @@ public sealed class HardpointTest : InteractionTest
             var impact = new VehicleCollisionEvent(VehicleCollisionKind.Impact, null, 4f, 6f);
             SEntMan.EventBus.RaiseLocalEvent(vehicle, ref impact);
             Assert.That(Integrity(treads), Is.LessThan(start), "Hitting something hard should damage the wheels.");
+        });
+    }
+
+    /// <summary>A hit costs the frame a share of its integrity that grows with speed; a bump costs nothing, and the weight class scales it.</summary>
+    [Test]
+    public async Task ImpactsHurtTheFrameBySpeed()
+    {
+        var vehicle = ToServer(await SpawnTarget(Fitted));
+        await RunTicks(5);
+
+        await Server.WaitAssertion(() =>
+        {
+            var frame = SEntMan.GetComponent<HardpointIntegrityComponent>(vehicle);
+            var weight = WFVehicleImpactDamageSystem.WeightScale(SEntMan.GetComponent<GridVehicleMoverComponent>(vehicle).WeightClass);
+            var fraction = Server.CfgMan.GetCVar(VehicleImpactCVars.FrameFraction);
+            frame.Integrity = frame.MaxIntegrity;
+
+            var bump = new VehicleCollisionEvent(VehicleCollisionKind.Impact, null, 0.5f, 6f);
+            SEntMan.EventBus.RaiseLocalEvent(vehicle, ref bump);
+            Assert.That(frame.Integrity, Is.EqualTo(frame.MaxIntegrity), "A bump at a crawl should cost nothing.");
+
+            var half = new VehicleCollisionEvent(VehicleCollisionKind.Impact, null, -3f, 6f);
+            SEntMan.EventBus.RaiseLocalEvent(vehicle, ref half);
+            var afterHalf = frame.Integrity;
+            Assert.That(frame.MaxIntegrity - afterHalf, Is.EqualTo(frame.MaxIntegrity * fraction * 0.5f * weight).Within(0.5f),
+                "Half speed (reversing counts) should cost half the full share.");
+
+            var crash = new VehicleCollisionEvent(VehicleCollisionKind.Crash, null, 6f, 6f);
+            SEntMan.EventBus.RaiseLocalEvent(vehicle, ref crash);
+            Assert.That(frame.Integrity, Is.EqualTo(afterHalf), "A crash on its own is the cabin's business, not the frame's.");
+
+            frame.Integrity = frame.MaxIntegrity;
+            var full = new VehicleCollisionEvent(VehicleCollisionKind.Impact, null, 6f, 6f);
+            SEntMan.EventBus.RaiseLocalEvent(vehicle, ref full);
+            Assert.That(frame.MaxIntegrity - frame.Integrity, Is.EqualTo(frame.MaxIntegrity * fraction * weight).Within(0.5f),
+                "Top speed should cost the full share.");
+        });
+    }
+
+    /// <summary>Wheels with no collision wear of their own wear by speed; the vehicle that was hit is hurt too.</summary>
+    [Test]
+    public async Task WheelsAndTheVehicleHitAreHurtToo()
+    {
+        var vehicle = ToServer(await SpawnTarget(Worn));
+        var struck = await SpawnAside(Fitted);
+        await RunTicks(5);
+
+        await Server.WaitAssertion(() =>
+        {
+            var treads = SlotItem(vehicle, "wheel-1")!.Value;
+            var start = Integrity(treads);
+            var struckFrame = Integrity(struck);
+
+            var impact = new VehicleCollisionEvent(VehicleCollisionKind.Impact, struck, 6f, 6f);
+            SEntMan.EventBus.RaiseLocalEvent(vehicle, ref impact);
+
+            Assert.That(Integrity(treads), Is.LessThan(start), "A hit at top speed should wear wheels that carry no wear of their own.");
+            Assert.That(Integrity(struck), Is.LessThan(struckFrame), "The vehicle that was run into should take damage too.");
+        });
+    }
+
+    /// <summary>A ship's hull hitting a vehicle deals it a multiple of what other things take.</summary>
+    [Test]
+    public async Task HullImpactsHurtVehiclesMore()
+    {
+        var vehicle = ToServer(await SpawnTarget(Fitted));
+        await RunTicks(5);
+
+        await Server.WaitAssertion(() =>
+        {
+            var shuttles = SEntMan.System<ShuttleSystem>();
+            var multiplier = Server.CfgMan.GetCVar(VehicleImpactCVars.HullMultiplier);
+            Assert.That(multiplier, Is.GreaterThan(1f));
+            Assert.That(shuttles.VehicleHullMultiplier(vehicle), Is.EqualTo(multiplier));
+            Assert.That(shuttles.VehicleHullMultiplier(SPlayer), Is.EqualTo(1f), "Only vehicles take the extra.");
         });
     }
 

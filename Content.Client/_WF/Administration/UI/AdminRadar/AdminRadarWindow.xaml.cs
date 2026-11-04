@@ -49,7 +49,12 @@ public sealed partial class AdminRadarWindow : FancyWindow
         MaximizeToggle.OnToggled += OnMaximizeToggled;
 
         TrueIffToggle.Pressed = _radar.TrueIff;
-        TrueIffToggle.OnToggled += args => _radar.TrueIff = args.Pressed;
+        TrueIffToggle.OnToggled += args =>
+        {
+            _radar.TrueIff = args.Pressed;
+            if (args.Pressed)
+                _radar.RequestSites(true);
+        };
 
         PlayersToggle.Pressed = _radar.ShowPlayers;
         PlayersToggle.OnToggled += args =>

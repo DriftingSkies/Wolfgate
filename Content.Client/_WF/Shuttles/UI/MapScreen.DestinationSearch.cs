@@ -32,7 +32,10 @@ public sealed partial class MapScreen
             if (child is not Collapsible { Heading: CollapsibleHeading heading, Body: { } body } map)
                 continue;
 
+            // A clipped label wants no width, so a centred one would be laid out at none: stretch it, centre the text.
             heading.Label.ClipText = true;
+            heading.Label.HorizontalAlignment = Control.HAlignment.Stretch;
+            heading.Label.Align = Label.AlignMode.Center;
             heading.ToolTip = heading.Title;
             var sectorMatch = !searching || Matches(heading.Title, search);
             var anyVisible = false;

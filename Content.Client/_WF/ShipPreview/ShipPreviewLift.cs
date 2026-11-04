@@ -1,5 +1,6 @@
 using Content.Client.Shuttles;
 using Content.Shared._WF.Planets.Flight;
+using Content.Shared.Salvage.Expeditions;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Utility;
@@ -34,6 +35,7 @@ public static class ShipPreviewLift
             return 0f;
 
         var lift = 0f;
+        var expedition = HasExpeditionConsole(entMan, grid);
         var children = entMan.GetComponent<TransformComponent>(grid).ChildEnumerator;
         while (children.MoveNext(out var uid))
         {
@@ -55,10 +57,23 @@ public static class ShipPreviewLift
             if (data.TryGet<ValueDataNode>("thrust", out var rated) && Parse.TryFloat(rated.Value, out var parsed))
                 thrust = parsed;
 
-            var landing = entMan.HasComponent<WFLandingThrusterComponent>(uid);
+            // A hull with an expedition console has every linear thruster converted on purchase.
+            var landing = expedition || entMan.HasComponent<WFLandingThrusterComponent>(uid);
             lift += thrust * (landing ? 1f : OrdinaryAtmosphereThrust) / StandardGravity;
         }
 
         return lift / (tileCount * TileMass);
+    }
+
+    private static bool HasExpeditionConsole(IEntityManager entMan, EntityUid grid)
+    {
+        var children = entMan.GetComponent<TransformComponent>(grid).ChildEnumerator;
+        while (children.MoveNext(out var uid))
+        {
+            if (entMan.HasComponent<SalvageExpeditionConsoleComponent>(uid))
+                return true;
+        }
+
+        return false;
     }
 }

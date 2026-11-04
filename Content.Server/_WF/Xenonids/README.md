@@ -22,6 +22,10 @@ A hive works on planet terrain like on a station: weeds, resin, nodes, eggs, tun
 stay when their chunk unloads, and stay on their layer (a tunnel or burrow never reaches the cavern below). Water, lava, liquid
 plasma and chasm tiles take none of it (`BlockWeeds`, `BlockXenoConstruction`). `XenoPlanetTest` covers this.
 
+Aerumna's hive region lays wild weeds and eggs by itself (`Resources/Prototypes/_WF/Xenonids/Wild`): `WFXenoWeedsWild` never spreads and is
+level 0, so a hive's weeds replace it; `WFXenoEggWild` sets `XenoEgg.Planted`, so it comes grown and cultivated and opens for anyone who steps
+on it. `WildHiveTest` covers both.
+
 Cut from RMC: marines, tactical maps, intel, dropship hijack, areas, RMC fire, medical and surgery (an infection ends
 in a burst or the host's death), language, the parasite and other xeno NPC AI, guidebook pages, figurines, RMC's
 night vision and the ghost xeno HUD toggle. Each cut is a `WOLFGATE:` comment where the code or prototype changed.
@@ -1017,6 +1021,7 @@ take half burn damage in place of RMC's tile fire immunity.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Xenonids/WildHiveTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Xenonids/WildHiveTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Xenonids/XenoAcidPillarTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Xenonids/XenoAcidPillarTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Xenonids/XenoAcidStructureTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Xenonids/XenoAcidStructureTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Xenonids/XenoBiodomeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Xenonids/XenoBiodomeTest.cs)
@@ -1194,6 +1199,7 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Resources/Prototypes/_WF/Xenonids/Voice/Xenonid/xeno_emote_sounds.yml`](../../../Resources/Prototypes/_WF/Xenonids/Voice/Xenonid/xeno_emote_sounds.yml)
 - [`Resources/Prototypes/_WF/Xenonids/Voice/Xenonid/xeno_emotes.yml`](../../../Resources/Prototypes/_WF/Xenonids/Voice/Xenonid/xeno_emotes.yml)
 - [`Resources/Prototypes/_WF/Xenonids/Voice/Xenonid/xeno_speech_sounds.yml`](../../../Resources/Prototypes/_WF/Xenonids/Voice/Xenonid/xeno_speech_sounds.yml)
+- [`Resources/Prototypes/_WF/Xenonids/Wild/wild_hive.yml`](../../../Resources/Prototypes/_WF/Xenonids/Wild/wild_hive.yml)
 
 ### Localization
 
@@ -1205,6 +1211,7 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Resources/Locale/en-US/_WF/Xenonids/wf-xeno-core.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/wf-xeno-core.ftl)
 - [`Resources/Locale/en-US/_WF/Xenonids/wf-xeno-ghost.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/wf-xeno-ghost.ftl)
 - [`Resources/Locale/en-US/_WF/Xenonids/wf-xeno-nickname.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/wf-xeno-nickname.ftl)
+- [`Resources/Locale/en-US/_WF/Xenonids/wild-hive.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/wild-hive.ftl)
 - [`Resources/Locale/en-US/_WF/Xenonids/xeno-guidebook.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/xeno-guidebook.ftl)
 - [`Resources/Locale/en-US/_WF/Xenonids/xeno-sensor.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/xeno-sensor.ftl)
 - [`Resources/Locale/en-US/_WF/Xenonids/xeno-surgery.ftl`](../../../Resources/Locale/en-US/_WF/Xenonids/xeno-surgery.ftl)

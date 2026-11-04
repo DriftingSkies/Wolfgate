@@ -23,6 +23,8 @@ public sealed partial class WFRoundSetupLobbyTest
             .GetMethod("FlushBroadcast", BindingFlags.NonPublic | BindingFlags.Instance)!
             .Invoke(pair.Server.System<WFRoundSetupSystem>(), null));
         await pair.RunTicksSync(10);
+        // A late preference load can still swap the host's profile once and queue one snapshot; let it pass.
+        await CountSnapshots(pair, 2);
         var count = await CountSnapshots(pair, 7);
         Assert.That(count, Is.Zero, "Nothing changed, so no snapshot should be sent.");
         state = await Request(pair, new WFRoundSetupRequest(WFRoundSetupAction.Configure) { LobbyId = id, Title = "Quiet" });

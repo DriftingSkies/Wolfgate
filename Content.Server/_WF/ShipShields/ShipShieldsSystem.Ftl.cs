@@ -14,6 +14,10 @@ public sealed partial class ShipShieldsSystem
     /// <summary>Checks this grid's FTL phase or a docked group's successful spoolup.</summary>
     public bool IsWolfgateShieldFtlLocked(EntityUid grid)
     {
+        // A planet hop drops the field the same way for as long as it lasts.
+        if (HasComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(grid))
+            return true;
+
         if (TryComp<FTLComponent>(grid, out var ftl) &&
             ((ftl.State & WolfgateShieldFtlStates) != 0 || ftl.LinkedShuttle is { } main &&
              TryComp<FTLComponent>(main, out var linked) && (linked.State & WolfgateShieldFtlStates) != 0))
@@ -56,6 +60,10 @@ public sealed partial class ShipShieldsSystem
     /// <summary>Enforces direct FTL state changes before emitter recharge ticks.</summary>
     private void UpdateWolfgateFtlShields()
     {
+        var hopping = EntityQueryEnumerator<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>();
+        while (hopping.MoveNext(out var hopper, out _))
+            SuppressWolfgateShieldForFtl(hopper);
+
         var query = EntityQueryEnumerator<FTLComponent>();
         while (query.MoveNext(out var uid, out var component))
         {

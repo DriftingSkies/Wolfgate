@@ -161,7 +161,7 @@ public sealed class GridVehicleMoverTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Letting go brakes the chassis to a halt where it is, and reversing backs it up.</summary>
+    /// <summary>Letting go coasts to a halt, and reversing backs the chassis up.</summary>
     [Test]
     public async Task ReleasingTheButtonStopsAndReversingBacksUp()
     {
@@ -174,7 +174,7 @@ public sealed class GridVehicleMoverTest
         await server.WaitRunTicks(90);
 
         await server.WaitPost(() => Drive(pair, rig, MoveButtons.None));
-        await server.WaitRunTicks(120);
+        await server.WaitRunTicks(180);
 
         Vector2 stopped = default;
         await server.WaitAssertion(() =>
@@ -300,7 +300,7 @@ public sealed class GridVehicleMoverTest
             var vehicle = entMan.GetComponent<RMCVehicleComponent>(rig.Vehicle);
             Assert.That(vehicles.TryRemoveOperator((rig.Vehicle, vehicle)), Is.True);
         });
-        await server.WaitRunTicks(120);
+        await server.WaitRunTicks(180);
 
         await server.WaitAssertion(() =>
         {
@@ -354,7 +354,7 @@ public sealed class GridVehicleMoverTest
                     break;
             }
         });
-        await server.WaitRunTicks(120);
+        await server.WaitRunTicks(180);
 
         var stoppedAt = 0f;
         await server.WaitAssertion(() =>

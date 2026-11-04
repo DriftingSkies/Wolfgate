@@ -1,3 +1,4 @@
+using Content.Server._WF.Dormancy;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.NPC.Components;
@@ -23,6 +24,7 @@ public sealed partial class WFCrewSleepSystem : EntitySystem
     [Dependency] private WFCrewWorkSystem _work = default!;
     [Dependency] private WFCrewEvaSystem _eva = default!;
     [Dependency] private AtmosphereSystem _atmos = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 
@@ -41,6 +43,10 @@ public sealed partial class WFCrewSleepSystem : EntitySystem
             return false;
         if (!_sleepIdle)
             return true;
+
+        // A camp or wreck crew on planet ground no player is near has no one to work for.
+        if (!_dormancy.IsActive(uid))
+            return false;
 
         // Still on the way to the helm or the gunnery console.
         if (crew.Duty == WFCrewDuties.Pilot && TryComp<WFPilotDutyComponent>(uid, out var pilot) && !pilot.AtHelm

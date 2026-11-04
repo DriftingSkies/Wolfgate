@@ -2,6 +2,8 @@
 - type: entity
   parent: BaseStructure
   id: RMCPlanter
+  # WOLFGATE(Streets): in the spawn menu's Streets group
+  categories: [ WFStreets, WFStreetsFurniture ]
   components:
   - type: Sprite
     noRot: false
@@ -28,4 +30,6 @@
   - type: Icon
     sprite: _RMC14/Structures/Furniture/hybrisa_planter.rsi
     state: planter
+  # WOLFGATE(Streets): a vehicle drives through it
+  - type: VehicleSmashable
 # WOLFGATE END

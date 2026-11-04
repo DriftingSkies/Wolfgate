@@ -7,6 +7,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: Structures/Wallmounts/Lighting/emergency_light.rsi
       state: emergency_light_off

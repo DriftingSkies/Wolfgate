@@ -42,6 +42,7 @@
             volume: -4
       - !type:DoActsBehavior
         acts: ["Destruction"]
+  - type: VehicleSmashable # WOLFGATE(Streets): vehicles drive through street furniture
 
 - type: entity
   parent: RMCPropSlotmachinebroken

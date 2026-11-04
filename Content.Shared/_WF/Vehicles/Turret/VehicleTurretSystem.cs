@@ -689,6 +689,12 @@ public sealed partial class VehicleTurretSystem : EntitySystem
 
     private void UpdateTurretRotation(EntityUid turretUid, VehicleTurretComponent turret, EntityUid vehicle, float frameTime)
     {
+        if (TryComp(vehicle, out WFVehicleEngineComponent? engine) && !engine.Powered)
+        {
+            // A powerless stabilizer follows the hull; restarting must not undo all intervening hull rotation.
+            turret.LastVehicleRotationValid = false;
+            return;
+        }
         var vehicleRot = _transform.GetWorldRotation(vehicle);
 
         if (turret.StabilizedRotation && turret.RotationSpeed > 0f &&
@@ -773,6 +779,12 @@ public sealed partial class VehicleTurretSystem : EntitySystem
 
     private void OnAttemptShoot(Entity<VehicleTurretComponent> ent, ref AttemptShootEvent args)
     {
+        if (TryGetVehicle(ent.Owner, out var vehicle) && TryComp(vehicle, out WFVehicleEngineComponent? engine) && !engine.Powered)
+        {
+            args.Cancelled = true;
+            args.ResetCooldown = true;
+            return;
+        }
         if (!_net.IsClient)
         {
             CheckShot(ent, ref args);

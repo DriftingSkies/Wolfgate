@@ -4,6 +4,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: Interface/Actions/actions_mecha.rsi
       state: mech_overload_off

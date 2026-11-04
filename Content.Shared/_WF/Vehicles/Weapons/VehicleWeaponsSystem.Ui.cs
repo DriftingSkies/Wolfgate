@@ -84,39 +84,53 @@ public sealed partial class VehicleWeaponsSystem
         if (!TryComp(args.Actor, out BuckleComponent? buckle) || buckle.BuckledTo != ent.Owner)
             return;
 
+        TrySetStabilization((vehicleUid, weapons), args.Actor, args.Enabled);
+    }
+
+    /// <summary>
+    /// Whether the gunner's selected turret holds its bearing as the hull turns (stabilised) or turns with the hull.
+    /// Only the vehicle's weapons operator may set it, and only for a turret that aims at the cursor.
+    /// </summary>
+    public bool TrySetStabilization(Entity<VehicleWeaponsComponent> vehicle, EntityUid actor, bool enabled)
+    {
+        var (vehicleUid, weapons) = vehicle;
+        if (weapons.Operator != actor)
+            return false;
+
         HardpointSlotsComponent? hardpoints = null;
         ItemSlotsComponent? itemSlots = null;
         if (!Resolve(vehicleUid, ref hardpoints, logMissing: false) ||
             !Resolve(vehicleUid, ref itemSlots, logMissing: false))
         {
-            return;
+            return false;
         }
 
-        if (!weapons.OperatorSelections.TryGetValue(args.Actor, out var selectedWeapon) ||
+        if (!weapons.OperatorSelections.TryGetValue(actor, out var selectedWeapon) ||
             !Exists(selectedWeapon))
         {
-            return;
+            return false;
         }
 
         if (!TryComp(selectedWeapon, out VehicleTurretComponent? turret) ||
             !_turret.TryResolveRotationTarget(selectedWeapon, out var targetUid, out var targetTurret))
         {
-            return;
+            return false;
         }
 
         if (!targetTurret.RotateToCursor)
-            return;
+            return false;
 
-        targetTurret.StabilizedRotation = args.Enabled;
+        targetTurret.StabilizedRotation = enabled;
         var vehicleRot = _transform.GetWorldRotation(vehicleUid);
         var currentWorld = (targetTurret.WorldRotation + vehicleRot).Reduced();
-        if (args.Enabled)
+        if (enabled)
             targetTurret.TargetRotation = currentWorld;
         else
             targetTurret.TargetRotation = targetTurret.WorldRotation;
         Dirty(targetUid, targetTurret);
 
         UpdateWeaponsUiForAllOperators(vehicleUid, weapons, hardpoints, itemSlots);
+        return true;
     }
 
     private void UpdateWeaponsUi(

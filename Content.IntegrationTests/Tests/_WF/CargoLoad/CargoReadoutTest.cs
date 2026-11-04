@@ -54,10 +54,10 @@ public sealed class CargoReadoutTest
     }
 
     /// <summary>Tonnes that leave a grid of this hull with <paramref name="factor"/> of its thrust.</summary>
-    private static float LoadFor(IEntityManager entMan, EntityUid grid, float factor)
+    private static float LoadFor(IEntityManager entMan, WFCargoLoadPrototype profile, EntityUid grid, float factor)
     {
         var hull = entMan.GetComponent<PhysicsComponent>(grid).FixturesMass;
-        return hull * (1f - factor) / factor;
+        return hull * (1f - factor) / factor + hull * profile.FreeLoad;
     }
 
     /// <summary>Cargo adds SpoolPerTonne seconds a tonne up to SpoolCap, and nothing to a drive mass doesn't affect.</summary>
@@ -145,7 +145,7 @@ public sealed class CargoReadoutTest
         // Moves the ship to a factor, sweeps, and checks the bands told.
         async Task Step(float factor, int[] told, string because)
         {
-            await server.WaitPost(() => SetTonnes(entMan, profile, ballast, LoadFor(entMan, ship, factor)));
+            await server.WaitPost(() => SetTonnes(entMan, profile, ballast, LoadFor(entMan, profile, ship, factor)));
             await pair.RunTicksSync(90);
             await server.WaitAssertion(() =>
             {
@@ -331,14 +331,14 @@ public sealed class CargoReadoutTest
         await Step(() =>
         {
             ballast = entMan.SpawnEntity(Ballast, new EntityCoordinates(ship, 2.5f, 2.5f));
-            SetTonnes(entMan, profile, ballast, LoadFor(entMan, ship, below));
+            SetTonnes(entMan, profile, ballast, LoadFor(entMan, profile, ship, below));
         }, 1, 0, "Crossing every band in one sweep warns once.");
 
         await server.WaitPost(() => consoles.RemovePilot(pilot));
         await pair.RunTicksSync(90);
         await Step(Board, 1, 0, "Taking a loaded helm gives the standing warning once.");
 
-        await Step(() => SetTonnes(entMan, profile, ballast, LoadFor(entMan, ship, clear)), 0, 1,
+        await Step(() => SetTonnes(entMan, profile, ballast, LoadFor(entMan, profile, ship, clear)), 0, 1,
             "Climbing back past every band in one sweep tells the pilot once.");
 
         await server.WaitPost(() =>
@@ -388,7 +388,7 @@ public sealed class CargoReadoutTest
             Assert.That(empty, Is.GreaterThan(0f));
 
             var ballast = entMan.SpawnEntity(Ballast, new EntityCoordinates(ship, 2.5f, 2.5f));
-            SetTonnes(entMan, profile, ballast, LoadFor(entMan, ship, 0.7f));
+            SetTonnes(entMan, profile, ballast, LoadFor(entMan, profile, ship, 0.7f));
         });
 
         await pair.RunTicksSync(90);

@@ -33,6 +33,12 @@ public sealed class XenobiologyTest
 
     private const string GreyPending = "MobSlimeXenobioBabyGrey";
 
+    /// <summary>Whether an entity is on the test's own map; other tests on a pooled server may leave slimes elsewhere.</summary>
+    private static bool OnMap(IEntityManager entities, EntityUid uid, Robust.Shared.Map.MapId map)
+    {
+        return entities.GetComponent<TransformComponent>(uid).MapID == map;
+    }
+
     private static EntityUid SpawnGrey(IEntityManager entities, Robust.Shared.Map.EntityCoordinates coords)
     {
         var before = entities.EntityQuery<SlimeComponent>().Select(s => s.Uid()).ToHashSet();
@@ -158,7 +164,7 @@ public sealed class XenobiologyTest
             var mutations = comp.PotentialMutations.ToHashSet();
             entities.System<XenobiologySystem>().DoMitosis((slime, comp));
 
-            var children = entities.EntityQuery<SlimeComponent>().Where(s => s.Uid() != slime).ToList();
+            var children = entities.EntityQuery<SlimeComponent>().Where(s => s.Uid() != slime && OnMap(entities, s.Uid(), map.MapId)).ToList();
             Assert.That(children, Is.Not.Empty);
             Assert.That(children.Select(c => c.Breed), Is.All.Matches<ProtoId<Content.Shared._WF.Xenobiology.BreedPrototype>>(b => mutations.Contains(b)),
                 "At full mutation chance every child is one of the parent's mutations.");
@@ -199,7 +205,7 @@ public sealed class XenobiologyTest
         {
             var solutions = entities.System<SharedSolutionContainerSystem>();
             Assert.That(solutions.TryGetSolution(reagentExtract, "extract", out _, out var solution), Is.True);
-            var cubes = entities.EntityQuery<MetaDataComponent>().Count(m => m.EntityPrototype?.ID == "MonkeyCube");
+            var cubes = entities.EntityQuery<MetaDataComponent>().Count(m => m.EntityPrototype?.ID == "MonkeyCube" && OnMap(entities, m.Owner, map.MapId));
 
             Assert.Multiple(() =>
             {
@@ -252,7 +258,7 @@ public sealed class XenobiologyTest
         await server.WaitAssertion(() =>
         {
             var extracts = entities.EntityQuery<SlimeExtractComponent>()
-                .Count(e => entities.GetComponent<MetaDataComponent>(e.Uid()).EntityPrototype?.ID == "GreySlimeExtract");
+                .Count(e => entities.GetComponent<MetaDataComponent>(e.Uid()).EntityPrototype?.ID == "GreySlimeExtract" && OnMap(entities, e.Uid(), map.MapId));
             Assert.That(extracts, Is.EqualTo(produced), "The grinder makes the slime's extract count of its breed's extract.");
         });
 
@@ -360,7 +366,7 @@ public sealed class XenobiologyTest
         await server.WaitAssertion(() =>
         {
             var containers = entities.System<Robust.Shared.Containers.SharedContainerSystem>();
-            var slimes = entities.EntityQuery<SlimeComponent>().Select(s => s.Uid()).ToList();
+            var slimes = entities.EntityQuery<SlimeComponent>().Select(s => s.Uid()).Where(s => OnMap(entities, s, map.MapId)).ToList();
             Assert.That(slimes, Has.Count.EqualTo(2));
             Assert.That(slimes.All(s => containers.TryGetContainingContainer((s, null), out var c) && c.Owner == crate), Is.True,
                 "The starter slimes stay in the crate until it is opened.");

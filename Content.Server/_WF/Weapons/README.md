@@ -54,6 +54,7 @@ predicted on their own client; this only cuts the audio entities other players r
 - [`Content.IntegrationTests/Tests/_WF/Weapons/EventGridHardpointTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/EventGridHardpointTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/GunshotAudioThrottleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/GunshotAudioThrottleTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/HitscanJumpShooterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/HitscanJumpShooterTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Weapons/NpcHitscanTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/NpcHitscanTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/ProjectileSweepTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/ProjectileSweepTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/ShieldSidearmTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/ShieldSidearmTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/WFGunPredictionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/WFGunPredictionTest.cs)
@@ -227,6 +228,7 @@ predicted on their own client; this only cuts the audio entities other players r
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml`](../../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml): refill from linked ammo loaders after each shot
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml`](../../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml): refill from linked ammo loaders after each shot
 - [`Resources/Prototypes/_Mono/Loadouts/Contractor/gun.yml`](../../../Resources/Prototypes/_Mono/Loadouts/Contractor/gun.yml)
+- [`Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml`](../../../Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml): the Sakura needs its .160 smart magazine
 - [`Resources/Prototypes/_Nuclear14/Entities/Structures/Decoration/floordecor.yml`](../../../Resources/Prototypes/_Nuclear14/Entities/Structures/Decoration/floordecor.yml): material bullet impacts
 - [`Resources/Prototypes/Entities/Mobs/base.yml`](../../../Resources/Prototypes/Entities/Mobs/base.yml): material bullet impacts
 - [`Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/projectiles.yml`](../../../Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/projectiles.yml): untagged targets sound like metal

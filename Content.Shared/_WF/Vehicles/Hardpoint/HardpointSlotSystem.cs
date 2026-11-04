@@ -25,6 +25,7 @@ public sealed partial class HardpointSlotSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedToolSystem _tool = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private Core.VehicleTopologySystem _topology = default!;
 
     private readonly HashSet<(EntityUid Owner, string SlotId)> _completingRemovals = new();
     private readonly List<(EntityUid Owner, string SlotId)> _invalidParts = new();
@@ -139,6 +140,12 @@ public sealed partial class HardpointSlotSystem : EntitySystem
 
         if (!_hardpoints.TryFindEmptyInstallLocation(ent.Owner, ent.Comp, used, out var targetLocation))
             return false;
+
+        var vehicle = _topology.TryGetVehicle(ent.Owner, out var root) ? root : ent.Owner;
+        var fit = new HardpointFitAttemptEvent(user, used);
+        RaiseLocalEvent(vehicle, ref fit);
+        if (fit.Cancelled)
+            return true;
 
         if (targetLocation.Definition.InsertDelay <= 0f)
         {

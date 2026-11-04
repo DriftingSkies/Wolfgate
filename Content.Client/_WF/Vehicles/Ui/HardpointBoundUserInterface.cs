@@ -30,7 +30,8 @@ public sealed class HardpointBoundUserInterface : BoundUserInterface, IRefreshab
             _menu.Title = metadata.EntityName;
 
         _menu.OnRemove += slotId => SendMessage(new HardpointRemoveMessage(slotId));
-        _menu.OpenCentered();
+        if (!EntMan.System<WFVehicleHudSystem>().TryEmbedMenu(_menu, Loc.GetString("wf-vehicle-tab-parts")))
+            _menu.OpenCentered();
         Refresh();
     }
 

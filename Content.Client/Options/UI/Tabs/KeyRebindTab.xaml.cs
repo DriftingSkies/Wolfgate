@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.Client._WF.Options; // WOLFGATE(Options)
 using Content.Shared._WF.RMCCore.Input; // WOLFGATE(Xenonids)
+using Content.Shared._WF.LandingGuide; // WOLFGATE(LandingGuide)
 using Content.Client.Stylesheets;
 using Content.Shared.CCVar;
 using Content.Shared.Input;
@@ -323,6 +324,7 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.ShuttleBrake);
             AddButton(ContentKeyFunctions.ShuttleAscend); // Mono
             AddButton(ContentKeyFunctions.ShuttleDescend); // Mono
+            AddButton(WFLandingGuideKeys.WFToggleLandingGuide); // WOLFGATE(LandingGuide): landing guide toggle
 
             AddHeader("ui-options-header-map-editor");
             AddButton(EngineKeyFunctions.EditorPlaceObject);

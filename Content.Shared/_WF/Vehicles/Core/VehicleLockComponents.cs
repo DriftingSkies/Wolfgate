@@ -76,7 +76,7 @@ public sealed partial class VehicleLockRepairDoAfterEvent : SimpleDoAfterEvent;
 
 /// <summary>A key: bound to one vehicle's key id, or blank and waiting to be imprinted, or a duplicator.</summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-[Access(typeof(VehicleLockSystem))]
+[Access(typeof(VehicleLockSystem), Other = AccessPermissions.Read)]
 public sealed partial class VehicleKeyComponent : Component
 {
     [DataField, AutoNetworkedField]

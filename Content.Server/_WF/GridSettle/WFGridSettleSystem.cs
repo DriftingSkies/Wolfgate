@@ -60,7 +60,7 @@ public sealed partial class WFGridSettleSystem : EntitySystem
         var query = EntityQueryEnumerator<ShuttleComponent, MapGridComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out _, out _, out var body))
         {
-            if (body.BodyType != BodyType.Dynamic || HasComp<FTLComponent>(uid) || HasComp<CEZGridFallerComponent>(uid) ||
+            if (body.BodyType != BodyType.Dynamic || HasComp<FTLComponent>(uid) || HasComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(uid) || HasComp<CEZGridFallerComponent>(uid) ||
                 !IsIdle(uid))
             {
                 RemComp<WFGridSettleComponent>(uid);

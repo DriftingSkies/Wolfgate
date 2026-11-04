@@ -1,0 +1,15 @@
+<PanelContainer xmlns="https://spacestation14.io"
+                MouseFilter="Stop"
+                MinWidth="420"
+                MaxWidth="720">
+    <BoxContainer Orientation="Horizontal" Margin="8 5 8 5" SeparationOverride="10">
+        <PanelContainer Name="TagPanel" VerticalAlignment="Center">
+            <Label Name="TagLabel" StyleClasses="LabelHeading" Margin="6 0 6 0" />
+        </PanelContainer>
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalAlignment="Center">
+            <RichTextLabel Name="TextLabel" HorizontalExpand="True" />
+            <Label Name="SenderLabel" StyleClasses="LabelSubText" />
+        </BoxContainer>
+        <Label Name="TimerLabel" VerticalAlignment="Center" Align="Right" />
+    </BoxContainer>
+</PanelContainer>

@@ -1,5 +1,6 @@
 
 using Content.Server.Physics.Controllers;
+using Content.Server.Weapons.Ranged.Systems; // WOLFGATE(Xenoborgs)
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
@@ -8,7 +9,8 @@ namespace Content.Server.Physics.Components;
 /// <summary>
 /// A component which makes its entity chasing entity with selected component.
 /// </summary>
-[RegisterComponent, Access(typeof(ChasingWalkSystem)), AutoGenerateComponentPause]
+// WOLFGATE(Xenoborgs): wizden#45247, GunSystem aims guided missiles
+[RegisterComponent, Access(typeof(ChasingWalkSystem), typeof(GunSystem)), AutoGenerateComponentPause]
 public sealed partial class ChasingWalkComponent : Component
 {
     /// <summary>
@@ -23,6 +25,14 @@ public sealed partial class ChasingWalkComponent : Component
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public float ImpulseInterval = 2f;
+
+    // WOLFGATE(Xenoborgs) START: wizden#45247 turn rate limit for guided missiles
+    /// <summary>
+    /// The max angle the entity can turn each impulse
+    /// </summary>
+    [DataField]
+    public Angle MaxAngleVectorChangePerImpulse = Angle.FromDegrees(180);
+    // WOLFGATE END
 
     /// <summary>
     /// The minimum speed at which this entity will move.
@@ -41,6 +51,14 @@ public sealed partial class ChasingWalkComponent : Component
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public float Speed;
+
+    // WOLFGATE(Xenoborgs) START: wizden#45247 guided missiles keep flying through their target
+    /// <summary>
+    /// If the entity should stop moving if they are already on top of the target
+    /// </summary>
+    [DataField]
+    public bool StopAtTarget = true;
+    // WOLFGATE END
 
     /// <summary>
     /// The minimum time interval in which an object can change its motion target.
@@ -64,7 +82,7 @@ public sealed partial class ChasingWalkComponent : Component
     /// <summary>
     /// The component that the entity is chasing
     /// </summary>
-    [DataField(required: true)]
+    [DataField] // WOLFGATE(Xenoborgs): wizden#45247, guided missiles chase an assigned target instead
     public ComponentRegistry ChasingComponent = [];
 
     /// <summary>
@@ -78,4 +96,18 @@ public sealed partial class ChasingWalkComponent : Component
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public EntityUid? ChasingEntity;
+
+    // WOLFGATE(Xenoborgs) START: wizden#40246 sprite faces the way it moves
+    /// <summary>
+    /// whether the entity should point in the direction its moving
+    /// </summary>
+    [DataField]
+    public bool RotateWithImpulse;
+
+    /// <summary>
+    /// Sprite rotation offset.
+    /// </summary>
+    [DataField]
+    public Angle RotationAngleOffset = Angle.Zero;
+    // WOLFGATE END
 }

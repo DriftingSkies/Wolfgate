@@ -1,9 +1,11 @@
 using System.Linq;
+using Content.Server._WF.Dormancy;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Server.NPC.HTN;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.NPC;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
@@ -19,16 +21,18 @@ public sealed partial class WFCrewRoutineSystem : EntitySystem
     [Dependency] private WFCrewWeaponSystem _weapons = default!;
     [Dependency] private WFCrewWorkSystem _work = default!;
     [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IRobustRandom _random = default!;
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        var query = EntityQueryEnumerator<WFCrewComponent, HTNComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out var crew, out var htn, out var xform))
+        // Only awake crew: a sleeping one neither turns nor walks, and wakes when a player comes.
+        var query = EntityQueryEnumerator<ActiveNPCComponent, WFCrewComponent, HTNComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var crew, out var htn, out var xform))
         {
-            if (!htn.Enabled || !_mobs.IsAlive(uid) || HasComp<ActorComponent>(uid))
+            if (!htn.Enabled || !_mobs.IsAlive(uid) || HasComp<ActorComponent>(uid) || !_dormancy.IsActive(uid, xform))
                 continue;
             if (TryComp<WFPilotDutyComponent>(uid, out var pilot) && pilot.AtHelm
                 && TryComp<PilotComponent>(uid, out var held) && held.Console is { } helm)

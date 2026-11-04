@@ -64,6 +64,7 @@ public sealed partial class GraphicsTab : Control
         Control.AddOptionCheckBox(CCVars.HudFpsCounterVisible, FpsCounterCheckBox);
 
         Control.AddOptionCheckBox(FHCCVars.RenderStarSystem, RenderStarSystemCheckBox); // Far Horizons
+        WfAddWeatherQuality(); // WOLFGATE(WolfWeather)
 
         Control.Initialize();
 

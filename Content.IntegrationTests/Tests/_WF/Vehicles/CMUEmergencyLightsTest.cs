@@ -62,6 +62,7 @@ public sealed class CMUEmergencyLightsTest : InteractionTest
         {
             bystander = SEntMan.SpawnAtPosition("InteractionTestMob", SEntMan.GetCoordinates(PlayerCoords));
             vehicle = SEntMan.SpawnEntity(id, new EntityCoordinates(MapData.Grid.Owner, 4.5f, 4.5f));
+            SEntMan.GetComponent<WFVehicleEngineComponent>(vehicle).Electrics = true;
 
             // A driver's eye follows the vehicle; the test mob has none of its own.
             SEntMan.EnsureComponent<EyeComponent>(SPlayer);

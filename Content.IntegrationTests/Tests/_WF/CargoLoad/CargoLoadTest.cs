@@ -38,6 +38,7 @@ public sealed class CargoLoadTest
         var cargo = entMan.System<WFCargoLoadSystem>();
         var mapSys = entMan.System<SharedMapSystem>();
         var physics = entMan.System<SharedPhysicsSystem>();
+        var profile = server.ProtoMan.Index(WFCargoLoadSystem.DefaultProfile);
 
         EntityUid ship = default;
         EntityUid crate = default;
@@ -70,7 +71,7 @@ public sealed class CargoLoadTest
             Assert.That(cargo.GetLoad(ship), Is.EqualTo(21f).Within(0.01f), "Four Bulk and one Light crate weigh 21t.");
 
             var hull = entMan.GetComponent<PhysicsComponent>(ship).FixturesMass;
-            var expected = System.Math.Max(0.4f, hull / (hull + 21f));
+            var expected = System.Math.Max(0.4f, hull / (hull + 21f - hull * profile.FreeLoad));
             Assert.That(cargo.GetSpaceFactor(ship), Is.EqualTo(expected).Within(0.001f));
 
             var lift = new WFGridLiftLoadEvent(0f);
@@ -150,7 +151,8 @@ public sealed class CargoLoadTest
             Assert.That(expected, Is.GreaterThan(0f));
             Assert.That(cargo.GetLoad(ship), Is.EqualTo(expected).Within(0.01f), "A silo's materials should load the ship.");
             Assert.That(cargo.GetSetStored(new[] { ship }), Is.EqualTo(expected).Within(0.01f));
-            Assert.That(cargo.GetSpaceFactor(ship), Is.LessThan(1f));
+            var hull = entMan.GetComponent<PhysicsComponent>(ship).FixturesMass;
+            Assert.That(cargo.GetSpaceFactor(ship), Is.EqualTo(WFCargoLoadSystem.ThrustFactor(profile, hull, expected)).Within(0.001f));
 
             // The helm's gauge reads the networked readout the sweep keeps on the ship.
             var readout = entMan.GetComponent<WFCargoReadoutComponent>(ship);

@@ -1,3 +1,4 @@
+using Content.Shared.Actions; // WOLFGATE(Xenoborgs)
 using Content.Shared.Gravity;
 using Content.Shared.Movement.Components;
 using Content.Shared.Throwing;
@@ -10,13 +11,32 @@ public sealed partial class SharedJumpAbilitySystem : EntitySystem
     [Dependency] private ThrowingSystem _throwing = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedGravitySystem _gravity = default!;
+    [Dependency] private SharedActionsSystem _actions = default!; // WOLFGATE(Xenoborgs)
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<JumpAbilityComponent, GravityJumpEvent>(OnGravityJump);
+
+        // WOLFGATE(Xenoborgs) START: wizden#43243 the component grants its own action
+        SubscribeLocalEvent<JumpAbilityComponent, MapInitEvent>(OnInit);
+        SubscribeLocalEvent<JumpAbilityComponent, ComponentShutdown>(OnShutdown);
+        // WOLFGATE END
     }
+
+    // WOLFGATE(Xenoborgs) START: wizden#43243 the component grants its own action
+    private void OnInit(Entity<JumpAbilityComponent> entity, ref MapInitEvent args)
+    {
+        if (entity.Comp.Action is { } action)
+            _actions.AddAction(entity, ref entity.Comp.ActionEntity, action);
+    }
+
+    private void OnShutdown(Entity<JumpAbilityComponent> entity, ref ComponentShutdown args)
+    {
+        _actions.RemoveAction(entity.Owner, entity.Comp.ActionEntity);
+    }
+    // WOLFGATE END
 
     private void OnGravityJump(Entity<JumpAbilityComponent> entity, ref GravityJumpEvent args)
     {

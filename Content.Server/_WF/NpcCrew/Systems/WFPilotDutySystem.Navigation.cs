@@ -126,8 +126,9 @@ public sealed partial class WFPilotDutySystem
     /// <summary>Whether the grid is starting, flying or finishing an FTL jump.</summary>
     private bool InTransit(EntityUid? grid)
     {
-        return grid is { } uid && TryComp<FTLComponent>(uid, out var ftl)
-               && ftl.State is FTLState.Starting or FTLState.Travelling or FTLState.Arriving;
+        return grid is { } uid && (HasComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(uid)
+               || TryComp<FTLComponent>(uid, out var ftl)
+               && ftl.State is FTLState.Starting or FTLState.Travelling or FTLState.Arriving);
     }
 
     /// <summary>Whether the grid the current order flies to or around is on another map.</summary>

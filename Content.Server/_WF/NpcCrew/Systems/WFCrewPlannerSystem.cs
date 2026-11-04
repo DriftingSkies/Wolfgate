@@ -74,6 +74,9 @@ public sealed partial class WFCrewPlannerSystem : EntitySystem
         var now = _timing.CurTime;
         if (_deckPosts.TryGetValue(grid, out var cached) && now < cached.Until && !TerminatingOrDeleted(grid))
             return cached.Posts;
+        // A map's own grid is a world's open ground, not a deck: planning it walks every tile of the world.
+        if (HasComp<MapComponent>(grid))
+            return Array.Empty<WFCrewPost>();
         var posts = Plan(grid, 4).Where(post => post.Kind == WFCrewPostKind.Deck).ToList();
         _deckPosts[grid] = (now + DeckPostCacheTime, posts);
         return posts;

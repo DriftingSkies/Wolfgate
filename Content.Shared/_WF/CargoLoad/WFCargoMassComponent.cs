@@ -42,6 +42,10 @@ public sealed partial class WFCargoLoadPrototype : IPrototype
     [DataField]
     public float ThrustFloor = 0.4f;
 
+    /// <summary>Share of its hull mass a ship carries before cargo costs thrust, so a ship's starting stock is free.</summary>
+    [DataField]
+    public float FreeLoad = 0.05f;
+
     /// <summary>Extra FTL spool per tonne, in seconds.</summary>
     [DataField]
     public float SpoolPerTonne = 0.1f;

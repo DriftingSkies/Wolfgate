@@ -2505,7 +2505,8 @@
   id: FloorXenoborg
   name: tiles-xenoborg-floor
   # WOLFGATE(Resprites) START: Wizden resprite; variant count kept so saved maps don't show error tiles.
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Exo/exo-borg.png
+  # WOLFGATE(Xenoborgs): Blue recolor of the wizden resprite.
+  sprite: /Textures/_WF/Xenoborgs/Tiles/Xeno_Exo.png
   variants: 1
   placementVariants:
   - 1.0

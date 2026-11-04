@@ -187,7 +187,7 @@ public sealed class GenitalOrganSpawnTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Minors and excluded species never get anatomy or slots; a later load with an ineligible age removes it.</summary>
+    /// <summary>Minors never get anatomy or slots, IPCs do; a later load with an ineligible age removes it.</summary>
     [Test]
     public async Task EligibilityTest()
     {
@@ -220,8 +220,8 @@ public sealed class GenitalOrganSpawnTest
             {
                 Assert.That(entMan.HasComponent<GenitalsComponent>(minor), Is.False, "Age 17 got anatomy.");
                 Assert.That(HasAnySlot(entMan, minor), Is.False, "Age 17 got slots.");
-                Assert.That(entMan.HasComponent<GenitalsComponent>(ipc), Is.False, "An adult IPC got anatomy.");
-                Assert.That(HasAnySlot(entMan, ipc), Is.False, "An adult IPC got slots.");
+                Assert.That(entMan.HasComponent<GenitalsComponent>(ipc), Is.True, "An adult IPC got no anatomy.");
+                Assert.That(GenitalOrgans(entMan, ipc), Has.Count.EqualTo(5), "An adult IPC got no organs.");
                 Assert.That(GenitalOrgans(entMan, adult), Has.Count.EqualTo(5));
             });
 

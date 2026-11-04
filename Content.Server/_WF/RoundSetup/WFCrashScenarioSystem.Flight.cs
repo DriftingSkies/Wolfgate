@@ -105,6 +105,15 @@ public sealed partial class WFCrashScenarioSystem
         _popup.PopupEntity(Loc.GetString("wf-round-setup-crash-controls"), uid, args.User);
     }
 
+    /// <summary>A hull still going down has no controls to hop with.</summary>
+    private void OnHopAttempt(ref Content.Server._WF.Planets.Hop.WFPlanetHopAttemptEvent args)
+    {
+        if (!TryComp<WFCrashScenarioComponent>(args.Uid, out var crash) || crash.Crashed)
+            return;
+        args.Cancelled = true;
+        args.Reason = Loc.GetString("wf-round-setup-crash-controls");
+    }
+
     private void OnFTLAttempt(ref ConsoleFTLAttemptEvent args)
     {
         if (!TryComp<WFCrashScenarioComponent>(args.Uid, out var crash) || crash.Crashed)

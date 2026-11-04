@@ -76,7 +76,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         bool applyEffects,
         bool debug = true,
         HashSet<EntityUid>? blockers = null,
-        HashSet<EntityUid>? ignoredEntities = null)
+        HashSet<EntityUid>? ignoredEntities = null,
+        bool allowVehiclePush = true)
     {
         if (!physicsQ.TryComp(uid, out var body) || !fixtureQ.TryComp(uid, out var fixtures))
             return true;
@@ -195,6 +196,20 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                     continue;
                 }
 
+                if (candidate.IsVehicle && gridPos != mover.Position &&
+                    rotation.Equals(GetCollisionLocalRotation(uid, grid, null)) &&
+                    TryGetFixtureAabb(fixtures, new PhysicsTransform(mover.Position, rotation), out var currentBounds))
+                {
+                    var currentHull = new HullPose(mover.Position, rotation, hullBounds, GetMovementAabb(hullBounds, mover));
+                    var previous = GetMovementAabb(currentBounds, mover);
+                    var next = candidate.CollisionAabb;
+                    if (currentHull.Overlaps(candidate.Aabb, true) &&
+                        Penetration(next, candidate.Aabb) < Penetration(previous, candidate.Aabb) - 0.00001f &&
+                        Vector2.DistanceSquared(next.Center, candidate.Aabb.Center) >
+                        Vector2.DistanceSquared(previous.Center, candidate.Aabb.Center))
+                        continue;
+                }
+
                 if (candidate.CollisionClass == VehicleCollisionClass.SoftMob &&
                     candidate.MobState != null &&
                     _standing.IsDown(candidate.Entity))
@@ -269,11 +284,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                         grid,
                         gridPos,
                         candidate.Entity,
-                        debugEnabled ? GridVehicleGeometry.ToWorldBounds(candidate.CollisionAabb, gridTx) : default,
-                        debugEnabled ? GridVehicleGeometry.ToWorldBounds(candidate.Aabb, gridTx) : default,
+                        candidate.CollisionAabb,
+                        candidate.Aabb,
                         clearance,
                         mapId,
                         candidate.IsVehicle,
+                        allowVehiclePush,
                         applyEffects,
                         debugEnabled,
                         blockers,
@@ -625,23 +641,68 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         float clearance,
         MapId mapId,
         bool isVehicle,
+        bool allowVehiclePush,
         bool applyEffects,
         bool debug,
         HashSet<EntityUid>? blockers,
         ref bool playedCollisionSound)
     {
-        if (isVehicle && TryPushVehicle(vehicle, mover, grid, gridPos, other, applyEffects))
+        if (allowVehiclePush && isVehicle && MathF.Abs(mover.CurrentSpeed) < 0.75f && TryPushVehicle(vehicle, mover, grid, gridPos, other, applyEffects))
             return CollisionHandlingResult.Continue;
 
         // One impact per contact, not one per step of it: the wheels pay for the hit, not for how long it lasts.
         if (applyEffects && _timing.CurTime >= mover.NextImpactTime)
         {
+            var impactSpeed = mover.CurrentSpeed;
             mover.NextImpactTime = _timing.CurTime + ImpactInterval;
+            if (isVehicle && !_net.IsClient && TryComp(other, out GridVehicleMoverComponent? struck) &&
+                physicsQ.TryComp(vehicle, out var sourceBody) && physicsQ.TryComp(other, out var targetBody))
+            {
+                var struckPosition = Transform(other).Coordinates.WithEntityId(grid, _transform, EntityManager).Position;
+                var targetToGrid = struck.SyncedGrid is { } targetGrid
+                    ? _transform.GetWorldRotation(targetGrid) - _transform.GetWorldRotation(grid)
+                    : Angle.Zero;
+                var delta = struckPosition - mover.Position;
+                if (delta.LengthSquared() > 0.001f)
+                {
+                    var normal = Vector2.Normalize(delta);
+                    var driveVelocity = mover.FreeSteering ? mover.TravelVelocity :
+                        GetCollisionLocalRotation(vehicle, grid, null).ToWorldVec() * mover.CurrentSpeed;
+                    var otherDriveVelocity = struck.FreeSteering ? targetToGrid.RotateVec(struck.TravelVelocity) :
+                        GetCollisionLocalRotation(other, grid, null).ToWorldVec() * struck.CurrentSpeed;
+                    var velocity = driveVelocity + mover.ImpactVelocity;
+                    var otherVelocity = otherDriveVelocity + targetToGrid.RotateVec(struck.ImpactVelocity);
+                    var closing = MathF.Max(0f, Vector2.Dot(velocity - otherVelocity, normal));
+                    var sourceMass = MathF.Max(1f, sourceBody.Mass);
+                    var targetMass = MathF.Max(1f, targetBody.Mass);
+                    var impulse = normal * GridVehicleMotionSimulator.CollisionImpulse(closing, sourceMass, targetMass);
+                    struck.ImpactVelocity += (-targetToGrid).RotateVec(impulse / targetMass);
+                    if (closing > 0f)
+                    {
+                        mover.ImpactVelocity = velocity - impulse / sourceMass;
+                        mover.CurrentSpeed = 0f;
+                        mover.TravelVelocity = Vector2.Zero;
+                    }
+                    var contact = Vector2.Clamp(collisionAabb.Center, otherAabb.BottomLeft, otherAabb.TopRight);
+                    var arm = contact - struckPosition;
+                    var torque = arm.X * impulse.Y - arm.Y * impulse.X;
+                    struck.ImpactSpin += Math.Clamp(torque / MathF.Max(1f, targetBody.Inertia) * 57.29578f, -90f, 90f);
+                    var sourceArm = contact - mover.Position;
+                    var sourceTorque = sourceArm.Y * impulse.X - sourceArm.X * impulse.Y;
+                    mover.ImpactSpin += Math.Clamp(sourceTorque / MathF.Max(1f, sourceBody.Inertia) * 57.29578f, -90f, 90f);
+                    Dirty(other, struck);
+                    Dirty(vehicle, mover);
+                }
+            }
             PlayCollisionSound(vehicle, ref playedCollisionSound);
-            RaiseVehicleCollision(vehicle, mover, VehicleCollisionKind.Impact, mover.CurrentSpeed, other);
+            RaiseVehicleCollision(vehicle, mover, VehicleCollisionKind.Impact, impactSpeed, other);
         }
 
-        AddBlockingCollision(vehicle, other, collisionAabb, otherAabb, clearance, mapId, debug, blockers);
+        var gridTransform = _physics.GetPhysicsTransform(grid);
+        AddBlockingCollision(vehicle, other,
+            debug ? GridVehicleGeometry.ToWorldBounds(collisionAabb, gridTransform) : default,
+            debug ? GridVehicleGeometry.ToWorldBounds(otherAabb, gridTransform) : default,
+            clearance, mapId, debug, blockers);
         return CollisionHandlingResult.Blocked;
     }
 
@@ -697,6 +758,13 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         return collisionClass == VehicleCollisionClass.SoftMob
             ? fullAabb
             : movementAabb;
+    }
+
+    /// <summary>Translation needed to separate two overlapping boxes, including a contained hull.</summary>
+    private static float Penetration(Box2 hull, Box2 other)
+    {
+        return MathF.Min(MathF.Min(hull.Right - other.Left, other.Right - hull.Left),
+            MathF.Min(hull.Top - other.Bottom, other.Top - hull.Bottom));
     }
 
     private static bool HasCollisionOverlap(Box2 vehicleAabb, Box2 otherAabb)

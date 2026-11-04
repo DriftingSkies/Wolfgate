@@ -605,6 +605,8 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/tags.yml`](../../../Resources/Prototypes/_Impstation/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml): eye markings get their own points (was Head)
+- [`Resources/Prototypes/_Moffstation/Entities/Mobs/Player/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Player/resomi.yml): Resomi share the Avali language
+- [`Resources/Prototypes/_Moffstation/Entities/Mobs/Species/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Species/resomi.yml): Resomi share the Avali language
 - [`Resources/Prototypes/_Moffstation/Species/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Species/resomi.yml)
   - tails are optional so players can go without one
   - was 6, more marking slots

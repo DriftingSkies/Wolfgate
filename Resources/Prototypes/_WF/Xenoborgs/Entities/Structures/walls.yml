@@ -17,14 +17,14 @@
     - Diagonal
   - type: Sprite
     drawdepth: Walls
-    sprite: Structures/Walls/xenoborg_diagonal.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg_diagonal.rsi
     state: state0
   - type: IconSmooth
     mode: Diagonal
     key: walls
     base: state
   - type: Icon
-    sprite: Structures/Walls/xenoborg_diagonal.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg_diagonal.rsi
     state: state0
   - type: Damageable
     damageContainer: StructuralInorganic
@@ -87,9 +87,9 @@
   - type: RadiationBlocker
     resistance: 5
   - type: Sprite
-    sprite: Structures/Walls/xenoborg.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg.rsi
   - type: Icon
-    sprite: Structures/Walls/xenoborg.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg.rsi
     state: full
   - type: Construction
     graph: Girder

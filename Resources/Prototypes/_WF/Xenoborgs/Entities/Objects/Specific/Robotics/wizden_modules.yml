@@ -1,0 +1,449 @@
+# Xenoborg modules ported from wizden, on Mono's per-chassis module bases. IDs are wizden's.
+
+# Heavy
+
+- type: entity
+  id: XenoborgModuleLaser
+  parent: [ BorgModuleXenoborgHeavy, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: laser xenoborg module
+  description: Module with a laser gun.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_heavy
+    - state: icon-xenoborg-laser
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: &primaryWeapon
+      tags:
+      - XenoborgModulePrimaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_HeavyLaserGun
+    items:
+    - WeaponLaserGunXenoborg
+  - type: BorgModuleIcon
+    icon: { sprite: _Mono/Interface/Action/actions_borg.rsi, state: xenoborg-laser-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgHeavy
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleBurstFireLaser
+  parent: [ BorgModuleXenoborgHeavy, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: burst fire laser xenoborg module
+  description: Module with a burst fire incendiary laser.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_heavy
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-laser3
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: *primaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_HeavyBurstFireLaser
+    items:
+    - WeaponBurstFireLaserXenoborg
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-laser3-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgHeavy
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleGuidedMissileLauncher
+  parent: [ BorgModuleXenoborgHeavy, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: guided missile launcher xenoborg module
+  description: Module with guided missile launcher and a range finder to set targets.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_heavy
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-guided-missile
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-secondary-weapon
+    moduleBlacklist: &secondaryWeaponOrOverlay
+      tags:
+      - XenoborgModuleSecondaryWeapon
+      - XenoborgModuleWithSimpleOverlay
+  - type: ComponentBorgModule
+    components:
+    - type: SimpleSpriteOverlay
+      overlaySprite:
+        sprite: _WF/Xenoborgs/Mobs/Silicon/chassis.rsi
+        state: xenoborg_heavy_missile_launcher
+  - type: ItemBorgModule
+    moduleId: Xenoborg_HeavyGuidedMissile
+    items:
+    - WeaponGuidedMissileLauncherXenoborg
+    - WeaponRangeFinderXenoborg
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-guided-missile-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgHeavy
+    - XenoborgModuleSecondaryWeapon
+    - XenoborgModuleWithSimpleOverlay
+
+- type: entity
+  id: XenoborgModuleRocket
+  parent: [ BorgModuleXenoborgHeavy, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: rocket xenoborg module
+  description: A module with a rocket launcher designed to destroy structures.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_heavy
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-rocket
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-secondary-weapon
+    moduleBlacklist: *secondaryWeaponOrOverlay
+  - type: ItemBorgModule
+    moduleId: Xenoborg_HeavyRocket
+    items:
+    - WeaponRocketLauncherXenoborg
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-rocket-module }
+  - type: ComponentBorgModule
+    components:
+    - type: SimpleSpriteOverlay
+      overlaySprite:
+        sprite: _WF/Xenoborgs/Mobs/Silicon/rockets.rsi
+        state: heavy_xenoborg_rockets
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgHeavy
+    - XenoborgModuleSecondaryWeapon
+    - XenoborgModuleWithSimpleOverlay
+
+- type: entity
+  id: XenoborgModuleHeavyRadioactive
+  parent: [ BorgModuleXenoborgHeavy, BaseFactionGearOtherFactionT3 ]
+  name: radioactive xenoborg module
+  description: Module that causes a xenoborg to emanate radioactive energy.
+  components:
+  - type: PointLight
+    color: green
+    radius: 5
+    energy: 1
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_heavy
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-radioactive
+  - type: BorgModuleWhitelist
+    moduleBlacklist:
+      tags:
+      - XenoborgModuleWithSimpleOverlay
+  - type: ComponentBorgModule
+    components:
+    - type: SimpleSpriteOverlay
+      overlaySprite:
+        sprite: _WF/Xenoborgs/Mobs/Silicon/chassis.rsi
+        state: xenoborg_heavy_rad
+      shader: unshaded
+    - type: RadiationSource
+      intensity: 4
+      slope: 1
+    - type: AmbientSound
+      range: 6
+      volume: -3
+      sound:
+        path: /Audio/_WF/Xenoborgs/Ambience/Objects/xenoborg_radioactive.ogg
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgHeavy
+    - XenoborgModuleWithSimpleOverlay
+
+# Engineer
+
+- type: entity
+  id: XenoborgModuleNaniteGun
+  parent: [ BorgModuleXenoborgEngineer, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: nanite gun xenoborg module
+  description: Module that allows Xenoborgs to have a crystal firing nanite gun.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_engi
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-nanite-gun
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: *primaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_EngineerNaniteGun
+    items:
+    - WeaponNaniteGun
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-nanite-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgEngineer
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleOilGun
+  parent: [ BorgModuleXenoborgEngineer, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: oil gun xenoborg module
+  description: Module with a gun that shoots ampoules filled with flammable oil.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_engi
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-oil
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: *primaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_EngineerOilGun
+    items:
+    - WeaponOilGun
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-oil-gun-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgEngineer
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleTileGun
+  parent: [ BorgModuleXenoborgEngineer, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: tile gun xenoborg module
+  description: Module with a tile gun. Wait, a what?
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_engi
+    - state: icon-xenoborg-tile
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-secondary-weapon
+    moduleBlacklist:
+      tags:
+      - XenoborgModuleSecondaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_EngineerTileGun
+    items:
+    - WeaponTileGun
+  - type: BorgModuleIcon
+    icon: { sprite: _Mono/Interface/Action/actions_borg.rsi, state: xenoborg-tile-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgEngineer
+    - XenoborgModuleSecondaryWeapon
+
+- type: entity
+  id: XenoborgModuleZap
+  parent: [ BorgModuleXenoborgEngineer, BaseFactionGearOtherFactionT3 ]
+  name: zap xenoborg module
+  description: Module that disables the grounding of the xenoborg, making them electrified. Shocking!
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_engi
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-zap
+  - type: ComponentBorgModule
+    components:
+    - type: Electrified
+      requirePower: false
+      shockDamage: 15
+      shockDelay: 6
+      shockTime: 0.25
+
+- type: entity
+  id: XenoborgModuleDeflectorField
+  parent: [ BorgModuleXenoborgEngineer, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: deflector field xenoborg module
+  description: Module with a self-recharging deflector field projector.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_engi
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-shield
+  - type: ItemBorgModule
+    moduleId: Xenoborg_EngineerDeflectorField
+    items:
+    - HoloprojectorXenoField
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-deflector-module }
+
+- type: entity
+  id: XenoborgModuleConstruction
+  parent: [ BorgModuleXenoborgEngineer, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: construction xenoborg module
+  description: Holds building materials, cables, tiles, boards and flatpacks, with a bag that pulls in materials.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_engi
+    - sprite: _WF/Xenoborgs/Objects/Specific/Robotics/borgmodule.rsi
+      state: icon-xenoborg-construction
+  - type: ItemBorgModule
+    moduleId: Xenoborg_EngineerConstruction
+    items:
+    - XenoborgMaterialBag
+  - type: DroppableBorgModule
+    moduleId: Xenoborg_EngineerConstruction
+    items:
+    - id: SheetSteel1
+      whitelist:
+        tags:
+        - Sheet
+    - id: CableApcStack10
+      whitelist:
+        tags:
+        - CableCoil
+    - id: FloorTileItemXenoborg
+      whitelist:
+        components:
+        - FloorTile
+    - id: DoorElectronics
+      whitelist:
+        components:
+        - Circuitboard
+    - id: SpaceHeaterFlatpack
+      whitelist:
+        components:
+        - Flatpack
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-construction-module }
+
+# Scout
+
+- type: entity
+  id: XenoborgModuleJump
+  parent: [ BorgModuleXenoborgScout, BaseFactionGearOtherFactionT3 ]
+  name: xenoborg jump module
+  description: Module that allows a xenoborg to jump forward.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-jump
+  - type: ComponentBorgModule
+    components:
+    - type: JumpAbility
+      action: ActionJumpBoost
+      jumpDistance: 4
+      jumpSound: /Audio/Effects/stealthoff.ogg
+
+- type: entity
+  id: XenoborgModuleSword
+  parent: [ BorgModuleXenoborgScout, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: knife xenoborg module
+  description: Module with a kukri knife.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-sword
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: *primaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_ScoutKnife
+    items:
+    - KukriKnife
+    - JetpackXenoborgRechargable
+  - type: BorgModuleIcon
+    icon: { sprite: _Mono/Interface/Action/actions_borg.rsi, state: xenoborg-sword-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgScout
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleEnergySword
+  parent: [ BorgModuleXenoborgScout, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: energy dagger xenoborg module
+  description: Module with an energy dagger.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-sword2
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: *primaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_ScoutEnergyDagger
+    items:
+    - EnergyDaggerLoudBlue
+    - JetpackXenoborgRechargable
+  - type: BorgModuleIcon
+    icon: { sprite: _Mono/Interface/Action/actions_borg.rsi, state: xenoborg-sword2-module }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgScout
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleBioKinfe
+  parent: [ BorgModuleXenoborgScout, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: bio knife xenoborg module
+  description: Module with a bio knife.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-sword2
+  - type: BorgModuleWhitelist
+    whitelistInfo: borg-module-whitelist-primary-weapon
+    moduleBlacklist: *primaryWeapon
+  - type: ItemBorgModule
+    moduleId: Xenoborg_ScoutBioKnife
+    items:
+    - XenoborgBioKnife
+    - JetpackXenoborgRechargable
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Xenoborgs/Interface/Actions/actions_borg.rsi, state: xenoborg-bio-knife }
+  - type: Tag
+    tags:
+    - BorgModuleXenoborgScout
+    - XenoborgModulePrimaryWeapon
+
+- type: entity
+  id: XenoborgModuleSpaceMovement
+  parent: [ BorgModuleXenoborgScout, BaseProviderBorgModule, BaseFactionGearOtherFactionT3 ]
+  name: space movement xenoborg module
+  description: Module that helps a Xenoborg move better in space.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-space-movement
+  - type: ItemBorgModule
+    moduleId: Xenoborg_ScoutSpaceMovement
+    items:
+    - HandheldGPSBasic
+    - HandHeldMassScannerBorg
+    - PinpointerMothership
+    - HandheldStationMapUnpowered
+    - WeaponGrapplingGun
+    - JetpackXenoborgRechargable
+  - type: BorgModuleIcon
+    icon: { sprite: _Mono/Interface/Action/actions_borg.rsi, state: xenoborg-space-movement-module }

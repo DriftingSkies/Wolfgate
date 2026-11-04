@@ -157,7 +157,8 @@ public sealed partial class WFCrewTest
             Server.System<WFCrewSecuritySystem>().Reset(gunner);
             SEntMan.GetComponent<WFCrewSecurityComponent>(gunner).Docking = WFCrewSecurityResponse.Warn;
         });
-        await RunTicks(5);
+        // The gunner only looks over its targets every quarter second.
+        await RunTicks(Ticks(1));
         await Server.WaitAssertion(() => Assert.That(SEntMan.HasComponent<ShipTargetingComponent>(gunner), Is.EqualTo(firedOnCrew),
             "Resetting docking policy must clear docking hostility without forgiving actual incoming fire."));
     }

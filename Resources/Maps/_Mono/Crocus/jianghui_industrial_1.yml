@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/11/2026 07:46:26
-  entityCount: 20016
+  entityCount: 20013
 maps:
 - 1
 grids:
@@ -32187,23 +32187,6 @@ entities:
     components:
     - type: Transform
       pos: 42.12888,67.63595
-      parent: 1
-- proto: FloorChasmEntity
-  entities:
-  - uid: 5881
-    components:
-    - type: Transform
-      pos: -103.5,73.5
-      parent: 1
-  - uid: 5882
-    components:
-    - type: Transform
-      pos: -103.5,74.5
-      parent: 1
-  - uid: 5883
-    components:
-    - type: Transform
-      pos: -103.5,72.5
       parent: 1
 - proto: FloorDrain
   entities:

@@ -47,7 +47,7 @@ public sealed partial class FtlDepartureSystem : EntitySystem
     }
 
     /// <summary>Gives the ship and everything docked to it the same clock, with the ship as the lead.</summary>
-    private void Publish(EntityUid lead, TimeSpan started, TimeSpan departure, bool entered, bool arriving)
+    public void Publish(EntityUid lead, TimeSpan started, TimeSpan departure, bool entered, bool arriving)
     {
         _convoy.Clear();
         _shuttles.GetAllDockedShuttles(lead, _convoy);
@@ -96,6 +96,14 @@ public sealed partial class FtlDepartureSystem : EntitySystem
             if (effect.Arriving)
             {
                 if (now >= effect.Departure + TimeSpan.FromSeconds(FtlDepartureTiming.FadeDuration))
+                    RemCompDeferred<FtlDepartureComponent>(uid);
+                continue;
+            }
+
+            // A planet hop keeps its own ripple and ends it itself.
+            if (HasComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(effect.Lead ?? uid))
+            {
+                if (effect.Entered && now >= effect.Departure + TimeSpan.FromSeconds(FtlDepartureTiming.FadeDuration))
                     RemCompDeferred<FtlDepartureComponent>(uid);
                 continue;
             }

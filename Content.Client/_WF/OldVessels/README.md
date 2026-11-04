@@ -44,6 +44,7 @@ Sentinel; the hardpoints under the swapped guns shrank with them.
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/OldVessels/Entities/carrier_consoles.yml`](../../../Resources/Prototypes/_WF/OldVessels/Entities/carrier_consoles.yml)
+- [`Resources/Prototypes/_WF/OldVessels/Entities/lockers.yml`](../../../Resources/Prototypes/_WF/OldVessels/Entities/lockers.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Entities/ship_vouchers.yml`](../../../Resources/Prototypes/_WF/OldVessels/Entities/ship_vouchers.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Recipes/shipyard.yml`](../../../Resources/Prototypes/_WF/OldVessels/Recipes/shipyard.yml)
 - [`Resources/Prototypes/_WF/OldVessels/Research/ussp.yml`](../../../Resources/Prototypes/_WF/OldVessels/Research/ussp.yml)

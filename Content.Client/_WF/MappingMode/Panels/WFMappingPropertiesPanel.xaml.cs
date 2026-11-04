@@ -137,6 +137,7 @@ public sealed partial class WFMappingPropertiesPanel : BoxContainer
         LinkSignalsButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Signals);
         LinkDevicesButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Devices);
         LinkAccessButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Access);
+        LinkThresholdsButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Thresholds);
         LinkClearButton.OnPressed += _ => _link.ClearSelection();
 
         QuickSelectButton.OnPressed += _ =>
@@ -369,6 +370,7 @@ public sealed partial class WFMappingPropertiesPanel : BoxContainer
         LinkSignalsButton.Pressed = _link.Tool == WFMappingLinkTool.Signals;
         LinkDevicesButton.Pressed = _link.Tool == WFMappingLinkTool.Devices;
         LinkAccessButton.Pressed = _link.Tool == WFMappingLinkTool.Access;
+        LinkThresholdsButton.Pressed = _link.Tool == WFMappingLinkTool.Thresholds;
 
         var selected = _link.Source ?? _link.Holder;
         LinkClearButton.Disabled = selected == null;

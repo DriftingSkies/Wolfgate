@@ -653,6 +653,10 @@ public sealed partial class GhostRoleSystem : EntitySystem
             return;
 
         ghostRole.Taken = false;
+        // WOLFGATE(Ghost) START: a dead or critical body stays off the list until OnMobStateChanged revives it
+        if (TryComp(uid, out Content.Shared.Mobs.Components.MobStateComponent? mobState) && mobState.CurrentState != MobState.Alive)
+            return;
+        // WOLFGATE END
         RegisterGhostRole((uid, ghostRole));
     }
 

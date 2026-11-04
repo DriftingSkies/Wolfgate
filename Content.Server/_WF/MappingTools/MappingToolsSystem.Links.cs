@@ -450,6 +450,11 @@ public sealed partial class MappingToolsSystem
         {
             ApplyAccess(change.Reader.Uid, forward ? change.New : change.Old, forward ? change.NewFill : change.OldFill);
         }
+
+        foreach (var change in edit.Thresholds)
+        {
+            ApplyThresholds(change.Monitor.Uid, forward ? change.New : change.Old);
+        }
     }
 
     private void ApplyLinks(EntityUid source, EntityUid sink, List<(string Source, string Sink)> links)

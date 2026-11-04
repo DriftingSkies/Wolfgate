@@ -17,7 +17,8 @@ the `WolfgateMusicPause` partials. `WFAudioBudgetSystem` caps how many network s
 burst of hundreds of clips (a large crash) can't exhaust audio sources. On the server, break, landing and impact
 sounds are each held to a handful a second (`WFSoundBudget`), counted per grid, or per map for things on no grid, so
 a crash on one ship never mutes another. `WFLoopDopplerSystem` takes Doppler off looping sounds on the client, which
-works around an OpenAL Soft 1.24.3 crash (a pitched-up loop overruns the mix buffer). The admin panel and the play command are in Administration; settings are in
+works around an OpenAL Soft 1.24.3 crash (a pitched-up loop overruns the mix buffer). `WFDetachedAudioSystem` mutes positional sounds left in
+nullspace, such as a loop on something out of view, which the lobby's listener would otherwise hear. The admin panel and the play command are in Administration; settings are in
 `InternetSoundCVars`.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -50,6 +51,7 @@ works around an OpenAL Soft 1.24.3 crash (a pitched-up loop overruns the mix buf
 - [`Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.cs`](../../../Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.cs)
 - [`Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.Replay.cs`](../../../Content.Client/_WF/Audio/InternetSound/InternetSoundSystem.Replay.cs)
 - [`Content.Client/_WF/Audio/WFAudioBudgetSystem.cs`](../../../Content.Client/_WF/Audio/WFAudioBudgetSystem.cs)
+- [`Content.Client/_WF/Audio/WFDetachedAudioSystem.cs`](../../../Content.Client/_WF/Audio/WFDetachedAudioSystem.cs)
 - [`Content.Client/_WF/Audio/WFLoopDopplerSystem.cs`](../../../Content.Client/_WF/Audio/WFLoopDopplerSystem.cs)
 - [`Content.Client/_WF/Audio/WFToggleLoopStopSystem.cs`](../../../Content.Client/_WF/Audio/WFToggleLoopStopSystem.cs)
 

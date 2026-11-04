@@ -230,6 +230,10 @@ public sealed partial class HardpointRepairDoAfterEvent : DoAfterEvent
 [ByRefEvent]
 public readonly record struct HardpointSlotsChangedEvent(EntityUid Vehicle);
 
+/// <summary>Raised on a vehicle before someone starts fitting a part to it; cancel to refuse the part.</summary>
+[ByRefEvent]
+public record struct HardpointFitAttemptEvent(EntityUid User, EntityUid Part, bool Cancelled = false);
+
 /// <summary>Raised on a part when its integrity changed.</summary>
 [ByRefEvent]
 public readonly record struct HardpointIntegrityChangedEvent;

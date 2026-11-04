@@ -5,6 +5,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: _WF/Vehicles/Objects/command_tablet.rsi
       state: cotablet
@@ -17,6 +18,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: _WF/Vehicles/CMU/cargo_carrier.rsi
       state: cargo_open
@@ -30,6 +32,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: Objects/Weapons/Grenades/grenade.rsi
       state: icon

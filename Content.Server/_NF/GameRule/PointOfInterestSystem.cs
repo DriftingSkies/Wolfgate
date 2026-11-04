@@ -13,6 +13,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Content.Server._NF.Station.Systems;
 using Robust.Shared.EntitySerialization.Systems;
+using Content.Server._WF.PlanetCargoHubs; // WOLFGATE(PlanetCargoHubs)
 
 namespace Content.Server._NF.GameRule;
 
@@ -30,6 +31,7 @@ public sealed partial class PointOfInterestSystem : EntitySystem
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private StationRenameWarpsSystems _renameWarps = default!;
     [Dependency] private StationSystem _station = default!;
+    [Dependency] private WFPlanetCargoHubSystem _wfCargoHubs = default!; // WOLFGATE(PlanetCargoHubs)
 
     private List<Vector2> _stationCoords = new();
 
@@ -68,6 +70,14 @@ public sealed partial class PointOfInterestSystem : EntitySystem
 
         for (int i = 0; i < depotCount && depotPrototypes.Count > 0; i++)
         {
+            // WOLFGATE(PlanetCargoHubs) START: a depot built on a planet this round gets no space station
+            if (_wfCargoHubs.IsPlanetside(i))
+            {
+                rotationOffset += rotation;
+                continue;
+            }
+            // WOLFGATE END
+
             var proto = _random.Pick(depotPrototypes);
 
             // Safety check: ensure selected POIs are either fine in any preset or accepts this current one.

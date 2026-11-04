@@ -240,6 +240,11 @@ Build modes, on keys 1 to 9 or the mode bar:
     the MappingTools selection, Copy from last ticks what was applied last. An airlock's access lives in its
     electronics, which only appear at map init; until then its own reader is set and marked, and map init copies it
     across.
+  - Alarms: click a vent, scrubber, sensor or air alarm to open its alarm thresholds (temperature, pressure, gases) in
+    the air alarm's own threshold controls, with a preset picker per kind. An air alarm stands for every monitor it
+    lists. Apply stores the values on each monitor, so they save with the map and map init keeps them over the
+    prototype's (a freezer vent in an engine room no longer alarms above 268 K); a monitor only takes the kinds it
+    already checks. Apply to selection sets every monitor and listed device in the MappingTools selection.
 
   Each change is one undo step. Escape drops the selected source or list. The Links layer draws every signal link
   (amber) and device list (blue) on the level.
@@ -513,6 +518,7 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 - [`Content.Client/_WF/MappingMode/Link/WFMappingLinkOverlay.cs`](../../../Content.Client/_WF/MappingMode/Link/WFMappingLinkOverlay.cs)
 - [`Content.Client/_WF/MappingMode/Link/WFMappingLinkPortsWindow.cs`](../../../Content.Client/_WF/MappingMode/Link/WFMappingLinkPortsWindow.cs)
 - [`Content.Client/_WF/MappingMode/Link/WFMappingLinkSystem.cs`](../../../Content.Client/_WF/MappingMode/Link/WFMappingLinkSystem.cs)
+- [`Content.Client/_WF/MappingMode/Link/WFMappingThresholdWindow.cs`](../../../Content.Client/_WF/MappingMode/Link/WFMappingThresholdWindow.cs)
 - [`Content.Client/_WF/MappingMode/LobbyGui.MappingMode.cs`](../../../Content.Client/_WF/MappingMode/LobbyGui.MappingMode.cs)
 - [`Content.Client/_WF/MappingMode/Modes/IWFMappingModeHandler.cs`](../../../Content.Client/_WF/MappingMode/Modes/IWFMappingModeHandler.cs)
 - [`Content.Client/_WF/MappingMode/Modes/WFAlignWorldTile.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFAlignWorldTile.cs)

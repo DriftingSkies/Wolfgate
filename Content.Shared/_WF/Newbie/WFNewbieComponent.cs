@@ -15,7 +15,11 @@ public sealed partial class WFNewbieComponent : Component
 }
 
 /// <summary>
-/// On a ship whose owner is a new player: tags its radar label and hail name.
+/// On a ship a new player owns or is piloting: tags its radar label and hail name.
 /// </summary>
 [RegisterComponent, NetworkedComponent]
-public sealed partial class WFNewbieShipComponent : Component;
+public sealed partial class WFNewbieShipComponent : Component
+{
+    /// <summary>Whether the owner is new, kept while they're offline. Server only.</summary>
+    public bool OwnerTagged;
+}

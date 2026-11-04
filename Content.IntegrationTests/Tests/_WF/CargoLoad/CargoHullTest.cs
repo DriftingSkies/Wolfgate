@@ -69,7 +69,7 @@ public sealed class CargoHullTest
                         {
                             var hull = HullMass(protoMan.Index(vessel).ShuttlePath);
                             var load = ship.Cargo * heaviest;
-                            var factor = hull / (hull + load);
+                            var factor = WFCargoLoadSystem.ThrustFactor(profile, hull, load);
                             TestContext.Out.WriteLine($"{encounter.ID} {vessel}: hull {hull:F0}, worst load {load:F0}t, thrust {factor:P0}");
                             Assert.That(factor, Is.GreaterThan(profile.ThrustFloor),
                                 $"{vessel} in {encounter.ID} fully loaded with {heaviest}t crates sits on the thrust floor.");

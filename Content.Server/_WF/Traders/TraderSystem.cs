@@ -15,6 +15,7 @@ using Content.Server.Atmos.Components;
 using System.Numerics;
 using Content.Server._NF.Bank;
 using Content.Server._NF.Shipyard.Components;
+using Content.Server.Cargo.Systems;
 using Content.Server.Carrying;
 using Content.Server.Chat.Systems;
 using Content.Server.Stack;
@@ -45,6 +46,7 @@ using Content.Shared.SSDIndicator;
 using Content.Shared.Stacks;
 using Content.Shared.Strip.Components;
 using Content.Shared.Verbs;
+using Content.Shared.Whitelist;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
@@ -73,6 +75,7 @@ public sealed partial class TraderSystem : EntitySystem
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private PaperSystem _paper = default!;
+    [Dependency] private PricingSystem _pricing = default!;
     [Dependency] private SharedContainerSystem _container = default!;
     [Dependency] private SharedGodmodeSystem _godmode = default!;
     [Dependency] private SharedMapSystem _map = default!;
@@ -81,6 +84,7 @@ public sealed partial class TraderSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private StackSystem _stack = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private EntityWhitelistSystem _whitelist = default!;
 
     /// <summary>
     /// Stack type traders accept as cash.
@@ -819,7 +823,7 @@ public sealed partial class TraderSystem : EntitySystem
                         return true;
                 }
 
-                return false;
+                return GetZoneGoods(ent).Count > 0;
 
             // Only the customer's own card counts, so a stranger's card on the table does not
             // satisfy the check and then get refused by the service a moment later.
@@ -970,18 +974,42 @@ public sealed partial class TraderSystem : EntitySystem
             return true;
         }
 
+        // Goods he takes in trade cover what the cash leaves, the cheapest first, and the rest comes back as change.
+        var goods = GetZoneGoods(ent);
+        var goodsTotal = goods.Sum(good => good.Value);
+        if (goods.Count > 0 && cashTotal + goodsTotal >= price)
+        {
+            var taken = 0;
+            foreach (var (good, value) in goods)
+            {
+                if (cashTotal + taken >= price)
+                    break;
+
+                QueueDel(good);
+                taken += value;
+            }
+
+            foreach (var item in cash)
+                QueueDel(item);
+
+            tendered = cashTotal + taken;
+            change = tendered - price;
+            GiveChange(ent, change);
+            return true;
+        }
+
         if (!TryGetZoneId(ent, customer, out _, out var wrongOwner))
         {
             if (wrongOwner)
                 SayAndShow(ent, Loc.GetString("trader-not-your-id"));
             else
                 SayAndShow(ent, Loc.GetString("trader-short",
-                    ("amount", BankSystemExtensions.ToSpesoString(price - cashTotal))));
+                    ("amount", BankSystemExtensions.ToSpesoString(price - cashTotal - goodsTotal))));
 
             return false;
         }
 
-        var remainder = price - cashTotal;
+        var remainder = price - cashTotal - goodsTotal;
         if (!_bank.TryBankWithdraw(customer, remainder))
         {
             _bank.TryGetBalance(customer, out var balance);
@@ -993,8 +1021,37 @@ public sealed partial class TraderSystem : EntitySystem
         foreach (var item in cash)
             QueueDel(item);
 
+        foreach (var (good, _) in goods)
+            QueueDel(good);
+
         tendered = price;
         return true;
+    }
+
+    /// <summary>
+    /// Goods in the barter zone this trader takes in trade, with what each counts for, cheapest first. None unless he
+    /// has <see cref="TraderGoodsPaymentComponent"/>.
+    /// </summary>
+    public List<(EntityUid Item, int Value)> GetZoneGoods(Entity<TraderComponent> ent)
+    {
+        var goods = new List<(EntityUid, int)>();
+        if (!TryComp<TraderGoodsPaymentComponent>(ent, out var payment))
+            return goods;
+
+        foreach (var item in GetZoneItems(ent))
+        {
+            if (EntityManager.IsQueuedForDeletion(item)
+                || !_whitelist.IsWhitelistPass(payment.Whitelist, item)
+                || _whitelist.IsWhitelistPass(payment.Blacklist, item))
+                continue;
+
+            var value = (int) Math.Floor(_pricing.GetPrice(item) * payment.Rate);
+            if (value > 0)
+                goods.Add((item, value));
+        }
+
+        goods.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+        return goods;
     }
 
     /// <summary>

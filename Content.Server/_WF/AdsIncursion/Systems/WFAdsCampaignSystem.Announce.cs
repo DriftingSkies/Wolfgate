@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server._WF.AdsIncursion.Components;
+using Content.Server._WF.PlanetComms;
 using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Shared._WF.AdsIncursion;
 using Content.Shared.Radio;
@@ -23,6 +24,7 @@ public sealed partial class WFAdsCampaignSystem
     [Dependency] private IChatManager _chatManager = default!;
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private WFPlanetCommsSystem _planetComms = default!;
 
     private static readonly ProtoId<RadioChannelPrototype> WarningChannel = "Common";
 
@@ -65,9 +67,11 @@ public sealed partial class WFAdsCampaignSystem
     private void Banner(string sender, string message, SoundSpecifier? sound, Color colour)
     {
         var wrapped = Loc.GetString("wf-ads-announcement-wrap", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
-        _chatManager.ChatMessageToAll(ChatChannel.Radio, message, wrapped, default, false, true, colour);
+        // Worlds with no mass transceiver up miss it.
+        var reach = _planetComms.Reachable(Filter.Broadcast(), null);
+        _chatManager.ChatMessageToManyFiltered(reach, ChatChannel.Radio, message, wrapped, default, false, true, colour);
         if (sound != null)
-            _audio.PlayGlobal(_audio.ResolveSound(sound), Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
+            _audio.PlayGlobal(_audio.ResolveSound(sound), reach, true, AudioParams.Default.WithVolume(-2f));
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Global station announcement from {sender}: {message}");
     }
 

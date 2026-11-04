@@ -68,6 +68,9 @@ public sealed partial class CMUEmergencyLightsSystem : EntitySystem
         if (_net.IsClient)
             return;
 
+        if (TryComp(vehicle, out WFVehicleEngineComponent? engine) && !engine.Powered)
+            return;
+
         var mode = (lights.Mode + 1) % (lights.LightPrototypes.Count + 1);
         SetMode((vehicle, lights), mode);
         _popup.PopupEntity(Loc.GetString("cmu-emergency-lights-mode", ("mode", mode)), args.Performer, args.Performer);

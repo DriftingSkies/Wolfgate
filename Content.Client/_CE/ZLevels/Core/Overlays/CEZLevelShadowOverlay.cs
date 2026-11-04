@@ -160,6 +160,11 @@ public sealed partial class CEZLevelShadowOverlay : Overlay
 
         foreach (var grid in _grids)
         {
+            // WOLFGATE(PlanetCities) START: a city's upper floors are buildings, roofed already, not a ship overhead.
+            if (_entManager.HasComponent<Content.Shared._WF.PlanetCities.WFPlanetCityGridComponent>(grid.Owner))
+                continue;
+            // WOLFGATE END
+
             var localPos = 0f;
             if (_entManager.TryGetComponent(grid.Owner, out CEZPhysicsComponent? zPhys))
                 localPos = Math.Clamp(zPhys.LocalPosition, 0f, 1f);

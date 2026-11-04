@@ -24,6 +24,12 @@ public sealed class RopeChain
     public float Width = 0.1f;
     public Color Color = Color.White;
 
+    /// <summary>The rope type's per-segment texture, drawn along the rope instead of a plain strip.</summary>
+    public Texture? SegmentTexture;
+
+    /// <summary>Width at end B as a share of the width at end A.</summary>
+    public float Taper = 1f;
+
     /// <summary>The repeating strand drawn along the core, if the rope type has one.</summary>
     public Texture? Texture;
 

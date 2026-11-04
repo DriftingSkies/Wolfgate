@@ -763,7 +763,8 @@ public sealed partial class WFEncounterTest
             Assert.That(First(), Is.EqualTo(WFCrewObjectiveKind.Attack), "Inside the leash it fights.");
             Server.System<SharedTransformSystem>().SetCoordinates(stray, new EntityCoordinates(MapData.MapUid, new Vector2(48000, 45000)));
         });
-        await RunTicks(150);
+        // Over the 5 s poll that recalls it: 150 ticks is exactly one poll and can land just before it.
+        await RunTicks(180);
         await Server.WaitAssertion(() =>
         {
             Assert.That(First(), Is.EqualTo(WFCrewObjectiveKind.GoTo), "Past it, it is sent back first.");

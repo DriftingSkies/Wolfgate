@@ -10,7 +10,7 @@ namespace Content.Client.Store.Ui;
 [UsedImplicitly]
 public sealed class StoreBoundUserInterface : BoundUserInterface
 {
-    private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!; // WOLFGATE: was never injected, so searching a store threw
 
     [ViewVariables]
     private StoreMenu? _menu;

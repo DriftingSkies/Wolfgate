@@ -295,6 +295,10 @@
   - type: ShowJobIcons
   - type: SiliconLawProvider
     laws: XenoborgLawset
+  # WOLFGATE(Xenoborgs) START: wizden#45193, EMPs don't drain xenoborgs; CellHolderEmpResistanceSystem lends it to the cell
+  - type: EmpResistance
+    coefficient: 0
+  # WOLFGATE END
   - type: FootstepModifier # it flies instead of walking
     footstepSoundCollection:
       path: /Audio/_Mono/Effects/Footsteps/borgwalk3.ogg

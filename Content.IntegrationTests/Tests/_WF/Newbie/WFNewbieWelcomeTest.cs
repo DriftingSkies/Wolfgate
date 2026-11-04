@@ -78,9 +78,11 @@ public sealed class WFNewbieWelcomeTest : GameTest
         await OverrideCVar(Side.Client, WFNewbieCVars.ShowWelcome, true);
         await CloseAll();
 
-        // Far above any playtime the pooled session may have built up, so it counts as fresh.
+        // Far above any playtime the pooled session may have built up, so it counts as fresh, and a pooled server may
+        // already have greeted this player.
         await OverrideCVar(Side.Server, WFNewbieCVars.Hours, 100000f);
         await OverrideCVar(Side.Server, WFNewbieCVars.FreshHours, 100000f);
+        await Server.WaitPost(() => SEntMan.System<Content.Server._WF.Newbie.WFNewbieWelcomeSystem>().Forget(ServerSession!.UserId));
 
         // The pool keeps popups off; turning them on greets this fresh player once.
         await OverrideCVar(Side.Server, WFNewbieCVars.Welcome, true);

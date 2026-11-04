@@ -1,0 +1,35 @@
+<!-- Names must avoid DefaultWindow's own: CloseButton, ContentsContainer, TitleLabel, WindowHeader. -->
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc wf-test-dummy-title}"
+               MinSize="520 480"
+               SetSize="560 560">
+    <BoxContainer Orientation="Vertical" SeparationOverride="4">
+        <Label Text="{Loc wf-test-dummy-section-request}" StyleClasses="LabelHeading" />
+        <LineEdit Name="DescriptionEdit" HorizontalExpand="True" PlaceHolder="{Loc wf-test-dummy-description-placeholder}" />
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+            <Label Text="{Loc wf-test-dummy-duration}" />
+            <SpinBox Name="DurationSpin" MinWidth="110" />
+            <Label Text="{Loc wf-test-dummy-duration-hint}" StyleClasses="LabelSubText" />
+        </BoxContainer>
+
+        <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 2" />
+        <Label Text="{Loc wf-test-dummy-section-audience}" StyleClasses="LabelHeading" />
+        <CheckBox Name="OwnsShipCheck" Text="{Loc wf-test-dummy-audience-owns-ship}" Pressed="True" />
+        <CheckBox Name="InSpaceCheck" Text="{Loc wf-test-dummy-audience-in-space}" Pressed="True" />
+        <CheckBox Name="InBodyCheck" Text="{Loc wf-test-dummy-audience-in-body}" Pressed="True" />
+        <CheckBox Name="SkipAdminsCheck" Text="{Loc wf-test-dummy-audience-skip-admins}" Pressed="True" />
+
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8" Margin="0 6 0 0">
+            <Button Name="SendButton" Text="{Loc wf-test-dummy-send}" StyleClasses="ButtonSquare" />
+            <Button Name="EndButton" Text="{Loc wf-test-dummy-end}" StyleClasses="ButtonSquare" Disabled="True" />
+            <Label Name="StatusLabel" HorizontalExpand="True" ClipText="True" />
+        </BoxContainer>
+
+        <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 2" />
+        <Label Name="ListHeading" Text="{Loc wf-test-dummy-section-list}" StyleClasses="LabelHeading" />
+        <Label Name="SummaryLabel" StyleClasses="LabelSubText" />
+        <ScrollContainer VerticalExpand="True" HorizontalExpand="True" HScrollEnabled="False">
+            <BoxContainer Name="EntryList" Orientation="Vertical" SeparationOverride="2" />
+        </ScrollContainer>
+    </BoxContainer>
+</DefaultWindow>

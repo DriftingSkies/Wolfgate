@@ -9,6 +9,8 @@
   # Hull cleanup and an arriving ship's FTL sweep both delete loose entities; neither may take a vehicle.
   - type: CleanupImmune
   - type: FTLSmashImmune
+  # Test vehicles carry test guns and turrets, so they count as military chassis.
+  - type: WFMilitaryVehicle
   - type: StaticPrice
     price: 1000
   - type: RMCVehicle

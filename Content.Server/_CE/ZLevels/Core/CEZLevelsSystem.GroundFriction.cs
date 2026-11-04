@@ -129,6 +129,9 @@ public sealed partial class CEZLevelsSystem
         var query = EntityQueryEnumerator<CEZGridFallerComponent, MapGridComponent>();
         while (query.MoveNext(out var uid, out _, out _))
         {
+            if (WfSkipGroundContact(uid)) // WOLFGATE(Dormancy): a resting hull's contact is sampled now and then, not every tick.
+                continue;
+
             SetGroundContact(uid, HasGroundContact(uid));
         }
     }

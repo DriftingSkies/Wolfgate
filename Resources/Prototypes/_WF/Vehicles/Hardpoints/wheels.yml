@@ -56,6 +56,8 @@
   name: APC wheel
   description: A reinforced APC wheel.
   components:
+  - type: StaticPrice
+    price: 2100
   - type: Sprite
     state: tires
   - type: HardpointItem
@@ -74,6 +76,8 @@
   name: tank treads
   description: Heavy duty tank treads.
   components:
+  - type: StaticPrice
+    price: 3500
   - type: Sprite
     state: treads
   - type: HardpointItem
@@ -92,6 +96,8 @@
   name: reinforced tank treads
   description: Heavier tank treads with better durability and acid resistance at the cost of acceleration.
   components:
+  - type: StaticPrice
+    price: 6300
   - type: Sprite
     state: treads
   - type: HardpointItem

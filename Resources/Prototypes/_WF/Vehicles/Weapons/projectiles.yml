@@ -51,6 +51,12 @@
   name: bullet (10x50mm)
   categories: [ HideSpawnMenu, WFVehicles ]
   components:
+  - type: WFImpactRicochet
+    sound:
+      collection: WFRcsmRicochet
+      params:
+        maxDistance: 16
+    chance: 0.35
   - type: Sprite
     sprite: _WF/Vehicles/Projectiles/bullet_projectiles.rsi
     drawdepth: Effects
@@ -202,6 +208,13 @@
   name: LTB cannon shell
   categories: [ HideSpawnMenu, WFVehicles ]
   components:
+  - type: WFImpactRicochet
+    sound:
+      collection: WFRcsmShellRicochet
+      params:
+        volume: 2
+        maxDistance: 24
+    chance: 0.45
   - type: Sprite
     sprite: _WF/Vehicles/Projectiles/projectiles.rsi
     scale: "1.2, 1.2"

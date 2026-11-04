@@ -60,14 +60,11 @@ internal static class CargoDeck
             (portB, entMan.GetComponent<DockingComponent>(portB)));
     }
 
-    /// <summary>The share of thrust a set of grids keeps with a load: hull / (hull + load), down to the floor.</summary>
+    /// <summary>The share of thrust a set of grids keeps with a load past its free allowance, down to the floor.</summary>
     public static float Factor(IEntityManager entMan, WFCargoLoadPrototype profile, float load, params EntityUid[] set)
     {
-        if (load <= 0f)
-            return 1f;
-
         var hull = set.Sum(grid => entMan.GetComponent<PhysicsComponent>(grid).FixturesMass);
-        return System.Math.Max(profile.ThrustFloor, hull / (hull + load));
+        return WFCargoLoadSystem.ThrustFactor(profile, hull, load);
     }
 }
 

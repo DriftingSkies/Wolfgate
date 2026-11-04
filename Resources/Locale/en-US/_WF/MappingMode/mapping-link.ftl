@@ -1,7 +1,7 @@
 ## Mapping screen: Link mode (signal links, device lists, access)
 
 wf-mapping-screen-mode-link = Link
-wf-mapping-screen-mouse-link = Signals: click a source, then a sink to pick ports; right click a sink to unlink. Devices: click an air alarm or other list, then click devices to add or remove them, or drag a box to add them all. Access: click a door or other reader. Tab: next tool.
+wf-mapping-screen-mouse-link = Signals: click a source, then a sink to pick ports; right click a sink to unlink. Devices: click an air alarm or other list, then click devices to add or remove them, or drag a box to add them all. Access: click a door or other reader. Alarms: click a vent, scrubber, sensor or air alarm to set its alarm thresholds. Tab: next tool.
 wf-mapping-screen-layer-links = Links (signals, device lists)
 wf-mapping-screen-layer-links-count = {$links ->
     [one] 1 signal link
@@ -11,7 +11,7 @@ wf-mapping-screen-layer-links-count = {$links ->
    *[other] {$lists} device lists
 } on this level.
 wf-mapping-screen-layer-links-none = Nothing to draw: no signal links or device lists on this level yet. Wire some in Link mode (9).
-wf-mapping-screen-key-WFMappingLinkCycle = Link mode: next tool (signals, devices, access)
+wf-mapping-screen-key-WFMappingLinkCycle = Link mode: next tool (signals, devices, access, alarms)
 
 wf-mapping-link-tool-signals = Signals
 wf-mapping-link-tool-signals-tooltip = Link a button, lever or sensor to doors, lights and other machines.
@@ -19,17 +19,21 @@ wf-mapping-link-tool-devices = Devices
 wf-mapping-link-tool-devices-tooltip = Choose the vents, scrubbers, sensors and firelocks an air alarm, fire alarm or console watches.
 wf-mapping-link-tool-access = Access
 wf-mapping-link-tool-access-tooltip = Set which access opens a door, locker or other reader.
+wf-mapping-link-tool-thresholds = Alarms
+wf-mapping-link-tool-thresholds-tooltip = Set when vents, scrubbers and sensors raise their air alarm. Click an air alarm to set every device it watches.
 wf-mapping-link-clear = Clear selection
 wf-mapping-link-selected = Selected: {$name}
 wf-mapping-link-hint-signals = Click a signal source.
 wf-mapping-link-hint-devices = Click an air alarm, fire alarm or console.
 wf-mapping-link-hint-access = Click a door or other reader.
+wf-mapping-link-hint-thresholds = Click a vent, scrubber, sensor or air alarm.
 
 wf-mapping-link-readout-signals = Link: signals, click a source
 wf-mapping-link-readout-source = Link: signals, source: {$name} ({$count} linked)
 wf-mapping-link-readout-devices = Link: devices, click a device list
 wf-mapping-link-readout-holder = Link: devices, list: {$name} ({$count}/{$max})
 wf-mapping-link-readout-access = Link: access, click a reader
+wf-mapping-link-readout-thresholds = Link: alarms, click a vent, scrubber, sensor or air alarm
 
 wf-mapping-link-not-source = That doesn't send signals.
 wf-mapping-link-not-sink = That doesn't take signals.
@@ -40,6 +44,8 @@ wf-mapping-link-not-device = That can't go in a device list.
 wf-mapping-link-not-reader = That has no access reader.
 wf-mapping-link-box-empty = No devices in that box.
 wf-mapping-link-access-no-selection = Nothing in the selection has an access reader.
+wf-mapping-link-thresholds-no-selection = Nothing is selected.
+wf-mapping-link-not-monitor = That isn't a vent, scrubber, sensor or air alarm.
 
 wf-mapping-link-apply = Apply
 wf-mapping-link-ports-title = Signal links
@@ -57,6 +63,18 @@ wf-mapping-link-access-copy = Copy from last
 wf-mapping-link-access-clear = Clear
 wf-mapping-link-access-selection = Apply to selection
 wf-mapping-link-access-selection-tooltip = Sets every door and reader in the current selection.
+
+wf-mapping-link-thresholds-title = Alarm thresholds
+wf-mapping-link-thresholds-target = {$name}: sets {$count} {$count ->
+    [one] device
+   *[other] devices
+}
+wf-mapping-link-thresholds-note = These save with the map. A device only takes the kinds it already checks.
+wf-mapping-link-thresholds-kelvin = In kelvin: 273 K is 0 °C, 293 K is 20 °C.
+wf-mapping-link-thresholds-preset = {$kind} preset:
+wf-mapping-link-thresholds-preset-pick = Load a preset...
+wf-mapping-link-thresholds-none = This device checks nothing.
+wf-mapping-link-thresholds-selection-tooltip = Sets every vent, scrubber and sensor in the current selection, and every device the selected air alarms watch.
 
 wf-mapping-link-bad = That can't be linked.
 wf-mapping-link-bad-port = One of those ports doesn't exist on it.
@@ -80,8 +98,14 @@ wf-mapping-link-access-set = Access set on {$count} {$count ->
     [one] reader
    *[other] readers
 }.
+wf-mapping-link-thresholds-no-devices = That air alarm watches no vents, scrubbers or sensors yet.
+wf-mapping-link-thresholds-set = Alarm thresholds set on {$count} {$count ->
+    [one] device
+   *[other] devices
+}.
 
 wf-mapping-tools-edit-link = signal link
 wf-mapping-tools-edit-unlink = signal unlink
 wf-mapping-tools-edit-device-list = device list change
 wf-mapping-tools-edit-access = access change
+wf-mapping-tools-edit-thresholds = alarm threshold change

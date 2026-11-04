@@ -75,6 +75,7 @@ public sealed partial class WFDoomedScenarioSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<GridSplitEvent>(OnGridSplit);
         SubscribeLocalEvent<ConsoleFTLAttemptEvent>(OnFTLAttempt);
+        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopAttemptEvent>(OnHopAttempt);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
     }
 
@@ -269,6 +270,17 @@ public sealed partial class WFDoomedScenarioSystem : EntitySystem
     /// <summary>Picks a breathable interior deck tile, never exterior plating or a gun.</summary>
     private bool TryFindFloor(EntityUid hull, out EntityCoordinates coordinates) =>
         _safeSpawn.TryFindSafeFloor(hull, out coordinates);
+
+    /// <summary>The Reavers hold the ship until their ambush is over, so it can't climb to orbit either.</summary>
+    private void OnHopAttempt(ref Content.Server._WF.Planets.Hop.WFPlanetHopAttemptEvent args)
+    {
+        if (!TryComp<WFDoomedScenarioComponent>(args.Uid, out var doomed) ||
+            !_scenarios.TryGetValue(doomed.LobbyId, out var scenario) || scenario.Encounter is not { } encounter ||
+            !TryComp<WFEncounterComponent>(encounter, out var comp) || comp.Resolution != null)
+            return;
+        args.Cancelled = true;
+        args.Reason = Loc.GetString("wf-round-setup-doomed-jammed");
+    }
 
     /// <summary>The Reavers jam the drive until their ambush is over.</summary>
     private void OnFTLAttempt(ref ConsoleFTLAttemptEvent args)

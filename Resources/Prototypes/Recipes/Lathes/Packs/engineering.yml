@@ -58,6 +58,7 @@
   id: EngineeringBoardsStatic
   recipes:
   - SpaceHeaterMachineCircuitBoard
+  - WFWeatherForecastComputerCircuitboard # WOLFGATE(Planets): weather forecast console board
 
 ## Dynamic
 

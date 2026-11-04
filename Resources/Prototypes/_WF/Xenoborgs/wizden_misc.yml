@@ -1,0 +1,51 @@
+# Support prototypes for the xenoborg modules ported from wizden. IDs are wizden's.
+
+# Borg module slot tags: a chassis holds one module of each.
+- type: Tag
+  id: XenoborgModulePrimaryWeapon
+
+- type: Tag
+  id: XenoborgModuleSecondaryWeapon
+
+- type: Tag
+  id: XenoborgModuleWithSimpleOverlay
+
+# Granted by the jump xenoborg module.
+- type: entity
+  parent: ActionGravityJump
+  id: ActionJumpBoost
+  name: Jump boost
+  components:
+  - type: InstantAction
+    useDelay: 10
+    icon:
+      sprite: _Mono/Interface/Action/actions_borg.rsi
+      state: xenoborg-jump-module
+    event: !type:GravityJumpEvent {}
+
+# Links the range finder to the guided missile launcher.
+- type: sourcePort
+  id: TargetSource
+  name: signal-port-name-target-source
+  description: signal-port-description-target-source
+  defaultLinks: [ TargetReceiver ]
+
+- type: sinkPort
+  id: TargetReceiver
+  name: signal-port-name-target-receiver
+  description: signal-port-description-target-receiver
+
+# Demolition rockets: wreck structures, barely hurt people.
+- type: explosion
+  id: XenoborgAntiStructureExplosion
+  damagePerIntensity:
+    types:
+      Heat: 4
+      Blunt: 2
+      Piercing: 3
+      Structural: 50
+  lightColor: Blue
+  fireColor: Blue
+  texturePath: /Textures/Effects/fire_greyscale.rsi
+  fireStates: 3
+  temperature: 800

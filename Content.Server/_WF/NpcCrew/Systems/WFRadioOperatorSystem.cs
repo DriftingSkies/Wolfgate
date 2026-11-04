@@ -88,6 +88,7 @@ public sealed partial class WFRadioOperatorSystem : EntitySystem
         SubscribeLocalEvent<DockEvent>(OnDock);
         SubscribeLocalEvent<UndockEvent>(OnUndock);
         SubscribeLocalEvent<FTLCompletedEvent>(OnFtlCompleted);
+        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopCompletedEvent>(OnHopCompleted);
         SubscribeLocalEvent<WFPilotOrdersCompletedEvent>(OnOrdersCompleted);
         SubscribeLocalEvent<WFPilotDockFailedEvent>(OnDockFailed);
         SubscribeLocalEvent<WFCrewMemberDownEvent>(OnCrewDown);
@@ -149,7 +150,9 @@ public sealed partial class WFRadioOperatorSystem : EntitySystem
             }
 
             // Said while the drive spools: FTLStartedEvent comes once the ship is in FTL space, out of reach.
-            var spooling = TryComp<FTLComponent>(grid, out var ftl) && ftl.State == FTLState.Starting;
+            var spooling = TryComp<FTLComponent>(grid, out var ftl) && ftl.State == FTLState.Starting
+                           || TryComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(grid, out var hop)
+                           && hop.Phase == Content.Server._WF.Planets.Hop.WFPlanetHopPhase.Warm;
             if (!spooling)
                 op.Comp.JumpAnnounced = false;
             else if (!op.Comp.JumpAnnounced)
@@ -272,6 +275,14 @@ public sealed partial class WFRadioOperatorSystem : EntitySystem
     private void OnFtlCompleted(ref FTLCompletedEvent args)
     {
         foreach (var op in OperatorsOn(args.Entity))
+        {
+            TrySend(op, WFRadioLine.Arriving);
+        }
+    }
+
+    private void OnHopCompleted(ref Content.Server._WF.Planets.Hop.WFPlanetHopCompletedEvent args)
+    {
+        foreach (var op in OperatorsOn(args.Hull))
         {
             TrySend(op, WFRadioLine.Arriving);
         }

@@ -24,6 +24,7 @@ public sealed partial class WFTradeMarketSystem
         SubscribeLocalEvent<WFTradeOriginComponent, MapInitEvent>(OnOriginMapInit);
         SubscribeLocalEvent<WFTradeOriginComponent, ComponentShutdown>(OnOriginShutdown);
         SubscribeLocalEvent<FTLCompletedEvent>(OnFtlCompleted);
+        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopCompletedEvent>(OnHopCompleted);
     }
 
     private void OnOriginStartup(Entity<WFTradeOriginComponent> ent, ref ComponentStartup args)
@@ -46,13 +47,24 @@ public sealed partial class WFTradeMarketSystem
     /// <summary>Re-stamps a jumping ship's crates where it arrives when they were pending or stamped on another map.</summary>
     private void OnFtlCompleted(ref FTLCompletedEvent ev)
     {
-        if (!TryComp(ev.MapUid, out TransformComponent? mapXform) || !IsMarketMap(mapXform.MapID))
+        RestampArrival(ev.Entity, ev.MapUid);
+    }
+
+    /// <summary>A hop onto a market map re-stamps the same way an FTL arrival does.</summary>
+    private void OnHopCompleted(ref Content.Server._WF.Planets.Hop.WFPlanetHopCompletedEvent ev)
+    {
+        RestampArrival(ev.Hull, ev.MapUid);
+    }
+
+    private void RestampArrival(EntityUid grid, EntityUid map)
+    {
+        if (!TryComp(map, out TransformComponent? mapXform) || !IsMarketMap(mapXform.MapID))
             return;
 
         var query = EntityQueryEnumerator<WFTradeOriginComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var origin, out var xform))
         {
-            if (xform.GridUid == ev.Entity && (origin.Pending || origin.Point.MapId != xform.MapID))
+            if (xform.GridUid == grid && (origin.Pending || origin.Point.MapId != xform.MapID))
                 Stamp((uid, origin));
         }
     }

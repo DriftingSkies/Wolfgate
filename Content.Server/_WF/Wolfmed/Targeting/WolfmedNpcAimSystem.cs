@@ -1,6 +1,7 @@
 using Content.Server.NPC.HTN;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Body.Systems;
+using Content.Shared.NPC;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
@@ -29,8 +30,9 @@ public sealed partial class WolfmedNpcAimSystem : EntitySystem
 
         _next = _timing.CurTime + Interval;
 
-        var query = EntityQueryEnumerator<HTNComponent, TargetingComponent>();
-        while (query.MoveNext(out var uid, out _, out var targeting))
+        // Only awake NPCs fight; a sleeping one gets its aim within a second of waking.
+        var query = EntityQueryEnumerator<ActiveNPCComponent, HTNComponent, TargetingComponent>();
+        while (query.MoveNext(out var uid, out _, out _, out var targeting))
         {
             if (HasComp<ActorComponent>(uid))
                 continue;

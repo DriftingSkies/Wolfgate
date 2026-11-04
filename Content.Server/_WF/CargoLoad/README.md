@@ -2,7 +2,7 @@
 
 Cargo weight. Every trade crate has a weight class (Light 1t, Standard 2t, Heavy 3t, Bulk 5t, in `WFCargoLoadDefault`),
 in the grid-mass units lift, gravgens and FTL already use: a hull tile weighs 0.5, so a 200-tile hauler is about 100.
-A sweep once a second sums the cargo aboard each grid. A loaded ship keeps `hull / (hull + load)` of its thrust in
+A sweep once a second sums the cargo aboard each grid. A ship carries `freeLoad` (5%) of its hull mass free, so its starting stock costs nothing; past that it keeps `hull / (hull + load - hull * freeLoad)` of its thrust in
 space (accelerating, braking, strafing and docking; not turning), down to `thrustFloor`; its cargo counts against
 planet lift and gravgen support; and a heavy hold spools FTL up to `spoolCap` seconds longer. Dumping cargo out an
 airlock, down a conveyor or by undocking a pod gives the thrust back at the next sweep. Ore, ingots and sheets weigh per

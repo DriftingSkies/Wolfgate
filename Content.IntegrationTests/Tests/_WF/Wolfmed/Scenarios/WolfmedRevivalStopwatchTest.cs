@@ -99,12 +99,12 @@ public sealed class WolfmedRevivalStopwatchTest : WolfmedGameTest
                     var at = map.GridCoords.Offset(new System.Numerics.Vector2(x += 2f, 0f));
                     var body = SEntMan.SpawnEntity("MobHuman", at);
                     var attacker = SEntMan.SpawnEntity("MobHuman", at.Offset(new System.Numerics.Vector2(0f, 3f)));
-                    // The round waits in nullspace: on the grid it would hit the first body it touched and delete
+                    // The round and the axe wait in nullspace: on the grid it would hit the first body it touched and delete
                     // itself, and it despawns on a timer; the rules read the hit's cause off it all fight.
                     var tool = death switch
                     {
                         Death.RifleMagazine => SEntMan.SpawnEntity("Bullet556x45mmFMJ", MapCoordinates.Nullspace),
-                        Death.FireAxe => SEntMan.SpawnEntity("FireAxe", at),
+                        Death.FireAxe => SEntMan.SpawnEntity("FireAxe", MapCoordinates.Nullspace),
                         _ => SEntMan.SpawnEntity("CombatKnife", at),
                     };
                     SEntMan.RemoveComponent<TimedDespawnComponent>(tool);

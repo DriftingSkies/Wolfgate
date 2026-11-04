@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Content.Shared._WF.Vehicles.Base;
+using Content.Shared._WF.Planets.Parachute;
 using Content.Shared._WF.Vehicles.Core;
 using Content.Shared._WF.Vehicles.Grid.Components;
 using Content.Shared._WF.Vehicles.Hardpoint;
@@ -74,13 +75,40 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         _driveProbe = false;
 
         StepMovement(uid, mover, vehicle, grid, gridComp, input, frameTime);
+        AdvanceImpact(uid, mover, grid, frameTime);
         StabiliseBody(uid);
 
-        if (MoverSnapshot.Of(mover) != before)
+        if (MoverSnapshot.Of(mover) != before || mover.TravelVelocity != Vector2.Zero)
             Dirty(uid, mover);
     }
 
-    /// <summary>Keeps the physics body out of the mover's way: nothing a throw, a blast or a ship impact gives it survives a step.</summary>
+    /// <summary>Advances collision momentum without allowing the hull to tunnel through blockers.</summary>
+    private void AdvanceImpact(EntityUid uid, GridVehicleMoverComponent mover, EntityUid grid, float frameTime)
+    {
+        if (mover.ImpactVelocity.LengthSquared() < 0.0001f && MathF.Abs(mover.ImpactSpin) < 0.01f)
+            return;
+
+        var rotation = GetCollisionLocalRotation(uid, grid, null);
+        TryMoveContinuous(uid, mover, grid, mover.Position + mover.ImpactVelocity * frameTime, rotation,
+            out var blocked, applyBlockEffects: false, allowVehiclePush: false);
+        mover.ImpactVelocity = blocked ? Vector2.Zero : mover.ImpactVelocity * MathF.Exp(-2f * frameTime);
+        var desired = rotation + Angle.FromDegrees(mover.ImpactSpin * frameTime);
+        if (CanOccupyTransform(uid, mover, grid, mover.Position, desired, Clearance, applyEffects: false, allowVehiclePush: false))
+        {
+            mover.Heading = desired;
+            mover.CurrentDirection = GridVehicleGeometry.CardinalFromRotation(desired);
+            _transform.SetLocalRotation(uid, desired);
+        }
+        else
+        {
+            mover.ImpactSpin = 0f;
+        }
+
+        mover.ImpactSpin *= MathF.Exp(-3f * frameTime);
+        SetGridPosition(uid, grid, mover.Position);
+        Dirty(uid, mover);
+    }
+
     private void StabiliseBody(EntityUid uid)
     {
         if (!physicsQ.TryComp(uid, out var body))
@@ -116,6 +144,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 return;
             }
         }
+
+        if (TryComp(uid, out WFVehicleEngineComponent? engine) && (!engine.Running || engine.ParkingBrake))
+            input = default;
+
+        if (TryComp(uid, out WFParachutedComponent? chute) && chute.Deployed)
+            input = default;
 
         // Smash slowdowns expire independently of input, so check this before speed selection.
         GetSmashSlowdownMultiplier(mover);
@@ -228,20 +262,18 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 isCommittedToMove: false,
                 frameTime)
             : new GridVehicleMotionSimulator.DriveSpeedResult(
-                GridVehicleMotionSimulator.StepIdleSpeed(mover.CurrentSpeed, mover.Deceleration, frameTime),
+                GridVehicleMotionSimulator.StepIdleSpeed(mover.CurrentSpeed, GetCoastDeceleration(uid, mover), frameTime),
                 false,
                 false);
 
         mover.CurrentSpeed = speedResult.CurrentSpeed;
-        if (speedResult.ChangingDirection)
-        {
-            mover.CurrentSpeed = 0f;
-            return turned;
-        }
 
         var travel = MathF.Abs(mover.CurrentSpeed) * frameTime;
         if (travel <= MinMoveDistance)
+        {
+            mover.TravelVelocity = Vector2.Zero;
             return turned;
+        }
 
         var forward = rotation.ToWorldVec();
         if (mover.CurrentSpeed < 0f)
@@ -256,13 +288,22 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             Math.Abs(Angle.ShortestDistance(rotation, DirectionToVehicleRotation(cardinal)).Degrees) < 0.1)
         {
             // Square to the tiles at parking speed: the lane steering of the four-way drive helps through doorways.
+            mover.TravelVelocity = forward * MathF.Abs(mover.CurrentSpeed);
             var direction = mover.CurrentSpeed < 0f ? -cardinal : cardinal;
             moved = TryMoveWithLaneGuidance(uid, mover, grid, gridComp, direction, rotation, travel, frameTime, out blocked);
         }
         else
         {
             _driveProbe = true;
-            var target = mover.Position + forward * travel;
+            var desiredVelocity = forward * MathF.Abs(mover.CurrentSpeed);
+            var longitudinal = Vector2.Dot(mover.TravelVelocity, forward);
+            mover.TravelVelocity += forward * (MathF.Abs(mover.CurrentSpeed) - longitudinal);
+            var change = desiredVelocity - mover.TravelVelocity;
+            var gripStep = MathF.Max(0f, mover.Grip) * frameTime;
+            mover.TravelVelocity = change.LengthSquared() <= gripStep * gripStep
+                ? desiredVelocity
+                : mover.TravelVelocity + Vector2.Normalize(change) * gripStep;
+            var target = mover.Position + mover.TravelVelocity * frameTime;
             moved = TryMoveContinuous(uid, mover, grid, target, rotation, out blocked);
 
             // Caught on something: what is left of the step is tried along the deck's axes, so a glancing contact slides
@@ -284,6 +325,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         if (blocked)
         {
+            mover.TravelVelocity = Vector2.Zero;
             mover.CurrentSpeed = 0f;
             RaiseVehicleCollision(uid, mover, VehicleCollisionKind.Crash, speedBeforeMove);
         }
@@ -429,17 +471,14 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             : new GridVehicleMotionSimulator.DriveSpeedResult(
                 GridVehicleMotionSimulator.StepIdleSpeed(
                     mover.CurrentSpeed,
-                    mover.Deceleration,
+                    GetCoastDeceleration(uid, mover),
                     frameTime),
                 false,
                 false);
 
         mover.CurrentSpeed = speedResult.CurrentSpeed;
-        if (speedResult.ChangingDirection)
-        {
-            mover.CurrentSpeed = 0f;
-            return false;
-        }
+        if (!mover.FreeSteering)
+            mover.Heading = DirectionToVehicleRotation(mover.CurrentDirection);
 
         var travel = MathF.Abs(mover.CurrentSpeed) * frameTime;
         if (travel <= MinMoveDistance)
@@ -462,6 +501,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             out var blocked);
         if (blocked)
         {
+            mover.TravelVelocity = Vector2.Zero;
             mover.CurrentSpeed = 0f;
             RaiseVehicleCollision(uid, mover, VehicleCollisionKind.Crash, speedBeforeMove);
         }
@@ -862,9 +902,11 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         Angle? rotation,
         out bool blocked,
         bool applyBlockEffects = true,
-        bool debugProbes = true)
+        bool debugProbes = true,
+        bool allowVehiclePush = true)
     {
         blocked = false;
+        allowVehiclePush &= applyBlockEffects;
         var start = mover.Position;
         var delta = target - start;
         var distance = delta.Length();
@@ -878,25 +920,25 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         for (var i = 1; i <= steps; i++)
         {
             var candidate = start + delta * (i / (float) steps);
-            if (!CanOccupyTransform(uid, mover, grid, candidate, rotation, Clearance, applyEffects: false, debug: debugProbes))
+            if (!CanOccupyTransform(uid, mover, grid, candidate, rotation, Clearance, applyEffects: false, debug: debugProbes, allowVehiclePush: allowVehiclePush))
             {
                 if (applyBlockEffects)
-                    CanOccupyTransform(uid, mover, grid, candidate, rotation, Clearance, applyEffects: true, debug: false);
+                    CanOccupyTransform(uid, mover, grid, candidate, rotation, Clearance, applyEffects: true, debug: false, allowVehiclePush: allowVehiclePush);
 
                 mover.Position = lastGood;
                 blocked = true;
                 return lastGood != start;
             }
 
+            if (applyBlockEffects &&
+                !CanOccupyTransform(uid, mover, grid, candidate, rotation, Clearance, applyEffects: true, debug: false, allowVehiclePush: allowVehiclePush))
+            {
+                mover.Position = lastGood;
+                blocked = true;
+                return lastGood != start;
+            }
             lastGood = candidate;
-        }
-
-        if (applyBlockEffects &&
-            !CanOccupyTransform(uid, mover, grid, lastGood, rotation, Clearance, applyEffects: true, debug: false))
-        {
-            mover.Position = start;
-            blocked = true;
-            return false;
+            mover.Position = candidate;
         }
 
         mover.Position = lastGood;
@@ -912,31 +954,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         out bool blocked,
         bool applyBlockEffects = true)
     {
-        blocked = false;
-        var start = mover.Position;
-        var delta = target - start;
-        var distance = delta.Length();
-
-        if (applyBlockEffects && distance > MinMoveDistance)
-        {
-            var probeStep = Math.Clamp(mover.MovementProbeStep, 0.02f, 0.5f);
-            var steps = Math.Max(1, (int)MathF.Ceiling(distance / probeStep));
-            for (var i = 1; i < steps; i++)
-            {
-                var candidate = start + delta * (i / (float)steps);
-                CanOccupyTransform(uid, mover, grid, candidate, rotation, Clearance, applyEffects: true, debug: false);
-            }
-        }
-
-        if (applyBlockEffects &&
-            !CanOccupyTransform(uid, mover, grid, target, rotation, Clearance, applyEffects: true, debug: false))
-        {
-            blocked = true;
-            return false;
-        }
-
-        mover.Position = target;
-        return true;
+        // A previous clearance probe may have offered a hypothetical vehicle push.
+        return TryMoveContinuous(uid, mover, grid, target, rotation, out blocked, applyBlockEffects);
     }
 
     private bool TryFindTurnPosition(
@@ -1053,6 +1072,13 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         bestScore = score;
         bestOffset = offset;
+    }
+
+    private float GetCoastDeceleration(EntityUid uid, GridVehicleMoverComponent mover)
+    {
+        return TryComp(uid, out WFVehicleEngineComponent? engine) && engine.ParkingBrake
+            ? mover.Deceleration
+            : mover.Deceleration * 0.12f;
     }
 
     private GridVehicleMotionSimulator.DriveProfile GetDriveProfile(EntityUid uid, GridVehicleMoverComponent mover)

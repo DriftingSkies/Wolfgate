@@ -15,6 +15,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
 using Robust.Shared.EntitySerialization;
@@ -158,6 +159,7 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
 
         var targetMapCoords = _transform.ToMapCoordinates(coords);
         _rmcTeleporter.HandlePulling(user, targetMapCoords);
+        FaceInteriorNorth(user);
         return true;
     }
 
@@ -749,6 +751,25 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
         RemCompDeferred<VehicleInteriorOccupantComponent>(ent.Owner);
     }
 
+    /// <summary>Turns the view of someone who has just come inside round to the interior's north, over the usual camera turn.</summary>
+    private void FaceInteriorNorth(EntityUid user)
+    {
+        if (!TryComp(user, out InputMoverComponent? mover))
+            return;
+
+        var xform = Transform(user);
+        var relative = xform.GridUid ?? xform.MapUid;
+        var before = TryComp(mover.RelativeEntity, out TransformComponent? oldXform) ? _transform.GetWorldRotation(oldXform) : Angle.Zero;
+        var after = relative is { } now ? _transform.GetWorldRotation(now) : Angle.Zero;
+
+        // The view starts where it was outside and turns from there.
+        mover.RelativeRotation -= after - before;
+        mover.RelativeEntity = relative;
+        mover.TargetRelativeRotation = Angle.Zero;
+        mover.LerpTarget = TimeSpan.Zero;
+        Dirty(user, mover);
+    }
+
     private void OnOccupantMetaFlagRemoveAttempt(Entity<VehicleInteriorOccupantComponent> ent, ref MetaFlagRemoveAttemptEvent args)
     {
         if ((args.ToRemove & MetaDataFlags.ExtraTransformEvents) != 0 &&
@@ -1057,5 +1078,52 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
             return false;
 
         return TryGetInteriorEntryCoordinates((vehicle, enter), entryIndex, out targetCoords);
+    }
+
+    /// <summary>Loads the vehicle's interior if it is not loaded yet; server only.</summary>
+    public bool TryLoadInterior(Entity<VehicleEnterComponent?> vehicle, [NotNullWhen(true)] out VehicleInteriorComponent? interior)
+    {
+        interior = null;
+        if (!Resolve(vehicle, ref vehicle.Comp, false))
+            return false;
+
+        return EnsureInterior(new Entity<VehicleEnterComponent>(vehicle.Owner, vehicle.Comp), out interior);
+    }
+
+    /// <summary>Counts someone put straight onto the interior's map, such as a spawned NPC crewman, as inside the vehicle.</summary>
+    public void TrackInteriorOccupant(EntityUid vehicle, EntityUid occupant)
+    {
+        TrackOccupant(occupant, vehicle);
+    }
+
+    /// <summary>
+    /// Puts an occupant out through the first of the interior's exits that has room, at once and past the lock, as an
+    /// NPC crew bailing out. The occupant must be unbuckled first.
+    /// </summary>
+    public bool TryExitVehicle(EntityUid vehicle, EntityUid occupant)
+    {
+        if (_net.IsClient ||
+            !TryComp(vehicle, out VehicleEnterComponent? enter) ||
+            !TryComp(vehicle, out VehicleInteriorComponent? interior) ||
+            !IsInteriorLoaded(interior))
+        {
+            return false;
+        }
+
+        var exitQuery = EntityQueryEnumerator<VehicleExitComponent, TransformComponent>();
+        while (exitQuery.MoveNext(out var exitUid, out var exit, out var exitXform))
+        {
+            if (exitXform.MapID != interior.MapId)
+                continue;
+
+            if (!TryFindExitSpot((exitUid, exit), enter, vehicle, occupant, out var spot))
+                continue;
+
+            _rmcTeleporter.HandlePulling(occupant, spot);
+            UntrackOccupant(occupant, vehicle);
+            return true;
+        }
+
+        return false;
     }
 }

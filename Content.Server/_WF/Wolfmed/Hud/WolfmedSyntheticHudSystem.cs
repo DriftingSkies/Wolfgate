@@ -45,6 +45,8 @@ public sealed partial class WolfmedSyntheticHudSystem : EntitySystem
     private const string LowPowerLine = "wolfmed-synthetic-cause-low-power";
 
     [Dependency] private BloodstreamSystem _blood = default!;
+
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private BodyPartFunctionalitySystem _functionality = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
@@ -75,7 +77,7 @@ public sealed partial class WolfmedSyntheticHudSystem : EntitySystem
         var query = EntityQueryEnumerator<WoundHostComponent, BodyComponent>();
         while (query.MoveNext(out var body, out _, out _))
         {
-            if (TerminatingOrDeleted(body))
+            if (TerminatingOrDeleted(body) || _dormancy.BodySleeps(body))
                 continue;
 
             if (!IsMechanicalBody(body))

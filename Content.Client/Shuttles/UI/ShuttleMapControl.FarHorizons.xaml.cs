@@ -22,6 +22,9 @@ public sealed partial class ShuttleMapControl
 
         handle.DrawCircle(starPos, starRadius, starSystem.StarSystem.Star.Color);
 
+        // WOLFGATE(PlanetScan): worlds draw as their own planet sprite, at a size that reads as a world.
+        if (WfDrawScopePlanets(handle, starSystem.StarSystem, shuttleTransform.MapUid)) return;
+
         foreach (var planet in starSystem.StarSystem.Planets)
         {
             var planetPos = Vector2.Transform(planet.Position, matty);

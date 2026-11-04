@@ -1,5 +1,9 @@
+using System.Linq;
 using System.Numerics;
+using Content.Server.Atmos.Monitor.Components;
 using Content.Shared.Access;
+using Content.Shared.Atmos;
+using Content.Shared.Atmos.Monitor;
 using Content.Shared.Decals;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -97,6 +101,68 @@ public record struct MappingAccessChange(
     bool NewFill);
 
 /// <summary>
+/// The thresholds an atmos monitor stores; null ones fall back to its prototypes at map init.
+/// </summary>
+public sealed class MappingThresholdState
+{
+    public AtmosAlarmThreshold? Temperature;
+    public AtmosAlarmThreshold? Pressure;
+    public Dictionary<Gas, AtmosAlarmThreshold>? Gases;
+
+    /// <summary>A copy of what a monitor stores now.</summary>
+    public static MappingThresholdState Of(AtmosMonitorComponent monitor)
+    {
+        return new MappingThresholdState
+        {
+            Temperature = Copy(monitor.TemperatureThreshold),
+            Pressure = Copy(monitor.PressureThreshold),
+            Gases = monitor.GasThresholds?.ToDictionary(p => p.Key, p => new AtmosAlarmThreshold(p.Value)),
+        };
+    }
+
+    /// <summary>Writes copies of this state into a monitor.</summary>
+    public void CopyTo(AtmosMonitorComponent monitor)
+    {
+        monitor.TemperatureThreshold = Copy(Temperature);
+        monitor.PressureThreshold = Copy(Pressure);
+        monitor.GasThresholds = Gases?.ToDictionary(p => p.Key, p => new AtmosAlarmThreshold(p.Value));
+    }
+
+    public bool SameAs(MappingThresholdState other)
+    {
+        if (!Same(Temperature, other.Temperature) || !Same(Pressure, other.Pressure))
+            return false;
+
+        if (Gases == null || other.Gases == null)
+            return Gases == null && other.Gases == null;
+
+        return Gases.Count == other.Gases.Count &&
+               Gases.All(p => other.Gases.TryGetValue(p.Key, out var o) && Same(p.Value, o));
+    }
+
+    private static AtmosAlarmThreshold? Copy(AtmosAlarmThreshold? threshold)
+    {
+        return threshold == null ? null : new AtmosAlarmThreshold(threshold);
+    }
+
+    private static bool Same(AtmosAlarmThreshold? a, AtmosAlarmThreshold? b)
+    {
+        if (a == null || b == null)
+            return a == null && b == null;
+
+        return a.Ignore == b.Ignore && a.UpperBound == b.UpperBound && a.LowerBound == b.LowerBound &&
+               a.UpperWarningPercentage == b.UpperWarningPercentage &&
+               a.LowerWarningPercentage == b.LowerWarningPercentage;
+    }
+}
+
+/// <summary>An atmos monitor's stored thresholds before and after.</summary>
+public record struct MappingThresholdChange(
+    MappingEntityRef Monitor,
+    MappingThresholdState Old,
+    MappingThresholdState New);
+
+/// <summary>
 /// A decal by value, with grid-local coordinates; decal ids change when one is re-added.
 /// </summary>
 public record struct MappingDecal(EntityUid Grid, Decal Decal);
@@ -126,13 +192,15 @@ public sealed class MappingEdit(string name)
     public readonly List<MappingLinkChange> Links = new();
     public readonly List<MappingDeviceListChange> DeviceLists = new();
     public readonly List<MappingAccessChange> Access = new();
+    public readonly List<MappingThresholdChange> Thresholds = new();
 
     public bool IsEmpty => Tiles.Count == 0 && Moves.Count == 0 && Created.Count == 0 && Deleted.Count == 0 &&
                            DecalsRemoved.Count == 0 && DecalsAdded.Count == 0 && PipeColors.Count == 0 &&
-                           Links.Count == 0 && DeviceLists.Count == 0 && Access.Count == 0;
+                           Links.Count == 0 && DeviceLists.Count == 0 && Access.Count == 0 && Thresholds.Count == 0;
 
-    /// <summary>Entities whose settings (colour, links, device list, access) change without moving.</summary>
-    public int SettingChanges => PipeColors.Count + 2 * Links.Count + DeviceLists.Count + Access.Count;
+    /// <summary>Entities whose settings (colour, links, device list, access, thresholds) change without moving.</summary>
+    public int SettingChanges => PipeColors.Count + 2 * Links.Count + DeviceLists.Count + Access.Count +
+                                 Thresholds.Count;
 
     /// <summary>
     /// Appends another edit that happened after this one.
@@ -149,6 +217,7 @@ public sealed class MappingEdit(string name)
         Links.AddRange(other.Links);
         DeviceLists.AddRange(other.DeviceLists);
         Access.AddRange(other.Access);
+        Thresholds.AddRange(other.Thresholds);
     }
 
     /// <summary>Estimated memory the edit holds, for the history budget.</summary>

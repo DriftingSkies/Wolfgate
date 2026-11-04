@@ -1,0 +1,183 @@
+# Xenoborg module tools and gear ported from wizden. IDs are wizden's.
+
+- type: entity
+  name: xenoborg jaws of death
+  parent: JawsOfLife
+  id: XenoborgJawsOfLife
+  description: Useful for prying open bolted doors where organics are hiding.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Tools/jaws_of_life.rsi
+    state: xorg_jaws_pry
+  - type: Item
+    sprite: _WF/Xenoborgs/Objects/Tools/jaws_of_life.rsi
+    inhandVisuals:
+      left:
+      - state: xorg_inhand-left
+      right:
+      - state: xorg_inhand-right
+    size: Normal
+  - type: Prying
+    force: true
+    speedModifier: 3.0
+  - type: MultipleTool
+    statusShowBehavior: true
+    entries:
+    - behavior: Prying
+      sprite:
+        sprite: _WF/Xenoborgs/Objects/Tools/jaws_of_life.rsi
+        state: xorg_jaws_pry
+      useSound: /Audio/Items/jaws_pry.ogg
+      changeSound: /Audio/Items/change_jaws.ogg
+    - behavior: Cutting
+      sprite:
+        sprite: _WF/Xenoborgs/Objects/Tools/jaws_of_life.rsi
+        state: xorg_jaws_cutter
+      useSound: /Audio/Items/jaws_cut.ogg
+      changeSound: /Audio/Items/change_jaws.ogg
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 12
+
+- type: entity
+  parent: Welder
+  id: RefuelingWelder
+  name: refueling welding tool
+  description: A slow welder that can refuel itself over time.
+  components:
+  - type: Tool
+    speedModifier: 0.5
+  - type: Welder
+    fuelConsumption: 2
+    fuelLitCost: 1
+  - type: SolutionRegeneration
+    solution: Welder
+    generated:
+      reagents:
+      - ReagentId: WeldingFuel
+        Quantity: 0.1
+
+- type: entity
+  parent: FireExtinguisher
+  id: SelfRechargingFireExtinguisher
+  name: self-recharging fire extinguisher
+  description: It extinguishes fires. It slowly refills with water.
+  components:
+  - type: SolutionRegeneration
+    solution: spray
+    generated:
+      reagents:
+      - ReagentId: Water
+        Quantity: 1
+
+- type: entity
+  parent: HoloprojectorBorg
+  id: HoloprojectorXenoField
+  name: xenoborg deflector field projector
+  description: An alien device, projecting fields that deflect projectiles.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Devices/Holoprojectors/xenoborg.rsi
+    state: icon
+  - type: HolosignProjector
+    signProto: XenoborgDeflectorField
+    chargeUse: 200
+
+- type: entity
+  parent: ClothingBackpack
+  id: XenoborgMaterialBag
+  name: silicon storage square
+  description: A knockoff version of a bluespace bag, can vacuum up select materials, unfit for use by humanoids due to harmful emissions.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Specific/Robotics/silicon_storage_cube.rsi
+    state: xenoborg
+  - type: MagnetPickup
+  - type: Dumpable
+  - type: Storage
+    grid:
+    - 0,0,7,3
+    quickInsert: true
+    areaInsert: true
+    whitelist:
+      tags:
+      - Sheet
+      - RawMaterial
+      - Ingot
+      - XenoborgCrystal
+      components:
+      - Circuitboard
+      - Flatpack
+      - FloorTile
+    blacklist:
+      components:
+      - SiliconLawProvider
+
+# Oil gun ammunition: a sealed ampoule that breaks on impact.
+- type: entity
+  parent: BaseItem
+  id: XenoborgOilChemistryAmpoule
+  name: ampoule
+  suffix: xenoborg oil
+  description: Break to open.
+  components:
+  - type: Item
+    size: Tiny
+    sprite: _WF/Xenoborgs/Objects/Specific/Chemistry/ampoule.rsi
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Specific/Chemistry/ampoule.rsi
+    layers:
+    - state: icon_empty
+    - state: fill-1
+      map: ["enum.SolutionContainerLayers.Fill"]
+      visible: false
+  - type: Appearance
+  - type: SolutionContainerVisuals
+    maxFillLevels: 6
+    fillBaseName: fill-
+    inHandsMaxFillLevels: 4
+    inHandsFillBaseName: -fill-
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: XenoborgOil
+          Quantity: 30
+  - type: Spillable
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: Label
+    currentLabel: reagent-name-xenoborg-oil
+  - type: ThrowingAngle
+    angle: 90
+    angularVelocity: true
+  - type: SpaceGarbage
+  - type: PhysicalComposition
+    materialComposition:
+      Glass: 10
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: DamageOnLand
+    damage:
+      types:
+        Blunt: 5
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 5
+      behaviors:
+      - !type:SpillBehavior { }
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: StaticPrice
+    price: 0
+  - type: Tag
+    tags:
+    - Trash

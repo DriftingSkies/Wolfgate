@@ -80,7 +80,7 @@ public sealed class CrashEffectsTest
                     Assert.That(em.GetComponent<TransformComponent>(fire).GridUid, Is.AnyOf(hull, fragment));
                 }
                 Assert.That(em.GetComponent<DamageableComponent>(actor).TotalDamage.Float(), Is.Zero,
-                    "Cosmetic bursts must not hurt the crew.");
+                    "Cosmetic bursts must not hurt the crew. " + string.Join(",", em.GetComponent<DamageableComponent>(actor).Damage.DamageDict.Where(kv => kv.Value > 0).Select(kv => $"{kv.Key}={kv.Value}")));
             });
         }
         await server.WaitRunTicks(pair.SecondsToTicks(6));

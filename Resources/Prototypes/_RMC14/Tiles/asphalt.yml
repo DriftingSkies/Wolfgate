@@ -13,6 +13,7 @@
   parent: CMTileBaseUnpryable
   id: RMCFloorAsphalt
   name: tiles-rmc-asphalt
+  allowRotationMirror: true
   sprite: /Textures/_RMC14/Tiles/asphalt/asphalt.png
 
 - type: tile

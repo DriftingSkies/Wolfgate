@@ -23,6 +23,9 @@ wf-vehicle-plow-indestructible = The plow cannot break through this structure.
 
 ent-WFActionVehicleSteeringMode = Switch steering
     .desc = Switch between free steering and fixed four-way driving.
+ent-WFActionVehicleScanner = Scanner
+    .desc = Open the vehicle's mass scanner.
+wf-vehicle-scanner-position = Position: { $x }, { $y }
 wf-vehicle-steering-free = Steering: free.
 wf-vehicle-steering-fixed = Steering: four-way.
 wf-vehicle-steering-no-room = No room to square the vehicle up.

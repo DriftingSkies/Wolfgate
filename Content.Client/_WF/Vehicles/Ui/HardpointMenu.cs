@@ -543,6 +543,8 @@ public sealed partial class HardpointMenu : FancyWindow
 
     private void UpdateWindowSizing(bool hasFrameIntegrity, bool hasError)
     {
+        if (Parent is BoxContainer)
+            return;
         const float baseWidth = 520f;
         const float baseHeight = 176f;
         const float listPadding = 18f;

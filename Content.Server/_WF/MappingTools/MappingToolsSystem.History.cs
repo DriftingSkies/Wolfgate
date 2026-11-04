@@ -167,6 +167,11 @@ public sealed partial class MappingToolsSystem
             Add(change.Reader.Uid);
         }
 
+        foreach (var change in edit.Thresholds)
+        {
+            Add(change.Monitor.Uid);
+        }
+
         return maps;
     }
 

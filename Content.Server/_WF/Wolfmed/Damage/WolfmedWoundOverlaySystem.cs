@@ -31,6 +31,8 @@ public sealed partial class WolfmedWoundOverlaySystem : EntitySystem
     private int _sweepShare = 1;
 
     [Dependency] private IConfigurationManager _cfg = default!;
+
+    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _dormancy = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedBodySystem _body = default!;
     [Dependency] private WolfmedGoreSystem _gore = default!;
@@ -104,7 +106,10 @@ public sealed partial class WolfmedWoundOverlaySystem : EntitySystem
             _nextSweep = now + TimeSpan.FromSeconds(MathF.Max(0.1f, _cfg.GetCVar(WolfmedCVars.OverlayRefreshSeconds)));
             var hosts = EntityQueryEnumerator<WoundHostComponent, PartDamageVisualsComponent>();
             while (hosts.MoveNext(out var uid, out _, out _))
-                _pending.Add(uid);
+            {
+                if (!_dormancy.BodySleeps(uid))
+                    _pending.Add(uid);
+            }
         }
 
         // Each tick takes its share of the sweep, so a full server doesn't refresh every body on one.

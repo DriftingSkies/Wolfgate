@@ -18,6 +18,8 @@
                 <!-- Far Horizons start -->
                 <CheckBox Name="RenderStarSystemCheckBox" Text="{Loc 'ui-options-render-star-system'}" />
                 <!-- Far Horizons end -->
+                <!-- WOLFGATE(WolfWeather): weather detail option -->
+                <ui:OptionDropDown Name="DropDownWeatherQuality" Title="{Loc 'ui-options-wolf-weather-quality'}" />
 
                 <!-- Interface -->
                 <Label Text="{Loc 'ui-options-interface-label'}" StyleClasses="LabelKeyText"/>

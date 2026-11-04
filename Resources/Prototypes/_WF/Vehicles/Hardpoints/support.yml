@@ -4,6 +4,8 @@
   name: integrated weapons sensor array
   description: An integrated sensor array that improves the fire rate of onboard weapons.
   components:
+  - type: StaticPrice
+    price: 4200
   - type: Sprite
     state: warray
   - type: HardpointItem
@@ -26,6 +28,8 @@
   name: overdrive enhancer
   description: An overdrive enhancer support attachment for a tank.
   components:
+  - type: StaticPrice
+    price: 4900
   - type: Sprite
     state: odrive_enhancer
   - type: HardpointItem
@@ -113,6 +117,8 @@
   name: APC freight storage
   description: A cargo pod for APC support slots.
   components:
+  - type: StaticPrice
+    price: 2800
   - type: Sprite
     state: freighter_storage
   - type: HardpointItem

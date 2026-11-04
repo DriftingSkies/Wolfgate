@@ -219,6 +219,9 @@
   - XenoborgModuleDefense
   - XenoborgModuleJammer
   addComponents:
+  # WOLFGATE(Xenoborgs) START: wizden flash immunity for heavy and scout xenoborgs
+  - type: FlashImmunity
+  # WOLFGATE END
   - type: MobThresholds # tankier
     thresholds:
       0: Alive
@@ -259,6 +262,9 @@
   - XenoborgModuleSurgery
   - XenoborgModuleDefense
   addComponents:
+  # WOLFGATE(Xenoborgs) START: wizden flash immunity for heavy and scout xenoborgs
+  - type: FlashImmunity
+  # WOLFGATE END
   - type: ShowHealthBars
     damageContainers:
     - Biological

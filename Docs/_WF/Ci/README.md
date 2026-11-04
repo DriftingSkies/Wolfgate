@@ -33,7 +33,7 @@ entry ids from 100000).
   - Wolfgate entities sit in module folders
   - Wolfgate vessels and map prototypes sit in module folders
 - [`.github/workflows/build-test-debug.yml`](../../../.github/workflows/build-test-debug.yml)
-  - split the integration tests over three runners; each builds and runs one shard
+  - split the integration tests over four runners; each builds and runs one shard
   - unit tests run once, on the core shard
   - exclude Shipyard tests in NUnit itself; the --filter form still ran them and only hid the results
   - one artifact per shard

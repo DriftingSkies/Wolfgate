@@ -1,0 +1,11 @@
+# Opens the mothership core's camera monitor on its xenoborgs' cameras.
+- type: entity
+  id: WFActionXenoborgCameras
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    icon: { sprite: Interface/Actions/actions_ai.rsi, state: crew_monitor }
+    iconOn: { sprite: Interface/Actions/actions_ai.rsi, state: crew_monitor }
+    keywords: [ "AI", "camera", "xenoborg" ]
+    priority: -5
+    event: !type:ToggleIntrinsicUIEvent { key: enum.SurveillanceCameraMonitorUiKey.Key }

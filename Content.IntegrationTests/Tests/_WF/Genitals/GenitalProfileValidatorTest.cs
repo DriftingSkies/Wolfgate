@@ -28,8 +28,22 @@ public sealed class GenitalProfileValidatorTest
 
             var minorIssues = new List<GenitalIssue>();
             var minor = GenitalProfileValidator.EnsureValid(full, 17, "Human", proto, minorIssues);
+            var ipcEligible = GenitalProfileValidator.IsEligible(30, "IPC", settings, out _);
+            // Exclude a species for the length of the check, then put the setting back.
             var ipcIssues = new List<GenitalIssue>();
-            var ipc = GenitalProfileValidator.EnsureValid(full, 30, "IPC", proto, ipcIssues);
+            GenitalProfile ipc;
+            bool excludedEligible;
+            GenitalIssue? excluded;
+            settings.ExcludedSpecies.Add("IPC");
+            try
+            {
+                ipc = GenitalProfileValidator.EnsureValid(full, 30, "IPC", proto, ipcIssues);
+                excludedEligible = GenitalProfileValidator.IsEligible(30, "IPC", settings, out excluded);
+            }
+            finally
+            {
+                settings.ExcludedSpecies.Remove("IPC");
+            }
             var adult = GenitalProfileValidator.EnsureValid(full, 18, "Human", proto);
 
             Assert.Multiple(() =>
@@ -37,7 +51,8 @@ public sealed class GenitalProfileValidatorTest
                 Assert.That(settings.AdultAge, Is.EqualTo(18));
                 Assert.That(GenitalProfileValidator.IsEligible(17, "Human", settings, out var underage), Is.False);
                 Assert.That(underage, Is.EqualTo(GenitalIssue.Underage));
-                Assert.That(GenitalProfileValidator.IsEligible(30, "IPC", settings, out var excluded), Is.False);
+                Assert.That(ipcEligible, Is.True, "IPCs can have anatomy.");
+                Assert.That(excludedEligible, Is.False);
                 Assert.That(excluded, Is.EqualTo(GenitalIssue.SpeciesExcluded));
                 Assert.That(GenitalProfileValidator.IsEligible(18, "Human", settings, out var none), Is.True);
                 Assert.That(none, Is.Null);

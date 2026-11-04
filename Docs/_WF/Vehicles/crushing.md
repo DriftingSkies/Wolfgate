@@ -20,6 +20,11 @@ knockdown, `VehicleRunover`) at 1.5 tiles per second or more, and left alone bel
 
 ## What Wolfgate does
 
+Owner decision of 2026-10-17: small things never stop a vehicle. Lockers, barricades, grilles, hydroponics trays, fences,
+windows, dumpsters and planters are smashed and the vehicle drives on (a light one slows down for lockers, barricades and
+fences); only walls, doors, hull, boulders, trees for the weakest vehicles, fuel pumps and statues still hold one. Stumps,
+including the one a Crocus tree leaves under the vehicle that knocked it down, are driven over by anything.
+
 Wolfgate's prototypes are not edited. A `vehicleSmashRule` prototype (`Resources/Prototypes/_WF/Vehicles/Crushing/smash_rules.yml`)
 carries the same settings and selects the entity prototypes that get them:
 
@@ -113,24 +118,27 @@ there); everything else relies on the target's own destruction sounds, as in RMC
 | RMC prototype | Wolfgate rule | Matches (bases) | Settings |
 |---|---|---|---|
 | `CMTable`, `CMRack` | `WFVehicleSmashTables` | `TableBase`, `N14FreeTableBase`, `Rack` | defaults |
-| `CMLockerBase` | `WFVehicleSmashLockers` | `ClosetBase`, not `GunSafe`, not `N14ClosetBase`, not locked or access-locked | minDestroy Light, minContinue Medium |
+| `CMLockerBase` | `WFVehicleSmashLockers` | `ClosetBase`, not `GunSafe`, not `N14ClosetBase`, not locked or access-locked | slowdown below Medium |
 | `RMCCrateOpenableBase` | `WFVehicleSmashCrates` | `CrateGeneric`, not locked, access-locked, trade or store crates | defaults |
 | `RMCBarrelBase` | `WFVehicleSmashBarrels` | `BaseBarrel`, `N14BaseBarrel` | defaults |
 | `CMBed` | `WFVehicleSmashBeds` | `Bed`, not `OperatingTable` | defaults |
 | `RMCCouchMid` | `WFVehicleSmashSofas` | sofas and comfortable benches | defaults |
 | `CMVendor*` | `WFVehicleSmashVendingMachines` | components `VendingMachine`, not wall mounted, fixed (`BaseStructureDisableAnchoring`), bounty, access-locked or store vendors | defaults |
-| `CMFence` | `WFVehicleSmashFences` | `BaseFenceMetal`, `BaseFenceWood` | deleteOnHit false, damage 50, slowdown below Medium |
-| `CMBarricade*` | `WFVehicleSmashBarricades` | `BaseBarricade`, `InflatableWall`, not the N14 wooden wall frame (a girder) | minDestroy Light, minContinue Medium |
-| `CMBaseWindow` | `WFVehicleSmashWindows` | `Window`, `WindowDirectional`, not hull windows | deleteOnHit false, damage 100 |
+| `CMFence` | `WFVehicleSmashFences` | `BaseFenceMetal`, `BaseFenceWood` | slowdown below Medium |
+| `CMBarricade*` | `WFVehicleSmashBarricades` | `BaseBarricade`, `InflatableWall`, not the N14 wooden wall frame (a girder) | slowdown below Medium |
+| `CMBaseWindow` | `WFVehicleSmashWindows` | `Window`, `WindowDirectional`, not hull windows | defaults |
 | `CMBaseWindow` (hull) | `WFVehicleSmashHullWindows` | reinforced, reinforced plasma and uranium, shuttle and plastitanium windows, not outpost ones | minDestroy Medium |
-| `RMCBaseWindowFrame` | `WFVehicleSmashWindowFrames` | `Grille` | minDestroy Light, minContinue Medium |
+| `RMCBaseWindowFrame` | `WFVehicleSmashWindowFrames` | `Grille` | defaults |
 | `CMBaseWindoor` | `WFVehicleSmashWindoors` | `BaseWindoor` | requiresDoorUnpowered, minContinue Heavy |
 | `CMBaseDoor` | `WFVehicleSmashDoors` | components `Airlock`, `Firelock`, not windoors, hull doors, vault doors | requiresDoorUnpowered, minContinue Heavy, crunch |
 | `CMBaseDoor` (hull) | `WFVehicleSmashHullDoors` | `AirlockExternal`, `AirlockShuttle`, not the outposts' docking airlocks | requiresDoorUnpowered, minDestroy Medium, minContinue Heavy, crunch |
 | `RMCShutterAlmayer`, `RMCPodDoor` | `WFVehicleSmashShutters` | `BaseShutter`, not `BlastDoor` | minContinue Heavy, crunch |
 | `RMCBaseTree` | `WFVehicleSmashTrees` | `BaseTree`, crocus trees | minDestroy Light, slowdown below Medium |
-| `RMCBoulderLarge` | `WFVehicleSmashBoulders` | `BaseRock` | minDestroy Medium |
-| `CMHydroponicsTray` | `WFVehicleSmashHydroponicsTrays` | `hydroponicsTray` | minDestroy Light |
+| (none) | `WFVehicleSmashStumps` | `CrocusStump`, `FloraTreeStump`, `FloraTreeStumpConifer`, priority 1 | defaults |
+| `RMCBoulderLarge` | `WFVehicleSmashBoulders` | `BaseRock`, `N14DecorStalagmite1` | minDestroy Medium |
+| `CMBarricadeSandbag*` | `WFVehicleSmashSandbags` | `N14BarricadeSandbagSingle`, `N14BarricadeWindow`, not the tank traps | slowdown below Medium |
+| (none) | `WFVehicleSmashClutter` | N14 pallet stacks, junk and shelves, dressers, railings, broken fences, scrap, robot showcases, targets (not the strange one), instruments, kegs, plastic flaps (not airtight), airlock assemblies | slowdown below Medium |
+| `CMHydroponicsTray` | `WFVehicleSmashHydroponicsTrays` | `hydroponicsTray` | defaults |
 | `CMDisposalUnit` | `WFVehicleSmashDisposalUnits` | `DisposalUnit`, `MailingUnit` | defaults |
 
 Left out, with the reason:
@@ -199,3 +207,13 @@ will not give.
 
 CMU's own ramming model, in which every vehicle damages structures by its impact energy and takes damage back, is not
 ported; without a plow a vehicle breaks exactly what the rules above say.
+
+## Street furniture
+
+Owner, 2026-10-13: street furnishings break when driven through. The planet cities' furniture comes from the Streets port
+(`Tools/_WF/Streets/port.yml`, its `set` rules), which gives the RMC and CMU pieces a `VehicleSmashable` component
+rather than a rule: many have no `Destructible`, and a rule never matches those. Lights, traffic lights, benches, bins,
+traffic directors, phone boxes, tents, shop shelves and slot machines go down under any vehicle, which drives on; a light
+breaks into its broken twin, which goes next. Dumpsters and planters go down the same way; the fuel pump and the concrete
+statue take a tank. Hydrants, signs and the rest that nothing collides with
+are driven over as before. `StreetFurnitureSmashTest` checks a piece of each kind.

@@ -1436,7 +1436,7 @@
         Heat: 0.1
         Cold: 0.1
         Shock: 0.1
-        Radiation: 0.1
+        Radiation: 0.05 # WOLFGATE: CBURN cleanup suit blocks as much radiation as the radiation suit (was 0.1)
         Caustic: 0.1
   - type: ClothingSpeedModifier
     walkModifier: 1.0

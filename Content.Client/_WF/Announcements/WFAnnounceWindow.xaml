@@ -1,0 +1,96 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:announce="clr-namespace:Content.Client._WF.Announcements"
+               Title="{Loc wf-announce-title}"
+               MinSize="900 640"
+               SetSize="1000 700">
+    <BoxContainer Orientation="Vertical">
+        <BoxContainer Orientation="Horizontal" VerticalExpand="True" SeparationOverride="12">
+            <!-- Form -->
+            <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False" SizeFlagsStretchRatio="3">
+                <BoxContainer Orientation="Vertical" Margin="0 0 8 0" SeparationOverride="4">
+                    <Label Text="{Loc wf-announce-section-message}" StyleClasses="LabelHeading" />
+                    <GridContainer Columns="2" HorizontalExpand="True">
+                        <Label Text="{Loc wf-announce-sender}" MinWidth="90" />
+                        <LineEdit Name="SenderEdit" HorizontalExpand="True" PlaceHolder="{Loc wf-announce-default-sender}" />
+                        <Label Text="{Loc wf-announce-heading}" />
+                        <LineEdit Name="TitleEdit" HorizontalExpand="True" PlaceHolder="{Loc wf-announce-heading-placeholder}" />
+                        <Label Text="{Loc wf-announce-accent}" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                            <OptionButton Name="AccentSelect" HorizontalExpand="True" />
+                            <LineEdit Name="AccentHex" MinWidth="90" />
+                            <PanelContainer Name="AccentSwatch" MinSize="24 24" />
+                            <Button Name="AccentPickButton" Text="{Loc wf-announce-accent-pick}" ToggleMode="True" />
+                        </BoxContainer>
+                    </GridContainer>
+                    <ColorSelectorSliders Name="AccentPicker" Visible="False" IsAlphaVisible="False" HorizontalExpand="True" />
+                    <TextEdit Name="BodyEdit" MinHeight="140" HorizontalExpand="True" />
+                    <CheckBox Name="MarkupCheck" Text="{Loc wf-announce-allow-markup}" ToolTip="{Loc wf-announce-allow-markup-tooltip}" />
+
+                    <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 2" />
+                    <Label Text="{Loc wf-announce-section-delivery}" StyleClasses="LabelHeading" />
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                        <Label Text="{Loc wf-announce-target}" MinWidth="90" />
+                        <OptionButton Name="TargetSelect" HorizontalExpand="True" />
+                        <CheckBox Name="ChatCheck" Text="{Loc wf-announce-post-chat}" Pressed="True" />
+                    </BoxContainer>
+
+                    <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 2" />
+                    <Label Text="{Loc wf-announce-section-sound}" StyleClasses="LabelHeading" />
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                        <OptionButton Name="SoundModeSelect" MinWidth="160" />
+                        <Label Text="{Loc wf-announce-volume}" />
+                        <SpinBox Name="VolumeSpin" MinWidth="110" />
+                        <Control HorizontalExpand="True" />
+                        <Button Name="PreviewSoundButton" Text="{Loc wf-announce-sound-preview}" />
+                        <Button Name="StopSoundButton" Text="{Loc wf-announce-sound-stop}" />
+                    </BoxContainer>
+                    <BoxContainer Name="SoundPicker" Orientation="Vertical" SeparationOverride="4">
+                        <LineEdit Name="SoundSearch" HorizontalExpand="True" PlaceHolder="{Loc wf-announce-sound-search}" />
+                        <ItemList Name="SoundList" MinHeight="130" HorizontalExpand="True" />
+                        <Label Name="SoundSelectedLabel" StyleClasses="LabelSubText" ClipText="True" />
+                    </BoxContainer>
+
+                    <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 2" />
+                    <CheckBox Name="ChipCheck" Text="{Loc wf-announce-section-chip}" StyleClasses="LabelHeading" />
+                    <GridContainer Name="ChipOptions" Columns="2" HorizontalExpand="True">
+                        <Label Text="{Loc wf-announce-chip-level}" MinWidth="90" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                            <OptionButton Name="ChipLevelSelect" HorizontalExpand="True" />
+                            <CheckBox Name="ChipFlashCheck" Text="{Loc wf-announce-chip-flash}" />
+                        </BoxContainer>
+                        <Label Text="{Loc wf-announce-chip-tag}" />
+                        <LineEdit Name="ChipTitleEdit" HorizontalExpand="True" PlaceHolder="{Loc wf-announce-chip-tag-placeholder}" />
+                        <Label Text="{Loc wf-announce-chip-text}" />
+                        <LineEdit Name="ChipTextEdit" HorizontalExpand="True" PlaceHolder="{Loc wf-announce-chip-text-placeholder}" />
+                        <Label Text="{Loc wf-announce-chip-duration}" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                            <SpinBox Name="ChipDurationSpin" MinWidth="110" />
+                            <Label Text="{Loc wf-announce-chip-duration-hint}" StyleClasses="LabelSubText" />
+                        </BoxContainer>
+                    </GridContainer>
+                </BoxContainer>
+            </ScrollContainer>
+
+            <!-- Preview -->
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" SizeFlagsStretchRatio="2" SeparationOverride="6">
+                <Label Text="{Loc wf-announce-section-preview}" StyleClasses="LabelHeading" />
+                <Label Text="{Loc wf-announce-preview-chip}" StyleClasses="LabelSubText" />
+                <announce:WFAnnouncementChip Name="ChipPreview" MinWidth="0" HorizontalExpand="True" />
+                <Label Name="ChipPreviewOff" Text="{Loc wf-announce-preview-chip-off}" StyleClasses="LabelSubText" />
+                <Label Text="{Loc wf-announce-preview-chat}" StyleClasses="LabelSubText" Margin="0 6 0 0" />
+                <PanelContainer StyleClasses="AngleRect" VerticalExpand="True">
+                    <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                        <RichTextLabel Name="ChatPreview" Margin="6" />
+                    </ScrollContainer>
+                </PanelContainer>
+            </BoxContainer>
+        </BoxContainer>
+
+        <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 6" />
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+            <Label Name="StatusLabel" HorizontalExpand="True" ClipText="True" />
+            <CheckBox Name="KeepOpenCheck" Text="{Loc wf-announce-keep-open}" />
+            <Button Name="SendButton" Text="{Loc wf-announce-send}" MinWidth="120" />
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>

@@ -6,6 +6,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon: Interface/Actions/eyeopen.png
     iconOn: Interface/Actions/eyeclose.png
     itemIconStyle: BigAction
@@ -16,6 +17,7 @@
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: _WF/Vehicles/Actions/id_lock_actions.rsi
       state: id_lock_unlocked
@@ -25,12 +27,29 @@
     itemIconStyle: BigItem
     event: !type:VehicleLockActionEvent
 
+# The vehicle's mass scanner, from the driver's seat (WFVehicleScanner).
+- type: entity
+  id: WFActionVehicleScanner
+  categories: [ WFVehicles ]
+  components:
+  - type: InstantAction
+    autoPopulate: false
+    icon:
+      sprite: Objects/Tools/handheld_mass_scanner.rsi
+      state: icon
+    event: !type:WFVehicleScannerActionEvent
+    checkCanInteract: false
+    raiseOnUser: true
+    itemIconStyle: NoItem
+    useDelay: 0.5
+
 # The driver's switch between free steering (lit) and the four-way drive. Given to whoever drives, taken back when they stop.
 - type: entity
   id: WFActionVehicleSteeringMode
   categories: [ WFVehicles ]
   components:
   - type: InstantAction
+    autoPopulate: false
     icon:
       sprite: Interface/Actions/actions_mecha.rsi
       state: mech_thrusters_off

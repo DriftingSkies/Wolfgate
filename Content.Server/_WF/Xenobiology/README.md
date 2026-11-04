@@ -51,6 +51,7 @@ prototypes.
 - [`Content.Shared/_WF/Xenobiology/BreedPrototype.cs`](../../../Content.Shared/_WF/Xenobiology/BreedPrototype.cs)
 - [`Content.Shared/_WF/Xenobiology/Components/MobGrowthComponent.cs`](../../../Content.Shared/_WF/Xenobiology/Components/MobGrowthComponent.cs)
 - [`Content.Shared/_WF/Xenobiology/Components/SlimeComponent.cs`](../../../Content.Shared/_WF/Xenobiology/Components/SlimeComponent.cs)
+- [`Content.Shared/_WF/Xenobiology/SlimeGrowthAttemptEvent.cs`](../../../Content.Shared/_WF/Xenobiology/SlimeGrowthAttemptEvent.cs)
 - [`Content.Shared/_WF/Xenobiology/Systems/MobGrowthSystem.cs`](../../../Content.Shared/_WF/Xenobiology/Systems/MobGrowthSystem.cs)
 - [`Content.Shared/_WF/Xenobiology/Systems/SharedXenoVacuumSystem.cs`](../../../Content.Shared/_WF/Xenobiology/Systems/SharedXenoVacuumSystem.cs)
 - [`Content.Shared/_WF/Xenobiology/Systems/SlimeExtractSystem.cs`](../../../Content.Shared/_WF/Xenobiology/Systems/SlimeExtractSystem.cs)

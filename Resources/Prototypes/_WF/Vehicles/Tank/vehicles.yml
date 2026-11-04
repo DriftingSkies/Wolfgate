@@ -9,6 +9,88 @@
   name: tank
   description: A heavy armored tank built for battlefield dominance.
   components:
+  - type: WFMilitaryVehicle
+  - type: VehicleSound
+    runningSound: null
+    collisionSound:
+      collection: WFRcsmCollide
+    mobCollisionSound:
+      collection: WFRcsmCrush
+    crashSound:
+      collection: WFRcsmCrash
+    hornSound: /Audio/_WF/Vehicles/RCSM/horn/horn.ogg
+    hornCooldown: 2
+  - type: WFVehicleEngineAudio
+    gears: 6
+    shiftSound:
+      collection: WFRcsmEngineShift
+    startSound: /Audio/_WF/Vehicles/RCSM/engines/leopard/start.ogg
+    stopSound: /Audio/_WF/Vehicles/RCSM/engines/leopard/stop.ogg
+    idleLoop: /Audio/_WF/Vehicles/RCSM/engines/leopard/idle.ogg
+    driveLoop: /Audio/_WF/Vehicles/RCSM/engines/leopard/drive.ogg
+    highLoop: /Audio/_WF/Vehicles/RCSM/engines/leopard/high.ogg
+    revSound:
+      collection: WFRcsmEngineRev
+    tracksLoop: /Audio/_WF/Vehicles/RCSM/engines/leopard/tracks.ogg
+    startDelay: 3
+    tracksStopSound:
+      collection: WFRcsmTracksStop
+    pivotLoop: /Audio/_WF/Vehicles/RCSM/tracks/pivot_creak_loop.ogg
+    pivotScreechSound:
+      collection: WFRcsmPivotScreech
+  - type: WFVehicleHitSound
+    lightHitSound:
+      collection: WFRcsmHitBullet
+    lightRicochetSound:
+      collection: WFRcsmRicochet
+    heavyHitSound:
+      collection: WFRcsmHitShell
+    heavyRicochetSound:
+      collection: WFRcsmShellRicochet
+  - type: WFVehicleDestroyedSound
+    sequence:
+    - sound:
+        collection: WFRcsmVehicleBlastAmmo
+        params:
+          volume: 6
+          maxDistance: 40
+    - sound:
+        collection: WFRcsmVehicleBlastLayer
+        params:
+          volume: 4
+          maxDistance: 30
+    - delay: 0.5
+      sound:
+        collection: WFRcsmVehicleDebris
+    - delay: 1.6
+      sound:
+        collection: WFRcsmVehicleCookoff
+        params:
+          maxDistance: 24
+    - delay: 3
+      sound:
+        collection: WFRcsmVehicleCrackers
+    - delay: 4.2
+      sound:
+        collection: WFRcsmVehicleBurn
+        params:
+          maxDistance: 16
+    - delay: 6
+      sound:
+        collection: WFRcsmVehicleCookoff
+        params:
+          volume: -3
+          maxDistance: 24
+    - delay: 8
+      sound:
+        collection: WFRcsmVehicleFire
+        params:
+          maxDistance: 14
+    - delay: 11
+      sound:
+        collection: WFRcsmVehicleFireStress
+        params:
+          maxDistance: 12
   - type: WarpPoint
     follow: true
     location: Tank

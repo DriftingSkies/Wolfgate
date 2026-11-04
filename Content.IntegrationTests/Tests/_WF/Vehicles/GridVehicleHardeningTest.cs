@@ -7,6 +7,7 @@ using Content.Shared._WF.Vehicles.Base;
 using Content.Shared._WF.Vehicles.Core;
 using Content.Shared._WF.Vehicles.Grid;
 using Content.Shared.GameTicking;
+using Content.Server.Administration.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Throwing;
 using Robust.Shared.GameObjects;
@@ -226,7 +227,11 @@ public sealed class GridVehicleHardeningTest
         await VehicleRigs.Seat(rig);
         await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.Right));
         await server.WaitRunTicks(45);
-        await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.None));
+        await server.WaitPost(() =>
+        {
+            VehicleRigs.Hold(rig, MoveButtons.None);
+            entMan.EnsureComponent<WFVehicleEngineComponent>(rig.Vehicle).ParkingBrake = true;
+        });
         await server.WaitRunTicks(60);
 
         var start = Vector2.Zero;
@@ -313,7 +318,7 @@ public sealed class GridVehicleHardeningTest
     }
 
     /// <summary>
-    /// Vehicles that push vehicles on a strip one tile wide, so none can steer round another: a lead and two followers
+    /// Vehicles that push at parking speed on a strip one tile wide, so none can steer round another: a lead and two followers
     /// move together, while a chain deeper than the collision buffers is refused instead of running past them. Every
     /// vehicle closes the gap to the next one, then the push fails at the third follower and the lead is stopped.
     /// </summary>
@@ -326,6 +331,7 @@ public sealed class GridVehicleHardeningTest
         var server = pair.Server;
         var entMan = server.EntMan;
 
+        await server.WaitPost(() => VehicleRigs.Mover(rig).MaxSpeed = 0.5f);
         var chain = new List<EntityUid>();
         var starts = new List<float>();
 
@@ -351,11 +357,17 @@ public sealed class GridVehicleHardeningTest
 
         await VehicleRigs.Seat(rig);
         await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.Right));
-        await server.WaitRunTicks(120);
+        await server.WaitRunTicks(1800);
 
         await server.WaitAssertion(() =>
         {
             var lead = VehicleRigs.LocalPosition(rig).X;
+            for (var i = 1; i < chain.Count; i++)
+            {
+                var previous = entMan.GetComponent<TransformComponent>(chain[i - 1]).LocalPosition.X;
+                var next = entMan.GetComponent<TransformComponent>(chain[i]).LocalPosition.X;
+                Assert.That(next - previous, Is.GreaterThan(2.35f), "Collision momentum overlapped consecutive hulls.");
+            }
 
             if (shouldMove)
             {
@@ -379,13 +391,22 @@ public sealed class GridVehicleHardeningTest
         // The depth counter must have come back to zero: a plain drive still works afterwards.
         if (!shouldMove)
         {
-            await server.WaitPost(() => VehicleRigs.Hold(rig, MoveButtons.Left));
+            await server.WaitPost(() =>
+            {
+                // Restore the driver after the long run on the airless test strip before checking reversal.
+                server.System<RejuvenateSystem>().PerformRejuvenate(rig.Driver);
+                VehicleRigs.Hold(rig, MoveButtons.Left);
+            });
             var blockedAt = 0f;
             await server.WaitAssertion(() => blockedAt = VehicleRigs.LocalPosition(rig).X);
             await server.WaitRunTicks(60);
             await server.WaitAssertion(() =>
             {
-                Assert.That(VehicleRigs.LocalPosition(rig).X, Is.LessThan(blockedAt - 1f), "The vehicle could not reverse after the refused push.");
+                var mover = VehicleRigs.Mover(rig);
+                var driverState = entMan.GetComponent<Content.Shared.Mobs.Components.MobStateComponent>(rig.Driver).CurrentState;
+                var at = string.Join(", ", chain.Select(f => entMan.GetComponent<TransformComponent>(f).LocalPosition.ToString()));
+                Assert.That(VehicleRigs.LocalPosition(rig).X, Is.LessThan(blockedAt - 1f),
+                    $"The vehicle could not reverse after the refused push. Speed {mover.CurrentSpeed}, heading {mover.Heading}, direction {mover.CurrentDirection}, position {mover.Position}, impact {mover.ImpactVelocity}, driver {driverState}, followers {at}.");
             });
         }
 

@@ -35,6 +35,7 @@ of Interest; singularities, tesla balls, nukes, the disk, rifts and anomalies ar
 
 - [`Content.IntegrationTests/Tests/_WF/Ghost/GhostOrbitNullspaceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Ghost/GhostOrbitNullspaceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Ghost/GhostOrbitWindowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Ghost/GhostOrbitWindowTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Ghost/GhostPlanetPoiTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Ghost/GhostPlanetPoiTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Ghost/PdaActivationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Ghost/PdaActivationTest.cs)
 
 ### Localization
@@ -50,6 +51,7 @@ of Interest; singularities, tesla balls, nukes, the disk, rifts and anomalies ar
   - orbit window has no WarpClicked; also unsubscribe the ghostnado button
   - the orbit window requests its targets when it opens
 - [`Content.Client/UserInterface/Systems/Ghost/Widgets/GhostGui.xaml.cs`](../../../Content.Client/UserInterface/Systems/Ghost/Widgets/GhostGui.xaml.cs): orbit menu replaces GhostTargetWindow
+- [`Content.Server/Ghost/Roles/GhostRoleSystem.cs`](../../Ghost/Roles/GhostRoleSystem.cs): a dead or critical body stays off the list until OnMobStateChanged revives it
 - [`Content.Server/Radio/EntitySystems/RadioSystem.cs`](../../Radio/EntitySystems/RadioSystem.cs): ghost orbit link
 
 <!-- WOLFGATE-GENERATED END -->

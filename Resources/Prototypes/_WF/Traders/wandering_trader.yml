@@ -40,6 +40,7 @@
   - type: Trader
     dialogue: WFTraderWandererDialogue
     killable: true
+  - type: WFCowardice
   - type: TraderShop
     vendors:
     - WFTraderStockGeneral

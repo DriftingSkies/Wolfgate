@@ -4,3 +4,35 @@
   completetime: 2
   materials:
     Steel: 3000
+
+# Utility modules ported from wizden, priced like Mono's. Weapons cost crystals only (crystal_recipes.yml).
+
+- type: latheRecipe
+  id: XenoborgModuleSpaceMovement
+  result: XenoborgModuleSpaceMovement
+  completetime: 2
+  materials:
+    Steel: 3000
+
+- type: latheRecipe
+  id: XenoborgModuleConstruction
+  result: XenoborgModuleConstruction
+  completetime: 2
+  materials:
+    Steel: 3000
+
+- type: latheRecipe
+  id: XenoborgModuleJump
+  result: XenoborgModuleJump
+  completetime: 2
+  materials:
+    Steel: 3000
+    Plastic: 3000
+
+- type: latheRecipe
+  id: XenoborgModuleDeflectorField
+  result: XenoborgModuleDeflectorField
+  completetime: 2
+  materials:
+    Steel: 3000
+    Plastic: 3000

@@ -12,6 +12,7 @@
   name: abstract vehicle
   description: An abstract vehicle. Make sure to replace this!
   components:
+  - type: WFVehicleEngine
   - type: RMCVehicle
     movementKind: Grid
   - type: LagCompensation
@@ -104,6 +105,7 @@
       rmc-wheels:
         state: wheels_1
   - type: PointLight
+    lightMask: ConeSingle
     enabled: false
     radius: 6
     energy: 2.5

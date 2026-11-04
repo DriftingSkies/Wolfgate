@@ -48,6 +48,22 @@ public sealed partial class GridVehicleMoverComponent : Component
     [AutoNetworkedField]
     public float CurrentSpeed;
 
+    /// <summary>Grid-local velocity retained when traction cannot follow the chassis immediately.</summary>
+    [AutoNetworkedField]
+    public Vector2 TravelVelocity;
+
+    /// <summary>Collision momentum integrated through the same swept clearance checks as driving.</summary>
+    [AutoNetworkedField]
+    public Vector2 ImpactVelocity;
+
+    /// <summary>Collision angular velocity in degrees per second.</summary>
+    [AutoNetworkedField]
+    public float ImpactSpin;
+
+    /// <summary>Lateral tire or track grip in tiles per second squared.</summary>
+    [DataField]
+    public float Grip = 12f;
+
     /// <summary>
     /// whether the vehicle steers like a car (throttle and steering, any heading) rather than snapping to the four directions
     /// </summary>

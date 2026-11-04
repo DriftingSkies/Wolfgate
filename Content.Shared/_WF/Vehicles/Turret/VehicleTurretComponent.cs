@@ -36,6 +36,14 @@ public sealed partial class VehicleTurretComponent : Component
     [DataField, AutoNetworkedField]
     public bool ShowOverlay = false;
 
+    /// <summary>Draw order relative to the main turret; hull-mounted weapons sit below its barrel.</summary>
+    [DataField, AutoNetworkedField]
+    public int OverlayDepthOffset;
+
+    /// <summary>Compensates a full-hull overlay whose painted pivot is away from the image centre.</summary>
+    [DataField, AutoNetworkedField]
+    public bool OffsetSpritePivot;
+
     [DataField, AutoNetworkedField]
     public bool OffsetRotatesWithTurret = false;
 

@@ -31,7 +31,7 @@
   </Box>
   As the mothership, you must grow your army of borgs. To do so, you must convert all the sentient beings you can find. This can be achieved in the following manner:
   - 1. Have your Xenoborgs bring dead crew to your ship, placing them in the body crusher
-  - 2. As the mothership core, you can print Xenoborg shells by inserting materials into yourself and then using yourself as a lathe
+  <!-- WOLFGATE(Xenoborgs): shells and weapon modules cost crystals -->- 2. As the mothership core, you can print Xenoborg shells from xenoborg crystals: have your xenoborgs build a xenoborg extractor, which grows crystals from its grid's power, then insert the crystals into yourself and use yourself as a lathe. Weapon modules cost crystals too; every other module costs materials
  
   ## Xenoborg Chassis
   There is a total of four types of Xenoborgs. Each Borg type has certain abilities that the others lack and require teamwork to help grow the xenoborgs numbers.
@@ -51,12 +51,20 @@
   The Engineer Xenoborg is a hacker and breacher. Their job is to break into the ships and stations to provide access points for other xenoborgs to attack and ambush bodies with sentient brains. They have a built-in access breaker, for quickly bolting open doors, and a collection of tools for repairing the mothership, and other xenoborgs.
 
 
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules -->[bold]Engineer upgrade modules:[/bold]
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules --><Box><GuideEntityEmbed Entity="XenoborgModuleConstruction"/><GuideEntityEmbed Entity="XenoborgModuleDeflectorField"/><GuideEntityEmbed Entity="XenoborgModuleTileGun"/></Box>
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules --><Box><GuideEntityEmbed Entity="XenoborgModuleNaniteGun"/><GuideEntityEmbed Entity="XenoborgModuleOilGun"/><GuideEntityEmbed Entity="XenoborgModuleZap"/></Box>
+
   ### The Heavy Xenoborg
   <Box>
     <GuideEntityEmbed Entity="XenoborgChassisHeavy" Caption=""/>
   </Box>
   The Heavy Xenoborg is a slow but tanky brawler, with a built-in laser gun for gunning down bodies with sentient brains. They contain a radio jammer to silence bodies with sentient brains from calling for help and potentially delaying the station discovering the Xenoborg threat.
 
+
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules -->[bold]Heavy upgrade modules:[/bold]
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules --><Box><GuideEntityEmbed Entity="XenoborgModuleLaser"/><GuideEntityEmbed Entity="XenoborgModuleBurstFireLaser"/><GuideEntityEmbed Entity="XenoborgModuleGuidedMissileLauncher"/></Box>
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules --><Box><GuideEntityEmbed Entity="XenoborgModuleRocket"/><GuideEntityEmbed Entity="XenoborgModuleHeavyRadioactive"/></Box>
 
   ### The Scout Xenoborg
   <Box>
@@ -65,11 +73,17 @@
   The Scout Xenoborg is a fast, close-quarters attack borg designed for hit and run attacks. They are most effective in moving dead bodies to the mothership, and rescuing Xenoborgs lost in space.
 
 
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules -->[bold]Scout upgrade modules:[/bold]
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules --><Box><GuideEntityEmbed Entity="XenoborgModuleJump"/><GuideEntityEmbed Entity="XenoborgModuleSword"/><GuideEntityEmbed Entity="XenoborgModuleEnergySword"/></Box>
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules --><Box><GuideEntityEmbed Entity="XenoborgModuleBioKinfe"/><GuideEntityEmbed Entity="XenoborgModuleSpaceMovement"/></Box>
+
   ### The Stealth Xenoborg
   <Box>
     <GuideEntityEmbed Entity="XenoborgChassisStealth" Caption=""/>
   </Box>
   The [bold]Stealth Xenoborg[/bold] have a built in hypopen that regenerates a sleeping reagent to disable bodies with sentient brains. They also contain a cloaking device making the borg nearly invisible. They also have a chameleon projector allowing the borg to disguise itself as random objects.
+
+  <!-- WOLFGATE(Xenoborgs): wizden upgrade modules -->A xenoborg holds one [color=red]primary weapon[/color] module and one [color=orange]secondary weapon[/color] module at a time; examine a module to see which it is.
 
   ## Preparation and Tactics
   Before FTLing near the stations or ships, make sure the IFF is off.

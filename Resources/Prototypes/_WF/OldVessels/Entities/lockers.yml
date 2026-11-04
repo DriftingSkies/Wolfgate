@@ -1,0 +1,9 @@
+- type: entity
+  parent: LockerWallColorSalvage
+  id: WFLockerWallColorSalvageFilled
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillSalvageSpecialist

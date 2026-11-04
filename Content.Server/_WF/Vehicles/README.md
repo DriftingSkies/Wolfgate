@@ -11,10 +11,20 @@ Wolfgate's own ride-on vehicles (`Content.Shared/Vehicle`: hoverbikes, janicarts
 base layer is renamed `RMCVehicle*` so the two cannot clash.
 
 Players walk up to a vehicle's doorway and use it to go in, sit in a seat to drive or man a gun, steer with the move keys,
-and use the horn, spotlight and overcharge button while driving. Leaving puts you on free floor you can walk to from the
+and use the horn, spotlight and overcharge button while driving. The driver turns the view outside with the camera keys
+(the four-way drive follows the turned view), coming inside turns the view to the interior's north, and the driver's seat
+carries the vehicle's mass scanner (`WFVehicleScannerSystem`): a HUD switch opens a radar that looks out from the
+vehicle, with its position and the world's map (`PlanetMap`: ground, water, roads and sites). A vehicle with someone alive inside takes their NPC
+factions and counts as a live target (`VehicleOccupantFactionSystem`, hooked into NPC target scoring and melee reach), so
+mobs hostile to the crew attack it, and an NPC's grudge against someone inside carries to the vehicle; empty, it
+belongs to nobody. NPCs with `WFVehicleBoarder` (wreck zombies, strangers) walk to the nearest doorway of an unlocked
+vehicle and climb in after the crew (`WFNpcBoardingSystem`), fight in the cabin and climb out again a few seconds after
+nobody they'd fight is left inside (a squatter, `leaves: false`, stays put); a locked one they attack from outside. A
+player or an NPC in a cabin counts for the NPC pause check as standing where the vehicle is, so a player inside wakes
+NPCs round the vehicle and an NPC who climbs in stays awake. Leaving puts you on free floor you can walk to from the
 hull, never behind a wall, a closed door or a deck edge; a vehicle walled in on every side keeps you inside. A prying tool
 on the vehicle opens the hardpoint window to fit or remove parts; a welder repairs them. A gunner picks a hardpoint in the
-seat's window or on the hotbar and aims with the cursor, and the turret turns to follow; rounds aimed at a point stop at
+seat's integrated weapon selector and aims with the cursor, and the turret turns to follow; rounds aimed at a point stop at
 the first wall they meet, and the guns are fed from the interior's ammo loader, which loads boxes of rounds into a gun's
 reserve. A vehicle smashes tables, lockers, fences, windows, unpowered doors and the like in its way (a heavier one goes
 through more; a ship's reinforced windows and external airlocks only a tank breaks) and runs over people at speed
@@ -47,7 +57,10 @@ map, refuses to leave the floor unless a handler of `VehicleOpenTileAttemptEvent
 smash through `TryGetSmashable`; crushing rules for Wolfgate's own tables, lockers and the like (`VehicleSmashRuleSystem`,
 `VehicleCrushingSystem`); falling through z-levels (`SharedVehicleFallSystem`, `VehicleFallSystem`); hardpoints, wheels,
 integrity and repair (`HardpointSystem`); interiors on private maps with doorways, exit markers, locks and keys, driver and
-weapon seats and the outside view (`VehicleInteriorSystem`); the horn, spotlight, overcharge, demolition and crash effect;
+weapon seats and the outside view (`VehicleInteriorSystem`); the horn, spotlight, overcharge, demolition and crash effect; crash damage (`WFVehicleImpactDamageSystem`: a hit
+at top speed costs a light vehicle's frame 18% of its integrity, scaled by speed and weight class, plus its wheels, and
+the vehicle it hit too; a ship's hull impact deals a vehicle 3 times what it deals other things there;
+`wf.vehicle_impact_frame_fraction`, `wf.vehicle_hull_impact_multiplier`);
 turrets and weapon seats with their gun hooks (`VehicleTurretSystem`, `VehicleWeaponsSystem`); hardpoint ammo, bullet
 boxes, the ammo loader and port guns (`VehicleHardpointAmmoSystem`, `VehicleAmmoLoaderSystem`, `VehiclePortGunSystem`);
 the Bison's remote control, cargo bay and self-destruct (`CMUCargoVehicleSystem`); and `VehicleSafetySystem` (server),
@@ -55,9 +68,61 @@ which keeps interiors from cleanup and edits, moves occupants out when a vehicle
 ship sale and returns strays to the entry point. The new `CollisionGroup.Vehicle` bit (`1 << 30`) is on vehicle fixtures and
 on the blockers mappers use to fence areas.
 
+Sound uses RCSM audio (`Resources/Audio/_WF/Vehicles/RCSM`, sound lists in `Vehicles/Audio/rcsm_sounds.yml`).
+`WFVehicleAudioSystem` (client) plays each driven vehicle's engine from `WFVehicleEngineAudio`: start and stop, idle,
+drive and high-rev loops crossfaded and pitched by revs, a gearbox for wheeled vehicles, pull-away revs, track or tyre
+noise and turn-in-place squeals; and a turret's traverse from `WFTurretTraverseAudio`. `WFVehicleCombatAudioSystem`
+(server) plays a gun's distant boom and loader cycle (`WFGunExtraSounds`), hull hits and ricochets (`WFVehicleHitSound`),
+round ricochets off what they hit (`WFImpactRicochet`) and the blast, cook-off and fire of a destroyed vehicle
+(`WFVehicleDestroyedSound`).
+In the cabin, `WFVehicleCabinAudioSystem` (client) plays every sound within 24 m of the hull again, 9 dB quieter and dulled
+(the `Underwater` reverb), louder the nearer it is; `WFVehicleCabinHearingSystem` (server) keeps the hull in the cabin's
+view so those sounds reach the client. Anyone looking out through the hull hears the outside as it is.
+
 `Docs/_WF/Vehicles/design.md` has the decisions behind it, one note per area sits beside it, and
 `Docs/_WF/Vehicles/port-manifest.md` records where each file came from and under which licence. The import, namespace,
 map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespaces follow the folders (`design.md`).
+
+## Driving, fuel and electrical power
+
+The crew dashboard is two low beveled wings either side of the hotbar (both above it on a narrow screen) in the
+cockpit's retro/futurist skins. The left wing has the speed and RPM dials; the right has the fuel and battery bars and
+round icon buttons (key, eject, parking brake, headlights, horn, the seat's vehicle actions with their own icons, and
+tabs for the condition, weapons, ammunition and equipment panels, which open in a tray above it). Tooltips name each
+button. No floating window.
+Ignition ON sweeps all gauges to maximum, back to zero and into live readings; OFF parks the needles and hides
+readout text while preserving the dial faces and tick marks. FUEL LOW is amber below 20%, red below 10%, and flashes red below 5%. RPM follows the same rev
+model as the engine audio, including gear-change drops. Headlights project a forward cone from the front bumper.
+Swept driving commits pushes at each clearance step; a vehicle already overlapping another can back out along
+a separating path without moving deeper into it.
+
+Ground vehicles start with a full tank and the engine off. A vehicle bought at a purchase terminal comes with its
+key; otherwise use an unbound normal or blank vehicle key on an unlocked hull to pair it. The dashboard's key button
+does the next step each press: it puts the matching key in from anywhere on the driver (hands, pockets, belt, bag)
+and switches the accessories on, then starts the engine, then stops it and switches everything off. The eject button
+appears once it is off. The same key locks and unlocks the doors; duplicated keys work for ignition too.
+Use a container of welding fuel on the stopped vehicle to refill it. Idle engines consume fuel, with higher
+consumption while driving. Fuel exhaustion stops propulsion while the chassis coasts down.
+
+Releasing the throttle coasts; opposing throttle brakes before reversing. The HUD's parking brake applies
+stronger braking. Tires lose lateral grip in sharp fast turns, and vehicle impacts transfer momentum and can
+spin the struck chassis. Cleanable tread marks expire after three minutes, capped globally at 2,048 marks.
+The gunner readout shows vehicle speed, fuel, the selected weapon and reserve ammunition alongside the existing
+weapon-selection controls. Diesel tanks shift audibly; the PMC turbine retains continuous revs.
+
+The driver's **Accessories** position powers the cabin, headlights, emergency lights, horn and turret without
+starting the engine. **Ignition OFF** shuts down both the engine and its electrical bus. The internal battery
+only recharges from the running engine's alternator; idle electronics, cabin power consumers and lights drain it.
+Accessories disconnect at the starter reserve so a driver can still restart. A start consumes that reserve;
+repeated starts without enough recharge can flatten it. Battery charge is shown on both seat displays.
+
+Use an existing Wolfgate parachute pack on a vehicle to strap it on. It deploys on falling through a z-level,
+limits descent speed and protects the hull during landing. The pack returns at touchdown, and the normal
+vehicle falling rules resume. A packed chute can also be unstrapped using its existing removal verb.
+
+Ignition OFF keeps dial faces and parked needles visible while hiding their readouts.
+
+The seat HUD also hosts hull and component health, vehicle switches, weapon selection, stabilization and ammunition controls. Vehicle actions remain server-authorized but no longer populate the hotbar. Equipment windows used outside a vehicle remain available for maintenance.
 
 <!-- WOLFGATE-GENERATED START -->
 <!-- Generated by python Tools/_WF/Ci/modules.py --write. Don't edit by hand. -->
@@ -66,23 +131,42 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 
 ### Server
 
+- [`Content.Server/_WF/Vehicles/Audio/WFVehicleCabinHearingSystem.cs`](Audio/WFVehicleCabinHearingSystem.cs)
+- [`Content.Server/_WF/Vehicles/Audio/WFVehicleCombatAudioSystem.cs`](Audio/WFVehicleCombatAudioSystem.cs)
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Cargo.cs`](Bison/CMUCargoVehicleSystem.Cargo.cs)
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Control.cs`](Bison/CMUCargoVehicleSystem.Control.cs)
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.cs`](Bison/CMUCargoVehicleSystem.cs)
 - [`Content.Server/_WF/Vehicles/Bison/CMUCargoVehicleSystem.Destruct.cs`](Bison/CMUCargoVehicleSystem.Destruct.cs)
+- [`Content.Server/_WF/Vehicles/Core/ShuttleSystem.VehicleImpact.cs`](Core/ShuttleSystem.VehicleImpact.cs)
 - [`Content.Server/_WF/Vehicles/Core/VehicleChatRelaySystem.cs`](Core/VehicleChatRelaySystem.cs)
 - [`Content.Server/_WF/Vehicles/Core/VehicleEntranceItemSystem.cs`](Core/VehicleEntranceItemSystem.cs)
 - [`Content.Server/_WF/Vehicles/Core/VehicleRunoverScreamSystem.cs`](Core/VehicleRunoverScreamSystem.cs)
+- [`Content.Server/_WF/Vehicles/Core/WFVehicleElectricalSystem.cs`](Core/WFVehicleElectricalSystem.cs)
+- [`Content.Server/_WF/Vehicles/Core/WFVehicleEngineSystem.cs`](Core/WFVehicleEngineSystem.cs)
+- [`Content.Server/_WF/Vehicles/Core/WFVehicleImpactDamageSystem.cs`](Core/WFVehicleImpactDamageSystem.cs)
+- [`Content.Server/_WF/Vehicles/Core/WFVehicleTrackSystem.cs`](Core/WFVehicleTrackSystem.cs)
+- [`Content.Server/_WF/Vehicles/Core/WFVehicleTreadsEvent.cs`](Core/WFVehicleTreadsEvent.cs)
 - [`Content.Server/_WF/Vehicles/Crushing/VehicleCrushingSystem.cs`](Crushing/VehicleCrushingSystem.cs)
 - [`Content.Server/_WF/Vehicles/Falling/VehicleFallSystem.cs`](Falling/VehicleFallSystem.cs)
 - [`Content.Server/_WF/Vehicles/Hardpoint/VehicleHardpointVisualsSystem.cs`](Hardpoint/VehicleHardpointVisualsSystem.cs)
+- [`Content.Server/_WF/Vehicles/Npc/NPCCombatSystem.Vehicles.cs`](Npc/NPCCombatSystem.Vehicles.cs)
+- [`Content.Server/_WF/Vehicles/Npc/NPCUtilitySystem.Vehicles.cs`](Npc/NPCUtilitySystem.Vehicles.cs)
+- [`Content.Server/_WF/Vehicles/Npc/PathfindingSystem.Vehicles.cs`](Npc/PathfindingSystem.Vehicles.cs)
+- [`Content.Server/_WF/Vehicles/Npc/VehicleOccupantFactionSystem.cs`](Npc/VehicleOccupantFactionSystem.cs)
+- [`Content.Server/_WF/Vehicles/Npc/WFNpcBoardingSystem.cs`](Npc/WFNpcBoardingSystem.cs)
+- [`Content.Server/_WF/Vehicles/NPCSystem.Vehicles.cs`](NPCSystem.Vehicles.cs)
 - [`Content.Server/_WF/Vehicles/Safety/ShipyardOrganicsSearchEvent.cs`](Safety/ShipyardOrganicsSearchEvent.cs)
 - [`Content.Server/_WF/Vehicles/Safety/VehicleSafetySystem.cs`](Safety/VehicleSafetySystem.cs)
+- [`Content.Server/_WF/Vehicles/Scanner/RadarConsoleSystem.Vehicles.cs`](Scanner/RadarConsoleSystem.Vehicles.cs)
 - [`Content.Server/_WF/Vehicles/Viewport/VehicleViewportSystem.cs`](Viewport/VehicleViewportSystem.cs)
 - [`Content.Server/_WF/Vehicles/Weapons/VehicleTriggerSystem.cs`](Weapons/VehicleTriggerSystem.cs)
+- [`Content.Server/_WF/Vehicles/Weapons/WFTurretStabilizeSystem.cs`](Weapons/WFTurretStabilizeSystem.cs)
 
 ### Shared
 
+- [`Content.Shared/_WF/Vehicles/Audio/WFGunExtraSoundsComponent.cs`](../../../Content.Shared/_WF/Vehicles/Audio/WFGunExtraSoundsComponent.cs)
+- [`Content.Shared/_WF/Vehicles/Audio/WFTurretTraverseAudioComponent.cs`](../../../Content.Shared/_WF/Vehicles/Audio/WFTurretTraverseAudioComponent.cs)
+- [`Content.Shared/_WF/Vehicles/Audio/WFVehicleEngineAudioComponent.cs`](../../../Content.Shared/_WF/Vehicles/Audio/WFVehicleEngineAudioComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Base/RMCVehicleComponent.cs`](../../../Content.Shared/_WF/Vehicles/Base/RMCVehicleComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Base/RMCVehicleOperatorComponent.cs`](../../../Content.Shared/_WF/Vehicles/Base/RMCVehicleOperatorComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Base/RMCVehicleSystem.cs`](../../../Content.Shared/_WF/Vehicles/Base/RMCVehicleSystem.cs)
@@ -103,6 +187,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Core/VehicleExitSpotSystem.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleExitSpotSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleFrameDamageVisuals.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleFrameDamageVisuals.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleHornSystem.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleHornSystem.cs)
+- [`Content.Shared/_WF/Vehicles/Core/VehicleImpactCVars.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleImpactCVars.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorComponents.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorComponents.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorEvents.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorEvents.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorRoofComponent.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorRoofComponent.cs)
@@ -110,6 +195,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Demolition.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Demolition.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Eject.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Eject.cs)
+- [`Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Npc.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleInteriorSystem.Npc.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleLockComponents.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleLockComponents.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleLockSystem.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleLockSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleOverchargeComponent.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleOverchargeComponent.cs)
@@ -127,6 +213,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Core/VehicleViewToggleSystem.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleViewToggleSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleWheelSlotsComponent.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleWheelSlotsComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Core/VehicleWheelSystem.cs`](../../../Content.Shared/_WF/Vehicles/Core/VehicleWheelSystem.cs)
+- [`Content.Shared/_WF/Vehicles/Core/WFVehicleEngineComponent.cs`](../../../Content.Shared/_WF/Vehicles/Core/WFVehicleEngineComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Crushing/VehicleCrushingEvents.cs`](../../../Content.Shared/_WF/Vehicles/Crushing/VehicleCrushingEvents.cs)
 - [`Content.Shared/_WF/Vehicles/Crushing/VehicleSmashRulePrototype.cs`](../../../Content.Shared/_WF/Vehicles/Crushing/VehicleSmashRulePrototype.cs)
 - [`Content.Shared/_WF/Vehicles/Crushing/VehicleSmashRuleSystem.cs`](../../../Content.Shared/_WF/Vehicles/Crushing/VehicleSmashRuleSystem.cs)
@@ -134,6 +221,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Falling/SharedVehicleFallSystem.Landing.cs`](../../../Content.Shared/_WF/Vehicles/Falling/SharedVehicleFallSystem.Landing.cs)
 - [`Content.Shared/_WF/Vehicles/Falling/VehicleFallComponent.cs`](../../../Content.Shared/_WF/Vehicles/Falling/VehicleFallComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Falling/VehicleFellEvent.cs`](../../../Content.Shared/_WF/Vehicles/Falling/VehicleFellEvent.cs)
+- [`Content.Shared/_WF/Vehicles/Falling/WFVehicleParachuteSystem.cs`](../../../Content.Shared/_WF/Vehicles/Falling/WFVehicleParachuteSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Grid/Components/GridVehicleMoverComponent.cs`](../../../Content.Shared/_WF/Vehicles/Grid/Components/GridVehicleMoverComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Grid/Components/GridVehicleOperatorComponent.cs`](../../../Content.Shared/_WF/Vehicles/Grid/Components/GridVehicleOperatorComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Grid/GridVehicleGeometry.cs`](../../../Content.Shared/_WF/Vehicles/Grid/GridVehicleGeometry.cs)
@@ -153,6 +241,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointSlotSystem.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointSlotSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointSlotTypePrototype.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointSlotTypePrototype.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointSystem.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointSystem.cs)
+- [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointSystem.Restore.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointSystem.Restore.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointSystem.Slots.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointSystem.Slots.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointTypePrototype.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointTypePrototype.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/HardpointUi.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/HardpointUi.cs)
@@ -167,6 +256,8 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Hardpoint/VehicleSupportModifierComponents.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/VehicleSupportModifierComponents.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/VehicleTurretSlotIds.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/VehicleTurretSlotIds.cs)
 - [`Content.Shared/_WF/Vehicles/Hardpoint/VehicleWeaponSupportSystem.cs`](../../../Content.Shared/_WF/Vehicles/Hardpoint/VehicleWeaponSupportSystem.cs)
+- [`Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerComponent.cs`](../../../Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerComponent.cs)
+- [`Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerSystem.cs`](../../../Content.Shared/_WF/Vehicles/Scanner/WFVehicleScannerSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Turret/VehicleTurretAttachmentComponent.cs`](../../../Content.Shared/_WF/Vehicles/Turret/VehicleTurretAttachmentComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Turret/VehicleTurretComponent.cs`](../../../Content.Shared/_WF/Vehicles/Turret/VehicleTurretComponent.cs)
 - [`Content.Shared/_WF/Vehicles/Turret/VehicleTurretDirectionHelpers.cs`](../../../Content.Shared/_WF/Vehicles/Turret/VehicleTurretDirectionHelpers.cs)
@@ -206,9 +297,12 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Shared/_WF/Vehicles/Weapons/VehicleWeaponsSystem.cs`](../../../Content.Shared/_WF/Vehicles/Weapons/VehicleWeaponsSystem.cs)
 - [`Content.Shared/_WF/Vehicles/Weapons/VehicleWeaponsSystem.Ui.cs`](../../../Content.Shared/_WF/Vehicles/Weapons/VehicleWeaponsSystem.Ui.cs)
 - [`Content.Shared/_WF/Vehicles/Weapons/VehicleWeaponsUi.cs`](../../../Content.Shared/_WF/Vehicles/Weapons/VehicleWeaponsUi.cs)
+- [`Content.Shared/_WF/Vehicles/Weapons/WFTurretStabilizeRequestEvent.cs`](../../../Content.Shared/_WF/Vehicles/Weapons/WFTurretStabilizeRequestEvent.cs)
 
 ### Client
 
+- [`Content.Client/_WF/Vehicles/Audio/WFVehicleAudioSystem.cs`](../../../Content.Client/_WF/Vehicles/Audio/WFVehicleAudioSystem.cs)
+- [`Content.Client/_WF/Vehicles/Audio/WFVehicleCabinAudioSystem.cs`](../../../Content.Client/_WF/Vehicles/Audio/WFVehicleCabinAudioSystem.cs)
 - [`Content.Client/_WF/Vehicles/Falling/VehicleFallSystem.cs`](../../../Content.Client/_WF/Vehicles/Falling/VehicleFallSystem.cs)
 - [`Content.Client/_WF/Vehicles/Grid/GridVehicleMoverOverlay.cs`](../../../Content.Client/_WF/Vehicles/Grid/GridVehicleMoverOverlay.cs)
 - [`Content.Client/_WF/Vehicles/Grid/GridVehicleMoverSystem.cs`](../../../Content.Client/_WF/Vehicles/Grid/GridVehicleMoverSystem.cs)
@@ -225,6 +319,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Client/_WF/Vehicles/Ui/HardpointBoundUserInterface.cs`](../../../Content.Client/_WF/Vehicles/Ui/HardpointBoundUserInterface.cs)
 - [`Content.Client/_WF/Vehicles/Ui/HardpointMenu.cs`](../../../Content.Client/_WF/Vehicles/Ui/HardpointMenu.cs)
 - [`Content.Client/_WF/Vehicles/Ui/HardpointMenu.xaml`](../../../Content.Client/_WF/Vehicles/Ui/HardpointMenu.xaml)
+- [`Content.Client/_WF/Vehicles/Ui/ShuttleNavControl.VehicleScanner.cs`](../../../Content.Client/_WF/Vehicles/Ui/ShuttleNavControl.VehicleScanner.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderBoundUserInterface.cs`](../../../Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderBoundUserInterface.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.cs`](../../../Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.xaml`](../../../Content.Client/_WF/Vehicles/Ui/VehicleAmmoLoaderMenu.xaml)
@@ -232,6 +327,13 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.Client/_WF/Vehicles/Ui/VehicleWeaponsBoundUserInterface.cs`](../../../Content.Client/_WF/Vehicles/Ui/VehicleWeaponsBoundUserInterface.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleWeaponsMenu.cs`](../../../Content.Client/_WF/Vehicles/Ui/VehicleWeaponsMenu.cs)
 - [`Content.Client/_WF/Vehicles/Ui/VehicleWeaponsMenu.xaml`](../../../Content.Client/_WF/Vehicles/Ui/VehicleWeaponsMenu.xaml)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleDashboard.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleDashboard.cs)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleHudSystem.Controls.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleHudSystem.Controls.cs)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleHudSystem.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleHudSystem.cs)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleInstrumentStartup.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleInstrumentStartup.cs)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleLamp.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleLamp.cs)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleRadarBoundUserInterface.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleRadarBoundUserInterface.cs)
+- [`Content.Client/_WF/Vehicles/Ui/WFVehicleRoundButton.cs`](../../../Content.Client/_WF/Vehicles/Ui/WFVehicleRoundButton.cs)
 - [`Content.Client/_WF/Vehicles/Visuals/VehicleEyeRotationSystem.cs`](../../../Content.Client/_WF/Vehicles/Visuals/VehicleEyeRotationSystem.cs)
 - [`Content.Client/_WF/Vehicles/Visuals/VehicleFrameDamageVisualizerSystem.cs`](../../../Content.Client/_WF/Vehicles/Visuals/VehicleFrameDamageVisualizerSystem.cs)
 - [`Content.Client/_WF/Vehicles/Visuals/VehicleHardpointVisualizerSystem.cs`](../../../Content.Client/_WF/Vehicles/Visuals/VehicleHardpointVisualizerSystem.cs)
@@ -253,22 +355,30 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleSteeringTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/GridVehicleSteeringTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/HardpointPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/HardpointPrototypeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/HardpointTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/HardpointTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/NpcBoardingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/NpcBoardingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleAmmoTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleAmmoTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedDataTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedDataTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.Rounds.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleArmedWeaponsTest.Rounds.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCabinHearingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCabinHearingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleChatRelayTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleChatRelayTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleClientTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleClientTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCompatTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCompatTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCoreFeaturesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCoreFeaturesTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCrushingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleCrushingTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleDraggedCrateTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleDraggedCrateTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleEnhancementsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleEnhancementsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleEventProbeSystem.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleEventProbeSystem.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallBodyTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallBodyTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallRigs.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallRigs.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleFallTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunHookTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunHookTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunSpinupTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleGunSpinupTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleHeadlightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleHeadlightTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleIgnitionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleIgnitionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleInteriorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleInteriorTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleNpcAttackTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleNpcAttackTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehiclePathfindingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehiclePathfindingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRigs.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRigs.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRosterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRosterTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRunoverTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleRunoverTest.cs)
@@ -276,7 +386,10 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSeatPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSeatPrototypeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSmashRuleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSmashRuleTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSpawnDefaultsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSpawnDefaultsTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSpawnerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSpawnerTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSpriteTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleSpriteTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleTrackMarkTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleTrackMarkTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleTurretLockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleTurretLockTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Vehicles/VehicleWeaponsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Vehicles/VehicleWeaponsTest.cs)
 
 ### Unit tests
@@ -293,8 +406,10 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Resources/Prototypes/_WF/Vehicles/APC/armed.yml`](../../../Resources/Prototypes/_WF/Vehicles/APC/armed.yml)
 - [`Resources/Prototypes/_WF/Vehicles/APC/spp_apc_interiors.yml`](../../../Resources/Prototypes/_WF/Vehicles/APC/spp_apc_interiors.yml)
 - [`Resources/Prototypes/_WF/Vehicles/APC/vehicles.yml`](../../../Resources/Prototypes/_WF/Vehicles/APC/vehicles.yml)
+- [`Resources/Prototypes/_WF/Vehicles/Audio/rcsm_sounds.yml`](../../../Resources/Prototypes/_WF/Vehicles/Audio/rcsm_sounds.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Base/base_vehicle.yml`](../../../Resources/Prototypes/_WF/Vehicles/Base/base_vehicle.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Base/test_chassis.yml`](../../../Resources/Prototypes/_WF/Vehicles/Base/test_chassis.yml)
+- [`Resources/Prototypes/_WF/Vehicles/Base/track_marks.yml`](../../../Resources/Prototypes/_WF/Vehicles/Base/track_marks.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Bison/cargo_vehicle.yml`](../../../Resources/Prototypes/_WF/Vehicles/Bison/cargo_vehicle.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Bison/cargo_vehicle_actions.yml`](../../../Resources/Prototypes/_WF/Vehicles/Bison/cargo_vehicle_actions.yml)
 - [`Resources/Prototypes/_WF/Vehicles/categories.yml`](../../../Resources/Prototypes/_WF/Vehicles/categories.yml)
@@ -328,12 +443,14 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Resources/Prototypes/_WF/Vehicles/Interiors/markers.yml`](../../../Resources/Prototypes/_WF/Vehicles/Interiors/markers.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Interiors/vehicle_keys.yml`](../../../Resources/Prototypes/_WF/Vehicles/Interiors/vehicle_keys.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Interiors/viewports.yml`](../../../Resources/Prototypes/_WF/Vehicles/Interiors/viewports.yml)
+- [`Resources/Prototypes/_WF/Vehicles/Props/military_wrecks.yml`](../../../Resources/Prototypes/_WF/Vehicles/Props/military_wrecks.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles.yml`](../../../Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles2.yml`](../../../Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles2.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles3.yml`](../../../Resources/Prototypes/_WF/Vehicles/Props/prop_vehicles3.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Props/tyrargo.yml`](../../../Resources/Prototypes/_WF/Vehicles/Props/tyrargo.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Seats/armored_seats.yml`](../../../Resources/Prototypes/_WF/Vehicles/Seats/armored_seats.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Seats/seats.yml`](../../../Resources/Prototypes/_WF/Vehicles/Seats/seats.yml)
+- [`Resources/Prototypes/_WF/Vehicles/Spawners/vehicle_spawners.yml`](../../../Resources/Prototypes/_WF/Vehicles/Spawners/vehicle_spawners.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Tank/armed.yml`](../../../Resources/Prototypes/_WF/Vehicles/Tank/armed.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Tank/spp_tank_interiors.yml`](../../../Resources/Prototypes/_WF/Vehicles/Tank/spp_tank_interiors.yml)
 - [`Resources/Prototypes/_WF/Vehicles/Tank/tank_interiors.yml`](../../../Resources/Prototypes/_WF/Vehicles/Tank/tank_interiors.yml)
@@ -358,6 +475,7 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Resources/Locale/en-US/_WF/Vehicles/cmu-military.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/cmu-military.ftl)
 - [`Resources/Locale/en-US/_WF/Vehicles/core.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/core.ftl)
 - [`Resources/Locale/en-US/_WF/Vehicles/crushing.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/crushing.ftl)
+- [`Resources/Locale/en-US/_WF/Vehicles/enhancements.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/enhancements.ftl)
 - [`Resources/Locale/en-US/_WF/Vehicles/falling.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/falling.ftl)
 - [`Resources/Locale/en-US/_WF/Vehicles/hardpoints.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/hardpoints.ftl)
 - [`Resources/Locale/en-US/_WF/Vehicles/interiors.ftl`](../../../Resources/Locale/en-US/_WF/Vehicles/interiors.ftl)
@@ -561,6 +679,8 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Resources/Textures/_WF/Vehicles/Tiles/vehicle_interior/sterile_green.png`](../../../Resources/Textures/_WF/Vehicles/Tiles/vehicle_interior/sterile_green.png)
 - [`Resources/Textures/_WF/Vehicles/Tiles/vehicle_interior/with_bars.png`](../../../Resources/Textures/_WF/Vehicles/Tiles/vehicle_interior/with_bars.png)
 - [`Resources/Textures/_WF/Vehicles/Tiles/void.png`](../../../Resources/Textures/_WF/Vehicles/Tiles/void.png)
+- [`Resources/Textures/_WF/Vehicles/Tracks/attributions.yml`](../../../Resources/Textures/_WF/Vehicles/Tracks/attributions.yml)
+- [`Resources/Textures/_WF/Vehicles/Tracks/tread.rsi/`](../../../Resources/Textures/_WF/Vehicles/Tracks/tread.rsi/)
 - [`Resources/Textures/_WF/Vehicles/van.rsi/`](../../../Resources/Textures/_WF/Vehicles/van.rsi/)
 - [`Resources/Textures/_WF/Vehicles/Wallmounts/camera.rsi/`](../../../Resources/Textures/_WF/Vehicles/Wallmounts/camera.rsi/)
 - [`Resources/Textures/_WF/Vehicles/wytank.rsi/`](../../../Resources/Textures/_WF/Vehicles/wytank.rsi/)
@@ -586,6 +706,228 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
 - [`Resources/Audio/_WF/Vehicles/honk_3_ambulence.ogg`](../../../Resources/Audio/_WF/Vehicles/honk_3_ambulence.ogg)
 - [`Resources/Audio/_WF/Vehicles/honk_4_light.ogg`](../../../Resources/Audio/_WF/Vehicles/honk_4_light.ogg)
 - [`Resources/Audio/_WF/Vehicles/overdrive_activate.ogg`](../../../Resources/Audio/_WF/Vehicles/overdrive_activate.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/attributions.yml`](../../../Resources/Audio/_WF/Vehicles/RCSM/attributions.yml)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast_ammo.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/blast_ammo.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/burn1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/burn1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/burn2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/burn2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/cookoff1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/cookoff1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/cookoff2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/cookoff2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/cookoff3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/cookoff3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/crackers1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/crackers1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/crackers2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/crackers2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/crackers3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/crackers3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/debris1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/debris1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/debris2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/debris2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/debris3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/debris3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/fire1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/fire1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/fire2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/fire2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/layer1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/layer1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/layer2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/layer2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/stress1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/stress1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/stress2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/stress2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/destroyed/stress3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/destroyed/stress3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engine/drive_loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engine/drive_loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engine/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engine/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engine/idle_loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engine/idle_loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engine/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engine/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engine/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engine/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/tracks.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/bradley/tracks.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/centauro/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/tracks.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/challenger/tracks.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/tracks.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/leopard/tracks.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/m60/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/m60/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/m60/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/m60/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/m60/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/m60/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/m60/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/m60/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/m60/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/m60/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/m60/tracks.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/m60/tracks.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/patria/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/patria/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/patria/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/patria/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/patria/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/patria/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/patria/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/patria/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/patria/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/patria/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/rev1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/rev1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/rev2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/rev2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/rev3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/rev3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/rev4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/rev4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/shift1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/shift1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/shift2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/shift2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/shift3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/shift3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/shift4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/shift4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/ural/drive.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/ural/drive.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/ural/high.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/ural/high.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/ural/idle.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/ural/idle.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/ural/start.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/ural/start.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/engines/ural/stop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/engines/ural/stop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/horn/horn.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/horn/horn.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet6.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/bullet6.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/car_crash1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/car_crash1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/car_crash2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/car_crash2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/car_crash3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/car_crash3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/collide1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/collide1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/collide2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/collide2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/collide3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/collide3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/collide4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/collide4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/crash1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/crash1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/crash2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/crash2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/crash3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/crash3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/crush1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/crush1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/crush2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/crush2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/crush3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/crush3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico10.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico10.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico11.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico11.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico12.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico12.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico6.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico6.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico7.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico7.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico8.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico8.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico9.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico9.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/rico_shell4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_ap4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_far4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_frag4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_he1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_he1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_he2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_he2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_he3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/impacts/shell_he3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/ammo_door1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/ammo_door1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/ammo_door2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/ammo_door2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/ammo_door3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/ammo_door3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/breech_open1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/breech_open1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/breech_open2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/breech_open2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/breech_open3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/breech_open3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/ram1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/ram1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/ram2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/ram2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/ram3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/ram3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/round1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/round1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/round2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/round2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/round3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/round3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/round4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/round4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/stub1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/stub1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/stub2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/stub2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/loading/stub3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/loading/stub3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/pivot_creak_loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/pivot_creak_loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/rattle1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/rattle1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/rattle2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/rattle2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/rattle3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/rattle3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/screech1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/screech1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/screech2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/screech2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/screech3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/screech3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/screech4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/screech4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/screech5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/screech5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/tracks/tracks_stop4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/electric_loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/electric_loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/electric_start1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/electric_start1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/electric_start2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/electric_start2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/electric_stop1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/electric_stop1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/electric_stop2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/electric_stop2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_start1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_start1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_start2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_start2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_stop1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_stop1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_stop2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/hydraulic_stop2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/loop.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/loop.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/start1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/start1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/start2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/start2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/start3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/start3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/stop1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/stop1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/stop2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/stop2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/turret/stop3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/turret/stop3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/cannon_far4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon_far1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon_far1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon_far2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon_far2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon_far3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/heavy_cannon_far3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/mg1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/mg1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/mg2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/mg2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/mg3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/mg3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/mg4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/mg4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/mg5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/mg5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/reload1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/reload1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/reload2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/reload2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/reload3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/reload3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/reload4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/reload4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/reload5.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/reload5.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/smoke1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/smoke1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/smoke2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/smoke2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/smoke3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/smoke3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/tank_fire_122mm.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/tank_fire_122mm.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far3.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far3.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far4.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_cannon_far4.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_mech1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_mech1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_mech2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/weapons/ww2_mech2.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/wheels/brake.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/wheels/brake.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/wheels/road.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/wheels/road.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/wheels/skid.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/wheels/skid.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/wheels/suspension1.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/wheels/suspension1.ogg)
+- [`Resources/Audio/_WF/Vehicles/RCSM/wheels/suspension2.ogg`](../../../Resources/Audio/_WF/Vehicles/RCSM/wheels/suspension2.ogg)
 - [`Resources/Audio/_WF/Vehicles/sound_vehicles_humvee_driving.ogg`](../../../Resources/Audio/_WF/Vehicles/sound_vehicles_humvee_driving.ogg)
 - [`Resources/Audio/_WF/Vehicles/sound_vehicles_humvee_horn.ogg`](../../../Resources/Audio/_WF/Vehicles/sound_vehicles_humvee_horn.ogg)
 - [`Resources/Audio/_WF/Vehicles/tank_driving.ogg`](../../../Resources/Audio/_WF/Vehicles/tank_driving.ogg)
@@ -669,7 +1011,9 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - passes the flag on
   - takes the click-through flag of the overload above
   - a click passes through the cabin roof or wall the player stands inside
+- [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): a vehicle scanner marks the vehicle and its position.
 - [`Content.Client/Sprite/SpriteFadeSystem.cs`](../../../Content.Client/Sprite/SpriteFadeSystem.cs): roofs the player stands under still fade
+- [`Content.Client/UserInterface/Systems/Actions/ActionUIController.cs`](../../../Content.Client/UserInterface/Systems/Actions/ActionUIController.cs): Keep panel-only vehicle controls out of the action hotbar.
 - [`Content.Client/Weapons/Ranged/Systems/GunSystem.cs`](../../../Content.Client/Weapons/Ranged/Systems/GunSystem.cs)
   - an operator on another map aims relative to the grid under the gun, which is on the map the cursor is over
   - a mounted gun's flash follows the gun at its muzzle, not an operator on another map
@@ -680,6 +1024,19 @@ map conversion and YAML translation scripts are in `Tools/_WF/Vehicles`; namespa
   - a listener may see the speech bubble on another entity
   - bubbleSource in place of source
   - BubbleSource, the entity this listener sees the bubble on
+- [`Content.Server/NPC/Pathfinding/PathfindingSystem.Grid.cs`](../../NPC/Pathfinding/PathfindingSystem.Grid.cs)
+  - a vehicle leaving a chunk frees the tiles its hull blocked there
+  - a vehicle blocks every tile under its hull
+- [`Content.Server/NPC/Systems/NPCCombatSystem.Melee.cs`](../../NPC/Systems/NPCCombatSystem.Melee.cs): a vehicle is in reach once its hull is.
+- [`Content.Server/NPC/Systems/NPCSystem.cs`](../../NPC/Systems/NPCSystem.cs)
+  - an NPC in a vehicle's cabin is where the vehicle is too, as players are, or he sleeps on boarding.
+  - a player in a vehicle's cabin is where the vehicle is.
+- [`Content.Server/NPC/Systems/NPCUtilitySystem.cs`](../../NPC/Systems/NPCUtilitySystem.cs): an occupied vehicle is a live target.
+- [`Content.Server/Shuttles/Systems/RadarConsoleSystem.cs`](../../Shuttles/Systems/RadarConsoleSystem.cs)
+  - carried in or out of a vehicle.
+  - needed for MapUidChangedEvent.
+  - a vehicle's scanner looks out from the vehicle, not from the seat inside it.
+- [`Content.Server/Shuttles/Systems/ShuttleSystem.Impact.cs`](../../Shuttles/Systems/ShuttleSystem.Impact.cs): a hull hitting a vehicle hurts it more
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers
 - [`Content.Shared/Vehicle/SharedVehicleSystem.cs`](../../../Content.Shared/Vehicle/SharedVehicleSystem.cs)
   - only check for a free hand; a later attempt handler (folded) can still cancel

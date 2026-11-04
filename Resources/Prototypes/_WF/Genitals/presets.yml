@@ -5,7 +5,7 @@
 - type: genitalPreset
   id: WFGenitalPresetDefault
   fallback: true
-  explicitFallback: [ Human, Dwarf, Goblin, Oni, Diona, SlimePerson, Synth, Protogen, Thaven, Shadekin ]
+  explicitFallback: [ Human, Dwarf, Goblin, Oni, Diona, SlimePerson, Synth, IPC, Protogen, Thaven, Shadekin ]
   male:
     penis: { shape: WFGenitalShapePenisHuman, lengthCm: 15 }
     testicles: { type: External, size: 2 }

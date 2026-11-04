@@ -106,6 +106,7 @@ public sealed partial class XenoEggSystem : EntitySystem
         SubscribeLocalEvent<XenoAttachedOvipositorComponent, XenoConstructionRangeEvent>(OnXenoConstructionRange);
         SubscribeLocalEvent<XenoAttachedOvipositorComponent, XenoRestAttemptEvent>(OnXenoRest);
 
+        SubscribeLocalEvent<XenoEggComponent, MapInitEvent>(OnXenoEggMapInit);
         SubscribeLocalEvent<XenoEggComponent, AfterAutoHandleStateEvent>(OnXenoEggAfterState);
         SubscribeLocalEvent<XenoEggComponent, GettingPickedUpAttemptEvent>(OnXenoEggPickedUpAttempt);
         SubscribeLocalEvent<XenoEggComponent, UseInHandEvent>(OnXenoEggUseInHand);
@@ -221,6 +222,15 @@ public sealed partial class XenoEggSystem : EntitySystem
     private void OnXenoRest(Entity<XenoAttachedOvipositorComponent> ent, ref XenoRestAttemptEvent args)
     {
         args.Cancelled = true;
+    }
+
+    private void OnXenoEggMapInit(Entity<XenoEggComponent> egg, ref MapInitEvent args)
+    {
+        if (!egg.Comp.Planted)
+            return;
+
+        egg.Comp.Cultivated = true;
+        SetEggState(egg, XenoEggState.Grown);
     }
 
     private void OnXenoEggAfterState(Entity<XenoEggComponent> egg, ref AfterAutoHandleStateEvent args)

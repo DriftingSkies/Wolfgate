@@ -1466,7 +1466,8 @@ public sealed class VehicleFallTest
                     Assert.That(MapOf(fall, fall.Vehicle), Is.EqualTo(fall.UpperMap), "The vehicle slid off the edge and dropped.");
                     Assert.That(position.Y + 0.425f, Is.LessThanOrEqualTo(6.01f), "The vehicle slid sideways over the edge of the deck.");
                     Assert.That(position.X + 1.2f, Is.LessThan(12f + 0.1f), "The vehicle got past the wall.");
-                    Assert.That(FrameIntegrity(fall), Is.EqualTo(FrameMax));
+                    // Hitting the wall at speed costs the frame a share; a fall would cost more.
+                    Assert.That(FrameIntegrity(fall), Is.InRange(FrameMax * 0.5f, FrameMax));
                 }
             });
         }

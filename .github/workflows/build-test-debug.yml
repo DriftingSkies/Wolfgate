@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     if: github.event.pull_request.draft == false
-    # WOLFGATE(Ci) START: split the integration tests over three runners; each builds and runs one shard
+    # WOLFGATE(Ci) START: split the integration tests over four runners; each builds and runs one shard
     # strategy:
     #   matrix:
     #     os: [ubuntu-latest]
@@ -25,12 +25,15 @@ jobs:
       matrix:
         # Pinned: on ubuntu-26.04 the cockpit and console label-width tests fail with the same code.
         os: [ubuntu-24.04]
-        shard: [ wf-heavy, wf-rest, core ]
+        shard: [ wf-heavy, wf-planets, wf-rest, core ]
         include:
         - shard: wf-heavy
           where: "test =~ 'Tests[.]_WF[.](Wolfmed|Encounters|NpcCrew|Vehicles)[.]'"
+        # Whole worlds built per test: on one runner with the rest they ran it out of memory.
+        - shard: wf-planets
+          where: "test =~ 'Tests[.]_WF[.](Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw)[.]'"
         - shard: wf-rest
-          where: "test =~ 'Tests[.]_WF[.]' && test !~ 'Tests[.]_WF[.](Wolfmed|Encounters|NpcCrew|Vehicles|RoundSetup)[.]' && test !~ ShipyardTest"
+          where: "test =~ 'Tests[.]_WF[.]' && test !~ 'Tests[.]_WF[.](Wolfmed|Encounters|NpcCrew|Vehicles|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw)[.]' && test !~ ShipyardTest"
         # Upstream and other forks, plus RoundSetup; Content.Tests runs here too.
         - shard: core
           where: "(test !~ 'Tests[.]_WF[.]' || test =~ 'Tests[.]_WF[.]RoundSetup[.]') && test !~ ShipyardTest"

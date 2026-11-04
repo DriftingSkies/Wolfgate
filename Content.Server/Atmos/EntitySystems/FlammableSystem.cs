@@ -482,6 +482,9 @@ namespace Content.Server.Atmos.EntitySystems
             }
             _processingFireEvents.Clear(); // WOLFGATE(Performance): clear the processed buffer
 
+            if (WfSkipSweep()) // WOLFGATE(Dormancy): the once-a-second sweep runs ten times a second, not every tick.
+                return;
+
             var curTime = _timing.CurTime;
 
             // TODO: This needs cleanup to take off the crust from TemperatureComponent and shit.

@@ -50,6 +50,40 @@
           - VehicleWheelItem
   - type: StaticPrice
     price: 80000
+  - type: VehicleSound
+    runningSound: null
+    collisionSound:
+      collection: WFRcsmCollide
+    mobCollisionSound:
+      collection: WFRcsmCrush
+    crashSound:
+      collection: WFRcsmCrash
+    hornSound: /Audio/_WF/Vehicles/RCSM/horn/horn.ogg
+    hornCooldown: 2
+  - type: WFVehicleEngineAudio
+    gears: 0
+    startSound: /Audio/_WF/Vehicles/RCSM/engine/start.ogg
+    stopSound: /Audio/_WF/Vehicles/RCSM/engine/stop.ogg
+    idleLoop: /Audio/_WF/Vehicles/RCSM/engine/idle_loop.ogg
+    driveLoop: /Audio/_WF/Vehicles/RCSM/engine/drive_loop.ogg
+    highLoop: /Audio/_WF/Vehicles/RCSM/engine/high.ogg
+    revSound:
+      collection: WFRcsmEngineRev
+    tracksLoop: /Audio/_WF/Vehicles/RCSM/tracks/tracks_loop.ogg
+    tracksStopSound:
+      collection: WFRcsmTracksStop
+    pivotLoop: /Audio/_WF/Vehicles/RCSM/tracks/pivot_creak_loop.ogg
+    pivotScreechSound:
+      collection: WFRcsmPivotScreech
+  - type: WFVehicleHitSound
+    lightHitSound:
+      collection: WFRcsmHitBullet
+    heavyHitSound:
+      collection: WFRcsmHitShell
+    lightRicochetSound:
+      collection: WFRcsmRicochet
+    heavyRicochetSound:
+      collection: WFRcsmShellRicochet
 
 # The FV150 Hobelar. A smaller hull than the Longstreet, its own turret and treads, and slots that take only TWE parts
 # (HardpointCompatibilityTWETank). CMU also declared an armor slot with no armor art and nothing that fits it, which is left out.
@@ -60,6 +94,21 @@
   description: The FV150 ‘Hobelar’ Light Cavalry Tank is a 6m long, 6m wide, 8m tall support vehicle for the RMC. Originally procured for the Special Air Service operations as an Airborne tank, this model has been made into a support vehicle for the Royal Marines thanks to a change of symbol and technological design. Entrance at the back.
   suffix: Drivable, Tank, CMU, TWE
   components:
+  - type: WFVehicleEngineAudio
+    startSound: /Audio/_WF/Vehicles/RCSM/engines/challenger/start.ogg
+    stopSound: /Audio/_WF/Vehicles/RCSM/engines/challenger/stop.ogg
+    idleLoop: /Audio/_WF/Vehicles/RCSM/engines/challenger/idle.ogg
+    driveLoop: /Audio/_WF/Vehicles/RCSM/engines/challenger/drive.ogg
+    highLoop: /Audio/_WF/Vehicles/RCSM/engines/challenger/high.ogg
+    revSound:
+      collection: WFRcsmEngineRev
+    tracksLoop: /Audio/_WF/Vehicles/RCSM/engines/challenger/tracks.ogg
+    startDelay: 3
+    tracksStopSound:
+      collection: WFRcsmTracksStop
+    pivotLoop: /Audio/_WF/Vehicles/RCSM/tracks/pivot_creak_loop.ogg
+    pivotScreechSound:
+      collection: WFRcsmPivotScreech
   - type: Fixtures
     fixtures:
       world:
@@ -173,6 +222,85 @@
   description: An unarmed engineering vehicle built on the chassis of a Longstreet Tank, fitted with a reinforced plow, built for hauling personnel/cargo and clearing enemy defenses without interrupting the flow of combat.
   suffix: Drivable, Tank, CMU, AEV, Unarmed
   components:
+  - type: WFMilitaryVehicle
+  - type: VehicleSound
+    runningSound: null
+    collisionSound:
+      collection: WFRcsmCollide
+    mobCollisionSound:
+      collection: WFRcsmCrush
+    crashSound:
+      collection: WFRcsmCrash
+    hornSound: /Audio/_WF/Vehicles/RCSM/horn/horn.ogg
+    hornCooldown: 2
+  - type: WFVehicleEngineAudio
+    startSound: /Audio/_WF/Vehicles/RCSM/engines/m60/start.ogg
+    stopSound: /Audio/_WF/Vehicles/RCSM/engines/m60/stop.ogg
+    idleLoop: /Audio/_WF/Vehicles/RCSM/engines/m60/idle.ogg
+    driveLoop: /Audio/_WF/Vehicles/RCSM/engines/m60/drive.ogg
+    highLoop: /Audio/_WF/Vehicles/RCSM/engines/m60/high.ogg
+    revSound:
+      collection: WFRcsmEngineRev
+    tracksLoop: /Audio/_WF/Vehicles/RCSM/engines/m60/tracks.ogg
+    startDelay: 4
+    tracksStopSound:
+      collection: WFRcsmTracksStop
+    pivotLoop: /Audio/_WF/Vehicles/RCSM/tracks/pivot_creak_loop.ogg
+    pivotScreechSound:
+      collection: WFRcsmPivotScreech
+  - type: WFVehicleHitSound
+    lightHitSound:
+      collection: WFRcsmHitBullet
+    lightRicochetSound:
+      collection: WFRcsmRicochet
+    heavyHitSound:
+      collection: WFRcsmHitShell
+    heavyRicochetSound:
+      collection: WFRcsmShellRicochet
+  - type: WFVehicleDestroyedSound
+    sequence:
+    - sound:
+        collection: WFRcsmVehicleBlastAmmo
+        params:
+          volume: 6
+          maxDistance: 40
+    - sound:
+        collection: WFRcsmVehicleBlastLayer
+        params:
+          volume: 4
+          maxDistance: 30
+    - delay: 0.5
+      sound:
+        collection: WFRcsmVehicleDebris
+    - delay: 1.6
+      sound:
+        collection: WFRcsmVehicleCookoff
+        params:
+          maxDistance: 24
+    - delay: 3
+      sound:
+        collection: WFRcsmVehicleCrackers
+    - delay: 4.2
+      sound:
+        collection: WFRcsmVehicleBurn
+        params:
+          maxDistance: 16
+    - delay: 6
+      sound:
+        collection: WFRcsmVehicleCookoff
+        params:
+          volume: -3
+          maxDistance: 24
+    - delay: 8
+      sound:
+        collection: WFRcsmVehicleFire
+        params:
+          maxDistance: 14
+    - delay: 11
+      sound:
+        collection: WFRcsmVehicleFireStress
+        params:
+          maxDistance: 12
   - type: VehiclePlowChassis
     structureDamageMultiplier: 4
     poweredDemolitionDamagePerSecond: 2000

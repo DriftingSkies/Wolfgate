@@ -1,0 +1,627 @@
+# Xenoborg module weapons ported from wizden. IDs are wizden's.
+
+# Burst fire laser (heavy)
+
+- type: entity
+  parent: WeaponAdvancedLaser
+  id: WeaponBurstFireLaserXenoborg
+  name: xenoborg burst fire laser
+  description: An alien weapon, channelling a burst-fire laser through a prism, causing targets to burst into fire.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Battery/xenoborg_burstfire.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-unshaded-4
+      map: [ "enum.GunVisualLayers.MagUnshaded" ]
+      shader: unshaded
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 60
+  - type: Gun
+    soundGunshot:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Gunshots/xenofirebeam.ogg
+    selectedMode: Burst
+    availableModes:
+    - Burst
+    minAngle: 2
+    maxAngle: 30
+    angleIncrease: 3
+    angleDecay: 15
+    cameraRecoilScalar: .25
+  - type: HitscanBatteryAmmoProvider
+    proto: XenoborgFireLaser
+    fireCost: 100
+
+- type: entity
+  parent: RedMediumLaser
+  id: XenoborgFireLaser
+  name: xenoborg fire laser ray
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicDamage
+    damage:
+      types:
+        Heat: 12
+  - type: HitscanBasicVisuals
+    muzzleFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: muzzle_xeno_fire
+    travelFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: beam_xeno_fire
+    impactFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: impact_xeno_fire
+  - type: HitscanIgnite
+    igniteChance: 0.75
+
+# Blue laser beams for Mono's xenoborg laser gun and cannon (wizden#45168); damage stays Mono's.
+
+- type: entity
+  parent: RedMediumLaser
+  id: XenoborgLaser
+  name: blue amplified laser ray
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicVisuals
+    muzzleFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: muzzle_beam_xenoborg
+    travelFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: beam_xenoborg
+    impactFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: impact_beam_xenoborg
+
+- type: entity
+  parent: RedHeavyLaser
+  id: XenoborgHeavyLaser
+  name: blue high-energy laser ray
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicVisuals
+    muzzleFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: muzzle_beam_xenoborg_heavy
+    travelFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: beam_xenoborg_heavy
+    impactFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: impact_beam_xenoborg_heavy
+
+# Guided missile launcher and range finder (heavy)
+
+- type: entity
+  parent: BaseWeaponBattery
+  id: WeaponRangeFinderXenoborg
+  name: xenoborg range finder
+  description: Paints a target for the linked guided missile launcher.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Battery/xenoborg_range_finder.rsi
+    layers:
+    - state: icon
+      map: [ "enum.GunVisualLayers.Base" ]
+  - type: Item
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Battery/xenoborg_range_finder.rsi
+  # wizden fires for free; Mono's battery guns divide by the fire cost, so it's 1 on a self-recharging cell instead.
+  - type: Battery
+    maxCharge: 100
+    startingCharge: 100
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 20
+  - type: HitscanBatteryAmmoProvider
+    proto: RangeLaser
+    fireCost: 1
+  - type: EyeCursorOffset
+    maxOffset: 3
+    pvsIncrease: 0.3
+  - type: CursorOffsetInHand
+  - type: TargetFinder
+  - type: DeviceLinkSource
+    ports:
+    - TargetSource
+  - type: AutoLinkTransmitter
+    channel: XenoborgGuidedMissileLauncher
+
+- type: entity
+  parent: BasicHitscan
+  id: RangeLaser
+  name: green laser
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TargetFinderHitscan
+  - type: HitscanBasicVisuals
+    muzzleFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: muzzle_laser_pointer
+    travelFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: laser_pointer
+    impactFlash:
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: impact_laser_pointer
+
+- type: entity
+  parent: BaseItem
+  id: WeaponGuidedMissileLauncherXenoborg
+  name: XB GML-78 # Xenoborg Guided Missile Launcher 78
+  description: A guided missile launcher. Its missiles chase whatever the linked range finder last painted.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Launchers/xenoborg_guided_missile_launcher.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-3
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Appearance
+  - type: MagazineVisuals
+    magState: mag
+    steps: 4
+    zeroVisible: false
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+        ents: []
+  - type: Gun
+    fireRate: 2
+    projectileSpeed: 6 # same as the missile's chasing speed, or untargeted missiles fly faster
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/rpgfire.ogg
+  - type: BallisticAmmoProvider
+    proto: BulletGuidedXenoborgMissile
+    capacity: 3
+    cycleable: false
+  - type: BallisticAmmoSelfRefiller
+    autoRefillRate: 17s # takes a while to get a new one
+  - type: TargetAssign
+  - type: DeviceLinkSink
+    ports:
+    - TargetReceiver
+  - type: AutoLinkReceiver
+    channel: XenoborgGuidedMissileLauncher
+
+- type: entity
+  parent: BulletRocket
+  id: BulletGuidedXenoborgMissile
+  name: guided xenoborg missile
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/xenoborg_guided_missile.rsi
+    layers:
+    - state: base
+    - state: tip
+      shader: unshaded
+    - state: fire
+      shader: unshaded
+  - type: PointLight
+    radius: 3.5
+    color: magenta
+    energy: 0.5
+  - type: TimedDespawn
+    lifetime: 15
+  - type: Explosive
+    explosionType: Minibomb
+    totalIntensity: 50
+    intensitySlope: 7
+    canCreateVacuum: false
+  - type: ChasingWalk
+    speed: 6
+    stopAtTarget: false
+    impulseInterval: 0.1
+    maxAngleVectorChangePerImpulse: 10
+    rotateWithImpulse: true
+
+# Demolition rocket launcher (heavy)
+
+- type: entity
+  parent: BaseItem
+  id: WeaponRocketLauncherXenoborg
+  name: XB MRL-97-D # Xenoborg Multi Rocket Launcher 97 D (Demolition)
+  description: An alien rocket launcher fitted with special demolition rockets.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Launchers/xb_mlr.rsi
+    layers:
+    - state: mlr
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-6
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+        ents: []
+  - type: Gun
+    burstFireRate: 12.5
+    selectedMode: Burst
+    availableModes:
+    - Burst
+    shotsPerBurst: 6
+    minAngle: 10
+    angleIncrease: 10
+    maxAngle: 50
+    projectileSpeed: 12.5
+    soundGunshot:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Gunshots/rocket1.ogg
+  - type: BallisticAmmoProvider
+    capacity: 6
+    proto: BulletXenoborgMechadermisRocket
+    cycleable: false
+    soundInsert:
+      path: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+  - type: BallisticAmmoSelfRefiller
+    autoRefillRate: 17s
+  - type: MagazineVisuals
+    magState: mag
+    steps: 7
+    zeroVisible: false
+  - type: Appearance
+
+- type: entity
+  parent: BaseBulletTrigger
+  id: BulletXenoborgMechadermisRocket
+  name: mechadermis rocket
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/projectiles2.rsi
+    layers:
+    - state: mechadermis-missile-base
+    - state: mechadermis-missile-unshaded
+      shader: unshaded
+  - type: TimedDespawn
+    lifetime: 10
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    explosionType: XenoborgAntiStructureExplosion
+    totalIntensity: 15.0
+    intensitySlope: 1.6
+    maxIntensity: 1.8
+    maxTileBreak: 0
+  - type: SineWaveAnimation
+    xWave:
+      amplitude: 0.4
+      frequency: 17
+      phaseOffset: null
+  - type: PointLight
+    radius: 2.5
+    color: magenta
+    energy: 0.4
+
+# Nanite gun (engineer): hurts the living, repairs borgs
+
+- type: entity
+  parent: BaseItem
+  id: WeaponNaniteGun
+  name: nanite gun
+  description: A strange gun that shoots nanites encased in crystal shards that heals borgs but hurts fleshy inferior beings.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Rifles/nanite.rsi
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-unshaded-5
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: AmmoCounter
+  - type: Gun
+    fireRate: 0.9
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Gunshots/nanite_gun.ogg
+    soundEmpty:
+      path: /Audio/Weapons/Guns/Empty/empty.ogg
+  - type: BallisticAmmoProvider
+    capacity: 5
+    proto: CartridgeNanite
+    soundInsert:
+      path: /Audio/Weapons/Guns/MagIn/shotgun_insert.ogg
+    cycleable: false # No synthesizing ammo
+  - type: BallisticAmmoSelfRefiller
+    autoRefillRate: 9s
+    affectedByEmp: true
+  - type: StaticPrice
+    price: 5000
+  - type: MagazineVisuals
+    magState: mag-unshaded
+    steps: 6
+    zeroVisible: true
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: _WF/Xenoborgs/Interface/ItemStatus/Crystals/not_spent.png
+    spentAmmoSprite: _WF/Xenoborgs/Interface/ItemStatus/Crystals/spent.png
+    numberOfRows: 1
+  - type: Appearance
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+        ents: [ ]
+
+- type: entity
+  parent: BaseCartridge
+  id: CartridgeNanite
+  name: nanite crystal
+  description: A high-power nanite crystal used by xenoborgs.
+  components:
+  - type: CartridgeAmmo
+    muzzleFlash: MuzzleFlashEffectNanite
+    proto: BulletNanite
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Ammunition/Casings/nanite_casing.rsi
+    layers:
+    - map: ["NaniteCasing"]
+      state: base
+  - type: RandomSprite
+    available:
+    - NaniteCasing:
+        base: ""
+        base1: ""
+        base2: ""
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  id: MuzzleFlashEffectNanite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 0.4
+  - type: Sprite
+    drawdepth: BelowMobs
+    offset: -.25, 0
+    layers:
+    - shader: unshaded
+      map: ["enum.EffectLayers.Unshaded"]
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/nanite_crystal.rsi
+      state: muzzle_nanite
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu
+  - type: AnimationPlayer
+
+- type: entity
+  id: BulletImpactEffectNanite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 0.25
+  - type: Sprite
+    drawdepth: Effects
+    layers:
+    - shader: unshaded
+      map: ["enum.EffectLayers.Unshaded"]
+      sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/nanite_crystal.rsi
+      state: impact_nanite
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  parent: BaseBullet
+  id: BulletNanite
+  categories: [ HideSpawnMenu ]
+  name: nanite crystal
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Projectiles/nanite_crystal.rsi
+    layers:
+    - state: nanite
+      shader: unshaded
+  - type: Projectile
+    impactEffect: BulletImpactEffectNanite
+    damage:
+      types:
+        Piercing: 10
+        Poison: 5
+    soundHit:
+      collection: NaniteBulletImpact
+  - type: ComplexProjectileDamage
+    damageOptions:
+    - damage:
+        types:
+          Blunt: -20
+          Piercing: -20
+          Slash: -20
+          Heat: -20
+          Shock: -20
+      whitelist:
+        components:
+        - BorgChassis
+
+- type: soundCollection
+  id: NaniteBulletImpact
+  files:
+  - /Audio/_WF/Xenoborgs/Weapons/Guns/Hits/nanite_hit1.ogg
+  - /Audio/_WF/Xenoborgs/Weapons/Guns/Hits/nanite_hit2.ogg
+  - /Audio/_WF/Xenoborgs/Weapons/Guns/Hits/nanite_hit3.ogg
+
+# Oil gun (engineer): throws ampoules of xenoborg oil
+
+- type: entity
+  parent: BaseItem
+  id: WeaponOilGun
+  name: oil gun
+  description: This gun launches ampoules of xenoborg oil to make organics slip or become flammable if hit with a direct hit. It comes with a tiny flame to light them on fire!
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Basic/oilgun.rsi
+    layers:
+    - state: icon
+    - state: flame
+      shader: unshaded
+    - state: mag-5
+      map: ["enum.GunVisualLayers.Mag"]
+    - state: reloading
+      map: ["reloading"]
+      visible: false
+  - type: MagazineVisuals
+    magState: mag
+    steps: 6
+    zeroVisible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.AmmoVisuals.IsFull:
+        reloading:
+          True: {visible: false}
+          False: {visible: true}
+  - type: Item
+    size: Large
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: _WF/Xenoborgs/Interface/ItemStatus/XenoborgOilAmpoule/not_spent.png
+    spentAmmoSprite: _WF/Xenoborgs/Interface/ItemStatus/XenoborgOilAmpoule/spent.png
+  - type: AmmoCounter
+  - type: Gun
+    fireRate: 5
+    projectileSpeed: 30
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Gunshots/magnetic_shot.ogg
+    soundEmpty:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Empty/empty_beep.ogg
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 2.5
+    rechargeSound:
+      path: /Audio/Weapons/Guns/MagIn/kinetic_reload.ogg
+  - type: BasicEntityAmmoProvider
+    proto: XenoborgOilChemistryAmpoule
+    capacity: 5
+    count: 5
+  - type: IgniteOnMeleeHit
+  - type: MeleeWeapon
+    wideAnimationRotation: -90
+    damage:
+      types:
+        Heat: 8
+    soundHit:
+      path: /Audio/Weapons/Guns/Hits/energy_meat1.ogg
+      params:
+        variation: 0.250
+        volume: -10
+    soundNoDamage:
+      path: /Audio/Weapons/Guns/Hits/energy_meat1.ogg
+      params:
+        variation: 0.250
+        volume: -12
+  - type: AltFireMelee
+    attackType: Heavy
+  - type: IgnitionSource
+    ignited: true
+    temperature: 700
+  - type: PointLight
+    radius: 1.5
+    color: lightblue
+
+# Tile gun (engineer): fires floor tiles, loaded by clicking tiles with it
+
+- type: entity
+  parent: BaseItem
+  id: WeaponTileGun
+  name: tile gun
+  description: A strange gun that shoots tiles. Shoot them with the floor!
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Basic/tilegun.rsi
+    layers:
+    - state: icon
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: MagazineVisuals
+    magState: mag
+    steps: 7
+    zeroVisible: false
+  - type: Item
+    size: Large
+  - type: ToolTileCompatible
+  - type: Tool
+    qualities:
+    - Prying
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: _WF/Xenoborgs/Interface/ItemStatus/Tiles/not_spent.png
+    spentAmmoSprite: _WF/Xenoborgs/Interface/ItemStatus/Tiles/spent.png
+    numberOfRows: 3
+  - type: AmmoCounter
+  - type: Gun
+    fireRate: 4
+    maxAngle: 15
+    minAngle: 1
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+    soundGunshot:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Gunshots/magnetic_shot.ogg
+    soundEmpty:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/Empty/empty_beep.ogg
+  - type: BallisticAmmoInteractLoader
+  - type: BallisticAmmoProvider
+    whitelist:
+      components:
+      - FloorTile
+    capacity: 27
+    proto: FloorTileItemXenoborg
+    soundInsert:
+      path: /Audio/_WF/Xenoborgs/Weapons/Guns/MagIn/tile_load.ogg
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+        ents: []
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: WeaponTileGun
+  id: WeaponTileGunEmpty
+  suffix: empty
+  components:
+  - type: BallisticAmmoProvider
+    proto: null
+
+# Melee (scout)
+
+- type: entity
+  parent: EnergyDaggerLoud
+  id: EnergyDaggerLoudBlue
+  suffix: blue
+  components:
+  - type: EnergySword
+    colorOptions:
+    - "#2288ff" # can only be blue
+
+- type: entity
+  parent: CombatKnife
+  id: XenoborgBioKnife
+  name: bio knife
+  description: Melds itself to specific metabolizers and will deal extra damage to those targets!
+  components:
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Melee/bioknife.rsi
+    state: icon
+  - type: MeleeWeapon
+    attackRate: 1.0
+    damage:
+      types:
+        Slash: 10
+  - type: Item
+    sprite: _WF/Xenoborgs/Objects/Weapons/Melee/bioknife.rsi
+  - type: BonusDamageOnMetabolism
+    selectedMetabolizer: Human
+    excludedMetabolizers:
+    - Vox # Their biology is resistant to this!
+    # The rest of these are just so we don't clog up the menu with useless items.
+    - Dragon
+    damage:
+      types:
+        Poison: 10

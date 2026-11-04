@@ -32,6 +32,7 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing; // WOLFGATE(Xenoborgs)
 using PullableComponent = Content.Shared.Movement.Pulling.Components.PullableComponent;
 using PullerComponent = Content.Shared.Movement.Pulling.Components.PullerComponent;
 // ES START
@@ -61,6 +62,7 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
     [Dependency] private TagSystem _tag = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private IGameTiming _timing = default!; // WOLFGATE(Xenoborgs): wizden#44391 shock delay
 // ES START
     [Dependency] private ESSparksSystem _esSparks = default!;
 // ES END
@@ -227,6 +229,11 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
         if (!_random.Prob(electrified.Probability))
             return false;
 
+        // WOLFGATE(Xenoborgs) START: wizden#44391 delay between shocks, for the zap xenoborg module
+        if (electrified.ShockDelay != null && electrified.NextShock > _timing.CurTime)
+            return false;
+        // WOLFGATE END
+
         EnsureComp<ActivatedElectrifiedComponent>(uid);
         _appearance.SetData(uid, ElectrifiedVisuals.ShowSparks, true);
 
@@ -251,6 +258,13 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
                     electrified.SiemensCoefficient
                 );
             }
+            // WOLFGATE(Xenoborgs) START: wizden#44391 delay between shocks
+            if (lastRet && electrified.ShockDelay != null)
+            {
+                electrified.NextShock = _timing.CurTime + electrified.ShockDelay;
+                Dirty(uid, electrified);
+            }
+            // WOLFGATE END
             return lastRet;
         }
 
@@ -279,6 +293,13 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
                     true,
                     electrified.SiemensCoefficient);
             }
+            // WOLFGATE(Xenoborgs) START: wizden#44391 delay between shocks, for power-net shocks too
+            if (lastRet && electrified.ShockDelay != null)
+            {
+                electrified.NextShock = _timing.CurTime + electrified.ShockDelay;
+                Dirty(uid, electrified);
+            }
+            // WOLFGATE END
             return lastRet;
         }
     }

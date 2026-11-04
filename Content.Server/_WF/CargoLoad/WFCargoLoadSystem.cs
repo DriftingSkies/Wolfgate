@@ -174,6 +174,13 @@ public sealed partial class WFCargoLoadSystem : EntitySystem
         return grids.Sum(GetLoad);
     }
 
+    /// <summary>Share of thrust a ship keeps in space: the load past its free allowance counts against the hull.</summary>
+    public static float ThrustFactor(WFCargoLoadPrototype profile, float hull, float load)
+    {
+        var counted = load - hull * profile.FreeLoad;
+        return counted <= 0f ? 1f : Math.Max(profile.ThrustFloor, hull / Math.Max(0.001f, hull + counted));
+    }
+
     /// <summary>Share of thrust a grid's set keeps in space; 1 with no cargo.</summary>
     public float GetSpaceFactor(EntityUid grid)
     {
@@ -397,7 +404,7 @@ public sealed partial class WFCargoLoadSystem : EntitySystem
                 stored += _stored.GetValueOrDefault(member);
             }
 
-            var factor = load <= 0f ? 1f : Math.Max(profile.ThrustFloor, hull / Math.Max(0.001f, hull + load));
+            var factor = ThrustFactor(profile, hull, load);
             foreach (var member in _set)
             {
                 if (!_touched.Add(member))
@@ -456,7 +463,7 @@ public sealed partial class WFCargoLoadSystem : EntitySystem
                 spool = SpoolFor(_jumping);
             }
 
-            var fullScale = cargo.SetHull * (1f / Math.Max(0.01f, profile.ThrustFloor) - 1f);
+            var fullScale = cargo.SetHull * (1f / Math.Max(0.01f, profile.ThrustFloor) - 1f + profile.FreeLoad);
             var readout = EnsureComp<WFCargoReadoutComponent>(uid);
             if (Near(readout.Load, cargo.SetLoad, 0.1f)
                 && Near(readout.Stored, cargo.SetStored, 0.1f)

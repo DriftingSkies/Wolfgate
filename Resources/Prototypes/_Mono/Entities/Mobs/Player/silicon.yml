@@ -842,6 +842,10 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: SurveillanceCameraSpeaker
   - type: SurveillanceCameraMonitor
+  # WOLFGATE(Xenoborgs) START: routes the xenoborgs' cameras to the AI's monitor on any xenoborg ship
+  - type: SurveillanceCameraRouter
+    subnetFrequency: Xenoborgs
+  # WOLFGATE END
   - type: RoboticsConsole
     allowBorgControl: true
     radioChannel: Xenoborg
@@ -859,6 +863,7 @@
       - Sheet
       - RawMaterial
       - Ingot
+      - XenoborgCrystal # WOLFGATE(Xenoborgs): wizden#45105, the core takes extractor crystals
   - type: Lathe
     idleState: icon
     runningState: building
@@ -867,6 +872,10 @@
     staticPacks:
     - EmptyXenoborgs
     - XenoborgUpgradeModules
+    # WOLFGATE(Xenoborgs) START: wizden#42796 + #45105, the extractor and crystal-priced recipes
+    - XenoborgMachines
+    - WFXenoborgCrystalRecipes
+    # WOLFGATE END
   - type: ReagentSpeed
     solution: lube
     modifiers:
@@ -974,6 +983,31 @@
     channels:
     - Binary
     defaultChannel: Binary
+  # WOLFGATE(Xenoborgs) START: the core watches its xenoborgs through their cameras
+  - type: UserInterface
+    interfaces:
+      enum.RadarConsoleUiKey.Key:
+        type: RadarConsoleBoundUserInterface
+      enum.SiliconLawsUiKey.Key:
+        type: SiliconLawBoundUserInterface
+      enum.RemoteDeviceUiKey.Key:
+        type: RemoteDevicesBoundUserInterface
+      enum.SurveillanceCameraMonitorUiKey.Key:
+        type: SurveillanceCameraMonitorBoundUserInterface
+  - type: IntrinsicUI
+    uis:
+      enum.RadarConsoleUiKey.Key:
+        toggleAction: ActionAGhostShowRadar
+      enum.SurveillanceCameraMonitorUiKey.Key:
+        toggleAction: WFActionXenoborgCameras
+  - type: SurveillanceCameraMonitor
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: Mothership
+    transmitFrequencyId: Mothership
+  - type: WirelessNetworkConnection
+    range: 10000
+  # WOLFGATE END
 
 # Xenoborg Cyborgs
 

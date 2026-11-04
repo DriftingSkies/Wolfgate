@@ -226,3 +226,5 @@ cmd-wf_trade-rush-failed = No unblockaded station without an open rush buys thos
 cmd-wf_trade-consignment = Posted a consignment as {$uid}.
 cmd-wf_trade-consignment-failed = Couldn't post a consignment. It needs two unblockaded chute stations and one that isn't already a destination.
 cmd-wf_trade-cleared = Ended {$shortages} shortages and booms and {$rushes} rush orders.
+
+wf-trade-chain-radiation-examine = [color=yellow]Its radiation sets off nearby crates like it. Keep them apart, or a pile of them will explode.[/color]

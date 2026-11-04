@@ -4,6 +4,8 @@
   name: ballistic armor plating
   description: Ballistic armor plating for a tank.
   components:
+  - type: StaticPrice
+    price: 5600
   - type: Sprite
     state: ballistic_armor
   - type: HardpointItem
@@ -27,6 +29,8 @@
   name: concussive armor plating
   description: Concussive armor plating for a tank.
   components:
+  - type: StaticPrice
+    price: 6300
   - type: Sprite
     state: concussive_armor
   - type: HardpointItem
@@ -51,6 +55,8 @@
   name: caustic armor plating
   description: Caustic armor plating for a tank.
   components:
+  - type: StaticPrice
+    price: 6300
   - type: Sprite
     state: caustic_armor
   - type: HardpointItem
@@ -74,6 +80,8 @@
   name: paladin armor plating
   description: Paladin armor plating for a tank.
   components:
+  - type: StaticPrice
+    price: 9800
   - type: Sprite
     state: paladin_armor
   - type: HardpointItem

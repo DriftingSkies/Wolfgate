@@ -19,6 +19,8 @@
   name: Improper L26A2 45mm Autocannon
   description: Tosubishi Heavy Industrial Manufacturing main gun for the FV150. Its rapid fire rate and multipurpose ammunition offers stopping power against infantry, structures, and medium armor. Careful use can even disable tanks.
   components:
+  - type: StaticPrice
+    price: 22400
   - type: Sprite
     sprite: _WF/Vehicles/CMU/fv150/icons.rsi
     state: heavy_autocannon
@@ -163,6 +165,8 @@
   name: Improper L98 10x28mm Hull General Purpose Machine Gun
   description: Imperial implementation of a hull machine gun in a powered cupola. Compact with integrated liquid cooling, and armored hull proofed to small arms. However, its angle of horizontal traverse is limited to the front arc, and its vertical no more than 23 degrees. The mounted weapon is a heavy barreled variant of the regular 10x28mm pulse-action general purpose machine gun. It is built under license from Armat by Weyland Yutani.
   components:
+  - type: StaticPrice
+    price: 9800
   - type: Sprite
     sprite: _WF/Vehicles/CMU/fv150/icons.rsi
     state: mounted_cupola
@@ -184,11 +188,13 @@
     useBarrelDirectionForShots: true
     fireWhileRotatingGraceDegrees: 180
     offsetRotatesWithTurret: false
-    useDirectionalOffsets: false
-    pixelOffsetNorth: "0,0"
-    pixelOffsetEast: "0,0"
-    pixelOffsetSouth: "0,0"
-    pixelOffsetWest: "0,0"
+    useDirectionalOffsets: true
+    offsetSpritePivot: true
+    overlayDepthOffset: -1
+    pixelOffsetNorth: "11,32"
+    pixelOffsetEast: "28,-1"
+    pixelOffsetSouth: "-11,-25"
+    pixelOffsetWest: "-28,20"
     showOverlay: true
     overlayRsi: _WF/Vehicles/CMU/fv150/exterior.rsi
     overlayState: mounted_cupola_0
@@ -243,6 +249,8 @@
   name: Improper L-39T Smoke Discharger
   description: A support module for the FV150, based off those used by the UA for their vehicles.
   components:
+  - type: StaticPrice
+    price: 7000
   - type: Sprite
     sprite: _WF/Vehicles/CMU/fv150/icons.rsi
     state: slauncher_0

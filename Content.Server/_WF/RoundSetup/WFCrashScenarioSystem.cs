@@ -47,6 +47,7 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
     [Dependency] private WFPlanetNetworkSystem _networks = default!;
     [Dependency] private WFShipScenarioSystem _ships = default!;
     [Dependency] private WFOrbitEntrySystem _orbit = default!;
+    [Dependency] private Content.Server._WF.Planets.Bounds.WFPlanetBoundsSystem _bounds = default!;
     [Dependency] private ShuttleSystem _shuttle = default!;
     [Dependency] private ShuttleConsoleSystem _consoles = default!;
     [Dependency] private ThrusterSystem _thrusters = default!;
@@ -89,6 +90,7 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<GridSplitEvent>(OnGridSplit);
         SubscribeLocalEvent<ConsoleFTLAttemptEvent>(OnFTLAttempt);
+        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopAttemptEvent>(OnHopAttempt);
         SubscribeLocalEvent<WFCrashScenarioConsoleComponent, ActivatableUIOpenAttemptEvent>(OnConsoleOpen,
             before: new[] { typeof(ShuttleConsoleSystem) });
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
@@ -136,12 +138,16 @@ public sealed partial class WFCrashScenarioSystem : EntitySystem
         foreach (var id in candidates)
         {
             var vessel = _prototypes.Index<VesselPrototype>(id);
-            var offset = network.Centre + _random.NextVector2(500f, 1200f);
+            // A bounded world only lets a hull down from inside its circle.
+            var offset = _bounds.TryGetBounds(network.OrbitMap, out var centre, out var radius)
+                ? centre + _random.NextVector2(radius * 0.2f, radius * 0.5f)
+                : network.Centre + _random.NextVector2(500f, 1200f);
             var mapId = Comp<MapComponent>(network.OrbitMap).MapId;
             if (!_loader.TryLoadGrid(mapId, vessel.ShuttlePath, out var loaded, offset: offset))
                 continue;
 
             var hull = loaded.Value.Owner;
+            _bounds.ClampHull(hull);
             EntityManager.AddComponents(hull, vessel.AddComponents);
             if (!HasComp<ShuttleComponent>(hull) || !TryFindFloor(hull, out _))
             {

@@ -1020,12 +1020,29 @@
       map: [ "enum.GunVisualLayers.Base" ]
     - state: mag-unshaded-4
       map: [ "enum.GunVisualLayers.MagUnshaded" ]
+  # WOLFGATE(Xenoborgs) START: wizden#45168 blue xenoborg laser beam, same damage
+  - type: HitscanBatteryAmmoProvider
+    proto: XenoborgLaser
+    fireCost: 50
+  # WOLFGATE END
 
 - type: entity
   parent: WeaponLaserCannon
   id: WeaponLaserCannonXenoborg
   name: xenoborg laser cannon
   components:
+  # WOLFGATE(Xenoborgs) START: wizden#43013 + #45168 xenoborg laser cannon sprite and blue beam, same damage
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Battery/xenoborg_laser_cannon.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-unshaded-4
+      map: [ "enum.GunVisualLayers.MagUnshaded" ]
+  - type: HitscanBatteryAmmoProvider
+    proto: XenoborgHeavyLaser
+    fireCost: 160
+  # WOLFGATE END
   - type: BatterySelfRecharger
     autoRecharge: true
     autoRechargeRate: 200

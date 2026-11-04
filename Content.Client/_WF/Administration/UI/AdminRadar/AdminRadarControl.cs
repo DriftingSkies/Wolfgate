@@ -13,7 +13,7 @@ namespace Content.Client._WF.Administration.UI.AdminRadar;
 
 /// <summary>
 /// The mass scanner display for admins: it fills whatever its window gives it, zooms out far past a console's range,
-/// and can show every grid under its real IFF and mark the players.
+/// and can show every grid and planet site under its real IFF and name and mark the players.
 /// </summary>
 public sealed class AdminRadarControl : ShuttleNavControl
 {
@@ -41,6 +41,7 @@ public sealed class AdminRadarControl : ShuttleNavControl
     private readonly SharedTransformSystem _xform;
 
     private readonly List<(IFFComponent Iff, IFFFlags Flags)> _hiddenIff = new();
+    private readonly AdminRadarSwappedSites _swappedSites = new();
     private readonly List<(Vector2 Position, string Name, int Others)> _playerLabels = new();
 
     public AdminRadarControl() : base(AdminMinRange, AdminMaxRange, StartRange)
@@ -99,13 +100,15 @@ public sealed class AdminRadarControl : ShuttleNavControl
         // Label everything in view, and keep the edge pointers to what a console would show.
         MaximumIFFDistance = MathF.Max(EdgeIffRange, CornerRadarRange);
 
-        // The nav control reads IFF flags and detection straight off the components, so both are lifted for this
-        // one draw and put back before anything else can look at them.
+        // The nav control reads IFF flags, detection and planet sites straight off the components, so all are lifted
+        // for this one draw and put back before anything else can look at them.
         DetectionRangeMultiplierComponent? detection = null;
         var alwaysDetect = false;
         if (_adminRadar.TrueIff)
         {
             _shuttle.WfRevealIff(_hiddenIff);
+            _adminRadar.RequestSites();
+            _adminRadar.RevealSites(_swappedSites);
             if (_consoleEntity is { } console && EntManager.EntityExists(console))
             {
                 detection = EntManager.EnsureComponent<DetectionRangeMultiplierComponent>(console);
@@ -121,6 +124,7 @@ public sealed class AdminRadarControl : ShuttleNavControl
         finally
         {
             _shuttle.WfRestoreIff(_hiddenIff);
+            _adminRadar.RestoreSites(_swappedSites);
             if (detection != null)
                 detection.AlwaysDetect = alwaysDetect;
         }

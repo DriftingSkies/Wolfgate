@@ -2,6 +2,7 @@ using Content.Shared.Actions;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes; // WOLFGATE(Xenoborgs)
 
 namespace Content.Shared.Movement.Components;
 
@@ -13,6 +14,21 @@ namespace Content.Shared.Movement.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedJumpAbilitySystem))]
 public sealed partial class JumpAbilityComponent : Component
 {
+    // WOLFGATE(Xenoborgs) START: wizden#43243 the component grants its own action, for the scout jump module
+    // Null here rather than wizden's ActionGravityJump, since existing users grant the action themselves.
+    /// <summary>
+    /// The action prototype that allows you to jump.
+    /// </summary>
+    [DataField]
+    public EntProtoId? Action;
+
+    /// <summary>
+    /// Entity to hold the action prototype.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntityUid? ActionEntity;
+    // WOLFGATE END
+
     /// <summary>
     /// How far you will jump (in tiles).
     /// </summary>

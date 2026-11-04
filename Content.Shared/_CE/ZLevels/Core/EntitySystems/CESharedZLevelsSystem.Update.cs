@@ -94,6 +94,7 @@ public abstract partial class CESharedZLevelsSystem
 
         var stickyGround = zPhysicsComponent.CachedStickyGround &&
             zPhysicsComponent.Velocity is <= 0 and > -2f;
+        WfGroundless(zPhysicsComponent, ref stickyGround); // WOLFGATE(Planets): a ghost never sticks to stairs or stays between levels
 
         if (stickyGround || zPhysicsComponent.AutoStep && distanceToGround < 0)
             zPhysicsComponent.LocalPosition = zPhysicsComponent.CachedGroundHeight;

@@ -1,4 +1,5 @@
 using Content.Server._NF.Shuttles.Components;
+using Content.Server._WF.Planets.Bounds;
 using Content.Server._WF.ShipPa;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
@@ -20,6 +21,7 @@ public sealed partial class WFOrbitDecaySystem : EntitySystem
     [Dependency] private ShipAlertSystem _alert = default!;
     [Dependency] private ShipPaSystem _pa = default!;
     [Dependency] private WFOrbitEntrySystem _orbitEntry = default!;
+    [Dependency] private WFPlanetBoundsSystem _bounds = default!;
     [Dependency] private WFLooseDebrisSystem _debris = default!;
 
     /// <summary>Situation code for a decaying hull; not pilot-selectable.</summary>
@@ -236,6 +238,9 @@ public sealed partial class WFOrbitDecaySystem : EntitySystem
     {
         // Restore first so lift-lost remembers the ship's own code, not this warning.
         Restore(grid, comp);
+
+        // A hull in the margin at the world's edge may not be far enough in to descend.
+        _bounds.ClampHull(grid);
 
         if (!_orbitEntry.TryDropFromOrbit(grid, out _))
         {

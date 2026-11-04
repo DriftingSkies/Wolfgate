@@ -100,6 +100,9 @@ public sealed partial class VehicleOverchargeSystem : EntitySystem
             return;
         }
 
+        if (TryComp(vehicle, out WFVehicleEngineComponent? engine) && !engine.Running)
+            return;
+
         if (!TryComp(vehicle, out VehicleOverchargeComponent? overcharge))
             return;
 

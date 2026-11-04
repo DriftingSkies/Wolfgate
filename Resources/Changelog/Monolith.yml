@@ -26477,3 +26477,17 @@ Entries:
   id: 2869
   time: '2026-11-01T05:10:49.0000000+00:00'
   url: https://github.com/Monolith-Station/Monolith/pull/4868
+- author: DoubleHypercube
+  changes:
+    - type: Tweak
+      message: Uncloneable now gives points.
+  id: 2872
+  time: '2026-11-02T21:33:47.0000000+00:00'
+  url: https://github.com/Monolith-Station/Monolith/pull/4958
+- author: DoubleHypercube
+  changes:
+    - type: Add
+      message: Prescription medical and security glasses!
+  id: 2874
+  time: '2026-11-02T22:46:22.0000000+00:00'
+  url: https://github.com/Monolith-Station/Monolith/pull/4950

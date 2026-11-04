@@ -2,7 +2,11 @@
 - type: tile
   id: FloorBlueCircuitXenoborg
   name: tiles-Malicous-blue-circuit-floor
-  sprite: /Textures/_WF/Xenoborgs/Tiles/Malicous_blue_circuit.png
+  sprite: /Textures/_WF/Xenoborgs/Tiles/Xeno_Circuit.png
+  variants: 2
+  placementVariants:
+  - 1.0
+  - 1.0
   baseTurf: Plating
   isSubfloor: false
   deconstructTools: [ Prying ]

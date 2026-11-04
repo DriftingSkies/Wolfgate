@@ -170,7 +170,7 @@
 
 - type: planetType
   id: PlanetAsclepiu
-  name: Asclepiu
+  name: Verda # WOLFGATE(Planets): Asclepiu is called Verda
   shader: RockyPlanet
   earthMass: 1.05
   rotation: 5.3

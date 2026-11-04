@@ -50,6 +50,9 @@ public sealed partial class CEZGroundFrictionController : VirtualController
             if (body.InvMass <= 0f)
                 continue;
 
+            if (!body.Awake) // WOLFGATE(Dormancy): a sleeping hull has no velocity or force to scrape, so skip sampling its grip.
+                continue;
+
             // Grip, not mere contact: a hull over a frictionless surface is on the ground and
             // simply slides, so there is nothing here to apply.
             var grip = _zLevels.GetGroundGrip(uid);

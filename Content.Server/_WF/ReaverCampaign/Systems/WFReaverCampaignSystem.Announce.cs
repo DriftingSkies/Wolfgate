@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Numerics;
+using Content.Server._WF.PlanetComms;
 using Content.Server._WF.ReaverCampaign.Components;
 using Content.Shared._WF.ReaverCampaign;
 using Content.Shared.Radio;
@@ -16,6 +17,7 @@ namespace Content.Server._WF.ReaverCampaign.Systems;
 public sealed partial class WFReaverCampaignSystem
 {
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private WFPlanetCommsSystem _planetComms = default!;
 
     private static readonly ProtoId<RadioChannelPrototype> WarningChannel = "Common";
 
@@ -33,7 +35,8 @@ public sealed partial class WFReaverCampaignSystem
     /// <summary>Plays the campaign's capital sound to everyone, on top of a capital event's chime.</summary>
     private void PlayCapital(WFReaverCampaignPrototype campaign)
     {
-        _audio.PlayGlobal(_audio.ResolveSound(campaign.CapitalSound), Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
+        _audio.PlayGlobal(_audio.ResolveSound(campaign.CapitalSound), _planetComms.Reachable(Filter.Broadcast(), null), true,
+            AudioParams.Default.WithVolume(-2f));
     }
 
     /// <summary>A banner to everyone with no sound, at most one per <see cref="QuietBannerInterval"/>; inside the window it goes out on the radio.</summary>

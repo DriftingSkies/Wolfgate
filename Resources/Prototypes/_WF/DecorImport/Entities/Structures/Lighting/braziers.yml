@@ -36,6 +36,11 @@
     normalState: brazier
     lightColor: "#c75fcb"
     maxLightRadius: 6
+  - type: EntityRadiusHeater
+    requireActivation: true
+    radius: 2.5
+    thermalEnergy: 20000
+    limit: 311
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Rock

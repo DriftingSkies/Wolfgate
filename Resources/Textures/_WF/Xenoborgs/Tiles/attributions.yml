@@ -1,0 +1,9 @@
+- files: [ "Xeno_Mono.png", "Xeno_Squares.png" ]
+  license: "CC-BY-SA-3.0"
+  copyright: "Xenoborg shuttle floors from Monolith #4558, recolored blue for Wolfgate."
+  source: "https://github.com/Monolith-Station/Monolith"
+
+- files: [ "Xeno_Exo.png", "Xeno_Circuit.png", "Xeno_Circuit_glow.png" ]
+  license: "CC-BY-SA-4.0"
+  copyright: "exo-borg.png and circuit-blue.png by AftrLite (GitHub), recolored for Wolfgate (the circuit in the Monolith xenoborg circuit blues); the glow mask is the circuit's traces."
+  source: "https://github.com/space-wizards/space-station-14"

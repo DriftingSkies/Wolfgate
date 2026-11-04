@@ -159,7 +159,15 @@ public sealed class VehicleRosterTest
 
         void Fail(string what) => failures.Add($"{entry.Id}: {what}");
 
-        await server.WaitPost(() => vehicle = entMan.SpawnEntity(entry.Id, new EntityCoordinates(map.Grid.Owner, VehicleSpot)));
+        await server.WaitPost(() =>
+        {
+            vehicle = entMan.SpawnEntity(entry.Id, new EntityCoordinates(map.Grid.Owner, VehicleSpot));
+            if (entMan.TryGetComponent<WFVehicleEngineComponent>(vehicle, out var engine))
+            {
+                engine.Running = true;
+                engine.Electrics = true;
+            }
+        });
         await server.WaitRunTicks(5);
 
         await server.WaitAssertion(() =>

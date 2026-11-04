@@ -3,7 +3,7 @@
 - type: genitalSettings
   id: WFDefault
   adultAge: 18
-  excludedSpecies: [ IPC ]      # positronic chassis
+  excludedSpecies: []          # species listed here get no anatomy
   partialArousal: 30
   fullArousal: 70
   vaginaArousedFrom: Full       # the aroused vulva art is only drawn at full arousal

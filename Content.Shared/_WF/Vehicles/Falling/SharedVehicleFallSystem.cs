@@ -4,6 +4,7 @@ using System.Numerics;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._WF.Vehicles.Grid;
+using Content.Shared._WF.Planets.Parachute;
 using Content.Shared._WF.Vehicles.Grid.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -187,6 +188,12 @@ public abstract partial class SharedVehicleFallSystem : EntitySystem
         if (IsUnloadedGround(args.Grid, args.Tile))
             return;
 
+        if (HasComp<WFParachutedComponent>(ent.Owner) && HasComp<CEZPhysicsComponent>(ent.Owner))
+        {
+            args.Allow = true;
+            return;
+        }
+
         // Past the edge the vehicle is on the map and not driven, so the drop that follows must find room from where its
         // origin is now, which is where Evaluate looks. Room that only a search from the tile ahead finds would leave it
         // stranded on the map; it stays on the deck, and can drive back, until the origin has room.
@@ -291,7 +298,8 @@ public abstract partial class SharedVehicleFallSystem : EntitySystem
     /// <summary>Drops the vehicle when too much of its footprint hangs over nothing and the level below can take it.</summary>
     private FallResult Evaluate(EntityUid uid, VehicleFallComponent fall, TransformComponent xform)
     {
-        if (!fall.Enabled || TerminatingOrDeleted(uid))
+        if (!fall.Enabled || TerminatingOrDeleted(uid) ||
+            HasComp<WFParachutedComponent>(uid) && HasComp<CEZPhysicsComponent>(uid))
             return FallResult.Invalid;
 
         // Only a vehicle standing on a grid or the map, not one inside something, and only where a level lies below.

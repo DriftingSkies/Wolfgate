@@ -16,6 +16,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Projectiles;
+using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Weapons.Ranged.Systems;
@@ -812,15 +813,56 @@ public sealed class VehicleAmmoTest : InteractionTest
             }
         });
 
-        // Rounds loaded into the reserve show once the window next refreshes.
+        // Rounds loaded into the reserve show straight away, with no shot or other refresh.
         await Server.WaitAssertion(() =>
         {
             SEntMan.System<VehicleHardpointAmmoSystem>().SetStoredRounds((rig.Gun, AmmoOf(rig)), 10, MagazineSize);
-            var refresh = new VehicleHardpointsRefreshEvent(rig.Vehicle);
-            SEntMan.EventBus.RaiseLocalEvent(rig.Vehicle, ref refresh);
 
             var entry = SEntMan.GetComponent<VehicleWeaponsSeatComponent>(seat).Ui.Hardpoints.Single(e => e.InstalledEntity == netGun);
             Assert.That(entry.StoredMagazines, Is.EqualTo(10), "The window did not follow the reserve.");
+        });
+    }
+
+    /// <summary>A handheld scanner looks out from the vehicle it is carried in, and stops once carried out.</summary>
+    [Test]
+    public async Task AHandheldScannerInsideLooksOutFromTheVehicle()
+    {
+        var rig = await BuildRig();
+        await Enter(rig, SPlayer, 0);
+
+        var scanner = EntityUid.Invalid;
+        var ui = SEntMan.System<SharedUserInterfaceSystem>();
+        await Server.WaitPost(() =>
+        {
+            scanner = SEntMan.SpawnEntity("HandHeldMassScanner", new EntityCoordinates(SPlayer, Vector2.Zero));
+        });
+        await RunTicks(3);
+        await Server.WaitPost(() => ui.OpenUi(scanner, RadarConsoleUiKey.Key, SPlayer));
+        await RunTicks(3);
+
+        EntityUid? Origin()
+        {
+            Assert.That(ui.TryGetUiState<NavBoundUserInterfaceState>(scanner, RadarConsoleUiKey.Key, out var state), Is.True, "The scanner has no state.");
+            return state!.State.Coordinates is { } coordinates ? SEntMan.GetCoordinates(coordinates).EntityId : null;
+        }
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(ui.IsUiOpen(scanner, RadarConsoleUiKey.Key, SPlayer), Is.True, "The scanner did not open.");
+            Assert.That(Origin(), Is.EqualTo(rig.Vehicle), "A scanner inside the vehicle shows the interior.");
+        });
+
+        await Server.WaitPost(() =>
+        {
+            var outside = Transform.GetMapCoordinates(rig.Vehicle);
+            Transform.SetMapCoordinates(SPlayer, outside.Offset(new Vector2(5f, 0f)));
+        });
+        await RunTicks(3);
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(ui.IsUiOpen(scanner, RadarConsoleUiKey.Key, SPlayer), Is.True, "Leaving the vehicle closed the scanner.");
+            Assert.That(Origin(), Is.Not.EqualTo(rig.Vehicle), "A scanner carried out still follows the vehicle.");
         });
     }
 

@@ -9,7 +9,9 @@
     speaks:
     - TauCetiBasic
     - Elyran # Screw it. Why not. I dont care anymore.
+    - Scratch # WOLFGATE(Species): Resomi share the Avali language
     understands:
     - TauCetiBasic
     - Elyran # Screw it. Why not. I dont care anymore.
+    - Scratch # WOLFGATE(Species)
   # Monolith - End

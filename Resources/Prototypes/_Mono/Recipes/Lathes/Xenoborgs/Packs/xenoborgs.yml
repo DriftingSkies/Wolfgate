@@ -1,8 +1,11 @@
 ## Static
 - type: latheRecipePack
   id: EmptyXenoborgs
-  recipes:
-  - BorgChassisSelectableXenoborg
+  # WOLFGATE(Xenoborgs) START: shells cost crystals only (WFXenoborgCrystalRecipes)
+  recipes: []
+  # recipes:
+  # - BorgChassisSelectableXenoborg
+  # WOLFGATE END
 
 - type: latheRecipePack
   id: XenoborgUpgradeModules
@@ -10,14 +13,20 @@
   - XenoborgModuleBasic
   - XenoborgModuleTool
   - XenoborgModuleToolBasic # WOLFGATE(Xenoborgs): Monolith #4558
-  - XenoborgModuleDefense
+  # - XenoborgModuleDefense # WOLFGATE(Xenoborgs): weapons cost crystals only
   - XenoborgModuleJammer
-  - XenoborgModuleHeavyLaser
+  # - XenoborgModuleHeavyLaser # WOLFGATE(Xenoborgs): weapons cost crystals only
   - XenoborgModuleAccessBreaker
   - XenoborgModuleDoorControl
   - XenoborgAdvancedModuleTool
-  - XenoborgModuleHypo
+  # - XenoborgModuleHypo # WOLFGATE(Xenoborgs): weapons cost crystals only
   - XenoborgModuleChameleonProjector
   - XenoborgModuleSuperCloakDevice
+  # WOLFGATE(Xenoborgs) START: utility modules ported from wizden; their weapons cost crystals only
+  - XenoborgModuleSpaceMovement
+  - XenoborgModuleConstruction
+  - XenoborgModuleJump
+  - XenoborgModuleDeflectorField
+  # WOLFGATE END
   - AiRemoteBrain
   - MMI

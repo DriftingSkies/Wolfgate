@@ -88,6 +88,28 @@ public sealed class WFGameHubTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>A manifest that finishes after its client left is dropped; sending it would throw on the game thread.</summary>
+    [Test]
+    public async Task ManifestForDisconnectedClientIsDropped()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var client = pair.Client;
+
+        await client.WaitPost(() => client.System<ClientHub>().RequestManifest(Game));
+        await pair.RunTicksSync(5);
+        await server.WaitPost(() => server.PlayerMan.Sessions.Single().Channel.Disconnect("Left during the manifest"));
+
+        // Long enough for the hash to finish and post back to the game thread.
+        for (var i = 0; i < 40; i++)
+        {
+            await Task.Delay(100);
+            await server.WaitRunTicks(1);
+        }
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task FinishedLevelsPayPrizesAndReachLeaderboard()
     {

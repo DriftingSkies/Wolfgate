@@ -134,6 +134,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         OnMouseEntered += HandleMouseEntered;
         OnMouseExited += HandleMouseExited;
         WfLoadDisplaySettings(); // WOLFGATE(Shuttles): start with the player's saved radar display choices.
+        WfAddPlanetScanner(); // WOLFGATE(PlanetScan): hovering a world opens its scan.
     }
 
     private void HandleMouseEntered(GUIMouseHoverEventArgs args)
@@ -485,6 +486,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         _isMouseDown = true;
         _lastMousePos = args.RelativePosition;
+        _wfPressedAt = args.RelativePixelPosition; // WOLFGATE(PlanetSignals): where a click on a world began.
         TryFireAtPosition(args.RelativePosition);
     }
 
@@ -504,6 +506,10 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
             return;
 
         _isMouseDown = false;
+
+        // WOLFGATE(PlanetSignals): a click on a world lists its signals.
+        if (WfTryOpenPlanetSignals(args.RelativePixelPosition, args.RelativePosition))
+            return;
 
         var coords = GetMouseEntityCoordinates(args.RelativePosition);
         OnRadarClick?.Invoke(coords);
@@ -663,6 +669,8 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         DrawCircles(handle);
 
+        DrawWfPlanetSignals(handle, worldToView, xform); // WOLFGATE(PlanetSignals): sites and other layers' vessels on a world's radar.
+        DrawWfVehicleScanner(handle, worldToView); // WOLFGATE(Vehicles): a vehicle scanner marks the vehicle and its position.
         DrawIFFBeacons(handle, worldToView, mapPos, xform.MapUid); // Far Horizons
 
         // Draw shields

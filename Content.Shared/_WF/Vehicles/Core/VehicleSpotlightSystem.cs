@@ -1,8 +1,12 @@
+using System.Numerics;
+using Content.Shared._WF.Vehicles.Grid;
+using Robust.Shared.Physics;
 using Content.Shared._WF.Vehicles.Base;
 using Content.Shared._WF.Vehicles.Hardpoint;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Input;
 using Robust.Shared.GameObjects;
+using Robust.Shared.GameStates;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -19,6 +23,7 @@ public sealed partial class VehicleSpotlightSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<VehicleSpotlightComponent, ComponentStartup>(OnSpotlightStartup);
+        SubscribeLocalEvent<WFVehicleEngineComponent, AfterAutoHandleStateEvent>(OnEngineState);
         SubscribeLocalEvent<VehicleSpotlightComponent, HardpointSlotsChangedEvent>(OnHardpointSlotsChanged);
         SubscribeLocalEvent<VehicleSpotlightComponent, VehicleHardpointsRefreshEvent>(OnHardpointsRefresh);
 
@@ -114,16 +119,41 @@ public sealed partial class VehicleSpotlightSystem : EntitySystem
         Dirty(vehicle, spotlight);
     }
 
+    private void OnEngineState(Entity<WFVehicleEngineComponent> ent, ref AfterAutoHandleStateEvent args)
+    {
+        RefreshPower(ent.Owner);
+    }
+
+    /// <summary>Reapplies the driver's light switch after battery power changes.</summary>
+    public void RefreshPower(EntityUid uid)
+    {
+        if (TryComp(uid, out VehicleSpotlightComponent? spotlight))
+            ApplySpotlight(uid, spotlight);
+    }
+
     private void ApplySpotlight(EntityUid uid, VehicleSpotlightComponent spotlight)
     {
         SharedPointLightComponent? light = null;
         if (!_lights.ResolveLight(uid, ref light))
             return;
 
+        // Mount the lamp just beyond the front bumper, rotating its offset with the chassis. At rotation 0 a vehicle
+        // faces south, the way the cone points, so its front is the hull's bottom edge.
+        if (TryComp(uid, out FixturesComponent? fixtures) &&
+            GridVehicleMoverSystem.TryGetFixtureAabb(fixtures, Robust.Shared.Physics.Transform.Empty, out var hull))
+        {
+            var offset = new Vector2(hull.Center.X, hull.Bottom - 0.05f);
+            if (light.Offset != offset)
+            {
+                light.Offset = offset;
+                Dirty(uid, light);
+            }
+        }
         _lights.SetRadius(uid, spotlight.Radius, light);
         _lights.SetEnergy(uid, spotlight.Energy, light);
         _lights.SetSoftness(uid, spotlight.Softness, light);
-        _lights.SetEnabled(uid, spotlight.Enabled, light);
+        var powered = !TryComp(uid, out WFVehicleEngineComponent? engine) || engine.Powered;
+        _lights.SetEnabled(uid, spotlight.Enabled && powered, light);
     }
 
     private static void EnsureBase(VehicleSpotlightComponent spotlight)

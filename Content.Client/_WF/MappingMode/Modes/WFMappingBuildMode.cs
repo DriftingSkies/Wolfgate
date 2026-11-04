@@ -69,4 +69,7 @@ public enum WFMappingLinkTool : byte
 
     /// <summary>The access levels a reader accepts.</summary>
     Access,
+
+    /// <summary>The alarm thresholds of vents, scrubbers and sensors, one at a time or through their air alarm.</summary>
+    Thresholds,
 }

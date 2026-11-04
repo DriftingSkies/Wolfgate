@@ -95,6 +95,7 @@
   cost: 10000
   recipeUnlocks:
   - WeaponSubMachineGunSakuraMMC
+  - MagazineSmart # WOLFGATE(Weapons): the Sakura needs its .160 smart magazine
   technologyPrerequisites:
   - UniversalMaterialResearchT1
   position: -5, -8

@@ -46,6 +46,11 @@ public sealed partial class TraderFleeSystem : EntitySystem
     /// </summary>
     private const float TravelWeight = 0.35f;
 
+    /// <summary>
+    /// How far, in tiles each way, he looks for somewhere to run.
+    /// </summary>
+    private const float FleeReach = 48f;
+
     private static readonly TimeSpan ThinkInterval = TimeSpan.FromSeconds(1);
     private static readonly TimeSpan StuckTime = TimeSpan.FromSeconds(5);
     private static readonly TimeSpan CalmDelay = TimeSpan.FromSeconds(20);
@@ -84,9 +89,19 @@ public sealed partial class TraderFleeSystem : EntitySystem
         if (attacker == ent.Owner || TerminatingOrDeleted(attacker))
             return;
 
+        Spook(ent, attacker, true);
+    }
+
+    /// <summary>
+    /// Sends him running from <paramref name="threat"/>. One who <paramref name="hurt"/> him is never traded with again;
+    /// one who only frightened him is.
+    /// </summary>
+    public void Spook(Entity<TraderComponent> ent, EntityUid threat, bool hurt)
+    {
         var flee = EnsureComp<TraderFleeComponent>(ent);
-        flee.Attackers.Add(attacker);
-        flee.Threat = attacker;
+        if (hurt)
+            flee.Attackers.Add(threat);
+        flee.Threat = threat;
         flee.HurtAt = _timing.CurTime;
         flee.CalmAt = null;
         flee.NextThink = TimeSpan.Zero;
@@ -217,10 +232,13 @@ public sealed partial class TraderFleeSystem : EntitySystem
         TimeSpan now)
     {
         var scored = new List<(Vector2i Tile, float Score)>();
-        var tiles = _map.GetAllTiles(grid, gridComp);
+        // Only the tiles round him: a planet's ground is one grid of hundreds of thousands of tiles.
+        var local = Transform(uid).LocalPosition;
+        var reach = new Box2(local - new Vector2(FleeReach), local + new Vector2(FleeReach));
+        var tiles = _map.GetLocalTilesIntersecting(grid, gridComp, reach);
         while (tiles.MoveNext(out var tile))
         {
-            var indices = tile.Value.GridIndices;
+            var indices = tile.GridIndices;
             if (flee.Rejected.Contains(indices))
                 continue;
 

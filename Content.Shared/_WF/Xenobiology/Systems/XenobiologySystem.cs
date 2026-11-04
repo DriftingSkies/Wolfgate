@@ -8,6 +8,7 @@ using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
+using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -116,17 +117,22 @@ public sealed partial class XenobiologySystem : EntitySystem
             return;
 
         if (SpawnSlime(ent, ent.Comp.BasePrototype, ent.Comp.Breed) is { } slime)
-        {
-            // Every spawned slime gets its own spread of stats; offspring inherit them.
-            var s = slime.Comp;
-            s.MutationChance *= _random.NextFloat(0.5f, 1.5f);
-            s.MaxOffspring += _random.Next(-1, 2);
-            s.ExtractsProduced += _random.Next(0, 2);
-            s.MitosisHunger *= _random.NextFloat(0.75f, 1.2f);
-            Dirty(slime);
-        }
+            RandomizeStats(slime);
 
         QueueDel(ent);
+    }
+
+    /// <summary>
+    /// Gives a newly spawned slime its own spread of stats; offspring inherit them.
+    /// </summary>
+    public void RandomizeStats(Entity<SlimeComponent> slime)
+    {
+        var s = slime.Comp;
+        s.MutationChance *= _random.NextFloat(0.5f, 1.5f);
+        s.MaxOffspring += _random.Next(-1, 2);
+        s.ExtractsProduced += _random.Next(0, 2);
+        s.MitosisHunger *= _random.NextFloat(0.75f, 1.2f);
+        Dirty(slime);
     }
 
     public override void Update(float frameTime)
@@ -158,7 +164,12 @@ public sealed partial class XenobiologySystem : EntitySystem
             if (value > slime.MitosisHunger - slime.JitterDifference)
                 _jitter.DoJitter(uid, TimeSpan.FromSeconds(1), true);
 
-            if (value >= slime.MitosisHunger)
+            if (value < slime.MitosisHunger)
+                continue;
+
+            var attempt = new SlimeGrowthAttemptEvent();
+            RaiseLocalEvent(uid, ref attempt);
+            if (!attempt.Cancelled)
                 _splitting.Add((uid, slime));
         }
 
@@ -204,7 +215,25 @@ public sealed partial class XenobiologySystem : EntitySystem
         if (TerminatingOrDeleted(parent) || !ProtoMan.TryIndex(breedId, out var breed))
             return null;
 
-        var uid = SpawnNextToOrDrop(proto, parent, null, breed.Components);
+        return SetUpBreed(SpawnNextToOrDrop(proto, parent, null, breed.Components), breed);
+    }
+
+    /// <summary>
+    /// Spawns <paramref name="proto"/> at <paramref name="coordinates"/> as a slime of <paramref name="breedId"/>.
+    /// </summary>
+    public Entity<SlimeComponent>? SpawnSlimeAt(EntityCoordinates coordinates, EntProtoId proto, ProtoId<BreedPrototype> breedId)
+    {
+        if (!ProtoMan.TryIndex(breedId, out var breed))
+            return null;
+
+        return SetUpBreed(SpawnAtPosition(proto, coordinates, breed.Components), breed);
+    }
+
+    /// <summary>
+    /// Applies a freshly spawned slime's breed colour, shader and name.
+    /// </summary>
+    private Entity<SlimeComponent>? SetUpBreed(EntityUid uid, BreedPrototype breed)
+    {
         if (!TryComp<SlimeComponent>(uid, out var slime))
             return null;
 

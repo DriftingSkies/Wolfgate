@@ -45,12 +45,19 @@ public sealed partial class VehicleTurretVisualSystem : EntitySystem
 
             if (!TryComputeRenderedTransform((EntityUid) turretUid,
                     turret,
-                    out _,
+                    out var vehicleUid,
                     out _,
                     out var localOffset,
                     out var localRotation))
             {
                 continue;
+            }
+
+            if (turret.OffsetSpritePivot)
+            {
+                var facing = (_transform.GetWorldRotation(vehicleUid) + localRotation + _eye.CurrentEye.Rotation).Reduced();
+                var pivot = _turret.GetPixelOffset(turret, facing) / PixelsPerMeter;
+                localOffset -= localRotation.RotateVec(VehicleTurretDirectionHelpers.GetLocalOffsetForRenderDirection(pivot, facing));
             }
 
             var visualXform = Transform(uid);
@@ -141,6 +148,8 @@ public sealed partial class VehicleTurretVisualSystem : EntitySystem
     private void SetOverlayDepth(EntityUid visualUid, EntityUid turretUid, SpriteComponent sprite)
     {
         var depth = (int) DrawDepth.OverMobs;
+        if (TryComp(turretUid, out VehicleTurretComponent? turret))
+            depth += turret.OverlayDepthOffset;
         if (HasComp<VehicleTurretAttachmentComponent>(turretUid))
             depth += 1;
 

@@ -69,13 +69,13 @@
   - type: ItemSlots
     slots:
       turret-cannon:
-        startingItem: VehicleTankLTBCannon
+        startingItem: WFVehicleTankLTBCannonRcsm
         disableEject: true
         whitelist:
           components:
           - HardpointItem
       turret-launcher:
-        startingItem: VehicleTankRERE700
+        startingItem: WFVehicleTankRERE700Rcsm
         disableEject: true
         whitelist:
           components:
@@ -105,7 +105,7 @@
           components:
           - HardpointItem
       support:
-        startingItem: VehicleTankRocketLauncher
+        startingItem: WFVehicleTankSmokeLauncherRcsm
         disableEject: true
         whitelist:
           components:

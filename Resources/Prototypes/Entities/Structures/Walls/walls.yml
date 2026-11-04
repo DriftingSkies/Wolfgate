@@ -1007,9 +1007,9 @@
   name: xenoborg wall
   components:
   - type: Sprite
-    sprite: Structures/Walls/xenoborg.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg.rsi # WOLFGATE(Xenoborgs): Banded blue resprite
   - type: Icon
-    sprite: Structures/Walls/xenoborg.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg.rsi # WOLFGATE(Xenoborgs): Banded blue resprite
   - type: IconSmooth
     key: walls
     base: xenoborg
@@ -1022,10 +1022,10 @@
   components:
   - type: Sprite
     drawdepth: Walls
-    sprite: Structures/Walls/xenoborg_diagonal.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg_diagonal.rsi # WOLFGATE(Xenoborgs): Banded blue resprite
     state: state0
   - type: Icon
-    sprite: Structures/Walls/xenoborg_diagonal.rsi
+    sprite: _WF/Xenoborgs/Structures/Walls/xenoborg_diagonal.rsi # WOLFGATE(Xenoborgs): Banded blue resprite
     state: state0
 
 - type: entity

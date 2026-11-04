@@ -8,6 +8,53 @@
   name: humvee
   description: A fast armored utility vehicle outfitted for patrols and support.
   components:
+  - type: WFVehicleEngineAudio
+    startSound: /Audio/_WF/Vehicles/RCSM/engines/centauro/start.ogg
+    stopSound: /Audio/_WF/Vehicles/RCSM/engines/centauro/stop.ogg
+    idleLoop: /Audio/_WF/Vehicles/RCSM/engines/centauro/idle.ogg
+    driveLoop: /Audio/_WF/Vehicles/RCSM/engines/centauro/drive.ogg
+    highLoop: /Audio/_WF/Vehicles/RCSM/engines/centauro/high.ogg
+    revSound:
+      collection: WFRcsmEngineRev
+    gears: 4
+    idlePitch: 1, 1.3
+    drivePitch: 0.75, 1.4
+    highPitch: 0.95, 1.25
+    shiftSound:
+      collection: WFRcsmEngineShift
+    throttleResponse: 5
+    tracksLoop: /Audio/_WF/Vehicles/RCSM/wheels/road.ogg
+    startDelay: 2
+    tracksPitch: 0.9, 1.25
+  - type: WFVehicleHitSound
+    lightHitSound:
+      collection: WFRcsmHitBullet
+    lightRicochetSound:
+      collection: WFRcsmRicochet
+    heavyHitSound:
+      collection: WFRcsmHitShell
+    heavyRicochetSound:
+      collection: WFRcsmShellRicochet
+  - type: WFVehicleDestroyedSound
+    sequence:
+    - sound:
+        collection: WFRcsmVehicleBlast
+        params:
+          volume: 4
+          maxDistance: 32
+    - delay: 0.4
+      sound:
+        collection: WFRcsmVehicleDebris
+    - delay: 2.5
+      sound:
+        collection: WFRcsmVehicleFire
+        params:
+          maxDistance: 14
+    - delay: 6
+      sound:
+        collection: WFRcsmVehicleFireStress
+        params:
+          maxDistance: 12
   - type: WarpPoint
     follow: true
     location: Humvee
@@ -28,7 +75,11 @@
     cooldown: 15
     overchargeSound: /Audio/_WF/Vehicles/overdrive_activate.ogg
   - type: VehicleSound
-    runningSound: /Audio/Effects/Vehicle/vehicleengineidle.ogg
+    runningSound: null
+    collisionSound:
+      collection: WFRcsmCollide
+    crashSound:
+      collection: WFRcsmCrash
     runningSoundCooldown: 2
     hornSound: /Audio/_WF/Vehicles/sound_vehicles_humvee_horn.ogg # This uses a unique horn
     hornCooldown: 1
@@ -153,6 +204,7 @@
   id: VehicleHumvee
   suffix: Drivable, Humvee, Base, Tracked
   components:
+  - type: WFMilitaryVehicle
   - type: ItemSlots
     slots:
       turret:
@@ -303,6 +355,7 @@
   description: A humvee configured for ARC interior layout.
   suffix: Drivable, Humvee, Base, ARC, Tracked
   components:
+  - type: WFMilitaryVehicle
   - type: GridVehicleMover
     weightClass: Light
   - type: Damageable

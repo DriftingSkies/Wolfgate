@@ -34,8 +34,9 @@ them. MappingMode's Fill, Shape, Pipe and area erase send it; anyone who may use
 to 16384 distinct cells.
 
 The link requests set signal links between a source and a sink (`MappingToolsLinkEvent`), add devices to or take them
-out of a device list (`MappingToolsDeviceListEvent`) and set the access of readers (`MappingToolsAccessEvent`), each
-as one undoable edit through the game's own systems; `MappingToolsLinksRequestEvent` returns the signal links of a map,
+out of a device list (`MappingToolsDeviceListEvent`) set the access of readers (`MappingToolsAccessEvent`) and set the
+alarm thresholds of atmos monitors (`MappingToolsSetThresholdsEvent`, read with `MappingToolsThresholdsRequestEvent`),
+each as one undoable edit through the game's own systems; `MappingToolsLinksRequestEvent` returns the signal links of a map,
 which aren't networked. MappingMode's Link mode sends them.
 
 Entry points: `MappingToolsSystem` (server; the requests, the per-mapper history and clipboard, and the placement and
@@ -105,6 +106,7 @@ rotation maths).
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.Links.cs`](MappingToolsSystem.Links.cs)
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.PipeDevices.cs`](MappingToolsSystem.PipeDevices.cs)
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.Pipes.cs`](MappingToolsSystem.Pipes.cs)
+- [`Content.Server/_WF/MappingTools/MappingToolsSystem.Thresholds.cs`](MappingToolsSystem.Thresholds.cs)
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.Wrench.cs`](MappingToolsSystem.Wrench.cs)
 - [`Content.Server/_WF/MappingTools/MappingZLevelsSystem.cs`](MappingZLevelsSystem.cs)
 - [`Content.Server/_WF/MappingTools/WFMappingPermissionEvents.cs`](WFMappingPermissionEvents.cs)
@@ -118,6 +120,7 @@ rotation maths).
 - [`Content.Shared/_WF/MappingTools/MappingToolsPipeDevices.cs`](../../../Content.Shared/_WF/MappingTools/MappingToolsPipeDevices.cs)
 - [`Content.Shared/_WF/MappingTools/MappingToolsPipes.cs`](../../../Content.Shared/_WF/MappingTools/MappingToolsPipes.cs)
 - [`Content.Shared/_WF/MappingTools/MappingToolsShapes.cs`](../../../Content.Shared/_WF/MappingTools/MappingToolsShapes.cs)
+- [`Content.Shared/_WF/MappingTools/MappingToolsThresholdEvents.cs`](../../../Content.Shared/_WF/MappingTools/MappingToolsThresholdEvents.cs)
 - [`Content.Shared/_WF/MappingTools/MappingZLevelsEvents.cs`](../../../Content.Shared/_WF/MappingTools/MappingZLevelsEvents.cs)
 - [`Content.Shared/_WF/MappingTools/ToggleMappingToolsActionEvent.cs`](../../../Content.Shared/_WF/MappingTools/ToggleMappingToolsActionEvent.cs)
 - [`Content.Shared/_WF/MappingTools/WFMappingAccessFillComponent.cs`](../../../Content.Shared/_WF/MappingTools/WFMappingAccessFillComponent.cs)
@@ -144,6 +147,7 @@ rotation maths).
 - [`Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsLinkTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsLinkTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsPipesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsPipesTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsThresholdTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingTools/MappingToolsThresholdTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingTools/MappingZLevelsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingTools/MappingZLevelsTest.cs)
 
 ### Unit tests

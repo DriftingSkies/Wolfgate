@@ -1,0 +1,9 @@
+# Circuit traces breathe between deep and pale royal blue and light the floor around them.
+- type: wfTileGlow
+  id: WFXenoborgCircuitGlow
+  tile: FloorBlueCircuitXenoborg
+  sprite: /Textures/_WF/Xenoborgs/Tiles/Xeno_Circuit_glow.png
+  dim: "#2814AA"
+  bright: "#786EFF"
+  light: "#1E0F8C"
+  period: 4

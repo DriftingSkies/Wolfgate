@@ -66,6 +66,16 @@ public sealed class RopeOverlay : Overlay
             if (!args.WorldAABB.Intersects(Bounds(chain, width * 2f)))
                 continue;
 
+            // A textured rope (a tentacle) is one pass of its texture, tinted by strain.
+            if (chain.SegmentTexture is { } segmentTexture)
+            {
+                var written = BuildStrip(chain, chain.Points, Math.Min(chain.Count, chain.Points.Length), width, vibration, time,
+                    Color.White.WithAlpha(1f), segmented: true);
+                if (written > 0)
+                    handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, segmentTexture, new ReadOnlySpan<DrawVertexUV2DColor>(_vertices, 0, written));
+                continue;
+            }
+
             var outline = Color.FromSrgb(new Color(chain.Color.R * 0.35f, chain.Color.G * 0.35f,
                 chain.Color.B * 0.35f, 0.85f));
             var core = Color.FromSrgb(chain.Color.WithAlpha(1f));
@@ -97,7 +107,7 @@ public sealed class RopeOverlay : Overlay
     }
 
     /// <summary>Two triangles per segment, with the shared edge mitred along the averaged normal.</summary>
-    private int BuildStrip(RopeChain chain, Vector2[] points, int count, float width, float vibration, float time, Color color, bool textured = false)
+    private int BuildStrip(RopeChain chain, Vector2[] points, int count, float width, float vibration, float time, Color color, bool textured = false, bool segmented = false)
     {
         if (count < 2 || !float.IsFinite(width) || width <= 0f)
             return 0;
@@ -125,8 +135,10 @@ public sealed class RopeOverlay : Overlay
             if (vibration > 0f && i > 0 && i < count - 1)
                 point += normal * (MathF.Sin(time * 45f + i * 1.7f) * vibration);
 
-            var left = point + normal * half;
-            var right = point - normal * half;
+            // Narrows from end A to end B by the type's taper.
+            var halfHere = half * (1f + (chain.Taper - 1f) * (count > 1 ? (float) i / (count - 1) : 0f));
+            var left = point + normal * halfHere;
+            var right = point - normal * halfHere;
             if (i > 0)
                 along += Vector2.Distance(points[i], points[i - 1]);
 
@@ -135,12 +147,25 @@ public sealed class RopeOverlay : Overlay
             var bottom = textured ? 1f : 0f;
             if (i > 0 && written + 6 <= _vertices.Length)
             {
-                _vertices[written++] = new DrawVertexUV2DColor(previousLeft, new Vector2(previousU, 0f), color);
-                _vertices[written++] = new DrawVertexUV2DColor(previousRight, new Vector2(previousU, bottom), color);
-                _vertices[written++] = new DrawVertexUV2DColor(left, new Vector2(u, 0f), color);
-                _vertices[written++] = new DrawVertexUV2DColor(previousRight, new Vector2(previousU, bottom), color);
-                _vertices[written++] = new DrawVertexUV2DColor(right, new Vector2(u, bottom), color);
-                _vertices[written++] = new DrawVertexUV2DColor(left, new Vector2(u, 0f), color);
+                if (segmented)
+                {
+                    // One copy of the texture per segment.
+                    _vertices[written++] = new DrawVertexUV2DColor(previousLeft, new Vector2(0f, 0f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(previousRight, new Vector2(1f, 0f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(left, new Vector2(0f, 1f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(previousRight, new Vector2(1f, 0f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(right, new Vector2(1f, 1f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(left, new Vector2(0f, 1f), color);
+                }
+                else
+                {
+                    _vertices[written++] = new DrawVertexUV2DColor(previousLeft, new Vector2(previousU, 0f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(previousRight, new Vector2(previousU, bottom), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(left, new Vector2(u, 0f), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(previousRight, new Vector2(previousU, bottom), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(right, new Vector2(u, bottom), color);
+                    _vertices[written++] = new DrawVertexUV2DColor(left, new Vector2(u, 0f), color);
+                }
             }
 
             previousLeft = left;

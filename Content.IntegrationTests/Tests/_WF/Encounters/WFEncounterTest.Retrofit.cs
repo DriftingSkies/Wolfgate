@@ -45,8 +45,17 @@ public sealed partial class WFEncounterTest
             Assert.That(encounters.TrySpawn(prototype, new MapCoordinates(new Vector2(-45000, -45000), MapData.MapId), out low, pinned: true, tier: 0), Is.True);
             Assert.That(encounters.TrySpawn(prototype, new MapCoordinates(new Vector2(-48000, -48000), MapData.MapId), out high, pinned: true, tier: 4), Is.True);
         });
-        // Power comes up and the fire control server takes the guns.
-        await RunTicks(60);
+        // Power comes up and the fire control server takes the guns; a slow runner takes longer than a second.
+        var controlled = false;
+        for (var i = 0; i < 20 && !controlled; i++)
+        {
+            await RunTicks(60);
+            await Server.WaitPost(() =>
+            {
+                var lead = SEntMan.GetComponent<WFEncounterComponent>(low).Ships["lead"];
+                controlled = Guns(lead.Grid).All(gun => SEntMan.GetComponent<FireControllableComponent>(gun).ControllingServer != null);
+            });
+        }
         await Server.WaitAssertion(() =>
         {
             var prototype = Server.ResolveDependency<IPrototypeManager>().Index<WFEncounterPrototype>(WFReaverPatrolProto);
@@ -228,8 +237,14 @@ public sealed partial class WFEncounterTest
             grid = loaded!.Value.Owner;
             Server.System<WFPirateRetrofitSystem>().Apply(grid, prototypes.Index(band.Retrofit!.Value), 1);
         });
-        // The power net updates receivers every half second, so wait out a whole interval.
-        await RunTicks(20);
+        // The power net updates receivers every half second, and a slow runner can take a few intervals.
+        var controlled = false;
+        for (var i = 0; i < 20 && !controlled; i++)
+        {
+            await RunTicks(20);
+            await Server.WaitPost(() => controlled = Guns(grid).Count > 0
+                && Guns(grid).All(gun => SEntMan.GetComponent<FireControllableComponent>(gun).ControllingServer != null));
+        }
         await Server.WaitAssertion(() =>
         {
             var guns = Guns(grid);

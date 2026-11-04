@@ -2,6 +2,8 @@
 - type: entity
   parent: SeatBase
   id: RMCBenchLeft
+  # WOLFGATE(Streets): in the spawn menu's Streets group
+  categories: [ WFStreets, WFStreetsFurniture ]
   suffix: Left
   placement:
     mode: SnapgridCenter
@@ -27,6 +29,8 @@
   - type: Icon
     sprite: _RMC14/Structures/Furniture/bench.rsi
     state: bench_left
+  # WOLFGATE(Streets): a vehicle drives through it
+  - type: VehicleSmashable
 
 - type: entity
   parent: RMCBenchLeft

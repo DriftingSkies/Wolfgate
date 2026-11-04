@@ -20,6 +20,8 @@
     WFPartsSiloFlatpack: 2
     WFChemicalSiloFlatpack: 2
     WFDoomArcadeFlatpack: 3
+    WFVehicleBayTerminalFlatpack: 4
+    WFVehicleDeliveryPadFlatpack: 4
     WFFreedoom2ArcadeFlatpack: 3
     # Wolfmed field medicine.
     WFWolfmedSplint: 6

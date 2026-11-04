@@ -22,24 +22,24 @@
     layers:
       - sprite: _Impstation/Structures/Hydroponics/containers.rsi # WOLFGATE(Resprites): Imp Sprite Ports
         state: hydrotray # WOLFGATE(Resprites): Imp Sprite Ports
-      - sprite: _Impstation/Structures/Hydroponics/overlays.rsi # WOLFGATE(Resprites): Imp Sprite Ports
-        state: lowhealth # WOLFGATE(Resprites): Imp Sprite Ports
+      - sprite: Structures/Hydroponics/overlays.rsi
+        state: lowhealth3
         map: [ "health_alert" ]
         visible: false
-      - sprite: _Impstation/Structures/Hydroponics/overlays.rsi # WOLFGATE(Resprites): Imp Sprite Ports
-        state: lowwater # WOLFGATE(Resprites): Imp Sprite Ports
+      - sprite: Structures/Hydroponics/overlays.rsi
+        state: lowwater3
         map: [ "water_alert" ]
         visible: false
-      - sprite: _Impstation/Structures/Hydroponics/overlays.rsi # WOLFGATE(Resprites): Imp Sprite Ports
-        state: lownutri # WOLFGATE(Resprites): Imp Sprite Ports
+      - sprite: Structures/Hydroponics/overlays.rsi
+        state: lownutri3
         map: [ "nutri_alert" ]
         visible: false
-      - sprite: _Impstation/Structures/Hydroponics/overlays.rsi # WOLFGATE(Resprites): Imp Sprite Ports
-        state: alert # WOLFGATE(Resprites): Imp Sprite Ports
+      - sprite: Structures/Hydroponics/overlays.rsi
+        state: alert3
         map: [ "undefined_alert" ]
         visible: false
-      - sprite: _Impstation/Structures/Hydroponics/overlays.rsi # WOLFGATE(Resprites): Imp Sprite Ports
-        state: harvest # WOLFGATE(Resprites): Imp Sprite Ports
+      - sprite: Structures/Hydroponics/overlays.rsi
+        state: harvest3
         map: [ "harvest_alert" ]
         visible: false
   - type: Appearance

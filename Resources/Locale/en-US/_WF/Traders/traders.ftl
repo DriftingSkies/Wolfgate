@@ -191,3 +191,9 @@ trader-systems-greeting = Welcome aboard. Shields, drives, fittings; the things 
 trader-systems-farewell = Run the cables properly. I'd hate to hear you lost it on the first jump.
 trader-systems-response-shop = Shield generators, drives, thrusters and the boards for all of it. One of each this trip.
 trader-systems-response-who = I know people at yards that don't sell to the public. They know I pay in advance.
+
+trader-repair-no-vehicle = I don't see your vehicle. Park it out front.
+trader-repair-fine = Nothing wrong with { THE($vehicle) } that I can fix.
+trader-repair-quote = { CAPITALIZE(THE($vehicle)) }, full repair: { $cost }.
+trader-repair-done = { CAPITALIZE(THE($vehicle)) } is good to go.
+trader-devour-start = { CAPITALIZE(THE($trader)) } kneels over { THE($target) } and starts to eat.

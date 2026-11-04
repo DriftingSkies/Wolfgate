@@ -292,6 +292,8 @@ public sealed partial class VehicleAmmoLoaderMenu : FancyWindow
 
     private void ResizeToContent(IReadOnlyList<VehicleAmmoLoaderUiEntry> hardpoints)
     {
+        if (Parent is BoxContainer)
+            return;
         var hardpointCount = Math.Max(1, hardpoints.Count);
         var maxSlots = 1;
         foreach (var hardpoint in hardpoints)

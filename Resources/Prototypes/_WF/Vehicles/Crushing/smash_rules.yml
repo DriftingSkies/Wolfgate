@@ -39,8 +39,10 @@
     components:
     - Lock
     - AccessReader
-  minDestroyWeightClass: Light
-  minContinueWeightClass: Medium
+  # Owner, 2026-10-17: small things never stop a vehicle; a light one only slows down.
+  slowdownBelowWeightClass: Medium
+  slowdownMultiplier: 0.5
+  slowdownDuration: 0.4
 
 # Crates. A secure or locked crate (Lock, AccessReader: armoury, ammunition, security and encounter loot) and a trade crate
 # (cargo someone is paid for) are economy fixtures, and a store crate is a purchase: no vehicle breaks them open.
@@ -172,14 +174,12 @@
     - CompanyAccessReader
     - Store
 
-# Fences hold for no weight class: they are damaged, the vehicle goes on, and a light one slows down.
+# Fences are knocked down and the vehicle goes on; a light one slows down.
 - type: vehicleSmashRule
   id: WFVehicleSmashFences
   parents:
   - BaseFenceMetal
   - BaseFenceWood
-  deleteOnHit: false
-  damageOnHit: 50
   slowdownBelowWeightClass: Medium
   slowdownMultiplier: 0.5
   slowdownDuration: 0.4
@@ -192,10 +192,11 @@
   - InflatableWall
   excludeParents:
   - N14WallWoodFrame
-  minDestroyWeightClass: Light
-  minContinueWeightClass: Medium
+  slowdownBelowWeightClass: Medium
+  slowdownMultiplier: 0.5
+  slowdownDuration: 0.4
 
-# Plain windows are damaged, not deleted. Reinforced, shuttle and plastitanium windows are hull, in the rule below.
+# Plain windows are smashed through. Reinforced, shuttle and plastitanium windows are hull, in the rule below.
 - type: vehicleSmashRule
   id: WFVehicleSmashWindows
   parents:
@@ -209,8 +210,6 @@
   - PlasmaReinforcedWindowDirectional
   - UraniumReinforcedWindowDirectional
   - ShuttleWindow
-  deleteOnHit: false
-  damageOnHit: 100
 
 # Hull windows: what ships are built from. A tank breaks one in a hit, through its own thresholds, and drives on; a
 # lighter vehicle is stopped and does nothing to it. The outposts' own windows are 10 to 100 times tougher on purpose
@@ -239,8 +238,6 @@
   id: WFVehicleSmashWindowFrames
   parents:
   - Grille
-  minDestroyWeightClass: Light
-  minContinueWeightClass: Medium
 
 # Doors open for a driver who has access. A powered door the driver cannot open holds; an unpowered one is smashed, and
 # only a heavy vehicle goes on through it.
@@ -322,17 +319,67 @@
   slowdownMultiplier: 0.5
   slowdownDuration: 0.4
 
+# Stumps, including the one a Crocus tree leaves where it fell, under the vehicle that knocked it down.
+- type: vehicleSmashRule
+  id: WFVehicleSmashStumps
+  # Ahead of the tree rule the plain stumps inherit: a stump is no tree, and any vehicle drives over it.
+  priority: 1
+  parents:
+  - CrocusStump
+  - FloraTreeStump
+  - FloraTreeStumpConifer
+
 - type: vehicleSmashRule
   id: WFVehicleSmashBoulders
   parents:
   - BaseRock
+  - N14DecorStalagmite1
   minDestroyWeightClass: Medium
+
+# Sandbags and the like (owner, 2026-10-17: a tank getting stuck on sandbags feels bad). A tank trap is built to stop
+# vehicles and still does.
+- type: vehicleSmashRule
+  id: WFVehicleSmashSandbags
+  parents:
+  - N14BarricadeSandbagSingle
+  - N14BarricadeWindow
+  excludeParents:
+  - N14BarricadeTanktrap
+  slowdownBelowWeightClass: Medium
+  slowdownMultiplier: 0.5
+  slowdownDuration: 0.4
+
+# Clutter and junk furniture: driven through like a table, a light vehicle slows down.
+- type: vehicleSmashRule
+  id: WFVehicleSmashClutter
+  parents:
+  - N14DecorFloorPalletStack
+  - N14JunkWoodBase
+  - N14ShelfWood1
+  - Dresser
+  - BaseRailing
+  - RMCFenceBroken
+  - BaseScrapLarge
+  - BaseShowcaseRobot
+  - BaseTarget
+  - TargetDarts
+  - BasePlaceableInstrument
+  - WoodenKeg
+  - PlasticFlapsClear
+  - PlasticFlapsOpaque
+  - AirlockAssembly
+  - AirlockHeavyAssembly
+  # Built to take a beating.
+  excludeParents:
+  - TargetStrange
+  slowdownBelowWeightClass: Medium
+  slowdownMultiplier: 0.5
+  slowdownDuration: 0.4
 
 - type: vehicleSmashRule
   id: WFVehicleSmashHydroponicsTrays
   parents:
   - hydroponicsTray
-  minDestroyWeightClass: Light
 
 - type: vehicleSmashRule
   id: WFVehicleSmashDisposalUnits

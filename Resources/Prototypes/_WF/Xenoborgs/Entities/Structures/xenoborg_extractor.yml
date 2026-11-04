@@ -1,0 +1,114 @@
+# Xenoborg extractor (wizden#42796): anchored on a station's grid, it drains the grid to grow crystals.
+
+- type: entity
+  parent: [ BaseMachine, BaseFactionGearOtherFactionT3 ]
+  id: XenoborgExtractor
+  name: xenoborg extractor
+  description: Drains electricity from the grid to produce xenoborg crystals via nuclear fusion.
+  suffix: Unanchored
+  placement:
+    mode: PlaceFree
+  components:
+  - type: Physics
+    bodyType: Dynamic
+  - type: Transform
+    anchored: false
+  - type: AnchorOnlyOnStation
+  - type: Sprite
+    sprite: _WF/Xenoborgs/Structures/Machines/xenoborg_extractor.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+      map: ["base"]
+    - state: running
+      map: ["running"]
+    - state: light
+      shader: unshaded
+      map: ["light"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.XenoborgExtractorVisuals.Consuming:
+        base:
+          True: { visible: false }
+          False: { visible: true }
+        running:
+          True: { visible: true }
+          False: { visible: false }
+        light:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 175
+      behaviors:
+      - !type:ExplodeBehavior
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalGlassBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Explosive # small explosion when destroyed
+    explosionType: Default
+    maxIntensity: 20
+    totalIntensity: 10
+    intensitySlope: 5
+    canCreateVacuum: false
+  - type: LightningTarget
+    priority: 1
+  - type: Electrified
+    onHandInteract: false
+    onInteractUsing: false
+    onBump: false
+    requirePower: true
+    highVoltageNode: input_hv
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      input_hv:
+        !type:CableDeviceNode
+        nodeGroupID: HVPower
+        enabled: true
+  - type: PowerConsumerBatteryCharger
+    efficiency: 0.25
+  - type: PowerConsumer
+    voltage: High
+    drawRate: 240000 # 240 kW (60 kW effective): a crystal every 15 seconds
+  - type: Battery
+    maxCharge: 900000 # 900 kJ
+  - type: ExaminableBattery
+  - type: SpawnOnBatteryFull
+    proto: MaterialXenoborgCrystal1
+
+- type: entity
+  parent: XenoborgExtractor
+  id: XenoborgExtractorAnchored
+  suffix: Anchored
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Physics
+    bodyType: Static
+  - type: Transform
+    anchored: true
+
+- type: entity
+  parent: [ BaseFlatpack, BaseFactionGearOtherFactionT3 ]
+  id: XenoborgExtractorFlatpack
+  name: xenoborg extractor flatpack
+  description: A flatpack used for constructing a xenoborg extractor.
+  components:
+  - type: Sprite
+    layers:
+    - sprite: _WF/Xenoborgs/Objects/Devices/flatpack.rsi
+      state: base-xenoborg
+    - state: overlay
+      color: "#452dfa"
+    - sprite: _WF/Xenoborgs/Objects/Devices/flatpack.rsi
+      state: icon-xenoborg-extractor
+  - type: Item
+    size: Normal
+  - type: Flatpack
+    entity: XenoborgExtractor

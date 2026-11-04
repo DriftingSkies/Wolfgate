@@ -53,6 +53,7 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
     private TimeSpan _lastRequest;
     private WFMappingLinkPortsWindow? _portsWindow;
     private WFMappingAccessWindow? _accessWindow;
+    private WFMappingThresholdWindow? _thresholdWindow;
 
     public WFMappingLinkTool Tool { get; private set; } = WFMappingLinkTool.Signals;
 
@@ -86,6 +87,7 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
 
         SubscribeNetworkEvent<MappingToolsLinksSnapshotEvent>(OnSnapshot);
         SubscribeNetworkEvent<MappingToolsLinkPortsEvent>(OnPorts);
+        SubscribeNetworkEvent<MappingToolsThresholdsEvent>(OnThresholds);
 
         CommandBinds.Builder
             .Bind(WFMappingKeyFunctions.WFMappingLinkCycle,
@@ -144,6 +146,9 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
         Source = null;
         Holder = null;
         _portsWindow?.Close();
+        if (tool != WFMappingLinkTool.Thresholds)
+            _thresholdWindow?.Close();
+
         if (tool == WFMappingLinkTool.Signals)
             RequestSnapshot(force: true);
 
@@ -194,6 +199,10 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
                     OpenAccess(reader);
                 else
                     Popup("wf-mapping-link-not-reader");
+                break;
+            case WFMappingLinkTool.Thresholds:
+                if (coords.IsValid(EntityManager))
+                    Send(new MappingToolsThresholdsRequestEvent(GetNetCoordinates(coords), GetNetEntity(clicked)));
                 break;
         }
     }
@@ -468,6 +477,53 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
         _accessWindow?.SetLast(LastAccess);
     }
 
+    private void OnThresholds(MappingToolsThresholdsEvent ev)
+    {
+        if (!ModeActive || Tool != WFMappingLinkTool.Thresholds || !TryGetEntity(ev.Target, out var target))
+            return;
+
+        if (_thresholdWindow == null)
+        {
+            _thresholdWindow = new WFMappingThresholdWindow(_prototypes);
+            _thresholdWindow.Applied += set => ApplyThresholds(set, false);
+            _thresholdWindow.AppliedToSelection += set => ApplyThresholds(set, true);
+            _thresholdWindow.OnClose += () => _thresholdWindow = null;
+        }
+
+        _thresholdWindow.SetTarget(ev.Target, MetaData(target.Value).EntityName, ev.Monitors, ev.Thresholds);
+        if (!_thresholdWindow.IsOpen)
+            _thresholdWindow.OpenCentered();
+    }
+
+    /// <summary>Sends thresholds for the window's target, or for everything selected; the server keeps the monitors.</summary>
+    private void ApplyThresholds(MappingThresholdSet thresholds, bool selection)
+    {
+        var targets = new List<NetEntity>();
+        if (selection)
+        {
+            foreach (var uid in _tools.Selection.SelectedEntities())
+            {
+                targets.Add(GetNetEntity(uid));
+            }
+
+            if (targets.Count == 0)
+            {
+                Popup("wf-mapping-link-thresholds-no-selection");
+                return;
+            }
+        }
+        else if (_thresholdWindow?.Target is { } target)
+        {
+            targets.Add(target);
+        }
+        else
+        {
+            return;
+        }
+
+        Send(new MappingToolsSetThresholdsEvent(targets, thresholds));
+    }
+
     private void OnPorts(MappingToolsLinkPortsEvent ev)
     {
         if (!ModeActive || Tool != WFMappingLinkTool.Signals || Source is not { } source ||
@@ -585,6 +641,7 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
                     ("count", list.Devices.Count),
                     ("max", list.DeviceLimit)),
             WFMappingLinkTool.Devices => Loc.GetString("wf-mapping-link-readout-devices"),
+            WFMappingLinkTool.Thresholds => Loc.GetString("wf-mapping-link-readout-thresholds"),
             _ => Loc.GetString("wf-mapping-link-readout-access"),
         };
     }
@@ -602,6 +659,7 @@ public sealed partial class WFMappingLinkSystem : EntitySystem
     {
         _portsWindow?.Close();
         _accessWindow?.Close();
+        _thresholdWindow?.Close();
     }
 
     private void Send(EntityEventArgs ev)

@@ -9,6 +9,17 @@ namespace Content.Tests._WF.Vehicles;
 [TestFixture]
 public sealed class GridVehicleMotionSimulatorTest
 {
+    [Test]
+    public void CollisionImpulseConservesMomentumAndDoesNotAttractSeparatingVehicles()
+    {
+        var impulse = GridVehicleMotionSimulator.CollisionImpulse(10f, 1000f, 2000f);
+        var sourceSpeed = 10f - impulse / 1000f;
+        var targetSpeed = impulse / 2000f;
+        Assert.That(sourceSpeed * 1000f + targetSpeed * 2000f, Is.EqualTo(10000f).Within(0.01f));
+        Assert.That(targetSpeed - sourceSpeed, Is.EqualTo(1.5f).Within(0.001f));
+        Assert.That(GridVehicleMotionSimulator.CollisionImpulse(-5f, 1000f, 2000f), Is.Zero);
+    }
+
     private const float Step = 1f / 60f;
 
     private static readonly GridVehicleMotionSimulator.DriveProfile Profile = new(
@@ -80,8 +91,8 @@ public sealed class GridVehicleMotionSimulatorTest
         Assert.That(speed, Is.EqualTo(0f), "It comes to rest before reversing.");
 
         var reverse = GridVehicleMotionSimulator.StepDriveSpeed(0f, Profile, North, South, true, false, 0.05f);
-        Assert.That(reverse.CurrentSpeed, Is.EqualTo(-0.6f).Within(0.0001f),
-            "Backing up ramps at the deceleration rate, as in RMC-14: the profile's reverse acceleration is never consulted.");
+        Assert.That(reverse.CurrentSpeed, Is.EqualTo(-0.2f).Within(0.0001f),
+            "Backing up uses the reverse acceleration, independently of braking strength.");
         Assert.That(reverse.ChangingDirection, Is.False);
     }
 

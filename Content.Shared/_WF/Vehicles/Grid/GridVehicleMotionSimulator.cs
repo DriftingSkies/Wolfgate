@@ -9,6 +9,13 @@ public static class GridVehicleMotionSimulator
 {
     private const float MinimumMovingSpeed = 0.01f;
 
+    /// <summary>Normal collision impulse for two masses; separating bodies exchange no momentum.</summary>
+    public static float CollisionImpulse(float closingSpeed, float mass, float otherMass)
+    {
+        return 1.15f * MathF.Max(0f, closingSpeed) /
+               (1f / MathF.Max(1f, mass) + 1f / MathF.Max(1f, otherMass));
+    }
+
     /// <summary>The speed limits and rates a drive step works with.</summary>
     public readonly record struct DriveProfile(
         float MaxSpeed,
@@ -151,7 +158,7 @@ public static class GridVehicleMotionSimulator
             }
         }
 
-        var steppedSpeed = StepTowardsTargetSpeed(currentSpeed, targetSpeed, accel, profile.Deceleration, frameTime);
+        var steppedSpeed = StepTowardsTargetSpeed(currentSpeed, targetSpeed, accel, accel, frameTime);
         var changingDirection =
             MathF.Abs(steppedSpeed) > MinimumMovingSpeed &&
             ((reversing && steppedSpeed > 0f) ||

@@ -8,6 +8,58 @@
   name: van
   description: A rugged transport van.
   components:
+  - type: VehicleSound
+    runningSound: null
+    collisionSound:
+      collection: WFRcsmCarCrash
+    mobCollisionSound:
+      collection: WFRcsmCrush
+    crashSound:
+      collection: WFRcsmCrash
+  - type: WFVehicleEngineAudio
+    startSound: /Audio/_WF/Vehicles/RCSM/engines/ural/start.ogg
+    stopSound: /Audio/_WF/Vehicles/RCSM/engines/ural/stop.ogg
+    idleLoop: /Audio/_WF/Vehicles/RCSM/engines/ural/idle.ogg
+    driveLoop: /Audio/_WF/Vehicles/RCSM/engines/ural/drive.ogg
+    highLoop: /Audio/_WF/Vehicles/RCSM/engines/ural/high.ogg
+    revSound:
+      collection: WFRcsmEngineRev
+    gears: 4
+    idlePitch: 1, 1.3
+    drivePitch: 0.75, 1.4
+    highPitch: 0.95, 1.25
+    shiftSound:
+      collection: WFRcsmEngineShift
+    throttleResponse: 5
+    tracksLoop: /Audio/_WF/Vehicles/RCSM/wheels/road.ogg
+    startDelay: 1.5
+    tracksPitch: 0.9, 1.25
+  - type: WFVehicleHitSound
+    lightHitSound:
+      collection: WFRcsmHitBullet
+    lightRicochetSound:
+      collection: WFRcsmRicochet
+    lightRicochetChance: 0.2
+  - type: WFVehicleDestroyedSound
+    sequence:
+    - sound:
+        collection: WFRcsmVehicleBlast
+        params:
+          volume: 4
+          maxDistance: 32
+    - delay: 0.4
+      sound:
+        collection: WFRcsmVehicleDebris
+    - delay: 2.5
+      sound:
+        collection: WFRcsmVehicleFire
+        params:
+          maxDistance: 14
+    - delay: 6
+      sound:
+        collection: WFRcsmVehicleFireStress
+        params:
+          maxDistance: 12
   - type: WarpPoint
     follow: true
     location: Van
@@ -301,6 +353,7 @@
   description: An SPP van fitted with a roof-mounted weapon.
   suffix: Drivable, Van, SPP, Armed
   components:
+  - type: WFMilitaryVehicle
   - type: Sprite
     layers:
     - map: [ base ]

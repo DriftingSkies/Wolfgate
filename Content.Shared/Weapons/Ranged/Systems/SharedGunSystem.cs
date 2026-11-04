@@ -992,4 +992,5 @@ public enum AmmoVisuals : byte
     HasAmmo, // used for generic visualizers. c# stuff can just check ammocount != 0
     MagLoaded,
     BoltClosed,
+    IsFull, // WOLFGATE(Xenoborgs): wizden#44389, used for generic visualizers
 }

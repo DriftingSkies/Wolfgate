@@ -117,6 +117,10 @@ public sealed partial class VehicleWeaponsSystem
                 operatorComp.HardpointActions.Remove(desiredSlot.MountedWeapon);
             }
 
+            // A gun on its way out, as when the vehicle is deleted, gets no action to hold.
+            if (TerminatingOrDeleted(desiredSlot.IconEntity))
+                continue;
+
             EntityUid? action = null;
             if (!_actions.AddAction(user, ref action, HardpointSelectActionId, container: desiredSlot.IconEntity) ||
                 action == null)

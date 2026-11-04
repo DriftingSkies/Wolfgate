@@ -5,7 +5,9 @@ using System.Linq;
 using System.Numerics;
 using Content.IntegrationTests.Pair;
 using Content.Shared._WF.Vehicles.Base;
+using Content.Server._WF.Vehicles.Npc;
 using Content.Shared._WF.Vehicles.Core;
+using Content.Shared._WF.Vehicles.Scanner;
 using Content.Shared._WF.Vehicles.Viewport;
 using Content.Shared.Actions;
 using Content.Shared.Bed.Sleep;
@@ -17,8 +19,10 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
+using Content.Shared.NPC.Systems;
 using Content.Shared.Standing;
 using Content.Shared.Verbs;
 using Robust.Shared.GameObjects;
@@ -351,11 +355,19 @@ public sealed class VehicleInteriorTest
         });
         await server.WaitRunTicks(5);
 
+        // The user has turned their view outside; coming in turns it to the interior's north.
+        await server.WaitPost(() => entMan.GetComponent<InputMoverComponent>(user).TargetRelativeRotation = Angle.FromDegrees(90));
+
         await Enter(pair, rig, user, 0);
 
         await server.WaitAssertion(() =>
         {
             Assert.That(MapOf(pair, user), Is.EqualTo(Interior(pair, rig).MapId), "The user did not get in through the doorway on a turned grid.");
+
+            var mover = entMan.GetComponent<InputMoverComponent>(user);
+            Assert.That(mover.TargetRelativeRotation, Is.EqualTo(Angle.Zero), "Coming in did not turn the view to north.");
+            Assert.That(entMan.GetComponent<TransformComponent>(mover.RelativeEntity!.Value).MapID, Is.EqualTo(Interior(pair, rig).MapId),
+                "The view is not held to the interior.");
 
             // The ship moves and turns while the user is inside.
             var xform = server.System<SharedTransformSystem>();
@@ -597,6 +609,59 @@ public sealed class VehicleInteriorTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>
+    /// With someone inside, the vehicle takes their factions and NPCs hostile to them go for it; empty, it belongs to
+    /// nobody and nothing targets it.
+    /// </summary>
+    [Test]
+    public async Task HostileNpcsTargetAnOccupiedVehicle()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var rig = await Build(pair);
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var factions = server.System<NpcFactionSystem>();
+
+        EntityUid user = default, hostile = default;
+        await server.WaitPost(() =>
+        {
+            user = SpawnHuman(pair, rig, Doorway(0));
+            hostile = SpawnHuman(pair, rig, VehicleSpot + new Vector2(0f, 3f));
+            factions.ClearFactions(hostile, false);
+            factions.AddFaction(hostile, "SimpleHostile");
+        });
+        await server.WaitRunTicks(3);
+
+        await Enter(pair, rig, user, 0);
+        await pair.RunTicksSync(pair.SecondsToTicks(1.5f));
+
+        await server.WaitAssertion(() =>
+        {
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(MapOf(pair, user), Is.EqualTo(Interior(pair, rig).MapId), "Test setup: the user did not get in.");
+                Assert.That(entMan.HasComponent<WFOccupiedVehicleComponent>(rig.Vehicle), Is.True, "The occupied vehicle is not a live target.");
+                Assert.That(factions.IsMember(rig.Vehicle, "NanoTrasen"), Is.True, "The vehicle did not take its occupant's faction.");
+                Assert.That(factions.GetNearbyHostiles(hostile, 10f), Does.Contain(rig.Vehicle), "A hostile NPC does not see the vehicle as a target.");
+            }
+        });
+
+        await Leave(pair, rig, user, 0);
+        await pair.RunTicksSync(pair.SecondsToTicks(1.5f));
+
+        await server.WaitAssertion(() =>
+        {
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(entMan.HasComponent<WFOccupiedVehicleComponent>(rig.Vehicle), Is.False, "The empty vehicle is still a live target.");
+                Assert.That(factions.IsMember(rig.Vehicle, "NanoTrasen"), Is.False, "The empty vehicle kept its occupant's faction.");
+                Assert.That(factions.GetNearbyHostiles(hostile, 10f), Does.Not.Contain(rig.Vehicle));
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>Buckling into the driver seat makes the user the operator and gives them the lock and view actions; unbuckling clears it.</summary>
     [Test]
     public async Task DriverSeatSetsAndClearsTheOperator()
@@ -649,6 +714,12 @@ public sealed class VehicleInteriorTest
                 Assert.That(entMan.HasComponent<VehicleLockActionComponent>(user), Is.True, "The driver has no lock action.");
                 Assert.That(entMan.HasComponent<VehicleViewToggleComponent>(user), Is.True, "The driver has no view toggle.");
             }
+
+            // The seat's scanner: an action for the driver, looking out from the vehicle.
+            FindAction(pair, user, "WFActionVehicleScanner");
+            var origin = new WFRadarOriginEvent();
+            entMan.EventBus.RaiseLocalEvent(seat, ref origin);
+            Assert.That(origin.Origin, Is.EqualTo(rig.Vehicle), "The driver's scanner does not look out from the vehicle.");
         });
 
         // The lock action drives the same lock the keys use; the view action swaps the driver's eye.
@@ -687,6 +758,9 @@ public sealed class VehicleInteriorTest
                 Assert.That(entMan.HasComponent<VehicleLockActionComponent>(user), Is.False);
                 Assert.That(entMan.HasComponent<VehicleViewToggleComponent>(user), Is.False);
                 Assert.That(entMan.GetComponent<EyeComponent>(user).Target, Is.Null, "The driver's eye is still on the vehicle.");
+                Assert.That(entMan.GetComponent<ActionsComponent>(user).Actions
+                    .Any(action => entMan.GetComponent<MetaDataComponent>(action).EntityPrototype?.ID == "WFActionVehicleScanner"),
+                    Is.False, "The scanner action stayed with someone who got up.");
             }
         });
 

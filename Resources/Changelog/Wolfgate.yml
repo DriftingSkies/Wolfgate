@@ -4995,3 +4995,508 @@ Entries:
   id: 100331
   time: '2026-11-03T11:15:20.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/457
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Admins have a new RP Announce window with custom sounds, colours,
+        headings and an on-screen notification chip.
+  id: 100332
+  time: '2026-11-04T01:25:03.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/473
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        The mothership core can print wizden's xenoborg upgrade modules:
+        construction, deflector field, tile gun, nanite gun, oil gun, zap,
+        laser, burst laser, guided missiles, rockets, radioactive aura, jump,
+        knife, energy dagger, bio knife and space movement.
+    - type: Add
+      message: >-
+        Xenoborgs can build an extractor that grows xenoborg crystals from their
+        ship's power. Shells and weapon modules cost crystals; utility modules
+        cost materials.
+    - type: Add
+      message: >-
+        The mothership core can watch through its xenoborgs' cameras from
+        anywhere.
+    - type: Tweak
+      message: >-
+        Xenoborg floors and walls have a new blue look, with neon bands on the
+        walls.
+    - type: Tweak
+      message: >-
+        Xenoborgs resist EMPs, and heavy and scout xenoborgs are immune to
+        flashes.
+  id: 100333
+  time: '2026-11-04T02:09:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/471
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Worlds are bounded circles, each sized for its planet, built in the
+        lobby before the round starts and walled at the edge.
+    - type: Add
+      message: >-
+        Fly past a world's edge and you're turned back on every layer. On the
+        ground the edge is hard, and a hull that strays out is put back inside.
+    - type: Add
+      message: >-
+        Ships arriving at a planet come out inside its circle, and each layer of
+        the planet is named for what it is.
+    - type: Add
+      message: >-
+        A progress bar shows in the lobby and over a world while it's still
+        forming. The round waits a short while for worlds that aren't done.
+    - type: Add
+      message: Asclepiu is now called Verda.
+    - type: Add
+      message: >-
+        Crocus is a joinable city on Verda, in a different spot each round, with
+        all its floors and its underground.
+    - type: Add
+      message: >-
+        Crocus has residents living in its buildings and towers, its faction
+        vendors, consoles and turrets, roofs over its streets and floors under
+        its higher levels, and open stairwells between levels.
+    - type: Add
+      message: >-
+        Every world has a road network joining its sites as a tree of trunks and
+        spurs, with footpaths out to the sites off the road.
+    - type: Add
+      message: >-
+        Roads are furnished with kerbs, street lights, traffic and litter, and
+        parked cars sit against the kerb.
+    - type: Add
+      message: >-
+        Dark tunnels cut through the rock where roads meet a ridge, with spiders
+        and risen crews inside.
+    - type: Add
+      message: >-
+        Sites along the roads, rolled per world: small, corner and run-down
+        houses, a house with a basement, the owner's roadside house, a gas
+        station, a mechanic's garage, a roadside inn, a greenhouse, an ancient
+        temple, an abandoned bandit hideout and a planetary vault.
+    - type: Add
+      message: >-
+        Verda gets a planetary hospital. Carcinoma gets the fountain of life,
+        three doses of vitae a round that heal everything.
+    - type: Add
+      message: >-
+        The research labs, clinics, dorms, mineshafts, outposts, brigs, camps,
+        virology labs, factories, mines and ruins are back as dungeon sites on
+        their worlds, with unknown signals in orbit until someone visits.
+    - type: Add
+      message: >-
+        The mechanic repairs your vehicle and sells repair boxes and delivery
+        beacons; the innkeeper trades with you and will take an organ as
+        payment.
+    - type: Add
+      message: >-
+        The ancient temple has guardians and relics that roll a complex
+        artifact.
+    - type: Add
+      message: >-
+        Planetside cargo depots A and B are sometimes built on a world with
+        landing berths, announced at round start, with an FTL beacon, map and
+        scan markers and a ground beacon.
+    - type: Add
+      message: >-
+        Every world has a comms outpost. Planet comms run through its mass
+        transceiver, so without a powered one a world's radios, announcements
+        and uplink go dark. Crew channel and handhelds still work.
+    - type: Add
+      message: >-
+        A broken mass transceiver is repaired with steel, a screwdriver and a
+        welder. It can't be deconstructed.
+    - type: Add
+      message: >-
+        Reaver encampments and ADS control sites stand beside the roads on every
+        world, guarded, lit and tented.
+    - type: Add
+      message: >-
+        Camps of crazies sit by the roads and go out to meet visitors instead of
+        attacking on sight.
+    - type: Add
+      message: >-
+        Strangers wander the worlds and live in the camps and houses: dealers,
+        beggars, preachers, muggers and stalkers who walk up to talk, sell, rob
+        or follow you aboard.
+    - type: Add
+      message: >-
+        Refuse a stranger and the whole camp remembers. Strangers guard their
+        camps and houses, roam between them and board unlocked vehicles.
+    - type: Add
+      message: >-
+        Planet NPCs don't always fight to the death. Some hold you up for cash,
+        mug you, beat you down and leave, take an organ, or fire a warning shot
+        and chase you off.
+    - type: Add
+      message: >-
+        Planet NPCs run when a fight goes badly, dress for their world's air and
+        leave each other alone.
+    - type: Add
+      message: >-
+        Gamble with NPCs for a stake: liar's dice, the lockbox, higher or lower,
+        memory and riddles. An old wise miner camps underground with a table to
+        play across.
+    - type: Add
+      message: >-
+        Crashed ships on every world, torn open at any angle and half buried,
+        reclaimed by the ground with wildlife inside.
+    - type: Add
+      message: >-
+        Wreck crews have risen again as zombies dressed for the world they came
+        down on, siding with the wildlife.
+    - type: Add
+      message: >-
+        Wrecks hold salvaged armament crates with a ship gun and its hardpoint,
+        gunnery co-processor chips, and a repair blueprint for the ship they
+        came from.
+    - type: Add
+      message: >-
+        Wrecked hulls and camp ships are settled into the ground and never fly
+        again.
+    - type: Add
+      message: Planetary vault guards carry a field pack worth looting.
+    - type: Add
+      message: >-
+        Leave your ship landed on a planet with nobody near it for long enough
+        and a squatter may move in and make a mess.
+    - type: Add
+      message: >-
+        Working vehicles are parked about the worlds, some with a squatter
+        holding the key.
+    - type: Add
+      message: >-
+        Reaver APCs patrol the roads on Verda and Merak, both ways from their
+        start, passive until shot.
+    - type: Add
+      message: >-
+        Server-crewed tanks, APCs and trucks that drive the roads and fight,
+        with an admin panel to spawn, order, rehome, visit and clear them.
+    - type: Add
+      message: >-
+        Expeditions send you to sites on the sector's worlds instead of
+        generated maps, and the timer only starts once you get there. Expedition
+        ships come with landing thrusters.
+    - type: Add
+      message: 'Radars show a world''s map: terrain, roads, water and sites.'
+    - type: Add
+      message: >-
+        Over a world's name on the radar you see how many vessels, sites and
+        people it holds, its cargo depot and whether your expedition is there.
+        Click it for the full list of signals.
+    - type: Add
+      message: >-
+        On a world's layers the radar marks its sites, the vessels on its other
+        layers and the people a medical tracker gives away, with your expedition
+        site in green and an arrow at the rim when it's off the scope.
+    - type: Add
+      message: >-
+        Planets draw as their own sprite on the radar and shuttle map, and
+        hovering one shows its scan callout.
+    - type: Add
+      message: The strategic plot shows the planet when you're over one.
+    - type: Add
+      message: >-
+        A landing guide while piloting over a planet (toggle J) shows the hull's
+        outline on the ground below, each tile green, red or amber, with a count
+        of what's blocking.
+    - type: Add
+      message: >-
+        Landing on rock or walls is refused, and a landing crushes plants and
+        ground cover under the hull.
+    - type: Add
+      message: >-
+        The world's clock and weather show on your HUD while you're on a planet,
+        no watch needed.
+    - type: Add
+      message: >-
+        Planets have seasons and a climate, with a forecast console and distant
+        thunderbolts.
+    - type: Add
+      message: >-
+        Rain wets the ground, leaves puddles with soft rims and ripples, washes
+        away decals and falls only where there's no roof. Ships stay dry.
+    - type: Add
+      message: >-
+        Snow piles up on open ground, slows you down, takes footprints, tread
+        marks and blood stains, and melts round fires and running heaters.
+    - type: Add
+      message: >-
+        Lakes freeze over in frost, thicken in the cold and thaw by degree.
+        Bonfires burn snow-covered fuel.
+    - type: Add
+      message: Admins can set a planet's weather and have it hold.
+    - type: Add
+      message: >-
+        Warmth: your HUD shows how warm it is where you stand and outside, and
+        how your body feels.
+    - type: Add
+      message: >-
+        Wet clothes and wind chill make you colder, you're warned before cold or
+        heat starts to hurt, and fires warm you from a distance.
+    - type: Add
+      message: >-
+        Every world's biomes were redone with bigger regions and tiles that
+        match their neighbours.
+    - type: Add
+      message: >-
+        Verda has woods, meadows, lake shores, irradiated scars and snowy
+        highlands.
+    - type: Add
+      message: >-
+        Merak has dune seas, red badlands, cactus fields, cracked gravel flats
+        and rare oases.
+    - type: Add
+      message: Fervidus has ash wastes, lava crust, ash flora and tar pools.
+    - type: Add
+      message: Thrascias has pack ice, frozen lakes, tundra, pines and crystal fields.
+    - type: Add
+      message: >-
+        Aerumna has fungal forests, clay flats, boulder fields and crystal
+        spires.
+    - type: Add
+      message: >-
+        Carcinoma has bone fields, hive pockets, meat marsh, scab shores and
+        blood lakes with clotted banks.
+    - type: Add
+      message: >-
+        Oceans are now lakes and ponds a few dozen tiles across, and nothing is
+        placed on water.
+    - type: Add
+      message: >-
+        Verda's wildlife includes mutated deer, two-headed deer, scar rats, rat
+        kings and frost bears.
+    - type: Add
+      message: >-
+        Merak has desert tarantulas, cobras and a crate mimic; Fervidus has
+        laser raptors, ash golems and cinder slimes; Thrascias has snow foxes,
+        yetis and crystal crabs.
+    - type: Add
+      message: >-
+        Aerumna has glowing slugs, shadow cats and gravity crabs; Carcinoma has
+        burrowers and meat spiders.
+    - type: Add
+      message: >-
+        Birds flock on every world, take off when you come close, land again
+        elsewhere and can be shot out of the air. Ash hawks and carrion birds
+        dive at you.
+    - type: Add
+      message: >-
+        Every world has its own breed of wild slime, which only grows and splits
+        in its home climate.
+    - type: Add
+      message: >-
+        Plants you can use: pick mushrooms, berries, dates, herbs and reeds,
+        cook soups and poultices, tap cacti for water and dig ice for plasma.
+    - type: Add
+      message: >-
+        Plants that use you: brambles, nettles and whip-vines lash, tendon vines
+        grab, cacti and ember flowers spit, puffballs and spore pods cloud,
+        glowroot irradiates and Carcinoma pimples burst when you get close.
+    - type: Add
+      message: >-
+        Carcinoma's air is CO2, breathed out by ventricles in the ground, and
+        its natives are immune. Bring air.
+    - type: Add
+      message: >-
+        Aerumna is the xenonid homeworld, with hive chambers, wild eggs and a
+        hive site.
+    - type: Add
+      message: >-
+        Sand maws lurk under Merak's dunes. Their tentacle drags you into an
+        acid belly full of loot; slash the tentacle free or break the belly
+        walls to get out. A pickaxe always waits inside.
+    - type: Add
+      message: >-
+        Aerumna's chromite leviathan roams and hunts, though it can't breach
+        hulls. Admins get Goob's space whale.
+    - type: Add
+      message: >-
+        Caverns under the worlds, reached by stairs down the cave mouths: the
+        underkarst, cinder vaults, sandstone galleries, rime galleries, umbral
+        deeps and the gut, each with its own life and ambience.
+    - type: Add
+      message: >-
+        Things to find in the caverns: a miner's camp, raiders, a surveyor, a
+        trapped miner, crawlers, a lamplighter and an echo.
+    - type: Add
+      message: Cave pits have a real floor under the lip.
+    - type: Add
+      message: >-
+        Black Mesa ambience, plant sounds and a real rocket takeoff sound on
+        every world.
+    - type: Add
+      message: >-
+        Roofs are drawn over ships and buildings and lift off whatever you're
+        in. Vessels roof their enclosed rooms as the grid changes.
+    - type: Add
+      message: >-
+        You can't drop into a roofed building from above, and ghosts never see
+        roofs.
+    - type: Add
+      message: >-
+        Vehicle purchase terminal with an expeditionary catalogue and a delivery
+        pad to buy and sell vehicles on.
+    - type: Add
+      message: >-
+        Military vehicles come from an outfitter and the station counter behind
+        a heavy vehicle licence, delivered by orbital drop beacon. Weapons only
+        fit military chassis.
+    - type: Add
+      message: >-
+        A military repair kit repairs and re-keys an abandoned NPC vehicle as
+        your salvage.
+    - type: Add
+      message: >-
+        Expeditionary ships can be refitted, the vehicle bay repairs vehicles
+        and sells parts, and vehicle bay flatpacks are sold at John Wolfgate.
+    - type: Add
+      message: >-
+        Vehicles have a dashboard with keyed ignition, a key button, a
+        start/stop button and bigger dials.
+    - type: Add
+      message: >-
+        Vehicles have a turnable driver view, a built-in mass scanner that looks
+        outside, a turret lock that holds the turret's bearing, front headlights
+        and tread marks under each track.
+    - type: Add
+      message: >-
+        New vehicle engine, gearbox, turret, gun, impact and wreck sounds. You
+        hear the world outside through the hull.
+    - type: Add
+      message: You face the interior's north when you get into a vehicle.
+    - type: Add
+      message: >-
+        Spawn menu gets a Streets group with furniture, signs, lighting,
+        buildings and yards, ported from RMC and CMU.
+    - type: Add
+      message: Ghosts get a Planetary POIs warp category, one warp per site.
+    - type: Tweak
+      message: >-
+        Small things no longer stop vehicles. Sandbags, junk, railings, stumps
+        and street furniture get driven over or smashed; tank traps still hold.
+    - type: Tweak
+      message: Vehicles hitting things hard take impact damage.
+    - type: Tweak
+      message: Mobs attack occupied vehicles by their crew's factions.
+    - type: Tweak
+      message: >-
+        Lower floors on planets are drawn full size when you're on foot; from a
+        ship a planet's lower layers keep their perspective.
+    - type: Tweak
+      message: Merak is a little cooler, so its wildlife doesn't cook at midday.
+    - type: Tweak
+      message: >-
+        Carcinoma's blood lakes are red, not black, and Thrascias's dark ice is
+        clear ice you can see through.
+    - type: Tweak
+      message: Planet weather is off by default and can be switched on by admins.
+    - type: Tweak
+      message: Chasms are gone from the haunted, mineshaft and Jianghui dungeons.
+    - type: Tweak
+      message: >-
+        Idle parts of a planet go to sleep while nobody is near, so planets are
+        cheaper to run.
+    - type: Tweak
+      message: Looking down at a planet from orbit is much cheaper on your GPU.
+    - type: Fix
+      message: >-
+        Broken floors and blasts on planets leave ground instead of plating and
+        lattice, and site buildings keep their indoor floors.
+    - type: Fix
+      message: Zombies turn to face where they walk and who they hit.
+    - type: Fix
+      message: >-
+        Dragged things land beside you in a vehicle instead of wedged in the
+        door.
+    - type: Fix
+      message: A broken-up ship keeps its helm lock on every piece.
+    - type: Fix
+      message: FTL destinations no longer show blank names.
+  id: 100334
+  time: '2026-11-04T02:25:00.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/231
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Searching uplinks and the UndergroundVend works again.
+    - type: Fix
+      message: >-
+        The chameleon backpack and deathsquad glasses list their disguises
+        again.
+    - type: Fix
+      message: A dead ghost role mob is no longer offered as a ghost role.
+    - type: Fix
+      message: Resomi can speak and understand Scratch.
+    - type: Fix
+      message: The MMC smart gun research also unlocks the Sakura's magazine.
+    - type: Tweak
+      message: Ships carry a small amount of cargo before it costs thrust.
+    - type: Tweak
+      message: The CBURN exosuit blocks as much radiation as a radiation suit.
+    - type: Tweak
+      message: >-
+        Fission and fusion fuel crates warn that stacking them sets off a chain
+        explosion.
+    - type: Tweak
+      message: >-
+        The PDV Eris and Vulture carry the new mining lasers, and the Eris
+        salvage locker is filled.
+    - type: Add
+      message: IPCs can have anatomy.
+    - type: Tweak
+      message: >-
+        Ships flown by a new player now show the (L) tag, not just ships they
+        own.
+  id: 100335
+  time: '2026-11-04T02:26:11.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/474
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Cargo weight tests match the free cargo allowance.
+  id: 100336
+  time: '2026-11-04T03:20:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/475
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Hydroponics tray alert lights sit in their sockets again.
+    - type: Fix
+      message: >-
+        TSFMC and PDV cyborgs take their advanced weapon module instead of
+        calling it a duplicate.
+    - type: Fix
+      message: >-
+        Clicking a ship or drone near a planet on the nav no longer opens that
+        planet's signal list.
+    - type: Tweak
+      message: >-
+        An orbital vehicle drop throws anyone standing on the beacon clear
+        instead of refusing to land.
+  id: 100337
+  time: '2026-11-04T04:35:32.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/477
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Any ship carrying an expedition console now has all of its thrusters
+        converted for landing, including ones built later.
+  id: 100338
+  time: '2026-11-04T04:50:30.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/478
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Admins can ask players who own a ship and are in space whether they want
+        to be tested on. No refunds or compensation will be given.
+  id: 100339
+  time: '2026-11-04T04:50:42.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/476

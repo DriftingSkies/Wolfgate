@@ -296,6 +296,15 @@ unmarked:
     module: Traders
     reason: NPC traders, ATMs, deposit consoles and vents placed on the Central Command map.
   - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
+    module: MilitaryVehicles
+    reason: The military outfitter counter placed beside the ATMs on the Central Command map.
+  - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
+    module: Minigames
+    reason: Two game hosts, the dealer and the riddle sage, seated at the bar lounge tables.
+  - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
+    module: Planets
+    reason: A weather forecast computer beside the station radar console.
+  - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
     module: BritishFood
     reason: Mrs. Luvvit's Pie & Mash in the trade hall kiosk row, in place of a potted plant and its front pane.
   - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
@@ -2821,6 +2830,18 @@ unmarked:
   - path: Resources/Textures/_NF/Clothing/Head/Hardsuits/nfsd.rsi/
     module: null
     reason: Licence and credit set as in HardLight 0fc067be74.
+  - path: Resources/Maps/Dungeon/haunted.yml
+    module: null
+    reason: Removed every chasm.
+  - path: Resources/Maps/Dungeon/mineshaft.yml
+    module: null
+    reason: Removed every chasm.
+  - path: Resources/Maps/_Mono/Crocus/jianghui_industrial_0.yml
+    module: null
+    reason: Removed every chasm.
+  - path: Resources/Maps/_Mono/Crocus/jianghui_industrial_1.yml
+    module: null
+    reason: Removed every chasm.
   - path: Resources/Textures/_NF/Clothing/Head/Hardsuits/nfsd_combat.rsi/
     module: null
     reason: Licence and credit set as in HardLight 0fc067be74.

@@ -6,6 +6,9 @@ using Content.IntegrationTests.Fixtures.Attributes;
 using Content.IntegrationTests.Tests._WF.Wolfmed;
 using Content.Server._WF.Newbie;
 using Content.Server.Players.PlayTimeTracking;
+using Content.Server.Shuttles.Components;
+using Content.Server.Shuttles.Systems;
+using Content.Shared.Shuttles.Components;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Newbie;
 using Content.Shared.Examine;
@@ -17,6 +20,7 @@ using Content.Shared.Traits;
 using NUnit.Framework;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.Newbie;
@@ -86,7 +90,12 @@ public sealed class WFNewbieTagTest : GameTest
             label = SEntMan.System<SharedShuttleSystem>().GetIFFLabel(_ship) ?? string.Empty;
         });
         var clientSees = false;
-        await Client.WaitPost(() => clientSees = CEntMan.HasComponent<WFNewbieComponent>(ToClientUid(_body)));
+        var clientLabel = string.Empty;
+        await Client.WaitPost(() =>
+        {
+            clientSees = CEntMan.HasComponent<WFNewbieComponent>(ToClientUid(_body));
+            clientLabel = CEntMan.System<SharedShuttleSystem>().GetIFFLabel(ToClientUid(_ship)) ?? string.Empty;
+        });
 
         Assert.Multiple(() =>
         {
@@ -95,6 +104,7 @@ public sealed class WFNewbieTagTest : GameTest
             Assert.That(examine, Does.Contain("new around here"), "the examine line is missing.");
             Assert.That(label, Does.Contain("(L)"), "the ship's radar label has no newbie tag.");
             Assert.That(clientSees, Is.True, "the client never got the newbie component.");
+            Assert.That(clientLabel, Does.Contain("(L)"), "the client's radar label has no newbie tag.");
         });
 
         // Turning the tag off removes it from both, and turning it back on restores it.
@@ -128,6 +138,48 @@ public sealed class WFNewbieTagTest : GameTest
             Assert.That(shown, Is.EqualTo((true, true)), "the tag did not come back when turned on again.");
             Assert.That(left, Is.False, "a body kept the tag after its player left it.");
             Assert.That(veteran, Is.EqualTo((false, false)), "a player past the threshold is still tagged.");
+        });
+    }
+
+    /// <summary>Report 429: a ship a new player is flying is tagged even when someone else owns it, until they leave the helm.</summary>
+    [Test]
+    public async Task PilotedShipIsTaggedTest()
+    {
+        Assert.That(ServerSession, Is.Not.Null, "This test needs a connected pair.");
+        var map = await WolfmedGameTest.CreateTestMap(Pair);
+        var minds = SEntMan.System<SharedMindSystem>();
+        var consoles = SEntMan.System<ShuttleConsoleSystem>();
+        _ship = map.Grid;
+        EntityUid helm = default;
+
+        await Server.WaitPost(() =>
+        {
+            var session = ServerSession!;
+            minds.WipeMind(session.ContentData()?.Mind);
+            _body = SEntMan.SpawnEntity("MobHuman", map.GridCoords);
+            minds.TransferTo(minds.CreateMind(session.UserId).Owner, _body);
+            helm = SEntMan.SpawnEntity("ComputerShuttle", map.GridCoords);
+            // Someone else, offline and never tagged, owns the ship.
+            SEntMan.EnsureComponent<ShipOwnershipComponent>(_ship).OwnerUserId = new NetUserId(Guid.NewGuid());
+            SEntMan.EnsureComponent<PilotComponent>(_body);
+        });
+        await RunTicksSync(30);
+
+        var idle = await Refresh();
+        await Server.WaitPost(() => consoles.AddPilot(helm, _body, SEntMan.GetComponent<ShuttleConsoleComponent>(helm)));
+        var flying = await Refresh();
+        var clientLabel = string.Empty;
+        await Client.WaitPost(() =>
+            clientLabel = CEntMan.System<SharedShuttleSystem>().GetIFFLabel(ToClientUid(_ship)) ?? string.Empty);
+        await Server.WaitPost(() => consoles.RemovePilot(_body));
+        var landed = await Refresh();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(idle.Ship, Is.False, "a veteran's ship nobody new flies was tagged.");
+            Assert.That(flying.Ship, Is.True, "a ship a new player flies was not tagged.");
+            Assert.That(clientLabel, Does.Contain("(L)"), "the client's radar label has no newbie tag.");
+            Assert.That(landed.Ship, Is.False, "the ship kept the tag after its new pilot left the helm.");
         });
     }
 

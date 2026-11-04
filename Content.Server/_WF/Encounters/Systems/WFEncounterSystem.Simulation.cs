@@ -63,6 +63,16 @@ public sealed partial class WFEncounterSystem
         Subs.CVar(_config, EncountersCVars.MaterializeInterval, value => _materializeInterval = TimeSpan.FromSeconds(value), true);
         Subs.CVar(_config, EncountersCVars.DuelMeanSeconds, value => _duelMean = MathF.Max(value, 1f), true);
         SubscribeLocalEvent<FTLStartedEvent>(OnFtlStarted);
+        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopStartedEvent>(OnHopStarted);
+    }
+
+    /// <summary>A hop out of orbit is noticed like a jump, so the ships about its exit are up before the hull arrives.</summary>
+    private void OnHopStarted(ref Content.Server._WF.Planets.Hop.WFPlanetHopStartedEvent ev)
+    {
+        if (HasComp<WFEncounterGridComponent>(ev.Hull))
+            return;
+
+        _jumps.Add((_transform.ToMapCoordinates(ev.Target), _timing.CurTime + JumpNotice));
     }
 
     /// <summary>A player's ship plotting a jump spawns the simulated ships about its exit while it is in transit.</summary>
