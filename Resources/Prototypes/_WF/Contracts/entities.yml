@@ -63,7 +63,6 @@
         variation: 0.10
         pitch: 1.10
 
-# A faction board: only its faction's contractors post here, and only their members may take the work.
 - type: entity
   parent: WFContractBoard
   id: WFContractBoardTSF
@@ -84,7 +83,6 @@
   - type: PointLight
     color: "#6fb6ff"
 
-# A faction board: only its faction's contractors post here, and only their members may take the work.
 - type: entity
   parent: WFContractBoard
   id: WFContractBoardUSSP
@@ -105,7 +103,6 @@
   - type: PointLight
     color: "#d0573f"
 
-# A faction board: only its faction's contractors post here, and only their members may take the work.
 - type: entity
   parent: WFContractBoard
   id: WFContractBoardPDV
@@ -126,7 +123,7 @@
   - type: PointLight
     color: "#d4a83a"
 
-# The Contracts PDA app: what the holder has accepted, with the clock, objectives and where to go.
+# The Contracts PDA app.
 - type: entity
   parent: NFBasePDACartridge
   id: WFContractsCartridge
@@ -150,7 +147,7 @@
     price: 50
     vendPrice: 500
 
-# Hand-carried parcels. Worth nothing to anyone but the addressee.
+# Hand-carried parcels.
 - type: entity
   parent: BaseItem
   id: WFContractParcel
@@ -214,8 +211,7 @@
   - type: Item
     size: Small
 
-# Contract crates for hauling: they need a hold or a strong back. Their base is the trade crate's, so they weigh on the
-# ship like cargo, but no chute buys them.
+# Hauling crates: weigh like trade cargo, but no chute buys them.
 - type: entity
   parent: BaseTradeItem
   id: WFContractFreight
@@ -323,7 +319,7 @@
   - type: WFCargoMass
     class: Light
 
-# The empty crate a supply or mining contract hands out. Fill it, close it, leave it on the contractor's station.
+# The manifest crate for supply and mining contracts.
 - type: entity
   parent: CrateGenericSteel
   id: WFContractCrate
@@ -335,7 +331,7 @@
   - type: StaticPrice
     price: 0
 
-# Things to bring back from wrecks.
+# Salvage finds.
 - type: entity
   parent: BaseItem
   id: WFContractFlightRecorder

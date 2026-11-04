@@ -20,6 +20,10 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WF.TradeGoods.Systems;
 
+/// <summary>Raised broadcast as a PDA sets up, for other modules to add apps every PDA gets.</summary>
+[ByRefEvent]
+public readonly record struct WFPdaProgramsEvent(List<EntProtoId> Programs);
+
 /// <summary>Marks the Market PDA app: live station prices and sector alerts.</summary>
 [RegisterComponent]
 public sealed partial class WFMarketCartridgeComponent : Component;
@@ -49,9 +53,6 @@ public sealed partial class WFMarketCartridgeSystem : EntitySystem
 
     public static readonly EntProtoId MarketCartridge = "WFMarketCartridge";
 
-    /// <summary>Other modules' apps every PDA gets after the Market app, added by those modules at startup.</summary>
-    public static readonly List<EntProtoId> ExtraPrograms = new();
-
     private static readonly TimeSpan RefreshInterval = TimeSpan.FromSeconds(5);
 
     private TimeSpan _nextRefresh;
@@ -65,16 +66,18 @@ public sealed partial class WFMarketCartridgeSystem : EntitySystem
     }
 
     /// <summary>
-    /// Adds the Market app, then <see cref="ExtraPrograms"/>, to every PDA's preinstalled programs just before they
-    /// install at map init, since most PDA prototypes replace the base list. Last in the list, so a full disk drops them
-    /// rather than a job program.
+    /// Adds the Market app, then any apps other modules add through <see cref="WFPdaProgramsEvent"/>, to every PDA's
+    /// preinstalled programs just before they install at map init, since most PDA prototypes replace the base list.
+    /// Last in the list, so a full disk drops them rather than a job program.
     /// </summary>
     private void OnPdaMapInit(Entity<PdaComponent> ent, ref MapInitEvent args)
     {
         if (!TryComp<CartridgeLoaderComponent>(ent, out var loader))
             return;
 
-        foreach (var program in ExtraPrograms.Prepend(MarketCartridge))
+        var ev = new WFPdaProgramsEvent(new List<EntProtoId> { MarketCartridge });
+        RaiseLocalEvent(ref ev);
+        foreach (var program in ev.Programs)
         {
             if (!loader.PreinstalledPrograms.Contains(program))
                 loader.PreinstalledPrograms.Add(program);

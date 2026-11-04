@@ -1,5 +1,4 @@
-# TSF-CIV "Stellar Blessing": a colony ship of civilian prospectors. Stores, building stock, settlers' mail and the odd
-# lost shuttle. Close to Caelestinus, so the pay is modest and the work is safe: a first stop for new contractors.
+# Stellar Blessing: colony stores and building stock; safe starter work next to Central.
 
 - type: wfContract
   id: WFContractSBColonyStores

@@ -1,27 +1,24 @@
 using System.Linq;
 using Content.Server._WF.Encounters.Components;
+using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.Waypoints;
 using Content.Shared._Mono.Company;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Contracts;
+using Content.Shared._WF.Waypoints;
 using Robust.Shared.Map;
 
 namespace Content.Server._WF.Contracts;
 
-/// <summary>
-/// Keeping contracts out of each other's way. A bounty's ships and a salvage wreck carry the holder's name on every
-/// radar, so others can see the work is claimed; the holder's crew get a waypoint for the target on the ships they are
-/// aboard; and a player outside the crew whose ship fires on a claimed target loses standing with the contractor, unless
-/// they are on the holder's side or the contractor's (TSF helping TSF is not interference).
-/// </summary>
+/// <summary>Claim labels, crew waypoints and the interference penalty.</summary>
 public sealed partial class WFContractSystem
 {
     [Dependency] private WFWaypointSystem _waypoints = default!;
 
-    /// <summary>Standing lost by a player outside the crew who fired on a claimed target.</summary>
+    /// <summary>Standing lost for firing on someone else's claimed target.</summary>
     private const int InterferencePenalty = 2;
 
-    /// <summary>Labels a bounty's ships, or a wreck, with who holds the contract; ships spawned late are labelled when they appear.</summary>
+    /// <summary>Labels a bounty's ships or a wreck with who holds the contract, as they appear.</summary>
     private void Claim(WFContract contract)
     {
         var claimant = Claimant(contract);
@@ -41,17 +38,16 @@ public sealed partial class WFContractSystem
         }
     }
 
-    /// <summary>Who a contract is claimed by: the holder's crew, or the holder.</summary>
+    /// <summary>The holder's crew name, else the holder.</summary>
     private string Claimant(WFContract contract)
     {
         return contract.User is { } user && _crews.CrewNameOf(user) is { } crew ? crew : contract.Character;
     }
 
-    /// <summary>Where a live contract's target is now, if it has one in space: a bounty's ship, an escort, a wreck, or cargo to collect.</summary>
+    /// <summary>Where a live contract's target is now: a ship, a wreck or cargo waiting for pickup.</summary>
     private MapCoordinates? MarkerPosition(WFContract contract)
     {
-        var proto = _proto.Index(contract.Prototype);
-        switch (proto.Objective)
+        switch (_proto.Index(contract.Prototype).Objective)
         {
             case WFContractBounty:
             case WFContractEscort:
@@ -67,10 +63,7 @@ public sealed partial class WFContractSystem
         return null;
     }
 
-    /// <summary>
-    /// Puts or moves a waypoint for each live contract's target on every player ship the holder's crew is aboard. A
-    /// waypoint the crew deleted is not put back.
-    /// </summary>
+    /// <summary>Puts or moves each live contract's waypoint on its crew's ships; deleted ones stay deleted.</summary>
     private void UpdateMarkers()
     {
         foreach (var contract in _contracts.Values)
@@ -82,7 +75,7 @@ public sealed partial class WFContractSystem
             if (MarkerPosition(contract) is not { } at)
                 continue;
 
-            var name = Loc.GetString("wf-contract-marker-name", ("id", contract.Id));
+            var name = MarkerName(contract);
             var bodies = _crews.CrewInRound(user).Select(member => member.Body).ToList();
             if (MobOf(new WFContractHolder(user, contract.Character)) is { } holder)
                 bodies.Add(holder);
@@ -92,15 +85,20 @@ public sealed partial class WFContractSystem
                 if (Transform(body).GridUid is not { } ship || !HasComp<ShuttleDeedComponent>(ship))
                     continue;
 
-                if (contract.Markers.TryGetValue(ship, out var id) && id == null)
+                var known = contract.Markers.TryGetValue(ship, out var id);
+                if (known && id == null)
                     continue;
 
-                contract.Markers[ship] = _waypoints.Place(ship, id, name, at);
+                var placed = _waypoints.Place(ship, id, name, at);
+                if (placed != null || known)
+                    contract.Markers[ship] = placed;
             }
         }
     }
 
-    /// <summary>The side a company is on: its contract faction, else the company itself; none for no company.</summary>
+    private string MarkerName(WFContract contract) => Loc.GetString("wf-contract-marker-name", ("id", contract.Id));
+
+    /// <summary>A company's side: its contract faction, else itself; null for none.</summary>
     private string? SideOf(string? company)
     {
         if (string.IsNullOrEmpty(company) || company == "None")
@@ -115,22 +113,26 @@ public sealed partial class WFContractSystem
         return company;
     }
 
-    /// <summary>Takes down the waypoints a contract put up.</summary>
+    /// <summary>Removes a contract's waypoints, from split-off pieces of its ships too.</summary>
     private void ClearMarkers(WFContract contract)
     {
-        foreach (var (ship, id) in contract.Markers)
+        if (contract.Markers.Count == 0)
+            return;
+
+        var name = WFWaypointRules.CleanName(MarkerName(contract));
+        var query = EntityQueryEnumerator<WFWaypointsComponent>();
+        while (query.MoveNext(out var grid, out var waypoints))
         {
-            if (id is { } waypoint && !TerminatingOrDeleted(ship))
-                _waypoints.Remove(ship, waypoint);
+            foreach (var waypoint in waypoints.Waypoints.Where(w => w.Name == name).ToList())
+            {
+                _waypoints.Remove(grid, waypoint.Id);
+            }
         }
 
         contract.Markers.Clear();
     }
 
-    /// <summary>
-    /// When a claimed target's encounter ends, every player outside the holder's crew whose ship hit it loses standing
-    /// with the contractor, and is told why.
-    /// </summary>
+    /// <summary>On a destroyed claimed target, everyone outside the crew and its sides who fought it loses standing.</summary>
     private void ClaimantsInterfered(WFContract contract, EntityUid encounter)
     {
         if (contract.User is not { } user || !TryComp<WFEncounterComponent>(encounter, out var comp))
@@ -149,7 +151,8 @@ public sealed partial class WFContractSystem
 
         foreach (var (attacker, hits) in comp.Hits)
         {
-            if (crew.Contains(attacker) || hits.Values.Sum() <= 0
+            // The hit count encounter rewards use; a stray shot is not interference.
+            if (crew.Contains(attacker) || hits.Values.Sum() < WFEncounterRewardSystem.MinimumHits
                 || !_mind.TryGetMind(attacker, out var mind) || mind.Value.Comp.OwnedEntity is not { } body
                 || HolderOf(body) is not { } meddler
                 || SideOf(CompOrNull<CompanyComponent>(body)?.CompanyName.Id) is { } side && friends.Contains(side))

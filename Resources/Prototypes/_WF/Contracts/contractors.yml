@@ -1,5 +1,4 @@
-# Who posts on the contract board, and from where. A contractor whose station is not in the round posts nothing.
-# PDV Helios posts nothing; the Underground deals off the board.
+# Contractors and their stations. Helios and the Underground post no station work.
 
 - type: wfContractor
   id: WFContractorCaelPort
@@ -73,8 +72,7 @@
   offers: 3
   order: 7
 
-# Faction boards: post only on their own board, and only members of the faction may take the work. They pay faction
-# credits on top, and work for one side costs standing with the other.
+# Faction boards: members only.
 
 - type: wfContractor
   id: WFContractorTSFRequisitions

@@ -1,4 +1,4 @@
-# MMC Hokkaido: the Mieyo Manufacturing Concern buys ore by the crate, refined stock, and pays to keep its claims clear.
+# MMC Hokkaido: ore, refined stock, claim jumpers.
 
 - type: wfContract
   id: WFContractMMCIronQuota

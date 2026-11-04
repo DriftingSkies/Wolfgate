@@ -31,10 +31,7 @@ public sealed partial class WFContractSystem
         return homes;
     }
 
-    /// <summary>
-    /// The station a game map spawned, if it is in the round, by the name the round gives it: the point of interest's or
-    /// the map's. Stations keep no record of their map, so a renamed station is not found.
-    /// </summary>
+    /// <summary>The round's station for a game map, matched by name.</summary>
     public EntityUid? StationOf(string map)
     {
         if (!_proto.TryIndex<Content.Shared.Maps.GameMapPrototype>(map, out var gameMap))
@@ -97,7 +94,6 @@ public sealed partial class WFContractSystem
         if (_station.GetLargestGrid(station) is not { } largest || !TryComp<MapGridComponent>(largest, out var gridComp))
             return null;
 
-        // The floor tile nearest the grid's middle.
         var centre = gridComp.LocalAABB.Center;
         Vector2i? best = null;
         var bestDistance = float.MaxValue;

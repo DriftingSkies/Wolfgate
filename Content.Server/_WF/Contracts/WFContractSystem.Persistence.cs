@@ -8,11 +8,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Server._WF.Contracts;
 
-/// <summary>
-/// Standing is kept between rounds per character. It is loaded when a character spawns, and the first time it is
-/// loaded in a round it drifts toward neutral by each contractor's <see cref="WFContractorPrototype.Drift"/>: favour
-/// fades without work, grudges fade without trouble. Every change is saved as it happens.
-/// </summary>
+/// <summary>Saves standing per character and drifts it toward neutral once per round played.</summary>
 public sealed partial class WFContractSystem
 {
     [Dependency] private IServerDbManager _db = default!;
@@ -21,8 +17,11 @@ public sealed partial class WFContractSystem
     /// <summary>Characters whose stored standing has been read this round.</summary>
     private readonly HashSet<WFContractHolder> _loaded = new();
 
-    /// <summary>Saves run one after another, so two changes to a new row cannot both insert it.</summary>
+    /// <summary>Saves run in order, so two changes to a new row cannot both insert it.</summary>
     private Task _saves = Task.CompletedTask;
+
+    /// <summary>Bumped each round, so a load that finishes after a restart is dropped.</summary>
+    private int _generation;
 
     private void InitializePersistence()
     {
@@ -34,15 +33,13 @@ public sealed partial class WFContractSystem
         _ = LoadStanding(new WFContractHolder(ev.Player.UserId, ev.Profile.Name));
     }
 
-    /// <summary>
-    /// Reads a character's stored standing, drifts it once for this round, and adds any change made before it loaded.
-    /// Does nothing if it has already been read this round.
-    /// </summary>
+    /// <summary>Loads, drifts and merges a character's stored standing, once per round.</summary>
     public async Task LoadStanding(WFContractHolder holder)
     {
         if (!_loaded.Add(holder))
             return;
 
+        var generation = _generation;
         List<WFStoredContractStanding> stored;
         try
         {
@@ -51,22 +48,31 @@ public sealed partial class WFContractSystem
         catch (Exception e)
         {
             Log.Error($"Could not load contract standing for {holder.Character} ({holder.User}): {e}");
+            // Unread standing must not overwrite the stored row.
+            if (generation == _generation)
+                _loaded.Remove(holder);
             return;
         }
 
+        if (generation != _generation)
+            return;
+
         var round = _ticker.RoundId;
         var standing = _standing.GetOrNew(holder);
+        var changed = standing.Where(pair => pair.Value != 0).Select(pair => pair.Key).ToHashSet();
         foreach (var row in stored)
         {
             var points = row.Points;
             if (row.LastRound != round && _proto.TryIndex<WFContractorPrototype>(row.Contractor, out var contractor))
                 points = Drifted(points, contractor.Drift);
 
-            // Changes made this round before the load are on top of what was stored.
+            if (points != row.Points || row.LastRound != round)
+                changed.Add(row.Contractor);
+
             standing[row.Contractor] = Math.Clamp(points + standing.GetValueOrDefault(row.Contractor), MinStanding, MaxStanding);
         }
 
-        foreach (var contractor in standing.Keys.ToList())
+        foreach (var contractor in changed)
         {
             SaveStanding(holder, contractor);
         }
@@ -78,7 +84,7 @@ public sealed partial class WFContractSystem
     public static int Drifted(int points, int drift) =>
         points > 0 ? Math.Max(0, points - drift) : Math.Min(0, points + drift);
 
-    /// <summary>Stores a character's standing with one contractor, once their stored standing has been read.</summary>
+    /// <summary>Stores one standing, once the character's stored standing has been read.</summary>
     private void SaveStanding(WFContractHolder holder, string contractor)
     {
         if (!_loaded.Contains(holder))

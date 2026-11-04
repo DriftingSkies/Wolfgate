@@ -1,5 +1,4 @@
-# TSFMC Flagship Halcyon: Marine Corps logistics. Munitions and reactor parts in, sealed dispatches out, medical and
-# armour stock, and pirate hunting for crews that can shoot.
+# TSFMC Halcyon: munitions, reactor parts, dispatches, stock, pirate hunting.
 
 - type: wfContract
   id: WFContractTSFMunitions

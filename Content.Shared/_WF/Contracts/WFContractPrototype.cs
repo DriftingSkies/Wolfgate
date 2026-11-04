@@ -25,10 +25,7 @@ public sealed partial class WFContractorPrototype : IPrototype
     [DataField]
     public Color Color = Color.White;
 
-    /// <summary>
-    /// The game maps (station or POI ids) it works from, first found is home. A contractor with none of them in the
-    /// round posts nothing.
-    /// </summary>
+    /// <summary>Game maps it works from; the first in the round is home.</summary>
     [DataField(required: true)]
     public List<string> Stations = new();
 
@@ -59,10 +56,7 @@ public static class WFContractBoards
     public const string Central = "Central";
 }
 
-/// <summary>
-/// A contract template. The board rolls offers from these: reward, counts and destinations are fixed when the offer is
-/// posted and shown before it is accepted.
-/// </summary>
+/// <summary>A contract template; offers rolled from it fix their pay and ends when posted.</summary>
 [Prototype("wfContract")]
 public sealed partial class WFContractPrototype : IPrototype
 {
@@ -221,10 +215,7 @@ public sealed partial class WFContractSupply : WFContractObjective
     [DataField]
     public float Premium = 1.25f;
 
-    /// <summary>
-    /// Most the goods can add to the pay, so a contract for costly goods never pays more than selling them would plus
-    /// the base. Unset, the template's top base pay: goods at most double a contract.
-    /// </summary>
+    /// <summary>Most the goods add to the pay; unset, the top base pay.</summary>
     [DataField]
     public int? GoodsCap;
 
@@ -233,10 +224,7 @@ public sealed partial class WFContractSupply : WFContractObjective
     public int PerKilometre;
 }
 
-/// <summary>
-/// One line of a supply manifest: a stack type, an entity prototype (or its children), a tag or a component, and how
-/// many. Lines without a stack or entity need a <see cref="Name"/> and <see cref="Value"/>.
-/// </summary>
+/// <summary>A supply line: a stack, entity, tag or component, and how many.</summary>
 [DataDefinition, Serializable]
 public sealed partial class WFContractGoods
 {
@@ -307,10 +295,7 @@ public sealed partial class WFContractRecovery : WFContractObjective
     public WFContractEnd To = WFContractEnd.Contractor;
 }
 
-/// <summary>
-/// See an NPC ship from near the contractor's station to another station. It is done when the ship has flown its route;
-/// it fails if the ship is lost.
-/// </summary>
+/// <summary>Escort an encounter ship to another station; done when it has flown its route.</summary>
 public sealed partial class WFContractEscort : WFContractObjective
 {
     /// <summary>Encounters to start, one picked per offer. Each needs a ship that flies the route.</summary>
@@ -337,10 +322,7 @@ public sealed partial class WFContractEscort : WFContractObjective
     public int PerKilometre;
 }
 
-/// <summary>
-/// Companies that count as one side for the contract board, such as a navy and its civilians. Members of one faction
-/// may help each other's contracts without it counting as interference.
-/// </summary>
+/// <summary>Companies on one side: they may help each other's contracts.</summary>
 [Prototype("wfContractFaction")]
 public sealed partial class WFContractFactionPrototype : IPrototype
 {

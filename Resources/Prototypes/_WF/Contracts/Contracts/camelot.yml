@@ -1,5 +1,4 @@
-# Freeport Camelot: the far freeport. Provisions and fuel in, exports out, smugglers it would rather were gone. Far from
-# Caelestinus, so its hauling pays by the kilometre and takes a real ship.
+# Freeport Camelot: provisions, fuel, exports, smugglers. Far out, so hauling pays by distance.
 
 - type: wfContract
   id: WFContractCamelotProvisions

@@ -1,5 +1,4 @@
-# Anomalous Lab: the sector's research station. Sample couriers, instruments in, cores, fragments and exotic ore wanted,
-# and whatever glows in the wrecks.
+# Anomalous Lab: samples, instruments, cores, fragments, exotic ore.
 
 - type: wfContract
   id: WFContractLabSamples

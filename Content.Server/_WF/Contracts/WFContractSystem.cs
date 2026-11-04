@@ -26,13 +26,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Server._WF.Contracts;
 
-/// <summary>
-/// The contract board. Contractors keep offers posted, each rolled from a <see cref="WFContractPrototype"/> with its pay,
-/// counts and ends fixed. A character accepts one at a board, paying any deposit, and has until its deadline; the
-/// objective's own handling decides when it is done. The pay is split among the holder's crew in the round, the deposit
-/// goes back to the holder; standing with the contractor rises with each one done, opens higher tiers, and is kept
-/// between rounds. Contracts and pay owed last the round.
-/// </summary>
+/// <summary>Posts contract offers, runs accepted contracts and pays them out; see the module README.</summary>
 public sealed partial class WFContractSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _proto = default!;
@@ -103,6 +97,7 @@ public sealed partial class WFContractSystem : EntitySystem
         _contracts.Clear();
         _standing.Clear();
         _loaded.Clear();
+        _generation++;
         _owed.Clear();
         _history.Clear();
         _nextOffer.Clear();
@@ -183,10 +178,7 @@ public sealed partial class WFContractSystem : EntitySystem
         return rank;
     }
 
-    /// <summary>
-    /// The rank a tier needs: tier 1 is open to all but the hostile, tier 2 to newcomers, and each tier above needs the
-    /// next rank.
-    /// </summary>
+    /// <summary>The rank a tier needs: Distrusted for tier 1, Applicant for 2, one more per tier.</summary>
     public static int RankForTier(int tier) => Math.Clamp(tier, 1, RankThresholds.Length - 2);
 
     public static string RankName(int rank) => RankNames[Math.Clamp(rank, 0, RankNames.Length - 1)];
@@ -203,7 +195,7 @@ public sealed partial class WFContractSystem : EntitySystem
     }
 
     /// <summary>Why a character cannot take an offer, or null if they can. The mob is checked for company membership.</summary>
-    public string? Locked(WFContractHolder? holder, WFContract contract, EntityUid? mob = null)
+    public string? Locked(WFContractHolder? holder, WFContract contract, EntityUid? mob = null, (int Slots, int Held)? crew = null)
     {
         if (holder is not { } who)
             return Loc.GetString("wf-contract-locked-no-character");
@@ -223,8 +215,8 @@ public sealed partial class WFContractSystem : EntitySystem
         if (rank < needed)
             return Loc.GetString("wf-contract-locked-rank", ("rank", Loc.GetString(RankName(needed))));
 
-        var slots = SlotsFor(CrewSize(who.User));
-        if (ActiveForCrew(who.User).Count() >= slots)
+        var (slots, held) = crew ?? CrewSlots(who.User);
+        if (held >= slots)
             return Loc.GetString("wf-contract-locked-full", ("max", slots));
 
         return null;
@@ -236,7 +228,10 @@ public sealed partial class WFContractSystem : EntitySystem
         if (HolderOf(mob) is not { } holder)
             return Loc.GetString("wf-contract-locked-no-character");
 
-        if (!_contracts.TryGetValue(id, out var contract) || contract.Status != WFContractStatus.Offered)
+        // Only at a board its contractor posts on, since cargo spawns beside the board.
+        if (!_contracts.TryGetValue(id, out var contract) || contract.Status != WFContractStatus.Offered
+            || _proto.Index(_proto.Index(contract.Prototype).Contractor).Board
+               != (CompOrNull<WFContractBoardComponent>(board)?.Board ?? WFContractBoards.Central))
             return Loc.GetString("wf-contract-error-gone");
 
         if (Locked(holder, contract, mob) is { } locked)
@@ -284,11 +279,7 @@ public sealed partial class WFContractSystem : EntitySystem
         return true;
     }
 
-    /// <summary>
-    /// Pays out a finished contract: the reward split evenly among the holder and their crewmates in the round, the
-    /// deposit back to the holder, faction credits to the holder. Each of them gains standing with the contractor, and
-    /// loses what the contract costs with its rivals.
-    /// </summary>
+    /// <summary>Splits the reward among the crew, returns the deposit and credits to the holder, and moves standing.</summary>
     private void Complete(WFContract contract)
     {
         if (contract.Status != WFContractStatus.Active || contract.User is not { } user)
@@ -463,7 +454,7 @@ public sealed partial class WFContractSystem : EntitySystem
         var templates = _proto.EnumeratePrototypes<WFContractPrototype>()
             .Where(t => t.Contractor == contractor.ID && t.MinPlayers <= players)
             .ToList();
-        // The same template twice on the board only once nothing else fits.
+        // Repeat a template only when nothing else fits.
         var fresh = templates.Where(t => !posted.Contains(t.ID)).ToList();
         if (fresh.Count > 0)
             templates = fresh;
@@ -479,10 +470,7 @@ public sealed partial class WFContractSystem : EntitySystem
         return null;
     }
 
-    /// <summary>
-    /// Posts an offer from one template now, beside whatever is up, for admins and tests. Null if there is no board or the
-    /// round cannot give it.
-    /// </summary>
+    /// <summary>Posts an offer from a template now, for admins and tests; null if the round can't give it.</summary>
     public WFContract? PostOffer(ProtoId<WFContractPrototype> id)
     {
         if (!_proto.TryIndex(id, out var template) || BoardStation() is not { } board
@@ -514,7 +502,6 @@ public sealed partial class WFContractSystem : EntitySystem
         if (!TryRoll(contract, template, homes, board))
             return null;
 
-        // Round to fifty so the board reads cleanly.
         contract.Reward = (int) Math.Round(contract.Reward / 50.0) * 50;
         _nextId++;
         return contract;

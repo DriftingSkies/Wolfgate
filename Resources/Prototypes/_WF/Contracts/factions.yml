@@ -1,5 +1,4 @@
-# Sides on the contract board. Members of one side may fire on each other's claimed targets without losing standing.
-# A company in none of these is its own side.
+# Sides that may help each other's contracts. A company in none is its own side.
 
 - type: wfContractFaction
   id: WFContractFactionTSF

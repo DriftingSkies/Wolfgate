@@ -1,4 +1,4 @@
-# Sevastopol Data Storage Center: data couriers, hardware supply, and recovering cores before someone else reads them.
+# Sevastopol: data couriers, hardware, lost cores.
 
 - type: wfContract
   id: WFContractSevDataCourier

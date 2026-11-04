@@ -24,9 +24,12 @@ public sealed partial class WFContractSystem
         SubscribeLocalEvent<WFContractBoardComponent, WFContractAbandonMessage>(OnBoardAbandon);
         SubscribeLocalEvent<WFContractCartridgeComponent, CartridgeUiReadyEvent>(OnCartridgeReady);
         SubscribeLocalEvent<WFContractCartridgeComponent, CartridgeMessageEvent>(OnCartridgeMessage);
-        // Static, and tests start many servers in one process.
-        if (!WFMarketCartridgeSystem.ExtraPrograms.Contains(ContractsCartridge))
-            WFMarketCartridgeSystem.ExtraPrograms.Add(ContractsCartridge);
+        SubscribeLocalEvent<WFPdaProgramsEvent>(OnPdaPrograms);
+    }
+
+    private void OnPdaPrograms(ref WFPdaProgramsEvent ev)
+    {
+        ev.Programs.Add(ContractsCartridge);
     }
 
     private void OnBoardOpened(Entity<WFContractBoardComponent> ent, ref BoundUIOpenedEvent args)
@@ -73,7 +76,7 @@ public sealed partial class WFContractSystem
             return;
 
         var loader = GetEntity(args.LoaderUid);
-        // Only the PDA's carrier may give up their contracts from it.
+        // Only the PDA's carrier may abandon from it.
         if (Transform(loader).ParentUid != args.Actor || HolderOf(args.Actor) is not { } holder)
             return;
 
@@ -81,21 +84,22 @@ public sealed partial class WFContractSystem
         _cartridgeLoader.UpdateCartridgeUiState(loader, new WFContractCartridgeUiState(State(args.Actor)));
     }
 
-    private void SendBoard(EntityUid board, EntityUid actor)
+    private void SendBoard(EntityUid board, EntityUid actor, Dictionary<string, EntityUid>? homes = null)
     {
         var tag = CompOrNull<WFContractBoardComponent>(board)?.Board ?? WFContractBoards.Central;
-        _ui.ServerSendUiMessage(board, WFContractBoardUiKey.Key, new WFContractBoardStateMessage(State(actor, tag)), actor);
+        _ui.ServerSendUiMessage(board, WFContractBoardUiKey.Key, new WFContractBoardStateMessage(State(actor, tag, homes)), actor);
     }
 
     /// <summary>Sends every open board and Contracts app its viewer's state.</summary>
     private void PushAll()
     {
+        Dictionary<string, EntityUid>? homes = null;
         var boards = EntityQueryEnumerator<WFContractBoardComponent>();
         while (boards.MoveNext(out var board, out _))
         {
             foreach (var actor in _ui.GetActors(board, WFContractBoardUiKey.Key).ToList())
             {
-                SendBoard(board, actor);
+                SendBoard(board, actor, homes ??= ContractorHomes());
             }
         }
 
@@ -106,19 +110,17 @@ public sealed partial class WFContractSystem
                 || loaderComp.ActiveProgram != uid || !_ui.IsUiOpen(loader, loaderComp.UiKey))
                 continue;
 
-            _cartridgeLoader.UpdateCartridgeUiState(loader, new WFContractCartridgeUiState(State(Transform(loader).ParentUid)),
-                loader: loaderComp);
+            _cartridgeLoader.UpdateCartridgeUiState(loader,
+                new WFContractCartridgeUiState(State(Transform(loader).ParentUid, homes: homes ??= ContractorHomes())), loader: loaderComp);
         }
     }
 
-    /// <summary>
-    /// What a viewer is shown: one board's offers (every board's, for the PDA app), their crew's live contracts, and
-    /// their own history and standing.
-    /// </summary>
-    public WFContractBoardState State(EntityUid viewer, string? board = null)
+    /// <summary>A viewer's board state: offers (one board's, or all), crew contracts, history and standing.</summary>
+    public WFContractBoardState State(EntityUid viewer, string? board = null, Dictionary<string, EntityUid>? homes = null)
     {
         var holder = HolderOf(viewer);
         var state = new WFContractBoardState { CanHold = holder != null };
+        var crew = holder is { } h ? CrewSlots(h.User) : ((int, int)?) null;
 
         foreach (var contract in _contracts.Values.Where(c => c.Status == WFContractStatus.Offered).OrderBy(c => c.Id))
         {
@@ -126,7 +128,7 @@ public sealed partial class WFContractSystem
                 continue;
 
             var view = View(contract);
-            view.Locked = Locked(holder, contract, viewer);
+            view.Locked = Locked(holder, contract, viewer, crew);
             state.Offers.Add(view);
         }
 
@@ -152,7 +154,7 @@ public sealed partial class WFContractSystem
             state.History.AddRange(history.Select(View));
 
         state.Owed = _owed.GetValueOrDefault(who);
-        var homes = ContractorHomes();
+        homes ??= ContractorHomes();
         foreach (var contractor in _proto.EnumeratePrototypes<WFContractorPrototype>().OrderBy(c => c.Order))
         {
             var points = Standing(who, contractor.ID);
@@ -206,7 +208,6 @@ public sealed partial class WFContractSystem
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-courier",
                     ("done", contract.Delivered), ("count", contract.Count), ("destination", StationName(contract.Destination))),
                     contract.Delivered >= contract.Count));
-                // Cargo waiting at another station: where to pick it up.
                 if (active && contract.Origin is { } pickup
                     && contract.Items.FirstOrDefault(i => !TerminatingOrDeleted(i) && OnStation(i, pickup)) is { Valid: true } waiting)
                     view.Coordinates = _transform.GetWorldPosition(waiting);

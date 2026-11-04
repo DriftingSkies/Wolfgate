@@ -1,8 +1,6 @@
-# Bounty contract targets: encounters the contract board starts when a bounty is accepted. Never scheduled, no warrant
-# (the contract pays), and they outlast the contract's clock. Tiers 1-2 can be taken by a lightly armed civilian hull,
-# 3 wants a real gunboat or a pair of ships, 4-5 a crewed warship.
+# Bounty targets: manual, no warrant (the contract pays), longer than the contract's clock.
 
-# Tier 1: a bail jumper alone in an unarmed shuttle. Runs, never fights.
+# T1: unarmed bail jumper.
 - type: wfEncounter
   id: WFContractTargetSkip
   name: wf-contract-target-skip
@@ -32,7 +30,7 @@
     objectives:
     - kind: Hold
 
-# Tier 2: a courier with stolen data and a hired gun, in an unarmed shuttle.
+# T2: unarmed courier with a guard.
 - type: wfEncounter
   id: WFContractTargetDataThief
   name: wf-contract-target-data-thief
@@ -62,8 +60,7 @@
     objectives:
     - kind: Hold
 
-# Tier 2: claim jumpers in a lightly retrofitted civilian hull, sitting on someone else's rocks. They warn off and then
-# shoot whoever comes close.
+# T2: light-retrofit claim jumpers; warn, then fire.
 - type: wfEncounter
   id: WFContractTargetClaimJumper
   name: wf-contract-target-claim-jumper
@@ -94,7 +91,7 @@
     objectives:
     - kind: Hold
 
-# Tier 2: a smuggler's runner, retrofitted light, with a deckhand on the guns.
+# T2: light-retrofit smuggler.
 - type: wfEncounter
   id: WFContractTargetSmuggler
   name: wf-contract-target-smuggler
@@ -125,7 +122,7 @@
     objectives:
     - kind: Hold
 
-# Tier 3: a pair of light raiders working a lane. Two hulls, both have to go.
+# T3: two light raiders.
 - type: wfEncounter
   id: WFContractTargetRaiderPair
   name: wf-contract-target-raider-pair
@@ -177,7 +174,7 @@
     - kind: Escort
       target: lead
 
-# Tier 4: a raider gunship with a boarding crew.
+# T4: raider gunship.
 - type: wfEncounter
   id: WFContractTargetGunship
   name: wf-contract-target-gunship
@@ -211,7 +208,7 @@
     objectives:
     - kind: Hold
 
-# Tier 5: a warlord's flagship with a hard crew. For a crewed warship or a wing of them.
+# T5: warlord flagship.
 - type: wfEncounter
   id: WFContractTargetWarlord
   name: wf-contract-target-warlord
@@ -245,10 +242,9 @@
     objectives:
     - kind: Hold
 
-# Escort runs: a freighter waits at the rendezvous until a player comes within startRadius, then flies to the one stop
-# the contract names and away. Raiders lie hidden until then, hold off a few minutes, and go for the freighter.
+# Escort runs: the freighter waits for its escort, then flies to the contract's stop; raiders lurk, then attack.
 
-# Tier 1: a nervous trader with nobody after it. Shepherd it there.
+# T1: no raiders.
 - type: wfEncounter
   id: WFContractEscortQuiet
   name: wf-contract-escort-quiet
@@ -274,7 +270,7 @@
     docking: Warn
     disengage: Deter
 
-# Tier 2: a small freighter with one light raider waiting for it.
+# T2: one light raider.
 - type: wfEncounter
   id: WFContractEscortLight
   name: wf-contract-escort-light
@@ -318,7 +314,7 @@
     - kind: Attack
       target: freighter
 
-# Tier 3: a medium freighter and a two-ship raid, the second hitting later.
+# T3: two raiders, the second later.
 - type: wfEncounter
   id: WFContractEscortHeavy
   name: wf-contract-escort-heavy

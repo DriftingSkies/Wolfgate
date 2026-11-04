@@ -1,6 +1,6 @@
 # Contracts
 
-A Star Citizen-style contract board. Stations post offers on the public board at the crossing of Caelestinus
+A contract board. Stations post offers on the public board at the crossing of Caelestinus
 Central's plaza; any character, Vagrants included, takes one there, pays its deposit if it has one, and has until its
 deadline. Faction boards on the Halcyon (TSF) and Camelot (USSP) post work for their own members, paid in faction
 credits on top. The Contracts PDA app (on every PDA) tracks the crew's accepted contracts: objectives, the clock, where

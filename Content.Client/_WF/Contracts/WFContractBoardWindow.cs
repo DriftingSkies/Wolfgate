@@ -7,10 +7,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WF.Contracts;
 
-/// <summary>
-/// The contract board: offers by category, the viewer's accepted contracts, their history and their standing, each list
-/// with a details pane.
-/// </summary>
+/// <summary>The contract board window: offers, accepted, history and standing.</summary>
 public sealed partial class WFContractBoardWindow : FancyWindow
 {
     [Dependency] private IGameTiming _timing = default!;

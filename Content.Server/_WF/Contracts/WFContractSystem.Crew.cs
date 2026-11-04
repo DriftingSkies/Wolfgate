@@ -8,20 +8,14 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.Contracts;
 
-/// <summary>
-/// Crews from Crew Setup share their contracts: slots grow with crew size, the pay is split among the crew in the
-/// round, and crewmates see each other's contracts. A player outside a crew is a crew of one.
-/// </summary>
+/// <summary>Crew Setup crews share contract slots and pay; a player outside a crew is a crew of one.</summary>
 public sealed partial class WFContractSystem
 {
     [Dependency] private WFRoundSetupSystem _crews = default!;
     [Dependency] private StackSystem _stacks = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
 
-    /// <summary>
-    /// Contracts a crew may hold at once: one, and one more each time the crew doubles (1, 2, 4, 8 and 16 members give
-    /// 1 to 5 slots).
-    /// </summary>
+    /// <summary>Slots for a crew: one, plus one each time it doubles.</summary>
     public static int SlotsFor(int crewSize) => 1 + (int) Math.Floor(Math.Log2(Math.Max(1, crewSize)));
 
     /// <summary>Crew members needed for one more slot than <paramref name="crewSize"/> gives.</summary>
@@ -29,6 +23,9 @@ public sealed partial class WFContractSystem
 
     /// <summary>Members of a player's crew in the round as its members; 1 outside a crew.</summary>
     public int CrewSize(NetUserId user) => Math.Max(1, _crews.CrewInRound(user).Count);
+
+    /// <summary>A player's crew's slots and how many of them are taken.</summary>
+    public (int Slots, int Held) CrewSlots(NetUserId user) => (SlotsFor(CrewSize(user)), ActiveForCrew(user).Count());
 
     /// <summary>Live contracts held by anyone in a player's crew, them included.</summary>
     public IEnumerable<WFContract> ActiveForCrew(NetUserId user)

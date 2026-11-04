@@ -418,7 +418,7 @@ public sealed partial class WFContractSystem
                 continue;
 
             comp.Delivered = true;
-            // A supply crate that was not delivered is the holder's to keep, with what they packed.
+            // An undelivered supply crate is the holder's to keep.
             if (proto.Objective is WFContractSupply && contract.Status != WFContractStatus.Completed)
             {
                 RemComp<WFContractItemComponent>(item);
@@ -499,7 +499,6 @@ public sealed partial class WFContractSystem
 
         if (_proto.Index(contract.Prototype).Objective is WFContractEscort escort)
         {
-            // Ended by an admin or the round: nobody's fault. Otherwise its ship either made it or it did not.
             if (args.Resolution == WFEncounterResolution.Ended)
                 Void(contract, "wf-contract-reason-target-gone");
             else if (EscortedShip(contract, escort) is { Flown: true } ship && !TerminatingOrDeleted(ship.Grid))
@@ -509,11 +508,10 @@ public sealed partial class WFContractSystem
             return;
         }
 
-        ClaimantsInterfered(contract, encounter);
-
         switch (args.Resolution)
         {
             case WFEncounterResolution.Destroyed:
+                ClaimantsInterfered(contract, encounter);
                 Complete(contract);
                 break;
             case WFEncounterResolution.Expired:
@@ -545,10 +543,7 @@ public sealed partial class WFContractSystem
         return false;
     }
 
-    /// <summary>
-    /// A point in open sector space a set distance from a station, clear of every grid, every station by
-    /// <paramref name="clearance"/> and any planet's gravity well.
-    /// </summary>
+    /// <summary>Open space at a distance from a station, clear of grids, stations and gravity wells.</summary>
     private MapCoordinates? PickSite(EntityUid station, float min, float max, float clearance)
     {
         if (_station.GetLargestGrid(station) is not { } grid)

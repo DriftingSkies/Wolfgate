@@ -1,9 +1,6 @@
 namespace Content.Server._WF.Contracts;
 
-/// <summary>
-/// A contract board: lists its contractors' offers and takes acceptances. Packages and crates for the board are left
-/// beside it.
-/// </summary>
+/// <summary>A contract board; cargo for its contracts is left beside it.</summary>
 [RegisterComponent]
 public sealed partial class WFContractBoardComponent : Component
 {
@@ -12,10 +9,7 @@ public sealed partial class WFContractBoardComponent : Component
     public string Board = Shared._WF.Contracts.WFContractBoards.Central;
 }
 
-/// <summary>
-/// A spot on a station where contract cargo is handed out. Without one, a station's warp point is used, then its
-/// centre.
-/// </summary>
+/// <summary>Where a station hands out contract cargo; else its warp point, else its centre.</summary>
 [RegisterComponent]
 public sealed partial class WFContractDropComponent : Component;
 
