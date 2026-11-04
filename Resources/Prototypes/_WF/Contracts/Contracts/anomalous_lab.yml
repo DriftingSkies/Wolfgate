@@ -1,0 +1,141 @@
+# Anomalous Lab: the sector's research station. Sample couriers, instruments in, cores, fragments and exotic ore wanted,
+# and whatever glows in the wrecks.
+
+- type: wfContract
+  id: WFContractLabSamples
+  contractor: WFContractorAnomalousLab
+  category: Delivery
+  tier: 1
+  title: wf-contract-lab-samples
+  briefing: wf-contract-lab-samples-brief
+  reward: 5500, 7500
+  minutes: 45
+  weight: 2
+  objective: !type:WFContractCourier
+    package: WFContractSampleCase
+    count: 1, 2
+    from: Contractor
+    to: Other
+    destinations: [ WFContractorSevastopol, WFContractorHalcyon, WFContractorCaelPort, WFContractorMMC ]
+    perPackage: 750
+    perKilometre: 1250
+
+- type: wfContract
+  id: WFContractLabInstruments
+  contractor: WFContractorAnomalousLab
+  category: Hauling
+  tier: 2
+  title: wf-contract-lab-instruments
+  briefing: wf-contract-lab-instruments-brief
+  reward: 12500, 16250
+  deposit: 1500
+  minutes: 55
+  weight: 1.5
+  objective: !type:WFContractCourier
+    package: WFContractFreightScience
+    count: 2, 3
+    from: Board
+    to: Contractor
+    perPackage: 2250
+    perKilometre: 1625
+
+- type: wfContract
+  id: WFContractLabCores
+  contractor: WFContractorAnomalousLab
+  category: Supply
+  tier: 3
+  title: wf-contract-lab-cores
+  briefing: wf-contract-lab-cores-brief
+  reward: 22500, 30000
+  deposit: 2000
+  minutes: 60
+  weight: 1
+  objective: !type:WFContractSupply
+    premium: 1.5
+    goods:
+    - component: AnomalyCore
+      name: wf-contract-goods-anomaly-core
+      count: 1, 2
+      value: 1500
+
+- type: wfContract
+  id: WFContractLabFragments
+  contractor: WFContractorAnomalousLab
+  category: Supply
+  tier: 2
+  title: wf-contract-lab-fragments
+  briefing: wf-contract-lab-fragments-brief
+  reward: 12500, 17500
+  deposit: 1000
+  minutes: 60
+  weight: 1.2
+  objective: !type:WFContractSupply
+    premium: 1.5
+    goods:
+    - entity: ArtifactFragment
+      count: 1, 2
+
+- type: wfContract
+  id: WFContractLabMaterials
+  contractor: WFContractorAnomalousLab
+  category: Supply
+  tier: 1
+  title: wf-contract-lab-materials
+  briefing: wf-contract-lab-materials-brief
+  reward: 7500, 10000
+  minutes: 50
+  weight: 1.5
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Plasma
+      count: 10, 20
+    - stack: Glass
+      count: 30, 50
+    - stack: Silver
+      count: 10, 20
+    - stack: Gold
+      count: 5, 10
+
+- type: wfContract
+  id: WFContractLabExoticOre
+  contractor: WFContractorAnomalousLab
+  category: Mining
+  tier: 3
+  title: wf-contract-lab-exotic-ore
+  briefing: wf-contract-lab-exotic-ore-brief
+  reward: 30000, 40000
+  deposit: 3000
+  minutes: 60
+  weight: 0.8
+  harms:
+    WFContractorMMC: 1
+  objective: !type:WFContractSupply
+    premium: 2
+    goods:
+    - stack: BluespaceOre
+      count: 4, 8
+    - stack: DiamondOre
+      count: 3, 6
+
+- type: wfContract
+  id: WFContractLabAnomalySample
+  contractor: WFContractorAnomalousLab
+  category: Salvage
+  tier: 2
+  title: wf-contract-lab-anomaly-sample
+  briefing: wf-contract-lab-anomaly-sample-brief
+  reward: 20000, 25000
+  deposit: 1000
+  minutes: 55
+  weight: 1.2
+  objective: !type:WFContractRecovery
+    item: WFContractAnomalySample
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/small-a-1.yml
+    - /Maps/Salvage/engineering-chunk.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml

@@ -1,0 +1,61 @@
+using System.Linq;
+using Content.Server._WF.RoundSetup;
+using Content.Shared.Hands.EntitySystems;
+using Content.Server.Stack;
+using Content.Shared._WF.Contracts;
+using Robust.Shared.Network;
+using Robust.Shared.Prototypes;
+
+namespace Content.Server._WF.Contracts;
+
+/// <summary>
+/// Crews from Crew Setup share their contracts: slots grow with crew size, the pay is split among the crew in the
+/// round, and crewmates see each other's contracts. A player outside a crew is a crew of one.
+/// </summary>
+public sealed partial class WFContractSystem
+{
+    [Dependency] private WFRoundSetupSystem _crews = default!;
+    [Dependency] private StackSystem _stacks = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+
+    /// <summary>
+    /// Contracts a crew may hold at once: one, and one more each time the crew doubles (1, 2, 4, 8 and 16 members give
+    /// 1 to 5 slots).
+    /// </summary>
+    public static int SlotsFor(int crewSize) => 1 + (int) Math.Floor(Math.Log2(Math.Max(1, crewSize)));
+
+    /// <summary>Crew members needed for one more slot than <paramref name="crewSize"/> gives.</summary>
+    public static int NextSlotAt(int crewSize) => 1 << SlotsFor(crewSize);
+
+    /// <summary>Members of a player's crew in the round as its members; 1 outside a crew.</summary>
+    public int CrewSize(NetUserId user) => Math.Max(1, _crews.CrewInRound(user).Count);
+
+    /// <summary>Live contracts held by anyone in a player's crew, them included.</summary>
+    public IEnumerable<WFContract> ActiveForCrew(NetUserId user)
+    {
+        var crew = _crews.CrewMembers(user).ToHashSet();
+        return _contracts.Values.Where(c => c.Status == WFContractStatus.Active && c.User is { } holder && crew.Contains(holder));
+    }
+
+    /// <summary>Who shares a finished contract's pay: the holder, and every crewmate playing in the round.</summary>
+    private List<WFContractHolder> PaidCrew(WFContractHolder holder)
+    {
+        var crew = new List<WFContractHolder> { holder };
+        foreach (var (user, body) in _crews.CrewInRound(holder.User))
+        {
+            if (user != holder.User && HolderOf(body) is { } mate && !crew.Contains(mate))
+                crew.Add(mate);
+        }
+
+        return crew;
+    }
+
+    /// <summary>Hands a stack of faction credits to a mob, or drops it at their feet.</summary>
+    private void GiveCredits(EntityUid mob, EntProtoId credits, int amount)
+    {
+        foreach (var stack in _stacks.SpawnMultiple(credits.Id, amount, Transform(mob).Coordinates))
+        {
+            _hands.PickupOrDrop(mob, stack);
+        }
+    }
+}

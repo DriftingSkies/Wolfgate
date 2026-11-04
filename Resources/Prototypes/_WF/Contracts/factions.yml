@@ -1,0 +1,14 @@
+# Sides on the contract board. Members of one side may fire on each other's claimed targets without losing standing.
+# A company in none of these is its own side.
+
+- type: wfContractFaction
+  id: WFContractFactionTSF
+  companies: [ TSF, TSFCivilian, TSFHighComm ]
+
+- type: wfContractFaction
+  id: WFContractFactionPDV
+  companies: [ PDV, PDVCivilian, PDVHighComm ]
+
+- type: wfContractFaction
+  id: WFContractFactionUSSP
+  companies: [ USSP ]

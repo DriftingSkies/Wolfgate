@@ -68,6 +68,7 @@ namespace Content.Server.Database
         // WOLFGATE END
 
         public DbSet<WolfgateGameScore> WolfgateGameScore { get; set; } = null!; // WOLFGATE(GameHub): best level scores
+        public DbSet<WolfgateContractStanding> WolfgateContractStanding { get; set; } = null!; // WOLFGATE(Contracts): standing with contractors
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -496,6 +497,12 @@ namespace Content.Server.Database
 
             modelBuilder.Entity<WolfgateGameScore>()
                 .HasIndex(s => s.Game);
+            // WOLFGATE END
+
+            // WOLFGATE(Contracts) START: one standing per character and contractor
+            modelBuilder.Entity<WolfgateContractStanding>()
+                .HasIndex(s => new { s.PlayerUserId, s.CharacterName, s.Contractor })
+                .IsUnique();
             // WOLFGATE END
 
             // WOLFGATE(Companies) START: names and tags are unique; a character's membership goes with the character
@@ -2073,6 +2080,29 @@ namespace Content.Server.Database
         public string Note { get; set; } = "";
     }
 
+    // WOLFGATE END
+
+    // WOLFGATE(Contracts) START: a character's standing with one contractor of the contract board
+    public class WolfgateContractStanding
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public Guid PlayerUserId { get; set; }
+
+        [Required, MaxLength(64)]
+        public string CharacterName { get; set; } = "";
+
+        [Required, MaxLength(64)]
+        public string Contractor { get; set; } = "";
+
+        public int Points { get; set; }
+
+        /// <summary>The last round its drift toward neutral was applied in.</summary>
+        public int LastRound { get; set; }
+
+        public DateTime Updated { get; set; }
+    }
     // WOLFGATE END
 
     // WOLFGATE(GameHub) START: a player's best score on one level of a hub game

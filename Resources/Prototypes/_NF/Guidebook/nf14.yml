@@ -12,6 +12,7 @@
   - SectorTopology
   - Expeditions
   - CargoHauling # TODO: separate this out along with salvage and mining into some NF_Cargo section
+  - WFContracts # WOLFGATE(Contracts): contract board guide
   - Shipyard
   - WeaponsSystems # mono
   - Creatures # mono

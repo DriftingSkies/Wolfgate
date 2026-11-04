@@ -49,6 +49,9 @@ public sealed partial class WFMarketCartridgeSystem : EntitySystem
 
     public static readonly EntProtoId MarketCartridge = "WFMarketCartridge";
 
+    /// <summary>Other modules' apps every PDA gets after the Market app, added by those modules at startup.</summary>
+    public static readonly List<EntProtoId> ExtraPrograms = new();
+
     private static readonly TimeSpan RefreshInterval = TimeSpan.FromSeconds(5);
 
     private TimeSpan _nextRefresh;
@@ -62,13 +65,20 @@ public sealed partial class WFMarketCartridgeSystem : EntitySystem
     }
 
     /// <summary>
-    /// Adds the Market app to every PDA's preinstalled programs just before they install at map init, since most PDA
-    /// prototypes replace the base list. Last in the list, so a full disk drops it rather than a job program.
+    /// Adds the Market app, then <see cref="ExtraPrograms"/>, to every PDA's preinstalled programs just before they
+    /// install at map init, since most PDA prototypes replace the base list. Last in the list, so a full disk drops them
+    /// rather than a job program.
     /// </summary>
     private void OnPdaMapInit(Entity<PdaComponent> ent, ref MapInitEvent args)
     {
-        if (TryComp<CartridgeLoaderComponent>(ent, out var loader) && !loader.PreinstalledPrograms.Contains(MarketCartridge))
-            loader.PreinstalledPrograms.Add(MarketCartridge);
+        if (!TryComp<CartridgeLoaderComponent>(ent, out var loader))
+            return;
+
+        foreach (var program in ExtraPrograms.Prepend(MarketCartridge))
+        {
+            if (!loader.PreinstalledPrograms.Contains(program))
+                loader.PreinstalledPrograms.Add(program);
+        }
     }
 
     private void OnUiReady(Entity<WFMarketCartridgeComponent> ent, ref CartridgeUiReadyEvent args)

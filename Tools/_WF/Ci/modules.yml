@@ -304,6 +304,15 @@ unmarked:
   - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
     module: null
     reason: Sector map entity gets its Parallax component and Colossus Sector name back after the #427 re-save dropped them.
+  - path: Resources/Maps/_Mono/Outpost/caelestinus_central.yml
+    module: Contracts
+    reason: The contract board stands at the crossing of the central plaza, beside the warp point.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon.yml
+    module: Contracts
+    reason: The TSF faction contract board stands in the arrival hall, beside the station map and warp point.
+  - path: Resources/Maps/_Mono/POI/camelot.yml
+    module: Contracts
+    reason: The USSP faction contract board stands in the room off the warp corridor.
   - path: Resources/Maps/_Mono/POI/underground.yml
     module: LockableButtons
     reason: The two blast door buttons take Underground access; the station's crew has no Pirate access.

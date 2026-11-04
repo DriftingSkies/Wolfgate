@@ -5,7 +5,7 @@ meta:
   forkId: wolfgate-mapping
   forkVersion: 20261023-201310-d5515d3-tm231-b5e79818
   time: 10/25/2026 14:53:15
-  entityCount: 10710
+  entityCount: 10711
 maps: []
 grids:
 - 1
@@ -70809,6 +70809,13 @@ entities:
     - type: Transform
       parent: 1
       pos: -11.5,-31.5
+- proto: WFContractBoardTSF
+  entities:
+  - uid: 10711
+    components:
+    - type: Transform
+      parent: 1
+      pos: 7.5,5.5
 - proto: Windoor
   entities:
   - uid: 10469

@@ -1,0 +1,138 @@
+# Sevastopol Data Storage Center: data couriers, hardware supply, and recovering cores before someone else reads them.
+
+- type: wfContract
+  id: WFContractSevDataCourier
+  contractor: WFContractorSevastopol
+  category: Delivery
+  tier: 1
+  title: wf-contract-sev-data-courier
+  briefing: wf-contract-sev-data-courier-brief
+  reward: 5500, 7500
+  minutes: 40
+  weight: 2.5
+  objective: !type:WFContractCourier
+    package: WFContractDataCase
+    count: 1, 2
+    from: Contractor
+    to: Other
+    perPackage: 750
+    perKilometre: 1250
+
+- type: wfContract
+  id: WFContractSevDataInbound
+  contractor: WFContractorSevastopol
+  category: Delivery
+  tier: 1
+  title: wf-contract-sev-data-inbound
+  briefing: wf-contract-sev-data-inbound-brief
+  reward: 5000, 7000
+  minutes: 40
+  weight: 2
+  objective: !type:WFContractCourier
+    package: WFContractDataCase
+    count: 1, 3
+    from: Board
+    to: Contractor
+    perPackage: 750
+    perKilometre: 1250
+
+- type: wfContract
+  id: WFContractSevSecureTransfer
+  contractor: WFContractorSevastopol
+  category: Delivery
+  tier: 3
+  title: wf-contract-sev-secure-transfer
+  briefing: wf-contract-sev-secure-transfer-brief
+  reward: 15000, 20000
+  deposit: 3000
+  minutes: 35
+  weight: 1
+  objective: !type:WFContractCourier
+    package: WFContractDataCase
+    count: 3, 5
+    from: Contractor
+    to: Other
+    perPackage: 1500
+    perKilometre: 1750
+
+- type: wfContract
+  id: WFContractSevServerRacks
+  contractor: WFContractorSevastopol
+  category: Hauling
+  tier: 2
+  title: wf-contract-sev-server-racks
+  briefing: wf-contract-sev-server-racks-brief
+  reward: 13750, 17500
+  deposit: 2000
+  minutes: 50
+  weight: 1.2
+  objective: !type:WFContractCourier
+    package: WFContractFreightComponents
+    count: 2, 3
+    from: Board
+    to: Contractor
+    perPackage: 2500
+    perKilometre: 1625
+
+- type: wfContract
+  id: WFContractSevHardware
+  contractor: WFContractorSevastopol
+  category: Supply
+  tier: 2
+  title: wf-contract-sev-hardware
+  briefing: wf-contract-sev-hardware-brief
+  reward: 11250, 15000
+  deposit: 1000
+  minutes: 50
+  weight: 1.5
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - entity: PowerCellHigh
+      count: 4, 8
+    - stack: CableHV
+      count: 30, 60
+    - stack: Glass
+      count: 40, 60
+    - stack: Plastic
+      count: 30, 50
+    - stack: Gold
+      count: 5, 10
+
+- type: wfContract
+  id: WFContractSevCoreRecovery
+  contractor: WFContractorSevastopol
+  category: Salvage
+  tier: 2
+  title: wf-contract-sev-core-recovery
+  briefing: wf-contract-sev-core-recovery-brief
+  reward: 17500, 23750
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  objective: !type:WFContractRecovery
+    item: WFContractDataCore
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    - /Maps/Salvage/small-a-1.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wfContract
+  id: WFContractSevDataThief
+  contractor: WFContractorSevastopol
+  category: Bounty
+  tier: 2
+  title: wf-contract-sev-data-thief
+  briefing: wf-contract-sev-data-thief-brief
+  reward: 30000, 37500
+  deposit: 2000
+  minutes: 50
+  weight: 1
+  objective: !type:WFContractBounty
+    encounters: [ WFContractTargetDataThief ]
+    minDistance: 3500
+    maxDistance: 5500
