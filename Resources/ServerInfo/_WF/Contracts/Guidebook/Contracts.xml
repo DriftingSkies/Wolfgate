@@ -1,7 +1,7 @@
 <Document>
   # Contracts
 
-  The [color=#5fc3e4]contract board[/color] stands at the crossing of the central plaza on Caelestinus Central, beside the warp point. Every station in the sector that pays for work posts there: deliveries, hauling, supply orders, mining quotas, bounties and salvage. Anyone can take a contract, Vagrants included, and the first tier asks for nothing but a shuttle.
+  [color=#5fc3e4]Contract boards[/color] stand at the crossing of the central plaza on Caelestinus Central and beside each of its dock arms. Every station in the sector that pays for work posts there: deliveries, hauling, supply orders, mining quotas, bounties, salvage, science and escorts. Anyone can take a contract, Vagrants included, and the first tier asks for nothing but a shuttle.
 
   <Box>
     <GuideEntityEmbed Entity="WFContractBoard"/>
@@ -23,11 +23,11 @@
 
   Contracts belong to your crew from Crew Setup. A crew holds one contract at a time, and one more each time it doubles: two members hold two, four hold three, eight hold four, sixteen hold five. On your own you are a crew of one.
 
-  When a contract is done the reward is split evenly between everyone in the crew who is in the round; the deposit goes back to whoever took it.
+  When a contract is done, the reward is split evenly between everyone in the crew who is in the round; the deposit goes back to whoever took it. Crewmates see each other's contracts in the Accepted tab and in the Contracts app. Only the one who took a contract can abandon it.
 
   Work a crew does together pays more as the crew grows. Mining contracts add half their pay again for each crewmate after the first; bounties, salvage, escorts and surveys add a quarter or more. The bonus counts up to four extra crewmates. The board shows what your crew would be paid in all and each member's share before you take a contract.
 
-  Some contracts are [color=#e0b050]crew work[/color]: bulk quotas, strip claims, infested hulks. They need a crew of a given size in the sector to take, and they pay for that whole crew, so each share beats a solo contract. Crewmates see each other's contracts in the Accepted tab and in the Contracts app. Only the one who took a contract can abandon it.
+  Some contracts are [color=#e0b050]crew work[/color]: bulk quotas, strip claims, infested hulks. They need a crew of a given size in the sector to take, and they pay for that whole crew, so each share beats a solo contract.
 
   ## Kinds of work
 
@@ -70,7 +70,7 @@
 
   ## Faction boards
 
-  The Federation keeps a requisitions board aboard the Halcyon, and the USSP Commissariat one on Camelot. They post work for their own members only, paid in thalers and, for the Federation, Federation credits on top: patrols, war materiel, convoys and salvage. Work for one faction costs standing with its rivals.
+  Each faction keeps its own boards by its docks: the Federation on the Halcyon, the USSP Commissariat on Camelot and the Dynasty Quartermaster on Helios. They post work for their own members only, paid in thalers with Federation credits or doubloons on top: patrols, war materiel, convoys and salvage. Work for one faction costs standing with its rivals.
 
   ## Who posts
 

@@ -3,7 +3,7 @@
 wf-contractor-cael-port = Caelestinus Port Authority
 wf-contractor-cael-port-desc = Runs the sector's mail and freight out of Caelestinus Central.
 wf-contractor-cael-marshals = Caelestinus Marshals
-wf-contractor-cael-marshals-desc = Keep the lanes around Central clear of the people who make them dangerous.
+wf-contractor-cael-marshals-desc = Keeps the lanes around Central clear of the people who make them dangerous.
 wf-contractor-mmc = Mieyo Manufacturing Concern
 wf-contractor-mmc-desc = MMC Hokkaido buys ore by the crate and pays to keep its claims its own.
 wf-contractor-sevastopol = Sevastopol Data Storage
@@ -35,7 +35,10 @@ wf-contract-cael-parcel-run = Parcel run to {$destination}
 wf-contract-cael-parcel-run-brief = {$count ->
     [one] A sealed parcel is waiting at the board for {$destination}.
    *[other] {$count} sealed parcels are waiting at the board for {$destination}.
-} Hand-carried; any shuttle will do. Walk it aboard the station and it's signed for.
+} Hand-carried; any shuttle will do. {$count ->
+    [one] Walk it aboard the station and it's signed for.
+   *[other] Walk them aboard the station and they're signed for.
+}
 
 wf-contract-cael-priority-mail = Priority mail for {$destination}
 wf-contract-cael-priority-mail-brief = {$count} priority parcels for {$destination}, {$km} km out. The clock is short and the addressees are impatient. A quick shuttle is worth more than a big one here.
@@ -44,16 +47,19 @@ wf-contract-cael-fragile = Fragile goods to {$destination}
 wf-contract-cael-fragile-brief = {$count ->
     [one] A fragile parcel goes
    *[other] {$count} fragile parcels go
-} to {$destination}. They are insured, so a deposit is taken against them. Don't fight with them in your bag.
+} to {$destination}. {$count ->
+    [one] It is insured, so a deposit is taken against it. Don't get into a fight with it in your bag.
+   *[other] They are insured, so a deposit is taken against them. Don't get into a fight with them in your bag.
+}
 
 wf-contract-cael-general-freight = General freight to {$destination}
-wf-contract-cael-general-freight-brief = {$count} crates of general stores for {$destination}, {$km} km out. They need a hold or a lot of patience: drag them aboard at the board, fly them over, and drag them onto the station.
+wf-contract-cael-general-freight-brief = {$count} crates of general stores for {$destination}, {$km} km out. They need a hold or a lot of patience: load them at the board, fly them over, and drag them onto the station.
 
 wf-contract-cael-inbound-freight = Freight pickup at {$origin}
 wf-contract-cael-inbound-freight-brief = {$count} crates of machine parts are sitting at {$origin} with Central's name on them. Collect them there and bring them back to Caelestinus Central. You'll need a hold.
 
 wf-contract-cael-bulk-freight = Bulk freight to {$destination}
-wf-contract-cael-bulk-freight-brief = {$count} heavy equipment crates for {$destination}, {$km} km out. This is a job for a real freighter; a light shuttle will crawl. Deposit is held against the cargo.
+wf-contract-cael-bulk-freight-brief = {$count} heavy equipment crates for {$destination}, {$km} km out. This is a job for a real freighter; a light shuttle will crawl. A deposit is held against the cargo.
 
 wf-contract-cael-luxury-convoy = Insured convoy to {$destination}
 wf-contract-cael-luxury-convoy-brief = {$count} crates of luxury goods for {$destination}, worth more than most ships that will carry them. The insurer wants a large deposit and expects you to arrive. Bring escorts if you have friends.
@@ -70,7 +76,7 @@ wf-contract-marshal-skip = Bail jumper near {$home}
 wf-contract-marshal-skip-brief = {$target} skipped a hearing and is drifting about {$km} km from {$home} in an unarmed shuttle. They won't fight, but they will run. Disable or destroy the shuttle; a gun or a boarding party will do.
 
 wf-contract-marshal-smuggler = Smuggler run near {$home}
-wf-contract-marshal-smuggler-brief = {$target} is moving contraband through the lanes round {$home} in a lightly armed runner. Expect them to run and to shoot back. Destroy the ship.
+wf-contract-marshal-smuggler-brief = {$target} is moving contraband through the lanes around {$home} in a lightly armed runner. Expect them to run and to shoot back. Destroy the ship.
 
 wf-contract-marshal-raiders = Raider pair near {$home}
 wf-contract-marshal-raiders-brief = Two raiders are working a lane about {$km} km out from {$home} and firing on anyone who comes close. Both hulls have to go. Bring a gunboat or a friend.
@@ -99,7 +105,7 @@ wf-contract-mmc-plasma-ore = Plasma ore for Hokkaido
 wf-contract-mmc-plasma-ore-brief = The refinery is starved of plasma: {$goods}. Pack the manifest crate and close it aboard Hokkaido.
 
 wf-contract-mmc-lithium = Lithium contract
-wf-contract-mmc-lithium-brief = MMC needs {$goods} for cell production, and lithium is scarce. Chromite asteroids are where it is. Pack the manifest crate and close it aboard Hokkaido.
+wf-contract-mmc-lithium-brief = MMC needs {$goods} for cell production, and lithium is scarce. It is found in chromite asteroids. Pack the manifest crate and close it aboard Hokkaido.
 
 wf-contract-mmc-rare-ore = Rare ore order
 wf-contract-mmc-rare-ore-brief = A board-level order: {$goods}. Expect a long search. Pack the manifest crate and close it aboard Hokkaido.
@@ -140,7 +146,7 @@ wf-contract-sev-hardware = Hardware for Sevastopol
 wf-contract-sev-hardware-brief = Sevastopol's technicians need {$goods}. Pack the manifest crate from the board and close it aboard Sevastopol.
 
 wf-contract-sev-core-recovery = Data core recovery
-wf-contract-sev-core-recovery-brief = A ship carrying Sevastopol storage cores broke up about {$km} km out from the station. One core survived the telemetry. Find it in the wreck and bring it home before someone else reads it.
+wf-contract-sev-core-recovery-brief = A ship carrying Sevastopol storage cores broke up about {$km} km out from the station. Telemetry says one core survived. Find it in the wreck and bring it home before someone else reads it.
 
 wf-contract-sev-data-thief = Data thief near Sevastopol
 wf-contract-sev-data-thief-brief = {$target} walked out of Sevastopol with an archive and is running in an unarmed shuttle with one hired gun. Stop the ship; the data is not to leave the sector.
@@ -169,7 +175,7 @@ wf-contract-sb-ore-quota = Ore for the colony foundry
 wf-contract-sb-ore-quota-brief = The colony foundry wants {$goods}. Pack the manifest crate and close it aboard the Stellar Blessing.
 
 wf-contract-sb-lost-shuttle = Missing colony shuttle
-wf-contract-sb-lost-shuttle-brief = A colonists' shuttle went missing about {$km} km from the Stellar Blessing. Its families want to know what happened. Bring back its flight recorder.
+wf-contract-sb-lost-shuttle-brief = A colonists' shuttle went missing about {$km} km from the Stellar Blessing. The colonists' families want to know what happened. Bring back its flight recorder.
 
 ## TSFMC Logistics Command
 
@@ -183,7 +189,13 @@ wf-contract-tsf-dispatches = Sealed dispatches to {$destination}
 wf-contract-tsf-dispatches-brief = {$count ->
     [one] A sealed dispatch
    *[other] {$count} sealed dispatches
-} from the Halcyon for {$destination}. The clock is short. Collect them aboard the Halcyon and carry them by hand.
+} from the Halcyon for {$destination}. The clock is short. Collect {$count ->
+    [one] it
+   *[other] them
+} aboard the Halcyon and carry {$count ->
+    [one] it
+   *[other] them
+} by hand.
 
 wf-contract-tsf-med-supply = Field medical supply
 wf-contract-tsf-med-supply-brief = The Corps' medics need {$goods}. Pack the manifest crate from the board and close it aboard the Halcyon.
@@ -235,7 +247,10 @@ wf-contract-lab-samples = Sample courier to {$destination}
 wf-contract-lab-samples-brief = {$count ->
     [one] A sealed sample case
    *[other] {$count} sealed sample cases
-} from the Anomalous Lab for {$destination}. Collect at the Lab. They hum. That is normal.
+} from the Anomalous Lab for {$destination}. Collect at the Lab. {$count ->
+    [one] It hums.
+   *[other] They hum.
+} That is normal.
 
 wf-contract-lab-instruments = Instruments for the Lab
 wf-contract-lab-instruments-brief = {$count} crates of instruments and reagents are waiting at the board for the Anomalous Lab, {$km} km out. They need a hold.
@@ -328,7 +343,7 @@ wf-contract-pdv-faction-rivals = Rival raiders on Dynasty ground
 wf-contract-pdv-faction-rivals-brief = Two raiders who answer to nobody are hunting near Helios, about {$km} km out. Show them whose ground it is. Paid in thalers and doubloons.
 
 wf-contract-pdv-faction-armoury = Stores for the Helios armoury
-wf-contract-pdv-faction-armoury-brief = The quartermaster wants {$goods}. Pack the manifest crate and close it aboard Helios. The Federation will remember who armed us.
+wf-contract-pdv-faction-armoury-brief = The Quartermaster wants {$goods}. Pack the manifest crate and close it aboard Helios. The Federation will remember who armed us.
 
 wf-contract-pdv-faction-salvage = Plunder recovery
 wf-contract-pdv-faction-salvage-brief = A freighter's wreck is drifting about {$km} km from Helios. Its cargo manifest says where the rest of the convoy went. Bring it to Helios.
@@ -342,13 +357,13 @@ wf-contract-mmc-deep-core-brief = A forward contract MMC can't fill from its own
 wf-contract-mmc-strip-claim = Strip a claim for MMC
 wf-contract-mmc-strip-claim-brief = MMC has bought out a claim and wants it stripped bare before the lease runs out: {$goods}. A full mining crew's work. Pack the manifest crate and close it aboard Hokkaido.
 wf-contract-sb-foundation = Foundation pour for the colony
-wf-contract-sb-foundation-brief = The Colony Board is laying a new habitat deck and needs {$goods} all at once. Buy, print or refine it as a crew, pack the manifest crate and close it aboard the Stellar Blessing.
+wf-contract-sb-foundation-brief = The Colony Board is laying a new habitat deck and needs {$goods} all at once. Buy, print or refine them as a crew, pack the manifest crate and close it aboard the Stellar Blessing.
 wf-contract-sb-colony-ore = Colony ore drive
 wf-contract-sb-colony-ore-brief = The colony's fabricators run on raw ore and they are nearly dry. Bring {$goods} with a crew, packed in the manifest crate and closed aboard the Stellar Blessing.
 wf-contract-tsf-faction-ore = Fleet ore requisition
-wf-contract-tsf-faction-ore-brief = Naval Requisitions needs {$goods} for the fleet's yards. A crew's work, for Federation personnel and civilians only. Close the manifest crate aboard the Halcyon. Paid in thalers and Federation credits.
+wf-contract-tsf-faction-ore-brief = Naval Requisitions needs {$goods} for the fleet's yards. Crew work, for Federation personnel and civilians only. Close the manifest crate aboard the Halcyon. Paid in thalers and Federation credits.
 wf-contract-ussp-faction-ore = Commissariat ore quota
-wf-contract-ussp-faction-ore-brief = The Commissariat sets the quota and the brigade meets it: {$goods}, closed in the manifest crate aboard Camelot. For USSP members, worked as a crew.
+wf-contract-ussp-faction-ore-brief = The Commissariat sets the quota and the brigade meets it: {$goods}, closed in the manifest crate aboard Camelot. Crew work, for USSP citizens only.
 
 ## Science: anomaly surveys.
 
@@ -373,12 +388,12 @@ wf-contract-sev-signal-survey-brief = Sevastopol's arrays are picking up interfe
        *[other] {$count} anomalies
     } aboard with an anomaly scanner so the archive can filter it out. Carp have been seen around it.
 wf-contract-tsf-faction-anomaly = Anomalous contact
-wf-contract-tsf-faction-anomaly-brief = A patrol logged {$count} anomalies and hostile life aboard a derelict about {$km} km from the Halcyon. Naval Intelligence wants every one scanned before they destabilise. For Federation personnel and civilians, as a crew. Paid in thalers and Federation credits.
+wf-contract-tsf-faction-anomaly-brief = A patrol logged {$count} anomalies and hostile life aboard a derelict about {$km} km from the Halcyon. Naval Intelligence wants every one scanned before they destabilise. Crew work, for Federation personnel and civilians only. Paid in thalers and Federation credits.
 
 ## Tows: bring a derelict hull in.
 
 wf-contract-cael-clear-lane = Clear a derelict from the lanes
-wf-contract-cael-clear-lane-brief = A dead hull is drifting about {$km} km out from Central, across an approach lane. The Port Authority wants it towed in where it can be broken up. Tether it, push it or drag it, as long as it arrives in one piece. Towing takes a rope coil and a tether installer; bring both to take the job.
+wf-contract-cael-clear-lane-brief = A dead hull is drifting about {$km} km out from Central, across an approach lane. The Port Authority wants it towed in where it can be broken up. Bring it in by tether, in one piece. Towing takes a rope coil and a tether installer; bring both to take the job.
 wf-contract-sb-scrap-hull = Scrap hull for the colony
 wf-contract-sb-scrap-hull-brief = The colony's recyclers can turn a wreck into a season of plating. Tow the derelict about {$km} km out from the Stellar Blessing back to the colony. Carp have been nesting in it. Towing takes a rope coil and a tether installer; bring both to take the job.
 wf-contract-mmc-hauler-hull = Recover a lost ore hauler
@@ -405,7 +420,7 @@ wf-contractor-pdv-quartermaster-employer = the PDV (PDV members only)
 wf-contract-halcyon-pouch = Diplomatic pouch to Camelot
 wf-contract-halcyon-pouch-brief = The Marine Corps has a sealed pouch for the Harbourmaster at Camelot, {$km} km away, and wants it carried by someone who isn't in uniform. Deliver it unopened. The Commissariat watches who carries Federation mail.
 wf-contract-camelot-pouch = Diplomatic pouch to the Halcyon
-wf-contract-camelot-pouch-brief = The Harbourmaster has a sealed pouch for the Halcyon, {$km} km away, and wants a neutral courier. Deliver it unopened. Federation Requisitions keeps a list of who runs freeport errands.
+wf-contract-camelot-pouch-brief = The Harbourmaster has a sealed pouch for the Halcyon, {$km} km away, and wants a neutral courier. Deliver it unopened. Naval Requisitions keeps a list of who runs freeport errands.
 wf-contract-camelot-fuel-relay = Plasma relay from Hokkaido
 wf-contract-camelot-fuel-relay-brief = Camelot's reactors are running lean. Collect {$count} crates of plasma canisters at {$origin} and haul them {$km} km to the freeport. They are heavy: bring a ship with a hold.
 wf-contract-sb-livestock = Livestock for the colony farms
@@ -419,7 +434,7 @@ wf-contract-halcyon-shipwright-brief = The Halcyon's yards are refitting patrol 
 wf-contract-halcyon-pirate-cull = Pirate cull
 wf-contract-halcyon-pirate-cull-brief = A raider pack has spread itself thin over the lanes about {$km} km from the Halcyon: four light ships, each on its own. The Marine Corps pays for all four. Hunt them down one by one before they regroup.
 wf-contract-cael-repossession = Repossession
-wf-contract-cael-repossession-brief = A ship registered at Central left dock without settling its berthing and loan, and was last seen about {$km} km out. The Port Authority wants {$target} disabled or destroyed. Camelot's fences were hoping to buy it.
+wf-contract-cael-repossession-brief = A ship registered at Central left dock without settling its berthing fees or its loan, and was last seen about {$km} km out. The Port Authority wants {$target} disabled or destroyed. Camelot's fences were hoping to buy it.
 wf-contract-marshals-smuggler-convoy = Smuggler convoy
 wf-contract-marshals-smuggler-convoy-brief = Two smugglers are running cargo together about {$km} km from Central: a fast lead ship that will try to slip away, and an armed wing that covers it. The Marshals want both stopped.
 wf-contract-marshals-ace = Ace hunt
@@ -446,7 +461,7 @@ wf-contract-target-pirate-cull = Raider pack {$designation}
 wf-contract-marshals-black-box = Black box from an infested hulk
 wf-contract-marshals-black-box-brief = A shuttle that went missing near Central has turned up about {$km} km out, overrun by flesh. The Marshals want its flight recorder for the inquiry. Cut your way in, recover the recorder and bring it to the board at Central.
 wf-contract-tsf-faction-hull = Warship hull for the Halcyon
-wf-contract-tsf-faction-hull-brief = Naval Requisitions has found a wrecked warship hull about {$km} km from the Halcyon and wants it back for study. Federation personnel and civilians only, as a crew. Towing takes a rope coil and a tether installer; bring both to take the job. Paid in thalers and Federation credits.
+wf-contract-tsf-faction-hull-brief = Naval Requisitions has found a wrecked warship hull about {$km} km from the Halcyon and wants it back for study. Crew work, for Federation personnel and civilians only. Towing takes a rope coil and a tether installer; bring both to take the job. Paid in thalers and Federation credits.
 
 ## Contracts on the new objectives.
 
@@ -473,7 +488,7 @@ wf-contract-lab-twin-survey-brief = Two derelicts drifting side by side about {$
 wf-contract-sev-archive-pull = Archive pull
 wf-contract-sev-archive-pull-brief = A derelict about {$km} km out still holds an intact archive. Stand by its terminal while it downloads; the download only runs with someone beside it, and whatever lives aboard will come for you in waves.
 wf-contract-sev-deep-archive = Deep archive recovery
-wf-contract-sev-deep-archive-brief = A long download from a derelict about {$km} km out, and the xenos nesting aboard will not sit still for it. Hold the terminal as a crew until the archive is copied.
+wf-contract-sev-deep-archive-brief = A derelict about {$km} km out holds a long download, and the xenos nesting aboard will not sit still for it. Hold the terminal as a crew until the archive is copied.
 wf-contract-sev-debris-charting = Debris charting
 wf-contract-sev-debris-charting-brief = Sevastopol is charting debris fields for its maps. Fly within range of {$count} points out from the station to log each one.
 wf-contract-sb-carp-nests = Carp nests near the colony
@@ -481,4 +496,4 @@ wf-contract-sb-carp-nests-brief = Carp keep coming at the colony's shuttles from
 wf-contract-halcyon-beacon = Restore a patrol beacon
 wf-contract-halcyon-beacon-brief = One of the Marine Corps' patrol beacons, on a derelict about {$km} km from the Halcyon, is down. Weld it whole and fit a power cell; the derelict jumps away once the beacon is broadcasting.
 wf-contract-halcyon-fleet-salvage = Fleet salvage operation
-wf-contract-halcyon-fleet-salvage-brief = A battle wreck about {$km} km from the Halcyon needs a full salvage crew: scan its {$count} anomalies, recover its flight recorder to the Halcyon, and tow the hull home. Towing takes a rope coil and a tether installer; bring both to take the job.
+wf-contract-halcyon-fleet-salvage-brief = A battle wreck about {$km} km from the Halcyon needs a full salvage crew: scan its {$count} anomalies, bring its flight recorder to the Halcyon, and tow the hull home. Towing takes a rope coil and a tether installer; bring both to take the job.

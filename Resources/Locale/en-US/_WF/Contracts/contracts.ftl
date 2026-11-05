@@ -51,7 +51,7 @@ wf-contract-tab-standing = Standing
 wf-contract-rail-entry = {$name} ({$count})
 wf-contract-board-slots = {$crew ->
     [1] Solo: {$slots} contract slot. A crew of {$next} would hold more.
-   *[other] Crew of {$crew}: {$slots} contract slots, shared. {$next} crew for the next.
+   *[other] Crew of {$crew}: {$slots} contract slots, shared. A crew of {$next} would hold one more.
 } Track them in the Contracts app on your PDA.
 wf-contract-board-no-character = Contracts are held by a character. Ghosts may only browse.
 wf-contract-board-owed = {$pay} {$pay ->
@@ -61,7 +61,7 @@ wf-contract-board-owed = {$pay} {$pay ->
 
 wf-contract-empty-offers = Nothing posted in this category right now. Contractors post again every few minutes.
 wf-contract-empty-planetary = Planetary operations open once surface survey licences are issued. Check back later.
-wf-contract-empty-accepted = You hold no contracts. Take one from the board at Caelestinus Central.
+wf-contract-empty-accepted = You hold no contracts. Take one from any contract board.
 wf-contract-empty-history = Nothing finished yet this shift.
 
 wf-contract-details-none = Select a contract.
@@ -110,7 +110,7 @@ wf-contract-locked-full = Your crew already holds {$max ->
    *[other] all {$max} of its contracts. A bigger crew can hold more.
 }
 wf-contract-locked-requires = You need to be carrying: {$items}.
-wf-contract-locked-crew =Needs a crew of {$needed} in the sector; yours has {$size}. Form a crew in Crew Setup.
+wf-contract-locked-crew = Needs a crew of {$needed} in the sector; yours has {$size}. Form a crew in Crew Setup.
 wf-contract-locked-company = {$contractor} only deals with its own people.
 wf-contract-locked-hostile = {$contractor} won't deal with you. Your standing with them is Hostile.
 wf-contract-error-gone = Someone else took that contract.
@@ -133,9 +133,9 @@ wf-contract-completed = "{$title}" complete. {$pay} {$pay ->
        *[other] , your share of the crew's pay.
     }
 wf-contract-completed-owed = "{$title}" complete. {$pay} {$pay ->
-        [one] thaler
-       *[other] thalers
-    } are owed to you and will be paid when your account can take it.
+        [one] thaler is
+       *[other] thalers are
+    } owed to you and will be paid when your account can take it.
 wf-contract-failed = "{$title}" failed: {$reason} Any deposit is forfeit.
 wf-contract-void = "{$title}" was called off: {$reason} {$deposit ->
     [0] {""}
@@ -145,9 +145,9 @@ wf-contract-void = "{$title}" was called off: {$reason} {$deposit ->
     } deposit was returned.
 }
 wf-contract-owed-paid = {$pay} {$pay ->
-        [one] thaler
-       *[other] thalers
-    } owed from finished contracts were paid to your account.
+        [one] thaler owed from finished contracts was
+       *[other] thalers owed from finished contracts were
+    } paid to your account.
 wf-contract-package-delivered = "{$title}": {$done} of {$count} delivered.
 wf-contract-anomaly-surveyed = "{$title}": {$done} of {$count} anomalies surveyed.
 
@@ -159,7 +159,7 @@ wf-contract-reason-escort-lost = the ship you were escorting was lost.
 wf-contract-reason-anomaly-collapsed = an anomaly collapsed before it was surveyed.
 wf-contract-reason-hull-lost = the hull was destroyed.
 
-wf-contract-interfered = You fired on a target {$claimant} holds a {$contractor} contract for. Your standing with {$contractor} fell by {$points}.
+wf-contract-interfered = You fired on a target held by {$claimant} under a {$contractor} contract. Your standing with {$contractor} fell by {$points}.
 
 ## Contract cargo
 
@@ -202,18 +202,18 @@ wf-contract-location-survey = {$active ->
    *[false] Derelict reported about {$km} km out from {$home}. Exact position on accepting.
 }
 wf-contract-location-tow = {$active ->
-    [true] Derelict about {$km} km out from {$home}. Tow it within {$range} m of {$home}.
+    [true] Derelict about {$km} km out from {$home}. Tow it to within {$range} m of {$home}.
    *[false] Derelict reported about {$km} km out from {$home}. Exact position on accepting.
 }
 wf-contract-objective-tow = {$gap ->
-    [-1] Tow the derelict within {$range} m of {$destination}
-   *[other] Tow the derelict within {$range} m of {$destination} ({$gap} m away)
+    [-1] Tow the derelict to within {$range} m of {$destination}
+   *[other] Tow the derelict to within {$range} m of {$destination} ({$gap} m away)
 }
-wf-contract-objective-survey =Scan every anomaly aboard with an anomaly scanner ({$done}/{$count})
+wf-contract-objective-survey = Scan every anomaly aboard with an anomaly scanner ({$done}/{$count})
 wf-contract-objective-escort-meet = Meet {$target} at the rendezvous
 wf-contract-objective-escort = See {$target} safely to {$destination}
 wf-contract-location-escort = {$active ->
-    [true] Rendezvous about 1-2 km out from {$home}; escort to {$destination} ({$km} km). It waits for you there.
+    [true] Rendezvous about 1–2 km out from {$home}; escort to {$destination} ({$km} km). It waits for you there.
    *[false] Rendezvous near {$home}, escort to {$destination} ({$km} km). Exact position on accepting.
 }
 

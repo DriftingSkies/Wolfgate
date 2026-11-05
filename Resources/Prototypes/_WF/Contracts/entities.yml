@@ -4,7 +4,7 @@
   parent: BaseStructure
   id: WFContractBoard
   name: contract board
-  description: The sector's open contract exchange. Deliveries, hauling, supply, bounties and salvage, posted by every station that pays.
+  description: The sector's open contract exchange. Deliveries, hauling, supply, mining, bounties, salvage, science and escorts, posted by every station that pays.
   placement:
     mode: SnapgridCenter
   components:
@@ -107,7 +107,7 @@
   parent: WFContractBoard
   id: WFContractBoardPDV
   name: quartermaster's board
-  description: "The Dynasty quartermaster's list of prizes, plunder and stores wanted at Helios, paid in thalers and doubloons."
+  description: "The Dynasty Quartermaster's list of prizes, plunder and stores wanted at Helios, paid in thalers and doubloons."
   components:
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
@@ -128,7 +128,7 @@
   parent: NFBasePDACartridge
   id: WFContractsCartridge
   name: contracts cartridge
-  description: A PDA program tracking the contracts you took at the contract board.
+  description: A PDA program tracking the contracts you took at a contract board.
   components:
   - type: Sprite
     sprite: Objects/Devices/cartridge.rsi
@@ -394,7 +394,7 @@
 - type: entity
   id: WFContractCargoPad
   name: contract pickup pad
-  description: Cargo for contracts taken at the boards nearby is left here.
+  description: Cargo for contracts taken at nearby boards is left here.
   placement:
     mode: SnapgridCenter
   components:
