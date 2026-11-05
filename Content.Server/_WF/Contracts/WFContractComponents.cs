@@ -25,6 +25,14 @@ public sealed partial class WFContractItemComponent : Component
     public bool Delivered;
 }
 
+/// <summary>Cargo an inspection contract asks to be searched; its holder's crew get a verb to do it.</summary>
+[RegisterComponent]
+public sealed partial class WFContractInspectableComponent : Component
+{
+    [ViewVariables]
+    public int Contract;
+}
+
 /// <summary>Marks the Contracts PDA app.</summary>
 [RegisterComponent]
 public sealed partial class WFContractCartridgeComponent : Component;

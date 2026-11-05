@@ -3,6 +3,7 @@ using Content.Server._NF.GameRule;
 using Content.Server.Warps;
 using Content.Shared._WF.Contracts;
 using Content.Shared.Maps;
+using Content.Shared.Physics;
 using Content.Shared.Station.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -64,53 +65,129 @@ public sealed partial class WFContractSystem
         return null;
     }
 
-    /// <summary>The tile in front of a board, where its cargo is left.</summary>
+    /// <summary>What makes a tile no place for cargo: walls, tables, machines, racks and crates.</summary>
+    private const CollisionGroup CargoBlockers = CollisionGroup.Impassable | CollisionGroup.MidImpassable | CollisionGroup.LowImpassable;
+
+    /// <summary>How far, in tiles walked, cargo may be placed from where it was meant to go.</summary>
+    private const int DropSearchTiles = 400;
+
+    /// <summary>Where a board hands out cargo: its nearest drop, else the floor in front of it.</summary>
     private EntityCoordinates? BoardDrop(EntityUid board)
     {
-        if (TerminatingOrDeleted(board))
+        if (TerminatingOrDeleted(board) || Transform(board) is not { GridUid: { } grid } xform
+            || !TryComp<MapGridComponent>(grid, out var gridComp))
             return null;
 
-        var xform = Transform(board);
-        return xform.Coordinates.Offset(xform.LocalRotation.RotateVec(new System.Numerics.Vector2(0f, -1f)));
+        if (NearestDrop(grid, xform.Coordinates, 8f) is { } drop)
+            return ClearTileNear(grid, gridComp, drop);
+
+        var front = xform.LocalRotation.RotateVec(new System.Numerics.Vector2(0f, -1f));
+        return ClearTileNear(grid, gridComp, xform.Coordinates, front, skipStart: true);
     }
 
-    /// <summary>Where a station hands out cargo: a contract drop, else its warp point, else a floor tile near its centre.</summary>
+    /// <summary>Where a station hands out cargo: its central drop, else its warp point, else its centre.</summary>
     private EntityCoordinates? Anchor(EntityUid station)
     {
+        EntityCoordinates? start = null;
+        var centre = _station.GetLargestGrid(station) is { } main && TryComp<MapGridComponent>(main, out var mainGrid)
+            ? _transform.GetWorldMatrix(main).TransformBox(mainGrid.LocalAABB).Center
+            : System.Numerics.Vector2.Zero;
+        var best = float.MaxValue;
         var drops = EntityQueryEnumerator<WFContractDropComponent, TransformComponent>();
         while (drops.MoveNext(out var uid, out _, out var xform))
         {
-            if (_station.GetOwningStation(uid, xform) == station)
-                return xform.Coordinates;
+            if (_station.GetOwningStation(uid, xform) != station)
+                continue;
+
+            var distance = (_transform.GetWorldPosition(xform) - centre).LengthSquared();
+            if (distance >= best)
+                continue;
+
+            best = distance;
+            start = xform.Coordinates;
         }
 
         var warps = EntityQueryEnumerator<WarpPointComponent, TransformComponent>();
-        while (warps.MoveNext(out var uid, out var warp, out var xform))
+        while (start == null && warps.MoveNext(out var uid, out var warp, out var xform))
         {
             if (!warp.AdminOnly && _station.GetOwningStation(uid, xform) == station)
-                return xform.Coordinates;
+                start = xform.Coordinates;
         }
 
-        if (_station.GetLargestGrid(station) is not { } largest || !TryComp<MapGridComponent>(largest, out var gridComp))
+        if (_station.GetLargestGrid(station) is not { } largest || !TryComp<MapGridComponent>(largest, out var largestComp))
             return null;
 
-        var centre = gridComp.LocalAABB.Center;
-        Vector2i? best = null;
-        var bestDistance = float.MaxValue;
-        foreach (var tile in _map.GetAllTiles(largest, gridComp))
+        start ??= _map.GridTileToLocal(largest, largestComp, _map.TileIndicesFor(largest, largestComp,
+            new EntityCoordinates(largest, largestComp.LocalAABB.Center)));
+        if (start.Value.EntityId is not { Valid: true } startGrid || !TryComp<MapGridComponent>(startGrid, out var startComp))
         {
-            if (_turf.IsTileBlocked(tile, Content.Shared.Physics.CollisionGroup.Impassable))
-                continue;
+            startGrid = largest;
+            startComp = largestComp;
+        }
 
-            var distance = (tile.GridIndices + new System.Numerics.Vector2(0.5f) - centre).LengthSquared();
-            if (distance >= bestDistance)
+        return ClearTileNear(startGrid, startComp, start.Value);
+    }
+
+    /// <summary>The contract drop marker on a grid nearest a point, within a range.</summary>
+    private EntityCoordinates? NearestDrop(EntityUid grid, EntityCoordinates near, float range)
+    {
+        EntityCoordinates? best = null;
+        var bestDistance = range;
+        var drops = EntityQueryEnumerator<WFContractDropComponent, TransformComponent>();
+        while (drops.MoveNext(out _, out _, out var xform))
+        {
+            if (xform.GridUid != grid || !xform.Coordinates.TryDistance(EntityManager, _transform, near, out var distance)
+                || distance > bestDistance)
                 continue;
 
             bestDistance = distance;
-            best = tile.GridIndices;
+            best = xform.Coordinates;
         }
 
-        return best is { } index ? _map.GridTileToLocal(largest, gridComp, index) : null;
+        return best;
+    }
+
+    /// <summary>Whether cargo can be left on a tile: floor with nothing solid on it.</summary>
+    private bool IsClearTile(EntityUid grid, MapGridComponent comp, Vector2i index)
+    {
+        return _map.TryGetTileRef(grid, comp, index, out var tile) && !_turf.IsSpace(tile)
+               && !_turf.IsTileBlocked(grid, index, CargoBlockers, comp);
+    }
+
+    /// <summary>The nearest clear floor tile to a point, walked out to in a fixed order without crossing walls.</summary>
+    private EntityCoordinates? ClearTileNear(EntityUid grid, MapGridComponent comp, EntityCoordinates near,
+        System.Numerics.Vector2? first = null, bool skipStart = false)
+    {
+        var start = _map.TileIndicesFor(grid, comp, near);
+        var directions = new List<Vector2i> { new(0, -1), new(1, 0), new(0, 1), new(-1, 0) };
+        if (first is { } toward && toward.LengthSquared() > 0.01f)
+        {
+            var preferred = new Vector2i((int) MathF.Round(toward.X), (int) MathF.Round(toward.Y));
+            if (directions.Remove(preferred))
+                directions.Insert(0, preferred);
+        }
+
+        var seen = new HashSet<Vector2i> { start };
+        var queue = new Queue<Vector2i>();
+        queue.Enqueue(start);
+        while (queue.Count > 0 && seen.Count <= DropSearchTiles)
+        {
+            var tile = queue.Dequeue();
+            if ((tile != start || !skipStart) && IsClearTile(grid, comp, tile))
+                return _map.GridTileToLocal(grid, comp, tile);
+
+            foreach (var direction in directions)
+            {
+                var next = tile + direction;
+                if (!seen.Add(next) || !_map.TryGetTileRef(grid, comp, next, out var nextTile) || _turf.IsSpace(nextTile)
+                    || _turf.IsTileBlocked(grid, next, CollisionGroup.Impassable, comp))
+                    continue;
+
+                queue.Enqueue(next);
+            }
+        }
+
+        return null;
     }
 
     /// <summary>Metres between two stations' largest grids.</summary>

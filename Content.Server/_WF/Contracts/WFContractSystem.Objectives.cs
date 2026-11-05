@@ -2,9 +2,12 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Systems;
+using Content.Server.Anomaly.Components;
 using Content.Server.Storage.Components;
 using Content.Shared._WF.Contracts;
 using Content.Shared._WF.Encounters;
+using Content.Shared.Anomaly;
+using Content.Shared.Anomaly.Components;
 using Content.Shared.Examine;
 using Content.Shared.Physics;
 using Content.Shared.Stacks;
@@ -24,6 +27,7 @@ public sealed partial class WFContractSystem
     [Dependency] private TagSystem _tags = default!;
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private WFEncounterSchedulerSystem _scheduler = default!;
+    [Dependency] private SharedAnomalySystem _anomalies = default!;
 
     /// <summary>How close a player must be to a wreck to keep it in the world once its contract ends.</summary>
     private const float WreckKeepRange = 300f;
@@ -34,23 +38,28 @@ public sealed partial class WFContractSystem
     /// <summary>How far an escort's rendezvous must be from any station.</summary>
     private const float EscortClearance = 800f;
 
+    /// <summary>Highest severity a survey's anomaly starts at, so it does not go critical before the survey team arrives.</summary>
+    private const float SurveyStartSeverity = 0.3f;
+
     private void InitializeObjectives()
     {
         SubscribeLocalEvent<WFContractItemComponent, ComponentShutdown>(OnItemShutdown);
         SubscribeLocalEvent<WFContractItemComponent, ExaminedEvent>(OnItemExamined);
         SubscribeLocalEvent<WFContractItemComponent, StorageAfterCloseEvent>(OnCrateClosed);
         SubscribeLocalEvent<WFEncounterResolvedEvent>(OnEncounterResolved);
+        InitializeOperations();
     }
 
     /// <summary>Fixes an offer's ends, counts and pay from its template. False if the round cannot give it.</summary>
     private bool TryRoll(WFContract contract, WFContractPrototype template, Dictionary<string, EntityUid> homes, EntityUid board)
     {
+        var boardTag = _proto.Index(template.Contractor).Board;
         switch (template.Objective)
         {
             case WFContractCourier courier:
             {
-                if (EndStation(courier.From, contract.Home, board, courier.Destinations, homes, null) is not { } from
-                    || EndStation(courier.To, contract.Home, board, courier.Destinations, homes, from) is not { } to
+                if (EndStation(courier.From, contract.Home, board, courier.Destinations, homes, null, boardTag) is not { } from
+                    || EndStation(courier.To, contract.Home, board, courier.Destinations, homes, from, boardTag) is not { } to
                     || from == to)
                     return false;
 
@@ -108,11 +117,23 @@ public sealed partial class WFContractSystem
                 contract.Distance = (recovery.MinDistance + recovery.MaxDistance) / 2f;
                 return true;
             }
+            case WFContractTow tow:
+                contract.Destination = contract.Home;
+                return RollWreck(contract, tow.Wrecks, tow.MinDistance, tow.MaxDistance);
+            case WFContractSurvey survey:
+            {
+                if (!survey.Anomalies.Any(id => _proto.HasIndex(id)) || !RollWreck(contract, survey.Wrecks, survey.MinDistance, survey.MaxDistance))
+                    return false;
+
+                contract.Count = _random.Next(survey.Count.X, Math.Max(survey.Count.X, survey.Count.Y) + 1);
+                contract.Reward += survey.PerAnomaly * contract.Count;
+                return true;
+            }
             case WFContractEscort escort:
             {
                 var options = escort.Encounters.Where(id => _proto.HasIndex(id)).ToList();
                 if (options.Count == 0
-                    || EndStation(WFContractEnd.Other, contract.Home, board, escort.Destinations, homes, null) is not { } to)
+                    || EndStation(WFContractEnd.Other, contract.Home, board, escort.Destinations, homes, null, boardTag) is not { } to)
                     return false;
 
                 contract.Encounter = _random.Pick(options);
@@ -122,6 +143,9 @@ public sealed partial class WFContractSystem
                 return true;
             }
         }
+
+        if (TryRollOperation(contract, template, homes, board, boardTag) is { } rolled)
+            return rolled;
 
         Log.Error($"Contract {template.ID} has an objective the board cannot run: {template.Objective.GetType().Name}.");
         return false;
@@ -134,9 +158,9 @@ public sealed partial class WFContractSystem
     public static int DistancePay(int perKilometre, float metres) =>
         (int) (perKilometre * Math.Min(metres / 1000f, MaxPaidKilometres));
 
-    /// <summary>The station one end of a courier run is at. <paramref name="not"/> keeps the far end off the near one.</summary>
+    /// <summary>The station one end of a run is at; <paramref name="not"/> keeps the far end off the near one.</summary>
     private EntityUid? EndStation(WFContractEnd end, EntityUid home, EntityUid board, List<ProtoId<WFContractorPrototype>> others,
-        Dictionary<string, EntityUid> homes, EntityUid? not)
+        Dictionary<string, EntityUid> homes, EntityUid? not, string boardTag)
     {
         switch (end)
         {
@@ -147,10 +171,17 @@ public sealed partial class WFContractSystem
         }
 
         var candidates = (others.Count == 0 ? homes.Values : others.Where(id => homes.ContainsKey(id)).Select(id => homes[id]))
-            .Where(station => station != home && station != not)
+            .Where(station => station != home && station != not && OpenTo(station, boardTag, homes))
             .Distinct()
             .ToList();
         return candidates.Count == 0 ? null : _random.Pick(candidates);
+    }
+
+    /// <summary>Whether a station may end a run posted on a board: faction-only stations (Helios) take their own board's work alone.</summary>
+    private bool OpenTo(EntityUid station, string boardTag, Dictionary<string, EntityUid> homes)
+    {
+        var boards = homes.Where(h => h.Value == station).Select(h => _proto.Index<WFContractorPrototype>(h.Key).Board).ToHashSet();
+        return boards.Contains(WFContractBoards.Central) || boards.Contains(boardTag);
     }
 
     /// <summary>Market value of one of a supply line's goods.</summary>
@@ -243,14 +274,13 @@ public sealed partial class WFContractSystem
         {
             case WFContractCourier courier:
             {
-                var at = contract.Origin is { } origin ? Anchor(origin) : BoardDrop(board);
-                if (at is not { } coords)
-                    return false;
-
+                // Parcels share a tile; each freight crate takes the next clear one.
                 for (var i = 0; i < contract.Count; i++)
                 {
-                    var offset = contract.Count == 1 ? Vector2.Zero : _random.NextVector2(0.35f);
-                    var package = Spawn(courier.Package, coords.Offset(offset));
+                    if ((contract.Origin is { } origin ? Anchor(origin) : BoardDrop(board)) is not { } coords)
+                        return false;
+
+                    var package = Spawn(courier.Package, coords);
                     Track(contract, package);
                     _meta.SetEntityName(package, Loc.GetString("wf-contract-package-name", ("name", Name(package)),
                         ("destination", StationName(contract.Destination))));
@@ -291,30 +321,52 @@ public sealed partial class WFContractSystem
             }
             case WFContractRecovery recovery:
             {
-                if (contract.Wreck is not { } wreck
-                    || PickSite(contract.Home, recovery.MinDistance, recovery.MaxDistance, recovery.StationClearance) is not { } site
-                    || !_mapLoader.TryLoadGrid(site.MapId, wreck, out var grid, offset: site.Position, rot: _random.NextAngle()))
+                if (LoadWreck(contract, recovery.MinDistance, recovery.MaxDistance, recovery.StationClearance) is not { } grid)
                     return false;
 
-                contract.Site = site;
-                contract.WreckGrid = grid.Value.Owner;
-                _meta.SetEntityName(grid.Value.Owner, Loc.GetString("wf-contract-wreck-name", ("id", contract.Id)));
-                if (FreeTile(grid.Value) is not { } tile)
+                if (FreeTile(grid) is not { } tile)
                 {
-                    QueueDel(grid.Value.Owner);
+                    DropWreck(contract);
                     return false;
                 }
 
-                var item = Spawn(recovery.Item, tile);
-                Track(contract, item);
+                Track(contract, Spawn(recovery.Item, tile));
+                Infest(grid, recovery.Infestation);
+                return true;
+            }
+            case WFContractTow tow:
+            {
+                if (LoadWreck(contract, tow.MinDistance, tow.MaxDistance, tow.StationClearance) is not { } grid)
+                    return false;
+
+                Infest(grid, tow.Infestation);
+                return true;
+            }
+            case WFContractSurvey survey:
+            {
+                if (LoadWreck(contract, survey.MinDistance, survey.MaxDistance, survey.StationClearance) is not { } grid)
+                    return false;
+
+                var grids = LoadTwins(contract, grid, survey.Derelicts);
+                PlaceAnomalies(contract, grids, survey.Anomalies);
+                if (contract.Anomalies.Count < contract.Count)
+                {
+                    DropWreck(contract);
+                    return false;
+                }
+
+                foreach (var derelict in grids)
+                {
+                    Infest(derelict, survey.Infestation);
+                }
+
                 return true;
             }
             case WFContractEscort escort:
             {
                 if (contract.Encounter is not { } encounterId || !_proto.TryIndex(encounterId, out var encounterProto)
                     || contract.Destination is not { } destination
-                    // Encounter stops are grids: a station entity is no dock target, and the encounter removes itself
-                    // when its orders fail at the rendezvous.
+                    // Stops must be grids: a station entity fails the orders and the encounter removes itself.
                     || _station.GetLargestGrid(destination) is not { } stop)
                     return false;
 
@@ -333,13 +385,90 @@ public sealed partial class WFContractSystem
             }
         }
 
-        return false;
+        return TryStartOperation(contract, proto.Objective, board) ?? false;
     }
 
     private void Track(WFContract contract, EntityUid item)
     {
         EnsureComp<WFContractItemComponent>(item).Contract = contract.Id;
         contract.Items.Add(item);
+    }
+
+    /// <summary>Loads a contract's wreck in open space near its contractor, named for the contract.</summary>
+    private Entity<MapGridComponent>? LoadWreck(WFContract contract, float min, float max, float clearance)
+    {
+        if (contract.Wreck is not { } wreck || PickSite(contract.Home, min, max, clearance) is not { } site
+            || !_mapLoader.TryLoadGrid(site.MapId, wreck, out var grid, offset: site.Position, rot: _random.NextAngle()))
+            return null;
+
+        contract.Site = site;
+        contract.WreckGrid = grid.Value.Owner;
+        _meta.SetEntityName(grid.Value.Owner, Loc.GetString("wf-contract-wreck-name", ("id", contract.Id)));
+        return grid.Value;
+    }
+
+    /// <summary>Deletes a wreck loaded for a contract that could not start.</summary>
+    private void DropWreck(WFContract contract)
+    {
+        if (contract.WreckGrid is { } wreck)
+            QueueDel(wreck);
+
+        foreach (var twin in contract.ExtraWrecks)
+        {
+            QueueDel(twin);
+        }
+
+        contract.WreckGrid = null;
+        contract.ExtraWrecks.Clear();
+        contract.Anomalies.Clear();
+        contract.Targets.Clear();
+    }
+
+    /// <summary>Places hostile mobs on free tiles of a wreck.</summary>
+    private void Infest(Entity<MapGridComponent> grid, List<WFContractSpawn> infestation)
+    {
+        foreach (var spawn in infestation)
+        {
+            var count = _random.Next(spawn.Count.X, Math.Max(spawn.Count.X, spawn.Count.Y) + 1);
+            for (var i = 0; i < count && FreeTile(grid) is { } tile; i++)
+            {
+                Spawn(spawn.Entity, tile);
+            }
+        }
+    }
+
+    /// <summary>Metres between a towed derelict's hull and its destination station's largest grid, or null if either is gone.</summary>
+    public float? TowGap(WFContract contract)
+    {
+        if (contract.WreckGrid is not { } wreck || TerminatingOrDeleted(wreck) || !TryComp<MapGridComponent>(wreck, out var wreckGrid)
+            || contract.Destination is not { } destination || _station.GetLargestGrid(destination) is not { } station
+            || !TryComp<MapGridComponent>(station, out var stationGrid)
+            || Transform(wreck).MapID != Transform(station).MapID)
+            return null;
+
+        var a = _transform.GetWorldMatrix(wreck).TransformBox(wreckGrid.LocalAABB);
+        var b = _transform.GetWorldMatrix(station).TransformBox(stationGrid.LocalAABB);
+        var dx = Math.Max(0f, Math.Max(a.Left - b.Right, b.Left - a.Right));
+        var dy = Math.Max(0f, Math.Max(a.Bottom - b.Top, b.Bottom - a.Top));
+        return MathF.Sqrt(dx * dx + dy * dy);
+    }
+
+    /// <summary>Records survey anomalies any anomaly scanner has scanned, telling the holder of each new one.</summary>
+    private void UpdateSurvey(WFContract contract)
+    {
+        var scanners = EntityQueryEnumerator<AnomalyScannerComponent>();
+        while (scanners.MoveNext(out _, out var scanner))
+        {
+            if (scanner.ScannedAnomaly is not { } anomaly || !contract.Anomalies.Contains(anomaly) || !contract.Scanned.Add(anomaly))
+                continue;
+
+            _dirty = true;
+            if (contract.Scanned.Count < contract.Count && contract.User is { } user)
+            {
+                Tell(new WFContractHolder(user, contract.Character), Loc.GetString("wf-contract-anomaly-surveyed",
+                    ("title", Title(contract)), ("done", contract.Scanned.Count), ("count", contract.Count)));
+            }
+        }
     }
 
     /// <summary>Checks a live contract's objective and completes it once done.</summary>
@@ -381,6 +510,26 @@ public sealed partial class WFContractSystem
                 if (contract.Items.FirstOrDefault() is { Valid: true } recovered && !TerminatingOrDeleted(recovered)
                     && OnStation(recovered, contract.Destination))
                     Complete(contract);
+                break;
+            case WFContractTow tow:
+                if (contract.WreckGrid is not { } towed || TerminatingOrDeleted(towed))
+                    Fail(contract, "wf-contract-reason-hull-lost");
+                else if (TowGap(contract) is { } gap && gap <= tow.Range)
+                {
+                    // The contractor takes the hull: gone once no one is aboard.
+                    _departures[towed] = _timing.CurTime;
+                    Complete(contract);
+                }
+                break;
+            default:
+                CheckOperation(contract, proto.Objective);
+                break;
+            case WFContractSurvey:
+                UpdateSurvey(contract);
+                if (contract.Scanned.Count >= contract.Count)
+                    Complete(contract);
+                else if (contract.Anomalies.Any(a => !contract.Scanned.Contains(a) && TerminatingOrDeleted(a)))
+                    Fail(contract, "wf-contract-reason-anomaly-collapsed");
                 break;
             case WFContractEscort escort:
                 if (contract.EncounterEntity is not { } run || TerminatingOrDeleted(run))
@@ -435,7 +584,14 @@ public sealed partial class WFContractSystem
         }
 
         contract.Items.Clear();
+        contract.Anomalies.Clear();
         ClearMarkers(contract);
+        foreach (var twin in contract.ExtraWrecks)
+        {
+            if (!TerminatingOrDeleted(twin) && !PlayerNear(twin, WreckKeepRange))
+                QueueDel(twin);
+        }
+
         if (contract.WreckGrid is { } wreck && !TerminatingOrDeleted(wreck) && !PlayerNear(wreck, WreckKeepRange))
             QueueDel(wreck);
     }
@@ -565,13 +721,13 @@ public sealed partial class WFContractSystem
         return null;
     }
 
-    /// <summary>A random floor tile of a grid with nothing solid on it.</summary>
+    /// <summary>A random floor tile of a wreck with nothing solid on it, tables and machines included.</summary>
     private EntityCoordinates? FreeTile(Entity<MapGridComponent> grid)
     {
         var tiles = new List<Vector2i>();
         foreach (var tile in _map.GetAllTiles(grid, grid.Comp))
         {
-            if (!_turf.IsTileBlocked(tile, CollisionGroup.Impassable))
+            if (!_turf.IsSpace(tile) && !_turf.IsTileBlocked(grid, tile.GridIndices, CargoBlockers, grid.Comp))
                 tiles.Add(tile.GridIndices);
         }
 

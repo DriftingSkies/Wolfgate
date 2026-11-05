@@ -103,6 +103,8 @@ public sealed class WFContractRow : ContainerButton
         var sub = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal };
         sub.AddChild(WFContractStyle.Label(contract.Contractor, contract.ContractorColor));
         sub.AddChild(WFContractStyle.Label("  ·  " + WFContractStyle.Category(contract.Category), WFContractStyle.Dim));
+        if (contract.MinCrew > 1)
+            sub.AddChild(WFContractStyle.Label("  ·  " + Loc.GetString("wf-contract-row-crew", ("crew", contract.MinCrew)), WFContractStyle.Warn));
         if (contract.Holder is { } holder)
             sub.AddChild(WFContractStyle.Label("  ·  " + Loc.GetString("wf-contract-row-holder", ("holder", holder)), WFContractStyle.Accent));
         text.AddChild(sub);
@@ -217,6 +219,13 @@ public sealed class WFContractDetails : BoxContainer
             WFContractStyle.TierColor(contract.Tier)));
         _body.AddChild(header);
 
+        _body.AddChild(new Label
+        {
+            Text = contract.Employer,
+            FontColorOverride = contract.ContractorColor,
+            Margin = new Thickness(0, 0, 0, 6),
+        });
+
         var briefing = new RichTextLabel { Margin = new Thickness(0, 0, 0, 8) };
         briefing.SetMessage(FormattedMessage.FromMarkupPermissive(contract.Briefing));
         _body.AddChild(briefing);
@@ -249,6 +258,16 @@ public sealed class WFContractDetails : BoxContainer
 
         _body.AddChild(Section("wf-contract-details-terms"));
         _body.AddChild(Term("wf-contract-details-reward", WFContractStyle.Money(contract.Reward), WFContractStyle.Good));
+        foreach (var item in contract.Requires)
+        {
+            _body.AddChild(Term("wf-contract-details-requires", item, WFContractStyle.Warn));
+        }
+        if (contract.MinCrew > 1)
+            _body.AddChild(Term("wf-contract-details-crew", Loc.GetString("wf-contract-row-crew", ("crew", contract.MinCrew)), WFContractStyle.Warn));
+        if (contract.CrewBonus is { } bonus)
+            _body.AddChild(Term("wf-contract-details-crew-bonus", bonus, WFContractStyle.Good));
+        if (contract.Share is { } share)
+            _body.AddChild(Term("wf-contract-details-share", share, WFContractStyle.Good));
         if (contract.Credits is { } credits)
             _body.AddChild(Term("wf-contract-details-bonus", credits, WFContractStyle.Good));
         if (contract.Holder is { } holder)

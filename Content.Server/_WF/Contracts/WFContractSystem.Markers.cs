@@ -25,6 +25,12 @@ public sealed partial class WFContractSystem
         if (contract.WreckGrid is { } wreck && contract.Claimed.Add(wreck) && !TerminatingOrDeleted(wreck))
             _meta.SetEntityName(wreck, Loc.GetString("wf-contract-claimed-name", ("name", Name(wreck)), ("claimant", claimant)));
 
+        foreach (var twin in contract.ExtraWrecks)
+        {
+            if (contract.Claimed.Add(twin) && !TerminatingOrDeleted(twin))
+                _meta.SetEntityName(twin, Loc.GetString("wf-contract-claimed-name", ("name", Name(twin)), ("claimant", claimant)));
+        }
+
         if (_proto.Index(contract.Prototype).Objective is not WFContractBounty
             || contract.EncounterEntity is not { } encounter || !TryComp<WFEncounterComponent>(encounter, out var comp))
             return;
@@ -53,11 +59,23 @@ public sealed partial class WFContractSystem
             case WFContractEscort:
                 return TargetPosition(contract) is { } target && contract.Site is { } site ? new MapCoordinates(target, site.MapId) : contract.Site;
             case WFContractRecovery:
+            case WFContractSurvey:
+            case WFContractTow:
                 return contract.WreckGrid is { } wreck && !TerminatingOrDeleted(wreck) ? _transform.GetMapCoordinates(wreck) : contract.Site;
             case WFContractCourier when contract.Origin is { } pickup:
                 return contract.Items.FirstOrDefault(i => !TerminatingOrDeleted(i) && OnStation(i, pickup)) is { Valid: true } waiting
                     ? _transform.GetMapCoordinates(waiting)
                     : null;
+            case WFContractSweep:
+                return NextPoint(contract);
+            case WFContractClear:
+            case WFContractRepair:
+            case WFContractDownload:
+            case WFContractInspect:
+            case WFContractOperation:
+                return contract.WreckGrid is { } derelict && !TerminatingOrDeleted(derelict)
+                    ? _transform.GetMapCoordinates(derelict)
+                    : contract.Site;
         }
 
         return null;

@@ -68,6 +68,21 @@ public sealed class WFContractView
 
     /// <summary>Faction credits it pays besides thalers, in words.</summary>
     public string? Credits;
+
+    /// <summary>Crew members in the round needed to take it.</summary>
+    public int MinCrew = 1;
+
+    /// <summary>What extra crewmates add to the pay, in words.</summary>
+    public string? CrewBonus;
+
+    /// <summary>What the viewer's crew would be paid, and each member's share, in words.</summary>
+    public string? Share;
+
+    /// <summary>Who the work is for: the contractor and the faction or company behind it.</summary>
+    public string Employer = string.Empty;
+
+    /// <summary>Items the taker must carry, in words.</summary>
+    public List<string> Requires = new();
 }
 
 [Serializable, NetSerializable]

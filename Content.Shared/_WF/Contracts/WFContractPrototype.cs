@@ -22,6 +22,10 @@ public sealed partial class WFContractorPrototype : IPrototype
     [DataField(required: true)]
     public LocId Description;
 
+    /// <summary>Who the work is really for, such as a faction or company, shown with every contract it posts.</summary>
+    [DataField(required: true)]
+    public LocId Employer;
+
     [DataField]
     public Color Color = Color.White;
 
@@ -100,6 +104,14 @@ public sealed partial class WFContractPrototype : IPrototype
     [DataField]
     public int MinPlayers;
 
+    /// <summary>Crew members in the round the holder's crew needs to take it; its pay is sized for that many.</summary>
+    [DataField]
+    public int MinCrew = 1;
+
+    /// <summary>Share of the pay added for each crewmate in the round past <see cref="MinCrew"/>, up to four.</summary>
+    [DataField]
+    public float CrewBonus;
+
     [DataField(required: true)]
     public WFContractObjective Objective = default!;
 
@@ -114,6 +126,33 @@ public sealed partial class WFContractPrototype : IPrototype
     /// <summary>The stacked entity <see cref="Credits"/> are paid in.</summary>
     [DataField]
     public EntProtoId? CreditEntity;
+
+    /// <summary>Items the taker must be carrying to accept it, such as a tow kit.</summary>
+    [DataField]
+    public List<WFContractRequirement> Requires = new();
+
+    /// <summary>Game presets it is never offered in.</summary>
+    [DataField]
+    public List<string> ExcludePresets = new();
+
+    /// <summary>A contract offered only to the crew that finished this one, as the next link of a chain.</summary>
+    [DataField]
+    public ProtoId<WFContractPrototype>? FollowUp;
+}
+
+/// <summary>An item the taker must carry: an entity prototype or one of its children, or anything with a tag.</summary>
+[DataDefinition, Serializable]
+public sealed partial class WFContractRequirement
+{
+    [DataField]
+    public EntProtoId? Entity;
+
+    [DataField]
+    public ProtoId<TagPrototype>? Tag;
+
+    /// <summary>What the board calls it.</summary>
+    [DataField(required: true)]
+    public LocId Name;
 }
 
 public enum WFContractCategory : byte
@@ -138,6 +177,9 @@ public enum WFContractCategory : byte
 
     /// <summary>An NPC ship to see safely to its destination.</summary>
     Escort,
+
+    /// <summary>Anomalies to survey aboard a derelict.</summary>
+    Science,
 
     /// <summary>Surface work. Reserved: no objective uses it yet.</summary>
     Planetary,
@@ -293,6 +335,88 @@ public sealed partial class WFContractRecovery : WFContractObjective
     /// <summary>Where the item goes. <see cref="WFContractEnd.Other"/> is not used here.</summary>
     [DataField]
     public WFContractEnd To = WFContractEnd.Contractor;
+
+    /// <summary>Hostile mobs placed aboard the wreck.</summary>
+    [DataField]
+    public List<WFContractSpawn> Infestation = new();
+
+    /// <summary>Pay added per unlocked node, for a xenoarchaeology artifact brought in analysed.</summary>
+    [DataField]
+    public int PerUnlockedNode;
+}
+
+/// <summary>Scan every anomaly aboard a derelict with an anomaly scanner before any of them collapses.</summary>
+public sealed partial class WFContractSurvey : WFContractObjective
+{
+    [DataField(required: true)]
+    public List<ResPath> Wrecks = new();
+
+    /// <summary>Anomalies to pick from, one roll per anomaly placed.</summary>
+    [DataField(required: true)]
+    public List<EntProtoId> Anomalies = new();
+
+    /// <summary>How many anomalies, rolled between the two.</summary>
+    [DataField]
+    public Vector2i Count = new(1, 1);
+
+    /// <summary>Pay added per anomaly.</summary>
+    [DataField]
+    public int PerAnomaly;
+
+    /// <summary>Hostile mobs placed aboard the derelict.</summary>
+    [DataField]
+    public List<WFContractSpawn> Infestation = new();
+
+    [DataField]
+    public float MinDistance = 3000f;
+
+    [DataField]
+    public float MaxDistance = 5000f;
+
+    /// <summary>How far the derelict must be from every station, the contractor's included.</summary>
+    [DataField]
+    public float StationClearance = 2500f;
+
+    /// <summary>Derelicts loaded side by side, the anomalies spread across them.</summary>
+    [DataField]
+    public int Derelicts = 1;
+}
+
+/// <summary>Tow a derelict to within range of the contractor's station; it fails if the hull is destroyed.</summary>
+public sealed partial class WFContractTow : WFContractObjective
+{
+    [DataField(required: true)]
+    public List<ResPath> Wrecks = new();
+
+    /// <summary>Metres between the derelict's hull and the station's that count as delivered.</summary>
+    [DataField]
+    public float Range = 150f;
+
+    /// <summary>Hostile mobs placed aboard the derelict.</summary>
+    [DataField]
+    public List<WFContractSpawn> Infestation = new();
+
+    [DataField]
+    public float MinDistance = 2500f;
+
+    [DataField]
+    public float MaxDistance = 4000f;
+
+    /// <summary>How far the derelict must be from every station, the contractor's included.</summary>
+    [DataField]
+    public float StationClearance = 2000f;
+}
+
+/// <summary>Entities placed on random free tiles of a contract's wreck.</summary>
+[DataDefinition, Serializable]
+public sealed partial class WFContractSpawn
+{
+    [DataField(required: true)]
+    public EntProtoId Entity;
+
+    /// <summary>How many, rolled between the two.</summary>
+    [DataField]
+    public Vector2i Count = new(1, 1);
 }
 
 /// <summary>Escort an encounter ship to another station; done when it has flown its route.</summary>

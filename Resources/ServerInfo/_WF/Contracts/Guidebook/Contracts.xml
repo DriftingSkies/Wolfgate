@@ -12,8 +12,8 @@
 
   ## Taking a contract
 
-  1. Open the board and pick an offer. Each one shows who posted it, the reward, any deposit, the time allowed and exactly what is asked: the stations, the counts, the goods.
-  2. Accept it. Any deposit comes out of your bank and is paid back with the reward. Cargo for the contract appears beside the board, or at the station named as the pickup.
+  1. Open the board and pick an offer. Each one says who you are working for, on behalf of which faction or company, and shows the reward, any deposit, the time allowed and exactly what is asked: the stations, the counts, the goods.
+  2. Accept it. Any deposit comes out of your bank and is paid back with the reward. Cargo for the contract is left on the [color=#5fc3e4]pickup pad[/color] marked beside the board, or at the station named as the pickup. With no pad nearby, it goes on the nearest clear floor in front of the board.
   3. Track it in the [color=#5fc3e4]Contracts[/color] app on your PDA: objectives, time left, where to go and coordinates for anything out in space. Type the coordinates into your helm's waypoint panel to fly there.
   4. Finish before the clock runs out. The reward and deposit go straight to your bank.
 
@@ -23,7 +23,11 @@
 
   Contracts belong to your crew from Crew Setup. A crew holds one contract at a time, and one more each time it doubles: two members hold two, four hold three, eight hold four, sixteen hold five. On your own you are a crew of one.
 
-  When a contract is done the reward is split evenly between everyone in the crew who is in the round; the deposit goes back to whoever took it. Crewmates see each other's contracts in the Accepted tab and in the Contracts app. Only the one who took a contract can abandon it.
+  When a contract is done the reward is split evenly between everyone in the crew who is in the round; the deposit goes back to whoever took it.
+
+  Work a crew does together pays more as the crew grows. Mining contracts add half their pay again for each crewmate after the first; bounties, salvage, escorts and surveys add a quarter or more. The bonus counts up to four extra crewmates. The board shows what your crew would be paid in all and each member's share before you take a contract.
+
+  Some contracts are [color=#e0b050]crew work[/color]: bulk quotas, strip claims, infested hulks. They need a crew of a given size in the sector to take, and they pay for that whole crew, so each share beats a solo contract. Crewmates see each other's contracts in the Accepted tab and in the Contracts app. Only the one who took a contract can abandon it.
 
   ## Kinds of work
 
@@ -33,6 +37,16 @@
   - [bold]Bounty Hunting[/bold]: a target ship appears out in space and shows on the sector radar. Destroy it. The hull it leaves is yours to claim if you can.
   - [bold]Salvage[/bold]: a wreck appears out in space with something worth recovering aboard. Find it and bring it to the station named.
   - [bold]Escort[/bold]: a freighter waits for you at a rendezvous near the contractor's station. Once you arrive it sets off for its destination. Raiders may be waiting. The contract is done when it gets there.
+  - [bold]Science[/bold]: a derelict with anomalies aboard appears out in space. Scan every one with an anomaly scanner before any of them collapses. Scanners are in the contractor tool loadout and on any protolathe. Some derelicts are infested; bring weapons.
+  - [bold]Mail runs[/bold]: one parcel for each of several stations. Each counts only at the station it is addressed to.
+  - [bold]Sweeps[/bold]: fly within range of each survey point; the next one is on your waypoints.
+  - [bold]Clearing[/bold]: destroy every carp nest aboard a wreck. Nests keep spawning carp until they are gone.
+  - [bold]Beacon repairs[/bold]: weld a derelict beacon whole and fit a power cell. The derelict jumps away a while later.
+  - [bold]Downloads[/bold]: stay beside a derelict terminal while it downloads. It only runs with someone beside it, and hostiles come in waves.
+  - [bold]Inspections[/bold]: board a stopped smuggler and inspect its suspect cargo crate (right-click it). Its crew will fight.
+  - [bold]Salvage operations[/bold]: one battle wreck that needs its anomalies scanned, its flight recorder brought home and its hull towed.
+  - [bold]Chains[/bold]: some bounties turn up a lead. The next contract is posted for your crew alone, for a short while.
+  - [bold]Tows[/bold] (Salvage): a dead hull appears out in space. Tether it to within range of the contractor's station. You need to be carrying a rope coil and a tether installer to take one. It fails if the hull is destroyed.
   - [bold]Planetary[/bold]: surface work, coming once survey licences are issued.
 
   ## Risk tiers and standing

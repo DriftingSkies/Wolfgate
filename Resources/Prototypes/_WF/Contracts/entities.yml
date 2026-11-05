@@ -389,3 +389,208 @@
     sprite: Objects/Misc/diskcases.rsi
     layers:
     - state: icon_cargo
+
+# Where the boards nearby leave contract cargo; map one beside each board.
+- type: entity
+  id: WFContractCargoPad
+  name: contract pickup pad
+  description: Cargo for contracts taken at the boards nearby is left here.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Decals/markings.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: delivery_greyscale
+      color: "#5fc3e4"
+  - type: Icon
+    sprite: Decals/markings.rsi
+    state: delivery_greyscale
+  - type: Clickable
+  - type: WFContractDrop
+
+# Cargo for the second batch of contracts.
+
+- type: entity
+  parent: WFContractParcel
+  id: WFContractDiplomaticPouch
+  name: diplomatic pouch
+  description: A locked leather pouch under a diplomatic seal. Its carrier is protected by treaty; its contents are none of their business.
+  components:
+  - type: Sprite
+    sprite: Objects/Storage/Briefcases/briefcase_brown.rsi
+    state: icon
+  - type: Item
+    size: Normal
+    sprite: Objects/Storage/Briefcases/briefcase_brown.rsi
+
+- type: entity
+  parent: WFContractFreight
+  id: WFContractFreightLivestock
+  name: contract livestock crate
+  description: A ventilated crate of live animals under a contract manifest. It shuffles and smells.
+  components:
+  - type: Sprite
+    sprite: Structures/Storage/Crates/livestock.rsi
+    layers:
+    - state: base
+    - state: closed
+
+- type: entity
+  parent: WFContractFreight
+  id: WFContractFreightPlasma
+  name: contract plasma canister crate
+  description: Racked plasma canisters under a contract manifest. Heavy, volatile, and not for sale.
+  components:
+  - type: Sprite
+    layers:
+    - state: chems-volatile
+  - type: WFCargoMass
+    class: Bulk
+
+# Devices and targets placed aboard derelicts by contracts.
+
+# Repair: weld it whole and fit a power cell. Starts damaged.
+- type: entity
+  id: WFContractNavBeacon
+  name: derelict nav beacon
+  description: A navigation beacon knocked out of service. It needs welding and a fresh power cell.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    state: icon
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Repairable
+    doAfterDelay: 4
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        whitelist:
+          components:
+          - PowerCell
+
+# Download: a crewmate stands by it while it runs.
+- type: entity
+  id: WFContractDataTerminal
+  name: derelict data terminal
+  description: A terminal still holding data worth having. Stay close while it downloads; something else wants it too.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: comm_logs
+      shader: unshaded
+  - type: InteractionOutline
+  - type: Clickable
+
+# Inspection: the marked cargo aboard a stopped smuggler.
+- type: entity
+  parent: CrateGenericSteel
+  id: WFContractSmuggledCargo
+  name: suspect cargo crate
+  description: A crate with a doctored manifest. Inspectors want a look inside.
+
+# Clearing: a nest that keeps spawning carp until destroyed.
+- type: entity
+  id: WFContractCarpNest
+  name: carp nest
+  description: A pulsing knot of anomalous energy that space carp keep crawling out of. Destroy it.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    layers:
+    - sprite: Structures/Specific/carp_rift.rsi
+      state: icon
+      color: "#7fb3ff"
+      shader: unshaded
+  - type: InteractionOutline
+  - type: Clickable
+  - type: PointLight
+    color: "#366db5"
+    radius: 4.0
+    energy: 2.0
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: TimedSpawner
+    prototypes:
+    - MobCarpSalvage
+    intervalSeconds: 45
+    minimumEntitiesSpawned: 1
+    maximumEntitiesSpawned: 2

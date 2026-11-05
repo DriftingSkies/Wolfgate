@@ -120,15 +120,17 @@ public sealed partial class WFContractSystem
     {
         var holder = HolderOf(viewer);
         var state = new WFContractBoardState { CanHold = holder != null };
-        var crew = holder is { } h ? CrewSlots(h.User) : ((int, int)?) null;
+        var crew = holder is { } h ? CrewSlots(h.User) : ((int, int, int)?) null;
 
         foreach (var contract in _contracts.Values.Where(c => c.Status == WFContractStatus.Offered).OrderBy(c => c.Id))
         {
-            if (board != null && _proto.Index(_proto.Index(contract.Prototype).Contractor).Board != board)
+            if (board != null && _proto.Index(_proto.Index(contract.Prototype).Contractor).Board != board
+                || !OfferedTo(contract, holder?.User))
                 continue;
 
             var view = View(contract);
             view.Locked = Locked(holder, contract, viewer, crew);
+            view.Share = Share(contract, crew?.Item1 ?? 1);
             state.Offers.Add(view);
         }
 
@@ -145,6 +147,7 @@ public sealed partial class WFContractSystem
         foreach (var contract in ActiveForCrew(who.User).OrderBy(c => c.Deadline))
         {
             var view = View(contract);
+            view.Share = Share(contract, state.CrewSize);
             view.Mine = contract.User == who.User && contract.Character == who.Character;
             if (!view.Mine)
                 view.Holder = contract.Character;
@@ -186,7 +189,15 @@ public sealed partial class WFContractSystem
             Status = contract.Status,
             Duration = contract.Duration,
             Deadline = contract.Status is WFContractStatus.Offered or WFContractStatus.Active ? contract.Deadline : null,
+            MinCrew = proto.MinCrew,
+            Employer = Loc.GetString("wf-contract-employer", ("contractor", Loc.GetString(contractor.Name)),
+                ("employer", Loc.GetString(contractor.Employer))),
+            Requires = proto.Requires.Select(r => Loc.GetString(r.Name)).ToList(),
         };
+
+        if (proto.CrewBonus > 0)
+            view.CrewBonus = Loc.GetString("wf-contract-crew-bonus", ("percent", (int) Math.Round(proto.CrewBonus * 100)),
+                ("past", Math.Max(1, proto.MinCrew)), ("most", MaxBonusCrew));
 
         foreach (var (rival, cost) in proto.Harms)
         {
@@ -254,6 +265,33 @@ public sealed partial class WFContractSystem
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-return", ("item", item),
                     ("destination", StationName(contract.Destination))), false));
                 break;
+            case WFContractTow tow:
+            {
+                view.Site = WFContractSite.Space;
+                view.Location = Loc.GetString("wf-contract-location-tow", ("home", StationName(contract.Home)),
+                    ("km", Km(contract.Distance)), ("range", (int) tow.Range), ("active", active));
+                if (active && contract.WreckGrid is { } hull && !TerminatingOrDeleted(hull))
+                    view.Coordinates = _transform.GetWorldPosition(hull);
+                else if (active && contract.Site is { } towSite)
+                    view.Coordinates = towSite.Position;
+                var gap = active ? TowGap(contract) : null;
+                view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-tow",
+                    ("destination", StationName(contract.Destination)), ("range", (int) tow.Range),
+                    ("gap", gap is { } metres ? (int) metres : -1)), gap is { } close && close <= tow.Range));
+                break;
+            }
+            case WFContractSurvey:
+            {
+                view.Site = WFContractSite.Space;
+                view.Location = Loc.GetString("wf-contract-location-survey", ("home", StationName(contract.Home)),
+                    ("km", Km(contract.Distance)), ("active", active));
+                if (active && contract.Site is { } surveySite)
+                    view.Coordinates = surveySite.Position;
+                var scanned = contract.Scanned.Count;
+                view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-survey",
+                    ("done", scanned), ("count", contract.Count)), active && scanned >= contract.Count));
+                break;
+            }
             case WFContractEscort:
                 view.Site = WFContractSite.Space;
                 view.Location = Loc.GetString("wf-contract-location-escort", ("home", StationName(contract.Home)),
@@ -265,9 +303,24 @@ public sealed partial class WFContractSystem
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-escort",
                     ("target", TargetName(contract)), ("destination", StationName(contract.Destination))), false));
                 break;
+            default:
+                ViewOperation(contract, proto.Objective, view, active);
+                break;
         }
 
         return view;
+    }
+
+    /// <summary>What a crew of a size would be paid for a contract and each one's share, or null for a lone contractor on solo work.</summary>
+    private string? Share(WFContract contract, int crewSize)
+    {
+        var proto = _proto.Index(contract.Prototype);
+        if (crewSize <= 1 && proto.MinCrew <= 1)
+            return null;
+
+        var size = Math.Max(crewSize, proto.MinCrew);
+        var pool = CrewPool(contract.Reward, proto, size);
+        return Loc.GetString("wf-contract-share", ("size", size), ("pool", pool), ("each", pool / size));
     }
 
     public string Title(WFContract contract)

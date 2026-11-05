@@ -139,6 +139,7 @@
   reward: 30000, 37500
   deposit: 2000
   minutes: 55
+  crewBonus: 0.25
   weight: 1.2
   objective: !type:WFContractBounty
     encounters: [ WFContractTargetSmuggler ]
@@ -155,6 +156,7 @@
   reward: 17500, 22500
   deposit: 1000
   minutes: 55
+  crewBonus: 0.25
   weight: 1
   objective: !type:WFContractRecovery
     item: WFContractCargoManifest
@@ -175,7 +177,82 @@
   reward: 21250, 27500
   deposit: 1500
   minutes: 70
+  crewBonus: 0.25
   weight: 1
   objective: !type:WFContractEscort
     encounters: [ WFContractEscortLight ]
     perKilometre: 1000
+
+- type: wfContract
+  id: WFContractCamelotPrizeHull
+  contractor: WFContractorCamelot
+  category: Salvage
+  tier: 3
+  title: wf-contract-camelot-prize-hull
+  briefing: wf-contract-camelot-prize-hull-brief
+  reward: 35000, 45000
+  deposit: 2500
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1
+  requires:
+  - tag: WFTowRope
+    name: wf-contract-requires-rope
+  - entity: WFTetherInstaller
+    name: wf-contract-requires-tether-installer
+  objective: !type:WFContractTow
+    range: 150
+    minDistance: 3500
+    maxDistance: 5500
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 2, 4
+    - entity: MobFleshGolemSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-vault-1.yml
+
+# Second batch.
+
+- type: wfContract
+  id: WFContractCamelotPouch
+  contractor: WFContractorCamelot
+  category: Delivery
+  tier: 2
+  title: wf-contract-camelot-pouch
+  briefing: wf-contract-camelot-pouch-brief
+  reward: 12000, 15000
+  deposit: 2000
+  minutes: 45
+  weight: 0.8
+  harms:
+    WFContractorTSFRequisitions: 1
+  objective: !type:WFContractCourier
+    package: WFContractDiplomaticPouch
+    from: Contractor
+    to: Other
+    destinations: [ WFContractorHalcyon ]
+    perKilometre: 2000
+
+- type: wfContract
+  id: WFContractCamelotFuelRelay
+  contractor: WFContractorCamelot
+  category: Hauling
+  tier: 2
+  title: wf-contract-camelot-fuel-relay
+  briefing: wf-contract-camelot-fuel-relay-brief
+  reward: 15000, 19000
+  deposit: 2500
+  minutes: 60
+  weight: 1.2
+  objective: !type:WFContractCourier
+    package: WFContractFreightPlasma
+    count: 3, 5
+    from: Other
+    to: Contractor
+    destinations: [ WFContractorMMC ]
+    perPackage: 2500
+    perKilometre: 1500

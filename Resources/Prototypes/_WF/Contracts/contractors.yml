@@ -4,6 +4,7 @@
   id: WFContractorCaelPort
   name: wf-contractor-cael-port
   description: wf-contractor-cael-port-desc
+  employer: wf-contractor-cael-port-employer
   color: "#37946e"
   stations: [ Frontier ]
   offers: 5
@@ -13,6 +14,7 @@
   id: WFContractorCaelMarshals
   name: wf-contractor-cael-marshals
   description: wf-contractor-cael-marshals-desc
+  employer: wf-contractor-cael-marshals-employer
   color: "#4d8fd6"
   stations: [ Frontier ]
   offers: 3
@@ -22,6 +24,7 @@
   id: WFContractorMMC
   name: wf-contractor-mmc
   description: wf-contractor-mmc-desc
+  employer: wf-contractor-mmc-employer
   color: "#d9d9d9"
   stations: [ Hokkaido ]
   offers: 4
@@ -31,6 +34,7 @@
   id: WFContractorSevastopol
   name: wf-contractor-sevastopol
   description: wf-contractor-sevastopol-desc
+  employer: wf-contractor-sevastopol-employer
   color: "#009dff"
   stations: [ Sevastopol ]
   offers: 3
@@ -40,6 +44,7 @@
   id: WFContractorStellarBlessing
   name: wf-contractor-stellar-blessing
   description: wf-contractor-stellar-blessing-desc
+  employer: wf-contractor-stellar-blessing-employer
   color: "#5fb0e0"
   stations: [ TSFMCIndustry ]
   offers: 3
@@ -49,6 +54,7 @@
   id: WFContractorHalcyon
   name: wf-contractor-halcyon
   description: wf-contractor-halcyon-desc
+  employer: wf-contractor-halcyon-employer
   color: "#5b7fe0"
   stations: [ TSFMCHalcyon ]
   offers: 3
@@ -58,6 +64,7 @@
   id: WFContractorCamelot
   name: wf-contractor-camelot
   description: wf-contractor-camelot-desc
+  employer: wf-contractor-camelot-employer
   color: "#d0573f"
   stations: [ USSPCamelot ]
   offers: 3
@@ -67,6 +74,7 @@
   id: WFContractorAnomalousLab
   name: wf-contractor-anomalous-lab
   description: wf-contractor-anomalous-lab-desc
+  employer: wf-contractor-anomalous-lab-employer
   color: "#a07fff"
   stations: [ AnomalousLab ]
   offers: 3
@@ -78,6 +86,7 @@
   id: WFContractorTSFRequisitions
   name: wf-contractor-tsf-requisitions
   description: wf-contractor-tsf-requisitions-desc
+  employer: wf-contractor-tsf-requisitions-employer
   color: "#6fb6ff"
   stations: [ TSFMCHalcyon ]
   board: TSF
@@ -89,6 +98,7 @@
   id: WFContractorUSSPCommissariat
   name: wf-contractor-ussp-commissariat
   description: wf-contractor-ussp-commissariat-desc
+  employer: wf-contractor-ussp-commissariat-employer
   color: "#d0573f"
   stations: [ USSPCamelot ]
   board: USSP
@@ -100,6 +110,7 @@
   id: WFContractorPDVQuartermaster
   name: wf-contractor-pdv-quartermaster
   description: wf-contractor-pdv-quartermaster-desc
+  employer: wf-contractor-pdv-quartermaster-employer
   color: "#d4a83a"
   stations: [ HeliosFortress ]
   board: PDV

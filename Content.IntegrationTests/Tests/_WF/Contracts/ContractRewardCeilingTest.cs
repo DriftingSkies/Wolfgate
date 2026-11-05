@@ -9,13 +9,13 @@ namespace Content.IntegrationTests.Tests._WF.Contracts;
 
 /// <summary>
 /// Keeps contract pay inside the economy: every template's best possible pay (top base, most packages, the longest
-/// paid run, goods at their cap) stays under its tier's ceiling.
+/// paid run, goods at their cap), shared by its minimum crew, stays under its tier's ceiling for one player.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(WFContractSystem))]
 public sealed class ContractRewardCeilingTest
 {
-    /// <summary>Most a contract of each tier may ever pay, deposit aside.</summary>
+    /// <summary>Most a contract of each tier may ever pay one player, deposit aside.</summary>
     private static readonly Dictionary<int, int> Ceilings = new() { [1] = 37500, [2] = 75000, [3] = 125000, [4] = 175000, [5] = 250000 };
 
     [Test]
@@ -31,9 +31,11 @@ public sealed class ContractRewardCeilingTest
             foreach (var c in server.ProtoMan.EnumeratePrototypes<WFContractPrototype>().OrderBy(c => c.Contractor.Id).ThenBy(c => c.Tier))
             {
                 var (min, max) = Range(sys, c);
-                table.AppendLine($"{c.Contractor.Id,-30} {c.ID,-36} {c.Category,-9} T{c.Tier} {min,7}-{max,7} dep {c.Deposit,6} {c.Minutes,3}m cr {c.Credits}");
-                if (max > Ceilings[c.Tier])
-                    over.Add($"{c.ID}: up to {max}, tier {c.Tier} ceiling {Ceilings[c.Tier]}");
+                var crew = System.Math.Max(1, c.MinCrew);
+                var each = max / crew;
+                table.AppendLine($"{c.Contractor.Id,-30} {c.ID,-36} {c.Category,-9} T{c.Tier} {min,7}-{max,7} crew {crew} each {each,7} +{c.CrewBonus:P0} dep {c.Deposit,6} {c.Minutes,3}m cr {c.Credits}");
+                if (each > Ceilings[c.Tier])
+                    over.Add($"{c.ID}: up to {each} each for a crew of {crew}, tier {c.Tier} ceiling {Ceilings[c.Tier]}");
             }
 
             TestContext.Out.WriteLine(table.ToString());
@@ -63,6 +65,22 @@ public sealed class ContractRewardCeilingTest
                 max += (int) System.Math.Min(high, cap) + WFContractSystem.DistancePay(s.PerKilometre, 30000f);
                 break;
             }
+            case WFContractMailRun m:
+                min += m.PerStop * m.Stops.X + WFContractSystem.DistancePay(m.PerKilometre, 1000f);
+                max += m.PerStop * m.Stops.Y + WFContractSystem.DistancePay(m.PerKilometre, 30000f);
+                break;
+            case WFContractSweep w:
+                min += w.PerPoint * w.Points.X;
+                max += w.PerPoint * w.Points.Y;
+                break;
+            case WFContractRecovery { PerUnlockedNode: > 0 } r:
+                // A fully analysed artifact: allow for a large node graph.
+                max += r.PerUnlockedNode * 12;
+                break;
+            case WFContractSurvey v:
+                min += v.PerAnomaly * v.Count.X;
+                max += v.PerAnomaly * v.Count.Y;
+                break;
             case WFContractEscort e:
                 min += WFContractSystem.DistancePay(e.PerKilometre, 1000f);
                 max += WFContractSystem.DistancePay(e.PerKilometre, 30000f);

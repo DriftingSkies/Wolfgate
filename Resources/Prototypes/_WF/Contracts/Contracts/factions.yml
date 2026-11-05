@@ -12,6 +12,7 @@
   reward: 27500, 35000
   deposit: 1000
   minutes: 55
+  crewBonus: 0.25
   weight: 2
   credits: 15
   creditEntity: FederationMilitaryCredit1
@@ -30,6 +31,7 @@
   reward: 50000, 62500
   deposit: 3000
   minutes: 60
+  crewBonus: 0.25
   weight: 1.2
   credits: 30
   creditEntity: FederationMilitaryCredit1
@@ -97,6 +99,7 @@
   reward: 20000, 25000
   deposit: 1000
   minutes: 60
+  crewBonus: 0.25
   weight: 1.2
   credits: 15
   creditEntity: FederationMilitaryCredit1
@@ -114,6 +117,7 @@
   briefing: wf-contract-tsf-faction-recorder-brief
   reward: 17500, 22500
   minutes: 55
+  crewBonus: 0.25
   weight: 1
   credits: 8
   creditEntity: FederationMilitaryCredit1
@@ -182,6 +186,7 @@
   reward: 60000, 70000
   deposit: 3000
   minutes: 60
+  crewBonus: 0.25
   weight: 1.2
   objective: !type:WFContractBounty
     encounters: [ WFContractTargetRaiderPair ]
@@ -198,6 +203,7 @@
   reward: 32500, 40000
   deposit: 1000
   minutes: 55
+  crewBonus: 0.25
   weight: 1.5
   objective: !type:WFContractBounty
     encounters: [ WFContractTargetSmuggler ]
@@ -214,6 +220,7 @@
   reward: 22500, 28750
   deposit: 1000
   minutes: 70
+  crewBonus: 0.25
   weight: 1.2
   objective: !type:WFContractEscort
     encounters: [ WFContractEscortLight ]
@@ -231,6 +238,7 @@
   reward: 27500, 35000
   deposit: 1000
   minutes: 55
+  crewBonus: 0.25
   weight: 2
   credits: 15
   creditEntity: Doubloon1
@@ -249,6 +257,7 @@
   reward: 50000, 62500
   deposit: 3000
   minutes: 60
+  crewBonus: 0.25
   weight: 1.2
   credits: 30
   creditEntity: Doubloon1
@@ -293,6 +302,7 @@
   briefing: wf-contract-pdv-faction-salvage-brief
   reward: 18750, 23750
   minutes: 60
+  crewBonus: 0.25
   weight: 1.2
   credits: 8
   creditEntity: Doubloon1
@@ -304,3 +314,169 @@
     - /Maps/Salvage/cargo-1.yml
     - /Maps/Salvage/hauling-shuttle.yml
     - /Maps/Salvage/small-cargo.yml
+
+# --- Faction crew work ---
+
+- type: wfContract
+  id: WFContractTSFFactionOre
+  contractor: WFContractorTSFRequisitions
+  category: Mining
+  tier: 2
+  title: wf-contract-tsf-faction-ore
+  briefing: wf-contract-tsf-faction-ore-brief
+  reward: 36000, 45000
+  deposit: 2000
+  minutes: 90
+  minCrew: 3
+  crewBonus: 0.35
+  weight: 1
+  credits: 20
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WFContractorUSSPCommissariat: 1
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 30000
+    goods:
+    - stack: SteelOre
+      count: 160, 220
+    - stack: PlasmaOre
+      count: 50, 80
+    - stack: UraniumOre
+      count: 40, 60
+
+- type: wfContract
+  id: WFContractTSFFactionAnomaly
+  contractor: WFContractorTSFRequisitions
+  category: Science
+  tier: 3
+  title: wf-contract-tsf-faction-anomaly
+  briefing: wf-contract-tsf-faction-anomaly-brief
+  reward: 40000, 50000
+  deposit: 2500
+  minutes: 65
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 1
+  credits: 25
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WFContractSurvey
+    count: 2, 3
+    perAnomaly: 5000
+    minDistance: 4000
+    maxDistance: 6000
+    anomalies: [ AnomalyFlesh, AnomalyGravity, AnomalyElectricity, AnomalyPyroclastic ]
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 2, 4
+    - entity: MobFleshGolemSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/outpost-arm.yml
+
+- type: wfContract
+  id: WFContractUSSPFactionOre
+  contractor: WFContractorUSSPCommissariat
+  category: Mining
+  tier: 2
+  title: wf-contract-ussp-faction-ore
+  briefing: wf-contract-ussp-faction-ore-brief
+  reward: 36000, 45000
+  deposit: 2000
+  minutes: 90
+  minCrew: 3
+  crewBonus: 0.35
+  weight: 1
+  harms:
+    WFContractorTSFRequisitions: 1
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 30000
+    goods:
+    - stack: SteelOre
+      count: 160, 220
+    - stack: Coal
+      count: 120, 160
+    - stack: UraniumOre
+      count: 40, 60
+
+# --- Ammunition drives: faction boards, costing standing with rivals ---
+
+- type: wfContract
+  id: WFContractTSFFactionAmmo
+  contractor: WFContractorTSFRequisitions
+  category: Supply
+  tier: 2
+  title: wf-contract-tsf-faction-ammo
+  briefing: wf-contract-tsf-faction-ammo-brief
+  reward: 15000, 20000
+  minutes: 55
+  weight: 1.2
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WFContractorUSSPCommissariat: 1
+    WFContractorPDVQuartermaster: 1
+  objective: !type:WFContractSupply
+    premium: 1.25
+    goods:
+    - entity: BoxMagazine
+      name: wf-contract-goods-magazine-boxes
+      count: 6, 10
+      value: 400
+
+- type: wfContract
+  id: WFContractUSSPFactionAmmo
+  contractor: WFContractorUSSPCommissariat
+  category: Supply
+  tier: 2
+  title: wf-contract-ussp-faction-ammo
+  briefing: wf-contract-ussp-faction-ammo-brief
+  reward: 15000, 20000
+  minutes: 55
+  weight: 1.2
+  harms:
+    WFContractorTSFRequisitions: 1
+  objective: !type:WFContractSupply
+    premium: 1.25
+    goods:
+    - entity: BoxMagazine
+      name: wf-contract-goods-magazine-boxes
+      count: 6, 10
+      value: 400
+
+- type: wfContract
+  id: WFContractTSFFactionHull
+  contractor: WFContractorTSFRequisitions
+  category: Salvage
+  tier: 3
+  title: wf-contract-tsf-faction-hull
+  briefing: wf-contract-tsf-faction-hull-brief
+  reward: 40000, 50000
+  deposit: 2500
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1
+  credits: 25
+  creditEntity: FederationMilitaryCredit1
+  requires:
+  - tag: WFTowRope
+    name: wf-contract-requires-rope
+  - entity: WFTetherInstaller
+    name: wf-contract-requires-tether-installer
+  objective: !type:WFContractTow
+    minDistance: 3500
+    maxDistance: 5500
+    stationClearance: 2500
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/small-syndicate.yml

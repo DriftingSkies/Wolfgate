@@ -15,6 +15,16 @@ public sealed partial class WFContractSystem
     [Dependency] private StackSystem _stacks = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
 
+    /// <summary>Most crewmates past a contract's minimum that add to its pay.</summary>
+    public const int MaxBonusCrew = 4;
+
+    /// <summary>What a contract pays a crew of a size in all, with its crew bonus.</summary>
+    public static int CrewPool(int reward, WFContractPrototype proto, int crewSize)
+    {
+        var extra = Math.Clamp(crewSize - Math.Max(1, proto.MinCrew), 0, MaxBonusCrew);
+        return reward + (int) (reward * proto.CrewBonus * extra);
+    }
+
     /// <summary>Slots for a crew: one, plus one each time it doubles.</summary>
     public static int SlotsFor(int crewSize) => 1 + (int) Math.Floor(Math.Log2(Math.Max(1, crewSize)));
 
@@ -24,8 +34,12 @@ public sealed partial class WFContractSystem
     /// <summary>Members of a player's crew in the round as its members; 1 outside a crew.</summary>
     public int CrewSize(NetUserId user) => Math.Max(1, _crews.CrewInRound(user).Count);
 
-    /// <summary>A player's crew's slots and how many of them are taken.</summary>
-    public (int Slots, int Held) CrewSlots(NetUserId user) => (SlotsFor(CrewSize(user)), ActiveForCrew(user).Count());
+    /// <summary>A player's crew's size in the round, its slots and how many of them are taken.</summary>
+    public (int Size, int Slots, int Held) CrewSlots(NetUserId user)
+    {
+        var size = CrewSize(user);
+        return (size, SlotsFor(size), ActiveForCrew(user).Count());
+    }
 
     /// <summary>Live contracts held by anyone in a player's crew, them included.</summary>
     public IEnumerable<WFContract> ActiveForCrew(NetUserId user)

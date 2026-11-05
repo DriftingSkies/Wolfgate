@@ -101,6 +101,7 @@ public sealed partial class WFContractSystem : EntitySystem
         _owed.Clear();
         _history.Clear();
         _nextOffer.Clear();
+        _departures.Clear();
         _nextId = 1;
     }
 
@@ -195,13 +196,16 @@ public sealed partial class WFContractSystem : EntitySystem
     }
 
     /// <summary>Why a character cannot take an offer, or null if they can. The mob is checked for company membership.</summary>
-    public string? Locked(WFContractHolder? holder, WFContract contract, EntityUid? mob = null, (int Slots, int Held)? crew = null)
+    public string? Locked(WFContractHolder? holder, WFContract contract, EntityUid? mob = null, (int Size, int Slots, int Held)? crew = null)
     {
         if (holder is not { } who)
             return Loc.GetString("wf-contract-locked-no-character");
 
         var proto = _proto.Index(contract.Prototype);
         var contractor = _proto.Index(proto.Contractor);
+        if (!OfferedTo(contract, who.User))
+            return Loc.GetString("wf-contract-error-gone");
+
         if (contractor.Companies.Count > 0
             && (mob is not { } body || CompOrNull<CompanyComponent>(body)?.CompanyName.Id is not { } company
                 || !contractor.Companies.Any(c => c.Id == company)))
@@ -215,7 +219,13 @@ public sealed partial class WFContractSystem : EntitySystem
         if (rank < needed)
             return Loc.GetString("wf-contract-locked-rank", ("rank", Loc.GetString(RankName(needed))));
 
-        var (slots, held) = crew ?? CrewSlots(who.User);
+        var (size, slots, held) = crew ?? CrewSlots(who.User);
+        if (size < proto.MinCrew)
+            return Loc.GetString("wf-contract-locked-crew", ("needed", proto.MinCrew), ("size", size));
+
+        if (proto.Requires.Count > 0 && (mob is { } carrier ? Missing(carrier, proto) : proto.Requires) is { Count: > 0 } missing)
+            return Loc.GetString("wf-contract-locked-requires", ("items", string.Join(", ", missing.Select(r => Loc.GetString(r.Name)))));
+
         if (held >= slots)
             return Loc.GetString("wf-contract-locked-full", ("max", slots));
 
@@ -240,6 +250,23 @@ public sealed partial class WFContractSystem : EntitySystem
         if (contract.Deposit > 0 && !_bank.TryBankWithdraw(mob, contract.Deposit))
             return Loc.GetString("wf-contract-error-deposit", ("deposit", contract.Deposit));
 
+        return Begin(mob, holder, contract, board);
+    }
+
+    /// <summary>Gives an offer to the character a mob plays with no checks and no deposit, for admins and tests.</summary>
+    public bool ForceAccept(EntityUid mob, int id, EntityUid board)
+    {
+        if (HolderOf(mob) is not { } holder || !_contracts.TryGetValue(id, out var contract)
+            || contract.Status != WFContractStatus.Offered)
+            return false;
+
+        contract.Deposit = 0;
+        return Begin(mob, holder, contract, board) == null;
+    }
+
+    /// <summary>Makes an offer live for its holder and puts its objective in the world. Returns why not, or null.</summary>
+    private string? Begin(EntityUid mob, WFContractHolder holder, WFContract contract, EntityUid board)
+    {
         var now = _timing.CurTime;
         contract.Status = WFContractStatus.Active;
         contract.User = holder.User;
@@ -279,7 +306,7 @@ public sealed partial class WFContractSystem : EntitySystem
         return true;
     }
 
-    /// <summary>Splits the reward among the crew, returns the deposit and credits to the holder, and moves standing.</summary>
+    /// <summary>Splits the pay, grown by any crew bonus, among the crew; returns the deposit and credits to the holder; moves standing.</summary>
     private void Complete(WFContract contract)
     {
         if (contract.Status != WFContractStatus.Active || contract.User is not { } user)
@@ -287,11 +314,14 @@ public sealed partial class WFContractSystem : EntitySystem
 
         var holder = new WFContractHolder(user, contract.Character);
         var proto = _proto.Index(contract.Prototype);
+        // Read before End clears the contract's items.
+        contract.Reward += ArtifactBonus(contract);
         End(contract, WFContractStatus.Completed);
 
         var crew = PaidCrew(holder);
-        var share = contract.Reward / crew.Count;
-        var remainder = contract.Reward - share * crew.Count;
+        var pool = CrewPool(contract.Reward, proto, crew.Count);
+        var share = pool / crew.Count;
+        var remainder = pool - share * crew.Count;
         foreach (var member in crew)
         {
             var pay = share + (member == holder ? remainder + contract.Deposit : 0);
@@ -309,8 +339,10 @@ public sealed partial class WFContractSystem : EntitySystem
         if (proto.Credits > 0 && proto.CreditEntity is { } credits && MobOf(holder) is { } mob)
             GiveCredits(mob, credits, proto.Credits);
 
+        PostFollowUp(holder, proto);
+
         _adminLog.Add(LogType.Action, LogImpact.Low,
-            $"Contract #{contract.Id} {contract.Prototype} completed by {holder.Character} ({user}): {contract.Reward} split {crew.Count} ways, deposit {contract.Deposit} returned");
+            $"Contract #{contract.Id} {contract.Prototype} completed by {holder.Character} ({user}): {pool} split {crew.Count} ways, deposit {contract.Deposit} returned");
     }
 
     /// <summary>Ends a live contract that failed: the deposit is lost and standing falls.</summary>
@@ -405,13 +437,21 @@ public sealed partial class WFContractSystem : EntitySystem
             if (contract.Status == WFContractStatus.Active && now >= contract.Deadline)
                 Fail(contract, "wf-contract-reason-expired");
         }
+
+        UpdateDepartures(now);
     }
 
     private void RefreshOffers(TimeSpan now)
     {
         foreach (var contract in _contracts.Values.ToList())
         {
-            if (contract.Status == WFContractStatus.Offered && (now >= contract.Deadline || TerminatingOrDeleted(contract.Home)))
+            if (contract.Status != WFContractStatus.Offered || now < contract.Deadline && !TerminatingOrDeleted(contract.Home))
+                continue;
+
+            // A follow-up never held a board slot, so its expiry doesn't hold the contractor back.
+            if (contract.ReservedFor != null)
+                _contracts.Remove(contract.Id);
+            else
                 RemoveOffer(contract);
         }
 
@@ -425,7 +465,7 @@ public sealed partial class WFContractSystem : EntitySystem
             if (!homes.ContainsKey(contractor.ID) || now < _nextOffer.GetValueOrDefault(contractor.ID))
                 continue;
 
-            var posted = _contracts.Values.Count(c => c.Status == WFContractStatus.Offered
+            var posted = _contracts.Values.Count(c => c.Status == WFContractStatus.Offered && c.ReservedFor == null
                                                       && _proto.Index(c.Prototype).Contractor == contractor.ID);
             if (posted >= contractor.Offers)
                 continue;
@@ -452,7 +492,8 @@ public sealed partial class WFContractSystem : EntitySystem
     {
         var posted = _contracts.Values.Where(c => c.Status == WFContractStatus.Offered).Select(c => c.Prototype.Id).ToHashSet();
         var templates = _proto.EnumeratePrototypes<WFContractPrototype>()
-            .Where(t => t.Contractor == contractor.ID && t.MinPlayers <= players)
+            // Weight 0 marks a chain link, posted only as a follow-up.
+            .Where(t => t.Contractor == contractor.ID && t.Weight > 0 && t.MinPlayers <= players && PresetAllows(t))
             .ToList();
         // Repeat a template only when nothing else fits.
         var fresh = templates.Where(t => !posted.Contains(t.ID)).ToList();

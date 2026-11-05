@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/25/2026 02:40:37
-  entityCount: 8647
+  entityCount: 8651
 maps: []
 grids:
 - 1
@@ -57635,4 +57635,30 @@ entities:
       pos: 15.5,28.5
     - type: DeltaPressure
       gridUid: 1
+- proto: WFContractBoardPDV
+  entities:
+  - uid: 8649
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -22.5,7.5
+      parent: 1
+  - uid: 8651
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 22.5,12.5
+      parent: 1
+- proto: WFContractCargoPad
+  entities:
+  - uid: 8650
+    components:
+    - type: Transform
+      pos: -22.5,6.5
+      parent: 1
+  - uid: 8652
+    components:
+    - type: Transform
+      pos: 22.5,11.5
+      parent: 1
 ...

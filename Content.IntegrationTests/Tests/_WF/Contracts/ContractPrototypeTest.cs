@@ -4,11 +4,16 @@ using System.Linq;
 using Content.Server._WF.Contracts;
 using Content.Shared._WF.Contracts;
 using Content.Shared._WF.Encounters;
+using Content.Server.GameTicking.Presets;
+using Content.Shared.Anomaly.Components;
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Repairable;
 using Content.Shared.Stacks;
 using Robust.Shared.ContentPack;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 
 namespace Content.IntegrationTests.Tests._WF.Contracts;
 
@@ -45,7 +50,8 @@ public sealed class ContractPrototypeTest
 
             foreach (var contractor in protos.EnumeratePrototypes<WFContractorPrototype>())
             {
-                Check(loc.HasString(contractor.Name) && loc.HasString(contractor.Description), contractor.ID, "missing strings");
+                Check(loc.HasString(contractor.Name) && loc.HasString(contractor.Description) && loc.HasString(contractor.Employer),
+                    contractor.ID, "missing strings");
                 Check(contractor.Stations.Count > 0, contractor.ID, "no stations");
                 Check(contracts.Any(c => c.Contractor == contractor.ID), contractor.ID, "no contracts");
                 Check(contractor.Companies.All(c => protos.HasIndex(c)), contractor.ID, "unknown company");
@@ -77,6 +83,39 @@ public sealed class ContractPrototypeTest
                 Check(contract.Harms.Keys.All(h => protos.HasIndex(h) && h != contract.Contractor), id, "harms an unknown contractor or its own");
                 Check(contract.Credits == 0 || contract.CreditEntity is { } credit && protos.HasIndex<EntityPrototype>(credit), id,
                     "credits without a credit entity");
+                Check(contract.MinCrew is >= 1 and <= 8, id, "minimum crew out of 1-8");
+                Check(contract.FollowUp is not { } followUp || protos.TryIndex(followUp, out var next) && next.Weight <= 0f, id,
+                    "a follow-up must exist and have weight 0, so it is only posted as a follow-up");
+                Check(contract.CrewBonus is >= 0f and <= 1f, id, "crew bonus out of 0-1");
+                foreach (var required in contract.Requires)
+                {
+                    Check((required.Entity is { } entity ? protos.HasIndex<EntityPrototype>(entity) : required.Tag is { } tag
+                            && protos.HasIndex(tag)) && loc.HasString(required.Name), id,
+                        $"unknown required item {required.Entity}{required.Tag} or its name");
+                }
+
+                foreach (var preset in contract.ExcludePresets)
+                {
+                    Check(protos.HasIndex<GamePresetPrototype>(preset), id, $"unknown game preset {preset}");
+                }
+
+                void CheckWrecks(List<ResPath> wrecks)
+                {
+                    Check(wrecks.Count > 0, id, "no wrecks");
+                    foreach (var wreck in wrecks)
+                    {
+                        Check(resources.ContentFileExists(wreck), id, $"missing wreck {wreck}");
+                    }
+                }
+
+                void CheckInfestation(List<WFContractSpawn> infestation)
+                {
+                    foreach (var spawn in infestation)
+                    {
+                        Check(protos.HasIndex<EntityPrototype>(spawn.Entity), id, $"unknown infestation {spawn.Entity}");
+                        Check(spawn.Count.X >= 0 && spawn.Count.X <= spawn.Count.Y, id, "bad infestation count");
+                    }
+                }
 
                 switch (contract.Objective)
                 {
@@ -139,10 +178,69 @@ public sealed class ContractPrototypeTest
                     case WFContractRecovery recovery:
                         Check(protos.HasIndex<EntityPrototype>(recovery.Item), id, "unknown item");
                         Check(recovery.To != WFContractEnd.Other, id, "a recovery goes to its contractor or the board");
-                        Check(recovery.Wrecks.Count > 0, id, "no wrecks");
-                        foreach (var wreck in recovery.Wrecks)
+                        CheckWrecks(recovery.Wrecks);
+                        CheckInfestation(recovery.Infestation);
+                        break;
+                    case WFContractSurvey survey:
+                        CheckWrecks(survey.Wrecks);
+                        CheckInfestation(survey.Infestation);
+                        Check(survey.Count.X >= 1 && survey.Count.X <= survey.Count.Y, id, "bad anomaly count");
+                        Check(contract.Category == WFContractCategory.Science, id, "survey outside Science");
+                        foreach (var anomaly in survey.Anomalies)
                         {
-                            Check(resources.ContentFileExists(wreck), id, $"missing wreck {wreck}");
+                            Check(protos.TryIndex(anomaly, out var anomalyProto) && anomalyProto.TryComp<AnomalyComponent>(out _, factory), id,
+                                $"{anomaly} is not an anomaly");
+                        }
+                        break;
+                    case WFContractTow tow:
+                        CheckWrecks(tow.Wrecks);
+                        CheckInfestation(tow.Infestation);
+                        Check(tow.Range > 0f && tow.MinDistance <= tow.MaxDistance, id, "bad range");
+                        Check(contract.Category == WFContractCategory.Salvage, id, "tow outside Salvage");
+                        Check(contract.Requires.Count > 0, id, "a tow should require a tow kit");
+                        break;
+                    case WFContractMailRun mail:
+                        Check(protos.HasIndex<EntityPrototype>(mail.Package), id, "unknown package");
+                        Check(mail.Stops.X >= 2 && mail.Stops.X <= mail.Stops.Y, id, "a mail run needs two stops or more");
+                        Check(contract.Category == WFContractCategory.Delivery, id, "mail run outside Delivery");
+                        break;
+                    case WFContractSweep sweep:
+                        Check(sweep.Points.X >= 1 && sweep.Points.X <= sweep.Points.Y && sweep.Range > 0f, id, "bad points");
+                        Check(sweep.MinDistance > 0 && sweep.MinDistance <= sweep.MaxDistance, id, "bad range");
+                        break;
+                    case WFContractClear clear:
+                        CheckWrecks(clear.Wrecks);
+                        CheckInfestation(clear.Infestation);
+                        CheckInfestation(new List<WFContractSpawn> { clear.Targets });
+                        Check(clear.Targets.Count.X >= 1, id, "nothing to clear");
+                        break;
+                    case WFContractRepair repair:
+                        CheckWrecks(repair.Wrecks);
+                        CheckInfestation(repair.Infestation);
+                        Check(protos.TryIndex(repair.Device, out var device) && device.TryComp<ItemSlotsComponent>(out _, factory)
+                              && device.TryComp<RepairableComponent>(out _, factory), id,
+                            "the device needs item slots and to be repairable");
+                        break;
+                    case WFContractDownload download:
+                        CheckWrecks(download.Wrecks);
+                        CheckInfestation(download.Waves);
+                        Check(protos.HasIndex<EntityPrototype>(download.Terminal) && download.Duration > System.TimeSpan.Zero, id, "bad terminal");
+                        Check(download.Duration.TotalMinutes < contract.Minutes, id, "the download outlasts the contract");
+                        break;
+                    case WFContractInspect inspect:
+                        CheckWrecks(inspect.Wrecks);
+                        CheckInfestation(inspect.Crew);
+                        Check(protos.HasIndex<EntityPrototype>(inspect.Cargo), id, "unknown cargo");
+                        break;
+                    case WFContractOperation operation:
+                        CheckWrecks(operation.Wrecks);
+                        CheckInfestation(operation.Infestation);
+                        Check(protos.HasIndex<EntityPrototype>(operation.Item), id, "unknown item");
+                        Check(contract.Requires.Count > 0, id, "an operation tows, so it should require a tow kit");
+                        foreach (var anomaly in operation.Anomalies)
+                        {
+                            Check(protos.TryIndex(anomaly, out var anomalyProto) && anomalyProto.TryComp<AnomalyComponent>(out _, factory), id,
+                                $"{anomaly} is not an anomaly");
                         }
                         break;
                     default:
@@ -170,6 +268,16 @@ public sealed class ContractPrototypeTest
         Assert.That(WFContractSystem.RankOf(-6), Is.EqualTo(0), "At -6 a contractor should be hostile.");
         Assert.That(WFContractSystem.RankOf(-1), Is.EqualTo(1), "Below zero a contractor should distrust you.");
         Assert.That(WFContractSystem.RankForTier(1), Is.EqualTo(1), "Tier 1 should be open to the distrusted.");
+
+        // Crew pay: the bonus counts crewmates past the minimum, at most four of them.
+        var mining = new WFContractPrototype { MinCrew = 1, CrewBonus = 0.5f };
+        Assert.That(WFContractSystem.CrewPool(10000, mining, 1), Is.EqualTo(10000));
+        Assert.That(WFContractSystem.CrewPool(10000, mining, 3), Is.EqualTo(20000));
+        Assert.That(WFContractSystem.CrewPool(10000, mining, 9), Is.EqualTo(30000), "The bonus should stop at four extra crewmates.");
+        var bulk = new WFContractPrototype { MinCrew = 3, CrewBonus = 0.35f };
+        Assert.That(WFContractSystem.CrewPool(40000, bulk, 3), Is.EqualTo(40000));
+        Assert.That(WFContractSystem.CrewPool(40000, bulk, 4), Is.EqualTo(54000));
+        Assert.That(WFContractSystem.CrewPool(10000, new WFContractPrototype(), 4), Is.EqualTo(10000), "No bonus, no growth.");
     }
 
     /// <summary>Standing is stored per character and contractor, and a second save updates the row.</summary>

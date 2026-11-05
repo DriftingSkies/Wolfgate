@@ -118,6 +118,7 @@
   briefing: wf-contract-sb-ore-quota-brief
   reward: 7000, 9500
   minutes: 50
+  crewBonus: 0.5
   weight: 1.5
   objective: !type:WFContractSupply
     pick: 1
@@ -139,6 +140,7 @@
   briefing: wf-contract-sb-lost-shuttle-brief
   reward: 11250, 15000
   minutes: 45
+  crewBonus: 0.25
   weight: 1.5
   objective: !type:WFContractRecovery
     item: WFContractFlightRecorder
@@ -150,3 +152,154 @@
     - /Maps/Salvage/small-3.yml
     - /Maps/Salvage/small-4.yml
     - /Maps/Salvage/small-ship-1.yml
+
+# Crew work.
+
+- type: wfContract
+  id: WFContractSBFoundation
+  contractor: WFContractorStellarBlessing
+  category: Supply
+  tier: 2
+  title: wf-contract-sb-foundation
+  briefing: wf-contract-sb-foundation-brief
+  reward: 36000, 45000
+  deposit: 2000
+  minutes: 90
+  minCrew: 3
+  crewBonus: 0.35
+  weight: 1
+  objective: !type:WFContractSupply
+    premium: 1.25
+    goodsCap: 30000
+    goods:
+    - stack: Steel
+      count: 250, 350
+    - stack: Glass
+      count: 150, 250
+    - stack: Plasteel
+      count: 50, 80
+    - stack: Plastic
+      count: 80, 120
+
+- type: wfContract
+  id: WFContractSBColonyOre
+  contractor: WFContractorStellarBlessing
+  category: Mining
+  tier: 1
+  title: wf-contract-sb-colony-ore
+  briefing: wf-contract-sb-colony-ore-brief
+  reward: 18000, 24000
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.4
+  weight: 1.2
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 16000
+    goods:
+    - stack: SteelOre
+      count: 120, 160
+    - stack: SpaceQuartz
+      count: 80, 120
+    - stack: Coal
+      count: 80, 120
+    - stack: SaltOre
+      count: 60, 90
+
+- type: wfContract
+  id: WFContractSBScrapHull
+  contractor: WFContractorStellarBlessing
+  category: Salvage
+  tier: 2
+  title: wf-contract-sb-scrap-hull
+  briefing: wf-contract-sb-scrap-hull-brief
+  reward: 17500, 22500
+  deposit: 1000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  requires:
+  - tag: WFTowRope
+    name: wf-contract-requires-rope
+  - entity: WFTetherInstaller
+    name: wf-contract-requires-tether-installer
+  objective: !type:WFContractTow
+    range: 150
+    minDistance: 2500
+    maxDistance: 4000
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    - /Maps/Salvage/cargo-1.yml
+
+# Second batch.
+
+- type: wfContract
+  id: WFContractSBLivestock
+  contractor: WFContractorStellarBlessing
+  category: Hauling
+  tier: 1
+  title: wf-contract-sb-livestock
+  briefing: wf-contract-sb-livestock-brief
+  reward: 7500, 10000
+  deposit: 500
+  minutes: 45
+  weight: 1.2
+  objective: !type:WFContractCourier
+    package: WFContractFreightLivestock
+    count: 2, 4
+    from: Board
+    to: Contractor
+    perPackage: 1500
+    perKilometre: 1250
+
+- type: wfContract
+  id: WFContractSBSeedBank
+  contractor: WFContractorStellarBlessing
+  category: Supply
+  tier: 1
+  title: wf-contract-sb-seed-bank
+  briefing: wf-contract-sb-seed-bank-brief
+  reward: 6000, 8500
+  minutes: 50
+  weight: 1.2
+  objective: !type:WFContractSupply
+    premium: 1.5
+    goods:
+    - component: Seed
+      name: wf-contract-goods-seeds
+      count: 15, 25
+      value: 30
+
+# New objectives.
+
+- type: wfContract
+  id: WFContractSBCarpNests
+  contractor: WFContractorStellarBlessing
+  category: Bounty
+  tier: 2
+  title: wf-contract-sb-carp-nests
+  briefing: wf-contract-sb-carp-nests-brief
+  reward: 18000, 24000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WFContractClear
+    minDistance: 2500
+    maxDistance: 4500
+    stationClearance: 2000
+    targets:
+      entity: WFContractCarpNest
+      count: 2, 3
+    infestation:
+    - entity: MobCarpSalvage
+      count: 2, 3
+    wrecks:
+    - /Maps/Salvage/cargo-1.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
