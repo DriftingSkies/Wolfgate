@@ -192,7 +192,10 @@ public sealed partial class WFContractSystem : EntitySystem
 
         var standing = _standing.GetOrNew(holder);
         standing[contractor] = Math.Clamp(standing.GetValueOrDefault(contractor) + points, MinStanding, MaxStanding);
-        SaveStanding(holder, contractor);
+        if (_loaded.Contains(holder))
+            SaveStanding(holder, contractor);
+        else
+            _ = LoadStanding(holder); // A failed or missed load: merge this change with the stored row and save it.
     }
 
     /// <summary>Why a character cannot take an offer, or null if they can. The mob is checked for company membership.</summary>
@@ -279,6 +282,8 @@ public sealed partial class WFContractSystem : EntitySystem
             if (contract.Deposit > 0)
                 _bank.TryBankDeposit(mob, contract.Deposit);
 
+            // A courier run can fail after spawning some of its packages.
+            Cleanup(contract);
             contract.Status = WFContractStatus.Offered;
             contract.User = null;
             contract.Character = string.Empty;

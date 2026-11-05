@@ -31,8 +31,20 @@ public sealed class ContractRewardCeilingTest
             foreach (var c in server.ProtoMan.EnumeratePrototypes<WFContractPrototype>().OrderBy(c => c.Contractor.Id).ThenBy(c => c.Tier))
             {
                 var (min, max) = Range(sys, c);
-                var crew = System.Math.Max(1, c.MinCrew);
-                var each = max / crew;
+                // The holder's pay, with the split's remainder, at every crew size that adds a bonus.
+                var minCrew = System.Math.Max(1, c.MinCrew);
+                var crew = minCrew;
+                var each = 0;
+                for (var n = minCrew; n <= minCrew + WFContractSystem.MaxBonusCrew; n++)
+                {
+                    var pool = WFContractSystem.CrewPool(max, c, n);
+                    var holderPay = pool / n + pool % n;
+                    if (holderPay <= each)
+                        continue;
+
+                    each = holderPay;
+                    crew = n;
+                }
                 table.AppendLine($"{c.Contractor.Id,-30} {c.ID,-36} {c.Category,-9} T{c.Tier} {min,7}-{max,7} crew {crew} each {each,7} +{c.CrewBonus:P0} dep {c.Deposit,6} {c.Minutes,3}m cr {c.Credits}");
                 if (each > Ceilings[c.Tier])
                     over.Add($"{c.ID}: up to {each} each for a crew of {crew}, tier {c.Tier} ceiling {Ceilings[c.Tier]}");
