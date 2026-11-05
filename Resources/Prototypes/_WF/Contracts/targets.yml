@@ -330,7 +330,7 @@
   ships:
   - key: freighter
     navigation: WFCrewNavigationFreight
-    vessels: [ Brute, Zhuangzi, Argent ]
+    vessels: [ WFBrute, Zhuangzi, Argent ]
     side: freight
     profile: WFCrewProfileHauler
     deckhands: 2

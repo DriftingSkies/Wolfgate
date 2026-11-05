@@ -501,6 +501,9 @@
         whitelist:
           components:
           - PowerCell
+  - type: ContainerContainer
+    containers:
+      cell_slot: !type:ContainerSlot
 
 # Download: a crewmate stands by it while it runs.
 - type: entity
