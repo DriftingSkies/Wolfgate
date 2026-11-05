@@ -24,7 +24,8 @@ public sealed partial class WFRemadeDirectorSystem
     [Dependency] private PullingSystem _pulling = default!;
     [Dependency] private WFRemadeConversionSystem _haulConversion = default!;
 
-    private const float HaulReach = 1.7f;
+    // Steering stops within 1.5 m but can stall just short beside a body it pushes against; pulling has no range of its own.
+    private const float HaulReach = 2.2f;
     private const float HaulVentReach = 2.2f;
     private const float HaulGiveUp = 90f;
     private const float HaulHidden = 22f;

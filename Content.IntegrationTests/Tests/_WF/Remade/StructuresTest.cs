@@ -139,12 +139,35 @@ public sealed class StructuresTest
         });
 
         var nodeComp = entMan.GetComponent<WFCorruptionNodeComponent>(node);
-        await RunUntil(pair, () => nodeComp.Tiles.Count >= nodeComp.Capacity, 400);
+        // The corruption spreads at random, so on this small deck a node grown at its far edge may have fewer free
+        // tiles in reach than it could feed; it fills those.
+        var feedable = 0;
+        await server.WaitPost(() =>
+        {
+            var at = entMan.GetComponent<TransformComponent>(node).LocalPosition;
+            var taken = monolith.Corruption
+                .Select(c => entMan.GetComponent<TransformComponent>(c).LocalPosition)
+                .Select(p => new Vector2i((int) MathF.Floor(p.X), (int) MathF.Floor(p.Y)))
+                .ToHashSet();
+            var free = 0;
+            for (var x = -8; x < 8; x++)
+            for (var y = -8; y < 8; y++)
+            {
+                if (!taken.Contains(new Vector2i(x, y)) && (new Vector2(x + 0.5f, y + 0.5f) - at).Length() <= nodeComp.Reach - 0.5f)
+                    free++;
+            }
+
+            feedable = Math.Min(nodeComp.Capacity, free);
+            Assert.That(feedable, Is.GreaterThan(limit / 2), "the node had too little room to show it feeds past the Monolith.");
+        });
+
+        await RunUntil(pair, () => nodeComp.Tiles.Count >= feedable, 900);
 
         await server.WaitPost(() =>
         {
-            Assert.That(nodeComp.Tiles.Count, Is.EqualTo(nodeComp.Capacity), "the node never filled what it could feed.");
-            Assert.That(monolith.Corruption.Count, Is.EqualTo(limit + nodeComp.Capacity), "the node's tiles didn't raise the cap.");
+            Assert.That(nodeComp.Tiles.Count, Is.GreaterThanOrEqualTo(feedable), "the node never filled what it could feed.");
+            Assert.That(nodeComp.Tiles.Count, Is.LessThanOrEqualTo(nodeComp.Capacity));
+            Assert.That(monolith.Corruption.Count, Is.EqualTo(limit + nodeComp.Tiles.Count), "the node's tiles didn't raise the cap.");
             Assert.That(monolith.Corruption.Count, Is.LessThanOrEqualTo(WFCorruptionSystem.Cap(WFMonolithStage.Growth, hull, nodeComp.Capacity)));
             Assert.That(entMan.System<WFCorruptionSystem>().GridTiles(map.Grid.Owner), Is.EqualTo(monolith.Corruption.Count), "the hull's tile count drifted from the real count.");
             Assert.That(FarthestTile(entMan, transforms, scion, monolith, out _), Is.GreaterThan(reach + 1.4f), "the corruption didn't get past the Monolith's reach.");

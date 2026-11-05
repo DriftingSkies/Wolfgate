@@ -6,6 +6,7 @@
 
 using Content.Server.Storage.Components;
 using Content.Shared.Materials;
+using Robust.Shared.Network; // WOLFGATE: server-only pickup
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
 using Content.Shared.Whitelist; // Mono
@@ -24,6 +25,7 @@ public sealed partial class MaterialReclaimerMagnetPickupSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedMaterialReclaimerSystem _storage = default!;
+    [Dependency] private INetManager _net = default!; // WOLFGATE: server-only pickup
 
     private static readonly TimeSpan ScanDelay = TimeSpan.FromSeconds(1);
     private const int MaxEntitiesToInsert = 15; // Mono
@@ -88,6 +90,10 @@ public sealed partial class MaterialReclaimerMagnetPickupSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        // WOLFGATE: a client-predicted pickup played a looping crush sound that nothing on the client stopped
+        if (_net.IsClient)
+            return;
+
         var query = EntityQueryEnumerator<MaterialReclaimerMagnetPickupComponent, MaterialReclaimerComponent, TransformComponent>();
         var currentTime = _timing.CurTime;
 
@@ -116,7 +122,7 @@ public sealed partial class MaterialReclaimerMagnetPickupSystem : EntitySystem
                 if (!_physicsQuery.TryGetComponent(near, out var physics) || physics.BodyStatus != BodyStatus.OnGround)
                     continue;
 
-                if (!_storage.TryStartProcessItem(uid, near))
+                if (!_storage.TryStartProcessItem(uid, near, predictSound: false)) // WOLFGATE: no user to predict for
                     continue;
 
                 count++; // Mono

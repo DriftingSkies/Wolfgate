@@ -8,4 +8,11 @@
   - CrocusDockworkerBelt
   - CrocusDockworkerShoes
   - NFSpeciesSpecific
+  # WOLFGATE(PlanetCities) START: dockworkers spawn with a bag, headset, PDA, survival box and wallet
+  - ContractorBackpack
+  - ContractorEars
+  - ContractorPDA
+  - ContractorBoxSurvival
+  - ContractorWallet
+  # WOLFGATE END
   canCustomizeName: true

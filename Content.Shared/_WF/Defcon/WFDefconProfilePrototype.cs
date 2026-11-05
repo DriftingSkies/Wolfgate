@@ -11,7 +11,7 @@ public sealed partial class WFDefconProfilePrototype : IPrototype
 
     /// <summary>Score needed for DEFCON 4, 3, 2 and 1, in that order.</summary>
     [DataField]
-    public List<float> Thresholds = new() { 10f, 25f, 45f, 70f };
+    public List<float> Thresholds = new() { 15f, 35f, 60f, 85f };
 
     /// <summary>How often the threat is scored.</summary>
     [DataField]
@@ -19,7 +19,7 @@ public sealed partial class WFDefconProfilePrototype : IPrototype
 
     /// <summary>How long a higher threat must hold before the level rises.</summary>
     [DataField]
-    public TimeSpan RiseConfirm = TimeSpan.FromSeconds(30);
+    public TimeSpan RiseConfirm = TimeSpan.FromSeconds(60);
 
     /// <summary>How long a lower threat must hold before the level falls one step.</summary>
     [DataField]
@@ -29,13 +29,13 @@ public sealed partial class WFDefconProfilePrototype : IPrototype
     [DataField]
     public TimeSpan MinDwell = TimeSpan.FromMinutes(5);
 
-    /// <summary>Score for each ADS tier, from Dormant up.</summary>
+    /// <summary>Score for each ADS tier, from Dormant up. Low because a campaign runs most rounds; only the last two tiers weigh.</summary>
     [DataField]
-    public List<float> AdsTier = new() { 0f, 5f, 12f, 22f, 35f, 50f };
+    public List<float> AdsTier = new() { 0f, 1f, 3f, 5f, 25f, 60f };
 
-    /// <summary>Score for each Reaver tier, from the lowest up.</summary>
+    /// <summary>Score for each Reaver tier, from the lowest up. Low because a campaign runs most rounds; only the last two tiers weigh.</summary>
     [DataField]
-    public List<float> ReaverTier = new() { 0f, 5f, 12f, 22f, 35f, 50f };
+    public List<float> ReaverTier = new() { 0f, 1f, 3f, 5f, 25f, 60f };
 
     /// <summary>Score while the war level is HOT.</summary>
     [DataField]
@@ -50,7 +50,7 @@ public sealed partial class WFDefconProfilePrototype : IPrototype
     public float ThreatEncounter = 6f;
 
     [DataField]
-    public float ThreatEncounterCap = 24f;
+    public float ThreatEncounterCap = 18f;
 
     /// <summary>Score for each open distress call, and its cap.</summary>
     [DataField]
@@ -61,10 +61,10 @@ public sealed partial class WFDefconProfilePrototype : IPrototype
 
     /// <summary>Score for each player death within <see cref="DeathWindow"/>, and its cap.</summary>
     [DataField]
-    public float Death = 3f;
+    public float Death = 2f;
 
     [DataField]
-    public float DeathCap = 18f;
+    public float DeathCap = 12f;
 
     [DataField]
     public TimeSpan DeathWindow = TimeSpan.FromMinutes(10);

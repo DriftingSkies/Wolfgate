@@ -1,0 +1,42 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Original author Info
+# GitHub: UnicornOnLSD
+# Discord: unicornonlsd
+
+# Wolfgate update author info:
+# Github: SylvaraWasTaken
+# Discord: SylvaraTayn
+
+- type: vessel
+  id: WFBrute
+  parent: BaseVessel
+  name: 'DIS Brute'
+  description: 'A modernized refit of the venerable Brute hull, the hallways, cargo bays and bridge have been streamlined significantly. To specialize it against its larger or faster competitors, the cargo bays have been separated and radiation-shielded shutters have been installed for bulk shipment of hazardous materials.  The significant thickness of the outer hull protects fragile or explosive cargo from significant impacts or weapons fire; being a budget civilian design, however, the Brute lacks shields, and the engines are subpar for its weight class. Note that while the radiation shielding will protect the crew from harmful radiation, it will not prevent criticality events.'
+  price: 84782 # appraised at 84001
+  category: Medium # 419 tiles
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/brute.yml
+  guidebookPage: null
+  class:
+  - Cargo
+  - Civilian
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WFBrute
+  mapName: 'DIS Brute'
+  mapPath: /SharedMaps/_WF/Shipyard/Shuttles/brute.yml
+  minPlayers: 0
+  stations:
+    WFBrute:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'CIV Brute {1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

@@ -90,7 +90,10 @@ unmarked:
     reason: Avali equipped states added (meta.json re-serialised).
   - path: Resources/Textures/Clothing/Head/Hardsuits/maxim.rsi/
     module: Species
-    reason: Avali equipped states added (meta.json re-serialised).
+    reason: Avali, Vulpkanin and Feroxi equipped states added.
+  - path: Resources/Textures/_NF/Clothing/Head/Hardsuits/maxim_prototype.rsi/
+    module: Species
+    reason: Vulpkanin and Feroxi equipped states added.
   - path: Resources/Textures/Clothing/Head/Hardsuits/medical.rsi/
     module: Species
     reason: Avali equipped states added (meta.json re-serialised).

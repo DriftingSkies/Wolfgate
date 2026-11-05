@@ -69,6 +69,7 @@ public sealed partial class SpawnPointSystem : EntitySystem
             // However, we should only use spawn points from the same station to prevent cross-faction spawning.
             var points2 = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
             var stationFallbackPositions = new List<EntityCoordinates>();
+            var otherJobPositions = new List<EntityCoordinates>(); // WOLFGATE: fallback ordering
 
             while (points2.MoveNext(out var uid, out var spawnPoint, out var xform))
             {
@@ -76,8 +77,20 @@ public sealed partial class SpawnPointSystem : EntitySystem
                 if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
                     continue;
 
+                // WOLFGATE START: prefer spawners that aren't another job's, e.g. not the godfather's office for a fugitive
+                if (args.Job != null && spawnPoint.SpawnType == SpawnPointType.Job && spawnPoint.Job != null && spawnPoint.Job != args.Job)
+                {
+                    otherJobPositions.Add(xform.Coordinates);
+                    continue;
+                }
+                // WOLFGATE END
+
                 stationFallbackPositions.Add(xform.Coordinates);
             }
+
+            // WOLFGATE: other jobs' spawners only when nothing else is left
+            if (stationFallbackPositions.Count == 0)
+                stationFallbackPositions.AddRange(otherJobPositions);
 
             if (stationFallbackPositions.Count > 0)
             {

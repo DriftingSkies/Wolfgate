@@ -298,6 +298,9 @@ and leaves anything airborne to the server. The design, including what is still 
 - [`Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.Update.cs`](../../../Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.Update.cs)
   - stepping down onto stairs is not a fall
   - ground over a cavern is a ceiling even where it isn't loaded
+- [`Resources/Prototypes/Entities/Mobs/NPCs/elemental.yml`](../../../Resources/Prototypes/Entities/Mobs/NPCs/elemental.yml): no BaseMob parent, so crabs and golems couldn't walk up stairs
+- [`Resources/Prototypes/Entities/Mobs/NPCs/silicon.yml`](../../../Resources/Prototypes/Entities/Mobs/NPCs/silicon.yml): no BaseMob parent, so bots couldn't walk up stairs
+- [`Resources/Prototypes/Entities/Mobs/Player/guardian.yml`](../../../Resources/Prototypes/Entities/Mobs/Player/guardian.yml): no BaseMob parent, so guardians couldn't walk up stairs
 - [`Resources/Prototypes/Recipes/Lathes/Packs/engineering.yml`](../../../Resources/Prototypes/Recipes/Lathes/Packs/engineering.yml): shovels dig cavern shafts on planets
 
 <!-- WOLFGATE-GENERATED END -->

@@ -177,7 +177,7 @@
   - key: freighter
     navigation: WFCrewNavigationFreight
     vessels:
-    - Brute
+    - WFBrute
     - Zhuangzi
     - Argent
     side: freight
@@ -1198,7 +1198,7 @@
   ships:
   - key: freighter
     navigation: WFCrewNavigationFreight
-    vessels: [ Brute, Argent ]
+    vessels: [ WFBrute, Argent ]
     side: freight
     profile: WFCrewProfileHauler
     deckhands: 2
@@ -1335,7 +1335,7 @@
   ships:
   - key: bait
     navigation: WFCrewNavigationFreight
-    vessels: [ Brute, Argent ]
+    vessels: [ WFBrute, Argent ]
     side: pirates
     faction: PirateNF
     profile: WFCrewProfilePirate
@@ -2247,7 +2247,7 @@
   ships:
   - key: smuggler
     navigation: WFCrewNavigationFreight
-    vessels: [ Brute, Zhuangzi ]
+    vessels: [ WFBrute, Zhuangzi ]
     side: smugglers
     faction: PirateNF
     company: paycheckbratva
@@ -2411,7 +2411,7 @@
   stationClearance: 2000
   ships:
   - key: hulk
-    vessels: [ Brute, Argent ]
+    vessels: [ WFBrute, Argent ]
     side: hulk
     distress: false
     derelict:

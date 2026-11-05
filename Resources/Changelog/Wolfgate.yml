@@ -5642,3 +5642,58 @@ Entries:
   id: 100351
   time: '2026-11-04T23:10:05.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/495
+- author: Sushiburger
+  changes:
+    - type: Add
+      message: Vulpkanin and Feroxi helmets for maxim (experimental salvage) suits
+  id: 100352
+  time: '2026-11-04T23:19:13.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/496
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Magboots no longer spam errors when put on a character preview.
+  id: 100353
+  time: '2026-11-05T02:03:37.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/498
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Local test runs no longer lock up the computer when several run at once.
+  id: 100354
+  time: '2026-11-05T02:04:26.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/497
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Late joiners with no spawn point of their own no longer spawn in another
+        job's office.
+    - type: Fix
+      message: The material reclaimer's crushing sound no longer loops forever.
+    - type: Fix
+      message: The planet clock and weather panel no longer covers separated chat.
+    - type: Fix
+      message: The FTL map zooms out far enough to see a whole jump.
+    - type: Tweak
+      message: >-
+        Dockworkers start with a bag, headset, PDA, survival box and wallet, and
+        speak Common.
+    - type: Fix
+      message: Prybar arms and speed legs keep your species' limb shape.
+    - type: Tweak
+      message: A refused wallmount now tells you it has to face you.
+    - type: Fix
+      message: Xenos, crabs, golems, bots and guardians can walk up stairs.
+    - type: Fix
+      message: Resomi protogen lights show over their arms and legs.
+  id: 100355
+  time: '2026-11-05T05:35:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/500
+- author: SylvaraWasTaken
+  changes:
+    - type: Add
+      message: A remaster of the Brute-class cargo freighter.
+  id: 100356
+  time: '2026-11-05T05:44:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/480

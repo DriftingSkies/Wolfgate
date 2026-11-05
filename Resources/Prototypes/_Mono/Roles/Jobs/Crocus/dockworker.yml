@@ -20,11 +20,13 @@
     - NovuNederic
     languagesUnderstood:
     - NovuNederic
-    # TRUST
-    removeLanguagesSpoken:
-    - TauCetiBasic
-    removeLanguagesUnderstood:
-    - TauCetiBasic
+    # WOLFGATE(PlanetCities) START: dockworkers keep Common so they can talk to anyone
+    # # TRUST
+    # removeLanguagesSpoken:
+    # - TauCetiBasic
+    # removeLanguagesUnderstood:
+    # - TauCetiBasic
+    # WOLFGATE END
 
 - type: startingGear
   id: JianghuiDockworkerGear

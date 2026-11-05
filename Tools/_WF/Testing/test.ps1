@@ -54,11 +54,17 @@ $shards = [ordered]@{
 # few percent faster still for a batch job that nobody waits on interactively.
 $env:DOTNET_gcServer = '1'
 $env:DOTNET_GCConcurrent = '0'
+# A heap per core in every test host held 18 GB and paged the machine when two runs overlapped; 6 heaps keep most of
+# the speed. An explicit value in the environment wins.
+if (-not $env:DOTNET_GCHeapCount) { $env:DOTNET_GCHeapCount = '6' }
+
+# Below-normal priority, inherited by dotnet and its test hosts, so the desktop and other work stay responsive.
+(Get-Process -Id $PID).PriorityClass = 'BelowNormal'
 
 function Invoke-Build {
     $sw = [Diagnostics.Stopwatch]::StartNew()
     # One build covers both suites: Content.IntegrationTests references Content.Tests.
-    dotnet build (Join-Path $root 'Content.IntegrationTests/Content.IntegrationTests.csproj') -c $Configuration -m -nr:false -v q -clp:ErrorsOnly
+    dotnet build (Join-Path $root 'Content.IntegrationTests/Content.IntegrationTests.csproj') -c $Configuration -m:6 -nr:false -v q -clp:ErrorsOnly
     if ($LASTEXITCODE -ne 0) { throw 'build failed' }
     Write-Host ("build: {0:n0} s" -f $sw.Elapsed.TotalSeconds)
 }
@@ -134,6 +140,18 @@ function Invoke-Parallel([hashtable] $argsByName) {
     return $ok
 }
 
+# One run at a time across every checkout and worktree on this machine; a second run waits for the first.
+$lock = [Threading.Mutex]::new($false, 'Global\WolfgateTestRun')
+try {
+    if (-not $lock.WaitOne(0)) {
+        Write-Host 'another test run is in progress; waiting for it to finish'
+        $null = $lock.WaitOne()
+    }
+}
+catch [Threading.AbandonedMutexException] {
+    # The previous holder died without releasing; the lock is ours now.
+}
+
 Push-Location $root
 try {
     New-Item -ItemType Directory -Force $results | Out-Null
@@ -183,4 +201,6 @@ try {
 }
 finally {
     Pop-Location
+    $lock.ReleaseMutex()
+    $lock.Dispose()
 }

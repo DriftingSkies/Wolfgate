@@ -8,7 +8,7 @@
       time: 7200 # mono - change to 2 hr
   startingGear: NFJanitorGear
   alwaysUseSpawner: true
-  setPreference: false
+  setPreference: true # WOLFGATE(Janitorial): janitors are back on Caelestinus, so the job can be picked; was false
   icon: "JobIconJanitor"
   supervisors: job-supervisors-sr
   weight: 100

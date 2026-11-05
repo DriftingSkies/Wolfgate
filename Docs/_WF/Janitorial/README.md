@@ -13,5 +13,6 @@ None.
 ## Non-modular edits
 
 - [`Resources/Prototypes/_Mono/Outpost/caelestinus.yml`](../../../Resources/Prototypes/_Mono/Outpost/caelestinus.yml): janitors are back on Caelestinus
+- [`Resources/Prototypes/_NF/Roles/Jobs/Civilian/janitor.yml`](../../../Resources/Prototypes/_NF/Roles/Jobs/Civilian/janitor.yml): janitors are back on Caelestinus, so the job can be picked; was false
 
 <!-- WOLFGATE-GENERATED END -->

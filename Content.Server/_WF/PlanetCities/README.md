@@ -152,5 +152,7 @@ wade) and catwalks where it turns.
 ## Non-modular edits
 
 - [`Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs`](../../../Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs): a city's upper floors are buildings, roofed already, not a ship overhead.
+- [`Resources/Prototypes/_Mono/Loadouts/Crocus/dockworker.yml`](../../../Resources/Prototypes/_Mono/Loadouts/Crocus/dockworker.yml): dockworkers spawn with a bag, headset, PDA, survival box and wallet
+- [`Resources/Prototypes/_Mono/Roles/Jobs/Crocus/dockworker.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Crocus/dockworker.yml): dockworkers keep Common so they can talk to anyone
 
 <!-- WOLFGATE-GENERATED END -->

@@ -1,12 +1,13 @@
 using System.Numerics;
 using Content.Client._Shitmed.UserInterface.Systems.Targeting.Widgets;
+using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.Alerts.Widgets;
 using Robust.Client.UserInterface;
 using Robust.Shared.Maths;
 
 namespace Content.Client._WF.Planets;
 
-/// <summary>Where the climate panels sit: above the targeting doll at the screen's right, clear of the alert icons.</summary>
+/// <summary>Where the climate panels sit: above the targeting doll at the game view's right, clear of the alert icons.</summary>
 public static class WFHudPlacement
 {
     private const float Gap = 8f;
@@ -15,8 +16,12 @@ public static class WFHudPlacement
     public static Vector2 Place(IUserInterfaceManager ui, Vector2 size)
     {
         var root = ui.PopupRoot;
-        var right = root.Width - 12;
-        var bottom = root.Height - 150;
+        // The game view, not the whole window: the separated layout puts chat beside it.
+        var area = UIBox2.FromDimensions(Vector2.Zero, root.Size);
+        if (ui.ActiveScreen?.GetWidget<MainViewport>() is { Visible: true, Width: > 0, Height: > 0 } viewport)
+            area = UIBox2.FromDimensions(viewport.GlobalPosition - root.GlobalPosition, viewport.Size);
+        var right = area.Right - 12;
+        var bottom = area.Bottom - 150;
         if (ui.GetActiveUIWidgetOrNull<TargetingControl>() is { Visible: true, Width: > 0 } target)
         {
             var position = target.GlobalPosition - root.GlobalPosition;
@@ -24,8 +29,9 @@ public static class WFHudPlacement
             bottom = position.Y - Gap;
         }
 
-        var left = MathF.Max(0, right - size.X);
-        var top = MathF.Max(0, bottom - size.Y);
+        right = MathF.Min(right, area.Right);
+        var left = MathF.Max(area.Left, right - size.X);
+        var top = MathF.Max(area.Top, bottom - size.Y);
 
         // The alert and body part icons stack down the same edge and draw over a panel they reach: sit beside them.
         if (ui.GetActiveUIWidgetOrNull<AlertsUI>() is { Visible: true } alerts)
@@ -38,7 +44,7 @@ public static class WFHudPlacement
                 var box = UIBox2.FromDimensions(child.GlobalPosition - root.GlobalPosition, child.Size);
                 var panel = UIBox2.FromDimensions(left, top, size.X, size.Y);
                 if (box.Intersects(panel))
-                    left = MathF.Max(0, box.Left - Gap - size.X);
+                    left = MathF.Max(area.Left, box.Left - Gap - size.X);
             }
         }
 

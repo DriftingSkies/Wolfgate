@@ -84,14 +84,25 @@ public sealed partial class MindSystem : SharedMindSystem
 
     public override bool TryGetMind(NetUserId user, [NotNullWhen(true)] out EntityUid? mindId, [NotNullWhen(true)] out MindComponent? mind)
     {
+        // WOLFGATE START: a session whose data is already gone (a client torn down mid-delete) failed the asserts with a KeyNotFoundException
+        // if (base.TryGetMind(user, out mindId, out mind))
+        // {
+        //     DebugTools.Assert(_players.GetPlayerData(user).ContentData() is not { } data || data.Mind == mindId);
+        //     return true;
+        // }
+        //
+        // DebugTools.Assert(_players.GetPlayerData(user).ContentData()?.Mind == null);
+        // return false;
+        _players.TryGetPlayerData(user, out var playerData);
         if (base.TryGetMind(user, out mindId, out mind))
         {
-            DebugTools.Assert(_players.GetPlayerData(user).ContentData() is not { } data || data.Mind == mindId);
+            DebugTools.Assert(playerData?.ContentData() is not { } data || data.Mind == mindId);
             return true;
         }
 
-        DebugTools.Assert(_players.GetPlayerData(user).ContentData()?.Mind == null);
+        DebugTools.Assert(playerData?.ContentData()?.Mind == null);
         return false;
+        // WOLFGATE END
     }
 
     public override void WipeAllMinds()

@@ -34,6 +34,8 @@
   save: false
   categories: [ WFXenonids ]
   components: # TODO RMC14 camera recoil from large explosions? check 13
+  # Height between z-levels, which BaseMob gives other mobs: without it a xeno can't walk up stairs.
+  - type: CEZPhysics
   - type: ZombieImmune
   - type: BlockEntityStorage
     whitelist:

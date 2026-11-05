@@ -23,11 +23,11 @@ public sealed class WFDefconTest
             Assert.That(defcon.Profile(), Is.Not.Null);
             var now = timing.CurTime;
 
-            defcon.Bias = 50f;
+            defcon.Bias = 65f;
             Assert.That(defcon.Evaluate(now), Is.False);
-            Assert.That(defcon.Evaluate(now + TimeSpan.FromSeconds(31)), Is.True);
+            Assert.That(defcon.Evaluate(now + TimeSpan.FromSeconds(61)), Is.True);
             Assert.That(defcon.Level, Is.EqualTo(2));
-            Assert.That(defcon.Score, Is.GreaterThanOrEqualTo(50f));
+            Assert.That(defcon.Score, Is.GreaterThanOrEqualTo(65f));
             Assert.That(defcon.PdaLine(), Does.Contain("2"));
 
             defcon.SetLevel(4, locked: true);

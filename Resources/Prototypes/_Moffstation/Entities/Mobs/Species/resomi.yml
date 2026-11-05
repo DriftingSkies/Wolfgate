@@ -249,14 +249,23 @@
     - map: [ "enum.HumanoidVisualLayers.Head" ]
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
     - map: [ "enum.HumanoidVisualLayers.Eyes" ]
-    - map: [ "enum.HumanoidVisualLayers.LHand" ]
-    - map: [ "enum.HumanoidVisualLayers.RHand" ]
-    - map: [ "enum.HumanoidVisualLayers.LFoot" ]
-    - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+    # WOLFGATE(Species) START: hands and feet over the limbs as on a human, so markings drawn there (protogen lights) show
+    # The bare body draws the same either way; they stay under the jumpsuit.
+    # - map: [ "enum.HumanoidVisualLayers.LHand" ]
+    # - map: [ "enum.HumanoidVisualLayers.RHand" ]
+    # - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+    # - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+    # WOLFGATE END
     - map: [ "enum.HumanoidVisualLayers.RArm" ]
     - map: [ "enum.HumanoidVisualLayers.LArm" ]
     - map: [ "enum.HumanoidVisualLayers.RLeg" ]
     - map: [ "enum.HumanoidVisualLayers.LLeg" ]
+    # WOLFGATE(Species) START: moved from above the limbs
+    - map: [ "enum.HumanoidVisualLayers.LHand" ]
+    - map: [ "enum.HumanoidVisualLayers.RHand" ]
+    - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+    - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+    # WOLFGATE END
     - map: [ "enum.HumanoidVisualLayers.Genital" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     - map: [ "enum.HumanoidVisualLayers.Breasts" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight

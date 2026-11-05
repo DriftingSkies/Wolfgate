@@ -12,6 +12,8 @@ using System.Linq;
 using System.Numerics;
 using Content.Shared._Mono.Traits.Physical;
 using Robust.Shared.Map;
+using Content.Server._WF.Augments; // WOLFGATE(Augments)
+using Content.Shared._WF.Augments; // WOLFGATE(Augments)
 
 namespace Content.Server._Mono.Traits.Physical;
 
@@ -23,6 +25,7 @@ public sealed partial class PrybarProstheticsSystem : EntitySystem
     [Dependency] private SharedBodySystem _bodySystem = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private SharedContainerSystem _containerSystem = default!;
+    [Dependency] private WFAugmentSystem _wfAugments = default!; // WOLFGATE(Augments)
 
     public override void Initialize()
     {
@@ -79,6 +82,8 @@ public sealed partial class PrybarProstheticsSystem : EntitySystem
                 }
             }
         }
+
+        _wfAugments.StyleTraitLimbs(ent, WFAugmentSlot.LeftArm, WFAugmentSlot.RightArm); // WOLFGATE(Augments): drawn to the species' own arm shape
     }
 
     private void SpawnAndReplace(string partProtoId, EntityUid parentEntity, string slotId)
@@ -96,6 +101,15 @@ public sealed partial class PrybarProstheticsSystem : EntitySystem
         if (_containerSystem.TryGetContainer(parentEntity, containerId, out var container))
         {
             var oldEntities = container.ContainedEntities.ToArray();
+
+            // WOLFGATE(Augments) START: cut the old arm loose like an augment swap, so the body keeps its arm markings
+            if (parentPart.Body is { } body)
+            {
+                foreach (var oldEntity in oldEntities)
+                    _bodySystem.WfCutLoose(body, oldEntity);
+                oldEntities = container.ContainedEntities.ToArray();
+            }
+            // WOLFGATE END
 
             foreach (var oldEntity in oldEntities)
             {

@@ -44966,8 +44966,6 @@ entities:
       deviceLists:
       - 5
       - 10079
-      configurators:
-      - invalid
     - type: AtmosPipeColor
       color: '#0055CCFF'
   - uid: 7549
@@ -44980,8 +44978,6 @@ entities:
       deviceLists:
       - 5
       - 10079
-      configurators:
-      - invalid
     - type: AtmosPipeColor
       color: '#0055CCFF'
   - uid: 7798
@@ -45086,8 +45082,6 @@ entities:
     - type: DeviceNetwork
       deviceLists:
       - 10079
-      configurators:
-      - invalid
     - type: AtmosPipeLayers
       pipeLayer: Secondary
     - type: AtmosPipeColor
@@ -45640,8 +45634,6 @@ entities:
     - type: DeviceNetwork
       deviceLists:
       - 10079
-      configurators:
-      - invalid
     - type: AtmosPipeLayers
       pipeLayer: Secondary
     - type: AtmosPipeColor
