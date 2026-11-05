@@ -47,6 +47,7 @@ PDV Helios and the Underground work this way, which keeps their prices as they w
 | Camelot | 1 | Chemicals, Fabrication, Reclamation, Refining | Supplies, Medical, Ammo, Fusion Fuel |
 | Halcyon | 1.5 | Munitions | Supplies, Medical, Ammo, Weapon Parts, Ship Components, Fusion Fuel |
 | Zvezda | 1 | Agriculture, Pharmaceuticals | Supplies, Medical, Luxuries, Fabric, Equipment |
+| MMC Hokkaido | 1 | Luxury goods, Refining | Supplies, Medical, Volatile Chemicals, Equipment, Fusion Fuel |
 | Cargo Depot | 0.5 | Agriculture, Munitions | Supplies, Medical, Ship Components |
 | Cargo Depot (alt) | 0.5 | Food, Pharmaceuticals, Refining | Medical, Equipment, Ship Components |
 | Anvilhold Drydock | 0.5 | None | Ship Components, Metals, Supplies |

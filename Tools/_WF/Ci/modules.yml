@@ -357,7 +357,7 @@ unmarked:
     reason: A trade-goods vendor in the reception lobby, by the turn-in chute.
   - path: Resources/Maps/_Mono/POI/hokkaido.yml
     module: TradeGoods
-    reason: A turn-in chute in the north cargo room, so the station is a market.
+    reason: A turn-in chute and a trade goods vendor in the north cargo room, so the station is a market.
   - path: Resources/Textures/Tiles/exoborg.png
     module: Xenoborgs
     reason: Exoborg floor tile redrawn.

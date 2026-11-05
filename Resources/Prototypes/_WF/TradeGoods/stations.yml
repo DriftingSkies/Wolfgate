@@ -1,6 +1,6 @@
 # Station chutes and trade vendors that Monolith's maps lack. Each vendor sells what its station's chute doesn't buy.
 
-# MMC Hokkaido: a mining company's hub buys what its crews use up and what it can't dig.
+# MMC Hokkaido: a mining company's hub buys what its crews use up and what its refinery and jewellers work from.
 - type: entity
   parent: BaseCargoChute
   id: WFCargoChuteHokkaido
@@ -16,7 +16,7 @@
       TradeGoodEquipment: SpaceCash4000
       TradeGoodFabric: SpaceCash4000
       TradeGoodFertilizer: SpaceCash6000
-      TradeGoodLuxuries: SpaceCash16000
+      TradeGoodScrap: SpaceCash4000
       TradeGoodShipComponents: SpaceCash7000
       TradeGoodFusionFuel: SpaceCash13000
       WFTradeGoodContraband: WFSpaceCash40000
@@ -41,6 +41,21 @@
       TradeGoodFissionFuel: SpaceCash20000
       TradeGoodFusionFuel: SpaceCash12000
       WFTradeGoodContraband: WFSpaceCash40000
+
+- type: entity
+  parent: VendingMachineTraderBaikal
+  id: WFVendingMachineTraderHokkaido
+  name: MMC Hokkaido Trade Goods Vendor
+  components:
+  - type: VendingMachine
+    pack: WFTraderHokkaido
+
+- type: vendingMachineInventory
+  id: WFTraderHokkaido
+  startingInventory:
+    TradeGoodLuxuries: 4294967295 # Infinite
+    TradeGoodMetals: 4294967295 # Infinite
+    PaperWrittenDispenserInstructions: 4294967295 # Infinite
 
 - type: entity
   parent: VendingMachineTraderBaikal

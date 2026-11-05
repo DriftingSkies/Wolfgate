@@ -126,6 +126,13 @@
   industries: [ WFTradeIndustryAgriculture, WFTradeIndustryPharmaceuticals ]
   uses: [ TradeGoodSupplies, TradeGoodMedicalSupplies, TradeGoodLuxuries, TradeGoodFabric, TradeGoodEquipment ]
 
+# MMC's mining hub refines what its crews dig and works its gold, silver and diamond into luxuries.
+- type: wfTradeStation
+  id: WFTradeStationHokkaido
+  stations: [ Hokkaido ]
+  industries: [ WFTradeIndustryLuxuryGoods, WFTradeIndustryRefining ]
+  uses: [ TradeGoodSupplies, TradeGoodMedicalSupplies, TradeGoodChemicalsVolatile, TradeGoodEquipment, TradeGoodFusionFuel ]
+
 - type: wfTradeStation
   id: WFTradeStationDepot
   stations: [ CargoDepot ]

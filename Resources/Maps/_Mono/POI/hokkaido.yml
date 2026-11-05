@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 09/24/2026 22:48:16
-  entityCount: 6270
+  entityCount: 6271
 maps: []
 grids:
 - 1
@@ -18806,6 +18806,13 @@ entities:
     components:
     - type: Transform
       pos: -1.5,2.5
+      parent: 1
+- proto: WFVendingMachineTraderHokkaido
+  entities:
+  - uid: 6271
+    components:
+    - type: Transform
+      pos: -1.5,1.5
       parent: 1
 - proto: filingCabinetDrawerRandom
   entities:

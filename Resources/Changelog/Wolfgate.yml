@@ -5697,3 +5697,16 @@ Entries:
   id: 100356
   time: '2026-11-05T05:44:19.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/480
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: MMC Hokkaido has a trade goods vendor selling luxuries and metals.
+    - type: Tweak
+      message: >-
+        Hokkaido joins the sector economy: it makes luxuries and metals, and its
+        prices and stock change like other stations'.
+    - type: Tweak
+      message: MMC Adamantite bounty removed
+  id: 100357
+  time: '2026-11-05T21:26:29.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/506

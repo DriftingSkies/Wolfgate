@@ -35,7 +35,7 @@ public sealed class EconomyLedgerTest
     private const string ShipComponents = "TradeGoodShipComponents";
 
     /// <summary>The always-spawned stations, one depot of each kind and the yard, as in a normal round.</summary>
-    private static readonly string[] RoundStations = { "Frontier", "USSPCamelot", "TSFMCHalcyon", "Zvezda", "CargoDepot", "CargoDepotAlt", "WFDrydock" };
+    private static readonly string[] RoundStations = { "Frontier", "USSPCamelot", "TSFMCHalcyon", "Zvezda", "CargoDepot", "CargoDepotAlt", "WFDrydock", "Hokkaido" };
 
     /// <summary>A station grid of a role.</summary>
     private static EntityUid Station(IEntityManager entMan, TestMapData map, string id, float offset = 0f)
@@ -347,6 +347,9 @@ public sealed class EconomyLedgerTest
             var shortage = shortages.Start(new ProtoId<WFTradeShortagePrototype>("WFTradeShortageChemicals"))!;
             Assert.That(shortage.Report, Is.True, "A due gap should be reported even when a fresher dip sits lower.");
             Assert.That(shortage.Grid, Is.EqualTo(grid));
+
+            // The test map's grid goes when the pair is returned; a report left on it breaks the next test that lists shortages.
+            shortages.Clear();
         });
 
         await pair.CleanReturnAsync();
