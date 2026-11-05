@@ -312,13 +312,16 @@ public sealed partial class WFContractSystem
             case WFContractEscort escort:
             {
                 if (contract.Encounter is not { } encounterId || !_proto.TryIndex(encounterId, out var encounterProto)
-                    || contract.Destination is not { } destination)
+                    || contract.Destination is not { } destination
+                    // Encounter stops are grids: a station entity is no dock target, and the encounter removes itself
+                    // when its orders fail at the rendezvous.
+                    || _station.GetLargestGrid(destination) is not { } stop)
                     return false;
 
                 for (var attempt = 0; attempt < 3; attempt++)
                 {
                     if (PickSite(contract.Home, escort.MinDistance, escort.MaxDistance, EscortClearance) is not { } site
-                        || !_encounters.TrySpawn(encounterProto, site, out var encounter, stops: new[] { destination }, offBudget: true))
+                        || !_encounters.TrySpawn(encounterProto, site, out var encounter, stops: new[] { stop }, offBudget: true))
                         continue;
 
                     contract.Site = site;
@@ -380,7 +383,9 @@ public sealed partial class WFContractSystem
                     Complete(contract);
                 break;
             case WFContractEscort escort:
-                if (EscortedShip(contract, escort) is not { } ship || TerminatingOrDeleted(ship.Grid))
+                if (contract.EncounterEntity is not { } run || TerminatingOrDeleted(run))
+                    Void(contract, "wf-contract-reason-target-gone");
+                else if (EscortedShip(contract, escort) is not { } ship || TerminatingOrDeleted(ship.Grid))
                     Fail(contract, "wf-contract-reason-escort-lost");
                 else if (ship.Flown)
                     Complete(contract);

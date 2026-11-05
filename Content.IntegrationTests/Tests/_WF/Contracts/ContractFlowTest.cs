@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Contracts;
+using Content.Server._WF.Encounters.Components;
 using Content.Server.Station.Systems;
 using Content.Shared._WF.Contracts;
 using Content.Shared.Maps;
@@ -155,6 +156,27 @@ public sealed class ContractFlowTest
             Assert.That(contracts.TryAbandon(holder, parcel.Id), Is.True);
             Assert.That(contracts.ActiveFor(holder), Is.Empty);
             Assert.That(contracts.State(mob).History.First().Status, Is.EqualTo(WFContractStatus.Abandoned));
+        });
+
+        // Escort: the run waits for its escort, then takes its orders and sets off, its stop a station grid.
+        WFContract escort = default!;
+        await server.WaitAssertion(() =>
+        {
+            escort = contracts.PostOffer("WFContractCaelEscortTrader")!;
+            Assert.That(contracts.TryAccept(mob, escort.Id, board), Is.Null);
+            var run = entMan.GetComponent<WFEncounterComponent>(escort.EncounterEntity!.Value);
+            Assert.That(run.Begun, Is.False, "The freighter set off before its escort arrived.");
+            Assert.That(run.Stops.Single(), Is.EqualTo(Largest(server, escort.Destination!.Value)), "An escort's stop must be the station's grid.");
+            var freighter = run.Ships["freighter"].Grid;
+            xforms.SetMapCoordinates(mob, new MapCoordinates(xforms.GetWorldPosition(freighter) + new Vector2(50f, 0f), escort.Site!.Value.MapId));
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(escort.EncounterEntity is { } run && !entMan.Deleted(run), Is.True, "The escort run removed itself when its escort arrived.");
+            Assert.That(entMan.GetComponent<WFEncounterComponent>(escort.EncounterEntity!.Value).Begun, Is.True);
+            Assert.That(contracts.ActiveFor(holder).Single().Id, Is.EqualTo(escort.Id), "The escort contract ended when its escort arrived.");
+            Assert.That(contracts.TryAbandon(holder, escort.Id), Is.True);
         });
 
         await pair.CleanReturnAsync();
