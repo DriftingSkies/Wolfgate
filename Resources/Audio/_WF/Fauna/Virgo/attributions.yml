@@ -1,0 +1,28 @@
+- files: ["snowbull_charge.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/effects/mob_effects/snowbull_charge.ogg"
+- files: ["splat.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/effects/splat.ogg"
+- files: ["tap.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/weapons/tap.ogg"
+- files: ["rapidslice.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/weapons/rapidslice.ogg"
+- files: ["mouse_squeak_loud.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/effects/mouse_squeak_loud.ogg"
+- files: ["sparkle.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/weapons/sparkle.ogg"
+- files: ["fireball.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VOREStation"
+  source: "https://github.com/VOREStation/VOREStation/blob/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88/sound/magic/Fireball.ogg"

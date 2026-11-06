@@ -185,6 +185,9 @@
                                 <vote:VoteCallMenuButton Name="CallVoteButton" TextAlign="Left" StyleClasses="LobbyNav" />
                                 <Button Name="OptionsButton" Access="Public" TextAlign="Left"
                                         Text="{Loc 'ui-lobby-options-button'}" StyleClasses="LobbyNav" />
+                                <!-- WOLFGATE(LoreBook): lore book entry in the lobby menu -->
+                                <Button Name="LoreBookButton" Access="Public" TextAlign="Left"
+                                        Text="{Loc 'wf-lore-book-button'}" StyleClasses="LobbyNav" />
                                 <Button Name="AHelpButton" Access="Public" TextAlign="Left"
                                         Text="{Loc 'ui-lobby-ahelp-nav-button'}" StyleClasses="LobbyNav" />
                                 <Button Name="LeaveButton" Access="Public" TextAlign="Left"

@@ -309,6 +309,8 @@ public sealed partial class WFWarheadSystem : EntitySystem
             Del(gridUid);
         }
 
+        Erase(coords, payload.EraseRadius);
+
         if (payload.ExplosionType is { } type && payload.TotalIntensity > 0f)
         {
             _explosion.QueueExplosion(coords, type, payload.TotalIntensity, payload.IntensitySlope,

@@ -1,0 +1,75 @@
+# Polaris fauna loot.
+
+- type: entity
+  parent: BaseItem
+  id: PolarisMaterialAnimalHide
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Polaris/stacks.rsi
+    state: sheet-hide
+  - type: Item
+    size: Small
+
+# Space worm meat. Cutting it frees whatever junk the worm swallowed.
+- type: entity
+  parent: FoodMeatRawBase
+  id: PolarisFoodMeatWorm
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Polaris/food.rsi
+    state: wormmeat
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 6
+        - ReagentId: Plasma
+          Quantity: 3
+  - type: SliceableFood
+    count: 1
+    slice: PolarisWormMeatLoot
+
+- type: entity
+  id: PolarisWormMeatLoot
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    table: !type:GroupSelector
+      children:
+      - id: MaintenanceFluffSpawner
+        weight: 45
+      - !type:NestedSelector
+        tableId: SalvageScrapSpawnerCommon
+        weight: 30
+      - id: MaintenanceToolSpawner
+        weight: 26
+      - id: LootSpawnerMedicalMinor
+        weight: 10
+      - id: PlasmaOre1
+        weight: 7
+      - id: MaintenanceWeaponSpawner
+        weight: 3
+      - id: LootSpawnerArmoryGunsOnly
+        weight: 1
+
+- type: entity
+  parent: BaseItem
+  id: PolarisOrganPlasmaVessel
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Polaris/surgery.rsi
+    state: plasma
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: PolarisOrganAcidGland
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Polaris/surgery.rsi
+    state: acidgland
+  - type: Item
+    size: Small

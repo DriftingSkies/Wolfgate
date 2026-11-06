@@ -17,7 +17,7 @@
     speechVerb: WFAdsSynth
 
 # The Automated Defense System's units: positronic automatons that need no air and shrug off vacuum and its cold. Every crew is at
-# the top of the ladder, and its hulls come plated in adamantite: the system fires on nobody first, so what it does fight
+# the top of the ladder, and its hulls come plated in durasteel: the system fires on nobody first, so what it does fight
 # it must be able to outlast. They name themselves from its designations and serial numbers.
 - type: wfCrewProfile
   id: WFCrewProfileAds
@@ -33,8 +33,8 @@
   # One system: its ships never count one another as attackers, however much fire passes between them.
   forgivesOwn: true
   hullSwaps:
-    WallPlastitanium: WFWallAdamantite
-    WallPlastitaniumDiagonal: WFWallAdamantiteDiagonal
+    WallPlastitanium: WFWallDurasteel
+    WallPlastitaniumDiagonal: WFWallDurasteelDiagonal
   titles:
     WFCrewCaptain: wf-ads-title-captain
     WFCrewPilot: wf-ads-title-pilot

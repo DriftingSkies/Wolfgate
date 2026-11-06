@@ -28,7 +28,10 @@ public static class WFDroneRingDrawing
     /// </summary>
     /// <param name="centre">The map's origin, in the control's pixels.</param>
     /// <param name="scale">Pixels per metre.</param>
-    public static void Draw(DrawingHandleScreen handle, Font font, List<float> radii, Vector2 centre, float scale, Vector2 viewSize, float uiScale)
+    /// <param name="labels">Each ring's name; drone zone numbers if null.</param>
+    /// <param name="colors">Each ring's colour; the drone zone colours if null.</param>
+    public static void Draw(DrawingHandleScreen handle, Font font, List<float> radii, Vector2 centre, float scale, Vector2 viewSize, float uiScale,
+        IReadOnlyList<string>? labels = null, IReadOnlyList<Color>? colors = null)
     {
         var middle = viewSize / 2f;
         var reach = (double) middle.Length();
@@ -56,10 +59,10 @@ public static class WFDroneRingDrawing
                     half = Math.Acos(cos);
             }
 
-            var color = Colors[Math.Min(i, Colors.Length - 1)];
+            var color = colors != null && i < colors.Count ? colors[i] : Colors[Math.Min(i, Colors.Length - 1)];
             DrawArc(handle, centre, radius, facing, half, uiScale, color.WithAlpha(0.6f));
 
-            var text = Loc.GetString("wf-drone-ring-label", ("tier", i + 1));
+            var text = labels != null && i < labels.Count ? labels[i] : Loc.GetString("wf-drone-ring-label", ("tier", i + 1));
             var dimensions = handle.GetDimensions(font, text, uiScale * 0.7f);
             var direction = new Vector2((float) Math.Cos(facing), (float) Math.Sin(facing));
             // Just outside the ring: past this line is the zone.

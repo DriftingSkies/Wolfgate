@@ -5,12 +5,12 @@
   id: WFVehicleCrewProfilePirate
   firstNames: WFNamesPirateFirst
   lastNames: WFNamesPirateLast
-  # Pirates never fly adamantite, as with NpcCrew's own pirate profile.
+  # Pirates never fly durasteel, as with NpcCrew's own pirate profile.
   hullSwaps:
-    WFWallAdamantite: WallPlastitanium
-    WFWallAdamantiteDiagonal: WallPlastitaniumDiagonal
-    WFWallAdamantiteCapital: WallPlastitanium
-    WFWallAdamantiteDiagonalCapital: WallPlastitaniumDiagonal
+    WFWallDurasteel: WallPlastitanium
+    WFWallDurasteelDiagonal: WallPlastitaniumDiagonal
+    WFWallDurasteelCapital: WallPlastitaniumCapital
+    WFWallDurasteelDiagonalCapital: WallPlastitaniumDiagonalCapital
   components:
   - type: PirateAccent
   - type: WFCrewSuitUp

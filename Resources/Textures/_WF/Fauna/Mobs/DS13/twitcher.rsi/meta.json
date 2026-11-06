@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at commit https://github.com/DS-13-Dev-Team/DS13-2.0/commit/4c8813536f72a1e2efafb661b62821bb62a5a514.",
+  "size": {
+    "x": 32,
+    "y": 48
+  },
+  "states": [
+    {
+      "name": "twitcher_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "twitcher_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "twitcher_chest",
+      "directions": 4
+    },
+    {
+      "name": "twitcher_head",
+      "directions": 4
+    },
+    {
+      "name": "twitcher_l_arm",
+      "directions": 4
+    },
+    {
+      "name": "twitcher_r_arm",
+      "directions": 4
+    }
+  ]
+}

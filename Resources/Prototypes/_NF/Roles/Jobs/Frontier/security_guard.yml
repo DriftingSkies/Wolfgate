@@ -48,3 +48,4 @@
     - EncryptionKeySecurity
   # - ShipVoucherFrontierGuard # Mono
     - WFShipVoucherJudge # WOLFGATE(Judges): free Lightning or Hornet at spawn
+    - WFBookCommonWrit # WOLFGATE(Bench): judges carry the Common Writ

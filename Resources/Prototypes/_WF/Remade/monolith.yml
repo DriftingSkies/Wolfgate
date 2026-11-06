@@ -3,6 +3,8 @@
   placement:
     mode: SnapgridCenter
   components:
+  - type: Contraband
+    severity: WFUnlawful
   - type: Transform
     noRot: true
   - type: Clickable
@@ -96,6 +98,8 @@
   parent: BaseStructure
   id: WFMonolithTap
   components:
+  - type: Contraband
+    severity: WFUnlawful
   - type: InteractionOutline
   - type: Physics
     bodyType: Static

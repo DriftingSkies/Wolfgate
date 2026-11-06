@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/15/2026 16:38:38
-  entityCount: 11899
+  entityCount: 11905
 maps: []
 grids:
 - 1
@@ -80194,6 +80194,25 @@ entities:
     - type: Transform
       pos: 23.5,48.5
       parent: 1
+- proto: WFContractBoardUSSP
+  entities:
+  - uid: 11900
+    components:
+    - type: Transform
+      parent: 1
+      pos: -1.5,25.5
+  - uid: 11902
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -35.5,36.5
+      parent: 1
+  - uid: 11904
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -15.5,-6.5
+      parent: 1
 - proto: WhiteCatwalkMono
   entities:
   - uid: 11819
@@ -80847,5 +80866,22 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -31.5,49.5
+      parent: 1
+- proto: WFContractCargoPad
+  entities:
+  - uid: 11901
+    components:
+    - type: Transform
+      pos: -1.5,24.5
+      parent: 1
+  - uid: 11903
+    components:
+    - type: Transform
+      pos: -34.5,36.5
+      parent: 1
+  - uid: 11905
+    components:
+    - type: Transform
+      pos: -15.5,-5.5
       parent: 1
 ...

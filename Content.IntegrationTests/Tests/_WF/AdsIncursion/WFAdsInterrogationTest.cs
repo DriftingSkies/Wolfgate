@@ -240,6 +240,37 @@ public sealed class WFAdsInterrogationTest : WFAdsTestBase
         await Cleanup(scene);
     }
 
+    /// <summary>
+    /// An attacker its crew left alone is not shot the moment they come back aboard: it is warned through the boarding
+    /// grace, then engaged (feedback #499).
+    /// </summary>
+    [Test]
+    public async Task ReboardedAttackerIsWarnedBeforeTheGuns()
+    {
+        var scene = await Setup(fire: true);
+        await RunTicks(150);
+        await Server.WaitAssertion(() => Assert.That(scene.Ship.Engaged, Does.Contain(scene.PlayerShip), "The attacker is engaged."));
+
+        // Empty, the hull is nobody's ship to fight.
+        await Server.WaitPost(Disembark);
+        await RunTicks(90);
+        await Server.WaitAssertion(() => Assert.That(scene.Ship.Engaged, Is.Empty, "An empty hull stays engaged."));
+
+        await Server.WaitPost(() => Server.System<SharedTransformSystem>().SetCoordinates(SPlayer,
+            new EntityCoordinates(scene.PlayerShip, new Vector2(1.5f, 1.5f))));
+        await RunTicks(150);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(Server.System<WFEncounterZoneSystem>().JustReboarded(scene.PlayerShip), Is.True, "Coming back aboard started no grace.");
+            Assert.That(scene.Ship.Engaged, Is.Empty, "The ship opened fire the moment its crew came back aboard.");
+            Assert.That(scene.Ship.Warned, Does.ContainKey(scene.PlayerShip), "The crew got no warning first.");
+        });
+
+        await RunSeconds((float) WFEncounterZoneSystem.BoardingGrace.TotalSeconds + 3f);
+        await Server.WaitAssertion(() => Assert.That(scene.Ship.Engaged, Does.Contain(scene.PlayerShip), "The grace never ran out."));
+        await Cleanup(scene);
+    }
+
     /// <summary>A ship that fires on an interrogating ship is engaged at once, with no question put.</summary>
     [Test]
     public async Task AttackerIsEngagedWithoutAHail()

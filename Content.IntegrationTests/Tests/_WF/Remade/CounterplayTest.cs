@@ -258,7 +258,9 @@ public sealed class CounterplayTest
         {
             Assert.That(entMan.Deleted(scion), Is.True);
             Assert.That(entMan.Deleted(shard), Is.True, "the shard outlived its Scion.");
-            Assert.That(entMan.GetComponent<WFCorruptionComponent>(tile).DecayAt, Is.Not.Null, "its corruption didn't start to die.");
+            // Decay comes at a random time within a minute, so the tile may already be gone.
+            Assert.That(entMan.Deleted(tile) || entMan.GetComponent<WFCorruptionComponent>(tile).DecayAt != null, Is.True,
+                "its corruption didn't start to die.");
             Assert.That(entMan.EntityQuery<WFRemadeDirectorComponent>().Any(), Is.False, "a Director outlived its Monolith.");
 
             var husks = entMan.EntityQuery<MetaDataComponent>().Count(meta => meta.EntityPrototype?.ID == "WFMonolithHusk");

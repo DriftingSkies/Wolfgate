@@ -1,0 +1,68 @@
+- files: ["break_stone.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/effects/break_stone.ogg"
+- files: ["drake_spit.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_spit.ogg"
+- files: ["slime_squish.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/effects/slime_squish.ogg"
+- files: ["spider_loop.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/effects/spider_loop.ogg"
+- files: ["ointment.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/effects/ointment.ogg"
+- files: ["drake_grumble.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_grumble.ogg"
+- files: ["drake_huff.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_huff.ogg"
+- files: ["drake_rattle.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_rattle.ogg"
+- files: ["drake_roar.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_roar.ogg"
+- files: ["drake_rumble.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_rumble.ogg"
+- files: ["drake_sneeze.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_sneeze.ogg"
+- files: ["drake_warn.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/drake_warn.ogg"
+- files: ["hatchling_growl.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/hatchling_growl.ogg"
+- files: ["hatchling_spit.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/hatchling_spit.ogg"
+- files: ["hatchling_warn.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/hatchling_warn.ogg"
+- files: ["hatchling_whine.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/hatchling_whine.ogg"
+- files: ["hatchling_yelp.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Polaris"
+  source: "https://github.com/PolarisSS13/Polaris/blob/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25/sound/voice/drakes/hatchling_yelp.ogg"

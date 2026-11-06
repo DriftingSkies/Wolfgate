@@ -1,0 +1,134 @@
+# Meatland creatures converted from TauCetiClassic. They blow apart on death and leave no corpse.
+
+- type: entity
+  abstract: true
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: TauCetiMobMeatlandBase
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/TauCeti/meatland.rsi
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 25
+  - type: FaunaDeathSpawn
+    gib: true
+    vanishChance: 0.2
+    popup: fauna-meatland-blows-apart
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      80: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+- type: entity
+  parent: TauCetiMobMeatlandBase
+  id: TauCetiMobMeatlandCreep
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: light
+      shader: unshaded
+  - type: PointLight
+    radius: 2.5
+    energy: 1
+    color: "#FF4040"
+  - type: MeleeWeapon
+    damage:
+      types:
+        Slash: 38
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      160: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+
+- type: entity
+  parent: TauCetiMobMeatlandBase
+  id: TauCetiMobMeatlandManiac
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: sovmeat
+  - type: MeleeWeapon
+    damage:
+      types:
+        Slash: 14
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+
+- type: entity
+  parent: TauCetiMobMeatlandBase
+  id: TauCetiMobMeatlandChangeling
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: horrormeat
+
+- type: entity
+  parent: TauCetiMobMeatlandBase
+  id: TauCetiMobMeatlandFlesh
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: livingflesh
+
+# Respawns its creature while none from it lives, about 1% per 2 s tick in the source.
+- type: entity
+  id: TauCetiMeatlandBurrow
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/TauCeti/meatland.rsi
+    state: lair
+    drawdepth: FloorObjects
+  - type: Damageable
+    damageContainer: Biological
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 120
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: FaunaBurrow
+    closable: false
+    interval: 200
+    maxAlive: 1
+    prototypes:
+    - TauCetiMobMeatlandCreep
+    - TauCetiMobMeatlandManiac
+    - TauCetiMobMeatlandChangeling
+    - TauCetiMobMeatlandFlesh

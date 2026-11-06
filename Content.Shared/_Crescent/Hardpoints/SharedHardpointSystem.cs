@@ -78,7 +78,8 @@ public class SharedHardpointSystem : EntitySystem
         }
 
         //else, if we UNanchored
-        if (component.anchoredTo == null || TerminatingOrDeleted(uid)) //this should literally never happen
+        if (component.anchoredTo == null || TerminatingOrDeleted(uid) //this should literally never happen
+            || TerminatingOrDeleted(component.anchoredTo.Value)) // WOLFGATE: a hardpoint deleted first threw on its transform
         {
             return;
         }

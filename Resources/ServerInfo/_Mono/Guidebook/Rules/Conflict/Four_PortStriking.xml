@@ -3,20 +3,20 @@
 ## Outpost striking is not allowed.
 <!-- WOLFGATE: fixed broken link, was MonolithRuleRoleplayEightSafeZones -->[bold]See the [textlink="Safe Zones rule" link="MonolithRuleRoleplaySevenSafeZones"] for areas that are always protected from strikes.[/bold]
 
-<!-- WOLFGATE: was color=blue, unreadable on the dark background -->Faction outposts (e.g., [color=cyan]Halcyon[/color]) are [color=red][bold]not allowed[/bold][/color] to be striked until [color=yellow]a High Command announcement[/color] allowing it has been given, or if [color=yellow]admin permission[/color] has been given.
-<!-- WOLFGATE(ColdWar): the announcement is the war level going HOT -->-- The announcement is the war level going [color=red][bold]HOT[/bold][/color] (see [textlink="Conflict Rule 5" link="WFRuleConflictFiveDeclaringWar"]). Strikes stop if it goes back to COLD.
--- For clarity, a "strike" in this context refers to any (organized or unorganized) hostile action intended to damage outposts, seize control, eliminate its occupants, or damage docked/undocked ships within a range of 256 meters that were not recently ([color=yellow][bold]2 minutes[/bold][/color]) in combat.
+<!-- WOLFGATE: was color=blue, unreadable on the dark background -->Faction outposts (e.g., [color=#1a9fb5]Halcyon[/color]) are [color=#d93c3c][bold]not allowed[/bold][/color] to be striked until [color=#b8860b]a High Command announcement[/color] allowing it has been given, or if [color=#b8860b]admin permission[/color] has been given.
+<!-- WOLFGATE(ColdWar): the announcement is the war level going HOT -->-- The announcement is the war level going [color=#d93c3c][bold]HOT[/bold][/color] (see [textlink="Conflict Rule 5" link="WFRuleConflictFiveDeclaringWar"]). Strikes stop if it goes back to COLD.
+<!-- WOLFGATE: rule colours readable on light and dark backgrounds -->-- For clarity, a "strike" in this context refers to any (organized or unorganized) hostile action intended to damage outposts, seize control, eliminate its occupants, or damage docked/undocked ships within a range of 256 meters that were not recently ([color=#b8860b][bold]2 minutes[/bold][/color]) in combat.
 -- Action should be taken to avoid camping spawn areas inside the outposts if possible.
 
-<!-- WOLFGATE: was color=maroon, unreadable on the dark background -->Mobile bases (e.g., [color=tan]PDV Jupiter[/color]) do [color=red][bold]not[/bold][/color] fall under these rules.
+<!-- WOLFGATE: was color=maroon, unreadable on the dark background -->Mobile bases (e.g., [color=#a4885c]PDV Jupiter[/color]) do [color=#d93c3c][bold]not[/bold][/color] fall under these rules.
 <!-- WOLFGATE(ColdWar): mobile bases are still covered by the ceasefire -->-- While the war level is COLD, [textlink="Conflict Rule 1" link="MonolithRuleConflictOneRandomDeathmatch"] still applies to them.
 
-[color=yellow]Ships are [bold]exempted[/bold] from this rule when they escape combat to their port. It is permitted to attack docked ships if they were in combat within the last two minutes, though you should [/color][color=red]minimize[/color][color=yellow] damage to the port itself.[/color]
+<!-- WOLFGATE: rule colours readable on light and dark backgrounds -->[color=#b8860b]Ships are [bold]exempted[/bold] from this rule when they escape combat to their port. It is permitted to attack docked ships if they were in combat within the last two minutes, though you should [/color][color=#d93c3c]minimize[/color][color=#b8860b] damage to the port itself.[/color]
 
-[color=orange]Prison breaks[/color] from detained players both in and out of the faction do [color=red][bold]not[/bold][/color] fall under these rules.
--- [color=orange]Detained players[/color] can damage where they're being held, make a path to an exit forcefully, injure others, and steal ships from outposts to escape [bold]if necessary[/bold].
+<!-- WOLFGATE: rule colours readable on light and dark backgrounds -->[color=#d9730d]Prison breaks[/color] from detained players both in and out of the faction do [color=#d93c3c][bold]not[/bold][/color] fall under these rules.
+<!-- WOLFGATE: rule colours readable on light and dark backgrounds -->-- [color=#d9730d]Detained players[/color] can damage where they're being held, make a path to an exit forcefully, injure others, and steal ships from outposts to escape [bold]if necessary[/bold].
 -- Detained players may receive help from outside players as long as they cause minimal damage to the station and its occupants. (examples of excessive damage: entering through Halcyon civ docks and killing every marine in briefing/cryo before even locating the prisoner, going to sabotage power/server/silo/etc.)
 <!-- WOLFGATE(ColdWar): a rescue does not lift the ceasefire -->-- While the war level is COLD, [textlink="Conflict Rule 1" link="MonolithRuleConflictOneRandomDeathmatch"] still applies to helpers from the other faction.
 -- If anyone is killed, bodies should not be intentionally hidden or made unrecoverable. [bold]You do not[/bold] have to revive anyone.
--- You should [color=red][bold]not[/bold][/color] be sabotaging an outpost. Such as cutting wires, destroying shields, generators, or gunnery consoles. (Cutting lv wires to disable doors for prying or cutting wires on doors on the escape route is permitted however.)
+<!-- WOLFGATE: rule colours readable on light and dark backgrounds -->-- You should [color=#d93c3c][bold]not[/bold][/color] be sabotaging an outpost. Such as cutting wires, destroying shields, generators, or gunnery consoles. (Cutting lv wires to disable doors for prying or cutting wires on doors on the escape route is permitted however.)
 </Document>

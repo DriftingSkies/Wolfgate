@@ -1,0 +1,191 @@
+# Wild fauna that hunt hostile creatures and leave people alone.
+- type: npcFaction
+  id: FaunaHunter
+  hostile:
+  - SimpleHostile
+
+# Purity constructs. They only fight back, and their healers mend each other.
+- type: npcFaction
+  id: FaunaPurity
+
+# Sojourn species factions. Each species fights the others and people, and ignores other fauna.
+- type: npcFaction
+  id: SojournSamak
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournDiyaab
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournShantak
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournTengo
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournPond
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  friendly:
+  - SojournPondKin
+  defaultHostile: true
+
+# The croaker lord only fights back, and its kin leave it alone.
+- type: npcFaction
+  id: SojournPondKin
+  friendly:
+  - SojournPond
+
+- type: npcFaction
+  id: SojournDeathclaw
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournPanther
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournStalker
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+# The tahca only fights back, but the other species still hunt it.
+- type: npcFaction
+  id: SojournRadstag
+
+- type: npcFaction
+  id: SojournRoach
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  friendly:
+  - SojournRoachKin
+  defaultHostile: true
+
+# The hakhma beetle only fights back, and its kin leave it alone.
+- type: npcFaction
+  id: SojournRoachKin
+  friendly:
+  - SojournRoach
+
+- type: npcFaction
+  id: SojournTengoloBerserker
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournSpiders
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournWurm
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournDaskvey
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: SojournAmeridian
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+# Shiptest basilisks and watchers hold a grudge against each other.
+- type: npcFaction
+  id: ShiptestBasilisk
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true
+
+- type: npcFaction
+  id: ShiptestWatcher
+  neutral:
+  - Dragon
+  - Passive
+  - SimpleHostile
+  - FaunaHunter
+  - FaunaPurity
+  defaultHostile: true

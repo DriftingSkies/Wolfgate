@@ -1,0 +1,34 @@
+# Loot from the OnyxBay fauna.
+
+- type: entity
+  parent: ClothingHeadEVAHelmetBase
+  id: OnyxBayClothingHeadHelmetGoliath
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/OnyxBay/goliath_helmet.rsi
+  - type: Clothing
+    sprite: _WF/Fauna/Objects/OnyxBay/goliath_helmet.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.85
+        Heat: 0.85
+        Radiation: 0.8
+
+- type: entity
+  parent: BaseItem
+  id: OnyxBayBeholderEye
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/OnyxBay/mining.rsi
+    state: beholder_eye
+  - type: Item
+    size: Normal
+  - type: MeleeWeapon
+    damage:
+      types:
+        Heat: 10
+    soundHit:
+      path: /Audio/Items/welder2.ogg

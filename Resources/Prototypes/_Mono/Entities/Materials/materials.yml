@@ -410,7 +410,6 @@
     tags:
     - Sheet
     - SafetyDepositBlacklist # lmao no
-    - WFPdvComposite # WOLFGATE(Mining): the Hokkaido composite bounty matches it
   - type: Item
     sprite: Objects/Materials/Sheets/glass.rsi
     heldPrefix: adamantite

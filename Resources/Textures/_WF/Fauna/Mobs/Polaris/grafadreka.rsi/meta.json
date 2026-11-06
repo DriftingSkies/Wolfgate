@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Polaris at commit https://github.com/PolarisSS13/Polaris/commit/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25.",
+  "size": {
+    "x": 64,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "base",
+      "directions": 4
+    },
+    {
+      "name": "fur",
+      "directions": 4
+    },
+    {
+      "name": "claws",
+      "directions": 4
+    },
+    {
+      "name": "eyes",
+      "directions": 4
+    },
+    {
+      "name": "glow",
+      "directions": 4
+    },
+    {
+      "name": "dead",
+      "directions": 4
+    },
+    {
+      "name": "dead-fur",
+      "directions": 4
+    },
+    {
+      "name": "dead-claws",
+      "directions": 4
+    }
+  ]
+}

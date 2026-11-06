@@ -1762,7 +1762,7 @@ entities:
     - type: Transform
       pos: 1.6092477,-9.276243
       parent: 1
-- proto: WFWallAdamantite
+- proto: WallPlastitanium
   entities:
   - uid: 8
     components:

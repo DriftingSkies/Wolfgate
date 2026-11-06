@@ -1,0 +1,905 @@
+# CHOMPStation space critters. Feeding one its food splits it, its evolve key turns it into the evolved form.
+
+- type: entity
+  abstract: true
+  parent: FaunaMobSpaceBase
+  id: CHOMPMobSpaceCritterBase
+  components:
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+
+# Sting ray of fire that heats the air around it, slowly at first, then fiercely past 200 C.
+- type: entity
+  parent: CHOMPMobSpaceCritterBase
+  id: CHOMPMobSolarRay
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: solarray
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: solarray
+      Dead:
+        Base: solarray-dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.3
+    damage:
+      types:
+        Heat: 12
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+      Acidic: [ Touch, Ingestion ]
+    reactions:
+    - reagents: [ Water ]
+      methods: [ Touch ]
+      effects:
+      - !type:HealthChange
+        scaleByQuantity: true
+        damage:
+          types:
+            Poison: 1
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodMeatRay
+      amount: 8
+    - id: CHOMPMaterialWisp
+      amount: 4
+  - type: FaunaAirTemperature
+    power: 25000
+    target: 5273.15
+    boostFrom: 473.15
+    boostPower: 2500000
+  - type: FaunaFeed
+    foodStacks:
+    - PlasmaOre
+    evolveStacks:
+    - Uranium
+    evolveInto: CHOMPMobGalaxyRay
+
+# Evolved solar ray, bigger and hotter.
+- type: entity
+  parent: CHOMPMobSolarRay
+  id: CHOMPMobGalaxyRay
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    scale: 1.5,1.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: galaxyray
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: galaxyray
+      Dead:
+        Base: solarray-dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.3
+    damage:
+      types:
+        Heat: 12
+  - type: FaunaAirTemperature
+    power: 75000
+    target: 15273.15
+    boostFrom: 473.15
+    boostPower: 7500000
+  - type: FaunaFeed
+    foodStacks:
+    - PlasmaOre
+
+# Crab-like creature made of ice that chills the air around it.
+- type: entity
+  parent: CHOMPMobSpaceCritterBase
+  id: CHOMPMobLivingIce
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: livingice
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: livingice
+      Dead:
+        Base: livingice-dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: FaunaAirTemperature
+    power: -10000
+    target: 2.7
+  - type: Physics
+    bodyStatus: OnGround
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 80
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: Butcherable
+    spawned:
+    - id: FloorTileItemSnow
+      amount: 18
+    - id: CHOMPMaterialFrostScale
+      amount: 4
+  - type: FaunaFeed
+    foodStacks:
+    - FloorTileSnow
+    evolveKey:
+      tags:
+      - BountyColdChili
+    evolveInto: CHOMPMobLivingIceberg
+
+# Evolved living icicle.
+- type: entity
+  parent: CHOMPMobLivingIce
+  id: CHOMPMobLivingIceberg
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    scale: 3,3
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: livingice
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: livingice
+      Dead:
+        Base: livingice-dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: FaunaAirTemperature
+    power: -25000
+    target: 2.7
+  - type: FaunaFeed
+    foodStacks:
+    - FloorTileSnow
+
+# Eel floating through its own cloud of sleeping gas.
+- type: entity
+  parent: CHOMPMobSpaceCritterBase
+  id: CHOMPMobDreamEel
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: dreameel
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: dreameel
+      Dead:
+        Base: dreameel
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodMeatEel
+      amount: 2
+    - id: CHOMPMaterialDreamScale
+      amount: 4
+  - type: GasProducerAnomaly
+    releasePassively: true
+    releasedGas: NitrousOxide
+    passiveMoleAmount: 0.5
+    spawnRadius: 1
+  - type: FaunaFeed
+    food:
+      tags:
+      - Raw
+      - Meat
+      requireAll: true
+    evolveStacks:
+    - Plasma
+    evolveInto: CHOMPMobNightmareEel
+
+# Evolved dream eel that breathes plasma.
+- type: entity
+  parent: CHOMPMobDreamEel
+  id: CHOMPMobNightmareEel
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    color: "#9933FF"
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: dreameel
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: dreameel
+      Dead:
+        Base: dreameel
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 6
+    baseSprintSpeed: 6
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: GasProducerAnomaly
+    releasePassively: true
+    releasedGas: Plasma
+    passiveMoleAmount: 0.5
+    spawnRadius: 1
+  - type: FaunaFeed
+    food:
+      tags:
+      - Raw
+      - Meat
+      requireAll: true
+
+# Metallic turtle that sends out gravity waves.
+- type: entity
+  parent: CHOMPMobSpaceCritterBase
+  id: CHOMPMobGravityShell
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: gravityshell
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: gravityshell
+      Dead:
+        Base: gravityshell
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 12
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodMeatGravityShell
+      amount: 8
+    - id: CHOMPMaterialShellChitin
+      amount: 4
+  - type: GravityWell
+    maxRange: 3
+    baseRadialAcceleration: 3
+    gravPulsePeriod: 1
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaChompGravityShell
+  - type: FaunaFeed
+    foodStacks:
+    - FloorTileConcrete
+    evolveStacks:
+    - Uranium
+    evolveInto: CHOMPMobCleanseShell
+
+# Evolved gravity shell that breathes out oxygen.
+- type: entity
+  parent: CHOMPMobSpaceCritterBase
+  id: CHOMPMobCleanseShell
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/CHOMP/space_critters.rsi
+    scale: 0.5,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: cleanseshell
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: cleanseshell
+      Dead:
+        Base: cleanseshell
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 12
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodMeatGravityShell
+      amount: 8
+    - id: CHOMPMaterialShellChitin
+      amount: 4
+  - type: GasProducerAnomaly
+    releasePassively: true
+    releasedGas: Oxygen
+    passiveMoleAmount: 0.5
+    spawnRadius: 1
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaChompGravityShell
+  - type: FaunaFeed
+    foodStacks:
+    - FloorTileConcrete
+
+# Tyr mineral ants: fast metal ants that dart in, bite and back off. Their bodies are full of the metal they eat.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: CHOMPMobTyrAnt
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CHOMP/tyr_ants.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: metal
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: metal
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      15: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 12
+  - type: FaunaHitAndRun
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.3
+        density: 80
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantShock
+      amount: 7
+    - id: SheetSteel1
+      amount: 6
+
+# Copper ant. Lasers and other energy weapons barely touch it.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntCopper
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: copper
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: copper
+      Dead:
+        Base: dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: CHOMPTyrAntCopper
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantBurn
+      amount: 3
+    - id: SheetCopper1
+      amount: 28
+
+# Agate ant. Glows, rushes in and bursts as it bites, exploding where it dies.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntAgate
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: agate
+      color: "#FF7D51"
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: agate
+      Dead:
+        Base: dead
+  - type: PointLight
+    radius: 5
+    energy: 2
+    color: "#FF7D51"
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 6
+    baseSprintSpeed: 6
+  - type: FaunaMeleeEffect
+    chance: 1
+    selfDamage:
+      types:
+        Blunt: 30
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    explosionType: Default
+    totalIntensity: 60
+    intensitySlope: 5
+    maxIntensity: 15
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantBonus
+      amount: 3
+    - id: CHOMPMaterialWeatheredAgate
+      amount: 28
+
+# Diamond ant. Slower and tougher, and it bites much harder.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntDiamond
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: diamond
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: diamond
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 24
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantNeoburn
+      amount: 7
+    - id: MaterialDiamond1
+      amount: 1
+      maxAmount: 2
+
+# Uranium ant. Glows green and gives off a burst of radiation when close to its prey.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntUranium
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: uranium
+      color: "#91FF91"
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: uranium
+      Dead:
+        Base: dead
+  - type: PointLight
+    radius: 5
+    energy: 2
+    color: "#91FF91"
+  - type: FaunaAbilities
+    abilities:
+    - action: CHOMPActionTyrAntRadiation
+      maxRange: 2
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantRadiation
+      amount: 7
+    - id: SheetUranium1
+      amount: 28
+
+- type: entity
+  id: CHOMPActionTyrAntRadiation
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 5
+    event: !type:InstantSpawnSpellEvent
+      prototype: RadiationPulse
+      posData: !type:TargetCasterPos
+
+# Painite ant. Its bite sets prey on fire.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntPainite
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: painite
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: painite
+      Dead:
+        Base: dead
+  - type: IgniteOnMeleeHit
+    fireStacks: 1
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantNeoburn
+      amount: 3
+    - id: CHOMPMaterialPainite
+      amount: 28
+
+# Bronze ant. Hits hard enough to knock prey down, and sends anyone already down flying.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntBronze
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: bronze
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: bronze
+      Dead:
+        Base: dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: Punch
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 12
+  - type: FaunaMeleeEffect
+    chance: 1
+    knockdown: 1
+  - type: MeleeThrowOnHit
+    distance: 3
+    speed: 8
+  - type: FaunaThrowChance
+    chance: 1
+    maxMass: 100
+    resistPopup: fauna-tyrant-throw-resist
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantShock
+      amount: 3
+    - id: CHOMPMaterialBronze
+      amount: 28
+
+# Queen ant. Lays new metal ants while the nest is quiet.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntQueen
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: queen
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: queen
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: FaunaBurrow
+    closable: false
+    interval: 60
+    maxAlive: 6
+    prototypes:
+    - CHOMPMobTyrAnt
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantShock
+      amount: 7
+    - id: CHOMPMaterialValhollide
+      amount: 4
+
+# Quartz ant. Melee and bullets barely scratch it.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntQuartz
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: quartz
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: quartz
+      Dead:
+        Base: dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: CHOMPTyrAntQuartz
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantRadiation
+      amount: 3
+    - id: CHOMPMaterialQuartz
+      amount: 28
+
+# Green verdantium ant. Half of all shots miss it.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntVerdantium
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: verdantium
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: verdantium
+      Dead:
+        Base: dead
+  - type: FaunaDodge
+    pool: 50
+    regen: 0
+    usage: 0
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantRadiation
+      amount: 7
+    - id: CHOMPMaterialVerdantium
+      amount: 28
+
+# Tiny metallic hydrogen ant that people walk right over.
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntMhydro
+  components:
+  - type: Sprite
+    scale: 0.5,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: mhydro
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mhydro
+      Dead:
+        Base: dead
+  - type: MobCollision
+    fixtureId: none
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 6
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantRadiation
+      amount: 7
+    - id: CHOMPMaterialMetallicHydrogen
+      amount: 16
+
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntGraphite
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: graphite
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: graphite
+      Dead:
+        Base: dead
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantNeoburn
+      amount: 7
+    - id: CHOMPMaterialGraphite
+      amount: 28
+
+- type: entity
+  parent: CHOMPMobTyrAnt
+  id: CHOMPMobTyrAntSilver
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: silver
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: silver
+      Dead:
+        Base: dead
+  - type: Butcherable
+    spawned:
+    - id: CHOMPFoodTyrantNeoburn
+      amount: 7
+    - id: IngotSilver1
+      amount: 28
+
+# Ant hole. Every 15 minutes five ants of the ported kinds crawl out.
+- type: entity
+  parent: BaseStructure
+  id: CHOMPAntHill
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/tribal_gear.rsi
+    state: hole
+    drawdepth: FloorObjects
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: TimedSpawner
+    prototypes:
+    - CHOMPMobTyrAntBronze
+    - CHOMPMobTyrAntCopper
+    - CHOMPMobTyrAntQuartz
+    - CHOMPMobTyrAntAgate
+    - CHOMPMobTyrAntPainite
+    - CHOMPMobTyrAntDiamond
+    - CHOMPMobTyrAntVerdantium
+    - CHOMPMobTyrAntUranium
+    - CHOMPMobTyrAntMhydro
+    - CHOMPMobTyrAntGraphite
+    - CHOMPMobTyrAntSilver
+    chance: 1
+    intervalSeconds: 900
+    minimumEntitiesSpawned: 5
+    maximumEntitiesSpawned: 5

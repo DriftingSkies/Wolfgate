@@ -382,7 +382,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 13
+        Slash: 18
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeTwitcherFootstep
@@ -528,7 +528,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 20
+        Slash: 26
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeTwitcherFootstep
@@ -696,7 +696,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 20
+        Slash: 28
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeUndyingFootstep
@@ -978,7 +978,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 13
+        Slash: 22
   - type: WFRemadeVoice
     speech:
       collection: WFRemadeDividerShoutLong
@@ -1337,7 +1337,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 13
+        Slash: 22
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeTripodFootstep

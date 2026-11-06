@@ -23,6 +23,10 @@ unnoticed, and the pasha ranks (Mirliva and up) are left for admin and event rol
 
 ## Files
 
+### Integration tests
+
+- [`Content.IntegrationTests/Tests/_WF/PdvRanks/WFPdvRanksTest.cs`](../../../Content.IntegrationTests/Tests/_WF/PdvRanks/WFPdvRanksTest.cs)
+
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/PdvRanks/ranks.yml`](../../../Resources/Prototypes/_WF/PdvRanks/ranks.yml)

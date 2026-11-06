@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from CHOMPStation at commit https://github.com/CHOMPStation2/CHOMPStation2/commit/ca24d940aa4a6eb0d58d32b85ddc830f44459264.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "sheet-gem"
+    },
+    {
+      "name": "sheet-wavy"
+    },
+    {
+      "name": "sheet-agate"
+    },
+    {
+      "name": "sheet-mythril"
+    },
+    {
+      "name": "sheet-puck"
+    },
+    {
+      "name": "sheet-ingot"
+    }
+  ]
+}

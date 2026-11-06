@@ -261,8 +261,13 @@ public sealed class WFReaverCitadelTest : WFReaverTestBase
 
             ShootAt(citadel, "lead", ship);
             before = Balance();
+
+            // The citadel is a capstone: it pays in full past the hourly cap.
+            var config = Server.ResolveDependency<IConfigurationManager>();
+            config.SetCVar(EncountersCVars.PayoutHourlyCap, 1);
             KillCrew(citadel, "lead");
             campaign.CheckStrongholds();
+            config.SetCVar(EncountersCVars.PayoutHourlyCap, int.MaxValue);
 
             Assert.That(SEntMan.GetComponent<WFEncounterComponent>(citadel).Resolution, Is.EqualTo(WFEncounterResolution.Destroyed));
             Assert.That(campaign.Strongholds().Select(entry => entry.Owner), Is.EqualTo(new[] { stronghold }), "The ordinary hub still stands.");

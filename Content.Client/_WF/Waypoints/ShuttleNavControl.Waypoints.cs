@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client._WF.CombatConsole;
+using Content.Client._WF.Lattice;
 using Content.Client._WF.Waypoints;
 using Content.Shared._Mono.Shuttles;
 using Content.Shared._WF.Waypoints;
@@ -240,11 +241,13 @@ public partial class ShuttleNavControl
         var bottom = PixelSize.Y - (WfOverlayEdge + (WfCockpitControls ? WfCockpitReadoutClearance : 0f)) * UIScale;
         var right = PixelSize.X - WfOverlayEdge * UIScale;
 
+        // Out past the Lattice's hold the numbers garble, half as badly as names.
+        var lattice = EntManager.System<WFLatticeViewSystem>();
         bottom = DrawLine(scanner is { } scan
-            ? Loc.GetString("wf-radar-scanner-coordinates", ("x", $"{scan.X:0.0}"), ("y", $"{scan.Y:0.0}"))
+            ? lattice.GarbleForViewer(Loc.GetString("wf-radar-scanner-coordinates", ("x", $"{scan.X:0.0}"), ("y", $"{scan.Y:0.0}")), 2, 0.5f)
             : Loc.GetString("wf-radar-scanner-unknown"), bottom);
         DrawLine(cursor is { } point
-            ? Loc.GetString("wf-radar-cursor-coordinates", ("x", $"{point.X:0.0}"), ("y", $"{point.Y:0.0}"))
+            ? lattice.GarbleForViewer(Loc.GetString("wf-radar-cursor-coordinates", ("x", $"{point.X:0.0}"), ("y", $"{point.Y:0.0}")), 3, 0.5f)
             : Loc.GetString("wf-radar-cursor-unknown"), bottom);
 
         float DrawLine(string text, float lineBottom)

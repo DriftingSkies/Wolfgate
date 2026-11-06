@@ -393,8 +393,9 @@ public sealed class DreadTest
         var far = await CountShard(pair, 70f, 15f);
         Assert.That(far, Is.EqualTo((0, 0, 0, 0, 0f)), "a shard 15 m off troubled the player.");
 
-        var near = await CountShard(pair, 70f, 1f);
-        Assert.That(Total(near), Is.GreaterThan(0), "a player 1 m from a Harvest shard felt nothing in two minutes.");
+        // About 2.6 events a minute at 1 m: two minutes drew none once in ~180 runs, four make that ~1 in 30,000.
+        var near = await CountShard(pair, 70f, 1f, seconds: 240f);
+        Assert.That(Total(near), Is.GreaterThan(0), "a player 1 m from a Harvest shard felt nothing in four minutes.");
         Assert.That(near.Bed, Is.GreaterThan(0f), "the whisper bed never started beside a Harvest shard.");
 
         var carried = await CountShard(pair, 70f, 0f, carried: true);

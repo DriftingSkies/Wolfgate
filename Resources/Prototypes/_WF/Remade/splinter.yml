@@ -5,6 +5,8 @@
   placement:
     mode: SnapgridCenter
   components:
+  - type: Contraband
+    severity: WFUnlawful
   - type: Transform
     noRot: true
     anchored: true

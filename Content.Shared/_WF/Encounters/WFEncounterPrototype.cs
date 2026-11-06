@@ -149,6 +149,13 @@ public sealed partial class WFEncounterPrototype : IPrototype
     [DataField]
     public float MaxDistance = 4000f;
 
+    /// <summary>
+    /// Least Lattice band the origin must lie in. Above zero, the distances are from the sector's centre instead of
+    /// from a player ship.
+    /// </summary>
+    [DataField]
+    public int LatticeBand;
+
     /// <summary>Open space: no station may be within this distance of the origin. Keeps raiders away from ports.</summary>
     [DataField]
     public float StationClearance;

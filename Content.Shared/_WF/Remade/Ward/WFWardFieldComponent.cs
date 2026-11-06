@@ -13,4 +13,8 @@ public sealed partial class WFWardFieldComponent : Component
     /// <summary>True while the stone is rooted at the Crescendo and the field can't be dented.</summary>
     [DataField, AutoNetworkedField]
     public bool Rooted;
+
+    /// <summary>Colour the membrane and its glyphs take instead of the stone's red, for fields that borrow its look.</summary>
+    [DataField, AutoNetworkedField]
+    public Color? Tint;
 }

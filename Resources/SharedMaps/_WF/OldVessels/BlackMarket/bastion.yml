@@ -3422,7 +3422,7 @@ entities:
     - type: Transform
       pos: -5.5,1.5
       parent: 1
-- proto: WFWallAdamantite
+- proto: WallPlastitanium
   entities:
   - uid: 399
     components:
@@ -3965,7 +3965,7 @@ entities:
     - type: Transform
       pos: -3.5,-5.5
       parent: 1
-- proto: WFWallAdamantiteCapital
+- proto: WallPlastitaniumCapital
   entities:
   - uid: 495
     components:
@@ -4012,7 +4012,7 @@ entities:
     - type: Transform
       pos: 0.5,3.5
       parent: 1
-- proto: WFWallAdamantiteDiagonal
+- proto: WallPlastitaniumDiagonal
   entities:
   - uid: 504
     components:

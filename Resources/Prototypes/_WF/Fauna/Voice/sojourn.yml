@@ -1,0 +1,600 @@
+# Sojourn fauna emotes, fired by AutoEmote at the source speak_chance.
+
+- type: emote
+  id: SojournEmoteSamak
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-samak-1
+  - fauna-emote-sojourn-samak-2
+  - fauna-emote-sojourn-samak-3
+  - fauna-emote-sojourn-samak-4
+
+- type: autoEmote
+  id: SojournAutoEmoteSamak
+  emote: SojournEmoteSamak
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteDiyaab
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-diyaab-1
+  - fauna-emote-sojourn-diyaab-2
+
+- type: autoEmote
+  id: SojournAutoEmoteDiyaab
+  emote: SojournEmoteDiyaab
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteShantak
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-shantak-1
+  - fauna-emote-sojourn-shantak-2
+  - fauna-emote-sojourn-shantak-3
+
+- type: autoEmote
+  id: SojournAutoEmoteShantak
+  emote: SojournEmoteShantak
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteTengolo
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-tengolo-1
+  - fauna-emote-sojourn-tengolo-2
+  - fauna-emote-sojourn-tengolo-3
+  - fauna-emote-sojourn-tengolo-4
+
+- type: autoEmote
+  id: SojournAutoEmoteTengolo
+  emote: SojournEmoteTengolo
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteHellDiver
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-hell-diver-1
+  - fauna-emote-sojourn-hell-diver-2
+  - fauna-emote-sojourn-hell-diver-3
+  - fauna-emote-sojourn-hell-diver-4
+
+- type: autoEmote
+  id: SojournAutoEmoteHellDiver
+  emote: SojournEmoteHellDiver
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteHakhma
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-hakhma-1
+  - fauna-emote-sojourn-hakhma-2
+  - fauna-emote-sojourn-hakhma-3
+  - fauna-emote-sojourn-hakhma-4
+
+- type: autoEmote
+  id: SojournAutoEmoteHakhma
+  emote: SojournEmoteHakhma
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteTahca
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-tahca-1
+  - fauna-emote-sojourn-tahca-2
+  - fauna-emote-sojourn-tahca-3
+  - fauna-emote-sojourn-tahca-4
+
+- type: autoEmote
+  id: SojournAutoEmoteTahca
+  emote: SojournEmoteTahca
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmotePanther
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-panther-1
+  - fauna-emote-sojourn-panther-2
+  - fauna-emote-sojourn-panther-3
+  - fauna-emote-sojourn-panther-4
+  - fauna-emote-sojourn-panther-5
+
+- type: autoEmote
+  id: SojournAutoEmotePanther
+  emote: SojournEmotePanther
+  interval: 2.0
+  chance: 0.01
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteNightmare
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-nightmare-1
+  - fauna-emote-sojourn-nightmare-2
+
+- type: autoEmote
+  id: SojournAutoEmoteNightmare
+  emote: SojournEmoteNightmare
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteCroakerLord
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-croaker-lord-1
+  - fauna-emote-sojourn-croaker-lord-2
+
+- type: autoEmote
+  id: SojournAutoEmoteCroakerLord
+  emote: SojournEmoteCroakerLord
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteHellPig
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-hell-pig-1
+  - fauna-emote-sojourn-hell-pig-2
+
+- type: autoEmote
+  id: SojournAutoEmoteHellPig
+  emote: SojournEmoteHellPig
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteHellPigWendigo
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-hell-pig-wendigo-1
+  - fauna-emote-sojourn-hell-pig-wendigo-2
+
+- type: autoEmote
+  id: SojournAutoEmoteHellPigWendigo
+  emote: SojournEmoteHellPigWendigo
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteSlepnir
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-slepnir-1
+  - fauna-emote-sojourn-slepnir-2
+
+- type: autoEmote
+  id: SojournAutoEmoteSlepnir
+  emote: SojournEmoteSlepnir
+  interval: 2.0
+  chance: 0.025
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteMukwah
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-mukwah-1
+  - fauna-emote-sojourn-mukwah-2
+  - fauna-emote-sojourn-mukwah-3
+  - fauna-emote-sojourn-mukwah-4
+
+- type: autoEmote
+  id: SojournAutoEmoteMukwah
+  emote: SojournEmoteMukwah
+  interval: 2.0
+  chance: 0.005
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteCaveSpider
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-cave-spider-1
+  - fauna-emote-sojourn-cave-spider-2
+  - fauna-emote-sojourn-cave-spider-3
+  - fauna-emote-sojourn-cave-spider-4
+
+- type: autoEmote
+  id: SojournAutoEmoteCaveSpider
+  emote: SojournEmoteCaveSpider
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteCloakerSpider
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-cloaker-spider-1
+  - fauna-emote-sojourn-cloaker-spider-2
+  - fauna-emote-sojourn-cloaker-spider-3
+
+- type: autoEmote
+  id: SojournAutoEmoteCloakerSpider
+  emote: SojournEmoteCloakerSpider
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteRoach
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-roach-1
+  - fauna-emote-sojourn-roach-2
+
+- type: autoEmote
+  id: SojournAutoEmoteRoach
+  emote: SojournEmoteRoach
+  interval: 2.0
+  chance: 0.02
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteTermite
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-termite-1
+  - fauna-emote-sojourn-termite-2
+
+- type: autoEmote
+  id: SojournAutoEmoteTermite
+  emote: SojournEmoteTermite
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmotePsi
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-psi-1
+  - fauna-emote-sojourn-psi-2
+  - fauna-emote-sojourn-psi-3
+  - fauna-emote-sojourn-psi-4
+  - fauna-emote-sojourn-psi-5
+  - fauna-emote-sojourn-psi-6
+
+- type: autoEmote
+  id: SojournAutoEmotePsi
+  emote: SojournEmotePsi
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteMemoryEater
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-memory-eater-1
+  - fauna-emote-sojourn-memory-eater-2
+  - fauna-emote-sojourn-memory-eater-3
+
+- type: autoEmote
+  id: SojournAutoEmoteMemoryEater
+  emote: SojournEmoteMemoryEater
+  interval: 2.0
+  chance: 0.02
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmotePonderous
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-ponderous-1
+  - fauna-emote-sojourn-ponderous-2
+  - fauna-emote-sojourn-ponderous-3
+
+- type: autoEmote
+  id: SojournAutoEmotePonderous
+  emote: SojournEmotePonderous
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteLicker
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-licker-1
+  - fauna-emote-sojourn-licker-2
+  - fauna-emote-sojourn-licker-3
+
+- type: autoEmote
+  id: SojournAutoEmoteLicker
+  emote: SojournEmoteLicker
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteCerebralCrusher
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-cerebral-crusher-1
+  - fauna-emote-sojourn-cerebral-crusher-2
+  - fauna-emote-sojourn-cerebral-crusher-3
+
+- type: autoEmote
+  id: SojournAutoEmoteCerebralCrusher
+  emote: SojournEmoteCerebralCrusher
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteFleshTower
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-flesh-tower-1
+  - fauna-emote-sojourn-flesh-tower-2
+  - fauna-emote-sojourn-flesh-tower-3
+
+- type: autoEmote
+  id: SojournAutoEmoteFleshTower
+  emote: SojournEmoteFleshTower
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteShellHound
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-shell-hound-1
+  - fauna-emote-sojourn-shell-hound-2
+  - fauna-emote-sojourn-shell-hound-3
+
+- type: autoEmote
+  id: SojournAutoEmoteShellHound
+  emote: SojournEmoteShellHound
+  interval: 2.0
+  chance: 0.02
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmotePusMaggot
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-pus-maggot-1
+  - fauna-emote-sojourn-pus-maggot-2
+  - fauna-emote-sojourn-pus-maggot-3
+
+- type: autoEmote
+  id: SojournAutoEmotePusMaggot
+  emote: SojournEmotePusMaggot
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteHoveringNightmare
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-hovering-nightmare-1
+  - fauna-emote-sojourn-hovering-nightmare-2
+  - fauna-emote-sojourn-hovering-nightmare-3
+
+- type: autoEmote
+  id: SojournAutoEmoteHoveringNightmare
+  emote: SojournEmoteHoveringNightmare
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteMemory
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-memory-1
+  - fauna-emote-sojourn-memory-2
+  - fauna-emote-sojourn-memory-3
+  - fauna-emote-sojourn-memory-4
+  - fauna-emote-sojourn-memory-5
+
+- type: autoEmote
+  id: SojournAutoEmoteMemory
+  emote: SojournEmoteMemory
+  interval: 2.0
+  chance: 0.15
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteAshWendigo
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-ash-wendigo-1
+  - fauna-emote-sojourn-ash-wendigo-2
+  - fauna-emote-sojourn-ash-wendigo-3
+
+- type: autoEmote
+  id: SojournAutoEmoteAshWendigo
+  emote: SojournEmoteAshWendigo
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteBaronWormwood
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-baron-wormwood-1
+  - fauna-emote-sojourn-baron-wormwood-2
+  - fauna-emote-sojourn-baron-wormwood-3
+
+- type: autoEmote
+  id: SojournAutoEmoteBaronWormwood
+  emote: SojournEmoteBaronWormwood
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteViscountMannimarcus
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-viscount-mannimarcus-1
+  - fauna-emote-sojourn-viscount-mannimarcus-2
+  - fauna-emote-sojourn-viscount-mannimarcus-3
+
+- type: autoEmote
+  id: SojournAutoEmoteViscountMannimarcus
+  emote: SojournEmoteViscountMannimarcus
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteDukeRavencroft
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-duke-ravencroft-1
+  - fauna-emote-sojourn-duke-ravencroft-2
+  - fauna-emote-sojourn-duke-ravencroft-3
+
+- type: autoEmote
+  id: SojournAutoEmoteDukeRavencroft
+  emote: SojournEmoteDukeRavencroft
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteMarshalBenedictus
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-marshal-benedictus-1
+  - fauna-emote-sojourn-marshal-benedictus-2
+  - fauna-emote-sojourn-marshal-benedictus-3
+
+- type: autoEmote
+  id: SojournAutoEmoteMarshalBenedictus
+  emote: SojournEmoteMarshalBenedictus
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteRedJesterThomas
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-red-jester-thomas-1
+  - fauna-emote-sojourn-red-jester-thomas-2
+  - fauna-emote-sojourn-red-jester-thomas-3
+
+- type: autoEmote
+  id: SojournAutoEmoteRedJesterThomas
+  emote: SojournEmoteRedJesterThomas
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteStewardKerevork
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-steward-kerevork-1
+  - fauna-emote-sojourn-steward-kerevork-2
+  - fauna-emote-sojourn-steward-kerevork-3
+
+- type: autoEmote
+  id: SojournAutoEmoteStewardKerevork
+  emote: SojournEmoteStewardKerevork
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteDreamingKing
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-dreaming-king-1
+  - fauna-emote-sojourn-dreaming-king-2
+  - fauna-emote-sojourn-dreaming-king-3
+  - fauna-emote-sojourn-dreaming-king-4
+  - fauna-emote-sojourn-dreaming-king-5
+  - fauna-emote-sojourn-dreaming-king-6
+
+- type: autoEmote
+  id: SojournAutoEmoteDreamingKing
+  emote: SojournEmoteDreamingKing
+  interval: 2.0
+  chance: 0.05
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: SojournEmoteDaskvey
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-sojourn-daskvey-1
+
+- type: autoEmote
+  id: SojournAutoEmoteDaskvey
+  emote: SojournEmoteDaskvey
+  interval: 2.0
+  chance: 0.02
+  hiddenFromChatWindow: true

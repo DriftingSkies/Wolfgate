@@ -1,0 +1,3110 @@
+# Planet creatures converted from Shiptest.
+
+# Desert goliath: little health behind a tough hide. Grabs with tentacles up close and charges from further out.
+- type: entity
+  parent: [ MobGoliath, FaunaMobCore ]
+  id: ShiptestMobGoliathWhitesands
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/goliath.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: goliath
+    - map: [ "preattack" ]
+      state: goliath_preattack
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaTentacleVisuals.Ready:
+        preattack:
+          True: { visible: true }
+          False: { visible: false }
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: goliath
+      Dead:
+        Base: goliath_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestWhitesandsGoliath
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    attackRate: 0.75
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 16
+  - type: NPCUseActionOnTarget
+    actionId: ShiptestActionGoliathTentacle
+  - type: FaunaChargeLook
+    afterimage: "#FF0000"
+  - type: FaunaCharge
+    range: 7
+    blockedStun: 10
+    windup: 1
+  - type: FaunaTentacleCooldown
+  - type: FaunaRockHide
+    projectileThreshold: 0
+    throwThreshold: 10
+  - type: PreventPulledWhileAlive
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ShiptestGemRupee
+      prob: 0.0025
+    - id: ShiptestGemFrostDiamond
+      prob: 0.0025
+    - id: ShiptestGemVoid
+      prob: 0.0025
+    - id: ShiptestGemPhoron
+      prob: 0.0025
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionGoliathCharge
+      minRange: 3
+      maxRange: 7
+      hold: 1
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatGoliath
+      amount: 2
+    - id: MaterialBones1
+      amount: 2
+    - id: MaterialGoliathHide1
+      amount: 2
+    - id: SilverOre1
+      amount: 10
+    - id: ShiptestMaterialSinew
+      amount: 2
+    - id: ShiptestTrophyGoliathTentacle
+      prob: 0.25
+
+- type: entity
+  parent: ShiptestMobGoliathWhitesands
+  id: ShiptestMobGoliathWhitesandsAncient
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/goliath.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: ancient
+    - map: [ "aggro" ]
+      state: ancient_alert
+      visible: false
+    - map: [ "preattack" ]
+      state: ancient_preattack
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: ancient
+      Dead:
+        Base: ancient_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+      enum.FaunaTentacleVisuals.Ready:
+        preattack:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      70: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestWhitesandsGoliathAncient
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.2
+    baseSprintSpeed: 1.2
+  - type: FaunaTentacleField
+    tentacle: ShiptestEffectGoliathTentacle
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatGoliath
+      amount: 2
+    - id: MaterialBones1
+      amount: 2
+    - id: SilverOre1
+      amount: 10
+    - id: ShiptestMaterialSinew
+      amount: 2
+    - id: ShiptestTrophyElderTentacle
+      prob: 0.75
+  - type: HTN
+    constantlyReplan: false
+    rootTask:
+      task: FaunaLurkCompound
+    blackboard:
+      VisionRadius: !type:Single
+        6
+      AggroVisionRadius: !type:Single
+        10
+
+# Rock-planet goliath: a burrowing worm with its own tentacles.
+- type: entity
+  parent: ShiptestMobGoliathWhitesands
+  id: ShiptestMobGruboid
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: gruboid
+    - map: [ "aggro" ]
+      state: gruboid_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: gruboid
+      Dead:
+        Base: gruboid_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      140: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestGoliath
+  - type: NPCUseActionOnTarget
+    actionId: ShiptestActionGruboidTentacle
+
+- type: entity
+  parent: ShiptestMobGruboid
+  id: ShiptestMobGruboidBaby
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: baby
+  - type: GenericVisualizer
+    visuals: {}
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: baby
+      Dead:
+        Base: baby_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: Damageable
+    damageContainer: Biological
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 5
+  - type: NPCUseActionOnTarget
+    actionId: ShiptestActionGruboidBabyTentacle
+  - type: FaunaAbilities
+    abilities: []
+  - type: Butcherable
+    spawned:
+    - id: MaterialGoliathHide1
+      amount: 1
+
+# Desert basilisk: a shell takes every hit until it cracks, and drops two diamonds when it does.
+- type: entity
+  parent: [ CitadelRPMobBasilisk, FaunaMobCore ]
+  id: ShiptestMobBasiliskWhitesands
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/basilisk.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: basilisk
+    - map: [ "aggro" ]
+      state: charge
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: basilisk
+      Dead:
+        Base: basilisk_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaBreakableShellVisuals.Stage:
+        enum.DamageStateVisualLayers.Base:
+          Whole: { state: basilisk }
+          Cracked: { state: basilisk_cracked }
+          Broken: { state: basilisk_broken }
+          Dead: { state: basilisk_dead }
+      enum.FaunaAggroVisuals.Aggro:
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 11
+        Structural: 60
+  - type: FaunaBreakableShell
+    loot:
+    - DiamondOre1
+    - DiamondOre1
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: NpcFactionMember
+    factions:
+    - ShiptestBasilisk
+  - type: Butcherable
+    spawned:
+    - id: ShiptestMaterialSinew
+      amount: 4
+    - id: MaterialBones1
+      amount: 2
+
+# Lava-planet goldgrub: flees, sets the ground behind it alight and bursts into flames when it dies.
+- type: entity
+  parent: [ CitadelRPMobGoldgrub, FaunaMobCore ]
+  id: ShiptestMobLavagrub
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/lavagrub.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: lavagrub
+    - map: [ "aggro" ]
+      state: lavagrub_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: lavagrub
+      Dead:
+        Base: lavagrub_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      45: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestLavagrub
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 45
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          GoldOre1:
+            min: 1
+            max: 3
+          SilverOre1:
+            min: 0
+            max: 2
+          UraniumOre1:
+            min: 0
+            max: 1
+          DiamondOre1:
+            min: 0
+            max: 1
+  - type: FaunaFireTrail
+    fire: ShiptestEffectTurfFire
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaDigAmbush
+    hole: ShiptestAntlionBurrow
+    fleeHealth: 1
+    fleeDelay: 10
+
+- type: entity
+  parent: ActionGoliathTentacle
+  id: ShiptestActionGoliathTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: Mobs/Aliens/Asteroid/goliath.rsi
+      state: goliath_tentacle_spawn
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      entityId: ShiptestEffectGoliathTentacle
+    useDelay: 12
+    range: 3
+
+- type: entity
+  parent: ShiptestActionGoliathTentacle
+  id: ShiptestActionGruboidTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+      state: tentacle_wiggle
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      entityId: ShiptestEffectGruboidTentacle
+    useDelay: 12
+    range: 3
+
+- type: entity
+  parent: ShiptestActionGruboidTentacle
+  id: ShiptestActionGruboidBabyTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+      state: tentacle_wiggle
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      entityId: ShiptestEffectGruboidTentacle
+      extraSpawns: 0
+    useDelay: 4
+    range: 7
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionGoliathCharge
+  components:
+  - type: EntityTargetAction
+    useDelay: 12
+    range: 7
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent
+
+- type: entity
+  parent: EffectGoliathTentacleSpawn
+  id: ShiptestEffectGoliathTentacle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SpawnOnDespawn
+    prototype: ShiptestGoliathTentacle
+
+- type: entity
+  parent: GoliathTentacle
+  id: ShiptestGoliathTentacle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: StunOnContact
+    blacklist:
+      components:
+      - MobState
+  - type: DamageOnCollide
+    damage:
+      types:
+        Blunt: 22
+    whitelist:
+      components:
+      - MobState
+  - type: SpawnOnDespawn
+    prototype: ShiptestGoliathTentacleSnare
+
+# Holds the legs of whoever stands where the tentacle rose, until they break free.
+- type: entity
+  id: ShiptestGoliathTentacleSnare
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: True
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      slips:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        hard: false
+        layer:
+        - LowImpassable
+  - type: Sprite
+    sprite: Mobs/Aliens/Asteroid/goliath.rsi
+    drawdepth: FloorObjects
+    state: goliath_tentacle_wiggle
+  - type: StepTrigger
+    requiredTriggeredSpeed: 0
+    intersectRatio: 0.1
+    blacklist:
+      tags:
+      - Goliath
+  - type: Ensnaring
+    freeTime: 5
+    breakoutTime: 5
+    walkSpeed: 0.1
+    sprintSpeed: 0.1
+    staminaDamage: 0
+    canMoveBreakout: true
+    maxEnsnares: 1
+  - type: TimedDespawn
+    lifetime: 5
+  - type: SpawnOnDespawn
+    prototype: EffectGoliathTentacleRetract
+
+- type: entity
+  parent: EffectGoliathTentacleSpawn
+  id: ShiptestEffectGruboidTentacle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+    state: tentacle_spawn
+  - type: SpawnOnDespawn
+    prototype: ShiptestGruboidTentacle
+
+- type: entity
+  parent: ShiptestGoliathTentacle
+  id: ShiptestGruboidTentacle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+    layers:
+    - state: tentacle_wiggle
+  - type: SpawnOnDespawn
+    prototype: ShiptestEffectGruboidTentacleRetract
+
+- type: entity
+  parent: EffectGoliathTentacleRetract
+  id: ShiptestEffectGruboidTentacleRetract
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/gruboid.rsi
+    state: tentacle_retract
+
+# Burning ground left by a lavagrub. Sets alight whoever walks into it.
+- type: entity
+  id: ShiptestEffectTurfFire
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      ignition:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        hard: false
+        mask:
+        - ItemMask
+        layer:
+        - SlipLayer
+  - type: IgniteOnCollide
+    fireStacks: 1
+    count: 5
+  - type: IgnitionSource
+    temperature: 700
+    ignited: true
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/turf_fire.rsi
+    drawdepth: FloorObjects
+    state: red_small
+  - type: PointLight
+    radius: 1.5
+    energy: 1.5
+    color: "#FA9632"
+  - type: TimedDespawn
+    lifetime: 10
+
+# Crystal-riddled ancient goliath: convulses, then sprays crystal shards that grow spires where they land. Spires
+# also keep bursting out of the ground around it.
+- type: entity
+  parent: [ MobGoliath, FaunaMobCore ]
+  id: ShiptestMobGoliathCrystal
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/crystal.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: goliath
+    - map: [ "preattack" ]
+      state: goliath_preattack
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: goliath
+      Dead:
+        Base: goliath_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaProjectileBurstVisuals.Windup:
+        preattack:
+          True: { visible: true }
+          False: { visible: false }
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      180: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestGoliath
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.2
+    baseSprintSpeed: 1.2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    attackRate: 0.75
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 16
+  - type: NPCUseActionOnTarget
+    actionId: ShiptestActionCrystalTentacle
+  - type: FaunaTentacleField
+    tentacle: ShiptestEffectCrystalSpire
+  - type: FaunaProjectileBurst
+    projectile: ShiptestProjectileCrystalShard
+    speed: 10
+    spiralChance: 0.2
+    windup: 1
+    windupJitter: 4
+    windupSound:
+      path: /Audio/_WF/Fauna/Shiptest/crystal_magic.ogg
+    spreadSound:
+      path: /Audio/_WF/Fauna/Shiptest/crystal_bamf.ogg
+    spiralSound:
+      path: /Audio/_WF/Fauna/Shiptest/crystal_charge.ogg
+    windupPopup: fauna-crystal-goliath-windup
+    spreadPopup: fauna-crystal-goliath-spread
+    spiralPopup: fauna-crystal-goliath-spiral
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionCrystalBurst
+      maxRange: 9
+      hold: 1
+  - type: FaunaTentacleCooldown
+  - type: FaunaRockHide
+    projectileThreshold: 0
+    throwThreshold: 10
+  - type: PreventPulledWhileAlive
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ShiptestGemRupee
+      prob: 0.0025
+    - id: ShiptestGemFrostDiamond
+      prob: 0.0025
+    - id: ShiptestGemVoid
+      prob: 0.0025
+    - id: ShiptestGemPhoron
+      prob: 0.0025
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatGoliath
+      amount: 2
+    - id: MaterialBones1
+      amount: 2
+    - id: SilverOre1
+      amount: 10
+    - id: ShiptestMaterialSinew
+      amount: 2
+    - id: ShiptestStrangeCrystal
+      amount: 2
+    - id: ShiptestTrophyElderTentacle
+      prob: 0.25
+
+# A legion twisted by the crystals. Its heads burst into shards when they die.
+- type: entity
+  parent: [ MobLegion, FaunaMobCore ]
+  id: ShiptestMobLegionCrystal
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/crystal.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: legion
+  - type: BasicEntityAmmoProvider
+    proto: ShiptestMobLegionCrystalHead
+    capacity: 1
+    count: 1
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MeleeWeapon
+    range: 1.3
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcPunch
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    damage:
+      types:
+        Blunt: 15
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ShiptestRegenerativeCoreCrystal
+    - id: SalvageHumanCorpse
+    - id: MaterialLegionSkull1
+      prob: 0.15
+    - id: MaterialLegionSkull1
+      prob: 0.25
+
+- type: entity
+  parent: [ MobLegionSkull, FaunaMobCore ]
+  id: ShiptestMobLegionCrystalHead
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/crystal.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: legion_head
+  - type: FaunaProjectileBurst
+    projectile: ShiptestProjectileCrystalShard
+    speed: 10
+    deathCount: 6
+  - type: MobCollision
+    fixtureId: none
+  - type: TimedDespawn
+    lifetime: 10
+
+# Watcher overgrown by a crystal tumour. Its freezing bolts also make the target shake.
+- type: entity
+  parent: MobWatcherBase
+  id: ShiptestMobWatcherForgotten
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/forgotten_watcher.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: watcher
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: watcher
+      Dead:
+        Base: watcher_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 25
+  - type: ProjectileBatteryAmmoProvider
+    proto: ShiptestBoltBasiliskSuper
+    fireCost: 50
+  - type: Gun
+    recoil: 0
+    fireRate: 1
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/pierce.ogg
+  - type: HTN
+    rootTask:
+      task: ShiptestWatcherCompound
+    blackboard:
+      VisionRadius: !type:Single
+        5
+      AggroVisionRadius: !type:Single
+        10
+  - type: FaunaCorpseEater
+    whitelist:
+      tags:
+      - Ore
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: NpcFactionMember
+    factions:
+    - ShiptestWatcher
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ShiptestGemFrostDiamond
+      prob: 0.05
+  - type: Butcherable
+    spawned:
+    - id: DiamondOre1
+      amount: 2
+    - id: ShiptestMaterialSinew
+      amount: 2
+    - id: MaterialBones1
+      amount: 1
+    - id: ShiptestStrangeCrystal
+      amount: 1
+    - id: ShiptestTrophyWatcherWing
+      prob: 0.25
+
+# Shoots and fights in melee, otherwise eats ore off the floor.
+- type: htnCompound
+  id: ShiptestWatcherCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: InnateRangedCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatItemCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+- type: entity
+  parent: WatcherBolt
+  id: ShiptestBoltBasiliskSuper
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/projectiles.rsi
+    layers:
+    - state: ice_2
+      shader: unshaded
+  - type: Projectile
+    impactEffect: BulletImpactEffectDisabler
+    damage:
+      types:
+        Cold: 5
+  - type: ChangeTemperatureOnCollide
+    heat: -100000
+  - type: FaunaProjectileEffect
+    jitter: 10
+
+- type: entity
+  parent: BaseBullet
+  id: ShiptestProjectileCrystalShard
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/projectiles.rsi
+    layers:
+    - state: crystal_shard
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 25
+  - type: TriggerOnProjectileHit
+  - type: SpawnOnTrigger
+    proto: ShiptestEffectCrystalSpire
+  - type: TimedDespawn
+    lifetime: 3
+  - type: FaunaFactionPass
+
+- type: entity
+  parent: ShiptestActionGoliathTentacle
+  id: ShiptestActionCrystalTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: _WF/Fauna/Mobs/Shiptest/crystal_spire.rsi
+      state: spire
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      entityId: ShiptestEffectCrystalSpire
+      extraSpawns: 5
+      offsetDirections: [ North, South, East, West, NorthEast, NorthWest, SouthEast, SouthWest ]
+    useDelay: 12
+    range: 3
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionCrystalBurst
+  components:
+  - type: EntityTargetAction
+    useDelay: 12
+    range: 9
+    checkCanAccess: false
+    event: !type:FaunaProjectileBurstActionEvent
+
+- type: entity
+  parent: EffectGoliathTentacleSpawn
+  id: ShiptestEffectCrystalSpire
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/crystal_spire.rsi
+    state: growth
+    offset: 0,0.5
+  - type: TimedDespawn
+    lifetime: 0.9
+  - type: SpawnOnDespawn
+    prototype: ShiptestCrystalSpire
+
+- type: entity
+  parent: ShiptestGoliathTentacle
+  id: ShiptestCrystalSpire
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/crystal_spire.rsi
+    layers:
+    - state: spire
+      offset: 0,0.5
+  - type: TimedDespawn
+    lifetime: 1
+  - type: SpawnOnDespawn
+    prototype: ShiptestEffectCrystalSpireRetract
+
+- type: entity
+  parent: EffectGoliathTentacleRetract
+  id: ShiptestEffectCrystalSpireRetract
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/crystal_spire.rsi
+    state: reduction
+    offset: 0,0.5
+  - type: TimedDespawn
+    lifetime: 0.9
+
+# Ice-moon wolf: bites twice as often, lunges from far off, is hard to shoot and runs when nearly dead.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobWolf
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/wolf.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: wolf
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: wolf
+      Dead:
+        Base: wolf_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 2
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 7
+  - type: FaunaDodge
+    pool: 50
+    maxPool: 50
+    sideStep: true
+  - type: FaunaChargeLook
+    afterimage: "#808080"
+  - type: FaunaCharge
+    range: 10
+    knockdown: 1
+    windup: 1
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionWolfCharge
+      minRange: 3
+      maxRange: 10
+      hold: 1
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaHostileFleeAnnounceCompound
+    blackboard:
+      VisionRadius: !type:Single
+        7
+      AggroVisionRadius: !type:Single
+        7
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+    - id: ShiptestMaterialSinewWolf
+      amount: 2
+    - id: MaterialBones1
+      amount: 2
+    - id: ShiptestTrophyWolfEar
+      prob: 0.25
+
+- type: entity
+  parent: ShiptestMobWolf
+  id: ShiptestMobWolfAlpha
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/wolf.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alpha
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alpha
+      Dead:
+        Base: alpha_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 2
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 10
+  - type: FaunaDodge
+    pool: 75
+    maxPool: 75
+    sideStep: true
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionWolfCharge
+      minRange: 3
+      maxRange: 10
+      hold: 1
+    - action: ShiptestActionWolfLunge
+      minRange: 1
+      maxRange: 7
+      hold: 1
+  - type: HTN
+    rootTask:
+      task: FaunaHostileFleeAnnounceCompound
+    blackboard:
+      VisionRadius: !type:Single
+        4
+      AggroVisionRadius: !type:Single
+        12
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+    - id: ShiptestMaterialSinewWolf
+      amount: 4
+    - id: MaterialBones1
+      amount: 5
+    - id: ShiptestTrophyFang
+      prob: 0.25
+
+# Slow ice-lake crustacean that winds up, then pounces and knocks its prey flat.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobLobstrosityArctic
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/lobstrosity.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: arctic
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: arctic
+      Dead:
+        Base: arctic_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 17
+  - type: FaunaChargeLook
+    afterimage: "#FFFFFF"
+  - type: FaunaCharge
+    range: 4
+    knockdown: 3
+    blockedStun: 6
+    windup: 1.5
+    windupPopup: fauna-shiptest-lobstrosity-pounce
+  - type: FaunaShout
+    shakes: 0
+    strength: 0
+    jitter: 2
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionLobstrosityShake
+      minRange: 2
+      maxRange: 4
+    - action: ShiptestActionLobstrosityCharge
+      minRange: 2
+      maxRange: 4
+      hold: 1.5
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        5
+      AggroVisionRadius: !type:Single
+        7
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatCrab
+      amount: 2
+    - id: MaterialBones1
+      amount: 2
+    - id: ShiptestTrophyLobsterClaw
+      prob: 0.25
+
+- type: entity
+  parent: ShiptestMobLobstrosityArctic
+  id: ShiptestMobLobstrosityTropical
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/lobstrosity.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: tropical
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: tropical
+      Dead:
+        Base: tropical_dead
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionWolfCharge
+  components:
+  - type: EntityTargetAction
+    useDelay: 9
+    range: 10
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionWolfLunge
+  components:
+  - type: EntityTargetAction
+    useDelay: 20
+    range: 7
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionLobstrosityCharge
+  components:
+  - type: EntityTargetAction
+    useDelay: 6
+    range: 4
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionLobstrosityShake
+  components:
+  - type: InstantAction
+    useDelay: 6
+    event: !type:FaunaShoutActionEvent
+
+# Young ice drake: shakes and roars, then breathes a short line of fire.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobIceWhelp
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/ice.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: whelp
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: whelp
+      Dead:
+        Base: whelp_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      80: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestIceWhelp
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/demon_attack1.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 20
+  - type: FaunaLineAttack
+    effect: ShiptestEffectFireBreath
+    range: 3
+    windupSound:
+      path: /Audio/Effects/demon_dies.ogg
+      params:
+        pitch: 2
+    fireSound:
+      path: /Audio/Magic/fireball.ogg
+    windupPopup: fauna-ice-whelp-windup
+    windupJitter: 3
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionIceWhelpBreath
+      maxRange: 3
+      hold: 2.5
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        6
+      AggroVisionRadius: !type:Single
+        7
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ShiptestGemAmber
+      prob: 0.1
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/Effects/demon_dies.ogg
+  - type: Butcherable
+    spawned:
+    - id: DiamondOre1
+      amount: 3
+    - id: ShiptestMaterialSinew
+      amount: 2
+    - id: MaterialBones1
+      amount: 10
+    - id: ShiptestMaterialHideAshDrake
+      amount: 1
+    - id: ShiptestTrophyTailSpike
+      prob: 0.25
+
+# Ice and bluespace given shape. Blinks to a spot a few tiles from its prey before each icy shot, and fades away
+# into bluespace crystals when killed.
+- type: entity
+  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
+  id: ShiptestMobIceDemon
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/ice.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: demon
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestIceDemon
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/demon_dies.ogg
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 15
+  - type: ProjectileBatteryAmmoProvider
+    proto: ShiptestBoltIce
+    fireCost: 50
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 50
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
+  - type: Gun
+    recoil: 0
+    fireRate: 0.33
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/pierce.ogg
+  - type: FaunaBlink
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionIceDemonBlink
+      minRange: 4
+      maxRange: 9
+      hold: 0.8
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: MaterialBluespace1
+      amount: 5
+    - id: AnomalyCoreBluespace
+      prob: 0.05
+    - id: ShiptestGemFrostDiamond
+      prob: 0.05
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        8
+      KiteRange: !type:Single
+        3
+
+- type: entity
+  parent: ShiptestMobIceDemon
+  id: ShiptestMobIceDemonPrimordial
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/ice.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: primordial
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Damageable
+    damageContainer: Biological
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/demon_dies.ogg
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: MaterialBluespace1
+      amount: 10
+    - id: AnomalyCoreBluespace
+      prob: 0.2
+    - id: ShiptestGemFrostDiamond
+      prob: 0.2
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 25
+  - type: Gun
+    recoil: 0
+    fireRate: 0.66
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/pierce.ogg
+  - type: FaunaAbilities
+    abilities: []
+
+- type: entity
+  parent: WatcherBolt
+  id: ShiptestBoltIce
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/projectiles.rsi
+    layers:
+    - state: ice_2
+      shader: unshaded
+  - type: Projectile
+    impactEffect: BulletImpactEffectDisabler
+    damage:
+      types:
+        Cold: 10
+  - type: ChangeTemperatureOnCollide
+    heat: -80000
+
+# One tile of an ice whelp's breath.
+- type: entity
+  id: ShiptestEffectFireBreath
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        hard: false
+        mask:
+        - ItemMask
+        layer:
+        - SlipLayer
+  - type: DamageOnCollide
+    emote: null
+    damage:
+      types:
+        Heat: 20
+    whitelist:
+      components:
+      - MobState
+  - type: IgniteOnCollide
+    fixtureId: fix
+    fireStacks: 1
+    count: 5
+  - type: IgnitionSource
+    temperature: 700
+    ignited: true
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/turf_fire.rsi
+    drawdepth: Effects
+    state: red_big
+  - type: PointLight
+    radius: 2
+    energy: 2
+    color: "#FA9632"
+  - type: TimedDespawn
+    lifetime: 1
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionIceWhelpBreath
+  components:
+  - type: EntityTargetAction
+    useDelay: 7
+    range: 3
+    checkCanAccess: false
+    event: !type:FaunaLineAttackActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionIceDemonBlink
+  components:
+  - type: EntityTargetAction
+    useDelay: 3
+    range: 9
+    checkCanAccess: false
+    event: !type:FaunaBlinkActionEvent
+
+# Misshapen demon that stops dead when its prey lines up with it, then fires a blood-red beam down that line.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobBrimdemon
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/brimdemon.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: brimdemon
+    - map: [ "firing" ]
+      state: firing
+      visible: false
+    - map: [ "telegraph" ]
+      state: telegraph
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: brimdemon
+      Dead:
+        Base: dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaLineAttackVisuals.State:
+        enum.DamageStateVisualLayers.Base:
+          Idle: { visible: true }
+          Charging: { visible: false }
+          Firing: { visible: false }
+        firing:
+          Idle: { visible: false }
+          Charging: { visible: true }
+          Firing: { visible: true }
+        telegraph:
+          Idle: { visible: false }
+          Charging: { visible: true }
+          Firing: { visible: false }
+  - type: PointLight
+    radius: 1.4
+    energy: 2
+    color: "#D00000"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 2
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 8
+  - type: FaunaLineAttack
+    effect: ShiptestEffectBrimbeamWarning
+    effectStart: ShiptestEffectBrimbeamWarningStart
+    effectEnd: ShiptestEffectBrimbeamWarningEnd
+    strike: ShiptestBrimbeam
+    strikeStart: ShiptestBrimbeamStart
+    strikeEnd: ShiptestBrimbeamEnd
+    firingTime: 2
+    strikeSound:
+      path: /Audio/_WF/Fauna/Shiptest/brimdemon.ogg
+    range: 10
+    cardinal: true
+    rotateEffects: true
+    windup: 0
+    stepDelay: 0
+    windupPopup: fauna-brimdemon-charge
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionBrimbeam
+      maxRange: 10
+      hold: 3
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaDeathSpawn
+    popup: fauna-shiptest-brimdemon-death
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/Effects/demon_dies.ogg
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaKiteCompound
+    blackboard:
+      VisionRadius: !type:Single
+        6
+      AggroVisionRadius: !type:Single
+        10
+      KiteRange: !type:Single
+        2
+      KiteApproachRange: !type:Single
+        4
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+    - id: ShiptestBrimdust
+      amount: 1
+    - id: ShiptestTrophyBrimdemonFang
+      prob: 0.25
+
+- type: entity
+  id: ShiptestEffectBrimbeamWarning
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/brimdemon.rsi
+    drawdepth: Effects
+    state: beam
+    color: "#FFFFFF60"
+  - type: TimedDespawn
+    lifetime: 1
+
+- type: entity
+  parent: ShiptestEffectBrimbeamWarning
+  id: ShiptestEffectBrimbeamWarningStart
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: beam_start
+
+- type: entity
+  parent: ShiptestEffectBrimbeamWarning
+  id: ShiptestEffectBrimbeamWarningEnd
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: beam_end
+
+# A tile of brimbeam: a heavy burn to everyone in it when it fires, and more for staying in it.
+- type: entity
+  id: ShiptestBrimbeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        hard: false
+        mask:
+        - ItemMask
+        layer:
+        - SlipLayer
+  - type: DamageOnCollide
+    emote: null
+    damage:
+      types:
+        Heat: 35
+    whitelist:
+      components:
+      - MobState
+  - type: DamageContacts
+    damage:
+      types:
+        Heat: 25
+    whitelist:
+      components:
+      - MobState
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/brimdemon.rsi
+    drawdepth: Effects
+    state: beam
+    shader: unshaded
+  - type: PointLight
+    radius: 2
+    energy: 3
+    color: "#D00000"
+  - type: TimedDespawn
+    lifetime: 2
+
+- type: entity
+  parent: ShiptestBrimbeam
+  id: ShiptestBrimbeamStart
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: beam_start
+
+- type: entity
+  parent: ShiptestBrimbeam
+  id: ShiptestBrimbeamEnd
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: beam_end
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionBrimbeam
+  components:
+  - type: EntityTargetAction
+    useDelay: 5
+    range: 10
+    checkCanAccess: false
+    event: !type:FaunaLineAttackActionEvent
+
+# Sand-dwelling insect. Digs in, heals underground and erupts beside its prey to bite it from below.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobAntlion
+  components:
+  - type: Sprite
+    sprite: ADT/Mobs/Animals/antlion.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: antlion
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: antlion
+      Dead:
+        Base: antlion_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      35: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 10
+  - type: FaunaDigAmbush
+    hole: ShiptestAntlionBurrow
+    splash: ShiptestEffectSandSplash
+    heal:
+      groups:
+        Brute: -5
+    eruptDamage:
+      types:
+        Piercing: 10
+    tiles: [ FloorAsteroidSand, FloorAsteroidSandRed, FloorAsteroidSandUnvariantized, FloorAsteroidSandPlanet, FloorAsteroidSandUnvariantizedPlanet ]
+  - type: FaunaRockHide
+    projectileThreshold: 0
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionAntlionBurrow
+      maxRange: 9
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 1
+
+- type: entity
+  parent: ShiptestMobAntlion
+  id: ShiptestMobAntlionQueen
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/antlion_queen.rsi
+    scale: 2,2
+    offset: 0,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: queen
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: queen
+      Dead:
+        Base: queen_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      175: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 25
+  - type: FaunaDigAmbush
+    hole: ShiptestAntlionBurrow
+    splash: ShiptestEffectSandSplash
+    heal:
+      groups:
+        Brute: -20
+    eruptDamage:
+      types:
+        Piercing: 25
+    tiles: [ FloorAsteroidSand, FloorAsteroidSandRed, FloorAsteroidSandUnvariantized, FloorAsteroidSandPlanet, FloorAsteroidSandUnvariantizedPlanet ]
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 4
+
+# Holds a dug-in antlion out of sight until it erupts.
+- type: entity
+  id: ShiptestAntlionBurrow
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: true
+  - type: ContainerContainer
+
+- type: entity
+  id: ShiptestEffectSandSplash
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/sand_splash.rsi
+    drawdepth: Effects
+    state: splash
+    color: "#DBC56B"
+  - type: TimedDespawn
+    lifetime: 1.2
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionAntlionBurrow
+  components:
+  - type: EntityTargetAction
+    useDelay: 15
+    range: 9
+    checkCanAccess: false
+    event: !type:FaunaDigAmbushActionEvent
+
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobBearBrown
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/bear.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: brown
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: brown
+      Dead:
+        Base: brown_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      70: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 15
+  - type: Speech
+    allowedEmotes:
+    - ShiptestEmoteBearRawr
+    - ShiptestEmoteBearGrumble
+    - ShiptestEmoteBearGrawl
+    - ShiptestEmoteBearStomp
+    - ShiptestEmoteBearStare
+  - type: AutoEmote
+    emotes:
+    - ShiptestBearRawr
+    - ShiptestBearGrumble
+    - ShiptestBearGrawl
+    - ShiptestBearStomp
+    - ShiptestBearStare
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatBear
+      amount: 5
+    - id: WFMeridianClothingHeadCostumeBearpelt
+      amount: 1
+
+- type: entity
+  parent: ShiptestMobBearBrown
+  id: ShiptestMobBearPolar
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/bear.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: polar
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: polar
+      Dead:
+        Base: polar_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestPolarBear
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 25
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatBear
+      amount: 3
+    - id: MaterialBones1
+      amount: 2
+    - id: MaterialHideBear
+      amount: 1
+
+# Polar bear in leftover combat armour plating.
+- type: entity
+  parent: ShiptestMobBearPolar
+  id: ShiptestMobBearWar
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/bear.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: war
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: armor
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: war
+        BaseUnshaded: armor
+      Dead:
+        Base: war_dead
+        BaseUnshaded: armor
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 35
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatBear
+      amount: 3
+    - id: MaterialBones1
+      amount: 2
+    - id: MaterialHideBear
+      amount: 6
+    - id: ShiptestBearArmor
+      amount: 1
+
+# A swarm of legions fused around a young necropolis spire. Smashes through walls, peels off new legions as it goes
+# and falls apart into three when killed.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobLegate
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/legate.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: legate
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      500: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 500
+      behaviors:
+      - !type:PopupBehavior
+        popup: fauna-legate-death
+        popupType: LargeCaution
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: MobLegion
+      amount: 3
+    - id: ShiptestRegenerativeCoreLegion
+    - id: SalvageHumanCorpse
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch4.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 30
+        Structural: 150
+  - type: FaunaBurrow
+    prototypes:
+    - MobLegion
+    interval: 20
+    maxAlive: 3
+    closable: false
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        4
+      AggroVisionRadius: !type:Single
+        4
+      NavSmash: !type:Bool
+        true
+
+# Predatory jungle flower. Charges up, then sprays a volley of solar energy at its prey.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobSeedling
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/seedling.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: seedling
+    - map: [ "charging" ]
+      state: charging
+      visible: false
+    - map: [ "firing" ]
+      state: fire
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: seedling
+      Dead:
+        Base: dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaProjectileBurstVisuals.Windup:
+        charging:
+          True: { visible: true }
+          False: { visible: false }
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+      enum.FaunaProjectileBurstVisuals.Firing:
+        firing:
+          True: { visible: true }
+          False: { visible: false }
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch4.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Structural: 30
+  - type: PreventPulledWhileAlive
+  - type: FaunaProjectileBurst
+    projectile: ShiptestProjectileSolar
+    speed: 12
+    volleyCount: 13
+    windup: 0.5
+    cancelOnHit: true
+    spreadSound:
+      path: /Audio/Weapons/pierce.ogg
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionSeedlingVolley
+      maxRange: 9
+      hold: 2
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaKiteCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        15
+      KiteRange: !type:Single
+        3
+      KiteApproachRange: !type:Single
+        5
+      NavSmash: !type:Bool
+        true
+
+- type: entity
+  parent: BaseBullet
+  id: ShiptestProjectileSolar
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/projectiles.rsi
+    layers:
+    - state: solar
+      shader: unshaded
+  - type: PointLight
+    radius: 2
+    energy: 1.5
+    color: "#FFFF66"
+  - type: Projectile
+    damage:
+      types:
+        Heat: 10
+    soundHit:
+      path: /Audio/_WF/Fauna/Shiptest/sear.ogg
+  - type: TimedDespawn
+    lifetime: 3
+  - type: FaunaFactionPass
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionSeedlingVolley
+  components:
+  - type: EntityTargetAction
+    useDelay: 3
+    range: 9
+    checkCanAccess: false
+    event: !type:FaunaProjectileBurstActionEvent
+
+# Floating metal club from the lavaland ruins: blast crosses, chasers, blinks, an arena, and it heals at home.
+- type: entity
+  parent: [ FaunaMobConstructBase, FlyingMobBase ]
+  id: ShiptestMobHierophant
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Shiptest/hierophant.rsi
+    offset: 0,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hierophant
+  - type: PointLight
+    radius: 3
+    energy: 1
+    color: "#660099"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      2500: Dead
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: ShiptestMegafauna
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 2500
+      behaviors:
+      - !type:PopupBehavior
+        popup: fauna-shiptest-hierophant-death
+        popupType: LargeCaution
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/_WF/Fauna/Shiptest/repulse.ogg
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          ShiptestHierophantBurstDeath:
+            min: 1
+            max: 1
+          ShiptestHierophantClub:
+            min: 1
+            max: 1
+          ShiptestTrophyVortexTalisman:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Shiptest/sonic_jackhammer.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    armorPenetration: 0.5
+    damage:
+      types:
+        Blunt: 15
+  - type: FaunaBlastCaster
+  - type: FaunaMeleeProc
+    chance: 1
+    spawn: ShiptestHierophantBurst
+    maxSpawned: 1
+  - type: FaunaBlink
+    distance: 1
+    effect: ShiptestHierophantBlinkBlast
+    fade: true
+    sound:
+      path: /Audio/_WF/Fauna/Shiptest/wand_teleport.ogg
+  - type: FaunaChaser
+    chaser: ShiptestHierophantChaser
+  - type: FaunaLeash
+    healFraction: 0.5
+    minHeal: 250
+    popup: fauna-shiptest-hierophant-fade
+  - type: FaunaFireTrail
+    fire: ShiptestHierophantSquares
+    deathRadius: 0
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionHierophantCrossAll
+      maxRange: 21
+      belowHealth: 0.5
+    - action: ShiptestActionHierophantCross
+      maxRange: 21
+    - action: ShiptestActionHierophantBlink
+      minRange: 3
+      maxRange: 21
+      hold: 1
+    - action: ShiptestActionHierophantChaser
+      maxRange: 21
+    - action: ShiptestActionHierophantArena
+      minRange: 2
+      maxRange: 10
+  - type: FaunaCorpseEater
+    delay: 1
+    consume: true
+    healTargetFraction: 0.5
+    healGroup: Brute
+  - type: FaunaIdleSpeech
+    idleOnly: false
+    chance: 0.02
+    lines:
+    - fauna-shiptest-hierophant-target-1
+    - fauna-shiptest-hierophant-target-2
+    - fauna-shiptest-hierophant-target-3
+    - fauna-shiptest-hierophant-kill-1
+    - fauna-shiptest-hierophant-kill-2
+    - fauna-shiptest-hierophant-kill-3
+    - fauna-shiptest-hierophant-kill-4
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/_WF/Fauna/Shiptest/mechmove04.ogg
+  - type: RadarBlip
+    radarColor: "#660099"
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaLurkCorpseEaterCompound
+    blackboard:
+      VisionRadius: !type:Single
+        21
+      AggroVisionRadius: !type:Single
+        21
+      # Above 1 so a target exactly one tile away still passes the melee range check.
+      MeleeRange: !type:Single
+        1.2
+
+- type: entity
+  id: ShiptestHierophantBlast
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/hierophant_effects.rsi
+    drawdepth: Effects
+    layers:
+    - state: blast
+      shader: unshaded
+  - type: PointLight
+    radius: 2
+    energy: 1
+    color: "#660099"
+  - type: FaunaBlastTile
+    damage:
+      types:
+        Heat: 10
+    hitSound:
+      path: /Audio/_WF/Fauna/Shiptest/sear.ogg
+  - type: TimedDespawn
+    lifetime: 0.9
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  id: ShiptestHierophantBlastHeavy
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/hierophant_effects.rsi
+    drawdepth: Effects
+    layers:
+    - state: blast
+      shader: unshaded
+  - type: PointLight
+    radius: 2
+    energy: 1
+    color: "#660099"
+  - type: FaunaBlastTile
+    damage:
+      types:
+        Heat: 30
+    hitSound:
+      path: /Audio/_WF/Fauna/Shiptest/sear.ogg
+  - type: TimedDespawn
+    lifetime: 0.9
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  id: ShiptestHierophantCross
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestHierophantBlast
+    shape: Cross
+    radius: 5
+    cross: Random
+    telegraph: ShiptestHierophantTelegraph
+    telegraphCardinal: ShiptestHierophantTelegraphCardinal
+    telegraphDiagonal: ShiptestHierophantTelegraphDiagonal
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/_WF/Fauna/Shiptest/bin_close.ogg
+
+# Below half health the cross fires both ways at once.
+- type: entity
+  parent: ShiptestHierophantCross
+  id: ShiptestHierophantCrossAll
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestHierophantBlast
+    shape: Cross
+    radius: 5
+    cross: All
+    telegraph: ShiptestHierophantTelegraph
+    telegraphCardinal: ShiptestHierophantTelegraphCardinal
+    telegraphDiagonal: ShiptestHierophantTelegraphDiagonal
+
+- type: entity
+  id: ShiptestHierophantBurst
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestHierophantBlast
+    shape: Square
+    radius: 3
+    ringDelay: 0.1
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/_WF/Fauna/Shiptest/blind.ogg
+
+- type: entity
+  id: ShiptestHierophantBlinkBlast
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestHierophantBlastHeavy
+    shape: Square
+    radius: 1
+    telegraph: ShiptestHierophantTelegraphTeleport
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/_WF/Fauna/Shiptest/blind.ogg
+
+- type: entity
+  id: ShiptestHierophantTelegraph
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/hierophant_telegraph.rsi
+    drawdepth: Effects
+    noRot: true
+    layers:
+    - state: telegraph
+      shader: unshaded
+  - type: TimedDespawn
+    lifetime: 0.3
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  parent: ShiptestHierophantTelegraph
+  id: ShiptestHierophantTelegraphCardinal
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - state: cardinal
+      shader: unshaded
+
+- type: entity
+  parent: ShiptestHierophantTelegraph
+  id: ShiptestHierophantTelegraphDiagonal
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - state: diagonal
+      shader: unshaded
+
+- type: entity
+  parent: ShiptestHierophantTelegraph
+  id: ShiptestHierophantTelegraphTeleport
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - state: teleport
+      shader: unshaded
+  - type: TimedDespawn
+    lifetime: 0.9
+
+- type: entity
+  id: ShiptestHierophantBurstDeath
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestHierophantBlast
+    shape: Square
+    radius: 10
+    ringDelay: 0.1
+
+- type: entity
+  id: ShiptestHierophantArena
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestHierophantArenaWall
+    shape: Ring
+    radius: 11
+
+- type: entity
+  parent: WallHierophantArena
+  id: ShiptestHierophantArenaWall
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 10
+
+- type: entity
+  id: ShiptestHierophantChaser
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaChaserMover
+    effect: ShiptestHierophantBlast
+
+- type: entity
+  id: ShiptestHierophantSquares
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/hierophant_effects.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: squares
+      shader: unshaded
+  - type: TimedDespawn
+    lifetime: 0.35
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionHierophantCross
+  components:
+  - type: EntityTargetAction
+    useDelay: 4
+    range: 21
+    checkCanAccess: false
+    event: !type:FaunaBlastActionEvent
+      pattern: ShiptestHierophantCross
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionHierophantCrossAll
+  components:
+  - type: EntityTargetAction
+    useDelay: 4
+    range: 21
+    checkCanAccess: false
+    event: !type:FaunaBlastActionEvent
+      pattern: ShiptestHierophantCrossAll
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionHierophantBlink
+  components:
+  - type: EntityTargetAction
+    useDelay: 6
+    range: 21
+    checkCanAccess: false
+    event: !type:FaunaBlinkActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionHierophantChaser
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 21
+    checkCanAccess: false
+    event: !type:FaunaChaserActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionHierophantArena
+  components:
+  - type: EntityTargetAction
+    useDelay: 20
+    range: 10
+    checkCanAccess: false
+    event: !type:FaunaBlastActionEvent
+      pattern: ShiptestHierophantArena
+
+# Icemoon wendigo. Its steps send shockwaves, it stomps the ground, screams to daze everyone nearby and blinks
+# around its prey. Faster and wider once half dead. Goes home if it wanders too far without prey.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobWendigo
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Destructible
+    thresholds: []
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Shiptest/wendigo.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: wendigo
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: wendigo
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      2500: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestMegafauna
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/demon_attack1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.4
+    damage:
+      types:
+        Slash: 40
+  - type: FaunaStepSlam
+    damage:
+      types:
+        Blunt: 20
+    sound:
+      path: /Audio/_WF/Fauna/Shiptest/crystal_bamf.ogg
+    popup: fauna-shiptest-wendigo-shockwave
+  - type: FaunaSlam
+    arc: 360
+    range: 5
+    delay: 0.5
+    knockdown: 0
+    throw: 8
+    effect: ShiptestEffectSmallSmoke
+    damage:
+      types:
+        Blunt: 20
+    hitSound:
+      path: /Audio/_WF/Fauna/Shiptest/crystal_bamf.ogg
+  - type: FaunaBlink
+    distance: 4
+    afterShout: true
+  - type: FaunaShout
+    range: 7
+    disorient: 14
+    popup: fauna-shiptest-wendigo-scream
+    emote: Jump
+  - type: FaunaEnrage
+    threshold: 1250
+    damage:
+      types:
+        Slash: 40
+    speed: 2.5
+    throwChance: 0
+  - type: FaunaLeash
+    range: 12
+  - type: FaunaAbilities
+    abilities:
+    - action: ShiptestActionWendigoStomp
+      maxRange: 4
+      hold: 1
+    - action: ShiptestActionWendigoBlink
+      minRange: 2
+      maxRange: 9
+    - action: ShiptestActionWendigoScream
+      maxRange: 7
+      hold: 1.2
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/_WF/Fauna/Shiptest/gravhit.ogg
+  - type: FaunaCorpseEater
+    delay: 1
+    consume: true
+    healTargetFraction: 0.5
+    healGroup: Brute
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaCorpseEaterCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        18
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 10
+
+- type: entity
+  id: ShiptestEffectSmallSmoke
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 0.5
+  - type: Sprite
+    drawdepth: Effects
+    sprite: _WF/Fauna/Mobs/Shiptest/smoke.rsi
+    state: smoke
+    noRot: true
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionWendigoStomp
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 4
+    checkCanAccess: false
+    event: !type:FaunaSlamActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionWendigoBlink
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 9
+    checkCanAccess: false
+    event: !type:FaunaBlinkActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: ShiptestActionWendigoScream
+  components:
+  - type: InstantAction
+    useDelay: 6
+    sound:
+      path: /Audio/Effects/demon_dies.ogg
+    event: !type:FaunaShoutActionEvent
+
+# Lava-planet puffer. Harmless until it spots prey, then puffs up into a nearly invincible biter that chews through
+# walls. Shrinks back after a while and has to rest before it can puff up again.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobFugu
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Shiptest/fugu.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "body" ]
+      state: fugu
+    - map: [ "inflated" ]
+      state: inflated
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: fugu
+      Dead:
+        Base: dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaInflateVisuals.Inflated:
+        body:
+          True: { visible: false }
+          False: { visible: true }
+        inflated:
+          True: { visible: true }
+          False: { visible: false }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: ShiptestFugu
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 0
+  - type: FaunaInflate
+    modifierSet: ShiptestFuguInflated
+    popup: fauna-shiptest-fugu-inflate
+    damage:
+      types:
+        Piercing: 17.5
+        Structural: 60
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: ShiptestFuguCompound
+    blackboard:
+      VisionRadius: !type:Single
+        5
+      AggroVisionRadius: !type:Single
+        9
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatFish
+      amount: 2
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ShiptestFuguGland
+
+# Keeps its distance while deflated and fights once inflated.
+- type: htnCompound
+  id: ShiptestFuguCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaInflatedPrecondition
+        inflated: false
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: SimpleHostileCompound
+
+# Carnivorous plant that lashes up to four vines onto its prey and drags them in.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: ShiptestMobVenusHumanTrap
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Shiptest/venus.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: venus
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 18
+  - type: IgnoreKudzu
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: false
+    allowMovement: true
+    name: fauna-shiptest-venus-ghost-role-name
+    description: fauna-shiptest-venus-ghost-role-description
+    rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgent
+  - type: GhostTakeoverAvailable
+  - type: FaunaVine
+    beam: ShiptestVineBeam
+    popup: fauna-shiptest-venus-vine
+    yankAll: true
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+- type: entity
+  id: ShiptestVineBeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/vines.rsi
+    drawdepth: Effects
+    layers:
+    - state: vine
+  - type: Physics
+    canCollide: false
+  - type: Beam
+  - type: TimedDespawn
+    lifetime: 2.1
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+# Pulsating bud that sprouts thorny vines around it and grows into a venus human trap.
+- type: entity
+  id: ShiptestFlowerBud
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/vines.rsi
+    layers:
+    - state: flower_bud
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        density: 7
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        layer:
+        - MidImpassable
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: TriggerOnSpawn
+  - type: SpawnOnTrigger
+    proto: ShiptestThornVinePattern
+  - type: TimedDespawn
+    lifetime: 120
+  - type: SpawnOnDespawn
+    prototype: ShiptestMobVenusHumanTrap
+
+- type: entity
+  id: ShiptestThornVinePattern
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaBlastPattern
+    effect: ShiptestThornVine
+    shape: Cross
+    radius: 2
+    cross: Diagonal
+
+- type: entity
+  id: ShiptestThornVine
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/vines.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: vine
+  - type: Clickable
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        density: 7
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        layer:
+        - MidImpassable
+  - type: DamageContacts
+    damage:
+      types:
+        Slash: 2.5
+    ignoreWhitelist:
+      components:
+      - IgnoreKudzu
+  - type: TimedDespawn
+    lifetime: 120
+
+# One in ten desert goliaths is an ancient one.
+- type: entity
+  parent: MarkerBase
+  id: ShiptestSpawnerGoliathWhitesands
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: _WF/Fauna/Mobs/Shiptest/goliath.rsi
+      state: goliath
+  - type: RandomSpawner
+    prototypes:
+    - ShiptestMobGoliathWhitesands
+    rarePrototypes:
+    - ShiptestMobGoliathWhitesandsAncient
+    rareChance: 0.1
+    offset: 0
+
+# Some wolves lead the pack.
+- type: entity
+  parent: MarkerBase
+  id: ShiptestSpawnerWolf
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: _WF/Fauna/Mobs/Shiptest/wolf.rsi
+      state: wolf
+  - type: RandomSpawner
+    prototypes:
+    - ShiptestMobWolf
+    rarePrototypes:
+    - ShiptestMobWolfAlpha
+    rareChance: 0.15
+    offset: 0
+
+- type: emote
+  id: ShiptestEmoteBearRawr
+  name: fauna-shiptest-bear-emote-rawr-name
+  available: false
+  chatMessages: [ "fauna-shiptest-bear-emote-rawr" ]
+
+- type: emote
+  id: ShiptestEmoteBearGrumble
+  name: fauna-shiptest-bear-emote-grumble-name
+  available: false
+  chatMessages: [ "fauna-shiptest-bear-emote-grumble" ]
+
+- type: emote
+  id: ShiptestEmoteBearGrawl
+  name: fauna-shiptest-bear-emote-grawl-name
+  available: false
+  chatMessages: [ "fauna-shiptest-bear-emote-grawl" ]
+
+- type: emote
+  id: ShiptestEmoteBearStomp
+  name: fauna-shiptest-bear-emote-stomp-name
+  available: false
+  chatMessages: [ "fauna-shiptest-bear-emote-stomp" ]
+
+- type: emote
+  id: ShiptestEmoteBearStare
+  name: fauna-shiptest-bear-emote-stare-name
+  available: false
+  chatMessages: [ "fauna-shiptest-bear-emote-stare" ]
+
+- type: autoEmote
+  id: ShiptestBearRawr
+  emote: ShiptestEmoteBearRawr
+  interval: 2.0
+  chance: 0.01
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: autoEmote
+  id: ShiptestBearGrumble
+  emote: ShiptestEmoteBearGrumble
+  interval: 2.0
+  chance: 0.01
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: autoEmote
+  id: ShiptestBearGrawl
+  emote: ShiptestEmoteBearGrawl
+  interval: 2.0
+  chance: 0.01
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: autoEmote
+  id: ShiptestBearStomp
+  emote: ShiptestEmoteBearStomp
+  interval: 2.0
+  chance: 0.01
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: autoEmote
+  id: ShiptestBearStare
+  emote: ShiptestEmoteBearStare
+  interval: 2.0
+  chance: 0.01
+  withChat: true
+  hiddenFromChatWindow: true

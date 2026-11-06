@@ -678,6 +678,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         DrawWolfgateShields(handle, xform, worldToView); // WOLFGATE(ShipShields): hull contours and directional coverage on all radar views.
         DrawCrewGroups(handle, xform, worldToView); // WOLFGATE(NpcCrew): Admin tags and battlegroup lines for NPC-crewed ships.
         DrawEncounterMarkers(handle, xform, worldToView); // WOLFGATE(Encounters): Sector markers for visible encounters.
+        DrawWfLatticePhantoms(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): radar contacts only this player sees.
         DrawWfWaypoints(handle, worldToView, xform.MapUid); // WOLFGATE(Waypoints): the crew's marked positions.
 
         // Frontier Corvax: north line drawing
@@ -902,6 +903,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                         Loc.GetString($"shuttle-console-signature-infrared")
                         : _detection.HandleUnknownMassLabel(grid.Owner)
                     : _shuttles.GetIFFLabel(grid, self: false, component: iff);
+                labelName = WfLatticeGarble(labelName, gUid); // WOLFGATE(Lattice): contact names garble out past the Lattice's hold.
 
                 var shouldDrawIFF = ShowIFF && labelName != null;
                 var shouldDrawDetailedIFF = ShowIFFDetailed && shouldDrawIFF; // Mono

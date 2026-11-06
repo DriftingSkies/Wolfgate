@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.AlertLevel;
+using Content.Server._WF.Lattice;
 using Content.Server._NF.GameTicking.Events;
 using Content.Server.GameTicking;
 using Content.Shared._NF.Shipyard.Components;
@@ -30,6 +31,7 @@ namespace Content.Server._WF.Encounters.Systems;
 public sealed partial class WFEncounterSchedulerSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private WFLatticeSystem _lattice = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IConfigurationManager _config = default!;
@@ -730,8 +732,13 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
     {
         origin = MapCoordinates.Nullspace;
         var anchors = new List<MapCoordinates>();
+        // A band-bound encounter measures from the Lattice's centre; with no Lattice, from players as usual.
+        if (prototype.LatticeBand > 0)
+            _lattice.GetCentres(anchors);
+
+        var fromCentre = anchors.Count > 0;
         var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-        while (players.MoveNext(out var uid, out _, out var xform))
+        while (!fromCentre && players.MoveNext(out var uid, out _, out var xform))
         {
             if (HasComp<GhostComponent>(uid) || _mobs.IsDead(uid) || _mobs.IsCritical(uid))
                 continue;
@@ -762,7 +769,8 @@ public sealed partial class WFEncounterSchedulerSystem : EntitySystem
             _nearby.Clear();
             _maps.FindGridsIntersecting(anchor.MapId, Box2.CenteredAround(point, new Vector2(Clearance * 2f)), ref _nearby, approx: true, includeMap: false);
             if (_nearby.Count > 0 || NearStation(prototype.StationClearance, point, anchor.MapId) || InGravityWell(point, anchor.MapId)
-                || NearHiddenStation(point, anchor.MapId))
+                || NearHiddenStation(point, anchor.MapId)
+                || fromCentre && _lattice.Locate(_maps.GetMapOrInvalid(anchor.MapId), point).Band < prototype.LatticeBand)
                 continue;
 
             origin = new MapCoordinates(point, anchor.MapId);

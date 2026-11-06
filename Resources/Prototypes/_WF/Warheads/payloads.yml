@@ -3,6 +3,7 @@
 - type: wfWarheadPayload
   id: WFPayloadStationNuke
   payload:
+    eraseRadius: 24
     # The station nuke runs its own blast; this adds the rest.
     flashRange: 90
     fireballRadius: 8
@@ -14,14 +15,15 @@
     promptRadiationSlope: 0.03
     falloutCount: 8
     falloutSpread: 25
-    falloutIntensity: 6
-    falloutHalfLife: 180
-    falloutRadius: 8
+    falloutIntensity: 30
+    falloutHalfLife: 600
+    falloutRadius: 14
     empRange: 40
 
 - type: wfWarheadPayload
   id: WFPayloadTactical
   payload:
+    eraseRadius: 8
     explosionType: WFNuclear
     totalIntensity: 40000
     intensitySlope: 4
@@ -36,14 +38,15 @@
     promptRadiationSlope: 0.08
     falloutCount: 3
     falloutSpread: 6
-    falloutIntensity: 3
-    falloutHalfLife: 90
-    falloutRadius: 5
+    falloutIntensity: 15
+    falloutHalfLife: 300
+    falloutRadius: 8
     empRange: 10
 
 - type: wfWarheadPayload
   id: WFPayloadField
   payload:
+    eraseRadius: 18
     explosionType: WFNuclear
     totalIntensity: 400000
     intensitySlope: 5
@@ -59,14 +62,15 @@
     promptRadiationSlope: 0.04
     falloutCount: 6
     falloutSpread: 18
-    falloutIntensity: 5
-    falloutHalfLife: 150
-    falloutRadius: 7
+    falloutIntensity: 25
+    falloutHalfLife: 480
+    falloutRadius: 12
     empRange: 30
 
 - type: wfWarheadPayload
   id: WFPayloadStrategic
   payload:
+    eraseRadius: 32
     # Deletes the grid it sits on, then the blast runs through the space it leaves.
     deleteGrid: true
     explosionType: WFNuclear
@@ -84,14 +88,15 @@
     promptRadiationSlope: 0.02
     falloutCount: 14
     falloutSpread: 40
-    falloutIntensity: 8
-    falloutHalfLife: 240
-    falloutRadius: 10
+    falloutIntensity: 40
+    falloutHalfLife: 720
+    falloutRadius: 16
     empRange: 90
 
 - type: wfWarheadPayload
   id: WFPayloadMissile
   payload:
+    eraseRadius: 10
     # Mono's Atlant numbers, plus the nuclear effects.
     explosionType: HardBomb
     totalIntensity: 500000
@@ -108,7 +113,7 @@
     promptRadiationSlope: 0.05
     falloutCount: 5
     falloutSpread: 15
-    falloutIntensity: 4
-    falloutHalfLife: 120
-    falloutRadius: 6
+    falloutIntensity: 20
+    falloutHalfLife: 360
+    falloutRadius: 10
     empRange: 25

@@ -128,6 +128,30 @@ public sealed partial class WFGroundCoverSystem
     }
 
     /// <summary>
+    /// Changes whenever the sent depths of a tile or its eight neighbours change: the sum of the sent versions of the
+    /// one to four chunks they span.
+    /// </summary>
+    public int SentVersionAround(EntityUid grid, Vector2i tile)
+    {
+        if (!TryComp<WFSnowCoverComponent>(grid, out var cover))
+            return 0;
+
+        var low = WFSnowCover.ChunkOf(tile - Vector2i.One);
+        var high = WFSnowCover.ChunkOf(tile + Vector2i.One);
+        uint sum = 0;
+        for (var x = low.X; x <= high.X; x++)
+        {
+            for (var y = low.Y; y <= high.Y; y++)
+            {
+                if (cover.Chunks.TryGetValue(new Vector2i(x, y), out var chunk) && chunk.Sent != null)
+                    sum += chunk.SentVersion;
+            }
+        }
+
+        return unchecked((int) sum);
+    }
+
+    /// <summary>
     /// Snow depth on a tile as clients were last sent it. With a session, as that session was sent it: 0 until it has
     /// the chunk, as its client would read.
     /// </summary>

@@ -160,6 +160,7 @@ public sealed class WFNukeDesignerWindow : DefaultWindow
         AddFloat("max-intensity", p => p.MaxIntensity, (p, v) => p.MaxIntensity = Math.Max(v, 0f));
         AddFloat("tile-break-scale", p => p.TileBreakScale, (p, v) => p.TileBreakScale = Math.Max(v, 0f));
         AddField("delete-grid", p => p.DeleteGrid.ToString(), (p, t) => bool.TryParse(t, out var b) && Assign(() => p.DeleteGrid = b));
+        AddFloat("erase-radius", p => p.EraseRadius, (p, v) => p.EraseRadius = Math.Clamp(v, 0f, 200f));
         AddFloat("prompt-radiation", p => p.PromptRadiation, (p, v) => p.PromptRadiation = Math.Max(v, 0f));
         AddFloat("prompt-radiation-slope", p => p.PromptRadiationSlope, (p, v) => p.PromptRadiationSlope = Math.Max(v, 0.001f));
         AddFloat("prompt-radiation-duration", p => p.PromptRadiationDuration, (p, v) => p.PromptRadiationDuration = Math.Max(v, 0.1f));

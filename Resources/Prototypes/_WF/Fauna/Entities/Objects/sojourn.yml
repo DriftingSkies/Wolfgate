@@ -1,0 +1,313 @@
+# Loot from the Sojourn fauna. Animal parts drop as plain trophy items.
+
+- type: entity
+  parent: BaseItem
+  id: SojournWolfTooth
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/wolf_tooth.rsi
+    state: icon
+  - type: Item
+    size: Tiny
+
+- type: entity
+  parent: BaseItem
+  id: SojournHelldiverTooth
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/helldiver_tooth.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournTahcaAntler
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/tahca_antler.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournRenderClaw
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/render_claw.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournStalkerChitin
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/stalker_chitin.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournStalkerSpur
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/stalker_spur.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournCroakerTongue
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/croaker_tongue.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournCannibalTooth
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/cannibal_tooth.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournSlepnirHoof
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/slepnir_hoof.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournChimeraFang
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/chimera_fang.rsi
+    state: icon
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: SojournHumanRemains
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/human_remains.rsi
+    state: icon
+
+# Hides and leather
+
+- type: entity
+  parent: MaterialBase
+  id: SojournHellHide
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/hell_hide.rsi
+    state: icon
+  - type: Item
+    sprite: _WF/Fauna/Objects/Sojourn/hell_hide.rsi
+    size: Small
+  - type: Stack
+    stackType: SojournHellHide
+    count: 1
+
+- type: stack
+  id: SojournHellHide
+  name: sojourn-stack-hell-hide
+  icon: { sprite: /Textures/_WF/Fauna/Objects/Sojourn/hell_hide.rsi, state: icon }
+  spawn: SojournHellHide
+  maxCount: 30
+
+- type: entity
+  parent: MaterialBase
+  id: SojournLeather
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/leather.rsi
+    state: icon
+  - type: Item
+    sprite: _WF/Fauna/Objects/Sojourn/leather.rsi
+  - type: Stack
+    stackType: SojournLeather
+    count: 1
+
+- type: stack
+  id: SojournLeather
+  name: sojourn-stack-leather
+  icon: { sprite: /Textures/_WF/Fauna/Objects/Sojourn/leather.rsi, state: icon }
+  spawn: SojournLeather
+  maxCount: 120
+
+# Meats
+
+- type: entity
+  parent: FoodMeatRawBase
+  id: SojournFoodMeatPrimal
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/primal_meat.rsi
+    state: icon
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 25
+        - ReagentId: Fat
+          Quantity: 25
+  - type: SliceableFood
+    count: 3
+    slice: FoodMeatCutlet
+  - type: Construction
+    graph: MeatSteak
+    node: start
+    defaultTarget: meat steak
+
+- type: entity
+  parent: FoodMeatRawBase
+  id: SojournFoodMeatPork
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/pork.rsi
+    state: icon
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 8
+        - ReagentId: Fat
+          Quantity: 8
+  - type: SliceableFood
+    count: 4
+    slice: FoodMeatBacon
+  - type: Construction
+    graph: MeatSteak
+    node: start
+    defaultTarget: meat steak
+
+- type: entity
+  abstract: true
+  parent: FoodMeatRawBase
+  id: SojournFoodMeatRoachBase
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Sojourn/roach_meat.rsi
+    state: icon
+  - type: SliceableFood
+    count: 3
+    slice: FoodMeatCutlet
+
+- type: entity
+  parent: SojournFoodMeatRoachBase
+  id: SojournFoodMeatRoachElektromagnetisch
+  suffix: Elektromagnetisch
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 4
+        - ReagentId: Fat
+          Quantity: 4
+        - ReagentId: Iron
+          Quantity: 5
+
+- type: entity
+  parent: SojournFoodMeatRoachBase
+  id: SojournFoodMeatRoachGluhend
+  suffix: Gluhend
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 4
+        - ReagentId: Fat
+          Quantity: 4
+        - ReagentId: Uranium
+          Quantity: 5
+
+- type: entity
+  parent: SojournFoodMeatRoachBase
+  id: SojournFoodMeatRoachJager
+  suffix: Jager
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 6
+        - ReagentId: Fat
+          Quantity: 6
+
+- type: entity
+  parent: SojournFoodMeatRoachBase
+  id: SojournFoodMeatRoachKraftwerk
+  suffix: Kraftwerk
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 6
+        - ReagentId: Fat
+          Quantity: 6
+
+- type: entity
+  parent: SojournFoodMeatRoachBase
+  id: SojournFoodMeatRoachPanzer
+  suffix: Panzer
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 8
+        - ReagentId: Fat
+          Quantity: 8
+
+# Dreaming King loot: Wolfgate stand-ins for the /obj/random/psi weapons and tools.
+- type: entity
+  parent: MarkerBase
+  id: SojournSpawnerPsiLoot
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: Objects/Tools/crowbar.rsi
+      state: icon
+  - type: RandomSpawner
+    offset: 0.2
+    prototypes:
+    - Katana
+    - Sledgehammer
+    - Chainsaw
+    - Machete
+    - ButchCleaver
+    - WeaponBrassKnuckles
+    - Multitool
+    - Shovel
+    - Screwdriver
+    - WelderIndustrial
+    - Crowbar
+    - Wrench

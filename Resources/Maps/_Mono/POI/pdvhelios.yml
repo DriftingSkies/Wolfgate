@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 10/25/2026 02:40:37
-  entityCount: 8651
+  entityCount: 8656
 maps: []
 grids:
 - 1
@@ -29139,24 +29139,24 @@ entities:
       pos: -4.5,51.5
 - proto: WFSpawnPointPdvJarrah
   entities:
-  - uid: 8651
+  - uid: 8656
     components:
     - type: Transform
       parent: 1
       pos: -5.5,63.5
-  - uid: 8652
+  - uid: 8657
     components:
     - type: Transform
       parent: 1
       pos: -5.5,64.5
 - proto: WFVendingMachinePdvOutfitter
   entities:
-  - uid: 8649
+  - uid: 8654
     components:
     - type: Transform
       parent: 1
       pos: -8.5,64.5
-  - uid: 8650
+  - uid: 8655
     components:
     - type: Transform
       parent: 1
@@ -57134,6 +57134,13 @@ entities:
     - type: Transform
       parent: 1
       pos: 16.5,-31.5
+- proto: WFLatticeStationAnchor
+  entities:
+  - uid: 8653
+    components:
+    - type: Transform
+      parent: 1
+      pos: 6.5,21.5
 - proto: WhiteCatwalkMono
   entities:
   - uid: 8574
@@ -57659,4 +57666,30 @@ entities:
       pos: 15.5,28.5
     - type: DeltaPressure
       gridUid: 1
+- proto: WFContractBoardPDV
+  entities:
+  - uid: 8649
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -22.5,7.5
+      parent: 1
+  - uid: 8651
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 22.5,12.5
+      parent: 1
+- proto: WFContractCargoPad
+  entities:
+  - uid: 8650
+    components:
+    - type: Transform
+      pos: -22.5,6.5
+      parent: 1
+  - uid: 8652
+    components:
+    - type: Transform
+      pos: 22.5,11.5
+      parent: 1
 ...

@@ -74,6 +74,7 @@ console panel), the client `ShipPaMeshSystem` (plays the ship's programme from r
 - [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaPlaylistTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaPlaylistTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaStopTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaStopTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaVolumeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipPa/ShipPaVolumeTest.cs)
 
 ### Unit tests
 

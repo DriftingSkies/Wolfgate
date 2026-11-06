@@ -24,6 +24,11 @@ public sealed partial class SeparatedChatGameScreen : InGameScreen
         SetAnchorAndMarginPreset(Hotbar, LayoutPreset.BottomWide, margin: 5);
         SetAnchorAndMarginPreset(Alerts, LayoutPreset.CenterRight, margin: 10);
         SetAnchorAndMarginPreset(Targeting, LayoutPreset.BottomRight, margin: 5);
+
+        // WOLFGATE(UserInterface) START: let the menu buttons shrink to their icons so the chat panel can be narrower.
+        foreach (var button in TopBar.Children)
+            button.MinWidth = 32;
+        // WOLFGATE END
         
         ScreenContainer.OnSplitResizeFinished += () =>
             OnChatResized?.Invoke(new Vector2(ScreenContainer.SplitFraction, 0));

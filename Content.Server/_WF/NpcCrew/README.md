@@ -22,9 +22,9 @@ headset, with the faction channel's key, and its own service ID cards (TSFMC, PD
 cards for those crews); every crew card carries the crewman's name and role title.
 A profile can give its roles titles of its own (`titles`, by role: the ADS calls its pilot a Helm Unit, not a First
 Officer), used on the crewman's name and card in place of the role's. A profile can also swap hull parts out (`hullSwaps`): the encounter system applies them to a ship's grid before anything
-goes aboard, so pirates never fly adamantite (the black-market hulls' plating becomes plain plastitanium in place,
+goes aboard, so pirates never fly durasteel (any durasteel plating becomes plain plastitanium in place,
 anchored and turned as it was). Every profile that kits its crew as pirates (the Reavers, corsairs and fugitives) must
-swap all of it; `PirateProfilesNeverFlyAdamantite` checks this.
+swap all of it; `PirateProfilesNeverFlyDurasteel` checks this.
 
 An engineer (`WFCrewEngineer`) is posted beside the plant on every encounter ship whose roles allow one. The ship
 arrives commissioned (generators full and lit, antimatter engine jarred and injecting, fission reactor fuelled with
@@ -507,7 +507,9 @@ simulated counterpart of `WFPilotDockedEvent`.
 - [`Content.Server/NPC/Systems/NPCSteeringSystem.Obstacles.cs`](../../NPC/Systems/NPCSteeringSystem.Obstacles.cs)
   - crew shove a loose crate off their path
   - open authorized doors through normal interaction before considering prying.
-- [`Content.Server/NPC/Systems/NPCSystem.cs`](../../NPC/Systems/NPCSystem.cs): ship crews with something to do must work even without nearby player bodies.
+- [`Content.Server/NPC/Systems/NPCSystem.cs`](../../NPC/Systems/NPCSystem.cs)
+  - a mob someone plays, such as a possessing admin, has no AI to wake
+  - ship crews with something to do must work even without nearby player bodies.
 - [`Content.Server/Shuttles/Systems/ShuttleSystem.Impact.cs`](../../Shuttles/Systems/ShuttleSystem.Impact.cs): crews take a ramming for an attack
 - [`Content.Server/Verbs/VerbSystem.cs`](../../Verbs/VerbSystem.cs): opt-in tracing for missing menu replies after ghosting.
 - [`Content.Shared/_Onyx/Wounds/WoundDamageRoutingSystem.cs`](../../../Content.Shared/_Onyx/Wounds/WoundDamageRoutingSystem.cs): Lets crew damage scaling skip the routed inner passes.

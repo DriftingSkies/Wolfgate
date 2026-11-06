@@ -16,6 +16,10 @@ public sealed partial class WFShipbreakerWarrantComponent : Component
     [ViewVariables]
     public int Reward;
 
+    /// <summary>What each hunter is told when the warrant pays out.</summary>
+    [ViewVariables]
+    public LocId PaidMessage = "drydock-chop-warrant-paid";
+
     /// <summary>Players who hurt the wanted in person.</summary>
     [ViewVariables]
     public HashSet<NetUserId> Fighters = new();

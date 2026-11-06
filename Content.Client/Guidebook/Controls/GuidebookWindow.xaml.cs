@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client._WF.LoreBook; // WOLFGATE(LoreBook)
 using Content.Client.Guidebook.RichText;
 using Content.Client.UserInterface.ControlExtensions;
 using Content.Client.UserInterface.Controls;
@@ -41,6 +42,10 @@ public sealed partial class GuidebookWindow : FancyWindow, ILinkClickHandler
 
     public void HandleClick(string link)
     {
+        // WOLFGATE(LoreBook): a link to a lore page opens the lore book
+        if (!_entries.ContainsKey(link) && UserInterfaceManager.GetUIController<WFLoreBookUIController>().TryOpenLink(link))
+            return;
+
         if (!_entries.TryGetValue(link, out var entry))
             return;
 

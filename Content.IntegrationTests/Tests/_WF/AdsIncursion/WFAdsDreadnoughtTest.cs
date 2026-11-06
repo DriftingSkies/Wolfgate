@@ -284,8 +284,13 @@ public sealed class WFAdsDreadnoughtTest : WFAdsTestBase
             Assert.That(ads.TryLaunchDreadnought(out var dreadnought), Is.True);
             ShootAt(dreadnought, "lead", ship);
             before = Balance();
+
+            // The dreadnought is a capstone: it pays in full past the hourly cap.
+            var config = Server.ResolveDependency<IConfigurationManager>();
+            config.SetCVar(EncountersCVars.PayoutHourlyCap, 1);
             KillCrew(dreadnought, "lead");
             ads.CheckDreadnoughts();
+            config.SetCVar(EncountersCVars.PayoutHourlyCap, int.MaxValue);
 
             var state = AdsState();
             Assert.That(SEntMan.GetComponent<WFEncounterComponent>(dreadnought).Resolution, Is.EqualTo(WFEncounterResolution.Destroyed));

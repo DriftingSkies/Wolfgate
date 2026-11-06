@@ -150,6 +150,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Server/Administration/Systems/BwoinkSystem.cs`](../../Content.Server/Administration/Systems/BwoinkSystem.cs)
   - a mention in an embed never pings; it goes in the content below
   - only message content pings, and the payload suppresses every mention unless roles are allowed
+- [`Content.Server/Anomaly/AnomalySynchronizerSystem.cs`](../../Content.Server/Anomaly/AnomalySynchronizerSystem.cs): a deleted anomaly threw here every tick and stopped every other synchronizer
+- [`Content.Server/Anomaly/AnomalySystem.Scanner.cs`](../../Content.Server/Anomaly/AnomalySystem.Scanner.cs): points earned ran onto the point output line
 - [`Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs`](../../Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs): with nothing in range Pick threw, so a supercritical never ended and retried every tick
 - [`Content.Server/Atmos/EntitySystems/AtmosphereSystem.HighPressureDelta.cs`](../../Content.Server/Atmos/EntitySystems/AtmosphereSystem.HighPressureDelta.cs)
   - Vector2 for the space-wind NaN guard
@@ -224,6 +226,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - restore the licence header removed by Kill Spdx
   - a free vend skips the cash payment, which logs a zero amount as invalid
 - [`Content.Server/Weapons/Ranged/Systems/GunSystem.cs`](../../Content.Server/Weapons/Ranged/Systems/GunSystem.cs): a bolt-action gun leaves its chamber full, and ammo that shoots itself has to leave it
+- [`Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs`](../../Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs): a hardpoint deleted first threw on its transform
 - [`Content.Shared/_Crescent/ShipShields/ShipShieldComponent.cs`](../../Content.Shared/_Crescent/ShipShields/ShipShieldComponent.cs): restore the licence header removed by Kill Spdx
 - [`Content.Shared/_Crescent/ShipShields/ShipShieldedComponent.cs`](../../Content.Shared/_Crescent/ShipShields/ShipShieldedComponent.cs): restore the licence header removed by Kill Spdx
 - [`Content.Shared/_Crescent/ShipShields/ShipShieldEmitterComponent.cs`](../../Content.Shared/_Crescent/ShipShields/ShipShieldEmitterComponent.cs): restore the licence header removed by Kill Spdx
@@ -296,6 +299,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - only a gun the user carries is refused, not an innate ability or a mounted weapon
   - a switched-off or folded shield blocks nothing
   - the attempt repeats every tick while the trigger is held
+- [`Content.Shared/CCVar/CCVars.Game.cs`](../../Content.Shared/CCVar/CCVars.Game.cs): off, froze round end for 45 s at 90 players
 - [`Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs`](../../Content.Shared/Clothing/EntitySystems/HideLayerClothingSystem.cs)
   - a modsuit seal adds and removes this on a worn helmet, which raises no equip events
   - layers follow the component while the clothing is worn
@@ -390,6 +394,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_DV/Entities/Objects/Weapons/Guns/Projectiles/muzzleflashes.yml`](../../Resources/Prototypes/_DV/Entities/Objects/Weapons/Guns/Projectiles/muzzleflashes.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Goobstation/Entities/Clothing/Eyes/glasses.yml`](../../Resources/Prototypes/_Goobstation/Entities/Clothing/Eyes/glasses.yml): an invalid default leaves the chameleon menu empty
 - [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml`](../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml): unsealing strips only the seal's own components, not the ones this helmet always has
+- [`Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/modsuit.yml`](../../Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/modsuit.yml): the rsi has no sealed vox state, so sealed Vox drew an error sprite
 - [`Resources/Prototypes/_Goobstation/Entities/Objects/Devices/Circuitboards/machine.yml`](../../Resources/Prototypes/_Goobstation/Entities/Objects/Devices/Circuitboards/machine.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Goobstation/Entities/Objects/Misc/filters.yml`](../../Resources/Prototypes/_Goobstation/Entities/Objects/Misc/filters.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Goobstation/Entities/Objects/Tools/upgrade_kits.yml`](../../Resources/Prototypes/_Goobstation/Entities/Objects/Tools/upgrade_kits.yml): restore the licence header removed by Kill Spdx
@@ -414,6 +419,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml`](../../Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml): PDV pack, price 125->175
 - [`Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/ussp.yml`](../../Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/ussp.yml): the loaded magazine is class-3 contraband worth 10 FMC since Monolith#4816
 - [`Resources/Prototypes/_Mono/Claws/reptilian.yml`](../../Resources/Prototypes/_Mono/Claws/reptilian.yml): huge claws never stop a lizard shooting; they take the worst spread instead
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/modsuit.yml`](../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/modsuit.yml): the rsi has no resomi state, so sealed Resomi drew an error sprite
 - [`Resources/Prototypes/_Mono/Entities/Mobs/NPCs/mothroaches.yml`](../../Resources/Prototypes/_Mono/Entities/Mobs/NPCs/mothroaches.yml): OwO accent removed
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/Circuitboards/Machine/turrets.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Devices/Circuitboards/Machine/turrets.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/flatpack.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Devices/flatpack.yml): restore the licence header removed by Kill Spdx
@@ -462,6 +468,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml)
   - PDV pack, composite cost 12000->9000
   - PDV pack, composite cost 23000->18000
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml): its tech disk promised it, but the lathes never listed it
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/tsfmc.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/tsfmc.yml): its tech disk promised it, but the lathes never listed it
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/mechs.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/mechs.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/universal_ship_ammo.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/universal_ship_ammo.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/turrets.yml`](../../Resources/Prototypes/_Mono/Recipes/Lathes/turrets.yml): restore the licence header removed by Kill Spdx
@@ -519,24 +527,52 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Four_PortStriking.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Four_PortStriking.xml)
   - fixed broken link, was MonolithRuleRoleplayEightSafeZones
   - was color=blue, unreadable on the dark background
+  - rule colours readable on light and dark backgrounds
   - was color=maroon, unreadable on the dark background
-- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/One_RandomDeathmatch.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/One_RandomDeathmatch.xml): was color=blue, unreadable on the dark background
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/One_RandomDeathmatch.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/One_RandomDeathmatch.xml)
+  - rule colours readable on light and dark backgrounds
+  - was color=blue, unreadable on the dark background
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Three_FairPlay.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Three_FairPlay.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Two_NewLife.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Two_NewLife.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Five_Languages.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Five_Languages.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Four_AlternativeAccounts.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Four_AlternativeAccounts.xml): rule colours readable on light and dark backgrounds
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml)
   - was "# Monolith Rules"
   - Wolfgate branding foreword
+  - rule colours readable on light and dark backgrounds
   - Wolfgate branding, age threshold was 16
   - Wolfgate branding
   - rule 5 "Erotic roleplay is prohibited." removed, later rules renumbered (#27)
-- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Eight_FactionRoles.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Eight_FactionRoles.xml): was Rule 8, shifted down one
-- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Nine_CommandingRoles.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Nine_CommandingRoles.xml): was Rule 9, renumbered
-- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Seven_SafeZones.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Seven_SafeZones.xml): was Rule 7, renumbered
-- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Six_Metagame.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Six_Metagame.xml): was Rule 6, renumbered
-- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Six_Ahelp.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Six_Ahelp.xml): was Monolith
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/One_CommonSense.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/One_CommonSense.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Eight_FactionRoles.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Eight_FactionRoles.xml)
+  - was Rule 8, shifted down one
+  - rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Four_CharacterActions.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Four_CharacterActions.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Nine_CommandingRoles.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Nine_CommandingRoles.xml)
+  - was Rule 9, renumbered
+  - rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/One_BreakCharacter.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/One_BreakCharacter.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Seven_SafeZones.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Seven_SafeZones.xml)
+  - was Rule 7, renumbered
+  - rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Six_Metagame.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Six_Metagame.xml)
+  - was Rule 6, renumbered
+  - rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Three_ProperGrammar.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Three_ProperGrammar.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Two_TextChat.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Roleplay/Two_TextChat.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Seven_ThreatenToReport.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Seven_ThreatenToReport.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Six_Ahelp.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Six_Ahelp.xml)
+  - rule colours readable on light and dark backgrounds
+  - was Monolith
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Three_CheatingExploits.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Three_CheatingExploits.xml): rule colours readable on light and dark backgrounds
+- [`Resources/ServerInfo/_Mono/Guidebook/Rules/Two_Respect.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Two_Respect.xml): rule colours readable on light and dark backgrounds
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/Zero_AgeThreshold.xml`](../../Resources/ServerInfo/_Mono/Guidebook/Rules/Zero_AgeThreshold.xml)
   - was 16, Monolith
   - was 16
+  - rule colours readable on light and dark backgrounds
 - [`Resources/ServerInfo/_NF/Guidebook/Rules/FrontierRuleset.xml`](../../Resources/ServerInfo/_NF/Guidebook/Rules/FrontierRuleset.xml)
   - was Monolith Station Rules
+  - rule colours readable on light and dark backgrounds
   - was Monolith
 - [`Resources/ServerInfo/_NF/Guidebook/Rules/Zero_Tolerance.xml`](../../Resources/ServerInfo/_NF/Guidebook/Rules/Zero_Tolerance.xml)
   - was 16, Monolith Station
@@ -558,6 +594,21 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - was 16
 - [`Resources/ServerInfo/Rules.txt`](../../Resources/ServerInfo/Rules.txt): Monolith renamed to Wolfgate in the intro and section headings (#19); the file is unused (server.rules_file is MonolithRuleset).
 - [`Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml`](../../Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml): PDV pack, top-left thruster was mapped disabled.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_r.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_r.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kresta.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/kresta.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kynda.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/kynda.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/inertia.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/inertia.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/mock.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/mock.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/snakelet.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/snakelet.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/neptune.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/neptune.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/ontos.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/ontos.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
 - [`Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/nuclear_reactor.rsi/`](../../Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/nuclear_reactor.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_component_cap.rsi/`](../../Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_component_cap.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_parts.rsi/`](../../Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_parts.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.

@@ -5697,3 +5697,359 @@ Entries:
   id: 100356
   time: '2026-11-05T05:44:19.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/480
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: MMC Hokkaido has a trade goods vendor selling luxuries and metals.
+    - type: Tweak
+      message: >-
+        Hokkaido joins the sector economy: it makes luxuries and metals, and its
+        prices and stock change like other stations'.
+    - type: Tweak
+      message: MMC Adamantite bounty removed
+  id: 100357
+  time: '2026-11-05T21:26:29.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/506
+- author: TheSlapper
+  changes:
+    - type: Add
+      message: Added 272 mobs.
+  id: 100358
+  time: '2026-11-05T21:36:08.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/505
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Synthetics can be turned by chimera Letoferol; it shorts their wiring
+        while flesh grows over the frame.
+    - type: Tweak
+      message: >-
+        An unsuited synthetic in space freezes and goes down after a short
+        while, but never passes out.
+    - type: Tweak
+      message: >-
+        A synthetic drained of hydraulic fluid starves its core and dies if it
+        isn't refilled.
+    - type: Fix
+      message: Native Synths can now be turned by natural Letoferol like other species.
+  id: 100359
+  time: '2026-11-05T22:20:17.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/499
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        The server spends less time on snow slowdown and body temperature
+        checks.
+  id: 100360
+  time: '2026-11-05T23:50:56.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/509
+- author: DriftingSkies
+  changes:
+    - type: Add
+      message: >-
+        Added contract boards to Caelestinus Central, at the centre of the plaza
+        and beside each of the six dock arms. Stations across the sector post
+        paid work there, open to everyone, Vagrants included.
+    - type: Add
+      message: >-
+        Every contract board has a pickup pad beside it. Contract cargo is
+        always left there, or on the nearest clear floor.
+    - type: Add
+      message: >-
+        Every contract says who you're working for, and on behalf of which
+        faction or company.
+    - type: Add
+      message: >-
+        Delivery contracts: hand-carry sealed parcels, data cases, sample cases
+        and diplomatic pouches to another station. Walk them aboard and they're
+        signed for. Mail runs send one parcel to each of several stations in a
+        single trip.
+    - type: Add
+      message: >-
+        Hauling contracts: move sealed freight, medical, munitions, equipment,
+        reactor-part, livestock and plasma crates between stations. They need a
+        hold or a strong back.
+    - type: Add
+      message: >-
+        Supply contracts: fill a manifest crate with the goods a station wants
+        (building stock, medical supplies, hardware, rations, reactor fuel,
+        anomaly cores, ship parts, seeds, circuit boards) and close it aboard
+        their station.
+    - type: Add
+      message: >-
+        Mining contracts: fill a manifest crate with ore, from iron and quartz
+        quotas up to lithium, uranium, diamond and bluespace. Bulk orders like
+        the motherlode and the annual quota give whole crews a long shift of
+        mining.
+    - type: Add
+      message: >-
+        Bounty contracts: hunt down a ship in open space, from an unarmed bail
+        jumper or an unpaid repossession up to smuggler convoys, an evasive ace
+        pilot and a warlord's flagship. The wreck it leaves is yours to claim.
+    - type: Add
+      message: >-
+        Some bounties turn up a lead: take down a Reaver lieutenant and their
+        warlord's bounty is held for your crew alone for a short while.
+    - type: Add
+      message: >-
+        Clear carp nests out of wrecks, and board stopped smugglers to inspect
+        their cargo past their armed crew.
+    - type: Add
+      message: >-
+        Salvage contracts: find a wreck out in space and bring back its flight
+        recorder, data core, cargo manifest or anomaly sample. Some wrecks are
+        infested.
+    - type: Add
+      message: >-
+        Tow contracts: drag a derelict hull to a station. You need a rope coil
+        and a tether installer on you to take one.
+    - type: Add
+      message: >-
+        Repair derelict nav beacons, and hold derelict terminals while they
+        download as hostiles attack in waves.
+    - type: Add
+      message: >-
+        Fleet salvage operations: scan a battle wreck's anomalies, recover its
+        flight recorder and tow the hull home, all in one contract.
+    - type: Add
+      message: >-
+        Science contracts: scan every anomaly aboard a derelict before one
+        collapses, from quiet wrecks to infested hulks, xeno nests and twin
+        derelicts. Recover live artifacts, which pay more for every node you
+        unlock, and log survey points out in open space.
+    - type: Add
+      message: >-
+        Escort contracts: meet a freighter at the rendezvous and see it safely
+        to its destination. Raiders may be lying in wait.
+    - type: Add
+      message: Planetary contracts are listed on the board as coming soon.
+    - type: Add
+      message: >-
+        Added the Contracts PDA app to track your crew's contracts, deadlines,
+        objectives and where to go.
+    - type: Add
+      message: >-
+        Contractors remember you between shifts. Finish work to raise your
+        standing and unlock riskier, better-paid contracts. Failing, abandoning,
+        or working against a contractor's interests lowers it.
+    - type: Add
+      message: >-
+        Crews share contract slots and split the pay. Bigger crews can hold more
+        contracts at once, and crew work pays more for each crewmate in the
+        sector, so shares don't shrink. The board shows each member's share
+        before you take a contract.
+    - type: Add
+      message: >-
+        Crew contracts need a crew of two to four in the sector, and pay each
+        member more than solo work.
+    - type: Add
+      message: >-
+        Bounty targets and wrecks show who has claimed them on radar, and your
+        crew get a waypoint to your target. Firing on someone else's claimed
+        target costs you standing, unless you're on the same side.
+    - type: Add
+      message: >-
+        Added faction contract boards by the docks of the Halcyon (TSF), Camelot
+        (USSP) and Helios (PDV), with members-only patrols, war materiel,
+        ammunition drives, convoys, ore requisitions and salvage. They pay in
+        thalers and faction currency. Only PDV-board contracts send you to
+        Helios.
+    - type: Tweak
+      message: Encounter ransom demands now ask for thalers.
+  id: 100361
+  time: '2026-11-05T23:52:42.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/481
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added the Lore Book, a book of the sector's history, factions, worlds
+        and threats. Open it from the top bar, the game menu or the lobby.
+    - type: Add
+      message: Objects with a lore entry have a Lore button when examined.
+    - type: Add
+      message: >-
+        New lore pages on the Collapse of Kyphrus, Carcinoma, Crocus, the
+        Ashfall Reavers, the ADS, the judges, the Monolith, Chimera and
+        xenonids.
+    - type: Tweak
+      message: >-
+        Lore pages moved out of the guidebook into the Lore Book; guide pages
+        link to them.
+  id: 100362
+  time: '2026-11-05T23:56:30.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/510
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Round end and round start no longer freeze the server for as long.
+  id: 100363
+  time: '2026-11-06T04:38:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/514
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Dead crew's headsets only plead for help where a Monolith is stirring or
+        the Remade are about.
+    - type: Fix
+      message: >-
+        The Numb trait hides the damage vignette and keeps the health doll at
+        full.
+    - type: Fix
+      message: >-
+        The anomaly scanner no longer runs points earned onto the point output
+        line.
+    - type: Fix
+      message: The plasma cutter is no longer giant when held or worn on a belt.
+    - type: Fix
+      message: >-
+        Sealed mercenary and Volta modsuits no longer turn Resomi into an error
+        sprite, and sealed standard modsuits no longer do it to Vox.
+    - type: Fix
+      message: Anvilhold and the chop-shop can't be broken by a drydock.
+    - type: Fix
+      message: Ships no longer pick up nuclear fallout in open space.
+    - type: Tweak
+      message: Nukes erase everything at ground zero, floor and paint included.
+    - type: Tweak
+      message: Nuclear fallout is now deadly and lasts much longer.
+    - type: Fix
+      message: >-
+        A battle's winner keeps its warning and attack rings on radar while it
+        still guards them.
+    - type: Fix
+      message: Admins possessing birds and NPCs no longer fight their AI.
+    - type: Fix
+      message: >-
+        The MLA-73, M90, Bulldog, Hristov and Bandit tech disks unlock their
+        guns.
+    - type: Fix
+      message: Bounty contracts try harder to find a place for their target.
+  id: 100364
+  time: '2026-11-06T05:30:03.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/513
+- author: Happyowl93
+  changes:
+    - type: Remove
+      message: >-
+        PDV ships no longer come with adamantite walls and are back on
+        plastitanium.
+    - type: Tweak
+      message: >-
+        Adamantite walls are now durasteel walls, with five thirds the health of
+        the plastitanium wall they replace and the same resistances.
+    - type: Add
+      message: >-
+        Drydocks offer durasteel plating, which swaps every plastitanium wall on
+        your ship for durasteel
+  id: 100365
+  time: '2026-11-06T06:02:47.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/470
+- author: Toriate
+  changes:
+    - type: Add
+      message: SRD and its ammo gets a new sprite.
+    - type: Fix
+      message: Removed the old soulful RCD sprite from under the RCD sprite.
+  id: 100366
+  time: '2026-11-06T06:06:51.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/507
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Reality anchors now hold the sector together. Fly past them and the
+        Unmooring sets in: Drift builds up, you start seeing and hearing things,
+        and the far bands are marked as restricted, unsafe space.
+    - type: Add
+      message: >-
+        The outer bands pay out more ore, and exotic matter, which sells high
+        and builds Drift stabilisers, anchor charms and relay anchors.
+    - type: Add
+      message: >-
+        The six Lattice anchors are shielded stations with drones guarding them.
+        Destroying one is a sector-wide breach that shrinks anchored space and
+        makes Kyphrus look wrong.
+    - type: Add
+      message: >-
+        Players deep in Drift may be offered the Choir, an opt-in antagonist
+        faction.
+    - type: Tweak
+      message: Monolith ships only turn up in the Deep, past 30 km.
+  id: 100367
+  time: '2026-11-06T09:48:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/508
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        The Common Writ is now the sector's law, upheld by the judges. Read it
+        in the lore book or the law book judges carry.
+    - type: Add
+      message: >-
+        Judges have a Bench app on their PDA to ticket people within a few
+        steps. The fine comes straight out of the offender's account.
+    - type: Add
+      message: >-
+        Fines you can't pay become Bench debt, taken from half of what you earn.
+        Leave it too long or let it grow too big and you are Wanted.
+    - type: Add
+      message: Outlawry charges make you Wanted at once, with a bounty on the board.
+    - type: Add
+      message: Monolith stones are now unlawful material, and examining one says so.
+    - type: Tweak
+      message: >-
+        The Roswell's port bow gun is now a WRIT disabler harpoon that draws a
+        fresh dart two minutes after each shot.
+    - type: Tweak
+      message: >-
+        The Lightning swaps one TOVEK for a SHRIKE ion disruptor to stop ships
+        that won't heave to.
+  id: 100368
+  time: '2026-11-06T10:50:17.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/516
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Fixed an exploit that let a client crash the server.
+  id: 100369
+  time: '2026-11-06T12:25:40.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/515
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: >-
+        The separated chat panel can be made narrower; its menu buttons shrink
+        to fit.
+  id: 100370
+  time: '2026-11-06T15:55:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/518
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Reaver and ADS bounties pay a lot more, and grow with every ship that
+        joins the fight.
+    - type: Tweak
+      message: >-
+        ADS bounties grow with the server population and give drydock repair
+        vouchers, like the Reavers.
+    - type: Tweak
+      message: >-
+        The Reaver citadel and ADS dreadnought bounties are no longer cut by the
+        hourly payout cap.
+  id: 100371
+  time: '2026-11-06T20:02:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/520
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Examining a wall, window, door or other structure now shows its
+        integrity, like 490/500.
+  id: 100372
+  time: '2026-11-06T20:27:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/519

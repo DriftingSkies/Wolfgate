@@ -167,7 +167,8 @@ public sealed class WFBirdSystem : EntitySystem
         var query = EntityQueryEnumerator<WFBirdComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var bird, out var xform))
         {
-            if (bird.Dead)
+            // A bird someone plays, such as a possessing admin, flies as they steer it.
+            if (bird.Dead || HasComp<ActorComponent>(uid))
                 continue;
 
             // A flock leader on planet ground nobody is near stays put; its members follow it.
@@ -761,7 +762,7 @@ public sealed class WFBirdSystem : EntitySystem
         var query = EntityQueryEnumerator<WFBirdComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var bird, out var xform))
         {
-            if (!bird.Member || bird.Protected || bird.Dead)
+            if (!bird.Member || bird.Protected || bird.Dead || HasComp<ActorComponent>(uid))
                 continue;
 
             var position = _transform.GetWorldPosition(xform);

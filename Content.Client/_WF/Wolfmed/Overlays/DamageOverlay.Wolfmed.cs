@@ -4,6 +4,7 @@ using Content.Shared.Damage;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
+using Content.Shared.Traits.Assorted;
 
 namespace Content.Client.UserInterface.Systems.DamageOverlays.Overlays;
 
@@ -36,6 +37,13 @@ public sealed partial class DamageOverlay
             !_entityManager.TryGetComponent(local, out PainComponent? pain) ||
             pain.SoftPainCap <= FixedPoint2.Zero)
             return;
+
+        // Numb: the player can't feel how hurt they are.
+        if (_entityManager.HasComponent<PainNumbnessComponent>(local))
+        {
+            BruteLevel = 0f;
+            return;
+        }
 
         var painLevel = FixedPoint2
             .Min(1f, _entityManager.System<PainSystem>().GetPain((local, pain)) / pain.SoftPainCap)

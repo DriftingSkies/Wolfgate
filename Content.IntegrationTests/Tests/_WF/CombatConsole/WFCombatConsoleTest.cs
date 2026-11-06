@@ -1123,6 +1123,12 @@ public sealed class WFCombatConsoleTest
             control.InvalidateMeasure();
         root.Measure(size);
         root.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+        // A Slider places its fill and grabber in Resized, after its children were arranged; the next frame's pass
+        // settles them, which a manual Arrange only does with the subtree invalidated again.
+        foreach (var control in Descendants(root))
+            control.InvalidateMeasure();
+        root.Measure(size);
+        root.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
     }
 
     /// <summary>A scroll container needs its bar when it shows a bar or its content is taller than it is.</summary>

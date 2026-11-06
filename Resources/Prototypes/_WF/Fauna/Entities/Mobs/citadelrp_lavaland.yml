@@ -1,0 +1,752 @@
+# Lavaland creatures converted from CitadelRP (tg for the basilisk, goldgrub, gutlunch and dwarf legion).
+
+- type: entity
+  parent: [ MobLavalandGoliath, FaunaMobCore ]
+  id: CitadelRPMobGoliathCalf
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/goliath_calf.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: goliath_baby
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: goliath_baby
+      Dead:
+        Base: goliath_baby_dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.4
+    baseSprintSpeed: 1.4
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 6
+        Slash: 6
+  - type: NPCUseActionOnTarget
+    actionId: ActionGoliathCalfTentacle
+  - type: HTN
+    constantlyReplan: true
+    rootTask:
+      task: FaunaHostileFleeDyingCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        9
+      NavSmash: !type:Bool
+        true
+  - type: FaunaGroupRetaliate
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+  - type: Speech
+    allowedEmotes: [ CitadelRPEmoteGoliath ]
+  - type: AutoEmote
+    emotes: [ CitadelRPAutoEmoteGoliath ]
+  - type: SolutionContainerManager
+    solutions:
+      udder:
+        maxVol: 50
+  - type: Udder
+    reagentId: Ammonia
+    quantityPerUpdate: 7.5
+    growthDelay: 40
+  - type: FaunaGrowth
+    growInto: MobLavalandGoliath
+    minDelay: 180
+    maxDelay: 220
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatGoliath
+      amount: 1
+    - id: MaterialGoliathHide1
+      amount: 2
+    - id: ShiptestMaterialSinew
+      amount: 2
+    - id: MaterialBones1
+      amount: 2
+
+- type: entity
+  parent: ActionGoliathTentacle
+  id: ActionGoliathCalfTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: Mobs/Aliens/Asteroid/goliath.rsi
+      state: goliath_tentacle_spawn
+    iconOn:
+      sprite: Mobs/Aliens/Asteroid/goliath.rsi
+      state: goliath_tentacle_wiggle
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      extraSpawns: 2
+    useDelay: 15
+    range: 4
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobGutlunch
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/gutlunch.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: gutlunch
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      20: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PopupBehavior
+        popup: fauna-citadelrp-gutlunch-death
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:SpillBehavior
+        solution: food
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+      udder:
+        maxVol: 50
+  - type: Udder
+    reagentId: Cream
+    quantityPerUpdate: 3.5
+    growthDelay: 30
+  - type: FaunaRockHide
+    exempt:
+      components:
+      - GatheringProjectile
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 0
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: FaunaFleeCompound
+  - type: InteractionPopup
+    successChance: 0.8
+    interactSuccessString: petting-success-generic
+    interactFailureString: petting-failure-generic
+
+# Male gutlunch: smaller, in one of three colours.
+- type: entity
+  parent: CitadelRPMobGutlunch
+  id: CitadelRPMobGubbuck
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/gutlunch.rsi
+    scale: 0.85, 0.85
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "body" ]
+      state: gutlunch
+  - type: FaunaRandomTint
+    palettes:
+      body: [ "#E39FBB", "#D97D64", "#CF8C4A" ]
+    layers:
+      body: body
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PopupBehavior
+        popup: fauna-citadelrp-gubbuck-death
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:SpillBehavior
+        solution: food
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobGutshank
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/gutshank.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: gutshank
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: gutshank
+      Dead:
+        Base: gutshank_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.7
+    baseSprintSpeed: 1.7
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 8
+  - type: FaunaMeleeProc
+    bloodDrainMin: 10
+    bloodDrainMax: 20
+  - type: FaunaFeed
+    evolveKey:
+      components:
+      - Seed
+    evolveInto: CitadelRPMobShank
+  - type: SolutionContainerManager
+    solutions:
+      udder:
+        maxVol: 50
+  - type: Udder
+    reagentId: Water
+    quantityPerUpdate: 7.5
+    growthDelay: 40
+  - type: MovementSound
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/spider_loop.ogg
+  - type: FaunaGroupRetaliate
+  - type: Speech
+    allowedEmotes: [ CitadelRPEmoteGutshank ]
+  - type: AutoEmote
+    emotes: [ CitadelRPAutoEmoteGutshank ]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 2
+    - id: ChitinChunk
+      amount: 5
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobShank
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/shank.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: shank
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: shank
+      Dead:
+        Base: shank_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: FaunaMeleeProc
+    bloodDrainMin: 20
+    bloodDrainMax: 25
+  - type: FaunaGroupRetaliate
+  - type: Speech
+    allowedEmotes: [ CitadelRPEmoteGutshank ]
+  - type: AutoEmote
+    emotes: [ CitadelRPAutoEmoteGutshank ]
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 4
+    - id: ChitinChunk
+      amount: 5
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobSandSifter
+  components:
+  - type: MeleeWeapon
+    hidden: true
+    damage:
+      types:
+        Blunt: 0
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/lavasnail.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: lavasnail
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: lavasnail
+      Dead:
+        Base: lavasnail_dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 20
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      20: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0.3
+    baseSprintSpeed: 0.3
+  - type: Speech
+    allowedEmotes: [ CitadelRPEmoteSandSifter ]
+  - type: AutoEmote
+    emotes: [ CitadelRPAutoEmoteSandSifter ]
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: IdleCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSnail
+      amount: 2
+    - id: CitadelRPSifterShell
+      amount: 1
+
+- type: entity
+  parent: [ BaseMobAsteroid, FlyingMobBase, FaunaMobCore ]
+  id: CitadelRPMobStormdrifter
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/stormdrifter.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: stormdrifter
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: stormdrifter
+      Dead:
+        Base: stormdrifter_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/towelwhip.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 10
+  - type: StaminaDamageOnHit
+    damage: 10
+    sound:
+      path: /Audio/Effects/sparks1.ogg
+  - type: FaunaGroupRetaliate
+  - type: Speech
+    allowedEmotes: [ CitadelRPEmoteStormdrifter ]
+  - type: AutoEmote
+    emotes: [ CitadelRPAutoEmoteStormdrifter ]
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: FaunaHostileFleeDyingCompound
+  - type: Butcherable
+    spawned:
+    - id: CitadelRPElderstone
+      amount: 1
+
+- type: entity
+  parent: CitadelRPMobStormdrifter
+  id: CitadelRPMobBulldrifter
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/bulldrifter.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: bulldrifter
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: bulldrifter
+      Dead:
+        Base: bulldrifter_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch2.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 12
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: ShiptestMaterialSinew
+      amount: 5
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobBasilisk
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/basilisk.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: basilisk
+    - map: [ "aggro" ]
+      state: basilisk_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: basilisk
+      Dead:
+        Base: basilisk_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 12
+        Structural: 60
+  - type: ProjectileBatteryAmmoProvider
+    proto: WatcherBolt
+    fireCost: 50
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 50
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/pierce.ogg
+  - type: FaunaRockHide
+    exempt:
+      components:
+      - GatheringProjectile
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        5
+      AggroVisionRadius: !type:Single
+        8
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: DiamondOre1
+      amount: 2
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobGoldgrub
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/goldgrub.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: goldgrub
+    - map: [ "aggro" ]
+      state: goldgrub_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: goldgrub
+      Dead:
+        Base: goldgrub_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      45: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 45
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          GoldOre1:
+            min: 1
+            max: 3
+          SilverOre1:
+            min: 0
+            max: 2
+          UraniumOre1:
+            min: 0
+            max: 1
+          DiamondOre1:
+            min: 0
+            max: 1
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 0
+  - type: FaunaRockHide
+    exempt:
+      components:
+      - GatheringProjectile
+  - type: Reflect
+    reflects: [ Energy ]
+    reflectProb: 1
+  - type: FaunaDigAmbush
+    hole: ShiptestAntlionBurrow
+    fleeHealth: 1
+  - type: FaunaCorpseEater
+    whitelist:
+      tags:
+      - Ore
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: CitadelRPGoldgrubCompound
+
+# Runs from attackers, otherwise eats ore off the floor.
+- type: htnCompound
+  id: CitadelRPGoldgrubCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatItemCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+- type: entity
+  parent: [ FaunaMobConstructBase, FlyingMobBase ]
+  id: CitadelRPMobCurseBlob
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/curseblob.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: curseblob
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          CitadelRPEffectCurseBlob:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/_WF/Fauna/CitadelRP/curse1.ogg
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/curseattack.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Heat: 10
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+# Shape the curse blob leaves when it dies.
+- type: entity
+  id: CitadelRPEffectCurseBlob
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/curseblob.rsi
+    state: curseblob
+    drawdepth: Effects
+  - type: TimedDespawn
+    lifetime: 3.2
+
+- type: entity
+  parent: [ MobLegion, FaunaMobCore ]
+  id: CitadelRPMobDwarfLegion
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/dwarf_legion.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: dwarf_legion
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 60
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: MaterialBones1
+      amount: 1
+      maxAmount: 3
+    - id: MaterialLegionSkull1
+  - type: FaunaRockHide
+    exempt:
+      components:
+      - GatheringProjectile
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3

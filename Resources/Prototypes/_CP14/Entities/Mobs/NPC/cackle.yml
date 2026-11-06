@@ -1,0 +1,128 @@
+# WOLFGATE(Fauna) START: ported from CrystallEdge
+- type: entity
+  parent: CP14SimpleMobBase
+  id: CP14MobMonsterCackle
+  components:
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+      VisionRadius: !type:Single
+        16
+      AggroVisionRadius: !type:Single
+        6
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _CP14/Mobs/Monster/cackle.rsi
+    layers:
+      - map: [ "enum.DamageStateVisualLayers.Base" ]
+        state: live
+      - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+        state: live_spikes
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 200
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: Butcherable
+    spawned:
+    - id: FoodCabbage
+      amount: 1
+  - type: CombatMode
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 1
+        Structural: 3
+  - type: Body
+    prototype: Animal
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: CP14Cackle
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      45: Dead
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      30: 0.5
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: live
+        BaseUnshaded: live_spikes
+      Dead:
+        Base: dead
+        BaseUnshaded: dead_spikes
+  - type: Stamina
+    critThreshold: 75
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 30
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: CP14MonsterToxinBleed
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 1
+    solution: melee
+  - type: ReplacementAccent
+    accent: xeno
+  - type: InteractionPopup
+    successChance: 0.6
+    interactSuccessString: petting-success-generic
+    interactFailureString: petting-failure-generic
+    interactSuccessSpawn: EffectHearts
+    interactSuccessSound:
+      path: /Audio/Voice/Diona/diona_rustle2.ogg
+  - type: Bloodstream
+    bloodMaxVolume: 200
+    bloodReagent: Sap
+  - type: Tag
+    tags:
+    - FootstepSound
+  - type: PassiveDamage
+    allowedStates:
+    - Alive
+    damageCap: 45
+    damage:
+      types:
+        Poison: -0.07
+      groups:
+        Brute: -0.07
+        Burn: -0.07
+  - type: BasicEntityAmmoProvider
+    proto: CP14SpikeCackleSpread
+    capacity: 2
+    count: 2
+  - type: RechargeBasicEntityAmmo
+    showExamineText: false
+    rechargeSound: null
+    rechargeCooldown: 4
+  - type: Gun
+    fireRate: 1
+    useKey: false
+    showExamineText: false
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/water_spray.ogg
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+# WOLFGATE END

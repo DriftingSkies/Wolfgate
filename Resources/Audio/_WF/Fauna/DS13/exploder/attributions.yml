@@ -1,0 +1,176 @@
+- files: ["exploder_attack_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_attack_1.ogg"
+- files: ["exploder_attack_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_attack_2.ogg"
+- files: ["exploder_attack_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_attack_3.ogg"
+- files: ["exploder_attack_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_attack_4.ogg"
+- files: ["exploder_attack_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_attack_5.ogg"
+- files: ["exploder_death_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_death_1.ogg"
+- files: ["exploder_death_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_death_2.ogg"
+- files: ["exploder_death_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_death_3.ogg"
+- files: ["exploder_shout_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_1.ogg"
+- files: ["exploder_shout_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_2.ogg"
+- files: ["exploder_shout_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_3.ogg"
+- files: ["exploder_shout_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_4.ogg"
+- files: ["exploder_shout_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_5.ogg"
+- files: ["exploder_shout_6.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_6.ogg"
+- files: ["exploder_shout_7.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_7.ogg"
+- files: ["exploder_blast_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_blast_1.ogg"
+- files: ["exploder_blast_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_blast_2.ogg"
+- files: ["exploder_blast_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_blast_3.ogg"
+- files: ["exploder_blast_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_blast_4.ogg"
+- files: ["exploder_blast_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_blast_5.ogg"
+- files: ["exploder_pain_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_pain_1.ogg"
+- files: ["exploder_pain_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_pain_2.ogg"
+- files: ["exploder_pain_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_pain_3.ogg"
+- files: ["exploder_pain_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_pain_4.ogg"
+- files: ["exploder_pain_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_pain_5.ogg"
+- files: ["exploder_shout_long_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_long_1.ogg"
+- files: ["exploder_shout_long_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_long_2.ogg"
+- files: ["exploder_shout_long_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_long_3.ogg"
+- files: ["exploder_shout_long_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_long_4.ogg"
+- files: ["exploder_shout_long_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_shout_long_5.ogg"
+- files: ["exploder_speech_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_1.ogg"
+- files: ["exploder_speech_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_2.ogg"
+- files: ["exploder_speech_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_3.ogg"
+- files: ["exploder_speech_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_4.ogg"
+- files: ["exploder_speech_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_5.ogg"
+- files: ["exploder_speech_6.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_6.ogg"
+- files: ["exploder_speech_7.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/exploder/exploder_speech_7.ogg"
+- files: ["exploder_footstep_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_1.ogg"
+- files: ["exploder_footstep_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_2.ogg"
+- files: ["exploder_footstep_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_3.ogg"
+- files: ["exploder_footstep_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_4.ogg"
+- files: ["exploder_footstep_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_5.ogg"
+- files: ["exploder_footstep_6.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_6.ogg"
+- files: ["exploder_footstep_7.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/exploder_footstep_7.ogg"

@@ -1,0 +1,16 @@
+# Guidebook pages that point players at the lore book.
+
+- type: guideEntry
+  id: WFLoreBookGuide
+  name: wf-lore-entry-guide
+  text: "/ServerInfo/_WF/LoreBook/Guidebook/LoreBook.xml"
+  priority: 1
+
+- type: guideEntry
+  id: WFFactionsGuide
+  name: wf-lore-entry-factions-guide
+  text: "/ServerInfo/_WF/LoreBook/Guidebook/Factions.xml"
+  priority: 1
+  children:
+  - WFAds
+  - Smuggling

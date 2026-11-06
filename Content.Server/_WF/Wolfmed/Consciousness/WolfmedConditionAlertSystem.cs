@@ -12,6 +12,7 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Traits.Assorted;
 using Robust.Server.GameObjects;
 using Robust.Shared.Maths;
 using Robust.Shared.Player;
@@ -159,11 +160,13 @@ public sealed partial class WolfmedConditionAlertSystem : EntitySystem
     private void ShowHealth(EntityUid body, ProtoId<AlertPrototype> alert, AlertPrototype prototype)
     {
         var level = CompOrNull<WolfmedConsciousnessComponent>(body)?.DownLevel ?? 0f;
+        // Numb: the doll reads healthy, as the trait promises.
+        if (HasComp<PainNumbnessComponent>(body))
+            level = 0f;
+
         var severity = (short) MathF.Round(MathHelper.Lerp(prototype.MinSeverity, prototype.MaxSeverity,
             Math.Clamp(level, 0f, 1f)));
 
-        // BeforeAlertSeverityCheckEvent is not raised: its one reader, pain numbness, pins the doll at full
-        // health, which would hide blood loss too. Numbness already zeroes pain in these inputs.
         _alerts.ShowAlert(body, alert, severity);
     }
 

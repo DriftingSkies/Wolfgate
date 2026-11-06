@@ -1855,12 +1855,6 @@ entities:
       parent: 1
 - proto: WeaponTurretTovek
   entities:
-  - uid: 4
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 6.5,-1.5
-      parent: 1
   - uid: 5
     components:
     - type: Transform
@@ -1878,5 +1872,13 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 5.5,-1.5
+      parent: 1
+- proto: WFIonDisruptor
+  entities:
+  - uid: 4
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 6.5,-1.5
       parent: 1
 ...

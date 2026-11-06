@@ -5,7 +5,7 @@ meta:
   forkId: wolfgate-mapping
   forkVersion: 20261023-201310-d5515d3-tm231-b5e79818
   time: 10/25/2026 14:53:15
-  entityCount: 10712
+  entityCount: 10720
 maps: []
 grids:
 - 1
@@ -36234,7 +36234,7 @@ entities:
       pos: -10.5,-6.5
 - proto: WFVendingMachineTsfOutfitter
   entities:
-  - uid: 10712
+  - uid: 10720
     components:
     - type: Transform
       parent: 1
@@ -70823,6 +70823,30 @@ entities:
     - type: Transform
       parent: 1
       pos: -11.5,-31.5
+- proto: WFContractBoardTSF
+  entities:
+  - uid: 10712
+    components:
+    - type: Transform
+      parent: 1
+      pos: 7.5,5.5
+  - uid: 10714
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -36.5,-13.5
+      parent: 1
+  - uid: 10716
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -31.5,3.5
+      parent: 1
+  - uid: 10718
+    components:
+    - type: Transform
+      pos: 52.5,0.5
+      parent: 1
 - proto: Windoor
   entities:
   - uid: 10469
@@ -71247,4 +71271,26 @@ entities:
     - type: Transform
       parent: 1
       pos: 14.420189,30.568787
+- proto: WFContractCargoPad
+  entities:
+  - uid: 10713
+    components:
+    - type: Transform
+      pos: 6.5,5.5
+      parent: 1
+  - uid: 10715
+    components:
+    - type: Transform
+      pos: -36.5,-14.5
+      parent: 1
+  - uid: 10717
+    components:
+    - type: Transform
+      pos: -30.5,3.5
+      parent: 1
+  - uid: 10719
+    components:
+    - type: Transform
+      pos: 53.5,0.5
+      parent: 1
 ...

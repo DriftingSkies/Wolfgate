@@ -7,6 +7,7 @@ namespace Content.Server._WF.GroundCover;
 public sealed class WFSnowSlowSystem : SharedWFSnowSlowSystem
 {
     [Dependency] private WFGroundCoverSystem _cover = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
 
     private EntityQuery<ActorComponent> _actorQuery;
 
@@ -17,6 +18,20 @@ public sealed class WFSnowSlowSystem : SharedWFSnowSlowSystem
     }
 
     protected override int SnowVersion => _cover.SentStamp;
+
+    // Half a second between full scans; player mobs are visited every tick, so their walking stays predicted.
+    protected override int ScanTicks => 15;
+
+    protected override int AreaVersion(EntityUid grid, Vector2i tile) => _cover.SentVersionAround(grid, tile);
+
+    protected override void GetUrgent(List<EntityUid> mobs)
+    {
+        foreach (var session in _player.Sessions)
+        {
+            if (session.AttachedEntity is { } mob)
+                mobs.Add(mob);
+        }
+    }
 
     protected override bool HasSnow(EntityUid grid)
     {

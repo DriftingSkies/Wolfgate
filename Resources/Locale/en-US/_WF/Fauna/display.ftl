@@ -1,0 +1,12 @@
+ent-FaunaDisplaySpawner = display mob spawner
+ent-FaunaDisplayButton = mob AI button
+fauna-display-button-live = AI on
+fauna-display-button-still = AI off
+ent-FaunaArenaSpawner = arena mob spawner
+ent-FaunaArenaButtonPrevious = previous mob
+ent-FaunaArenaButtonNext = next mob
+ent-FaunaArenaButtonFight = fight
+ent-FaunaArenaButtonRestock = restock
+fauna-arena-pick = {$index}/{$count} {$name}
+fauna-arena-fight = Fight
+fauna-arena-restock = Restocked

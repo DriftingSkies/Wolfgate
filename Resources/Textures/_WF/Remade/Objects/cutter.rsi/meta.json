@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from DS13-1.0 at https://github.com/DS-13-Dev-Team/DS13 (icons/obj/tools.dmi, plasmacutter); held and worn states copy the icon",
+  "copyright": "Taken from DS13-1.0 at https://github.com/DS-13-Dev-Team/DS13 (icons/obj/tools.dmi, plasmacutter); inhand-left and inhand-right from DS13-2.0 at https://github.com/DS-13-Dev-Team/DS13-2.0 (icons/mob/inhands/weapons/guns_*hand.dmi, plasmacutter); equipped-BELT from Objects/Tools/welder.rsi",
   "size": {
     "x": 32,
     "y": 32

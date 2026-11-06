@@ -60,6 +60,9 @@ entry ids from 100000).
   - Wolfgate vessels and entity prices, which sit in module folders
   - run when this workflow changes
   - main CI skips these tests, so shipyard code and test changes run them here
+- [`.github/workflows/no-submodule-update.yml`](../../../.github/workflows/no-submodule-update.yml)
+  - rerun when labels change so an Engine Update label clears the check
+  - deliberate engine bumps carry the Engine Update label
 - [`.github/workflows/prtitlecase.yml`](../../../.github/workflows/prtitlecase.yml)
   - built-in token instead of bot PAT
   - needed since the built-in token replaces the bot PAT

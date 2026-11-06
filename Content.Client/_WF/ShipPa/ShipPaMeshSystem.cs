@@ -252,6 +252,14 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
             ShowCaption(grid.Value, caption);
     }
 
+    /// <summary>The pilot's volume setting for the speaker's ship, kept within the allowed range.</summary>
+    private float ShipVolume(EntityUid? grid)
+    {
+        return TryComp(grid, out ShipAlertComponent? alert)
+            ? Math.Clamp(alert.Volume, ShipAlertComponent.MinVolume, 1f)
+            : 1f;
+    }
+
     private static bool Better(Candidate candidate, Candidate? other)
     {
         if (other == null)
@@ -360,7 +368,7 @@ public sealed partial class ShipPaMeshSystem : EntitySystem
         // Extra edge fade prevents crossing the hard MaxDistance boundary at nonzero gain.
         var edge = Math.Clamp((speaker.Range - distance) / 2f, 0f, 1f);
         audio.Gain = SharedAudioSystem.VolumeToGain(voice.Broadcast.Params.Volume + speaker.Volume - 6f * speaker.Distortion)
-                     * voice.Fade * edge * flutter;
+                     * voice.Fade * edge * flutter * ShipVolume(xform.GridUid);
 
         if (_timing.CurTime < voice.Broadcast.Start)
         {

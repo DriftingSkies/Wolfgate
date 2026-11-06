@@ -1,0 +1,22 @@
+# WOLFGATE(Fauna) START: ported from CrystallEdge
+# Wolfgate swaps: group Toxins, flavor metallic and a Wolfgate physical description for the CP14 ones.
+- type: reagent
+  id: CP14MonsterToxinBleed
+  name: cp14-reagent-name-toxin-bleed
+  desc: cp14-reagent-desc-toxin-bleed
+  group: Toxins
+  flavor: metallic
+  color: "#872e2e"
+  physicalDesc: reagent-physical-desc-metallic
+  metabolisms:
+    Poison:
+      metabolismRate: 0.5
+      effects:
+      - !type:ModifyBleedAmount
+        amount: 2
+      - !type:HealthChange
+        damage:
+          types:
+            Piercing: 1.5
+  pricePerUnit: 4.0
+# WOLFGATE END

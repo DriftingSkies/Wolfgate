@@ -76,6 +76,11 @@ three times the power, so a fully converted ship hovers on the power it already 
 parts, so it stacks with the thruster line. A single-tier line can name its tier with `mark` (the keys' "to Mk II")
 and `lamp` (the lamp's numeral).
 
+The durasteel plating line is `WFHullPlatingRefit` (`WFHullPlatingRefitSystem`): one tier that replaces every
+plastitanium wall in place with its durasteel wall (ShipArmor module), at 1,000 cr per wall, or 15 plasteel and 5
+plastitanium units per wall at a mobile drydock (about 20 plastitanium sheets for a Luda). It is the only way to get durasteel. Each swap is recorded in the
+ship's repair snapshot, so the ship repair tool and drydock repairs rebuild durasteel, with no refit charge.
+
 A refit buys the next tier any unit falls short of, for every unit of the line, and is recorded once its job finishes
 with nothing skipped. A repair then brings each owned line back to tier, rebuilt machines included: units the ship paid
 for cost `refitRepairShare` (20%) of their tiers, and units past that coverage, such as machines added later, pay in
@@ -220,8 +225,10 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Supplies.cs`](WFDrydockSystem.Supplies.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Upgrades.cs`](WFDrydockSystem.Upgrades.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockSystem.Vouchers.cs`](WFDrydockSystem.Vouchers.cs)
+- [`Content.Server/_WF/Drydock/WFDrydockUnbreakableComponent.cs`](WFDrydockUnbreakableComponent.cs)
 - [`Content.Server/_WF/Drydock/WFDrydockWorkItem.cs`](WFDrydockWorkItem.cs)
 - [`Content.Server/_WF/Drydock/WFHulkComponent.cs`](WFHulkComponent.cs)
+- [`Content.Server/_WF/Drydock/WFHullPlatingRefitSystem.cs`](WFHullPlatingRefitSystem.cs)
 - [`Content.Server/_WF/Drydock/WFLandingThrusterRefitSystem.cs`](WFLandingThrusterRefitSystem.cs)
 - [`Content.Server/_WF/Drydock/WFPartRefitSystem.cs`](WFPartRefitSystem.cs)
 - [`Content.Server/_WF/Drydock/WFSalvagedHardwareComponent.cs`](WFSalvagedHardwareComponent.cs)
@@ -243,6 +250,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 - [`Content.Shared/_WF/Drydock/WFDrydockMaterialPaymentComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockMaterialPaymentComponent.cs)
 - [`Content.Shared/_WF/Drydock/WFDrydockOperatorComponent.cs`](../../../Content.Shared/_WF/Drydock/WFDrydockOperatorComponent.cs)
 - [`Content.Shared/_WF/Drydock/WFFlatpackUnpackedEvent.cs`](../../../Content.Shared/_WF/Drydock/WFFlatpackUnpackedEvent.cs)
+- [`Content.Shared/_WF/Drydock/WFHullPlatingRefit.cs`](../../../Content.Shared/_WF/Drydock/WFHullPlatingRefit.cs)
 - [`Content.Shared/_WF/Drydock/WFLandingThrusterRefit.cs`](../../../Content.Shared/_WF/Drydock/WFLandingThrusterRefit.cs)
 - [`Content.Shared/_WF/Drydock/WFPartRatingRefit.cs`](../../../Content.Shared/_WF/Drydock/WFPartRatingRefit.cs)
 - [`Content.Shared/_WF/Drydock/WFShipRefitEffect.cs`](../../../Content.Shared/_WF/Drydock/WFShipRefitEffect.cs)
@@ -263,6 +271,7 @@ Mk IV manipulators on stock bins draw 30 kW.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Drydock/ChopShopTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/ChopShopTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockDurasteelTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockDurasteelTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockHailTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockHailTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/DrydockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/DrydockTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBerthTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Drydock/MobileDrydockBerthTest.cs)

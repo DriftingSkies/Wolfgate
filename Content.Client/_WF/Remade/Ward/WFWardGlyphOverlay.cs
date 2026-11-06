@@ -109,7 +109,7 @@ public sealed class WFWardGlyphOverlay : Overlay
 
                 var letter = (char) ('A' + (i * 7 + 3) % 26);
                 var at = Vector2.Transform(world, toScreen) - new Vector2(FontSize * 0.3f, FontSize * 0.5f) * scale;
-                handle.DrawString(_font, at, letter.ToString(), scale, Ink.WithAlpha(alpha));
+                handle.DrawString(_font, at, letter.ToString(), scale, (field.Tint ?? Ink).WithAlpha(alpha));
             }
         }
     }

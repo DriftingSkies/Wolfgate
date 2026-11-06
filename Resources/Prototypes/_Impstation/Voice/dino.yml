@@ -1,0 +1,10 @@
+# WOLFGATE(Fauna) START: ported from Impstation
+- type: speechSounds
+  id: Dino
+  saySound:
+    collection: DinoSpeech
+  askSound:
+    collection: DinoSpeech
+  exclaimSound:
+    collection: DinoSpeech
+# WOLFGATE END

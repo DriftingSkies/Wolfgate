@@ -1,0 +1,8 @@
+# WOLFGATE(Fauna) START: ported from Goob Station
+- type: soundCollection
+  id: Flesh_Stab
+  files:
+  - /Audio/_Goobstation/Wraith/Attack/Flesh_Stab_1.ogg
+  - /Audio/_Goobstation/Wraith/Attack/Flesh_Stab_2.ogg
+  - /Audio/_Goobstation/Wraith/Attack/Flesh_Stab_3.ogg
+# WOLFGATE END

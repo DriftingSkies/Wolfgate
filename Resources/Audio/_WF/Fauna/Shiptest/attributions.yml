@@ -1,0 +1,48 @@
+- files: ["crystal_bamf.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/effects/bamf.ogg"
+- files: ["crystal_magic.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/effects/magic.ogg"
+- files: ["crystal_charge.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/magic/charge.ogg"
+- files: ["brimdemon.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/creatures/brimdemon.ogg"
+- files: ["sear.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/weapons/sear.ogg"
+- files: ["repulse.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/magic/repulse.ogg"
+- files: ["bin_close.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/effects/bin_close.ogg"
+- files: ["wand_teleport.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/magic/wand_teleport.ogg"
+- files: ["blind.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/magic/blind.ogg"
+- files: ["gravhit.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/effects/gravhit.ogg"
+- files: ["sonic_jackhammer.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/weapons/sonic_jackhammer.ogg"
+- files: ["mechmove04.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Shiptest"
+  source: "https://github.com/shiptest-ss13/Shiptest/blob/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3/sound/mecha/mechmove04.ogg"

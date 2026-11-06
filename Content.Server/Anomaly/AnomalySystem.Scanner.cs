@@ -175,6 +175,7 @@ public sealed partial class AnomalySystem
             msg.AddMarkupOrThrow(Loc.GetString("anomaly-scanner-point-output-unknown"));
         else
             msg.AddMarkupOrThrow(Loc.GetString("anomaly-scanner-point-output", ("point", GetAnomalyPointValue(anomaly, anomalyComp))));
+        msg.PushNewline(); // WOLFGATE: points earned ran onto the point output line
         //Frontier: Point earned
         if (secret != null && secret.Secret.Contains(AnomalySecretData.PointsEarned))
             msg.AddMarkupOrThrow(Loc.GetString("anomaly-scanner-point-earned-unknown"));

@@ -381,7 +381,7 @@ public sealed partial class CCVars
     ///     but may cause lag during round end with very high player counts.
     /// </summary>
     public static readonly CVarDef<bool> RoundEndPVSOverrides =
-        CVarDef.Create("game.round_end_pvs_overrides", true, CVar.SERVERONLY);
+        CVarDef.Create("game.round_end_pvs_overrides", false, CVar.SERVERONLY); // WOLFGATE: off, froze round end for 45 s at 90 players
 
     /// <summary>
     ///     If true, players can place objects onto tabletop games like chess boards.

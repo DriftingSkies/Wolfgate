@@ -1,0 +1,88 @@
+# WOLFGATE(Fauna) START: ported from Impstation
+# The action uses Wolfgate's inline EntityWorldTargetAction and the goliath tentacle event, so NPCs can fire it.
+# Its sound is left out, the audio is not in the source clone.
+- type: entity
+  id: ActionCurseAttack
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: _Impstation/Magic/curse.rsi
+      state: curse_tentacle_spawn
+    iconOn:
+      sprite: _Impstation/Magic/curse.rsi
+      state: curse_tentacle_wiggle
+    event: !type:GoliathSummonTentacleAction
+      entityId: EffectCurseTentacleSpawn
+    useDelay: 8
+    range: 10
+
+- type: entity
+  id: CurseTentacle
+  components:
+  - type: Transform
+    anchored: True
+  - type: Physics
+    bodyType: Static
+    canCollide: true
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _Impstation/Magic/curse.rsi
+    layers:
+    - state: curse_tentacle_wiggle
+  - type: StunOnContact
+    blacklist:
+      tags:
+      - Goliath
+  - type: Fixtures
+    fixtures:
+      fix:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        mask:
+        - Impassable
+        layer:
+        - Impassable
+        hard: false
+  - type: TimedDespawn
+    lifetime: 0.4
+  - type: SpawnOnDespawn
+    prototype: EffectCurseTentacleRetract
+
+- type: entity
+  id: BaseEffectCurseTentacleSpawn
+  categories: [ HideSpawnMenu ]
+  abstract: true
+  components:
+  - type: Transform
+    anchored: True
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Sprite
+    sprite: _Impstation/Magic/curse.rsi
+  - type: InteractionOutline
+  - type: TimedDespawn
+    lifetime: 0.7
+
+- type: entity
+  id: EffectCurseTentacleSpawn
+  parent: BaseEffectCurseTentacleSpawn
+  categories: [ HideSpawnMenu ]
+  components:
+    - type: Sprite
+      state: curse_tentacle_spawn
+    - type: SpawnOnDespawn
+      prototype: CurseTentacle
+
+- type: entity
+  id: EffectCurseTentacleRetract
+  parent: BaseEffectCurseTentacleSpawn
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: curse_tentacle_retract
+  - type: EffectVisuals
+  - type: AnimationPlayer
+# WOLFGATE END

@@ -9,8 +9,10 @@ using Robust.Shared.Map;
 namespace Content.Server._WF.Waypoints;
 
 /// <summary>Adds and deletes the waypoints of the grid a helm or mass scanner stands on.</summary>
-public sealed class WFWaypointSystem : EntitySystem
+public sealed partial class WFWaypointSystem : EntitySystem
 {
+    [Dependency] private SharedMapSystem _mapSystem = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -75,6 +77,48 @@ public sealed class WFWaypointSystem : EntitySystem
         waypoints.Waypoints.Add(new WFWaypoint(id, clean, GetNetEntity(map), position));
         Dirty(grid, waypoints);
         return true;
+    }
+
+    /// <summary>
+    /// Places a waypoint on a grid for another system, or moves the one it placed before (<paramref name="id"/>). Returns
+    /// its id, or null if it was deleted from the panel since, or the grid is full: the crew did not want it.
+    /// </summary>
+    public int? Place(EntityUid grid, int? id, string name, MapCoordinates at)
+    {
+        if (!WFWaypointRules.IsValidPosition(at.Position) || !_mapSystem.TryGetMap(at.MapId, out var map))
+            return null;
+
+        var waypoints = EnsureComp<WFWaypointsComponent>(grid);
+        var clean = WFWaypointRules.CleanName(name);
+        if (id is { } existing)
+        {
+            var index = waypoints.Waypoints.FindIndex(waypoint => waypoint.Id == existing);
+            if (index < 0)
+                return null;
+
+            var moved = new WFWaypoint(existing, clean, GetNetEntity(map.Value), at.Position);
+            if (waypoints.Waypoints[index] == moved)
+                return existing;
+
+            waypoints.Waypoints[index] = moved;
+            Dirty(grid, waypoints);
+            return existing;
+        }
+
+        if (waypoints.Waypoints.Count >= WFWaypointRules.MaxWaypoints)
+            return null;
+
+        var newId = waypoints.NextId++;
+        waypoints.Waypoints.Add(new WFWaypoint(newId, clean, GetNetEntity(map.Value), at.Position));
+        Dirty(grid, waypoints);
+        return newId;
+    }
+
+    /// <summary>Removes a waypoint another system placed on a grid, if it is still there.</summary>
+    public void Remove(EntityUid grid, int id)
+    {
+        if (TryComp<WFWaypointsComponent>(grid, out var waypoints) && waypoints.Waypoints.RemoveAll(waypoint => waypoint.Id == id) > 0)
+            Dirty(grid, waypoints);
     }
 
     /// <summary>Deletes a waypoint from the console's grid.</summary>

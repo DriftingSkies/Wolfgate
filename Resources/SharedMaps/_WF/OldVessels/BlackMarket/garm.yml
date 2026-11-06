@@ -9823,7 +9823,7 @@ entities:
       parent: 169
     - type: Physics
       canCollide: False
-- proto: WFWallAdamantite
+- proto: WallPlastitanium
   entities:
   - uid: 16
     components:
@@ -10565,7 +10565,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -4.5,-17.5
       parent: 2
-- proto: WFWallAdamantiteCapital
+- proto: WallPlastitaniumCapital
   entities:
   - uid: 12
     components:
@@ -10597,7 +10597,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 1.5,0.5
       parent: 2
-- proto: WFWallAdamantiteDiagonal
+- proto: WallPlastitaniumDiagonal
   entities:
   - uid: 25
     components:

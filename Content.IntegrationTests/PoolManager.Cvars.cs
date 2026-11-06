@@ -46,6 +46,7 @@ public static partial class PoolManager
         ("wf.encounters.vote", "false"), // WOLFGATE(Encounters): a round-restart vote throws on a dummy session's join
         (CCVars.AutoVoteEnabled.Name, "false"), // WOLFGATE: a round-restart vote throws on a dummy session's join
         ("wf.newbie.welcome", "false"), // WOLFGATE(Newbie): welcome popups would open over other tests' windows
+        ("wf.lorebook.seen_edition", "1000"), // WOLFGATE(LoreBook): a new edition's lore book would open over other tests' windows
         ("wf.companies.create_hours", "0"), // WOLFGATE(Companies): test players have no playtime
         ("wf.companies.create_fee", "0"), // WOLFGATE(Companies): tests check balances without the creation fee
         (CCVars.StorageLimit.Name, "1")// Frontier: test failures with multiple storage

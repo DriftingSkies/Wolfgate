@@ -1,0 +1,178 @@
+# Darkwater creatures converted from NuclearPhase.
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: NuclearPhaseMobOceanbornHunter
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/NuclearPhase/oceanborn_hunter.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hunter
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: hunter_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hunter
+        BaseUnshaded: hunter_eyes
+      Dead:
+        Base: hunter_dead
+  - type: PointLight
+    radius: 1.5
+    energy: 1
+    color: "#9b8fe0"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      160: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaOceanborn
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 25
+  - type: Bloodstream
+    bloodReagent: NuclearPhaseOceanbornBlood
+    bloodlossDamage:
+      types:
+        Bloodloss: 0.5
+    bloodlossHealDamage:
+      types:
+        Bloodloss: -1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 170
+      behaviors:
+      - !type:GibBehavior { }
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: NuclearPhaseFoodSyntiflesh
+      amount: 3
+    - id: NuclearPhaseFishSkinPurple
+      amount: 5
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: NuclearPhaseMobOceanbornScout
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/NuclearPhase/oceanborn_scout.rsi
+    color: "#FFFFFFD2"
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: scout
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: scout
+      Dead:
+        Base: scout_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaOceanborn
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 10
+  - type: Bloodstream
+    bloodReagent: NuclearPhaseOceanbornBlood
+    bloodlossDamage:
+      types:
+        Bloodloss: 0.5
+    bloodlossHealDamage:
+      types:
+        Bloodloss: -1
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      IdleRange: !type:Single
+        20
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: NuclearPhaseFoodSyntiflesh
+      amount: 3
+    - id: NuclearPhaseFishSkinPurple
+      amount: 5
+
+- type: entity
+  id: NuclearPhaseOceanbornBurrow
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/NuclearPhase/burrow.rsi
+    state: burrow
+    scale: 2, 2
+    drawdepth: FloorObjects
+  - type: FaunaBurrow
+    prototypes:
+    - NuclearPhaseMobOceanbornHunter
+    - NuclearPhaseMobOceanbornScout
+    - NuclearPhaseMobOceanbornScout
+    - NuclearPhaseMobOceanbornScout
+    spawnSound: /Audio/_WF/Fauna/NuclearPhase/lizard.ogg
+
+- type: reagent
+  parent: Blood
+  id: NuclearPhaseOceanbornBlood
+  name: reagent-name-nuclearphase-oceanborn-blood
+  desc: reagent-desc-nuclearphase-oceanborn-blood
+  color: "#cba5eb"

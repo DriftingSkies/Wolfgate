@@ -1,0 +1,18 @@
+# What the lore book turns into when it has been read too closely: its glyph writing and its whispers.
+- type: font
+  id: WFLoreGlyphs
+  path: /Fonts/_DS13/Shage/Shage.ttf
+
+# Whispers from under the pages once the book has been read too closely.
+- type: soundCollection
+  id: WFLoreBookWhispers
+  files:
+  - /Audio/_WF/LoreBook/whisper1.ogg
+  - /Audio/_WF/LoreBook/whisper2.ogg
+  - /Audio/_WF/LoreBook/whisper3.ogg
+
+# A page turning, one of these at random.
+- type: soundCollection
+  id: WFLoreBookPageTurn
+  files:
+  - /Audio/_WF/LoreBook/page_flip1.ogg

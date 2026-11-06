@@ -1,0 +1,2111 @@
+# Polaris fauna.
+
+# Older, slower carp that knocks prey down.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: PolarisMobElderCarp
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Polaris/elder_carp.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: elder_carp
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: elder_carp
+      Dead:
+        Base: elder_carp_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 7
+  - type: FaunaMeleeEffect
+    chance: 0.15
+    knockdown: 3
+    popup: fauna-polaris-carp-knock
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatFish
+      amount: 3
+
+# Rare, very aggressive carp the size of a shuttle pod.
+- type: entity
+  parent: PolarisMobElderCarp
+  id: PolarisMobGreatWhiteCarp
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Polaris/great_white_carp.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: megacarp
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: megacarp
+      Dead:
+        Base: megacarp_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      230: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 20
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatFish
+      amount: 10
+
+# Huge segmented worm. Its charge swallows what it hits, and it digests anything it eats into plasma.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: PolarisMobSpaceWorm
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Polaris/space_worm.rsi
+    layers:
+    - map: [ "enum.FaunaWormVisualLayers.Base" ]
+      state: spacewormhead1_hunt
+  - type: FaunaWormVisuals
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 17
+        Structural: 85
+  - type: HTN
+    rootTask:
+      task: FaunaXrayHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: FaunaCharge
+    range: 6
+    knockdown: 2
+    windup: 0.5
+    overshoot: 2
+    structureDamage:
+      types:
+        Structural: 85
+  - type: FaunaAbilities
+    abilities:
+    - action: PolarisActionSpaceWormCharge
+      minRange: 2
+      maxRange: 6
+      hold: 0.5
+  - type: FaunaWorm
+    segmentPrototype: PolarisMobSpaceWormSegment
+    shareDamage: true
+    swallowItemRange: 0.5
+    swallowPopup: fauna-polaris-worm-swallow
+    digestPopup: fauna-polaris-worm-digest
+    digestDamage:
+      types:
+        Caustic: 15
+  - type: ContainerContainer
+    containers:
+      fauna_worm_stomach: !type:Container
+  - type: Butcherable
+    spawned:
+    - id: PolarisMaterialAnimalHide
+      amount: 3
+    - id: PolarisFoodMeatWorm
+      amount: 2
+    - id: PolarisOrganPlasmaVessel
+
+- type: entity
+  parent: PolarisMobSpaceWorm
+  id: PolarisMobSpaceWormShort
+  components:
+  - type: FaunaWorm
+    segmentPrototype: PolarisMobSpaceWormSegment
+    segmentCount: 3
+    shareDamage: true
+    swallowItemRange: 0.5
+    swallowPopup: fauna-polaris-worm-swallow
+    digestPopup: fauna-polaris-worm-digest
+    digestDamage:
+      types:
+        Caustic: 15
+
+- type: entity
+  parent: PolarisMobSpaceWorm
+  id: PolarisMobSpaceWormLong
+  components:
+  - type: FaunaWorm
+    segmentPrototype: PolarisMobSpaceWormSegment
+    segmentCount: 10
+    shareDamage: true
+    swallowItemRange: 0.5
+    swallowPopup: fauna-polaris-worm-swallow
+    digestPopup: fauna-polaris-worm-digest
+    digestDamage:
+      types:
+        Caustic: 15
+
+- type: entity
+  parent: DS13ActionBase
+  id: PolarisActionSpaceWormCharge
+  components:
+  - type: EntityTargetAction
+    useDelay: 30
+    range: 6
+    checkCanAccess: false
+    sound:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+    event: !type:FaunaChargeActionEvent
+
+# A body segment. It only moves with its head.
+- type: entity
+  parent: [ BaseSimpleMob, MobBloodstream, FlyingMobBase ]
+  id: PolarisMobSpaceWormSegment
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Polaris/space_worm.rsi
+    layers:
+    - map: [ "enum.FaunaWormVisualLayers.Base" ]
+      state: spaceworm3
+  - type: FaunaWormVisuals
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Butcherable
+    spawned:
+    - id: PolarisMaterialAnimalHide
+      amount: 3
+    - id: PolarisFoodMeatWorm
+      amount: 2
+    - id: PolarisOrganPlasmaVessel
+    - id: PolarisOrganAcidGland
+
+# Sif animals. Cold barely hurts them and they survive down to 175 K, but heat burns them badly.
+- type: entity
+  abstract: true
+  parent: SimpleSpaceMobBase
+  id: PolarisMobSifBase
+  components:
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisSif
+  - type: Temperature
+    heatDamageThreshold: 325
+    coldDamageThreshold: 175
+    currentTemperature: 310.15
+    coldDamage:
+      types:
+        Cold: 0.1
+    specificHeat: 42
+    heatDamage:
+      types:
+        Heat: 1.5
+
+# Flightless Sif insect that spits freezing globs, breathes out a freezing cloud and runs once badly hurt.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobFrostfly
+  components:
+  - type: Speech
+    allowedEmotes: [ PolarisFrostflyIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-frostfly-say-1
+    - fauna-polaris-frostfly-say-2
+    - fauna-polaris-frostfly-say-3
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisFrostflyIdle ]
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/Effects/refill.ogg
+    popup: fauna-polaris-insect-threaten
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/sif_kiters.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: frostfly
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: frostfly_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: frostfly
+        BaseUnshaded: frostfly_eyes
+      Dead:
+        Base: frostfly_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      65: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisFrostfly
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 0.67
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 8
+  - type: BasicEntityAmmoProvider
+    proto: PolarisBlobFreezing
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1.5
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.67
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Voice/Slime/slime_squish.ogg
+  - type: FaunaAbilities
+    abilities:
+    - action: PolarisActionFrostflyCloud
+      maxRange: 4
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaRangedFleeWhenHurtCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 1
+
+# Invasive fuzzy moth that shoots spore globs and releases a disorienting spore cloud.
+- type: entity
+  parent: [ PolarisMobSifBase, FlyingMobBase ]
+  id: PolarisMobTymisianMoth
+  components:
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisSif
+  - type: Speech
+    allowedEmotes: [ PolarisTymisianMothIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-frostfly-say-1
+    - fauna-polaris-moth-say-2
+    - fauna-polaris-frostfly-say-3
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisTymisianMothIdle ]
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/Effects/spray3.ogg
+    popup: fauna-polaris-insect-threaten
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/sif_kiters.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: moth
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: moth
+      Dead:
+        Base: moth_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      80: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 0.67
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 8
+  - type: BasicEntityAmmoProvider
+    proto: PolarisBlob
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1.5
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.67
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Voice/Slime/slime_squish.ogg
+  - type: FaunaAbilities
+    abilities:
+    - action: PolarisActionMothSpores
+      maxRange: 6
+  - type: NpcFactionMember
+    factions:
+    - SojournSpiders
+  - type: HTN
+    rootTask:
+      task: FaunaRangedFleeWhenHurtCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 1
+
+- type: entity
+  parent: BaseBullet
+  id: PolarisBlob
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/blob_shot.rsi
+    layers:
+    - state: blob
+  - type: Projectile
+    damage:
+      types:
+        Blunt: 3
+  - type: TimedDespawn
+    lifetime: 3
+
+# Ice and mucus: barely hurts, but chills the target so it moves slowly.
+- type: entity
+  parent: PolarisBlob
+  id: PolarisBlobFreezing
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/blob_shot.rsi
+    layers:
+    - state: blob
+      color: "#99EEFF"
+  - type: FaunaProjectileEffect
+    slow: 4
+  - type: ChangeTemperatureOnCollide
+    heat: -20000
+
+- type: entity
+  id: PolarisCloudFrost
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/cloud.rsi
+    drawdepth: Effects
+    state: cloud
+    color: "#00CCFFAA"
+  - type: FaunaCloud
+    sparedFaction: SimpleHostile
+    damage:
+      types:
+        Cold: 4
+    slow: 2
+  - type: TimedDespawn
+    lifetime: 8
+
+- type: entity
+  id: PolarisCloudSpores
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/cloud.rsi
+    drawdepth: Effects
+    state: cloud
+    color: "#80AB82AA"
+  - type: FaunaCloud
+    sparedFaction: SojournSpiders
+    stamina: 10
+    disorient: 5
+    breathingOnly: true
+  - type: TimedDespawn
+    lifetime: 8
+
+- type: entity
+  id: PolarisActionFrostflyCloud
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 10
+    event: !type:InstantSpawnSpellEvent
+      prototype: PolarisCloudFrost
+      posData: !type:TargetCasterPos
+
+- type: entity
+  id: PolarisActionMothSpores
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 10
+    event: !type:InstantSpawnSpellEvent
+      prototype: PolarisCloudSpores
+      posData: !type:TargetCasterPos
+
+# Sif bone-plated beast that goes berserk once it is down to half health.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobSavik
+  components:
+  - type: Speech
+    allowedEmotes: [ PolarisSavikIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-savik-say-1
+    - fauna-polaris-savik-say-2
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisSavikIdle ]
+  - type: StatusEffects
+    allowed:
+    - Stun
+    - KnockedDown
+    - SlowedDown
+    - Stutter
+    - Electrocution
+    - ForcedSleep
+    - TemporaryBlindness
+    - Pacified
+    - Flashed
+    - RadiationProtection
+    - Drowsiness
+    - Adrenaline
+  - type: Stealth
+    enabledOnDeath: false
+  - type: FaunaAmbush
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/savik.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: savik
+    - map: [ "enraged" ]
+      state: berserk
+      scale: 1.2, 1.2
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: savik
+      Dead:
+        Base: dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaEnrageVisuals.Enraged:
+        enraged:
+          True: { visible: true }
+          False: { visible: false }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh1.ogg
+    angle: 0
+    attackRate: 1
+    animation: WeaponArcClaw
+    armorPenetration: 0.15
+    damage:
+      types:
+        Slash: 15
+  - type: FaunaEnrage
+    threshold: 62
+    damage:
+      types:
+        Slash: 25
+    speed: 4.5
+    throwChance: 0
+    attackRate: 1.5
+    duration: 30
+    exhaustion: 120
+    heal: 62
+    clearStuns: true
+    popup: fauna-polaris-savik-berserk
+    exhaustedPopup: fauna-polaris-savik-exhausted
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaMaulCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+
+# Huge Sif crab that leaves people alone until provoked, then knocks them flat and hurls away anyone already down.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobHooliganCrab
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Speech
+    allowedEmotes: [ PolarisCrabIdle ]
+  - type: AutoEmote
+    emotes: [ PolarisCrabIdle ]
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+  - type: FaunaGroupRetaliate
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/hooligan_crab.rsi
+    scale: 1.5, 1.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: crab
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: crab
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisHooliganCrab
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Polaris/break_stone.ogg
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcFist
+    armorPenetration: 0.35
+    damage:
+      types:
+        Blunt: 28
+  - type: FaunaMeleeEffect
+    chance: 1
+    knockdown: 2
+    popup: fauna-polaris-crab-crush
+    throwDowned: 5
+    throwPopup: fauna-polaris-crab-hurl
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: PolarisHooliganCrabCompound
+    blackboard:
+      FollowRange: !type:Single
+        4
+      FollowCloseRange: !type:Single
+        2
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatCrab
+      amount: 6
+
+# Living players the hooligan crab can trail.
+- type: utilityQuery
+  id: PolarisNearbyPlayers
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: Actor
+  considerations:
+  - !type:TargetIsAliveCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+
+# Mauls whoever attacks it, otherwise trails the nearest player.
+- type: htnCompound
+  id: PolarisHooliganCrabCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyMaulTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        brakeMaxVelocity: null
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MeleeOperator
+        targetKey: Target
+        targetState: Critical
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: MeleeRange
+      services:
+      - !type:UtilityService
+        id: MeleeService
+        proto: FaunaNearbyMaulTargets
+        key: Target
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: PolarisNearbyPlayers
+        key: FollowEntity
+        keyCoordinates: FollowTarget
+    - !type:HTNCompoundTask
+      task: FollowCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Six-tailed Sif predator. Its bites tear through armour and its glowing tails blind anyone close by.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobKururak
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Speech
+    allowedEmotes: [ PolarisKururakIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-kururak-say-1
+    - fauna-polaris-kururak-say-2
+    - fauna-polaris-kururak-say-3
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisKururakIdle ]
+  - type: FaunaAggroCry
+    popup: fauna-polaris-kururak-threaten
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/kururak.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: kururak
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: kururak
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisKururak
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh2.ogg
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcClaw
+    armorPenetration: 0.4
+    damage:
+      types:
+        Slash: 15
+  - type: FlashImmunity
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: PolarisKururakCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+
+# The pack's leader. It carries the leader buff, the only kururak that flares its tails and rends with its claws.
+- type: entity
+  parent: PolarisMobKururak
+  id: PolarisMobKururakLeader
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/kururak.rsi
+    scale: 1.1, 1.1
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: kururak
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      330: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisKururakLeader
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh2.ogg
+    angle: 0
+    attackRate: 0.625
+    animation: WeaponArcClaw
+    armorPenetration: 0.4
+    damage:
+      types:
+        Slash: 22.5
+  - type: FaunaAbilities
+    abilities:
+    - action: PolarisActionKururakTailFlash
+      maxRange: 1
+  - type: FaunaMeleeProc
+    chance: 0.25
+    damage:
+      types:
+        Slash: 10
+    bleed: 5
+
+# A kururak asleep in its den. It wakes when hurt.
+- type: entity
+  parent: PolarisMobKururak
+  id: PolarisMobKururakHibernating
+  components:
+  - type: Sleeping
+
+- type: entity
+  parent: AdminInstantEffectFlash
+  id: PolarisKururakTailFlash
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashOnTrigger
+    range: 1
+    duration: 4
+
+- type: entity
+  id: PolarisActionKururakTailFlash
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 60
+    event: !type:InstantSpawnSpellEvent
+      prototype: PolarisKururakTailFlash
+      posData: !type:TargetCasterPos
+
+# Glowing Sif drake. Spits sticky sap that slows prey, has a toxic bite and licks its packmates' wounds closed.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobGrafadreka
+  components:
+  - type: Speech
+    allowedEmotes:
+    - PolarisGrafadrekaIdle
+    - PolarisDrakeRoar
+    - PolarisDrakeGrumble
+    - PolarisDrakeHuff
+    - PolarisDrakeRattle
+    - PolarisDrakeRumble
+    - PolarisDrakeSneeze
+    - PolarisDrakeHeadbutt
+  - type: Vocal
+    sounds:
+      Male: PolarisGrafadreka
+      Female: PolarisGrafadreka
+      Unsexed: PolarisGrafadreka
+    screamAction: null
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-grafadreka-say-1
+    - fauna-polaris-grafadreka-say-2
+    - fauna-polaris-grafadreka-say-3
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisGrafadrekaIdle ]
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/drake_warn.ogg
+    popup: fauna-polaris-grafadreka-threaten
+  - type: FaunaMeleeEffect
+    chance: 0
+    downedDamage:
+      types:
+        Piercing: 35
+    downedSound:
+      path: /Audio/Effects/bite.ogg
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      60: 0.84
+      75: 0.63
+      100: 0.45
+      125: 0.35
+  - type: FaunaCorpseEater
+    food: true
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/grafadreka.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "base" ]
+      state: base
+    - map: [ "fur" ]
+      state: fur
+    - map: [ "claws" ]
+      state: claws
+    - map: [ "eyes" ]
+      state: eyes
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded", "glow" ]
+      state: glow
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: base
+        BaseUnshaded: glow
+      Dead:
+        Base: dead
+  - type: GenericVisualizer
+    visuals:
+      enum.MobStateVisuals.State:
+        fur:
+          Alive: { state: fur }
+          Critical: { state: fur }
+          Dead: { state: dead-fur }
+        claws:
+          Alive: { state: claws }
+          Critical: { state: claws }
+          Dead: { state: dead-claws }
+        eyes:
+          Alive: { visible: true }
+          Critical: { visible: false }
+          Dead: { visible: false }
+        glow:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+  - type: FaunaRandomTint
+    lightPalette: glow
+    palettes:
+      base: [ "#608894", "#436974", "#7FA3AE" ]
+      fur: [ "#C0C0C0", "#FFFFFF", "#8DAF6A", "#CC9090", "#6A97B0" ]
+      claws: [ "#808080", "#C0C0C0", "#FFFFFF", "#151515", "#333333", "#666666", "#CCCCCC" ]
+      glow: [ "#33CCFF", "#66CCFF", "#00FFFF", "#3366CC" ]
+      eyes: [ "#FFFFFF", "#C0C0C0" ]
+    layers:
+      base: base
+      fur: fur
+      claws: claws
+      eyes: eyes
+      glow: glow
+  - type: PointLight
+    radius: 2
+    energy: 0.8
+    color: "#66CCFF"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.15
+    damage:
+      types:
+        Slash: 12
+        Poison: 5
+  - type: BasicEntityAmmoProvider
+    proto: PolarisDrakeSpit
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 8
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/_WF/Fauna/Polaris/drake_spit.ogg
+  - type: FaunaPackHeal
+    interval: 8
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/ointment.ogg
+    heal:
+      groups:
+        Brute: -3
+        Burn: -3
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: PolarisGrafadrekaCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+
+- type: entity
+  parent: PolarisBlob
+  id: PolarisDrakeSpit
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/blob_shot.rsi
+    layers:
+    - state: blob
+      color: "#66CCFF"
+  - type: Projectile
+    damage:
+      types:
+        Blunt: 0
+  - type: FaunaProjectileEffect
+    slow: 3
+
+# Young grafadreka. Weaker in every way, with a lighter spit.
+- type: entity
+  parent: PolarisMobGrafadreka
+  id: PolarisMobGrafadrekaHatchling
+  components:
+  - type: Speech
+    allowedEmotes:
+    - PolarisGrafadrekaIdle
+    - PolarisHatchlingGrowl
+    - PolarisHatchlingWhine
+    - PolarisHatchlingYelp
+    - PolarisHatchlingWarn
+    - PolarisDrakeSneeze
+  - type: Vocal
+    sounds:
+      Male: PolarisGrafadrekaHatchling
+      Female: PolarisGrafadrekaHatchling
+      Unsexed: PolarisGrafadrekaHatchling
+    screamAction: null
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/hatchling_warn.ogg
+    popup: fauna-polaris-grafadreka-threaten
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/grafadreka_hatchling.rsi
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.02
+    damage:
+      types:
+        Slash: 4
+  - type: FaunaMeleeEffect
+    chance: 0
+    downedDamage:
+      types:
+        Piercing: 7.5
+    downedSound:
+      path: /Audio/Effects/bite.ogg
+  - type: BasicEntityAmmoProvider
+    proto: PolarisDrakeSpitWeak
+    capacity: 1
+    count: 1
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/_WF/Fauna/Polaris/hatchling_spit.ogg
+
+# Grafadreka with bright rainbow colours.
+- type: entity
+  parent: PolarisMobGrafadreka
+  id: PolarisMobGrafadrekaRainbow
+  components:
+  - type: FaunaRandomTint
+    lightPalette: glow
+    palettes:
+      base: [ "#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#8F00FF" ]
+      fur: [ "#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#8F00FF" ]
+      claws: [ "#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#8F00FF" ]
+      glow: [ "#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#8F00FF" ]
+      eyes: [ "#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#8F00FF" ]
+    layers:
+      base: base
+      fur: fur
+      claws: claws
+      eyes: eyes
+      glow: glow
+
+- type: entity
+  parent: PolarisDrakeSpit
+  id: PolarisDrakeSpitWeak
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FaunaProjectileEffect
+    slow: 1
+
+# Polaris giant spiders. Some bites inject venom.
+- type: entity
+  abstract: true
+  parent: SimpleSpaceMobBase
+  id: PolarisMobGiantSpiderBase
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/giant_spider.rsi
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MovementSound
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/spider_loop.ogg
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisGiantSpider
+  - type: Speech
+    allowedEmotes: [ PolarisSpiderIdle ]
+  - type: AutoEmote
+    emotes: [ PolarisSpiderIdle ]
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 10
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 30
+  - type: FaunaMeleeProc
+    chance: 0.1
+    solution: melee
+    transferAmount: 5
+  - type: NpcFactionMember
+    factions:
+    - SojournSpiders
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 2
+    - id: ChitinChunk
+
+# Very fast spider that leaps onto prey and bites harder at anything already down.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderHunter
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hunter
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: hunter_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hunter
+        BaseUnshaded: hunter_eyes
+      Dead:
+        Base: hunter_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      120: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: FaunaMeleeEffect
+    chance: 0
+    downedMultiplier: 1.5
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Mechanotoxin
+        Quantity: 1
+  - type: FaunaCharge
+    range: 4
+    windup: 1
+    knockdown: 2
+  - type: FaunaAbilities
+    abilities:
+    - action: PolarisActionSpiderLeap
+      minRange: 2
+      maxRange: 4
+      hold: 1
+
+- type: entity
+  parent: DS13ActionBase
+  id: PolarisActionSpiderLeap
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 4
+    checkCanAccess: false
+    sound:
+      path: /Audio/_WF/Fauna/VG/spiderlunge.ogg
+    event: !type:FaunaChargeActionEvent
+
+# Nearly invisible spider. Its first bite from hiding knocks prey down. It hides again once left alone for a while.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderLurker
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: lurker
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: lurker_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: lurker
+        BaseUnshaded: lurker_eyes
+      Dead:
+        Base: lurker_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Cryptobiolin
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.3
+    solution: melee
+    transferAmount: 1
+  - type: Stealth
+    enabledOnDeath: false
+  - type: FaunaAmbush
+    ambushDamage:
+      types:
+        Piercing: 30
+    ambushKnockdown: 3
+    ambushSound:
+      path: /Audio/_WF/Fauna/VG/spiderlunge.ogg
+    rehide: 10
+    revealOnDamage: true
+
+# Sandy spider that tunnels under the floor and bursts up beneath its prey, knocking it flat.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderTunneler
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: tunneler
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: tunneler_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: tunneler
+        BaseUnshaded: tunneler_eyes
+      Dead:
+        Base: tunneler_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      120: Dead
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Happiness
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.15
+    solution: melee
+    transferAmount: 3
+  - type: FaunaDigAmbush
+    hole: ShiptestAntlionBurrow
+    splash: PolarisSpiderTunnelSpawner
+    duration: 1.5
+    eruptKnockdown: 3
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/break_stone.ogg
+  - type: ContainerContainer
+    containers:
+      fauna_dig_ambush: !type:Container
+  - type: FaunaAbilities
+    abilities:
+    - action: PolarisActionSpiderTunnel
+      minRange: 2
+      maxRange: 6
+
+- type: entity
+  parent: DS13ActionBase
+  id: PolarisActionSpiderTunnel
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 6
+    checkCanAccess: false
+    event: !type:FaunaDigAmbushActionEvent
+
+# Sand and a tunnel hole left at each end of a tunneler's dig.
+- type: entity
+  id: PolarisSpiderTunnelSpawner
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    offset: 0
+    table: !type:AllSelector
+      children:
+      - id: ShiptestEffectSandSplash
+      - id: PolarisSpiderTunnelHole
+      - id: DesertSand1
+
+- type: entity
+  id: PolarisSpiderTunnelHole
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/effects.rsi
+    drawdepth: FloorObjects
+    state: tunnel_hole
+  - type: TimedDespawn
+    lifetime: 60
+
+# Spider that spits balls of web, coating the floor around its prey in sticky web.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderWebslinger
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: webslinger
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: webslinger_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: webslinger
+        BaseUnshaded: webslinger_eyes
+      Dead:
+        Base: webslinger_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      90: Dead
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: SpaceDrugs
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.1
+    solution: melee
+    transferAmount: 2
+  - type: BasicEntityAmmoProvider
+    proto: PolarisWebBall
+    capacity: 1
+    count: 1
+  - type: FaunaRandomAmmo
+    prototypes:
+    - PolarisWebBall
+    - PolarisWebBall
+    - PolarisWebBola
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 1
+    minAngle: 12
+    maxAngle: 12
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Effects/thudswoosh.ogg
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+
+- type: entity
+  parent: BaseBullet
+  id: PolarisWebBall
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/web_ball.rsi
+    layers:
+    - state: web_ball
+
+# The webslinger's bola. Unlike the thrown Bola it flies its full range, so it reaches prey when fired from a gun.
+- type: entity
+  parent: BaseItem
+  id: PolarisWebBola
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Throwable/bola.rsi
+    state: icon
+  - type: Ammo
+    muzzleFlash: null
+  - type: EmitSoundOnLand
+    sound: /Audio/Effects/snap.ogg
+  - type: Ensnaring
+    freeTime: 2.0
+    breakoutTime: 3.5
+    walkSpeed: 0.5
+    sprintSpeed: 0.5
+    staminaDamage: 0
+    canThrowTrigger: true
+    canMoveBreakout: true
+    maxEnsnares: 1
+  - type: FaunaFactionPass
+    factions:
+    - SojournSpiders
+
+# Bloated spider whose belly splits open on death, letting out a swarm of spiderlings.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderCarrier
+  components:
+  - type: Sprite
+    scale: 1.2, 1.2
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: carrier
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: carrier_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: carrier
+        BaseUnshaded: carrier_eyes
+      Dead:
+        Base: carrier_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: ChloralHydrate
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.1
+    solution: melee
+    transferAmount: 3
+  - type: FaunaDeathSpawn
+    popup: fauna-polaris-carrier-split
+    spawns:
+    - id: PolarisMobSpiderling
+      amount: 5
+      maxAmount: 10
+    - id: PolarisMobGiantSpiderSwarmling
+      prob: 0.5
+
+# A young hunter from a carrier's brood, smaller and weaker than a grown one.
+- type: entity
+  parent: PolarisMobGiantSpiderHunter
+  id: PolarisMobGiantSpiderSwarmling
+  components:
+  - type: Sprite
+    scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      48: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 6.5
+
+# Carrier whose brood are smaller carriers of the same kind.
+- type: entity
+  parent: PolarisMobGiantSpiderCarrier
+  id: PolarisMobGiantSpiderCarrierRecursive
+  components:
+  - type: FaunaDeathSpawn
+    popup: fauna-polaris-carrier-split
+    spawns:
+    - id: PolarisMobSpiderling
+      amount: 5
+      maxAmount: 10
+    - id: PolarisMobGiantSpiderSwarmlingRecursive
+      prob: 0.5
+
+- type: entity
+  parent: PolarisMobGiantSpiderCarrierRecursive
+  id: PolarisMobGiantSpiderSwarmlingRecursive
+  components:
+  - type: Sprite
+    scale: 0.9, 0.9
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 6.5
+
+# Polaris spiderling. It scurries about and grows into a giant spider.
+- type: entity
+  parent: VGMobSpiderling
+  id: PolarisMobSpiderling
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/effects.rsi
+    layers:
+    - state: spiderling
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      3: Dead
+  - type: NpcFactionMember
+    factions:
+    - SojournSpiders
+  - type: FaunaGrowth
+    growInto: PolarisMobGiantSpiderHunter
+    chance: 1
+    minDelay: 200
+    maxDelay: 400
+
+# Slow crystalline spider infused with plasma. It hits hard and explodes when it dies.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderPhorogenic
+  components:
+  - type: Sprite
+    scale: 1.25, 1.25
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: phoron
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: phoron_eyes
+      shader: unshaded
+    - map: [ "primed" ]
+      state: phoron_primed
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: phoron
+        BaseUnshaded: phoron_eyes
+      Dead:
+        Base: phoron_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.Trigger.TriggerVisuals.VisualState:
+        primed:
+          Primed: { visible: true }
+          Unprimed: { visible: false }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      225: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.15
+    damage:
+      types:
+        Piercing: 25
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Plasma
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.3
+    solution: melee
+    transferAmount: 0.5
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: OnUseTimerTrigger
+    delay: 1.5
+    examinable: false
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    explosionType: Default
+    totalIntensity: 120
+    intensitySlope: 5
+    maxIntensity: 20
+
+# Smashes through walls and doors to reach prey.
+- type: entity
+  parent: PolarisMobGiantSpiderPhorogenic
+  id: PolarisMobGiantSpiderPhorogenicDemolishing
+  components:
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+
+# Senses prey through walls and smashes its way to it.
+- type: entity
+  parent: PolarisMobGiantSpiderPhorogenicDemolishing
+  id: PolarisMobGiantSpiderPhorogenicXray
+  components:
+  - type: HTN
+    rootTask:
+      task: FaunaXrayHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+
+# Spider that crackles with electricity and fires stun beams from range.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderElectric
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: spark
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: spark_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: spark
+        BaseUnshaded: spark_eyes
+      Dead:
+        Base: spark_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      210: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 15
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Stimulants
+        Quantity: 1
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisElectricSpider
+  - type: FaunaMeleeProc
+    chance: 0.15
+    solution: melee
+    transferAmount: 3
+  - type: BasicEntityAmmoProvider
+    proto: PolarisSpiderStunBeam
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1.5
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.67
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/Guns/Gunshots/taser2.ogg
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+
+- type: entity
+  parent: BulletDisablerStaminaOnly
+  id: PolarisSpiderStunBeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: StaminaDamageOnCollide
+    damage: 20
+
+# Ice-blue spider whose bite chills the blood. Shrugs off cold, burns easily.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderFrost
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: frost
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: frost_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: frost
+        BaseUnshaded: frost_eyes
+      Dead:
+        Base: frost_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      175: Dead
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: FrostOil
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.1
+    solution: melee
+    transferAmount: 5
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisFrostSpider
+
+# Big red spider with a burning bite.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderPepper
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: pepper
+      scale: 1.1, 1.1
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: pepper_eyes
+      scale: 1.1, 1.1
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: pepper
+        BaseUnshaded: pepper_eyes
+      Dead:
+        Base: pepper_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      210: Dead
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: CapsaicinOil
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.2
+    solution: melee
+    transferAmount: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+
+# Fire-resistant spider whose bite sets prey alight. Cuts through armour.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: PolarisMobGiantSpiderThermic
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: pit
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: pit_eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: pit
+        BaseUnshaded: pit_eyes
+      Dead:
+        Base: pit_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      175: Dead
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Phlogiston
+        Quantity: 1
+  - type: FaunaMeleeProc
+    chance: 0.3
+    solution: melee
+    transferAmount: 1
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisThermicSpider
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.15
+    damage:
+      types:
+        Piercing: 15
+
+# Smashes through walls and doors to reach prey.
+- type: entity
+  parent: PolarisMobGiantSpiderThermic
+  id: PolarisMobGiantSpiderThermicDemolishing
+  components:
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+
+# Senses prey through walls and smashes its way to it.
+- type: entity
+  parent: PolarisMobGiantSpiderThermicDemolishing
+  id: PolarisMobGiantSpiderThermicXray
+  components:
+  - type: HTN
+    rootTask:
+      task: FaunaXrayHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+
+# Sif rodent with hands. Leaves people alone, but every sakimm nearby joins in once one is hurt.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobSakimm
+  components:
+  - type: Speech
+    allowedEmotes: [ PolarisSakimmIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-sakimm-say-1
+    - fauna-polaris-sakimm-say-2
+    - fauna-polaris-sakimm-say-3
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisSakimmIdle ]
+  - type: FaunaRandomScale
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/sakimm.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: sakimm
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: sakimm
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PolarisSakimm
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 10
+  - type: FaunaGroupRetaliate
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+
+# Small Sif predator with silky fur. Fierce once provoked.
+- type: entity
+  parent: PolarisMobSifBase
+  id: PolarisMobSiffet
+  components:
+  - type: Speech
+    allowedEmotes: [ PolarisSiffetIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-polaris-siffet-say-1
+    - fauna-polaris-siffet-say-2
+    - fauna-polaris-siffet-say-3
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ PolarisSiffetIdle ]
+  - type: FaunaHitAndRun
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/siffet.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: siffet
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: siffet
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 12
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+
+# Floating blob spore. Hits harder in a swarm and bursts when killed.
+- type: entity
+  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
+  id: PolarisMobBlobSpore
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Speech
+    allowedEmotes: [ PolarisBlobSporeIdle ]
+  - type: AutoEmote
+    emotes: [ PolarisBlobSporeIdle ]
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Polaris/blob_spore.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: blob_spore
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: blob_spore
+      Dead:
+        Base: blob_spore
+  - type: PointLight
+    radius: 3
+    energy: 1
+    color: "#FFFFFF"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Polaris/slime_squish.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 3
+  - type: FaunaSwarmBonus
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/_WF/Fauna/Polaris/slime_squish.ogg
+      - !type:PopupBehavior
+        popup: fauna-polaris-spore-burst
+        popupType: SmallCaution
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# Weaker blob spore.
+- type: entity
+  parent: PolarisMobBlobSpore
+  id: PolarisMobBlobSporeFragile
+  components:
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      15: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Polaris/slime_squish.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 1.5
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/_WF/Fauna/Polaris/slime_squish.ogg
+      - !type:PopupBehavior
+        popup: fauna-polaris-spore-burst
+        popupType: SmallCaution
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]

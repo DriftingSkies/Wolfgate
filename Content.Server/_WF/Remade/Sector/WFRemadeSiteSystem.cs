@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.Encounters.Systems;
+using Content.Server._WF.Lattice;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.Remade.Monolith;
 using Content.Server.Radio.EntitySystems;
@@ -32,6 +33,7 @@ public sealed partial class WFRemadeSiteSystem : EntitySystem
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private WFLatticeSystem _lattice = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private MobStateSystem _mobs = default!;
@@ -258,8 +260,13 @@ public sealed partial class WFRemadeSiteSystem : EntitySystem
     {
         origin = MapCoordinates.Nullspace;
         var anchors = new List<MapCoordinates>();
+        // A band-bound encounter measures from the Lattice's centre; with no Lattice, from players as usual.
+        if (prototype.LatticeBand > 0)
+            _lattice.GetCentres(anchors);
+
+        var fromCentre = anchors.Count > 0;
         var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-        while (players.MoveNext(out var uid, out _, out var xform))
+        while (!fromCentre && players.MoveNext(out var uid, out _, out var xform))
         {
             if (xform.MapID != MapId.Nullspace && !HasComp<GhostComponent>(uid) && !_mobs.IsDead(uid))
                 anchors.Add(_transform.GetMapCoordinates(uid, xform));
@@ -271,7 +278,8 @@ public sealed partial class WFRemadeSiteSystem : EntitySystem
             var distance = _random.NextFloat(prototype.MinDistance, MathF.Max(prototype.MinDistance, prototype.MaxDistance));
             var point = anchor.Position + _random.NextAngle().ToVec() * distance;
             // Only sector space counts: a player on a planet, in a vehicle or in hyperspace is no place to measure from.
-            if (!_scheduler.IsClearSpace(anchor.MapId, point, PlaceClearance, prototype.StationClearance))
+            if (!_scheduler.IsClearSpace(anchor.MapId, point, PlaceClearance, prototype.StationClearance)
+                || fromCentre && _lattice.Locate(_maps.GetMapOrInvalid(anchor.MapId), point).Band < prototype.LatticeBand)
                 continue;
 
             origin = new MapCoordinates(point, anchor.MapId);
@@ -284,8 +292,11 @@ public sealed partial class WFRemadeSiteSystem : EntitySystem
     /// <summary>A garbled line on the common channel with a rough position, thrown off by up to a kilometre or so.</summary>
     private void Hint(MapCoordinates origin)
     {
-        var x = Rough(origin.Position.X);
-        var y = Rough(origin.Position.Y);
+        var map = _maps.GetMapOrInvalid(origin.MapId);
+        var seed = _random.Next();
+        // Out past the Lattice's hold the numbers come through broken, half as badly as names do.
+        var x = _lattice.GarbleAt(Rough(origin.Position.X).ToString(), map, origin.Position, seed, 0.5f);
+        var y = _lattice.GarbleAt(Rough(origin.Position.Y).ToString(), map, origin.Position, seed + 1, 0.5f);
         var text = Loc.GetString($"wf-remade-sector-hint-{_random.Next(1, 4)}", ("x", x), ("y", y));
         var voice = Spawn(null, new EntityCoordinates(_maps.GetMapOrInvalid(origin.MapId), origin.Position));
         _meta.SetEntityName(voice, Loc.GetString("wf-remade-sector-hint-sender"));

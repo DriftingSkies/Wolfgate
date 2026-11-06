@@ -1,0 +1,138 @@
+# WOLFGATE(Fauna) START: ported from Goob Station
+- type: entity
+  parent: [ BaseMob, MobCombat ]
+  id: MobMonstrosityHead
+  components:
+  - type: MindContainer
+  - type: SoundWhileAlive
+  - type: SpamEmitSound
+    minInterval: 5
+    maxInterval: 25
+    sound:
+      path: /Audio/_Goobstation/Wraith/Mobs/mechmonstrositylaugh.ogg
+      params:
+        volume: -1
+        maxDistance: 12
+        variation: 0.01
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _Goobstation/Wraith/Mobs/monstrosity.rsi
+    layers:
+      - map: [ "enum.DamageStateVisualLayers.Base" ]
+        state: crawler
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: crawler
+      Dead:
+        Base: crawler_dead
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Metallic
+  - type: MeleeWeapon
+    altDisarm: false
+    animation: WeaponArcBite
+    soundHit:
+      collection: Flesh_Stab
+    damage:
+      types:
+        Slash: 10
+  - type: NoSlip
+  - type: Pullable
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepHeavySuit
+
+- type: entity
+  parent: [ BaseMob, MobCombat ]
+  id: MobMonstrosityBody
+  components:
+  - type: SoundWhileAlive
+  - type: SpamEmitSound
+    minInterval: 5
+    maxInterval: 25
+    sound:
+      path: /Audio/_Goobstation/Wraith/Mobs/mechmonstrositylaugh.ogg
+      params:
+        volume: -1
+        maxDistance: 12
+        variation: 0.01
+  - type: MindContainer
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Prying
+    pryPowered: true
+  - type: ComplexInteraction
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _Goobstation/Wraith/Mobs/monstrosity.rsi
+    layers:
+      - state: monstrosity
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+      collection: Flesh_Stab
+    damage:
+      types:
+        Blunt: 7
+  - type: MobState
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 60
+        mask:
+          - MobMask
+        layer:
+          - MobLayer
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Metallic
+  - type: NoSlip
+  - type: Pullable
+  - type: Destructible
+    thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 60
+        behaviors:
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+          - !type:PlaySoundBehavior
+            sound:
+              path: /Audio/Effects/gib1.ogg
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - FootstepSound
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepHeavySuit
+# WOLFGATE END

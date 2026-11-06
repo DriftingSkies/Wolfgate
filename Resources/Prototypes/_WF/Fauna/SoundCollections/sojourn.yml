@@ -1,0 +1,49 @@
+# Sound collections for the Sojourn fauna.
+
+- type: soundCollection
+  id: SojournNightmareWhispers
+  files:
+  - /Audio/_WF/Fauna/Sojourn/i_see_you2.ogg
+  - /Audio/_WF/Fauna/Sojourn/im_here1.ogg
+  - /Audio/_WF/Fauna/Sojourn/behind_you1.ogg
+  - /Audio/_WF/Fauna/Sojourn/over_here3.ogg
+  - /Audio/_WF/Fauna/Sojourn/turn_around1.ogg
+
+- type: soundCollection
+  id: SojournRoachEmp
+  files:
+  - /Audio/_WF/Fauna/Sojourn/unknown_spacegun_burn.ogg
+  - /Audio/_WF/Fauna/Sojourn/unknown_spacegun_melt.ogg
+  - /Audio/_WF/Fauna/Sojourn/unknown_spacegun_incinerate.ogg
+  - /Audio/_WF/Fauna/Sojourn/unknown_spacegun_vaporize.ogg
+
+- type: soundCollection
+  id: SojournRoachNanites
+  files:
+  - /Audio/_WF/Fauna/Sojourn/robot_talk_light1.ogg
+  - /Audio/_WF/Fauna/Sojourn/robot_talk_light2.ogg
+  - /Audio/_WF/Fauna/Sojourn/robot_talk_heavy4.ogg
+
+- type: soundCollection
+  id: SojournAmeridianCrumble
+  files:
+  - /Audio/_WF/Fauna/Sojourn/crumble1.ogg
+  - /Audio/_WF/Fauna/Sojourn/crumble2.ogg
+  - /Audio/_WF/Fauna/Sojourn/crumble3.ogg
+  - /Audio/_WF/Fauna/Sojourn/crumble4.ogg
+  - /Audio/_WF/Fauna/Sojourn/crumble5.ogg
+
+- type: soundCollection
+  id: SojournPsiClaw
+  files:
+  - /Audio/_WF/Xenonids/Xeno/alien_claw_flesh1.ogg
+  - /Audio/_WF/Xenonids/Xeno/alien_claw_flesh2.ogg
+  - /Audio/_WF/Xenonids/Xeno/alien_claw_flesh3.ogg
+  - /Audio/_WF/Xenonids/Xeno/alien_tail_attack.ogg
+
+- type: soundCollection
+  id: SojournPsiDeath
+  files:
+  - /Audio/_WF/Fauna/Sojourn/growl1.ogg
+  - /Audio/_WF/Fauna/Sojourn/growl2.ogg
+  - /Audio/_WF/Fauna/Sojourn/growl3.ogg

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.AdsIncursion.Components;
+using Content.Server._WF.Drydock;
 using Content.Server._WF.Encounters.Components;
 using Content.Shared._WF.AdsIncursion;
 using Content.Shared._WF.Encounters;
@@ -10,6 +11,8 @@ namespace Content.Server._WF.AdsIncursion.Systems;
 
 public sealed partial class WFAdsCampaignSystem
 {
+    [Dependency] private WFDrydockSystem _drydock = default!;
+
     /// <summary>How near a node's lead a player ship must stand by to count for the support pool.</summary>
     private const float SupportRange = 2500f;
 
@@ -41,7 +44,7 @@ public sealed partial class WFAdsCampaignSystem
     {
         var (uid, comp, encounter) = node;
         var factor = 1f + SentinelBountyScale * sentinels;
-        var bounty = (int) (ByTier(campaign.NodeBounty, Math.Max(comp.Tier, state.Tier), 0) * factor);
+        var bounty = Scaled(campaign, uid, (int) (ByTier(campaign.NodeBounty, Math.Max(comp.Tier, state.Tier), 0) * factor));
         var attackers = encounter.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
         var supporters = new List<EntityUid>();
         foreach (var (ship, seconds) in comp.Support)
@@ -51,33 +54,70 @@ public sealed partial class WFAdsCampaignSystem
         }
 
         var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * factor));
-        var paid = _rewards.PayBounty(uid, reward, "breaking the ADS node", supporters, extra);
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(uid, reward, "breaking the ADS node", supporters, extra, helpers);
+        _drydock.IssueShipVouchers(campaign.NodeVoucher, helpers);
         return (bounty, paid);
     }
 
     /// <summary>Pays the sweep bounty to those who hit a destroyed sweep or sentinel; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PaySweepBounty(WFAdsCampaignPrototype campaign, EntityUid uid, string deed)
     {
-        var (reward, extra) = Rewards(campaign, campaign.SweepBounty, grant => grant.Patrol);
-        var paid = _rewards.PayBounty(uid, reward, deed, null, extra);
-        return (campaign.SweepBounty, paid);
+        return PayMinorBounty(campaign, uid, campaign.SweepBounty, deed);
     }
 
     /// <summary>Pays the interdictor bounty to those who hit a destroyed interdictor or picket; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PayInterdictorBounty(WFAdsCampaignPrototype campaign, EntityUid uid, string deed)
     {
-        var (reward, extra) = Rewards(campaign, campaign.InterdictorBounty, grant => grant.Patrol);
-        var paid = _rewards.PayBounty(uid, reward, deed, null, extra);
-        return (campaign.InterdictorBounty, paid);
+        return PayMinorBounty(campaign, uid, campaign.InterdictorBounty, deed);
+    }
+
+    /// <summary>Pays a sweep-sized bounty, scaled by the population and ships, with the patrol credits and sweep voucher; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayMinorBounty(WFAdsCampaignPrototype campaign, EntityUid uid, int spesos, string deed)
+    {
+        var bounty = Scaled(campaign, uid, spesos);
+        var (reward, extra) = Rewards(campaign, bounty, grant => grant.Patrol);
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(uid, reward, deed, null, extra, helpers);
+        _drydock.IssueShipVouchers(campaign.SweepVoucher, helpers);
+        return (bounty, paid);
+    }
+
+    /// <summary>Pays the dreadnought's bounty, scaled by the population and ships and outside the hourly cap; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayDreadnoughtBounty(WFAdsCampaignPrototype campaign, EntityUid uid)
+    {
+        var bounty = Scaled(campaign, uid, campaign.DreadnoughtBounty);
+        var (reward, extra) = Rewards(campaign, bounty, grant => grant.Stronghold);
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(uid, reward, "destroying the ADS dreadnought", null, extra, helpers, uncapped: true);
+        _drydock.IssueShipVouchers(campaign.NodeVoucher, helpers);
+        return (bounty, paid);
     }
 
     /// <summary>Pays half the current tier's node bounty, credits included, to those who hit a destroyed deployment; returns the bounty and how many were paid.</summary>
     private (int Bounty, int Paid) PayDeploymentBounty(WFAdsCampaignPrototype campaign, WFAdsCampaignComponent state, EntityUid deployment)
     {
-        var bounty = ByTier(campaign.NodeBounty, state.Tier, 0) / 2;
+        var bounty = Scaled(campaign, deployment, ByTier(campaign.NodeBounty, state.Tier, 0) / 2);
         var (reward, extra) = Rewards(campaign, bounty, grant => grant.Stronghold / 2);
-        var paid = _rewards.PayBounty(deployment, reward, "stopping the ADS deployment", null, extra);
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(deployment, reward, "stopping the ADS deployment", null, extra, helpers);
+        _drydock.IssueShipVouchers(campaign.NodeVoucher, helpers);
         return (bounty, paid);
+    }
+
+    /// <summary>A bounty in spesos scaled by the population bracket and the paid attacking ships; credits are per head and stay as they are.</summary>
+    private int Scaled(WFAdsCampaignPrototype campaign, EntityUid encounter, int bounty)
+    {
+        var population = PlayerPositions(_territory.SectorMap).Count;
+        var scale = 1f;
+        var best = -1;
+        foreach (var bracket in campaign.Population)
+        {
+            if (population >= bracket.MinPlayers && bracket.MinPlayers > best)
+                (best, scale) = (bracket.MinPlayers, bracket.BountyScale);
+        }
+
+        return _rewards.ScaleForShips(encounter, (int) (bounty * scale), campaign.ShipBountyScale, campaign.MaxShipBountyScale);
     }
 
     /// <summary>A bounty as an encounter reward with the first navy's credits, and the other navies' credits as rewards of no spesos.</summary>

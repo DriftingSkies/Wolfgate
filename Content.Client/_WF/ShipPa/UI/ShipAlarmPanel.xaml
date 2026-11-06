@@ -55,6 +55,18 @@
                Align="Right"
                FontColorOverride="#00ff2a"/>
     </BoxContainer>
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 0 8 4">
+        <Label Text="{Loc 'shuttle-console-ship-volume'}" FontColorOverride="#00ff2a"/>
+        <Slider Name="VolumeSlider"
+                MinValue="20"
+                MaxValue="100"
+                Rounded="True"
+                Value="100"
+                HorizontalExpand="True"
+                VerticalAlignment="Center"
+                Margin="8 0 8 0"/>
+        <Label Name="VolumeLabel" Text="100%" MinWidth="40" Align="Right" FontColorOverride="#00ff2a"/>
+    </BoxContainer>
     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4 0 4 4">
         <LineEdit Name="AnnounceEdit"
                   PlaceHolder="{Loc 'shuttle-console-ship-announce-placeholder'}"

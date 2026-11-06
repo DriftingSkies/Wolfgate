@@ -2,6 +2,8 @@ name: No submodule update checker
 
 on:
   pull_request:
+    # WOLFGATE(Ci): rerun when labels change so an Engine Update label clears the check
+    types: [ opened, synchronize, reopened, labeled, unlabeled ]
     paths:
       - 'RobustToolbox'
 
@@ -15,4 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fail
+        # WOLFGATE(Ci): deliberate engine bumps carry the Engine Update label
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Engine Update') }}
         run: exit 1

@@ -304,14 +304,13 @@ public sealed partial class WFAdsCampaignSystem
             return;
         }
 
-        var (reward, extra) = Rewards(campaign, campaign.DreadnoughtBounty, grant => grant.Stronghold);
-        var paid = _rewards.PayBounty(uid, reward, "destroying the ADS dreadnought", null, extra);
+        var (bounty, paid) = PayDreadnoughtBounty(campaign, uid);
         state.DreadnoughtsDestroyed++;
         Finish(state);
         var map = Transform(uid).MapID;
         Announce(campaign, Loc.GetString("wf-ads-dreadnought-destroyed",
             ("callsign", WFSectorHex.Callsign(_territory.CellOf(new MapCoordinates(Position(encounter, comp.Lead), map)))),
-            ("bounty", campaign.DreadnoughtBounty),
+            ("bounty", bounty),
             ("paid", paid)), false);
         Log.Info($"ADS dreadnought {ToPrettyString(uid)} destroyed; the ADS is finished for the round.");
         if (Campaign != null)

@@ -1,0 +1,43 @@
+# Adds what every Wolfgate wild mob gets from SimpleSpaceMobBase to a mob on another base, such as BaseMobAsteroid.
+
+- type: entity
+  abstract: true
+  parent: [ MobBloodstream, MobFlammable ]
+  id: FaunaMobCore
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      60: 0.7
+      80: 0.5
+  - type: MobPrice
+    price: 1000
+  - type: Perishable
+
+# Base for constructs, spirits and other wild mobs with no flesh: the SimpleSpaceMobBase setup without blood, bite
+# wounds, a body or rotting.
+- type: entity
+  abstract: true
+  parent: [ BaseSimpleMob, MobCombat ]
+  id: FaunaMobConstructBase
+  components:
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: NpcFactionMember
+    factions:
+    - SimpleNeutral
+  - type: HTN
+    rootTask:
+      task: IdleCompound
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcBite
+  - type: NameIdentifier
+    group: GenericNumber
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      60: 0.7
+      80: 0.5
+  - type: StaticPrice
+    price: 1000

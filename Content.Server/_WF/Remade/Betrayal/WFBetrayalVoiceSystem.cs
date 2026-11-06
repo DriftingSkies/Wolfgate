@@ -1,9 +1,11 @@
 using Content.Server._NF.Radio;
 using Content.Server._WF.Remade.Conversion;
 using Content.Server._WF.Remade.Director;
+using Content.Server._WF.Remade.Monolith;
 using Content.Server.Chat.Systems;
 using Content.Server.NPC.HTN;
 using Content.Server.Radio.EntitySystems;
+using Content.Shared._WF.Remade;
 using Content.Shared._WF.Remade.Betrayal;
 using Content.Shared.Doors.Components;
 using Content.Shared.GameTicking;
@@ -127,6 +129,31 @@ public sealed partial class WFBetrayalVoiceSystem : EntitySystem
         lure.Area = AreaOf(ev.Target);
         lure.Remaining = _random.Next(LureMin, LureMax + 1);
         lure.Next = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat(LureGapMin, LureGapMax));
+    }
+
+    /// <summary>Whether a body lies where the Monolith reaches: on a map with a stirring Monolith, or a grid with the Remade on it.</summary>
+    public bool Haunted(EntityUid body)
+    {
+        var xform = Transform(body);
+        var monoliths = EntityQueryEnumerator<WFMonolithComponent, TransformComponent>();
+        while (monoliths.MoveNext(out _, out var monolith, out var stone))
+        {
+            if (monolith.Stage != WFMonolithStage.Quiet && stone.MapID == xform.MapID
+                && (!monolith.Local || stone.GridUid == xform.GridUid))
+                return true;
+        }
+
+        if (xform.GridUid is not { } grid)
+            return false;
+
+        var remade = EntityQueryEnumerator<WFRemadeComponent, TransformComponent>();
+        while (remade.MoveNext(out _, out _, out var other))
+        {
+            if (other.GridUid == grid)
+                return true;
+        }
+
+        return false;
     }
 
     private void OnTransform(Entity<WFLureComponent> ent, ref RadioTransformMessageEvent args)

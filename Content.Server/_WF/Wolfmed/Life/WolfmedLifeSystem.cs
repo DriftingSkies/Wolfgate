@@ -91,7 +91,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     [Dependency] private WolfmedVacuumSystem _vacuum = default!;
     [Dependency] private Content.Shared.Popups.SharedPopupSystem _popup = default!; // Playtest 5
 
-    private readonly List<EntityUid> _due = new();
+    private readonly WFTickBuckets _due = new();
 
     // Consciousness bodies due and the dormant share, logged at most every StatLogEvery.
     private static readonly TimeSpan StatLogEvery = TimeSpan.FromSeconds(10);
@@ -357,15 +357,16 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         var curTick = _timing.CurTick;
 
         // Buffered: a tick can destroy an organ, which removes entities while the query is open.
-        _due.Clear();
-        var query = EntityQueryEnumerator<WolfmedConsciousnessComponent>();
-        while (query.MoveNext(out var uid, out _))
+        if (_due.Begin(curTick, period))
         {
-            if (WFTickSpread.Due(uid, curTick, period))
+            var query = EntityQueryEnumerator<WolfmedConsciousnessComponent>();
+            while (query.MoveNext(out var uid, out _))
+            {
                 _due.Add(uid);
+            }
         }
 
-        foreach (var body in _due)
+        foreach (var body in _due.Due)
         {
             if (TerminatingOrDeleted(body))
                 continue;

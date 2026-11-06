@@ -41,7 +41,7 @@ public sealed partial class WFReaverCampaignSystem
     {
         var (uid, comp, encounter) = stronghold;
         var factor = BountyFactor(campaign, comp) * Bracket(campaign, state).BountyScale;
-        var bounty = (int) (ByTier(campaign.StrongholdBounty, Math.Max(comp.Tier, state.Tier), 0) * factor);
+        var bounty = ShipScaled(campaign, uid, (int) (ByTier(campaign.StrongholdBounty, Math.Max(comp.Tier, state.Tier), 0) * factor));
         var attackers = encounter.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
         var supporters = new List<EntityUid>();
         foreach (var (ship, seconds) in comp.Support)
@@ -52,7 +52,8 @@ public sealed partial class WFReaverCampaignSystem
 
         var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * factor));
         var helpers = new List<EntityUid>();
-        var paid = _rewards.PayBounty(uid, reward, comp.Citadel ? "breaking the Reaver citadel" : "breaking the Reaver stronghold", supporters, extra, helpers);
+        var paid = _rewards.PayBounty(uid, reward, comp.Citadel ? "breaking the Reaver citadel" : "breaking the Reaver stronghold", supporters, extra, helpers,
+            uncapped: comp.Citadel);
         _drydock.IssueShipVouchers(campaign.StrongholdVoucher, helpers);
         return (bounty, paid);
     }
@@ -79,7 +80,7 @@ public sealed partial class WFReaverCampaignSystem
     private (int Bounty, int Paid) PayMinorBounty(WFReaverCampaignPrototype campaign, EntityUid encounter, int spesos, string reason)
     {
         var scale = Bracket().BountyScale;
-        var bounty = (int) (spesos * scale);
+        var bounty = ShipScaled(campaign, encounter, (int) (spesos * scale));
         var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Patrol * scale));
         var helpers = new List<EntityUid>();
         var paid = _rewards.PayBounty(encounter, reward, reason, null, extra, helpers);
@@ -92,12 +93,18 @@ public sealed partial class WFReaverCampaignSystem
         bool citadel)
     {
         var scale = (citadel ? campaign.CitadelBountyScale : 1f) * Bracket(campaign, state).BountyScale;
-        var bounty = (int) (ByTier(campaign.StrongholdBounty, state.Tier, 0) * scale) / 2;
+        var bounty = ShipScaled(campaign, convoy, (int) (ByTier(campaign.StrongholdBounty, state.Tier, 0) * scale) / 2);
         var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * scale) / 2);
         var helpers = new List<EntityUid>();
         var paid = _rewards.PayBounty(convoy, reward, citadel ? "destroying the Reaver citadel convoy" : "destroying the Reaver convoy", null, extra, helpers);
         _drydock.IssueShipVouchers(campaign.StrongholdVoucher, helpers);
         return (bounty, paid);
+    }
+
+    /// <summary>A bounty in spesos scaled by the paid attacking ships; credits are per head and stay as they are.</summary>
+    private int ShipScaled(WFReaverCampaignPrototype campaign, EntityUid encounter, int bounty)
+    {
+        return _rewards.ScaleForShips(encounter, bounty, campaign.ShipBountyScale, campaign.MaxShipBountyScale);
     }
 
     /// <summary>A bounty as an encounter reward with the first navy's credits, and the other navies' credits as rewards of no spesos.</summary>

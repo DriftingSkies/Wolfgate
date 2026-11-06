@@ -105,6 +105,15 @@ public sealed class BetrayalTest
             server.CfgMan.SetCVar(CCVars.NPCEnabled, false);
             WFRemadeDirectorTest.LayDeck(pair, map);
             WFRemadeDirectorTest.SpawnCrewman(pair, At(map, 8, 0));
+
+            // No Monolith stirring: an ordinary death stays quiet.
+            var quiet = entMan.SpawnEntity("MobHuman", At(map, 2, 0));
+            var quietSet = entMan.SpawnEntity("ClothingHeadsetGrey", At(map, 2, 0));
+            Assert.That(entMan.System<InventorySystem>().TryEquip(quiet, quietSet, "ears", force: true), Is.True);
+            entMan.System<MobStateSystem>().ChangeMobState(quiet, MobState.Dead);
+            Assert.That(entMan.HasComponent<WFLureComponent>(quietSet), Is.False, "a headset pleaded with no Monolith about.");
+
+            SpawnScion(entMan, At(map, -6, 0), 20f);
             human = entMan.SpawnEntity("MobHuman", At(map, 0, 0));
             for (var i = 1; i <= 7; i++)
             {

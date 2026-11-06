@@ -1,0 +1,81 @@
+# WOLFGATE(Fauna) START: ported from Impstation
+- type: entity
+  parent: [ SimpleMobBase, FlyingMobBase, MobCombat ]
+  id: MobWeirdShrimp
+  components:
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 5
+    weightlessAcceleration: 1.5
+    weightlessFriction: 1
+    weightlessModifier: 1
+  - type: Sprite
+    drawdepth: Mobs
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      sprite: _Impstation/Mobs/Aliens/weirdshrimp.rsi
+      state: weirdshrimp
+  - type: Speech
+    speechSounds: Squeak
+    speechVerb: BabyAnom
+    allowedEmotes: ['Squeak']
+  - type: Vocal
+    sounds:
+      Male: Mouse
+      Female: Mouse
+      Unsexed: Mouse
+    wilhelmProbability: 0
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.25
+        density: 10
+        mask:
+        - FlyingMobMask
+        layer:
+        - FlyingMobLayer
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: weirdshrimp
+      Critical:
+        Base: weirdshrimp-dead
+      Dead:
+        Base: weirdshrimp-dead
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatFish
+      amount: 1
+  - type: InteractionPopup
+    successChance: 0.2
+    interactSuccessString: petting-success-babyanom
+    interactFailureString: petting-success-babyanom
+    interactSuccessSpawn: EffectHearts
+    interactSuccessSound:
+      path: /Audio/Animals/fox_squeak.ogg
+  - type: SentienceTarget
+    flavorKind: station-event-random-sentience-flavor-organic
+  - type: Bloodstream
+    bloodReagent: CopperBlood
+    bloodMaxVolume: 50
+  - type: ReplacementAccent
+    accent: babyanom
+  - type: MeleeWeapon
+    soundHit:
+        path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 8
+  - type: GhostTakeoverAvailable
+  - type: GhostRole
+    makeSentient: true
+    name: ghost-role-information-weirdshrimp-name
+    description: ghost-role-information-weirdshrimp-description
+    rules: ghost-role-information-familiar-weirdshrimp-rules
+    raffle:
+      settings: short
+# WOLFGATE END

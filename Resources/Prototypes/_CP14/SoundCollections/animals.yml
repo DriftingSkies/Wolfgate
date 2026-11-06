@@ -1,0 +1,8 @@
+# WOLFGATE(Fauna) START: ported from CrystallEdge
+- type: soundCollection
+  id: CP14Dinosaurs
+  files:
+  - /Audio/_CP14/Animals/dino1.ogg
+  - /Audio/_CP14/Animals/dino2.ogg
+  - /Audio/_CP14/Animals/dino3.ogg
+# WOLFGATE END

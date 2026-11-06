@@ -306,7 +306,7 @@
   - type: MeleeWeapon
     damage:
       types:
-        Slash: 12
+        Slash: 16
   - type: WFRemadeLimbs
     rsi: _WF/Remade/Mobs/fennec.rsi
     limbs:

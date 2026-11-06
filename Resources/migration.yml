@@ -799,3 +799,11 @@ GoonSetpiecesBloodwall: TauCetiMeatlandWall
 # WOLFGATE(DecorImport) START: bamboo wall cut from the import
 TgMineralBamboo: null
 # WOLFGATE END
+
+# WOLFGATE(ShipArmor) START: adamantite walls renamed to durasteel
+# 2026-11-03
+WFWallAdamantite: WFWallDurasteel
+WFWallAdamantiteDiagonal: WFWallDurasteelDiagonal
+WFWallAdamantiteCapital: WFWallDurasteelCapital
+WFWallAdamantiteDiagonalCapital: WFWallDurasteelDiagonalCapital
+# WOLFGATE END

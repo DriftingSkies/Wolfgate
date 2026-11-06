@@ -132,6 +132,26 @@ public sealed partial class WFAdsCampaignPrototype : IPrototype
     [DataField]
     public List<int> RetakeBounty = new() { 10000, 12000, 14000, 17000, 20000, 25000 };
 
+    /// <summary>What a bounty grows by for each paid attacking ship past the first.</summary>
+    [DataField]
+    public float ShipBountyScale = 0.5f;
+
+    /// <summary>The most the ship count may multiply a bounty by.</summary>
+    [DataField]
+    public float MaxShipBountyScale = 2.5f;
+
+    /// <summary>What more living players on the sector map multiply every bounty by; the highest bracket reached applies.</summary>
+    [DataField]
+    public List<WFAdsBountyBracket> Population = new();
+
+    /// <summary>The repair voucher each ship that helps break a node or stop a deployment gets, bound to that ship.</summary>
+    [DataField]
+    public EntProtoId? NodeVoucher;
+
+    /// <summary>The repair voucher each ship that helps destroy any other ADS ship gets, bound to that ship.</summary>
+    [DataField]
+    public EntProtoId? SweepVoucher;
+
     /// <summary>The faction credits each navy's members get with a bounty: the stronghold amount for a node, the patrol amount for anything else.</summary>
     [DataField]
     public List<WFReaverCreditGrant> Credits = new();
@@ -185,4 +205,17 @@ public sealed partial class WFAdsCampaignPrototype : IPrototype
 
     [DataField]
     public Color FallingColor = Color.FromHex("#3FB8AF");
+}
+
+/// <summary>A bounty multiplier from a number of living players on.</summary>
+[DataDefinition]
+public sealed partial class WFAdsBountyBracket
+{
+    /// <summary>The living players on the sector map from which this bracket applies.</summary>
+    [DataField(required: true)]
+    public int MinPlayers;
+
+    /// <summary>What every campaign bounty is multiplied by.</summary>
+    [DataField]
+    public float BountyScale = 1f;
 }

@@ -1,0 +1,686 @@
+# Runs from the nearest hostile. With NPCRetaliation, that is whoever hurt the mob.
+- type: htnCompound
+  id: FaunaFleeCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Fights like SimpleHostileCompound, but runs from its attackers once below a tenth of its health.
+- type: htnCompound
+  id: FaunaHostileFleeWhenHurtCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.1
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: SimpleHostileCompound
+
+# Fights like SimpleHostileCompound, but runs from its attackers once below 30% health, like Polaris can_flee mobs.
+- type: htnCompound
+  id: FaunaHostileFleeDyingCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.3
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: SimpleHostileCompound
+
+# Shoots like SimpleRangedHostileCompound, but runs from its attackers once below half its health.
+- type: htnCompound
+  id: FaunaRangedFleeWhenHurtCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.5
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: SimpleRangedHostileCompound
+
+# Nearest reachable dead mob.
+- type: utilityQuery
+  id: FaunaNearbyCorpse
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: MobState
+  considerations:
+  - !type:TargetIsDeadCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+
+# Walks to a corpse and eats or cocoons it with FaunaCorpseEater.
+- type: htnCompound
+  id: FaunaEatCorpseCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyCorpse
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:FaunaEatCorpseOperator
+
+# Fights in melee, eats corpses when nothing is left to fight.
+- type: htnCompound
+  id: FaunaCorpseEaterCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatCorpseCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Walks to a downed mob and cocoons it with FaunaCorpseEater, which needs eatCritical.
+- type: htnCompound
+  id: FaunaEatDownedCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyDowned
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:FaunaEatCorpseOperator
+
+# Fights in melee, then cocoons downed mobs, then corpses.
+- type: htnCompound
+  id: FaunaDownedCorpseEaterCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatDownedCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatCorpseCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Shoots and fights in melee, cocoons corpses when nothing is left to fight.
+- type: htnCompound
+  id: FaunaRangedCorpseEaterCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaAdjacentMeleeCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaInnateRangedCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatCorpseCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Nearest reachable food lying free.
+- type: utilityQuery
+  id: FaunaNearbyFood
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: Food
+  considerations:
+  - !type:TargetIsAliveCon
+    curve: !type:InverseBoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+
+# Walks to food and eats it with FaunaCorpseEater.
+- type: htnCompound
+  id: FaunaEatFoodCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyFood
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:FaunaEatCorpseOperator
+
+# Nearest reachable item the mob's FaunaCorpseEater whitelist accepts, such as ore.
+- type: utilityQuery
+  id: FaunaNearbyEdibleItem
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: Item
+  considerations:
+  - !type:FaunaCanEatCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+
+# Walks to an item and eats it with FaunaCorpseEater.
+- type: htnCompound
+  id: FaunaEatItemCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyEdibleItem
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:FaunaEatCorpseOperator
+
+# Fights in melee while hostile, otherwise eats whitelisted items such as ore.
+- type: htnCompound
+  id: FaunaItemEaterCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatItemCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Fights in melee while hostile, otherwise eats food, then corpses.
+- type: htnCompound
+  id: FaunaGourmongerCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatFoodCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatCorpseCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Stands still until something gets in reach, then fights. For mobs that must not wander, like a disguised mimic.
+- type: htnCompound
+  id: FaunaLurkCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:RandomOperator
+        targetKey: IdleTime
+        minKey: MinimumIdleTime
+        maxKey: MaximumIdleTime
+    - !type:HTNPrimitiveTask
+      operator: !type:WaitOperator
+        key: IdleTime
+
+# Like FaunaLurkCompound, but eats corpses with FaunaCorpseEater when nothing is left to fight.
+- type: htnCompound
+  id: FaunaLurkCorpseEaterCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatCorpseCompound
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:RandomOperator
+        targetKey: IdleTime
+        minKey: MinimumIdleTime
+        maxKey: MaximumIdleTime
+    - !type:HTNPrimitiveTask
+      operator: !type:WaitOperator
+        key: IdleTime
+
+# Steps back from its gun target when it comes within KiteRange, otherwise shoots like SimpleRangedHostileCompound.
+- type: htnCompound
+  id: FaunaRangedKiteCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyGunTargets
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: KiteRange
+      operator: !type:PickFleePointOperator
+        distanceKey: KiteRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: SimpleRangedHostileCompound
+
+# Keeps KiteRange from its target and lets FaunaAbilities do the attacking.
+- type: htnCompound
+  id: FaunaKiteCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: KiteRange
+      operator: !type:PickFleePointOperator
+        distanceKey: KiteRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: KiteApproachRange
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Like FaunaHostileFleeWhenHurtCompound, but emotes once when it starts to run.
+- type: htnCompound
+  id: FaunaHostileFleeAnnounceCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.1
+      - !type:KeyNotExistsPrecondition
+        key: FleeAnnounced
+    - !type:HTNPrimitiveTask
+      operator: !type:FaunaEmoteOperator
+        emote: fauna-wolf-flee
+    - !type:HTNPrimitiveTask
+      operator: !type:SetBoolOperator
+        targetKey: FleeAnnounced
+        value: true
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaHostileFleeWhenHurtCompound
+
+# Nearest living player.
+- type: utilityQuery
+  id: FaunaNearbyPlayers
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: Actor
+  considerations:
+  - !type:TargetIsAliveCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+
+# Runs from attackers and from any player that comes near.
+- type: htnCompound
+  id: FaunaTimidFleeCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyPlayers
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Nearest critical (downed, not dead) mob, for eatCritical cocooners.
+- type: utilityQuery
+  id: FaunaNearbyDowned
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: MobState
+  considerations:
+  - !type:TargetIsCritCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+
+# Like NearbyMeleeTargets, but critical mobs still count, for mobs that maul downed prey.
+- type: utilityQuery
+  id: FaunaNearbyMaulTargets
+  query:
+  - !type:NearbyHostilesQuery
+  considerations:
+  - !type:TargetIsDeadCon
+    curve: !type:InverseBoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetHealthCon
+    curve: !type:PresetCurve
+      preset: TargetHealth
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+  - !type:TargetInLOSOrCurrentCon
+    curve: !type:BoolCurve
+
+# Fights like SimpleHostileCompound, but keeps attacking its target until it is dead.
+- type: htnCompound
+  id: FaunaMaulCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyMaulTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        brakeMaxVelocity: null
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MeleeOperator
+        targetKey: Target
+        targetState: Critical
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: MeleeRange
+      services:
+      - !type:UtilityService
+        id: MeleeService
+        proto: FaunaNearbyMaulTargets
+        key: Target
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Like NearbyMeleeTargets, but without line of sight or a clear path, for mobs that sense prey through walls.
+- type: utilityQuery
+  id: FaunaNearbyMeleeTargetsXray
+  query:
+  - !type:NearbyHostilesQuery
+  considerations:
+  - !type:TargetIsAliveCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetHealthCon
+    curve: !type:PresetCurve
+      preset: TargetHealth
+
+# Fights like SimpleHostileCompound, picking targets it can't see. Pair it with NavSmash to dig through walls.
+- type: htnCompound
+  id: FaunaXrayHostileCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: FaunaNearbyMeleeTargetsXray
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        brakeMaxVelocity: null
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MeleeOperator
+        targetKey: Target
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: MeleeRange
+      services:
+      - !type:UtilityService
+        id: MeleeService
+        proto: FaunaNearbyMeleeTargetsXray
+        key: Target
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Polaris kururak: fights in melee, and runs below 30% health with a cry the first time.
+- type: htnCompound
+  id: PolarisKururakCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.3
+      - !type:KeyNotExistsPrecondition
+        key: FleeAnnounced
+    - !type:HTNPrimitiveTask
+      operator: !type:FaunaEmoteOperator
+        emote: fauna-polaris-kururak-retreat
+    - !type:HTNPrimitiveTask
+      operator: !type:SetBoolOperator
+        targetKey: FleeAnnounced
+        value: true
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.3
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: SimpleHostileCompound
+
+# Polaris grafadreka: spits and bites, runs below 30% health, and eats food and corpses when there is nothing to fight.
+- type: htnCompound
+  id: PolarisGrafadrekaCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+      preconditions:
+      - !type:FaunaHealthBelowPrecondition
+        fraction: 0.3
+    - !type:HTNPrimitiveTask
+      operator: !type:PickFleePointOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaInnateRangedCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatFoodCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: FaunaEatCorpseCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# Shoots while the mob's own gun has ammo, then lets the next branch, usually melee, take over until it recharges.
+- type: htnCompound
+  id: FaunaInnateRangedCombatCompound
+  branches:
+  - preconditions:
+    - !type:GunAmmoPrecondition
+      minPercent: 0.001
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyGunTargets
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        stopOnLineOfSight: true
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:JukeOperator
+        jukeType: AdjacentTile
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:KeyExistsPrecondition
+        key: Target
+      operator: !type:FaunaGunOperator
+        gun: !type:GunOperator
+          targetKey: Target
+      services:
+      - !type:UtilityService
+        id: RangedService
+        proto: NearbyGunTargets
+        key: Target
+
+# Fights in melee when a target is already in reach, so a ranged mob bites instead of waiting for its gun.
+- type: htnCompound
+  id: FaunaAdjacentMeleeCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: NearbyMeleeTargets
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: MeleeRange
+      operator: !type:NoOperator
+    - !type:HTNCompoundTask
+      task: BeforeMeleeAttackTargetCompound

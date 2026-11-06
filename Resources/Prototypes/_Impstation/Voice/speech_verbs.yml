@@ -1,0 +1,9 @@
+# WOLFGATE(Fauna) START: ported from Impstation
+- type: speechVerb
+  id: BabyAnom
+  name: chat-speech-verb-name-babyanom
+  speechVerbStrings:
+  - chat-speech-verb-babyanom-1
+  - chat-speech-verb-babyanom-2
+  - chat-speech-verb-babyanom-3
+# WOLFGATE END

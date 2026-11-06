@@ -1,0 +1,48 @@
+# The Lattice's lore pages, hung under the lore book's Forbidden chapter, and its guidebook page.
+- type: guideEntry
+  id: WFLoreUnmooring
+  name: wf-lore-entry-unmooring
+  text: "/ServerInfo/_WF/LoreBook/StarSystem/Unmooring.xml"
+  unease: 0.3
+
+- type: guideEntry
+  id: WFLoreLattice
+  name: wf-lore-entry-lattice
+  text: "/ServerInfo/_WF/LoreBook/StarSystem/Lattice.xml"
+  unease: 0.2
+
+- type: guideEntry
+  id: WFLoreChoir
+  name: wf-lore-entry-choir
+  text: "/ServerInfo/_WF/LoreBook/Threats/Choir.xml"
+  unease: 0.35
+
+- type: guideEntry
+  id: WFLatticeGuide
+  name: guide-entry-wf-lattice
+  text: "/ServerInfo/_WF/Lattice/Guidebook/Lattice.xml"
+  priority: 9
+
+# A Lore button on examine for the Lattice's things.
+- type: wfLoreLink
+  id: WFLoreLinkLattice
+  entry: WFLoreLattice
+  entities:
+  - WFLatticeAnchorCoreAlpha
+  - WFLatticeAnchorCoreBeta
+  - WFLatticeAnchorCoreGamma
+  - WFLatticeAnchorCoreDelta
+  - WFLatticeAnchorCoreEpsilon
+  - WFLatticeAnchorCoreZeta
+  - WFLatticeAnchorShield
+  - WFLatticeRelayAnchor
+  - WFFlatpackLatticeRelay
+
+- type: wfLoreLink
+  id: WFLoreLinkUnmooring
+  entry: WFLoreUnmooring
+  entities:
+  - WFMaterialExoticMatter
+  - WFLatticeStabiliser
+  - WFFlatpackLatticeStabiliser
+  - WFLatticeCharm

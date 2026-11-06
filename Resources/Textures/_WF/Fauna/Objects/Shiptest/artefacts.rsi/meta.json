@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Shiptest at commit https://github.com/shiptest-ss13/Shiptest/commit/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "goliath_tentacle"
+    },
+    {
+      "name": "watcher_wing"
+    },
+    {
+      "name": "tail_spike"
+    },
+    {
+      "name": "lobster_claw"
+    },
+    {
+      "name": "brimdemon_fang"
+    },
+    {
+      "name": "vortex_talisman",
+      "delays": [
+        [
+          2.0,
+          0.25,
+          0.225,
+          0.2,
+          0.175,
+          0.15,
+          0.125,
+          0.1,
+          0.075,
+          0.05,
+          0.25,
+          0.09,
+          0.08,
+          0.07,
+          0.06,
+          0.05,
+          0.04,
+          0.03,
+          0.02,
+          0.01
+        ]
+      ]
+    },
+    {
+      "name": "hierophant_club_ready_beacon",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

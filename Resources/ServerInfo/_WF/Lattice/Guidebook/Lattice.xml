@@ -1,0 +1,48 @@
+<Document>
+  # The Lattice and Drift
+
+  Six reality anchors around Caelestinus Central hold the sector together. The further you fly from them, the worse things get, and the better the pickings. For the story behind it, see [lorelink="The Unmooring" link="WFLoreUnmooring"].
+
+  ## Bands
+
+  Your radar draws the band edges as rings, in place of the old drone zone rings. Crossing one shows a warning.
+
+  - [bold]Moored[/bold], up to about 18 km from the centre: safe. Drift fades here.
+  - [bold]Slack[/bold], 18 to 22 km: Drift builds slowly. Ore yields a little more.
+  - [bold]Adrift[/bold], 22 to 25 km: Drift builds faster. Rocks start to drop exotic matter.
+  - [bold]Untethered[/bold], 25 to 30 km: Drift builds fast. More ore, more exotic matter.
+  - [bold]the Deep[/bold], past 30 km: Drift climbs fastest of all, up to its cap. Names and coordinates garble. The best ore, the most exotic matter, and Monolith hulks.
+
+  If an anchor is destroyed, the bands move inward on its side.
+
+  ## Drift
+
+  Your ship builds Drift while you are aboard out in the bands; off a ship, you build your own. On a planet you take the band of the planet's place in the sector.
+
+  - From low Drift: whispers, voices on the common channel, contacts on the radar that are not there.
+  - From about a quarter: footsteps and knocks, false hails from ships that do not exist.
+  - From about a third: your screen starts to swim.
+  - From about half: things glimpsed in the corner of your eye.
+  - From about seventy: a Remade standing in the dark. It is gone when you walk up to it. Probably.
+
+  Only you see your hallucinations. In the Deep, a small animal aboard (a pet or a mouse) can die and rise as a Remade.
+
+  ## Protection
+
+  - [bold]Drift stabiliser[/bold]: an autolathe flatpack (5 exotic matter). Bolt it to your ship and give it 15 kW. It keeps 80% of Drift gain off the ship and stops the Deep taking your animals.
+  - [bold]Anchor charm[/bold]: an autolathe item (1 exotic matter). Wear it round your neck to keep half the Drift off yourself.
+
+  ## Exotic matter
+
+  Mined from asteroid rock in the Adrift band and beyond, more of it the deeper you go. It sells for 3,000 a shard and builds the stabiliser, the charm and relay anchors.
+
+  ## Anchors
+
+  The six primary anchors are shielded stations about 3 km out from the centre. Attack one and drones come out to defend it. Destroying an anchor's core is a breach: the whole sector is told, anchored space shrinks, and the black hole looks worse for everyone.
+
+  A [bold]relay anchor[/bold] (autolathe flatpack, 20 exotic matter) pushes anchored space outward around it. Bolt it down with 30 kW of power on a hull that stays still for a minute and it takes hold. Move the hull or cut the power and it lets go.
+
+  ## The Choir
+
+  Very high Drift can bring an offer to join the Choir, an antagonist faction. It appears as an action you can use for five minutes. Ignore it and nothing happens. The server's antagonist rules apply if you answer.
+</Document>

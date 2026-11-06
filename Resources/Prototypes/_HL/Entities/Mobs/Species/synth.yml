@@ -282,6 +282,7 @@
     - AnomalyHost
     - SiliconEmotes
     - Synth
+    - Humanoid # WOLFGATE(Chimera): every other playable species has it; Letoferol only turns Humanoid-tagged mobs
 
 - type: entity
   parent: BaseSpeciesDummy

@@ -104,6 +104,7 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 - [`Content.Shared/_WF/Performance/WFCollectionExtensions.cs`](../../../Content.Shared/_WF/Performance/WFCollectionExtensions.cs)
 - [`Content.Shared/_WF/Performance/WFDeletedRefStateSystem.cs`](../../../Content.Shared/_WF/Performance/WFDeletedRefStateSystem.cs)
 - [`Content.Shared/_WF/Performance/WFPerformanceCVars.cs`](../../../Content.Shared/_WF/Performance/WFPerformanceCVars.cs)
+- [`Content.Shared/_WF/Performance/WFTickBuckets.cs`](../../../Content.Shared/_WF/Performance/WFTickBuckets.cs)
 - [`Content.Shared/_WF/Performance/WFTickSpread.cs`](../../../Content.Shared/_WF/Performance/WFTickSpread.cs)
 
 ### Client
@@ -135,6 +136,7 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 
 ### Unit tests
 
+- [`Content.Tests/_WF/Performance/WFTickBucketsTest.cs`](../../../Content.Tests/_WF/Performance/WFTickBucketsTest.cs)
 - [`Content.Tests/_WF/Performance/WFTickSpreadTest.cs`](../../../Content.Tests/_WF/Performance/WFTickSpreadTest.cs)
 
 ### Localization
@@ -413,6 +415,9 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
   - wizden#38974, subnets carry a Color
   - wizden#38974, was string HexCode
 - [`Content.Shared/CCVar/CCVars.Atmos.cs`](../../../Content.Shared/CCVar/CCVars.Atmos.cs): fewer thread-pool jobs per pass
+- [`Content.Shared/Damage/Systems/DamageableSystem.cs`](../../../Content.Shared/Damage/Systems/DamageableSystem.cs)
+  - size the dictionary once instead of growing it from empty on every spawn
+  - size once
 - [`Content.Shared/Fluids/Components/DrainComponent.cs`](../../../Content.Shared/Fluids/Components/DrainComponent.cs): when a dry auto-drain next searches for puddles
 - [`Content.Shared/Gravity/SharedGravitySystem.cs`](../../../Content.Shared/Gravity/SharedGravitySystem.cs)
   - batched weightlessness refresh

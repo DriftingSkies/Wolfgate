@@ -42,11 +42,18 @@ public sealed partial class GoliathTentacleSystem : EntitySystem
         var dirs = new List<Direction>();
         dirs.AddRange(args.OffsetDirections);
 
-        for (var i = 0; i < 3; i++)
+        // WOLFGATE(Fauna) START: honour ExtraSpawns and offset diagonals by a whole tile
+        // for (var i = 0; i < 3; i++)
+        // {
+        //     var dir = _random.PickAndTake(dirs);
+        //     spawnPos.Add(coords.Offset(dir));
+        // }
+        for (var i = 0; i < args.ExtraSpawns && dirs.Count > 0; i++)
         {
-            var dir = _random.PickAndTake(dirs);
-            spawnPos.Add(coords.Offset(dir));
+            var dir = _random.PickAndTake(dirs).ToIntVec();
+            spawnPos.Add(coords.Offset(new System.Numerics.Vector2(dir.X, dir.Y)));
         }
+        // WOLFGATE END
 
         if (_transform.GetGrid(coords) is not { } grid || !TryComp<MapGridComponent>(grid, out var gridComp))
             return;

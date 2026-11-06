@@ -1,0 +1,21 @@
+# Loot from the CitadelRP fauna.
+
+- type: entity
+  parent: BaseItem
+  id: CitadelRPSifterShell
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CitadelRP/lavaland.rsi
+    state: sifter_shell
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CitadelRPElderstone
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CitadelRP/lavaland.rsi
+    state: elderstone
+  - type: Item
+    size: Small
