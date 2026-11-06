@@ -5,7 +5,7 @@ meta:
   forkId: wolfgate-mapping
   forkVersion: 20261023-201310-d5515d3-tm231-b5e79818
   time: 10/25/2026 14:53:15
-  entityCount: 10711
+  entityCount: 10712
 maps: []
 grids:
 - 1
@@ -36232,6 +36232,13 @@ entities:
     - type: Transform
       parent: 1
       pos: -10.5,-6.5
+- proto: WFVendingMachineTsfOutfitter
+  entities:
+  - uid: 10712
+    components:
+    - type: Transform
+      parent: 1
+      pos: 14.5,4.5
 - proto: filingCabinetDrawer
   entities:
   - uid: 5614
