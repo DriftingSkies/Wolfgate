@@ -167,21 +167,23 @@
   tier: 1
   title: wf-contract-cael-medical-stock
   briefing: wf-contract-cael-medical-stock-brief
-  reward: 6500, 9000
+  reward: 12500, 15500
   minutes: 45
   weight: 1
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
+    goodsCap: 2500
     goods:
     - stack: Gauze
-      count: 20, 40
+      count: 8, 12
     - stack: Ointment
-      count: 20, 40
+      count: 8, 12
     - stack: Brutepack
-      count: 20, 40
+      count: 8, 12
     - entity: MedkitFilled
-      count: 2, 4
+      count: 1, 2
+      value: 600
 
 # --- Marshals ---
 

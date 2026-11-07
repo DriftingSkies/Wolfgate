@@ -136,8 +136,21 @@
   ships:
   - key: lead
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara ]
-    retrofit: WFPirateRetrofitLight
+    vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     side: raiders
     faction: PirateNF
     company: WFAshfallReavers
@@ -156,8 +169,21 @@
     - kind: Hold
   - key: wing
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara ]
-    retrofit: WFPirateRetrofitLight
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: 120, 60
     side: raiders
     faction: PirateNF
@@ -188,8 +214,21 @@
   ships:
   - key: target
     navigation: WFCrewNavigationRaider
-    vessels: [ Peregrine, Shuilian, Arribane, Autumn, Zeros ]
-    retrofit: WFPirateRetrofitMedium
+    vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     side: raiders
     faction: PirateNF
     company: WFAshfallReavers
@@ -222,8 +261,18 @@
   ships:
   - key: target
     navigation: WFCrewNavigationWarship
-    vessels: [ Kalisto, Metis, Scallywag ]
-    retrofit: WFPirateRetrofitHeavy
+    vessels: [ Fenrir, Garm, Ganymede ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Fenrir, Garm, Ganymede ]
+      skills: [ Regular ]
+    - minTier: 4
+      vessels: [ Fenrir, Garm, Ganymede, Vulture ]
+      skills: [ Regular, Veteran ]
+    - minTier: 5
+      vessels: [ Fenrir, Garm, Ganymede, Vulture ]
+      skills: [ Veteran ]
     side: raiders
     faction: PirateNF
     company: WFAshfallReavers
@@ -341,8 +390,21 @@
     disengage: Deter
   - key: raider
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara ]
-    retrofit: WFPirateRetrofitLight
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: 2400, 800
     side: raiders
     faction: PirateNF
@@ -359,8 +421,21 @@
       target: freighter
   - key: gunship
     navigation: WFCrewNavigationRaider
-    vessels: [ Peregrine, Shuilian, Arribane, Autumn ]
-    retrofit: WFPirateRetrofitMedium
+    vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: -2600, 1200
     side: raiders
     faction: PirateNF
@@ -393,8 +468,21 @@
   ships:
   - key: lead
     navigation: WFCrewNavigationFugitive
-    vessels: [ Noble, Caracara, Sakuratsu ]
-    retrofit: WFPirateRetrofitLight
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     side: target
     faction: PirateNF
     profile: WFCrewProfileFugitive
@@ -412,8 +500,21 @@
     - kind: Hold
   - key: wing
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Pillbox ]
-    retrofit: WFPirateRetrofitLight
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: 100, -80
     side: target
     faction: PirateNF
@@ -443,8 +544,21 @@
   ships:
   - key: target
     navigation: WFCrewNavigationFugitive
-    vessels: [ Sakuratsu, Spessbite, Noble ]
-    retrofit: WFPirateRetrofitLight
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     side: target
     faction: PirateNF
     profile: WFCrewProfileFugitiveArmed
@@ -505,7 +619,21 @@
   ships:
   - key: one
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Pillbox, Takeaway ]
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     side: raiders
     faction: PirateNF
     company: WFAshfallReavers
@@ -524,7 +652,21 @@
     - kind: Hold
   - key: two
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Pillbox, Takeaway ]
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: 900, 300
     side: raiders
     faction: PirateNF
@@ -544,7 +686,21 @@
     - kind: Hold
   - key: three
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Pillbox, Takeaway ]
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: -700, 800
     side: raiders
     faction: PirateNF
@@ -564,7 +720,21 @@
     - kind: Hold
   - key: four
     navigation: WFCrewNavigationRaider
-    vessels: [ Spessbite, Victoria, Pillbox, Takeaway ]
+    vessels: [ Carrion, Hazel, Horsefly, Tick ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
     offset: 300, -1000
     side: raiders
     faction: PirateNF
@@ -582,3 +752,433 @@
     wanderPause: 40
     objectives:
     - kind: Hold
+
+# Faction contract targets: navy ships of one side, hunted by the other's board.
+# T3: a Federation patrol pair, for the PDV.
+- type: wfEncounter
+  id: WFContractTargetTsfPatrol
+  name: wf-contract-target-tsf-patrol
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  weight: 0
+  duration: 4500
+  leash: 2500
+  ships:
+  - key: lead
+    navigation: WFCrewNavigationWarship
+    vessels: [ QJ271, Paladin, Ocelot, Seax, Xiphos ]
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    wander: 6
+    wanderRadius: 1500
+    wanderPause: 30
+    objectives:
+    - kind: Hold
+  - key: wing
+    navigation: WFCrewNavigationWarship
+    vessels: [ QJ271, Paladin, Ocelot ]
+    offset: 120, 0
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: lead
+
+# T3: a Federation transport and its escort, for the PDV to raid.
+- type: wfEncounter
+  id: WFContractTargetTsfConvoy
+  name: wf-contract-target-tsf-convoy
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  weight: 0
+  duration: 4500
+  leash: 2500
+  ships:
+  - key: transport
+    navigation: WFCrewNavigationWarship
+    vessels: [ Argent ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 2
+    guards: 2
+    skill: Green
+    distress: false
+    warnRange: 800
+    attackRange: 300
+    disengage: Deter
+    disengageRange: 1200
+    evades: false
+    flees: 1500
+    wander: 6
+    wanderRadius: 1500
+    wanderPause: 30
+    objectives:
+    - kind: Hold
+  - key: escort
+    navigation: WFCrewNavigationWarship
+    vessels: [ QJ271, Paladin ]
+    offset: 150, 0
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: transport
+
+# T4: a Federation warship with two gunboats, for the PDV.
+- type: wfEncounter
+  id: WFContractTargetTsfHeavy
+  name: wf-contract-target-tsf-heavy
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  weight: 0
+  duration: 4800
+  leash: 3000
+  ships:
+  - key: lead
+    navigation: WFCrewNavigationWarship
+    vessels: [ Banshee, Dagger, Fracture, Calypso ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 1
+    guards: 1
+    skill: Veteran
+    distress: false
+    warnRange: 1500
+    attackRange: 1000
+    disengage: Deter
+    disengageRange: 1900
+    wander: 6
+    wanderRadius: 1500
+    wanderPause: 30
+    objectives:
+    - kind: Hold
+  - key: wing
+    navigation: WFCrewNavigationWarship
+    vessels: [ QJ271, Paladin, Ocelot ]
+    offset: 150, 80
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: lead
+  - key: wingtwo
+    navigation: WFCrewNavigationWarship
+    vessels: [ QJ271, Paladin, Ocelot ]
+    offset: -150, 80
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: lead
+
+# T3: a Dynasty patrol pair, for the TSF.
+- type: wfEncounter
+  id: WFContractTargetPdvPatrol
+  name: wf-contract-target-pdv-patrol
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  weight: 0
+  duration: 4500
+  leash: 2500
+  ships:
+  - key: lead
+    navigation: WFCrewNavigationWarship
+    vessels: [ Kynda, Gadfly, Kresta, Ontos ]
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    wander: 6
+    wanderRadius: 1500
+    wanderPause: 30
+    objectives:
+    - kind: Hold
+  - key: wing
+    navigation: WFCrewNavigationWarship
+    vessels: [ Kynda, Gadfly, Kresta ]
+    offset: 120, 0
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: lead
+
+# T4: a Dynasty warship with two gunboats, for the TSF.
+- type: wfEncounter
+  id: WFContractTargetPdvHeavy
+  name: wf-contract-target-pdv-heavy
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  weight: 0
+  duration: 4800
+  leash: 3000
+  ships:
+  - key: lead
+    navigation: WFCrewNavigationWarship
+    vessels: [ Tethys, Neptune ]
+    side: target
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 1
+    guards: 1
+    skill: Veteran
+    distress: false
+    warnRange: 1500
+    attackRange: 1000
+    disengage: Deter
+    disengageRange: 1900
+    wander: 6
+    wanderRadius: 1500
+    wanderPause: 30
+    objectives:
+    - kind: Hold
+  - key: wing
+    navigation: WFCrewNavigationWarship
+    vessels: [ Gadfly, Kresta, Kynda ]
+    offset: 150, 80
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: lead
+  - key: wingtwo
+    navigation: WFCrewNavigationWarship
+    vessels: [ Gadfly, Kresta, Kynda ]
+    offset: -150, 80
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: target
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    objectives:
+    - kind: Escort
+      target: lead
+
+# T3: a bounty hunter gunship sent after the Dynasty, for the PDV.
+- type: wfEncounter
+  id: WFContractTargetMercHunter
+  name: wf-contract-target-merc-hunter
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  weight: 0
+  duration: 4500
+  leash: 2500
+  ships:
+  - key: target
+    navigation: WFCrewNavigationRaider
+    vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+    # Reaver ships, by the contract's tier.
+    tiers:
+    - minTier: 3
+      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WFPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Regular, Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+      skills: [ Veteran ]
+      retrofit: WFPirateRetrofitGrime
+    side: target
+    company: blackhawkpmc
+    profile: WFCrewProfilePirate
+    deckhands: 1
+    guards: 1
+    skill: Veteran
+    distress: false
+    warnRange: 1200
+    attackRange: 800
+    disengage: Deter
+    disengageRange: 1500
+    wander: 8
+    wanderRadius: 2500
+    wanderPause: 20
+    objectives:
+    - kind: Hold
+
+# T3 escort: a Federation transport on its way home; Dynasty gunboats lie in wait, then strike.
+- type: wfEncounter
+  id: WFContractEscortFederation
+  name: wf-contract-escort-federation
+  start: Manual
+  category: Traffic
+  cost: 0
+  weight: 0
+  duration: 5400
+  startRadius: 700
+  route:
+    minStops: 1
+    maxStops: 1
+  ships:
+  - key: freighter
+    navigation: WFCrewNavigationFreight
+    vessels: [ Argent ]
+    side: freight
+    faction: TSFMC
+    company: TSF
+    profile: WFCrewProfileTsf
+    deckhands: 2
+    captain: true
+    flyRoute: true
+    boarding: Warn
+    docking: Warn
+    disengage: Deter
+  - key: raider
+    navigation: WFCrewNavigationWarship
+    vessels: [ Kynda, Gadfly, Kresta ]
+    offset: 2400, 800
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: raiders
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    lurks: true
+    objectives:
+    - kind: Hold
+      duration: 150
+    - kind: Attack
+      target: freighter
+  - key: raidertwo
+    navigation: WFCrewNavigationWarship
+    vessels: [ Kynda, Gadfly, Kresta ]
+    offset: -2600, 1200
+    captain: false
+    roles: [ WFCrewPilot, WFCrewGunner ]
+    side: raiders
+    faction: WFPdvNavy
+    company: PDV
+    profile: WFCrewProfilePdv
+    deckhands: 0
+    skill: Regular
+    distress: false
+    warnRange: 1000
+    attackRange: 600
+    disengage: Deter
+    disengageRange: 1400
+    lurks: true
+    objectives:
+    - kind: Hold
+      duration: 300
+    - kind: Attack
+      target: freighter

@@ -20,8 +20,9 @@ escort encounters), `factions.yml` (sides) and `entities.yml` (boards, cartridge
   nothing. Each keeps `offers` offers up; after one leaves the board it waits 90 s before posting again. Offers stay up
   20 to 35 minutes. Nothing is posted unless the public board stands on a station.
 - **Boards**: a `WFContractBoard` shows the offers of contractors whose `board` matches its own (`Central`, `TSF`,
-  `USSP`, `PDV`). A contractor with `companies` only deals with members of those companies. Central has a board at the
-  plaza and one per dock arm; the Halcyon, Camelot and Helios have theirs by their docks (Helios also in the cargo bay).
+  `USSP`, `PDV`, `Colony`, `ASF`). A contractor with `companies` only deals with members of those companies. Central has a board at the
+  plaza and one per dock arm; the Halcyon, Camelot and Helios have theirs by their docks (Helios also in the cargo bay),
+  as do the Stellar Blessing (`Colony`, TSF civilians) and the ASF Lantern Post (`ASF`, paid in reward grants too).
   Each has a `WFContractCargoPad` beside it. A station only faction-board contractors call home (Helios) is never the
   far end of another board's run (`OpenTo`).
 - **Employer**: each contractor's `employer` names who the work is really for, shown above every briefing.
@@ -160,8 +161,10 @@ escort encounters), `factions.yml` (sides) and `entities.yml` (boards, cartridge
 
 - [`Resources/Prototypes/_WF/Contracts/contractors.yml`](../../../Resources/Prototypes/_WF/Contracts/contractors.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/anomalous_lab.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/anomalous_lab.yml)
+- [`Resources/Prototypes/_WF/Contracts/Contracts/asf.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/asf.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/caelestinus.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/caelestinus.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/camelot.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/camelot.yml)
+- [`Resources/Prototypes/_WF/Contracts/Contracts/colony.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/colony.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/factions.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/factions.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/halcyon.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/halcyon.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/hokkaido.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/hokkaido.yml)
@@ -190,6 +193,7 @@ escort encounters), `factions.yml` (sides) and `entities.yml` (boards, cartridge
 - [`Resources/Maps/_Mono/Outpost/caelestinus_central.yml`](../../../Resources/Maps/_Mono/Outpost/caelestinus_central.yml): Contract boards with pickup pads at the central plaza and beside each of the six dock arms.
 - [`Resources/Maps/_Mono/POI/camelot.yml`](../../../Resources/Maps/_Mono/POI/camelot.yml): USSP faction contract boards with pickup pads off the warp corridor and by the north-west and south-west docks.
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): PDV faction contract boards with pickup pads in the civilian arm by the west docks and in the cargo bay.
+- [`Resources/Maps/_Mono/POI/tsfmc_industry.yml`](../../../Resources/Maps/_Mono/POI/tsfmc_industry.yml): The settlers' council contract board and pickup pad in the east hall, by the market and cargo consoles.
 - [`Resources/Maps/_Mono/POI/tsfmchalcyon.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon.yml): TSF faction contract boards with pickup pads in the arrival hall, by both west public docks and the navy dock hall.
 - [`Resources/Prototypes/_NF/Guidebook/nf14.yml`](../../../Resources/Prototypes/_NF/Guidebook/nf14.yml): contract board guide
 

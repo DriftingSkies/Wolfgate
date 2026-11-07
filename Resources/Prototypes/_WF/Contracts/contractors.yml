@@ -102,7 +102,7 @@
   color: "#d0573f"
   stations: [ USSPCamelot ]
   board: USSP
-  companies: [ USSP ]
+  companies: [ USSP, TheViperGroup ]
   offers: 4
   order: 11
 
@@ -117,3 +117,27 @@
   companies: [ PDV, PDVCivilian, PDVHighComm ]
   offers: 4
   order: 12
+
+- type: wfContractor
+  id: WFContractorColonyCouncil
+  name: wf-contractor-colony-council
+  description: wf-contractor-colony-council-desc
+  employer: wf-contractor-colony-council-employer
+  color: "#5fb0e0"
+  stations: [ TSFMCIndustry ]
+  board: Colony
+  companies: [ TSFCivilian ]
+  offers: 4
+  order: 13
+
+- type: wfContractor
+  id: WFContractorAsfResearch
+  name: wf-contractor-asf-research
+  description: wf-contractor-asf-research-desc
+  employer: wf-contractor-asf-research-employer
+  color: "#9b6dff"
+  stations: [ WFAsfLantern ]
+  board: ASF
+  companies: [ WFAsf ]
+  offers: 4
+  order: 14

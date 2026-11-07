@@ -331,6 +331,9 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: Contracts
     reason: PDV faction contract boards with pickup pads in the civilian arm by the west docks and in the cargo bay.
+  - path: Resources/Maps/_Mono/POI/tsfmc_industry.yml
+    module: Contracts
+    reason: The settlers' council contract board and pickup pad in the east hall, by the market and cargo consoles.
   - path: Resources/Maps/_Mono/POI/underground.yml
     module: LockableButtons
     reason: The two blast door buttons take Underground access; the station's crew has no Pirate access.

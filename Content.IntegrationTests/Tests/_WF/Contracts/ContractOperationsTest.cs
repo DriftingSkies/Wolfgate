@@ -155,6 +155,17 @@ public sealed class ContractOperationsTest
             Assert.That(contracts.TryAbandon(holder, freight.Id), Is.True);
         });
 
+        // A higher-tier bounty flies the Reaver line for its tier.
+        await server.WaitAssertion(() =>
+        {
+            var gunship = Take(contracts, mob, board, "WFContractMarshalGunship", crewCheck: false);
+            var run = entMan.GetComponent<Content.Server._WF.Encounters.Components.WFEncounterComponent>(gunship.EncounterEntity!.Value);
+            Assert.That(run.Tier, Is.EqualTo(4), "The bounty's encounter did not take the contract's tier.");
+            Assert.That(run.Ships["target"].Vessel?.Id, Is.AnyOf("Kalisto", "Metis", "Mudskipper", "Scallywag"),
+                "A tier 4 gunship bounty should fly a tier 4 Reaver hull.");
+            Assert.That(contracts.TryAbandon(holder, gunship.Id), Is.True);
+        });
+
         // Twin survey: two derelicts, anomalies on both. Chain links never post on their own.
         await server.WaitAssertion(() =>
         {
@@ -165,6 +176,20 @@ public sealed class ContractOperationsTest
             Assert.That(contracts.TryAbandon(holder, twin.Id), Is.True);
             Assert.That(contracts.All.Any(c => c.Prototype == "WFContractMarshalsWarlordChain"), Is.False,
                 "A chain link was posted without its first link.");
+        });
+
+        // Ammunition drive: loaded magazines and ammo boxes of any calibre count; empty magazines and guns don't.
+        await server.WaitAssertion(() =>
+        {
+            var ammo = new WFContract { Prototype = "WFContractTSFFactionAmmo", Goods = { (0, 6) } };
+            var at = new EntityCoordinates(ContractFlowTest.Largest(server, central), 1.5f, 1.5f);
+            var crate = entMan.SpawnEntity("CrateGenericSteel", at);
+            var storage = entMan.System<Content.Shared.Storage.EntitySystems.SharedEntityStorageSystem>();
+            foreach (var item in new[] { "Magazine9x19mmPistolFMJ", "AmmoBox9x19mmFMJ", "Magazine9x19mmPistolEmpty", "WeaponShotgunKammerer" })
+            {
+                Assert.That(storage.Insert(entMan.SpawnEntity(item, at), crate), Is.True);
+            }
+            Assert.That(contracts.Packed(ammo, crate).Single(), Is.EqualTo(2));
         });
 
         await pair.CleanReturnAsync();

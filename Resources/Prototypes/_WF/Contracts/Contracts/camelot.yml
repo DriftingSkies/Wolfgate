@@ -7,7 +7,7 @@
   tier: 1
   title: wf-contract-camelot-provisions
   briefing: wf-contract-camelot-provisions-brief
-  reward: 8000, 11000
+  reward: 8500, 10000
   minutes: 55
   weight: 2
   objective: !type:WFContractSupply
@@ -22,7 +22,8 @@
     - entity: DrinkWaterBottleFull
       count: 10, 20
     - entity: MedkitFilled
-      count: 2, 4
+      count: 1, 2
+      value: 600
 
 - type: wfContract
   id: WFContractCamelotFuel
@@ -256,3 +257,50 @@
     destinations: [ WFContractorMMC ]
     perPackage: 2500
     perKilometre: 1500
+
+# Fifth batch.
+
+- type: wfContract
+  id: WFContractCamelotBeacon
+  contractor: WFContractorCamelot
+  category: Salvage
+  tier: 2
+  title: wf-contract-camelot-beacon
+  briefing: wf-contract-camelot-beacon-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WFContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-3.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wfContract
+  id: WFContractCamelotHarbourClearance
+  contractor: WFContractorCamelot
+  category: Salvage
+  tier: 1
+  title: wf-contract-camelot-harbour-clearance
+  briefing: wf-contract-camelot-harbour-clearance-brief
+  reward: 9000, 12000
+  minutes: 50
+  crewBonus: 0.25
+  weight: 1.2
+  requires:
+  - tag: WFTowRope
+    name: wf-contract-requires-rope
+  - entity: WFTetherInstaller
+    name: wf-contract-requires-tether-installer
+  objective: !type:WFContractTow
+    minDistance: 2500
+    maxDistance: 4000
+    wrecks:
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/small-ship-1.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml

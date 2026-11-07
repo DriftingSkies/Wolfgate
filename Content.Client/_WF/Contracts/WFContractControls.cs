@@ -52,6 +52,18 @@ public static class WFContractStyle
         return panel;
     }
 
+    /// <summary>Plain text in one colour that wraps to its container's width.</summary>
+    public static RichTextLabel Wrapped(string text, Color color, Thickness margin)
+    {
+        var message = new FormattedMessage();
+        message.PushColor(color);
+        message.AddText(text);
+        message.Pop();
+        var label = new RichTextLabel { Margin = margin };
+        label.SetMessage(message);
+        return label;
+    }
+
     public static Label Label(string text, Color color, string? style = null)
     {
         var label = new Label { Text = text, FontColorOverride = color, ClipText = true };
@@ -219,12 +231,7 @@ public sealed class WFContractDetails : BoxContainer
             WFContractStyle.TierColor(contract.Tier)));
         _body.AddChild(header);
 
-        _body.AddChild(new Label
-        {
-            Text = contract.Employer,
-            FontColorOverride = contract.ContractorColor,
-            Margin = new Thickness(0, 0, 0, 6),
-        });
+        _body.AddChild(WFContractStyle.Wrapped(contract.Employer, contract.ContractorColor, new Thickness(0, 0, 0, 6)));
 
         var briefing = new RichTextLabel { Margin = new Thickness(0, 0, 0, 8) };
         briefing.SetMessage(FormattedMessage.FromMarkupPermissive(contract.Briefing));
@@ -240,20 +247,11 @@ public sealed class WFContractDetails : BoxContainer
         }
 
         _body.AddChild(Section("wf-contract-details-location"));
-        _body.AddChild(new Label
-        {
-            Text = contract.Location,
-            FontColorOverride = WFContractStyle.Bright,
-            Margin = new Thickness(6, 0, 0, 0),
-        });
+        _body.AddChild(WFContractStyle.Wrapped(contract.Location, WFContractStyle.Bright, new Thickness(6, 0, 0, 0)));
         if (contract.Coordinates is { } coords)
         {
-            _body.AddChild(new Label
-            {
-                Text = Loc.GetString("wf-contract-details-coordinates", ("x", (int) coords.X), ("y", (int) coords.Y)),
-                FontColorOverride = WFContractStyle.Accent,
-                Margin = new Thickness(6, 0, 0, 0),
-            });
+            _body.AddChild(WFContractStyle.Wrapped(Loc.GetString("wf-contract-details-coordinates", ("x", (int) coords.X), ("y", (int) coords.Y)),
+                WFContractStyle.Accent, new Thickness(6, 0, 0, 0)));
         }
 
         _body.AddChild(Section("wf-contract-details-terms"));
@@ -284,7 +282,7 @@ public sealed class WFContractDetails : BoxContainer
         if (contract.Deadline != null)
         {
             var row = Term(contract.Status == WFContractStatus.Active ? "wf-contract-details-deadline" : "wf-contract-details-offer-ends",
-                string.Empty, contract.Status == WFContractStatus.Active ? WFContractStyle.Warn : WFContractStyle.Dim);
+                string.Empty, contract.Status == WFContractStatus.Active ? WFContractStyle.Warn : WFContractStyle.Dim, wrap: false);
             _clock = (Label) row.Children.Last();
             _body.AddChild(row);
         }
@@ -317,13 +315,25 @@ public sealed class WFContractDetails : BoxContainer
         };
     }
 
-    private static BoxContainer Term(string key, string value, Color color)
+    /// <summary>A labelled value; it wraps unless <paramref name="wrap"/> is false, which keeps it a Label to update in place.</summary>
+    private static BoxContainer Term(string key, string value, Color color, bool wrap = true)
     {
         var row = new BoxContainer { Orientation = LayoutOrientation.Horizontal, Margin = new Thickness(6, 0, 0, 0) };
-        row.AddChild(new Label { Text = Loc.GetString(key), FontColorOverride = WFContractStyle.Dim, MinWidth = 110 });
-        row.AddChild(new Label { Text = value, FontColorOverride = color });
+        row.AddChild(new Label { Text = Loc.GetString(key), FontColorOverride = WFContractStyle.Dim, MinWidth = 110, VerticalAlignment = VAlignment.Top });
+        if (wrap)
+        {
+            var text = WFContractStyle.Wrapped(value, color, new Thickness(0));
+            text.HorizontalExpand = true;
+            row.AddChild(text);
+        }
+        else
+        {
+            row.AddChild(new Label { Text = value, FontColorOverride = color });
+        }
+
         return row;
     }
+
 }
 
 /// <summary>Standing with each contractor: rank and progress to the next.</summary>
@@ -338,12 +348,7 @@ public sealed class WFContractStandingList : BoxContainer
     public void Update(List<WFContractStandingView> standing)
     {
         RemoveAllChildren();
-        AddChild(new Label
-        {
-            Text = Loc.GetString("wf-contract-standing-help"),
-            FontColorOverride = WFContractStyle.Dim,
-            Margin = new Thickness(0, 0, 0, 6),
-        });
+        AddChild(WFContractStyle.Wrapped(Loc.GetString("wf-contract-standing-help"), WFContractStyle.Dim, new Thickness(0, 0, 0, 6)));
 
         foreach (var entry in standing)
         {
@@ -352,12 +357,9 @@ public sealed class WFContractStandingList : BoxContainer
             top.AddChild(new Label { Text = entry.Contractor, FontColorOverride = entry.Color, HorizontalExpand = true });
             top.AddChild(new Label { Text = entry.Rank, FontColorOverride = WFContractStyle.Bright });
             card.AddChild(top);
-            card.AddChild(new Label
-            {
-                Text = entry.Present ? entry.Description : Loc.GetString("wf-contract-standing-absent", ("description", entry.Description)),
-                FontColorOverride = WFContractStyle.Dim,
-                ClipText = true,
-            });
+            card.AddChild(WFContractStyle.Wrapped(
+                entry.Present ? entry.Description : Loc.GetString("wf-contract-standing-absent", ("description", entry.Description)),
+                WFContractStyle.Dim, new Thickness(0)));
 
             var floor = Math.Min(0, entry.Points);
             var bar = new ProgressBar

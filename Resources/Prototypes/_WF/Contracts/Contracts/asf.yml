@@ -1,0 +1,338 @@
+# ASF field research: science work for the Astraeus Solar Federation, posted on the Lantern Post's board and paid in
+# thalers and Astraeus Reward Grants.
+
+- type: wfContract
+  id: WFContractAsfAnomalySurvey
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 1
+  title: wf-contract-asf-anomaly-survey
+  briefing: wf-contract-asf-anomaly-survey-brief
+  reward: 8000, 11000
+  minutes: 45
+  crewBonus: 0.25
+  weight: 1.5
+  credits: 10
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSurvey
+    count: 1, 2
+    perAnomaly: 2500
+    minDistance: 2500
+    maxDistance: 4000
+    stationClearance: 2000
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
+    wrecks:
+    - /Maps/Salvage/small-1.yml
+    - /Maps/Salvage/small-2.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wfContract
+  id: WFContractAsfGravimetry
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 1
+  title: wf-contract-asf-gravimetry
+  briefing: wf-contract-asf-gravimetry-brief
+  reward: 5500, 7500
+  minutes: 45
+  weight: 1.5
+  credits: 8
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSweep
+    points: 3, 4
+    perPoint: 1500
+    minDistance: 2500
+    maxDistance: 5500
+
+- type: wfContract
+  id: WFContractAsfLenses
+  contractor: WFContractorAsfResearch
+  category: Supply
+  tier: 1
+  title: wf-contract-asf-lenses
+  briefing: wf-contract-asf-lenses-brief
+  reward: 7000, 9500
+  minutes: 50
+  weight: 1.2
+  credits: 6
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Glass
+      count: 30, 50
+    - stack: Silver
+      count: 10, 20
+    - stack: Gold
+      count: 5, 10
+    - stack: Plasma
+      count: 10, 20
+
+- type: wfContract
+  id: WFContractAsfArtifact
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 2
+  title: wf-contract-asf-artifact
+  briefing: wf-contract-asf-artifact-brief
+  reward: 15000, 20000
+  deposit: 1000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  credits: 20
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractRecovery
+    item: ComplexXenoArtifactItem
+    perUnlockedNode: 2500
+    minDistance: 3500
+    maxDistance: 5500
+    infestation:
+    - entity: MobFleshClampSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-a-1.yml
+    - /Maps/Salvage/medium-library.yml
+    - /Maps/Salvage/medium-vault-1.yml
+
+- type: wfContract
+  id: WFContractAsfInfestedHulk
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 2
+  title: wf-contract-asf-infested-hulk
+  briefing: wf-contract-asf-infested-hulk-brief
+  reward: 22000, 28000
+  deposit: 1500
+  minutes: 60
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 1
+  credits: 20
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSurvey
+    count: 2, 3
+    perAnomaly: 4000
+    minDistance: 3500
+    maxDistance: 5500
+    anomalies: [ AnomalyFlesh, AnomalyLiquid, AnomalyShadow, AnomalyPyroclastic ]
+    infestation:
+    - entity: MobFleshClampSalvage
+      count: 2, 3
+    - entity: MobFleshJaredSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/medium-1.yml
+    - /Maps/Salvage/medium-silent-orchestra.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wfContract
+  id: WFContractAsfProbeData
+  contractor: WFContractorAsfResearch
+  category: Salvage
+  tier: 2
+  title: wf-contract-asf-probe-data
+  briefing: wf-contract-asf-probe-data-brief
+  reward: 20000, 26000
+  deposit: 1500
+  minutes: 55
+  crewBonus: 0.3
+  weight: 1
+  credits: 15
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractDownload
+    duration: 180
+    waveInterval: 50
+    waves:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/small-tesla.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wfContract
+  id: WFContractAsfResearchBeacon
+  contractor: WFContractorAsfResearch
+  category: Salvage
+  tier: 2
+  title: wf-contract-asf-research-beacon
+  briefing: wf-contract-asf-research-beacon-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  credits: 12
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-3.yml
+    - /Maps/Salvage/small-tesla.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wfContract
+  id: WFContractAsfExoticSamples
+  contractor: WFContractorAsfResearch
+  category: Mining
+  tier: 2
+  title: wf-contract-asf-exotic-samples
+  briefing: wf-contract-asf-exotic-samples-brief
+  reward: 17500, 22500
+  deposit: 1500
+  minutes: 60
+  crewBonus: 0.5
+  weight: 1
+  credits: 20
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSupply
+    pick: 1
+    premium: 1.5
+    goodsCap: 15000
+    goods:
+    - stack: BluespaceOre
+      count: 3, 6
+    - stack: DiamondOre
+      count: 3, 6
+    - stack: PlasmaOre
+      count: 20, 30
+
+- type: wfContract
+  id: WFContractAsfVesselEscort
+  contractor: WFContractorAsfResearch
+  category: Escort
+  tier: 2
+  title: wf-contract-asf-vessel-escort
+  briefing: wf-contract-asf-vessel-escort-brief
+  reward: 18000, 23000
+  deposit: 1500
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  credits: 15
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractEscort
+    encounters: [ WFContractEscortLight ]
+    destinations: [ WFContractorAnomalousLab, WFContractorSevastopol ]
+    perKilometre: 1250
+
+- type: wfContract
+  id: WFContractAsfCores
+  contractor: WFContractorAsfResearch
+  category: Supply
+  tier: 3
+  title: wf-contract-asf-cores
+  briefing: wf-contract-asf-cores-brief
+  reward: 22500, 30000
+  deposit: 2000
+  minutes: 60
+  weight: 0.8
+  credits: 30
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSupply
+    premium: 1.5
+    goods:
+    - component: AnomalyCore
+      name: wf-contract-goods-anomaly-core
+      count: 1, 2
+      value: 1500
+
+- type: wfContract
+  id: WFContractAsfTwinSurvey
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 3
+  title: wf-contract-asf-twin-survey
+  briefing: wf-contract-asf-twin-survey-brief
+  reward: 35000, 45000
+  deposit: 2500
+  minutes: 70
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 0.8
+  credits: 30
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSurvey
+    derelicts: 2
+    count: 3, 4
+    perAnomaly: 4000
+    minDistance: 3500
+    maxDistance: 5500
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyBluespace, AnomalyIce, AnomalyFlora ]
+    infestation:
+    - entity: MobFleshClampSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/medium-1.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+
+- type: wfContract
+  id: WFContractAsfFieldStation
+  contractor: WFContractorAsfResearch
+  category: Salvage
+  tier: 3
+  title: wf-contract-asf-field-station
+  briefing: wf-contract-asf-field-station-brief
+  reward: 70000, 85000
+  deposit: 5000
+  minutes: 100
+  minCrew: 3
+  crewBonus: 0.3
+  weight: 0.6
+  credits: 35
+  creditEntity: WFAsfRewardGrant1
+  requires:
+  - tag: WFTowRope
+    name: wf-contract-requires-rope
+  - entity: WFTetherInstaller
+    name: wf-contract-requires-tether-installer
+  objective: !type:WFContractOperation
+    item: WFContractDataCore
+    count: 2, 3
+    anomalies: [ AnomalyGravity, AnomalyBluespace, AnomalyElectricity ]
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wfContract
+  id: WFContractAsfXenoStudy
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 4
+  title: wf-contract-asf-xeno-study
+  briefing: wf-contract-asf-xeno-study-brief
+  reward: 60000, 75000
+  deposit: 5000
+  minutes: 75
+  minCrew: 3
+  crewBonus: 0.3
+  weight: 0.6
+  credits: 50
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSurvey
+    count: 3, 4
+    perAnomaly: 6000
+    minDistance: 4000
+    maxDistance: 6500
+    stationClearance: 3000
+    anomalies: [ AnomalyFlesh, AnomalyBluespace, AnomalyGravity, AnomalyShadow ]
+    infestation:
+    - entity: MobXenoDrone
+      count: 3, 5
+    - entity: MobXenoRunner
+      count: 2, 3
+    - entity: MobXenoSpitter
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/tick-colony.yml
+    - /Maps/Salvage/outpost-arm.yml
+    - /Maps/Salvage/security-chunk.yml

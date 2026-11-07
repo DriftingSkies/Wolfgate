@@ -131,14 +131,14 @@ public sealed class ContractPrototypeTest
                         Check(protos.HasIndex<EntityPrototype>(supply.Crate), id, "unknown crate");
                         foreach (var goods in supply.Goods)
                         {
-                            var kinds = new[] { goods.Stack != null, goods.Entity != null, goods.Tag != null, goods.Component != null }.Count(k => k);
-                            Check(kinds == 1, id, "a goods line needs exactly one of stack, entity, tag or component");
+                            var kinds = new[] { goods.Stack != null, goods.Entity != null, goods.Tag != null, goods.Component != null, goods.Ammo }.Count(k => k);
+                            Check(kinds == 1, id, "a goods line needs exactly one of stack, entity, tag, component or ammo");
                             Check(goods.Count.X >= 1 && goods.Count.X <= goods.Count.Y, id, "bad goods count");
                             Check(goods.Stack == null || protos.HasIndex<StackPrototype>(goods.Stack.Value), id, $"unknown stack {goods.Stack}");
                             Check(goods.Entity == null || protos.HasIndex<EntityPrototype>(goods.Entity.Value), id, $"unknown entity {goods.Entity}");
                             Check(goods.Component == null || factory.TryGetRegistration(goods.Component, out _), id, $"unknown component {goods.Component}");
                             Check(goods.Stack != null || goods.Entity != null || goods.Name != null && goods.Value != null, id,
-                                "a tag or component line needs a name and a value");
+                                "a tag, component or ammo line needs a name and a value");
                             Check(goods.Name == null || loc.HasString(goods.Name.Value), id, "missing goods name string");
                         }
                         break;

@@ -262,3 +262,22 @@
     perPoint: 1750
     minDistance: 3000
     maxDistance: 6500
+
+# Fifth batch.
+
+- type: wfContract
+  id: WFContractSevBackupTapes
+  contractor: WFContractorSevastopol
+  category: Delivery
+  tier: 2
+  title: wf-contract-sev-backup-tapes
+  briefing: wf-contract-sev-backup-tapes-brief
+  reward: 9000, 12000
+  deposit: 1000
+  minutes: 65
+  weight: 1
+  objective: !type:WFContractMailRun
+    package: WFContractDataCase
+    stops: 3, 4
+    perStop: 2000
+    perKilometre: 1000

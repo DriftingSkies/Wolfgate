@@ -9,10 +9,13 @@ using Content.Shared._WF.Encounters;
 using Content.Shared.Anomaly;
 using Content.Shared.Anomaly.Components;
 using Content.Shared.Examine;
+using Content.Shared.Mind.Components;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Physics;
 using Content.Shared.Stacks;
 using Content.Shared.Storage.Components;
 using Content.Shared.Tag;
+using Content.Shared.Weapons.Ranged.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
@@ -28,6 +31,7 @@ public sealed partial class WFContractSystem
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private WFEncounterSchedulerSystem _scheduler = default!;
     [Dependency] private SharedAnomalySystem _anomalies = default!;
+    [Dependency] private Content.Shared.Storage.EntitySystems.SharedEntityStorageSystem _entityStorage = default!;
 
     /// <summary>How close a player must be to a wreck to keep it in the world once its contract ends.</summary>
     private const float WreckKeepRange = 300f;
@@ -239,6 +243,9 @@ public sealed partial class WFContractSystem
             && HasComp(uid, registration.Type))
             return TryComp<StackComponent>(uid, out var count) ? count.Count : 1;
 
+        if (goods.Ammo && TryComp<BallisticAmmoProviderComponent>(uid, out var ammo) && ammo.Count > 0 && !HasComp<GunComponent>(uid))
+            return 1;
+
         return 0;
     }
 
@@ -309,7 +316,8 @@ public sealed partial class WFContractSystem
                     if (PickSite(contract.Home, bounty.MinDistance, bounty.MaxDistance, bounty.StationClearance) is not { } site)
                         continue;
 
-                    if (!_encounters.TrySpawn(encounterProto, site, out var encounter, offBudget: true))
+                    // The contract's tier picks the target's ships from tier bands, such as the Reaver line.
+                    if (!_encounters.TrySpawn(encounterProto, site, out var encounter, offBudget: true, tier: proto.Tier))
                         continue;
 
                     contract.Site = site;
@@ -373,7 +381,8 @@ public sealed partial class WFContractSystem
                 for (var attempt = 0; attempt < 3; attempt++)
                 {
                     if (PickSite(contract.Home, escort.MinDistance, escort.MaxDistance, EscortClearance) is not { } site
-                        || !_encounters.TrySpawn(encounterProto, site, out var encounter, stops: new[] { stop }, offBudget: true))
+                        || !_encounters.TrySpawn(encounterProto, site, out var encounter, stops: new[] { stop }, offBudget: true,
+                            tier: proto.Tier))
                         continue;
 
                     contract.Site = site;
@@ -580,6 +589,8 @@ public sealed partial class WFContractSystem
                 continue;
             }
 
+            if (proto.Objective is WFContractSupply)
+                TakeDelivery(contract, item);
             QueueDel(item);
         }
 
@@ -594,6 +605,36 @@ public sealed partial class WFContractSystem
 
         if (contract.WreckGrid is { } wreck && !TerminatingOrDeleted(wreck) && !PlayerNear(wreck, WreckKeepRange))
             QueueDel(wreck);
+    }
+
+    /// <summary>
+    /// The contractor keeps a delivered crate's manifest goods; everything else, players caught inside when it closed
+    /// above all, is put out beside it before the crate goes.
+    /// </summary>
+    private void TakeDelivery(WFContract contract, EntityUid crate)
+    {
+        if (_proto.Index(contract.Prototype).Objective is not WFContractSupply supply
+            || !TryComp<EntityStorageComponent>(crate, out var storage))
+            return;
+
+        var needed = contract.Goods.Select(g => g.Count).ToList();
+        foreach (var uid in storage.Contents.ContainedEntities.ToList())
+        {
+            if (HasComp<MobStateComponent>(uid) || HasComp<MindContainerComponent>(uid))
+                continue;
+
+            for (var i = 0; i < needed.Count; i++)
+            {
+                if (needed[i] <= 0 || Matches(supply.Goods[contract.Goods[i].Line], uid) is not (> 0 and var count))
+                    continue;
+
+                needed[i] -= count;
+                Del(uid);
+                break;
+            }
+        }
+
+        _entityStorage.EmptyContents(crate);
     }
 
     private void OnItemShutdown(Entity<WFContractItemComponent> ent, ref ComponentShutdown args)
@@ -721,16 +762,23 @@ public sealed partial class WFContractSystem
         return null;
     }
 
-    /// <summary>A random floor tile of a wreck with nothing solid on it, tables and machines included.</summary>
+    /// <summary>A random floor tile of a wreck clear of tables and machines, else any walkable one.</summary>
     private EntityCoordinates? FreeTile(Entity<MapGridComponent> grid)
     {
-        var tiles = new List<Vector2i>();
+        var clear = new List<Vector2i>();
+        var walkable = new List<Vector2i>();
         foreach (var tile in _map.GetAllTiles(grid, grid.Comp))
         {
-            if (!_turf.IsSpace(tile) && !_turf.IsTileBlocked(grid, tile.GridIndices, CargoBlockers, grid.Comp))
-                tiles.Add(tile.GridIndices);
+            if (_turf.IsSpace(tile) || _turf.IsTileBlocked(grid, tile.GridIndices, CollisionGroup.Impassable, grid.Comp))
+                continue;
+
+            walkable.Add(tile.GridIndices);
+            if (!_turf.IsTileBlocked(grid, tile.GridIndices, CargoBlockers, grid.Comp))
+                clear.Add(tile.GridIndices);
         }
 
-        return tiles.Count == 0 ? null : _map.GridTileToLocal(grid, grid.Comp, _random.Pick(tiles));
+        // A cramped wreck may have no clear floor at all; any walkable tile beats failing the contract.
+        var pool = clear.Count > 0 ? clear : walkable;
+        return pool.Count == 0 ? null : _map.GridTileToLocal(grid, grid.Comp, _random.Pick(pool));
     }
 }

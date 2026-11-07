@@ -123,6 +123,46 @@
   - type: PointLight
     color: "#d4a83a"
 
+- type: entity
+  parent: WFContractBoard
+  id: WFContractBoardColony
+  name: settlers' council board
+  description: "Work posted by the Stellar Blessing's settlers for their own: stores, building stock, escorts and keeping the colony's approaches safe."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: supply
+      shader: unshaded
+    - state: tech_key
+      shader: unshaded
+  - type: WFContractBoard
+    board: Colony
+  - type: PointLight
+    color: "#5fb0e0"
+
+- type: entity
+  parent: WFContractBoard
+  id: WFContractBoardASF
+  name: ASF research board
+  description: "Field work for the Astraeus Solar Federation: anomaly surveys, artifact recovery and sample collection, paid in thalers and reward grants."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: rdcomp
+      shader: unshaded
+    - state: rd_key
+      shader: unshaded
+  - type: WFContractBoard
+    board: ASF
+  - type: PointLight
+    color: "#9b6dff"
+
 # The Contracts PDA app.
 - type: entity
   parent: NFBasePDACartridge
@@ -597,3 +637,43 @@
     intervalSeconds: 45
     minimumEntitiesSpawned: 1
     maximumEntitiesSpawned: 2
+
+# Cargo for faction board work.
+
+- type: entity
+  parent: WFContractParcel
+  id: WFContractPrisonerDossier
+  name: prisoner transfer dossier
+  description: A sealed folder of custody papers. Whoever holds the papers holds the prisoner.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: folder-base
+      color: "#9a3b3b"
+    - state: folder-sec-doc
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: WFContractParcel
+  id: WFContractStrongbox
+  name: sealed strongbox
+  description: A heavy locked case of hard currency. Don't count it, don't open it, don't lose it.
+  components:
+  - type: Sprite
+    sprite: Objects/Storage/medalcase.rsi
+    state: closed
+  - type: Item
+    size: Normal
+    sprite: Objects/Storage/medalcase.rsi
+
+- type: entity
+  parent: WFContractFreight
+  id: WFContractFreightContraband
+  name: contract contraband crate
+  description: A crate whose manifest says machine parts. It doesn't rattle like machine parts.
+  components:
+  - type: Sprite
+    layers:
+    - state: weapon-components

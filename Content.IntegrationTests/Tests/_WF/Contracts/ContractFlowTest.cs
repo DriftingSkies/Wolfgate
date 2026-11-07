@@ -114,7 +114,7 @@ public sealed class ContractFlowTest
 
         // Supply: an iron quota for Hokkaido is not taken short, and is taken full.
         WFContract supply = default!;
-        EntityUid crate = default;
+        EntityUid crate = default, stowaway = default;
         await server.WaitAssertion(() =>
         {
             supply = contracts.PostOffer("WFContractMMCIronQuota")!;
@@ -129,12 +129,17 @@ public sealed class ContractFlowTest
             Assert.That(contracts.ActiveFor(holder).Single().Id, Is.EqualTo(supply.Id), "A short crate was taken.");
             Assert.That(contracts.Packed(supply, crate).Single(), Is.EqualTo(supply.Goods.Single().Count - 1));
             Fill(server, crate, "SteelOre1", 1);
+            // Someone shut in with the goods, as when a crate is closed on a person standing over it.
+            stowaway = entMan.SpawnEntity(Mob, entMan.GetComponent<TransformComponent>(crate).Coordinates);
+            Assert.That(entMan.System<SharedEntityStorageSystem>().Insert(stowaway, crate), Is.True);
         });
         await pair.RunTicksSync(90);
         await server.WaitAssertion(() =>
         {
             Assert.That(contracts.ActiveFor(holder), Is.Empty, "A full crate closed on its station was not taken.");
             Assert.That(entMan.Deleted(crate) || entMan.IsQueuedForDeletion(crate), Is.True);
+            Assert.That(!entMan.Deleted(stowaway) && !entMan.IsQueuedForDeletion(stowaway), Is.True, "Someone inside a delivered crate was deleted with it.");
+            Assert.That(entMan.GetComponent<TransformComponent>(stowaway).ParentUid, Is.Not.EqualTo(crate));
             Assert.That(contracts.Standing(holder, "WFContractorMMC"), Is.EqualTo(1));
         });
 

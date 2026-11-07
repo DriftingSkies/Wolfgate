@@ -381,3 +381,46 @@
       count: 150, 200
     - stack: UraniumOre
       count: 100, 150
+
+# Fifth batch.
+
+- type: wfContract
+  id: WFContractMMCHeavyConvoy
+  contractor: WFContractorMMC
+  category: Escort
+  tier: 3
+  title: wf-contract-mmc-heavy-convoy
+  briefing: wf-contract-mmc-heavy-convoy-brief
+  reward: 40000, 50000
+  deposit: 3000
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 0.8
+  objective: !type:WFContractEscort
+    encounters: [ WFContractEscortHeavy ]
+    destinations: [ WFContractorCaelPort, WFContractorCamelot ]
+    perKilometre: 1500
+
+- type: wfContract
+  id: WFContractMMCOutpostCore
+  contractor: WFContractorMMC
+  category: Salvage
+  tier: 2
+  title: wf-contract-mmc-outpost-core
+  briefing: wf-contract-mmc-outpost-core-brief
+  reward: 20000, 26000
+  deposit: 1500
+  minutes: 55
+  crewBonus: 0.3
+  weight: 1
+  objective: !type:WFContractDownload
+    duration: 180
+    waveInterval: 50
+    waves:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/asteroid-base.yml
+    - /Maps/Salvage/outpost-arm.yml
+    - /Maps/Salvage/engineering-chunk.yml

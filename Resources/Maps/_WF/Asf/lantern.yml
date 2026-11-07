@@ -1,7 +1,7 @@
 meta:
   format: 6
   postmapinit: false
-  entityCount: 3570
+  entityCount: 3572
 tilemap:
   0: Space
   3: FloorCarpetOffice
@@ -22692,4 +22692,19 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 6.5,-27.5
+      parent: 1
+- proto: WFContractBoardASF
+  entities:
+  - uid: 3594
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 8.5,-4.5
+      parent: 1
+- proto: WFContractCargoPad
+  entities:
+  - uid: 3595
+    components:
+    - type: Transform
+      pos: 9.5,-4.5
       parent: 1
