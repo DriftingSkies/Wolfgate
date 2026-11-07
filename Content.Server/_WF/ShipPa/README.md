@@ -49,6 +49,8 @@ console panel), the client `ShipPaMeshSystem` (plays the ship's programme from r
 - [`Content.Shared/_WF/ShipPa/ShipAlertComponent.cs`](../../../Content.Shared/_WF/ShipPa/ShipAlertComponent.cs)
 - [`Content.Shared/_WF/ShipPa/ShipPaAudioComponent.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaAudioComponent.cs)
 - [`Content.Shared/_WF/ShipPa/ShipPaBroadcastComponent.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaBroadcastComponent.cs)
+- [`Content.Shared/_WF/ShipPa/ShipPaCVars.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaCVars.cs)
+- [`Content.Shared/_WF/ShipPa/ShipPaDrift.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaDrift.cs)
 - [`Content.Shared/_WF/ShipPa/ShipPaEvents.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaEvents.cs)
 - [`Content.Shared/_WF/ShipPa/ShipPaMessages.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaMessages.cs)
 - [`Content.Shared/_WF/ShipPa/ShipPaPlaylistComponent.cs`](../../../Content.Shared/_WF/ShipPa/ShipPaPlaylistComponent.cs)
@@ -78,6 +80,7 @@ console panel), the client `ShipPaMeshSystem` (plays the ship's programme from r
 
 ### Unit tests
 
+- [`Content.Tests/_WF/ShipPa/ShipPaDriftTest.cs`](../../../Content.Tests/_WF/ShipPa/ShipPaDriftTest.cs)
 - [`Content.Tests/_WF/ShipPa/ShipPaInputTest.cs`](../../../Content.Tests/_WF/ShipPa/ShipPaInputTest.cs)
 - [`Content.Tests/_WF/ShipPa/ShipPaPlaybackPolicyTest.cs`](../../../Content.Tests/_WF/ShipPa/ShipPaPlaybackPolicyTest.cs)
 - [`Content.Tests/_WF/ShipPa/ShipPaPlaylistTextTest.cs`](../../../Content.Tests/_WF/ShipPa/ShipPaPlaylistTextTest.cs)
@@ -114,6 +117,8 @@ console panel), the client `ShipPaMeshSystem` (plays the ship's programme from r
 
 ## Non-modular edits
 
+- [`Content.Client/Options/UI/Tabs/AudioTab.xaml`](../../../Content.Client/Options/UI/Tabs/AudioTab.xaml): personal PA volume
+- [`Content.Client/Options/UI/Tabs/AudioTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/AudioTab.xaml.cs): personal PA volume
 - [`Resources/Prototypes/_Mono/Guidebook/shipyard.yml`](../../../Resources/Prototypes/_Mono/Guidebook/shipyard.yml)
 - [`Resources/Prototypes/Entities/Structures/Wallmounts/air_alarm.yml`](../../../Resources/Prototypes/Entities/Structures/Wallmounts/air_alarm.yml): stands in for PA speakers on ships that have none
 

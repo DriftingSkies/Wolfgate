@@ -189,6 +189,19 @@
     slot: kidneys
     amount: 3 # WOLFGATE (P4 balance): Onyx ships 1; 15 repeats of a 2 s step is dead time. Revert by editing this line.
 
+- type: entity
+  parent: SurgeryStepInsertOrgan
+  id: WFSurgeryStepInsertKidneys
+  name: Add kidneys
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SurgeryDamageChangeEffect
+    damage:
+      types:
+        Poison: -2147483648
+    sleepModifier: 1
+    isConsumable: true
+
 # Slash and bite (W2) ---------------------------------------------------------
 # The artery is clamped first and sutured second: WolfmedArterialBleedBehavior refuses every treatment
 # while the bleed is still running, so the clamp step is what makes the suture step possible.

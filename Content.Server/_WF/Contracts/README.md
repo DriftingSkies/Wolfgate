@@ -92,7 +92,8 @@ escort encounters), `factions.yml` (sides) and `entities.yml` (boards, cartridge
 - `WFContractEscort` (Escort): accepting starts one of `encounters` 1.2 to 2 km out from the contractor's station with
   the destination station as its one stop. Its `ship` (a `flyRoute` ship) waits there until a player comes within the
   encounter's `startRadius`, then flies to the stop and away; raiders in the encounter lie hidden, hold a few minutes
-  and attack it. Done when the ship has flown its route; failed if it is lost.
+  and attack it. Done once the ship has docked at the stop (no dock call left in its orders) or flown its route;
+  failed if it is lost.
 - `WFContractMailRun` (Delivery): `stops` stations (never the board's, never a faction-only station) each get one
   parcel addressed to them, all handed out at the board; a parcel counts only at its own station. Pay adds `perStop`
   and `perKilometre` over the whole route.
@@ -158,6 +159,7 @@ escort encounters), `factions.yml` (sides) and `entities.yml` (boards, cartridge
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WF/Contracts/cargo_products.yml`](../../../Resources/Prototypes/_WF/Contracts/cargo_products.yml)
 - [`Resources/Prototypes/_WF/Contracts/contractors.yml`](../../../Resources/Prototypes/_WF/Contracts/contractors.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/anomalous_lab.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/anomalous_lab.yml)
 - [`Resources/Prototypes/_WF/Contracts/Contracts/caelestinus.yml`](../../../Resources/Prototypes/_WF/Contracts/Contracts/caelestinus.yml)

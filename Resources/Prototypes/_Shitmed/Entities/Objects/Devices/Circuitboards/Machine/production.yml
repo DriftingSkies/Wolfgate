@@ -6,9 +6,11 @@
   components:
   - type: MachineBoard
     prototype: Autodoc
+    # WOLFGATE: a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
+    requirements:
+      Manipulator: 4
     stackRequirements:
       Cable: 3
-      Manipulator: 4
       Steel: 10
     tagRequirements: # Mono
       ComponentBrickEconomy1:

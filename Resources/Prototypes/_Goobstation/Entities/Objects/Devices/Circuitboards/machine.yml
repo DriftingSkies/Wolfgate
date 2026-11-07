@@ -86,8 +86,10 @@
     state: service
   - type: MachineBoard
     prototype: VinylPlayer
-    stackRequirements:
+    # WOLFGATE: a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
+    requirements:
       Manipulator: 1
+    stackRequirements:
       Steel: 5
       WoodPlank: 10 #Forge-Change
       Plastic: 5 #Forge-Change
@@ -102,8 +104,10 @@
     state: service
   - type: MachineBoard
     prototype: StationRadioServer
-    stackRequirements:
+    # WOLFGATE: a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
+    requirements:
       Manipulator: 8 #Forge-Change
+    stackRequirements:
       Steel: 30 #Forge-Change
       Plastic: 10
       Plasma: 5
@@ -119,8 +123,10 @@
     state: service
   - type: MachineBoard
     prototype: StationRadioRig
-    stackRequirements:
+    # WOLFGATE: a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
+    requirements:
       Manipulator: 10 #Forge-Change
+    stackRequirements:
       Steel: 20 #Forge-Change
       Glass: 20 #Forge-Change
       Plastic: 10 #Forge-Change

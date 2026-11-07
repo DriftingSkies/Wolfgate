@@ -240,7 +240,8 @@ public sealed partial class WFPlanetCommsSystem : EntitySystem
         if (_dirty || _builtTick != _timing.CurTick)
         {
             _upNetworks.Clear();
-            var query = EntityQueryEnumerator<WFMassTransceiverComponent, ApcPowerReceiverComponent, TransformComponent>();
+            // A transceiver the site stash has paused keeps the power state it slept with, so it still carries.
+            var query = AllEntityQuery<WFMassTransceiverComponent, ApcPowerReceiverComponent, TransformComponent>();
             while (query.MoveNext(out _, out var transceiver, out var power, out var xform))
             {
                 if (!transceiver.Broken && power.Powered && NetworkOf(xform.MapUid) is { } up)

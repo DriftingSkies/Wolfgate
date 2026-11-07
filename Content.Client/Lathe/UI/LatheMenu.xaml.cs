@@ -55,6 +55,7 @@ public sealed partial class LatheMenu : FancyWindow
     public LatheMenu()
     {
         RobustXamlLoader.Load(this);
+        Content.Client._WF.Branding.WFWindowBranding.Apply(this); // WOLFGATE(Branding): Wolfgate title bar
         IoCManager.InjectDependencies(this);
 
         _spriteSystem = _entityManager.System<SpriteSystem>();

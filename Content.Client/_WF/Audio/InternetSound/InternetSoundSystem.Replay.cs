@@ -71,6 +71,7 @@ public sealed partial class InternetSoundSystem
     private void ResetReplayPosition()
     {
         // Destroy sources before freeing their native buffers; seeking backwards may reuse these ids.
+        StopGlobal(0);
         _pa.ResetReplayPosition();
         foreach (var id in _replayMounted.ToArray())
         {

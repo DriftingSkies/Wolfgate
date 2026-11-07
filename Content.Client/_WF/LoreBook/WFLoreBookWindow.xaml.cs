@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Linq;
 using System.Numerics;
 using Content.Client.Guidebook;
@@ -51,6 +52,7 @@ public sealed partial class WFLoreBookWindow : BaseWindow, ILinkClickHandler
     public WFLoreBookWindow()
     {
         RobustXamlLoader.Load(this);
+        WFWindowBranding.Apply(this);
         IoCManager.InjectDependencies(this);
 
         Cover.PanelOverride = Tiled("/Textures/_WF/LoreBook/leather.png", Color.White);

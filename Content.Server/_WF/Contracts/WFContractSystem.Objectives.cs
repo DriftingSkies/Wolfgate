@@ -4,6 +4,9 @@ using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Systems;
 using Content.Server.Anomaly.Components;
 using Content.Server.Storage.Components;
+using Content.Server.Storage.EntitySystems;
+using Content.Shared._WF.NpcCrew;
+using Content.Shared.Mobs.Components;
 using Content.Shared._WF.Contracts;
 using Content.Shared._WF.Encounters;
 using Content.Shared.Anomaly;
@@ -539,10 +542,20 @@ public sealed partial class WFContractSystem
                     Void(contract, "wf-contract-reason-target-gone");
                 else if (EscortedShip(contract, escort) is not { } ship || TerminatingOrDeleted(ship.Grid))
                     Fail(contract, "wf-contract-reason-escort-lost");
-                else if (ship.Flown)
+                else if (ship.Flown || Arrived(ship))
                     Complete(contract);
                 break;
         }
+    }
+
+    /// <summary>
+    /// Whether an escorted ship has reached its destination: no dock call is left in its orders. The escort is done
+    /// there, whatever the ship does with its departure afterwards.
+    /// </summary>
+    private bool Arrived(Encounters.Components.WFEncounterShipState ship)
+    {
+        return _crewObjectives.TryGetQueue(ship.Grid, ship.Group, out var left)
+               && left.All(order => order.Kind != WFCrewObjectiveKind.Dock);
     }
 
     /// <summary>The ship an escort contract protects, if its encounter is still running.</summary>
@@ -581,6 +594,16 @@ public sealed partial class WFContractSystem
                 RemComp<WFContractItemComponent>(item);
                 _meta.SetEntityName(item, Loc.GetString("wf-contract-crate-void-name"));
                 continue;
+            }
+
+            // Closing the crate shuts in whoever stood on it; they are let out, not sent off with the goods.
+            if (TryComp<EntityStorageComponent>(item, out var storage))
+            {
+                foreach (var held in storage.Contents.ContainedEntities.ToArray())
+                {
+                    if (HasComp<MobStateComponent>(held))
+                        _entityStorage.Remove(held, item, storage);
+                }
             }
 
             QueueDel(item);
@@ -665,7 +688,7 @@ public sealed partial class WFContractSystem
         {
             if (args.Resolution == WFEncounterResolution.Ended)
                 Void(contract, "wf-contract-reason-target-gone");
-            else if (EscortedShip(contract, escort) is { Flown: true } ship && !TerminatingOrDeleted(ship.Grid))
+            else if (EscortedShip(contract, escort) is { } ship && !TerminatingOrDeleted(ship.Grid) && (ship.Flown || Arrived(ship)))
                 Complete(contract);
             else if (args.Resolution is WFEncounterResolution.Destroyed or WFEncounterResolution.Expired)
                 Fail(contract, "wf-contract-reason-escort-lost");

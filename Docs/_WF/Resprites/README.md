@@ -15,6 +15,7 @@ Ports visual updates and matching prototypes for closets, lockers, wardrobes, wa
 - [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdpirate.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdpirate.rsi/)
 - [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi/)
 - [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/shipyardrpd.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/shipyardrpd.rsi/)
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Weapons/Guns/Battery/lawbringer.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Weapons/Guns/Battery/lawbringer.rsi/)
 - [`Resources/Textures/_WF/Resprites/_WF/Tiles/half_h.png`](../../../Resources/Textures/_WF/Resprites/_WF/Tiles/half_h.png)
 - [`Resources/Textures/_WF/Resprites/_WF/Tiles/half_v.png`](../../../Resources/Textures/_WF/Resprites/_WF/Tiles/half_v.png)
 - [`Resources/Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_s_l.png`](../../../Resources/Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_s_l.png)
@@ -393,6 +394,7 @@ Ports visual updates and matching prototypes for closets, lockers, wardrobes, wa
 
 ## Non-modular edits
 
+- [`Resources/Prototypes/_Goobstation/Entities/Objects/Weapons/Guns/Battery/battery_guns.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Objects/Weapons/Guns/Battery/battery_guns.yml): Toriate's Lawbringer sprite
 - [`Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml)
   - SRD uses the shipyard RCD sprite
   - keep the old SRD inhands, the base now uses the shipyard RCD

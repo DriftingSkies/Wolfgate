@@ -1,4 +1,4 @@
-# The Lattice round the sector's centre. Band edges follow the drone rings (18, 22, 25 and 30 km on the default
+# The Lattice round the sector's centre. Band edges follow the drone rings (18, 24, 31 and 40 km on the default
 # worldgen); the edges here are used when the rings don't line up. Drift rates are per second, out of 100. Yield
 # multiplies asteroid ore; exotic is exotic matter shards per vein.
 - type: wfLatticeProfile
@@ -33,6 +33,18 @@
   - kind: Phantom
     minDrift: 70
     weight: 1
+  # A bad turn, rare: tunnel vision, glyphs and bass for a few seconds.
+  - kind: Pulse
+    minDrift: 40
+    weight: 0.6
+  # The Coda's hazards for a crewed ship: hunter packs board the longer it stays (from three minutes in), its structure
+  # rots unless a stabiliser runs, and thrusters, gyroscopes or power give out now and then.
+  hazardBand: 4
+  hunterMobs:
+  - WFRemadeHopper
+  - WFRemadeLeaper
+  - WFRemadeSpitter
+  - WFRemadeLurker
   # In the Deep a ship's small animals can be taken and turn Remade, unless a stabiliser runs.
   takeBand: 4
   takeChance: 0.04
@@ -64,7 +76,7 @@
     yield: 1.1
   - name: wf-lattice-band-adrift
     message: wf-lattice-enter-adrift
-    edge: 22000
+    edge: 24000
     drift: 0.15
     chip: Warning
     color: "#e08030"
@@ -72,16 +84,17 @@
     exotic: 0.005
   - name: wf-lattice-band-untethered
     message: wf-lattice-enter-untethered
-    edge: 25000
+    edge: 31000
     drift: 0.4
     chip: Warning
     color: "#e04030"
     yield: 1.4
     exotic: 0.015
     flash: true
+    ftl: false
   - name: wf-lattice-band-deep
     message: wf-lattice-enter-deep
-    edge: 30000
+    edge: 40000
     drift: 1
     driftGrowth: 4
     garbled: true
@@ -90,6 +103,7 @@
     yield: 1.6
     exotic: 0.04
     flash: true
+    ftl: false
 
 # A primary anchor until the anchor stations are built: holds the field and nothing else.
 - type: entity

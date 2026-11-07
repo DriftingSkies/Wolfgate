@@ -1,0 +1,6 @@
+- type: consentToggle
+  id: WFHemophageDrain
+  name: Hemophages may feed on me
+  description: Lets a hemophage pull you in and drink your blood. While it bites you can't move, fight or break free.
+  sortKey: 1-hemophage-0
+  defaultOn: true

@@ -24,6 +24,8 @@
     noRot: true
     scale: 2,2
     offset: 0,1.5
+    # Over the station's spire turrets, one of which stands inside the statue's footprint.
+    drawdepth: OverMobs
   - type: PointLight
     radius: 6
     energy: 2.5
@@ -258,6 +260,7 @@
   - type: WFLatticeRelay
     strength: 0.3
     settleSeconds: 5
+    needsFuel: false
 
 - type: entity
   parent: BaseFlatpack

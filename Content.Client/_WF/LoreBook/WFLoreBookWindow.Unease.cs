@@ -143,10 +143,13 @@ public sealed partial class WFLoreBookWindow
         {
             if (c == '\n')
             {
+                // A heading's last word ends here; settle it while the line still counts as a heading.
+                Flush();
                 lineStart = true;
                 heading = false;
             }
-            else if (lineStart && !char.IsWhiteSpace(c))
+            // A marker comment or tag in front of a heading's '#' doesn't stop it being a heading.
+            else if (lineStart && depth == 0 && !char.IsWhiteSpace(c) && c is not ('<' or '['))
             {
                 lineStart = false;
                 heading = c == '#';

@@ -22,28 +22,20 @@ public sealed class WFLatticeBeamOverlay : Overlay
     /// <summary>How close an anchor must sit to its corner of the polygon to count as that corner's, in metres.</summary>
     private const float CornerMatch = 1200f;
 
-    private const float GlowWidth = 7f;
-    private const float BodyWidth = 2.4f;
-    private const float StrandWidth = 0.35f;
-    private const float StrandAmplitude = 1.1f;
-    private const float StrandWavelength = 36f;
-    private const float StrandSpeed = 2.5f;
-    private const float StrandStep = 3f;
-    private const float PulseSpacing = 220f;
-    private const float PulseSpeed = 320f;
-    private const float PulseRadius = 1.4f;
+    /// <summary>Full width of the beam's glow, in metres.</summary>
+    private const float BeamWidth = 9f;
 
-    private static readonly Color Glow = Color.FromHex("#b040e0");
-    private static readonly Color Body = Color.FromHex("#d070ff");
-    private static readonly Color StrandColor = Color.FromHex("#f4d8ff");
+    private static readonly ProtoId<ShaderPrototype> Shader = "WFLatticeBeam";
 
     private readonly List<Vector2?> _corners = new();
-    private readonly List<Vector2> _verts = new();
+    private readonly DrawVertexUV2D[] _quad = new DrawVertexUV2D[4];
+    private readonly ShaderInstance _shader;
 
     public WFLatticeBeamOverlay()
     {
         IoCManager.InjectDependencies(this);
         ZIndex = 5;
+        _shader = _proto.Index(Shader).InstanceUnique();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -55,7 +47,7 @@ public sealed class WFLatticeBeamOverlay : Overlay
             return;
 
         MatchCorners(field, profile);
-        var view = args.WorldAABB.Enlarged(GlowWidth);
+        var view = args.WorldAABB.Enlarged(BeamWidth);
         var time = (float) _timing.RealTime.TotalSeconds;
         var handle = args.WorldHandle;
         for (var i = 0; i < _corners.Count; i++)
@@ -107,53 +99,26 @@ public sealed class WFLatticeBeamOverlay : Overlay
 
     private void DrawBeam(DrawingHandleWorld handle, Vector2 start, Vector2 end, float t0, float t1, float time, int seed)
     {
-        var a = Vector2.Lerp(start, end, t0);
-        var b = Vector2.Lerp(start, end, t1);
         var length = Vector2.Distance(start, end);
         var dir = (end - start) / length;
-        var normal = new Vector2(-dir.Y, dir.X);
-        var flicker = 0.85f + 0.15f * MathF.Sin(time * 7f + seed * 1.7f);
-
-        Quad(handle, a, b, normal, GlowWidth, Glow.WithAlpha(0.10f * flicker));
-        Quad(handle, a, b, normal, BodyWidth, Body.WithAlpha(0.32f * flicker));
-
-        // Two strands twist round the beam's core, out of step with each other.
+        var half = new Vector2(-dir.Y, dir.X) * (BeamWidth / 2f);
         var from = t0 * length;
         var to = t1 * length;
-        Strand(handle, start, dir, normal, from, to, time, 0f);
-        Strand(handle, start, dir, normal, from, to, time, MathF.PI);
+        var a = start + dir * from;
+        var b = start + dir * to;
 
-        // Bright knots of light run the length of it.
-        var offset = (time * PulseSpeed + seed * 97f) % PulseSpacing;
-        for (var at = MathF.Ceiling((from - offset) / PulseSpacing) * PulseSpacing + offset; at <= to; at += PulseSpacing)
-        {
-            handle.DrawCircle(start + dir * at, PulseRadius * 2.2f, Body.WithAlpha(0.25f));
-            handle.DrawCircle(start + dir * at, PulseRadius, StrandColor.WithAlpha(0.9f));
-        }
-    }
+        // UV.x is metres along the whole beam, so the clipped piece on screen flows on from the rest of it.
+        _quad[0] = new DrawVertexUV2D(a + half, new Vector2(from, 1f));
+        _quad[1] = new DrawVertexUV2D(a - half, new Vector2(from, -1f));
+        _quad[2] = new DrawVertexUV2D(b + half, new Vector2(to, 1f));
+        _quad[3] = new DrawVertexUV2D(b - half, new Vector2(to, -1f));
 
-    private void Strand(DrawingHandleWorld handle, Vector2 start, Vector2 dir, Vector2 normal, float from, float to, float time, float phase)
-    {
-        _verts.Clear();
-        for (var at = from; ; at += StrandStep)
-        {
-            var d = MathF.Min(at, to);
-            var wave = MathF.Sin(d / StrandWavelength * MathF.Tau - time * StrandSpeed + phase) * StrandAmplitude;
-            var centre = start + dir * d + normal * wave;
-            _verts.Add(centre + normal * StrandWidth);
-            _verts.Add(centre - normal * StrandWidth);
-            if (d >= to)
-                break;
-        }
-
-        handle.DrawPrimitives(DrawPrimitiveTopology.TriangleStrip, _verts.ToArray(), StrandColor.WithAlpha(0.75f));
-    }
-
-    private static void Quad(DrawingHandleWorld handle, Vector2 a, Vector2 b, Vector2 normal, float width, Color color)
-    {
-        var half = normal * (width / 2f);
-        Span<Vector2> quad = new[] { a + half, a - half, b + half, b - half };
-        handle.DrawPrimitives(DrawPrimitiveTopology.TriangleStrip, quad, color);
+        _shader.SetParameter("beamLength", length);
+        _shader.SetParameter("seed", seed * 1.37f);
+        _shader.SetParameter("shimmer", 0.5f + 0.5f * MathF.Sin(time * 3f + seed * 1.7f));
+        handle.UseShader(_shader);
+        handle.DrawPrimitives(DrawPrimitiveTopology.TriangleStrip, Texture.White, _quad);
+        handle.UseShader(null);
     }
 
     /// <summary>The share of a segment, 0 to 1 from start to end, that lies inside a box; null if none does.</summary>

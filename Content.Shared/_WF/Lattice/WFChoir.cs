@@ -1,4 +1,6 @@
 using Content.Shared.Actions;
+using Content.Shared.StatusIcon;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameStates;
 
@@ -6,7 +8,20 @@ namespace Content.Shared._WF.Lattice;
 
 /// <summary>Someone who answered the song: the Choir's own, at home past the Lattice. No Drift or garble touches them; only the Monolith's dread still does.</summary>
 [RegisterComponent, NetworkedComponent]
-public sealed partial class WFChoirMemberComponent : Component;
+public sealed partial class WFChoirMemberComponent : Component
+{
+    /// <summary>The Choir's mark over their head, seen by ghosts, admins and other members.</summary>
+    [DataField]
+    public ProtoId<FactionIconPrototype> StatusIcon = "WFChoirFaction";
+
+    /// <summary>When they died, while they lie dead. Server only.</summary>
+    [ViewVariables]
+    public TimeSpan? DiedAt;
+
+    /// <summary>Whether their body has been set turning. Server only.</summary>
+    [ViewVariables]
+    public bool Turning;
+}
 
 /// <summary>Someone deep in Drift who has been offered the song, until it fades.</summary>
 [RegisterComponent]

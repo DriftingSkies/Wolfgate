@@ -173,6 +173,47 @@
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: kidneys
 
+# Kidneys can be swapped like the other torso organs; Shitmed ships no kidney surgeries.
+- type: entity
+  parent: SurgeryBase
+  id: WFSurgeryRemoveKidneys
+  name: Remove Kidneys
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    requirement: SurgeryOpenRibcage
+    steps:
+    - SurgeryStepSawBones
+    - SurgeryStepClampInternalBleeders
+    - SurgeryStepRemoveOrgan
+  - type: SurgeryPartCondition
+    part: Torso
+  - type: SurgeryOrganCondition
+    organ:
+    - type: WFKidneys
+
+- type: entity
+  parent: SurgeryBase
+  id: WFSurgeryInsertKidneys
+  name: Insert Kidneys
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    requirement: SurgeryOpenRibcage
+    steps:
+    - SurgeryStepSawBones
+    - WFSurgeryStepInsertKidneys
+    - SurgeryStepSealOrganWound
+  - type: SurgeryOrganSlotCondition
+    organSlot: kidneys
+  - type: SurgeryPartCondition
+    part: Torso
+  - type: SurgeryOrganCondition
+    organ:
+    - type: WFKidneys
+    inverse: true
+    reattaching: true
+
 - type: entity
   parent: SurgeryBase
   id: WFSurgeryHealBrain

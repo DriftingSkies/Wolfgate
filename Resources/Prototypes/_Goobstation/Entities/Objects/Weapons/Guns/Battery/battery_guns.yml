@@ -71,7 +71,7 @@
   description: Sometimes rank is a function of firepower. A versatile energy gun with a myriad of firing modes designed for the Judges. Self-recharges after a 5 second delay.
   components:
   - type: Sprite
-    sprite: _Goobstation/Objects/Weapons/Guns/Battery/lawbringer.rsi
+    sprite: _WF/Resprites/_WF/Objects/Weapons/Guns/Battery/lawbringer.rsi # WOLFGATE(Resprites): Toriate's Lawbringer sprite
     layers:
     - state: icon
       map: ["enum.GunVisualLayers.Base"]
@@ -83,7 +83,7 @@
     slots:
     - suitStorage
     - belt
-    sprite: _Goobstation/Objects/Weapons/Guns/Battery/lawbringer.rsi
+    sprite: _WF/Resprites/_WF/Objects/Weapons/Guns/Battery/lawbringer.rsi # WOLFGATE(Resprites): Toriate's Lawbringer sprite
   - type: Gun
     soundGunshot:
       path: /Audio/_DV/Weapons/Guns/Gunshots/laser.ogg

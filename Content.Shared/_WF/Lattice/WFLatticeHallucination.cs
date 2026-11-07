@@ -27,6 +27,9 @@ public enum WFLatticeHallucinationKind : byte
 
     /// <summary>A Remade standing there until they come close.</summary>
     Phantom,
+
+    /// <summary>A bad turn: vision narrows and throbs for a few seconds, glyphs crawl round its edge, and the bass hits.</summary>
+    Pulse,
 }
 
 /// <summary>Tells one client to show a hallucination at a place.</summary>

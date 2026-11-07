@@ -231,6 +231,7 @@ public sealed partial class HealingSystem
         return TryComp<BloodstreamComponent>(body, out var bloodstream) &&
                _solutionContainerSystem.ResolveSolution(body, bloodstream.BloodSolutionName,
                    ref bloodstream.BloodSolution, out var blood) &&
-               blood.Volume >= blood.MaxVolume;
+               blood.Volume >= blood.MaxVolume &&
+               !WfHemophageHasRoom(body);
     }
 }

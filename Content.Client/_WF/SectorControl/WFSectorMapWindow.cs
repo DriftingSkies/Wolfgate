@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Numerics;
 using Robust.Client.UserInterface.CustomControls;
 
@@ -14,6 +15,7 @@ public sealed class WFSectorMapWindow : DefaultWindow
     public WFSectorMapWindow()
     {
         Title = Loc.GetString("wf-sector-map-window-title");
+        WFWindowBranding.Apply(this);
         Resizable = true;
         SetSize = new Vector2(900, 700);
         MinSize = new Vector2(400, 300);

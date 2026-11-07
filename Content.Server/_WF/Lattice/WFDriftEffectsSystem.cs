@@ -51,6 +51,11 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
 
     private static readonly SoundSpecifier Menace = new SoundCollectionSpecifier("WFDreadMenace");
 
+    private static readonly SoundSpecifier PulseSound = new SoundPathSpecifier("/Audio/_WF/Lattice/drift_pulse.ogg");
+
+    /// <summary>How long a pulse holds, in seconds.</summary>
+    private const float PulseSeconds = 3.2f;
+
     private readonly Dictionary<NetUserId, TimeSpan> _next = new();
     private readonly List<WFLatticeEffect> _open = new();
     private readonly List<EntityUid> _animals = new();
@@ -130,6 +135,10 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
                 var at = Near(mob, 5f, 8f);
                 RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(at), 8f, seed), session);
                 _audio.PlayStatic(Menace, Filter.SinglePlayer(session), at, true);
+                return;
+            case WFLatticeHallucinationKind.Pulse:
+                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Transform(mob).Coordinates), PulseSeconds, seed), session);
+                _audio.PlayGlobal(PulseSound, session);
                 return;
         }
     }

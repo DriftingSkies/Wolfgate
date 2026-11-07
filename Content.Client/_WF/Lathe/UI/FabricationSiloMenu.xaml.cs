@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Linq;
 using Content.Client.Materials.UI;
 using Content.Client.UserInterface.Controls;
@@ -63,6 +64,7 @@ public sealed partial class FabricationSiloMenu : FancyWindow
     public FabricationSiloMenu()
     {
         RobustXamlLoader.Load(this);
+        WFWindowBranding.Apply(this);
         IoCManager.InjectDependencies(this);
         _silos = _entityManager.System<FabricationSiloSystem>();
 

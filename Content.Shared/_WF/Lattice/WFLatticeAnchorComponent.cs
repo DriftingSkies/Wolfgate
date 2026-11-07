@@ -17,7 +17,7 @@ public sealed partial class WFLatticeAnchorComponent : Component
     public bool Primary;
 }
 
-/// <summary>A player-built anchor: holds the field only while powered, anchored and parked.</summary>
+/// <summary>A player-built anchor: holds the field only while powered, anchored, parked and fed exotic matter.</summary>
 [RegisterComponent]
 public sealed partial class WFLatticeRelayComponent : Component
 {
@@ -36,6 +36,22 @@ public sealed partial class WFLatticeRelayComponent : Component
     /// <summary>Seconds its grid has sat still so far.</summary>
     [ViewVariables]
     public float Settled;
+
+    /// <summary>Whether it runs on exotic matter; a station's mapped anchor doesn't.</summary>
+    [DataField]
+    public bool NeedsFuel = true;
+
+    /// <summary>Seconds of holding it has left; it burns them only while it holds.</summary>
+    [DataField]
+    public float Fuel;
+
+    /// <summary>Seconds of holding one shard of exotic matter buys.</summary>
+    [DataField]
+    public float FuelPerShard = 600f;
+
+    /// <summary>Most shards it holds at once.</summary>
+    [DataField]
+    public int MaxShards = 6;
 }
 
 /// <summary>One of an anchor station's own guns: it fires only from an anchor station.</summary>

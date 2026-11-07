@@ -85,6 +85,8 @@ public sealed class WFLatticeStationTest
             relay = entities.SpawnEntity("WFLatticeRelayAnchor", map.GridCoords);
             entities.GetComponent<ApcPowerReceiverComponent>(relay).NeedsPower = false;
             entities.GetComponent<WFLatticeRelayComponent>(relay).SettleSeconds = 1f;
+            Assert.That(entities.GetComponent<WFLatticeRelayComponent>(relay).Fuel, Is.Zero, "a new relay came fuelled.");
+            entities.GetComponent<WFLatticeRelayComponent>(relay).Fuel = 600f;
         });
 
         await pair.RunSeconds(4f);
@@ -95,6 +97,10 @@ public sealed class WFLatticeStationTest
             Assert.That(entities.System<WFLatticeBreachObserver>().Breaches, Is.EqualTo(3), "a lost anchor wasn't announced as a breach.");
             Assert.That(entities.GetComponent<WFLatticeAnchorComponent>(relay).Active, Is.True, "the parked relay didn't take hold.");
             Assert.That(field.Anchors, Has.Count.EqualTo(4), "three primaries and the relay should hold the field.");
+            var meta = entities.GetComponent<MetaDataComponent>(stations[2]).EntityName;
+            Assert.That(meta, Does.StartWith("DEAD ANCHOR"), "a lost anchor's station still looks alive on radar.");
+            Assert.That(entities.GetComponent<Content.Shared.Shuttles.Components.IFFComponent>(stations[2]).Color, Is.EqualTo(Color.FromHex("#6e6e6e")),
+                "a lost anchor's station isn't greyed out.");
 
             // The standing stations' shields are up and drawn as a purple rooted Ward.
             var warded = entities.EntityQuery<ShipShieldEmitterComponent>()

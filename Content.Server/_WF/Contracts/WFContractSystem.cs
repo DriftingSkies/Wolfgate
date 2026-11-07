@@ -2,11 +2,13 @@ using System.Linq;
 using Content.Server._NF.Bank;
 using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Systems;
+using Content.Server._WF.NpcCrew.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Cargo.Systems;
 using Content.Server.Chat.Managers;
 using Content.Server.Popups;
 using Content.Server.Station.Systems;
+using Content.Server.Storage.EntitySystems;
 using Content.Shared._Mono.Company;
 using Content.Shared._WF.Contracts;
 using Content.Shared.Chat;
@@ -46,6 +48,8 @@ public sealed partial class WFContractSystem : EntitySystem
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private MapLoaderSystem _mapLoader = default!;
     [Dependency] private WFEncounterSystem _encounters = default!;
+    [Dependency] private WFCrewObjectiveSystem _crewObjectives = default!;
+    [Dependency] private EntityStorageSystem _entityStorage = default!;
 
     /// <summary>Standing points needed for each rank, lowest first: Hostile, Distrusted, Applicant and up.</summary>
     public static readonly int[] RankThresholds = [int.MinValue, -5, 0, 1, 3, 6, 10];

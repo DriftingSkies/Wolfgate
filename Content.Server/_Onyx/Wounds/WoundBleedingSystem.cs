@@ -447,6 +447,11 @@ public sealed partial class WoundBleedingSystem : EntitySystem
             return false;
 
         multiplier = profile.BleedingMultiplier;
+        // WOLFGATE(MeridianTraits) START: a hemophage's thin blood runs faster
+        if (TryGetBody(part, out var wfBody) &&
+            TryComp(wfBody, out Content.Shared._WF.MeridianTraits.Hemophage.WFHemophageComponent? wfHemophage))
+            multiplier *= wfHemophage.BleedMultiplier;
+        // WOLFGATE END
         return true;
     }
 

@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -48,6 +49,7 @@ public sealed partial class WFCrewSetupWindow : DefaultWindow
     {
         IoCManager.InjectDependencies(this);
         Title = Loc.GetString("wf-crew-setup-title");
+        WFWindowBranding.Apply(this);
         MinSize = new Vector2(1100, 600);
         SetSize = new Vector2(1280, 720);
         _system = _entities.System<WFCrewSetupClientSystem>();

@@ -283,6 +283,8 @@ public sealed partial class StaminaSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
+        value = ev.Value; // WOLFGATE(MeridianTraits): handlers may scale the damage, as a dormant hemophage's tumor does
+
         // Have we already reached the point of max stamina damage?
         if (component.Critical && immediate)
         {

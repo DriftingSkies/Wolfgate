@@ -13,12 +13,19 @@ using Robust.Client.GameObjects;
 using Content.Shared._NF.Bank.Components; // Frontier
 using Content.Shared.Containers.ItemSlots; // Frontier
 using Content.Shared.Stacks; // Frontier
+// WOLFGATE(Gags): expose prototype defaults for eligible vending items
+using Content.Client._WF.Gags;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.VendingMachines
 {
     public sealed class VendingMachineBoundUserInterface : BoundUserInterface
     {
         [Dependency] private CreditReceiverSystem _credit = default!; // Mono
+        // WOLFGATE(Gags) START: apply the selected vendor colour options
+        [Dependency] private WFGagsSystem _gags = default!;
+        private VendingMachineInventoryEntry? _recolorEntry;
+        // WOLFGATE END
 
         [ViewVariables]
         private VendingMachineMenu? _menu;
@@ -64,6 +71,8 @@ namespace Content.Client.VendingMachines
                 _menu.Title = Loc.GetString("vending-machine-nf-fallback-title");
             // End Frontier: no exceptions
             _menu.OnItemSelected += OnItemSelected;
+            // WOLFGATE(Gags): recolouring requires explicit confirmation before purchase
+            _menu.OnRecolorConfirmed += OnRecolorConfirmed;
             _menu.WfVendor = Owner; // WOLFGATE(TradeGoods): the menu reads the vendor's live trade-good prices
             Update();
         }
@@ -117,8 +126,36 @@ namespace Content.Client.VendingMachines
             if (selectedItem == null)
                 return;
 
+            // WOLFGATE(Gags) START: stop at a colour editor for recolourable products in enabled machines
+            if (EntMan.TryGetComponent<VendingMachineComponent>(Owner, out var vending) &&
+                vending.CanRecolor &&
+                _gags.DefaultColors(new EntProtoId(selectedItem.ID)) is { } defaults)
+            {
+                _recolorEntry = selectedItem;
+                _menu?.ShowRecolorItem(
+                    data is VendorItemsListData { ItemText: var itemName } ? itemName : selectedItem.ID,
+                    selectedItem.ID,
+                    defaults);
+                return;
+            }
+
+            _recolorEntry = null;
+            _menu?.HideRecolorItem();
+            // WOLFGATE END
             SendMessage(new VendingMachineEjectMessage(selectedItem.Type, selectedItem.ID));
         }
+
+        // WOLFGATE(Gags) START: buy the item with the editor's final colours
+        private void OnRecolorConfirmed(List<Color>? colors)
+        {
+            if (_recolorEntry is not { } entry)
+                return;
+
+            SendMessage(new VendingMachineEjectMessage(entry.Type, entry.ID, colors));
+            _recolorEntry = null;
+            _menu?.HideRecolorItem();
+        }
+        // WOLFGATE END
 
         protected override void Dispose(bool disposing)
         {
@@ -130,6 +167,8 @@ namespace Content.Client.VendingMachines
                 return;
 
             _menu.OnItemSelected -= OnItemSelected;
+            // WOLFGATE(Gags): release the recolour purchase handler
+            _menu.OnRecolorConfirmed -= OnRecolorConfirmed;
             _menu.OnClose -= Close;
             _menu.Dispose();
         }

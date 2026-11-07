@@ -225,7 +225,10 @@ public sealed class WildSlimesTest
                 else if (xform.MapUid == world.Cavern)
                     inGrotto++;
 
-                Assert.That(Vector2.Distance(xform.Coordinates.Position, patch.Middle), Is.LessThan(patch.Radius + 6f));
+                // Radius is the round patch of the same area; a long patch reaches well past it, so check the tile.
+                var tile = new Vector2i((int) MathF.Floor(xform.Coordinates.Position.X), (int) MathF.Floor(xform.Coordinates.Position.Y));
+                var own = xform.MapUid == world.Ground ? patch.Tiles : patch.Grotto;
+                Assert.That(own, Does.Contain(tile), $"A wild slime stands off its patch at {tile}.");
             }
 
             TestContext.Out.WriteLine($"Populated {spawned}: {onPatch} on the patch, {inGrotto} in the grotto.");

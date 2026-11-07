@@ -54,6 +54,8 @@
   - SurgeryInsertLiver
   - SurgeryRemoveStomach
   - SurgeryInsertStomach
+  - WFSurgeryRemoveKidneys
+  - WFSurgeryInsertKidneys
   - SurgeryInsertPump
   - WFSurgeryAlienEmbryoRemoval
   - WFSurgeryBurstChestRepair

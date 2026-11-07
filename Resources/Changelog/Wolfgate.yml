@@ -6053,3 +6053,130 @@ Entries:
   id: 100372
   time: '2026-11-06T20:27:49.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/519
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Space now changes colour as you leave the Lattice's hold, and the Coda
+        is nearly black, full of veins and things that look back.
+    - type: Tweak
+      message: >-
+        The bands are now Unison, Detune, Dissonance, Feedback and the Coda, and
+        they reach much further out.
+    - type: Add
+      message: >-
+        FTL drives don't work in Feedback or the Coda, and you can't jump into
+        them.
+    - type: Add
+      message: >-
+        High Drift can hit you with a pulse: your vision narrows and throbs with
+        glyphs and bass for a few seconds.
+    - type: Add
+      message: Destroyed Lattice anchors show as DEAD ANCHOR with grey IFF on radar.
+    - type: Add
+      message: >-
+        Bodies left in the Coda rise as Remade. If it was yours, you can choose
+        to rise with it.
+    - type: Tweak
+      message: >-
+        Answering the Choir is a coin toss: half join, half die and rise as
+        Remade. Choir members can't be revived and turn when they die.
+    - type: Add
+      message: >-
+        Ghosts and admins see a red C over Choir members, and their PDAs carry
+        red glyphs.
+    - type: Add
+      message: >-
+        Surgeons can cut the song out of a Choir member with a shard of exotic
+        matter, at a risk.
+    - type: Tweak
+      message: Relay anchors now burn exotic matter to keep holding.
+    - type: Add
+      message: >-
+        Ships that linger in the Coda get boarded by Remade hunters, rot without
+        a stabiliser, have systems cut out, and lose patches of radar.
+  id: 100373
+  time: '2026-11-06T22:30:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/523
+- author: Toriate
+  changes:
+    - type: Add
+      message: New sprites for the Lawbringer
+  id: 100374
+  time: '2026-11-07T01:21:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/522
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Added the Hemophagia and Hemophagia (Masquerade) quirks. A tumor
+        replaces your heart, and you live on blood drunk or drained from others.
+    - type: Add
+      message: Added blood dishes, the Bloodshot cocktail and a taste suppressor.
+  id: 100375
+  time: '2026-11-07T01:36:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/529
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Wolfgate branding on the sector map, Lore Book, Crew Setup, Companies,
+        Anatomy, entity spawner, mass scanner, lathe and drydock windows.
+  id: 100376
+  time: '2026-11-07T02:44:14.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/532
+- author: burgerenergy
+  changes:
+    - type: Tweak
+      message: Shippery gunnery guidebook pages have been brought more up to date.
+  id: 100377
+  time: '2026-11-07T03:25:48.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/524
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Automated tests now run on five runners instead of four, so checks
+        finish sooner.
+  id: 100378
+  time: '2026-11-07T03:50:05.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/534
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Planet comms no longer drop while nobody is near the comms outpost.
+    - type: Fix
+      message: >-
+        Vinyl players, station radio servers and rigs, autodocs and slime
+        grinders can be built again; the frame takes their manipulators.
+    - type: Fix
+      message: >-
+        Flight consoles and other consoles with locked key slots can be
+        deconstructed.
+    - type: Fix
+      message: You can lie down on a deck with no gravity, so surgery works there.
+    - type: Fix
+      message: >-
+        Finishing a supply contract no longer takes whoever was shut in the
+        crate with it.
+    - type: Fix
+      message: Escort contracts pay out once the ship docks at its destination.
+    - type: Fix
+      message: Company members taking a station job keep the station's job icon.
+    - type: Add
+      message: Kidneys can be removed and replaced in surgery, like the other organs.
+    - type: Add
+      message: Cargo sells brute and burn treatment kit crates again.
+    - type: Tweak
+      message: >-
+        Ship crews taking paramedic, doctor, engineer and the other standard
+        jobs get the survival box, hardsuits and HUD glasses contractors do.
+    - type: Tweak
+      message: Caelestinus janitors are paid.
+    - type: Fix
+      message: The antique necklace's description is whole.
+    - type: Tweak
+      message: The forge says what it smelts and that the metal goes to its stock.
+  id: 100379
+  time: '2026-11-07T03:59:45.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/531

@@ -134,8 +134,8 @@
   hidden: true
   duration: 5400
   # In the Deep only, measured from the sector's centre.
-  minDistance: 31000
-  maxDistance: 36000
+  minDistance: 41000
+  maxDistance: 47000
   latticeBand: 4
   stationClearance: 3000
   ships:
@@ -163,8 +163,8 @@
   hidden: true
   duration: 5400
   # In the Deep only, measured from the sector's centre.
-  minDistance: 31000
-  maxDistance: 36000
+  minDistance: 41000
+  maxDistance: 47000
   latticeBand: 4
   stationClearance: 3000
   ships:
@@ -222,8 +222,8 @@
   cooldown: 5400
   duration: 3600
   # In the Deep only, measured from the sector's centre.
-  minDistance: 31000
-  maxDistance: 36000
+  minDistance: 41000
+  maxDistance: 47000
   latticeBand: 4
   stationClearance: 3000
   manifests: [ WFManifestGeneral, WFManifestMedical, WFManifestSalvage ]

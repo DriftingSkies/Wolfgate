@@ -57,6 +57,8 @@ public sealed partial class WFLatticeSystem : EntitySystem
         });
         InitializeStations();
         InitializeDefence();
+        InitializeFtl();
+        InitializeRelayFuel();
     }
 
     public override void Update(float frameTime)
@@ -305,9 +307,10 @@ public sealed partial class WFLatticeSystem : EntitySystem
 
             drift.Drift = Math.Clamp(drift.Drift + rate * seconds, 0f, profile.DriftMax);
             var level = (int) (drift.Drift / WFDriftComponent.LevelStep);
-            if (drift.Band != index || drift.Level != level || MathF.Abs(drift.Depth - depth) >= 0.05f)
+            if (drift.Band != index || drift.Level != level || MathF.Abs(drift.Depth - depth) >= 0.05f || drift.NoFtl == band.Ftl)
             {
                 drift.Band = index;
+                drift.NoFtl = !band.Ftl;
                 drift.Level = level;
                 drift.Depth = depth;
                 Dirty(carrier, drift);

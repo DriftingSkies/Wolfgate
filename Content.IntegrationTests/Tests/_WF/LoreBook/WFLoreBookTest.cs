@@ -193,4 +193,15 @@ public sealed class WFLoreBookTest
 
         return found;
     }
+
+    /// <summary>A heading behind a marker comment stays plain: headings print glyph tags as text.</summary>
+    [Test]
+    public void MarkedHeadingsNeverTurnToGlyphs()
+    {
+        const string page = "<!-- WOLFGATE END -->### With Regards to Prisoners\nSome body words follow here.";
+        var corrupt = WFLoreBookWindow.Distort(new System.Random(1), page, 0f, 0f, 1f);
+        var heading = corrupt.Split('\n')[0];
+        Assert.That(heading, Does.Not.Contain("WFLoreGlyphs"), $"a marked heading turned to glyphs: {heading}");
+        Assert.That(corrupt.Split('\n')[1], Does.Contain("WFLoreGlyphs"), "the body never turned to glyphs.");
+    }
 }

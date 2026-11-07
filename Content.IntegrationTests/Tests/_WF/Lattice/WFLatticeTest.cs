@@ -39,10 +39,10 @@ public sealed class WFLatticeTest
 
             Assert.That(anchors, Has.Count.EqualTo(6));
             Assert.That(lattice.BandAt(map.MapUid, new Vector2(10000f, 0f)), Is.EqualTo(0));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, 20000f)), Is.EqualTo(1));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(-23500f, 0f)), Is.EqualTo(2));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, -27000f)), Is.EqualTo(3));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(35000f, 0f)), Is.EqualTo(4));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, 21000f)), Is.EqualTo(1));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(-27500f, 0f)), Is.EqualTo(2));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, -35500f)), Is.EqualTo(3));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(45000f, 0f)), Is.EqualTo(4));
 
             // Setting up again keeps the anchors it has.
             lattice.Setup(map.MapUid);

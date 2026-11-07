@@ -118,14 +118,15 @@ public sealed partial class WFCompanySystem
         marker.Tag = company.Tag;
         marker.Rank = rank;
         Dirty(card, marker);
+        // A station job keeps its own title and icon; the rank's icon goes with the rank's title.
+        if (title == null)
+            return;
         if (IconRankOf(company, member) is { } iconRank)
         {
             var icon = EnsureComp<WFCompanyRankIconComponent>(card);
             icon.RankId = iconRank.Id;
             Dirty(card, icon);
         }
-        if (title == null)
-            return;
         var shownJob = job ?? BaseJob(company, member);
         if (_minds.TryGetMind(body, out var mind, out _) && _prototypes.TryIndex<JobPrototype>(shownJob, out _))
         {

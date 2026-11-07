@@ -1,12 +1,12 @@
-<Document>
+<!-- WOLFGATE(Weapons) START: ship gunnery specs brought in line with the current weapons --><Document>
   # Energy Weapons Specifications
   Notes:
   - For munitions that accelerate over time (such as missiles), range is a rough estimate.
   - For munitions that are fired at a static speed (such as normal weapons), range is simply just the launch velocity * projectile lifetime.
   - RPS may not be accurate due to it being capped by server tick speed (usually 20 or 30 ticks/second).
-  - Rare guns such as ADS/NT/Syndicate shipguns will not be included.
+  - Energy weapons do not interact with the ammunition system.
 
-  ## Specifications (as of 24-Oct-2025)
+  ## Specifications (as of 24-Oct-2026)
   <Table Columns="7">
     <ColorBox>
       <Box>
@@ -51,12 +51,12 @@
     </ColorBox>
     <ColorBox Color="#5a9926">
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        0.5 RPS
+        0.7 RPS
       </Box>
     </ColorBox>
     <ColorBox Color="#8f2b65">
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        924 meters
+        1,800~ meters
       </Box>
     </ColorBox>
     <ColorBox Color="#8f2b65">
@@ -128,7 +128,7 @@
     </ColorBox>
     <ColorBox>
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        Superheavy
+        Super heavy
       </Box>
     </ColorBox>
     <!--Rubicon-->
@@ -159,7 +159,7 @@
     </ColorBox>
     <ColorBox>
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        Medium
+        Light
       </Box>
     </ColorBox>
     <!--DYMERE-->
@@ -190,7 +190,7 @@
     </ColorBox>
     <ColorBox>
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        Superheavy
+        Super heavy
       </Box>
     </ColorBox>
     <!--Phalanx-->
@@ -255,6 +255,68 @@
         Heavy
       </Box>
     </ColorBox>
+    <!--Prometheus-->
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        TPC Prometheus Laser Cannon
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#b58818">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        HITSCAN
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#5a9926">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        0.8 RPS
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        1000 meters
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        N/A
+      </Box>
+    </ColorBox>
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Medium
+      </Box>
+    </ColorBox>
+    <!--Cerberus-->
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        TPC Prometheus Laser Cannon
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#b58818">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        PROJ
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#5a9926">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        0.5 RPS
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        1800~ meters
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        N/A
+      </Box>
+    </ColorBox>
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Heavy
+      </Box>
+    </ColorBox>
   </Table>
 
-</Document>
+<!-- WOLFGATE END --></Document>

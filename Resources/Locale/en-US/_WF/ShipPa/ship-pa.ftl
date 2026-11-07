@@ -78,3 +78,5 @@ ship-distress-announcement-cancel = Distress call cancelled.
 ship-distress-announcement-lapsed = Distress call lapsed. Send another if you still need help.
 ship-distress-cooldown = Wait {$seconds} seconds before sending another distress call.
 ship-distress-marker = SOS: {$ship}
+
+ui-options-ship-pa-volume = Ship PA

@@ -1,16 +1,19 @@
 wf-lattice-chip-sender = Lattice
 
-wf-lattice-band-moored = Moored
-wf-lattice-band-slack = Slack
-wf-lattice-band-adrift = Adrift
-wf-lattice-band-untethered = Untethered
-wf-lattice-band-deep = the Deep
+wf-lattice-band-moored = Unison
+wf-lattice-band-slack = Detune
+wf-lattice-band-adrift = Dissonance
+wf-lattice-band-untethered = Feedback
+wf-lattice-band-deep = the Coda
 
 wf-lattice-enter-moored = Back in anchored space. The Lattice holds here.
 wf-lattice-enter-slack = Leaving anchored space. Restricted space: {$band}. Unsafe. Trust your instruments less.
 wf-lattice-enter-adrift = Restricted space: {$band}. Unsafe. The Lattice barely holds here.
-wf-lattice-enter-untethered = Restricted space: {$band}. The Lattice does not reach here. Turn back.
+wf-lattice-enter-untethered = Restricted space: {$band}. The Lattice does not reach here. FTL drives are dead. Turn back.
 wf-lattice-enter-deep = {$band}. Nothing holds here.
+
+wf-lattice-ftl-dead = The FTL drive won't spool. Nothing out here holds still enough to jump from.
+wf-lattice-ftl-target-dead = The FTL drive won't lock on. Nothing out there holds still enough to jump to.
 
 ent-WFLatticeAnchorMarker = reality anchor
     .desc = Holds the Lattice field.
@@ -99,6 +102,7 @@ ent-WFFlatpackLatticeRelay = relay anchor flatpack
     .desc = A flatpack used for building a relay anchor.
 
 wf-lattice-station-name = Lattice anchor {$anchor}
+wf-lattice-station-name-dead = DEAD ANCHOR {$anchor}
 wf-lattice-anchor-name-1 = Alpha
 wf-lattice-anchor-name-2 = Beta
 wf-lattice-anchor-name-3 = Gamma
@@ -126,14 +130,14 @@ wf-lattice-defcon-reason = { $count ->
 }
 
 ent-WFChoirActionAnswer = Answer the song
-    .desc = Join the Choir. You become an antagonist, and there's no going back.
+    .desc = Answer the Choir. Half who answer join it as antagonists; the other half die and rise as Remade. There's no going back.
 
 wf-choir-wrap = [color=#d070ff][bold]{$message}[/bold][/color]
 wf-choir-offer-popup = Out here, something is singing. It knows your name.
-wf-choir-offer = A song reaches you from past the Lattice. It's beautiful, and it wants you. Use the "Answer the song" action within five minutes to join the Choir, an antagonist faction. Ignore it and it fades. Server rules for antagonists apply.
+wf-choir-offer = A song reaches you from past the Lattice. It's beautiful, and it wants you. Use the "Answer the song" action within five minutes to join the Choir, an antagonist faction. Ignore it and it fades. Answering is a coin toss: half join the Choir, half die and rise as Remade. Choir members can't be revived. Server rules for antagonists apply.
 wf-choir-full = The song fades. It has all the voices it wants for now.
 wf-choir-joined-popup = You answer. The noise in your head turns into music.
-wf-choir-briefing = You are Choir now. The Lattice keeps the song out of the sector; you want it in. Break the anchors, carry Scions inward, and keep the Deep for the song. Out here nothing you see frightens you, and the Choir's ships and the Remade won't harm you. You're an antagonist: follow the server's antagonist rules.
+wf-choir-briefing = You are Choir now. The Lattice keeps the song out of the sector; you want it in. Break the anchors, carry Scions inward, and keep the Coda for the song. Out here nothing you see frightens you, and the Choir's ships and the Remade won't harm you. You can't be revived: when you die, your body turns Remade and you go with it. You're an antagonist: follow the server's antagonist rules.
 wf-choir-admin-offered = was offered the Choir (high Drift).
 wf-choir-admin-joined = joined the Choir.
 wf-choir-defcon-reason = { $count ->
@@ -160,5 +164,56 @@ wf-lattice-defence-unknown = an unknown vessel
 wf-drift-alert-name = Drift
 wf-drift-alert-desc = How far reality has slipped from you. It fills out past anchored space and drains back inside it.
 
-# A wreck in the Deep that has filled with Remade, as it shows on radar.
+# A wreck in the Coda that has filled with Remade, as it shows on radar.
 wf-lattice-lost-ship-name = Lost ship
+
+cmd-wfhallucinate-desc = Shows one Drift hallucination to a player: Whisper, Radio, Hail, Blip, Sound, Glimpse, Phantom or Pulse.
+cmd-wfhallucinate-help = Usage: wfhallucinate <kind> [username]
+cmd-wfhallucinate-no-player = No player called {$name}.
+cmd-wfhallucinate-no-body = That player has no body.
+cmd-wfhallucinate-hint-player = <username>
+
+wf-deep-rise-title = Your body rises
+wf-deep-rise-text = Out here nothing stays dead. Your body is getting up, and it isn't you any more. Go with it? You'll play a Remade: kill the living and spread the Unmooring.
+wf-deep-rise-accept = Rise
+wf-deep-rise-deny = Stay dead
+wf-deep-rise-joined = You stand up. You are Remade now. Kill the living.
+
+wf-choir-confirm-title = Answer the song?
+wf-choir-confirm-text = The song wants you. Answering is a coin toss. 50% chance: you join the Choir, an antagonist. 50% chance: you die where you stand and rise as a Remade abomination. Either way, there's no going back.
+wf-choir-confirm-accept = I want to answer
+wf-choir-confirm-deny = Let it fade
+wf-choir-confirm-final-title = Are you sure?
+wf-choir-confirm-final-text = Last chance. Half of those who answer die and come back as Remade. If you join the Choir instead, you can never be revived: when you die, your body turns Remade and you go with it.
+wf-choir-confirm-final-accept = Answer the song
+wf-choir-abomination-popup = The song pours in, and there's too much of it. Your body breaks open and something else stands up.
+wf-choir-admin-abomination = answered the Choir and lost the coin toss: turning Remade.
+wf-choir-unrevivable = The Choir has this one. The body won't take a heartbeat, and it is already changing.
+wf-choir-pda-mark = [color=#c43434]Red glyphs are scratched over the casing:[/color] [color=#c43434][font="WFLoreGlyphs" size=10]THESONGHASME[/font][/color]
+wf-choir-antag-name = Choir
+wf-choir-antag-objective = Bring the song into the sector: break the anchors and carry Scions inward.
+
+wf-song-excision-tool-name = a shard of exotic matter
+wf-song-excision-freed = The song goes quiet. For the first time in a long while, your head is your own. You are no longer Choir.
+wf-song-excision-freed-surgeon = The glyphs on the brain fade. The song is out.
+wf-song-excision-failed = The song screams through the open skull, and the body on the table stops breathing. Something else is waking up in it.
+
+wf-lattice-relay-loaded = You feed { $count ->
+    [one] a shard
+   *[other] {$count} shards
+} of exotic matter into the relay.
+wf-lattice-relay-full = The relay can't take any more exotic matter.
+wf-lattice-relay-empty = The relay gutters out. It needs exotic matter.
+wf-lattice-relay-fuel = It has exotic matter for about [color=#d070ff]{$minutes}[/color] more { $minutes ->
+    [one] minute
+   *[other] minutes
+} of holding.
+wf-lattice-relay-no-fuel = [color=#e04030]It has no exotic matter. Feed it shards to make it hold.[/color]
+
+wf-coda-hunters = Something has come aboard. You can hear it moving.
+wf-coda-rot = The hull groans. Something out here is eating the ship.
+wf-coda-fail-thrusters = The thrusters cough and die.
+wf-coda-fail-gyros = The gyroscopes spin down. The ship won't turn.
+wf-coda-fail-power = The lights go out. The breakers have tripped.
+
+surgery-popup-step-WFLatticeStepExciseSong = {$user} is cutting the song out of {$target}'s brain.

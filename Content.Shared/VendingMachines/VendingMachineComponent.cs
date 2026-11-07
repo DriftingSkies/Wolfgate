@@ -33,6 +33,10 @@ namespace Content.Shared.VendingMachines
         [DataField]
         public float EjectDelay = 1.2f;
 
+        // WOLFGATE(Gags): enable recolouring items before purchase
+        [DataField, AutoNetworkedField]
+        public bool CanRecolor;
+
         // Frontier: random ejection
         /// <summary>
         /// Used by the server to determine how many items the machine allowed to eject from random triggers. (Default 2)

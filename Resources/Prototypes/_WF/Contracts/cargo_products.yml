@@ -1,0 +1,11 @@
+# Cargo products for goods contracts ask for that nothing else sells: Frontier keeps the upstream medkit crates
+# abstract, so the brute and burn kits the Halcyon and TSF supply runs want were loot only.
+
+- type: cargoProduct
+  id: WFEmergencyBruteKit
+  parent: EmergencyBruteKit
+  cost: 700 # the filled kit sells for 635
+
+- type: cargoProduct
+  id: WFEmergencyBurnKit
+  parent: EmergencyBurnKit

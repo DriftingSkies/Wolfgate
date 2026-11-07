@@ -73,6 +73,8 @@ using Content.Shared._NF.Bank.BUI; // Frontier
 using Content.Server._Mono.VendingMachine;
 using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._Mono.Economy; // Mono - Seperation of cash payment from VendingMachineComp
+// WOLFGATE(Gags): validate and apply vending recolours
+using Content.Shared._WF.Gags;
 
 namespace Content.Server.VendingMachines
 {
@@ -95,6 +97,10 @@ namespace Content.Server.VendingMachines
         [Dependency] private IAdminLogManager _adminLogger = default!; // Frontier
         [Dependency] private VendingMachinePurchaseSystem _vendingPurchase = default!; // Mono
         [Dependency] private SharedCreditReceiverSystem _cash = default!; // Mono - Pwease chwose two pway wiw cawsh ow cwedit
+        // WOLFGATE(Gags) START: hold colours only until the selected item is dispensed
+        [Dependency] private SharedWFGagsSystem _gags = default!;
+        private readonly Dictionary<EntityUid, List<Color>> _pendingColors = new();
+        // WOLFGATE END
 
         private const float WallVendEjectDistanceFromWall = 1f;
 
@@ -170,7 +176,8 @@ namespace Content.Server.VendingMachines
             if (component.Ejecting)
                 return;
 
-            AuthorizedVend(uid, entity, args.Type, args.ID, component);
+            // WOLFGATE(Gags): pass colour options through the normal purchase checks
+            AuthorizedVend(uid, entity, args.Type, args.ID, component, args.Colors);
         }
 
         private void OnPowerChanged(EntityUid uid, VendingMachineComponent component, ref PowerChangedEvent args)
@@ -367,7 +374,9 @@ namespace Content.Server.VendingMachines
         /// <param name="type">The type of inventory the item is from</param>
         /// <param name="itemId">The prototype ID of the item</param>
         /// <param name="component"></param>
-        public void AuthorizedVend(EntityUid uid, EntityUid sender, InventoryType type, string itemId, VendingMachineComponent component)
+        // WOLFGATE(Gags) START: keep recolouring behind the regular price, stock and access checks
+        public void AuthorizedVend(EntityUid uid, EntityUid sender, InventoryType type, string itemId,
+            VendingMachineComponent component, List<Color>? colors = null)
         {
             if (!_prototypeManager.TryIndex<EntityPrototype>(itemId, out var proto))
                 return;
@@ -413,6 +422,13 @@ namespace Content.Server.VendingMachines
 
                 if (TryEjectVendorItem(uid, type, itemId, component.CanShoot, component))
                 {
+                    if (component.CanRecolor &&
+                        _gags.DefaultColors(new EntProtoId(itemId)) != null &&
+                        WFGagsColors.Sanitize(colors) is { } safeColors)
+                    {
+                        _pendingColors[uid] = safeColors;
+                    }
+
                     // WOLFGATE: a free vend skips the cash payment, which logs a zero amount as invalid
                     paidFully = totalPrice > 0 && _cash.TryCashPayment(uid, totalPrice, out var _, true); // Mono - Attempt to pay with cash before credit
 
@@ -440,6 +456,7 @@ namespace Content.Server.VendingMachines
             }
             // End Frontier
         }
+        // WOLFGATE END
 
         /// <summary>
         /// Tries to update the visuals of the component based on its current state.
@@ -568,6 +585,11 @@ namespace Content.Server.VendingMachines
             }
 
             var ent = Spawn(vendComponent.NextItemToEject, spawnCoordinates);
+
+            // WOLFGATE(Gags) START: apply colours only to the item whose purchase passed server validation
+            if (_pendingColors.Remove(uid, out var colors))
+                _gags.SetColors(ent, colors);
+            // WOLFGATE END
 
             // Mono: Track vending machine purchases for pricing modifications
             // Only track if this was a paid purchase (not a random eject or force eject)

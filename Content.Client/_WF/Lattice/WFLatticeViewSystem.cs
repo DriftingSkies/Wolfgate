@@ -23,12 +23,14 @@ public sealed partial class WFLatticeViewSystem : EntitySystem
     {
         base.Initialize();
         _overlays.AddOverlay(new WFLatticeBeamOverlay());
+        _overlays.AddOverlay(new WFLatticeSkyOverlay());
     }
 
     public override void Shutdown()
     {
         base.Shutdown();
         _overlays.RemoveOverlay<WFLatticeBeamOverlay>();
+        _overlays.RemoveOverlay<WFLatticeSkyOverlay>();
     }
 
     /// <summary>Seconds between changes in how a garbled text reads.</summary>
@@ -123,6 +125,23 @@ public sealed partial class WFLatticeViewSystem : EntitySystem
         var lost = 1f - field.Integrity;
         var depth = Depth(field, profile, _transform.GetWorldPosition(viewer));
         return Math.Clamp(depth >= 0f ? MathF.Max(lost, 0.6f + 0.4f * depth) : lost, 0f, 1f);
+    }
+
+    /// <summary>Whether the local player's ship, or they themselves, are out where the Coda's hazards reach.</summary>
+    public bool InHazardBand()
+    {
+        if (_player.LocalEntity is not { } mob || HasComp<WFChoirMemberComponent>(mob))
+            return false;
+
+        var fields = EntityQueryEnumerator<WFLatticeFieldComponent>();
+        if (!fields.MoveNext(out _, out var field) || !_proto.TryIndex(field.Profile, out var profile))
+            return false;
+
+        WFDriftComponent? drift = null;
+        if (Transform(mob).GridUid is not { } grid || !TryComp(grid, out drift))
+            TryComp(mob, out drift);
+
+        return drift != null && drift.Band >= profile.HazardBand;
     }
 
     /// <summary>Garbles text about where the local player is, such as their own coordinates.</summary>

@@ -126,6 +126,10 @@ in the upstream `_Mono` lore, factions and star system pages.
   - Verda's city
 - [`Resources/ServerInfo/_Mono/Guidebook/BeginnerGuide.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/BeginnerGuide.xml): point new players at the lore book
 - [`Resources/ServerInfo/_Mono/Guidebook/Factions/caelestinus.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/caelestinus.xml): one origin for Caelestinus, which now holds the Bench; the upstream text is kept in the comment below
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml): objectives in red like the other factions'
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/viper_group.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/viper_group.xml)
+  - the Vipers get standing orders like the other factions
+  - Viper standing order
 - [`Resources/ServerInfo/_Mono/Guidebook/Lore/Primer.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Lore/Primer.xml): the opening page, rewritten for the Collapse, the Lattice and the Bench; the upstream text is kept in the comment below
 - [`Resources/ServerInfo/_Mono/Guidebook/Lore/Timeline.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Lore/Timeline.xml): the history, carried through the Collapse and the Caelestinus Accord; the upstream text is kept in the comment below
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml): the primer is in the lore book; was a textlink

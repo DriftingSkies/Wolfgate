@@ -1,7 +1,9 @@
 using Content.Shared._WF.Lattice;
+using Content.Shared.CCVar;
 using Content.Shared.Ghost;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
+using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
 
@@ -13,6 +15,7 @@ namespace Content.Client._WF.Lattice;
 /// </summary>
 public sealed partial class WFLatticeHallucinationSystem : EntitySystem
 {
+    [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IOverlayManager _overlays = default!;
     [Dependency] private IPlayerManager _player = default!;
@@ -25,6 +28,7 @@ public sealed partial class WFLatticeHallucinationSystem : EntitySystem
     private const float VanishRange = 3f;
 
     private readonly List<(EntityUid Figure, TimeSpan Ends, bool Vanishes)> _figures = new();
+    private WFDriftPulseOverlay _pulse = default!;
 
     /// <summary>Radar contacts that aren't there: where, until when, and a seed for their garbled label.</summary>
     public readonly List<(MapCoordinates Position, TimeSpan Ends, int Seed)> Blips = new();
@@ -35,6 +39,9 @@ public sealed partial class WFLatticeHallucinationSystem : EntitySystem
 
         SubscribeNetworkEvent<WFLatticeHallucinationEvent>(OnHallucination);
         _overlays.AddOverlay(new WFDriftOverlay());
+        _pulse = new WFDriftPulseOverlay();
+        _overlays.AddOverlay(_pulse);
+        Subs.CVar(_config, CCVars.ReducedMotion, still => _pulse.Still = still, true);
     }
 
     public override void Shutdown()
@@ -42,6 +49,7 @@ public sealed partial class WFLatticeHallucinationSystem : EntitySystem
         base.Shutdown();
 
         _overlays.RemoveOverlay<WFDriftOverlay>();
+        _overlays.RemoveOverlay(_pulse);
         Clear();
     }
 
@@ -79,6 +87,9 @@ public sealed partial class WFLatticeHallucinationSystem : EntitySystem
         var ends = _timing.CurTime + TimeSpan.FromSeconds(ev.Seconds);
         switch (ev.Kind)
         {
+            case WFLatticeHallucinationKind.Pulse:
+                _pulse.Start(ev.Seconds, ev.Seed);
+                break;
             case WFLatticeHallucinationKind.Blip:
                 Blips.Add((_transform.ToMapCoordinates(coordinates), ends, ev.Seed));
                 break;

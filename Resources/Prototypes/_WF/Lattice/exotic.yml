@@ -50,6 +50,8 @@
     color: "#b040e0"
   - type: Item
     size: Tiny
+  # Cuts the song out of a Choir member's head, a shard at a time.
+  - type: WFSongExcisionTool
   # Matter from outside the Lattice's hold still carries a little of it.
   - type: WFDriftSource
     rate: 0.1

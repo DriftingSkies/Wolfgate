@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,7 @@ using Moq;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface.Controls;
 using Robust.Server.GameObjects;
+using Robust.Shared.Audio.Components;
 using Robust.Shared.ContentPack;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
@@ -150,19 +152,38 @@ public sealed class ShipPaAudienceTest : InteractionTest
             track = PrepareTrack(id, null);
             Assert.That(Recipients(track), Has.Count.EqualTo(1), "Global sounds must be sent regardless of location.");
             Assert.That(GetField(track, "State")!.ToString(), Is.EqualTo("Sending"));
-            Assert.That(GetField(track, "Audio"), Is.Null, "Global playback must wait for readiness.");
+            Assert.That((TimeSpan) GetField(track, "Ends")!, Is.EqualTo(TimeSpan.Zero), "Global playback must wait for readiness.");
         });
         await WaitForAsset(id);
         await RunTicks(10);
         await Server.WaitAssertion(() =>
         {
             Assert.That(GetField(track, "State")!.ToString(), Is.EqualTo("Playing"));
-            var audio = (EntityUid) GetField(track, "Audio")!;
-            Assert.That(SEntMan.HasComponent<InternetSoundAudioComponent>(audio), Is.True,
-                "The readiness acknowledgement must create the ordinary global audio entity.");
-            Server.System<InternetSoundSystem>().Stop(null);
+            Assert.That((TimeSpan) GetField(track, "Ends")!, Is.GreaterThan(Server.Timing.CurTime),
+                "The readiness acknowledgement must start the server's clock on the track.");
         });
+        // The client runs its own stream of a global sound, marked for the radio's volume.
+        await Client.WaitAssertion(() =>
+        {
+            var path = InternetSoundResources.PathFor(id);
+            var streams = 0;
+            var query = Client.EntMan.EntityQueryEnumerator<InternetSoundAudioComponent, AudioComponent>();
+            while (query.MoveNext(out _, out var audio))
+            {
+                if (audio.FileName == path)
+                    streams++;
+            }
+            Assert.That(streams, Is.EqualTo(1), "The client should play one stream of the global sound.");
+        });
+        await Server.WaitPost(() => Server.System<InternetSoundSystem>().Stop(null));
         await RunTicks(20);
+        await Client.WaitAssertion(() =>
+        {
+            var path = InternetSoundResources.PathFor(id);
+            var query = Client.EntMan.EntityQueryEnumerator<InternetSoundAudioComponent, AudioComponent>();
+            while (query.MoveNext(out _, out var audio))
+                Assert.That(audio.FileName, Is.Not.EqualTo(path), "Stopping the sound should stop the client's stream.");
+        });
     }
 
     [Test]

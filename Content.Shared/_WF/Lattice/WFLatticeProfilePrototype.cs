@@ -121,6 +121,62 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
     [DataField]
     public List<WFLatticeEffect> Effects = new();
 
+    /// <summary>Least band where crewed ships suffer the Coda's hazards: hunters, hull rot and failing systems.</summary>
+    [DataField]
+    public int HazardBand = 4;
+
+    /// <summary>Seconds a ship can sit in the Coda before hunters can find it.</summary>
+    [DataField]
+    public float HunterGrace = 180f;
+
+    /// <summary>Seconds of exposure past the grace over which the hunters' chance per roll climbs to its most.</summary>
+    [DataField]
+    public float HunterRamp = 900f;
+
+    /// <summary>Most chance per roll (once a minute) that a hunter pack boards.</summary>
+    [DataField]
+    public float HunterMaxChance = 0.6f;
+
+    /// <summary>Seconds after a pack boards before another can.</summary>
+    [DataField]
+    public float HunterCooldown = 300f;
+
+    /// <summary>Hunters in a pack: least and most.</summary>
+    [DataField]
+    public Vector2i HunterPack = new(2, 4);
+
+    /// <summary>Most living hunters aboard one ship.</summary>
+    [DataField]
+    public int HunterCap = 8;
+
+    /// <summary>What hunts.</summary>
+    [DataField]
+    public List<EntProtoId> HunterMobs = new();
+
+    /// <summary>Structures the Unmooring eats on an unsheltered ship each rot tick (every 20 s), at the edge and far out.</summary>
+    [DataField]
+    public Vector2i RotTargets = new(2, 6);
+
+    /// <summary>Structural damage per structure per rot tick.</summary>
+    [DataField]
+    public float RotDamage = 12f;
+
+    /// <summary>Chance per failure roll (every 40 s) that something aboard gives out.</summary>
+    [DataField]
+    public float FailureChance = 0.45f;
+
+    /// <summary>How long a failure lasts, in seconds: least and most.</summary>
+    [DataField]
+    public Vector2 FailureSeconds = new(8f, 20f);
+
+    /// <summary>Least band in which the dead rise as Remade, unless sheltered.</summary>
+    [DataField]
+    public int RiseBand = 4;
+
+    /// <summary>Seconds a body lies dead there before it starts to turn.</summary>
+    [DataField]
+    public float RiseDelay = 60f;
+
     /// <summary>Least band in which a ship's small animals can be taken.</summary>
     [DataField]
     public int TakeBand = 4;
@@ -226,4 +282,8 @@ public sealed partial class WFLatticeBand
     /// <summary>Exotic matter shards per vein of a rock broken here, on average.</summary>
     [DataField]
     public float Exotic;
+
+    /// <summary>Whether FTL drives work here, both to jump out and as a jump's destination.</summary>
+    [DataField]
+    public bool Ftl = true;
 }

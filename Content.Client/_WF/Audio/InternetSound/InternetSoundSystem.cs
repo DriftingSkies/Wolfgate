@@ -10,18 +10,21 @@ using Robust.Client.Audio;
 using Robust.Client.Console;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Asynchronous;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network.Transfer;
+using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
 namespace Content.Client._WF.Audio.InternetSound;
 
 /// <summary>
-/// Receives admin internet sounds and mounts them as resources, so the server can then play them as ordinary
-/// sounds. Also runs the radio for sounds played to everyone, and frees a track's decoded audio once the
-/// server says it's done with it.
+/// Receives admin internet sounds and mounts them as resources, so a ship's PA can play them like ordinary
+/// sounds. A sound played to everyone runs as this client's own stream from the moment the server says so:
+/// a radio needs no tick-exact sync, and the engine's resync of a networked stream skipped at every server
+/// hiccup. Also runs the radio window, and frees a track's decoded audio once the server is done with it.
 /// </summary>
 public sealed partial class InternetSoundSystem : EntitySystem
 {
@@ -33,6 +36,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
     [Dependency] private ShipPaMeshSystem _pa = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private ContentAudioSystem _contentAudio = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private ClientGlobalSoundSystem _globalSound = default!;
 
     /// <summary>
@@ -76,6 +80,12 @@ public sealed partial class InternetSoundSystem : EntitySystem
     private readonly HashSet<int> _stopped = new();
     private readonly HashSet<int> _received = new();
     private bool _shutdown;
+
+    /// <summary>This client's own stream of each sound played to everyone, by track.</summary>
+    private readonly Dictionary<int, EntityUid> _globalStreams = new();
+
+    /// <summary>Sounds told to play before their audio had arrived, and when, so they start that far in.</summary>
+    private readonly Dictionary<int, TimeSpan> _pendingPlays = new();
 
     private InternetSoundPopup? _popup;
 
@@ -164,6 +174,8 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
         _releasing.Clear();
         _resources.Clear();
+        _globalStreams.Clear();
+        _pendingPlays.Clear();
 
         lock (Receivers)
         {
@@ -374,6 +386,49 @@ public sealed partial class InternetSoundSystem : EntitySystem
             return;
         }
         RaiseNetworkEvent(new InternetSoundReadyEvent(header.Id, false));
+
+        // Told to play before the audio was here: join it that far in rather than from the top.
+        if (_pendingPlays.Remove(header.Id, out var since))
+        {
+            StartGlobal(header.Id, (float) (_timing.RealTime - since).TotalSeconds);
+            if (_popupId == header.Id)
+                _popup?.SetPlaying();
+        }
+    }
+
+    /// <summary>
+    /// Starts this client's stream of a sound played to everyone, <paramref name="offset"/> seconds in.
+    /// </summary>
+    private void StartGlobal(int id, float offset)
+    {
+        StopGlobal(id);
+        var path = InternetSoundResources.PathFor(id);
+        var stream = _audio.PlayGlobal(new ResolvedPathSpecifier(path), Filter.Local(), false,
+            AudioParams.Default.WithPlayOffset(offset));
+        if (stream == null)
+        {
+            Log.Warning($"Couldn't play internet sound {id}.");
+            return;
+        }
+
+        EnsureComp<InternetSoundAudioComponent>(stream.Value.Entity);
+        _globalStreams[id] = stream.Value.Entity;
+    }
+
+    /// <summary>Stops this client's stream of a sound played to everyone, or every one of them for id 0.</summary>
+    private void StopGlobal(int id)
+    {
+        if (id == 0)
+        {
+            foreach (var other in _globalStreams.Keys.ToList())
+                StopGlobal(other);
+            _pendingPlays.Clear();
+            return;
+        }
+
+        _pendingPlays.Remove(id);
+        if (_globalStreams.Remove(id, out var entity) && Exists(entity))
+            _audio.Stop(entity);
     }
 
     private void FailLoading(Header? header, Exception e)
@@ -448,6 +503,15 @@ public sealed partial class InternetSoundSystem : EntitySystem
     {
         if (_popupId == ev.Id)
             _popup?.SetPlaying();
+
+        if (_stopped.Contains(ev.Id))
+            return;
+
+        // The server can say play before this client has even seen the header; keep the word until the audio comes.
+        if (_received.Contains(ev.Id))
+            StartGlobal(ev.Id, 0f);
+        else
+            _pendingPlays[ev.Id] = _timing.RealTime;
     }
 
     private void OnRelease(InternetSoundReleaseEvent ev)
@@ -465,6 +529,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
     private void OnStop(InternetSoundStopEvent ev)
     {
+        StopGlobal(ev.Id);
         if (_replay.Replay != null)
             return;
         if (ev.Id == 0)

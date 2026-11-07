@@ -24,6 +24,10 @@ public sealed partial class WFDriftComponent : Component
     [DataField, AutoNetworkedField]
     public float Depth;
 
+    /// <summary>Whether its band kills FTL drives, so a ship here can't jump.</summary>
+    [DataField, AutoNetworkedField]
+    public bool NoFtl;
+
     /// <summary>On a person: Drift they carry in their own head, from a Monolith or another source, wherever they are. Server only.</summary>
     [DataField]
     public float Mind;

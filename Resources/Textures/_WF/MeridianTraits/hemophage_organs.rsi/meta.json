@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Nova Sector (https://github.com/NovaSector/NovaSector) via Meridian Rift, modular_nova/modules/organs/icons/hemophage_organs.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "liver"
+    },
+    {
+      "name": "stomach"
+    },
+    {
+      "name": "tongue"
+    },
+    {
+      "name": "tumor-on",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.6
+        ]
+      ]
+    },
+    {
+      "name": "tumor-dormant-on",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

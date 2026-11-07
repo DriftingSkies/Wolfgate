@@ -258,7 +258,9 @@ public sealed partial class WFWardSystem : EntitySystem
         foreach (var person in _people)
         {
             var xform = Transform(person);
-            if (xform.GridUid != null || !TryComp<PhysicsComponent>(person, out var body))
+            // Only what sits loose on the map: a rider goes with their vehicle, and moving an organ would pull
+            // it out of the body it is in.
+            if (xform.GridUid != null || xform.ParentUid != homeXform.MapUid || !TryComp<PhysicsComponent>(person, out var body))
                 continue;
 
             var inHome = Vector2.Transform(_transform.GetWorldPosition(xform), toLocal);
