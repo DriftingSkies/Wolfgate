@@ -326,6 +326,7 @@ public sealed partial class WFOutpostSystem
         EnsureComp<PreventGridAnchorChangesComponent>(basement);
         _shuttle.Disable(basement, force: true);
         EnsureComp<CleanupImmuneComponent>(basement);
+        basement.Comp2.CanSplit = false;
         basement.Comp1.Outpost = outpost;
         outpost.Comp1.Basement = basement;
     }

@@ -206,6 +206,8 @@ public sealed partial class WFOutpostSystem : EntitySystem
         EnsureComp<PreventGridAnchorChangesComponent>(grid);
         _shuttle.Disable(grid, force: true);
         EnsureComp<CleanupImmuneComponent>(grid);
+        // Its floor may lie in separate patches across the claim, and a split would tear them off the outpost.
+        Comp<MapGridComponent>(grid).CanSplit = false;
         // Open to the sky until roofed (spike F0.3): explicit roofs instead of a vessel's implied one.
         RemComp<ImplicitRoofComponent>(grid);
         EnsureComp<RoofComponent>(grid);

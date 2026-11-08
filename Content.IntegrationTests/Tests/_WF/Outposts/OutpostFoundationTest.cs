@@ -4,6 +4,7 @@ using System.Numerics;
 using Content.Server._WF.Outposts;
 using Content.Server._WF.Outposts.Components;
 using Content.Server._WF.WolfWeather;
+using Content.Shared._WF.Outposts;
 using Content.Shared._WF.WolfWeather;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -15,7 +16,8 @@ namespace Content.IntegrationTests.Tests._WF.Outposts;
 
 /// <summary>
 /// The ground under an outpost is carved away and comes back when the outpost goes; foundation plates extend the
-/// outpost onto the ground beside it, never the ground itself; and nothing strikes the ground it covers.
+/// outpost onto the ground anywhere in its claim, never the ground itself, and the outpost never splits apart; and
+/// nothing strikes the ground it covers.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(WFOutpostSystem))]
@@ -58,21 +60,48 @@ public sealed class OutpostFoundationTest
                 // East of the outpost's middle row: ground tile (8, 0), outpost tile (3, 1).
                 Assert.That(outposts.TryExtend(user, "Plating", new EntityCoordinates(ground, 8.5f, 0.5f), out reason), Is.True,
                     $"A plate beside the outpost was refused: {reason}.");
-                Assert.That(outposts.TryExtend(user, "Plating", new EntityCoordinates(ground, 10.5f, 0.5f), out reason), Is.False);
-                Assert.That(reason, Is.EqualTo("wf-outpost-plate-not-edge"), "A plate was laid away from the outpost.");
+                // Two tiles further east, a patch of its own: ground tile (10, 0), outpost tile (5, 1).
+                Assert.That(outposts.TryExtend(user, "Plating", new EntityCoordinates(ground, 10.5f, 0.5f), out reason), Is.True,
+                    $"A plate in the claim, apart from the floor, was refused: {reason}.");
+                // The claim now reaches ground x 18.
+                Assert.That(outposts.TryExtend(user, "Plating", new EntityCoordinates(ground, 20.5f, 0.5f), out reason), Is.False);
+                Assert.That(reason, Is.EqualTo("wf-outpost-plate-outside-claim"), "A plate was laid outside the claim.");
+                // The floor spans ground x 5..10; at a span of 8, x 13 would make it 9 wide.
+                server.CfgMan.SetCVar(OutpostCVars.MaxSpan, 8);
+                Assert.That(outposts.TryExtend(user, "Plating", new EntityCoordinates(ground, 13.5f, 0.5f), out reason), Is.False);
+                Assert.That(reason, Is.EqualTo("wf-outpost-plate-too-wide"), "A plate spread the outpost past its span.");
+                server.CfgMan.SetCVar(OutpostCVars.MaxSpan, OutpostCVars.MaxSpan.DefaultValue);
 
                 var outpostGrid = entMan.GetComponent<MapGridComponent>(grid);
                 var outpost = entMan.GetComponent<WFOutpostComponent>(grid);
                 Assert.Multiple(() =>
                 {
-                    Assert.That(outposts.CountTiles((grid, outpostGrid)), Is.EqualTo(10), "The plate didn't extend the outpost.");
+                    Assert.That(outposts.CountTiles((grid, outpostGrid)), Is.EqualTo(11), "The plates didn't extend the outpost.");
                     Assert.That(maps.GetTileRef(grid, outpostGrid, new Vector2i(3, 1)).Tile.IsEmpty, Is.False);
+                    Assert.That(maps.GetTileRef(grid, outpostGrid, new Vector2i(5, 1)).Tile.IsEmpty, Is.False);
                     Assert.That(maps.GetTileRef(ground, groundGrid, new Vector2i(8, 0)).Tile.IsEmpty, Is.True,
                         "The plate built on the ground instead of carving it.");
-                    // Twelve sides open round the 3x3; the new tile closes one and opens three.
-                    Assert.That(outpost.Portals, Has.Count.EqualTo(14), "The portal ring wasn't moved to the new edge.");
+                    Assert.That(maps.GetTileRef(ground, groundGrid, new Vector2i(10, 0)).Tile.IsEmpty, Is.True,
+                        "The detached plate built on the ground instead of carving it.");
+                    // Twelve sides open round the 3x3; the east tile closes one and opens three, the detached one opens four.
+                    Assert.That(outpost.Portals, Has.Count.EqualTo(18), "The portal ring wasn't moved to the new edges.");
+                    Assert.That(outpostGrid.CanSplit, Is.False, "The outpost can split.");
                 });
                 carved.Add(new Vector2i(8, 0));
+                carved.Add(new Vector2i(10, 0));
+
+                // Bridge to the patch, then break the bridge: the outpost stays one grid.
+                Assert.That(outposts.TryExtend(user, "Plating", new EntityCoordinates(ground, 9.5f, 0.5f), out reason), Is.True, reason);
+                maps.SetTile(grid, outpostGrid, new Vector2i(4, 1), Tile.Empty);
+            });
+
+            await pair.RunTicksSync(2);
+            await server.WaitAssertion(() =>
+            {
+                var outpostGrid = entMan.GetComponent<MapGridComponent>(grid);
+                Assert.That(maps.GetTileRef(grid, outpostGrid, new Vector2i(5, 1)).Tile.IsEmpty, Is.False,
+                    "Breaking the bridge split the patch off the outpost.");
+                Assert.That(outposts.CountTiles((grid, outpostGrid)), Is.EqualTo(11));
 
                 entMan.DeleteEntity(grid);
             });

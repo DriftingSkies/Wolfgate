@@ -18,7 +18,9 @@ biome never grows it back, and loose things on it move onto the outpost. Its flo
 ground's navmesh, weather strikes and wildlife never reach under its walls. The carved tiles come back as they were when
 the outpost is deleted or sold. Its edge is joined to the ground by a ring of pathfinding portals
 (`WFOutpostSystem.Portals`), so NPCs walk on and off it. Foundation plates (`WFOutpostFoundationPlate`) extend the
-outpost a tile at a time onto open ground beside its floor, up to `wf.outposts.max_tiles` (1,600).
+outpost a tile at a time onto open ground anywhere in its claim, so its floor may lie in separate patches, up to
+`wf.outposts.max_tiles` (1,600) and no wider than `wf.outposts.max_span` (64) tiles either way. Outpost grids never
+split (`CanSplit` off), so a patch cut off by a breach stays part of the outpost.
 
 An outpost is a terrain grid (`WFPlanetTerrainGridComponent`, from Planets), not a vessel: open to the sky until roofed,
 so weather and lightning reach its bare tiles. Walls roof the tile they stand on, and roof panels (`WFOutpostRoofPanel`)

@@ -34,7 +34,8 @@ wf-outpost-console-raids-never = None on this world
 
 wf-outpost-plate-not-outpost = Foundation plates extend an outpost of your own; you don't have one.
 wf-outpost-plate-wrong-ground = Your outpost isn't on this ground.
-wf-outpost-plate-not-edge = A foundation plate has to go right beside your outpost's floor.
+wf-outpost-plate-outside-claim = A foundation plate has to go inside your outpost's claim.
+wf-outpost-plate-too-wide = Your outpost can't spread any wider than that.
 wf-outpost-plate-taken = There's already floor there.
 wf-outpost-plate-full = Your outpost is as big as an outpost can be.
 wf-outpost-plate-claimed = That ground is claimed by another outpost.

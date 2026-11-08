@@ -9,7 +9,10 @@ using Robust.Shared.Player;
 
 namespace Content.Server._WF.Outposts;
 
-/// <summary>Foundation plates: the outpost grows a tile at a time onto the open ground beside its floor.</summary>
+/// <summary>
+/// Foundation plates: the outpost grows a tile at a time onto open ground anywhere in its claim, so its floor may lie in
+/// separate patches, as long as the whole spans no more than <see cref="OutpostCVars.MaxSpan"/> tiles either way.
+/// </summary>
 public sealed partial class WFOutpostSystem
 {
     private static readonly Vector2i[] Neighbours = { Vector2i.Up, Vector2i.Down, Vector2i.Left, Vector2i.Right };
@@ -35,9 +38,9 @@ public sealed partial class WFOutpostSystem
     }
 
     /// <summary>
-    /// Extends an outpost onto the ground tile at <paramref name="target"/>, which has to be open ground right beside
-    /// its floor: one the user is a listed builder on, if the tile is beside it, else the user's own. The ground there
-    /// is carved away. <paramref name="reason"/> is a loc id when it fails.
+    /// Extends an outpost onto the ground tile at <paramref name="target"/>, which has to be open ground in its claim:
+    /// one the user is a listed builder on, if the tile is in its claim, else the user's own. The ground there is carved
+    /// away. <paramref name="reason"/> is a loc id when it fails.
     /// </summary>
     public bool TryExtend(EntityUid user, string tileId, EntityCoordinates target, out string reason)
     {
@@ -66,16 +69,16 @@ public sealed partial class WFOutpostSystem
             return false;
         }
 
-        var beside = false;
-        foreach (var side in Neighbours)
+        var groundIndex = _maps.TileIndicesFor(ground, groundGrid, at);
+        if (!InClaim((outpost, outpost.Comp, gridComp), groundIndex))
         {
-            if (_maps.TryGetTileRef(outpost, gridComp, index + side, out var next) && !next.Tile.IsEmpty)
-                beside = true;
+            reason = "wf-outpost-plate-outside-claim";
+            return false;
         }
 
-        if (!beside)
+        if (!WithinSpan(gridComp, index))
         {
-            reason = "wf-outpost-plate-not-edge";
+            reason = "wf-outpost-plate-too-wide";
             return false;
         }
 
@@ -85,7 +88,6 @@ public sealed partial class WFOutpostSystem
             return false;
         }
 
-        var groundIndex = _maps.TileIndicesFor(ground, groundGrid, at);
         if (TryGetClaim(ground, groundIndex, outpost.Comp.Owner, out _))
         {
             reason = "wf-outpost-plate-claimed";
@@ -102,7 +104,7 @@ public sealed partial class WFOutpostSystem
         return true;
     }
 
-    /// <summary>The outpost a plate at <paramref name="target"/> extends: one the user builds on that it is beside, else their own.</summary>
+    /// <summary>The outpost a plate at <paramref name="target"/> extends: one the user builds on whose claim it is in, else their own.</summary>
     private bool TryGetPlateOutpost(EntityUid user, EntityCoordinates target, out Entity<WFOutpostComponent> outpost)
     {
         var map = _transform.GetMap(target);
@@ -113,15 +115,12 @@ public sealed partial class WFOutpostSystem
             if (comp.Ground != map || IsOwnerOf(user, comp) || !CanBuild(user, (uid, comp)))
                 continue;
 
-            var index = _maps.TileIndicesFor(uid, grid, at);
-            foreach (var side in Neighbours)
-            {
-                if (!_maps.TryGetTileRef(uid, grid, index + side, out var next) || next.Tile.IsEmpty)
-                    continue;
+            if (!TryComp<MapGridComponent>(comp.Ground, out var groundGrid)
+                || !InClaim((uid, comp, grid), _maps.TileIndicesFor(comp.Ground, groundGrid, at)))
+                continue;
 
-                outpost = (uid, comp);
-                return true;
-            }
+            outpost = (uid, comp);
+            return true;
         }
 
         if (TryComp<ActorComponent>(user, out var actor) && TryGetOutpost(actor.PlayerSession.UserId, out outpost))
@@ -129,5 +128,23 @@ public sealed partial class WFOutpostSystem
 
         outpost = default;
         return false;
+    }
+
+    /// <summary>Whether a ground tile is in an outpost's claim.</summary>
+    private bool InClaim(Entity<WFOutpostComponent, MapGridComponent> outpost, Vector2i groundIndex)
+    {
+        var (min, max) = GetClaimZone(outpost);
+        return groundIndex.X >= min.X && groundIndex.Y >= min.Y && groundIndex.X <= max.X && groundIndex.Y <= max.Y;
+    }
+
+    /// <summary>Whether the outpost's floor, with a tile added at <paramref name="index"/>, still spans no more than the cap either way.</summary>
+    private bool WithinSpan(MapGridComponent grid, Vector2i index)
+    {
+        var local = grid.LocalAABB;
+        var size = grid.TileSize;
+        var min = Vector2i.ComponentMin(new Vector2i((int) MathF.Floor(local.Left / size), (int) MathF.Floor(local.Bottom / size)), index);
+        var max = Vector2i.ComponentMax(new Vector2i((int) MathF.Ceiling(local.Right / size) - 1, (int) MathF.Ceiling(local.Top / size) - 1), index);
+        var span = _cfg.GetCVar(OutpostCVars.MaxSpan);
+        return max.X - min.X < span && max.Y - min.Y < span;
     }
 }

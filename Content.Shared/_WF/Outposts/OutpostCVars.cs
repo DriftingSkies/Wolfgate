@@ -14,6 +14,10 @@ public sealed class OutpostCVars
     public static readonly CVarDef<int> MaxTiles =
         CVarDef.Create("wf.outposts.max_tiles", 1600, CVar.SERVERONLY);
 
+    /// <summary>Widest an outpost's floor may spread across either axis, in tiles; plates past it are refused.</summary>
+    public static readonly CVarDef<int> MaxSpan =
+        CVarDef.Create("wf.outposts.max_span", 64, CVar.SERVERONLY);
+
     /// <summary>
     /// Most entities one outpost may hold and still be saved: a save takes about 0.21 ms an entity on the main thread
     /// (spike F0.2), so this keeps it near half a second.

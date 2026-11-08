@@ -108,6 +108,10 @@ public sealed class OutpostSaveLoadTest
                 var east = transform.ToMapCoordinates(new EntityCoordinates(first, 3.5f, 1.5f));
                 Assert.That(outposts.TryExtend(user, "Plating", transform.ToCoordinates(ground, east), out var reason), Is.True,
                     $"The plate was refused: {reason}.");
+                // A patch of floor apart from the rest, with a gap of ground between.
+                var apart = transform.ToMapCoordinates(new EntityCoordinates(first, 5.5f, 1.5f));
+                Assert.That(outposts.TryExtend(user, "Plating", transform.ToCoordinates(ground, apart), out reason), Is.True,
+                    $"The detached plate was refused: {reason}.");
 
                 var storage = server.System<SharedEntityStorageSystem>();
                 var locker = entMan.SpawnEntity("LockerSteel", maps.GridTileToLocal(first, grid, new Vector2i(0, 0)));
@@ -143,7 +147,7 @@ public sealed class OutpostSaveLoadTest
             var stored = await db.GetOutpostSaveDataAsync(owner, 0);
             Assert.That(stored, Is.Not.Null);
             Assert.That(stored!.Value.Save.Appraisal, Is.EqualTo(appraisal));
-            Assert.That(stored.Value.Save.Tiles, Is.EqualTo(10));
+            Assert.That(stored.Value.Save.Tiles, Is.EqualTo(11));
             await server.WaitAssertion(() =>
             {
                 Assert.That(outposts.GetSlots(owner)?[0]?.Name, Is.EqualTo(entMan.GetComponent<MetaDataComponent>(first).EntityName));
@@ -170,7 +174,7 @@ public sealed class OutpostSaveLoadTest
             await server.WaitAssertion(() =>
             {
                 Assert.That(entMan.HasComponent<WFOutpostPendingLoadComponent>(second), "The outline is drawn on the founding outpost.");
-                Assert.That(entMan.GetComponent<WFOutpostPendingLoadComponent>(second).Tiles, Has.Count.EqualTo(10));
+                Assert.That(entMan.GetComponent<WFOutpostPendingLoadComponent>(second).Tiles, Has.Count.EqualTo(11));
                 // The cash on the floor is not part of the price.
                 price = before - Balance();
                 Assert.That(price, Is.EqualTo(WFOutpostSystem.LoadPrice(appraisal)));
@@ -183,7 +187,9 @@ public sealed class OutpostSaveLoadTest
                 Assert.That(entMan.Deleted(second), "The founding outpost is gone.");
                 Assert.That(outposts.TryGetOutpost(owner, out var loaded), Is.True, "The save is the owner's outpost.");
                 var grid = entMan.GetComponent<MapGridComponent>(loaded);
-                Assert.That(outposts.CountTiles((loaded, grid)), Is.EqualTo(10));
+                Assert.That(outposts.CountTiles((loaded, grid)), Is.EqualTo(11));
+                Assert.That(maps.GetTileRef(loaded, grid, new Vector2i(5, 1)).Tile.IsEmpty, Is.False, "The detached patch didn't come back.");
+                Assert.That(grid.CanSplit, Is.False, "The loaded outpost can split.");
                 Assert.That(transform.GetWorldPosition(loaded.Comp.Console), Is.EqualTo(consoleAt).Using<Vector2>((a, b) => (a - b).Length() < 0.01f),
                     "The console landed on the founding console's tile.");
                 Assert.That(entMan.GetComponent<WFOutpostConsoleComponent>(loaded.Comp.Console).Outpost, Is.EqualTo(loaded.Owner));
