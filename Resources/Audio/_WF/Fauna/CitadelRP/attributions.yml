@@ -1,0 +1,32 @@
+- files: ["towelwhip.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CitadelRP"
+  source: "https://github.com/citadel-station/citadel-rp/blob/db254a45e84676b7d1f32e3386c65453253bc6c5/sound/weapons/towelwhip.ogg"
+- files: ["drone_attack.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CitadelRP"
+  source: "https://github.com/citadel-station/citadel-rp/blob/db254a45e84676b7d1f32e3386c65453253bc6c5/sound/mobs/biomorphs/drone_attack.ogg"
+- files: ["stealthoff.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CitadelRP"
+  source: "https://github.com/citadel-station/citadel-rp/blob/db254a45e84676b7d1f32e3386c65453253bc6c5/sound/effects/stealthoff.ogg"
+- files: ["growl1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CitadelRP"
+  source: "https://github.com/citadel-station/citadel-rp/blob/db254a45e84676b7d1f32e3386c65453253bc6c5/sound/hallucinations/growl1.ogg"
+- files: ["pulse3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CitadelRP"
+  source: "https://github.com/citadel-station/citadel-rp/blob/db254a45e84676b7d1f32e3386c65453253bc6c5/sound/weapons/pulse3.ogg"
+- files: ["slice.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from CitadelRP"
+  source: "https://github.com/citadel-station/citadel-rp/blob/db254a45e84676b7d1f32e3386c65453253bc6c5/sound/weapons/slice.ogg"
+- files: ["curse1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Citadel Station 13"
+  source: "https://github.com/Citadel-Station-13/Citadel-Station-13/blob/31b47497ab7e3b1c15c67657931ce480f14caed1/sound/effects/curse1.ogg"
+- files: ["curseattack.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Citadel Station 13"
+  source: "https://github.com/Citadel-Station-13/Citadel-Station-13/blob/31b47497ab7e3b1c15c67657931ce480f14caed1/sound/effects/curseattack.ogg"

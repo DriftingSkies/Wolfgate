@@ -120,6 +120,9 @@ namespace Content.Server.NPC.Systems
                 return;
             }
 
+            if (HasComp<ActorComponent>(uid)) // WOLFGATE(NpcCrew): a mob someone plays, such as a possessing admin, has no AI to wake
+                return;
+
             Log.Debug($"Waking {ToPrettyString(uid)}");
             EnsureComp<ActiveNPCComponent>(uid);
         }

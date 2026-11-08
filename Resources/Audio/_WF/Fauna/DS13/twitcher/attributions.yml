@@ -1,0 +1,148 @@
+- files: ["twitcher_attack_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_1.ogg"
+- files: ["twitcher_attack_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_2.ogg"
+- files: ["twitcher_attack_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_3.ogg"
+- files: ["twitcher_attack_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_4.ogg"
+- files: ["twitcher_attack_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_5.ogg"
+- files: ["twitcher_attack_6.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_6.ogg"
+- files: ["twitcher_attack_7.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_7.ogg"
+- files: ["twitcher_attack_8.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_attack_8.ogg"
+- files: ["twitcher_death_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_death_1.ogg"
+- files: ["twitcher_death_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_death_2.ogg"
+- files: ["twitcher_death_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_death_3.ogg"
+- files: ["twitcher_death_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_death_4.ogg"
+- files: ["twitcher_shout_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_1.ogg"
+- files: ["twitcher_shout_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_2.ogg"
+- files: ["twitcher_shout_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_3.ogg"
+- files: ["twitcher_shout_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_4.ogg"
+- files: ["twitcher_shout_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_5.ogg"
+- files: ["twitcher_pain_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_1.ogg"
+- files: ["twitcher_pain_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_2.ogg"
+- files: ["twitcher_pain_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_3.ogg"
+- files: ["twitcher_pain_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_4.ogg"
+- files: ["twitcher_pain_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_5.ogg"
+- files: ["twitcher_pain_6.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_6.ogg"
+- files: ["twitcher_pain_7.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_7.ogg"
+- files: ["twitcher_pain_8.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_8.ogg"
+- files: ["twitcher_pain_9.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_9.ogg"
+- files: ["twitcher_pain_extreme.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_pain_extreme.ogg"
+- files: ["twitcher_shout_long_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_long_2.ogg"
+- files: ["twitcher_shout_long_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_long_5.ogg"
+- files: ["twitcher_shout_long_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_long_1.ogg"
+- files: ["twitcher_shout_long_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_long_3.ogg"
+- files: ["twitcher_shout_long_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_shout_long_4.ogg"
+- files: ["twitcher_speech_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_speech_1.ogg"
+- files: ["twitcher_speech_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_speech_2.ogg"
+- files: ["twitcher_speech_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_speech_3.ogg"
+- files: ["twitcher_speech_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_speech_4.ogg"
+- files: ["twitcher_speech_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/twitcher/twitcher_speech_5.ogg"

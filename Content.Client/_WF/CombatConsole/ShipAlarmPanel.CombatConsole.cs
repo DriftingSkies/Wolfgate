@@ -23,11 +23,18 @@ public sealed partial class ShipAlarmPanel
             label.MinHeight = 24;
             label.ClipText = true;
         }
-        conditionCaption.ClipText = false;
+        conditionCaption.ClipText = SpeakersCaption.ClipText = false;
         ConditionLabel.HorizontalExpand = true;
-        SpeakersCaption.HorizontalExpand = SpeakersLabel.HorizontalExpand = true;
+        SpeakersLabel.HorizontalExpand = true;
         SpeakersLabel.Align = Robust.Client.UserInterface.Controls.Label.AlignMode.Left;
-        var readouts = Column(Row(conditionCaption, ConditionLabel), Column(SpeakersCaption, SpeakersLabel));
+        // The volume slider rides the Speakers caption line, so the bank stays as tall as before.
+        VolumeSlider.Margin = new Thickness(6, 0);
+        VolumeSlider.MinWidth = 0;
+        VolumeLabel.Margin = new Thickness(0);
+        VolumeLabel.MinHeight = 24;
+        var volume = Row(SpeakersCaption, VolumeSlider, VolumeLabel);
+        volume.SeparationOverride = 0;
+        var readouts = Column(Row(conditionCaption, ConditionLabel), Column(volume, SpeakersLabel));
         readouts.SeparationOverride = 2;
         ((BoxContainer) SpeakersLabel.Parent!).SeparationOverride = 0;
 

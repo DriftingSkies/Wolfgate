@@ -16,6 +16,8 @@ World generation raises `WFDebrisPlacingEvent` before it spawns a debris feature
 a sector cell that any faction holds or has just freed (it stays clearing for `wf.sector.clearing_minutes`), so no drones appear there. Chunks already generated, and cells claimed
 after, keep the drones they have.
 
+On a map with the Lattice (`_WF/Lattice`) the radars draw its band edges instead, which line up with these rings.
+
 Biomes pinned to a block of chunks (the Wilds) also hold drones but are patches, not distances, and get no ring.
 A biome claims a chunk by its centre, so the real edge wanders up to half a chunk (64 m) either side of the ring.
 

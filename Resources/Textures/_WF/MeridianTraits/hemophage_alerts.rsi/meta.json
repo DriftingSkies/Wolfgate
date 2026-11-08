@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Nova Sector (https://github.com/NovaSector/NovaSector) via Meridian Rift, hemophage/icons/screen_alert.dmi; blood0-blood10 drawn for Wolfgate on the hemophage action background",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "hemokinetic_regen"
+    },
+    {
+      "name": "master_of_the_house"
+    },
+    {
+      "name": "slave_to_the_tumor"
+    },
+    {
+      "name": "blood0"
+    },
+    {
+      "name": "blood1"
+    },
+    {
+      "name": "blood2"
+    },
+    {
+      "name": "blood3"
+    },
+    {
+      "name": "blood4"
+    },
+    {
+      "name": "blood5"
+    },
+    {
+      "name": "blood6"
+    },
+    {
+      "name": "blood7"
+    },
+    {
+      "name": "blood8"
+    },
+    {
+      "name": "blood9"
+    },
+    {
+      "name": "blood10"
+    }
+  ]
+}

@@ -43,6 +43,7 @@
   titleOut: wolfmed-cause-cold-title-out
   symptom: wolfmed-cause-cold-symptom
   help: wolfmed-cause-cold-help
+  helpMechanical: wolfmed-cause-cold-help-mechanical
   helpBlocked: wolfmed-cause-cold-help-blocked
   helpOut: wolfmed-cause-cold-help-out
   helpOutBlocked: wolfmed-cause-cold-help-out-blocked

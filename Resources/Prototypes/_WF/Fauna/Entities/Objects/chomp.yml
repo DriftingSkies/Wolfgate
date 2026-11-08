@@ -1,0 +1,221 @@
+# CHOMPStation fauna loot. The metals and scales drop as plain items.
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodMeatRay
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodMeatEel
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodMeatGravityShell
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodTyrantShock
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodTyrantNeoburn
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodTyrantBurn
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodTyrantRadiation
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+
+- type: entity
+  parent: FoodMeat
+  id: CHOMPFoodTyrantBonus
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialWisp
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/crafting.rsi
+    state: wisp
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialFrostScale
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/crafting.rsi
+    state: scale
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialDreamScale
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/crafting.rsi
+    state: scale
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialShellChitin
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/crafting.rsi
+    state: shell
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialValhollide
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-gem
+    color: "#FFF3B2"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialQuartz
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-gem
+    color: "#E6D7DF"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialPainite
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-gem
+    color: "#6B4947"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialVerdantium
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-wavy
+    color: "#4FE95A"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialWeatheredAgate
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-agate
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialMetallicHydrogen
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-mythril
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialGraphite
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-puck
+    color: "#333333"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: CHOMPMaterialBronze
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/stacks.rsi
+    state: sheet-ingot
+    color: "#EDD12F"
+  - type: Item
+    size: Small

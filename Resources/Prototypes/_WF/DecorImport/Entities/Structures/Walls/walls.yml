@@ -599,8 +599,8 @@
   id: NovaMineralAdamantine
   components:
   - type: Construction
-    graph: WFAdamantiteWall
-    node: adamantiteWall
+    graph: WFDurasteelWall
+    node: durasteelWall
   - type: Sprite
     sprite: _WF/DecorImport/Structures/Walls/adamantine_wall.rsi
   - type: Icon

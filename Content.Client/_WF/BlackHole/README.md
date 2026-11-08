@@ -12,6 +12,9 @@ The star keeps its name, mass, navigation beacon and planetary layout; this is a
 with no gravity, damage or orbital simulation changes. The inherited stellar mass is a compatibility
 scale for the existing radius and lighting calculations, not a physical black-hole mass model.
 
+The Lattice (`_WF/Lattice`) feeds the shader's `unmooring` uniform: as anchors fall, or out in the Deep, Kyphrus
+lenses harder, its disk stutters and turns violet, a ghost image appears and the shadow's edge tears.
+
 The partial `StarOverlay.BlackHole.cs` captures parallax before world geometry and supplies camera-aware
 refraction offsets. Planets and asteroid belts draw afterward, as do ships and stations. The shader uses
 analytic disk images and a bounded background displacement instead of a ray march or additional textures.

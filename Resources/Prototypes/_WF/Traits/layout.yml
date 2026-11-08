@@ -99,6 +99,8 @@
     - HighPainThreshold
     - LightweightDrunk
     - WFIlluminated
+    - WFHemophagia
+    - WFHemophagiaMasquerade
 
 - type: wfTraitLayout
   id: SpeechTraits

@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Polaris at commit https://github.com/PolarisSS13/Polaris/commit/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "hunter",
+      "directions": 4
+    },
+    {
+      "name": "hunter_dead"
+    },
+    {
+      "name": "hunter_eyes",
+      "directions": 4
+    },
+    {
+      "name": "lurker",
+      "directions": 4
+    },
+    {
+      "name": "lurker_dead"
+    },
+    {
+      "name": "lurker_eyes",
+      "directions": 4
+    },
+    {
+      "name": "tunneler",
+      "directions": 4
+    },
+    {
+      "name": "tunneler_dead"
+    },
+    {
+      "name": "tunneler_eyes",
+      "directions": 4
+    },
+    {
+      "name": "webslinger",
+      "directions": 4
+    },
+    {
+      "name": "webslinger_dead"
+    },
+    {
+      "name": "webslinger_eyes",
+      "directions": 4
+    },
+    {
+      "name": "carrier",
+      "directions": 4
+    },
+    {
+      "name": "carrier_dead"
+    },
+    {
+      "name": "carrier_eyes",
+      "directions": 4
+    },
+    {
+      "name": "phoron",
+      "directions": 4
+    },
+    {
+      "name": "phoron_dead"
+    },
+    {
+      "name": "phoron_eyes",
+      "directions": 4
+    },
+    {
+      "name": "spark",
+      "directions": 4
+    },
+    {
+      "name": "spark_dead"
+    },
+    {
+      "name": "spark_eyes",
+      "directions": 4
+    },
+    {
+      "name": "frost",
+      "directions": 4
+    },
+    {
+      "name": "frost_dead"
+    },
+    {
+      "name": "frost_eyes",
+      "directions": 4
+    },
+    {
+      "name": "pepper",
+      "directions": 4
+    },
+    {
+      "name": "pepper_dead"
+    },
+    {
+      "name": "pepper_eyes",
+      "directions": 4
+    },
+    {
+      "name": "pit",
+      "directions": 4
+    },
+    {
+      "name": "pit_dead"
+    },
+    {
+      "name": "pit_eyes",
+      "directions": 4
+    },
+    {
+      "name": "phoron_primed",
+      "delays": [
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

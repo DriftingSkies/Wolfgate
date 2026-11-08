@@ -22,9 +22,11 @@ uniform bool hasBackground;
 uniform sampler2D SCREEN_TEXTURE;
 uniform highp vec2 worldToScreenX;
 uniform highp vec2 worldToScreenY;
+// How far the Lattice has failed, 0 to 1: stronger lensing, a stuttering violet disk, a ghost image and a torn shadow.
+uniform highp float unmooring;
 
 // Differential rotation winds the turbulence into narrow, continuous plasma streams.
-highp vec4 accretionDisk(highp vec2 q, highp float pixelWidth) {
+highp vec4 accretionDisk(highp vec2 q, highp float pixelWidth, highp vec3 baseColor, highp float diskTime) {
     highp float r = length(q);
     highp float inner = hasRings ? max(1.25, ringsRadiusInner * 0.8) : 1.28;
     highp float outer = hasRings ? max(inner + 0.5, ringsRadiusOuter * 1.6) : 4.16;
@@ -33,7 +35,7 @@ highp vec4 accretionDisk(highp vec2 q, highp float pixelWidth) {
     }
 
     highp float angle = atan(q.y, q.x);
-    highp float orbit = angle - TIME * rotationSpeed / pow(max(r, 1.0), 0.65);
+    highp float orbit = angle - diskTime * rotationSpeed / pow(max(r, 1.0), 0.65);
     highp vec2 flow = vec2(cos(orbit), sin(orbit));
     highp float turbulence = fbm(flow * 9.0 + vec2(r * 7.0, r * 3.0));
     highp float filaments = sin(r * 85.0 + turbulence * 3.5 + sin(orbit * 7.0 + r * 4.0));
@@ -46,7 +48,7 @@ highp vec4 accretionDisk(highp vec2 q, highp float pixelWidth) {
     highp float approaching = 0.5 - 0.5 * q.x / max(r, 0.001);
     highp float beaming = mix(0.48, 1.85, approaching * approaching);
 
-    highp vec3 ember = starColor * vec3(1.3, 0.40, 0.12);
+    highp vec3 ember = baseColor * vec3(1.3, 0.40, 0.12);
     highp vec3 hot = mix(vec3(1.4, 1.05, 0.62), vec3(0.85, 1.1, 1.5), approaching * 0.65);
     highp vec3 radiance = mix(ember, hot, heat * heat) * texture * beaming * (0.65 + heat * 2.8);
     highp vec3 color = vec3(1.0) - exp(-radiance);
@@ -55,6 +57,10 @@ highp vec4 accretionDisk(highp vec2 q, highp float pixelWidth) {
 }
 
 void fragment() {
+    highp float u = clamp(unmooring, 0.0, 1.0);
+    // The disk's clock skips in jumps as the Lattice fails, and its colour leans from warm orange towards violet.
+    highp float diskTime = TIME + u * 0.45 * floor(sin(TIME * 2.3) * 3.0);
+    highp vec3 tint = mix(starColor, vec3(0.62, 0.30, 1.25), u * 0.85);
     highp vec2 center = starWorldPos + (parallaxCenter - starWorldPos) * (1.0 - parallaxFactor);
     highp float radius = max(starRadius * solarRadiusFactor, 0.001);
     highp vec2 offset = viewportMin + UV * viewportSize - center;
@@ -76,7 +82,7 @@ void fragment() {
 
     // Only the space background is captured; ships and nearby bodies draw after this pass.
     highp float lensEnvelope = 1.0 - smoothstep(2.4, effectRadius, r);
-    highp float bend = lensStrength * lensEnvelope / (r * r + 0.55);
+    highp float bend = lensStrength * (1.0 + u * 1.2) * lensEnvelope / (r * r + 0.55);
     highp vec2 displacement = offset * bend;
     highp vec2 displacementPixels = worldToScreenX * displacement.x + worldToScreenY * displacement.y;
     highp vec2 sampleUv = (FRAGCOORD.xy - displacementPixels) * SCREEN_PIXEL_SIZE;
@@ -101,10 +107,18 @@ void fragment() {
     // Soft emission gives the disk a halo without requiring a separate bloom pass.
     highp float equatorial = length(vec2(disk.x, disk.y / (tilt + 0.16)));
     highp float haze = exp(-equatorial * 0.8) * (1.0 - smoothstep(3.5, effectRadius, r));
-    highp vec3 halo = starColor * haze * 0.12;
+    highp vec3 halo = tint * haze * 0.12;
     composite = compositeOver(composite, vec4(halo, haze * 0.38));
 
-    highp vec4 directDisk = accretionDisk(vec2(disk.x, disk.y / tilt), pixelWidth / tilt);
+    highp vec4 directDisk = accretionDisk(vec2(disk.x, disk.y / tilt), pixelWidth / tilt, tint, diskTime);
+    // A wrong second image of the disk, turned a little and running against the first.
+    if (u > 0.01) {
+        highp float ghostAngle = 0.35 + 0.1 * sin(TIME * 0.7);
+        highp vec2 ghostQ = vec2(disk.x * cos(ghostAngle) - disk.y * sin(ghostAngle), disk.x * sin(ghostAngle) + disk.y * cos(ghostAngle));
+        highp vec4 ghost = accretionDisk(vec2(ghostQ.x, ghostQ.y / tilt) * 1.08, pixelWidth / tilt, tint, -diskTime);
+        ghost.a *= u * 0.45;
+        composite = compositeOver(composite, ghost);
+    }
     if (disk.y >= 0.0) {
         composite = compositeOver(composite, directDisk);
     }
@@ -115,14 +129,16 @@ void fragment() {
     if (arcT > 0.0 && arcT < 1.0) {
         highp float sourceRadius = mix(1.28, 4.16, arcT);
         highp vec2 arcDirection = vec2(disk.x, disk.y * 0.90) / max(arcRadius, 0.001);
-        highp vec4 arc = accretionDisk(arcDirection * sourceRadius, pixelWidth * 6.0);
+        highp vec4 arc = accretionDisk(arcDirection * sourceRadius, pixelWidth * 6.0, tint, diskTime);
         highp float upper = smoothstep(-0.1, 0.3, disk.y);
         highp float arch = smoothstep(0.05, 0.42, abs(disk.y));
         arc.a *= arch * mix(0.28, 0.93, upper) * (1.0 - smoothstep(0.65, 1.0, arcT));
         composite = compositeOver(composite, arc);
     }
 
-    highp float shadow = 1.0 - smoothstep(1.0 - pixelWidth, 1.0 + pixelWidth, r);
+    // The shadow's edge tears as the Lattice fails.
+    highp float tear = u * 0.09 * fbm(vec2(atan(p.y, p.x) * 3.0, TIME * 0.6));
+    highp float shadow = 1.0 - smoothstep(1.0 - pixelWidth, 1.0 + pixelWidth, r - tear);
     composite = compositeOver(composite, vec4(0.0, 0.0, 0.0, shadow));
 
     // A narrow photon ring stays legible at distance; its broad halo is outside the shadow.
@@ -130,7 +146,7 @@ void fragment() {
     highp float photon = exp(-pow((r - 1.035) / ringWidth, 2.0));
     highp float ringGlow = exp(-abs(r - 1.055) * 24.0) * (1.0 - shadow);
     highp float brightness = 0.76 + 0.24 * (-disk.x / max(r, 0.001));
-    highp vec3 ringColor = mix(starColor, vec3(1.0, 0.96, 0.85), photon);
+    highp vec3 ringColor = mix(tint, vec3(1.0, 0.96, 0.85), photon);
     composite = compositeOver(composite, vec4(ringColor * brightness, clamp(photon * 0.95 + ringGlow * 0.35, 0.0, 1.0)));
 
     if (disk.y < 0.0) {

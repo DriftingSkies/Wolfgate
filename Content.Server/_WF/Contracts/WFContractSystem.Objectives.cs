@@ -6,6 +6,7 @@ using Content.Server.Anomaly.Components;
 using Content.Server.Storage.Components;
 using Content.Shared._WF.Contracts;
 using Content.Shared._WF.Encounters;
+using Content.Shared._WF.NpcCrew;
 using Content.Shared.Anomaly;
 using Content.Shared.Anomaly.Components;
 using Content.Shared.Examine;
@@ -318,7 +319,10 @@ public sealed partial class WFContractSystem
 
                     // The contract's tier picks the target's ships from tier bands, such as the Reaver line.
                     if (!_encounters.TrySpawn(encounterProto, site, out var encounter, offBudget: true, tier: proto.Tier))
+                    {
+                        Log.Warning($"Bounty contract {contract.Id} could not start {encounterId} at {site}.");
                         continue;
+                    }
 
                     contract.Site = site;
                     contract.EncounterEntity = encounter;
@@ -545,10 +549,20 @@ public sealed partial class WFContractSystem
                     Void(contract, "wf-contract-reason-target-gone");
                 else if (EscortedShip(contract, escort) is not { } ship || TerminatingOrDeleted(ship.Grid))
                     Fail(contract, "wf-contract-reason-escort-lost");
-                else if (ship.Flown)
+                else if (ship.Flown || Arrived(ship))
                     Complete(contract);
                 break;
         }
+    }
+
+    /// <summary>
+    /// Whether an escorted ship has reached its destination: no dock call is left in its orders. The escort is done
+    /// there, whatever the ship does with its departure afterwards.
+    /// </summary>
+    private bool Arrived(Encounters.Components.WFEncounterShipState ship)
+    {
+        return _crewObjectives.TryGetQueue(ship.Grid, ship.Group, out var left)
+               && left.All(order => order.Kind != WFCrewObjectiveKind.Dock);
     }
 
     /// <summary>The ship an escort contract protects, if its encounter is still running.</summary>
@@ -703,7 +717,7 @@ public sealed partial class WFContractSystem
         {
             if (args.Resolution == WFEncounterResolution.Ended)
                 Void(contract, "wf-contract-reason-target-gone");
-            else if (EscortedShip(contract, escort) is { Flown: true } ship && !TerminatingOrDeleted(ship.Grid))
+            else if (EscortedShip(contract, escort) is { } ship && !TerminatingOrDeleted(ship.Grid) && (ship.Flown || Arrived(ship)))
                 Complete(contract);
             else if (args.Resolution is WFEncounterResolution.Destroyed or WFEncounterResolution.Expired)
                 Fail(contract, "wf-contract-reason-escort-lost");
@@ -745,20 +759,31 @@ public sealed partial class WFContractSystem
         return false;
     }
 
-    /// <summary>Open space at a distance from a station, clear of grids, stations and gravity wells.</summary>
+    /// <summary>
+    /// Open space at a distance from a station, clear of grids, stations and gravity wells. A crowded band is tried
+    /// again wider and with half the station clearance, so busy sectors still find a site.
+    /// </summary>
     private MapCoordinates? PickSite(EntityUid station, float min, float max, float clearance)
     {
         if (_station.GetLargestGrid(station) is not { } grid)
             return null;
 
         var centre = _transform.GetMapCoordinates(grid);
-        for (var attempt = 0; attempt < 40; attempt++)
+        var far = Math.Max(min, max);
+        for (var pass = 0; pass < 3; pass++)
         {
-            var point = centre.Position + _random.NextAngle().ToVec() * _random.NextFloat(min, Math.Max(min, max));
-            if (_scheduler.IsClearSpace(centre.MapId, point, SiteClearance, clearance))
-                return new MapCoordinates(point, centre.MapId);
+            for (var attempt = 0; attempt < 40; attempt++)
+            {
+                var point = centre.Position + _random.NextAngle().ToVec() * _random.NextFloat(min, far);
+                if (_scheduler.IsClearSpace(centre.MapId, point, SiteClearance, clearance))
+                    return new MapCoordinates(point, centre.MapId);
+            }
+
+            far *= 1.5f;
+            clearance *= 0.5f;
         }
 
+        Log.Warning($"No clear contract site {min}-{max} m from {ToPrettyString(station)}.");
         return null;
     }
 

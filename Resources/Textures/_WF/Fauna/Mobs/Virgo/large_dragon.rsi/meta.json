@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from VOREStation at commit https://github.com/VOREStation/VOREStation/commit/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88.",
+  "size": {
+    "x": 128,
+    "y": 92
+  },
+  "states": [
+    {
+      "name": "underSmooth",
+      "directions": 4
+    },
+    {
+      "name": "bodyScaled",
+      "directions": 4
+    },
+    {
+      "name": "earsNormal",
+      "directions": 4
+    },
+    {
+      "name": "maneShaggy",
+      "directions": 4
+    },
+    {
+      "name": "hornsCurved",
+      "directions": 4
+    },
+    {
+      "name": "eyesNormal",
+      "directions": 4
+    },
+    {
+      "name": "dead"
+    },
+    {
+      "name": "flame",
+      "directions": 4,
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ],
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ],
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ],
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "rage",
+      "directions": 4,
+      "delays": [
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.3,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "underPlated",
+      "directions": 4
+    },
+    {
+      "name": "bodySmooth",
+      "directions": 4
+    },
+    {
+      "name": "maneNone",
+      "directions": 4
+    },
+    {
+      "name": "maneDorsalfin",
+      "directions": 4
+    }
+  ]
+}

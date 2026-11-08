@@ -133,8 +133,10 @@
   cost: 1
   hidden: true
   duration: 5400
-  minDistance: 3500
-  maxDistance: 9000
+  # In the Deep only, measured from the sector's centre.
+  minDistance: 41000
+  maxDistance: 47000
+  latticeBand: 4
   stationClearance: 3000
   ships:
   - key: hulk
@@ -160,8 +162,10 @@
   cost: 2
   hidden: true
   duration: 5400
-  minDistance: 3500
-  maxDistance: 9000
+  # In the Deep only, measured from the sector's centre.
+  minDistance: 41000
+  maxDistance: 47000
+  latticeBand: 4
   stationClearance: 3000
   ships:
   - key: hulk
@@ -217,8 +221,10 @@
   minPlayers: 3
   cooldown: 5400
   duration: 3600
-  minDistance: 2500
-  maxDistance: 5000
+  # In the Deep only, measured from the sector's centre.
+  minDistance: 41000
+  maxDistance: 47000
+  latticeBand: 4
   stationClearance: 3000
   manifests: [ WFManifestGeneral, WFManifestMedical, WFManifestSalvage ]
   ships:

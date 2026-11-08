@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Shiptest at commit https://github.com/shiptest-ss13/Shiptest/commit/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3.",
+  "size": {
+    "x": 96,
+    "y": 96
+  },
+  "states": [
+    {
+      "name": "telegraph",
+      "delays": [
+        [
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03,
+          0.04,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "cardinal",
+      "delays": [
+        [
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03,
+          0.04,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "diagonal",
+      "delays": [
+        [
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03,
+          0.04,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "teleport",
+      "delays": [
+        [
+          0.1,
+          0.08,
+          0.06,
+          0.04,
+          0.02,
+          0.125,
+          0.175,
+          0.15,
+          0.1,
+          0.025,
+          0.05,
+          0.075,
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

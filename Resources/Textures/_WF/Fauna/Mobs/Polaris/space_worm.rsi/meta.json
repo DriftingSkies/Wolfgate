@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Polaris at commit https://github.com/PolarisSS13/Polaris/commit/6cd19fe0dec6b5f18b6b18c3eb36af7bf3359f25.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "spaceworm3"
+    },
+    {
+      "name": "spaceworm3_dead"
+    },
+    {
+      "name": "spaceworm5"
+    },
+    {
+      "name": "spaceworm5_dead"
+    },
+    {
+      "name": "spaceworm6"
+    },
+    {
+      "name": "spaceworm6_dead"
+    },
+    {
+      "name": "spaceworm9"
+    },
+    {
+      "name": "spaceworm9_dead"
+    },
+    {
+      "name": "spaceworm10"
+    },
+    {
+      "name": "spaceworm10_dead"
+    },
+    {
+      "name": "spaceworm12"
+    },
+    {
+      "name": "spaceworm12_dead"
+    },
+    {
+      "name": "spacewormtail",
+      "directions": 4
+    },
+    {
+      "name": "spacewormtail_dead",
+      "directions": 4
+    },
+    {
+      "name": "spacewormhead1",
+      "directions": 4
+    },
+    {
+      "name": "spacewormhead0",
+      "directions": 4
+    },
+    {
+      "name": "spacewormhead1_hunt",
+      "directions": 4
+    },
+    {
+      "name": "spacewormhead0_hunt",
+      "directions": 4
+    },
+    {
+      "name": "spacewormhead0_dead",
+      "directions": 4
+    },
+    {
+      "name": "spacewormhead1_dead",
+      "directions": 4
+    }
+  ]
+}

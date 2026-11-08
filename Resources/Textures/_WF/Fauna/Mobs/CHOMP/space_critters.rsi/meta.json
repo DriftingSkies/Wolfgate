@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from CHOMPStation at commit https://github.com/CHOMPStation2/CHOMPStation2/commit/ca24d940aa4a6eb0d58d32b85ddc830f44459264.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "solarray",
+      "directions": 4
+    },
+    {
+      "name": "solarray-dead",
+      "directions": 4
+    },
+    {
+      "name": "galaxyray",
+      "directions": 4,
+      "delays": [
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ],
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ],
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ],
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "livingice"
+    },
+    {
+      "name": "livingice-dead"
+    },
+    {
+      "name": "dreameel",
+      "directions": 4
+    },
+    {
+      "name": "gravityshell",
+      "directions": 4
+    },
+    {
+      "name": "cleanseshell",
+      "directions": 4
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+# Asteroid creatures converted from OnyxBay.
+
+- type: entity
+  parent: [ MobGoliath, FaunaMobCore ]
+  id: OnyxBayMobGoliath
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/goliath.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: goliath
+    - map: [ "aggro" ]
+      state: goliath_alert
+      visible: false
+    - map: [ "preattack" ]
+      state: goliath_preattack
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: goliath
+      Dead:
+        Base: goliath_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+      enum.FaunaTentacleVisuals.Ready:
+        preattack:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaTentacleCooldown
+  - type: FaunaRockHide
+    projectileMultiplier: 0.33
+  - type: FaunaAggroCry
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch4.ogg
+    angle: 0
+    attackRate: 0.75
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 25
+  - type: NPCUseActionOnTarget
+    actionId: OnyxBayActionGoliathTentacle
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: MaterialGoliathHide1
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatGoliath
+      amount: 2
+
+- type: entity
+  parent: OnyxBayMobGoliath
+  id: OnyxBayMobGoliathAlpha
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 550
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/goliath.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alpha
+    - map: [ "aggro" ]
+      state: alpha_alert
+      visible: false
+    - map: [ "preattack" ]
+      state: alpha_preattack
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alpha
+      Dead:
+        Base: alpha_dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.3
+    baseSprintSpeed: 1.3
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      500: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch4.ogg
+    angle: 0
+    attackRate: 0.75
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 35
+  - type: NPCUseActionOnTarget
+    actionId: OnyxBayActionGoliathAlphaTentacle
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: OnyxBayClothingHeadHelmetGoliath
+    - id: MaterialGoliathHide1
+      amount: 2
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatGoliath
+      amount: 3
+
+- type: entity
+  parent: ActionGoliathTentacle
+  id: OnyxBayActionGoliathTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: _WF/Fauna/Mobs/OnyxBay/goliath.rsi
+      state: tentacle_hold
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      entityId: OnyxBayEffectGoliathTentacle
+    useDelay: 14
+    range: 7
+
+- type: entity
+  parent: OnyxBayActionGoliathTentacle
+  id: OnyxBayActionGoliathAlphaTentacle
+  components:
+  - type: EntityWorldTargetAction
+    raiseOnUser: true
+    icon:
+      sprite: _WF/Fauna/Mobs/OnyxBay/goliath.rsi
+      state: tentacle_hold
+    sound:
+      path: /Audio/Weapons/slash.ogg
+    event: !type:GoliathSummonTentacleAction
+      entityId: OnyxBayEffectGoliathTentacle
+    useDelay: 10
+    range: 7
+
+# The rising tentacle is the warning, the held frame grabs.
+- type: entity
+  parent: BaseEffectGoliathTentacleSpawn
+  id: OnyxBayEffectGoliathTentacle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/goliath.rsi
+    state: tentacle
+  - type: TimedDespawn
+    lifetime: 1.3
+  - type: SpawnOnDespawn
+    prototype: OnyxBayGoliathTentacle
+
+- type: entity
+  id: OnyxBayGoliathTentacle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: True
+  - type: Physics
+    bodyType: Static
+    canCollide: true
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/goliath.rsi
+    state: tentacle_hold
+  - type: StunOnContact
+    blacklist:
+      tags:
+      - Goliath
+  - type: Fixtures
+    fixtures:
+      fix:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        mask:
+        - Impassable
+        layer:
+        - Impassable
+        hard: false
+  - type: TimedDespawn
+    lifetime: 0.7
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: OnyxBayMobShockzard
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/shockzard.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: shockzard
+    - map: [ "aggro" ]
+      state: shockzard_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: shockzard
+      Dead:
+        Base: shockzard_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: FaunaRockHide
+    projectileMultiplier: 0.33
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: DiamondOre1
+      amount: 2
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 12
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 4
+  - type: BasicEntityAmmoProvider
+    proto: OnyxBayShockzardBolt
+    capacity: 1
+    count: 1
+  - type: Gun
+    recoil: 0
+    fireRate: 0.25
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/_WF/Fauna/OnyxBay/pulse3.ogg
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        2
+      AggroVisionRadius: !type:Single
+        7
+
+- type: entity
+  parent: WatcherBolt
+  id: OnyxBayShockzardBolt
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/projectiles.rsi
+    layers:
+    - state: ice_2
+      shader: unshaded
+  - type: Projectile
+    damage:
+      types:
+        Heat: 5
+  - type: StunOnCollide
+    knockdownAmount: 5
+
+- type: entity
+  parent: [ BaseMobAsteroid, FlyingMobBase, FaunaMobCore ]
+  id: OnyxBayMobBeholder
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/beholder.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: beholder
+    - map: [ "aggro" ]
+      state: beholder_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: beholder
+      Dead:
+        Base: beholder_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+    popup: fauna-onyxbay-beholder-gaze
+  - type: FaunaRockHide
+    projectileMultiplier: 0.33
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: DiamondOre1
+      amount: 2
+    - id: OnyxBayBeholderEye
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 22
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 3
+  - type: BasicEntityAmmoProvider
+    proto: OnyxBayShockzardBolt
+    capacity: 1
+    count: 1
+  - type: FaunaRandomAmmo
+    prototypes:
+    - OnyxBayShockzardBolt
+    - BulletTaser
+    - BulletDisabler
+    - BulletEnergyGunLaser
+    - FaunaNeurotoxinSpit
+    - BulletFireBolt
+    - BulletMagicBolt
+    - BulletKinetic
+    - ProjectileEmp
+  - type: Gun
+    recoil: 0
+    fireRate: 0.33
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/pierce.ogg
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+
+- type: entity
+  parent: [ BaseMobAsteroid, FlyingMobBase, FaunaMobCore ]
+  id: OnyxBayMobHoverhead
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/hoverhead.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hoverhead
+    - map: [ "aggro" ]
+      state: hoverhead_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hoverhead
+      Dead:
+        Base: hoverhead_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: FaunaRockHide
+    projectileMultiplier: 0.33
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: OnyxBayAnomalousCore
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 0
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    selectedMode: SemiAuto
+    showExamineText: false
+    availableModes:
+    - SemiAuto
+    soundGunshot: null
+  - type: RechargeBasicEntityAmmo
+    showExamineText: false
+    rechargeCooldown: 0
+    rechargeSound: null
+  - type: BasicEntityAmmoProvider
+    proto: OnyxBayMobPsychokineticAnomaly
+    capacity: 1
+    count: 1
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      KiteRange: !type:Single
+        3
+
+# Lives 10 s and comes every 2 s, so a hoverhead keeps at most five.
+- type: entity
+  parent: [ BaseMobAsteroid, FlyingMobBase ]
+  id: OnyxBayMobPsychokineticAnomaly
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/hoverhead.rsi
+    layers:
+    - state: anomaly
+      shader: unshaded
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      1: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Guns/Hits/energy_meat1.ogg
+    angle: 0
+    attackRate: 0.5
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Heat: 2
+  - type: Ammo
+    muzzleFlash: null
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        10
+      AggroVisionRadius: !type:Single
+        10
+  - type: TimedDespawn
+    lifetime: 10
+
+- type: entity
+  parent: FoodHivelordRemains
+  id: OnyxBayAnomalousCore
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/OnyxBay/hoverhead.rsi
+    state: core

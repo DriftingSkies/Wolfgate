@@ -1,0 +1,69 @@
+# WOLFGATE(Fauna) START: ported from Nuclear 14
+- type: entity
+  parent: N14MobBaseHostileInsect
+  id: N14MobCazador
+  components:
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 2
+    baseSprintSpeed : 4.3
+  - type: Sprite
+    drawdepth: Mobs
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: cazador
+      sprite: _Nuclear14/Mobs/Insects/cazador.rsi
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+            radius: 0.25
+        density: 10
+        mask:
+        - FlyingMobMask
+        layer:
+        - FlyingMobLayer
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: cazador
+      Critical:
+        Base: cazador
+      Dead:
+        Base: dead
+  - type: Stamina
+    critThreshold: 20
+  - type: Bloodstream
+    bloodMaxVolume: 50
+  - type: MeleeWeapon
+    altDisarm: false
+    hidden: true
+    soundHit:
+        path: /Audio/Effects/bite.ogg
+    angle: 30
+    animation: WeaponArcThrust
+    wideAnimation: WeaponArcThrust
+    damage:
+      types:
+        Piercing: 3
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 10
+        reagents:
+        - ReagentId: CazadorVenom
+          Quantity: 10
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: CazadorVenom
+        Quantity: 0.25
+  - type: MeleeChemicalInjector
+    solution: melee
+    transferAmount: 1.5
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 1
+# WOLFGATE END

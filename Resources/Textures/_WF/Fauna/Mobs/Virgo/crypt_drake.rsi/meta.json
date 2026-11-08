@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from VOREStation at commit https://github.com/VOREStation/VOREStation/commit/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88.",
+  "size": {
+    "x": 128,
+    "y": 92
+  },
+  "states": [
+    {
+      "name": "cryptdrake",
+      "directions": 4
+    },
+    {
+      "name": "dead"
+    },
+    {
+      "name": "cryptdrake_albedo",
+      "directions": 4
+    },
+    {
+      "name": "cryptdrake_albedo-dead"
+    },
+    {
+      "name": "cryptdrake_albedo-eyes",
+      "directions": 4
+    }
+  ]
+}

@@ -5,7 +5,9 @@ countdown in its last 10 seconds, floats a green countdown over itself, and then
 (`wfWarheadPayload`): a blast, an immediate radiation burst, decaying fallout that leaves a green haze, an EMP, and
 for the client a white-out flash, a shockwave ring that bends the screen and shakes the camera, and a procedural
 fireball in space or a rising mushroom cloud on a planet. A strategic payload deletes the grid it sits on outright,
-never a planet.
+never a planet. Every payload's `eraseRadius` wipes ground zero before the blast (`WFWarheadSystem.Erase.cs`): every
+physical thing there, everything on a ship's grid, decals and floor tiles (a planet keeps its ground), so no paint or
+fittings are left floating. Fallout is lethal: 15-40 rad/s at its centre, halving every 5-12 minutes.
 
 Warheads are admin and antag only for now. Chassis:
 
@@ -54,6 +56,7 @@ Entry points: `WFWarheadSystem` (countdowns, detonation, arming, designer spawns
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.Arming.cs`](WFWarheadSystem.Arming.cs)
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.cs`](WFWarheadSystem.cs)
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.Designer.cs`](WFWarheadSystem.Designer.cs)
+- [`Content.Server/_WF/Warheads/WFWarheadSystem.Erase.cs`](WFWarheadSystem.Erase.cs)
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.Ui.cs`](WFWarheadSystem.Ui.cs)
 
 ### Shared

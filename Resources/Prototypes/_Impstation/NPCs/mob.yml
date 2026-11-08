@@ -1,0 +1,8 @@
+# WOLFGATE(Fauna) START: ported from Impstation NPCs/mob.yml
+- type: htnCompound
+  id: NiceCarpCompound
+  branches:
+    - tasks:
+        - !type:HTNCompoundTask
+          task: IdleCompound
+# WOLFGATE END

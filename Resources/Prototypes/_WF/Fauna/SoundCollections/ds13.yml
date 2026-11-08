@@ -1,0 +1,610 @@
+# Sound collections for the DS13 necromorphs.
+
+- type: soundCollection
+  id: DS13BruteAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/brute/brute_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_attack_3.ogg
+
+- type: soundCollection
+  id: DS13BruteDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/brute/brute_death.ogg
+
+- type: soundCollection
+  id: DS13BruteShout
+  files:
+  - /Audio/_WF/Fauna/DS13/brute/brute_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_shout_3.ogg
+
+- type: soundCollection
+  id: DS13LeaperAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_5.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_6.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_attack_7.ogg
+
+- type: soundCollection
+  id: DS13LeaperDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_death_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_death_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_death_3.ogg
+
+- type: soundCollection
+  id: DS13LeaperShout
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_5.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_6.ogg
+
+- type: soundCollection
+  id: DS13LeaperTailswing
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_tailswing_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_tailswing_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_tailswing_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_tailswing_4.ogg
+
+- type: soundCollection
+  id: DS13TwitcherAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_5.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_6.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_7.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_attack_8.ogg
+
+- type: soundCollection
+  id: DS13TwitcherDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_death_1.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_death_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_death_3.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_death_4.ogg
+
+- type: soundCollection
+  id: DS13TwitcherShout
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_5.ogg
+
+- type: soundCollection
+  id: DS13UbermorphAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_5.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_6.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_7.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_attack_8.ogg
+
+- type: soundCollection
+  id: DS13UbermorphShout
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_5.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_6.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_7.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_8.ogg
+
+- type: soundCollection
+  id: DS13UbermorphRegen
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_regen_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_regen_2.ogg
+
+- type: soundCollection
+  id: DS13UbermorphSpawn
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/Ubermorph_spawn_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/Ubermorph_spawn_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/Ubermorph_spawn_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/Ubermorph_spawn_4.ogg
+
+- type: soundCollection
+  id: DS13PukerAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_attack_5.ogg
+
+- type: soundCollection
+  id: DS13PukerDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_death_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_death_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_death_3.ogg
+
+- type: soundCollection
+  id: DS13PukerShout
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_5.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_6.ogg
+
+- type: soundCollection
+  id: DS13ExploderAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_attack_5.ogg
+
+- type: soundCollection
+  id: DS13ExploderDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_death_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_death_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_death_3.ogg
+
+- type: soundCollection
+  id: DS13ExploderShout
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_5.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_6.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_7.ogg
+
+- type: soundCollection
+  id: DS13ExploderBlast
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_blast_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_blast_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_blast_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_blast_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_blast_5.ogg
+
+- type: soundCollection
+  id: DS13InfectorAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/infector/infector_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_attack_5.ogg
+
+- type: soundCollection
+  id: DS13InfectorDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/infector/infector_death_1.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_death_2.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_death_3.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_death_4.ogg
+
+- type: soundCollection
+  id: DS13InfectorShout
+  files:
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_4.ogg
+
+- type: soundCollection
+  id: DS13LurkerAttack
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_3.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_4.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_5.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_6.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_7.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_8.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_attack_9.ogg
+
+- type: soundCollection
+  id: DS13LurkerDeath
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_death_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_death_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_death_3.ogg
+
+- type: soundCollection
+  id: DS13LurkerShout
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_5.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_6.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_7.ogg
+
+- type: soundCollection
+  id: DS13LurkerSpineFire
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/spine_fire_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/spine_fire_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/spine_fire_3.ogg
+
+# Pain, scream, long shout, speech, footstep and climb sounds. Necromorph is the generic slasher set.
+
+- type: soundCollection
+  id: DS13NecromorphPain
+  files:
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_pain_6.ogg
+
+- type: soundCollection
+  id: DS13NecromorphScream
+  files:
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_2.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_3.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_4.ogg
+
+- type: soundCollection
+  id: DS13NecromorphShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_shout_long_4.ogg
+
+- type: soundCollection
+  id: DS13NecromorphSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/slasher/slasher_speech_2.ogg
+
+- type: soundCollection
+  id: DS13BrutePain
+  files:
+  - /Audio/_WF/Fauna/DS13/brute/brute_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_pain_extreme.ogg
+
+- type: soundCollection
+  id: DS13BruteShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/brute/brute_shout_long.ogg
+
+- type: soundCollection
+  id: DS13BruteFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/brute/brute_step_1.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_step_2.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_step_3.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_step_4.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_step_5.ogg
+  - /Audio/_WF/Fauna/DS13/brute/brute_step_6.ogg
+
+- type: soundCollection
+  id: DS13LeaperPain
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_7.ogg
+
+- type: soundCollection
+  id: DS13LeaperScream
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_pain_7.ogg
+
+- type: soundCollection
+  id: DS13LeaperShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_long_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_shout_long_5.ogg
+
+- type: soundCollection
+  id: DS13LeaperSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_speech_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_speech_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_speech_4.ogg
+
+- type: soundCollection
+  id: DS13LeaperFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_footstep_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_footstep_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_footstep_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_footstep_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/leaper_footstep_5.ogg
+
+- type: soundCollection
+  id: DS13LeaperClimb
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_5.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_6.ogg
+
+- type: soundCollection
+  id: DS13InfectorPain
+  files:
+  - /Audio/_WF/Fauna/DS13/infector/infector_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_pain_4.ogg
+
+- type: soundCollection
+  id: DS13InfectorShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_shout_long_3.ogg
+
+- type: soundCollection
+  id: DS13InfectorFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/infector/infector_footstep_1.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_footstep_2.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_footstep_3.ogg
+  - /Audio/_WF/Fauna/DS13/infector/infector_footstep_4.ogg
+
+- type: soundCollection
+  id: DS13TwitcherPain
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_7.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_8.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_9.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_pain_extreme.ogg
+
+- type: soundCollection
+  id: DS13TwitcherScream
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_5.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_1.ogg
+
+- type: soundCollection
+  id: DS13TwitcherShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_4.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_shout_long_5.ogg
+
+- type: soundCollection
+  id: DS13TwitcherSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_speech_2.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_speech_3.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_speech_4.ogg
+  - /Audio/_WF/Fauna/DS13/twitcher/twitcher_speech_5.ogg
+
+- type: soundCollection
+  id: DS13UbermorphPain
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_7.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_8.ogg
+
+- type: soundCollection
+  id: DS13UbermorphScream
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_long_3.ogg
+
+- type: soundCollection
+  id: DS13UbermorphShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_shout_long_4.ogg
+
+- type: soundCollection
+  id: DS13UbermorphSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_4.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_5.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_6.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_7.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_speech_8.ogg
+
+- type: soundCollection
+  id: DS13UbermorphFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_footstep_1.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_footstep_2.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_footstep_3.ogg
+  - /Audio/_WF/Fauna/DS13/ubermorph/ubermorph_footstep_4.ogg
+
+- type: soundCollection
+  id: DS13PukerPain
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_7.ogg
+
+- type: soundCollection
+  id: DS13PukerScream
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_4.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_long_4.ogg
+
+- type: soundCollection
+  id: DS13PukerShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_shout_long_4.ogg
+
+- type: soundCollection
+  id: DS13PukerSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_speech_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_speech_3.ogg
+
+- type: soundCollection
+  id: DS13PukerFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_1.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_2.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_3.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_4.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_5.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_6.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_7.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_8.ogg
+  - /Audio/_WF/Fauna/DS13/puker/puker_footstep_9.ogg
+
+- type: soundCollection
+  id: DS13ExploderPain
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_pain_5.ogg
+
+- type: soundCollection
+  id: DS13ExploderShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_long_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_shout_long_5.ogg
+
+- type: soundCollection
+  id: DS13ExploderSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_5.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_6.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_speech_7.ogg
+
+- type: soundCollection
+  id: DS13ExploderFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_1.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_2.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_3.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_4.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_5.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_6.ogg
+  - /Audio/_WF/Fauna/DS13/exploder/exploder_footstep_7.ogg
+
+- type: soundCollection
+  id: DS13LurkerPain
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_3.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_4.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_5.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_6.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_pain_7.ogg
+
+- type: soundCollection
+  id: DS13LurkerScream
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_long_3.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_4.ogg
+
+- type: soundCollection
+  id: DS13LurkerShoutLong
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_long_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_long_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_shout_long_3.ogg
+
+- type: soundCollection
+  id: DS13LurkerSpeech
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_speech_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_speech_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_speech_3.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_speech_4.ogg
+
+- type: soundCollection
+  id: DS13LurkerFootsteps
+  files:
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_1.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_2.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_3.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_4.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_5.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_6.ogg
+  - /Audio/_WF/Fauna/DS13/lurker/lurker_footstep_7.ogg
+
+- type: soundCollection
+  id: DS13LurkerClimb
+  files:
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_1.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_2.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_3.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_4.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_5.ogg
+  - /Audio/_WF/Fauna/DS13/leaper/wall_climb_6.ogg

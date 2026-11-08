@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from CHOMPStation at commit https://github.com/CHOMPStation2/CHOMPStation2/commit/ca24d940aa4a6eb0d58d32b85ddc830f44459264.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "metal",
+      "directions": 4
+    },
+    {
+      "name": "dead"
+    },
+    {
+      "name": "copper",
+      "directions": 4
+    },
+    {
+      "name": "agate",
+      "directions": 4
+    },
+    {
+      "name": "diamond",
+      "directions": 4
+    },
+    {
+      "name": "uranium",
+      "directions": 4
+    },
+    {
+      "name": "painite",
+      "directions": 4
+    },
+    {
+      "name": "bronze",
+      "directions": 4
+    },
+    {
+      "name": "queen",
+      "directions": 4
+    },
+    {
+      "name": "quartz",
+      "directions": 4
+    },
+    {
+      "name": "verdantium",
+      "directions": 4
+    },
+    {
+      "name": "mhydro",
+      "directions": 4
+    },
+    {
+      "name": "graphite",
+      "directions": 4
+    },
+    {
+      "name": "silver",
+      "directions": 4
+    }
+  ]
+}

@@ -30,6 +30,7 @@ wolfmed-cause-cold-title = Downed: hypothermic
 wolfmed-cause-cold-title-out = Unconscious: hypothermia
 wolfmed-cause-cold-symptom = Shivering, numb and slow.
 wolfmed-cause-cold-help = Get warm. Painkillers will not help.
+wolfmed-cause-cold-help-mechanical = The chassis has frozen stiff. Get it somewhere warm, or into a suit.
 wolfmed-cause-cold-help-blocked = Get warm, and have the rest treated.
 wolfmed-cause-cold-help-out = You will come round as you warm up.
 wolfmed-cause-cold-help-out-blocked = You will not come round until you are warm and the rest is treated.

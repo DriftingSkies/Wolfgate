@@ -44,3 +44,4 @@ wolfmed-surgery-tool-multitool = a multitool
 wolfmed-surgery-tool-welding-tool = a welding tool
 wolfmed-surgery-tool-cable-coil = a cable coil
 wolfmed-surgery-tool-skin-graft = a skin graft
+surgery-popup-step-WFSurgeryStepInsertKidneys = {$user} is inserting kidneys into {$target}'s {$part}!

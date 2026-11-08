@@ -156,10 +156,14 @@ public sealed class GroundCoverTest
             Assert.That(cover.GetDepth(map.Grid, Open + new Vector2i(1, 0)), Is.GreaterThan(0), "The shovel cleared more than its tile.");
         });
 
-        await server.WaitRunTicks(pair.SecondsToTicks(1));
-        await server.WaitAssertion(() =>
-            Assert.That(entMan.GetComponent<MovementSpeedModifierComponent>(mob).WalkSpeedModifier, Is.EqualTo(1f).Within(0.001f),
-                "Cleared ground still slowed the mob."));
+        // The slowdown reads the depths last published (every 0.5 s) on a 0.5 s scan, so the two can stack to a second.
+        var walk = 0f;
+        for (var i = 0; i < 6 && MathF.Abs(walk - 1f) > 0.001f; i++)
+        {
+            await server.WaitRunTicks(pair.SecondsToTicks(0.5f));
+            await server.WaitPost(() => walk = entMan.GetComponent<MovementSpeedModifierComponent>(mob).WalkSpeedModifier);
+        }
+        Assert.That(walk, Is.EqualTo(1f).Within(0.001f), "Cleared ground still slowed the mob.");
 
         // Without snow but below freezing it stays; above freezing it melts.
         await server.WaitPost(() => server.System<SharedWolfWeatherSystem>().SetWeather(map.MapUid, null, null, 0));

@@ -8,14 +8,15 @@ worn through first.
 - Blasts, shell hits and hitscan beams move alike, armor-piercing rounds included. Melee and collisions are
   untouched.
 - The share scales linearly with the armor's thickness up to 12.5: a shuttle wall (5) moves 40%, plastitanium (10)
-  80%, and the PDV adamantite walls (13) and capital plastitanium (15) all of it.
+  80%, and durasteel walls (13) and capital plastitanium (15) all of it.
 - Any backing armor also keeps the mount's floor: explosions treat its tile as blocked until the armor falls,
   so a breached tile can't unanchor the hardpoint and drop its gun first (`ExplosionSystem.ShipArmor.cs`).
-- PDV adamantite walls (`WFWallAdamantite` and its diagonal and capital variants) are plastitanium walls built
-  from PDV composite. They take plastitanium's resistances on every variant and twice plastitanium's health
-  (6000, capital 7000), standing in for the shields PDV hulls lack. PDV hulls and the classic PDV (BlackMarket)
-  ships are refit with them, except those that carry a shield generator (Saturn, Layak, Motley Anne, Vulture,
-  Saintie), which keep plastitanium.
+- Durasteel walls (`WFWallDurasteel` and its diagonal and capital variants) are each plastitanium wall with five
+  thirds its health (5000, diagonal 4585, capital 5835, capital diagonal 3335) and the same resistances, so a straight
+  hull wall takes three Cyrexa APHE shells where plastitanium takes two. There is no
+  recipe: a ship gets them from the drydock's durasteel plating refit (`WFRefitDurasteel`, Drydock module), which
+  swaps every plastitanium wall in place. The ADS hulls (`WFCrewProfileAds`) and the SY Reach also fly them, and
+  pirate profiles swap them back to plastitanium.
 - Tuning lives in the `wf.ship_armor.*` server CVars. The examine window's hull armor verb shows current coverage.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -35,6 +36,7 @@ worn through first.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/ShipArmor/WFArmorBackedTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipArmor/WFArmorBackedTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ShipArmor/WFDurasteelWallTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipArmor/WFDurasteelWallTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/ShipArmor/WFHullArmorThicknessTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipArmor/WFHullArmorThicknessTest.cs)
 
 ### Prototypes
@@ -48,10 +50,10 @@ worn through first.
 
 ### Textures
 
-- [`Resources/Textures/_WF/ShipArmor/adamantite.rsi/`](../../../Resources/Textures/_WF/ShipArmor/adamantite.rsi/)
-- [`Resources/Textures/_WF/ShipArmor/adamantite_diagonal.rsi/`](../../../Resources/Textures/_WF/ShipArmor/adamantite_diagonal.rsi/)
-- [`Resources/Textures/_WF/ShipArmor/radamantite.rsi/`](../../../Resources/Textures/_WF/ShipArmor/radamantite.rsi/)
-- [`Resources/Textures/_WF/ShipArmor/radamantite_diagonal.rsi/`](../../../Resources/Textures/_WF/ShipArmor/radamantite_diagonal.rsi/)
+- [`Resources/Textures/_WF/ShipArmor/durasteel.rsi/`](../../../Resources/Textures/_WF/ShipArmor/durasteel.rsi/)
+- [`Resources/Textures/_WF/ShipArmor/durasteel_diagonal.rsi/`](../../../Resources/Textures/_WF/ShipArmor/durasteel_diagonal.rsi/)
+- [`Resources/Textures/_WF/ShipArmor/rdurasteel.rsi/`](../../../Resources/Textures/_WF/ShipArmor/rdurasteel.rsi/)
+- [`Resources/Textures/_WF/ShipArmor/rdurasteel_diagonal.rsi/`](../../../Resources/Textures/_WF/ShipArmor/rdurasteel_diagonal.rsi/)
 - [`Resources/Textures/_WF/ShipArmor/shield.svg`](../../../Resources/Textures/_WF/ShipArmor/shield.svg)
 - [`Resources/Textures/_WF/ShipArmor/shield.svg.192dpi.png`](../../../Resources/Textures/_WF/ShipArmor/shield.svg.192dpi.png)
 - [`Resources/Textures/_WF/ShipArmor/shield.svg.192dpi.png.yml`](../../../Resources/Textures/_WF/ShipArmor/shield.svg.192dpi.png.yml)
@@ -59,24 +61,7 @@ worn through first.
 ## Non-modular edits
 
 - [`Content.Server/Explosion/EntitySystems/ExplosionSystem.Processing.cs`](../../Explosion/EntitySystems/ExplosionSystem.Processing.cs): armored mounts keep their floor until the armor falls
+- [`Resources/migration.yml`](../../../Resources/migration.yml): adamantite walls renamed to durasteel
 - [`Resources/Prototypes/Entities/Structures/Walls/walls.yml`](../../../Resources/Prototypes/Entities/Structures/Walls/walls.yml): plastitanium hull armor takes 80% of mount hits (10 of 12.5)
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_r.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_r.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kresta.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/kresta.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/kynda.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/kynda.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/layak.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/layak.yml): PDV hull with a shield generator, kept on plastitanium instead of adamantite.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/motleyanne.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/motleyanne.yml): PDV hull with a shield generator, kept on plastitanium instead of adamantite.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/inertia.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/inertia.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/mock.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/mock.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/snakelet.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/snakelet.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/neptune.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/neptune.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/ontos.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/ontos.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/saturn.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/saturn.yml): PDV hull with a shield generator, kept on plastitanium instead of adamantite.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml): PDV hull refit from plastitanium to adamantite walls.
-- [`Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml): PDV hull refit from plastitanium to adamantite walls.
 
 <!-- WOLFGATE-GENERATED END -->

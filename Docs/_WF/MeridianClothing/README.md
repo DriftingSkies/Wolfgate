@@ -2020,7 +2020,9 @@ Without `--write` it only reports what it would port; `--report <file>` lists wh
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/robodrobe.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/robodrobe.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/scidrobe.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/scidrobe.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/secdrobe.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/secdrobe.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-- [`Resources/Prototypes/Catalog/VendingMachines/Inventories/theater.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/theater.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
+- [`Resources/Prototypes/Catalog/VendingMachines/Inventories/theater.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/theater.yml)
+  - stock the Meridian maid outfits
+  - Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/virodrobe.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/virodrobe.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/winterdrobe.yml`](../../../Resources/Prototypes/Catalog/VendingMachines/Inventories/winterdrobe.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
 - [`Resources/Prototypes/Loadouts/loadout_groups.yml`](../../../Resources/Prototypes/Loadouts/loadout_groups.yml): Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py

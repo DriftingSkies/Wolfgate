@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client._WF.BlackHole;
+using Content.Client._WF.Lattice;
 using Content.Shared._FarHorizons.StarSystem.Helpers;
 using Robust.Client.Graphics;
 
@@ -30,6 +31,7 @@ public sealed partial class StarOverlay
         _shaderInstance.SetParameter("solarRadiusFactor", BlackHoleVisuals.SolarRadiusFactor);
         _shaderInstance.SetParameter("effectRadius", BlackHoleVisuals.EffectRadius);
         _shaderInstance.SetParameter("hasBackground", ScreenTexture != null);
+        _shaderInstance.SetParameter("unmooring", _entMan.System<WFLatticeViewSystem>().Unmooring());
         if (ScreenTexture == null)
             return;
 

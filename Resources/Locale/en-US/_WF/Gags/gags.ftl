@@ -3,3 +3,6 @@ wf-gags-color-tooltip = Colour {$index}
 wf-gags-reset = Reset
 wf-gags-reset-tooltip = Back to the item's own colours.
 wf-gags-colorable = Can be recoloured once picked.
+# WOLFGATE(Gags) START: recolouring clothing in vending machines
+wf-gags-vending-buy = Buy selected item
+# WOLFGATE END

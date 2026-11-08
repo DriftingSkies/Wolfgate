@@ -65,6 +65,8 @@ public sealed partial class ShipAlarmPanel : BoxContainer
         SoundStopButton.OnPressed += _ => SoundStopRequested?.Invoke();
         SkipButton.OnPressed += _ => PlaylistRequested?.Invoke(ShipPaPlaylistAction.Skip, 0);
         ClearQueueButton.OnPressed += _ => PlaylistRequested?.Invoke(ShipPaPlaylistAction.Clear, 0);
+        VolumeSlider.OnValueChanged += _ => UpdateVolumeLabel();
+        VolumeSlider.OnReleased += _ => VolumeRequested?.Invoke(VolumeSlider.Value / 100f);
 
         Refresh(null);
         RefreshPlaylist(null);
@@ -109,6 +111,11 @@ public sealed partial class ShipAlarmPanel : BoxContainer
     /// The pilot switched the collision warning on or off.
     /// </summary>
     public event Action<bool>? CollisionAlertRequested;
+
+    /// <summary>
+    /// The pilot let go of the PA volume slider, as a fraction of full volume.
+    /// </summary>
+    public event Action<float>? VolumeRequested;
 
     /// <summary>
     /// Points the panel at a ship, or nothing.
@@ -230,6 +237,12 @@ public sealed partial class ShipAlarmPanel : BoxContainer
             : "shuttle-console-ship-distress-send");
         DistressButton.Modulate = _distress ? DistressColor : Color.White;
 
+        // Don't fight the pilot's drag; the server value lands once they let go.
+        if (!VolumeSlider.Grabbed)
+            VolumeSlider.SetValueWithoutEvent(MathF.Round((alert?.Volume ?? 1f) * 100f));
+        VolumeSlider.Disabled = alert == null;
+        UpdateVolumeLabel();
+
         SpeakersCaption.Text = Loc.GetString(alert is { SpeakersFallback: true }
             ? "shuttle-console-ship-speakers-fallback"
             : "shuttle-console-ship-speakers");
@@ -329,6 +342,11 @@ public sealed partial class ShipAlarmPanel : BoxContainer
 
             QueueList.AddChild(row);
         }
+    }
+
+    private void UpdateVolumeLabel()
+    {
+        VolumeLabel.Text = Loc.GetString("shuttle-console-ship-volume-value", ("percent", (int) VolumeSlider.Value));
     }
 
     private void QueueSound()

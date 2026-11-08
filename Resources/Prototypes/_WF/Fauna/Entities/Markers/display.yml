@@ -1,0 +1,360 @@
+- type: entity
+  parent: MarkerBase
+  id: FaunaDisplaySpawner
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - state: ai
+  - type: FaunaDisplaySpawner
+    prototype: MobMouse
+
+- type: entity
+  id: FaunaDisplayButton
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    canCollide: false
+  - type: Sprite
+    drawdepth: WallMountedItems
+    sprite: Structures/Wallmounts/switch.rsi
+    layers:
+    - state: base
+    - state: button
+    - state: button-unshaded
+      shader: unshaded
+  - type: FaunaDisplayButton
+
+- type: entity
+  parent: MarkerBase
+  id: FaunaArenaSpawner
+  components:
+  - type: Sprite
+    layers:
+    - state: red
+    - state: ai
+  - type: FaunaArenaSpawner
+    roster:
+    - CitadelRPMobGutlunch
+    - CitadelRPMobGoliathCalf
+    - CitadelRPMobGutshank
+    - CitadelRPMobShank
+    - CitadelRPMobSandSifter
+    - CitadelRPMobStormdrifter
+    - CitadelRPMobBulldrifter
+    - CitadelRPMobBasilisk
+    - CitadelRPMobGoldgrub
+    - CitadelRPMobCurseBlob
+    - CitadelRPMobDwarfLegion
+    - LavalandMobAshWhelp
+    - MobLavalandGoliath
+    - MobLavalandGoliathAncient
+    - MobLegion
+    - MobLegionSkull
+    - CitadelRPMobSkallaxYoung
+    - CitadelRPMobSkallaxWorker
+    - CitadelRPMobSkallaxMature
+    - CitadelRPMobRak
+    - CitadelRPMobRakGrey
+    - CitadelRPMobMole
+    - CitadelRPMobChameleon
+    - CitadelRPMobDerelictHorror
+    - CitadelRPMobGeist
+    - CitadelRPMobPhantom
+    - CitadelRPMobVortex
+    - CitadelRPMobHallucination
+    - CitadelRPMobAmbusher
+    - CitadelRPMobWriggler
+    - CitadelRPMobDrifter
+    - CitadelRPMobScavenger
+    - DS13MobBrute
+    - DS13MobBruteFlesh
+    - DS13MobLeaperEnhanced
+    - DS13MobInfector
+    - DS13MobTwitcher
+    - DS13MobUbermorph
+    - DS13MobPuker
+    - DS13MobExploder
+    - DS13MobLurker
+    - TauCetiMobMeatlandCreep
+    - TauCetiMobMeatlandManiac
+    - TauCetiMobMeatlandChangeling
+    - TauCetiMobMeatlandFlesh
+    - CP14MobDinoSmallHydra
+    - CP14MobDinoYumkaraptor
+    - CP14MobMonsterCackle
+    - CP14MobMonsterMyconideFlyagaric
+    - N14MobCazador
+    - N14MobSporeplant
+    - MobAugury
+    - MobBadOmen
+    - MobFiendfish
+    - MobFriendfish
+    - MobVRex
+    - MobWeirdShrimp
+    - MobBluespaceHarvesterMiGo
+    - MobElder
+    - MobWorm
+    - MobAbyssCrawler
+    - MobCreature
+    - MobMonstrosityBody
+    - MobMonstrosityHead
+    - MobMeowl
+    - MobZleeb
+    - MobSquackroach
+    - MobSquackroachPet
+    - MobHivebot
+    - MobHivebotRanged
+    - MobHivebotStrong
+    - VGMobGingerbroodmother
+    - VGMobGingerbomination
+    - VGMobWendigoAlpha
+    - VGMobSpiderQueen
+    - OnyxBayMobGoliath
+    - OnyxBayMobGoliathAlpha
+    - OnyxBayMobShockzard
+    - OnyxBayMobBeholder
+    - OnyxBayMobHoverhead
+    - VoidcrewMobCrystalHivelord
+    - NuclearPhaseMobOceanbornHunter
+    - NuclearPhaseMobOceanbornScout
+    - VGMobGourmonger
+    - SojournMobSamak
+    - SojournMobDiyaab
+    - SojournMobShantak
+    - SojournMobViper
+    - SojournMobTengoloBrute
+    - SojournMobTengoloStalker
+    - SojournMobTengoloCharger
+    - SojournMobHellDiver
+    - SojournMobHakhma
+    - SojournMobTahca
+    - SojournMobGiantSnake
+    - SojournMobRender
+    - SojournMobRenderMalformed
+    - SojournMobPanther
+    - SojournMobNightmareStalker
+    - SojournMobDreamDaemon
+    - SojournMobCroakerLord
+    - SojournMobHellPig
+    - SojournMobHellPigWendigo
+    - SojournMobSlepnir
+    - SojournMobMukwah
+    - SojournMobChimera
+    - VirgoMobShark
+    - VirgoMobRay
+    - VirgoMobSnowbull
+    - VirgoMobSpaceJellyfish
+    - VirgoMobSpaceGhost
+    - VirgoMobSpookyGhost
+    - VirgoMobStartreader
+    - CHOMPMobSolarRay
+    - CHOMPMobGalaxyRay
+    - CHOMPMobLivingIce
+    - CHOMPMobLivingIceberg
+    - CHOMPMobDreamEel
+    - CHOMPMobNightmareEel
+    - CHOMPMobGravityShell
+    - CHOMPMobCleanseShell
+    - PolarisMobElderCarp
+    - PolarisMobGreatWhiteCarp
+    - PolarisMobSpaceWorm
+    - ShiptestMobGoliathWhitesands
+    - ShiptestMobGoliathWhitesandsAncient
+    - ShiptestMobGruboid
+    - ShiptestMobGruboidBaby
+    - ShiptestMobBasiliskWhitesands
+    - ShiptestMobLavagrub
+    - ShiptestMobGoliathCrystal
+    - ShiptestMobLegionCrystal
+    - ShiptestMobWatcherForgotten
+    - ShiptestMobWolf
+    - ShiptestMobWolfAlpha
+    - ShiptestMobLobstrosityArctic
+    - ShiptestMobLobstrosityTropical
+    - ShiptestMobIceWhelp
+    - ShiptestMobIceDemon
+    - ShiptestMobIceDemonPrimordial
+    - ShiptestMobBrimdemon
+    - ShiptestMobAntlion
+    - ShiptestMobAntlionQueen
+    - ShiptestMobBearBrown
+    - ShiptestMobBearPolar
+    - ShiptestMobBearWar
+    - ShiptestMobLegate
+    - ShiptestMobSeedling
+    - PolarisMobFrostfly
+    - PolarisMobTymisianMoth
+    - PolarisMobSavik
+    - PolarisMobHooliganCrab
+    - PolarisMobKururak
+    - PolarisMobKururakLeader
+    - PolarisMobGrafadreka
+    - PolarisMobGiantSpiderHunter
+    - PolarisMobGiantSpiderLurker
+    - PolarisMobGiantSpiderTunneler
+    - PolarisMobGiantSpiderWebslinger
+    - PolarisMobGiantSpiderCarrier
+    - PolarisMobGiantSpiderSwarmling
+    - PolarisMobGiantSpiderPhorogenic
+    - PolarisMobGiantSpiderElectric
+    - VirgoMobGiantSpiderBroodmother
+    - VirgoMobSolargrub
+    - VirgoMobSolarmoth
+    - VirgoMobLunarmoth
+    - VirgoMobOregrub
+    - VirgoMobMimicCrate
+    - VirgoMobMimicCloset
+    - VirgoMobMimicAirlock
+    - VirgoMobYsbryd
+    - VirgoMobBlaidd
+    - VirgoMobFaithless
+    - VirgoMobFaithlessStrong
+    - VirgoMobPurityLaity
+    - VirgoMobPurityDeacon
+    - VirgoMobPurityPriest
+    - VirgoMobPurityBishop
+    - VirgoMobPurityArchbishop
+    - VirgoMobPurityCardinal
+    - CHOMPMobTyrAnt
+    - CHOMPMobTyrAntCopper
+    - CHOMPMobTyrAntAgate
+    - CHOMPMobTyrAntDiamond
+    - CHOMPMobTyrAntUranium
+    - CHOMPMobTyrAntPainite
+    - CHOMPMobTyrAntBronze
+    - CHOMPMobTyrAntQueen
+    - PolarisMobSakimm
+    - PolarisMobSiffet
+    - PolarisMobBlobSpore
+    - PolarisMobGiantSpiderFrost
+    - PolarisMobGiantSpiderPepper
+    - PolarisMobGiantSpiderThermic
+    - VirgoMobGiantSpiderIon
+    - VirgoMobGiantRat
+    - VirgoMobUnicorn
+    - VirgoMobCryptDrake
+    - SojournMobElektromagnetischRoach
+    - SojournMobGestrahlteRoach
+    - SojournMobGluhendRoach
+    - SojournMobJagerRoach
+    - SojournMobKraftwerkRoach
+    - SojournMobPanzerRoach
+    - SojournMobTazntzRoach
+    - SojournMobUnbekanntRoach
+    - SojournMobCaveSpider
+    - SojournMobCloakerSpider
+    - SojournMobAmeridianGolem
+    - SojournMobAmeridianRuntling
+    - SojournMobAmeridianTitan
+    - SojournMobKorolevaTermite
+    - VirgoMobLargeDragon
+    - ShiptestMobWendigo
+    - ShiptestMobHierophant
+    - ShiptestMobFugu
+    - ShiptestMobVenusHumanTrap
+    - SojournMobCorruptedDevourer
+    - SojournMobMemoryEater
+    - SojournMobPonderous
+    - SojournMobLicker
+    - SojournMobCerebralCrusher
+    - SojournMobFleshTower
+    - SojournMobShellHound
+    - SojournMobPusMaggot
+    - SojournMobHoveringNightmare
+    - SojournMobMemory
+    - SojournMobAshWendigo
+    - SojournMobBaronWormwood
+    - SojournMobCrimsonJelly
+    - SojournMobPitchHorror
+    - SojournMobDreamingKing
+    - SojournMobDaskvey
+    - CHOMPMobTyrAntGraphite
+    - CHOMPMobTyrAntMhydro
+    - CHOMPMobTyrAntQuartz
+    - CHOMPMobTyrAntSilver
+    - CHOMPMobTyrAntVerdantium
+    - CHOMPAntHill
+    - CitadelRPMobGubbuck
+    - TauCetiMeatlandBurrow
+    - VirgoMobGiantRatLab
+    - VirgoMobGiantRatPhoron
+    - VirgoMobLavagrub
+    - PolarisMobBlobSporeFragile
+    - PolarisMobGiantSpiderCarrierRecursive
+    - PolarisMobGiantSpiderPhorogenicDemolishing
+    - PolarisMobGiantSpiderPhorogenicXray
+    - PolarisMobGiantSpiderThermicDemolishing
+    - PolarisMobGiantSpiderThermicXray
+    - PolarisMobGrafadrekaHatchling
+    - PolarisMobGrafadrekaRainbow
+    - PolarisMobKururakHibernating
+    - VirgoMobBlaiddHostile
+    - VirgoMobCryptDrakeAlbedo
+    - VirgoMobYsbrydDecorated
+    - PolarisMobSpaceWormShort
+    - PolarisMobSpaceWormLong
+
+- type: entity
+  abstract: true
+  id: FaunaArenaButtonBase
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    canCollide: false
+  - type: Sprite
+    drawdepth: WallMountedItems
+    sprite: Structures/Wallmounts/switch.rsi
+    layers:
+    - state: base
+    - state: button
+    - state: button-unshaded
+      shader: unshaded
+
+- type: entity
+  parent: FaunaArenaButtonBase
+  id: FaunaArenaButtonPrevious
+  components:
+  - type: FaunaArenaButton
+    action: Previous
+    delay: 0.1
+
+- type: entity
+  parent: FaunaArenaButtonBase
+  id: FaunaArenaButtonNext
+  components:
+  - type: FaunaArenaButton
+    action: Next
+    delay: 0.1
+
+- type: entity
+  parent: FaunaArenaButtonBase
+  id: FaunaArenaButtonFight
+  components:
+  - type: FaunaArenaButton
+    action: Fight
+  - type: Sprite
+    layers:
+    - state: base
+    - state: off
+    - state: off-unshaded
+      shader: unshaded
+
+- type: entity
+  parent: FaunaArenaButtonBase
+  id: FaunaArenaButtonRestock
+  components:
+  - type: FaunaArenaButton
+    action: Restock
+  - type: Sprite
+    layers:
+    - state: base
+    - state: on
+    - state: on-unshaded
+      shader: unshaded

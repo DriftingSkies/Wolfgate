@@ -1,0 +1,1891 @@
+meta:
+  format: 7
+  category: Map
+  engineVersion: 291.0.0
+  forkId: ""
+  forkVersion: ""
+  time: 10/30/2026 20:53:44
+  entityCount: 261
+maps:
+- 1
+grids:
+- 1
+orphans: []
+nullspace: []
+tilemap:
+  2: Space
+  1: FloorPlanetGrass
+  0: FloorSteel
+entities:
+- proto: ""
+  entities:
+  - uid: 1
+    mapInit: true
+    components:
+    - type: MetaData
+      name: Map Entity
+    - type: Transform
+    - type: Map
+      mapInitialized: True
+    - type: GridTree
+    - type: Broadphase
+    - type: ChunkContainer
+      chunkEntities: []
+    - type: OccluderTree
+    - type: MapGrid
+      chunks:
+        0,0:
+          ind: 0,0
+          tiles: AAAAAAADAAAAAAAAAQAAAAAAAAMAAAAAAAABAAAAAAAAAAAAAAAAAAMAAAAAAAADAAAAAAAAAgAAAAAAAAMAAQAAAAAFAAEAAAAAAwABAAAAAAEAAQAAAAABAAEAAAAAAQABAAAAAAQAAgAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAwAAAAAAAAEAAAAAAAADAAAAAAAAAgAAAAAAAAIAAAAAAAAAAAEAAAAABQABAAAAAAAAAQAAAAAEAAEAAAAAAwABAAAAAAIAAQAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAIAAAAAAAAAAAAAAAAAAwAAAAAAAAMAAAAAAAABAAAAAAAAAwABAAAAAAAAAQAAAAADAAEAAAAAAgABAAAAAAEAAQAAAAAAAAEAAAAAAwACAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAAAAAAwAAAAAAAAIAAAAAAAADAAAAAAAAAwAAAAAAAAMAAQAAAAADAAEAAAAABAABAAAAAAIAAQAAAAAAAAEAAAAAAAABAAAAAAIAAgAAAAAAAAAAAAAAAQAAAAAAAAIAAAAAAAADAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAAAAAEAAAAAAQABAAAAAAMAAQAAAAABAAEAAAAAAgABAAAAAAUAAQAAAAABAAIAAAAAAAAAAAAAAAEAAAAAAAADAAAAAAAAAQAAAAAAAAEAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAgABAAAAAAUAAQAAAAACAAEAAAAAAgABAAAAAAMAAQAAAAAEAAEAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAAMAAAAAAAADAAAAAAAAAgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAIAAQAAAAADAAEAAAAABAABAAAAAAMAAQAAAAAFAAEAAAAAAwABAAAAAAIAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAMAAAAAAAADAAAAAAAAAQAAAAAAAAMAAAAAAAAAAAEAAAAAAwABAAAAAAEAAQAAAAAAAAEAAAAAAQABAAAAAAEAAQAAAAAEAAIAAAAAAAAAAAAAAAMAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQABAAAAAAUAAQAAAAAFAAEAAAAAAAABAAAAAAIAAQAAAAADAAEAAAAABAACAAAAAAAAAQAAAAAEAAEAAAAABQABAAAAAAEAAQAAAAADAAEAAAAAAAABAAAAAAAAAQAAAAACAAEAAAAAAQABAAAAAAIAAQAAAAABAAEAAAAABAABAAAAAAUAAQAAAAADAAEAAAAAAgABAAAAAAAAAgAAAAAAAAEAAAAAAgABAAAAAAUAAQAAAAAEAAEAAAAAAQABAAAAAAIAAQAAAAADAAEAAAAAAwABAAAAAAIAAQAAAAAFAAEAAAAAAwABAAAAAAEAAQAAAAAFAAEAAAAAAgABAAAAAAUAAQAAAAAFAAIAAAAAAAABAAAAAAQAAQAAAAAAAAEAAAAAAgABAAAAAAQAAQAAAAAFAAEAAAAAAQABAAAAAAUAAQAAAAADAAEAAAAAAAABAAAAAAUAAQAAAAACAAEAAAAABQABAAAAAAMAAQAAAAADAAEAAAAAAAACAAAAAAAAAQAAAAAFAAEAAAAABQABAAAAAAIAAQAAAAABAAEAAAAABQABAAAAAAIAAQAAAAADAAEAAAAAAAABAAAAAAIAAQAAAAABAAEAAAAABAABAAAAAAAAAQAAAAABAAEAAAAABAABAAAAAAAAAgAAAAAAAAEAAAAAAAABAAAAAAMAAQAAAAADAAEAAAAAAQABAAAAAAIAAQAAAAAEAAEAAAAAAgABAAAAAAIAAQAAAAAEAAEAAAAAAAABAAAAAAQAAQAAAAADAAEAAAAABQABAAAAAAAAAQAAAAADAAIAAAAAAAABAAAAAAUAAQAAAAADAAEAAAAAAwABAAAAAAQAAQAAAAADAAEAAAAABAABAAAAAAMAAQAAAAAFAAEAAAAAAwABAAAAAAEAAQAAAAAAAAEAAAAABQABAAAAAAMAAQAAAAAAAAEAAAAAAQACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAA==
+          version: 7
+        -1,-1:
+          ind: -1,-1
+          tiles: AgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAEAAQAAAAAAAAEAAAAAAgABAAAAAAUAAQAAAAACAAEAAAAAAwABAAAAAAIAAQAAAAAEAAEAAAAABAABAAAAAAIAAQAAAAACAAEAAAAABQABAAAAAAQAAQAAAAABAAEAAAAAAwABAAAAAAQAAQAAAAADAAEAAAAAAQABAAAAAAQAAQAAAAABAAEAAAAABAABAAAAAAMAAQAAAAAAAAEAAAAAAQABAAAAAAMAAQAAAAAAAAEAAAAAAwABAAAAAAEAAQAAAAAEAAEAAAAAAQABAAAAAAEAAQAAAAACAAEAAAAAAQABAAAAAAIAAQAAAAAEAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAABQABAAAAAAEAAQAAAAADAAEAAAAAAwABAAAAAAQAAQAAAAAFAAEAAAAABQABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAMAAQAAAAACAAEAAAAAAAABAAAAAAQAAQAAAAABAAEAAAAABQABAAAAAAAAAQAAAAAAAAEAAAAAAwABAAAAAAEAAQAAAAADAAEAAAAAAgABAAAAAAUAAQAAAAAFAAEAAAAAAQABAAAAAAUAAQAAAAACAAEAAAAABAABAAAAAAQAAQAAAAABAAEAAAAAAgABAAAAAAAAAQAAAAADAAEAAAAAAwABAAAAAAUAAQAAAAACAAEAAAAAAAABAAAAAAIAAQAAAAADAAEAAAAABQABAAAAAAQAAQAAAAAAAAEAAAAABAABAAAAAAEAAQAAAAAAAAEAAAAABAABAAAAAAEAAQAAAAAAAAEAAAAAAwABAAAAAAAAAQAAAAAEAAEAAAAAAQABAAAAAAMAAQAAAAABAAEAAAAAAgABAAAAAAAAAQAAAAABAAEAAAAABAAAAAAAAAIAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAAEAAAAAAAADAAAAAAAAAQAAAAAAAAIAAAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAADAAAAAAAAAQAAAAAAAAMAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAACAAAAAAAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAAAAAAAAAEAAAAAAAACAAAAAAAAAQAAAAAAAAMAAAAAAAABAAAAAAAAAwAAAAAAAAAAAAAAAAACAAAAAAAAAwAAAAAAAAEAAAAAAAACAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAwAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAEAAAAAAAABAAAAAAAAAwAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAADAAAAAAAAAwAAAAAAAAMAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAQAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAEAAAAAAAABAAAAAAAAAwAAAAAAAAIAAAAAAAADAAAAAAAAAQAAAAAAAAMAAAAAAAADAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAwAAAAAAAAAAAAAAAAADAAAAAAAAAgAAAAAAAAEAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAwAAAAAAAAMAAAAAAAACAAAAAAAAAgAAAAAAAAAAAAAAAAADAAAAAAAAAgAAAAAAAAIAAAAAAAADAA==
+          version: 7
+        -1,0:
+          ind: -1,0
+          tiles: AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAwAAAAAAAAMAAAAAAAADAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAACAAAAAAAAAwAAAAAAAAIAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAABAAAAAAAAAwAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAACAAAAAAAAAwAAAAAAAAEAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAADAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAAAAwAAAAAAAAMAAAAAAAADAAAAAAAAAwAAAAAAAAAAAAAAAAACAAAAAAAAAgAAAAAAAAMAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAADAAAAAAAAAAAAAAAAAAIAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAADAAAAAAAAAgAAAAAAAAAAAAAAAAADAAAAAAAAAwAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAAAAAAAAAAAAwAAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAADAAAAAAAAAwAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAMAAAAAAAABAAAAAAAAAQAAAAAAAAIAAAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAACAAAAAAAAAwAAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAwAAAAAAAAIAAAAAAAACAAAAAAAAAwAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAABAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAwAAAAAAAAEAAAAAAAABAAAAAAAAAwAAAAAAAAIAAAAAAAADAAAAAAAAAQAAAAAAAAMAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAACAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAAAABAAEAAAAAAAABAAAAAAEAAQAAAAADAAEAAAAAAAABAAAAAAMAAQAAAAAEAAEAAAAAAAABAAAAAAUAAQAAAAAAAAEAAAAAAwABAAAAAAAAAQAAAAABAAEAAAAAAgABAAAAAAEAAQAAAAACAAEAAAAABQABAAAAAAUAAQAAAAAEAAEAAAAAAwABAAAAAAAAAQAAAAADAAEAAAAAAwABAAAAAAEAAQAAAAAFAAEAAAAAAgABAAAAAAEAAQAAAAAAAAEAAAAAAwABAAAAAAQAAQAAAAAEAAEAAAAABAABAAAAAAQAAQAAAAAEAAEAAAAAAwABAAAAAAUAAQAAAAADAAEAAAAABAABAAAAAAIAAQAAAAAFAAEAAAAAAAABAAAAAAMAAQAAAAABAAEAAAAAAAABAAAAAAMAAQAAAAABAAEAAAAAAQABAAAAAAAAAQAAAAAEAAEAAAAAAAABAAAAAAIAAQAAAAAEAAEAAAAAAAABAAAAAAUAAQAAAAACAAEAAAAAAQABAAAAAAMAAQAAAAAAAAEAAAAABAABAAAAAAMAAQAAAAABAAEAAAAABQABAAAAAAEAAQAAAAAEAAEAAAAAAQABAAAAAAQAAQAAAAAEAAEAAAAAAQABAAAAAAIAAQAAAAAEAAEAAAAABAABAAAAAAIAAQAAAAADAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAgABAAAAAAQAAQAAAAACAAEAAAAAAAABAAAAAAMAAQAAAAAEAAEAAAAAAAABAAAAAAAAAQAAAAACAAEAAAAABAABAAAAAAMAAQAAAAABAAEAAAAAAgABAAAAAAUAAQAAAAACAAEAAAAAAQABAAAAAAEAAQAAAAABAAEAAAAABQABAAAAAAQAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAA==
+          version: 7
+        -2,-1:
+          ind: -2,-1
+          tiles: AgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAAAAABAAAAAAMAAQAAAAABAAEAAAAABQABAAAAAAMAAQAAAAAFAAEAAAAAAQABAAAAAAIAAQAAAAACAAEAAAAAAwABAAAAAAMAAQAAAAACAAEAAAAABQABAAAAAAUAAgAAAAAAAAIAAAAAAAABAAAAAAQAAQAAAAAFAAEAAAAAAgABAAAAAAIAAQAAAAACAAEAAAAABQABAAAAAAMAAQAAAAAAAAEAAAAAAAABAAAAAAEAAQAAAAAEAAEAAAAAAQABAAAAAAAAAQAAAAAEAAIAAAAAAAACAAAAAAAAAQAAAAADAAEAAAAABAABAAAAAAAAAQAAAAADAAEAAAAABAABAAAAAAAAAQAAAAADAAEAAAAAAQABAAAAAAQAAQAAAAAAAAEAAAAAAgABAAAAAAQAAQAAAAAEAAEAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAAAQABAAAAAAEAAQAAAAACAAEAAAAAAQABAAAAAAUAAQAAAAAFAAEAAAAAAgABAAAAAAUAAQAAAAAAAAEAAAAAAgABAAAAAAUAAQAAAAAFAAEAAAAAAAABAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAAAAQAAAAACAAEAAAAAAQABAAAAAAIAAQAAAAAEAAEAAAAAAQABAAAAAAMAAQAAAAABAAEAAAAABQABAAAAAAAAAQAAAAACAAEAAAAAAgABAAAAAAAAAQAAAAAFAAIAAAAAAAACAAAAAAAAAQAAAAAEAAEAAAAABAABAAAAAAUAAQAAAAAFAAEAAAAAAwABAAAAAAQAAQAAAAAFAAEAAAAABAABAAAAAAEAAQAAAAABAAEAAAAAAwABAAAAAAEAAQAAAAAAAAEAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAAAQABAAAAAAQAAQAAAAABAAEAAAAABAABAAAAAAEAAQAAAAAFAAAAAAAAAQAAAAAAAAAAAAAAAAADAAAAAAAAAwAAAAAAAAIAAAAAAAABAAAAAAAAAwAAAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAMAAQAAAAAEAAEAAAAABQABAAAAAAAAAQAAAAAFAAEAAAAAAQAAAAAAAAEAAAAAAAACAAAAAAAAAgAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAADAAIAAAAAAAACAAAAAAAAAQAAAAAAAAEAAAAAAwABAAAAAAQAAQAAAAACAAEAAAAABAABAAAAAAQAAAAAAAAAAAAAAAAAAwAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgACAAAAAAAAAgAAAAAAAAEAAAAAAQABAAAAAAIAAQAAAAAFAAEAAAAABQABAAAAAAUAAQAAAAAEAAAAAAAAAAAAAAAAAAIAAAAAAAADAAAAAAAAAAAAAAAAAAIAAAAAAAADAAAAAAAAAwAAAAAAAAIAAgAAAAAAAAIAAAAAAAABAAAAAAQAAQAAAAAEAAEAAAAAAAABAAAAAAUAAQAAAAACAAEAAAAABQAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAABAAIAAAAAAAACAAAAAAAAAQAAAAACAAEAAAAAAAABAAAAAAEAAQAAAAADAAEAAAAABAABAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAABAAAAAAAAAgACAAAAAAAAAgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAACAAEAAAAAAQABAAAAAAIAAQAAAAAAAAAAAAAAAQAAAAAAAAIAAAAAAAACAAAAAAAAAwAAAAAAAAEAAAAAAAADAAAAAAAAAAAAAAAAAAEAAgAAAAAAAAIAAAAAAAABAAAAAAAAAQAAAAABAAEAAAAAAQABAAAAAAUAAQAAAAABAAEAAAAAAgAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAEAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+          version: 7
+        -2,0:
+          ind: -2,0
+          tiles: AgAAAAAAAAIAAAAAAAABAAAAAAMAAQAAAAACAAEAAAAAAwABAAAAAAIAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAgAAAAAAAAEAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAACAAIAAAAAAAACAAAAAAAAAQAAAAAEAAEAAAAABAABAAAAAAMAAQAAAAAAAAEAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAADAAAAAAAAAQAAAAAAAAEAAAAAAAADAAAAAAAAAgACAAAAAAAAAgAAAAAAAAEAAAAABQABAAAAAAEAAQAAAAAFAAEAAAAAAAABAAAAAAUAAQAAAAAFAAAAAAAAAQAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAwAAAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAAAAQAAAAAEAAEAAAAAAgABAAAAAAIAAQAAAAAAAAEAAAAAAwAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAIAAAAAAAADAAIAAAAAAAACAAAAAAAAAQAAAAADAAEAAAAABQABAAAAAAUAAQAAAAABAAEAAAAAAgABAAAAAAMAAAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAADAAAAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAABAABAAAAAAQAAQAAAAAFAAEAAAAABQABAAAAAAEAAQAAAAAAAAAAAAAAAwAAAAAAAAEAAAAAAAADAAAAAAAAAwAAAAAAAAEAAAAAAAADAAAAAAAAAgAAAAAAAAMAAgAAAAAAAAIAAAAAAAABAAAAAAQAAQAAAAAFAAEAAAAABQABAAAAAAUAAQAAAAABAAEAAAAAAQAAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAACAAAAAAAAAwAAAAAAAAEAAAAAAAACAAIAAAAAAAACAAAAAAAAAQAAAAADAAEAAAAABAABAAAAAAIAAQAAAAAEAAEAAAAABQABAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAADAAAAAAAAAAACAAAAAAAAAgAAAAAAAAEAAAAAAQABAAAAAAQAAQAAAAAAAAEAAAAAAQABAAAAAAUAAQAAAAADAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAMAAAAAAAACAAAAAAAAAwAAAAAAAAMAAgAAAAAAAAIAAAAAAAABAAAAAAEAAQAAAAACAAEAAAAAAwABAAAAAAAAAQAAAAABAAEAAAAABAABAAAAAAEAAQAAAAABAAEAAAAABAABAAAAAAUAAQAAAAAAAAEAAAAAAgABAAAAAAUAAQAAAAABAAIAAAAAAAACAAAAAAAAAQAAAAABAAEAAAAAAAABAAAAAAMAAQAAAAAFAAEAAAAAAAABAAAAAAEAAQAAAAACAAEAAAAAAwABAAAAAAUAAQAAAAABAAEAAAAAAQABAAAAAAMAAQAAAAABAAEAAAAAAwACAAAAAAAAAgAAAAAAAAEAAAAAAAABAAAAAAIAAQAAAAACAAEAAAAAAQABAAAAAAMAAQAAAAABAAEAAAAAAgABAAAAAAIAAQAAAAAFAAEAAAAAAwABAAAAAAUAAQAAAAABAAEAAAAABAABAAAAAAMAAgAAAAAAAAIAAAAAAAABAAAAAAMAAQAAAAADAAEAAAAAAwABAAAAAAQAAQAAAAAEAAEAAAAAAgABAAAAAAUAAQAAAAABAAEAAAAAAgABAAAAAAMAAQAAAAADAAEAAAAAAAABAAAAAAEAAQAAAAAEAAIAAAAAAAACAAAAAAAAAQAAAAADAAEAAAAABAABAAAAAAIAAQAAAAAFAAEAAAAABQABAAAAAAEAAQAAAAADAAEAAAAABAABAAAAAAUAAQAAAAAAAAEAAAAAAgABAAAAAAUAAQAAAAABAAEAAAAAAQACAAAAAAAAAgAAAAAAAAEAAAAAAwABAAAAAAMAAQAAAAAAAAEAAAAABAABAAAAAAQAAQAAAAAEAAEAAAAAAgABAAAAAAMAAQAAAAABAAEAAAAAAQABAAAAAAQAAQAAAAAFAAEAAAAAAgABAAAAAAMAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAA==
+          version: 7
+        0,-1:
+          ind: 0,-1
+          tiles: AgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAABAAAAAAUAAQAAAAABAAEAAAAAAwABAAAAAAQAAQAAAAAEAAEAAAAABAABAAAAAAUAAQAAAAAAAAEAAAAAAwABAAAAAAAAAQAAAAAAAAEAAAAAAwABAAAAAAEAAQAAAAAAAAEAAAAAAgACAAAAAAAAAQAAAAAAAAEAAAAABQABAAAAAAIAAQAAAAADAAEAAAAABAABAAAAAAAAAQAAAAAFAAEAAAAAAwABAAAAAAQAAQAAAAACAAEAAAAABQABAAAAAAQAAQAAAAABAAEAAAAAAgABAAAAAAIAAgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAADAAEAAAAAAAABAAAAAAIAAQAAAAAAAAEAAAAAAwABAAAAAAIAAQAAAAAAAAEAAAAABQABAAAAAAEAAQAAAAABAAEAAAAAAAABAAAAAAEAAQAAAAACAAIAAAAAAAABAAAAAAIAAQAAAAADAAEAAAAAAwABAAAAAAAAAQAAAAAEAAEAAAAABAABAAAAAAIAAQAAAAAAAAEAAAAABQABAAAAAAAAAQAAAAAEAAEAAAAABAABAAAAAAQAAQAAAAAEAAEAAAAABQACAAAAAAAAAQAAAAAAAAEAAAAAAgABAAAAAAEAAQAAAAACAAEAAAAAAwABAAAAAAMAAQAAAAAAAAEAAAAAAgABAAAAAAAAAQAAAAACAAEAAAAABAABAAAAAAIAAQAAAAACAAEAAAAAAQABAAAAAAMAAgAAAAAAAAEAAAAABQABAAAAAAIAAQAAAAAEAAEAAAAABAABAAAAAAIAAQAAAAADAAEAAAAABQABAAAAAAIAAQAAAAAAAAEAAAAAAAABAAAAAAIAAQAAAAAEAAEAAAAAAgABAAAAAAAAAQAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAwAAAAAAAAMAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAwABAAAAAAMAAQAAAAABAAEAAAAAAgABAAAAAAMAAQAAAAAAAAEAAAAABAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAADAAAAAAAAAgAAAAAAAAMAAAAAAAACAAAAAAAAAAAAAAAAAAIAAQAAAAAFAAEAAAAAAAABAAAAAAUAAQAAAAAEAAEAAAAAAgABAAAAAAAAAgAAAAAAAAAAAAAAAgAAAAAAAAMAAAAAAAADAAAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAABAABAAAAAAEAAQAAAAAFAAEAAAAABAABAAAAAAIAAQAAAAADAAIAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAADAAAAAAAAAwAAAAAAAAMAAAAAAAACAAAAAAAAAAABAAAAAAQAAQAAAAAAAAEAAAAAAgABAAAAAAEAAQAAAAAFAAEAAAAAAwACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAMAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAMAAQAAAAAFAAEAAAAAAgABAAAAAAQAAQAAAAABAAEAAAAAAAABAAAAAAAAAgAAAAAAAAAAAAAAAwAAAAAAAAIAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAACAAAAAAAAAAAAAAAAAAMAAAAAAAADAAEAAAAAAQABAAAAAAEAAQAAAAAEAAEAAAAAAgABAAAAAAUAAQAAAAADAAIAAAAAAAAAAAAAAAMAAAAAAAACAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAwAAAAAAAAIAAAAAAAADAAAAAAAAAgABAAAAAAMAAQAAAAABAAEAAAAABAABAAAAAAQAAQAAAAACAAEAAAAABAACAAAAAAAAAAAAAAABAAAAAAAAAwAAAAAAAAMAAAAAAAABAAAAAAAAAwAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAMAAQAAAAACAAEAAAAAAAABAAAAAAIAAQAAAAACAAEAAAAAAAABAAAAAAIAAgAAAAAAAA==
+          version: 7
+    - type: ThermalSignature
+    - type: SpreaderGrid
+      updateAccumulator: 0.9660535
+    - type: GridPathfinding
+    - type: Gravity
+      inherent: True
+      gravityShakeSound: !type:SoundPathSpecifier
+        path: /Audio/Effects/alert.ogg
+      enabled: True
+    - type: DecalGrid
+      chunkCollection:
+        version: 2
+        nodes:
+        - node:
+            color: '#3A8EDEFF'
+            angle: -1.5707963267948966 rad
+            id: ArrowsGreyscale
+          decals:
+            0: -11,2
+        - node:
+            color: '#3A8EDEFF'
+            angle: 1.5707963267948966 rad
+            id: ArrowsGreyscale
+          decals:
+            1: -9,2
+        - node:
+            color: '#DE3A3AFF'
+            id: WarnBoxGreyscale
+          decals:
+            2: -10,1
+        - node:
+            color: '#3ADE5AFF'
+            id: BoxGreyscale
+          decals:
+            3: -12,-5
+    - type: PlanetMap
+    - type: Parallax
+      parallax: bedrock
+    - type: MapLight
+      ambientLightColor: '#E6CB8BFF'
+    - type: Roof
+      data: {}
+    - type: RadiationGridResistance
+    - type: SunShadow
+    - type: ExplosionAirtightGrid
+    - type: MapAtmosphere
+      space: False
+      mixture:
+        temperature: 293.15
+        volume: 2500
+        moles:
+          Oxygen: 21.82478
+          Nitrogen: 82.10312
+        immutable: True
+- proto: FaunaArenaButtonFight
+  entities:
+  - uid: 31
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -9.5,1.5
+    - type: Fixtures
+      fixtures: {}
+- proto: FaunaArenaButtonNext
+  entities:
+  - uid: 23
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -8.5,2.5
+    - type: Fixtures
+      fixtures: {}
+- proto: FaunaArenaButtonPrevious
+  entities:
+  - uid: 30
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -10.5,2.5
+    - type: Fixtures
+      fixtures: {}
+- proto: FaunaArenaButtonRestock
+  entities:
+  - uid: 57
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -11.5,-4.5
+    - type: Fixtures
+      fixtures: {}
+- proto: FaunaArenaSpawner
+  entities:
+  - uid: 91
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 0.5,0.5
+- proto: FaunaDisplaySpawner
+  entities:
+  - uid: 200
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitBasic
+  - uid: 202
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitUsspL10
+  - uid: 204
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitSalvage
+  - uid: 206
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitGoliath
+  - uid: 208
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitMercenary
+  - uid: 210
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitM82c
+  - uid: 212
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitSecurity
+  - uid: 214
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitSyndieElite
+  - uid: 216
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitSyndie
+  - uid: 218
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitMaxim
+  - uid: 220
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitWarden
+  - uid: 222
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitERTLeader
+  - uid: 224
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -17.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitJuggernaut
+  - uid: 226
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -16.5,11.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterHardsuitDeathsquad
+  - uid: 228
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponPistolMk58
+  - uid: 230
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine45_ACPPistolFMJ
+  - uid: 232
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponPistolViper
+  - uid: 234
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine9x19mmPistolFMJ
+  - uid: 236
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponPistolCobra
+  - uid: 238
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine635x40mmCaselessPistol
+  - uid: 240
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRevolverMateba
+  - uid: 242
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: SpeedLoader357_magnumFMJ
+  - uid: 244
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRevolverPython
+  - uid: 246
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: SpeedLoader357_magnumFMJ
+  - uid: 248
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRevolverArgenti
+  - uid: 250
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,9.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox556x45mmFMJ
+  - uid: 252
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponSubMachineGunC20r
+  - uid: 254
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine9x19mmSubMachineGunFMJ
+  - uid: 256
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponSubMachineGunDrozd
+  - uid: 258
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine45_ACPSubMachineGunFMJ
+  - uid: 260
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponSubMachineGunWt550
+  - uid: 262
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine46x30mmSubMachineGunTopMountedFMJ
+  - uid: 264
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponSubMachineGunVector45_ACP
+  - uid: 266
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine45_ACPSubMachineGunFMJ
+  - uid: 268
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponSniperMosin
+  - uid: 270
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox762x54mmRFMJ
+  - uid: 272
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponSniperHristov
+  - uid: 274
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox145x114mm
+  - uid: 276
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -17.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleBurner
+  - uid: 278
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -16.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine127x99mm
+  - uid: 280
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -15.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleLeeEnfield
+  - uid: 282
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -14.5,7.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine762x51mmFMJ
+  - uid: 284
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleLecter
+  - uid: 286
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine68x52mmCaseless
+  - uid: 288
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleAk
+  - uid: 290
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine762x39mmFMJ
+  - uid: 292
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleM90
+  - uid: 294
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine762x51mmFMJ
+  - uid: 296
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleGestio
+  - uid: 298
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine762x39mmLowCapacityFMJ
+  - uid: 300
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponRifleNovaliteC1
+  - uid: 302
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,5.5
+    - type: FaunaDisplaySpawner
+      prototype: MagazineNovaliteC1
+  - uid: 304
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponShotgunKammerer
+  - uid: 306
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox12_gaugeBuckshot
+  - uid: 308
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponShotgunEnforcer
+  - uid: 310
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox12_gaugeBuckshot
+  - uid: 312
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponShotgunBulldog
+  - uid: 314
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine12_gaugeBuckshot
+  - uid: 316
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponShotgunDoubleBarreled
+  - uid: 318
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox12_gaugeBuckshot
+  - uid: 320
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponShotgunBigJohnny
+  - uid: 322
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox23x75mmBuckshot
+  - uid: 324
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponLightMachineGunL6
+  - uid: 326
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: Magazine762x39mmBox
+  - uid: 328
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -17.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponLMGPKMS
+  - uid: 330
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -16.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: AmmoBox556x45mmFMJ
+  - uid: 332
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -15.5,3.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponMinigun
+  - uid: 334
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponLaserCarbine
+  - uid: 336
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponLaserGun
+  - uid: 338
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponPulseRifle
+  - uid: 340
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponPulseCarbine
+  - uid: 342
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponAdvancedLaser
+  - uid: 344
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponEnergyShotgun
+  - uid: 346
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponXrayCannon
+  - uid: 348
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponEnergyGunFrost
+  - uid: 350
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponLaserCellMG
+  - uid: 352
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,1.5
+    - type: FaunaDisplaySpawner
+      prototype: MilitaryPowerCellMG
+  - uid: 354
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponProtoKineticAccelerator
+  - uid: 356
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponProtoKineticAcceleratorSawn
+  - uid: 358
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponHeavyMiningLaser
+  - uid: 360
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponLauncherChinaLake
+  - uid: 362
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: 40mmGrenadeFragmentation
+  - uid: 364
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponCrusher
+  - uid: 366
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: WeaponCrusherGlaive
+  - uid: 368
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: Stunbaton
+  - uid: 370
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: CombatKnife
+  - uid: 372
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,-0.5
+    - type: FaunaDisplaySpawner
+      prototype: Spear
+  - uid: 374
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingOuterArmorBasic
+  - uid: 376
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: ClothingHeadHelmetBasic
+  - uid: 378
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: OxygenTankFilled
+  - uid: 380
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: ToolboxMechanical
+  - uid: 382
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: Brutepack
+  - uid: 384
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: Ointment
+  - uid: 386
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: Gauze
+  - uid: 388
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: EmergencyMedipen
+  - uid: 390
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,-2.5
+    - type: FaunaDisplaySpawner
+      prototype: HandheldHealthAnalyzer
+- proto: Table
+  entities:
+  - uid: 201
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,11.5
+  - uid: 203
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,11.5
+  - uid: 205
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,11.5
+  - uid: 207
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,11.5
+  - uid: 209
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,11.5
+  - uid: 211
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,11.5
+  - uid: 213
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,11.5
+  - uid: 215
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,11.5
+  - uid: 217
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,11.5
+  - uid: 219
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,11.5
+  - uid: 221
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,11.5
+  - uid: 223
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,11.5
+  - uid: 225
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -17.5,11.5
+  - uid: 227
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -16.5,11.5
+  - uid: 229
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,9.5
+  - uid: 231
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,9.5
+  - uid: 233
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,9.5
+  - uid: 235
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,9.5
+  - uid: 237
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,9.5
+  - uid: 239
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,9.5
+  - uid: 241
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,9.5
+  - uid: 243
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,9.5
+  - uid: 245
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,9.5
+  - uid: 247
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,9.5
+  - uid: 249
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,9.5
+  - uid: 251
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,9.5
+  - uid: 253
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,7.5
+  - uid: 255
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,7.5
+  - uid: 257
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,7.5
+  - uid: 259
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,7.5
+  - uid: 261
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,7.5
+  - uid: 263
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,7.5
+  - uid: 265
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,7.5
+  - uid: 267
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,7.5
+  - uid: 269
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,7.5
+  - uid: 271
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,7.5
+  - uid: 273
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,7.5
+  - uid: 275
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,7.5
+  - uid: 277
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -17.5,7.5
+  - uid: 279
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -16.5,7.5
+  - uid: 281
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -15.5,7.5
+  - uid: 283
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -14.5,7.5
+  - uid: 285
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,5.5
+  - uid: 287
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,5.5
+  - uid: 289
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,5.5
+  - uid: 291
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,5.5
+  - uid: 293
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,5.5
+  - uid: 295
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,5.5
+  - uid: 297
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,5.5
+  - uid: 299
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,5.5
+  - uid: 301
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,5.5
+  - uid: 303
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,5.5
+  - uid: 305
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,3.5
+  - uid: 307
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,3.5
+  - uid: 309
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,3.5
+  - uid: 311
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,3.5
+  - uid: 313
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,3.5
+  - uid: 315
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,3.5
+  - uid: 317
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,3.5
+  - uid: 319
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,3.5
+  - uid: 321
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,3.5
+  - uid: 323
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,3.5
+  - uid: 325
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -19.5,3.5
+  - uid: 327
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -18.5,3.5
+  - uid: 329
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -17.5,3.5
+  - uid: 331
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -16.5,3.5
+  - uid: 333
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -15.5,3.5
+  - uid: 335
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,1.5
+  - uid: 337
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,1.5
+  - uid: 339
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,1.5
+  - uid: 341
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,1.5
+  - uid: 343
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,1.5
+  - uid: 345
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,1.5
+  - uid: 347
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,1.5
+  - uid: 349
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,1.5
+  - uid: 351
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,1.5
+  - uid: 353
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,1.5
+  - uid: 355
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,-0.5
+  - uid: 357
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,-0.5
+  - uid: 359
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,-0.5
+  - uid: 361
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,-0.5
+  - uid: 363
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,-0.5
+  - uid: 365
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,-0.5
+  - uid: 367
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,-0.5
+  - uid: 369
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,-0.5
+  - uid: 371
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,-0.5
+  - uid: 373
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -20.5,-0.5
+  - uid: 375
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -29.5,-2.5
+  - uid: 377
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -28.5,-2.5
+  - uid: 379
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -27.5,-2.5
+  - uid: 381
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -26.5,-2.5
+  - uid: 383
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -25.5,-2.5
+  - uid: 385
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -24.5,-2.5
+  - uid: 387
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -23.5,-2.5
+  - uid: 389
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -22.5,-2.5
+  - uid: 391
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -21.5,-2.5
+- proto: WallReinforced
+  entities:
+  - uid: 4
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -5.5,8.5
+  - uid: 5
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -2.5,8.5
+  - uid: 6
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -1.5,8.5
+  - uid: 7
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 2.5,8.5
+  - uid: 8
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 0.5,8.5
+  - uid: 11
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,8.5
+  - uid: 12
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -6.5,8.5
+  - uid: 13
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -0.5,8.5
+  - uid: 14
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 3.5,8.5
+  - uid: 15
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 1.5,8.5
+  - uid: 19
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -4.5,8.5
+  - uid: 20
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -3.5,8.5
+  - uid: 21
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,6.5
+  - uid: 22
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,8.5
+  - uid: 28
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,6.5
+  - uid: 29
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,7.5
+  - uid: 36
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,4.5
+  - uid: 37
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,7.5
+  - uid: 38
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 4.5,8.5
+  - uid: 39
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 6.5,8.5
+  - uid: 43
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,5.5
+  - uid: 44
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,5.5
+  - uid: 45
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 5.5,8.5
+  - uid: 46
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 7.5,8.5
+  - uid: 51
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,2.5
+  - uid: 52
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,3.5
+  - uid: 53
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-4.5
+  - uid: 54
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-5.5
+  - uid: 58
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,3.5
+  - uid: 59
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,4.5
+  - uid: 60
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-4.5
+  - uid: 61
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-5.5
+  - uid: 80
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,1.5
+  - uid: 81
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,2.5
+  - uid: 82
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-7.5
+  - uid: 83
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-2.5
+  - uid: 86
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-0.5
+  - uid: 87
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,0.5
+  - uid: 88
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-6.5
+  - uid: 89
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-2.5
+  - uid: 92
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,1.5
+  - uid: 93
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-6.5
+  - uid: 94
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-3.5
+  - uid: 95
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-1.5
+  - uid: 96
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-1.5
+  - uid: 97
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 4.5,-7.5
+  - uid: 98
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,-3.5
+  - uid: 99
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-0.5
+  - uid: 100
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 3.5,-7.5
+  - uid: 101
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 2.5,-7.5
+  - uid: 103
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 7.5,-7.5
+  - uid: 104
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 5.5,-7.5
+  - uid: 105
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 1.5,-7.5
+  - uid: 106
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -0.5,-7.5
+  - uid: 107
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 6.5,-7.5
+  - uid: 108
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -2.5,-7.5
+  - uid: 109
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -1.5,-7.5
+  - uid: 110
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: 0.5,-7.5
+  - uid: 111
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -5.5,-7.5
+  - uid: 116
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,-7.5
+  - uid: 117
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -6.5,-7.5
+  - uid: 118
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -4.5,-7.5
+  - uid: 119
+    mapInit: true
+    components:
+    - type: Transform
+      parent: 1
+      pos: -3.5,-7.5
+...

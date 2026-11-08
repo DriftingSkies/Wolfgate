@@ -51,6 +51,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
             subs.Event<ShipPaInternetSoundStopMessage>(OnInternetSoundStop);
             subs.Event<ShipPaPlaylistRequestMessage>(OnPlaylistRequest);
             subs.Event<ShipDistressRequestMessage>(OnDistressRequest);
+            subs.Event<ShipPaVolumeRequestMessage>(OnVolumeRequest);
         });
 
         InitializeDistress();
@@ -76,6 +77,23 @@ public sealed partial class ShipAlertSystem : EntitySystem
 
         EnsureComp<ShipAlertComponent>(grid);
         _pa.RefreshCounts(grid);
+    }
+
+    /// <summary>Sets the ship's PA volume, clamped so the pilot can't mute the speakers.</summary>
+    private void OnVolumeRequest(Entity<ShuttleConsoleComponent> ent, ref ShipPaVolumeRequestMessage args)
+    {
+        if (GetConsoleGrid(ent) is not { } grid || !float.IsFinite(args.Volume))
+            return;
+
+        var alert = EnsureComp<ShipAlertComponent>(grid);
+        var volume = Math.Clamp(args.Volume, ShipAlertComponent.MinVolume, 1f);
+        if (MathHelper.CloseTo(alert.Volume, volume))
+            return;
+
+        alert.Volume = volume;
+        Dirty(grid, alert);
+        _adminLogger.Add(LogType.Action, LogImpact.Low,
+            $"{ToPrettyString(args.Actor):player} set the PA volume of {ToPrettyString(grid):grid} to {volume:P0}");
     }
 
     private void OnCodeRequest(Entity<ShuttleConsoleComponent> ent, ref ShipAlertCodeRequestMessage args)

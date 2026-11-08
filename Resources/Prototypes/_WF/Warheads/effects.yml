@@ -43,6 +43,9 @@
   description: Settled radioactive dust. Don't breathe it.
   categories: [ HideSpawnMenu ]
   components:
+  # Dust in open space stays put: ships flying through don't pick it up.
+  - type: Transform
+    gridTraversal: false
   - type: RadiationSource
     intensity: 5
     slope: 0.15

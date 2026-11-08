@@ -22,13 +22,17 @@
   threatScale: [ 1, 1, 1, 1.1, 1.2, 1.3 ]
   maxThreatScale: 1.5
   tierThresholds: [ 10, 22, 40, 60, 80 ]
-  strongholdBounty: [ 100000, 150000, 200000, 260000, 330000, 400000 ]
-  patrolBounty: 35000
+  strongholdBounty: [ 200000, 300000, 400000, 500000, 625000, 750000 ]
+  patrolBounty: 75000
+  batteryBounty: 40000
+  # Each paid attacking ship past the first adds half the bounty, to at most two and a half times it.
+  shipBountyScale: 0.5
+  maxShipBountyScale: 2.5
   # Each ship that helps also gets a free repair at the Anvilhold Drydock, bound to it, one unused at a time.
   strongholdVoucher: WFDrydockRepairVoucher
   patrolVoucher: WFDrydockRepairVoucher
   # Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.
-  retakeBounty: [ 8000, 10000, 12000, 14000, 16000, 20000 ]
+  retakeBounty: [ 16000, 20000, 24000, 28000, 32000, 40000 ]
   # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
   # cap by tier (0..5), and the convoy for each level from 1.
   reinforcementInterval: 20m
@@ -68,12 +72,12 @@
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
-    stronghold: 50
-    patrol: 20
+    stronghold: 100
+    patrol: 40
   - entity: Doubloon1
     companies: [ PDV, PDVCivilian ]
-    stronghold: 50
-    patrol: 20
+    stronghold: 100
+    patrol: 40
   risingSound:
     path: /Audio/Misc/redalert.ogg
   fallingSound:
@@ -105,13 +109,17 @@
   threatScale: [ 1, 1, 1.1, 1.2, 1.35, 1.5 ]
   maxThreatScale: 1.5
   tierThresholds: [ 12, 30, 55, 80, 105 ]
-  strongholdBounty: [ 100000, 150000, 200000, 260000, 330000, 400000 ]
-  patrolBounty: 35000
+  strongholdBounty: [ 200000, 300000, 400000, 500000, 625000, 750000 ]
+  patrolBounty: 75000
+  batteryBounty: 40000
+  # Each paid attacking ship past the first adds half the bounty, to at most two and a half times it.
+  shipBountyScale: 0.5
+  maxShipBountyScale: 2.5
   # Each ship that helps also gets a free repair at the Anvilhold Drydock, bound to it, one unused at a time.
   strongholdVoucher: WFDrydockRepairVoucher
   patrolVoucher: WFDrydockRepairVoucher
   # Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.
-  retakeBounty: [ 10000, 12000, 14000, 17000, 20000, 25000 ]
+  retakeBounty: [ 20000, 24000, 28000, 34000, 40000, 50000 ]
   # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
   # cap by tier (0..5), and the convoy for each level from 1.
   reinforcementInterval: 12m
@@ -154,12 +162,12 @@
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
-    stronghold: 50
-    patrol: 20
+    stronghold: 100
+    patrol: 40
   - entity: Doubloon1
     companies: [ PDV, PDVCivilian ]
-    stronghold: 50
-    patrol: 20
+    stronghold: 100
+    patrol: 40
   risingSound:
     path: /Audio/Misc/redalert.ogg
   fallingSound:
@@ -191,13 +199,17 @@
   threatScale: [ 1, 1.1, 1.2, 1.3, 1.4, 1.5 ]
   maxThreatScale: 1.5
   tierThresholds: [ 15, 35, 60, 90, 120 ]
-  strongholdBounty: [ 100000, 150000, 200000, 260000, 330000, 400000 ]
-  patrolBounty: 35000
+  strongholdBounty: [ 200000, 300000, 400000, 500000, 625000, 750000 ]
+  patrolBounty: 75000
+  batteryBounty: 40000
+  # Each paid attacking ship past the first adds half the bounty, to at most two and a half times it.
+  shipBountyScale: 0.5
+  maxShipBountyScale: 2.5
   # Each ship that helps also gets a free repair at the Anvilhold Drydock, bound to it, one unused at a time.
   strongholdVoucher: WFDrydockRepairVoucher
   patrolVoucher: WFDrydockRepairVoucher
   # Spesos for retaking a held cell, by tier, split among the crews of the ships that held it through the countdown.
-  retakeBounty: [ 12000, 15000, 18000, 22000, 26000, 30000 ]
+  retakeBounty: [ 24000, 30000, 36000, 44000, 52000, 60000 ]
   # Reinforcements dock to a stronghold hub one by one: the interval a hub stands before the next sets out, the level
   # cap by tier (0..5), and the convoy for each level from 1.
   reinforcementInterval: 8m
@@ -243,12 +255,12 @@
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
-    stronghold: 50
-    patrol: 20
+    stronghold: 100
+    patrol: 40
   - entity: Doubloon1
     companies: [ PDV, PDVCivilian ]
-    stronghold: 50
-    patrol: 20
+    stronghold: 100
+    patrol: 40
   risingSound:
     path: /Audio/Misc/redalert.ogg
   fallingSound:

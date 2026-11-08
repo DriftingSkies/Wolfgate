@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Linq;
 using Content.Client._WF.Stylesheets;
 using Content.Client.UserInterface.Controls;
@@ -60,6 +61,7 @@ public sealed partial class AnatomyWindow : FancyWindow
     public AnatomyWindow()
     {
         RobustXamlLoader.Load(this);
+        WFWindowBranding.Apply(this);
         IoCManager.InjectDependencies(this);
 
         var reveal = new ButtonGroup(false);

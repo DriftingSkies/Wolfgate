@@ -1,0 +1,2467 @@
+# VOREStation (Virgo) space fauna, alien animals and the snowbull.
+
+- type: entity
+  abstract: true
+  parent: [ SimpleSpaceMobBase, FlyingMobBase, MobCombat ]
+  id: FaunaMobSpaceBase
+  components:
+  - type: InputMover
+  - type: MobMover
+  - type: CombatMode
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 80
+        mask:
+        - FlyingMobMask
+        layer:
+        - FlyingMobLayer
+  - type: MobState
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        9
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+
+# Territorial kin of the space carp, it knocks its prey off balance.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: VirgoMobShark
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/shark.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: shark
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: shark
+      Dead:
+        Base: shark_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 0.45
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 22
+  - type: FaunaMeleeEffect
+    chance: 0.1
+    slow: 4
+    popup: fauna-virgo-shark-knock
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatFish
+      amount: 10
+
+# Harmless drifter that only buffets what attacks it, then loses interest.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: VirgoMobRay
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/ray.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: ray
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: ray
+      Dead:
+        Base: ray_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 0.55
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 7
+  - type: FaunaMeleeEffect
+    chance: 0.66
+    slow: 4
+    dropTarget: true
+    popup: fauna-virgo-ray-buffet
+    dropPopup: fauna-virgo-ray-lose-interest
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatFish
+      amount: 5
+  - type: Speech
+    allowedEmotes: [ VirgoRayIdle ]
+  - type: AutoEmote
+    emotes: [ VirgoRayIdle ]
+
+# Ice-world bull that charges whatever threatens it.
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: VirgoMobSnowbull
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/snowbull.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: snowbull
+    - map: [ "charge" ]
+      state: snowbull-charge
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: snowbull
+      Dead:
+        Base: snowbull-dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaChargeVisuals.Charging:
+        charge:
+          True: { visible: true }
+          False: { visible: false }
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 17
+  - type: FaunaCharge
+    shake: 1.5
+    range: 8
+    windup: 1
+    windupPopup: fauna-virgo-snowbull-prepare
+    damage:
+      types:
+        Blunt: 21
+    knockdown: 5
+    throw: 1
+    structureDamage:
+      types:
+        Structural: 20
+  - type: FaunaAggroCry
+    popup: fauna-virgo-snowbull-huff
+  - type: FaunaGroupRetaliate
+  - type: FaunaAbilities
+    abilities:
+    - action: VirgoActionSnowbullCharge
+      minRange: 3
+      maxRange: 8
+      hold: 1
+  - type: NPCRetaliation
+    attackMemoryLength: 40
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+    - id: PolarisMaterialAnimalHide
+      amount: 6
+
+- type: entity
+  parent: DS13ActionBase
+  id: VirgoActionSnowbullCharge
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 8
+    checkCanAccess: false
+    sound:
+      path: /Audio/_WF/Fauna/Virgo/snowbull_charge.ogg
+    event: !type:FaunaChargeActionEvent
+
+# Translucent space predator that drinks its prey's hunger and buds when full.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: VirgoMobSpaceJellyfish
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/space_jellyfish.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: space_jellyfish
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: space_jellyfish-eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: space_jellyfish
+        BaseUnshaded: space_jellyfish-eyes
+      Dead:
+        Base: space_jellyfish_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Virgo/tap.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 2
+  - type: FaunaHungerDrain
+  - type: FaunaHitAndRun
+  - type: MobCollision
+    fixtureId: none
+  - type: Speech
+    allowedEmotes: [ VirgoJellyfishIdle ]
+  - type: AutoEmote
+    emotes: [ VirgoJellyfishIdle ]
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          VirgoFoodJellyfishCore:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: FoodMeatBase
+  id: VirgoFoodJellyfishCore
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/jellyfish_core.rsi
+    state: jellyfish_core
+  - type: FlavorProfile
+    flavors:
+    - sweet
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 50
+
+# Pulsing mass of darkness that throws smaller ghosts at its prey. Only lasers and energy hurt it.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: VirgoMobSpaceGhost
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/space_ghost.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: space_ghost
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: space_ghost-eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: space_ghost
+        BaseUnshaded: space_ghost-eyes
+      Dead:
+        Base: space_ghost_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaEnergyOnly
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 1
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: SpaceDrugs
+          Quantity: 20
+  - type: MeleeChemicalInjector
+    transferAmount: 3
+    solution: melee
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: SpaceDrugs
+        Quantity: 1
+  - type: FaunaAbilities
+    abilities:
+    - action: VirgoActionSpookyGhost
+      maxRange: 7
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        9
+      NavSmash: !type:Bool
+        true
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+  - type: FaunaDeathSpawn
+    popup: fauna-virgo-ghost-fade
+    spawns:
+    - id: DiamondOre1
+    - id: Ectoplasm
+      prob: 0.03
+
+- type: entity
+  parent: DS13ActionBase
+  id: VirgoActionSpookyGhost
+  components:
+  - type: InstantAction
+    useDelay: 7
+    event: !type:InstantSpawnSpellEvent
+      prototype: VirgoMobSpookyGhost
+      posData: !type:TargetInFront
+
+# Fades away after a while, or when hit by a laser.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: VirgoMobSpookyGhost
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/space_ghost.rsi
+    color: "#FFFFFF80"
+    layers:
+    - map: [ "base" ]
+      state: spookyghost-1
+  - type: RandomSprite
+    available:
+    - base:
+        spookyghost-1: ""
+        spookyghost-2: ""
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      5: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaEnergyOnly
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 1
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: SpaceDrugs
+          Quantity: 6
+  - type: MeleeChemicalInjector
+    transferAmount: 3
+    solution: melee
+  - type: TimedDespawn
+    lifetime: 35
+  - type: FaunaDarkness
+    hiddenVisibility: null
+    litDamage:
+      types:
+        Blunt: 1
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        9
+      NavSmash: !type:Bool
+        true
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+  - type: FaunaDeathSpawn
+    popup: fauna-virgo-ghost-fade
+
+# Slow, shelled asteroid grazer. Weapons glance off its shell, but an explosion flips it onto its back.
+- type: entity
+  parent: FaunaMobSpaceBase
+  id: VirgoMobStartreader
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 1100
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/startreader.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: startreader
+    - map: [ "flipped" ]
+      state: startreader_flipped
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: startreader
+      Dead:
+        Base: startreader_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaShellVisuals.Flipped:
+        flipped:
+          True: { visible: true }
+          False: { visible: false }
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      1000: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaStartreaderShell
+  - type: FaunaShell
+    shellModifierSet: FaunaStartreaderShell
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Blunt: 5
+  - type: FaunaMeleeEffect
+    chance: 0.15
+    knockdown: 5
+    skipDowned: true
+    popup: fauna-virgo-startreader-trip
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: VirgoSpawnerUnderdarkLoot
+      prob: 0.25
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        9
+      NavSmash: !type:Bool
+        true
+  - type: Speech
+    allowedEmotes: [ VirgoStartreaderIdle ]
+  - type: AutoEmote
+    emotes: [ VirgoStartreaderIdle ]
+
+# Huge spider queen that keeps birthing short-lived broodlings, spits concentrated venom and bursts into spiders on death.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: VirgoMobGiantSpiderBroodmother
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 900
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/VG/spider_queen.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: spider_queen
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: spider_queen
+      Dead:
+        Base: spider_queen_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      800: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.15
+    damage:
+      types:
+        Piercing: 32
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Amatoxin
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 1
+    solution: melee
+  - type: BasicEntityAmmoProvider
+    proto: VirgoSpiderToxinShot
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 2
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/pierce.ogg
+  - type: FaunaBurrow
+    closable: false
+    interval: 6
+    maxAlive: 8
+    throwSpeed: 8
+    prototypes:
+    - VirgoMobGiantSpiderBroodlingHunter
+    - VirgoMobGiantSpiderBroodlingLurker
+    - VirgoMobGiantSpiderBroodlingTunneler
+    - VirgoMobGiantSpiderBroodlingWebslinger
+    - VirgoMobGiantSpiderBroodlingElectric
+  - type: FaunaDeathSpawn
+    popup: fauna-virgo-broodmother-burst
+    spawns:
+    - id: VirgoSpawnerBroodmotherDeathBrood
+    - id: VirgoRoyalSpiderEgg
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 20
+
+- type: entity
+  parent: BaseBullet
+  id: VirgoSpiderToxinShot
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Xenonids/Objects/Xeno/xeno_projectiles.rsi
+    layers:
+    - state: neurotoxin
+      shader: unshaded
+  - type: Projectile
+    armorPenetration: 0.4
+    damage:
+      types:
+        Caustic: 35
+  - type: StaminaDamageOnCollide
+    damage: 15
+  - type: TimedDespawn
+    lifetime: 3
+
+# Eight picks from eleven giant spiders, for the broodmother's death. A hunter stands in for the plain guard.
+- type: entity
+  id: VirgoSpawnerBroodmotherDeathBrood
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    offset: 0.5
+    table: !type:GroupSelector
+      rolls: !type:ConstantNumberSelector
+        value: 8
+      children:
+      - id: PolarisMobGiantSpiderFrost
+      - id: PolarisMobGiantSpiderElectric
+      - id: PolarisMobGiantSpiderHunter
+      - id: PolarisMobGiantSpiderLurker
+      - id: PolarisMobGiantSpiderPepper
+      - id: PolarisMobGiantSpiderThermic
+      - id: PolarisMobGiantSpiderTunneler
+      - id: PolarisMobGiantSpiderWebslinger
+      - id: PolarisMobGiantSpiderPhorogenic
+      - id: PolarisMobGiantSpiderCarrier
+      - id: PolarisMobGiantSpiderHunter
+
+# Broodlings: small, frail copies of the giant spiders that wither away after two minutes.
+
+- type: entity
+  parent: PolarisMobGiantSpiderHunter
+  id: VirgoMobGiantSpiderBroodlingHunter
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: TimedDespawn
+    lifetime: 120
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+
+- type: entity
+  parent: PolarisMobGiantSpiderLurker
+  id: VirgoMobGiantSpiderBroodlingLurker
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: TimedDespawn
+    lifetime: 120
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+
+- type: entity
+  parent: PolarisMobGiantSpiderTunneler
+  id: VirgoMobGiantSpiderBroodlingTunneler
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: TimedDespawn
+    lifetime: 120
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+
+- type: entity
+  parent: PolarisMobGiantSpiderWebslinger
+  id: VirgoMobGiantSpiderBroodlingWebslinger
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: TimedDespawn
+    lifetime: 120
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+
+- type: entity
+  parent: PolarisMobGiantSpiderElectric
+  id: VirgoMobGiantSpiderBroodlingElectric
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: TimedDespawn
+    lifetime: 120
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+
+# Glowing grub that sucks power out of the cable it sits on. Its bite can shock, and if it drains enough it turns into
+# a solarmoth.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobSolargrub
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/grubs.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: solargrub
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: solargrub
+      Dead:
+        Base: solargrub_dead
+  - type: PointLight
+    radius: 2.5
+    energy: 1
+    color: "#FFFF00"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 3
+        Shock: 2
+  - type: FaunaMeleeEffect
+    chance: 0.1
+    knockdown: 4
+    popup: fauna-virgo-grub-shock
+    effect: EffectSparks
+    sound:
+      path: /Audio/Weapons/egloves.ogg
+  - type: FaunaMeleeProc
+    chance: 0.1
+    empRange: 1
+    empEnergy: 1000
+    empDuration: 10
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 10
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Licoxide
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 2.5
+    solution: melee
+  - type: FaunaPowerDrain
+    evolveInto: VirgoMobSolarmoth
+    evolvePopup: fauna-virgo-grub-evolve
+    anchor: true
+    drainPopup: fauna-solargrub-drain
+  - type: Speech
+    allowedEmotes: [ VirgoSolargrubIdle ]
+  - type: AutoEmote
+    emotes: [ VirgoSolargrubIdle ]
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: VirgoFoodMeatGrub
+      amount: 6
+
+# Tiny solargrub larva. It nibbles, sits on cables to drain power, and grows into a solargrub once it has drained enough.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobSolargrubLarva
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/grubs.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: grublarva
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: grublarva
+      Dead:
+        Base: grublarva_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      5: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 1
+  - type: FaunaPowerDrain
+    evolveInto: VirgoMobSolargrub
+    evolveAt: 7000000
+    evolvePopup: fauna-virgo-larva-evolve
+    anchor: true
+    drainPopup: fauna-solargrub-drain
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: VirgoFoodMeatGrub
+
+# What a solargrub becomes. It heats the air around it to deadly temperatures, shrugs off bullets and lasers, and
+# sets off an EMP when it dies.
+- type: entity
+  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
+  id: VirgoMobSolarmoth
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: FaunaPowerDrainEvolved
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/solarmoth.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: solarmoth
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: solarmoth
+      Dead:
+        Base: solarmoth
+  - type: PointLight
+    radius: 9.5
+    energy: 1
+    color: "#0000FF"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoSolarmoth
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 3
+        Shock: 2
+  - type: FaunaMeleeEffect
+    chance: 0.2
+    knockdown: 4
+    popup: fauna-virgo-grub-shock
+    effect: EffectSparks
+    sound:
+      path: /Audio/Weapons/egloves.ogg
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 10
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Licoxide
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 2.5
+    solution: melee
+  - type: Speech
+    allowedEmotes: [ VirgoSolarmothIdle ]
+  - type: AutoEmote
+    emotes: [ VirgoSolarmothIdle ]
+  - type: FaunaAirTemperature
+    power: 100000
+    target: 10273.15
+    boostFrom: 473.15
+    boostPower: 10000000
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmpOnTrigger
+    range: 7
+    energyConsumption: 50000
+  - type: DeleteOnTrigger
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+# The cold twin of the solarmoth. It freezes the air around it instead.
+- type: entity
+  parent: VirgoMobSolarmoth
+  id: VirgoMobLunarmoth
+  components:
+  - type: PointLight
+    radius: 9.5
+    energy: 1
+    color: "#FFFFFF"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoLunarmoth
+  - type: FaunaAirTemperature
+    power: -100000
+    target: 3
+
+# Docile grub that eats minerals. It flees from anything bigger, its bite injects thermite, and it spills ore when killed.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobOregrub
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/grubs.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: oregrub
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: oregrub
+      Dead:
+        Base: oregrub_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoOregrub
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 5
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 30
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Thermite
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 1.25
+    solution: melee
+  - type: FaunaDeathSpawn
+    popup: fauna-virgo-oregrub-collapse
+    spawns:
+    - id: VirgoSpawnerOregrubOres
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: FaunaTimidFleeCompound
+  - type: Speech
+    allowedEmotes: [ VirgoOregrubIdle ]
+  - type: AutoEmote
+    emotes: [ VirgoOregrubIdle ]
+
+# Older, tougher and faster oregrub. Its bite burns more often and it is full of rarer ores.
+- type: entity
+  parent: VirgoMobOregrub
+  id: VirgoMobLavagrub
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/grubs.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: lavagrub
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: lavagrub
+      Dead:
+        Base: lavagrub_dead
+  - type: PointLight
+    radius: 2.5
+    energy: 1
+    color: "#FFA500"
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoLavagrub
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeChemicalInjector
+    transferAmount: 3.3
+    solution: melee
+  - type: FaunaDeathSpawn
+    popup: fauna-virgo-oregrub-collapse
+    spawns:
+    - id: VirgoSpawnerOregrubOres
+    - id: VirgoSpawnerLavagrubOres
+
+# Three to six picks from the oregrub's ores. Lead and marble have no ore here, so they pick nothing.
+- type: entity
+  id: VirgoSpawnerOregrubOres
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    offset: 0.4
+    table: !type:GroupSelector
+      rolls: !type:RangeNumberSelector
+        range: 3, 6
+      children:
+      - id: SpaceQuartz1
+      - id: Coal1
+      - id: SteelOre1
+      - id: PlasmaOre1
+      - id: SilverOre1
+      - id: GoldOre1
+      - !type:NoneSelector
+      - !type:NoneSelector
+
+# Five to nine picks from the lavagrub's ores. Osmium, hydrogen and verdantium have no ore here, so they pick nothing.
+- type: entity
+  id: VirgoSpawnerLavagrubOres
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    offset: 0.4
+    table: !type:GroupSelector
+      rolls: !type:RangeNumberSelector
+        range: 5, 9
+      children:
+      - id: UraniumOre1
+      - id: DiamondOre1
+      - !type:NoneSelector
+      - !type:NoneSelector
+      - !type:NoneSelector
+
+# Mimics sit still as an ordinary object, bite whoever comes right next to them and hide again once they lose prey.
+# They have no body, so they take FaunaMobCore's parts by hand with a fixed price: a mob price needs a body.
+- type: entity
+  abstract: true
+  parent: [ BaseSimpleMob, MobCombat, MobBloodstream, MobFlammable ]
+  id: VirgoMobMimicBase
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      60: 0.7
+      80: 0.5
+  - type: StaticPrice
+    price: 1000
+  - type: Perishable
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 8
+  - type: FaunaAmbush
+    revealOnDamage: true
+    wakeVisionRadius: 8
+    wakeHold: 10
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaLurkCompound
+    blackboard:
+      VisionRadius: !type:Single
+        1.5
+      AggroVisionRadius: !type:Single
+        8
+
+- type: entity
+  parent: VirgoMobMimicBase
+  id: VirgoMobMimicCrate
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "disguise" ]
+      sprite: Structures/Storage/Crates/generic.rsi
+      state: icon
+    - map: [ "mimic" ]
+      sprite: _WF/Fauna/Mobs/Virgo/mimic.rsi
+      state: crate_open
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAmbushVisuals.Revealed:
+        disguise:
+          True: { visible: false }
+          False: { visible: true }
+        mimic:
+          True: { visible: true }
+          False: { visible: false }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 11
+  - type: FaunaMeleeEffect
+    chance: 0.1
+    knockdown: 3
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: CrateGenericSteel
+
+- type: entity
+  parent: VirgoMobMimicBase
+  id: VirgoMobMimicCloset
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/mimic.rsi
+    layers:
+    - map: [ "disguise" ]
+      state: closet
+    - map: [ "mimic" ]
+      state: closet_open
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAmbushVisuals.Revealed:
+        disguise:
+          True: { visible: false }
+          False: { visible: true }
+        mimic:
+          True: { visible: true }
+          False: { visible: false }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoMimicCloset
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.25
+    damage:
+      types:
+        Piercing: 8
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: ClosetMaintenance
+
+- type: entity
+  parent: VirgoMobMimicBase
+  id: VirgoMobMimicAirlock
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/mimic.rsi
+    layers:
+    - map: [ "disguise" ]
+      state: airlock
+    - map: [ "mimic" ]
+      state: airlock_open
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAmbushVisuals.Revealed:
+        disguise:
+          True: { visible: false }
+          False: { visible: true }
+        mimic:
+          True: { visible: true }
+          False: { visible: false }
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoMimicAirlock
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+
+# Barely visible whitespace spirit. It drifts slowly, its touch makes the mind see things, and it speeds up once hurt.
+- type: entity
+  parent: FaunaMobConstructBase
+  id: VirgoMobYsbryd
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/ysbryd.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: ysbryd
+  - type: Stealth
+    lastVisibility: -0.4
+    maxVisibility: -0.4
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Blunt: 10
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 10
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: SpaceDrugs
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 1
+    solution: melee
+  - type: FaunaEnrage
+    threshold: 100
+    damage:
+      types:
+        Blunt: 10
+    speed: 5
+    throwChance: 0
+  - type: MobCollision
+    fixtureId: none
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+- type: entity
+  parent: VirgoMobYsbryd
+  id: VirgoMobYsbrydDecorated
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/ysbryd.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: ysbryd_deco
+
+# Wolf-like fey with a spiky mane. It blends into its surroundings until it strikes and runs when badly hurt.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobBlaidd
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/blaidd.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "body" ]
+      state: blaidd
+      visible: false
+    - map: [ "cloak" ]
+      state: blaidd_cloaked
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: blaidd
+      Dead:
+        Base: blaidd_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAmbushVisuals.Revealed:
+        body:
+          True: { visible: true }
+          False: { visible: false }
+        cloak:
+          True: { visible: false }
+          False: { visible: true }
+  - type: FaunaAmbush
+    rehide: 10
+    revealOnDamage: true
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 15
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: FaunaHostileFleeWhenHurtCompound
+    blackboard:
+      VisionRadius: !type:Single
+        12
+      AggroVisionRadius: !type:Single
+        12
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+
+- type: entity
+  parent: VirgoMobBlaidd
+  id: VirgoMobBlaiddHostile
+  components:
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+
+# A shadowy horror from beyond. It grips its victims and sometimes drags them to the floor.
+- type: entity
+  parent: FaunaMobConstructBase
+  id: VirgoMobFaithless
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/faithless.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: faithless
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/growl1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.05
+    damage:
+      types:
+        Blunt: 14
+  - type: FaunaMeleeEffect
+    chance: 0.12
+    knockdown: 3
+    popup: fauna-virgo-faithless-knock
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+
+- type: entity
+  parent: VirgoMobFaithless
+  id: VirgoMobFaithlessStrong
+  components:
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/growl1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.05
+    damage:
+      types:
+        Blunt: 20
+
+# Purity constructs: mechanical followers of the purity worshippers. They leave people alone until attacked, and fall
+# apart into ectoplasm when destroyed.
+- type: entity
+  abstract: true
+  parent: [ FaunaMobConstructBase, FlyingMobBase ]
+  id: VirgoMobPurityBase
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Virgo/purity.rsi
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: VirgoPurity
+  - type: FaunaGroupRetaliate
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Virgo/rapidslice.ogg
+    angle: 0
+    animation: WeaponArcSlash
+    damage:
+      types:
+        Slash: 10
+  - type: NpcFactionMember
+    factions:
+    - FaunaPurity
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+  - type: FaunaDeathSpawn
+    popup: fauna-virgo-purity-collapse
+    spawns:
+    - id: Ectoplasm
+
+# Small, fast and numerous. Weak, but its blows go through armour.
+- type: entity
+  parent: VirgoMobPurityBase
+  id: VirgoMobPurityLaity
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: laity
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.5
+    baseSprintSpeed: 4.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Virgo/rapidslice.ogg
+    angle: 0
+    animation: WeaponArcSlash
+    armorPenetration: 0.5
+    damage:
+      types:
+        Blunt: 6
+
+# Hardy stone carver. Its stabs cut through armour, and it soothes the wounds of nearby constructs.
+- type: entity
+  parent: VirgoMobPurityBase
+  id: VirgoMobPurityDeacon
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: deacon
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    angle: 0
+    animation: WeaponArcThrust
+    armorPenetration: 0.6
+    damage:
+      types:
+        Piercing: 10
+  - type: FaunaPackHeal
+    faction: FaunaPurity
+    radius: 2
+    heal:
+      groups:
+        Brute: -2
+        Burn: -2
+
+# Sturdy but weak. It keeps a repair aura going for the constructs around it.
+- type: entity
+  parent: VirgoMobPurityBase
+  id: VirgoMobPurityPriest
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: priest
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Virgo/rapidslice.ogg
+    angle: 0
+    animation: WeaponArcFist
+    damage:
+      types:
+        Blunt: 12
+  - type: FaunaPackHeal
+    faction: FaunaPurity
+    radius: 3
+    heal:
+      groups:
+        Brute: -4
+        Burn: -4
+
+# Patrolling hunter of the flock's enemies.
+- type: entity
+  parent: VirgoMobPurityBase
+  id: VirgoMobPurityBishop
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: bishop
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Virgo/rapidslice.ogg
+    angle: 0
+    animation: WeaponArcSlash
+    armorPenetration: 0.15
+    damage:
+      types:
+        Slash: 17
+
+# The right hand of purification. Hits far harder than the rest and ignores most armour.
+- type: entity
+  parent: VirgoMobPurityBishop
+  id: VirgoMobPurityArchbishop
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: archbishop
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/pierce.ogg
+    angle: 0
+    animation: WeaponArcThrust
+    armorPenetration: 0.5
+    damage:
+      types:
+        Slash: 25
+
+# The left hand of purification. Its shell turns most bullets aside, its fists smash through armour, and it mends the
+# flock around it.
+- type: entity
+  parent: VirgoMobPurityBase
+  id: VirgoMobPurityCardinal
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: cardinal
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+    angle: 0
+    animation: WeaponArcFist
+    armorPenetration: 0.5
+    damage:
+      types:
+        Blunt: 25
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: VirgoPurityCardinal
+  - type: Reflect
+    reflectProb: 0.75
+  - type: FaunaPackHeal
+    faction: FaunaPurity
+    radius: 3
+    heal:
+      groups:
+        Brute: -4
+        Burn: -4
+
+# Rat the size of a dog. Attacks whatever it sees.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobGiantRat
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/giant_rat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: rous
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: rous
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 12
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/_WF/Fauna/Virgo/mouse_squeak_loud.ogg
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatRat
+      amount: 6
+  - type: PreventPulledWhileAlive
+  - type: FaunaAggroCry
+    popup: fauna-virgo-rat-got-target
+  - type: Speech
+    allowedEmotes: [ VirgoGiantRatIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-virgo-rat-say-1
+    - fauna-virgo-rat-say-2
+    - fauna-virgo-rat-say-3
+    chance: 0.0033
+  - type: AutoEmote
+    emotes: [ VirgoGiantRatIdle ]
+
+# Alien overlord of rats.
+- type: entity
+  parent: VirgoMobGiantRat
+  id: VirgoMobGiantRatPhoron
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/giant_rat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: phorous
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: phorous
+      Dead:
+        Base: phorous-dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      175: Dead
+
+- type: entity
+  parent: VirgoMobGiantRat
+  id: VirgoMobGiantRatLab
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/giant_rat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: labrat
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: labrat
+      Dead:
+        Base: labrat-dead
+
+# White horse with a golden horn. Answers an attack with rainbow beams.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobUnicorn
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/unicorn.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: unicorn
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: unicorn
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/genhit1.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 3
+  - type: HitscanBatteryAmmoProvider
+    proto: VirgoRainbowBeam
+    fireCost: 100
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 50
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    minAngle: 15
+    maxAngle: 15
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/_WF/Fauna/Virgo/sparkle.ogg
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 10
+  - type: Speech
+    allowedEmotes: [ VirgoUnicornIdle ]
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-virgo-unicorn-say-1
+    - fauna-virgo-unicorn-say-2
+    chance: 0.0017
+  - type: AutoEmote
+    emotes: [ VirgoUnicornIdle ]
+
+- type: entity
+  parent: BasicHitscan
+  id: VirgoRainbowBeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicDamage
+    damage:
+      types:
+        Heat: 20
+  - type: HitscanBasicVisuals
+    muzzleFlash:
+      sprite: _WF/Fauna/Mobs/Virgo/rainbow_beam.rsi
+      state: muzzle_rainbow
+    travelFlash:
+      sprite: _WF/Fauna/Mobs/Virgo/rainbow_beam.rsi
+      state: rainbow
+    impactFlash:
+      sprite: _WF/Fauna/Mobs/Virgo/rainbow_beam.rsi
+      state: impact_rainbow
+
+# Huge skull-faced drake. Leaves people alone until hurt, then its eyes flash and it leaps.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobCryptDrake
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 1100
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/crypt_drake.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: cryptdrake
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: cryptdrake
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      1000: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: VirgoCryptDrake
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 15
+  - type: FaunaChargeLook
+    lean: 0.25
+  - type: FaunaCharge
+    range: 4
+    knockdown: 2
+    windup: 2
+    windupPopup: fauna-virgo-drake-eyes
+    chargeSound:
+      path: /Audio/_WF/Fauna/VG/spiderlunge.ogg
+  - type: FaunaAbilities
+    abilities:
+    - action: VirgoActionCryptDrakeLeap
+      minRange: 2
+      maxRange: 4
+      hold: 1
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 10
+
+# Pale crypt drake with glowing eyes.
+- type: entity
+  parent: VirgoMobCryptDrake
+  id: VirgoMobCryptDrakeAlbedo
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/crypt_drake.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: cryptdrake_albedo
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: cryptdrake_albedo-eyes
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: cryptdrake_albedo
+        BaseUnshaded: cryptdrake_albedo-eyes
+      Dead:
+        Base: cryptdrake_albedo-dead
+
+- type: entity
+  parent: DS13ActionBase
+  id: VirgoActionCryptDrakeLeap
+  components:
+  - type: EntityTargetAction
+    useDelay: 30
+    range: 4
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent
+
+# Webslinger cousin that spits ion bolts, shorting out whatever it hits.
+- type: entity
+  parent: PolarisMobGiantSpiderWebslinger
+  id: VirgoMobGiantSpiderIon
+  components:
+  - type: MeleeChemicalInjector
+    transferAmount: 0.3
+    solution: melee
+  - type: BasicEntityAmmoProvider
+    proto: VirgoSpiderIonBolt
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1.5
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.67
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/Guns/Gunshots/taser2.ogg
+
+- type: entity
+  parent: BaseBulletEmp
+  id: VirgoSpiderIonBolt
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EmpOnTrigger
+    range: 0.3
+    energyConsumption: 100000
+    disableDuration: 5
+
+# Huge fire-breathing dragon that charges from afar, spins its tail when crowded and rages below half health.
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: VirgoMobLargeDragon
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaVirgoLargeDragon
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 100
+    damage:
+      types:
+        Blunt: 5
+    soundHit:
+      path: /Audio/Effects/hit_kick.ogg
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 900
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Virgo/large_dragon.rsi
+    layers:
+    - map: [ "dead" ]
+      state: dead
+      visible: false
+    - map: [ "under" ]
+      state: underSmooth
+    - map: [ "body" ]
+      state: bodyScaled
+    - map: [ "ears" ]
+      state: earsNormal
+    - map: [ "mane" ]
+      state: maneShaggy
+    - map: [ "horns" ]
+      state: hornsCurved
+    - map: [ "eyes" ]
+      state: eyesNormal
+      shader: unshaded
+    - map: [ "flame" ]
+      state: flame
+      shader: unshaded
+      visible: false
+    - map: [ "rage" ]
+      state: rage
+      visible: false
+  - type: RandomSprite
+    getAllGroups: true
+    available:
+    - under:
+        underSmooth: VirgoDragonColors
+        underPlated: VirgoDragonColors
+    - body:
+        bodySmooth: VirgoDragonColors
+        bodyScaled: VirgoDragonColors
+    - mane:
+        maneNone: VirgoDragonColors
+        maneShaggy: VirgoDragonColors
+        maneDorsalfin: VirgoDragonColors
+  - type: GenericVisualizer
+    visuals:
+      enum.MobStateVisuals.State:
+        dead:
+          Alive: { visible: false }
+          Critical: { visible: false }
+          Dead: { visible: true }
+        under:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+        body:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+        ears:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+        mane:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+        horns:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+        eyes:
+          Alive: { visible: true }
+          Critical: { visible: true }
+          Dead: { visible: false }
+      enum.FaunaProjectileBurstVisuals.Windup:
+        flame:
+          True: { visible: true }
+          False: { visible: false }
+      enum.FaunaEnrageVisuals.Enraged:
+        rage:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaRandomTint
+    palettes:
+      horns: [ "#000000", "#151515", "#303030", "#606060", "#808080", "#AAAAAA", "#CCCCCC", "#EEEEEE", "#FFFFFF" ]
+      ears: [ "#D0A090", "#C08070", "#A06050", "#E0B0A0", "#906050" ]
+      eyes: [ "#FF3030", "#FFB000", "#30FF30", "#30A0FF", "#C040FF", "#FFFFFF" ]
+    layers:
+      horns: horns
+      ears: ears
+      eyes: eyes
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      800: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.25
+    baseSprintSpeed: 3.25
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/slash.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 30
+  - type: FaunaChargeLook
+    lean: 0.25
+  - type: FaunaCharge
+    range: 7
+    knockdown: 5
+    windup: 2
+    windupPopup: fauna-virgo-dragon-charge
+    chargeSound:
+      path: /Audio/_WF/Fauna/VG/spiderlunge.ogg
+    damage:
+      types:
+        Blunt: 50
+  - type: FaunaSlam
+    arc: 360
+    range: 2
+    delay: 0.2
+    knockdown: 1.5
+    throw: 7
+    emote: Spin
+    damage:
+      types:
+        Blunt: 20
+    hitSound:
+      path: /Audio/Weapons/punchmiss.ogg
+  - type: FaunaProjectileBurst
+    projectile: VirgoProjectileDragonFlame
+    spreadCount: 5
+    spreadStep: 6
+    windup: 2
+    windupLight: true
+    windupSound:
+      path: /Audio/_WF/Fauna/Virgo/fireball.ogg
+  - type: PointLight
+    enabled: false
+    radius: 7
+    energy: 3
+    color: "#ED9200"
+  - type: FaunaEnrage
+    threshold: 400
+    damage:
+      types:
+        Slash: 30
+    speed: 3.25
+    throwChance: 0
+    popup: fauna-virgo-dragon-enrage
+  - type: FaunaAbilities
+    abilities:
+    - action: VirgoActionDragonCharge
+      minRange: 5
+      maxRange: 10
+      hold: 1
+    - action: VirgoActionDragonTailSpin
+      maxRange: 2
+      minHostiles: 2
+    - action: VirgoActionDragonBreath
+      minRange: 2
+      maxRange: 8
+      hold: 2
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaMaulCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 40
+  - type: FaunaIdleSpeech
+    lines:
+    - fauna-virgo-dragon-say-1
+    - fauna-virgo-dragon-say-2
+    - fauna-virgo-dragon-say-3
+    - fauna-virgo-dragon-say-4
+    chance: 0.0017
+
+- type: entity
+  parent: BaseBullet
+  id: VirgoProjectileDragonFlame
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: fireball
+      shader: unshaded
+  - type: PointLight
+    color: "#ED9200"
+    radius: 2
+    energy: 3
+  - type: Projectile
+    damage:
+      types:
+        Heat: 30
+  - type: IgniteOnCollide
+    fireStacks: 1
+  - type: FaunaFireTrail
+    fire: ShiptestEffectTurfFire
+    deathRadius: 0
+  - type: TimedDespawn
+    lifetime: 0.8
+
+- type: entity
+  parent: DS13ActionBase
+  id: VirgoActionDragonCharge
+  components:
+  - type: EntityTargetAction
+    useDelay: 8
+    range: 10
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: VirgoActionDragonTailSpin
+  components:
+  - type: EntityTargetAction
+    useDelay: 8
+    range: 2
+    checkCanAccess: false
+    event: !type:FaunaSlamActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: VirgoActionDragonBreath
+  components:
+  - type: EntityTargetAction
+    useDelay: 8
+    range: 8
+    checkCanAccess: false
+    event: !type:FaunaProjectileBurstActionEvent
+
+- type: palette
+  id: VirgoDragonColors
+  name: VirgoDragonColors
+  hidden: true
+  colors:
+    c1: "#1E1E1E"
+    c2: "#3F3F3F"
+    c3: "#545454"
+    c4: "#969696"
+    c5: "#DBDBDB"
+    c6: "#ABBBD8"
+    c7: "#3D0B00"
+    c8: "#3A221D"
+    c9: "#77554F"
+    c10: "#281D1B"
+    c11: "#631F00"
+    c12: "#964421"
+    c13: "#936B24"
+    c14: "#381313"
+    c15: "#380000"
+    c16: "#682121"
+    c17: "#700E00"
+    c18: "#44525B"
+    c19: "#283035"
+    c20: "#29353D"
+    c21: "#353E44"
+    c22: "#281000"
+    c23: "#38261A"
+    c24: "#302F3D"
+    c25: "#322E3A"
+    c26: "#262738"
+
+- type: emote
+  id: VirgoRayIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-ray-emote-1, fauna-virgo-ray-emote-2, fauna-virgo-ray-emote-3, fauna-virgo-ray-emote-4, fauna-virgo-ray-emote-5 ]
+
+- type: autoEmote
+  id: VirgoRayIdle
+  emote: VirgoRayIdle
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoJellyfishIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-jellyfish-emote-1, fauna-virgo-jellyfish-emote-2, fauna-virgo-jellyfish-emote-3, fauna-virgo-jellyfish-emote-4, fauna-virgo-jellyfish-emote-5, fauna-virgo-jellyfish-emote-6 ]
+
+- type: autoEmote
+  id: VirgoJellyfishIdle
+  emote: VirgoJellyfishIdle
+  interval: 2.0
+  chance: 0.01
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoStartreaderIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-startreader-emote-1, fauna-virgo-startreader-emote-2, fauna-virgo-startreader-emote-3, fauna-virgo-startreader-emote-4, fauna-virgo-startreader-emote-5, fauna-virgo-startreader-emote-6, fauna-virgo-startreader-emote-7, fauna-virgo-startreader-emote-8, fauna-virgo-startreader-emote-9, fauna-virgo-startreader-emote-10 ]
+
+- type: autoEmote
+  id: VirgoStartreaderIdle
+  emote: VirgoStartreaderIdle
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoSolargrubIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-solargrub-emote-1, fauna-virgo-solargrub-emote-2 ]
+
+- type: autoEmote
+  id: VirgoSolargrubIdle
+  emote: VirgoSolargrubIdle
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoSolarmothIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-solarmoth-emote-1 ]
+
+- type: autoEmote
+  id: VirgoSolarmothIdle
+  emote: VirgoSolarmothIdle
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoOregrubIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-oregrub-emote-1, fauna-virgo-oregrub-emote-2, fauna-virgo-oregrub-emote-3 ]
+
+- type: autoEmote
+  id: VirgoOregrubIdle
+  emote: VirgoOregrubIdle
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoGiantRatIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-rat-emote-1, fauna-virgo-rat-emote-2, fauna-virgo-rat-emote-3, fauna-virgo-rat-emote-4, fauna-virgo-rat-emote-5, fauna-virgo-rat-emote-6 ]
+
+- type: autoEmote
+  id: VirgoGiantRatIdle
+  emote: VirgoGiantRatIdle
+  interval: 2.0
+  chance: 0.0067
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: VirgoUnicornIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-virgo-unicorn-emote-1, fauna-virgo-unicorn-emote-2, fauna-virgo-unicorn-emote-3, fauna-virgo-unicorn-emote-4, fauna-virgo-unicorn-emote-5 ]
+
+- type: autoEmote
+  id: VirgoUnicornIdle
+  emote: VirgoUnicornIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true

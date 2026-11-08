@@ -52,6 +52,23 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     /// <summary>Starts part way through the second, off the tick other one-second systems run on.</summary>
     private TimeSpan _next = TimeSpan.FromSeconds(0.2);
     private readonly Dictionary<EntityUid, Crewed> _crewed = new();
+
+    /// <summary>
+    /// How long a zone holds its fire on a ship its crew have just come back aboard: the ship was let be while empty,
+    /// so its people hear a warning before the guns. Fresh fire from it is answered at once.
+    /// </summary>
+    public static readonly TimeSpan BoardingGrace = TimeSpan.FromSeconds(20);
+
+    /// <summary>
+    /// Grids with a living player aboard, berthed or not; those that had one on the last look; and those that ever
+    /// had one. A ship casting off from a station kept its crew, so only one that lay empty is reboarded.
+    /// </summary>
+    private readonly HashSet<EntityUid> _aboard = new();
+    private readonly HashSet<EntityUid> _aboardBefore = new();
+    private readonly HashSet<EntityUid> _everCrewed = new();
+
+    /// <summary>When each ship's crew came back aboard after it lay empty.</summary>
+    private readonly Dictionary<EntityUid, TimeSpan> _reboarded = new();
     private readonly List<EntityUid> _stale = new();
     private readonly List<(EntityUid Encounter, WFEncounterShipState Ship)> _fleet = new();
     private readonly HashSet<(EntityUid Ship, EntityUid Other)> _rivals = new();
@@ -116,7 +133,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     /// Whether an encounter's zones have stood down. A resolved encounter's have, except a battle's: whoever won a
     /// decided fight holds the field, and its zones stand until its ships are cleaned up.
     /// </summary>
-    private static bool Stood(WFEncounterComponent encounter)
+    public static bool Stood(WFEncounterComponent encounter)
     {
         return encounter.Resolution is { } resolution && resolution != WFEncounterResolution.Decided;
     }
@@ -197,12 +214,15 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
     private void FindCrewedShips()
     {
         _crewed.Clear();
+        _aboard.Clear();
         var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
         while (players.MoveNext(out var uid, out _, out var xform))
         {
             // A pilot's mech flying free of any grid is a vessel of its own.
             if ((xform.GridUid ?? _alerts.FreeMechOf(uid)) is not { } grid || HasComp<GhostComponent>(uid) || _mobs.IsDead(uid))
                 continue;
+
+            _aboard.Add(grid);
 
             if (!_crewed.TryGetValue(grid, out var crewed))
             {
@@ -229,6 +249,41 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             else
                 crewed.Unflagged = true;
         }
+
+        NoteBoardings();
+    }
+
+    /// <summary>Marks the ships whose crew came back aboard since the last look, for <see cref="BoardingGrace"/>.</summary>
+    private void NoteBoardings()
+    {
+        var now = _timing.CurTime;
+        foreach (var grid in _aboard)
+        {
+            if (!_aboardBefore.Contains(grid) && !_everCrewed.Add(grid))
+                _reboarded[grid] = now;
+        }
+
+        _aboardBefore.Clear();
+        _aboardBefore.UnionWith(_aboard);
+        _everCrewed.RemoveWhere(grid => TerminatingOrDeleted(grid));
+        foreach (var (grid, at) in _reboarded)
+        {
+            if (now - at >= BoardingGrace || TerminatingOrDeleted(grid))
+                _stale.Add(grid);
+        }
+
+        foreach (var grid in _stale)
+        {
+            _reboarded.Remove(grid);
+        }
+
+        _stale.Clear();
+    }
+
+    /// <summary>Whether a ship's crew came back aboard too recently for a zone to open fire on it unprovoked.</summary>
+    public bool JustReboarded(EntityUid grid)
+    {
+        return _reboarded.ContainsKey(grid);
     }
 
     /// <summary>Whether a grid is a ship people fly: not a station, outpost or asteroid, and not one of an encounter's own.</summary>
@@ -504,7 +559,7 @@ public sealed partial class WFEncounterZoneSystem : EntitySystem
             // A ship badly hurt picks no new fights: it only answers one that is on it.
             var holdsBack = ship.Mood >= WFShipMood.Desperate && !ship.Engaged.Contains(intruder)
                             && !_alerts.IsAttacker(ship.Grid, intruder);
-            if (ship.AttackRange > 0f && distance <= ship.AttackRange && !idle && !holdsBack
+            if (ship.AttackRange > 0f && distance <= ship.AttackRange && !idle && !holdsBack && !JustReboarded(intruder)
                 && (!ceasefire || ship.Engaged.Contains(intruder) || _alerts.IsAttacker(ship.Grid, intruder)))
             {
                 _alerts.EndZoneWarning(ship.Grid, intruder);

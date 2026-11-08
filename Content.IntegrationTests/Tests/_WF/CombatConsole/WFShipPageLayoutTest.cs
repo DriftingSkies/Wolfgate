@@ -368,10 +368,14 @@ public sealed class WFShipPageLayoutTest
 
     private static void Layout(Control root, Vector2 size)
     {
-        foreach (var control in Descendants(root))
-            control.InvalidateMeasure();
-        root.Measure(size);
-        root.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+        // Two passes: a Slider places its fill and grabber in Resized, after its children were arranged.
+        for (var pass = 0; pass < 2; pass++)
+        {
+            foreach (var control in Descendants(root))
+                control.InvalidateMeasure();
+            root.Measure(size);
+            root.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
+        }
     }
 
     private static bool IsUnder(Control control, Control root)

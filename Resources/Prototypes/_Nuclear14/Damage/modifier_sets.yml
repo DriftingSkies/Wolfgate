@@ -1,0 +1,21 @@
+# WOLFGATE(Fauna) START: ported from Nuclear 14
+# Only the sets the ported mobs use.
+- type: damageModifierSet
+  id: WastelandAnimal
+  coefficients:
+    Blunt: 1
+    Slash: 1
+    Piercing: 1
+    Cold: 0.5
+    Poison: 0.5
+    Radiation: 0.5
+    Asphyxiation: 0.0
+    Bloodloss: 1
+    Cellular: 1
+
+- type: damageModifierSet
+  id: N14Insect
+  coefficients:
+    Blunt: 1.1
+    Heat: 1.5
+# WOLFGATE END

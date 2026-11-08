@@ -163,7 +163,8 @@ public sealed partial class WolfmedStasisSystem : EntitySystem
     /// A budget of one damage type spent on the body's wounds at topical strength, first part first. A fracture is
     /// never touched; a wound nothing topical closes, or one that refuses (a lodged round), is passed over.
     /// </summary>
-    private void CloseWounds(EntityUid body, string type, FixedPoint2 budget)
+    /// <returns>The budget left unspent.</returns>
+    public FixedPoint2 CloseWounds(EntityUid body, string type, FixedPoint2 budget)
     {
         var damageType = new ProtoId<DamageTypePrototype>(type);
         foreach (var (part, _) in _body.GetBodyChildren(body))
@@ -171,7 +172,7 @@ public sealed partial class WolfmedStasisSystem : EntitySystem
             foreach (var wound in _wounds.GetWounds(part).ToArray())
             {
                 if (budget <= FixedPoint2.Zero)
-                    return;
+                    return budget;
 
                 if (HasComp<WoundFractureComponent>(wound) ||
                     !_prototypes.TryIndex(wound.Comp.Prototype, out var prototype) ||
@@ -187,5 +188,7 @@ public sealed partial class WolfmedStasisSystem : EntitySystem
                 budget -= severity / FixedPoint2.New(settings.SeverityMultiplier);
             }
         }
+
+        return budget;
     }
 }

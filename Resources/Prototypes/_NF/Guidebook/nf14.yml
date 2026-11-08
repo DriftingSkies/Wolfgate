@@ -18,6 +18,7 @@
   - Creatures # mono
   - MonoMisc # mono
   - WFRemadeGuide # WOLFGATE(Remade): the Monolith, the Remade and how to end an outbreak
+  - WFLatticeGuide # WOLFGATE(Lattice): the bands, Drift, exotic matter and the anchors
 
 - type: guideEntry
   id: Bank

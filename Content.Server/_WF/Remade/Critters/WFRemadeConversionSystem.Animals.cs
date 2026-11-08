@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._WF.Remade.Counterplay;
 using Content.Server.Body.Components;
 using Content.Server.Zombies;
 using Content.Shared._WF.Remade;
@@ -42,6 +43,15 @@ public sealed partial class WFRemadeConversionSystem
                && !HasComp<WFRemadeComponent>(uid)
                && !HasComp<ZombieImmuneComponent>(uid)
                && !_minds.TryGetMind(uid, out _, out _);
+    }
+
+    /// <summary>Whether a living animal would turn if it died now: it has its head and some Remade fits its mass.</summary>
+    public bool WouldTurnIfKilled(EntityUid uid)
+    {
+        return IsAnimal(uid)
+               && !HasComp<WFNecrotoxinProtectedComponent>(uid)
+               && HasHeadIfAny(uid)
+               && AnimalWeights(uid).Count > 0;
     }
 
     /// <summary>Whether this can be turned at all: crew or an animal.</summary>

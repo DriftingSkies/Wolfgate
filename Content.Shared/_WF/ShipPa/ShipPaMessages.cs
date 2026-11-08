@@ -38,6 +38,18 @@ public sealed class ShipDistressRequestMessage : BoundUserInterfaceMessage
     }
 }
 
+/// <summary>Pilot moved the PA volume slider.</summary>
+[Serializable, NetSerializable]
+public sealed class ShipPaVolumeRequestMessage : BoundUserInterfaceMessage
+{
+    public float Volume;
+
+    public ShipPaVolumeRequestMessage(float volume)
+    {
+        Volume = volume;
+    }
+}
+
 /// <summary>Pilot typed a free-text announcement.</summary>
 [Serializable, NetSerializable]
 public sealed class ShipPaAnnounceRequestMessage : BoundUserInterfaceMessage

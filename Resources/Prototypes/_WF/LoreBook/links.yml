@@ -1,0 +1,90 @@
+# Entities with a lore button on examine. Everything that inherits from a listed prototype gets the same page.
+# Entities whose guidebook help points at a lore page get the button on their own.
+
+- type: wfLoreLink
+  id: WFLoreLinkTsf
+  entry: TSFMC_Entry
+  entities:
+  - ClothingUniformTSFMC
+  - ClothingUniformTSFMCDesert
+  - ClothingUniformTSFMCForest
+  - ClothingUniformTsfmcMopp
+  - ClothingUniformTSFMCDress
+  - ClothingUniformTSFMCEngi
+  - ClothingBackpackTsfmc
+  - ClothingHeadsetTsfmc
+
+- type: wfLoreLink
+  id: WFLoreLinkPdv
+  entry: PDV_Entry
+  entities:
+  - ClothingHeadHelmetCombatPDV
+  - ClothingHeadsetAltVanguardCommand
+
+- type: wfLoreLink
+  id: WFLoreLinkUssp
+  entry: USSP_Entry
+  entities:
+  - ClothingUniformUSSP
+  - ClothingUniformServiceDressUSSP
+  - ClothingHeadHelmetCombatUSSP
+  - ClothingHeadHelmetHeavyUSSP
+  - ClothingHeadsetUSSP
+
+- type: wfLoreLink
+  id: WFLoreLinkMmc
+  entry: MMC
+  entities:
+  - ClothingUniformMMC
+
+- type: wfLoreLink
+  id: WFLoreLinkAsf
+  entry: WFAsf
+  entities:
+  - WFAsfBanner
+  - WFAsfMarineBanner
+  - WFAsfClothingUniformService
+  - WFAsfClothingUniformColonist
+  - WFAsfClothingUniformResearcher
+
+- type: wfLoreLink
+  id: WFLoreLinkReavers
+  entry: WFLoreReavers
+  entities:
+  - WFClothingOuterHardsuitReaver
+  - WFClothingOuterHardsuitReaverCombat
+  - WFClothingOuterHardsuitReaverVoid
+  - WFClothingUniformReaverFatigues
+  - WFClothingUniformReaverDeck
+  - WFClothingUniformReaverEngine
+  - WFClothingHeadReaverBeret
+  - WFClothingNeckReaverCaptainCloak
+  - WFClothingNeckReaverWarlordCloak
+
+- type: wfLoreLink
+  id: WFLoreLinkAds
+  entry: WFLoreAds
+  entities:
+  - ShipRepairDeviceRedacted
+  - WFCrateAdsRepair
+  - WFCrateAdsArms
+
+- type: wfLoreLink
+  id: WFLoreLinkMonolith
+  entry: WFLoreMonolith
+  entities:
+  - WFMonolithScion
+  - WFRemadeBase
+  - MobMonolithicBase
+
+- type: wfLoreLink
+  id: WFLoreLinkXenonids
+  entry: WFLoreXenonids
+  entities:
+  - CMXenoBase
+
+- type: wfLoreLink
+  id: WFLoreLinkChimera
+  entry: WFLoreChimera
+  entities:
+  - ChimeraFleshKudzu

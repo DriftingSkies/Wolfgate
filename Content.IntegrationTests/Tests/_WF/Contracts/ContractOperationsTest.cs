@@ -195,6 +195,43 @@ public sealed class ContractOperationsTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Every Caelestinus marshal bounty puts its target in the world when taken (feedback #523).</summary>
+    [Test]
+    public async Task BountiesStart()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var contracts = entMan.System<WFContractSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var central = ContractFlowTest.Station(server, map, Vector2.Zero, "Frontier");
+            // Neighbours 3-5 km out crowd the bounty band, as round-start stations do.
+            ContractFlowTest.Station(server, map, new Vector2(4000f, 0f), "Sevastopol");
+            ContractFlowTest.Station(server, map, new Vector2(0f, 3000f), "Hokkaido");
+            ContractFlowTest.Station(server, map, new Vector2(-3500f, -2000f), "AnomalousLab");
+            var board = entMan.SpawnEntity("WFContractBoard", new EntityCoordinates(ContractFlowTest.Largest(server, central), 4.5f, 4.5f));
+            var mob = entMan.SpawnEntity("MobHuman", new EntityCoordinates(ContractFlowTest.Largest(server, central), 2.5f, 2.5f));
+            var minds = entMan.System<SharedMindSystem>();
+            var mind = minds.CreateMind(pair.Player!.UserId, "Test Hunter");
+            minds.TransferTo(mind.Owner, mob);
+
+            var bounties = server.ProtoMan.EnumeratePrototypes<WFContractPrototype>()
+                .Where(p => p.Contractor.Id == "WFContractorCaelMarshals" && p.Objective is WFContractBounty && p.Weight > 0)
+                .Select(p => p.ID)
+                .ToList();
+            Assert.That(bounties, Is.Not.Empty);
+            foreach (var id in bounties)
+            {
+                var bounty = Take(contracts, mob, board, id, crewCheck: false);
+                Assert.That(bounty.EncounterEntity, Is.Not.Null, $"{id} started with no target.");
+            }
+        });
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>Posts an offer, waives its deposit (the test character has no bank) and takes it.</summary>
     private static WFContract Take(WFContractSystem contracts, EntityUid mob, EntityUid board, string id, bool crewCheck = true)
     {

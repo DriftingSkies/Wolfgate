@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from DS13-2.0 at commit https://github.com/DS-13-Dev-Team/DS13-2.0/commit/4c8813536f72a1e2efafb661b62821bb62a5a514.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "acid_large"
+    },
+    {
+      "name": "acid_small"
+    },
+    {
+      "name": "impact_acid_1"
+    },
+    {
+      "name": "impact_acid_2"
+    },
+    {
+      "name": "impact_acid_3"
+    },
+    {
+      "name": "impact_acid_4"
+    }
+  ]
+}

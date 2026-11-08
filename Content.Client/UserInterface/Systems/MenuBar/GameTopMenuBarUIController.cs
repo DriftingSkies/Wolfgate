@@ -2,6 +2,7 @@ using Content.Client._Common.Consent.UI; // WOLFGATE(Genitals)
 using Content.Client._WF.Genitals.UI; // WOLFGATE(Genitals): anatomy panel
 using Content.Client._WF.SectorControl; // WOLFGATE(SectorControl)
 using Content.Client._WF.Feedback; // WOLFGATE(Feedback)
+using Content.Client._WF.LoreBook; // WOLFGATE(LoreBook)
 using Content.Client.UserInterface.Systems.Actions;
 using Content.Client.UserInterface.Systems.Admin;
 using Content.Client.UserInterface.Systems.Bwoink;
@@ -31,6 +32,7 @@ public sealed partial class GameTopMenuBarUIController : UIController
     [Dependency] private SandboxUIController _sandbox = default!;
     [Dependency] private GuidebookUIController _guidebook = default!;
     [Dependency] private WFSectorMapUIController _sectorMap = default!; // WOLFGATE(SectorControl): sector map button
+    [Dependency] private WFLoreBookUIController _loreBook = default!; // WOLFGATE(LoreBook): lore book button
     [Dependency] private EmotesUIController _emotes = default!;
     [Dependency] private LanguageMenuUIController _language = default!;
     [Dependency] private FeedbackUIController _feedback = default!; // WOLFGATE(Feedback): bug report button
@@ -51,6 +53,7 @@ public sealed partial class GameTopMenuBarUIController : UIController
         _escape.UnloadButton();
         _guidebook.UnloadButton();
         _sectorMap.UnloadButton(); // WOLFGATE(SectorControl): sector map button
+        _loreBook.UnloadButton(); // WOLFGATE(LoreBook): lore book button
         _admin.UnloadButton();
         _character.UnloadButton();
         _crafting.UnloadButton();
@@ -69,6 +72,7 @@ public sealed partial class GameTopMenuBarUIController : UIController
         _escape.LoadButton();
         _guidebook.LoadButton();
         _sectorMap.LoadButton(); // WOLFGATE(SectorControl): sector map button
+        _loreBook.LoadButton(); // WOLFGATE(LoreBook): lore book button
         _admin.LoadButton();
         _character.LoadButton();
         _crafting.LoadButton();

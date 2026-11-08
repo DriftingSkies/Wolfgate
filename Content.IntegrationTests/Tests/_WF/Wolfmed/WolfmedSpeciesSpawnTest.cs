@@ -86,9 +86,9 @@ public sealed class WolfmedSpeciesSpawnTest : WolfmedGameTest
                 // Playtest 3 IPC 2: the pool is hydraulic fluid now, not Oil (lamp oil a lit welder set alight).
                 Assert.That(bloodstream.BloodReagent, Is.EqualTo(new ProtoId<ReagentPrototype>("WFWolfmedHydraulicFluid")));
                 Assert.That(bloodstream.BloodMaxVolume, Is.EqualTo(FixedPoint2.New(250)));
-                // U16: an IPC has no metabolizer (OrganIPCPump's Metabolizer block is commented out), so a
-                // 250u chemical solution would be a trap. InjectableSolution is deliberately absent with it.
-                Assert.That(bloodstream.ChemicalMaxVolume, Is.EqualTo(FixedPoint2.Zero));
+                // The pump only metabolises contaminants and WFChassisFilter flushes the rest, so the stream stays small.
+                // InjectableSolution is deliberately absent: syringes still do nothing.
+                Assert.That(bloodstream.ChemicalMaxVolume, Is.EqualTo(FixedPoint2.New(30)));
 
                 // Oil loss deals no damage at all: Heat would route to a part and feed its own leak (P5-D6), and
                 // Bloodloss reads as oxygen loss on a machine that does not breathe.

@@ -219,6 +219,10 @@ public sealed partial class MeleeWeaponSystem
             if (arcComponent.User == null)
                 continue;
 
+            // WOLFGATE(Fauna): the user can be deleted or leave PVS mid-swing
+            if (!Exists(arcComponent.User.Value))
+                continue;
+
             Vector2 targetPos = TransformSystem.GetWorldPosition(arcComponent.User.Value);
 
             if (arcComponent.Offset != Vector2.Zero)

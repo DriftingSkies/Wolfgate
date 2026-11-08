@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from CitadelRP at commit https://github.com/citadel-station/citadel-rp/commit/db254a45e84676b7d1f32e3386c65453253bc6c5.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "rak",
+      "directions": 4
+    },
+    {
+      "name": "rak_dead"
+    },
+    {
+      "name": "rakmeat"
+    },
+    {
+      "name": "rakb",
+      "directions": 4
+    },
+    {
+      "name": "rakb_dead"
+    },
+    {
+      "name": "rakbmeat"
+    }
+  ]
+}

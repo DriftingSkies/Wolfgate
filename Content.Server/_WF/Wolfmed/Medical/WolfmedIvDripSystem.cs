@@ -58,6 +58,7 @@ public sealed partial class WolfmedIvDripSystem : EntitySystem
     private static readonly ProtoId<DamageTypePrototype> Piercing = "Piercing";
     private static readonly ProtoId<ReagentPrototype> PackColourReagent = "Blood";
 
+    [Dependency] private Content.Server._WF.MeridianTraits.Hemophage.WFHemophageSystem _wfHemophage = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
@@ -280,6 +281,8 @@ public sealed partial class WolfmedIvDripSystem : EntitySystem
             return 0f;
 
         var room = (blood.MaxVolume - blood.Volume).Float();
+        if (_wfHemophage.BloodRoom(body) is { } reserveRoom) // MeridianTraits: a hemophage's reserve takes blood too
+            room = reserveRoom.Float();
         units = MathF.Min(units, room);
         var given = 0f;
 
@@ -296,7 +299,8 @@ public sealed partial class WolfmedIvDripSystem : EntitySystem
             }
 
             var take = MathF.Min(units, opened);
-            if (!_bloodstream.TryModifyBloodLevel(body, FixedPoint2.New(take), bloodstream))
+            if (!_wfHemophage.TryGiveBlood(body, FixedPoint2.New(take)) &&
+                !_bloodstream.TryModifyBloodLevel(body, FixedPoint2.New(take), bloodstream))
                 break;
 
             opened -= take;
@@ -356,11 +360,13 @@ public sealed partial class WolfmedIvDripSystem : EntitySystem
 
         if (own.Volume > FixedPoint2.Zero)
         {
-            var room = _solutions.ResolveSolution(patient, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var blood)
-                ? blood.AvailableVolume
-                : FixedPoint2.Zero;
+            var room = _wfHemophage.BloodRoom(patient) ?? // MeridianTraits: a hemophage's reserve takes blood too
+                (_solutions.ResolveSolution(patient, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var blood)
+                    ? blood.AvailableVolume
+                    : FixedPoint2.Zero);
             var fits = FixedPoint2.Min(room, own.Volume);
-            if (fits > FixedPoint2.Zero && _bloodstream.TryModifyBloodLevel(patient, fits, bloodstream))
+            if (fits > FixedPoint2.Zero &&
+                (_wfHemophage.TryGiveBlood(patient, fits) || _bloodstream.TryModifyBloodLevel(patient, fits, bloodstream)))
                 own.SplitSolution(fits);
             leftover.AddSolution(own, _protos);
         }

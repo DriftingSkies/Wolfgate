@@ -334,6 +334,10 @@ stops. Extorters weigh the four nearest crewed ships and go for the richest hold
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.TraderHail.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterTest.TraderHail.cs)
 - [`Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterVehicleInteriorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Encounters/WFEncounterVehicleInteriorTest.cs)
 
+### Unit tests
+
+- [`Content.Tests/_WF/Encounters/WFEncounterShipScaleTest.cs`](../../../Content.Tests/_WF/Encounters/WFEncounterShipScaleTest.cs)
+
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/Encounters/abductors.yml`](../../../Resources/Prototypes/_WF/Encounters/abductors.yml)

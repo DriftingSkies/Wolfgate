@@ -57,6 +57,14 @@ public sealed partial class AnomalySynchronizerSystem : EntitySystem
                 continue;
             sync.NextCheckTime += sync.CheckFrequency;
 
+            // WOLFGATE START: a deleted anomaly threw here every tick and stopped every other synchronizer
+            if (TerminatingOrDeleted(sync.ConnectedAnomaly.Value))
+            {
+                DisconnectFromAnomaly((uid, sync), sync.ConnectedAnomaly.Value);
+                continue;
+            }
+            // WOLFGATE END
+
             if (Transform(sync.ConnectedAnomaly.Value).MapUid != Transform(uid).MapUid)
             {
                 DisconnectFromAnomaly((uid, sync), sync.ConnectedAnomaly.Value);

@@ -23,6 +23,12 @@ public sealed partial class ShipAlertComponent : Component
     /// <summary>True while the counts above are the ship's air alarms standing in for speakers.</summary>
     [DataField, AutoNetworkedField] public bool SpeakersFallback;
 
+    /// <summary>Quietest the pilot may turn the PA down to.</summary>
+    public const float MinVolume = 0.2f;
+
+    /// <summary>Gain multiplier for everything the ship's speakers play, between <see cref="MinVolume"/> and 1.</summary>
+    [DataField, AutoNetworkedField] public float Volume = 1f;
+
     /// <summary>Looped on every speaker while general quarters is sounded.</summary>
     [DataField] public SoundSpecifier GeneralQuartersAlarm = new SoundPathSpecifier("/Audio/Misc/redalert.ogg");
 

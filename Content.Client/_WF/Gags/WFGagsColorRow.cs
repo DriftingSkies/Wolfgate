@@ -40,6 +40,9 @@ public sealed class WFGagsColorRow : BoxContainer
     /// <summary>Raised with the new colours, or null when they were reset to the item's own.</summary>
     public event Action<List<Color>?>? OnColorsChanged;
 
+    /// <summary>The current colours, including changes still settling.</summary>
+    public List<Color> CurrentColors => _colors.ToList();
+
     public WFGagsColorRow()
     {
         Orientation = LayoutOrientation.Vertical;

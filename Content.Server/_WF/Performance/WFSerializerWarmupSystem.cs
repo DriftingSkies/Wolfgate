@@ -8,10 +8,10 @@ using Robust.Shared.Serialization.Manager;
 namespace Content.Server._WF.Performance;
 
 /// <summary>
-/// Compiles the serializer delegates of every component type on a worker thread at startup. Otherwise the first ship
-/// save or copy compiles dozens of them in one tick.
+/// Compiles the write and copy delegates of every component type on a worker thread at startup. Otherwise the first
+/// ship save or map load of the round compiles dozens of them in one tick.
 /// </summary>
-public sealed class WFSerializerWarmupSystem : EntitySystem
+public sealed partial class WFSerializerWarmupSystem : EntitySystem
 {
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private ISerializationManager _serialization = default!;
@@ -38,6 +38,10 @@ public sealed class WFSerializerWarmupSystem : EntitySystem
                 {
                     var instance = Activator.CreateInstance(type);
                     serialization.WriteValue(type, instance, true);
+
+                    // Map loads copy each component into the entity as IComponent; compile and run that path once.
+                    if (instance is IComponent source && Activator.CreateInstance(type) is IComponent target)
+                        serialization.CopyTo(source, ref target, skipHook: true, notNullableOverride: true);
                 }
                 catch (Exception)
                 {

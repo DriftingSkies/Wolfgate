@@ -196,6 +196,58 @@ public sealed class WFWarheadTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Ground zero is wiped: fittings, loose items, decals and floor go; the tiles past the radius stay (feedback #526).</summary>
+    [Test]
+    public async Task EraseRadiusWipesGroundZero()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false, Dirty = true });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var warheads = entMan.System<WFWarheadSystem>();
+        var mapSys = entMan.System<SharedMapSystem>();
+        var decals = entMan.System<Content.Server.Decals.DecalSystem>();
+        Entity<Robust.Shared.Map.Components.MapGridComponent> grid = default;
+        EntityUid fan = default, crowbar = default, far = default;
+
+        await server.WaitAssertion(() =>
+        {
+            grid = mapSys.CreateGridEntity(map.MapId);
+            entMan.System<SharedTransformSystem>().SetWorldPosition(grid.Owner, new Vector2(100f, 100f));
+            for (var x = -12; x <= 12; x++)
+            {
+                mapSys.SetTile(grid, new Vector2i(x, 0), map.Tile.Tile);
+            }
+
+            fan = entMan.SpawnEntity("AtmosDeviceFanDirectional", new EntityCoordinates(grid.Owner, 1.5f, 0.5f));
+            crowbar = entMan.SpawnEntity("CrowbarRed", new EntityCoordinates(grid.Owner, 2.5f, 0.5f));
+            far = entMan.SpawnEntity("CrowbarRed", new EntityCoordinates(grid.Owner, 12.5f, 0.5f));
+            Assert.That(decals.TryAddDecal("Dirt", new EntityCoordinates(grid.Owner, 0.5f, 0.5f), out _), Is.True);
+
+            var payload = QuietPayload();
+            payload.EraseRadius = 6f;
+            warheads.Detonate(new MapCoordinates(new Vector2(100.5f, 100.5f), map.MapId), grid.Owner, payload, null);
+        });
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.Deleted(fan), "a fitting at ground zero survived");
+            Assert.That(entMan.Deleted(crowbar), "a loose item at ground zero survived");
+            Assert.That(entMan.Deleted(far), Is.False, "an item past the erase radius was deleted");
+            Assert.That(!entMan.EntityExists(grid.Owner) || decals.GetDecalsInRange(grid.Owner, new Vector2(0.5f, 0.5f), 2f).Count == 0,
+                "a decal at ground zero survived");
+            // Losing its middle splits the strip, so each end is checked on whatever grid now holds it.
+            var zeroFloor = entMan.TryGetComponent<Robust.Shared.Map.Components.MapGridComponent>(grid.Owner, out var gridComp)
+                && mapSys.TryGetTileRef(grid.Owner, gridComp, new Vector2i(0, 0), out var zero) && !zero.Tile.IsEmpty;
+            Assert.That(zeroFloor, Is.False, "the floor at ground zero survived");
+            Assert.That(entMan.GetComponent<TransformComponent>(far).GridUid, Is.Not.Null, "the floor past the erase radius went too");
+            Assert.That(entMan.EntityQuery<WFFalloutComponent>().Any(), "no fallout was left");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public void BlastRadiusEstimateGrowsWithYield()
     {

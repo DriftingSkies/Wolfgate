@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Shiptest at commit https://github.com/shiptest-ss13/Shiptest/commit/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "brown",
+      "directions": 4
+    },
+    {
+      "name": "brown_dead"
+    },
+    {
+      "name": "polar",
+      "directions": 4
+    },
+    {
+      "name": "polar_dead"
+    },
+    {
+      "name": "war",
+      "directions": 4
+    },
+    {
+      "name": "war_dead"
+    },
+    {
+      "name": "armor",
+      "directions": 4
+    }
+  ]
+}

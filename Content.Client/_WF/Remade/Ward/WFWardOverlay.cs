@@ -48,6 +48,16 @@ public sealed class WFWardOverlay : Overlay
         ZIndex = 8;
     }
 
+    /// <summary>The membrane's dim, bright, hit and flash colours: the stone's red, or shades of the field's tint.</summary>
+    public static (Color Dim, Color Bright, Color Ember, Color Hot) Palette(WFWardFieldComponent field)
+    {
+        if (field.Tint is not { } tint)
+            return (Dim, Bright, Ember, HotWhite);
+
+        var dim = new Color(tint.R * 0.3f, tint.G * 0.3f, tint.B * 0.3f);
+        return (dim, tint, Color.InterpolateBetween(tint, Color.White, 0.35f), Color.InterpolateBetween(tint, Color.White, 0.8f));
+    }
+
     /// <summary>How hard the field looks, from 0 for a loose skin to 1 for the rooted stone.</summary>
     public static float Hardness(WFWardFieldComponent field)
     {
@@ -118,7 +128,8 @@ public sealed class WFWardOverlay : Overlay
             handle.UseShader(membrane.Configure(_shader, hardness, Still));
             var surface = distant ? membrane.Distant ??= new Surface(visuals.Contours, true) : membrane.Detailed ??= new Surface(visuals.Contours, false);
             _impacts.TryGetValue(uid, out var impacts);
-            surface.Update(Color.InterpolateBetween(Dim, Bright, hardness), hardness, fade, impacts, _timing.CurTime, distant);
+            var (dim, bright, ember, hot) = Palette(field);
+            surface.Update(Color.InterpolateBetween(dim, bright, hardness), ember, hot, hardness, fade, impacts, _timing.CurTime, distant);
             handle.SetTransform(matrix);
             DrawBatches(handle, surface.Vertices);
         }
@@ -211,7 +222,7 @@ public sealed class WFWardOverlay : Overlay
             Vertices = new DrawVertexUV2DColor[_mesh.Triangles.Count];
         }
 
-        public void Update(Color baseColor, float hardness, float fade, List<WFWardImpact>? impacts, TimeSpan time, bool distant)
+        public void Update(Color baseColor, Color ember, Color hot, float hardness, float fade, List<WFWardImpact>? impacts, TimeSpan time, bool distant)
         {
             var active = impacts is { Count: > 0 };
             if (!active && !_hadImpacts && _lastBase == baseColor && _lastFade == fade)
@@ -249,8 +260,8 @@ public sealed class WFWardOverlay : Overlay
 
                 hit = Math.Clamp(hit, 0f, 1.5f);
                 flash = Math.Clamp(flash, 0f, 1f);
-                var tint = Color.InterpolateBetween(baseColor, Ember, Math.Clamp(hit, 0f, 1f));
-                tint = Color.InterpolateBetween(tint, HotWhite, flash * 0.8f);
+                var tint = Color.InterpolateBetween(baseColor, ember, Math.Clamp(hit, 0f, 1f));
+                tint = Color.InterpolateBetween(tint, hot, flash * 0.8f);
                 _colors[i] = Color.FromSrgb(tint).WithAlpha(baseAlpha + hit * 0.55f + flash * 0.4f);
             }
 

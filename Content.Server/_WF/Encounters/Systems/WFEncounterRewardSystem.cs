@@ -486,14 +486,42 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         return helpers;
     }
 
+    /// <summary>How many attacking ships carry a player <see cref="PayBounty"/> would pay.</summary>
+    public int PaidShips(Entity<WFEncounterComponent?> encounter)
+    {
+        if (!Resolve(encounter, ref encounter.Comp, false))
+            return 0;
+
+        var comp = encounter.Comp;
+        var attackers = comp.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
+        return GetHelpers(comp, comp.Ships.Values.Select(ship => ship.Side).ToHashSet())
+            .Select(helper => Transform(helper.Mob).GridUid)
+            .Where(grid => grid is { } ship && attackers.Contains(ship))
+            .Distinct()
+            .Count();
+    }
+
+    /// <summary>A bounty scaled up for each paid attacking ship past the first, so a bigger group doesn't thin every share.</summary>
+    public int ScaleForShips(EntityUid encounter, int bounty, float perShip, float maxScale)
+    {
+        return (int) (bounty * ShipScale(PaidShips(encounter), perShip, maxScale));
+    }
+
+    /// <summary>What a bounty is multiplied by for a number of paid attacking ships: never below one or above the cap.</summary>
+    public static float ShipScale(int ships, float perShip, float maxScale)
+    {
+        return Math.Clamp(1f + perShip * (ships - 1), 1f, Math.Max(1f, maxScale));
+    }
+
     /// <summary>
     /// Pays a bounty on a beaten encounter to its helpers, and a fifth to living players aboard supporters; returns how many were paid.
     /// <paramref name="extraCredits"/> are further rewards of which only the faction credits are handed out. Every
-    /// player the bounty is shared among is added to <paramref name="helperMobs"/>, paid or capped.
+    /// player the bounty is shared among is added to <paramref name="helperMobs"/>, paid or capped. An
+    /// <paramref name="uncapped"/> bounty, a once-a-round capstone, skips the hourly cap and doesn't count toward it.
     /// </summary>
     public int PayBounty(Entity<WFEncounterComponent?> encounter, WFEncounterReward reward, string deed,
         IReadOnlyList<EntityUid>? supporters = null, IReadOnlyList<WFEncounterReward>? extraCredits = null,
-        List<EntityUid>? helperMobs = null)
+        List<EntityUid>? helperMobs = null, bool uncapped = false)
     {
         if (!Resolve(encounter, ref encounter.Comp, false))
             return 0;
@@ -543,7 +571,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
         helpers.AddRange(aids);
         helperMobs?.AddRange(helpers.Select(helper => helper.Mob));
-        return Pay(encounter, comp, reward, helpers, deed, shares, extraCredits);
+        return Pay(encounter, comp, reward, helpers, deed, shares, extraCredits, uncapped);
     }
 
     /// <summary>
@@ -590,9 +618,9 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
     /// <summary>Pays a reward to the helpers within the hourly cap, equally unless shares are given, and returns how many received anything.</summary>
     private int Pay(EntityUid uid, WFEncounterComponent encounter, WFEncounterReward reward,
         List<(ICommonSession Session, EntityUid Mob)> helpers, string deed, List<int>? shares = null,
-        IReadOnlyList<WFEncounterReward>? extraCredits = null)
+        IReadOnlyList<WFEncounterReward>? extraCredits = null, bool uncapped = false)
     {
-        return Pay(encounter.Name, $"encounter {encounter.Prototype} ({ToPrettyString(uid):entity})", reward, helpers, deed, shares, extraCredits);
+        return Pay(encounter.Name, $"encounter {encounter.Prototype} ({ToPrettyString(uid):entity})", reward, helpers, deed, shares, extraCredits, uncapped);
     }
 
     /// <summary>
@@ -633,7 +661,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
 
     private int Pay(string name, string subject, WFEncounterReward reward,
         List<(ICommonSession Session, EntityUid Mob)> helpers, string deed, List<int>? shares = null,
-        IReadOnlyList<WFEncounterReward>? extraCredits = null)
+        IReadOnlyList<WFEncounterReward>? extraCredits = null, bool uncapped = false)
     {
         var received = 0;
         var cap = _config.GetCVar(EncountersCVars.PayoutHourlyCap);
@@ -641,7 +669,7 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
         {
             var (session, mob) = helpers[i];
             var share = shares?[i] ?? reward.Spesos / helpers.Count;
-            var paid = Capped(session.UserId, share, cap);
+            var paid = uncapped ? share : Capped(session.UserId, share, cap);
             if (paid < share)
             {
                 _chat.DispatchServerMessage(session, Loc.GetString("wf-encounter-reward-capped", ("name", name), ("cap", cap)));
@@ -653,7 +681,8 @@ public sealed partial class WFEncounterRewardSystem : EntitySystem
             var cut = _companies.CutFor(session, paid);
             if (paid > 0 && !_bank.TryBankDeposit(mob, paid - cut, false))
             {
-                Refund(session.UserId, paid);
+                if (!uncapped)
+                    Refund(session.UserId, paid);
                 paid = 0;
             }
             else

@@ -22181,7 +22181,7 @@ entities:
       containers:
         solution@Welder: !type:ContainerSlot
           ent: 112
-- proto: WFWallAdamantite
+- proto: WFWallDurasteel
   entities:
   - uid: 977
     components:

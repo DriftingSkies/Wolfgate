@@ -1,0 +1,53 @@
+# Loot from the NuclearPhase oceanborn.
+
+- type: entity
+  parent: MaterialBase
+  id: NuclearPhaseFishSkinPurple
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/NuclearPhase/fish_skin.rsi
+    color: "#bda2ba"
+    layers:
+    - state: skin
+      map: [ "base" ]
+  - type: Item
+    sprite: _WF/Fauna/Objects/NuclearPhase/fish_skin.rsi
+  - type: Appearance
+  - type: Stack
+    stackType: NuclearPhaseFishSkinPurple
+    count: 1
+    baseLayer: base
+    layerStates:
+    - skin
+    - skin_2
+    - skin_3
+
+- type: stack
+  id: NuclearPhaseFishSkinPurple
+  name: nuclearphase-stack-fish-skin-purple
+  icon: { sprite: /Textures/_WF/Fauna/Objects/NuclearPhase/fish_skin.rsi, state: skin }
+  spawn: NuclearPhaseFishSkinPurple
+  maxCount: 60
+
+- type: entity
+  parent: FoodMeatRawBase
+  id: NuclearPhaseFoodSyntiflesh
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/NuclearPhase/syntiflesh.rsi
+    state: icon
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 9
+        - ReagentId: Fat
+          Quantity: 9
+  - type: SliceableFood
+    count: 3
+    slice: FoodMeatCutlet
+  - type: Construction
+    graph: MeatSteak
+    node: start
+    defaultTarget: meat steak

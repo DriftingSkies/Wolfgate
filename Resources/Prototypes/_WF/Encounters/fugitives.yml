@@ -19,10 +19,10 @@
   skills: [ Green, Regular ]
   # Outlaws fly plastitanium as the Reavers do (WFCrewProfilePirate).
   hullSwaps:
-    WFWallAdamantite: WallPlastitanium
-    WFWallAdamantiteDiagonal: WallPlastitaniumDiagonal
-    WFWallAdamantiteCapital: WallPlastitanium
-    WFWallAdamantiteDiagonalCapital: WallPlastitaniumDiagonal
+    WFWallDurasteel: WallPlastitanium
+    WFWallDurasteelDiagonal: WallPlastitaniumDiagonal
+    WFWallDurasteelCapital: WallPlastitaniumCapital
+    WFWallDurasteelDiagonalCapital: WallPlastitaniumDiagonalCapital
   engagement:
     WFCrewDeckhand: WhenAttacked
     WFCrewMarine: WhenAttacked
@@ -47,10 +47,10 @@
   - WFMobCrewBodyTajaran
   skills: [ Veteran, Elite ]
   hullSwaps:
-    WFWallAdamantite: WallPlastitanium
-    WFWallAdamantiteDiagonal: WallPlastitaniumDiagonal
-    WFWallAdamantiteCapital: WallPlastitanium
-    WFWallAdamantiteDiagonalCapital: WallPlastitaniumDiagonal
+    WFWallDurasteel: WallPlastitanium
+    WFWallDurasteelDiagonal: WallPlastitaniumDiagonal
+    WFWallDurasteelCapital: WallPlastitaniumCapital
+    WFWallDurasteelDiagonalCapital: WallPlastitaniumDiagonalCapital
   engagement:
     WFCrewDeckhand: WhenAttacked
     WFCrewMarine: WhenAttacked

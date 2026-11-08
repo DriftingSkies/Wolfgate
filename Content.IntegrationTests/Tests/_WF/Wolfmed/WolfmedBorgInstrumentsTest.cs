@@ -43,8 +43,10 @@ public sealed class WolfmedBorgInstrumentsTest : WolfmedGameTest
             var needed = new SortedSet<string>();
             foreach (var step in prototypes.EnumeratePrototypes<EntityPrototype>())
             {
+                // An organ-insertion step's "tool" is the organ going in, not an instrument.
                 if (step.Abstract || !step.ID.StartsWith("WFSurgeryStep") ||
-                    !step.TryComp<SurgeryStepComponent>(out var comp, factory) || comp.Tool == null)
+                    !step.TryComp<SurgeryStepComponent>(out var comp, factory) || comp.Tool == null ||
+                    step.TryComp<SurgeryAddOrganStepComponent>(out _, factory))
                     continue;
 
                 needed.UnionWith(comp.Tool.Keys);

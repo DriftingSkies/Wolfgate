@@ -26,22 +26,36 @@
   maxChallenges: 1
   maxPickets: 3
   tierThresholds: [ 10, 22, 40, 60, 80 ]
-  nodeBounty: [ 50000, 75000, 100000, 130000, 170000, 220000 ]
-  sweepBounty: 18000
-  interdictorBounty: 30000
-  retakeBounty: [ 8000, 10000, 12000, 14000, 16000, 20000 ]
+  nodeBounty: [ 150000, 225000, 300000, 375000, 450000, 550000 ]
+  sweepBounty: 45000
+  interdictorBounty: 70000
+  # Each paid attacking ship past the first adds half the bounty, to at most two and a half times it.
+  shipBountyScale: 0.5
+  maxShipBountyScale: 2.5
+  # What more living players on the sector map multiply every bounty by; the highest bracket reached applies.
+  population:
+  - minPlayers: 25
+    bountyScale: 1.15
+  - minPlayers: 40
+    bountyScale: 1.3
+  - minPlayers: 55
+    bountyScale: 1.5
+  # Each ship that helps also gets a free repair at the Anvilhold Drydock, bound to it, one unused at a time.
+  nodeVoucher: WFDrydockRepairVoucher
+  sweepVoucher: WFDrydockRepairVoucher
+  retakeBounty: [ 16000, 20000, 24000, 28000, 32000, 40000 ]
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
-    stronghold: 30
-    patrol: 10
+    stronghold: 60
+    patrol: 20
   - entity: Doubloon1
     companies: [ PDV, PDVCivilian ]
-    stronghold: 30
-    patrol: 10
+    stronghold: 60
+    patrol: 20
   dreadnought: WFAdsDreadnought
   dreadnoughtDelay: 20m
-  dreadnoughtBounty: 400000
+  dreadnoughtBounty: 1200000
   risingSound:
     path: /Audio/_WF/AdsIncursion/aimalf.ogg
   fallingSound:
@@ -76,22 +90,36 @@
   maxChallenges: 1
   maxPickets: 3
   tierThresholds: [ 10, 25, 45, 70, 95 ]
-  nodeBounty: [ 50000, 75000, 100000, 130000, 170000, 220000 ]
-  sweepBounty: 18000
-  interdictorBounty: 30000
-  retakeBounty: [ 10000, 12000, 14000, 17000, 20000, 25000 ]
+  nodeBounty: [ 150000, 225000, 300000, 375000, 450000, 550000 ]
+  sweepBounty: 45000
+  interdictorBounty: 70000
+  # Each paid attacking ship past the first adds half the bounty, to at most two and a half times it.
+  shipBountyScale: 0.5
+  maxShipBountyScale: 2.5
+  # What more living players on the sector map multiply every bounty by; the highest bracket reached applies.
+  population:
+  - minPlayers: 25
+    bountyScale: 1.15
+  - minPlayers: 40
+    bountyScale: 1.3
+  - minPlayers: 55
+    bountyScale: 1.5
+  # Each ship that helps also gets a free repair at the Anvilhold Drydock, bound to it, one unused at a time.
+  nodeVoucher: WFDrydockRepairVoucher
+  sweepVoucher: WFDrydockRepairVoucher
+  retakeBounty: [ 20000, 24000, 28000, 34000, 40000, 50000 ]
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
-    stronghold: 30
-    patrol: 10
+    stronghold: 60
+    patrol: 20
   - entity: Doubloon1
     companies: [ PDV, PDVCivilian ]
-    stronghold: 30
-    patrol: 10
+    stronghold: 60
+    patrol: 20
   dreadnought: WFAdsDreadnought
   dreadnoughtDelay: 10m
-  dreadnoughtBounty: 400000
+  dreadnoughtBounty: 1200000
   risingSound:
     path: /Audio/_WF/AdsIncursion/aimalf.ogg
   fallingSound:
@@ -126,22 +154,36 @@
   maxChallenges: 2
   maxPickets: 3
   tierThresholds: [ 12, 30, 55, 85, 115 ]
-  nodeBounty: [ 50000, 75000, 100000, 130000, 170000, 220000 ]
-  sweepBounty: 18000
-  interdictorBounty: 30000
-  retakeBounty: [ 12000, 15000, 18000, 22000, 26000, 30000 ]
+  nodeBounty: [ 150000, 225000, 300000, 375000, 450000, 550000 ]
+  sweepBounty: 45000
+  interdictorBounty: 70000
+  # Each paid attacking ship past the first adds half the bounty, to at most two and a half times it.
+  shipBountyScale: 0.5
+  maxShipBountyScale: 2.5
+  # What more living players on the sector map multiply every bounty by; the highest bracket reached applies.
+  population:
+  - minPlayers: 25
+    bountyScale: 1.15
+  - minPlayers: 40
+    bountyScale: 1.3
+  - minPlayers: 55
+    bountyScale: 1.5
+  # Each ship that helps also gets a free repair at the Anvilhold Drydock, bound to it, one unused at a time.
+  nodeVoucher: WFDrydockRepairVoucher
+  sweepVoucher: WFDrydockRepairVoucher
+  retakeBounty: [ 24000, 30000, 36000, 44000, 52000, 60000 ]
   credits:
   - entity: FederationMilitaryCredit1
     companies: [ TSF, TSFCivilian ]
-    stronghold: 30
-    patrol: 10
+    stronghold: 60
+    patrol: 20
   - entity: Doubloon1
     companies: [ PDV, PDVCivilian ]
-    stronghold: 30
-    patrol: 10
+    stronghold: 60
+    patrol: 20
   dreadnought: WFAdsDreadnought
   dreadnoughtDelay: 6m
-  dreadnoughtBounty: 400000
+  dreadnoughtBounty: 1200000
   risingSound:
     path: /Audio/_WF/AdsIncursion/aimalf.ogg
   fallingSound:

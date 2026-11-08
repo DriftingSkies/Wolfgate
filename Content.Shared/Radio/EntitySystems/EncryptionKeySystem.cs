@@ -100,7 +100,8 @@ public sealed partial class EncryptionKeySystem : EntitySystem
         }
         else if (TryComp<ToolComponent>(args.Used, out var tool)
                  && _tool.HasQuality(args.Used, component.KeysExtractionMethod, tool)
-                 && component.KeyContainer.ContainedEntities.Count > 0) // dont block deconstruction
+                 && component.KeyContainer.ContainedEntities.Count > 0 // dont block deconstruction
+                 && component.KeysUnlocked) // WOLFGATE: locked key slots, as on shuttle consoles, don't block prying the board out either
         {
             args.Handled = true;
             TryRemoveKey(uid, component, args, tool);

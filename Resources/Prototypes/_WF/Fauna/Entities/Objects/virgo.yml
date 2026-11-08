@@ -1,0 +1,74 @@
+# VOREStation fauna loot.
+
+- type: entity
+  parent: FoodMeatRawBase
+  id: VirgoFoodMeatGrub
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Virgo/food.rsi
+    state: grubmeat
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 10
+
+- type: entity
+  parent: BaseItem
+  id: VirgoRoyalSpiderEgg
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Virgo/egg.rsi
+    state: egg_slimeglob
+  - type: Item
+    size: Small
+
+# The star treader's underdark loot: mining tools, ores or treasure, and nothing two times in three.
+- type: entity
+  id: VirgoSpawnerUnderdarkLoot
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    offset: 0.3
+    table: !type:GroupSelector
+      prob: 0.35
+      children:
+      - !type:GroupSelector
+        weight: 3
+        children:
+        - id: Pickaxe
+          weight: 15
+        - id: MiningDrill
+          weight: 14
+        - id: MiningDrillDiamond
+          weight: 3
+      - !type:AllSelector
+        weight: 3
+        children:
+        - id: OreBag
+        - id: Shovel
+        - id: SpaceQuartz1
+          amount: !type:ConstantNumberSelector
+            value: 10
+      - !type:GroupSelector
+        weight: 2
+        children:
+        - !type:AllSelector
+          weight: 4
+          children:
+          - id: SpaceCash500
+          - id: SpaceCash100
+        - !type:AllSelector
+          weight: 3
+          children:
+          - id: IngotGold1
+            amount: !type:ConstantNumberSelector
+              value: 10
+        - !type:AllSelector
+          weight: 1
+          children:
+          - id: DiamondOre1
+            amount: !type:ConstantNumberSelector
+              value: 3

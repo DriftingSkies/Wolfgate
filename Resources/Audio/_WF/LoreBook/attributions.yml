@@ -1,0 +1,22 @@
+# Whispers under the lore book once it has been read too closely. Mixed down to mono Ogg.
+- files: ["whisper1.ogg"]
+  license: "CC0-1.0"
+  copyright: "\"Creepy Whispering\" by freesound_community on pixabay.com (Pixabay Content License), mixed to mono."
+  source: "https://pixabay.com/sound-effects/creepy-whispering-6690/"
+
+- files: ["whisper2.ogg"]
+  license: "CC0-1.0"
+  copyright: "\"Four Voices Whispering\" by freesound_community on pixabay.com (Pixabay Content License), mixed to mono."
+  source: "https://pixabay.com/sound-effects/four-voices-whispering-6943/"
+
+- files: ["whisper3.ogg"]
+  license: "CC0-1.0"
+  copyright: "\"Four Voices Whispering 2 (w echo)\" by freesound_community on pixabay.com (Pixabay Content License), mixed to mono."
+  source: "https://pixabay.com/sound-effects/four-voices-whispering-2-wecho-6755/"
+
+# Page turns in the lore book.
+- files: ["page_flip1.ogg"]
+  license: "CC0-1.0"
+  copyright: "\"Page Flip (smaller page)\" by oxidvideos on pixabay.com (Pixabay Content License), mixed to mono."
+  source: "https://pixabay.com/sound-effects/page-flip-smaller-page-453027/"
+

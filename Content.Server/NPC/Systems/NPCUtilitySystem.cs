@@ -45,6 +45,7 @@ using System.Linq;
 using Content.Shared.StatusEffect; // Frontier
 using Content.Server._WF.Xenonids.Parasite.AI; // WOLFGATE(Xenonids)
 using Content.Shared._WF.Xenonids.Parasite; // WOLFGATE(Xenonids)
+using Content.Server._WF.Fauna; // WOLFGATE(Fauna)
 
 namespace Content.Server.NPC.Systems;
 
@@ -74,6 +75,7 @@ public sealed partial class NPCUtilitySystem : EntitySystem
     [Dependency] private GunSystem _gun = default!; // Mono
     [Dependency] private NPCCombatSystem _npcCombat = default!;
     [Dependency] private TurretTargetSettingsSystem _turretTargetSettings = default!;
+    [Dependency] private FaunaCorpseEaterSystem _faunaEater = default!; // WOLFGATE(Fauna)
 
     private readonly List<EntityUid> _wfHostileScratch = new(); // WOLFGATE(Performance): reused by NearbyHostilesQuery
 
@@ -448,6 +450,13 @@ public sealed partial class NPCUtilitySystem : EntitySystem
                 return TryComp<InfectableComponent>(targetUid, out var infectable)
                        && !infectable.BeingInfected
                        && !HasComp<VictimInfectedComponent>(targetUid) ? 1f : 0f;
+            }
+            // WOLFGATE END
+            // WOLFGATE(Fauna) START: fauna pick items their corpse eater accepts, such as ore
+            case FaunaCanEatCon:
+            {
+                return TryComp<FaunaCorpseEaterComponent>(owner, out var eater)
+                       && _faunaEater.CanEat((owner, eater), targetUid) ? 1f : 0f;
             }
             // WOLFGATE END
             default:

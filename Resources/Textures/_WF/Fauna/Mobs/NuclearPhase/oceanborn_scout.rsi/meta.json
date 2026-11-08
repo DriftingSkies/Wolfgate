@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from NuclearPhase at commit https://github.com/NuPhase/NuclearPhase/commit/a90d33c6e9d07497a181e6d1529bf7bd4258ef56.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "scout",
+      "directions": 4
+    },
+    {
+      "name": "scout_dead"
+    }
+  ]
+}

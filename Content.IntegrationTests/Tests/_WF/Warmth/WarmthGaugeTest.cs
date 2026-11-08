@@ -131,7 +131,12 @@ public sealed class WarmthGaugeTest
         for (var i = 0; i < 24 && !warming; i++)
         {
             await pair.RunTicksSync(pair.SecondsToTicks(5f));
-            await server.WaitPost(() => warming = entMan.GetComponent<WFWarmthComponent>(mob).Trend == WFWarmthTrend.Warming);
+            // The trend reads Warming only while the gauge climbs, which can fall between two polls; a higher gauge counts too.
+            await server.WaitPost(() =>
+            {
+                var now = entMan.GetComponent<WFWarmthComponent>(mob);
+                warming = now.Trend == WFWarmthTrend.Warming || now.Gauge > coldGauge;
+            });
         }
 
         await server.WaitAssertion(() =>

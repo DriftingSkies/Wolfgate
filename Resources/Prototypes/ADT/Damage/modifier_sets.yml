@@ -1,0 +1,7 @@
+# WOLFGATE(Fauna) START: ported from ADT
+- type: damageModifierSet
+  id: ADTDragonDamageSet
+  coefficients:
+    Cold: 0
+    Bloodloss: 0.7
+# WOLFGATE END

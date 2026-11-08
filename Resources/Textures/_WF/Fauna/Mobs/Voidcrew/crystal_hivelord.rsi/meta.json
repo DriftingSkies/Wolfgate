@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Voidcrew at commit https://github.com/voidcrew/Voidcrew/commit/0c87384b55294dc7348f83bbd3fddd9427d136de.",
+  "size": {
+    "x": 29,
+    "y": 28
+  },
+  "states": [
+    {
+      "name": "hivelord",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "hivelord_dead"
+    },
+    {
+      "name": "hivelord_inactive"
+    },
+    {
+      "name": "brood",
+      "delays": [
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Sojourn Station at commit https://github.com/sojourn-13/sojourn-station/commit/c4d39bd4efea1cf25a61a39474b3835ade953bcd.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "nurse_E",
+      "directions": 4
+    },
+    {
+      "name": "nurse_E_dead",
+      "delays": [
+        [
+          0.5,
+          0.1,
+          0.1,
+          0.7
+        ]
+      ]
+    },
+    {
+      "name": "hunter",
+      "directions": 4
+    },
+    {
+      "name": "hunter_dead"
+    }
+  ]
+}

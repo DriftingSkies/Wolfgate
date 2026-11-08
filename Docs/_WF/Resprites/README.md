@@ -10,6 +10,12 @@ Ports visual updates and matching prototypes for closets, lockers, wardrobes, wa
 
 ### Textures
 
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcd.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcd.rsi/)
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdmilitary.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdmilitary.rsi/)
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdpirate.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdpirate.rsi/)
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi/)
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Tools/shipyardrpd.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Tools/shipyardrpd.rsi/)
+- [`Resources/Textures/_WF/Resprites/_WF/Objects/Weapons/Guns/Battery/lawbringer.rsi/`](../../../Resources/Textures/_WF/Resprites/_WF/Objects/Weapons/Guns/Battery/lawbringer.rsi/)
 - [`Resources/Textures/_WF/Resprites/_WF/Tiles/half_h.png`](../../../Resources/Textures/_WF/Resprites/_WF/Tiles/half_h.png)
 - [`Resources/Textures/_WF/Resprites/_WF/Tiles/half_v.png`](../../../Resources/Textures/_WF/Resprites/_WF/Tiles/half_v.png)
 - [`Resources/Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_s_l.png`](../../../Resources/Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_s_l.png)
@@ -388,6 +394,10 @@ Ports visual updates and matching prototypes for closets, lockers, wardrobes, wa
 
 ## Non-modular edits
 
+- [`Resources/Prototypes/_Goobstation/Entities/Objects/Weapons/Guns/Battery/battery_guns.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Objects/Weapons/Guns/Battery/battery_guns.yml): Toriate's Lawbringer sprite
+- [`Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml)
+  - SRD uses the shipyard RCD sprite
+  - keep the old SRD inhands, the base now uses the shipyard RCD
 - [`Resources/Prototypes/_Mono/Turf/generated.yml`](../../../Resources/Prototypes/_Mono/Turf/generated.yml)
   - Port floor sprite updates from upstream respritening batches.
   - Repathed
@@ -401,7 +411,9 @@ Ports visual updates and matching prototypes for closets, lockers, wardrobes, wa
 - [`Resources/Prototypes/_NF/Entities/Structures/Storage/Closets/Lockers/lockers.yml`](../../../Resources/Prototypes/_NF/Entities/Structures/Storage/Closets/Lockers/lockers.yml): Fixes shit NF lockers
 - [`Resources/Prototypes/_NF/Entities/Structures/Storage/Closets/wall_lockers.yml`](../../../Resources/Prototypes/_NF/Entities/Structures/Storage/Closets/wall_lockers.yml): Fixes shit NF lockers
 - [`Resources/Prototypes/_NF/Entities/Structures/Storage/Closets/wardrobe.yml`](../../../Resources/Prototypes/_NF/Entities/Structures/Storage/Closets/wardrobe.yml): Repathed
+- [`Resources/Prototypes/Catalog/Cargo/cargo_engineering.yml`](../../../Resources/Prototypes/Catalog/Cargo/cargo_engineering.yml): RCD sprite without the old one drawn underneath
 - [`Resources/Prototypes/Catalog/Cargo/cargo_service.yml`](../../../Resources/Prototypes/Catalog/Cargo/cargo_service.yml): Imp Sprite Ports
+- [`Resources/Prototypes/Entities/Objects/Tools/tools.yml`](../../../Resources/Prototypes/Entities/Objects/Tools/tools.yml): RCD sprite without the old one drawn underneath
 - [`Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/magic.yml`](../../../Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/magic.yml): Port closet sprite mappings from upstream respritening batches.
 - [`Resources/Prototypes/Entities/Structures/conveyor.yml`](../../../Resources/Prototypes/Entities/Structures/conveyor.yml): Imp Sprite Ports
 - [`Resources/Prototypes/Entities/Structures/cryogenic_sleep_unit.yml`](../../../Resources/Prototypes/Entities/Structures/cryogenic_sleep_unit.yml): Imp Sprite Ports

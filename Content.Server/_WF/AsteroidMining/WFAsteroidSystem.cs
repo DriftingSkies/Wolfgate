@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.Spawning;
 using Content.Server._WF.DroneRings;
+using Content.Server._WF.Lattice;
 using Content.Server.Explosion.EntitySystems;
 using Content.Server.Gatherable;
 using Content.Server.Shuttles.Systems;
@@ -39,6 +40,7 @@ public enum WFAsteroidCrack : byte
 public sealed partial class WFAsteroidSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private WFLatticeSystem _lattice = default!;
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private ITileDefinitionManager _tileDefs = default!;
@@ -450,7 +452,8 @@ public sealed partial class WFAsteroidSystem : EntitySystem
         if (comp.BoulderPrototype is { } boulder)
             oreMass -= SpawnBoulders(comp, boulder, oreMass * comp.BoulderShare, center, mapUid);
 
-        SpawnOre(ores, oreMass * OreYield(comp), center, radius);
+        SpawnOre(ores, oreMass * OreYield(comp) * _lattice.YieldAt(center), center, radius);
+        _lattice.SpawnExotic(center, oreMass, radius);
     }
 
     /// <summary>Ore each vein of the rock drops: the rock's yield times its kind's.</summary>
@@ -521,11 +524,18 @@ public sealed partial class WFAsteroidSystem : EntitySystem
 
         comp.Cracking = true;
         var center = _transform.GetMapCoordinates(uid);
-        var mass = comp.Mass * OreYield(comp);
+        var mass = comp.Mass * OreYield(comp) * _lattice.YieldAt(center);
         if (args.TeleportLootToGatherer && args.Gatherer is { } gatherer)
-            SpawnOre(comp.Ores, mass, _transform.GetMapCoordinates(gatherer), 0.2f);
+        {
+            var drill = _transform.GetMapCoordinates(gatherer);
+            SpawnOre(comp.Ores, mass, drill, 0.2f);
+            _lattice.SpawnExotic(center, comp.Mass, 0.2f, drill);
+        }
         else
+        {
             SpawnOre(comp.Ores, mass, center, MathF.Max(comp.Radius, 0.3f));
+            _lattice.SpawnExotic(center, comp.Mass, MathF.Max(comp.Radius, 0.3f));
+        }
         if (Transform(uid).MapUid is { } mapUid)
             SpawnCrackEffect(center, mapUid, MathF.Max(comp.Radius, 0.5f), comp.VeinColor, false);
     }

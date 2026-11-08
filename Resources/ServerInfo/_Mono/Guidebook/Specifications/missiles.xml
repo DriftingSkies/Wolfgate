@@ -1,13 +1,14 @@
-<Document>
+<!-- WOLFGATE(Weapons) START: ship gunnery specs brought in line with the current weapons --><Document>
   # Missile Weapons Specifications
   Notes:
-  - Munition range & ammo capacity is taken from the standard magazine & ammunition that comes loaded with the weapon.
+  - Munition range and ammo capacity is taken from the standard magazine and ammunition that comes loaded with the weapon.
   - For munitions that accelerate over time (such as missiles), range is a rough estimate.
   - For munitions that are fired at a static speed (such as normal weapons), range is simply just the launch velocity * projectile lifetime.
   - RPS may not be accurate due to it being capped by server tick speed (usually 20 or 30 ticks/second).
-  - Rare guns such as ADS/NT/Syndicate shipguns will not be included.
+  - Most, albeit not all, missile weapons use physical ammunition and must be loaded by hand or autoloader system. They do not have have an infinite fallback.
+  - Most, albeit not all, missile weapons have a homing system, tracking to a grid's piloting console or drone core. The level of tracking depends on the warhead. You can't lock on, so mind your friends!
 
-  ## Specifications (as of 24-Oct-2025)
+  ## Specifications (as of 24-Oct-2026)
   <Table Columns="7">
     <ColorBox>
       <Box>
@@ -26,12 +27,12 @@
     </ColorBox>
     <ColorBox>
       <Box>
-        Munition Range (Estimated)
+        Munition Range
       </Box>
     </ColorBox>
     <ColorBox>
       <Box>
-        Max Velocity
+        Velocity
       </Box>
     </ColorBox>
     <ColorBox>
@@ -57,7 +58,7 @@
     </ColorBox>
     <ColorBox Color="#8f2b65">
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        ~945 meters
+        2,000 meters
       </Box>
     </ColorBox>
     <ColorBox Color="#8f2b65">
@@ -67,7 +68,7 @@
     </ColorBox>
     <ColorBox>
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        Medium
+        Light
       </Box>
     </ColorBox>
     <!--Vespera-->
@@ -88,7 +89,7 @@
     </ColorBox>
     <ColorBox Color="#8f2b65">
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        ~630 meters
+        2,000 meters
       </Box>
     </ColorBox>
     <ColorBox Color="#8f2b65">
@@ -104,7 +105,7 @@
     <!--Tovek-->
     <ColorBox>
       <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        ADMX-23 TOVEK
+        ADMX-250 TOVEK
       </Box>
     </ColorBox>
     <ColorBox Color="#b58818">
@@ -163,6 +164,99 @@
         Medium
       </Box>
     </ColorBox>
+    <!--New stuff-->
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        MLRS-382 "Paladin"
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#b58818">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Variable
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#5a9926">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        0.8 RPS
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        2000 meters
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Variable
+      </Box>
+    </ColorBox>
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Heavy
+      </Box>
+    </ColorBox>
+    <!--Syndie Serpent-->
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Serpent Torpedo Launcher
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#b58818">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        N/A
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#5a9926">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        0.5 RPS
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        2000 meters
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Variable
+      </Box>
+    </ColorBox>
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Medium
+      </Box>
+    </ColorBox>
+    <!--SRM Vanquisher-->
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        SRM-573 "Vanquisher"
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#b58818">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Vanquisher (Cart)
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#5a9926">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        0.1 RPS
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        2000 meters
+      </Box>
+    </ColorBox>
+    <ColorBox Color="#8f2b65">
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Variable
+      </Box>
+    </ColorBox>
+    <ColorBox>
+      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
+        Heavy
+      </Box>
+    </ColorBox>
   </Table>
 
-</Document>
+<!-- WOLFGATE END --></Document>

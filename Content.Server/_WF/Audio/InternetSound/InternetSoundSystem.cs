@@ -29,8 +29,8 @@ namespace Content.Server._WF.Audio.InternetSound;
 
 /// <summary>
 /// Internet sounds: fetches a link with yt-dlp, mounts the result as a resource on the server and receiving
-/// clients, then plays it like any other sound â€” to everyone at once for admins, or out of a ship's PA
-/// speakers, which crew can do from the shuttle console.
+/// clients, then plays it: to everyone at once for admins, each client running its own copy once told to, or
+/// out of a ship's PA speakers, which crew can do from the shuttle console.
 /// </summary>
 /// <remarks>
 /// PA assets go only to clients aboard or near their ship, including remote views. Recipients keep them
@@ -116,8 +116,11 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
         public TimeSpan Deadline;
 
-        /// <summary>The audio entity, for a sound played to everyone. PA tracks live in ShipPaSystem.</summary>
-        public EntityUid? Audio;
+        /// <summary>How long the audio runs, read once it is fetched.</summary>
+        public TimeSpan Length;
+
+        /// <summary>When a sound played to everyone runs out. PA tracks live in ShipPaSystem.</summary>
+        public TimeSpan Ends;
 
         public InternetSoundTransfer? Transfer;
 
@@ -177,8 +180,8 @@ public sealed partial class InternetSoundSystem : EntitySystem
                     StartPlayback(track);
                     break;
 
-                // The engine deletes a finished non-looping audio entity by itself.
-                case TrackState.Playing when !track.IsPa && track.Audio is { } audio && !Exists(audio):
+                // Clients play a sound for everyone on their own clocks; the server only keeps its time.
+                case TrackState.Playing when !track.IsPa && _timing.CurTime >= track.Ends:
                     Finish(track);
                     break;
 
@@ -431,7 +434,9 @@ public sealed partial class InternetSoundSystem : EntitySystem
         // before any of it goes out to clients.
         try
         {
-            _audio.GetAudioLength(new ResolvedPathSpecifier(InternetSoundResources.PathFor(id)));
+            track.Length = _audio.GetAudioLength(new ResolvedPathSpecifier(InternetSoundResources.PathFor(id)));
+            if (track.Length <= TimeSpan.Zero)
+                throw new InvalidDataException("the audio has no length");
         }
         catch (Exception e)
         {
@@ -543,18 +548,9 @@ public sealed partial class InternetSoundSystem : EntitySystem
         }
         else
         {
-            var stream = _audio.PlayGlobal(new ResolvedPathSpecifier(path), Filter.Broadcast(), true, AudioParams.Default);
-
-            if (stream == null)
-            {
-                ReportError(track, Loc.GetString("wf-internet-sound-error-unplayable"));
-                Drop(track);
-                SendState();
-                return;
-            }
-
-            EnsureComp<InternetSoundAudioComponent>(stream.Value.Entity);
-            track.Audio = stream.Value.Entity;
+            // Not a networked stream: a radio needs no tick-exact sync, and the engine's resync on every
+            // state would seek it at each server hiccup. Each client starts its own copy on the word.
+            track.Ends = _timing.CurTime + track.Length;
             track.State = TrackState.Playing;
 
             Report(track.Admin, Loc.GetString("wf-internet-sound-playing", ("title", track.Title)), false);
@@ -595,13 +591,9 @@ public sealed partial class InternetSoundSystem : EntitySystem
             _shipPa.StopAlarm(grid, TrackKey);
             _byGrid.Remove(grid);
         }
-        else
+        else if (_global == track.Id)
         {
-            if (track.Audio is { } audio && Exists(audio))
-                _audio.Stop(audio);
-
-            if (_global == track.Id)
-                _global = 0;
+            _global = 0;
         }
 
         track.Transfer?.Dispose();

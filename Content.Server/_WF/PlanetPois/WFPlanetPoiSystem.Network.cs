@@ -66,7 +66,9 @@ public sealed partial class WFPlanetPoiSystem
             RaiseLocalEvent(ref extra);
             entries.InsertRange(0, extra.Sites);
             var reserved = new List<Box2i>();
-            await PlaceCitiesAsync(ground, grid, biome, network, orbit, centre, radius, table, record, reserved, initialPins, created, createdDecals, changed, claimsDone);
+            // Entrance approaches of placed road sites: a later site's pins there would cut its entrance off the roads.
+            var approaches = new List<Box2i>();
+            await PlaceCitiesAsync(ground, grid, biome, network, orbit, centre, radius, table, record, reserved, approaches, initialPins, created, createdDecals, changed, claimsDone);
             Report(ground, WFWorldFormingStage.Sites, 0.1f);
             await claimsDone;
             if (TerminatingOrDeleted(ground))
@@ -94,7 +96,7 @@ public sealed partial class WFPlanetPoiSystem
                     if (entry.MapPath is { } path)
                     {
                         // A site with no room is left out rather than costing the world every other site.
-                        if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, out origin))
+                        if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, approaches, out origin))
                         {
                             Log.Warning($"No room for {entry.Name} on {ToPrettyString(ground)}; the site is skipped.");
                             continue;
@@ -118,7 +120,7 @@ public sealed partial class WFPlanetPoiSystem
                         {
                             if (TerminatingOrDeleted(ground)) return;
                             footprint = generated.Footprint;
-                            if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, out origin))
+                            if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, approaches, out origin))
                             {
                                 Log.Warning($"No room for {entry.Name} on {ToPrettyString(ground)}; the site is skipped.");
                                 continue;
@@ -139,6 +141,11 @@ public sealed partial class WFPlanetPoiSystem
                     if (!Fits(actual, centre, radius - 1, table.CentreClear) || reserved.Any(other => Overlaps(other, actual)))
                         throw new InvalidOperationException($"{entry.Name} exceeded its reserved placement; increase its footprint or world radius.");
                     reserved.Add(PlacementBounds(Union(reservation, actual), entry, table.Roads));
+                    if (entry.MapPath != null && table.Roads is { } approachRoads && entry.Connection != WFPlanetPoiConnection.Isolated)
+                    {
+                        foreach (var socket in entry.Sockets)
+                            approaches.Add(ApproachBounds(origin + socket.Offset, socket.Direction, approachRoads));
+                    }
                     if (entry.MapPath != null)
                     {
                         var claimed = new HashSet<Vector2i>();
@@ -552,7 +559,7 @@ public sealed partial class WFPlanetPoiSystem
             ? WFPlanetPoiPlacementPlanner.WithRoadClearance(bounds, roads.Width, roads.ShoulderWidth)
             : bounds;
     /// <summary>Searches a bounded number of origins for a collision-free footprint.</summary>
-    private bool TryOrigin(Entity<BiomeComponent> ground, Vector2 centre, float radius, WFPlanetPoiTablePrototype table, WFPlanetPoiEntry entry, Box2i footprint, List<Box2i> reserved, out Vector2i origin)
+    private bool TryOrigin(Entity<BiomeComponent> ground, Vector2 centre, float radius, WFPlanetPoiTablePrototype table, WFPlanetPoiEntry entry, Box2i footprint, List<Box2i> reserved, List<Box2i> approaches, out Vector2i origin)
     {
         origin = default;
         var reach = radius - table.EdgeMargin;
@@ -563,6 +570,8 @@ public sealed partial class WFPlanetPoiSystem
             var box = Translate(footprint, candidateOrigin);
             var placement = PlacementBounds(box, entry, table.Roads);
             if (!Fits(placement, centre, radius - 1, table.CentreClear) || reserved.Any(other => Overlaps(other, placement) || Vector2.DistanceSquared(new Vector2((other.Left+other.Right)/2f, (other.Bottom+other.Top)/2f), candidateOrigin) < table.Spacing * table.Spacing))
+                return false;
+            if (approaches.Any(approach => Overlaps(approach, placement)))
                 return false;
             if (entry.MapPath != null && table.Roads is { } roads && entry.Connection != WFPlanetPoiConnection.Isolated
                 && entry.Sockets.Any(socket => !ApproachFits(candidateOrigin + socket.Offset, socket.Direction, roads, centre, radius - 1, table.CentreClear,
@@ -619,6 +628,18 @@ public sealed partial class WFPlanetPoiSystem
                 wet++;
         }
         return wet > samples * allowed;
+    }
+
+    /// <summary>The box <see cref="ApproachFits"/> checks: the lane out of an entrance and the square at its end.</summary>
+    private static Box2i ApproachBounds(Vector2i position, WFPlanetPoiDirection direction, WFPlanetRoadNetwork roads)
+    {
+        var vector = Direction(direction);
+        var clearance = roads.Width / 2 + roads.ShoulderWidth;
+        var end = position + vector * (clearance + 1);
+        var across = new Vector2i(-vector.Y, vector.X) * clearance;
+        var low = Vector2i.ComponentMin(Vector2i.ComponentMin(position - across, position + across), end - new Vector2i(clearance, clearance));
+        var high = Vector2i.ComponentMax(Vector2i.ComponentMax(position - across, position + across), end + new Vector2i(clearance, clearance));
+        return new Box2i(low.X, low.Y, high.X + 1, high.Y + 1);
     }
 
     /// <summary>Checks complete road and shoulder approaches against bounds and protected terrain.</summary>

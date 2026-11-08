@@ -47,6 +47,7 @@ public sealed partial class WolfmedDownedSystem : EntitySystem
     /// <summary>Guns a Downed body may still fire (playtest 4): the pistols, revolvers and small energy guns.</summary>
     private static readonly ProtoId<TagPrototype> SidearmTag = "Sidearm";
     [Dependency] private TagSystem _tags = default!; // M2
+    [Dependency] private IComponentFactory _factory = default!;
 
     public override void Initialize()
     {
@@ -160,8 +161,24 @@ public sealed partial class WolfmedDownedSystem : EntitySystem
         // M2 (OD7 (c)): and a Downed neighbour, with gauze in hand.
         if (args.Target is { } target && !IsSelfOrCarried(ent, target) &&
             !HasComp<WolfmedDownedReachableComponent>(target) && !IsWithinReach(ent, target) &&
-            !CanAidAdjacent(ent, target))
+            !CanAidAdjacent(ent, target) && !CanReachHelm(ent, target))
             args.Cancelled = true;
+    }
+
+    /// <summary>
+    /// A body Downed by radiation sickness keeps the helm within reach, so a crew can still fly out of the fallout
+    /// that is making them sick.
+    /// </summary>
+    public bool CanReachHelm(EntityUid user, EntityUid target)
+    {
+        // The console component lives on the server; Shared only knows its name.
+        if (!_factory.TryGetRegistration("ShuttleConsole", out var console) || !HasComp(target, console.Type)
+            || !TryComp<WolfmedConsciousnessComponent>(user, out var consciousness)
+            || consciousness.Cause != WolfmedCause.Radiation)
+            return false;
+
+        return _transform.InRange(Transform(user).Coordinates, Transform(target).Coordinates,
+            _cfg.GetCVar(WolfmedCVars.DownedReach));
     }
 
     /// <summary>

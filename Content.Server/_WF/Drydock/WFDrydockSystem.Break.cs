@@ -177,7 +177,7 @@ public sealed partial class WFDrydockSystem
         if (IsShipyardGrid(console, comp, ship))
             return Loc.GetString("drydock-console-own-grid");
 
-        if (IsOutpost(ship))
+        if (IsOutpost(ship) || HasComp<WFDrydockUnbreakableComponent>(ship))
             return Loc.GetString("drydock-console-break-station");
 
         // A company hangar ship is relaunched free each round, so breaking it would print money.

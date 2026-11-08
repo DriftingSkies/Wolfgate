@@ -14,6 +14,8 @@ using FancyWindow = Content.Client.UserInterface.Controls.FancyWindow;
 using Robust.Client.UserInterface;
 using Content.Shared.IdentityManagement;
 using Robust.Client.Graphics;
+// WOLFGATE(Gags): use the existing GAGS colour editor for vending purchases
+using Content.Shared._WF.Gags;
 
 namespace Content.Client.VendingMachines.UI
 {
@@ -25,8 +27,11 @@ namespace Content.Client.VendingMachines.UI
         private readonly Dictionary<EntProtoId, EntityUid> _dummies = [];
 
         public event Action<GUIBoundKeyEventArgs, ListData>? OnItemSelected;
+        // WOLFGATE(Gags): send the selected colours when the user confirms a purchase
+        public event Action<List<Color>?>? OnRecolorConfirmed;
 
         private readonly StyleBoxFlat _styleBox = new() { BackgroundColor = new Color(70, 73, 102) };
+        private List<Color>? _recolorDefaults; // WOLFGATE(Gags): defaults for the open recolour item
 
         public VendingMachineMenu()
         {
@@ -38,7 +43,33 @@ namespace Content.Client.VendingMachines.UI
             VendingContents.DataFilterCondition += DataFilterCondition;
             VendingContents.GenerateItem += GenerateButton;
             VendingContents.ItemKeyBindDown += (args, data) => OnItemSelected?.Invoke(args, data);
+            // WOLFGATE(Gags) START: confirmation is separate from selecting a recolourable item
+            RecolorBuyButton.OnPressed += _ =>
+            {
+                if (_recolorDefaults == null)
+                    return;
+
+                var colors = RecolorColorRow.CurrentColors;
+                OnRecolorConfirmed?.Invoke(WFGagsColors.Same(colors, _recolorDefaults) ? null : colors);
+            };
+            // WOLFGATE END
         }
+
+        // WOLFGATE(Gags) START: show the editor for one recolourable product
+        public void ShowRecolorItem(string itemName, string prototypeId, List<Color> defaults)
+        {
+            _recolorDefaults = defaults;
+            RecolorItemLabel.Text = itemName;
+            RecolorColorRow.Set(prototypeId, defaults, defaults);
+            RecolorPanel.Visible = true;
+        }
+
+        public void HideRecolorItem()
+        {
+            _recolorDefaults = null;
+            RecolorPanel.Visible = false;
+        }
+        // WOLFGATE END
 
         protected override void Dispose(bool disposing)
         {

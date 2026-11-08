@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Nova Sector (https://github.com/NovaSector/NovaSector) via Meridian Rift, hemophage/icons/actions_hemophage.dmi and modular_nova/modules/organs/icons/hemophage_organs.dmi, composited onto the hemophage action background",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "dormant"
+    },
+    {
+      "name": "dormant_on"
+    },
+    {
+      "name": "regen"
+    },
+    {
+      "name": "clot"
+    },
+    {
+      "name": "master"
+    },
+    {
+      "name": "drain"
+    }
+  ]
+}

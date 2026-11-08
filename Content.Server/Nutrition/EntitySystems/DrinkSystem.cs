@@ -380,6 +380,9 @@ public sealed partial class DrinkSystem : SharedDrinkSystem
         _audio.PlayPvs(entity.Comp.UseSound, args.Target.Value, AudioParams.Default.WithVolume(-2f).WithVariation(0.25f));
 
         _reaction.DoEntityReaction(args.Target.Value, solution, ReactionMethod.Ingestion);
+        // WOLFGATE(MeridianTraits): a hemophage's tumor judges what was drunk
+        var wfDrank = new Content.Shared._WF.MeridianTraits.Hemophage.WFDrankEvent(entity.Owner, drained);
+        RaiseLocalEvent(args.Target.Value, ref wfDrank);
         _stomach.TryTransferSolution(firstStomach.Value.Owner, drained, firstStomach.Value.Comp1);
 
         var speechEvent = new SpeechTriggerEvent(SpeechTrigger.Drinking);

@@ -18,6 +18,11 @@ corruption, and breaking a Scion (3000 damage) kills its corruption and starves 
 prototype), `WFRemadeDirectorSystem` (phases Quiet, Stalk, Peak, Relax; sleeps with no crew in 64 m). Assets come from
 `Tools/_WF/Remade/port_assets.py`, which holds the whole DS13-2.0 roster; only the slasher and infector have mobs so far.
 
+**How they hit.** A Remade has no aim of its own, so each blow lands on a random part of its victim, by the victim's own
+odds. Their claws hit hard enough for Wolfmed's deep-cut rules: a slasher's 24 slash can open an artery (22) and cut a
+tendon (16) in one swing, so they bleed people out and take them apart rather than scratching. Giving them `Targeting`
+would also change how damage they take is routed, which the Undying and the Crescendo tests catch.
+
 **Limbs and abilities.** A Remade built of limbs (`WFRemadeLimbs`, Shared) shares each hit between its limbs by weight, or by a
 player's targeting aim, and the torso takes only a fraction, so shooting it barely works. Slash and piercing sever easily, blunt and
 heat poorly. Severing hides the limb's layer, drops it as an item and costs the mob a lump of damage, so dismemberment is the fast
@@ -443,6 +448,7 @@ does on its own. `wf_remade outbreak [uid]` forces an outbreak.
 - [`Content.IntegrationTests/Tests/_WF/Remade/SectorTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/SectorTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Remade/SignalsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/SignalsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Remade/StructuresTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/StructuresTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Remade/SyntheticConversionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/SyntheticConversionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Remade/TormentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/TormentTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Remade/VariantsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/VariantsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Remade/WardTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Remade/WardTest.cs)

@@ -14,17 +14,17 @@ namespace Content.IntegrationTests.Tests._WF.NpcCrew;
 
 public sealed partial class WFCrewTest
 {
-    /// <summary>A pirate-crewed hull loses its adamantite plating for plastitanium, in place and still anchored.</summary>
+    /// <summary>A pirate-crewed hull loses its durasteel plating for plastitanium, in place and still anchored.</summary>
     [Test]
-    public async Task PirateHullSwapsAdamantiteForPlastitanium()
+    public async Task PirateHullSwapsDurasteelForPlastitanium()
     {
         var deck = await CreateDeck(new Vector2(700, 700), 7, true);
         EntityUid wall = default;
         EntityUid diagonal = default;
         await Server.WaitAssertion(() =>
         {
-            wall = SEntMan.SpawnAtPosition("WFWallAdamantite", new EntityCoordinates(deck, new Vector2(2.5f, 2.5f)));
-            diagonal = SEntMan.SpawnAtPosition("WFWallAdamantiteDiagonalCapital", new EntityCoordinates(deck, new Vector2(4.5f, 2.5f)));
+            wall = SEntMan.SpawnAtPosition("WFWallDurasteel", new EntityCoordinates(deck, new Vector2(2.5f, 2.5f)));
+            diagonal = SEntMan.SpawnAtPosition("WFWallDurasteelDiagonalCapital", new EntityCoordinates(deck, new Vector2(4.5f, 2.5f)));
             var transforms = Server.System<SharedTransformSystem>();
             foreach (var part in new[] { wall, diagonal })
             {
@@ -34,18 +34,18 @@ public sealed partial class WFCrewTest
 
             transforms.SetLocalRotation(diagonal, Angle.FromDegrees(90));
             var swapped = Server.System<WFCrewSetupSystem>().ApplyHullSwaps(deck, "WFCrewProfilePirate");
-            Assert.That(swapped, Is.EqualTo(2), "Both adamantite parts are swapped.");
+            Assert.That(swapped, Is.EqualTo(2), "Both durasteel parts are swapped.");
         });
         await RunTicks(2);
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SEntMan.Deleted(wall) && SEntMan.Deleted(diagonal), Is.True, "The adamantite is gone.");
+            Assert.That(SEntMan.Deleted(wall) && SEntMan.Deleted(diagonal), Is.True, "The durasteel is gone.");
             var map = Server.System<SharedMapSystem>();
             var gridComp = SEntMan.GetComponent<Robust.Shared.Map.Components.MapGridComponent>(deck);
             var plain = FindAnchored(map, deck, gridComp, new Vector2i(2, 2));
             var corner = FindAnchored(map, deck, gridComp, new Vector2i(4, 2));
             Assert.That(plain, Is.EqualTo("WallPlastitanium"), "The straight wall is plastitanium.");
-            Assert.That(corner, Is.EqualTo("WallPlastitaniumDiagonal"), "The diagonal keeps its shape.");
+            Assert.That(corner, Is.EqualTo("WallPlastitaniumDiagonalCapital"), "The reinforced diagonal stays reinforced and keeps its shape.");
             var rotated = map.GetAnchoredEntities(deck, gridComp, new Vector2i(4, 2));
             foreach (var part in rotated)
             {
@@ -54,7 +54,7 @@ public sealed partial class WFCrewTest
         });
     }
 
-    /// <summary>A big hull is swapped a share at a time over several ticks, never all in one, and ends with no adamantite.</summary>
+    /// <summary>A big hull is swapped a share at a time over several ticks, never all in one, and ends with no durasteel.</summary>
     [Test]
     public async Task BigHullSwapsAreSpreadOverTicks()
     {
@@ -67,7 +67,7 @@ public sealed partial class WFCrewTest
             {
                 for (var y = 0; y < 20; y++)
                 {
-                    var wall = SEntMan.SpawnAtPosition("WFWallAdamantite", new EntityCoordinates(deck, new Vector2(x + 0.5f, y + 0.5f)));
+                    var wall = SEntMan.SpawnAtPosition("WFWallDurasteel", new EntityCoordinates(deck, new Vector2(x + 0.5f, y + 0.5f)));
                     if (!SEntMan.GetComponent<TransformComponent>(wall).Anchored)
                         transforms.AnchorEntity(wall);
                     walls.Add(wall);
@@ -88,7 +88,7 @@ public sealed partial class WFCrewTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(setup.HullSwapsPending, Is.False);
-            Assert.That(walls.All(SEntMan.Deleted), Is.True, "Every adamantite wall is gone.");
+            Assert.That(walls.All(SEntMan.Deleted), Is.True, "Every durasteel wall is gone.");
             var map = Server.System<SharedMapSystem>();
             var gridComp = SEntMan.GetComponent<Robust.Shared.Map.Components.MapGridComponent>(deck);
             for (var x = 0; x < 20; x++)
@@ -101,12 +101,12 @@ public sealed partial class WFCrewTest
 
     /// <summary>A profile with no swaps leaves a hull alone.</summary>
     [Test]
-    public async Task HaulerHullKeepsItsAdamantite()
+    public async Task HaulerHullKeepsItsDurasteel()
     {
         var deck = await CreateDeck(new Vector2(700, 760), 7, true);
         await Server.WaitAssertion(() =>
         {
-            var wall = SEntMan.SpawnAtPosition("WFWallAdamantite", new EntityCoordinates(deck, new Vector2(2.5f, 2.5f)));
+            var wall = SEntMan.SpawnAtPosition("WFWallDurasteel", new EntityCoordinates(deck, new Vector2(2.5f, 2.5f)));
             if (!SEntMan.GetComponent<TransformComponent>(wall).Anchored)
                 Server.System<SharedTransformSystem>().AnchorEntity(wall);
             Assert.That(Server.System<WFCrewSetupSystem>().ApplyHullSwaps(deck, "WFCrewProfileHauler"), Is.EqualTo(0));
@@ -114,17 +114,17 @@ public sealed partial class WFCrewTest
         });
     }
 
-    /// <summary>Every profile that kits its crew as pirates swaps out every adamantite wall.</summary>
+    /// <summary>Every profile that kits its crew as pirates swaps out every durasteel wall.</summary>
     [Test]
-    public async Task PirateProfilesNeverFlyAdamantite()
+    public async Task PirateProfilesNeverFlyDurasteel()
     {
         await Server.WaitAssertion(() =>
         {
-            var adamantite = ProtoMan.EnumeratePrototypes<EntityPrototype>()
-                .Where(proto => proto.ID.StartsWith("WFWallAdamantite"))
+            var durasteel = ProtoMan.EnumeratePrototypes<EntityPrototype>()
+                .Where(proto => proto.ID.StartsWith("WFWallDurasteel"))
                 .Select(proto => proto.ID)
                 .ToList();
-            Assert.That(adamantite, Is.Not.Empty);
+            Assert.That(durasteel, Is.Not.Empty);
 
             var checkedAny = false;
             foreach (var profile in ProtoMan.EnumeratePrototypes<WFCrewProfilePrototype>())
@@ -132,7 +132,7 @@ public sealed partial class WFCrewTest
                 if (!profile.Loadouts.Values.Any(gear => gear.Any(id => id.Id.StartsWith("WFCrewPirate"))))
                     continue;
                 checkedAny = true;
-                foreach (var wall in adamantite)
+                foreach (var wall in durasteel)
                 {
                     Assert.That(profile.HullSwaps.ContainsKey(wall), Is.True, $"{profile.ID} crews pirates but keeps {wall}.");
                 }

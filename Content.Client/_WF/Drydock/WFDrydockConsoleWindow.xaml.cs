@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -87,6 +88,7 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
     public WFDrydockConsoleWindow()
     {
         RobustXamlLoader.Load(this);
+        WFWindowBranding.Apply(this);
         IoCManager.InjectDependencies(this);
         FitWindow(this, new Vector2(1060, 690));
 

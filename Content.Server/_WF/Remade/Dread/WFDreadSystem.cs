@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._WF.Lattice;
 using Content.Server._WF.Remade.Conversion;
 using Content.Server._WF.Remade.Corruption;
 using Content.Server._WF.Remade.Director;
@@ -7,6 +8,7 @@ using Content.Server._WF.Remade.Torment;
 using Content.Server._WF.Remade.Gifts;
 using Content.Server._WF.Remade.Monolith;
 using Content.Server.Chat.Managers;
+using Content.Shared._WF.Lattice;
 using Content.Shared._WF.Remade;
 using Content.Shared._WF.Remade.Dread;
 using Content.Shared.Chat;
@@ -86,8 +88,12 @@ public sealed partial class WFDreadSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WFCorruptionSystem _corruption = default!;
+    [Dependency] private WFDriftMindSystem _drift = default!;
 
     private static readonly TimeSpan TickRate = TimeSpan.FromSeconds(1);
+
+    /// <summary>Drift a second the stone puts in a head at full dread.</summary>
+    private const float DreadDrift = 1.5f;
     private static readonly TimeSpan WhisperGap = TimeSpan.FromSeconds(4);
     private static readonly TimeSpan MurmurGap = TimeSpan.FromSeconds(2);
     private static readonly TimeSpan GlimpseGap = TimeSpan.FromSeconds(8);
@@ -224,6 +230,9 @@ public sealed partial class WFDreadSystem : EntitySystem
 
             if (fromShard)
                 heard = influence;
+
+            // The stone's hold on a head is Drift, so it shows on the gauge and builds the Unmooring's hallucinations too.
+            _drift.Add(uid, level * DreadDrift * (float) TickRate.TotalSeconds, WFDriftFlavour.Monolith, Math.Min(1f, level * 1.5f) * 100f);
 
             Roll(uid, subject, stage, influence * WFDreadMath.StressFactor(stress) * rate, heard * WFDreadMath.StressFactor(stress) * rate, now);
 

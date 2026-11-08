@@ -78,7 +78,7 @@ public sealed class BiotypeApplyTest : WolfmedGameTest
                 Assert.That(SEntMan.HasComponent<RespiratorComponent>(body), Is.False);
                 Assert.That(SEntMan.HasComponent<HungerComponent>(body), Is.False);
                 Assert.That(SEntMan.HasComponent<ThirstComponent>(body), Is.False);
-                AssertBlood(body, Fluid, 250, 0);
+                AssertBlood(body, Fluid, 250, 30);
                 Assert.That(SEntMan.System<ItemSlotsSystem>().TryGetSlot(body, "cell_slot", out var cell) && cell.HasItem,
                     "No power cell in the cell slot.");
                 Assert.That(SEntMan.System<WolfmedShutdownSystem>().IsMechanical(body), Is.True);

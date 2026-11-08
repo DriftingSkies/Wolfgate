@@ -1,0 +1,68 @@
+# DS13 necromorph voice. Speech sets play as idle sounds at the DS13 auto_sound rate, scream sets on the Scream emote.
+
+- type: emote
+  id: DS13EmoteSpeech
+  name: fauna-emote-name-ambient
+  available: false
+
+- type: autoEmote
+  id: DS13AutoEmoteSpeech
+  emote: DS13EmoteSpeech
+  interval: 20.0
+  chance: 0.5
+  withChat: false
+  hiddenFromChatWindow: true
+
+- type: emoteSounds
+  id: DS13Necromorph
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13NecromorphSpeech
+    Scream:
+      collection: DS13NecromorphScream
+
+- type: emoteSounds
+  id: DS13Leaper
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13LeaperSpeech
+    Scream:
+      collection: DS13LeaperScream
+
+- type: emoteSounds
+  id: DS13Twitcher
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13TwitcherSpeech
+    Scream:
+      collection: DS13TwitcherScream
+
+- type: emoteSounds
+  id: DS13Ubermorph
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13UbermorphSpeech
+    Scream:
+      collection: DS13UbermorphScream
+
+- type: emoteSounds
+  id: DS13Puker
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13PukerSpeech
+    Scream:
+      collection: DS13PukerScream
+
+- type: emoteSounds
+  id: DS13Exploder
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13ExploderSpeech
+
+- type: emoteSounds
+  id: DS13Lurker
+  sounds:
+    DS13EmoteSpeech:
+      collection: DS13LurkerSpeech
+    Scream:
+      collection: DS13LurkerScream

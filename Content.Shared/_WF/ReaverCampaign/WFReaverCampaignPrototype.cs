@@ -98,6 +98,14 @@ public sealed partial class WFReaverCampaignPrototype : IPrototype
     [DataField]
     public int PatrolBounty = 20000;
 
+    /// <summary>What a bounty grows by for each paid attacking ship past the first.</summary>
+    [DataField]
+    public float ShipBountyScale = 0.5f;
+
+    /// <summary>The most the ship count may multiply a bounty by.</summary>
+    [DataField]
+    public float MaxShipBountyScale = 2.5f;
+
     /// <summary>The repair voucher each ship that helps break a stronghold or convoy gets, bound to that ship.</summary>
     [DataField]
     public EntProtoId? StrongholdVoucher;

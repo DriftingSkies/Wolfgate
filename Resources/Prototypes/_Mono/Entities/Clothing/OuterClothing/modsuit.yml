@@ -128,8 +128,10 @@
       - state: equipped-OUTERCLOTHING-sealed
       outerClothing-vox:
       - state: equipped-OUTERCLOTHING-sealed-vox
-      outerClothing-resomi:
-      - state: equipped-OUTERCLOTHING-sealed-resomi
+      # WOLFGATE START: the rsi has no resomi state, so sealed Resomi drew an error sprite
+      # outerClothing-resomi:
+      # - state: equipped-OUTERCLOTHING-sealed-resomi
+      # WOLFGATE END
   - type: ExplosionResistance
     damageCoefficient: 0.2
   - type: Armor
@@ -176,8 +178,10 @@
       - state: equipped-OUTERCLOTHING-sealed
       outerClothing-vox:
       - state: equipped-OUTERCLOTHING-sealed-vox
-      outerClothing-resomi:
-      - state: equipped-OUTERCLOTHING-sealed-resomi
+      # WOLFGATE START: the rsi has no resomi state, so sealed Resomi drew an error sprite
+      # outerClothing-resomi:
+      # - state: equipped-OUTERCLOTHING-sealed-resomi
+      # WOLFGATE END
   - type: ExplosionResistance
     damageCoefficient: 0.7 # Mono
   - type: Armor

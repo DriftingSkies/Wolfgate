@@ -1,0 +1,109 @@
+# WOLFGATE(Fauna) START: ported from Impstation
+- type: entity
+  parent: [ SimpleSpaceMobBase, FlyingMobBase, MobCombat ]
+  id: MobBadOmen
+  components:
+  - type: MovementSpeedModifier
+    weightlessFriction: 1
+    weightlessFrictionNoInput: 1
+    weightlessAcceleration: 1.5
+  - type: Sprite
+    sprite: _Impstation/Mobs/Animals/Magic/curse.rsi
+    noRot: true
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: omen
+  - type: Appearance
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.40
+        density: 100
+        mask:
+        - FlyingMobMask
+        layer:
+        - FlyingMobLayer
+  - type: MovementAlwaysTouching
+  - type: MovementIgnoreGravity
+    weightless: true
+  - type: Physics
+    bodyStatus: InAir
+  - type: CanMoveInAir
+  - type: NoSlip
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: NpcFactionMember
+    factions:
+      - Wizard
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/_NF/Voice/Goblin/goblin-deathgasp-01.ogg
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/_Impstation/Magic/cursespawn.ogg
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 4
+        Poison: 4
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - Goliath
+
+- type: entity
+  parent: [ MobBadOmen ]
+  id: MobAugury
+  components:
+  - type: NPCUseActionOnTarget
+    actionId: ActionCurseAttack
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/_NF/Voice/Goblin/goblin-deathgasp-01.ogg
+  - type: Sprite
+    sprite: _Impstation/Mobs/Animals/Magic/curse.rsi
+    noRot: true
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: augury
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 18
+        Poison: 8
+# WOLFGATE END

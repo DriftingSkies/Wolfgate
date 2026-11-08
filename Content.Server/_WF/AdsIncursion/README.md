@@ -17,7 +17,9 @@ Wyrm that flies in from the sector edge and circles it, up to a cap by tier; whe
 after the top attacker and come back three minutes after the last hit. Breaking a node (its lead out of the fight)
 frees its cells and pays `nodeBounty[tier]` times one plus half a sentinel alive, to those who hit it or its sentinels,
 with a fifth for the ships that stood by. A sweep or sentinel killed pays the sweep bounty, and a sweep frees the cell
-it died in. A crewed ship that stays `interdictDwell` in ADS space has the nearest sweep sent to hold beside it and
+it died in. Every spesos bounty is multiplied by the `population` bracket's `bountyScale` and grows by
+`shipBountyScale` for each paid attacking ship past the first, up to `maxShipBountyScale`; each helping ship gets the
+`nodeVoucher` (node, deployment, dreadnought) or `sweepVoucher` (anything else), unless it still holds one. A crewed ship that stays `interdictDwell` in ADS space has the nearest sweep sent to hold beside it and
 query it.
 
 Every ADS zone interrogates (`zoneTargets: Interrogate`, `WFEncounterInterrogationSystem` in `Encounters`): each crewed

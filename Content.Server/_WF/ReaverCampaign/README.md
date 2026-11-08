@@ -67,7 +67,8 @@ paid to everyone who hit it, with a fifth for the ships that stood by the assaul
 died in is freed and a smaller bounty paid; each navy's members also get its own faction credits, from the campaign's
 `credits` list, and each player ship that helped break a stronghold or convoy, or destroy a patrol or reinforcement,
 gets the campaign's `strongholdVoucher` or `patrolVoucher`, a `WFDrydockRepairVoucher` bound to that ship, unless it
-still holds one), and flying lanes: only quiet cells are taken, and a station's cell is
+still holds one; every spesos bounty grows by `shipBountyScale` for each paid attacking ship past the first, up to
+`maxShipBountyScale`, so a bigger group doesn't thin every share), and flying lanes: only quiet cells are taken, and a station's cell is
 contested for ten minutes, announced as a blockade, before it falls. Each storyteller preset has its own
 `wfReaverCampaign` (`Resources/Prototypes/_WF/ReaverCampaign/campaigns.yml`) with the pace, caps, tier ladder,
 bounties and encounter prototypes; a preset with none runs no campaign. It runs only while `wf.encounters.enabled`,

@@ -23,6 +23,7 @@ public sealed partial class ShuttleConsoleBoundUserInterface
         _window.ShipSoundRequested += url => SendMessage(new ShipPaInternetSoundRequestMessage(url));
         _window.ShipSoundStopRequested += () => SendMessage(new ShipPaInternetSoundStopMessage());
         _window.ShipPlaylistRequested += (action, id) => SendMessage(new ShipPaPlaylistRequestMessage(action, id));
+        _window.ShipVolumeRequested += volume => SendMessage(new ShipPaVolumeRequestMessage(volume));
         _window.ShipCollisionAlertRequested += enabled => SendMessage(new CollisionWarningToggleMessage(enabled));
         // WOLFGATE(Cockpit): preserve camera requests in the same input order as cockpit entry and exit.
         _window.ShipCameraRequested += (view, zoom, lowLight) => SendPredictedMessage(new ShuttleCameraSetMessage(view, zoom, lowLight));

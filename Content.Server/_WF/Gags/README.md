@@ -9,6 +9,9 @@ Players recolour an item in the loadout window: a pick that is recolourable show
 strip under the grid, and a reset button. The colours are saved with the loadout (`profile_loadout.gags_colors`),
 shown on the character preview, and put on the item when the loadout spawns it.
 
+ClothesMate and AutoDrobe also let players select colours for a recolourable product before confirming its
+purchase. The server applies those colours only after the normal vending authorization and purchase checks.
+
 Entry points: `WFGagsComponent`, `SharedWFGagsSystem` (`SetColors`, `ApplyLoadout`), the client `WFGagsSystem`
 that tints, `WFGagsColorRow` (the loadout window's swatches) and `WFGagsColors` (saving and checking colours). The
 MeridianClothing module is where the recolourable items come from.
@@ -55,12 +58,41 @@ MeridianClothing module is where the recolourable items come from.
 
 - [`Content.Client/Lobby/LobbyUIController.cs`](../../../Content.Client/Lobby/LobbyUIController.cs): picked colours on the preview
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs): colours picked for a recolourable item
+- [`Content.Client/VendingMachines/UI/VendingMachineMenu.xaml`](../../../Content.Client/VendingMachines/UI/VendingMachineMenu.xaml)
+  - xmlns:gags for the vending colour editor
+  - choose colours before buying recolourable clothing
+- [`Content.Client/VendingMachines/UI/VendingMachineMenu.xaml.cs`](../../../Content.Client/VendingMachines/UI/VendingMachineMenu.xaml.cs)
+  - use the existing GAGS colour editor for vending purchases
+  - send the selected colours when the user confirms a purchase
+  - defaults for the open recolour item
+  - confirmation is separate from selecting a recolourable item
+  - show the editor for one recolourable product
+- [`Content.Client/VendingMachines/VendingMachineBoundUserInterface.cs`](../../../Content.Client/VendingMachines/VendingMachineBoundUserInterface.cs)
+  - expose prototype defaults for eligible vending items
+  - apply the selected vendor colour options
+  - recolouring requires explicit confirmation before purchase
+  - stop at a colour editor for recolourable products in enabled machines
+  - buy the item with the editor's final colours
+  - release the recolour purchase handler
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): colours picked for the loadout's recolourable item, comma-separated hex; empty for its own.
 - [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
 - [`Content.Server/Station/Systems/StationSpawningSystem.cs`](../../Station/Systems/StationSpawningSystem.cs): the colours picked in the loadout window
+- [`Content.Server/VendingMachines/VendingMachineSystem.cs`](../../VendingMachines/VendingMachineSystem.cs)
+  - validate and apply vending recolours
+  - hold colours only until the selected item is dispensed
+  - pass colour options through the normal purchase checks
+  - keep recolouring behind the regular price, stock and access checks
+  - apply colours only to the item whose purchase passed server validation
 - [`Content.Shared/Preferences/Loadouts/RoleLoadout.cs`](../../../Content.Shared/Preferences/Loadouts/RoleLoadout.cs)
   - picked colours sent by a client are capped and made opaque
   - a colour change is a change to save
 - [`Content.Shared/Station/SharedStationSpawningSystem.cs`](../../../Content.Shared/Station/SharedStationSpawningSystem.cs): the colours picked in the loadout window
+- [`Content.Shared/VendingMachines/VendingMachineComponent.cs`](../../../Content.Shared/VendingMachines/VendingMachineComponent.cs): enable recolouring items before purchase
+- [`Content.Shared/VendingMachines/VendingMachineInterfaceState.cs`](../../../Content.Shared/VendingMachines/VendingMachineInterfaceState.cs)
+  - carry chosen clothing colours with a purchase
+  - recolour an eligible item before it is dispensed
+- [`Resources/Prototypes/Entities/Structures/Machines/vending_machines.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/vending_machines.yml)
+  - allow recolouring clothes before purchase
+  - allow recolouring costumes before purchase
 
 <!-- WOLFGATE-GENERATED END -->

@@ -1,0 +1,170 @@
+# WOLFGATE(Fauna) START: ported from Nuclear 14
+- type: body
+  id: N14Animal
+  name: "N14 animal"
+  root: torso
+  slots:
+    torso:
+      part: TorsoAnimal
+
+- type: entity
+  abstract: true
+  id: N14MobBaseSimple
+  parent: SimpleSpaceMobBase
+  components:
+  - type: Body
+    prototype: N14Animal
+  - type: InputMover
+  - type: MobMover
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Sprite
+    drawdepth: Mobs
+  - type: Physics
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 2
+    baseSprintSpeed : 3.9
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+            radius: 0.30
+        density: 20
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: MobState
+    allowedStates:
+      - Alive
+      - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      15: Dead
+  - type: MovementAlwaysTouching
+  - type: Appearance
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 1
+  - type: Bloodstream
+    bloodMaxVolume: 50
+    bloodReagent: Blood
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: WastelandAnimal
+  - type: Puller
+    needsHands: false
+  - type: IgnitionSource
+
+- type: entity
+  abstract: true
+  id: N14MobBaseHostile
+  parent: N14MobBaseSimple
+  components:
+  - type: Hunger
+    thresholds:
+      Overfed: 200
+      Okay: 150
+      Peckish: 100
+      Starving: 50
+      Dead: 0
+    baseDecayRate: 0.0
+  - type: Thirst
+    thresholds:
+      OverHydrated: 200
+      Okay: 150
+      Thirsty: 100
+      Parched: 50
+      Dead: 0
+    baseDecayRate: 0.0
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: N14RangedHostileCompound
+  - type: Sprite
+    drawdepth: Mobs
+  - type: MobState
+    allowedStates:
+      - Alive
+      - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      15: Dead
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 1
+  - type: Bloodstream
+    bloodMaxVolume: 50
+    bloodReagent: Blood
+  - type: CombatMode
+  - type: MeleeWeapon
+    hidden: true
+    attackRate: 2
+    range: 1
+    soundHit:
+        path: /Audio/Effects/bite.ogg
+    angle: 60
+    animation: WeaponArcBite
+    wideAnimation: WeaponArcBite
+    damage:
+      groups:
+        Brute: 2
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: Toxin
+          Quantity: 0.1
+  - type: MeleeChemicalInjector
+    solution: melee
+  - type: ReplacementAccent
+    accent: genericAggressive
+
+- type: entity
+  abstract: true
+  id: N14MobBaseHostileInsect
+  parent: N14MobBaseHostile
+  components:
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: N14Insect
+  - type: NoSlip
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Speech
+    speechSounds: Squeak
+  - type: ReplacementAccent
+    accent: genericAggressive
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+            radius: 0.30
+        density: 30
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+# WOLFGATE END

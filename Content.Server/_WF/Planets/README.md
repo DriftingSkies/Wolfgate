@@ -549,6 +549,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Resources/Locale/en-US/_WF/Planets/carcinoma_life.ftl`](../../../Resources/Locale/en-US/_WF/Planets/carcinoma_life.ftl)
 - [`Resources/Locale/en-US/_WF/Planets/climate.ftl`](../../../Resources/Locale/en-US/_WF/Planets/climate.ftl)
 - [`Resources/Locale/en-US/_WF/Planets/flight.ftl`](../../../Resources/Locale/en-US/_WF/Planets/flight.ftl)
+- [`Resources/Locale/en-US/_WF/Planets/forge.ftl`](../../../Resources/Locale/en-US/_WF/Planets/forge.ftl)
 - [`Resources/Locale/en-US/_WF/Planets/guidebook.ftl`](../../../Resources/Locale/en-US/_WF/Planets/guidebook.ftl)
 - [`Resources/Locale/en-US/_WF/Planets/infestation.ftl`](../../../Resources/Locale/en-US/_WF/Planets/infestation.ftl)
 - [`Resources/Locale/en-US/_WF/Planets/jetpack.ftl`](../../../Resources/Locale/en-US/_WF/Planets/jetpack.ftl)

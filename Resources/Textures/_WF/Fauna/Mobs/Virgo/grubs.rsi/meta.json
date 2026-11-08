@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Virgo at commit https://github.com/VOREStation/VOREStation/commit/87b3dbf0ec98646a502ec3a8a9b8a2abe8322d88.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "solargrub",
+      "directions": 4
+    },
+    {
+      "name": "solargrub_dead"
+    },
+    {
+      "name": "oregrub",
+      "directions": 4
+    },
+    {
+      "name": "oregrub_dead"
+    },
+    {
+      "name": "lavagrub",
+      "directions": 4
+    },
+    {
+      "name": "lavagrub_dead"
+    },
+    {
+      "name": "grublarva",
+      "directions": 4
+    },
+    {
+      "name": "grublarva_dead"
+    }
+  ]
+}

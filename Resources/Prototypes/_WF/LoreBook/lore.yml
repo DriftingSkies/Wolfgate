@@ -1,0 +1,75 @@
+# Lore book pages. An entry with `lore: true` and all its children open in the lore book, not the guidebook.
+# Upstream chapters (BasicLore, Factions, MonoStarSystem) are marked lore in their own files.
+
+- type: guideEntry
+  id: WFLorePresentDay
+  name: wf-lore-entry-present-day
+  text: "/ServerInfo/_WF/LoreBook/PresentDay.xml"
+
+- type: guideEntry
+  id: WFLoreReavers
+  name: wf-lore-entry-reavers
+  text: "/ServerInfo/_WF/LoreBook/Factions/Reavers.xml"
+
+- type: guideEntry
+  id: WFLoreAds
+  name: wf-lore-entry-ads
+  text: "/ServerInfo/_WF/LoreBook/Factions/Ads.xml"
+
+- type: guideEntry
+  id: WFLoreJudges
+  name: wf-lore-entry-judges
+  text: "/ServerInfo/_WF/LoreBook/Factions/Judges.xml"
+
+- type: guideEntry
+  id: WFLoreCollapse
+  name: wf-lore-entry-collapse
+  text: "/ServerInfo/_WF/LoreBook/StarSystem/Collapse.xml"
+
+- type: guideEntry
+  id: WFLoreCarcinoma
+  name: wf-lore-entry-carcinoma
+  text: "/ServerInfo/_WF/LoreBook/StarSystem/Carcinoma.xml"
+
+- type: guideEntry
+  id: WFLoreCrocus
+  name: wf-lore-entry-crocus
+  text: "/ServerInfo/_WF/LoreBook/StarSystem/Crocus.xml"
+
+- type: guideEntry
+  id: WFLoreThreats
+  name: wf-lore-entry-threats
+  text: "/ServerInfo/_WF/LoreBook/Threats/Threats.xml"
+  lore: true
+  priority: 20
+  children:
+  - WFLoreMonolith
+  - WFLoreChimera
+  - WFLoreXenonids
+
+# Pages that unsettle the book, kept together at the back.
+- type: guideEntry
+  id: WFLoreForbidden
+  name: wf-lore-entry-forbidden
+  text: "/ServerInfo/_WF/LoreBook/Forbidden.xml"
+  lore: true
+  priority: 30
+  children:
+  - WFLoreUnmooring
+  - WFLoreLattice
+  - WFLoreChoir
+
+- type: guideEntry
+  id: WFLoreMonolith
+  name: wf-lore-entry-monolith
+  text: "/ServerInfo/_WF/LoreBook/Threats/Monolith.xml"
+
+- type: guideEntry
+  id: WFLoreChimera
+  name: wf-lore-entry-chimera
+  text: "/ServerInfo/_WF/LoreBook/Threats/Chimera.xml"
+
+- type: guideEntry
+  id: WFLoreXenonids
+  name: wf-lore-entry-xenonids
+  text: "/ServerInfo/_WF/LoreBook/Threats/Xenonids.xml"

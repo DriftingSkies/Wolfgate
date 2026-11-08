@@ -249,7 +249,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 8
+        Slash: 12
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeLeaperFootstep
@@ -394,7 +394,7 @@
       collection: WFRemadeLeaperClaw
     damage:
       types:
-        Slash: 10
+        Slash: 17
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeLeaperFootstep
@@ -562,7 +562,7 @@
       collection: WFRemadeLeaperClaw
     damage:
       types:
-        Slash: 20
+        Slash: 26
   - type: FootstepModifier
     footstepSoundCollection:
       collection: WFRemadeLeaperFootstep
@@ -728,7 +728,7 @@
       path: /Audio/Weapons/slash.ogg
     damage:
       types:
-        Slash: 11
+        Slash: 14
   - type: WFRemadeVoice
     speech:
       collection: WFRemadeSpitterSpeech

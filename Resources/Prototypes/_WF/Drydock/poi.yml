@@ -19,6 +19,8 @@
       prob: 0.3
   # Has a shuttle console for the dockmaster's hails, but is not a ship: no piloting or FTL.
   - type: PreventPilot
+  # Loaded from a bare grid path, it has no station, so the drydocks can't tell it from a ship.
+  - type: WFDrydockUnbreakable
 
 # Illegal drydock on Anvilhold's layout: break-only berths and a fence instead of a dockmaster. See chopshop.yml.
 - type: pointOfInterest
@@ -39,3 +41,5 @@
     - maxDistance: 1500
       prob: 0.3
   - type: PreventPilot
+  # Loaded from a bare grid path, it has no station, so the drydocks can't tell it from a ship.
+  - type: WFDrydockUnbreakable

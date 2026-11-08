@@ -101,6 +101,7 @@
     - SurgeryInsertLungs
     - SurgeryInsertLiver
     - SurgeryInsertStomach
+    - WFSurgeryInsertKidneys
     - SurgeryInsertBrain
     - SurgeryInsertEyes
     - SurgeryInsertPump

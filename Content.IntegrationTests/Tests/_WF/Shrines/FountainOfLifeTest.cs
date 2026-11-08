@@ -19,6 +19,9 @@ public sealed class FountainOfLifeTest
 {
     private const string Vitae = "WFVitae";
 
+    /// <summary>Damage the vacuum may deal one body and not the other in the same window.</summary>
+    private static readonly FixedPoint2 AmbientSlack = FixedPoint2.New(3);
+
     [Test]
     public async Task ADoseHealsEverythingButKeepsTheCuffsOn()
     {
@@ -60,11 +63,12 @@ public sealed class FountainOfLifeTest
             {
                 // The test map is a vacuum, so both keep taking pressure and heat damage; the dosed one must be rid of
                 // the 30 blunt and 20 heat it started with.
+                // The two bodies take that damage on their own ticks, so allow a little difference between them.
                 var healed = entMan.GetComponent<DamageableComponent>(dosed).Damage.DamageDict;
                 var hurt = entMan.GetComponent<DamageableComponent>(underdosed).Damage.DamageDict;
-                Assert.That(healed.GetValueOrDefault("Blunt"), Is.LessThanOrEqualTo(hurt.GetValueOrDefault("Blunt") - 30),
+                Assert.That(healed.GetValueOrDefault("Blunt"), Is.LessThanOrEqualTo(hurt.GetValueOrDefault("Blunt") - 30 + AmbientSlack),
                     $"A full dose of vitae should heal everything: {string.Join(", ", healed)}");
-                Assert.That(healed.GetValueOrDefault("Heat"), Is.LessThanOrEqualTo(hurt.GetValueOrDefault("Heat") - 20),
+                Assert.That(healed.GetValueOrDefault("Heat"), Is.LessThanOrEqualTo(hurt.GetValueOrDefault("Heat") - 20 + AmbientSlack),
                     $"A full dose of vitae should heal everything: {string.Join(", ", healed)}");
                 Assert.That(entMan.GetComponent<CuffableComponent>(dosed).CuffedHandCount, Is.GreaterThan(0),
                     "Vitae must not free a prisoner.");

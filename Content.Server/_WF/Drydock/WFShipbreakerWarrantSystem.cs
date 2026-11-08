@@ -36,7 +36,7 @@ public sealed partial class WFShipbreakerWarrantSystem : EntitySystem
     }
 
     /// <summary>Puts a warrant on a shipbreaker, or adds the reward to the one they already have.</summary>
-    public void Issue(EntityUid breaker, string ship, int reward, string description, string author)
+    public void Issue(EntityUid breaker, string ship, int reward, string description, string author, LocId? paidMessage = null)
     {
         if (reward <= 0)
             return;
@@ -54,6 +54,8 @@ public sealed partial class WFShipbreakerWarrantSystem : EntitySystem
 
         warrant = AddComp<WFShipbreakerWarrantComponent>(breaker);
         warrant.Reward = reward;
+        if (paidMessage is { } paid)
+            warrant.PaidMessage = paid;
         Post(breaker, warrant, description, author);
     }
 
@@ -107,7 +109,7 @@ public sealed partial class WFShipbreakerWarrantSystem : EntitySystem
             }
 
             carry = 0;
-            _chat.DispatchServerMessage(session, Loc.GetString("drydock-chop-warrant-paid", ("name", name), ("amount", amount)));
+            _chat.DispatchServerMessage(session, Loc.GetString(ent.Comp.PaidMessage, ("name", name), ("amount", amount)));
             _adminLog.Add(LogType.Action, LogImpact.Medium,
                 $"{session.Name} was paid {amount} spesos for the shipbreaking warrant on {ToPrettyString(ent):entity}");
         }

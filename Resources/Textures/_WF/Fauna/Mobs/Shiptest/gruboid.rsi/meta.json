@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Shiptest at commit https://github.com/shiptest-ss13/Shiptest/commit/1d98db044a8a61499ef1e2d54fa2d8516a8e7da3.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "gruboid",
+      "directions": 4
+    },
+    {
+      "name": "gruboid_alert",
+      "directions": 4
+    },
+    {
+      "name": "gruboid_dead"
+    },
+    {
+      "name": "baby",
+      "directions": 4
+    },
+    {
+      "name": "baby_dead"
+    },
+    {
+      "name": "tentacle_spawn",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "tentacle_wiggle",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "tentacle_retract",
+      "delays": [
+        [
+          0.1,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    }
+  ]
+}

@@ -33,7 +33,7 @@ entry ids from 100000).
   - Wolfgate entities sit in module folders
   - Wolfgate vessels and map prototypes sit in module folders
 - [`.github/workflows/build-test-debug.yml`](../../../.github/workflows/build-test-debug.yml)
-  - split the integration tests over four runners; each builds and runs one shard
+  - split the integration tests over five runners; each builds and runs one shard
   - unit tests run once, on the core shard
   - exclude Shipyard tests in NUnit itself; the --filter form still ran them and only hid the results
   - one artifact per shard
@@ -60,6 +60,9 @@ entry ids from 100000).
   - Wolfgate vessels and entity prices, which sit in module folders
   - run when this workflow changes
   - main CI skips these tests, so shipyard code and test changes run them here
+- [`.github/workflows/no-submodule-update.yml`](../../../.github/workflows/no-submodule-update.yml)
+  - rerun when labels change so an Engine Update label clears the check
+  - deliberate engine bumps carry the Engine Update label
 - [`.github/workflows/prtitlecase.yml`](../../../.github/workflows/prtitlecase.yml)
   - built-in token instead of bot PAT
   - needed since the built-in token replaces the bot PAT

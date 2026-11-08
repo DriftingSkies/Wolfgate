@@ -56,7 +56,8 @@
     # Synthetics playtest: HYDRAULIC PRESSURE LOW with no way out. Half a human's blood regeneration, so a sealed
     # chassis tops itself up in about half an hour; a pack or the autodoc is still the quick fix.
     bloodRefreshAmount: 0.5
-    chemicalMaxVolume: 0
+    # Room for contaminants such as Letoferol; WFChassisFilter flushes everything else.
+    chemicalMaxVolume: 30
     bloodlossDamage:
       types: {}
     bloodlossHealDamage:
@@ -134,6 +135,7 @@
       path: /Audio/_EinsteinEngines/Effects/Silicon/startup.ogg
   - type: EmitBuzzWhileDamaged
   - type: WeldingHealable
+  - type: WFChassisFilter
   - type: Temperature
     interactionExchangeCoefficient: 0.002
     heatDamageThreshold: 1800
@@ -229,6 +231,7 @@
   - DeadStartupButton
   - EmitBuzzWhileDamaged
   - WeldingHealable
+  - WFChassisFilter
   - KillOnOverheat
   - ZombieImmune
   - SynthBattery

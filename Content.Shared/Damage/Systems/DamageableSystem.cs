@@ -146,6 +146,15 @@ namespace Content.Shared.Damage
             {
                 // Initialize damage dictionary, using the types and groups from the damage
                 // container prototype
+                // WOLFGATE(Performance) START: size the dictionary once instead of growing it from empty on every spawn
+                var wfCapacity = damageContainerPrototype.SupportedTypes.Count;
+                foreach (var groupId in damageContainerPrototype.SupportedGroups)
+                {
+                    wfCapacity += _prototypeManager.Index<DamageGroupPrototype>(groupId).DamageTypes.Count;
+                }
+
+                component.Damage.DamageDict.EnsureCapacity(wfCapacity);
+                // WOLFGATE END
                 foreach (var type in damageContainerPrototype.SupportedTypes)
                 {
                     component.Damage.DamageDict.TryAdd(type, FixedPoint2.Zero);
@@ -163,6 +172,7 @@ namespace Content.Shared.Damage
             else
             {
                 // No DamageContainerPrototype was given. So we will allow the container to support all damage types
+                component.Damage.DamageDict.EnsureCapacity(_prototypeManager.Count<DamageTypePrototype>()); // WOLFGATE(Performance): size once
                 foreach (var type in _prototypeManager.EnumeratePrototypes<DamageTypePrototype>())
                 {
                     component.Damage.DamageDict.TryAdd(type.ID, FixedPoint2.Zero);

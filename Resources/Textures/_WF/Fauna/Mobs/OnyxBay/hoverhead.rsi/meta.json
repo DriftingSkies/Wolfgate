@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from OnyxBay at commit https://github.com/ChaoticOnyx/OnyxBay/commit/3cb893c92162f09aa91987e1e1a943221809e3d3.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "hoverhead",
+      "delays": [
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "hoverhead_alert",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "hoverhead_dead"
+    },
+    {
+      "name": "anomaly",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "core"
+    },
+    {
+      "name": "core_used"
+    }
+  ]
+}

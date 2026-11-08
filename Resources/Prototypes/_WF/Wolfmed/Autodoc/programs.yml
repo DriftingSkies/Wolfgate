@@ -57,6 +57,8 @@
   - SurgeryInsertLiver
   - SurgeryRemoveStomach
   - SurgeryInsertStomach
+  - WFSurgeryRemoveKidneys
+  - WFSurgeryInsertKidneys
   - SurgeryInsertPump
 
 - type: autodocProgram

@@ -66,6 +66,7 @@ public sealed partial class WFPlanetPoiSystem
         WFPlanetPoiTablePrototype table,
         WFPlanetPoiComponent record,
         List<Box2i> reserved,
+        List<Box2i> approaches,
         HashSet<Vector2i> initialPins,
         HashSet<EntityUid> created,
         List<uint> createdDecals,
@@ -78,7 +79,7 @@ public sealed partial class WFPlanetPoiSystem
         var plans = new List<CityPlan>();
         foreach (var city in _proto.EnumeratePrototypes<WFFixedCityPrototype>().OrderBy(city => city.ID))
         {
-            if (city.Surface == network.Surface && ReserveCity(city, ground, biome, centre, radius, table, reserved) is { } plan)
+            if (city.Surface == network.Surface && ReserveCity(city, ground, biome, centre, radius, table, reserved, approaches) is { } plan)
                 plans.Add(plan);
         }
 
@@ -111,6 +112,12 @@ public sealed partial class WFPlanetPoiSystem
 
             if (built.Count == 0)
                 reserved.Remove(PlacementBounds(plan.Reservation, plan.Entry, table.Roads));
+            else if (table.Roads is { } roads && plan.Entry.Connection != WFPlanetPoiConnection.Isolated)
+            {
+                // The approach pins are let go above, so the sites placed after the city must keep off its entrances.
+                foreach (var socket in plan.Entry.Sockets)
+                    approaches.Add(ApproachBounds(plan.Origin + socket.Offset, socket.Direction, roads));
+            }
         }
     }
 
@@ -122,7 +129,8 @@ public sealed partial class WFPlanetPoiSystem
         Vector2 centre,
         float radius,
         WFPlanetPoiTablePrototype table,
-        List<Box2i> reserved)
+        List<Box2i> reserved,
+        List<Box2i> entranceBoxes)
     {
         var gameMap = _proto.Index<GameMapPrototype>(city.GameMap);
         if (!gameMap.Stations.TryGetValue(city.Station, out var config))
@@ -166,7 +174,7 @@ public sealed partial class WFPlanetPoiSystem
             },
         };
 
-        if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, out var origin))
+        if (!TryOrigin((ground, biome), centre, radius, table, entry, footprint, reserved, entranceBoxes, out var origin))
         {
             Log.Warning($"No room for {city.ID} on {ToPrettyString(ground)}; the city is left out.");
             return null;

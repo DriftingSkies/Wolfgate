@@ -46,6 +46,27 @@
   neutral:
   - Dragon
   - Passive
+  # WOLFGATE(Fauna) START: per-species fauna factions ignore other fauna
+  - SojournSamak
+  - SojournDiyaab
+  - SojournShantak
+  - SojournTengo
+  - SojournPond
+  - SojournDeathclaw
+  - SojournPanther
+  - SojournStalker
+  - SojournRadstag
+  - SojournRoach
+  - SojournTengoloBerserker
+  - SojournSpiders
+  - SojournWurm
+  - SojournDaskvey
+  - SojournRoachKin
+  - SojournPondKin
+  - SojournAmeridian
+  - ShiptestBasilisk
+  - ShiptestWatcher
+  # WOLFGATE END
   defaultHostile: true
 
 - type: npcFaction

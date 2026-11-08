@@ -1,0 +1,3757 @@
+# Sojourn Station planet fauna and big beasts.
+
+- type: entity
+  abstract: true
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: SojournMobBase
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        9
+      AggroVisionRadius: !type:Single
+        9
+      NavSmash: !type:Bool
+        true
+
+# Armoured cold-terrain ambusher.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobSamak
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/samak.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: samak
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: samak
+      Dead:
+        Base: samak_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      130: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist8
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 12
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+    - id: SojournWolfTooth
+  - type: NpcFactionMember
+    factions:
+    - SojournSamak
+  - type: Speech
+    allowedEmotes: [ SojournEmoteSamak ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteSamak
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-samak-speech-1
+    - fauna-sojourn-samak-speech-2
+
+# Small pack hunter.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobDiyaab
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/diyaab.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: diyaab
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: diyaab
+      Dead:
+        Base: diyaab_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      25: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 6
+    baseSprintSpeed: 6
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 3
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 1
+  - type: NpcFactionMember
+    factions:
+    - SojournDiyaab
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: Speech
+    allowedEmotes: [ SojournEmoteDiyaab ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteDiyaab
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-diyaab-speech-1
+    - fauna-sojourn-diyaab-speech-2
+    - fauna-sojourn-diyaab-speech-3
+
+# Piglike creature with a glowing mane.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobShantak
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/shantak.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: shantak
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: shantak
+      Dead:
+        Base: shantak_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      55: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist3
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 10
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 6
+  - type: NpcFactionMember
+    factions:
+    - SojournShantak
+  - type: Speech
+    allowedEmotes: [ SojournEmoteShantak ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteShantak
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-shantak-speech-1
+    - fauna-sojourn-shantak-speech-2
+    - fauna-sojourn-shantak-speech-3
+
+# Bites only what comes right next to it, with a toxic bite.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobViper
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    drawdepth: FloorObjects
+    sprite: _WF/Fauna/Mobs/Sojourn/viper.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: viper
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: viper
+      Dead:
+        Base: viper_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      25: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 6
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: Toxin
+          Quantity: 20
+  - type: MeleeChemicalInjector
+    transferAmount: 4
+    solution: melee
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Toxin
+        Quantity: 1
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        3
+      AggroVisionRadius: !type:Single
+        3
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 1
+  - type: NpcFactionMember
+    factions:
+    - SojournPond
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+
+# Male tengolo, a four-eyed monkey crossed with a warthog.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobTengoloBrute
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/fatshouter.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: fatshouter
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: fatshouter
+      Dead:
+        Base: fatshouter_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      130: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist5
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 17
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 3
+    - id: MaterialBones1
+      amount: 4
+    - id: SojournLeather
+      amount: 4
+  - type: NpcFactionMember
+    factions:
+    - SojournTengo
+  - type: Speech
+    allowedEmotes: [ SojournEmoteTengolo ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteTengolo
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-tengolo-speech-1
+    - fauna-sojourn-tengolo-speech-2
+
+# Cat-like male tengolo.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobTengoloStalker
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/bigcat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: bigcat
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: bigcat
+      Dead:
+        Base: bigcat_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      180: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist5
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 21
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+    - id: MaterialBones1
+      amount: 4
+    - id: SojournLeather
+      amount: 4
+  - type: NpcFactionMember
+    factions:
+    - SojournTengo
+  - type: Speech
+    allowedEmotes: [ SojournEmoteTengolo ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteTengolo
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-tengolo-speech-1
+    - fauna-sojourn-tengolo-speech-2
+
+# Female tengolo, an elk crossed with a warthog.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobTengoloCharger
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/rafama.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: rafama
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: rafama
+      Dead:
+        Base: rafama_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      90: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist3
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 14
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 3
+    - id: MaterialBones1
+      amount: 4
+    - id: SojournLeather
+      amount: 4
+  - type: NpcFactionMember
+    factions:
+    - SojournTengo
+  - type: Speech
+    allowedEmotes: [ SojournEmoteTengolo ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteTengolo
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-tengolo-speech-1
+    - fauna-sojourn-tengolo-speech-2
+
+# Hunts hostile fauna and leaves people alone.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobHellDiver
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/tunneler.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: tunneler
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: tunneler
+      Dead:
+        Base: tunneler_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist10
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 22
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/hiss4.ogg
+    popup: fauna-sojourn-helldiver-chitter
+  - type: NpcFactionMember
+    factions:
+    - FaunaHunter
+  - type: HTN
+    rootTask:
+      task: FaunaCorpseEaterCompound
+    blackboard:
+      VisionRadius: !type:Single
+        12
+      AggroVisionRadius: !type:Single
+        20
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 2
+    - id: MaterialBones1
+      amount: 6
+    - id: SojournLeather
+      amount: 6
+    - id: SojournHelldiverTooth
+  - type: Speech
+    allowedEmotes: [ SojournEmoteHellDiver ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteHellDiver
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-hell-diver-speech-1
+    - fauna-sojourn-hell-diver-speech-2
+
+# Ornery beetle that fights back when attacked.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobHakhma
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/hakhma.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hakhma
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hakhma
+      Dead:
+        Base: hakhma_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist15
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 17
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - SojournRoachKin
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+  - type: Speech
+    allowedEmotes: [ SojournEmoteHakhma ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteHakhma
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-hakhma-speech-1
+    - fauna-sojourn-hakhma-speech-2
+
+# Two-headed deer that fights back when attacked.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobTahca
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/radstag.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: radstag
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: radstag
+      Dead:
+        Base: radstag_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      120: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 17
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - SojournRadstag
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+    - id: MaterialBones1
+      amount: 6
+    - id: SojournLeather
+      amount: 6
+    - id: SojournTahcaAntler
+  - type: Speech
+    allowedEmotes: [ SojournEmoteTahca ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteTahca
+  - type: FaunaIdleSpeech
+    chance: 0.025
+    lines:
+    - fauna-sojourn-tahca-speech-1
+    - fauna-sojourn-tahca-speech-2
+
+# An absolutely gigantic snake.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobGiantSnake
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/giant_snake.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: giant_snake
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: giant_snake
+      Dead:
+        Base: giant_snake_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 17
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 8
+    - id: MaterialBones1
+      amount: 6
+    - id: SojournLeather
+      amount: 8
+  - type: NpcFactionMember
+    factions:
+    - SojournPond
+
+# Laser-resistant brute that roars when it finds prey.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobRender
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 750
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/render.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: render
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: render
+      Dead:
+        Base: render_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      550: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournRender
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/deathclawattack.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 37
+        Structural: 40
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/deathclaw_roar.ogg
+    popup: fauna-sojourn-render-roar
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        12
+      AggroVisionRadius: !type:Single
+        12
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPrimal
+      amount: 6
+    - id: MaterialBones1
+      amount: 20
+    - id: SojournLeather
+      amount: 16
+    - id: SojournRenderClaw
+    - id: SojournWolfTooth
+      amount: 2
+  - type: NpcFactionMember
+    factions:
+    - SojournDeathclaw
+
+# Darker, tougher render.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobRenderMalformed
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 1000
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/render.rsi
+    color: "#8B0000"
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: render
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: render
+      Dead:
+        Base: render_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      800: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournRender
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/deathclawattack.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 42
+        Structural: 40
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/deathclaw_roar.ogg
+    popup: fauna-sojourn-render-roar
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        12
+      AggroVisionRadius: !type:Single
+        12
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPrimal
+      amount: 6
+    - id: MaterialBones1
+      amount: 20
+    - id: SojournLeather
+      amount: 16
+    - id: SojournRenderClaw
+    - id: SojournWolfTooth
+      amount: 2
+  - type: NpcFactionMember
+    factions:
+    - SojournDeathclaw
+
+# Big black cat.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobPanther
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/panther.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: panther
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: panther
+      Dead:
+        Base: panther_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournPanther
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 20
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+    - id: MaterialBones1
+      amount: 6
+    - id: SojournLeather
+      amount: 6
+    - id: SojournWolfTooth
+      amount: 2
+  - type: NpcFactionMember
+    factions:
+    - SojournPanther
+  - type: Speech
+    allowedEmotes: [ SojournEmotePanther ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmotePanther
+  - type: FaunaIdleSpeech
+    chance: 0.01
+    lines:
+    - fauna-sojourn-panther-speech-1
+    - fauna-sojourn-panther-speech-2
+    - fauna-sojourn-panther-speech-3
+    - fauna-sojourn-panther-speech-4
+
+# Near-invisible until it strikes, whispers while it hunts.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobNightmareStalker
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/nightmare.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: nightmare
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: nightmare
+      Dead:
+        Base: nightmare_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournNightmare
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite1.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 32
+  - type: Stealth
+    enabledOnDeath: false
+  - type: FaunaAmbush
+    whisper:
+      collection: SojournNightmareWhispers
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        5
+      AggroVisionRadius: !type:Single
+        16
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: MaterialBones1
+      amount: 30
+    - id: SojournStalkerChitin
+      orGroup: part
+      prob: 0.5
+    - id: SojournStalkerSpur
+      orGroup: part
+      prob: 0.5
+  - type: NpcFactionMember
+    factions:
+    - SojournStalker
+  - type: Speech
+    allowedEmotes: [ SojournEmoteNightmare ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteNightmare
+
+# Evolved nightmare stalker.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobDreamDaemon
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 650
+      behaviors:
+      - !type:GibBehavior { }
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/dream_daemon.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: dream_daemon
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: dream_daemon
+      Dead:
+        Base: dream_daemon_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      450: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournDreamDaemon
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite1.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 50
+  - type: Stealth
+    enabledOnDeath: false
+  - type: FaunaAmbush
+    whisper:
+      collection: SojournNightmareWhispers
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        20
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: MaterialBones1
+      amount: 30
+    - id: SojournStalkerChitin
+      orGroup: part
+      prob: 0.5
+    - id: SojournStalkerSpur
+      orGroup: part
+      prob: 0.5
+  - type: NpcFactionMember
+    factions:
+    - SojournStalker
+  - type: Speech
+    allowedEmotes: [ SojournEmoteNightmare ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteNightmare
+
+# Giant frog that opens its eyes and rages when hurt.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobCroakerLord
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 800
+      behaviors:
+      - !type:GibBehavior { }
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/croaker_lord.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: croaker_lord
+    - map: [ "alert" ]
+      state: croaker_lord_alert
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: croaker_lord
+      Dead:
+        Base: croaker_lord_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        alert:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaEnrage
+    threshold: 1
+    damage:
+      types:
+        Piercing: 55
+    speed: 3
+    throwChance: 0
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      600: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite2.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 55
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: NpcFactionMember
+    factions:
+    - SojournPondKin
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        16
+      AggroVisionRadius: !type:Single
+        16
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 10
+    - id: MaterialBones1
+      amount: 10
+    - id: SojournLeather
+      amount: 20
+    - id: SojournCroakerTongue
+  - type: FaunaAggroCry
+  - type: Speech
+    allowedEmotes: [ SojournEmoteCroakerLord ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteCroakerLord
+
+# Berserk old tengolo charger.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobHellPig
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 950
+      behaviors:
+      - !type:GibBehavior { }
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/hellpig.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hellpig
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hellpig
+      Dead:
+        Base: hellpig_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      750: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournHellPig
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite2.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 37
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        16
+      AggroVisionRadius: !type:Single
+        16
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 8
+    - id: MaterialBones1
+      amount: 10
+    - id: SojournLeather
+      amount: 20
+    - id: SojournWolfTooth
+      amount: 2
+    - id: SojournHellHide
+  - type: NpcFactionMember
+    factions:
+    - SojournTengoloBerserker
+  - type: Speech
+    allowedEmotes: [ SojournEmoteHellPig ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteHellPig
+
+# Berserk old tengolo stalker.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobHellPigWendigo
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 800
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/wendigo.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: wendigo
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: wendigo
+      Dead:
+        Base: wendigo_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      600: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournWendigo
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite2.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 30
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        16
+      AggroVisionRadius: !type:Single
+        16
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 8
+    - id: MaterialBones1
+      amount: 10
+    - id: SojournLeather
+      amount: 20
+    - id: SojournWolfTooth
+      amount: 2
+    - id: SojournCannibalTooth
+  - type: NpcFactionMember
+    factions:
+    - SojournTengoloBerserker
+  - type: Speech
+    allowedEmotes: [ SojournEmoteHellPigWendigo ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteHellPigWendigo
+
+# Berserk charger that attacks up close, then chases.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobSlepnir
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/slepnir.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: slepnir
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: slepnir
+      Dead:
+        Base: slepnir_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      350: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournSlepnir
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 6
+    baseSprintSpeed: 6
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite2.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 32
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        16
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatPork
+      amount: 8
+    - id: MaterialBones1
+      amount: 10
+    - id: SojournLeather
+      amount: 20
+    - id: SojournWolfTooth
+      amount: 2
+    - id: SojournSlepnirHoof
+  - type: NpcFactionMember
+    factions:
+    - SojournTengoloBerserker
+  - type: Speech
+    allowedEmotes: [ SojournEmoteSlepnir ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteSlepnir
+
+# Mutated bear that roars when it finds prey.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobMukwah
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/mukwah.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: mukwah
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mukwah
+      Dead:
+        Base: mukwah_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/maul.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 45
+  - type: FaunaShout
+    popup: fauna-sojourn-mukwah-roar
+    enrage: true
+  - type: FaunaEnrage
+    threshold: 100000
+    duration: 8
+    exhaustion: 4
+    exhaustedSpeed: 2
+    speed: 4.5
+    attackRate: 1.5
+    damage:
+      types:
+        Slash: 45
+  - type: FaunaAbilities
+    abilities:
+    - action: SojournActionMukwahRoar
+      maxRange: 9
+      hold: 1
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatBear
+    - id: MaterialBones1
+      amount: 10
+    - id: SojournLeather
+      amount: 10
+    - id: MaterialHideBear
+    - id: SojournWolfTooth
+      amount: 2
+  - type: Speech
+    allowedEmotes: [ SojournEmoteMukwah ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteMukwah
+
+# Hunting hound that goes after hostile fauna.
+- type: entity
+  parent: SojournMobBase
+  id: SojournMobChimera
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/chimera.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: chimera
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: chimera
+      Dead:
+        Base: chimera_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_bite2.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 32
+  - type: NpcFactionMember
+    factions:
+    - FaunaHunter
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+    - id: MaterialBones1
+      amount: 6
+    - id: SojournChimeraFang
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+
+# Pale cave nurse spider. Cocoons the dead, lays eggs and spins sticky webs. Its bite freezes.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: SojournMobCaveSpider
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/spiders.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: nurse_E
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: nurse_E
+      Dead:
+        Base: nurse_E_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/spiderlunge.ogg
+    angle: 0
+    animation: SojournWeaponArcSpiderBite
+    damage:
+      types:
+        Piercing: 13
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: FrostOil
+          Quantity: 20
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: FrostOil
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 4
+    solution: melee
+  - type: FaunaCorpseEater
+    cocoon: VGSpiderCocoon
+    spawn: VGSpiderEggCluster
+    startPopup: fauna-cocoon-start
+    donePopup: fauna-cocoon-done
+    eatCritical: true
+    bite:
+      types:
+        Asphyxiation: 200
+        Poison: 6
+  - type: Spider
+    webPrototype: VGSpiderStickyWeb
+  - type: FaunaAbilities
+    abilities:
+    - action: ActionSpiderWeb
+      maxRange: 10
+  - type: HTN
+    rootTask:
+      task: FaunaDownedCorpseEaterCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 3
+  - type: NpcFactionMember
+    factions:
+    - SojournSpiders
+  - type: Speech
+    allowedEmotes: [ SojournEmoteCaveSpider ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteCaveSpider
+
+# Hunting spider whose chameleon shell keeps it nearly invisible its whole life.
+- type: entity
+  parent: PolarisMobGiantSpiderBase
+  id: SojournMobCloakerSpider
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/spiders.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hunter
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hunter
+      Dead:
+        Base: hunter_dead
+  - type: Stealth
+    lastVisibility: -0.4
+    maxVisibility: -0.4
+    enabledOnDeath: false
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      35: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournResist1
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.75
+    baseSprintSpeed: 2.75
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/spiderlunge.ogg
+    angle: 0
+    animation: SojournWeaponArcSpider
+    damage:
+      types:
+        Piercing: 15
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: Mechanotoxin
+          Quantity: 20
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Mechanotoxin
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 4
+    solution: melee
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 4
+  - type: NpcFactionMember
+    factions:
+    - SojournSpiders
+  - type: FaunaDigAmbush
+    hole: ShiptestAntlionBurrow
+    fleeHealth: 0.3
+  - type: Speech
+    allowedEmotes: [ SojournEmoteCloakerSpider ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteCloakerSpider
+
+- type: entity
+  parent: WeaponArcBite
+  id: SojournWeaponArcRoach
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/attacks.rsi
+    state: roach_attack
+    color: "#C4A484"
+
+- type: entity
+  parent: WeaponArcBite
+  id: SojournWeaponArcSpiderBite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/attacks.rsi
+    state: spider_bite
+    color: "#CBC3E3"
+
+- type: entity
+  parent: WeaponArcBite
+  id: SojournWeaponArcSpider
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/attacks.rsi
+    state: spider_attack
+
+- type: entity
+  parent: WeaponArcBite
+  id: SojournWeaponArcTermite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/attacks.rsi
+    state: termite_attack
+
+# Sojourn roaches: dog-sized cockroaches that swarm through each other and eat the dead to heal.
+- type: entity
+  abstract: true
+  parent: SimpleSpaceMobBase
+  id: SojournMobRoachBase
+  components:
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: _WF/Fauna/Mobs/Sojourn/roaches.rsi
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.3
+        density: 100
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournRoach
+  - type: Bloodstream
+    bloodReagent: InsectBlood
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_screeching.ogg
+    popup: fauna-sojourn-roach-screech
+  - type: FaunaCorpseEater
+    delay: 900
+    consume: true
+    spawn: SojournHumanRemains
+    heal: 20
+    healGroup: Burn
+  - type: NpcFactionMember
+    factions:
+    - SojournRoach
+  - type: HTN
+    rootTask:
+      task: FaunaCorpseEaterCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: Speech
+    allowedEmotes: [ SojournEmoteRoach ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteRoach
+
+# Blue roach crackling with energy. Its bites can set off an EMP, and so does its death.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobElektromagnetischRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: elektromagnetisch
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: elektromagnetisch-move
+    noMovementLayers:
+      movement:
+        state: elektromagnetisch
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: elektromagnetisch
+      Dead:
+        Base: elektromagnetisch_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.75
+    damage:
+      types:
+        Piercing: 14
+  - type: FaunaMeleeEffect
+    chance: 0.01
+    knockdown: 3
+  - type: PointLight
+    radius: 3
+    energy: 1
+    color: "#3a6fd8"
+  - type: FaunaMeleeProc
+    chance: 0.05
+    spawn: SojournEffectRoachEmp
+    sound:
+      collection: SojournRoachEmp
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmpOnTrigger
+    range: 3
+    energyConsumption: 100000
+    disableDuration: 30
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: SojournRoachEmp
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatRoachElektromagnetisch
+      amount: 2
+  - type: FaunaDeathSpawn
+    popup: fauna-sojourn-roach-elektro-death
+
+- type: entity
+  parent: AdminInstantEffectBase
+  id: SojournEffectRoachEmp
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EmpOnTrigger
+    range: 3
+    energyConsumption: 100000
+    disableDuration: 10
+
+# Roach of congealed green waste that vomits toxic bile on its prey.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobGestrahlteRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: radioactiveroach
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: radioactiveroach-move
+    noMovementLayers:
+      movement:
+        state: radioactiveroach
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: radioactiveroach
+      Dead:
+        Base: radioactiveroach_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.23
+    damage:
+      types:
+        Piercing: 5
+  - type: FaunaMeleeEffect
+    chance: 0.03
+    knockdown: 3
+  - type: FaunaMeleeProc
+    chance: 0.25
+    damage:
+      types:
+        Poison: 5
+    popup: fauna-sojourn-roach-bile
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_screeching.ogg
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+
+# Glowing green roach that breeds uranium. Its pinch burns and its flash blinds.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobGluhendRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: glowingroach
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: glowingroach
+      Dead:
+        Base: glowingroach_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournGluhend
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    damage:
+      types:
+        Piercing: 6
+  - type: PointLight
+    radius: 2
+    energy: 1
+    color: "#3a5f3a"
+  - type: FaunaMeleeEffect
+    chance: 0.05
+    flash: 4
+    knockdown: 4
+    popup: fauna-sojourn-roach-flash
+    effect: GrenadeFlashEffect
+  - type: FaunaMeleeProc
+    chance: 0.25
+    damage:
+      types:
+        Heat: 11
+    popup: fauna-sojourn-roach-pinch
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_screeching.ogg
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatRoachGluhend
+      amount: 2
+  - type: FlashImmunity
+
+# Roach with oversized claws that often knocks its prey down.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobJagerRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: jager
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: jager-move
+    noMovementLayers:
+      movement:
+        state: jager
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: jager
+      Dead:
+        Base: jager_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.09
+    damage:
+      types:
+        Piercing: 7
+  - type: FaunaMeleeEffect
+    chance: 0.05
+    knockdown: 3
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatRoachJager
+      amount: 3
+
+# Metal-crusted roach whose bites release swarms of nanite locusts.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobKraftwerkRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: naniteroach
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: naniteroach-move
+    noMovementLayers:
+      movement:
+        state: naniteroach
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: naniteroach
+      Dead:
+        Base: naniteroach_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.5
+    damage:
+      types:
+        Piercing: 2
+  - type: FaunaMeleeEffect
+    chance: 0.03
+    knockdown: 3
+  - type: FaunaMeleeProc
+    chance: 0.25
+    spawn: SojournMobNaniteSwarm
+    maxSpawned: 5
+    gibSpawned: true
+    spawnSpeech: fauna-sojourn-kraftwerk-swarm-speech
+    sound:
+      collection: SojournRoachNanites
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatRoachKraftwerk
+      amount: 3
+
+# Cloud of nanite-infested locusts. Falls apart into oil when it dies.
+- type: entity
+  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
+  id: SojournMobNaniteSwarm
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Sojourn/roaches.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: naniteswarm
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      10: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 2
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: SojournPuddleNaniteOil
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: DeleteOnTrigger
+  - type: NpcFactionMember
+    factions:
+    - SojournRoach
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.25
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+
+- type: entity
+  parent: PuddleTemporary
+  id: SojournPuddleNaniteOil
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      puddle:
+        maxVol: 1000
+        reagents:
+        - ReagentId: Oil
+          Quantity: 5
+
+# Heavily armoured roach that never slips.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobPanzerRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: panzer
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: panzer-move
+    noMovementLayers:
+      movement:
+        state: panzer
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: panzer
+      Dead:
+        Base: panzer_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournPanzer
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 100
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.17
+    damage:
+      types:
+        Piercing: 4
+  - type: FaunaMeleeEffect
+    chance: 0.03
+    knockdown: 3
+  - type: NoSlip
+  - type: Butcherable
+    spawned:
+    - id: SojournFoodMeatRoachPanzer
+      amount: 4
+
+# Frog-roach abomination that hates all life, even its own.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobTazntzRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: tzantz
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: tzantz-move
+    noMovementLayers:
+      movement:
+        state: tzantz
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: tzantz
+      Dead:
+        Base: tzantz_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournTazntz
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 100
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.23
+    damage:
+      types:
+        Piercing: 10
+  - type: FaunaMeleeEffect
+    chance: 0.01
+    knockdown: 3
+  - type: NoSlip
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+
+# Shimmering roach that flickers between places. Blinks beside its prey and slips past bullets.
+- type: entity
+  parent: SojournMobRoachBase
+  id: SojournMobUnbekanntRoach
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: bluespaceroach
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: bluespaceroach-move
+    noMovementLayers:
+      movement:
+        state: bluespaceroach
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: bluespaceroach
+      Dead:
+        Base: bluespaceroach_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      25: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_bite.ogg
+    angle: 0
+    animation: SojournWeaponArcRoach
+    armorPenetration: 0.9
+    damage:
+      types:
+        Piercing: 7
+    resistanceBypass: true
+  - type: FaunaBlink
+    distance: 1
+    effect: EffectSparks
+    idleInterval: 20
+    hitChance: 0.25
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/insect_battle_screeching.ogg
+  - type: FaunaAbilities
+    abilities:
+    - action: SojournActionRoachBlink
+      minRange: 2
+      maxRange: 7
+      corpses: true
+  - type: FaunaDodge
+    pool: 25
+    maxPool: 25
+    useChance: 0
+  - type: Butcherable
+    spawned:
+    - id: MaterialBluespace1
+      amount: 1
+  - type: FlashImmunity
+  - type: TriggerOnSpawn
+  - type: SpawnOnTrigger
+    proto: EffectSparks
+
+- type: entity
+  parent: DS13ActionBase
+  id: SojournActionRoachBlink
+  components:
+  - type: EntityTargetAction
+    useDelay: 3
+    range: 7
+    checkCanAccess: false
+    event: !type:FaunaBlinkActionEvent
+
+# Sojourn ameridian golems: living crystal that shatters into ameridian shards when it dies.
+- type: entity
+  abstract: true
+  parent: FaunaMobConstructBase
+  id: SojournMobAmeridianGolemBase
+  components:
+  - type: PointLight
+    radius: 2
+    energy: 1
+    color: "#8aa88a"
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 18
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: SojournAmeridianCrumble
+  - type: DeleteOnTrigger
+  - type: NpcFactionMember
+    factions:
+    - SojournAmeridian
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+
+# Crystal golem that smashes whatever comes near.
+- type: entity
+  parent: SojournMobAmeridianGolemBase
+  id: SojournMobAmeridianGolem
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/ameridian.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: golem
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      42: Dead
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: FaunaSojournGolem
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: FaunaDeathSpawn
+    popup: fauna-sojourn-golem-shatter
+    spawns:
+    - id: ShardCrystalGreen
+      amount: 1
+
+# Small, fast crystal golem.
+- type: entity
+  parent: SojournMobAmeridianGolemBase
+  id: SojournMobAmeridianRuntling
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/ameridian.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: runtling
+      scale: 0.75, 0.75
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      21: Dead
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: FaunaSojournRuntling
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: FaunaDeathSpawn
+    popup: fauna-sojourn-golem-shatter
+    spawns:
+    - id: ShardCrystalGreen
+      amount: 1
+
+# Huge crystal golem that hurls razor shards and throws off anyone who grabs it.
+- type: entity
+  parent: SojournMobAmeridianGolemBase
+  id: SojournMobAmeridianTitan
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/ameridian_titan.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: titan
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      2500: Dead
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: FaunaSojournTitan
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+  - type: FaunaDeathSpawn
+    popup: fauna-sojourn-golem-shatter
+    spawns:
+    - id: ShardCrystalGreen
+      amount: 120
+  - type: PointLight
+    radius: 10
+    energy: 2
+    color: "#aa2733"
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 45
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.8
+        density: 1000
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: FaunaProjectileBurst
+    projectile: SojournProjectileAmeridianShard
+    spreadCount: 1
+  - type: FaunaAbilities
+    abilities:
+    - action: SojournActionAmeridianShard
+      minRange: 2
+      maxRange: 8
+  - type: FaunaGrabRetort
+    popup: fauna-sojourn-titan-retort
+    sound:
+      path: /Audio/_WF/Fauna/VG/heavysmash.ogg
+
+- type: entity
+  parent: BaseBullet
+  id: SojournProjectileAmeridianShard
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Shiptest/projectiles.rsi
+    layers:
+    - state: crystal_shard
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 30
+        Radiation: 10
+  - type: FaunaFactionPass
+    factions:
+    - SojournAmeridian
+  - type: TimedDespawn
+    lifetime: 3
+
+- type: entity
+  parent: DS13ActionBase
+  id: SojournActionAmeridianShard
+  components:
+  - type: EntityTargetAction
+    useDelay: 2
+    range: 8
+    checkCanAccess: false
+    event: !type:FaunaProjectileBurstActionEvent
+
+# Sojourn termites: burrowing insects that chew through walls to reach their prey.
+- type: entity
+  abstract: true
+  parent: SimpleSpaceMobBase
+  id: SojournMobTermiteBase
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Sojourn/termites.rsi
+  - type: Bloodstream
+    bloodReagent: CopperBlood
+  - type: NpcFactionMember
+    factions:
+    - SojournWurm
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: Speech
+    allowedEmotes: [ SojournEmoteTermite ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteTermite
+  - type: FaunaDeathSpawn
+    gib: true
+    popup: fauna-sojourn-termite-splatter
+
+# Termite queen. Calls her workers and soldiers out of the ground and drops diamonds when she dies.
+- type: entity
+  parent: SojournMobTermiteBase
+  id: SojournMobKorolevaTermite
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/koroleva.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: koroleva
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: koroleva
+      Dead:
+        Base: koroleva_gore
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      35: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournKoroleva
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: SojournWeaponArcTermite
+    armorPenetration: 0.33
+    damage:
+      types:
+        Piercing: 30
+  - type: FaunaBurrow
+    closable: false
+    interval: 40
+    maxAlive: 4
+    prototypes:
+    - SojournMobPomoshchnikTermite
+    - SojournMobPushkaTermite
+    - SojournMobSmertnikTermite
+    - SojournMobPomoshchnikTermite
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: DiamondOre1
+      amount: 3
+      maxAmount: 5
+
+# Worker termite.
+- type: entity
+  parent: SojournMobTermiteBase
+  id: SojournMobPomoshchnikTermite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: pomoshchnik
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: pomoshchnik
+      Dead:
+        Base: pomoshchnik_gore
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      10: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournTermite
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: SojournWeaponArcTermite
+    damage:
+      types:
+        Piercing: 20
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: SteelOre1
+      amount: 3
+      maxAmount: 5
+
+# Big soldier termite.
+- type: entity
+  parent: SojournMobTermiteBase
+  id: SojournMobPushkaTermite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: pushka
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: pushka
+      Dead:
+        Base: pushka_gore
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      22.5: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournPushka
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: SojournWeaponArcTermite
+    damage:
+      types:
+        Piercing: 30
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: SilverOre1
+      amount: 3
+      maxAmount: 5
+
+# Miner termite that launches stone spikes from its shell.
+- type: entity
+  parent: SojournMobTermiteBase
+  id: SojournMobSmertnikTermite
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: smertnik
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: smertnik
+      Dead:
+        Base: smertnik_gore
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      22.5: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournTermite
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 1.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: SojournWeaponArcTermite
+    damage:
+      types:
+        Piercing: 15
+  - type: BasicEntityAmmoProvider
+    proto: SojournProjectileSharpStone
+    capacity: 1
+    count: 1
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 2
+    showExamineText: false
+    rechargeSound: null
+  - type: Gun
+    recoil: 0
+    fireRate: 0.5
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/Guns/Gunshots/pistol.ogg
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: UraniumOre1
+      amount: 3
+      maxAmount: 5
+
+- type: entity
+  parent: BaseBullet
+  id: SojournProjectileSharpStone
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Blunt: 16
+  - type: StaminaDamageOnCollide
+    damage: 12
+
+# Psi monsters of the deep maintenance realm. They can't be pulled or flashed, and heal and fade out in the dark.
+- type: entity
+  abstract: true
+  parent: SimpleSpaceMobBase
+  id: SojournMobPsiCore
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Sojourn/psi.rsi
+  - type: Destructible
+    thresholds: []
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournPsi
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 10
+  - type: NoSlip
+  - type: FlashImmunity
+  - type: PreventPulledWhileAlive
+  - type: Stealth
+    enabledOnDeath: false
+  - type: FaunaDarkness
+    heal:
+      groups:
+        Brute: -1
+        Burn: -1
+  - type: FaunaAggroCry
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/hell_screech.ogg
+    cooldown: 30
+  - type: SoundOnDeath
+    sound:
+      collection: SojournPsiDeath
+  - type: TriggerOnMobstateChange
+    mobState:
+    - Dead
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        8
+  - type: FaunaGrabRetort
+    damage:
+      types:
+        Blunt: 30
+    knockdown: 3
+  - type: FaunaDeathSpawn
+    throwContents: 3
+
+# Psi monster that crumbles to ash when it dies.
+- type: entity
+  abstract: true
+  parent: SojournMobPsiCore
+  id: SojournMobPsiBase
+  components:
+  - type: FaunaDeathSpawn
+    scatter: 0
+    popup: fauna-sojourn-psi-crumble
+    spawns:
+    - id: SojournPsiAsh
+  - type: DeleteOnTrigger
+  - type: Speech
+    allowedEmotes: [ SojournEmotePsi ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmotePsi
+
+- type: entity
+  parent: Ash
+  id: SojournPsiAsh
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: SojournPsiAsh
+  id: SojournPsiAshPonderous
+  categories: [ HideSpawnMenu ]
+
+# A familiar yet alien thing a mindless thought made real.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobCorruptedDevourer
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: corruptroach
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 13
+
+# Nearly invisible and silent until it is close enough to strike.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobMemoryEater
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: chameleon
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_NF/Effects/silence.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 17
+  - type: FaunaDarkness
+    hiddenVisibility: -1
+    heal:
+      groups:
+        Brute: -1
+        Burn: -1
+  - type: FaunaAggroCry
+    sound: null
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        5
+      AggroVisionRadius: !type:Single
+        5
+  - type: Speech
+    allowedEmotes: [ SojournEmoteMemoryEater ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteMemoryEater
+
+# Slow-stalking mutant whose touch melts the mind.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobPonderous
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: strygh
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcFist
+    armorPenetration: 0.33
+    damage:
+      types:
+        Blunt: 17
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: MindbreakerToxin
+          Quantity: 20
+  - type: MeleeChemicalInjector
+    transferAmount: 2
+    solution: melee
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: MindbreakerToxin
+        Quantity: 1
+  - type: FaunaDeathSpawn
+    scatter: 0
+    popup: fauna-sojourn-psi-crumble
+    spawns:
+    - id: SojournPsiAshPonderous
+  - type: Speech
+    allowedEmotes: [ SojournEmotePonderous ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmotePonderous
+
+# Fast insect-like thing with a long, venom-laced tongue.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobLicker
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: runner
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      38: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcBite
+    armorPenetration: 0.23
+    damage:
+      types:
+        Piercing: 16
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: Toxin
+          Quantity: 20
+  - type: MeleeChemicalInjector
+    transferAmount: 3
+    solution: melee
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Toxin
+        Quantity: 1
+  - type: Speech
+    allowedEmotes: [ SojournEmoteLicker ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteLicker
+
+# Hulking bone creature with mind-weakening claws.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobCerebralCrusher
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: farartbot
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+    angle: 0
+    animation: WeaponArcFist
+    damage:
+      types:
+        Blunt: 35
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: MindbreakerToxin
+          Quantity: 20
+  - type: MeleeChemicalInjector
+    transferAmount: 2
+    solution: melee
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: MindbreakerToxin
+        Quantity: 1
+  - type: FaunaDarkness
+    heal:
+      groups:
+        Brute: -10
+        Burn: -10
+  - type: Speech
+    allowedEmotes: [ SojournEmoteCerebralCrusher ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteCerebralCrusher
+
+# Rooted tower of flesh that lobs bursts of acid at intruders.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobFleshTower
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: floaterx
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0
+    baseSprintSpeed: 0
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcFist
+    damage:
+      types:
+        Blunt: 8
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 0.5
+  - type: BasicEntityAmmoProvider
+    proto: SojournProjectilePsiGoo
+    capacity: 3
+    count: 3
+  - type: Gun
+    recoil: 0
+    fireRate: 0.67
+    useKey: false
+    projectileSpeed: 10
+    selectedMode: Burst
+    availableModes:
+    - Burst
+    shotsPerBurst: 3
+    burstFireRate: 1.33
+    burstCooldown: 1.5
+    soundGunshot:
+      path: /Audio/_WF/Fauna/Sojourn/acid_spit.ogg
+  - type: HTN
+    rootTask:
+      task: TurretCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        8
+  - type: Speech
+    allowedEmotes: [ SojournEmoteFleshTower ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteFleshTower
+
+- type: entity
+  parent: BaseBullet
+  id: SojournProjectilePsiGoo
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/psi.rsi
+    layers:
+    - state: goo
+  - type: Projectile
+    damage:
+      types:
+        Heat: 25
+  - type: Ammo
+    muzzleFlash: null
+
+# Bone-plated hound with a bare, skinless belly, kept as a pet by Daskvey.
+- type: entity
+  parent: SimpleMobBase
+  id: SojournMobShellHound
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WF/Fauna/Mobs/Sojourn/shell_hound.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: shell_hound
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: shell_hound
+      Dead:
+        Base: dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournShellHound
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      120: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.5
+    damage:
+      types:
+        Slash: 25
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 3
+    - id: SojournChimeraFang
+  - type: NpcFactionMember
+    factions:
+    - SojournDaskvey
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        7
+      AggroVisionRadius: !type:Single
+        7
+  - type: Speech
+    allowedEmotes: [ SojournEmoteShellHound ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteShellHound
+
+# Squirming maggot that vomits acid on what it bites and latches on to feed.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobPusMaggot
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: parasite
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      55: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 13
+  - type: FaunaMeleeProc
+    chance: 0.75
+    damage:
+      types:
+        Heat: 13
+    popup: fauna-sojourn-psi-maggot-pus
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/splat.ogg
+  - type: FaunaLeech
+    chance: 0.3
+    damage:
+      types:
+        Heat: 5.5
+        Cellular: 1.5
+    heal:
+      groups:
+        Brute: -16
+        Burn: -16
+    latchPopup: fauna-leech-latch
+    painPopup: fauna-leech-pain
+    releasePopup: fauna-leech-release
+  - type: Speech
+    allowedEmotes: [ SojournEmotePusMaggot ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmotePusMaggot
+
+# Pus maggot burst from a dying flesh behemoth. Its ashes are weaker.
+- type: entity
+  parent: SojournMobPusMaggot
+  id: SojournMobPusMaggotSummoned
+  components:
+  - type: FaunaDeathSpawn
+    scatter: 0
+    popup: fauna-sojourn-psi-crumble
+    spawns:
+    - id: SojournPsiAshWeak
+
+# Misshapen flying skull that latches on now and then.
+- type: entity
+  parent: [ SojournMobPsiBase, FlyingMobBase ]
+  id: SojournMobHoveringNightmare
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: regugriator22
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 23
+  - type: FaunaLeech
+    chance: 0.1
+    damage:
+      types:
+        Heat: 5.5
+        Cellular: 1.5
+    heal:
+      groups:
+        Brute: -16
+        Burn: -16
+    latchPopup: fauna-leech-latch
+    painPopup: fauna-leech-pain
+    releasePopup: fauna-leech-release
+  - type: Speech
+    allowedEmotes: [ SojournEmoteHoveringNightmare ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteHoveringNightmare
+
+# What is left where people died. Clings to most it touches.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobMemory
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: m3
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      70: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcFist
+    damage:
+      types:
+        Blunt: 22
+  - type: FaunaLeech
+    chance: 0.7
+    damage:
+      types:
+        Heat: 5.5
+        Cellular: 1.5
+    heal:
+      groups:
+        Brute: -16
+        Burn: -16
+    latchPopup: fauna-leech-latch
+    painPopup: fauna-leech-pain
+    releasePopup: fauna-leech-release
+  - type: Speech
+    allowedEmotes: [ SojournEmoteMemory ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteMemory
+
+# Burning-skulled maggot kin. Its fire lights up the dark, so neither it nor the psi monsters near it heal.
+- type: entity
+  parent: SojournMobPusMaggot
+  id: SojournMobAshWendigo
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: guarda
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.17
+    damage:
+      types:
+        Slash: 28
+  - type: FaunaMeleeProc
+    chance: 0.75
+    damage:
+      types:
+        Heat: 28
+    popup: fauna-sojourn-psi-wendigo-fire
+    sound:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+  - type: PointLight
+    radius: 4
+    energy: 2
+    color: "#FF3233"
+  - type: FaunaDarkness
+    heal: null
+    hiddenVisibility: 0.6
+  - type: FaunaDeathSpawn
+    scatter: 0
+    popup: fauna-sojourn-psi-crumble
+    spawns:
+    - id: SojournPsiAshAshWendigo
+  - type: Speech
+    allowedEmotes: [ SojournEmoteAshWendigo ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteAshWendigo
+
+# Flesh behemoth noble of the Dreaming King's court. Regrows almost any wound in the dark and bursts into maggots.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobBaronWormwood
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: vargo
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 35
+  - type: FaunaDarkness
+    heal:
+      groups:
+        Brute: -50
+        Burn: -50
+  - type: FaunaDeathSpawn
+    scatter: 1
+    popup: fauna-sojourn-psi-baron-burst
+    spawns:
+    - id: SojournMobPusMaggotSummoned
+      amount: 3
+      maxAmount: 6
+    - id: SojournPsiAshBehemoth
+  - type: Speech
+    allowedEmotes: [ SojournEmoteBaronWormwood ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteBaronWormwood
+
+- type: entity
+  parent: SojournPsiAsh
+  id: SojournPsiAshWeak
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: SojournPsiAsh
+  id: SojournPsiAshAshWendigo
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: SojournPsiAsh
+  id: SojournPsiAshBehemoth
+  categories: [ HideSpawnMenu ]
+
+# Rotting genetic abomination that knocks people over and absorbs the fallen into its mass. Bursts into gibs on death.
+- type: entity
+  parent: SojournMobPsiCore
+  id: SojournMobCrimsonJelly
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: oormat
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.25
+    baseSprintSpeed: 2.25
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+    angle: 0
+    animation: WeaponArcFist
+    damage:
+      types:
+        Blunt: 33
+  - type: FaunaMeleeEffect
+    chance: 0.15
+    knockdown: 3
+    popup: fauna-sojourn-psi-jelly-knock
+  - type: FaunaEngulf
+    heal:
+      groups:
+        Brute: -250
+    captiveDamage:
+      types:
+        Blunt: 5
+        Heat: 5
+    popup: fauna-engulf
+  - type: FaunaDarkness
+    heal:
+      groups:
+        Brute: -10
+        Burn: -10
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/_WF/Fauna/Sojourn/shriek1.ogg
+  - type: FaunaDeathSpawn
+    popup: fauna-sojourn-psi-jelly-burst
+    spawns: []
+  - type: GibOnTrigger
+    useArgumentEntity: true
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        12
+      AggroVisionRadius: !type:Single
+        12
+
+# Crimson jelly grown into a thing of eyes and teeth. Knocks people down twice as often.
+- type: entity
+  parent: SojournMobCrimsonJelly
+  id: SojournMobPitchHorror
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hyper
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      625: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+    angle: 0
+    animation: WeaponArcFist
+    armorPenetration: 0.09
+    damage:
+      types:
+        Blunt: 33
+  - type: FaunaMeleeEffect
+    chance: 0.3
+    knockdown: 3
+    popup: fauna-sojourn-psi-jelly-knock
+
+# All-seeing eye of the Dreaming King's court. Feeds on those it catches.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobViscountMannimarcus
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: eelo
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MeleeWeapon
+    soundHit:
+      collection: SojournPsiClaw
+    angle: 0
+    animation: WeaponArcFist
+    armorPenetration: 0.17
+    damage:
+      types:
+        Blunt: 28
+  - type: FaunaDarkness
+    heal:
+      groups:
+        Brute: -10
+        Burn: -10
+  - type: FaunaLeech
+    chance: 0.3
+    damage:
+      types:
+        Heat: 5.5
+        Cellular: 1.5
+    heal:
+      groups:
+        Brute: -16
+        Burn: -16
+    latchPopup: fauna-leech-latch
+    painPopup: fauna-leech-pain
+    releasePopup: fauna-leech-release
+  - type: Speech
+    allowedEmotes: [ SojournEmoteViscountMannimarcus ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteViscountMannimarcus
+
+- type: entity
+  parent: SojournMobAshWendigo
+  id: SojournMobDukeRavencroft
+  components:
+  - type: MeleeWeapon
+    armorPenetration: 0.33
+  - type: Speech
+    allowedEmotes: [ SojournEmoteDukeRavencroft ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteDukeRavencroft
+
+- type: entity
+  parent: SojournMobCerebralCrusher
+  id: SojournMobMarshalBenedictus
+  components:
+  - type: MeleeWeapon
+    armorPenetration: 0.23
+  - type: Speech
+    allowedEmotes: [ SojournEmoteMarshalBenedictus ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteMarshalBenedictus
+
+- type: entity
+  parent: SojournMobCrimsonJelly
+  id: SojournMobRedJesterThomas
+  components:
+  - type: MeleeWeapon
+    armorPenetration: 0.57
+  - type: Speech
+    allowedEmotes: [ SojournEmoteRedJesterThomas ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteRedJesterThomas
+
+- type: entity
+  parent: SojournMobPitchHorror
+  id: SojournMobStewardKerevork
+  components:
+  - type: MeleeWeapon
+    armorPenetration: 0.75
+  - type: Speech
+    allowedEmotes: [ SojournEmoteStewardKerevork ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteStewardKerevork
+
+# Tyrant of the psi realm. Its blows rattle the mind, and twice it vanishes and returns with its court.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobDreamingKing
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/psi_large.rsi
+    offset: 0,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: dreaming_king
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      1400: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Xenonids/Xeno/alien_footstep_charge1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.5
+    damage:
+      types:
+        Blunt: 55
+  - type: FaunaMeleeEffect
+    chance: 0
+    shake: 1.5
+  - type: FaunaDarkness
+    heal: null
+  - type: FaunaPhaseSummon
+    teleportRange: 6
+    gore: SojournKingGore
+    phases:
+    - fraction: 0.66
+      spawns: [ SojournMobViscountMannimarcus, SojournMobDukeRavencroft, SojournMobMarshalBenedictus ]
+      popup: fauna-sojourn-king-phase-1
+      arrivalPopup: fauna-sojourn-king-arrive-1
+      sound:
+        path: /Audio/_WF/Fauna/Sojourn/hell_screech.ogg
+    - fraction: 0.33
+      spawns: [ SojournMobBaronWormwood, SojournMobRedJesterThomas, SojournMobStewardKerevork ]
+      popup: fauna-sojourn-king-phase-2
+      arrivalPopup: fauna-sojourn-king-arrive-2
+      sound:
+        path: /Audio/_WF/Fauna/Sojourn/hell_screech.ogg
+  - type: FaunaDeathSpawn
+    scatter: 0
+    popup: fauna-sojourn-psi-crumble
+    spawns:
+    - id: SojournPsiAshKing
+    - id: SojournSpawnerPsiLoot
+      amount: 8
+  - type: Speech
+    allowedEmotes: [ SojournEmoteDreamingKing ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteDreamingKing
+
+- type: entity
+  parent: SojournPsiAsh
+  id: SojournPsiAshKing
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: DecalSpawnerBloodSplatters
+  id: SojournKingGore
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RandomDecalSpawner
+    decals:
+    - splatter
+    radius: 1.5
+    maxDecals: 6
+    prob: 1
+
+# Void-black dragon streaming psionic power. Blasts foes at range, breathes fire, lashes with its tail and flings
+# whoever it strikes. Two shell hounds keep it company.
+- type: entity
+  parent: SojournMobPsiBase
+  id: SojournMobDaskvey
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Sojourn/psi_large.rsi
+    offset: 0,0.5
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: daskvey
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSojournDaskvey
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      7500: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 6
+    baseSprintSpeed: 6
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/slice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    armorPenetration: 0.6
+    damage:
+      types:
+        Slash: 50
+  - type: MeleeThrowOnHit
+    distance: 4
+  - type: FaunaDarkness
+    hiddenVisibility: null
+  - type: HitscanBatteryAmmoProvider
+    proto: SojournDaskveyBlast
+    fireCost: 100
+  - type: Battery
+    maxCharge: 100
+    startingCharge: 100
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 34
+  - type: Gun
+    recoil: 0
+    fireRate: 0.34
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
+  - type: FaunaProjectileBurst
+    projectile: ProjectileFireball
+    windup: 1
+  - type: FaunaAbilities
+    abilities:
+    - action: SojournActionDaskveyFireBreath
+      minRange: 3
+      maxRange: 8
+    - action: SojournActionDaskveyTail
+      minRange: 2
+      maxRange: 8
+    - action: SojournActionDaskveyBump
+      maxRange: 2
+  - type: FaunaDeathSpawn
+    scatter: 0.5
+    popup: fauna-sojourn-psi-crumble
+    spawns:
+    - id: SojournPsiAsh
+    - id: ClothingEyesEyepatch
+      amount: 2
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+    blackboard:
+      VisionRadius: !type:Single
+        8
+      AggroVisionRadius: !type:Single
+        8
+  - type: Speech
+    allowedEmotes: [ SojournEmoteDaskvey ]
+  - type: AutoEmote
+    emotes:
+    - SojournAutoEmoteDaskvey
+  - type: NpcFactionMember
+    factions:
+    - SojournDaskvey
+  - type: FaunaCharge
+    range: 2
+    damage:
+      types:
+        Blunt: 12
+    throw: 4.5
+    throwSpread: 180
+
+- type: entity
+  parent: Pulse
+  id: SojournDaskveyBlast
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicDamage
+    damage:
+      types:
+        Heat: 50
+        Shock: 0
+
+- type: entity
+  parent: BaseBullet
+  id: SojournProjectileDaskveyTail
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/DS13/lurker_spine.rsi
+    layers:
+    - state: spine_projectile
+  - type: Projectile
+    damage:
+      types:
+        Blunt: 13
+  - type: StunOnCollide
+    stunAmount: 2
+    knockdownAmount: 2
+  - type: Ammo
+    muzzleFlash: null
+
+- type: entity
+  parent: DS13ActionBase
+  id: SojournActionDaskveyFireBreath
+  components:
+  - type: EntityTargetAction
+    useDelay: 10
+    range: 8
+    checkCanAccess: false
+    event: !type:FaunaProjectileBurstActionEvent
+      popup: fauna-sojourn-daskvey-fire
+
+- type: entity
+  parent: DS13ActionBase
+  id: SojournActionDaskveyTail
+  components:
+  - type: EntityTargetAction
+    useDelay: 8
+    range: 8
+    checkCanAccess: false
+    event: !type:FaunaProjectileBurstActionEvent
+      projectile: SojournProjectileDaskveyTail
+      popup: fauna-sojourn-daskvey-tail
+
+- type: entity
+  parent: DS13ActionBase
+  id: SojournActionMukwahRoar
+  components:
+  - type: InstantAction
+    useDelay: 12
+    sound:
+      path: /Audio/Animals/bear.ogg
+    event: !type:FaunaShoutActionEvent
+
+- type: entity
+  parent: DS13ActionBase
+  id: SojournActionDaskveyBump
+  components:
+  - type: EntityTargetAction
+    useDelay: 3
+    range: 2
+    checkCanAccess: false
+    event: !type:FaunaChargeActionEvent

@@ -22,12 +22,12 @@ public sealed class InternetSoundCVars
         CVarDef.Create("wf.internet_sound.player_requests", true, CVar.SERVERONLY);
 
     /// <summary>
-    /// How many tracks may be in play at once across the whole server. PA recipients retain assets until
-    /// release, so this bounds both server transfers and client memory: a decoded seven-minute mono track
-    /// at the default rate costs about 18 MB.
+    /// How many tracks may be in play at once across the whole server, ship PA tracks included. PA recipients
+    /// retain assets until release, so this bounds both server transfers and client memory: a decoded
+    /// seven-minute mono track at the default rate costs about 37 MB.
     /// </summary>
     public static readonly CVarDef<int> MaxConcurrent =
-        CVarDef.Create("wf.internet_sound.max_concurrent", 2, CVar.SERVERONLY);
+        CVarDef.Create("wf.internet_sound.max_concurrent", 6, CVar.SERVERONLY);
 
     /// <summary>
     /// Extra tiles beyond a ship's bounds and maximum speaker range in which PA audio is prefetched.
@@ -63,17 +63,18 @@ public sealed class InternetSoundCVars
     /// <summary>
     /// Sample rate the audio is sent at, 8000 to 48000. This is the setting that matters for client memory:
     /// the engine decodes to 16-bit PCM up front, so a track costs rate * channels * 2 bytes a second while
-    /// it plays, regardless of how small the Ogg was. 22050 is plenty for a loudspeaker.
+    /// it plays, regardless of how small the Ogg was. 22050 was enough for a loudspeaker but sounded rough
+    /// on the radio.
     /// </summary>
     public static readonly CVarDef<int> SampleRate =
-        CVarDef.Create("wf.internet_sound.sample_rate", 22050, CVar.SERVERONLY);
+        CVarDef.Create("wf.internet_sound.sample_rate", 44100, CVar.SERVERONLY);
 
     /// <summary>
-    /// Ogg Vorbis bitrate in kbps, 8 to 192. Sets how much is sent to each client: 32 kbps is about
-    /// 240 KB a minute and holds up fine once a speaker has mangled it.
+    /// Ogg Vorbis bitrate in kbps, 8 to 192. Sets how much is sent to each client: 64 kbps is about
+    /// 480 KB a minute, cheap now transfers ride the fast connection.
     /// </summary>
     public static readonly CVarDef<int> Bitrate =
-        CVarDef.Create("wf.internet_sound.bitrate", 32, CVar.SERVERONLY);
+        CVarDef.Create("wf.internet_sound.bitrate", 64, CVar.SERVERONLY);
 
     /// <summary>
     /// Send stereo instead of mono. Doubles client memory and wants a higher bitrate to be worth it.
@@ -89,8 +90,8 @@ public sealed class InternetSoundCVars
         CVarDef.Create("wf.internet_sound.timeout", 120, CVar.SERVERONLY);
 
     /// <summary>
-    /// Largest converted file in megabytes that will be sent to clients. At the default rate and bitrate a
-    /// full-length track is under 2 MB, so this only catches something having gone wrong.
+    /// Largest converted file in megabytes that will be sent to clients. At the default 64 kbps a full-length
+    /// track is about 3.4 MB. A bitrate past about 150 kbps needs this raised, or long tracks are refused.
     /// </summary>
     public static readonly CVarDef<int> MaxSizeMb =
         CVarDef.Create("wf.internet_sound.max_size_mb", 8, CVar.SERVERONLY);

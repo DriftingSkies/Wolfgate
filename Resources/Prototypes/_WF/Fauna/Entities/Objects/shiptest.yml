@@ -1,0 +1,231 @@
+# Loot from the Shiptest fauna. Crusher trophies, gems and cores drop as plain items.
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestMaterialSinew
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/mining.rsi
+    state: sinew
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: ShiptestMaterialSinew
+  id: ShiptestMaterialSinewWolf
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestMaterialHideAshDrake
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/mining.rsi
+    state: dragon_hide
+  - type: Item
+    size: Normal
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestBrimdust
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/mining.rsi
+    state: brimdust
+  - type: Item
+    size: Tiny
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestStrangeCrystal
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/ash_flora.rsi
+    state: unnamed_crystal
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestRegenerativeCoreLegion
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/surgery.rsi
+    state: legion_soul
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: ShiptestRegenerativeCoreLegion
+  id: ShiptestRegenerativeCoreCrystal
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/surgery.rsi
+    state: crystal_heart
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestBearArmor
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/items.rsi
+    state: bear_armor_upgrade
+  - type: Item
+    size: Normal
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestHierophantClub
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/artefacts.rsi
+    state: hierophant_club_ready_beacon
+  - type: Item
+    size: Large
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 15
+    soundHit:
+      path: /Audio/_WF/Fauna/Shiptest/sonic_jackhammer.ogg
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: ShiptestGemBase
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/gems.rsi
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: ShiptestGemBase
+  id: ShiptestGemRupee
+  components:
+  - type: Sprite
+    state: rupee
+
+- type: entity
+  parent: ShiptestGemBase
+  id: ShiptestGemFrostDiamond
+  components:
+  - type: Sprite
+    state: diamond
+
+- type: entity
+  parent: ShiptestGemBase
+  id: ShiptestGemVoid
+  components:
+  - type: Sprite
+    state: void
+
+- type: entity
+  parent: ShiptestGemBase
+  id: ShiptestGemPhoron
+  components:
+  - type: Sprite
+    state: phoron
+
+- type: entity
+  parent: ShiptestGemBase
+  id: ShiptestGemAmber
+  components:
+  - type: Sprite
+    state: amber
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: ShiptestTrophyBase
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/artefacts.rsi
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyGoliathTentacle
+  components:
+  - type: Sprite
+    state: goliath_tentacle
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyElderTentacle
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/elite_trophies.rsi
+    state: elder_tentacle
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyWatcherWing
+  components:
+  - type: Sprite
+    state: watcher_wing
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyWolfEar
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/elite_trophies.rsi
+    state: torn_ear
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyFang
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/elite_trophies.rsi
+    state: fang
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyLobsterClaw
+  components:
+  - type: Sprite
+    state: lobster_claw
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyBrimdemonFang
+  components:
+  - type: Sprite
+    state: brimdemon_fang
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyVortexTalisman
+  components:
+  - type: Sprite
+    state: vortex_talisman
+
+- type: entity
+  parent: ShiptestTrophyBase
+  id: ShiptestTrophyTailSpike
+  components:
+  - type: Sprite
+    state: tail_spike
+  - type: Sharp
+  - type: MeleeWeapon
+    damage:
+      types:
+        Slash: 10
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Slash: 15
+
+- type: entity
+  parent: BaseItem
+  id: ShiptestFuguGland
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/Shiptest/surgery.rsi
+    state: fugu_gland
+  - type: Item
+    size: Normal

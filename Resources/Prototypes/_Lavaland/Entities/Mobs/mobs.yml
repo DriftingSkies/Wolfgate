@@ -1,0 +1,63 @@
+# WOLFGATE(Fauna) START: ported from Goob Station
+- type: entity
+  id: LavalandMobAshWhelp
+  parent: BaseMobAsteroid
+  components:
+  - type: Physics
+    bodyType: KinematicController
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 300
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _Lavaland/Mobs/lavaland_monsters.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: ash_whelp
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: ash_whelp
+      Dead:
+        Base: ash_whelp_dead
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    soundHit:
+      path: /Audio/Effects/demon_attack1.ogg
+    animation: WeaponArcBite
+    damage:
+        types:
+          Slash: 15
+          Structural: 25
+  - type: Tag
+    tags:
+    - CannotSuicide
+  - type: CombatMode
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Hierophant
+# WOLFGATE END

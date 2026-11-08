@@ -88,7 +88,8 @@ public sealed class WolfmedIpcDeathTest : WolfmedGameTest
         }
 
         var (untreated, putOut, patter) = (bodies[0], bodies[1], bodies[2]);
-        await RunSeconds(1);
+        // A new body joins the core-heat buckets at the next period and ticks within the one after: up to 2 s.
+        await RunSeconds(3);
         await Server.WaitPost(() =>
         {
             foreach (var body in bodies)

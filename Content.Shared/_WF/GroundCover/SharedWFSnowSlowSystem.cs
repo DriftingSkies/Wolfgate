@@ -23,15 +23,26 @@ public abstract class SharedWFSnowSlowSystem : EntitySystem
     /// <summary>Where each mob's slowdown was last worked out, and what it came to.</summary>
     private readonly Dictionary<EntityUid, (EntityUid Grid, Vector2i Tile, int Version, float Speed)> _tracked = new();
 
+    /// <summary>Mobs on a snow grid at the last full scan; the ticks between scans only visit these.</summary>
+    private readonly HashSet<EntityUid> _onSnowGrid = new();
+
     private readonly List<EntityUid> _stale = new();
+    private readonly List<EntityUid> _urgent = new();
     private EntityQuery<MapGridComponent> _gridQuery;
+    private EntityQuery<InputMoverComponent> _inputQuery;
+    private EntityQuery<MovementSpeedModifierComponent> _moveQuery;
+    private EntityQuery<TransformComponent> _xformQuery;
     private TimeSpan _nextPrune;
+    private int _scanIn;
     private bool _forget;
 
     public override void Initialize()
     {
         base.Initialize();
         _gridQuery = GetEntityQuery<MapGridComponent>();
+        _inputQuery = GetEntityQuery<InputMoverComponent>();
+        _moveQuery = GetEntityQuery<MovementSpeedModifierComponent>();
+        _xformQuery = GetEntityQuery<TransformComponent>();
         SubscribeLocalEvent<MovementSpeedModifierComponent, RefreshMovementSpeedModifiersEvent>(OnRefresh);
         SubscribeLocalEvent<WFSnowFootstepEvent>(OnFootstep);
         UpdatesBefore.Add(typeof(SharedPhysicsSystem));
@@ -41,6 +52,7 @@ public abstract class SharedWFSnowSlowSystem : EntitySystem
     {
         base.Shutdown();
         _tracked.Clear();
+        _onSnowGrid.Clear();
     }
 
     /// <summary>
@@ -61,6 +73,17 @@ public abstract class SharedWFSnowSlowSystem : EntitySystem
 
     /// <summary>Goes up whenever the depths this side reads change, so standing mobs are looked at again.</summary>
     protected abstract int SnowVersion { get; }
+
+    /// <summary>Goes up whenever the depths around a tile change; by default <see cref="SnowVersion"/>.</summary>
+    protected virtual int AreaVersion(EntityUid grid, Vector2i tile) => SnowVersion;
+
+    /// <summary>Ticks between full scans of every mover; the ticks between only visit mobs on snow grids.</summary>
+    protected virtual int ScanTicks => 1;
+
+    /// <summary>Mobs visited every tick even between full scans, such as player-controlled ones.</summary>
+    protected virtual void GetUrgent(List<EntityUid> mobs)
+    {
+    }
 
     /// <summary>Whether this side works out a mob's slowdown: every mob on the server, predicted ones on the client.</summary>
     protected abstract bool Tracks(EntityUid mob);
@@ -86,33 +109,36 @@ public abstract class SharedWFSnowSlowSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var version = SnowVersion;
-        var query = EntityQueryEnumerator<InputMoverComponent, MovementSpeedModifierComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out _, out var move, out var xform))
+        if (_forget || --_scanIn <= 0)
         {
-            if (!Tracks(uid))
-                continue;
-
-            var on = TileUnder(xform, out var grid, out var tile);
-            var had = _tracked.TryGetValue(uid, out var last);
-            if (!on)
+            _scanIn = ScanTicks;
+            _onSnowGrid.Clear();
+            var query = EntityQueryEnumerator<InputMoverComponent, MovementSpeedModifierComponent, TransformComponent>();
+            while (query.MoveNext(out var uid, out _, out var move, out var xform))
             {
-                if (_forget || had && last.Speed < 1f)
-                    _speed.RefreshMovementSpeedModifiers(uid, move);
-
-                if (had)
-                    _tracked.Remove(uid);
-
-                continue;
+                if (Visit(uid, move, xform))
+                    _onSnowGrid.Add(uid);
+            }
+        }
+        else
+        {
+            foreach (var uid in _onSnowGrid)
+            {
+                if (_moveQuery.TryComp(uid, out var move) && _xformQuery.TryComp(uid, out var xform))
+                    Visit(uid, move, xform);
             }
 
-            if (had && last.Grid == grid && last.Tile == tile && last.Version == version)
-                continue;
-
-            var speed = WFSnowCover.SpeedAt(WFSnowCover.MoveDepth(tile, t => TileDepth(uid, grid, t)));
-            _tracked[uid] = (grid, tile, version, speed);
-            if (_forget || (had ? last.Speed != speed : speed < 1f))
-                _speed.RefreshMovementSpeedModifiers(uid, move);
+            _urgent.Clear();
+            GetUrgent(_urgent);
+            foreach (var uid in _urgent)
+            {
+                if (!_onSnowGrid.Contains(uid)
+                    && _inputQuery.HasComp(uid)
+                    && _moveQuery.TryComp(uid, out var move)
+                    && _xformQuery.TryComp(uid, out var xform)
+                    && Visit(uid, move, xform))
+                    _onSnowGrid.Add(uid);
+            }
         }
 
         _forget = false;
@@ -133,6 +159,34 @@ public abstract class SharedWFSnowSlowSystem : EntitySystem
         {
             _tracked.Remove(uid);
         }
+    }
+
+    /// <summary>Sets one mob's slowdown if its tile or the snow around it changed. True when it stands on a snow grid.</summary>
+    private bool Visit(EntityUid uid, MovementSpeedModifierComponent move, TransformComponent xform)
+    {
+        if (!Tracks(uid))
+            return false;
+
+        var on = TileUnder(xform, out var grid, out var tile);
+        if (!on)
+        {
+            if (_tracked.Remove(uid, out var gone) && gone.Speed < 1f || _forget)
+                _speed.RefreshMovementSpeedModifiers(uid, move);
+
+            return false;
+        }
+
+        var version = AreaVersion(grid, tile);
+        var had = _tracked.TryGetValue(uid, out var last);
+        if (had && last.Grid == grid && last.Tile == tile && last.Version == version)
+            return true;
+
+        var speed = WFSnowCover.SpeedAt(WFSnowCover.MoveDepth(tile, t => TileDepth(uid, grid, t)));
+        _tracked[uid] = (grid, tile, version, speed);
+        if (_forget || (had ? last.Speed != speed : speed < 1f))
+            _speed.RefreshMovementSpeedModifiers(uid, move);
+
+        return true;
     }
 
     /// <summary>The grid tile a mob stands on, if that grid has snow.</summary>

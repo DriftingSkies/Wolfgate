@@ -1,0 +1,120 @@
+- files: ["deathclawattack.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/weapons/deathclawattack.ogg"
+- files: ["deathclaw_roar.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/voice/deathclaw_roar.ogg"
+- files: ["hiss4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/voice/hiss4.ogg"
+- files: ["maul.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/creatures/maul.ogg"
+- files: ["i_see_you2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/i_see_you2.ogg"
+- files: ["im_here1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/im_here1.ogg"
+- files: ["behind_you1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/behind_you1.ogg"
+- files: ["over_here3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/over_here3.ogg"
+- files: ["turn_around1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/turn_around1.ogg"
+- files: ["insect_battle_bite.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/voice/insect_battle_bite.ogg"
+- files: ["insect_battle_screeching.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/voice/insect_battle_screeching.ogg"
+- files: ["unknown_spacegun_burn.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/weapons/guns/unknown_spacegun_burn.ogg"
+- files: ["unknown_spacegun_melt.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/weapons/guns/unknown_spacegun_melt.ogg"
+- files: ["unknown_spacegun_incinerate.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/weapons/guns/unknown_spacegun_incinerate.ogg"
+- files: ["unknown_spacegun_vaporize.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/weapons/guns/unknown_spacegun_vaporize.ogg"
+- files: ["robot_talk_light1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/machines/robots/robot_talk_light1.ogg"
+- files: ["robot_talk_light2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/machines/robots/robot_talk_light2.ogg"
+- files: ["robot_talk_heavy4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/machines/robots/robot_talk_heavy4.ogg"
+- files: ["crumble1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/crumble1.ogg"
+- files: ["crumble2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/crumble2.ogg"
+- files: ["crumble3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/crumble3.ogg"
+- files: ["crumble4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/crumble4.ogg"
+- files: ["crumble5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/crumble5.ogg"
+- files: ["hell_screech.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/hell_screech.ogg"
+- files: ["growl1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/growl1.ogg"
+- files: ["growl2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/growl2.ogg"
+- files: ["growl3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/hallucinations/growl3.ogg"
+- files: ["acid_spit.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/creatures/acid_spit.ogg"
+- files: ["splat.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/effects/splat.ogg"
+- files: ["shriek1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Sojourn Station"
+  source: "https://github.com/sojourn-13/sojourn-station/blob/c4d39bd4efea1cf25a61a39474b3835ade953bcd/sound/voice/shriek1.ogg"

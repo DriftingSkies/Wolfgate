@@ -1,0 +1,250 @@
+# Polaris fauna emotes, fired by AutoEmote at the source speak_chance.
+
+- type: emote
+  id: PolarisFrostflyIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-frostfly-emote-1, fauna-polaris-frostfly-emote-2, fauna-polaris-frostfly-emote-3, fauna-polaris-frostfly-emote-4, fauna-polaris-frostfly-emote-5, fauna-polaris-frostfly-emote-6 ]
+
+- type: autoEmote
+  id: PolarisFrostflyIdle
+  emote: PolarisFrostflyIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisTymisianMothIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-moth-emote-1, fauna-polaris-moth-emote-2, fauna-polaris-moth-emote-3, fauna-polaris-moth-emote-4, fauna-polaris-moth-emote-5, fauna-polaris-moth-emote-6 ]
+
+- type: autoEmote
+  id: PolarisTymisianMothIdle
+  emote: PolarisTymisianMothIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisSavikIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-savik-emote-1, fauna-polaris-savik-emote-2, fauna-polaris-savik-emote-3, fauna-polaris-savik-emote-4 ]
+
+- type: autoEmote
+  id: PolarisSavikIdle
+  emote: PolarisSavikIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisCrabIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-crab-emote-1, fauna-polaris-crab-emote-2 ]
+
+- type: autoEmote
+  id: PolarisCrabIdle
+  emote: PolarisCrabIdle
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisKururakIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-kururak-emote-1, fauna-polaris-kururak-emote-2, fauna-polaris-kururak-emote-3, fauna-polaris-kururak-emote-4, fauna-polaris-kururak-emote-5, fauna-polaris-kururak-emote-6, fauna-polaris-kururak-emote-7, fauna-polaris-kururak-emote-8 ]
+
+- type: autoEmote
+  id: PolarisKururakIdle
+  emote: PolarisKururakIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisGrafadrekaIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-grafadreka-emote-1, fauna-polaris-grafadreka-emote-2, fauna-polaris-grafadreka-emote-3, fauna-polaris-grafadreka-emote-4, fauna-polaris-grafadreka-emote-5, fauna-polaris-grafadreka-emote-6, fauna-polaris-grafadreka-emote-7, fauna-polaris-grafadreka-emote-8, fauna-polaris-grafadreka-emote-9 ]
+
+- type: autoEmote
+  id: PolarisGrafadrekaIdle
+  emote: PolarisGrafadrekaIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisDrakeRoar
+  name: fauna-polaris-drake-roar-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-roar ]
+  chatTriggers: [ droar ]
+
+- type: emote
+  id: PolarisDrakeGrumble
+  name: fauna-polaris-drake-grumble-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-grumble ]
+  chatTriggers: [ dgrumble ]
+
+- type: emote
+  id: PolarisDrakeHuff
+  name: fauna-polaris-drake-huff-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-huff ]
+  chatTriggers: [ dhuff ]
+
+- type: emote
+  id: PolarisDrakeRattle
+  name: fauna-polaris-drake-rattle-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-rattle ]
+  chatTriggers: [ drattle ]
+
+- type: emote
+  id: PolarisDrakeRumble
+  name: fauna-polaris-drake-rumble-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-rumble ]
+  chatTriggers: [ drumble ]
+
+- type: emote
+  id: PolarisDrakeSneeze
+  name: fauna-polaris-drake-sneeze-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-sneeze ]
+  chatTriggers: [ dsneeze ]
+
+- type: emote
+  id: PolarisDrakeHeadbutt
+  name: fauna-polaris-drake-headbutt-name
+  available: false
+  chatMessages: [ fauna-polaris-drake-headbutt ]
+  chatTriggers: [ headbutt ]
+
+- type: emoteSounds
+  id: PolarisGrafadreka
+  sounds:
+    PolarisDrakeRoar:
+      path: /Audio/_WF/Fauna/Polaris/drake_roar.ogg
+    PolarisDrakeGrumble:
+      path: /Audio/_WF/Fauna/Polaris/drake_grumble.ogg
+    PolarisDrakeHuff:
+      path: /Audio/_WF/Fauna/Polaris/drake_huff.ogg
+    PolarisDrakeRattle:
+      path: /Audio/_WF/Fauna/Polaris/drake_rattle.ogg
+    PolarisDrakeRumble:
+      path: /Audio/_WF/Fauna/Polaris/drake_rumble.ogg
+    PolarisDrakeSneeze:
+      path: /Audio/_WF/Fauna/Polaris/drake_sneeze.ogg
+    PolarisDrakeHeadbutt:
+      path: /Audio/Effects/thudswoosh.ogg
+
+- type: emote
+  id: PolarisSpiderIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-spider-emote-1 ]
+
+- type: autoEmote
+  id: PolarisSpiderIdle
+  emote: PolarisSpiderIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisSakimmIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-sakimm-emote-1, fauna-polaris-sakimm-emote-2, fauna-polaris-sakimm-emote-3, fauna-polaris-sakimm-emote-4, fauna-polaris-sakimm-emote-5 ]
+
+- type: autoEmote
+  id: PolarisSakimmIdle
+  emote: PolarisSakimmIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisSiffetIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-siffet-emote-1, fauna-polaris-siffet-emote-2, fauna-polaris-siffet-emote-3, fauna-polaris-siffet-emote-4, fauna-polaris-siffet-emote-5 ]
+
+- type: autoEmote
+  id: PolarisSiffetIdle
+  emote: PolarisSiffetIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisBlobSporeIdle
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages: [ fauna-polaris-spore-emote-1, fauna-polaris-spore-emote-2 ]
+
+- type: autoEmote
+  id: PolarisBlobSporeIdle
+  emote: PolarisBlobSporeIdle
+  interval: 2.0
+  chance: 0.0033
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: PolarisHatchlingGrowl
+  name: fauna-polaris-hatchling-growl-name
+  available: false
+  chatMessages: [ fauna-polaris-hatchling-growl ]
+  chatTriggers: [ hgrowl ]
+
+- type: emote
+  id: PolarisHatchlingWhine
+  name: fauna-polaris-hatchling-whine-name
+  available: false
+  chatMessages: [ fauna-polaris-hatchling-whine ]
+  chatTriggers: [ hwhine ]
+
+- type: emote
+  id: PolarisHatchlingYelp
+  name: fauna-polaris-hatchling-yelp-name
+  available: false
+  chatMessages: [ fauna-polaris-hatchling-yelp ]
+  chatTriggers: [ hyelp ]
+
+- type: emote
+  id: PolarisHatchlingWarn
+  name: fauna-polaris-hatchling-warn-name
+  available: false
+  chatMessages: [ fauna-polaris-hatchling-warn ]
+  chatTriggers: [ hwarn ]
+
+- type: emoteSounds
+  id: PolarisGrafadrekaHatchling
+  sounds:
+    PolarisHatchlingGrowl:
+      path: /Audio/_WF/Fauna/Polaris/hatchling_growl.ogg
+    PolarisHatchlingWhine:
+      path: /Audio/_WF/Fauna/Polaris/hatchling_whine.ogg
+    PolarisHatchlingYelp:
+      path: /Audio/_WF/Fauna/Polaris/hatchling_yelp.ogg
+    PolarisHatchlingWarn:
+      path: /Audio/_WF/Fauna/Polaris/hatchling_warn.ogg
+    PolarisDrakeSneeze:
+      path: /Audio/_WF/Fauna/Polaris/drake_sneeze.ogg

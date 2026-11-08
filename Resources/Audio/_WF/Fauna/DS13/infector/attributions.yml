@@ -1,0 +1,96 @@
+- files: ["infector_attack_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_attack_1.ogg"
+- files: ["infector_attack_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_attack_2.ogg"
+- files: ["infector_attack_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_attack_3.ogg"
+- files: ["infector_attack_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_attack_4.ogg"
+- files: ["infector_attack_5.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_attack_5.ogg"
+- files: ["infector_death_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_death_1.ogg"
+- files: ["infector_death_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_death_2.ogg"
+- files: ["infector_death_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_death_3.ogg"
+- files: ["infector_death_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_death_4.ogg"
+- files: ["infector_shout_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_1.ogg"
+- files: ["infector_shout_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_2.ogg"
+- files: ["infector_shout_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_3.ogg"
+- files: ["infector_shout_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_4.ogg"
+- files: ["infector_pain_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_pain_1.ogg"
+- files: ["infector_pain_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_pain_2.ogg"
+- files: ["infector_pain_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_pain_3.ogg"
+- files: ["infector_pain_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_pain_4.ogg"
+- files: ["infector_shout_long_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_long_1.ogg"
+- files: ["infector_shout_long_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_long_2.ogg"
+- files: ["infector_shout_long_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/creatures/necromorph/infector/infector_shout_long_3.ogg"
+- files: ["infector_footstep_1.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/infector_footstep_1.ogg"
+- files: ["infector_footstep_2.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/infector_footstep_2.ogg"
+- files: ["infector_footstep_3.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/infector_footstep_3.ogg"
+- files: ["infector_footstep_4.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from DS13-2.0"
+  source: "https://github.com/DS-13-Dev-Team/DS13-2.0/blob/4c8813536f72a1e2efafb661b62821bb62a5a514/deadspace/sound/effects/footstep/infector_footstep_4.ogg"

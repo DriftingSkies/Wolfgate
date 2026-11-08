@@ -104,7 +104,8 @@ public sealed partial class HealingSystem : EntitySystem
         }
 
         // Restores missing blood
-        if (healing.ModifyBloodLevel != 0)
+        // WOLFGATE(MeridianTraits): a hemophage keeps a pack's blood past a full bloodstream
+        if (healing.ModifyBloodLevel != 0 && !WfHemophageTakesBlood(entity.Owner, healing.ModifyBloodLevel))
             _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, healing.ModifyBloodLevel);
 
         var healed = _damageable.TryChangeDamage(entity.Owner, healing.Damage, true, origin: args.User, canSever: false); // Shitmed Change

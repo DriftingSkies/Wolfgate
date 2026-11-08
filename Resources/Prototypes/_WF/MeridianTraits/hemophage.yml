@@ -1,0 +1,242 @@
+# Hemophagia, ported from Meridian Rift's quirk. The trait swaps the heart for a pulsating tumor; the tumor makes the
+# body a hemophage and corrupts its liver, lungs and stomach. Only species with ordinary red blood can host it.
+
+- type: trait
+  id: WFHemophagia
+  name: trait-wf-hemophagia-name
+  description: trait-wf-hemophagia-desc
+  category: Quirks
+  speciesBlacklist:
+  - Arachnid
+  - Asakim
+  - Avali
+  - Chitinid
+  - Diona
+  - Gingerbread
+  - Goblin
+  - Hydrakin
+  - Moth
+  - Resomi
+  - Shadekin
+  - Skeleton
+  - Skrell
+  - SlimePerson
+  - Thaven
+  - Vox
+  biotypeBlacklist:
+  - Synthetic
+  mutuallyExclusiveTraits:
+  - WFHemophagiaMasquerade
+  components:
+  - type: WFHemophageTrait
+
+- type: trait
+  id: WFHemophagiaMasquerade
+  name: trait-wf-hemophagia-masquerade-name
+  description: trait-wf-hemophagia-masquerade-desc
+  category: Quirks
+  speciesBlacklist:
+  - Arachnid
+  - Asakim
+  - Avali
+  - Chitinid
+  - Diona
+  - Gingerbread
+  - Goblin
+  - Hydrakin
+  - Moth
+  - Resomi
+  - Shadekin
+  - Skeleton
+  - Skrell
+  - SlimePerson
+  - Thaven
+  - Vox
+  biotypeBlacklist:
+  - Synthetic
+  mutuallyExclusiveTraits:
+  - WFHemophagia
+  components:
+  - type: WFHemophageTrait
+    masquerade: true
+
+- type: entity
+  id: WFOrganHemophageTumor
+  parent: OrganHumanHeart
+  components:
+  - type: Organ
+    removable: false
+  - type: WFHemophageTumor
+  - type: Sprite
+    sprite: _WF/MeridianTraits/hemophage_organs.rsi
+    layers:
+    - state: tumor-on
+      map: [ "tumor" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WFHemophageTumorVisuals.Dormant:
+        tumor:
+          True: { state: tumor-dormant-on }
+          False: { state: tumor-on }
+  - type: Item
+    sprite: Mobs/Species/Human/organs.rsi
+    heldPrefix: heart
+
+# Wolfgate bodies have no tongue slot; the trait gives the head one for this. Once corrupted it grants Drain Victim.
+- type: entity
+  id: WFOrganHemophageTongue
+  parent: OrganHumanTongue
+  components:
+  - type: Organ
+    slotId: tongue
+  - type: Sprite
+    sprite: _WF/MeridianTraits/hemophage_organs.rsi
+    state: tongue
+
+- type: Tag
+  id: WFBloodyFood
+
+# Actions
+
+- type: entity
+  id: WFActionHemophageDormant
+  components:
+  - type: InstantAction
+    useDelay: 120
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/MeridianTraits/hemophage_actions.rsi
+      state: dormant
+    iconOn:
+      sprite: _WF/MeridianTraits/hemophage_actions.rsi
+      state: dormant_on
+    event: !type:WFHemophageDormantActionEvent
+
+- type: entity
+  id: WFActionHemophageRegen
+  components:
+  - type: InstantAction
+    useDelay: 2
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/MeridianTraits/hemophage_actions.rsi
+      state: regen
+    event: !type:WFHemophageRegenActionEvent
+
+- type: entity
+  id: WFActionHemophageClot
+  components:
+  - type: InstantAction
+    useDelay: 10
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/MeridianTraits/hemophage_actions.rsi
+      state: clot
+    event: !type:WFHemophageClotActionEvent
+
+- type: entity
+  id: WFActionHemophageMaster
+  components:
+  - type: InstantAction
+    useDelay: 2
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/MeridianTraits/hemophage_actions.rsi
+      state: master
+    event: !type:WFHemophageMasterActionEvent
+
+- type: entity
+  id: WFActionHemophageDrain
+  components:
+  - type: InstantAction
+    useDelay: 10 # well past the 3 s bite, so a victim gets a window to break free between bites
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WF/MeridianTraits/hemophage_actions.rsi
+      state: drain
+    event: !type:WFHemophageDrainActionEvent
+
+# Alerts
+
+- type: alert
+  id: WFHemophageBlood
+  clickEvent: !type:WFHemophageBloodAlertEvent
+  icons:
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood0
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood1
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood2
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood3
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood4
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood5
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood6
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood7
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood8
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood9
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: blood10
+  minSeverity: 0
+  maxSeverity: 10
+  name: wf-alert-hemophage-blood-name
+  description: wf-alert-hemophage-blood-desc
+
+- type: alert
+  id: WFHemophageSatiated
+  icons:
+  - sprite: /Textures/Interface/Alerts/bleed.rsi
+    state: bleed10
+  name: wf-alert-hemophage-satiated-name
+  description: wf-alert-hemophage-satiated-desc
+
+- type: alert
+  id: WFHemophageRegen
+  icons:
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: hemokinetic_regen
+  name: wf-alert-hemophage-regen-name
+  description: wf-alert-hemophage-regen-desc
+
+- type: alert
+  id: WFHemophageMaster
+  icons:
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: master_of_the_house
+  name: wf-alert-hemophage-master-name
+  description: wf-alert-hemophage-master-desc
+
+- type: alert
+  id: WFHemophageSlave
+  icons:
+  - sprite: /Textures/_WF/MeridianTraits/hemophage_alerts.rsi
+    state: slave_to_the_tumor
+  name: wf-alert-hemophage-slave-name
+  description: wf-alert-hemophage-slave-desc
+
+# Mail goodie: Meridian sends a hemophage a blood bag now and then. Four packs are about one Meridian bag of blood.
+- type: entity
+  parent: Bloodpack
+  id: WFBloodpack4
+  suffix: 4
+  components:
+  - type: Stack
+    count: 4
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: BaseMail
+  id: WFMailHemophageBlood
+  suffix: hemophage blood
+  components:
+  - type: Mail
+    contents:
+    - id: WFBloodpack4

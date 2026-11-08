@@ -1,3 +1,4 @@
+using Content.Client._WF.Branding;
 using System.Linq;
 using System.Numerics;
 using Content.Client.Lobby;
@@ -44,6 +45,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     {
         IoCManager.InjectDependencies(this);
         Title = Text("title");
+        WFWindowBranding.Apply(this);
         MinSize = new Vector2(480, 360);
         SetSize = new Vector2(1120, 780);
         _system = _entities.System<WFRoundSetupClientSystem>();

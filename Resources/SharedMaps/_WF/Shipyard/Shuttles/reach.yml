@@ -18940,7 +18940,7 @@ entities:
     - type: Transform
       parent: 2
       pos: 2.5,-20.5
-- proto: WFWallAdamantite
+- proto: WFWallDurasteel
   entities:
   - uid: 20
     components:

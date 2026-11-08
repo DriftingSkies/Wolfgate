@@ -339,6 +339,8 @@ public sealed partial class CMArmorSystem : EntitySystem
             }
         }
 
+        // WOLFGATE: facing armour is kept apart so non-xeno mobs can use it too
+        var facing = 0;
         if (args.Origin is { } origin &&
             Exists(origin) &&
             origin.IsValid() &&
@@ -354,19 +356,23 @@ public sealed partial class CMArmorSystem : EntitySystem
                 var dir = _transform.GetWorldRotation(ent).GetCardinalDir();
                 if (dir == diff)
                 {
-                    ev.XenoArmor += ev.FrontalArmor;
+                    facing = ev.FrontalArmor;
                 }
                 else
                 {
                     var perpendiculars = diff.GetPerpendiculars();
                     if (dir == perpendiculars.First || dir == perpendiculars.Second)
-                        ev.XenoArmor += ev.SideArmor;
+                        facing = ev.SideArmor;
                 }
             }
         }
 
+        ev.XenoArmor += facing;
         if (ignoreXenoArmor && !immuneToAP)
+        {
             ev.XenoArmor = 0;
+            facing = 0;
+        }
 
         //Default modifier
         var mod = EnsureComp<RMCArmorModifierComponent>(ent);
@@ -377,11 +383,11 @@ public sealed partial class CMArmorSystem : EntitySystem
             // WOLFGATE: RMCBulletComponent isn't ported; any projectile counts as a bullet
             if (HasComp<ProjectileComponent>(args.Tool))
             {
-                Resist(args.Damage, ev.Bullet, ArmorGroup, mod.RangedArmorModifier);
+                Resist(args.Damage, ev.Bullet + facing, ArmorGroup, mod.RangedArmorModifier);
             }
             else if (HasComp<MeleeWeaponComponent>(args.Tool))
             {
-                Resist(args.Damage, ev.Melee, ArmorGroup, mod.MeleeArmorModifier);
+                Resist(args.Damage, ev.Melee + facing, ArmorGroup, mod.MeleeArmorModifier);
             }
             Resist(args.Damage, ev.Bio, BioGroup, mod.RangedArmorModifier);
         }

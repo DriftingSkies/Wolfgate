@@ -45,12 +45,12 @@
   - WeaponRifleVympelRogue
   - WeaponSubMachineGunC20rRogue
   - WeaponRevolverPythonRogue
-#  - WeaponRifleM90Rogue
+  - WeaponRifleM90Rogue # WOLFGATE: its tech disk promised it, but the lathes never listed it
 #  - WeaponSubMachineGunAtreidesRogue
   - WeaponLauncherPanzeroRogue
-#  - WeaponShotgunBulldogRogue
-#  - WeaponSniperHristovRogue
-#  - WeaponSubMachineGunMla73Rogue
+  - WeaponShotgunBulldogRogue # WOLFGATE: its tech disk promised it, but the lathes never listed it
+  - WeaponSniperHristovRogue # WOLFGATE: its tech disk promised it, but the lathes never listed it
+  - WeaponSubMachineGunMla73Rogue # WOLFGATE: its tech disk promised it, but the lathes never listed it
 #  - WeaponDEWBasilisk
   - WeaponShotgunSultanPulsar
 #  - WeaponLightMachineGunL6Rogue

@@ -2,6 +2,8 @@
   parent: BaseItem
   id: WFMonolithShard
   components:
+  - type: Contraband
+    severity: WFUnlawful
   - type: Sprite
     sprite: _WF/Remade/Objects/shard.rsi
     layers:

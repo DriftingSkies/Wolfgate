@@ -140,7 +140,9 @@ public sealed partial class BloodstreamSystem : EntitySystem
                 continue;
 
             // Adds blood to their blood level if it is below the maximum; Blood regeneration. Must be alive.
-            if (bloodSolution.Volume < bloodSolution.MaxVolume && !_mobStateSystem.IsDead(uid))
+            // WOLFGATE(MeridianTraits): a hemophage's blood only comes back by feeding
+            if (bloodSolution.Volume < bloodSolution.MaxVolume && !_mobStateSystem.IsDead(uid)
+                && !HasComp<Content.Shared._WF.MeridianTraits.Hemophage.WFHemophageComponent>(uid))
             {
                 // WOLFGATE(Wolfmed): M3: an impaired heart regenerates at its band's factor (plan §8); 1 everywhere else.
                 TryModifyBloodLevel(uid, bloodstream.BloodRefreshAmount * _wolfmedLife.BloodRegenFactor(uid), bloodstream);

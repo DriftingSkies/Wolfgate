@@ -1,0 +1,125 @@
+# Creatures converted from Voidcrew.
+
+- type: entity
+  parent: [ MobHivelord, FaunaMobCore ]
+  id: VoidcrewMobCrystalHivelord
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Voidcrew/crystal_hivelord.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hivelord_inactive
+    - map: [ "aggro" ]
+      state: hivelord
+      visible: false
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hivelord_inactive
+      Dead:
+        Base: hivelord_dead
+  - type: GenericVisualizer
+    visuals:
+      enum.FaunaAggroVisuals.Aggro:
+        enum.DamageStateVisualLayers.Base:
+          True: { visible: false }
+          False: { visible: true }
+        aggro:
+          True: { visible: true }
+          False: { visible: false }
+  - type: FaunaAggroCry
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: Gun
+    recoil: 0
+    fireRate: 0.17
+    selectedMode: SemiAuto
+    showExamineText: false
+    availableModes:
+    - SemiAuto
+    soundGunshot: null
+  - type: BasicEntityAmmoProvider
+    proto: VoidcrewMobCrystalHivelordBrood
+    capacity: 1
+    count: 1
+  - type: Destructible
+    thresholds: []
+  - type: FaunaDeathSpawn
+    spawns:
+    - id: VoidcrewEffectCrystalBroodTelegraph
+      amount: 3
+  - type: FaunaHurt
+    spawn: VoidcrewEffectCrystalBroodTelegraph
+    cooldown: 5
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      KiteRange: !type:Single
+        4
+      VisionRadius: !type:Single
+        4
+      AggroVisionRadius: !type:Single
+        5
+
+- type: entity
+  parent: [ MobHivelordBrood, FaunaMobCore ]
+  id: VoidcrewMobCrystalHivelordBrood
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Voidcrew/crystal_hivelord.rsi
+    layers:
+    - state: brood
+      color: "#4FB8FF"
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 1.0
+    range: 0.75
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 2
+  - type: MobCollision
+    fixtureId: none
+  - type: TimedDespawn
+    lifetime: 10
+  - type: SpawnOnDespawn
+    prototype: VoidcrewEffectCrystalBroodFade
+
+# The brood lands after the mark.
+- type: entity
+  parent: RMCEffectXenoTelegraphGreen
+  id: VoidcrewEffectCrystalBroodTelegraph
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    color: "#4FB8FF"
+    state: xeno_telegraph_base_small
+  - type: TimedDespawn
+    lifetime: 0.6
+  - type: SpawnOnDespawn
+    prototype: VoidcrewMobCrystalHivelordBrood
+
+- type: entity
+  id: VoidcrewEffectCrystalBroodFade
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/Voidcrew/crystal_hivelord.rsi
+    drawdepth: Effects
+    state: brood
+    color: "#4FB8FF66"
+  - type: TimedDespawn
+    lifetime: 0.4
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu

@@ -36,7 +36,7 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
 
     /// <summary>Kelvin over its target at which a recovering core counts as arrived.</summary>
     private const float CoreSnap = 0.01f;
-    private readonly List<EntityUid> _due = new();
+    private readonly WFTickBuckets _due = new();
 
     // Cached cvars, kept current by Subs.CVar.
     private float _consciousnessHysteresis;
@@ -82,15 +82,16 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
         var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
         var seconds = period / (float) _timing.TickRate;
         var curTick = _timing.CurTick;
-        _due.Clear();
-        var query = EntityQueryEnumerator<WolfmedConsciousnessComponent, TemperatureComponent>();
-        while (query.MoveNext(out var uid, out _, out _))
+        if (_due.Begin(curTick, period))
         {
-            if (WFTickSpread.Due(uid, curTick, period))
+            var query = EntityQueryEnumerator<WolfmedConsciousnessComponent, TemperatureComponent>();
+            while (query.MoveNext(out var uid, out _, out _))
+            {
                 _due.Add(uid);
+            }
         }
 
-        foreach (var body in _due)
+        foreach (var body in _due.Due)
         {
             // An NPC body no player is near holds still until someone comes, as the life tick does.
             if (!TerminatingOrDeleted(body) && !_dormancy.BodySleeps(body))

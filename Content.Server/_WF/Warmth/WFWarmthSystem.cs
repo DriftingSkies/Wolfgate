@@ -81,7 +81,7 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
     /// <summary>Under this many moles the tile counts as vacuum and has no temperature.</summary>
     private const float VacuumMoles = 0.5f;
 
-    private readonly List<EntityUid> _due = new();
+    private readonly WFTickBuckets _due = new();
     private readonly HashSet<Entity<EntityRadiusHeaterComponent>> _fires = new();
     private readonly HashSet<EntityUid> _heaterMaps = new();
     private TimeSpan _nextHeaterScan;
@@ -128,15 +128,16 @@ public sealed partial class WFWarmthSystem : SharedWFWarmthSystem
         var period = WFTickSpread.Period(_timing, (float) TickInterval.TotalSeconds);
         var seconds = period / (float) _timing.TickRate;
         var curTick = _timing.CurTick;
-        _due.Clear();
-        var query = EntityQueryEnumerator<TemperatureComponent, MobStateComponent>();
-        while (query.MoveNext(out var uid, out _, out _))
+        if (_due.Begin(curTick, period))
         {
-            if (WFTickSpread.Due(uid, curTick, period))
+            var query = EntityQueryEnumerator<TemperatureComponent, MobStateComponent>();
+            while (query.MoveNext(out var uid, out _, out _))
+            {
                 _due.Add(uid);
+            }
         }
 
-        foreach (var body in _due)
+        foreach (var body in _due.Due)
         {
             if (TerminatingOrDeleted(body) || _dormancy.BodySleeps(body))
                 continue;

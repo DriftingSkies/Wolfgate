@@ -90,6 +90,11 @@ public sealed class GiftsTest
         entMan.System<DamageableSystem>().TryChangeDamage(body, damage, true);
     }
 
+    private static float Blunt(IEntityManager entMan, EntityUid body)
+    {
+        return entMan.GetComponent<DamageableComponent>(body).Damage.DamageDict.TryGetValue("Blunt", out var blunt) ? blunt.Float() : 0f;
+    }
+
     private static float TotalDamage(IEntityManager entMan, EntityUid body)
     {
         return entMan.GetComponent<DamageableComponent>(body).Damage.GetTotal().Float();
@@ -220,7 +225,7 @@ public sealed class GiftsTest
             corpse = entMan.SpawnEntity("MobHuman", At(map, -3, 0));
             headless = entMan.SpawnEntity("MobHuman", At(map, 0, 4));
             Hurt(entMan, ally, 30f);
-            before = TotalDamage(entMan, ally);
+            before = Blunt(entMan, ally);
             Assert.That(before, Is.GreaterThan(10f), "the ally took no damage, so healing can't be seen.");
             Kill(entMan, corpse);
             foreach (var (head, _) in entMan.System<Content.Server.Body.Systems.BodySystem>()
@@ -238,7 +243,9 @@ public sealed class GiftsTest
         {
             Assert.That(mobState.IsDead(corpse), Is.True, "the corpse didn't die, so reviving it proves nothing.");
             Assert.That(mobState.IsDead(headless), Is.True, "the headless body didn't die.");
-            Assert.That(TotalDamage(entMan, ally), Is.LessThan(before), "Flesh healed nobody in reach.");
+            // Only the blunt it was hurt with: a fresh body takes a little heat and asphyxiation while it settles.
+            Assert.That(Blunt(entMan, ally), Is.LessThan(before),
+                $"Flesh healed nobody in reach: blunt {before} before, now {string.Join(", ", entMan.GetComponent<DamageableComponent>(ally).Damage.DamageDict.Where(kv => kv.Value > 0))}.");
         });
 
         // About 27 s to raise a body at this resonance.

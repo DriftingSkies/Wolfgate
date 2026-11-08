@@ -15,6 +15,7 @@ public sealed partial class RadarConsoleWindow : FancyWindow,
     public RadarConsoleWindow()
     {
         RobustXamlLoader.Load(this);
+        Content.Client._WF.Branding.WFWindowBranding.Apply(this); // WOLFGATE(Branding): Wolfgate title bar
 
     // Mono
         IFFToggle.OnToggled += OnIFFTogglePressed;

@@ -1,0 +1,79 @@
+# CitadelRP fauna emotes, fired by AutoEmote at the source idle chance (1 in 201 per 2 s tick).
+
+- type: emote
+  id: CitadelRPEmoteGoliath
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-citadelrp-goliath-1
+  - fauna-emote-citadelrp-goliath-2
+  - fauna-emote-citadelrp-goliath-3
+  - fauna-emote-citadelrp-goliath-4
+  - fauna-emote-citadelrp-goliath-5
+  - fauna-emote-citadelrp-goliath-6
+  - fauna-emote-citadelrp-goliath-7
+
+- type: autoEmote
+  id: CitadelRPAutoEmoteGoliath
+  emote: CitadelRPEmoteGoliath
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: CitadelRPEmoteGutshank
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-citadelrp-gutshank-1
+  - fauna-emote-citadelrp-gutshank-2
+  - fauna-emote-citadelrp-gutshank-3
+  - fauna-emote-citadelrp-gutshank-4
+  - fauna-emote-citadelrp-gutshank-5
+
+- type: autoEmote
+  id: CitadelRPAutoEmoteGutshank
+  emote: CitadelRPEmoteGutshank
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: CitadelRPEmoteSandSifter
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-citadelrp-sand-sifter-1
+  - fauna-emote-citadelrp-sand-sifter-2
+  - fauna-emote-citadelrp-sand-sifter-3
+  - fauna-emote-citadelrp-sand-sifter-4
+  - fauna-emote-citadelrp-sand-sifter-5
+
+- type: autoEmote
+  id: CitadelRPAutoEmoteSandSifter
+  emote: CitadelRPEmoteSandSifter
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true
+
+- type: emote
+  id: CitadelRPEmoteStormdrifter
+  name: fauna-emote-name-ambient
+  available: false
+  chatMessages:
+  - fauna-emote-citadelrp-stormdrifter-1
+  - fauna-emote-citadelrp-stormdrifter-2
+  - fauna-emote-citadelrp-stormdrifter-3
+  - fauna-emote-citadelrp-stormdrifter-4
+  - fauna-emote-citadelrp-stormdrifter-5
+
+- type: autoEmote
+  id: CitadelRPAutoEmoteStormdrifter
+  emote: CitadelRPEmoteStormdrifter
+  interval: 2.0
+  chance: 0.005
+  withChat: true
+  hiddenFromChatWindow: true

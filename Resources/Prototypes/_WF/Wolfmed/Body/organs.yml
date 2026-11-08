@@ -138,6 +138,7 @@
   id: WFWolfmedOrganKidneys
   abstract: true
   components:
+  - type: WFKidneys
   - type: WolfmedOrgan
     health: 25
     maxHealth: 25 # playtest 4: 15 fell to three capped hits; with wolfmed.organ_hit_cap 3 an organ takes nine

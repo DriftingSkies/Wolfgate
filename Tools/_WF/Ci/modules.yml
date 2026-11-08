@@ -16,6 +16,12 @@ external:
 # Edits outside _WF that can't hold a WOLFGATE marker: JSON, images, audio, rich-text .txt and map files.
 # Each entry has a path (a file, a folder or a glob), the module it serves (null for a standalone edit) and a reason.
 unmarked:
+  - path: Resources/Maps/_Mono/POI/pdvhelios.yml
+    module: Lattice
+    reason: Mapped a station anchor beside an APC so Helios stays anchored space past the Lattice's hold.
+  - path: Resources/Maps/_Mono/POI/underground.yml
+    module: Lattice
+    reason: Mapped a station anchor beside an APC so the Syndicate FOB stays anchored space past the Lattice's hold.
   - path: Resources/Maps/Shuttles/dart.yml
     module: Cloning
     reason: Mapped a genetic database and a body scanner console, linked to the scanner and pod.
@@ -2297,59 +2303,50 @@ unmarked:
     module: Shipyard
     reason: Saved with its air filled in; the starter ship spawned as vacuum.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/inertia.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/mock.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/MotleyAnne/snakelet.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/kortik_r.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/kresta.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/kynda.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
-  - path: Resources/SharedMaps/_Mono/Shuttles/PDV/layak.yml
-    module: ShipArmor
-    reason: PDV hull with a shield generator, kept on plastitanium instead of adamantite.
-  - path: Resources/SharedMaps/_Mono/Shuttles/PDV/motleyanne.yml
-    module: ShipArmor
-    reason: PDV hull with a shield generator, kept on plastitanium instead of adamantite.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/neptune.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/ontos.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
-  - path: Resources/SharedMaps/_Mono/Shuttles/PDV/saturn.yml
-    module: ShipArmor
-    reason: PDV hull with a shield generator, kept on plastitanium instead of adamantite.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml
-    module: ShipArmor
-    reason: PDV hull refit from plastitanium to adamantite walls.
+    module: null
+    reason: PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
   - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
     module: null
     reason: PDV pack, top-left thruster was mapped disabled.
@@ -2935,3 +2932,78 @@ unmarked:
   - path: Resources/Textures/_NF/Structures/Machines/scrap_processor.rsi/
     module: null
     reason: Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
+  - path: Resources/Textures/_Lavaland/Mobs/
+    module: Fauna
+    reason: Lavaland mob sprites, ported from Goob Station.
+  - path: Resources/Textures/_Impstation/Mobs/Aliens/bigfish.rsi/
+    module: Fauna
+    reason: Fiend-fish sprite, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Mobs/Animals/Magic/curse.rsi/
+    module: Fauna
+    reason: Bad omen and augury sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Magic/curse.rsi/
+    module: Fauna
+    reason: Augury tentacle sprites, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Clothing/OuterClothing/Coats/vrex_fur_coat.rsi/
+    module: Fauna
+    reason: V-rex fur coat sprite, the v-rex butcher drop, ported from Impstation.
+  - path: Resources/Textures/_Funkystation/Mobs/
+    module: Fauna
+    reason: Meowl and zleeb sprites, ported from Starlight.
+  - path: Resources/Textures/_Starlight/Mobs/Animals/Hellmobs/
+    module: Fauna
+    reason: Mi-go sprite, ported from Starlight.
+  - path: Resources/Textures/_Goobstation/Wizard/Mobs/
+    module: Fauna
+    reason: Otherthing sprite, ported from Goob Station.
+  - path: Resources/Textures/Mobs/Aliens/hivebot.rsi/
+    module: Fauna
+    reason: Hivebot sprite, ported from Space Wizards.
+  - path: Resources/Textures/_Nuclear14/Mobs/
+    module: Fauna
+    reason: Sporeplant and cazador sprites, ported from Nuclear 14.
+  - path: Resources/Textures/_Starlight/Mobs/Abyss/
+    module: Fauna
+    reason: Elder and abyss worm sprites, ported from Starlight.
+  - path: Resources/Textures/_Goobstation/Mobs/Animals/
+    module: Fauna
+    reason: Abyss crawler sprite, ported from Goob Station.
+  - path: Resources/Textures/_Goobstation/Wraith/Mobs/
+    module: Fauna
+    reason: Mechanical monstrosity sprites, ported from Goob Station.
+  - path: Resources/Textures/ADT/Mobs/Aliens/
+    module: Fauna
+    reason: Spitter and space emperor sprites, ported from ADT.
+  - path: Resources/Textures/ADT/Interface/Actions/space_emperor.rsi/
+    module: Fauna
+    reason: Space emperor light action icons, ported from ADT.
+  - path: Resources/Textures/_Impstation/Mobs/Aliens/vrex.rsi/
+    module: Fauna
+    reason: V-rex sprite, ported from Impstation.
+  - path: Resources/Textures/_Impstation/Mobs/Aliens/weirdshrimp.rsi/
+    module: Fauna
+    reason: Weird shrimp sprite, ported from Impstation.
+  - path: Resources/Textures/_EinsteinEngines/Mobs/Animals/squackroach.rsi/
+    module: Fauna
+    reason: Squackroach sprite, ported from Einstein Engines.
+  - path: Resources/Audio/_Impstation/Animals/vrex_roar.ogg
+    module: Fauna
+    reason: V-rex roar, ported from Impstation.
+  - path: Resources/Audio/_Impstation/Voice/Dino/
+    module: Fauna
+    reason: Dinosaur voice sounds, ported from Impstation.
+  - path: Resources/Audio/_Impstation/Magic/cursespawn.ogg
+    module: Fauna
+    reason: Bad omen spawn sound, ported from Impstation.
+  - path: Resources/Audio/_Goobstation/Animals/breath1.ogg
+    module: Fauna
+    reason: Abyss crawler breathing, ported from Goob Station.
+  - path: Resources/Audio/_Goobstation/Wraith/
+    module: Fauna
+    reason: Mechanical monstrosity laugh and hit sounds, ported from Goob Station.
+  - path: Resources/Audio/_CP14/Animals/
+    module: Fauna
+    reason: Dinosaur calls, ported from CrystallEdge.
+  - path: Resources/SharedMaps/_Mono/Shuttles/CSec/lightning.yml
+    module: Bench
+    reason: Bench refit swapped one TOVEK hardpoint for a SHRIKE ion disruptor.

@@ -1,0 +1,17 @@
+<Document>
+  # The Lore Book
+
+  The guidebook tells you how things work. The [bold]lore book[/bold] tells you why they are there: the history of the Colossus sector, its factions, its worlds and the things that hunt in it.
+
+  Open it with the book button on the top bar, from the game menu, or from the lobby. Gold links like this one open it at the right page: [lorelink="Welcome to Colossus" link="BasicLore"].
+
+  Objects with a lore page show a book button when you examine them. Click it to read about the thing in front of you.
+
+  ## Chapters
+
+  - [lorelink="Welcome to Colossus" link="BasicLore"]: the primer, the timeline and the sector today. Read this first.
+  - [lorelink="Factions" link="Factions"]: who you can fly for, and who will shoot at you.
+  - [lorelink="Star System" link="MonoStarSystem"]: Kyphrus, its collapse and its worlds.
+  - [lorelink="Things That Hunt" link="WFLoreThreats"]: the Monolith, the Chimera and the xenonids.
+  - [lorelink="Forbidden" link="WFLoreForbidden"]: the Unmooring, the Lattice and the Choir. Read them with care.
+</Document>

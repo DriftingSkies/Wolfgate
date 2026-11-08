@@ -29,6 +29,16 @@
     ClothingHeadHatPumpkin: 2
     ClothingHeadHatShrineMaidenWig: 2
     ClothingOuterSuitShrineMaiden: 2
+    # WOLFGATE(MeridianClothing) START: stock the Meridian maid outfits
+    WFMeridianClothingGlovesMaidArmCovers: 2
+    WFMeridianClothingUnderCostumeMaid: 2
+    WFMeridianClothingUnderMaidCostume: 2
+    WFMeridianClothingHeadMaidHeadband: 2
+    WFMeridianClothingHeadCostumeMaidHeadband: 2
+    WFMeridianClothingNeckMaidNeckCover: 2
+    WFMeridianClothingGlovesCombatMaid: 2
+    WFMeridianClothingAccessoryMaidcorsetSyndicate: 2
+    # WOLFGATE END
     Gohei: 2
     ClothingOuterSuitWitchRobes: 2
     ClothingHeadHatWitch1: 2

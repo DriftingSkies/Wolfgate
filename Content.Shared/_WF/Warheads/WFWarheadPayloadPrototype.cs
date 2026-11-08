@@ -42,6 +42,10 @@ public sealed partial class WFWarheadPayload
     [DataField]
     public bool DeleteGrid;
 
+    /// <summary>Metres around ground zero where everything is deleted, floor and decals too, before the blast runs.</summary>
+    [DataField]
+    public float EraseRadius;
+
     /// <summary>Radiation burst at detonation, in rads per second at the centre.</summary>
     [DataField]
     public float PromptRadiation;

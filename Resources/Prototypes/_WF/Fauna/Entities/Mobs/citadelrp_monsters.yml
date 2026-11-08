@@ -1,0 +1,796 @@
+# Monsters converted from CitadelRP: skallax, rak, mole, fey fauna and the derelict horrors.
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobSkallaxYoung
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/skallax.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: skallax_young
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: skallax_young
+      Dead:
+        Base: skallax_young_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/slice.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 22
+  - type: MovementSound
+    sound:
+      path: /Audio/_WF/Fauna/Polaris/spider_loop.ogg
+  - type: FaunaGroupRetaliate
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 2
+
+- type: entity
+  parent: CitadelRPMobSkallaxYoung
+  id: CitadelRPMobSkallaxWorker
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/skallax.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: skallax_worker
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: skallax_worker
+      Dead:
+        Base: skallax_worker_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSkallaxWorker
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/slice.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 4
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1.1
+  - type: BasicEntityAmmoProvider
+    proto: FaunaSkallaxAcid
+    capacity: 1
+    count: 1
+  - type: Gun
+    recoil: 0
+    fireRate: 0.9
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Effects/Fluids/splat.ogg
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      KiteRange: !type:Single
+        4
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 3
+
+- type: entity
+  parent: CitadelRPMobSkallaxYoung
+  id: CitadelRPMobSkallaxMature
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/skallax.rsi
+    scale: 1.2, 1.2
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: skallax_mature
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: skallax_mature
+      Dead:
+        Base: skallax_mature_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      350: Dead
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaSkallaxMature
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/slice.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 32
+  - type: FaunaHitAndRun
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 4
+
+- type: entity
+  parent: BaseBullet
+  id: FaunaSkallaxAcid
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Caustic: 20
+  - type: StaminaDamageOnCollide
+    damage: 10
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/xeno_toxic.rsi
+    layers:
+    - state: xeno_toxic
+  - type: Ammo
+    muzzleFlash: null
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobRak
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/rak.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: rak
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: rak
+      Dead:
+        Base: rak_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      60: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 8
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: CitadelRPFoodMeatRak
+      amount: 2
+
+- type: entity
+  parent: CitadelRPMobRak
+  id: CitadelRPMobRakGrey
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/rak.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: rakb
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: rakb
+      Dead:
+        Base: rakb_dead
+  - type: Butcherable
+    spawned:
+    - id: CitadelRPFoodMeatRakGrey
+      amount: 2
+
+- type: entity
+  parent: FoodMeatCrab
+  id: CitadelRPFoodMeatRak
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/rak.rsi
+    state: rakmeat
+
+- type: entity
+  parent: FoodMeatCrab
+  id: CitadelRPFoodMeatRakGrey
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/rak.rsi
+    state: rakbmeat
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobMole
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/mole.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: mole
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mole
+      Dead:
+        Base: mole_dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.7
+        density: 300
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 2.5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Blunt: 22
+  - type: FaunaGroupRetaliate
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: NPCRetaliation
+  - type: FactionException
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobChameleon
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Butcherable
+    spawned:
+    - id: SojournLeather
+      amount: 3
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/chameleon.rsi
+    color: "#FFFFFF96"
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: chameleon
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.3
+    baseSprintSpeed: 3.3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/drone_attack.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 20
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1
+  - type: BasicEntityAmmoProvider
+    proto: FaunaNeurotoxinSpit
+    capacity: 1
+    count: 1
+  - type: Gun
+    recoil: 0
+    fireRate: 1
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Effects/Fluids/splat.ogg
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      KiteRange: !type:Single
+        4
+
+- type: entity
+  parent: FaunaSkallaxAcid
+  id: FaunaNeurotoxinSpit
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Caustic: 5
+  - type: StaminaDamageOnCollide
+    damage: 23
+
+- type: entity
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobDerelictHorror
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: Butcherable
+    spawned:
+    - id: SojournLeather
+      amount: 3
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 450
+      behaviors:
+      - !type:GibBehavior { }
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/derelict_horror.rsi
+    scale: 1.1, 1.1
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: horror
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: horror
+      Dead:
+        Base: horror_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.3
+    baseSprintSpeed: 3.3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/drone_attack.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 30
+  - type: PointLight
+    radius: 2
+    energy: 1
+    color: "#4fa8ff"
+  - type: FaunaGroupRetaliate
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+- type: entity
+  abstract: true
+  parent: [ BaseMobAsteroid, FlyingMobBase, FaunaMobCore ]
+  id: CitadelRPMobDerelictAnomalyBase
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/stealthoff.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Blunt: 25
+  - type: FaunaGroupRetaliate
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+- type: entity
+  parent: CitadelRPMobDerelictAnomalyBase
+  id: CitadelRPMobGeist
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/geist.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: geist
+      shader: unshaded
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaEnergyOnly
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Shock: 0
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1
+  - type: BasicEntityAmmoProvider
+    proto: FaunaGeistHeatBeam
+    capacity: 1
+    count: 1
+  - type: Gun
+    recoil: 0
+    fireRate: 1
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/_WF/Fauna/CitadelRP/pulse3.ogg
+  - type: PointLight
+    radius: 3
+    energy: 1.5
+    color: "#7fd4ff"
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      KiteRange: !type:Single
+        4
+
+- type: entity
+  parent: WatcherBolt
+  id: FaunaGeistHeatBeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi
+    layers:
+    - state: omnilaser_greyscale
+      shader: unshaded
+      color: orangered
+  - type: ChangeTemperatureOnCollide
+    heat: 50000
+
+- type: entity
+  parent: CitadelRPMobDerelictAnomalyBase
+  id: CitadelRPMobPhantom
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/phantom.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: phantom
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 250
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaMeleeOnly
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.3
+    baseSprintSpeed: 3.3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/stealthoff.ogg
+    angle: 0
+    attackRate: 1.1
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 25
+
+- type: entity
+  parent: CitadelRPMobDerelictAnomalyBase
+  id: CitadelRPMobVortex
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/vortex.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: vortex
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: FaunaMeleeOnly
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.7
+    baseSprintSpeed: 1.7
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/stealthoff.ogg
+    angle: 0
+    attackRate: 0.9
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 25
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 1.1
+  - type: BasicEntityAmmoProvider
+    proto: BulletDisabler
+    capacity: 1
+    count: 1
+  - type: Gun
+    recoil: 0
+    fireRate: 0.9
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/Guns/Gunshots/taser.ogg
+  - type: HTN
+    rootTask:
+      task: FaunaRangedKiteCompound
+    blackboard:
+      KiteRange: !type:Single
+        4
+
+- type: entity
+  parent: CitadelRPMobDerelictAnomalyBase
+  id: CitadelRPMobHallucination
+  components:
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/hallucination.rsi
+    scale: 1.2, 1.2
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hallucination
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 5
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/growl1.ogg
+    angle: 0
+    attackRate: 1.25
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Heat: 4
+  - type: PointLight
+    radius: 2
+    energy: 1
+    color: "#ff8a2a"
+
+- type: entity
+  abstract: true
+  parent: [ BaseMobAsteroid, FaunaMobCore ]
+  id: CitadelRPMobFeyBase
+  components:
+  - type: WolfmedDamageCause
+    cause: Unarmed
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.3
+    baseSprintSpeed: 3.3
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: FaunaGroupRetaliate
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+
+- type: entity
+  parent: CitadelRPMobFeyBase
+  id: CitadelRPMobAmbusher
+  components:
+  - type: Butcherable
+    spawned:
+    - id: SojournLeather
+      amount: 3
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/ambusher.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: ambusher
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/drone_attack.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 15
+  - type: FaunaHitAndRun
+
+- type: entity
+  parent: CitadelRPMobFeyBase
+  id: CitadelRPMobWriggler
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Butcherable
+    spawned:
+    - id: SojournLeather
+      amount: 3
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/wriggler.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: wriggler
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/drone_attack.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 20
+
+- type: entity
+  parent: CitadelRPMobFeyBase
+  id: CitadelRPMobDrifter
+  components:
+  - type: Butcherable
+    spawned:
+    - id: SojournLeather
+      amount: 3
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/drifter.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: drifter
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: drifter
+      Dead:
+        Base: drifter_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      120: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 3
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/_WF/Fauna/CitadelRP/drone_attack.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 18
+
+- type: entity
+  parent: CitadelRPMobFeyBase
+  id: CitadelRPMobScavenger
+  components:
+  - type: WolfmedDamageCause
+    cause: Bite
+  - type: Butcherable
+    spawned:
+    - id: SojournLeather
+      amount: 3
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/CitadelRP/scavenger.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: scavenger
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: scavenger
+      Dead:
+        Base: scavenger_dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 15

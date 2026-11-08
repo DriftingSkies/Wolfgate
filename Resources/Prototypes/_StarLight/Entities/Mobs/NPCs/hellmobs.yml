@@ -1,0 +1,71 @@
+# WOLFGATE(Fauna) START: ported from Starlight
+- type: entity
+  parent: SimpleSpaceMobBase
+  id: BaseMobBluespaceHarvester
+  abstract: true
+  components:
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+  - type: MovementAlwaysTouching
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Dead
+  - type: Stamina
+    critThreshold: 50
+  - type: CombatMode
+  - type: ReplacementAccent
+    accent: genericAggressive
+
+- type: entity
+  parent: BaseMobBluespaceHarvester
+  id: MobBluespaceHarvesterMiGo
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _Starlight/Mobs/Animals/Hellmobs/mi_go.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: migo_base
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: migo_move
+    noMovementLayers:
+      movement:
+        state: migo_base
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: migo_base
+      Dead:
+        Base: migo_dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 4.5
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      70: Dead
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 8
+        Piercing: 4
+# WOLFGATE END
