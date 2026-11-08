@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._NF.Station.Components;
+using Content.Server._WF.Outposts.Components;
 using Content.Server.Administration.Managers;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
@@ -56,7 +57,7 @@ public sealed partial class WFRoundSetupSystem
     /// <summary>Private scenario stations never enter the ordinary station picker.</summary>
     private bool IsScenarioStation(EntityUid station) =>
         HasComp<WFCrashScenarioStationComponent>(station) || HasComp<WFShipScenarioStationComponent>(station) ||
-        HasComp<WFDoomedScenarioStationComponent>(station);
+        HasComp<WFDoomedScenarioStationComponent>(station) || HasComp<WFOutpostStationComponent>(station);
 
     /// <summary>Rechecks role bans and character requirements before offering or spawning a job.</summary>
     private bool IsJobAllowed(ICommonSession session, string job, Dictionary<string, bool>? eligibility = null)
@@ -185,8 +186,10 @@ public sealed partial class WFRoundSetupSystem
                 }
                 continue;
             }
+            if (lobby.Scenario == WFRoundScenario.Outpost)
+                StartOutpostAtRoundStart(lobby, candidates, args.PlayerPool);
             // Normal groups share the ordinary round-start allocation and shortage access calculation.
-            if (lobby.Scenario == WFRoundScenario.Normal)
+            if (lobby.Scenario is WFRoundScenario.Normal or WFRoundScenario.Outpost)
                 continue;
             foreach (var player in candidates)
                 args.PlayerPool.Remove(player);
@@ -274,7 +277,7 @@ public sealed partial class WFRoundSetupSystem
         }
         else if (lobby.Scenario == WFRoundScenario.Crashlanded)
         {
-            if (!_crash.TryPrepare(lobby.Id, out station, out error))
+            if (!_crash.TryPrepare(lobby.Id, out station, out error, lobby.CrashCarcinoma))
                 return false;
             if (!_crash.TryGetSpawn(lobby.Id, out var spawn))
             {
@@ -293,6 +296,11 @@ public sealed partial class WFRoundSetupSystem
                 return false;
             }
             coordinates = spawn;
+        }
+        else if (lobby.Scenario == WFRoundScenario.Outpost)
+        {
+            if (!TryOutpostSpawn(lobby, session, out station, out coordinates, out error))
+                return false;
         }
         else if (WFRoundSetupPolicy.IsShip(lobby.Scenario))
         {
@@ -360,12 +368,14 @@ public sealed partial class WFRoundSetupSystem
             {
                 if (session.AttachedEntity is { } survivor)
                     _crash.GiveEmergencyEquipment(survivor);
-                _crash.NotifyArrival(lobby.Id, session);
+                _crash.NotifyArrival(lobby.Id, session, session.UserId == lobby.Host);
             }
             else if (lobby.Scenario == WFRoundScenario.Doomed && !_ships.HasAssignedShip(lobby.Id))
                 _doomed.NotifyArrival(lobby.Id, session);
             else if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || _ships.HasAssignedShip(lobby.Id))
                 _ships.NotifyArrival(lobby.Id, session);
+            else if (lobby.Scenario == WFRoundScenario.Outpost && lobby.OutpostGrid is { } outpost)
+                _ships.LinkCrewAccess(new[] { outpost }, session);
             SyncCrewShips();
             return true;
         }
@@ -374,6 +384,27 @@ public sealed partial class WFRoundSetupSystem
             _pendingSpawns.Remove(session.UserId);
             if (buyingShip && !completed)
                 RollbackShip(lobby);
+        }
+    }
+
+    /// <summary>
+    /// Joins a player outside any crew to the running round as a job on a private station, at the given coordinates,
+    /// such as an outpost's cryopod.
+    /// </summary>
+    public bool TrySpawnAt(ICommonSession session, EntityUid station, string job, EntityCoordinates coordinates)
+    {
+        if (!CanEnter(session) || _ticker.RunLevel != GameRunLevel.InRound || IsInCrew(session.UserId)
+            || !IsJobAllowed(session, job))
+            return false;
+
+        _pendingSpawns[session.UserId] = (station, coordinates);
+        try
+        {
+            return _ticker.WFTryRoundSetupSpawn(session, station, job, lateJoin: true);
+        }
+        finally
+        {
+            _pendingSpawns.Remove(session.UserId);
         }
     }
 

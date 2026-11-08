@@ -10,23 +10,29 @@ public sealed partial class WFShipAccessServerSystem
     /// <summary>The shuttle console's access tab: lock, add, remove, builder flags, door rules and codes.</summary>
     private void InitializeConsole()
     {
-        Subs.BuiEvents<ShuttleConsoleComponent>(ShuttleConsoleUiKey.Key, subs =>
-        {
-            subs.Event<WFShipAccessSetModeMessage>(OnSetMode);
-            subs.Event<WFShipAccessSetLockedMessage>(OnSetLocked);
-            subs.Event<WFShipAccessAddPlayerMessage>(OnAddPlayer);
-            subs.Event<WFShipAccessRemoveMessage>(OnRemove);
-            subs.Event<WFShipAccessSetBuilderMessage>(OnSetBuilder);
-            subs.Event<WFShipAccessSetDoorRuleMessage>(OnSetDoorRule);
-            subs.Event<WFShipAccessSetAllDoorRulesMessage>(OnSetAllDoorRules);
-            subs.Event<WFShipAccessSetDoorPlayerMessage>(OnSetDoorPlayer);
-            subs.Event<WFShipAccessRequestCodesMessage>(OnRequestCodes);
-            subs.Event<WFShipAccessSetShipCodeMessage>(OnSetShipCode);
-            subs.Event<WFShipAccessSetDoorCodeMessage>(OnSetDoorCode);
-        });
+        Subs.BuiEvents<ShuttleConsoleComponent>(ShuttleConsoleUiKey.Key, SubscribeAccessTab);
     }
 
-    private void OnSetMode(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetModeMessage args)
+    /// <summary>
+    /// Subscribes a console's UI to the Access tab's messages, for the grid the console stands on: the shuttle
+    /// console's here, and any other console that shows the tab (the outpost console) from its own system.
+    /// </summary>
+    public void SubscribeAccessTab<T>(BoundUserInterfaceRegisterExt.Subscriber<T> subs) where T : IComponent
+    {
+        subs.Event<WFShipAccessSetModeMessage>((uid, _, args) => OnSetMode(uid, ref args));
+        subs.Event<WFShipAccessSetLockedMessage>((uid, _, args) => OnSetLocked(uid, ref args));
+        subs.Event<WFShipAccessAddPlayerMessage>((uid, _, args) => OnAddPlayer(uid, ref args));
+        subs.Event<WFShipAccessRemoveMessage>((uid, _, args) => OnRemove(uid, ref args));
+        subs.Event<WFShipAccessSetBuilderMessage>((uid, _, args) => OnSetBuilder(uid, ref args));
+        subs.Event<WFShipAccessSetDoorRuleMessage>((uid, _, args) => OnSetDoorRule(uid, ref args));
+        subs.Event<WFShipAccessSetAllDoorRulesMessage>((uid, _, args) => OnSetAllDoorRules(uid, ref args));
+        subs.Event<WFShipAccessSetDoorPlayerMessage>((uid, _, args) => OnSetDoorPlayer(uid, ref args));
+        subs.Event<WFShipAccessRequestCodesMessage>((uid, _, args) => OnRequestCodes(uid, ref args));
+        subs.Event<WFShipAccessSetShipCodeMessage>((uid, _, args) => OnSetShipCode(uid, ref args));
+        subs.Event<WFShipAccessSetDoorCodeMessage>((uid, _, args) => OnSetDoorCode(uid, ref args));
+    }
+
+    private void OnSetMode(EntityUid console, ref WFShipAccessSetModeMessage args)
     {
         if (!TryGetEditableShip(console, args.Actor, out var ship))
             return;
@@ -44,7 +50,7 @@ public sealed partial class WFShipAccessServerSystem
             Popup(console, args.Actor, "ship-access-mode-unavailable");
     }
 
-    private void OnSetLocked(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetLockedMessage args)
+    private void OnSetLocked(EntityUid console, ref WFShipAccessSetLockedMessage args)
     {
         if (!TryGetEditableShip(console, args.Actor, out var ship))
             return;
@@ -58,19 +64,19 @@ public sealed partial class WFShipAccessServerSystem
         SetLocked(ship, args.Locked);
     }
 
-    private void OnRemove(Entity<ShuttleConsoleComponent> console, ref WFShipAccessRemoveMessage args)
+    private void OnRemove(EntityUid console, ref WFShipAccessRemoveMessage args)
     {
         if (TryGetEditableShip(console, args.Actor, out var ship))
             RemoveEntry(ship, args.Key);
     }
 
-    private void OnSetBuilder(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetBuilderMessage args)
+    private void OnSetBuilder(EntityUid console, ref WFShipAccessSetBuilderMessage args)
     {
         if (TryGetEditableShip(console, args.Actor, out var ship))
             SetBuilder(ship, args.Key, args.Builder);
     }
 
-    private void OnAddPlayer(Entity<ShuttleConsoleComponent> console, ref WFShipAccessAddPlayerMessage args)
+    private void OnAddPlayer(EntityUid console, ref WFShipAccessAddPlayerMessage args)
     {
         var actor = args.Actor;
         if (!TryGetEditableShip(console, actor, out var ship) || !TryGetEntity(args.Target, out var target))
@@ -83,7 +89,7 @@ public sealed partial class WFShipAccessServerSystem
             return;
         }
 
-        if (!_transform.InRange(Transform(console.Owner).Coordinates, Transform(target.Value).Coordinates, WFShipAccessSystem.AddRange))
+        if (!_transform.InRange(Transform(console).Coordinates, Transform(target.Value).Coordinates, WFShipAccessSystem.AddRange))
         {
             Popup(console, actor, "ship-access-add-out-of-range");
             return;
@@ -107,10 +113,10 @@ public sealed partial class WFShipAccessServerSystem
             return;
         }
 
-        _popup.PopupEntity(Loc.GetString("ship-access-added", ("name", Name(target.Value))), console.Owner, actor);
+        _popup.PopupEntity(Loc.GetString("ship-access-added", ("name", Name(target.Value))), console, actor);
     }
 
-    private void AddHeldCard(Entity<ShuttleConsoleComponent> console, EntityUid actor, Entity<WFShipAccessComponent> ship, EntityUid card)
+    private void AddHeldCard(EntityUid console, EntityUid actor, Entity<WFShipAccessComponent> ship, EntityUid card)
     {
         if (!_access.TryGetKey(card, out _))
         {
@@ -125,7 +131,7 @@ public sealed partial class WFShipAccessServerSystem
             return;
         }
 
-        _popup.PopupEntity(Loc.GetString("ship-access-added", ("name", name)), console.Owner, actor);
+        _popup.PopupEntity(Loc.GetString("ship-access-added", ("name", name)), console, actor);
     }
 
     /// <summary>
@@ -133,10 +139,10 @@ public sealed partial class WFShipAccessServerSystem
     /// bought before this module existed gets its component, and its readers, on the first edit; anyone else gets
     /// the not-owner popup.
     /// </summary>
-    private bool TryGetEditableShip(Entity<ShuttleConsoleComponent> console, EntityUid actor, out Entity<WFShipAccessComponent> ship)
+    private bool TryGetEditableShip(EntityUid console, EntityUid actor, out Entity<WFShipAccessComponent> ship)
     {
         ship = default;
-        if (Transform(console.Owner).GridUid is not { } grid)
+        if (Transform(console).GridUid is not { } grid)
             return false;
 
         if (!_access.IsOwner(actor, grid))
@@ -176,8 +182,8 @@ public sealed partial class WFShipAccessServerSystem
         return false;
     }
 
-    private void Popup(Entity<ShuttleConsoleComponent> console, EntityUid actor, string key)
+    private void Popup(EntityUid console, EntityUid actor, string key)
     {
-        _popup.PopupEntity(Loc.GetString(key), console.Owner, actor);
+        _popup.PopupEntity(Loc.GetString(key), console, actor);
     }
 }

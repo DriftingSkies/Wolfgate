@@ -2465,6 +2465,108 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.ToTable("wolfgate_game_score", (string)null);
                 });
 
+            modelBuilder.Entity("Content.Server.Database.WolfgateOutpostPayout", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_outpost_payout_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer")
+                        .HasColumnName("amount");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("PlayerUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("player_user_id");
+
+                    b.Property<DateTime>("Sold")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("sold");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_outpost_payout");
+
+                    b.HasIndex("PlayerUserId");
+
+                    b.ToTable("wolfgate_outpost_payout", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.WolfgateOutpostSave", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_outpost_save_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Appraisal")
+                        .HasColumnType("integer")
+                        .HasColumnName("appraisal");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("data");
+
+                    b.Property<int>("Entities")
+                        .HasColumnType("integer")
+                        .HasColumnName("entities");
+
+                    b.Property<Guid>("Lineage")
+                        .HasColumnType("uuid")
+                        .HasColumnName("lineage");
+
+                    b.Property<int>("LoadedRound")
+                        .HasColumnType("integer")
+                        .HasColumnName("loaded_round");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("PlayerUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("player_user_id");
+
+                    b.Property<DateTime>("Saved")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("saved");
+
+                    b.Property<int>("SavedRound")
+                        .HasColumnType("integer")
+                        .HasColumnName("saved_round");
+
+                    b.Property<int>("Slot")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot");
+
+                    b.Property<int>("Tiles")
+                        .HasColumnType("integer")
+                        .HasColumnName("tiles");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_outpost_save");
+
+                    b.HasIndex("Lineage");
+
+                    b.HasIndex("PlayerUserId", "Slot")
+                        .IsUnique();
+
+                    b.ToTable("wolfgate_outpost_save", (string)null);
+                });
+
             modelBuilder.Entity("PlayerRound", b =>
                 {
                     b.Property<int>("PlayersId")

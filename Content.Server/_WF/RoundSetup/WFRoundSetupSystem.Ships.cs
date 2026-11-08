@@ -21,7 +21,9 @@ public sealed partial class WFRoundSetupSystem
     private IReadOnlyCollection<EntityUid> CrewGrids(Lobby lobby) => _ships.HasAssignedShip(lobby.Id) || WFRoundSetupPolicy.IsShip(lobby.Scenario) ||
         WFRoundSetupPolicy.IsFormed(lobby.Scenario)
         ? _ships.GetActiveGrids(lobby.Id)
-        : lobby.Scenario == WFRoundScenario.Doomed ? _doomed.GetGrids(lobby.Id) : _crash.GetGrids(lobby.Id);
+        : lobby.Scenario == WFRoundScenario.Doomed ? _doomed.GetGrids(lobby.Id)
+        : lobby.Scenario == WFRoundScenario.Outpost ? lobby.OutpostGrid is { } outpost ? new[] { outpost } : Array.Empty<EntityUid>()
+        : _crash.GetGrids(lobby.Id);
 
     private WFRoundSetupShip? CurrentShip(Lobby lobby) => CrewGrids(lobby)
         .Select(grid => _ships.SnapshotShip(grid)).FirstOrDefault(ship => ship != null);

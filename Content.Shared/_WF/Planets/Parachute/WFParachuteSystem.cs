@@ -140,8 +140,8 @@ public sealed partial class WFParachuteSystem : EntitySystem
         if (_net.IsClient)
             return true;
 
-        var pack = Spawn(ent.Comp.Pack, Transform(ent).Coordinates);
-        _hands.PickupOrDrop(user, pack);
+        if (ent.Comp.Pack is { } packId)
+            _hands.PickupOrDrop(user, Spawn(packId, Transform(ent).Coordinates));
         RemComp<WFParachutedComponent>(ent);
         return true;
     }
@@ -197,7 +197,8 @@ public sealed partial class WFParachuteSystem : EntitySystem
 
             if (_net.IsServer)
             {
-                Spawn(chute.Pack, Transform(uid).Coordinates);
+                if (chute.Pack is { } pack)
+                    Spawn(pack, Transform(uid).Coordinates);
                 RemComp<WFParachutedComponent>(uid);
             }
             else

@@ -149,6 +149,16 @@ public sealed partial class FloorTileSystem : EntitySystem
                 // WOLFGATE(Planets): a planet's natural ground takes lattice directly, and remembers what is under it.
                 var onTerrain = WfIsPlanetTerrain(gridUid, mapGrid, tile) && HasBaseTurf(currentTileDefinition, ContentTileDefinition.SpaceID);
 
+                // WOLFGATE(Outposts) START: raw ground inside another player's outpost claim is theirs to build on.
+                if (onTerrain)
+                {
+                    var claimed = new Content.Shared._WF.Outposts.WFGroundBuildAttemptEvent(args.User, location);
+                    RaiseLocalEvent(ref claimed);
+                    if (claimed.Cancelled)
+                        return;
+                }
+                // WOLFGATE END
+
                 if (HasBaseTurf(currentTileDefinition, baseTurf.ID) || onTerrain) // WOLFGATE(Planets): lattice also goes straight onto planet ground.
                 {
                     if (!_stackSystem.Use(uid, 1, stack))

@@ -123,6 +123,14 @@ public sealed partial class CEZLevelsSystem
             return false;
         }
 
+        var divert = new WFLiftoffDivertEvent(grid, pilot);
+        RaiseLocalEvent(ref divert);
+        if (divert.Handled)
+        {
+            reason = divert.Reason;
+            return reason == null;
+        }
+
         if (!WfCanOfferLiftoff(grid))
         {
             reason = Loc.GetString("wf-liftoff-not-grounded");

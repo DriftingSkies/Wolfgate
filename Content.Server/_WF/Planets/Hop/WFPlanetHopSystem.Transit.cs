@@ -99,14 +99,16 @@ public sealed partial class WFPlanetHopSystem
 
         // The ring and the clear check measure the hull at the pose it will land in.
         _transform.SetWorldRotation(hull, hop.Angle);
-        var spot = FindSpot(hull, riders, landing, landing == hop.TargetMap ? hop.Target : hop.Origin, hop.Angle);
+        var exact = hop.Spared != null && landing == hop.TargetMap;
+        var spot = exact ? hop.Target : FindSpot(hull, riders, landing, landing == hop.TargetMap ? hop.Target : hop.Origin, hop.Angle);
 
         Place(hull, riders, landing, spot, hop.Angle);
 
-        _bounds.ClampHull(hull);
+        if (!exact)
+            _bounds.ClampHull(hull);
 
         if (HasComp<MapGridComponent>(hull))
-            _shuttle.Smimsh(hull);
+            _shuttle.Smimsh(hull, ignoredGrids: exact ? new HashSet<EntityUid> { hop.Spared!.Value } : null);
 
         Knock(hull);
 

@@ -1,0 +1,21 @@
+wf-pad-occupied = The landing pad below is taken.
+wf-pad-unpowered = The landing pad below has no power.
+wf-pad-docked = Undock from the other ships before landing on a pad.
+wf-pad-too-small = The landing pad below is {$size}×{$size} tiles; this ship needs {$width}×{$height}.
+wf-pad-blocked = Something stands on the landing pad below.
+wf-pad-guiding = The pad is already guiding this ship.
+wf-pad-lost = The pad this ship stood on is gone.
+wf-pad-in-use = Not while the pad holds or guides a ship.
+wf-pad-resized = The pad is now {$size}×{$size} tiles.
+wf-pad-verb-widen = Widen pad to {$size}×{$size}
+wf-pad-verb-narrow = Narrow pad to {$size}×{$size}
+wf-pad-examine = It marks out a landing pad [color=white]{$size}×{$size}[/color] tiles across.
+wf-pad-examine-guiding = It is guiding a ship.
+wf-pad-examine-parked = A ship is parked on it.
+wf-pad-examine-unpowered = It has no power and guides nothing.
+wf-pad-verb-public = Open pad to every pilot
+wf-pad-verb-private = Keep pad to the allow list
+wf-pad-now-public = Any pilot may land on this pad now.
+wf-pad-now-private = Only the owner and the Access tab's allow list may land on this pad now.
+wf-pad-examine-public = Any pilot may land on it.
+wf-pad-examine-private = Only the outpost's owner and those on its allow list may land on it.

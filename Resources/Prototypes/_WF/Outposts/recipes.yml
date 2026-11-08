@@ -1,0 +1,107 @@
+# What the outpost fabricator prints. Every Wolfgate product is priced at or above the materials it costs
+# (OutpostFabricatorTest); the stock recipes it shares keep upstream's prices.
+
+- type: latheCategory
+  id: WFOutpostBuilding
+  name: wf-lathe-category-outpost-building
+
+- type: latheRecipePack
+  id: WFOutpostConstructionStatic
+  recipes:
+  - WFOutpostFoundationPlate
+  - WFOutpostRoofPanel
+  - WFPrefabWallPanel
+  - WFPrefabWindowKit
+  - WFPrefabDoorKit
+  - WFPrefabAirlockKit
+  - WFPrefabShuttersKit
+  - WFOutpostFabricatorPack
+
+- type: latheRecipePack
+  id: WFOutpostToolsStatic
+  recipes:
+  - PowerDrill
+  - WFArcWelder
+
+- type: latheRecipe
+  abstract: true
+  id: WFBaseOutpostBuildingRecipe
+  categories:
+  - WFOutpostBuilding
+  completetime: 3
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFOutpostFoundationPlate
+  result: WFOutpostFoundationPlate
+  materials:
+    Steel: 400
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFOutpostRoofPanel
+  result: WFOutpostRoofPanel
+  materials:
+    Steel: 200
+    Plastic: 50
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFPrefabWallPanel
+  result: WFPrefabWallPanel
+  materials:
+    Steel: 300
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFPrefabWindowKit
+  result: WFPrefabWindowKit
+  materials:
+    Glass: 300
+    Steel: 100
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFPrefabDoorKit
+  result: WFPrefabDoorKit
+  materials:
+    Steel: 500
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFPrefabAirlockKit
+  result: WFPrefabAirlockKit
+  completetime: 6
+  materials:
+    Steel: 900
+    Plastic: 300
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFPrefabShuttersKit
+  result: WFPrefabShuttersKit
+  completetime: 4
+  materials:
+    Steel: 400
+    Plastic: 100
+
+- type: latheRecipe
+  parent: WFBaseOutpostBuildingRecipe
+  id: WFOutpostFabricatorPack
+  result: WFOutpostFabricatorPack
+  completetime: 20
+  materials:
+    Steel: 2000
+    Glass: 1000
+    Plastic: 500
+
+- type: latheRecipe
+  id: WFArcWelder
+  result: WFArcWelder
+  categories:
+  - Tools
+  completetime: 4
+  materials:
+    Steel: 600
+    Plastic: 200
+    Glass: 100

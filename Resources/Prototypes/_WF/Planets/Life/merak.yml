@@ -61,6 +61,9 @@
   id: WFFaunaMerakFlats
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockMerak
+      weight: 2
     - id: MobIronCrab
       weight: 3
     - id: MobQuartzCrab
@@ -79,6 +82,9 @@
   id: WFFaunaMerakOasis
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockMerak
+      weight: 2
     # A bird flock (_WF/Birds); the leader spawns the rest.
     - id: WFMobBirdGlassSwift
       weight: 3

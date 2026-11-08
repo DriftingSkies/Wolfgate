@@ -52,7 +52,7 @@ public static class WFPlanetView
         if (!entMan.TryGetComponent(viewer, out TransformComponent? xform)
             || xform.GridUid is not { } grid
             || !entMan.HasComponent<WFPlanetLayerComponent>(xform.MapUid)
-            || grid != xform.MapUid && !entMan.HasComponent<WFPlanetCityGridComponent>(grid)
+            || grid != xform.MapUid && !entMan.HasComponent<WFPlanetCityGridComponent>(grid) && !entMan.HasComponent<WFPlanetTerrainGridComponent>(grid)
             || !entMan.TryGetComponent(grid, out MapGridComponent? gridComp)
             || !entMan.TryGetComponent(grid, out RoofComponent? roof))
             return false;

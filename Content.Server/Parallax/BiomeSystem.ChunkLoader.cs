@@ -117,6 +117,9 @@ public sealed partial class BiomeSystem
             if (_wfOccupied.Contains(indices)) // WOLFGATE(Planets)
                 return;
 
+            if (WfLayFoundation(gridUid, grid, indices, loadedEntities)) // WOLFGATE(Outposts): the cavern under an outpost's claim is foundation rock
+                return;
+
             if (TryGetEntity(indices, component, (gridUid, grid), out var entPrototype))
             {
                 if (WfLayRoll(component, gridUid, grid, indices, entPrototype, loadedEntities)) // WOLFGATE(Planets): a planet's rock spawner is rolled here from its tile, so the rock unloads and comes back the same

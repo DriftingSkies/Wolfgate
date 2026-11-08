@@ -8,7 +8,7 @@ namespace Content.Client._WF.RoundSetup;
 public sealed partial class WFRoundSetupWindow
 {
     private enum SetupView : byte { Browse, Create, Saved, MyLobby }
-    private enum LobbyPage : byte { Overview, Ship, Admission, Roles }
+    private enum LobbyPage : byte { Overview, Ship, Admission, Roles, Outpost }
 
     private readonly ScenarioColumns _navigation = new() { HorizontalExpand = true };
     private readonly BoxContainer _shipPage = Column(8);
@@ -250,7 +250,7 @@ public sealed partial class WFRoundSetupWindow
         crewName.ToolTip = Text("crew-title-help");
         _body.AddChild(DescriptionEditor(_newDescription, value => _newDescription = value));
         BuildCreateCompany(state);
-        foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Crashlanded, WFRoundScenario.FactionShip, WFRoundScenario.Doomed })
+        foreach (var scenario in new[] { WFRoundScenario.Ship, WFRoundScenario.Outpost, WFRoundScenario.Crashlanded, WFRoundScenario.FactionShip, WFRoundScenario.Doomed })
         {
             var card = Column(8);
             var title = PlainDescription(ScenarioName(scenario));
@@ -267,13 +267,22 @@ public sealed partial class WFRoundSetupWindow
                 faction.OnItemSelected += args => { _newFaction = (WFCrewFaction) args.Id; Redraw(); };
                 card.AddChild(faction);
             }
+            if (scenario == WFRoundScenario.Crashlanded)
+            {
+                var carcinoma = new CheckBox { Text = Text("crash-carcinoma"), Pressed = _newCrashCarcinoma, Name = "RoundSetupCrashCarcinoma" };
+                carcinoma.ToolTip = Text("crash-carcinoma-help");
+                carcinoma.OnToggled += args => _newCrashCarcinoma = args.Pressed;
+                card.AddChild(carcinoma);
+            }
             var unavailable = scenario == WFRoundScenario.Crashlanded && !state.CrashlandedAvailable ||
                 scenario == WFRoundScenario.Doomed && !state.DoomedAvailable ||
+                scenario == WFRoundScenario.Outpost && !state.OutpostAvailable ||
                 scenario == WFRoundScenario.FactionShip && !state.Factions.Contains(_newFaction);
             var unavailableReason = scenario switch
             {
                 WFRoundScenario.FactionShip => "faction-unavailable",
                 WFRoundScenario.Doomed => "doomed-unavailable",
+                WFRoundScenario.Outpost => "outpost-unavailable",
                 _ => "crash-unavailable",
             };
             if (unavailable)
@@ -283,6 +292,7 @@ public sealed partial class WFRoundSetupWindow
                 CompanyId = CreateCompany(state),
                 Scenario = scenario,
                 Faction = scenario == WFRoundScenario.FactionShip ? _newFaction : WFCrewFaction.None,
+                CrashCarcinoma = scenario == WFRoundScenario.Crashlanded && _newCrashCarcinoma,
                 Title = _newTitle,
                 Description = _newDescription,
             }), unavailable || !state.CanJoin);
@@ -301,8 +311,10 @@ public sealed partial class WFRoundSetupWindow
         var host = lobby.Host == user;
         var member = lobby.Members.FirstOrDefault(player => player.UserId == user);
         var pages = new List<(LobbyPage Page, string Label)> { (LobbyPage.Overview, "flow-overview") };
-        if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started)
+        if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started && lobby.Scenario != WFRoundScenario.Outpost)
             pages.Add((LobbyPage.Ship, "ship"));
+        if (lobby.Scenario == WFRoundScenario.Outpost && !lobby.Started)
+            pages.Add((LobbyPage.Outpost, "outpost-tab"));
         pages.Add((LobbyPage.Roles, "crew-section"));
         if (host)
             pages.Add((LobbyPage.Admission, "admission"));
@@ -329,6 +341,7 @@ public sealed partial class WFRoundSetupWindow
         switch (_lobbyPage)
         {
             case LobbyPage.Ship: BuildShipSettings(state, lobby, host); break;
+            case LobbyPage.Outpost: BuildOutpostSettings(lobby, host); break;
             case LobbyPage.Roles:
                 if (!string.IsNullOrEmpty(lobby.Description))
                     _body.AddChild(PlainDescription(lobby.Description));
@@ -360,7 +373,13 @@ public sealed partial class WFRoundSetupWindow
                     BuildMemberSetup(state, lobby, member);
                 else
                     _body.AddChild(Description("already-playing"));
-                if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started)
+                if (lobby.Scenario == WFRoundScenario.Outpost)
+                {
+                    _body.AddChild(OutpostSummary(lobby));
+                    if (!lobby.Started)
+                        _body.AddChild(Button("outpost-tab", () => NavigateLobby(LobbyPage.Outpost)));
+                }
+                else if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started)
                 {
                     _body.AddChild(VesselSummary(state, lobby));
                     if (!lobby.Started)
@@ -384,6 +403,9 @@ public sealed partial class WFRoundSetupWindow
         selector.AddItem(ScenarioName(WFRoundScenario.Doomed), (int) WFRoundScenario.Doomed);
         if (!state.DoomedAvailable)
             selector.DisableItem(2, Text("doomed-unavailable"));
+        selector.AddItem(ScenarioName(WFRoundScenario.Outpost), (int) WFRoundScenario.Outpost);
+        if (!state.OutpostAvailable)
+            selector.DisableItem(3, Text("outpost-unavailable"));
         foreach (var faction in WFFactionCrewPolicy.All)
         {
             selector.AddItem(Text("faction-start", ("faction", Text("faction-" + faction.ToString().ToLowerInvariant()))), 10 + (int) faction);
@@ -433,7 +455,8 @@ public sealed partial class WFRoundSetupWindow
             _footer.AddChild(Button("leave", () => Send(WFRoundSetupAction.Leave, lobby.Id)));
             return;
         }
-        var purchase = WFRoundSetupPolicy.IsShip(lobby.Scenario) && lobby.Host == member.UserId && !lobby.Started;
+        var outpost = lobby.Scenario == WFRoundScenario.Outpost;
+        var purchase = WFRoundSetupPolicy.IsPurchase(lobby.Scenario) && lobby.Host == member.UserId && !lobby.Started && !lobby.OutpostLanding;
         var vessel = state.Vessels.FirstOrDefault(choice => choice.Id == lobby.Vessel);
         var eligible = member.RoleId == null
             ? state.Jobs.Any(job => job.Id == member.Job && (member.Station == null || job.Station == member.Station))
@@ -442,13 +465,15 @@ public sealed partial class WFRoundSetupWindow
         var canPurchase = payment == null || payment.Price > 0 && payment.Allocated == payment.Price &&
             (payment.Contribution == 0 || state.HostBalance is { } balance && balance >= payment.Contribution);
         var paymentReason = payment is { Price: > 0 } && payment.Allocated != payment.Price ? "payment-total-error" :
-            lobby.Vessel == null ? "ship-unselected" : state.HostBalance == null ? "ship-bank-help" : "ship-insufficient-help";
+            outpost && lobby.OutpostSlot == null && lobby.OutpostPreset == null ? "outpost-choice" :
+            !outpost && lobby.Vessel == null ? "ship-unselected" : state.HostBalance == null ? "ship-bank-help" : "ship-insufficient-help";
         if (purchase && !member.Ready && _lobbyPage != LobbyPage.Admission)
         {
-            var nextPage = _lobbyPage == LobbyPage.Overview ? LobbyPage.Ship :
-                _lobbyPage == LobbyPage.Ship ? LobbyPage.Roles : LobbyPage.Admission;
+            var nextPage = _lobbyPage == LobbyPage.Overview ? outpost ? LobbyPage.Outpost : LobbyPage.Ship :
+                _lobbyPage is LobbyPage.Ship or LobbyPage.Outpost ? LobbyPage.Roles : LobbyPage.Admission;
             var reason = _lobbyPage == LobbyPage.Overview && !eligible ? "ready-needs-job" :
                 _lobbyPage == LobbyPage.Ship && vessel == null ? "ship-unselected" :
+                _lobbyPage == LobbyPage.Outpost && lobby.OutpostSlot == null && lobby.OutpostPreset == null ? "outpost-choice" :
                 _lobbyPage == LobbyPage.Roles && _editingRole != null ? "finish-role-edit" : null;
             var next = Button("next", () => NavigateLobby(nextPage), reason != null, reason);
             next.Name = "RoundSetupNext";

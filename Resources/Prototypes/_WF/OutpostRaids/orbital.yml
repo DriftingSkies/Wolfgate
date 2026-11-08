@@ -1,0 +1,141 @@
+# Orbital defence (WFOrbitalDefenceSystem): gizmos that meet a raid shuttle on its way down from orbit. They fire on raid
+# shuttles only, never on players' ships. Names and descriptions are in Resources/Locale/en-US/_WF/OutpostRaids/raids.ftl.
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostSensorUplinkPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#40C0E0"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostSensorUplink
+    delay: 3
+  - type: StaticPrice
+    price: 3000
+
+- type: entity
+  parent: WFBaseOutpostWarningMast
+  id: WFOutpostSensorUplink
+  components:
+  - type: Sprite
+    color: "#a0e0f0"
+  - type: ApcPowerReceiver
+    powerLoad: 1000
+  - type: WFSensorUplink
+  - type: WFRepackable
+    pack: WFOutpostSensorUplinkPack
+    delay: 3
+  - type: StaticPrice
+    price: 3000
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostFlakBatteryPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#B0B060"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostFlakBattery
+    delay: 5
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostFlakBattery
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Shuttles/kinetic.rsi
+    snapCardinals: true
+    layers:
+    - state: ptk-800
+  - type: ApcPowerReceiver
+    powerLoad: 2000
+  - type: WFOrbitalBattery
+    damage: 15
+    sound:
+      path: /Audio/Weapons/Guns/Gunshots/ship_duster.ogg
+  - type: WFRepackable
+    pack: WFOutpostFlakBatteryPack
+    delay: 5
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostDefenceBatteryPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#C06040"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostDefenceBattery
+    delay: 5
+  - type: StaticPrice
+    price: 9000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostDefenceBattery
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Shuttles/launcher.rsi
+    snapCardinals: true
+    layers:
+    - state: exp-2100g
+  - type: ApcPowerReceiver
+    powerLoad: 5000
+  - type: WFOrbitalBattery
+    damage: 40
+    sound:
+      path: /Audio/Weapons/Guns/Gunshots/ship_svalinn.ogg
+  - type: WFRepackable
+    pack: WFOutpostDefenceBatteryPack
+    delay: 5
+  - type: StaticPrice
+    price: 9000
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostDescentJammerPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#8040C0"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostDescentJammer
+    delay: 3
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostDescentJammer
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Devices/overwatch_jammer.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: ApcPowerReceiver
+    powerLoad: 3000
+  - type: WFDescentJammer
+  - type: WFRepackable
+    pack: WFOutpostDescentJammerPack
+    delay: 3
+  - type: StaticPrice
+    price: 5000

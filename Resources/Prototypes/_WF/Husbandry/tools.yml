@@ -1,0 +1,29 @@
+- type: entity
+  parent: BaseItem
+  id: WFLasso
+  name: lasso
+  description: A loop of stout rope for catching animals. Throw it over one to lead it; a big animal takes two loops. Use it on the animal again to let go.
+  components:
+  - type: Sprite
+    sprite: _WF/Tether/rope_hemp.rsi
+    state: icon
+  - type: Item
+    sprite: _WF/Tether/rope_hemp.rsi
+    size: Small
+  - type: WFLasso
+  - type: StaticPrice
+    price: 60
+
+- type: entity
+  parent: BaseWhistle
+  id: WFHerdingWhistle
+  name: herding whistle
+  description: A shepherd's whistle. Blow it to call your livestock to follow; alt-click to tell them to stay or go to the nearest pen.
+  components:
+  - type: Sprite
+    state: whistle
+  - type: UseDelay
+    delay: 1
+  - type: WFHerdingWhistle
+  - type: StaticPrice
+    price: 40

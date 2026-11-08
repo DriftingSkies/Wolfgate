@@ -155,6 +155,7 @@ public sealed partial class WFPlanetPoiSystem
             Connection = entry.Connection,
             Sockets = sockets,
             Name = entry.Name,
+            Type = entry.Type,
             Weight = entry.Weight,
             Expeditions = entry.Expeditions,
             Difficulty = entry.Difficulty,

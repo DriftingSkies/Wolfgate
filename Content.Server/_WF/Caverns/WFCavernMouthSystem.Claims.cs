@@ -504,6 +504,10 @@ public sealed partial class WFCavernMouthSystem
             || pad.Any(offset => _biome.WfIsPinned(levelBiome, site.Origin + offset)))
             return Block.Pinned;
 
+        // Ground kept shut, such as an outpost's foundation, may open again once its claim is gone.
+        if (!MayOpen(context.Ground.Owner, site.Origin + site.Shape.Min, site.Origin + site.Shape.Max))
+            return Block.Waiting;
+
         if (loading != null)
         {
             var radius = context.Spec.PadRadius;
@@ -543,6 +547,14 @@ public sealed partial class WFCavernMouthSystem
             approx: true, includeMap: false);
 
         return grids.Count == 0 ? Block.None : Block.Waiting;
+    }
+
+    /// <summary>Whether the ground may open onto the cavern over the tiles from <paramref name="min"/> to <paramref name="max"/>, inclusive.</summary>
+    public bool MayOpen(EntityUid ground, Vector2i min, Vector2i max)
+    {
+        var ev = new WFCavernOpenAttemptEvent(ground, min, max);
+        RaiseLocalEvent(ref ev);
+        return !ev.Cancelled;
     }
 
     /// <summary>Cuts the mouth: ring and hole on the ground, the pad in the cavern, then shades, rim and stairs.</summary>

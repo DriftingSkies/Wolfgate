@@ -1,0 +1,25 @@
+# Outpost tools: the arc welder makes its own fuel from a cell's worth of charge, for outposts with no fuel tank.
+
+- type: entity
+  parent: Welder
+  id: WFArcWelder
+  name: arc welder
+  description: A welding tool that strikes its arc from a built-in charge cell, slowly restoring its own fuel. Prints empty.
+  components:
+  - type: Sprite
+    sprite: Objects/Tools/welder_experimental.rsi
+  - type: Item
+    sprite: Objects/Tools/welder_experimental.rsi
+  - type: SolutionContainerManager
+    solutions:
+      Welder:
+        reagents: []
+        maxVol: 50
+  - type: SolutionRegeneration
+    solution: Welder
+    generated:
+      reagents:
+      - ReagentId: WeldingFuel
+        Quantity: 1
+  - type: StaticPrice
+    price: 65

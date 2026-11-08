@@ -201,6 +201,7 @@ public sealed partial class CEZLevelsSystem
     /// <summary>Sink acceleration over a planet, scaled by partial lift; marks the set lift-lost.</summary>
     private float WfSinkGravity(EntityUid grid, HashSet<EntityUid> set, float gravity)
     {
+        WfShiftOffClaims(grid, set);
         if (!WfTryGetLiftRatio(grid, out var ratio))
             return gravity;
 
@@ -231,7 +232,7 @@ public sealed partial class CEZLevelsSystem
 
         _wfNextOrbitRefusal[grid] = _timing.CurTime + WFOrbitRefusalCooldown;
 
-        if (!_wfOrbitEntry.TryEnterAtmosphere(console, false, out var reason))
+        if (!_wfOrbitEntry.TryEnterAtmosphere(console, false, out var reason, pilot))
             _popup.PopupEntity(reason, console, pilot);
 
         return true;

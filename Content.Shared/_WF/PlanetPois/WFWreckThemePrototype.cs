@@ -68,6 +68,14 @@ public sealed partial class WFPlanetWrecks
     [DataField]
     public int MaxCount = 2;
 
+    /// <summary>What its sites are called once identified; a plain wreck when unset.</summary>
+    [DataField]
+    public LocId? Name;
+
+    /// <summary>What kind of place a wreck is, for claiming it.</summary>
+    [DataField]
+    public ProtoId<WFPoiTypePrototype>? Type;
+
     /// <summary>How close to the world's edge a wreck may lie, in tiles; the table's edgeMargin when unset.</summary>
     [DataField]
     public int? EdgeMargin;

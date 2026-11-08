@@ -270,7 +270,7 @@ public sealed partial class WFShipAccessServerSystem
         }
     }
 
-    private void OnSetDoorRule(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetDoorRuleMessage args)
+    private void OnSetDoorRule(EntityUid console, ref WFShipAccessSetDoorRuleMessage args)
     {
         if (!TryGetEditableShip(console, args.Actor, out var ship) || !TryGetShipDoor(console, ship, args.Door, args.Actor, out var door))
             return;
@@ -292,7 +292,7 @@ public sealed partial class WFShipAccessServerSystem
             Popup(console, args.Actor, "ship-access-seal-pending");
     }
 
-    private void OnSetAllDoorRules(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetAllDoorRulesMessage args)
+    private void OnSetAllDoorRules(EntityUid console, ref WFShipAccessSetAllDoorRulesMessage args)
     {
         if (!TryGetEditableShip(console, args.Actor, out var ship))
             return;
@@ -308,17 +308,17 @@ public sealed partial class WFShipAccessServerSystem
             return;
         }
         var changed = SetAllDoorRules(ship, args.Rule);
-        _popup.PopupEntity(Loc.GetString("ship-access-all-doors-set", ("count", changed)), console.Owner, args.Actor);
+        _popup.PopupEntity(Loc.GetString("ship-access-all-doors-set", ("count", changed)), console, args.Actor);
     }
 
-    private void OnSetDoorPlayer(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetDoorPlayerMessage args)
+    private void OnSetDoorPlayer(EntityUid console, ref WFShipAccessSetDoorPlayerMessage args)
     {
         if (TryGetEditableShip(console, args.Actor, out var ship) && TryGetShipDoor(console, ship, args.Door, args.Actor, out var door))
             SetDoorPlayer(ship, door, args.Key, args.Listed);
     }
 
     /// <summary>Resolves a console message's door and checks it is a door on the console's own grid. Firelocks take no rule.</summary>
-    private bool TryGetShipDoor(Entity<ShuttleConsoleComponent> console, Entity<WFShipAccessComponent> ship, NetEntity netDoor, EntityUid actor, out EntityUid door)
+    private bool TryGetShipDoor(EntityUid console, Entity<WFShipAccessComponent> ship, NetEntity netDoor, EntityUid actor, out EntityUid door)
     {
         if (TryGetEntity(netDoor, out var uid) && IsRuledDoor(uid.Value) && Transform(uid.Value).GridUid == ship.Owner)
         {

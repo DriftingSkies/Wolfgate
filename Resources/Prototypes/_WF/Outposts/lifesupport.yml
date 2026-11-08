@@ -1,0 +1,698 @@
+# Atmos and kitchen pack: what keeps an outpost's people breathing, warm and fed. Each gizmo is the stock machine's
+# working parts on a frame with no board, set up from its pack and repacked into it.
+
+- type: entity
+  abstract: true
+  parent: BaseMachinePowered
+  id: WFBaseOutpostLifeGizmo
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# CO2 cracker
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostCo2CrackerPack
+  name: CO2 cracker pack
+  description: A packed CO2 cracker. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#8FD3FF"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostCo2Cracker
+    delay: 3
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostCo2Cracker
+  name: CO2 cracker
+  description: Splits the carbon dioxide in the room back into oxygen, up to a mole a second, while it has power.
+  components:
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/Portable/portable_scrubber.rsi
+    noRot: true
+    layers:
+    - state: icon-running
+      color: "#BFE6FF"
+    - state: unlit
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 2000
+  - type: AtmosDevice
+    joinSystem: true
+  - type: WFCo2Cracker
+  - type: WFRepackable
+    pack: WFOutpostCo2CrackerPack
+    delay: 3
+  - type: StaticPrice
+    price: 900
+
+# Heating
+
+- type: entity
+  abstract: true
+  parent: WFBaseOutpostLifeGizmo
+  id: WFBaseOutpostHeater
+  components:
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/Portable/portable_sheater.rsi
+    noRot: true
+    layers:
+    - state: sheaterOff
+      map: ["enum.SpaceHeaterVisualLayers.Main"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.SpaceHeaterVisuals.State:
+        SpaceHeaterVisualLayers.Main:
+          Off: { state: sheaterOff }
+          StandBy: { state: sheaterStandby }
+          Heating: { state: sheaterHeat }
+          Cooling: { state: sheaterCool }
+  - type: AtmosDevice
+    joinSystem: true
+  - type: SpaceHeater
+  - type: GasThermoMachine
+    temperatureTolerance: 0.2
+    atmospheric: true
+  - type: EntityRadiusHeater
+    radius: 2
+    thermalEnergy: 12000
+    limit: 311
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostTemperatureRegulatorPack
+  name: temperature regulator pack
+  description: A packed temperature regulator. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#FF9F5A"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostTemperatureRegulator
+    delay: 3
+  - type: StaticPrice
+    price: 450
+
+- type: entity
+  parent: WFBaseOutpostHeater
+  id: WFOutpostTemperatureRegulator
+  name: temperature regulator
+  description: Heats or cools the room to the temperature you set.
+  components:
+  - type: ApcPowerReceiver
+    powerDisabled: true
+  - type: UserInterface
+    interfaces:
+      enum.SpaceHeaterUiKey.Key:
+        type: SpaceHeaterBoundUserInterface
+  - type: ActivatableUI
+    inHandsOnly: false
+    key: enum.SpaceHeaterUiKey.Key
+  - type: WFRepackable
+    pack: WFOutpostTemperatureRegulatorPack
+    delay: 3
+  - type: StaticPrice
+    price: 450
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostWallHeaterPack
+  name: wall heater pack
+  description: A packed wall heater. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#E8603C"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostWallHeater
+    delay: 2
+  - type: StaticPrice
+    price: 200
+
+- type: entity
+  parent: WFBaseOutpostHeater
+  id: WFOutpostWallHeater
+  name: wall heater
+  description: A plain heater that stands against a wall and keeps the room at room temperature whenever it has power. No settings.
+  components:
+  - type: ApcPowerReceiver
+    powerDisabled: false
+  - type: SpaceHeater
+    mode: Heat
+    powerLevel: Low
+  - type: GasThermoMachine
+    temperatureTolerance: 0.2
+    atmospheric: true
+    targetTemperature: 293.15
+  - type: WFRepackable
+    pack: WFOutpostWallHeaterPack
+    delay: 2
+  - type: StaticPrice
+    price: 200
+
+# Synthesizers
+
+- type: entity
+  abstract: true
+  parent: WFBaseOutpostLifeGizmo
+  id: WFBaseOutpostSynthesizer
+  components:
+  - type: Sprite
+    sprite: Structures/Storage/tanks.rsi
+    noRot: true
+  - type: ApcPowerReceiver
+    powerLoad: 400
+  - type: SolutionContainerManager
+    solutions:
+      tank:
+        maxVol: 300
+  - type: DrainableSolution
+    solution: tank
+  - type: ExaminableSolution
+    solution: tank
+  - type: ReagentTank
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostWaterSynthesizerPack
+  name: water synthesizer pack
+  description: A packed water synthesizer. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#4A90E2"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostWaterSynthesizer
+    delay: 3
+  - type: StaticPrice
+    price: 500
+
+- type: entity
+  parent: WFBaseOutpostSynthesizer
+  id: WFOutpostWaterSynthesizer
+  name: water synthesizer
+  description: Condenses clean water into its tank while it has power. Fill a container from it.
+  components:
+  - type: Sprite
+    layers:
+    - state: watercooler
+  - type: WFReagentSynthesizer
+    reagent: Water
+    rate: 1
+  - type: WFRepackable
+    pack: WFOutpostWaterSynthesizerPack
+    delay: 3
+  - type: StaticPrice
+    price: 500
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostNutrientSynthesizerPack
+  name: nutrient synthesizer pack
+  description: A packed nutrient synthesizer. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#7BC043"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostNutrientSynthesizer
+    delay: 3
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WFBaseOutpostSynthesizer
+  id: WFOutpostNutrientSynthesizer
+  name: nutrient synthesizer
+  description: Makes plant nutrient for hydroponics while it has power. Fill a jug from it.
+  components:
+  - type: Sprite
+    layers:
+    - state: generictank-1
+      color: "#9BD770"
+  - type: WFReagentSynthesizer
+    reagent: EZNutrient
+    rate: 0.5
+  - type: WFRepackable
+    pack: WFOutpostNutrientSynthesizerPack
+    delay: 3
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostSustenanceDispenserPack
+  name: sustenance dispenser pack
+  description: A packed sustenance dispenser. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#D8B26E"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostSustenanceDispenser
+    delay: 3
+  - type: StaticPrice
+    price: 700
+
+- type: entity
+  parent: WFBaseOutpostSynthesizer
+  id: WFOutpostSustenanceDispenser
+  name: sustenance dispenser
+  description: Slowly makes a bland, filling nutrient slurry while it has power. Pour it into a cup and drink up.
+  components:
+  - type: Sprite
+    layers:
+    - state: watercooler
+      color: "#E6C98F"
+  - type: SolutionContainerManager
+    solutions:
+      tank:
+        maxVol: 100
+  - type: WFReagentSynthesizer
+    reagent: Nutriment
+    rate: 0.1
+  - type: WFRepackable
+    pack: WFOutpostSustenanceDispenserPack
+    delay: 3
+  - type: StaticPrice
+    price: 700
+
+# Rations printer
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostRationsPrinterPack
+  name: rations printer pack
+  description: A packed rations printer. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#C9A66B"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostRationsPrinter
+    delay: 3
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostRationsPrinter
+  name: rations printer
+  description: Presses biomass into ration bricks. Feed it biomass from a biogenerator.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/autolathe.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+      map: ["enum.LatheVisualLayers.IsRunning"]
+      color: "#E8D3A8"
+    - state: unlit
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: inserting
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+  - type: Appearance
+  - type: ApcPowerReceiver
+    powerLoad: 300
+  - type: Lathe
+    idleState: icon
+    runningState: building
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
+    staticPacks:
+    - WFOutpostRationsStatic
+  - type: MaterialStorage
+    whitelist:
+      tags:
+      - Sheet
+      - RawMaterial
+      - Ingot
+  - type: ActivatableUI
+    key: enum.LatheUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.LatheUiKey.Key:
+        type: LatheBoundUserInterface
+  - type: WFRepackable
+    pack: WFOutpostRationsPrinterPack
+    delay: 3
+  - type: StaticPrice
+    price: 400
+
+- type: latheCategory
+  id: WFOutpostRations
+  name: wf-lathe-category-outpost-rations
+
+- type: latheRecipePack
+  id: WFOutpostRationsStatic
+  recipes:
+  - WFOutpostRationNutribrick
+  - WFOutpostRationBrownie
+
+- type: latheRecipe
+  id: WFOutpostRationNutribrick
+  result: FoodSnackNutribrick
+  categories:
+  - WFOutpostRations
+  completetime: 4
+  materials:
+    Biomass: 10
+
+- type: latheRecipe
+  id: WFOutpostRationBrownie
+  result: FoodSnackMREBrownie
+  categories:
+  - WFOutpostRations
+  completetime: 4
+  materials:
+    Biomass: 8
+
+# Cooking
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostGriddlePack
+  name: griddle pack
+  description: A packed griddle. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#B0B0B0"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostGriddle
+    delay: 2
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostGriddle
+  name: griddle
+  description: A flat hot plate for steaks and eggs. Put the food on it and set the heat.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/electric_grill.rsi
+    drawdepth: SmallObjects
+    snapCardinals: true
+    layers:
+    - state: icon
+    - map: ["enum.EntityHeaterVisuals.Setting"]
+      shader: unshaded
+      visible: false
+  - type: Fixtures
+    fixtures:
+      itemcollide:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.14,-0.05,0.15,0.25"
+        layer:
+        - HighImpassable
+        hard: false
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.14,-0.05,0.15,0.25"
+        mask:
+        - TabletopMachineMask
+        layer:
+        - TabletopMachineLayer
+  - type: ApcPowerReceiver
+    powerLoad: 0
+  - type: EntityHeater
+    settingSound:
+      path: /Audio/Weapons/click.ogg
+      params:
+        volume: -6
+  - type: ItemPlacer
+    maxEntities: 4
+    whitelist:
+      components:
+      - Temperature
+  - type: PlaceableSurface
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.EntityHeaterVisuals.Setting:
+        enum.EntityHeaterVisuals.Setting:
+          Off: { visible: false }
+          Low: { visible: true, state: low }
+          Medium: { visible: true, state: medium }
+          High: { visible: true, state: high }
+  - type: WFRepackable
+    pack: WFOutpostGriddlePack
+    delay: 2
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostRangePack
+  name: range pack
+  description: A packed electric range. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#6E6E6E"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostRange
+    delay: 3
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostRange
+  name: range
+  description: An oven with a hob on top, for an outpost kitchen.
+  components:
+  - type: Microwave
+    capacity: 10
+    canMicrowaveIdsSafely: false
+    explosionChance: 0
+    lightningChance: 0
+    beginCookingSound: /Audio/_NF/Machines/egg-timer.ogg
+    foodDoneSound: /Audio/Machines/ding.ogg
+    loopingSound: /Audio/_NF/Effects/silence.ogg
+    validRecipeTypes: Oven
+    canHeat: true
+    canIrradiate: false
+    key: ElectricRangeKey
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.VisualState:
+        enum.MicrowaveVisualizerLayers.Base:
+          Idle: { state: "off_no_door" }
+          Broken: { state: "off_no_door" }
+          Cooking: { state: "off_no_door" }
+        enum.MicrowaveVisualizerLayers.BaseUnlit:
+          Idle: { state: "unlit" }
+          Broken: { state: "unlit" }
+          Cooking: { state: "cooking_unlit" }
+      enum.PowerDeviceVisuals.Powered:
+        enum.MicrowaveVisualizerLayers.BaseUnlit:
+          True: { visible: true }
+          False: { visible: false }
+      enum.EntityHeaterVisuals.Setting:
+        enum.EntityHeaterVisuals.Setting:
+          Off: { visible: false }
+          Low: { visible: true, state: range_low }
+          Medium: { visible: true, state: range_medium }
+          High: { visible: true, state: range_high }
+  - type: ActivatableUI
+    key: enum.MicrowaveUiKey.ElectricRangeKey
+  - type: UserInterface
+    interfaces:
+      enum.MicrowaveUiKey.ElectricRangeKey:
+        type: MicrowaveBoundUserInterface
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.30,-0.25,0.30,0.45"
+        density: 600
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+      fix2:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.30,0.15,0.30,0.45"
+        mask:
+        - TabletopMachineMask
+        layer:
+        - Impassable
+        - MidImpassable
+        - LowImpassable
+        hard: false
+  - type: Sprite
+    sprite: _NF/Structures/Machines/oven.rsi
+    snapCardinals: true
+    layers:
+    - state: off_no_door
+      map: ["enum.MicrowaveVisualizerLayers.Base"]
+    - state: unlit
+      shader: unshaded
+      map: ["enum.MicrowaveVisualizerLayers.BaseUnlit"]
+    - state: oven_door
+    - map: ["enum.EntityHeaterVisuals.Setting"]
+      state: range_low
+      shader: unshaded
+      visible: false
+  - type: ApcPowerReceiver
+    powerLoad: 1000
+  - type: ContainerContainer
+    containers:
+      microwave_entity_container: !type:Container
+  - type: EntityHeater
+    passivePower: 1000
+  - type: PlaceableSurface
+    isPlaceable: false
+  - type: ItemPlacer
+    maxEntities: 4
+    whitelist:
+      components:
+      - Temperature
+  - type: WFRepackable
+    pack: WFOutpostRangePack
+    delay: 3
+  - type: StaticPrice
+    price: 600
+
+# Animal feeder: the enclosed floor round it is a pen, whose livestock outpost saves keep (Husbandry).
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostAnimalFeederPack
+  name: animal feeder pack
+  description: A packed animal feeder. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#A0784A"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostAnimalFeeder
+    delay: 2
+  - type: StaticPrice
+    price: 120
+
+- type: entity
+  parent: BaseStructure
+  id: WFOutpostAnimalFeeder
+  name: animal feeder
+  description: A trough to keep animal feed in.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    sprite: Structures/Storage/orebox.rsi
+    noRot: true
+    layers:
+    - state: orebox
+      color: "#B08850"
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 60
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroyHeavy
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Storage
+    grid:
+    - 0,0,7,3
+    maxItemSize: Normal
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+  - type: WFAnimalFeeder
+  - type: WFRepackable
+    pack: WFOutpostAnimalFeederPack
+    delay: 2
+  - type: StaticPrice
+    price: 120

@@ -18,13 +18,15 @@ public sealed partial class WFRoundSetupSystem
     {
         WFRoundScenario.Ship or WFRoundScenario.Doomed or WFRoundScenario.Formed => WFShipCrewJobs.Jobs,
         WFRoundScenario.FactionShip => WFFactionCrewPolicy.Jobs(faction),
+        WFRoundScenario.Outpost => OutpostJobs,
         _ => WFCrashScenarioSystem.AllowedJobs,
     };
 
     /// <summary>A crew scenario this server can run right now.</summary>
     private bool IsScenarioAvailable(WFRoundScenario scenario) => WFRoundSetupPolicy.IsCrewScenario(scenario) &&
         (scenario != WFRoundScenario.Crashlanded || _crash.IsAvailable) &&
-        (scenario != WFRoundScenario.Doomed || _doomed.IsAvailable);
+        (scenario != WFRoundScenario.Doomed || _doomed.IsAvailable) &&
+        (scenario != WFRoundScenario.Outpost || OutpostAvailable);
 
     /// <summary>Requires a real faction job offered by the current map and allowed for this character.</summary>
     private bool CanCreateFaction(ICommonSession session, WFCrewFaction faction, Dictionary<string, bool>? eligibility = null) =>

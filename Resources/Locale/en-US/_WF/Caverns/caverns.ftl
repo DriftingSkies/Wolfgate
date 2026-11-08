@@ -29,10 +29,12 @@ wf-cavern-shaft-landing-hard = It's a hard landing. Look for the stairs.
 wf-cavern-shaft-dig-start = You start digging a shaft down through the ground.
 wf-cavern-shaft-dig-start-others = { CAPITALIZE(THE($user)) } starts digging a shaft down through the ground.
 wf-cavern-shaft-dig-done = The ground gives way into the dark below.
+wf-cavern-shaft-dig-shut = Solid foundation rock lies under this ground. It won't dig through.
 
 wf-cavern-stairs-condition = Must be built on a cavern floor, under ground that can be opened up.
 wf-cavern-stairs-refused-hull = A ship is parked on the ground above.
 wf-cavern-stairs-refused-built = Something is built on the ground above.
 wf-cavern-stairs-refused-exit = There is no clear ground at the top of the stairs. Try facing them another way.
+wf-cavern-stairs-refused-shut = The ground above is an outpost's foundation and won't open.
 wf-cavern-stairs-examine-open = They lead up to the surface.
 wf-cavern-stairs-examine-blocked = Something overhead blocks the way up.

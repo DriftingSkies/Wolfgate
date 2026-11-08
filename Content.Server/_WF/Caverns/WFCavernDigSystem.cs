@@ -37,6 +37,7 @@ public sealed partial class WFCavernDigSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedToolSystem _tool = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private WFCavernMouthSystem _mouths = default!;
 
     /// <summary>The tool speed <see cref="WFCavernMouthSpec.ShaftSeconds"/> is timed at: a standard shovel's.</summary>
     public const float ShaftToolSpeed = 0.5f;
@@ -74,6 +75,13 @@ public sealed partial class WFCavernDigSystem : EntitySystem
             || !_interaction.InRangeUnobstructed(args.User, _map.GridTileToLocal(gridUid, grid, index), popup: false))
             return;
 
+        if (!_mouths.MayOpen(gridUid, index, index))
+        {
+            args.Handled = true;
+            _popup.PopupEntity(Loc.GetString("wf-cavern-shaft-dig-shut"), args.User, args.User);
+            return;
+        }
+
         // Wrapped as a tool event, so the shovel's dig sound plays at the end. The world's time is the time: unlike a
         // tool's own use, the digger's hands don't shorten it.
         var dig = new SharedToolSystem.ToolDoAfterEvent(0f, new WFCavernShaftDigDoAfterEvent(GetNetEntity(gridUid), index), GetNetEntity(ent));
@@ -105,7 +113,8 @@ public sealed partial class WFCavernDigSystem : EntitySystem
         var gridUid = GetEntity(args.Grid);
         if (!TryComp<WFCavernGroundComponent>(gridUid, out var ground)
             || !TryComp<MapGridComponent>(gridUid, out var grid)
-            || !CanDigShaft((gridUid, ground, grid), args.Tile, out _))
+            || !CanDigShaft((gridUid, ground, grid), args.Tile, out _)
+            || !_mouths.MayOpen(gridUid, args.Tile, args.Tile))
             return;
 
         _map.SetTile(gridUid, grid, args.Tile, Tile.Empty);

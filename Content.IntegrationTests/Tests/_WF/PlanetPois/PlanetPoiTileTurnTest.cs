@@ -37,7 +37,7 @@ public sealed class PlanetPoiTileTurnTest
   entries:
   - mapPath: /Maps/_WF/PlanetPois/verda_gas_station.yml
     name: wf-poi-verda-gas-station
-    footprint: -3,-16,13,3
+    footprint: -3,-31,13,3
     minCount: 1
     maxCount: 1
     connection: Isolated

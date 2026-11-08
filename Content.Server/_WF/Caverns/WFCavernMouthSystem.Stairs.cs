@@ -80,6 +80,9 @@ public sealed partial class WFCavernMouthSystem
         if (UnderGrid(Comp<MapComponent>(ground).MapId, index))
             return WFCavernStairsRefusal.Hull;
 
+        if (!MayOpen(ground, index, exit))
+            return WFCavernStairsRefusal.Shut;
+
         // Solid ground opens only where it is still the world's own, with nothing standing on it.
         if (!IsEmpty(context.Ground, index) && (!IsBareGround(context.Ground, index) || HasBuilt(context.Ground, index)))
             return WFCavernStairsRefusal.Built;
@@ -211,4 +214,7 @@ public enum WFCavernStairsRefusal : byte
 
     /// <summary>The tile at the top of the stairs is a hole, or something built stands on it.</summary>
     Exit,
+
+    /// <summary>The ground above is kept shut, such as an outpost's foundation.</summary>
+    Shut,
 }

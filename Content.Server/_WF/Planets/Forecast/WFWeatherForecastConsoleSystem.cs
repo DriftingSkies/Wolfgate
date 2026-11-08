@@ -90,9 +90,25 @@ public sealed partial class WFWeatherForecastConsoleSystem : EntitySystem
         return state;
     }
 
-    /// <summary>Fills the season and rows for one world.</summary>
+    /// <summary>Fills the season, the time to dawn or dusk, the storm now and the rows for one world.</summary>
     private void Forecast(EntityUid world, WFWeatherForecastState into)
     {
+        if (_weather.TryGetDayCycle(world, out var night, out var untilChange))
+        {
+            into.HasClock = true;
+            into.Night = night;
+            into.DayChangeInSeconds = (float) untilChange.TotalSeconds;
+        }
+
+        var raid = new WFForecastRaidWindowEvent(world);
+        RaiseLocalEvent(ref raid);
+        if (raid.Handled)
+        {
+            into.HasRaidWindow = true;
+            into.RaidActive = raid.Active;
+            into.RaidChangeInSeconds = (float) raid.UntilChange.TotalSeconds;
+        }
+
         if (!TryComp<WFPlanetWeatherComponent>(world, out var state) || !_proto.TryIndex(state.Profile, out var profile) ||
             !_weather.TryGetSchedule(world, _schedule))
         {
@@ -104,6 +120,21 @@ public sealed partial class WFWeatherForecastConsoleSystem : EntitySystem
         into.Season = season?.Name;
         into.SeasonColor = season?.Color ?? Color.White;
         into.Cycling = _cfg.GetCVar(PlanetCVars.PlanetWeather);
+
+        foreach (var entry in _schedule)
+        {
+            if (entry.Start > now || entry.End <= now || entry.Weather == null)
+                continue;
+
+            into.Storm = entry.Phase switch
+            {
+                WFStormPhase.Telegraph => WFForecastStorm.Building,
+                WFStormPhase.Main => WFForecastStorm.Raging,
+                WFStormPhase.End => WFForecastStorm.Passing,
+                _ => WFForecastStorm.None,
+            };
+            break;
+        }
 
         var horizon = now + WFPlanetWeatherSystem.ForecastHorizon;
         TimeSpan? rowStart = null;
@@ -175,4 +206,13 @@ public sealed partial class WFWeatherForecastConsoleSystem : EntitySystem
         row.Celsius = (int) MathF.Round(kelvin - Atmospherics.T0C);
         into.Rows.Add(row);
     }
+}
+
+/// <summary>Asks whether a world's outposts can be raided now, and how long until that changes, for its forecast.</summary>
+[ByRefEvent]
+public record struct WFForecastRaidWindowEvent(EntityUid World)
+{
+    public bool Handled;
+    public bool Active;
+    public TimeSpan UntilChange;
 }

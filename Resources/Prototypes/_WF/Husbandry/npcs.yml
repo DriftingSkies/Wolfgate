@@ -1,0 +1,34 @@
+# Livestock: wanders like any animal, unless a herding whistle gave it someone to follow or a spot to keep to.
+- type: htnCompound
+  id: WFLivestockCompound
+  branches:
+  # Herded and too far from where it was sent: go there.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:CoordinatesNotInRangePrecondition
+        targetKey: FollowTarget
+        rangeKey: FollowRange
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        targetKey: FollowTarget
+        rangeKey: FollowCloseRange
+        removeKeyOnFinish: false
+  # Herded and there: wait a while.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:CoordinatesInRangePrecondition
+        targetKey: FollowTarget
+        rangeKey: FollowRange
+      operator: !type:RandomOperator
+        targetKey: IdleTime
+        minKey: MinimumIdleTime
+        maxKey: MaximumIdleTime
+    - !type:HTNPrimitiveTask
+      operator: !type:WaitOperator
+        key: IdleTime
+  # Not herded.
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound

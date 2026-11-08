@@ -20,7 +20,7 @@ public abstract partial class CESharedZLevelsSystem
         if (!HasComp<WFPlanetLayerComponent>(map))
             return false;
 
-        if (grid != map && !HasComp<WFPlanetCityGridComponent>(grid))
+        if (grid != map && !HasComp<WFPlanetCityGridComponent>(grid) && !HasComp<WFPlanetTerrainGridComponent>(grid))
             return true;
 
         return TryComp<RoofComponent>(grid, out var roof) && _wfRoof.IsRooved((grid, gridComp, roof), tile);

@@ -1,0 +1,53 @@
+# The terminal in a claimable point of interest (WFPoiClaimTerminalSystem).
+
+- type: entity
+  parent: BaseStructure
+  id: WFPoiClaimTerminal
+  name: site terminal
+  description: An old control terminal. Whoever gets it working holds this place.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    drawdepth: Objects
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: generic
+      shader: unshaded
+  - type: Icon
+    sprite: Structures/Machines/computers.rsi
+    state: computer
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Electronic
+  - type: Repairable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: WFPoiClaimTerminal

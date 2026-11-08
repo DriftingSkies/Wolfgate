@@ -280,6 +280,16 @@ public sealed partial class AnchorableSystem : EntitySystem
 
         anchorable.CurrentDelay = anchorable.Delay + attempt.Delay; // Frontier: assign delay from base value
 
+        // WOLFGATE(Outposts) START: raw ground inside another player's outpost claim is theirs to build on.
+        if (anchoring && !attempt.Cancelled)
+        {
+            var claimed = new Content.Shared._WF.Outposts.WFGroundBuildAttemptEvent(userUid, Transform(uid).Coordinates);
+            RaiseLocalEvent(ref claimed);
+            if (claimed.Cancelled)
+                return false;
+        }
+        // WOLFGATE END
+
         return !attempt.Cancelled;
     }
 

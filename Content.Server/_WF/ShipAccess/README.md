@@ -136,6 +136,9 @@ and `ShipAccessKeypadWindow` (the keypad). The `WFShipLocked` access level is in
 `Resources/Prototypes/_WF/ShipAccess/access.yml`. The admin vessel spawner and ERT builder
 (`Content.Server/_WF/Administration`) register their ships through `SetupRegisteredShip` and `AddOwnerUser`.
 
+Outposts (module Outposts) take the same component, registered to their owner's account, and show the same tab
+on the outpost console: `SubscribeAccessTab` wires any console's UI to the tab's messages for the grid it stands on.
+
 A ship that breaks apart keeps its helm lock on every piece (`WFShipGridLockSplitSystem`), so a wreck's owner isn't
 shut out of a helm that ended up on a broken-off section.
 

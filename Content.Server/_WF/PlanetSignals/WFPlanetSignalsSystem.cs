@@ -192,7 +192,7 @@ public sealed class WFPlanetSignalsSystem : EntitySystem
         var map = GetNetEntity(ground);
         foreach (var site in record.Sites)
         {
-            if (!TryComp<WFPoiSignalComponent>(site.Signal, out var signal))
+            if (!TryComp<WFPoiSignalComponent>(site.Signal, out var signal) || signal.Faint)
                 continue;
 
             NetEntity? expedition = null;

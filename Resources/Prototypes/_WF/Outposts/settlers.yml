@@ -1,0 +1,103 @@
+# Settlers: an outpost's owner joins the round in one of its cryopods, as the outpost settler, with that job's loadout
+# and title from their character (edited on the character editor's Outposts tab).
+
+- type: job
+  id: WFOutpostSettler
+  name: wf-job-name-outpost-settler
+  description: wf-job-description-outpost-settler
+  playTimeTracker: JobWFOutpostSettler
+  setPreference: false
+  icon: "JobIconContractor"
+  supervisors: job-supervisors-nobody
+  accessGroups:
+  - GeneralAccess
+
+- type: playTimeTracker
+  id: JobWFOutpostSettler
+
+- type: roleLoadout
+  id: JobWFOutpostSettler
+  groups:
+  - MercenaryHead
+  - ContractorNeck
+  - MercenaryJumpsuit
+  - MercenaryGloves
+  - MercenaryBackpack
+  - MercenaryOuterClothing
+  - MercenaryShoes
+  - MercenaryFace
+  - MercenaryGlasses
+  - MercenaryBelt
+  - MercenaryEars
+  - ContractorEncryptionKey
+  - ContractorBoxSurvival
+  - ContractorPDA
+  - ContractorWallet
+  - ContractorCartridge
+  - ContractorImplanter
+  - ContractorUtility
+  - ContractorFun
+  - ContractorTrinkets
+  - ContractorBureaucracy
+  - NFSpeciesSpecific
+  - MercenaryBalaclava
+
+- type: customJobTitle
+  id: JobWFOutpostSettler
+  parent: JobContractor
+
+# The station settlers and Outpost crews join as: made for the round when the first one does, with no grid. The other
+# jobs are an Outpost crew's (WFRoundSetupSystem.OutpostJobs).
+- type: entity
+  id: WFOutpostStation
+  parent:
+  - BaseStation
+  - BaseStationJobsSpawning
+  - BaseStationRecords
+  categories: [ HideSpawnMenu ]
+  save: false
+  components:
+  - type: WFOutpostStation
+  - type: StationJobs
+    availableJobs:
+      WFOutpostSettler: [ -1, -1 ]
+      Contractor: [ -1, -1 ]
+      Pilot: [ -1, -1 ]
+      Mercenary: [ -1, -1 ]
+      StationEngineer: [ -1, -1 ]
+      MedicalDoctor: [ -1, -1 ]
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostCryopodPack
+  name: outpost cryopod pack
+  description: A packed outpost cryopod. Use it in hand facing your outpost's floor to set it up there. You can wake up in it when you join the round.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#7FD4E8"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostCryopod
+    delay: 4
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: MachineCryoSleepPod
+  id: WFOutpostCryopod
+  name: outpost cryopod
+  description: A cryo sleep chamber for an outpost. Its owner can join the round in it; up to six stand on an outpost.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: WFOutpostCryopod
+  - type: WFRepackable
+    pack: WFOutpostCryopodPack
+    delay: 4
+  - type: StaticPrice
+    price: 1500

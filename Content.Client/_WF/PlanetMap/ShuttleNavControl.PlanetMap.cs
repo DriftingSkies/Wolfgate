@@ -35,6 +35,7 @@ public partial class ShuttleNavControl
     private static readonly Color WfMapSiteColour = Color.FromHex("#FFB347");
     private static readonly Color WfMapUnknownColour = Color.FromHex("#C8C8C8");
     private static readonly Color WfMapCityFill = Color.FromHex("#8C8C8C").WithAlpha(0.35f);
+    private static readonly Color WfMapPadColour = Color.FromHex("#5FE3C0");
 
     /// <summary>Pixels per metre above which identified sites get their names.</summary>
     private const float WfMapLabelScale = 0.5f;
@@ -90,6 +91,7 @@ public partial class ShuttleNavControl
 
         WfMapDrawCircles(handle, worldToView, map, scale);
         WfMapDrawSites(handle, worldToView, map, scale);
+        WfMapDrawPads(handle, worldToView, map, scale);
         _wfMapDrewSites = map.Sites.Count > 0;
         return true;
     }
@@ -241,6 +243,47 @@ public partial class ShuttleNavControl
             var label = Loc.GetString(site.Name);
             var labelSize = handle.GetDimensions(Font, label, UIScale * 0.75f);
             handle.DrawString(Font, point + new Vector2(size * 2f, -labelSize.Y / 2f), label, UIScale * 0.75f, colour);
+        }
+    }
+
+    /// <summary>Every landing pad as its square to scale, or a ringed dot when too small to see, named when zoomed in.</summary>
+    private void WfMapDrawPads(DrawingHandleScreen handle, Matrix3x2 worldToView, WFPlanetMapComponent map, float scale)
+    {
+        var size = 4f * UIScale;
+        var bounds = new UIBox2(new Vector2(-size * 4f), (Vector2) PixelSize + new Vector2(size * 4f));
+        foreach (var pad in map.Pads)
+        {
+            var point = Vector2.Transform(pad.Centre, worldToView);
+            if (!bounds.Contains(point))
+                continue;
+
+            var half = pad.Size / 2f;
+            if (half * scale < size)
+            {
+                handle.DrawCircle(point, size * 1.2f, WfMapPadColour, false);
+                handle.DrawCircle(point, size * 0.4f, WfMapPadColour);
+            }
+            else
+            {
+                var corners = new Vector2[4];
+                for (var i = 0; i < 4; i++)
+                {
+                    var corner = new Vector2(i is 0 or 3 ? -half : half, i < 2 ? -half : half);
+                    corners[i] = Vector2.Transform(pad.Centre + pad.Rotation.RotateVec(corner), worldToView);
+                }
+
+                for (var i = 0; i < 4; i++)
+                    handle.DrawLine(corners[i], corners[(i + 1) % 4], WfMapPadColour);
+                handle.DrawLine(corners[0], corners[2], WfMapPadColour.WithAlpha(0.4f));
+                handle.DrawLine(corners[1], corners[3], WfMapPadColour.WithAlpha(0.4f));
+            }
+
+            if (scale < WfMapLabelScale)
+                continue;
+
+            var label = Loc.GetString(pad.Public ? "wf-planet-map-pad-public" : "wf-planet-map-pad");
+            var labelSize = handle.GetDimensions(Font, label, UIScale * 0.75f);
+            handle.DrawString(Font, point + new Vector2(-labelSize.X / 2f, size * 2f), label, UIScale * 0.75f, WfMapPadColour);
         }
     }
 

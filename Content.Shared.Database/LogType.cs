@@ -512,4 +512,11 @@ public enum LogType
     /// </summary>
     WFAnatomy = 12490,
     // WOLFGATE END
+
+    // WOLFGATE(Outposts) START: founding, saving, loading and admin handling of player outposts
+    /// <summary>
+    /// Player outposts.
+    /// </summary>
+    WFOutpost = 12491,
+    // WOLFGATE END
 }

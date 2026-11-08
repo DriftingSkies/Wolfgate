@@ -331,6 +331,7 @@ namespace Content.Client.Lobby.UI
 
             InitializeEmoteVoices(); // WOLFGATE(EmoteVoices)
             InitializeSpeechVoice(); // WOLFGATE(Voice)
+            InitializeOutposts(); // WOLFGATE(Outposts): the account's outpost saves, as a tab of their own
             InitializeSizePercent(); // WOLFGATE(Humanoid): typed percentages for height and width
             InitializeBloodColour(); // WOLFGATE(BloodColour)
 

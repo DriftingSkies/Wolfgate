@@ -33,6 +33,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
     private bool _draftLateJoin;
     private string _draftTitle = string.Empty;
     private WFCrewFaction _newFaction = WFCrewFaction.TSF;
+    private bool _newCrashCarcinoma;
     private string _newTitle = string.Empty;
     private string _newDescription = string.Empty;
     private string _draftDescription = string.Empty;
@@ -174,7 +175,11 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         }
         content.AddChild(WFScenarioDifficultyLabel.Create(lobby.Scenario));
         content.AddChild(Description(ScenarioDescription(lobby.Scenario)));
-        if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started)
+        if (lobby.Scenario == WFRoundScenario.Crashlanded && lobby.CrashCarcinoma)
+            content.AddChild(Description("crash-carcinoma-on"));
+        if (lobby.Scenario == WFRoundScenario.Outpost)
+            content.AddChild(OutpostSummary(lobby));
+        else if (WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Started)
         {
             content.AddChild(VesselSummary(state, lobby));
             if (!lobby.Started)
@@ -447,6 +452,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         WFRoundScenario.FactionShip => "scenario-faction",
         WFRoundScenario.Doomed => "scenario-doomed",
         WFRoundScenario.Formed => "scenario-formed",
+        WFRoundScenario.Outpost => "scenario-outpost",
         _ => "scenario-normal",
     });
 
@@ -457,6 +463,7 @@ public sealed partial class WFRoundSetupWindow : DefaultWindow
         WFRoundScenario.FactionShip => "faction-description",
         WFRoundScenario.Doomed => "doomed-description",
         WFRoundScenario.Formed => "formed-description",
+        WFRoundScenario.Outpost => "outpost-description",
         _ => "normal-description",
     };
 

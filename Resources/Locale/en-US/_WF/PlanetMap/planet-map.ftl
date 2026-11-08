@@ -4,3 +4,6 @@ wf-planet-map-off = Map: off
 
 wf-planet-map-landing = Landing zone
 wf-planet-map-unknown = ?
+
+wf-planet-map-pad = Landing pad
+wf-planet-map-pad-public = Public pad

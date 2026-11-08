@@ -48,7 +48,15 @@ public sealed partial class WFPlanetPoiTablePrototype : IPrototype
 
     /// <summary>Metres from a site's origin at which someone on the ground identifies its signal.</summary>
     [DataField]
-    public float RevealRange = 48f;
+    public float RevealRange = 50f;
+
+    /// <summary>Squares of open ground kept clear for outposts landing this round, placed after the sites.</summary>
+    [DataField]
+    public int OutpostLots;
+
+    /// <summary>The side of an outpost lot in tiles, its claim margin included.</summary>
+    [DataField]
+    public int OutpostLotSize = 48;
 
     /// <summary>The expedition rating of this world's sites, unless an entry says otherwise.</summary>
     [DataField]
@@ -57,6 +65,10 @@ public sealed partial class WFPlanetPoiTablePrototype : IPrototype
     /// <summary>Crashed ships scattered off the roads, reclaimed by the world.</summary>
     [DataField]
     public WFPlanetWrecks? Wrecks;
+
+    /// <summary>Derelict capital ships: wrecks of the largest hulls, placed like <see cref="Wrecks"/> and named apart.</summary>
+    [DataField]
+    public WFPlanetWrecks? Capitals;
 
     /// <summary>Armed camps round ships set down off the roads, such as Reaver encampments.</summary>
     [DataField]
@@ -174,6 +186,10 @@ public sealed partial class WFPlanetPoiEntry
 
     [DataField(required: true)]
     public LocId Name;
+
+    /// <summary>What kind of place the site is, for claiming it; none for a site nobody can claim.</summary>
+    [DataField]
+    public ProtoId<WFPoiTypePrototype>? Type;
 
     [DataField]
     public float Weight = 1f;

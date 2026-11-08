@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Content.Server._WF.Caverns;
+using Content.Server._WF.Chimera;
 using Content.Server._WF.Planets;
 using Content.Shared._WF.Birds;
 using Content.Server.NPC.HTN;
@@ -102,8 +103,9 @@ public sealed class CavernGutTest
                 var tile = new Vector2i(4 + 2 * spared.Count, 0);
                 pools.Add(tile);
                 var mob = entMan.SpawnEntity(native, new EntityCoordinates(map.Grid, tile.X + 0.5f, 0.5f));
-                // Asleep, so it stands in its pool instead of wandering out.
+                // Asleep, so it stands in its pool instead of wandering or leaping out.
                 entMan.RemoveComponent<HTNComponent>(mob);
+                entMan.RemoveComponent<WFFleshTickComponent>(mob);
                 spared[native] = mob;
             }
 

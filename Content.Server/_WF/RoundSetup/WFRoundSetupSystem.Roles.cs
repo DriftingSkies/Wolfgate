@@ -243,22 +243,26 @@ public sealed partial class WFRoundSetupSystem
     /// <summary>Only explicit setup readiness grants consent to buy this vessel for this selected character.</summary>
     private bool HasShipPurchaseConsent(Lobby lobby, ICommonSession session)
     {
-        return WFRoundSetupPolicy.IsShip(lobby.Scenario) && lobby.Vessel != null &&
+        return WFRoundSetupPolicy.IsPurchase(lobby.Scenario) && PurchaseKey(lobby) is { } key &&
                lobby.Members.TryGetValue(session.UserId, out var member) && IsReady(session.UserId, member) &&
-               member.PurchaseVessel == lobby.Vessel && member.PurchaseRevision == lobby.PaymentRevision &&
+               member.PurchaseVessel == key && member.PurchaseRevision == lobby.PaymentRevision &&
                member.PurchaseCharacterSlot == _preferences.GetPreferences(session.UserId).SelectedCharacterIndex;
     }
     /// <summary>Ship hosts appear ready only after confirming the pending purchase in Round Setup.</summary>
     private bool IsReadyForLobby(Lobby lobby, NetUserId user, Member member)
     {
-        if (!lobby.Started && WFRoundSetupPolicy.IsShip(lobby.Scenario) && (lobby.Host == user || member.Contribution > 0))
+        if (IsBuying(lobby) && (lobby.Host == user || member.Contribution > 0))
             return _players.TryGetSessionById(user, out var session) && HasShipPurchaseConsent(lobby, session);
         return IsReady(user, member);
     }
     /// <summary>A successor must consent before becoming responsible for an unpurchased ship.</summary>
     private void RequireHostConsent(Lobby lobby)
     {
-        if (!lobby.Started && WFRoundSetupPolicy.IsShip(lobby.Scenario))
-            ResetContributions(lobby);
+        if (!IsBuying(lobby))
+            return;
+        // The outpost was the old host's save.
+        if (lobby.Scenario == WFRoundScenario.Outpost)
+            ClearOutpost(lobby);
+        ResetContributions(lobby);
     }
 }

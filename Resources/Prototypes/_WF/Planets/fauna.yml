@@ -5,6 +5,9 @@
   id: WFFaunaAsclepiu
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockAsclepiu
+      weight: 2
     - id: MobFox
       weight: 4
     - id: MobLizard
@@ -27,6 +30,9 @@
   id: WFFaunaFervidus
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockFervidus
+      weight: 2
     # A bird flock (_WF/Birds); the leader spawns the rest.
     - id: WFMobBirdAshHawk
       weight: 2
@@ -82,6 +88,9 @@
   id: WFFaunaThrascias
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockThrascias
+      weight: 2
     - id: MobArgocyteSlurva
       weight: 4
     - id: WFMobThrasciasPenguin

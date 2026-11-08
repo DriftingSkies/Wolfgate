@@ -42,8 +42,15 @@ public sealed partial class WFPlanetPoiSystem
     private async Task PlaceWrecksAsync(EntityUid ground, MapGridComponent grid, BiomeComponent biome, EntityUid orbit, Vector2 centre, float radius,
         WFPlanetPoiTablePrototype table, WFPlanetPoiComponent record, HashSet<EntityUid> created)
     {
-        if (table.Wrecks is not { } wrecks)
-            return;
+        if (table.Wrecks is { } wrecks)
+            await PlaceWrecksAsync(ground, grid, biome, orbit, centre, radius, table, record, wrecks, created);
+        if (table.Capitals is { } capitals)
+            await PlaceWrecksAsync(ground, grid, biome, orbit, centre, radius, table, record, capitals, created);
+    }
+
+    private async Task PlaceWrecksAsync(EntityUid ground, MapGridComponent grid, BiomeComponent biome, EntityUid orbit, Vector2 centre, float radius,
+        WFPlanetPoiTablePrototype table, WFPlanetPoiComponent record, WFPlanetWrecks wrecks, HashSet<EntityUid> created)
+    {
         if (!_proto.TryIndex(wrecks.Theme, out var theme))
         {
             Log.Error($"Unknown wreck theme {wrecks.Theme} in {table.ID}.");
@@ -138,7 +145,8 @@ public sealed partial class WFPlanetPoiSystem
                 (int) MathF.Ceiling(spot.X + reach) + 1, (int) MathF.Ceiling(spot.Y + reach) + 1);
             var site = new WFPlanetPoiSite
             {
-                Name = WreckName,
+                Name = wrecks.Name ?? WreckName,
+                Type = wrecks.Type,
                 Origin = origin,
                 Bounds = bounds,
                 TileCount = under.Count,
@@ -146,7 +154,7 @@ public sealed partial class WFPlanetPoiSystem
                 Expeditions = false,
                 Difficulty = table.Difficulty,
             };
-            site.Signal = SpawnSignal(ground, orbit, origin, new WFPlanetPoiEntry { Name = WreckName }, table);
+            site.Signal = SpawnSignal(ground, orbit, origin, new WFPlanetPoiEntry { Name = wrecks.Name ?? WreckName }, table, wrecks.Type);
             created.Add(site.Signal);
             record.Sites.Add(site);
             ClearFurnitureInside(record, bounds);

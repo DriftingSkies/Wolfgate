@@ -1,0 +1,195 @@
+# Outpost producers: the parts press, the power exporter and the mining bot dock. Each is a gizmo set up from its pack
+# and runs only on an outpost, powered, while someone is home and under the outpost's hourly cap
+# (wf.outposts.producer_cap). Player text is in Resources/Locale/en-US/_WF/OutpostIndustry/industry.ftl.
+
+# Parts press
+
+- type: entity
+  parent: BaseItem
+  id: WFPressedMachineParts
+  components:
+  - type: Sprite
+    sprite: Objects/Storage/boxes.rsi
+    layers:
+    - state: box
+      color: "#a8b0b8"
+    - state: circuit
+  - type: Item
+    size: Normal
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostPartsPressPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#A8B0B8"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostPartsPress
+    delay: 4
+  - type: StaticPrice
+    price: 3000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostPartsPress
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/flatpacker.rsi
+    snapCardinals: true
+    layers:
+    - state: base
+    - state: screen
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 3000
+  - type: MaterialStorage
+    whitelist:
+      tags:
+      - Sheet
+  - type: WFPartsPress
+    product: WFPressedMachineParts
+    cost:
+      Steel: 500
+      Plastic: 200
+  - type: WFRepackable
+    pack: WFOutpostPartsPressPack
+    delay: 4
+  - type: StaticPrice
+    price: 3000
+
+# Power exporter
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostPowerExporterPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#F0D040"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostPowerExporter
+    delay: 4
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostPowerExporter
+  components:
+  - type: Sprite
+    sprite: Structures/Power/substation.rsi
+    snapCardinals: true
+    layers:
+    - state: substation
+    - state: screen
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 30000
+  - type: WFPowerExporter
+  - type: WFRepackable
+    pack: WFOutpostPowerExporterPack
+    delay: 4
+  - type: StaticPrice
+    price: 4000
+
+# Mining bot dock and its bots
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostMiningBotDockPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#D8A040"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostMiningBotDock
+    delay: 4
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostMiningBotDock
+  components:
+  - type: Sprite
+    sprite: Structures/Storage/orebox.rsi
+    noRot: true
+    layers:
+    - state: orebox
+      color: "#d8a040"
+    - state: orebox-top
+      color: "#d8a040"
+  - type: ApcPowerReceiver
+    powerLoad: 2000
+  - type: WFMiningBotDock
+  - type: Storage
+    grid:
+    - 0,0,9,5
+    maxItemSize: Normal
+    whitelist:
+      tags:
+      - Ore
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+  - type: WFRepackable
+    pack: WFOutpostMiningBotDockPack
+    delay: 4
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: MobSiliconBase
+  id: WFMobMiningBot
+  components:
+  - type: Sprite
+    sprite: Mobs/Silicon/Bots/supplybot.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base", "movement"]
+      state: supplybot
+      color: "#d8a040"
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: supplybot-moving
+    noMovementLayers:
+      movement:
+        state: supplybot
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 3
+  - type: WFMiningBot
+  - type: HTN
+    rootTask:
+      task: WFMiningBotCompound
+  - type: ContainerContainer
+    containers:
+      wf-mining-bot-hold: !type:Container
+  - type: StaticPrice
+    price: 0
+
+- type: htnCompound
+  id: WFMiningBotCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WFMiningBotOperator
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound

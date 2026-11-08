@@ -121,8 +121,9 @@ public sealed partial class WFPlanetHopSystem : EntitySystem
     }
 
     /// <summary>
-    /// Starts a hop of the hull and the grids docked to it onto another map, aimed at a spot in the world frame.
-    /// Refuses for the physical reasons only; no drive, beacon, range or cooldown is asked.
+    /// Starts a hop of the hull and the grids docked to it onto another map, aimed at a spot in the world frame, or set
+    /// down exactly there when <paramref name="exact"/> is given. Refuses for the physical reasons only; no drive,
+    /// beacon, range or cooldown is asked.
     /// </summary>
     public bool TryStart(
         Entity<ShuttleComponent> hull,
@@ -130,7 +131,8 @@ public sealed partial class WFPlanetHopSystem : EntitySystem
         Vector2 worldPos,
         EntityUid? body,
         bool arriving,
-        [NotNullWhen(false)] out string? reason)
+        [NotNullWhen(false)] out string? reason,
+        WFHopExact? exact = null)
     {
         reason = null;
 
@@ -150,7 +152,7 @@ public sealed partial class WFPlanetHopSystem : EntitySystem
         var group = new HashSet<EntityUid>(_group);
         UndockOutsiders(group);
 
-        var angle = _transform.GetWorldRotation(hull.Owner);
+        var angle = exact?.Angle ?? _transform.GetWorldRotation(hull.Owner);
         var riders = Offsets(hull.Owner, group);
         var origin = _transform.GetWorldPosition(hull.Owner);
         var now = _timing.CurTime;
@@ -166,7 +168,8 @@ public sealed partial class WFPlanetHopSystem : EntitySystem
         hop.Angle = angle;
         hop.OriginMap = Transform(hull.Owner).MapUid ?? EntityUid.Invalid;
         hop.Origin = origin;
-        hop.Target = FindSpot(hull.Owner, riders, targetMap, worldPos, angle);
+        hop.Spared = exact?.Spared;
+        hop.Target = exact != null ? worldPos : FindSpot(hull.Owner, riders, targetMap, worldPos, angle);
 
         BeginWarmEffects(hull, hop);
         MarkApproach(hull.Owner, hop, origin);

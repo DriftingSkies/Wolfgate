@@ -76,6 +76,7 @@ public sealed partial class WFCavernStairsSystem : SharedWFCavernStairsSystem
             WFCavernStairsRefusal.None => null,
             WFCavernStairsRefusal.Hull => "wf-cavern-stairs-refused-hull",
             WFCavernStairsRefusal.Exit => "wf-cavern-stairs-refused-exit",
+            WFCavernStairsRefusal.Shut => "wf-cavern-stairs-refused-shut",
             _ => "wf-cavern-stairs-refused-built",
         };
 

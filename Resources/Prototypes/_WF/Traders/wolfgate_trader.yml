@@ -50,4 +50,4 @@
   - type: Trader
     dialogue: WFTraderWolfgateDialogue
   - type: TraderShop
-    vendors: [ WFVendingMachineWolfgate ]
+    vendors: [ WFVendingMachineWolfgate, WFVendingMachineOutpostOutfitter ]

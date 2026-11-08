@@ -69,3 +69,7 @@
     ClothingBackpackXenoBioTankFilled: 3
     WFSlimeGrinderFlatpack: 2
     WFXenobiologyBountyConsoleFlatpack: 1
+    # Outposts: the console kit founds one, plates grow it, panels roof it.
+    WFOutpostConsoleKit: 3
+    WFOutpostFoundationPlate: 100
+    WFOutpostRoofPanel: 100

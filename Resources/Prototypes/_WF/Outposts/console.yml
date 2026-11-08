@@ -1,0 +1,108 @@
+# The outpost console and the kit it comes packed in. Used on natural planet ground, the kit founds an outpost with the
+# console in its middle; destroying the console lets the outpost go.
+
+- type: entity
+  parent: BaseItem
+  id: WFOutpostConsoleKit
+  name: outpost console kit
+  description: A packed outpost console. Use it on open planet ground, or in hand facing it, to found an outpost of your own there.
+  components:
+  - type: Item
+    size: Large
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    layers:
+    - state: base
+    - state: overlay
+      color: "#EFB341"
+    - state: icon-default
+  - type: WFOutpostKit
+  - type: WFDeployable
+    machine: WFOutpostConsole
+    delay: 4
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: BaseStructure
+  id: WFOutpostConsole
+  name: outpost console
+  description: The heart of an outpost. While it stands, the outpost is held fast to the ground and answers to its founder.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    drawdepth: Objects
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: comm
+      shader: unshaded
+    - state: mining_key
+      shader: unshaded
+  - type: Icon
+    sprite: Structures/Machines/computers.rsi
+    state: computer
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Electronic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: ActivatableUI
+    key: enum.WFOutpostConsoleUiKey.Key
+    requireActiveHand: false
+  - type: UserInterface
+    interfaces:
+      enum.WFOutpostConsoleUiKey.Key:
+        type: WFOutpostConsoleBoundUserInterface
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#EFB341"
+    lightMask: ConeSingle
+    autoRot: true
+    offset: "0, 0.4"
+    castShadows: false
+  - type: EmitSoundOnUIOpen
+    sound:
+      collection: Keyboard
+      params:
+        volume: -1
+        variation: 0.10
+        pitch: 1.10
+  - type: StaticPrice
+    price: 100
+  - type: WFOutpostConsole
+    taxAccounts: # The cargo console's split.
+      Frontier: 0.25
+      Nfsd: 0.15
+      Medical: 0.1
+  - type: WFRepackable
+    pack: WFOutpostConsoleKit
+    delay: 4

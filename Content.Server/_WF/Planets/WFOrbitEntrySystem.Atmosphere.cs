@@ -31,8 +31,12 @@ public sealed partial class WFOrbitEntrySystem
     // Levels/s; above CE's ExitTransitMaxSpeed (0.1) so the first settle check doesn't count it as landed.
     private const float AtmosphereEntrySeed = 0.15f;
 
-    /// <summary>Drops the console's hull out of orbit; low lift or power needs <paramref name="confirmed"/>.</summary>
-    public bool TryEnterAtmosphere(EntityUid console, bool confirmed, [NotNullWhen(false)] out string? reason)
+    /// <summary>
+    /// Drops the console's hull out of orbit; low lift or power needs <paramref name="confirmed"/>. A guide below, such as
+    /// a landing pad the <paramref name="pilot"/> may use, can take the hull down instead.
+    /// </summary>
+    public bool TryEnterAtmosphere(EntityUid console, bool confirmed, [NotNullWhen(false)] out string? reason,
+        EntityUid? pilot = null)
     {
         if (!TryGetHull(console, out var hull, out reason))
             return false;
@@ -43,6 +47,17 @@ public sealed partial class WFOrbitEntrySystem
         {
             reason = Loc.GetString("wf-orbit-not-in-orbit");
             return false;
+        }
+
+        if (GroundBelow(mapUid) is { } guided)
+        {
+            var guide = new WFOrbitDescentAttemptEvent(grid, pilot, guided);
+            RaiseLocalEvent(ref guide);
+            if (guide.Handled)
+            {
+                reason = guide.Reason;
+                return reason == null;
+            }
         }
 
         if (!confirmed
@@ -62,6 +77,13 @@ public sealed partial class WFOrbitEntrySystem
         if (!confirmed && powerDeficit)
         {
             reason = Loc.GetString("wf-flight-power-warning");
+            return false;
+        }
+
+        // Someone's claim below, such as an outpost's: no descending onto it.
+        if (GroundBelow(mapUid) is { } ground && _zLevels.WfClaimUnder(new[] { grid }, ground) is { } claimant)
+        {
+            reason = Loc.GetString("wf-orbit-over-claim", ("claimant", claimant));
             return false;
         }
 
@@ -129,6 +151,16 @@ public sealed partial class WFOrbitEntrySystem
         return true;
     }
 
+    /// <summary>The ground layer of the world an orbit layer circles.</summary>
+    private EntityUid? GroundBelow(EntityUid orbitMap)
+    {
+        return TryComp<WFOrbitLayerComponent>(orbitMap, out var orbit)
+               && TryGetEntity(orbit.Network, out var network)
+               && TryComp<WFPlanetNetworkComponent>(network, out var comp)
+            ? comp.GroundMap
+            : null;
+    }
+
     /// <summary>Whether the ground under an orbit layer is still being generated, with the world's name.</summary>
     private bool Forming(EntityUid orbitMap, out string planet)
     {
@@ -149,7 +181,7 @@ public sealed partial class WFOrbitEntrySystem
         if (GetEntity(args.Console) != uid || !IsPilot(args.Actor, uid))
             return;
 
-        if (!TryEnterAtmosphere(uid, args.Confirmed, out var reason))
+        if (!TryEnterAtmosphere(uid, args.Confirmed, out var reason, args.Actor))
             _popup.PopupEntity(reason, uid, args.Actor);
     }
 }

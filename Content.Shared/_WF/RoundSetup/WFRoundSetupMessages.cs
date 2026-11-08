@@ -7,7 +7,7 @@ namespace Content.Shared._WF.RoundSetup;
 
 /// <summary>The crew starting conditions; Normal is reserved and cannot create a scenario lobby.</summary>
 [Serializable, NetSerializable]
-public enum WFRoundScenario : byte { Normal, Crashlanded, Ship, FactionShip, Doomed, Formed }
+public enum WFRoundScenario : byte { Normal, Crashlanded, Ship, FactionShip, Doomed, Formed, Outpost }
 
 /// <summary>How hard a scenario is to survive, shown on its card.</summary>
 [Serializable, NetSerializable]
@@ -27,7 +27,7 @@ public enum WFRoundSetupAction : byte
 {
     Refresh, Create, Configure, Join, Leave, AcceptRequest, RejectRequest,
     Invite, AcceptInvite, DeclineInvite, SelectJob, SetReady, Launch, RegenerateCode, Kick, TransferHost,
-    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart, ApplyRoster, SetTitle, SaveSetup, LoadSetup, DeleteSetup, SetShipName, AssignShip, ApproveShip, CancelShip, SetContribution, Watch, SetRecruiting, Post, SetCompany,
+    SelectVessel, UpsertRole, RemoveRole, SelectRole, ConfirmJoin, ChangeScenario, SelectShipStart, ApplyRoster, SetTitle, SaveSetup, LoadSetup, DeleteSetup, SetShipName, AssignShip, ApproveShip, CancelShip, SetContribution, Watch, SetRecruiting, Post, SetCompany, SelectOutpost,
 }
 
 /// <summary>A request whose actor is always taken from its network session.</summary>
@@ -65,6 +65,12 @@ public sealed class WFRoundSetupRequest : EntityEventArgs
     public int? CompanyId;
     /// <summary>Join: a company member joins their company's crew as their company rank instead of an opening.</summary>
     public bool AsRank;
+    /// <summary>Create: a Crashlanded crew may come down on Carcinoma.</summary>
+    public bool CrashCarcinoma;
+    /// <summary>SelectOutpost: the host's outpost save slot the crew lands in.</summary>
+    public int OutpostSlot;
+    /// <summary>SelectOutpost: a preset the crew lands in instead of a save.</summary>
+    public string? OutpostPreset;
 
     public WFRoundSetupRequest(WFRoundSetupAction action) { Action = action; }
 }
@@ -161,6 +167,15 @@ public sealed class WFRoundSetupLobby
     public bool Hangar;
     /// <summary>Recipient only: their company rank's job is one this crew can field, so they may join as it.</summary>
     public bool CanJoinAsRank;
+    /// <summary>A Crashlanded crew that opted in to coming down on Carcinoma.</summary>
+    public bool CrashCarcinoma;
+    /// <summary>An Outpost crew's chosen save slot of the host's, with its name.</summary>
+    public int? OutpostSlot;
+    /// <summary>An Outpost crew's chosen preset, in place of a save slot.</summary>
+    public string? OutpostPreset;
+    public string OutpostName = string.Empty;
+    /// <summary>An Outpost crew's outpost is on its way down; members wait in the lobby until it lands.</summary>
+    public bool OutpostLanding;
 }
 
 /// <summary>A per-recipient snapshot of the round setup browser and their membership.</summary>
@@ -180,6 +195,7 @@ public sealed class WFRoundSetupState : EntityEventArgs
     public WFRoundSetupCompany[] FieldCompanies = Array.Empty<WFRoundSetupCompany>();
     public bool CrashlandedAvailable;
     public bool DoomedAvailable;
+    public bool OutpostAvailable;
     public WFCrewFaction[] Factions = Array.Empty<WFCrewFaction>();
     public int? OwnLobby;
     public WFRoundSetupLobby[] Lobbies = Array.Empty<WFRoundSetupLobby>();

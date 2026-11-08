@@ -256,7 +256,7 @@ public sealed partial class RoundSetupUiTest
         {
             AssertFits(window, viewport);
             Assert.That(Labels(window), Does.Contain(Loc.GetString("wf-round-setup-choose-scenario")));
-            Assert.That(Descendants(window).OfType<Button>().Count(control => control.Name?.StartsWith("RoundSetupCreate") == true), Is.EqualTo(4));
+            Assert.That(Descendants(window).OfType<Button>().Count(control => control.Name?.StartsWith("RoundSetupCreate") == true), Is.EqualTo(5));
             var faction = Named<Button>(window, "RoundSetupCreateFactionShip");
             Assert.That(faction.Disabled, Is.True, "The empty test map offers no faction jobs.");
             Assert.That(faction.ToolTip, Is.EqualTo(Loc.GetString("wf-round-setup-faction-unavailable")));

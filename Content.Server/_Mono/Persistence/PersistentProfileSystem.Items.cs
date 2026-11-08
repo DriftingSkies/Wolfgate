@@ -73,6 +73,10 @@ public sealed partial class PersistentProfileSystem
         var items = new List<PersistentProfileItem>(profile.Items);
         foreach (var entity in entities)
         {
+            // WOLFGATE(Outposts): something saved with an outpost comes back with the outpost, not with its carrier
+            if (HasComp<Content.Shared._WF.Outposts.WFSaveOriginComponent>(entity))
+                continue;
+
             var sticky = false;
             if (TryComp(entity, out PersistAtRoundEndComponent? persistence) &&
                 (persistence.Sticky || persistence.Once))

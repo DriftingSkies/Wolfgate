@@ -1,0 +1,170 @@
+# Native livestock: one tameable species a world, in its quieter fauna tables. Each is a farm animal adapted to its
+# world: it doesn't breathe the air, takes the world's heat or cold, and gives a hide as well as meat. Names and
+# descriptions are in Resources/Locale/en-US/_WF/Husbandry/livestock.ftl.
+
+- type: entity
+  parent: MaterialBase
+  id: WFMaterialHide
+  components:
+  - type: Sprite
+    sprite: Objects/Materials/materials.rsi
+    state: corgihide
+    color: "#a07850"
+  - type: Item
+    heldPrefix: corgihide
+  - type: StaticPrice
+    price: 40
+
+- type: entity
+  abstract: true
+  id: WFNativeLivestock
+  components:
+  - type: BreathingImmunity
+  - type: WFTameable
+
+# Asclepiu: a ridgeback goat, for milk and wool.
+- type: entity
+  parent: [MobGoat, WFNativeLivestock]
+  id: WFMobLivestockAsclepiu
+  components:
+  - type: Sprite
+    color: "#c8a878"
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockAsclepiu
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+    - id: WFMaterialHide
+  - type: Temperature
+    heatDamageThreshold: 330
+    coldDamageThreshold: 230
+    currentTemperature: 300
+
+# Verda: a meadow ox, for milk.
+- type: entity
+  parent: [MobCow, WFNativeLivestock]
+  id: WFMobLivestockVerda
+  components:
+  - type: Sprite
+    color: "#b89070"
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockVerda
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 5
+    - id: WFMaterialHide
+      amount: 2
+  - type: Temperature
+    heatDamageThreshold: 330
+    coldDamageThreshold: 230
+    currentTemperature: 300
+
+# Merak: a long-legged dune fowl, for eggs.
+- type: entity
+  parent: [MobChicken, WFNativeLivestock]
+  id: WFMobLivestockMerak
+  components:
+  - type: Sprite
+    color: "#e0c890"
+    scale: 1.3, 1.3
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockMerak
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatChicken
+      amount: 2
+    - id: WFMaterialHide
+  - type: Temperature
+    heatDamageThreshold: 380
+    coldDamageThreshold: 230
+    currentTemperature: 320
+
+# Thrascias: a shaggy musk goat, for wool and milk.
+- type: entity
+  parent: [MobGoat, WFNativeLivestock]
+  id: WFMobLivestockThrascias
+  components:
+  - type: Sprite
+    color: "#f0f0f8"
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockThrascias
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 4
+    - id: WFMaterialHide
+      amount: 2
+  - type: Temperature
+    coldDamageThreshold: 0
+    currentTemperature: 250
+
+# Fervidus: an ash hen, for eggs.
+- type: entity
+  parent: [MobChicken, WFNativeLivestock]
+  id: WFMobLivestockFervidus
+  components:
+  - type: Sprite
+    color: "#686060"
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockFervidus
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatChicken
+    - id: WFMaterialHide
+  - type: Temperature
+    heatDamageThreshold: 500
+    coldDamageThreshold: 0
+    currentTemperature: 373.15
+
+# Aerumna: a spore cow from the fungal forest, for milk.
+- type: entity
+  parent: [MobCow, WFNativeLivestock]
+  id: WFMobLivestockAerumna
+  components:
+  - type: Sprite
+    color: "#a890c8"
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockAerumna
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 5
+    - id: WFMaterialHide
+      amount: 2
+  - type: Temperature
+    heatDamageThreshold: 360
+    coldDamageThreshold: 200
+    currentTemperature: 290
+
+# Carcinoma: a flesh hen, for eggs.
+- type: entity
+  parent: [MobChicken, WFNativeLivestock]
+  id: WFMobLivestockCarcinoma
+  components:
+  - type: Sprite
+    color: "#d08080"
+  - type: NpcFactionMember
+    factions:
+    - Passive
+    - Chicken
+    - WFGutNative
+  - type: Reproductive
+    offspring:
+    - id: WFMobLivestockCarcinoma
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatChicken
+      amount: 2
+    - id: WFMaterialHide
+  - type: Temperature
+    heatDamageThreshold: 360
+    coldDamageThreshold: 230
+    currentTemperature: 310

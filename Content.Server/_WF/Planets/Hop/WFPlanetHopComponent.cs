@@ -49,6 +49,13 @@ public sealed partial class WFPlanetHopComponent : Component
     [ViewVariables]
     public Vector2 Target;
 
+    /// <summary>
+    /// A guided landing, such as onto an outpost's pad: the hull comes down exactly at <see cref="Target"/>, and its
+    /// touchdown spares this grid and what stands on it.
+    /// </summary>
+    [ViewVariables]
+    public EntityUid? Spared;
+
     [ViewVariables]
     public Angle Angle;
 

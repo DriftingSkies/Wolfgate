@@ -1,0 +1,722 @@
+# Comms and logistics pack: radio and announcements for an outpost, the time and weather console, light, charging,
+# recycling and storage. Each gizmo is the stock machine's working parts on a frame with no board, set up from its pack
+# and repacked into it.
+
+# Time and weather console
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostWeatherConsolePack
+  name: time and weather console pack
+  description: A packed time and weather console. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#6AB0E0"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostWeatherConsole
+    delay: 3
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostWeatherConsole
+  name: time and weather console
+  description: The world's clock, the time to dusk or dawn, the storm now and the forecast from the survey satellites.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    snapCardinals: true
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: sensors
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: WFWeatherForecastConsole
+  - type: ActivatableUI
+    key: enum.WFWeatherForecastUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.WFWeatherForecastUiKey.Key:
+        type: WFWeatherForecastBoundUserInterface
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#6ab0e0"
+  - type: LitOnPowered
+  - type: WFRepackable
+    pack: WFOutpostWeatherConsolePack
+    delay: 3
+  - type: StaticPrice
+    price: 600
+
+# Planet broadcast console
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostBroadcastConsolePack
+  name: planet broadcast console pack
+  description: A packed planet broadcast console. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#E0A040"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostBroadcastConsole
+    delay: 3
+  - type: StaticPrice
+    price: 1200
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostBroadcastConsole
+  name: planet broadcast console
+  description: Sends a short announcement to everyone on this world. It needs a while to recharge between broadcasts.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    snapCardinals: true
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: comm
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: WFPlanetBroadcastConsole
+  - type: ActivatableUI
+    key: enum.WFPlanetBroadcastUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.WFPlanetBroadcastUiKey.Key:
+        type: WFPlanetBroadcastBoundUserInterface
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#e0a040"
+  - type: LitOnPowered
+  - type: WFRepackable
+    pack: WFOutpostBroadcastConsolePack
+    delay: 3
+  - type: StaticPrice
+    price: 1200
+
+# Telecom relay
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostTelecomRelayPack
+  name: telecom relay pack
+  description: A packed telecom relay. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#7FD17F"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostTelecomRelay
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostTelecomRelay
+  name: telecom relay
+  description: Carries headset radio on this world while it has power, on the channels of the keys in it. Comes with the common and traffic keys.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/telecomms.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+    - state: unlit
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Appearance
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -9
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/server_fans.ogg
+  - type: ApcPowerReceiver
+    powerLoad: 400
+  - type: EncryptionKeyHolder
+    keysExtractionMethod: Prying
+    keySlots: 4
+  - type: TelecomServer
+  - type: ContainerContainer
+    containers:
+      key_slots: !type:Container
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyCommon
+      - EncryptionKeyTraffic
+  - type: WFRepackable
+    pack: WFOutpostTelecomRelayPack
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+# Intercom
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostIntercomPack
+  name: outpost intercom pack
+  description: A packed standing intercom. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#9FB7D9"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostIntercom
+    delay: 2
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostIntercom
+  name: outpost intercom
+  description: A standing intercom on the common and traffic channels. It needs no telecom relay, only power.
+  components:
+  - type: Sprite
+    sprite: Structures/Wallmounts/intercom.rsi
+    noRot: true
+    layers:
+    - state: base
+    - state: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+      shader: unshaded
+    - state: broadcasting
+      map: ["enum.RadioDeviceVisualLayers.Broadcasting"]
+      shader: unshaded
+      visible: false
+    - state: speaker
+      map: ["enum.RadioDeviceVisualLayers.Speaker"]
+      shader: unshaded
+      visible: false
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+      enum.RadioDeviceVisuals.Broadcasting:
+        enum.RadioDeviceVisualLayers.Broadcasting:
+          True: { visible: true }
+          False: { visible: false }
+      enum.RadioDeviceVisuals.Speaker:
+        enum.RadioDeviceVisualLayers.Speaker:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 100
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: ApcPowerReceiver
+    powerLoad: 50
+  - type: TelecomExempt
+  - type: EncryptionKeyHolder
+    keySlots: 3
+    keysExtractionMethod: Prying
+  - type: RadioMicrophone
+    powerRequired: true
+    unobstructedRequired: true
+    listenRange: 2
+    toggleOnInteract: false
+  - type: RadioSpeaker
+    toggleOnInteract: false
+  - type: Intercom
+  - type: Speech
+    speechVerb: Robotic
+  - type: ContainerContainer
+    containers:
+      key_slots: !type:Container
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyCommon
+      - EncryptionKeyTraffic
+  - type: ActivatableUIRequiresPower
+  - type: ActivatableUI
+    key: enum.IntercomUiKey.Key
+    singleUser: true
+  - type: UserInterface
+    interfaces:
+      enum.IntercomUiKey.Key:
+        type: IntercomBoundUserInterface
+  - type: WFRepackable
+    pack: WFOutpostIntercomPack
+    delay: 2
+  - type: StaticPrice
+    price: 400
+
+# Floodlight post
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostFloodlightPack
+  name: floodlight post pack
+  description: A packed floodlight post. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#FFF2A8"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostFloodlight
+    delay: 2
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostFloodlight
+  name: floodlight post
+  description: A pole of lamps that lights the ground around it while it has power.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Lights/lights.rsi
+    noRot: true
+    layers:
+    - state: floodlight
+    - state: floodlight_on
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 100
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: ApcPowerReceiver
+    powerLoad: 250
+  - type: PointLight
+    radius: 10
+    energy: 3
+    softness: 1
+  - type: LitOnPowered
+  - type: WFRepackable
+    pack: WFOutpostFloodlightPack
+    delay: 2
+  - type: StaticPrice
+    price: 300
+
+# Multi-cell charger
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostMultiChargerPack
+  name: multi-cell charger pack
+  description: A packed multi-cell charger. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#03FC4E"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostMultiCharger
+    delay: 2
+  - type: StaticPrice
+    price: 350
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostMultiCharger
+  name: multi-cell charger
+  description: Charges up to four power cells at once while it has power.
+  components:
+  - type: Sprite
+    sprite: Structures/Power/cell_recharger.rsi
+    snapCardinals: true
+    layers:
+    - state: empty
+    - state: light-off
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 400
+  - type: WFMultiCharger
+  - type: ItemSlots
+    slots:
+      cell_1:
+        name: power-cell-slot-component-slot-name-default
+        whitelist:
+          tags:
+          - PowerCell
+          - PowerCellSmall
+      cell_2:
+        name: power-cell-slot-component-slot-name-default
+        whitelist:
+          tags:
+          - PowerCell
+          - PowerCellSmall
+      cell_3:
+        name: power-cell-slot-component-slot-name-default
+        whitelist:
+          tags:
+          - PowerCell
+          - PowerCellSmall
+      cell_4:
+        name: power-cell-slot-component-slot-name-default
+        whitelist:
+          tags:
+          - PowerCell
+          - PowerCellSmall
+  - type: ContainerContainer
+    containers:
+      cell_1: !type:ContainerSlot
+      cell_2: !type:ContainerSlot
+      cell_3: !type:ContainerSlot
+      cell_4: !type:ContainerSlot
+  - type: WFRepackable
+    pack: WFOutpostMultiChargerPack
+    delay: 2
+  - type: StaticPrice
+    price: 350
+
+# Materials recycler
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostRecyclerPack
+  name: materials recycler pack
+  description: A packed materials recycler. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#A0A0A0"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostRecycler
+    delay: 3
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: Recycler
+  id: WFOutpostRecycler
+  name: materials recycler
+  description: Crushes scrap and junk fed into it back into materials. Mind your fingers.
+  components:
+  - type: WFRepackable
+    pack: WFOutpostRecyclerPack
+    delay: 3
+  - type: StaticPrice
+    price: 900
+
+# Organics printer
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostOrganicsPrinterPack
+  name: organics printer pack
+  description: A packed organics printer. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#6BC96B"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostOrganicsPrinter
+    delay: 3
+  - type: StaticPrice
+    price: 700
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostOrganicsPrinter
+  name: organics printer
+  description: Turns produce into biomass and prints food, fertiliser, cloth and other organics from it.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/biofabricator.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+      map: ["enum.LatheVisualLayers.IsRunning"]
+    - state: unlit
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: inserting
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+  - type: Appearance
+  - type: ApcPowerReceiver
+    powerLoad: 300
+  - type: MaterialStorage
+  - type: ProduceMaterialExtractor
+  - type: ItemSlots
+    slots:
+      beaker_slot:
+        name: lathe-component-output-slot-beaker-name
+        whitelist:
+          components:
+          - FitsInDispenser
+  - type: ContainerContainer
+    containers:
+      beaker_slot: !type:ContainerSlot
+  - type: Lathe
+    reagentOutputSlotId: beaker_slot
+    idleState: icon
+    runningState: building
+    staticPacks:
+    - BioGenIngredientsStatic
+    - BioGenMaterialsStatic
+    - NFBioGenIngredientsStatic
+    - NFBioGenMaterialsStatic
+    - NFBioGenSoil
+  - type: ActivatableUI
+    key: enum.LatheUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.LatheUiKey.Key:
+        type: LatheBoundUserInterface
+  - type: WFRepackable
+    pack: WFOutpostOrganicsPrinterPack
+    delay: 3
+  - type: StaticPrice
+    price: 700
+
+# Ore silo
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostOreSiloPack
+  name: ore silo pack
+  description: A packed ore silo. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#B08D57"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostOreSilo
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostOreSilo
+  name: ore silo
+  description: Stores ore, sheets and ingots and lends them to linked fabricators nearby.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/silo.rsi
+    snapCardinals: true
+    layers:
+    - state: silo
+      map: [ "base" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        base:
+          True: { state: silo_active }
+          False: { state: silo }
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: OreSilo
+    range: 125
+  - type: MaterialStorage
+    whitelist:
+      tags:
+      - Sheet
+      - RawMaterial
+      - Ingot
+      - Ore
+  - type: ActivatableUI
+    key: enum.OreSiloUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.OreSiloUiKey.Key:
+        type: OreSiloBoundUserInterface
+  - type: WFRepackable
+    pack: WFOutpostOreSiloPack
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+# Fabrication silo
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostFabricationSiloPack
+  name: fabrication silo pack
+  description: A packed fabrication silo. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#8DA3B0"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostFabricationSilo
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostFabricationSilo
+  name: fabrication silo
+  description: Stores precursor components and supplies them to linked fabrication machines. Use a component on it, or dump a bag into it.
+  components:
+  - type: Sprite
+    sprite: _WF/Lathe/parts_silo.rsi
+    snapCardinals: true
+    layers:
+    - state: silo
+      map: [ "base" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        base:
+          True: { state: silo_active }
+          False: { state: silo }
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: FabricationSilo
+    kind: Parts
+  - type: ActivatableUI
+    key: enum.OreSiloUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.OreSiloUiKey.Key:
+        type: FabricationSiloBoundUserInterface
+  - type: ContainerContainer
+    containers:
+      fabrication_parts: !type:Container
+  - type: WFRepackable
+    pack: WFOutpostFabricationSiloPack
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+# Deposit terminal
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostDepositTerminalPack
+  name: deposit terminal pack
+  description: A packed bank deposit terminal. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#D4C25A"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostDepositTerminal
+    delay: 3
+  - type: StaticPrice
+    price: 1000
+
+# A bank ATM's cash slot and deposit, with the usual fee, on a frame with no board. It takes cash, never pays it out.
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFOutpostDepositTerminal
+  name: deposit terminal
+  description: Banks the cash put in it to your account, less a 5% fee. It holds no cash to pay out.
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/atm/atm.rsi
+    noRot: true
+    layers:
+    - state: icon
+    - state: unshaded
+      shader: unshaded
+  - type: ApcPowerReceiver
+    powerLoad: 100
+  - type: BankATM
+    cashSlot:
+      name: bank-ATM-cashSlot
+      insertSound: /Audio/Machines/scanning.ogg
+      ejectSound: /Audio/Machines/tray_eject.ogg
+      ejectOnBreak: true
+      swap: false
+      whitelist:
+        components:
+        - Cash
+    taxAccounts:
+      Frontier: 0.02
+      Nfsd: 0.02
+      Medical: 0.01
+  - type: ItemSlots
+  - type: ContainerContainer
+    containers:
+      bank-ATM-cashSlot: !type:ContainerSlot
+  - type: WFDepositOnly
+  - type: ActivatableUI
+    key: enum.BankATMMenuUiKey.ATM
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.BankATMMenuUiKey.ATM:
+        type: WFDepositTerminalBoundUserInterface
+  - type: WFRepackable
+    pack: WFOutpostDepositTerminalPack
+    delay: 3
+  - type: StaticPrice
+    price: 1000

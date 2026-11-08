@@ -62,6 +62,8 @@ public sealed partial class BiomeSystem
                 }
             }
         }
+
+        WfProcessLoaders(); // WOLFGATE(Planets): NPCs with a terrain loader load the ground round them, as raids walking in
     }
 
     private bool CanLoad(EntityUid uid)

@@ -95,7 +95,8 @@ public sealed partial class WFCarcinomaInfestationSystem : EntitySystem
         var query = EntityQueryEnumerator<MapGridComponent, PhysicsComponent>();
         while (query.MoveNext(out var hull, out var grid, out var body))
         {
-            if (HasComp<MapComponent>(hull) || HasComp<WFDetachedTerrainComponent>(hull)) continue;
+            // Terrain grids such as outposts are buildings on the ground, not landed hulls to grip.
+            if (HasComp<MapComponent>(hull) || HasComp<WFDetachedTerrainComponent>(hull) || HasComp<WFPlanetTerrainGridComponent>(hull)) continue;
             var hasState = TryComp<WFCarcinomaInfestationComponent>(hull, out var state);
             if (!IsLandedHere(hull))
             {

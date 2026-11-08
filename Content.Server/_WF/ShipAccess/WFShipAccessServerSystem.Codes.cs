@@ -263,13 +263,13 @@ public sealed partial class WFShipAccessServerSystem
             _popup.PopupEntity(Loc.GetString(key), door.Value, user);
     }
 
-    private void OnRequestCodes(Entity<ShuttleConsoleComponent> console, ref WFShipAccessRequestCodesMessage args)
+    private void OnRequestCodes(EntityUid console, ref WFShipAccessRequestCodesMessage args)
     {
         if (TryGetEditableShip(console, args.Actor, out var ship) && _player.TryGetSessionByEntity(args.Actor, out var session))
             SendCodes(ship, session);
     }
 
-    private void OnSetShipCode(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetShipCodeMessage args)
+    private void OnSetShipCode(EntityUid console, ref WFShipAccessSetShipCodeMessage args)
     {
         if (!TryGetEditableShip(console, args.Actor, out var ship))
             return;
@@ -285,7 +285,7 @@ public sealed partial class WFShipAccessServerSystem
             SendCodes(ship, session);
     }
 
-    private void OnSetDoorCode(Entity<ShuttleConsoleComponent> console, ref WFShipAccessSetDoorCodeMessage args)
+    private void OnSetDoorCode(EntityUid console, ref WFShipAccessSetDoorCodeMessage args)
     {
         if (!TryGetEditableShip(console, args.Actor, out var ship) || !TryGetShipDoor(console, ship, args.Door, args.Actor, out var door))
             return;

@@ -36,6 +36,10 @@ public sealed partial class WFPlanetMapComponent : Component
     [ViewVariables, AutoNetworkedField]
     public List<WFPlanetMapSite> Sites = new();
 
+    /// <summary>The landing pads on the world's ground, kept by the Outposts module.</summary>
+    [ViewVariables, AutoNetworkedField]
+    public List<WFPlanetMapPad> Pads = new();
+
     /// <summary>Server only: the ground the roads and sites were read from, once they were.</summary>
     [ViewVariables]
     public EntityUid? RoadsFrom;
@@ -94,6 +98,10 @@ public enum WFPlanetMapLineKind : byte { Road, Trail, Tunnel }
 /// </summary>
 [Serializable, NetSerializable]
 public readonly record struct WFPlanetMapSite(WFPlanetMapSiteKind Kind, Vector2i Position, Box2i Bounds, string Name);
+
+/// <summary>A landing pad: its middle, its side in tiles, how it is turned, and whether any pilot may use it.</summary>
+[Serializable, NetSerializable]
+public readonly record struct WFPlanetMapPad(Vector2 Centre, int Size, Angle Rotation, bool Public);
 
 /// <summary>What a site is; <see cref="Depot"/> is a cargo depot built on the planet.</summary>
 public enum WFPlanetMapSiteKind : byte { Unknown, Building, House, Fuel, Vault, Facility, City, Camp, Wreck, Depot }

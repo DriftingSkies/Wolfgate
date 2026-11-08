@@ -1,0 +1,33 @@
+# Building out an outpost: foundation plates grow its floor onto the ground beside it, roof panels roof it over.
+
+- type: entity
+  parent: BaseItem
+  id: WFOutpostFoundationPlate
+  name: outpost foundation plate
+  description: A heavy plate that bolts onto an outpost's edge. Lay it on open ground right beside your outpost's floor to extend it by a tile.
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    sprite: Objects/Materials/Sheets/metal.rsi
+    state: steel
+  - type: WFOutpostFoundationPlate
+  - type: StaticPrice
+    price: 25
+
+# Roofing for outposts, which stand open to the sky until roofed.
+
+- type: entity
+  parent: BaseItem
+  id: WFOutpostRoofPanel
+  name: outpost roof panel
+  description: A light panel that locks onto an outpost's frame overhead. Use it on a tile of your own outpost to roof it over.
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    sprite: Objects/Materials/Sheets/metal.rsi
+    state: plasteel
+  - type: WFOutpostRoofPanel
+  - type: StaticPrice
+    price: 20

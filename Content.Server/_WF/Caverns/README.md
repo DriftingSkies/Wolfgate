@@ -112,7 +112,11 @@ mouths; and two lines in CE's z-physics: `WfSteppedDown` keeps a slow step down 
 which would open a worn parachute, and `WfSealedAbove` makes the ground a ceiling for anything rising in a cavern
 (a flyer, an atmospheric jetpack) even where its terrain isn't loaded and so has no tiles. The server tells a hole
 from unloaded ground by the pin; a client can't, so it predicts the way up only for a body stairs have carried there
-and leaves anything airborne to the server. The design, including what is still to come (the rest of F4 and the mining loop), is in
+and leaves anything airborne to the server. Before a mouth, a hole, stairs or a shaft opens the ground,
+`WFCavernOpenAttemptEvent` is raised, and ground kept shut, such as over an outpost's foundation, stays closed: a mouth
+waits, a hole takes its natural tile back, and stairs and shafts are refused. Where another grid's floor stands in
+for a map's own, such as an outpost over the ground carved from under it or an outpost basement dug into the cavern, an
+emptied tile is neither made a hole nor filled again. The design, including what is still to come (the rest of F4 and the mining loop), is in
 `Docs/_WF/Caverns/CAVERNS_DESIGN.md`.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -134,6 +138,7 @@ and leaves anything airborne to the server. The design, including what is still 
 - [`Content.Server/_WF/Caverns/WFCavernMouthSystem.Holes.cs`](WFCavernMouthSystem.Holes.cs)
 - [`Content.Server/_WF/Caverns/WFCavernMouthSystem.Preclaim.cs`](WFCavernMouthSystem.Preclaim.cs)
 - [`Content.Server/_WF/Caverns/WFCavernMouthSystem.Stairs.cs`](WFCavernMouthSystem.Stairs.cs)
+- [`Content.Server/_WF/Caverns/WFCavernOpenAttemptEvent.cs`](WFCavernOpenAttemptEvent.cs)
 - [`Content.Server/_WF/Caverns/WFCavernSampler.cs`](WFCavernSampler.cs)
 - [`Content.Server/_WF/Caverns/WFCavernStairsSystem.cs`](WFCavernStairsSystem.cs)
 - [`Content.Server/_WF/Caverns/WFCavernStairsSystem.Pulled.cs`](WFCavernStairsSystem.Pulled.cs)

@@ -10,6 +10,9 @@ public record struct WFPlanetHopAttemptEvent(EntityUid Uid, bool Cancelled, stri
 [ByRefEvent]
 public readonly record struct WFPlanetHopStartedEvent(EntityUid Hull, EntityCoordinates Target);
 
+/// <summary>A guided landing: the hull's exact pose on the target map, and the grid its touchdown spares.</summary>
+public readonly record struct WFHopExact(Angle Angle, EntityUid Spared);
+
 /// <summary>A hull and the grids docked to it have come out on the target map.</summary>
 [ByRefEvent]
 public readonly record struct WFPlanetHopCompletedEvent(EntityUid Hull, EntityUid MapUid);

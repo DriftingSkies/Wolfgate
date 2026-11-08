@@ -1,0 +1,104 @@
+# The outpost fabricator: a slow, unupgradeable lathe that prints what an outpost is built from, another fabricator
+# included, but never a console. Outpost recipe disks add to what it prints; they come with the POI workshops.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WFBaseOutpostPack
+  components:
+  - type: Item
+    size: Large
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    layers:
+    - state: base
+    - state: overlay
+      color: "#cec8ac"
+    - state: icon-default
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostFabricatorPack
+  name: outpost fabricator pack
+  description: A packed outpost fabricator. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#EFB341"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostFabricator
+    delay: 4
+  - type: StaticPrice
+    price: 250
+
+- type: entity
+  parent: BaseMachinePowered
+  id: WFOutpostFabricator
+  name: outpost fabricator
+  description: A rugged little lathe for outposts. It prints walls, doors, tools and parts from metal, glass and plastic, slowly, and can't be upgraded.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    sprite: Structures/Machines/autolathe.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+      map: ["enum.LatheVisualLayers.IsRunning"]
+    - state: unlit
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: inserting
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+  - type: Appearance
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: Lathe
+    idleState: icon
+    runningState: building
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
+    timeMultiplier: 2
+    staticPacks:
+    - WFOutpostConstructionStatic
+    - WFOutpostToolsStatic
+    - PartsStatic
+    - ElectronicsStatic
+    - CablesStatic
+  - type: MaterialStorage
+    whitelist:
+      tags:
+      - Sheet
+      - RawMaterial
+      - Ingot
+  - type: MaterialStorageMagnetPickup
+    range: 1.50
+  - type: ActivatableUI
+    key: enum.LatheUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.LatheUiKey.Key:
+        type: LatheBoundUserInterface
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - WFOutpostRecipeDisk
+  - type: ContainerContainer
+    containers:
+      blueprint: !type:Container
+  - type: WFRepackable
+    pack: WFOutpostFabricatorPack
+    delay: 4
+  - type: StaticPrice
+    price: 250
+
+- type: Tag
+  id: WFOutpostRecipeDisk

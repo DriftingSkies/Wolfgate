@@ -24,6 +24,7 @@ wf-orbit-no-sector = This orbit layer has no sector body to return to.
 wf-orbit-not-in-sector = { $planet } is not in this system.
 wf-orbit-not-in-orbit = This hull is not in planet orbit.
 wf-orbit-outside-bounds = Outside the world's edge; no ground to descend to here.
+wf-orbit-over-claim = The ground below is claimed by {$claimant}. Move clear of it to descend.
 wf-orbit-out-of-range = Too far from { $planet } for orbital insertion.
 wf-orbit-refused = Orbital insertion refused.
 wf-orbit-hopping = Already on the way.

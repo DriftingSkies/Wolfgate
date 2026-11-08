@@ -1,0 +1,95 @@
+# Early warning masts: while powered on an outpost, they sound its alarm (ship code Red over the PA) ahead of a raid.
+
+- type: entity
+  abstract: true
+  parent: WFBaseOutpostLifeGizmo
+  id: WFBaseOutpostWarningMast
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Specific/Explorers/salvageradar.rsi
+    snapCardinals: true
+    layers:
+    - state: base
+    - state: unshaded
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Appearance
+  - type: ApcPowerReceiver
+    powerLoad: 300
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostWarningMastPack
+  name: early warning mast pack
+  description: A packed early warning mast. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#E04040"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostWarningMast
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WFBaseOutpostWarningMast
+  id: WFOutpostWarningMast
+  name: early warning mast
+  description: Watches the approaches while it has power, and sounds the outpost's alarm two minutes before raiders land.
+  components:
+  - type: WFEarlyWarning
+    lead: 120
+  - type: WFRepackable
+    pack: WFOutpostWarningMastPack
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostLongRangeMastPack
+  name: long-range warning mast pack
+  description: A packed long-range warning mast. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#A02020"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostLongRangeMast
+    delay: 3
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: WFBaseOutpostWarningMast
+  id: WFOutpostLongRangeMast
+  name: long-range warning mast
+  description: Watches far out while it has power, and sounds the outpost's alarm four minutes before raiders land.
+  components:
+  - type: WFEarlyWarning
+    lead: 240
+  - type: ApcPowerReceiver
+    powerLoad: 600
+  - type: WFRepackable
+    pack: WFOutpostLongRangeMastPack
+    delay: 3
+  - type: StaticPrice
+    price: 4000
+
+# The default raid window: dusk to dawn, and while a storm rages, on every world.
+
+- type: wfRaidWindow
+  id: WFRaidWindowDefault

@@ -80,8 +80,12 @@ public sealed partial class WFPlanetPoiSystem : EntitySystem
         args.Holds.Add(PlaceAsync(args.Ground, comp, args.Centre, args.Radius, table, args.Claims));
     }
 
-    /// <summary>The marker on the orbit layer over a site, unidentified until someone on the ground reaches it.</summary>
-    private EntityUid SpawnSignal(EntityUid ground, EntityUid orbit, Vector2i origin, WFPlanetPoiEntry entry, WFPlanetPoiTablePrototype table)
+    /// <summary>
+    /// The marker on the orbit layer over a site, unidentified until someone on the ground reaches it, unless its type
+    /// says it broadcasts its name or only gives off a faint signal.
+    /// </summary>
+    public EntityUid SpawnSignal(EntityUid ground, EntityUid orbit, Vector2i origin, WFPlanetPoiEntry entry, WFPlanetPoiTablePrototype table,
+        ProtoId<WFPoiTypePrototype>? type = null)
     {
         if (TerminatingOrDeleted(orbit))
             return EntityUid.Invalid;
@@ -94,6 +98,14 @@ public sealed partial class WFPlanetPoiSystem : EntitySystem
         comp.Origin = origin;
         comp.Name = entry.Name;
         comp.RevealRange = table.RevealRange;
+        if ((type ?? entry.Type) is { } typeId && _proto.TryIndex(typeId, out var kind))
+        {
+            comp.RevealRange = kind.RevealRange ?? comp.RevealRange;
+            comp.Faint = kind.Beacon == WFPoiBeacon.Faint;
+            if (kind.Beacon == WFPoiBeacon.Known)
+                Reveal((signal, comp), null);
+        }
+
         return signal;
     }
 
@@ -134,6 +146,7 @@ public sealed partial class WFPlanetPoiSystem : EntitySystem
     {
         var name = Loc.GetString(signal.Comp.Name);
         signal.Comp.Revealed = true;
+        signal.Comp.Faint = false;
         _meta.SetEntityName(signal, name);
 
         if (finder is { } player)

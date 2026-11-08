@@ -52,6 +52,7 @@
     ignoreFactions:
     - AberrantFleshExpeditionNF
     - Chimera
+    - WFGutNative
     coveredBy:
       tags:
       - Catwalk
@@ -112,3 +113,7 @@
   sprite:
     sprite: Fluids/vomit_toxin.rsi
     state: vomit_toxin-3
+
+# The Gut's tame creatures, such as the native flesh hens: no friends or foes, only spared by its acid.
+- type: npcFaction
+  id: WFGutNative

@@ -1,0 +1,158 @@
+# What the F7.4 sites hold: an automated outpost's core and turrets, ruins' clues, a workshop's recipe disk, and the
+# survey scanner that finds faint sites.
+
+- type: entity
+  parent: BaseStructure
+  id: WFPoiAutomatedCore
+  name: outpost core
+  description: The control server of an automated outpost. Its turrets answer to it until someone gets into it with a multitool.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    layers:
+    - state: server
+    - state: variant-research
+    - state: server-on
+      map: [ "status" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WFPoiCoreVisuals.Hacked:
+        status:
+          True: { state: server-off }
+          False: { state: server-on }
+  - type: WFPoiCore
+  - type: CleanupImmune
+
+- type: entity
+  parent: WeaponTurretLaserSilicon
+  id: WFPoiAutomatedTurret
+  name: outpost turret
+  description: A laser turret slaved to an automated outpost's core.
+  suffix: Automated outpost
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WFAds
+  - type: WFPoiCoreGuard
+
+- type: entity
+  parent: BaseItem
+  id: WFPoiSurveyScanner
+  name: survey scanner
+  description: Swept round on a world's ground, it picks up the faint signals of sites no radar shows.
+  components:
+  - type: Sprite
+    sprite: Objects/Tools/handheld_mass_scanner.rsi
+    state: icon
+    color: "#9fd8c0"
+  - type: Item
+    size: Small
+  - type: WFPoiSurveyScanner
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: BaseItem
+  id: WFPoiClueNotes
+  name: old survey notes
+  description: Brittle pages of someone's survey of this world, with landmarks and bearings.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: paper
+    - state: paper_words
+  - type: Item
+    size: Tiny
+  - type: WFPoiClue
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  parent: BaseItem
+  id: WFOutpostRecipeDiskWorkshop
+  name: homestead recipe disk
+  description: A workshop's disk of homestead machine boards. An outpost fabricator learns them once it is inserted.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    layers:
+    - state: datadisk_base
+      color: "#5f8f4a"
+    - state: datadisk_label
+  - type: Item
+    size: Tiny
+  - type: Blueprint
+    providedRecipes:
+    - HydroponicsTrayMachineCircuitboard
+    - SeedExtractorMachineCircuitboard
+    - ReagentGrinderMachineCircuitboard
+    - MicrowaveMachineCircuitboard
+  - type: Tag
+    tags:
+    - WFOutpostRecipeDisk
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WFOutpostRecipeDiskWorkshop
+  id: WFOutpostRecipeDiskIndustrial
+  name: industrial recipe disk
+  description: A workshop's disk of tier 2 boards for turning ore and scrap into stock. An outpost fabricator learns them once it is inserted.
+  components:
+  - type: Sprite
+    layers:
+    - state: datadisk_base
+      color: "#c08a3a"
+    - state: datadisk_label
+  - type: Blueprint
+    providedRecipes:
+    - AutolatheMachineCircuitboard
+    - OreProcessorMachineCircuitboard
+    - BiogeneratorMachineCircuitboard
+    - GasRecyclerMachineCircuitboard
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WFOutpostRecipeDiskWorkshop
+  id: WFOutpostRecipeDiskAdvanced
+  name: advanced recipe disk
+  description: A workshop's rare disk of tier 3 boards for research and chemistry. An outpost fabricator learns them once it is inserted.
+  components:
+  - type: Sprite
+    layers:
+    - state: datadisk_base
+      color: "#8a5fc0"
+    - state: datadisk_label
+  - type: Blueprint
+    providedRecipes:
+    - ProtolatheMachineCircuitboard
+    - CircuitImprinterMachineCircuitboard
+    - ChemMasterMachineCircuitboard
+    - ChemDispenserMachineCircuitboard
+  - type: StaticPrice
+    price: 2000
+
+# What a workshop leaves out: mostly the homestead disk, sometimes a tier 2 or, rarely, a tier 3 one.
+- type: entity
+  parent: MarkerBase
+  id: WFOutpostRecipeDiskWorkshopSpawner
+  name: workshop recipe disk spawner
+  components:
+  - type: Sprite
+    layers:
+    - state: red
+    - sprite: Objects/Misc/module.rsi
+      state: datadisk_base
+  - type: EntityTableSpawner
+    offset: 0
+    table: !type:GroupSelector
+      children:
+      - id: WFOutpostRecipeDiskWorkshop
+        weight: 60
+      - id: WFOutpostRecipeDiskIndustrial
+        weight: 30
+      - id: WFOutpostRecipeDiskAdvanced
+        weight: 10

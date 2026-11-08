@@ -25,6 +25,16 @@ public enum WFForecastCertainty : byte
     Possible,
 }
 
+/// <summary>Where a storm on a world is now.</summary>
+[Serializable, NetSerializable]
+public enum WFForecastStorm : byte
+{
+    None,
+    Building,
+    Raging,
+    Passing,
+}
+
 /// <summary>One stretch of forecast weather.</summary>
 [Serializable, NetSerializable]
 public sealed class WFForecastRow
@@ -62,6 +72,17 @@ public sealed class WFWeatherForecastState : BoundUserInterfaceState
     public bool Cycling;
     /// <summary>The weather now first, then what follows.</summary>
     public List<WFForecastRow> Rows = new();
+    /// <summary>The world has a clock: <see cref="Night"/> and <see cref="DayChangeInSeconds"/> mean something.</summary>
+    public bool HasClock;
+    public bool Night;
+    /// <summary>Real seconds until dawn at night, or until dusk by day.</summary>
+    public float DayChangeInSeconds;
+    public WFForecastStorm Storm;
+    /// <summary>Outposts on the world can be raided: <see cref="RaidActive"/> and <see cref="RaidChangeInSeconds"/> mean something.</summary>
+    public bool HasRaidWindow;
+    public bool RaidActive;
+    /// <summary>Real seconds until the raid window closes while open, or opens while closed; 0 when it never changes.</summary>
+    public float RaidChangeInSeconds;
 }
 
 /// <summary>Picks the world a forecast console shows.</summary>

@@ -1,0 +1,3 @@
+# Livestock caught outside a pen while its world's Active window is open: whatever hunts by default hunts it.
+- type: npcFaction
+  id: WFLivestockPrey

@@ -512,6 +512,16 @@ namespace Content.Server.Construction
                 }
             }
 
+            // WOLFGATE(Outposts) START: raw ground inside another player's outpost claim is theirs to build on.
+            var wfClaimed = new Content.Shared._WF.Outposts.WFGroundBuildAttemptEvent(user, location);
+            RaiseLocalEvent(ref wfClaimed);
+            if (wfClaimed.Cancelled)
+            {
+                Cleanup();
+                return false;
+            }
+            // WOLFGATE END
+
             void Cleanup()
             {
                 if (senderSession is {} session) // Goobstation - not added for constructor

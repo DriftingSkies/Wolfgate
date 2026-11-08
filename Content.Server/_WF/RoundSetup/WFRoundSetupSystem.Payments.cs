@@ -8,7 +8,9 @@ namespace Content.Server._WF.RoundSetup;
 
 public sealed partial class WFRoundSetupSystem
 {
-    private int VesselPrice(Lobby lobby) => lobby.HangarLicence == null && lobby.Vessel != null && _prototypes.TryIndex<VesselPrototype>(lobby.Vessel, out var vessel) ? vessel.Price : 0;
+    private int VesselPrice(Lobby lobby) => lobby.Scenario == WFRoundScenario.Outpost
+        ? lobby.OutpostSlot != null || lobby.OutpostPreset != null ? lobby.OutpostPrice : 0 :
+        lobby.HangarLicence == null && lobby.Vessel != null && _prototypes.TryIndex<VesselPrototype>(lobby.Vessel, out var vessel) ? vessel.Price : 0;
 
     private string? EligiblePurchaseJob(Lobby lobby, ICommonSession host) =>
         lobby.Members[host.UserId].Job is { } job && IsJobAllowed(host, job) ? job : null;
@@ -27,7 +29,7 @@ public sealed partial class WFRoundSetupSystem
     /// <summary>Only the leader may allocate bounded shares before launch; any edit revokes all approvals.</summary>
     private bool SetContribution(Lobby lobby, WFRoundSetupRequest request)
     {
-        if (lobby.Started || !WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.Vessel == null ||
+        if (!IsBuying(lobby) || PurchaseKey(lobby) == null ||
             request.PaymentRevision != lobby.PaymentRevision || request.Target is not { } target ||
             !lobby.Members.TryGetValue(target, out var member) || request.Contribution < 0 || request.Contribution > VesselPrice(lobby))
             return false;
@@ -42,7 +44,7 @@ public sealed partial class WFRoundSetupSystem
     private bool ValidatePaymentQuote(Lobby lobby, ICommonSession session, int? revision, out string error)
     {
         error = "wf-round-setup-payment-changed";
-        if (lobby.Started || !WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.HangarLicence != null)
+        if (!IsBuying(lobby) || lobby.HangarLicence != null)
             return true;
         // A zero-share passenger never authorizes a withdrawal.
         return (lobby.Members[session.UserId].Contribution == 0 && lobby.Host != session.UserId || revision == lobby.PaymentRevision) &&
@@ -80,7 +82,7 @@ public sealed partial class WFRoundSetupSystem
 
     private bool AllPaymentsApproved(Lobby lobby)
     {
-        if (lobby.Started || !WFRoundSetupPolicy.IsShip(lobby.Scenario))
+        if (!IsBuying(lobby))
             return true;
         if (lobby.HangarLicence != null)
             return _players.TryGetSessionById(lobby.Host, out var hangarHost) && CanEnter(hangarHost) &&
@@ -91,7 +93,7 @@ public sealed partial class WFRoundSetupSystem
                 HasShipPurchaseConsent(lobby, player) && CanSpawnRole(lobby, player));
     }
 
-    private WFRoundSetupPayment? PaymentFor(Lobby lobby, NetUserId user) => lobby.Started || !WFRoundSetupPolicy.IsShip(lobby.Scenario) || lobby.HangarLicence != null
+    private WFRoundSetupPayment? PaymentFor(Lobby lobby, NetUserId user) => !IsBuying(lobby) || lobby.HangarLicence != null
         ? null : new WFRoundSetupPayment(lobby.PaymentRevision, VesselPrice(lobby), lobby.Members[user].Contribution,
             lobby.Members.Values.Sum(member => (long) member.Contribution), AllPaymentsApproved(lobby));
 
@@ -106,6 +108,8 @@ public sealed partial class WFRoundSetupSystem
         var contributions = lobby.Members.Where(pair => pair.Value.Contribution > 0).Select(pair =>
             new WFShipScenarioSystem.Contribution(_players.GetSessionById(pair.Key), pair.Value.PurchaseCharacterSlot!.Value,
                 pair.Value.Contribution)).ToArray();
-        return _ships.TryCharge(lobby.Id, host, contributions, out error);
+        return lobby.Scenario == WFRoundScenario.Outpost
+            ? _ships.TryChargeShares(lobby.Id, contributions, VesselPrice(lobby), out error)
+            : _ships.TryCharge(lobby.Id, host, contributions, out error);
     }
 }

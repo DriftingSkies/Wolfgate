@@ -41,6 +41,7 @@ public sealed class WFPlanetMapSystem : EntitySystem
     public const int MinCell = 8;
 
     private const string WreckName = "wf-poi-wreck";
+    private const string CapitalName = "wf-poi-derelict-capital";
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
     private TimeSpan _next;
     private readonly Dictionary<int, WFPlanetMapGround> _tileGrounds = new();
@@ -164,6 +165,8 @@ public sealed class WFPlanetMapSystem : EntitySystem
         foreach (var site in record.Sites)
         {
             var revealed = TryComp<WFPoiSignalComponent>(site.Signal, out var signal) && signal.Revealed || all;
+            if (signal is { Faint: true } && !all)
+                continue;
             var kind = KindOf(site);
             var position = signal?.Origin ?? site.Origin;
             if (!revealed)
@@ -184,7 +187,7 @@ public sealed class WFPlanetMapSystem : EntitySystem
     public WFPlanetMapSiteKind KindOf(WFPlanetPoiSite site)
     {
         var name = site.Name.Id;
-        if (name == WreckName)
+        if (name is WreckName or CapitalName)
             return WFPlanetMapSiteKind.Wreck;
         if (WFPlanetCargoHubSites.IsHub(name))
             return WFPlanetMapSiteKind.Depot;

@@ -13,6 +13,7 @@ public sealed class WFWeatherForecastWindow : DefaultWindow
     private readonly OptionButton _worlds;
     private readonly Label _season;
     private readonly Label _now;
+    private readonly Label _clock;
     private readonly Label _off;
     private readonly GridContainer _table;
     private readonly List<NetEntity> _worldIds = new();
@@ -46,9 +47,11 @@ public sealed class WFWeatherForecastWindow : DefaultWindow
 
         _season = new Label();
         _now = new Label();
+        _clock = new Label();
         _off = new Label { StyleClasses = { "LabelSubText" }, Visible = false };
         column.AddChild(_season);
         column.AddChild(_now);
+        column.AddChild(_clock);
         column.AddChild(_off);
 
         _table = new GridContainer { Columns = 5, HSeparationOverride = 12, VSeparationOverride = 2 };
@@ -78,6 +81,7 @@ public sealed class WFWeatherForecastWindow : DefaultWindow
         {
             _season.Text = state.Worlds.Count == 0 ? Loc.GetString("wf-forecast-console-no-worlds") : string.Empty;
             _now.Text = string.Empty;
+            _clock.Text = string.Empty;
             _off.Visible = false;
             return;
         }
@@ -89,6 +93,7 @@ public sealed class WFWeatherForecastWindow : DefaultWindow
         var now = state.Rows[0];
         _now.Text = Loc.GetString("wf-forecast-console-now",
             ("weather", WeatherName(now.Weather)), ("temperature", FormatTemperature(now)));
+        _clock.Text = FormatClock(state);
         _off.Text = Loc.GetString("wf-forecast-console-off");
         _off.Visible = !state.Cycling;
 
@@ -106,6 +111,26 @@ public sealed class WFWeatherForecastWindow : DefaultWindow
             _table.AddChild(new Label { Text = FormatTemperature(row) });
             _table.AddChild(new Label { Text = FormatFlags(row) });
         }
+    }
+
+    /// <summary>The time to dawn or dusk, and the storm now if there is one.</summary>
+    public static string FormatClock(WFWeatherForecastState state)
+    {
+        if (!state.HasClock)
+            return string.Empty;
+
+        var minutes = (int) MathF.Ceiling(state.DayChangeInSeconds / 60f);
+        var clock = Loc.GetString(state.Night ? "wf-forecast-console-dawn-in" : "wf-forecast-console-dusk-in", ("minutes", minutes));
+        if (state.Storm != WFForecastStorm.None)
+            clock = Loc.GetString("wf-forecast-console-clock-storm", ("clock", clock), ("storm", (int) state.Storm));
+        if (!state.HasRaidWindow)
+            return clock;
+
+        var raid = state.RaidChangeInSeconds <= 0
+            ? Loc.GetString(state.RaidActive ? "wf-forecast-console-raids-always" : "wf-forecast-console-raids-never")
+            : Loc.GetString(state.RaidActive ? "wf-forecast-console-raids-close-in" : "wf-forecast-console-raids-open-in",
+                ("minutes", (int) MathF.Ceiling(state.RaidChangeInSeconds / 60f)));
+        return Loc.GetString("wf-forecast-console-clock-raids", ("clock", clock), ("raids", raid));
     }
 
     public static string WeatherName(string weather)

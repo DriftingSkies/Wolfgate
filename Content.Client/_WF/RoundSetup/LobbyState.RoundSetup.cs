@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Client._NF.LateJoin.Windows;
+using Content.Client._WF.Outposts;
 using Content.Client._WF.RoundSetup;
 using Content.Shared._WF.RoundSetup;
 
@@ -10,12 +11,15 @@ public sealed partial class LobbyState
     private WFRoundSetupClientSystem? _roundSetup;
     private PickerWindow? _stationRoles;
     private WFRoundJoinChoiceWindow? _joinChoice;
+    private WFOutpostJoinSystem? _outpostJoin;
 
     private void InitializeRoundSetupHome()
     {
         _roundSetup = _entityManager.System<WFRoundSetupClientSystem>();
         _roundSetup.Received += RoundSetupChanged;
         _roundSetup.Send(new WFRoundSetupRequest(WFRoundSetupAction.Refresh));
+        _outpostJoin = _entityManager.System<WFOutpostJoinSystem>();
+        _outpostJoin.OfferReceived += OutpostOfferReceived;
     }
 
     private void ShutdownRoundSetupHome()
@@ -23,6 +27,9 @@ public sealed partial class LobbyState
         if (_roundSetup != null)
             _roundSetup.Received -= RoundSetupChanged;
         _roundSetup = null;
+        if (_outpostJoin != null)
+            _outpostJoin.OfferReceived -= OutpostOfferReceived;
+        _outpostJoin = null;
         _joinStationAfterLeaving = false;
         _joinChoice?.Close();
         _joinChoice = null;
@@ -91,6 +98,15 @@ public sealed partial class LobbyState
         _joinChoice = new WFRoundJoinChoiceWindow(
             () => _userInterfaceManager.GetUIController<WFRoundSetupUIController>().OpenCrews(), JoinStationRoles, pregame: !_gameTicker.IsGameStarted);
         _joinChoice.OpenCentered();
+        if (_gameTicker.IsGameStarted)
+            _outpostJoin?.Query();
+    }
+
+    /// <summary>Offers waking up at the player's outpost in the open join chooser.</summary>
+    private void OutpostOfferReceived(string? outpost)
+    {
+        if (outpost != null && _joinChoice is { IsOpen: true } && _outpostJoin is { } join)
+            _joinChoice.AddOutpost(outpost, join.Join);
     }
 
     private void JoinStationRoles()

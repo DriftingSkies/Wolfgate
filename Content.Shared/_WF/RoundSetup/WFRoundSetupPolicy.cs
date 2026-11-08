@@ -14,9 +14,13 @@ public static class WFRoundSetupPolicy
     /// <summary>Both independent and faction crews use the ship preparation flow.</summary>
     public static bool IsShip(WFRoundScenario scenario) => scenario is WFRoundScenario.Ship or WFRoundScenario.FactionShip;
 
+    /// <summary>Scenarios where the crew pays for what it starts in, split by contributions: a ship or a saved outpost.</summary>
+    public static bool IsPurchase(WFRoundScenario scenario) => IsShip(scenario) || scenario == WFRoundScenario.Outpost;
+
     /// <summary>Scenarios a player crew can be created with.</summary>
     public static bool IsCrewScenario(WFRoundScenario scenario) =>
-        scenario is WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip or WFRoundScenario.Doomed;
+        scenario is WFRoundScenario.Ship or WFRoundScenario.Crashlanded or WFRoundScenario.FactionShip or WFRoundScenario.Doomed
+            or WFRoundScenario.Outpost;
 
     /// <summary>Formed crews start in the round around characters already playing.</summary>
     public static bool IsFormed(WFRoundScenario scenario) => scenario == WFRoundScenario.Formed;

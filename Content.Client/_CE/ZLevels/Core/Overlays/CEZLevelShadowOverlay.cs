@@ -164,6 +164,9 @@ public sealed partial class CEZLevelShadowOverlay : Overlay
             if (_entManager.HasComponent<Content.Shared._WF.PlanetCities.WFPlanetCityGridComponent>(grid.Owner))
                 continue;
             // WOLFGATE END
+            // WOLFGATE(Planets): terrain grids such as outposts are buildings on the ground too.
+            if (_entManager.HasComponent<Content.Shared._WF.Planets.WFPlanetTerrainGridComponent>(grid.Owner))
+                continue;
 
             var localPos = 0f;
             if (_entManager.TryGetComponent(grid.Owner, out CEZPhysicsComponent? zPhys))

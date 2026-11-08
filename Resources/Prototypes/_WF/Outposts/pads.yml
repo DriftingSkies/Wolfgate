@@ -1,0 +1,80 @@
+# Landing pads (F6.2): a beacon on an outpost's floor marks out a square that pilots with access land on from orbit.
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostLandingPadPack
+  name: landing pad beacon pack
+  description: A packed landing pad beacon. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#7FD3FF"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostLandingPad
+    delay: 3
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  abstract: true
+  parent: WFBaseOutpostLifeGizmo
+  id: WFBaseLandingPad
+  name: landing pad beacon
+  description: Guides ships with access to this outpost down from orbit onto the square of ground around it, and back up again, whatever their lift. It draws heavily while guiding.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    noRot: true
+    drawdepth: FloorObjects
+    layers:
+    - state: icon
+    - state: blink
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        hard: false
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: ApcPowerReceiver
+    powerLoad: 100
+  - type: WFLandingPad
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WFBaseLandingPad
+  id: WFOutpostLandingPad
+  components:
+  - type: WFRepackable
+    pack: WFOutpostLandingPadPack
+    delay: 3
+
+# A Tradepost's apron (F6.2): any pilot lands here, and it runs off the post's own supply.
+- type: entity
+  parent: WFBaseLandingPad
+  id: WFPoiPublicLandingPad
+  name: public landing pad beacon
+  description: Guides any ship down from orbit onto the apron around it, and back up again, whatever its lift.
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: WFLandingPad
+    size: 13
+    public: true

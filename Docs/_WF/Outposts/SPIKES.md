@@ -68,3 +68,25 @@ What this means for the caps:
 
 The mix is heavy on machines with many components, so a real outpost of the same count is likely a little cheaper.
 These are dev-machine numbers; a production server's CPU will be slower, so measure there again before raising the cap.
+
+## F0.3 Roof and outdoors: does an outpost go by its roofs?
+
+Yes, once it stops looking like a vessel. `OutpostRoofTest` founds an outpost on a planet's ground and checks its
+tiles.
+
+- A grid made at runtime gets `ImplicitRoofComponent` (`ShuttleSystem.OnGridInit`), which roofs every tile, and on a
+  planet layer any grid but the ground and a fixed city's levels counts as a vessel, covered throughout
+  (`SharedWeatherSystem.WfPlanetExposure`). An outpost would never see rain.
+- The fix is a new Planets marker, `WFPlanetTerrainGridComponent`: a grid that is buildings on the ground. The four
+  checks that let a city grid go by its roofs accept it too: weather exposure, the roofed-below check for z-levels, the
+  planet view's "inside a building" test and the z-level ship shadow. The outpost drops its implicit roof for a
+  `RoofComponent` of its own.
+- Then a bare outpost tile is outdoors (rained on, struck by lightning), a wall's tile is roofed (walls carry
+  `IsRoof`), and a tile under a roof panel (`WFOutpostRoofPanel`, owner only for now) is roofed. Thunder picks its tile
+  through the same exposure check, so it never lands on a roofed outpost tile.
+
+Not checked: the overlay itself. The roof bits are what the client's roof overlay draws, but no screenshot was taken;
+the test is headless.
+
+Atmosphere needs nothing: a runtime grid of seven tiles or more gets a grid atmosphere of its own
+(`AutomaticAtmosSystem`), so an outpost holds air like a landed ship, its open edges sharing the planet's.

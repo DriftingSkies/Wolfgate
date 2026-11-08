@@ -69,6 +69,8 @@ namespace Content.Server.Database
 
         public DbSet<WolfgateGameScore> WolfgateGameScore { get; set; } = null!; // WOLFGATE(GameHub): best level scores
         public DbSet<WolfgateContractStanding> WolfgateContractStanding { get; set; } = null!; // WOLFGATE(Contracts): standing with contractors
+        public DbSet<WolfgateOutpostSave> WolfgateOutpostSave { get; set; } = null!; // WOLFGATE(Outposts): saved outposts
+        public DbSet<WolfgateOutpostPayout> WolfgateOutpostPayout { get; set; } = null!; // WOLFGATE(Outposts): round-end sales owed to offline owners
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -503,6 +505,18 @@ namespace Content.Server.Database
             modelBuilder.Entity<WolfgateContractStanding>()
                 .HasIndex(s => new { s.PlayerUserId, s.CharacterName, s.Contractor })
                 .IsUnique();
+            // WOLFGATE END
+
+            // WOLFGATE(Outposts) START: one saved outpost per account and slot; saves found by lineage
+            modelBuilder.Entity<WolfgateOutpostSave>()
+                .HasIndex(s => new { s.PlayerUserId, s.Slot })
+                .IsUnique();
+
+            modelBuilder.Entity<WolfgateOutpostSave>()
+                .HasIndex(s => s.Lineage);
+
+            modelBuilder.Entity<WolfgateOutpostPayout>()
+                .HasIndex(p => p.PlayerUserId);
             // WOLFGATE END
 
             // WOLFGATE(Companies) START: names and tags are unique; a character's membership goes with the character
@@ -2080,6 +2094,57 @@ namespace Content.Server.Database
         public string Note { get; set; } = "";
     }
 
+    // WOLFGATE END
+
+    // WOLFGATE(Outposts) START: an outpost saved by its owner, brought back in a later round
+    public class WolfgateOutpostSave
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public Guid PlayerUserId { get; set; }
+
+        public int Slot { get; set; }
+
+        [Required, MaxLength(64)]
+        public string Name { get; set; } = "";
+
+        public int Tiles { get; set; }
+
+        public int Entities { get; set; }
+
+        /// <summary>What the outpost's parts were worth when it was saved.</summary>
+        public int Appraisal { get; set; }
+
+        /// <summary>The grid as gzip'd YAML.</summary>
+        public byte[] Data { get; set; } = default!;
+
+        public int SavedRound { get; set; }
+
+        /// <summary>The last round the save was loaded in, 0 if never.</summary>
+        public int LoadedRound { get; set; }
+
+        public DateTime Saved { get; set; }
+
+        /// <summary>The outpost the save was taken from, kept through its saves and loads; a sale voids them all.</summary>
+        public Guid Lineage { get; set; }
+    }
+
+    /// <summary>What an outpost sold at round end fetched, owed to an owner who was offline; paid when they next spawn.</summary>
+    public class WolfgateOutpostPayout
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public Guid PlayerUserId { get; set; }
+
+        [Required, MaxLength(64)]
+        public string Name { get; set; } = "";
+
+        public int Amount { get; set; }
+
+        public DateTime Sold { get; set; }
+    }
     // WOLFGATE END
 
     // WOLFGATE(Contracts) START: a character's standing with one contractor of the contract board

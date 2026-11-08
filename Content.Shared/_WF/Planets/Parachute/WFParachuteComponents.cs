@@ -30,9 +30,9 @@ public sealed partial class WFParachutedComponent : Component
     [DataField, AutoNetworkedField]
     public float FallSpeed = 1.5f;
 
-    /// <summary>What is left at the landing site.</summary>
+    /// <summary>What is left at the landing site; nothing for a delivery chute.</summary>
     [DataField]
-    public EntProtoId Pack = "WFParachute";
+    public EntProtoId? Pack = "WFParachute";
 
     [DataField]
     public SoundSpecifier DeploySound = new SoundPathSpecifier("/Audio/Effects/thudswoosh.ogg");

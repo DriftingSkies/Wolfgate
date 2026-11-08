@@ -1,0 +1,455 @@
+# The raid ladder: an outpost gets raids up to the table's next step after the last one it beat. Steps 3 and 4,
+# the humanoid raiders, are in raiders.yml.
+
+- type: wfRaidTier
+  id: WFRaidTierStray
+  step: 0
+  cost: 10
+
+- type: wfRaidTier
+  id: WFRaidTierPack
+  step: 1
+  cost: 25
+
+- type: wfRaidTier
+  id: WFRaidTierBurrow
+  step: 2
+  cost: 18
+
+# A raid mob fights what it meets and otherwise walks to its spot: the claim edge, then the outpost.
+- type: htnCompound
+  id: WFRaidWildlifeCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFRaidTarget
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRaidTarget
+        # The director moves the spot on; clearing it on arrival races a plan made before it was cleared.
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+# What each world sends. The table with no surfaces is every other world's.
+
+- type: wfRaidTable
+  id: WFRaidTableDefault
+  packs:
+  - tier: WFRaidTierStray
+    spawns:
+    - id: WFMobVerdaScarRat
+      min: 2
+      max: 3
+  - tier: WFRaidTierPack
+    spawns:
+    - id: WFMobVerdaScarRat
+      min: 3
+      max: 4
+    - id: WFMobVerdaDeerCharger
+  - tier: WFRaidTierBurrow
+    spawns:
+    - id: WFRaidBurrowVerda
+    - id: WFMobVerdaScarRat
+      min: 1
+      max: 2
+  - tier: WFRaidTierScavengers
+    spawns:
+    - id: WFMobRaidScavenger
+      min: 2
+      max: 3
+    - id: WFMobRaidScavengerGunner
+  - tier: WFRaidTierRaiders
+    arrival: WFRaidRaiderQuad
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+  # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
+  - tier: WFRaidTierScavengers
+    tunnel: true
+    arrival: WFRaidTunnelExit
+    spawns:
+    - id: WFMobRaidTunneller
+      min: 2
+      max: 3
+    - id: WFMobRaidTunnellerGunner
+  - tier: WFRaidTierShuttle
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 2
+      max: 2
+    - id: WFMobRaidScavengerGunner
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+
+- type: wfRaidTable
+  id: WFRaidTableMerak
+  surfaces: [ WFSurfaceMerak ]
+  packs:
+  - tier: WFRaidTierStray
+    spawns:
+    - id: WFMobDesertTarantula
+      min: 1
+      max: 2
+  - tier: WFRaidTierPack
+    spawns:
+    - id: WFMobDesertTarantula
+      min: 3
+      max: 4
+  - tier: WFRaidTierBurrow
+    spawns:
+    - id: WFRaidBurrowMerak
+    - id: WFMobDesertTarantula
+      min: 1
+      max: 2
+  - tier: WFRaidTierScavengers
+    spawns:
+    - id: WFMobRaidScavenger
+      min: 2
+      max: 3
+    - id: WFMobRaidScavengerGunner
+  - tier: WFRaidTierRaiders
+    arrival: WFRaidRaiderQuad
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+  # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
+  - tier: WFRaidTierScavengers
+    tunnel: true
+    arrival: WFRaidTunnelExit
+    spawns:
+    - id: WFMobRaidTunneller
+      min: 2
+      max: 3
+    - id: WFMobRaidTunnellerGunner
+  - tier: WFRaidTierShuttle
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 2
+      max: 2
+    - id: WFMobRaidScavengerGunner
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+
+- type: wfRaidTable
+  id: WFRaidTableThrascias
+  surfaces: [ WFSurfaceThrascias ]
+  packs:
+  - tier: WFRaidTierStray
+    spawns:
+    - id: WFMobThrasciasSnowSpider
+      min: 1
+      max: 2
+  - tier: WFRaidTierPack
+    spawns:
+    - id: WFMobThrasciasFrostBear
+    - id: WFMobThrasciasSnowSpider
+      min: 2
+      max: 3
+  - tier: WFRaidTierBurrow
+    spawns:
+    - id: WFRaidBurrowThrascias
+    - id: WFMobThrasciasSnowSpider
+      min: 1
+      max: 2
+  - tier: WFRaidTierScavengers
+    spawns:
+    - id: WFMobRaidScavenger
+      min: 2
+      max: 3
+    - id: WFMobRaidScavengerGunner
+  - tier: WFRaidTierRaiders
+    arrival: WFRaidRaiderQuad
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+  # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
+  - tier: WFRaidTierScavengers
+    tunnel: true
+    arrival: WFRaidTunnelExit
+    spawns:
+    - id: WFMobRaidTunneller
+      min: 2
+      max: 3
+    - id: WFMobRaidTunnellerGunner
+  - tier: WFRaidTierShuttle
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 2
+      max: 2
+    - id: WFMobRaidScavengerGunner
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+
+- type: wfRaidTable
+  id: WFRaidTableFervidus
+  surfaces: [ WFSurfaceFervidus ]
+  packs:
+  - tier: WFRaidTierStray
+    spawns:
+    - id: WFMobCinderSlime
+      min: 1
+      max: 2
+  - tier: WFRaidTierPack
+    spawns:
+    - id: WFMobLaserRaptorFervidus
+      min: 1
+      max: 2
+    - id: WFMobCinderSlime
+      min: 2
+      max: 3
+  - tier: WFRaidTierBurrow
+    spawns:
+    - id: WFRaidBurrowFervidus
+    - id: WFMobCinderSlime
+      min: 1
+      max: 2
+  - tier: WFRaidTierScavengers
+    spawns:
+    - id: WFMobRaidScavenger
+      min: 2
+      max: 3
+    - id: WFMobRaidScavengerGunner
+  - tier: WFRaidTierRaiders
+    arrival: WFRaidRaiderQuad
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+  # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
+  - tier: WFRaidTierScavengers
+    tunnel: true
+    arrival: WFRaidTunnelExit
+    spawns:
+    - id: WFMobRaidTunneller
+      min: 2
+      max: 3
+    - id: WFMobRaidTunnellerGunner
+  - tier: WFRaidTierShuttle
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 2
+      max: 2
+    - id: WFMobRaidScavengerGunner
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+
+- type: wfRaidTable
+  id: WFRaidTableCarcinoma
+  surfaces: [ WFSurfaceCarcinoma ]
+  packs:
+  - tier: WFRaidTierStray
+    spawns:
+    - id: WFMobCarcinomaSpider
+  - tier: WFRaidTierPack
+    spawns:
+    - id: WFMobCarcinomaSpider
+      min: 2
+      max: 3
+  - tier: WFRaidTierBurrow
+    spawns:
+    - id: WFRaidBurrowCarcinoma
+    - id: WFMobCarcinomaSpider
+      min: 1
+      max: 2
+  - tier: WFRaidTierScavengers
+    spawns:
+    - id: WFMobRaidScavenger
+      min: 2
+      max: 3
+    - id: WFMobRaidScavengerGunner
+  - tier: WFRaidTierRaiders
+    arrival: WFRaidRaiderQuad
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+  # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
+  - tier: WFRaidTierScavengers
+    tunnel: true
+    arrival: WFRaidTunnelExit
+    spawns:
+    - id: WFMobRaidTunneller
+      min: 2
+      max: 3
+    - id: WFMobRaidTunnellerGunner
+  - tier: WFRaidTierShuttle
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 2
+      max: 2
+    - id: WFMobRaidScavengerGunner
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidBreacher
+    - id: WFMobRaidRaider
+      min: 1
+      max: 2
+    - id: WFMobRaidScavenger
+      min: 1
+      max: 2
+
+# Step 2: a burrow at the walk-in spot that keeps sending the world's wildlife until it is destroyed or filled in.
+- type: entity
+  abstract: true
+  id: WFRaidBurrowBase
+  name: burrow
+  description: A fresh hole, wide enough for whatever dug it to keep coming up. Break it in or fill it with a shovel.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/NuclearPhase/burrow.rsi
+    state: burrow
+    scale: 2, 2
+    drawdepth: FloorObjects
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFRaidBurrow
+
+- type: entity
+  parent: WFRaidBurrowBase
+  id: WFRaidBurrowVerda
+  components:
+  - type: FaunaBurrow
+    prototypes: [ WFMobVerdaScarRat ]
+    interval: 20
+    maxAlive: 4
+
+- type: entity
+  parent: WFRaidBurrowBase
+  id: WFRaidBurrowMerak
+  components:
+  - type: FaunaBurrow
+    prototypes: [ WFMobDesertTarantula ]
+    interval: 20
+    maxAlive: 4
+
+- type: entity
+  parent: WFRaidBurrowBase
+  id: WFRaidBurrowThrascias
+  components:
+  - type: FaunaBurrow
+    prototypes: [ WFMobThrasciasSnowSpider ]
+    interval: 20
+    maxAlive: 4
+
+- type: entity
+  parent: WFRaidBurrowBase
+  id: WFRaidBurrowFervidus
+  components:
+  - type: FaunaBurrow
+    prototypes: [ WFMobCinderSlime ]
+    interval: 20
+    maxAlive: 4
+
+- type: entity
+  parent: WFRaidBurrowBase
+  id: WFRaidBurrowCarcinoma
+  components:
+  - type: FaunaBurrow
+    prototypes: [ WFMobCarcinomaSpider ]
+    interval: 20
+    maxAlive: 4

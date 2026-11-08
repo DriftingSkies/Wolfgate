@@ -1,0 +1,170 @@
+# Prefab building for outposts, printed at the outpost fabricator. Each panel or kit deploys in hand onto the outpost
+# floor tile in front of you. Prefab walls, doors and shutters pack up again as they are; the window and airlock kits
+# set up stock ones, taken apart the usual way.
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFPrefabWallPanel
+  name: prefab wall panel
+  description: A folded wall section. Use it in hand facing your outpost's floor to stand it up there.
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#8A8A8A"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFPrefabWall
+    delay: 2
+    face: false
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  parent: BaseWall
+  id: WFPrefabWall
+  name: prefab wall
+  description: A bolted-together wall section. Softer than a welded wall, but it packs up again.
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/Walls/mining.rsi
+  - type: Icon
+    sprite: Structures/Walls/mining.rsi
+  - type: IconSmooth
+    key: walls
+    base: mining
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: WallDefense1
+  - type: ReceiverXenoClaws
+    maxHealth: 800
+    hitsToDestroy: 14
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 800
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFRepackable
+    pack: WFPrefabWallPanel
+    delay: 2
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFPrefabWindowKit
+  name: prefab window kit
+  description: A glass pane in a bolt-on frame. Use it in hand facing your outpost's floor to set a window there.
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#A8D8EA"
+    - state: icon-default
+  - type: WFDeployable
+    machine: Window
+    delay: 2
+    face: false
+  - type: StaticPrice
+    price: 30
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFPrefabDoorKit
+  name: prefab door kit
+  description: A hinged door in its frame. Use it in hand facing your outpost's floor to hang it there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#6E6E6E"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFPrefabDoor
+    delay: 3
+  - type: StaticPrice
+    price: 30
+
+- type: entity
+  parent: BaseMaterialDoorNavMap
+  id: WFPrefabDoor
+  name: prefab door
+  description: A plain door that opens by hand. Needs no power, and locks with the outpost.
+  components:
+  - type: Transform
+    anchored: true
+  - type: AccessReader
+  - type: WFRepackable
+    pack: WFPrefabDoorKit
+    delay: 3
+  - type: StaticPrice
+    price: 30
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFPrefabAirlockKit
+  name: prefab airlock kit
+  description: A packed airlock, its electronics wired in. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#52B4E9"
+    - state: icon-default
+  - type: WFDeployable
+    machine: Airlock
+    delay: 4
+  - type: StaticPrice
+    price: 85
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFPrefabShuttersKit
+  name: prefab shutters kit
+  description: A rolled-up shutter. Use it in hand facing your outpost's floor to set it up there, then link it to a button.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#DE3A3A"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFPrefabShutters
+    delay: 3
+  - type: StaticPrice
+    price: 35
+
+- type: entity
+  parent: BaseShutter
+  id: WFPrefabShutters
+  name: prefab shutters
+  description: Bolt-on shutters, opened and closed from a linked button.
+  components:
+  - type: Transform
+    anchored: true
+  - type: Occluder
+  - type: ContainerFill
+    containers:
+      board: []
+  - type: WFRepackable
+    pack: WFPrefabShuttersKit
+    delay: 3
+  - type: StaticPrice
+    price: 35

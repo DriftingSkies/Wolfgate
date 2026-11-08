@@ -411,7 +411,7 @@ public sealed class SiteStashTest
     {
         var xform = entMan.GetComponent<TransformComponent>(uid);
         var proto = entMan.GetComponent<MetaDataComponent>(uid).EntityPrototype?.ID ?? "(none)";
-        return $"{proto} @ {xform.LocalPosition.X:F2},{xform.LocalPosition.Y:F2} r{xform.LocalRotation.Degrees:F0}";
+        return FormattableString.Invariant($"{proto} @ {xform.LocalPosition.X:F2},{xform.LocalPosition.Y:F2} r{xform.LocalRotation.Degrees:F0}");
     }
 
     private static bool Paused(IEntityManager entMan, EntityUid uid)

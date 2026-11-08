@@ -1,0 +1,54 @@
+# Outpost defences: turrets and mines that only go for raiders and hostile wildlife.
+
+- type: npcFaction
+  id: WFOutpostDefence
+  hostile:
+  - SimpleHostile
+  - Xeno
+  - AberrantFleshExpeditionNF
+  - WFOutpostRaiders
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostTurretPack
+  name: outpost turret pack
+  description: A packed outpost turret. Use it in hand facing your outpost's floor to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#C08030"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostTurret
+    delay: 5
+  - type: StaticPrice
+    price: 3000
+
+- type: entity
+  parent: BaseWeaponBallisticTurret
+  id: WFOutpostTurret
+  name: outpost turret
+  description: A self-charging auto-turret that fires only on raiders and hostile wildlife. An outpost can set up six.
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WFOutpostDefence
+  - type: WFOutpostTurret
+  - type: WFRepackable
+    pack: WFOutpostTurretPack
+    delay: 5
+  - type: StaticPrice
+    price: 3000
+
+- type: entity
+  parent: LandMineExplosive
+  id: WFOutpostDefenceMine
+  name: perimeter mine
+  description: A landmine keyed to the outpost's defence net. It goes off only under raiders and hostile wildlife.
+  components:
+  - type: WFFactionMine
+    faction: WFOutpostDefence
+  - type: StaticPrice
+    price: 400

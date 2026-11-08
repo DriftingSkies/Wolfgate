@@ -29,34 +29,40 @@ namespace Content.IntegrationTests.Tests._WF.RoundSetup;
 [TestOf(typeof(WFCrashScenarioSystem))]
 public sealed class CrashScenarioTest
 {
-    /// <summary>Every random candidate loads as a shuttle with enough unobstructed deck for a full crew.</summary>
-    [TestCaseSource(typeof(WFCrashScenarioSystem), nameof(WFCrashScenarioSystem.VesselIds))]
-    public async Task CrashVesselHasUsableCrewSpace(string vesselId)
+    /// <summary>Every hull in every crash pool loads as a shuttle with enough unobstructed deck for a full crew.</summary>
+    [Test]
+    public async Task CrashVesselsHaveUsableCrewSpace()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
         var em = server.EntMan;
         var map = await pair.CreateTestMap();
+        var prototypes = server.ResolveDependency<IPrototypeManager>();
         await server.WaitAssertion(() =>
         {
-            var vessel = server.ResolveDependency<IPrototypeManager>().Index<VesselPrototype>(vesselId);
-            Assert.That(server.System<MapLoaderSystem>().TryLoadGrid(map.MapId, vessel.ShuttlePath, out var loaded),
-                Is.True, $"Crash candidate {vesselId} must load.");
-            var hull = loaded!.Value.Owner;
-            em.AddComponents(hull, vessel.AddComponents);
-            Assert.That(em.HasComponent<ShuttleComponent>(hull), Is.True);
-            var turf = server.System<TurfSystem>();
-            var tiles = server.System<SharedMapSystem>().GetAllTiles(hull, loaded.Value.Comp);
-            var usable = 0;
-            while (tiles.MoveNext(out var tile))
+            Assert.That(prototypes.HasIndex(WFCrashScenarioSystem.Pool), Is.True, "The crash pool is missing.");
+            var vessels = prototypes.EnumeratePrototypes<WFCrashPoolPrototype>().SelectMany(pool => pool.Vessels).Distinct();
+            foreach (var vesselId in vessels)
             {
-                if (!tile.Value.Tile.IsEmpty && !turf.IsSpace(tile.Value)
-                    && !turf.IsTileBlocked(tile.Value, CollisionGroup.MobMask))
-                    usable++;
+                var vessel = prototypes.Index(vesselId);
+                Assert.That(server.System<MapLoaderSystem>().TryLoadGrid(map.MapId, vessel.ShuttlePath, out var loaded),
+                    Is.True, $"Crash candidate {vesselId} must load.");
+                var hull = loaded!.Value.Owner;
+                em.AddComponents(hull, vessel.AddComponents);
+                Assert.That(em.HasComponent<ShuttleComponent>(hull), Is.True, $"Crash candidate {vesselId} is no shuttle.");
+                var turf = server.System<TurfSystem>();
+                var tiles = server.System<SharedMapSystem>().GetAllTiles(hull, loaded.Value.Comp);
+                var usable = 0;
+                while (tiles.MoveNext(out var tile))
+                {
+                    if (!tile.Value.Tile.IsEmpty && !turf.IsSpace(tile.Value)
+                        && !turf.IsTileBlocked(tile.Value, CollisionGroup.MobMask))
+                        usable++;
+                }
+                Assert.That(usable, Is.GreaterThanOrEqualTo(WFRoundSetupPolicy.MaximumMembers),
+                    $"Crash candidate {vesselId} needs room for the full crew.");
+                em.DeleteEntity(hull);
             }
-            Assert.That(usable, Is.GreaterThanOrEqualTo(WFRoundSetupPolicy.MaximumMembers),
-                $"Crash candidate {vesselId} needs room for the full crew.");
-            em.DeleteEntity(hull);
         });
         await pair.CleanReturnAsync();
     }

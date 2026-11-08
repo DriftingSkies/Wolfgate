@@ -16,3 +16,21 @@
       Mercenary: [ -1, -1 ]
       StationEngineer: [ -1, -1 ]
       MedicalDoctor: [ -1, -1 ]
+
+# The hulls a Crashlanded crew wakes up aboard: civilian ships with enclosed crew spaces and deck for a full crew
+# (CrashScenarioTest).
+- type: wfCrashPool
+  id: WFCrashCivilian
+  vessels:
+  - Guppy
+  - Peregrine
+  - Rosetta
+  - Pillbox
+  - Arribane
+  - Noble
+  - Sakuratsu
+  - Shuilian
+  - Spessbite
+  - Takeaway
+  - Tiger
+  - Zhuangzi

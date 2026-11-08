@@ -8,9 +8,11 @@ Compact crew rows appear below Leave Server and open full details when clicked; 
 
 Open Crew Setup from the lobby, the group icon beside Character in the top-left gameplay toolbar, or the in-round game menu. The toolbar button stays pressed while setup is open and toggles it closed. The Invite players panel stays visible at the top of Who can join, with a Send invitation action and an explanation when nobody is eligible. Hosts invite connected players from this panel; only players awaiting a spawn and outside other crews appear in the picker. Recipients choose an available role in the invited crew and accept. Ready up before round start; a pregame group launches only when its host is ready. Mid-round hosts launch their waiting group explicitly. A disconnected host keeps ownership; a host can transfer ownership to another member or leave to pass it to the next member. Respawning leaves the previous crew and releases its reserved slot; remaining members retain their crew and an existing ship stays in the world. Round restart clears all lobbies and invitation codes.
 
-The server owns membership and validates every request. Scenario job slots remain available when a helm is disabled or unpowered; ordinary shuttle power rules do not override crew admission. Normal pregame readiness and Standard joining do not create a scenario crew; only Ship, Crashlanded and Faction Crew can create one. Standard opens the existing picker unchanged, so players can still take station jobs or join a player-owned ship's crew. Only private scenario stations are hidden from it and rejected by server spawn validation. Every contributor’s balance is checked before the hull loads, so an unfunded crew never triggers a grid load. Lobby snapshots go out only when something changes (a request, a character edit, a connect or disconnect, a run-level change or an expired request), plus one safety refresh every 30 seconds. Players on the lobby screen, crew leaders and invitees always receive them; an in-round player receives them for 60 seconds after their last request, and the open Crew Setup window renews that every 20 seconds. Crashlanded uses a random civilian vessel and planet, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants hear a looping alarm and see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning and alarm. The countdown never increases during client clock corrections. Up to three small, randomly spaced bursts flash and boom on the deck during preparation, leaving five-second cosmetic flames; these do not damage entities, ignite anything, alter the atmosphere or break tiles. Survivors receive an emergency EVA suit, breath mask and a survival kit with species-appropriate gas, a filled medkit, health analyser, compact repair tools and extinguisher, lantern, water, food and a harmonica alongside the existing medicine, rations and signalling tools; existing clothing is preserved. Later survivors spawn on a surviving floor in that group's wreck.
+The server owns membership and validates every request. Scenario job slots remain available when a helm is disabled or unpowered; ordinary shuttle power rules do not override crew admission. Normal pregame readiness and Standard joining do not create a scenario crew; only Ship, Crashlanded and Faction Crew can create one. Standard opens the existing picker unchanged, so players can still take station jobs or join a player-owned ship's crew. Only private scenario stations are hidden from it and rejected by server spawn validation. Every contributor’s balance is checked before the hull loads, so an unfunded crew never triggers a grid load. Lobby snapshots go out only when something changes (a request, a character edit, a connect or disconnect, a run-level change or an expired request), plus one safety refresh every 30 seconds. Players on the lobby screen, crew leaders and invitees always receive them; an in-round player receives them for 60 seconds after their last request, and the open Crew Setup window renews that every 20 seconds. Crashlanded uses a random vessel from its crash pool and a random crash world, a fixed three-minute preparation period with disabled flight controls, and the existing planetary descent and crash systems. Living occupants hear a looping alarm and see a shared on-screen countdown until atmospheric entry, highlighted for the final thirty seconds. Leaving the ship, dying or entering atmosphere clears the warning and alarm. The countdown never increases during client clock corrections. Up to three small, randomly spaced bursts flash and boom on the deck during preparation, leaving five-second cosmetic flames; these do not damage entities, ignite anything, alter the atmosphere or break tiles. Survivors receive an emergency EVA suit, breath mask and a survival kit with species-appropriate gas, a filled medkit, health analyser, compact repair tools and extinguisher, lantern, water, food and a harmonica alongside the existing medicine, rations and signalling tools; existing clothing is preserved. Later survivors spawn on a surviving floor in that group's wreck.
 
-Crashlanded draws equally from twelve existing civilian designs: Guppy, Peregrine, Rosetta, Pillbox, Arribane, Noble, Sakuratsu, Shuilian, Spessbite, Takeaway, Tiger and Zhuangzi. This mixes mining, research, medical, food-service, botany, atmospheric and cargo layouts. A crew keeps its chosen hull and wreck for later arrivals.
+Crashlanded draws equally from the `wfCrashPool` prototype `WFCrashCivilian` (`crash.yml`): twelve existing civilian designs, Guppy, Peregrine, Rosetta, Pillbox, Arribane, Noble, Sakuratsu, Shuilian, Spessbite, Takeaway, Tiger and Zhuangzi. This mixes mining, research, medical, food-service, botany, atmospheric and cargo layouts. A crew keeps its chosen hull and wreck for later arrivals.
+
+A crash world is sanctioned and pulls at most 3 g (read live off its ground layer, so Planet Control changes count). Carcinoma, never sanctioned, is a crash world only for a crew that ticks Allow Carcinoma on the Crashlanded card. The hull waits in orbit at least 32 m from any outpost's claim zone and 64 m from other crews' crash hulls on that world (`WFCrashScenarioSystem.Sites`); when 24 tries find no such spot it waits at the last one, and the landing guard moves it off any claim before touchdown. When the leader spawns, the hull's deed goes to their ID (a passenger ID in hand if they wear none), with normal ship ownership and crew access as for a Ship crew. Its appraisal while whole is its sale baseline (`WFSaleBaselineComponent` in Shipyard), so the wreck sells only for what the crew adds to it. `CrashSitesTest` covers all of this.
 
 Crashlanded requires the existing `wf.planet_networks` server setting and a sector containing registered planets. Its card is disabled when planet networks are off. Closing late admission prevents new members; players already accepted retain their place until the host removes them.
 
@@ -42,6 +44,16 @@ Players already in the round can form or join a crew without respawning (live me
 
 Hosts turn on Looking for crew in Who can join. A crew shows as recruiting only while outsiders could take an opening (Public or Request access, late joining on, a free slot); recruiting crews sort to the top of every crew list with a slow pulsing border. Post for crew sends a 200-character in-character posting, at most every 10 minutes, as a Crew Board chat line and a bottom-right card to every connected player outside a crew who could join it. The card's View opens the crew in Crew Setup; Mute sets the client setting `wf.round_setup.show_postings` to false. Postings go to the admin log, and `crewunpost <id>` withdraws one. The server side is `WFRoundSetupSystem.Postings`; the card is `WFCrewPostingCardSystem`.
 
+Outpost crews (`WFRoundSetupSystem.Outposts`) start on the host's saved outpost instead of a ship. The host picks one of
+their saves on Your outpost; its load price is shared out and consented to as a ship's is
+(`WFShipScenarioSystem.Shares`). The host's launch checks every share, picks a crash world, charges and queues the drop
+(`WFOutpostSystem.TryQueueDrop`); the crew waits in the lobby and wakes in the landed outpost's free cryopods, or on its
+floor, on the settler station. If it can't come down the shares are refunded and the crew starts Normal, settlers as
+Contractors, with a notice. Its card needs `wf.outposts.enabled` and planet worlds. `OutpostScenarioTest` covers it.
+A landed outpost keeps its crew for the round: members who join later wake in its free pods, and an owner who wakes
+there through the join chooser joins its crew, or starts one. The crew's name, description, admission and openings are
+saved with the outpost and come back with it, filling in what the host left unset (`OutpostCrewTest`).
+
 Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSystem`, `WFDoomedScenarioSystem`, `WFShipScenarioSystem`, and the client Crew Setup window.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -61,6 +73,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Effects.cs`](WFCrashScenarioSystem.Effects.cs)
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Equipment.cs`](WFCrashScenarioSystem.Equipment.cs)
 - [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Flight.cs`](WFCrashScenarioSystem.Flight.cs)
+- [`Content.Server/_WF/RoundSetup/WFCrashScenarioSystem.Sites.cs`](WFCrashScenarioSystem.Sites.cs)
 - [`Content.Server/_WF/RoundSetup/WFCrewUnpostCommand.cs`](WFCrewUnpostCommand.cs)
 - [`Content.Server/_WF/RoundSetup/WFDoomedScenarioComponent.cs`](WFDoomedScenarioComponent.cs)
 - [`Content.Server/_WF/RoundSetup/WFDoomedScenarioSystem.cs`](WFDoomedScenarioSystem.cs)
@@ -74,6 +87,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Hangar.cs`](WFRoundSetupSystem.Hangar.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Live.cs`](WFRoundSetupSystem.Live.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Notifications.cs`](WFRoundSetupSystem.Notifications.cs)
+- [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Outposts.cs`](WFRoundSetupSystem.Outposts.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Payments.cs`](WFRoundSetupSystem.Payments.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Postings.cs`](WFRoundSetupSystem.Postings.cs)
 - [`Content.Server/_WF/RoundSetup/WFRoundSetupSystem.Roles.cs`](WFRoundSetupSystem.Roles.cs)
@@ -93,11 +107,13 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.Factions.cs`](WFShipScenarioSystem.Factions.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.Payments.cs`](WFShipScenarioSystem.Payments.cs)
 - [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.Refunds.cs`](WFShipScenarioSystem.Refunds.cs)
+- [`Content.Server/_WF/RoundSetup/WFShipScenarioSystem.Shares.cs`](WFShipScenarioSystem.Shares.cs)
 
 ### Shared
 
 - [`Content.Shared/_WF/RoundSetup/WFCrashCountdownClock.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashCountdownClock.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrashCountdownEvent.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashCountdownEvent.cs)
+- [`Content.Shared/_WF/RoundSetup/WFCrashPoolPrototype.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrashPoolPrototype.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrewPostingEvent.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrewPostingEvent.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrewSignalEvent.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrewSignalEvent.cs)
 - [`Content.Shared/_WF/RoundSetup/WFCrewStatus.cs`](../../../Content.Shared/_WF/RoundSetup/WFCrewStatus.cs)
@@ -134,6 +150,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Layout.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Live.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Live.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Loadouts.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Loadouts.cs)
+- [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Outposts.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Outposts.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Payments.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Payments.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Preview.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Preview.cs)
 - [`Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Refresh.cs`](../../../Content.Client/_WF/RoundSetup/WFRoundSetupWindow.Refresh.cs)
@@ -151,6 +168,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashEffectsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashEffectsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashEquipmentTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashEquipmentTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashScenarioTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashScenarioTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrashSitesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrashSitesTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/CrewLoadoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/CrewLoadoutTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/DoomedScenarioTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/DoomedScenarioTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupDemoTest.cs`](../../../Content.IntegrationTests/Tests/_WF/RoundSetup/RoundSetupDemoTest.cs)
@@ -202,6 +220,7 @@ Entry points: `WFRoundSetupSystem`, `GameTicker.RoundSetup`, `WFCrashScenarioSys
 - [`Resources/Locale/en-US/_WF/RoundSetup/home.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/home.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/join-flow.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/join-flow.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/lobby-panel.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/lobby-panel.ftl)
+- [`Resources/Locale/en-US/_WF/RoundSetup/outpost.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/outpost.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/preview.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/preview.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/recruiting.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/recruiting.ftl)
 - [`Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl`](../../../Resources/Locale/en-US/_WF/RoundSetup/round-setup.ftl)

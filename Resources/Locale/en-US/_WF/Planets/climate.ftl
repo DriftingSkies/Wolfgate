@@ -20,6 +20,18 @@ wf-forecast-console-no-worlds = No surveyed worlds in this sector.
 wf-forecast-console-season = Season: { $season }
 wf-forecast-console-no-season = No seasons
 wf-forecast-console-now = Now: { $weather }, { $temperature }
+wf-forecast-console-dusk-in = Dusk in { $minutes } min
+wf-forecast-console-dawn-in = Night; dawn in { $minutes } min
+wf-forecast-console-clock-storm = { $clock }. { $storm ->
+    [1] A storm is building
+    [2] A storm is raging
+   *[3] The storm is passing
+}
+wf-forecast-console-clock-raids = { $clock }. { $raids }
+wf-forecast-console-raids-open-in = Raids possible in { $minutes } min
+wf-forecast-console-raids-close-in = Raids possible; safe again in { $minutes } min
+wf-forecast-console-raids-always = Raids possible at any hour
+wf-forecast-console-raids-never = No raids on this world
 wf-forecast-console-off = The weather is holding steady. Nothing is forecast.
 wf-forecast-console-header-when = When
 wf-forecast-console-header-local = Local

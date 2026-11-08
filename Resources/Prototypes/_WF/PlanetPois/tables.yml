@@ -9,6 +9,7 @@
 
 - type: wfPlanetPoiTable
   id: WFPoisAsclepiu
+  outpostLots: 3
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -36,6 +37,7 @@
     maxCount: 2
   wrecks:
     theme: WFWreckThemeVerda
+    type: WFPoiTypeSmallDerelict
     minCount: 1
     maxCount: 2
   difficulty: Moderate
@@ -55,6 +57,29 @@
   minCount: 7
   maxCount: 11
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/automated_outpost.yml
+    name: wf-poi-automated-outpost
+    type: WFPoiTypeAutomatedOutpost
+    expeditions: false
+    footprint: -2,-3,21,19
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    trail: true
+    sockets:
+    - offset: 9,-1
+      direction: South
+    rotate: true
+  - mapPath: /Maps/_WF/PlanetPois/alien_artifact_site.yml
+    name: wf-poi-alien-artifact-site
+    type: WFPoiTypeAlienArtifactSite
+    expeditions: false
+    footprint: -2,-2,17,17
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    sockets: []
+    rotate: true
   - mapPath: /Maps/_WF/PlanetComms/comms_outpost.yml
     name: wf-poi-comms-outpost
     expeditions: false
@@ -95,6 +120,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/greenhouse.yml
     name: wf-poi-greenhouse
+    type: WFPoiTypeFarm
     expeditions: false
     footprint: -8,-12,2,2
     minCount: 1
@@ -107,6 +133,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/ancient_temple.yml
     name: wf-poi-ancient-temple
+    type: WFPoiTypeRuins
     expeditions: false
     footprint: -15,-1,14,31
     minCount: 0
@@ -160,6 +187,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/abandoned_bandit_hideout.yml
     name: wf-poi-abandoned-bandit-hideout
+    type: WFPoiTypeAbandonedOutpost
     expeditions: false
     footprint: -4,-4,13,10
     minCount: 1
@@ -173,8 +201,9 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/verda_gas_station.yml
     name: wf-poi-verda-gas-station
+    type: WFPoiTypeTradepost
     expeditions: false
-    footprint: -3,-16,13,3
+    footprint: -3,-31,13,3
     minCount: 1
     maxCount: 1
     connection: Through
@@ -186,6 +215,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/mechanic_shop.yml
     name: wf-poi-mechanic-shop
+    type: WFPoiTypeWorkshop
     expeditions: false
     footprint: 0,-10,15,11
     minCount: 1
@@ -240,6 +270,7 @@
   centreClear: 96
 - type: wfPlanetPoiTable
   id: WFPoisMerak
+  outpostLots: 3
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -270,8 +301,17 @@
     maxCount: 20
   wrecks:
     theme: WFWreckThemeMerak
+    type: WFPoiTypeSmallDerelict
     minCount: 1
     maxCount: 3
+  # A capital ship comes down now and then where the ground is wide enough for it.
+  capitals:
+    theme: WFWreckThemeMerak
+    type: WFPoiTypeDerelictCapital
+    name: wf-poi-derelict-capital
+    sizes: [ Large ]
+    minCount: 0
+    maxCount: 1
   difficulty: Moderate
   roads:
     # Few roads join few sites, so a site off them can be well out: its footpath reaches that far.
@@ -289,6 +329,29 @@
   minCount: 5
   maxCount: 8
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/automated_outpost.yml
+    name: wf-poi-automated-outpost
+    type: WFPoiTypeAutomatedOutpost
+    expeditions: false
+    footprint: -2,-3,21,19
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    trail: true
+    sockets:
+    - offset: 9,-1
+      direction: South
+    rotate: true
+  - mapPath: /Maps/_WF/PlanetPois/alien_artifact_site.yml
+    name: wf-poi-alien-artifact-site
+    type: WFPoiTypeAlienArtifactSite
+    expeditions: false
+    footprint: -2,-2,17,17
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    sockets: []
+    rotate: true
   - mapPath: /Maps/_WF/PlanetComms/comms_outpost.yml
     name: wf-poi-comms-outpost
     expeditions: false
@@ -329,6 +392,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/greenhouse.yml
     name: wf-poi-greenhouse
+    type: WFPoiTypeFarm
     expeditions: false
     footprint: -8,-12,2,2
     minCount: 0
@@ -341,6 +405,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/ancient_temple.yml
     name: wf-poi-ancient-temple
+    type: WFPoiTypeRuins
     expeditions: false
     footprint: -15,-1,14,31
     minCount: 0
@@ -354,6 +419,7 @@
     below: /Maps/_WF/PlanetPois/ancient_temple_below.yml
   - mapPath: /Maps/_WF/PlanetPois/abandoned_bandit_hideout.yml
     name: wf-poi-abandoned-bandit-hideout
+    type: WFPoiTypeAbandonedOutpost
     expeditions: false
     footprint: -4,-4,13,10
     minCount: 0
@@ -367,6 +433,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/mechanic_shop.yml
     name: wf-poi-mechanic-shop
+    type: WFPoiTypeWorkshop
     expeditions: false
     footprint: 0,-10,15,11
     minCount: 0
@@ -393,10 +460,12 @@
     rotate: true
   - dungeon: WFPoiMerakMineshaft
     name: wf-poi-merak-mineshaft
+    type: WFPoiTypeMine
     minCount: 1
     maxCount: 2
   - dungeon: WFPoiMerakOutpost
     name: wf-poi-merak-outpost
+    type: WFPoiTypeAbandonedOutpost
     minCount: 1
     maxCount: 2
   spacing: 96
@@ -404,6 +473,7 @@
   centreClear: 96
 - type: wfPlanetPoiTable
   id: WFPoisFervidus
+  outpostLots: 3
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -429,8 +499,17 @@
     maxCount: 2
   wrecks:
     theme: WFWreckThemeFervidus
+    type: WFPoiTypeSmallDerelict
     minCount: 1
     maxCount: 3
+  # A capital ship comes down now and then where the ground is wide enough for it.
+  capitals:
+    theme: WFWreckThemeFervidus
+    type: WFPoiTypeDerelictCapital
+    name: wf-poi-derelict-capital
+    sizes: [ Large ]
+    minCount: 0
+    maxCount: 1
   difficulty: Hazardous
   roads:
     tile: FloorDarkPavement
@@ -443,6 +522,29 @@
   minCount: 2
   maxCount: 3
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/automated_outpost.yml
+    name: wf-poi-automated-outpost
+    type: WFPoiTypeAutomatedOutpost
+    expeditions: false
+    footprint: -2,-3,21,19
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    trail: true
+    sockets:
+    - offset: 9,-1
+      direction: South
+    rotate: true
+  - mapPath: /Maps/_WF/PlanetPois/alien_artifact_site.yml
+    name: wf-poi-alien-artifact-site
+    type: WFPoiTypeAlienArtifactSite
+    expeditions: false
+    footprint: -2,-2,17,17
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    sockets: []
+    rotate: true
   - mapPath: /Maps/_WF/PlanetComms/comms_outpost.yml
     name: wf-poi-comms-outpost
     expeditions: false
@@ -469,6 +571,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/ancient_temple.yml
     name: wf-poi-ancient-temple
+    type: WFPoiTypeRuins
     expeditions: false
     footprint: -15,-1,14,31
     minCount: 0
@@ -486,6 +589,7 @@
     name: wf-poi-fervidus-camp
 - type: wfPlanetPoiTable
   id: WFPoisThrascias
+  outpostLots: 3
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -511,8 +615,17 @@
     maxCount: 2
   wrecks:
     theme: WFWreckThemeThrascias
+    type: WFPoiTypeSmallDerelict
     minCount: 1
     maxCount: 3
+  # A capital ship comes down now and then where the ground is wide enough for it.
+  capitals:
+    theme: WFWreckThemeThrascias
+    type: WFPoiTypeDerelictCapital
+    name: wf-poi-derelict-capital
+    sizes: [ Large ]
+    minCount: 0
+    maxCount: 1
   difficulty: Hazardous
   roads:
     tile: FloorSnowDug
@@ -525,6 +638,29 @@
   minCount: 2
   maxCount: 3
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/automated_outpost.yml
+    name: wf-poi-automated-outpost
+    type: WFPoiTypeAutomatedOutpost
+    expeditions: false
+    footprint: -2,-3,21,19
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    trail: true
+    sockets:
+    - offset: 9,-1
+      direction: South
+    rotate: true
+  - mapPath: /Maps/_WF/PlanetPois/alien_artifact_site.yml
+    name: wf-poi-alien-artifact-site
+    type: WFPoiTypeAlienArtifactSite
+    expeditions: false
+    footprint: -2,-2,17,17
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    sockets: []
+    rotate: true
   - mapPath: /Maps/_WF/PlanetComms/comms_outpost.yml
     name: wf-poi-comms-outpost
     expeditions: false
@@ -551,6 +687,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/ancient_temple.yml
     name: wf-poi-ancient-temple
+    type: WFPoiTypeRuins
     expeditions: false
     footprint: -15,-1,14,31
     minCount: 0
@@ -568,6 +705,7 @@
     name: wf-poi-thrascias-virology
 - type: wfPlanetPoiTable
   id: WFPoisAerumna
+  outpostLots: 3
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -599,8 +737,17 @@
     maxCount: 2
   wrecks:
     theme: WFWreckThemeAerumna
+    type: WFPoiTypeSmallDerelict
     minCount: 1
     maxCount: 3
+  # A capital ship comes down now and then where the ground is wide enough for it.
+  capitals:
+    theme: WFWreckThemeAerumna
+    type: WFPoiTypeDerelictCapital
+    name: wf-poi-derelict-capital
+    sizes: [ Large ]
+    minCount: 0
+    maxCount: 1
   difficulty: Extreme
   roads:
     tile: FloorChromite
@@ -616,6 +763,29 @@
   edgeMargin: 72
   centreClear: 64
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/automated_outpost.yml
+    name: wf-poi-automated-outpost
+    type: WFPoiTypeAutomatedOutpost
+    expeditions: false
+    footprint: -2,-3,21,19
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    trail: true
+    sockets:
+    - offset: 9,-1
+      direction: South
+    rotate: true
+  - mapPath: /Maps/_WF/PlanetPois/alien_artifact_site.yml
+    name: wf-poi-alien-artifact-site
+    type: WFPoiTypeAlienArtifactSite
+    expeditions: false
+    footprint: -2,-2,17,17
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    sockets: []
+    rotate: true
   - mapPath: /Maps/_WF/PlanetComms/comms_outpost.yml
     name: wf-poi-comms-outpost
     expeditions: false
@@ -642,6 +812,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/ancient_temple.yml
     name: wf-poi-ancient-temple
+    type: WFPoiTypeRuins
     expeditions: false
     footprint: -15,-1,14,31
     minCount: 0
@@ -657,8 +828,10 @@
     name: wf-poi-aerumna-factory
   - dungeon: WFPoiAerumnaMine
     name: wf-poi-aerumna-mine
+    type: WFPoiTypeMine
 - type: wfPlanetPoiTable
   id: WFPoisCarcinoma
+  outpostLots: 3
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -684,6 +857,7 @@
     maxCount: 2
   wrecks:
     theme: WFWreckThemeCarcinoma
+    type: WFPoiTypeSmallDerelict
     minCount: 2
     maxCount: 3
     # The world is small and its sites keep far from the edge; the wrecks need not.
@@ -705,6 +879,29 @@
   edgeMargin: 48
   centreClear: 64
   entries:
+  - mapPath: /Maps/_WF/PlanetPois/automated_outpost.yml
+    name: wf-poi-automated-outpost
+    type: WFPoiTypeAutomatedOutpost
+    expeditions: false
+    footprint: -2,-3,21,19
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    trail: true
+    sockets:
+    - offset: 9,-1
+      direction: South
+    rotate: true
+  - mapPath: /Maps/_WF/PlanetPois/alien_artifact_site.yml
+    name: wf-poi-alien-artifact-site
+    type: WFPoiTypeAlienArtifactSite
+    expeditions: false
+    footprint: -2,-2,17,17
+    minCount: 0
+    maxCount: 1
+    connection: Isolated
+    sockets: []
+    rotate: true
   - mapPath: /Maps/_WF/PlanetComms/comms_outpost.yml
     name: wf-poi-comms-outpost
     expeditions: false
@@ -731,6 +928,7 @@
     rotate: true
   - mapPath: /Maps/_WF/PlanetPois/carcinoma_fountain_of_life.yml
     name: wf-poi-carcinoma-fountain-of-life
+    type: WFPoiTypeHeavenlyShrine
     expeditions: false
     footprint: -12,-12,13,13
     minCount: 1

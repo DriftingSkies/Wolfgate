@@ -219,6 +219,9 @@
   id: WFFaunaFervidusAshfields
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockFervidus
+      weight: 2
     # A bird flock (_WF/Birds); the leader spawns the rest.
     - id: WFMobBirdAshHawk
       weight: 2

@@ -1,0 +1,225 @@
+# Humanoid raiders (steps 3 to 6). What they carry is raid loot: it can't be sold and no outpost save keeps it.
+
+# Raiders go for people, their pets and outpost defences, and leave wildlife be.
+- type: npcFaction
+  id: WFOutpostRaiders
+  hostile:
+  - NanoTrasen
+  - PetsNT
+  - WFOutpostDefence
+
+- type: wfRaidTier
+  id: WFRaidTierScavengers
+  step: 3
+  cost: 40
+
+- type: wfRaidTier
+  id: WFRaidTierRaiders
+  step: 4
+  cost: 60
+
+- type: wfRaidTier
+  id: WFRaidTierShuttle
+  step: 5
+  cost: 90
+
+# A siege: a shuttle and three waves through the night.
+- type: wfRaidTier
+  id: WFRaidTierSiege
+  step: 6
+  cost: 140
+
+# A raider fights whoever it meets; a breacher with the key breaks into the outpost; the rest walk to their spot.
+- type: htnCompound
+  id: WFRaidRaiderCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: RangedCombatCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: MeleeCombatCompound
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFRaidBreach
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WFRaidBreachOperator
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WFRaidTarget
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: false
+        targetKey: WFRaidTarget
+        # The director moves the spot on; clearing it on arrival races a plan made before it was cleared.
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+- type: entity
+  abstract: true
+  parent: WFCavernPersonBase
+  id: WFMobRaidRaiderBase
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WFOutpostRaiders
+  - type: HTN
+    rootTask:
+      task: WFRaidRaiderCompound
+  - type: NPCRetaliation
+    attackMemoryLength: 10
+  - type: WFRaidRaider
+
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidScavenger
+  name: scavenger
+  description: A drifter who picks over outposts after dark, and fights for what they find.
+  components:
+  - type: Loadout
+    prototypes: [ WFCavernGearRaiderShiv ]
+
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidScavengerGunner
+  name: scavenger
+  description: A drifter who picks over outposts after dark, with a pipe shotgun for anyone who objects.
+  components:
+  - type: Loadout
+    prototypes: [ WFCavernGearRaiderGunner ]
+
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidRaider
+  name: raider
+  description: One of a gang that hits outposts at night, armoured and armed.
+  components:
+  - type: Loadout
+    prototypes: [ WFRaidGearRaider ]
+
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidBreacher
+  name: raider breacher
+  description: The one in a raiding gang who carries the maul. Walls, doors and turrets come down first.
+  components:
+  - type: WFRaidRaider
+    breacher: true
+  - type: Loadout
+    prototypes: [ WFRaidGearBreacher ]
+
+- type: startingGear
+  id: WFRaidGearRaider
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    head: ClothingHeadHelmetBasic
+    outerClothing: ClothingOuterArmorBasic
+    mask: ClothingMaskBandBlack
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+  inhand:
+  - WeaponShotgunImprovisedLoaded
+
+- type: startingGear
+  id: WFRaidGearBreacher
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    head: ClothingHeadHelmetBasic
+    outerClothing: ClothingOuterArmorBasic
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+  inhand:
+  - WFRaidBreachingMaul
+
+# Hits walls hard one-handed, so a breacher needn't wield it.
+- type: entity
+  parent: Sledgehammer
+  id: WFRaidBreachingMaul
+  name: breaching maul
+  description: A sledgehammer with a weighted, spiked head, made for breaking into places.
+  components:
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    damage:
+      types:
+        Blunt: 15
+        Structural: 40
+    soundHit:
+      collection: MetalThud
+
+# The quad a raiding gang rides in on, left where they walk in from until the raid is over.
+- type: entity
+  id: WFRaidRaiderQuad
+  name: raider quad
+  description: A battered quad bike, chained and stripped of its key. Its riders aren't far off.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: Objects/Vehicles/atv.rsi
+    state: vehicle
+    noRot: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+
+# Tunnellers (F7.5): tunnel raiders sent against an outpost, who come up out of the cavern at its claim's edge.
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidTunneller
+  name: tunnel raider
+  description: A scavenger from the tunnels, come up out of the ground with a shiv for whatever the outpost keeps.
+  components:
+  - type: Loadout
+    prototypes: [ WFCavernGearRaiderShiv ]
+  - type: WFCavernTelegraph
+    sound:
+      collection: WFCavernEncounterRaiderChatter
+    minInterval: 15
+    maxInterval: 35
+
+- type: entity
+  parent: WFMobRaidTunneller
+  id: WFMobRaidTunnellerGunner
+  description: A scavenger from the tunnels, come up out of the ground with a pipe shotgun.
+  components:
+  - type: Loadout
+    prototypes: [ WFCavernGearRaiderGunner ]
+
+# Where tunnellers came up, left until the raid is over.
+- type: entity
+  id: WFRaidTunnelExit
+  name: tunnel exit
+  description: Fresh spoil round a hole someone dug up from below, already caving in behind them.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WF/Fauna/Mobs/NuclearPhase/burrow.rsi
+    state: burrow
+    scale: 1.5, 1.5
+    drawdepth: FloorObjects

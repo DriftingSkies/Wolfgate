@@ -73,6 +73,10 @@ public sealed partial class WFPlanetPoiComponent : Component
 
     [ViewVariables]
     public List<EntityUid> Furniture = new();
+
+    /// <summary>Open ground kept for outposts landing this round, with exclusive upper edges.</summary>
+    [ViewVariables]
+    public List<Box2i> OutpostLots = new();
 }
 
 /// <summary>A camp set down before the ground round it existed, and what still goes outside it.</summary>
@@ -87,6 +91,10 @@ public sealed class WFPlanetPoiSite
     public List<WFPlanetRoadSocket> Sockets = new();
     public Dictionary<WFPlanetRoadSocket, List<Vector2i>> AccessPaths = new();
     public LocId Name;
+
+    /// <summary>What kind of place it is, for claiming it.</summary>
+    public ProtoId<WFPoiTypePrototype>? Type;
+
     /// <summary>Where the generator was pointed; the site spreads round it.</summary>
     public Vector2i Origin;
 
@@ -123,6 +131,10 @@ public sealed class WFPlanetPoiSite
     /// <summary>The station running an expedition on the site, and whether one has already cleared it this round.</summary>
     public EntityUid? ExpeditionClaim;
     public bool Cleared;
+
+    /// <summary>The outpost the site became when it was claimed, and the terminal it is claimed at.</summary>
+    public EntityUid? ClaimedBy;
+    public EntityUid? Terminal;
 }
 
 /// <summary>
@@ -146,4 +158,8 @@ public sealed partial class WFPoiSignalComponent : Component
 
     [ViewVariables]
     public bool Revealed;
+
+    /// <summary>Off every radar until identified or picked up by a survey scanner.</summary>
+    [ViewVariables]
+    public bool Faint;
 }

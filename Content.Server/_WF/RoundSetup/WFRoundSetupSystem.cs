@@ -72,6 +72,8 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         public WFShipStartLocation ShipStart;
         public WFLobbyAccess Access = WFLobbyAccess.Requests;
         public bool AllowLateJoin = true;
+        /// <summary>A Crashlanded crew may come down on Carcinoma.</summary>
+        public bool CrashCarcinoma;
         public bool Started;
         public ShipChange? PendingShip;
         public string Code = string.Empty;
@@ -85,6 +87,18 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         public int? CompanyId;
         /// <summary>The company hangar licence this crew launches, when it is one.</summary>
         public int? HangarLicence;
+        /// <summary>An Outpost crew's chosen save slot of the host's, its name and its load price.</summary>
+        public int? OutpostSlot;
+        /// <summary>An Outpost crew's chosen preset, in place of a save slot.</summary>
+        public string? OutpostPreset;
+        public string OutpostName = string.Empty;
+        public int OutpostPrice;
+        /// <summary>The crew's outpost is on its way down.</summary>
+        public bool OutpostLanding;
+        /// <summary>The crew's outpost, once it has landed.</summary>
+        public EntityUid? OutpostGrid;
+        /// <summary>Members waiting in the lobby for the outpost to land.</summary>
+        public readonly HashSet<NetUserId> OutpostWaiting = new();
         public readonly Dictionary<int, LobbyRole> Roles = new();
         public readonly Dictionary<NetUserId, Member> Members = new();
         public readonly Dictionary<NetUserId, int> Requests = new();
@@ -273,7 +287,8 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 }
                 var created = new Lobby { Id = ++_nextId, Host = user, Scenario = msg.Scenario,
                     Faction = msg.Scenario == WFRoundScenario.FactionShip ? msg.Faction : WFCrewFaction.None,
-                    Code = NewCode(), Title = title, Description = description };
+                    Code = NewCode(), Title = title, Description = description,
+                    CrashCarcinoma = msg.Scenario == WFRoundScenario.Crashlanded && msg.CrashCarcinoma };
                 _lobbies.Add(created.Id, created);
                 RegisterMember(created, session, new Member { Name = session.Name });
                 if (msg.CompanyId is { } createdCompany && _companies.CanFieldCrew(session, createdCompany))
@@ -366,6 +381,9 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             case WFRoundSetupAction.Launch when own != null && msg.LobbyId == own.Id && CanEnter(session):
                 success = Launch(own, session, out error);
                 break;
+            case WFRoundSetupAction.SelectOutpost when own != null && msg.LobbyId == own.Id && own.Host == user:
+                success = SelectOutpost(own, session, msg.OutpostSlot, msg.OutpostPreset, out error);
+                break;
             case WFRoundSetupAction.Post when own != null && msg.LobbyId == own.Id && own.Host == user:
                 success = PostCrew(own, session, msg.Posting, out error);
                 if (success)
@@ -406,14 +424,20 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             error = "wf-round-setup-error-ship-choice";
             return false;
         }
+        if (IsBuying(lobby) && lobby.Scenario == WFRoundScenario.Outpost && lobby.Host == session.UserId && lobby.OutpostSlot == null
+            && lobby.OutpostPreset == null)
+        {
+            error = "wf-round-setup-outpost-choice";
+            return false;
+        }
         if (!CanSpawnRole(lobby, session))
             return false;
-        if (WFRoundSetupPolicy.IsShip(lobby.Scenario) && !lobby.Started)
+        if (IsBuying(lobby))
         {
             if (!ValidatePaymentFunds(lobby, session, out error))
                 return false;
             member.PurchaseRevision = lobby.PaymentRevision;
-            member.PurchaseVessel = lobby.Vessel;
+            member.PurchaseVessel = PurchaseKey(lobby);
             member.PurchaseCharacterSlot = _preferences.GetPreferences(session.UserId).SelectedCharacterIndex;
         }
         if (_ticker.RunLevel == GameRunLevel.PreRoundLobby)
@@ -428,7 +452,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
         }
         else
             member.Ready = true;
-        if (!wasReady && !lobby.Started && WFRoundSetupPolicy.IsShip(lobby.Scenario) && lobby.Host != session.UserId &&
+        if (!wasReady && IsBuying(lobby) && lobby.Host != session.UserId &&
             _ticker.RunLevel == GameRunLevel.InRound && AllPaymentsApproved(lobby))
             NotifyCrew(lobby, Loc.GetString("wf-round-setup-payment-ready"));
         return true;
@@ -467,7 +491,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             case WFRoundSetupAction.SetCompany:
                 return lobby.HangarLicence == null && SetCrewCompany(lobby, session, msg.CompanyId);
             case WFRoundSetupAction.ChangeScenario:
-                if (lobby.Started || lobby.HangarLicence != null || !IsScenarioAvailable(msg.Scenario))
+                if (lobby.Started || lobby.OutpostLanding || lobby.HangarLicence != null || !IsScenarioAvailable(msg.Scenario))
                     return false;
                 if (msg.Scenario == WFRoundScenario.FactionShip && !CanCreateFaction(session, msg.Faction))
                     return false;
@@ -480,6 +504,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
                 lobby.Scenario = msg.Scenario;
                 lobby.Faction = faction;
                 lobby.Vessel = null;
+                ClearOutpost(lobby);
                 lobby.ShipStart = WFShipStartLocation.RandomSpace;
                 if (lobby.Scenario == WFRoundScenario.FactionShip)
                 {
@@ -699,6 +724,8 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             HostJob = lobby.Members[lobby.Host].Job, Portrait = lobby.Members[lobby.Host].Portrait,
             HostTitle = RosterTitle(lobby, lobby.Host, lobby.Members[lobby.Host]), HostRankId = CrewRankId(lobby, lobby.Host, lobby.Members[lobby.Host]),
             Scenario = lobby.Scenario, Faction = lobby.Faction, ShipName = lobby.ShipName, Access = lobby.Access, AllowLateJoin = lobby.AllowLateJoin,
+            CrashCarcinoma = lobby.CrashCarcinoma,
+            OutpostSlot = lobby.OutpostSlot, OutpostPreset = lobby.OutpostPreset, OutpostName = lobby.OutpostName, OutpostLanding = lobby.OutpostLanding,
             CurrentShip = lobby.Started ? CurrentShip(lobby) : null, ShipCondition = ShipCondition(lobby),
             Started = lobby.Started, MemberCount = lobby.Members.Count, Vessel = lobby.Vessel, ShipStart = lobby.ShipStart,
             Roster = lobby.Members.Select(pair => new WFRoundSetupCrewmate(pair.Value.Name, pair.Value.Job,
@@ -757,7 +784,7 @@ public sealed partial class WFRoundSetupSystem : EntitySystem
             CanJoin = canEnter, CanJoinLive = canJoinLive,
             OwnCompany = _companies.CompanyIdOf(session),
             CompanyRank = _companies.RankFor(session)?.Title,
-            FieldCompanies = own == null || own.Host == session.UserId ? FieldCompanies(session) : Array.Empty<WFRoundSetupCompany>(), CrashlandedAvailable = _crash.IsAvailable, DoomedAvailable = _doomed.IsAvailable, OwnLobby = own?.Id,
+            FieldCompanies = own == null || own.Host == session.UserId ? FieldCompanies(session) : Array.Empty<WFRoundSetupCompany>(), CrashlandedAvailable = _crash.IsAvailable, DoomedAvailable = _doomed.IsAvailable, OutpostAvailable = OutpostAvailable, OwnLobby = own?.Id,
             // A launched crew whose members are all dead, gone or in cryosleep drops off everyone else's list.
             Lobbies = _lobbies.Values.Where(lobby => lobby == own || !lobby.Started || HasActiveMembers(lobby)).Select(ForRecipient).ToArray(),
             Invitations = _lobbies.Values.Where(l => l.Invitations.Contains(session.UserId))

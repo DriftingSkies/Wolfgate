@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Numerics;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._WF.Caverns;
 using Content.Shared._WF.Planets;
@@ -161,7 +162,8 @@ public sealed partial class WFCavernMouthSystem
         foreach (var index in ground.Comp.FloorOpened)
         {
             if (!IsEmpty(level, index)
-                || !_biome.WfIsChunkLoaded(levelBiome, index) && !_biome.WfIsPinned(levelBiome, index))
+                || !_biome.WfIsChunkLoaded(levelBiome, index) && !_biome.WfIsPinned(levelBiome, index)
+                || HasGridFloor(level, index))
                 continue;
 
             if (built != null && built.Underlay.Remove(index, out var under))
@@ -192,6 +194,7 @@ public sealed partial class WFCavernMouthSystem
 
         var groundBiome = (context.Ground.Owner, context.Ground.Comp1);
         var holes = new List<Vector2i>();
+        var shut = new List<(Vector2i, Tile)>();
 
         foreach (var index in ground.Comp.Opened)
         {
@@ -199,14 +202,28 @@ public sealed partial class WFCavernMouthSystem
             if (ground.Comp.Shades.ContainsKey(index) || !IsEmpty(context.Ground, index))
                 continue;
 
+            // Ground carved out from under a grid's floor, or open over a basement's below, is no hole.
+            if (HasGridFloor(context.Ground, index) || HasGridFloor(context.Level, index))
+                continue;
+
             // The unloader empties only natural tiles and never pins them; a hole whose chunk unloads first is pinned.
             if (!_biome.WfIsChunkLoaded(groundBiome, index) && !_biome.WfIsPinned(groundBiome, index))
                 continue;
+
+            // Ground kept shut, such as over an outpost's foundation, takes its own tile back.
+            if (!MayOpen(ground, index, index) && NaturalOr(context.Ground, index, Tile.Empty) is { IsEmpty: false } natural)
+            {
+                shut.Add((index, natural));
+                continue;
+            }
 
             holes.Add(index);
         }
 
         ground.Comp.Opened.Clear();
+
+        if (shut.Count > 0)
+            _map.SetTiles(context.Ground.Owner, context.Ground.Comp2, shut);
 
         if (holes.Count == 0)
             return;
@@ -503,5 +520,24 @@ public sealed partial class WFCavernMouthSystem
         var grids = new List<Entity<MapGridComponent>>();
         _map.FindGridsIntersecting(mapId, TileBox(index), ref grids, approx: true, includeMap: false);
         return grids.Count > 0;
+    }
+
+    /// <summary>
+    /// Whether a grid other than the map has floor right over a map tile, standing in for it: an outpost over ground carved
+    /// out from under it, or a basement dug into the cavern.
+    /// </summary>
+    private bool HasGridFloor(EntityUid map, Vector2i index)
+    {
+        var grids = new List<Entity<MapGridComponent>>();
+        var mapId = Transform(map).MapID;
+        _map.FindGridsIntersecting(mapId, TileBox(index), ref grids, approx: true, includeMap: false);
+        var centre = new MapCoordinates(index + new Vector2(0.5f), mapId);
+        foreach (var grid in grids)
+        {
+            if (_map.TryGetTileRef(grid, grid.Comp, _map.TileIndicesFor(grid, grid.Comp, centre), out var tile) && !tile.Tile.IsEmpty)
+                return true;
+        }
+
+        return false;
     }
 }

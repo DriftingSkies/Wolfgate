@@ -1,0 +1,8 @@
+# Foundation rock (F7.5): what the cavern under an outpost's claim loads as, in place of its own rock and tunnels.
+
+- type: entity
+  parent: N14WallRockIndestructible
+  id: WFOutpostFoundationRock
+  name: foundation rock
+  description: Dense, packed rock under someone's outpost. No pick or drill gets through it.
+  suffix: Outpost

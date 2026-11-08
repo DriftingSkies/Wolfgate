@@ -1,0 +1,419 @@
+# Outpost trade: the universal trade hub that the console's Trade tab drops orders onto, the listings it sells (cargo
+# products in the WFOutpost group), the Planet Outpost Kit with its add-on crates, and the outfitter that sells them.
+# Every listing and kit costs at least what it appraises at once delivered (OutpostTradeTest).
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFOutpostTradeHubPack
+  name: trade hub pack
+  description: A folded universal trade hub. Use it in hand facing your outpost's floor, near an LV cable, to set it up there.
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#A46106"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFOutpostTradeHub
+    face: false
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  abstract: true
+  id: WFBaseOutpostTradeHub
+  name: universal trade hub
+  description: A drop beacon for your outpost's Trade orders, which come down on it by parachute. It needs power and open sky.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/cargo_telepad.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: offline
+      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { state: idle }
+          False: { state: offline }
+  - type: Clickable
+  - type: InteractionOutline
+  - type: ApcPowerReceiver
+    powerLoad: 1000
+  - type: ExtensionCableReceiver
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFUniversalTradeHub
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WFBaseOutpostTradeHub
+  id: WFOutpostTradeHub
+  components:
+  - type: WFRepackable
+    pack: WFOutpostTradeHubPack
+
+# The kit and its add-ons. A crate appraises at what it holds, so each one's vend price sits just above that.
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WFCratePlanetOutpostKit
+  name: Planet Outpost Kit
+  description: Everything to start a planet outpost and live off it - console, trade hub, fabricator, wind and sun power, a battery, cable, plates and roofing.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WFOutpostConsoleKit
+    - id: WFOutpostTradeHubPack
+    - id: WFOutpostFabricatorPack
+    - id: WFOutpostWindTurbinePack
+    - id: WFOutpostSolarStringPack
+    - id: WFOutpostBatterySmallPack
+    - id: CableApcStack
+    - id: WFOutpostFoundationPlate
+      amount: 10
+    - id: WFOutpostRoofPanel
+      amount: 10
+  - type: StaticPrice
+    vendPrice: 9500
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WFCrateOutpostShell
+  name: outpost shell crate
+  description: Prefab walls, windows and a door, enough to close in a small room.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WFPrefabWallPanel
+      amount: 8
+    - id: WFPrefabWindowKit
+      amount: 2
+    - id: WFPrefabDoorKit
+  - type: StaticPrice
+    vendPrice: 500
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WFCrateOutpostFoundation
+  name: outpost foundation crate
+  description: Foundation plates and roof panels, ten of each, to grow an outpost and roof it over.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WFOutpostFoundationPlate
+      amount: 10
+    - id: WFOutpostRoofPanel
+      amount: 10
+  - type: StaticPrice
+    vendPrice: 600
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WFCrateOutpostPower
+  name: outpost power crate
+  description: A wind turbine, two solar strings, a small battery and cable, for an outpost that runs on the weather.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WFOutpostWindTurbinePack
+    - id: WFOutpostSolarStringPack
+      amount: 2
+    - id: WFOutpostBatterySmallPack
+    - id: CableApcStack
+  - type: StaticPrice
+    vendPrice: 2300
+
+# The outfitter.
+
+- type: vendingMachineInventory
+  id: WFOutpostOutfitterInventory
+  startingInventory:
+    WFCratePlanetOutpostKit: 4294967295 # Infinite
+    WFCrateOutpostShell: 4294967295 # Infinite
+    WFCrateOutpostFoundation: 4294967295 # Infinite
+    WFCrateOutpostPower: 4294967295 # Infinite
+    WFOutpostTradeHubPack: 4294967295 # Infinite
+    WFOutpostFabricatorPack: 4294967295 # Infinite
+    WFOutpostWindTurbinePack: 4294967295 # Infinite
+    WFOutpostSolarStringPack: 4294967295 # Infinite
+    WFOutpostFuelGeneratorPack: 4294967295 # Infinite
+    WFOutpostCompactRTGPack: 4294967295 # Infinite
+    WFOutpostBatterySmallPack: 4294967295 # Infinite
+    WFOutpostBatteryLargePack: 4294967295 # Infinite
+    WFOutpostCryopodPack: 4294967295 # Infinite
+    WFOutpostCo2CrackerPack: 4294967295 # Infinite
+    WFOutpostTemperatureRegulatorPack: 4294967295 # Infinite
+    WFOutpostWallHeaterPack: 4294967295 # Infinite
+    WFOutpostWaterSynthesizerPack: 4294967295 # Infinite
+    WFOutpostNutrientSynthesizerPack: 4294967295 # Infinite
+    WFOutpostSustenanceDispenserPack: 4294967295 # Infinite
+    WFOutpostRationsPrinterPack: 4294967295 # Infinite
+    WFOutpostGriddlePack: 4294967295 # Infinite
+    WFOutpostRangePack: 4294967295 # Infinite
+    WFOutpostAnimalFeederPack: 4294967295 # Infinite
+    WFLasso: 4294967295 # Infinite
+    WFHerdingWhistle: 4294967295 # Infinite
+    WFOutpostWeatherConsolePack: 4294967295 # Infinite
+    WFOutpostBroadcastConsolePack: 4294967295 # Infinite
+    WFOutpostWarningMastPack: 4294967295 # Infinite
+    WFOutpostLongRangeMastPack: 4294967295 # Infinite
+    WFOutpostTurretPack: 4294967295 # Infinite
+    WFOutpostDefenceMine: 4294967295 # Infinite
+    WFOutpostTelecomRelayPack: 4294967295 # Infinite
+    WFOutpostIntercomPack: 4294967295 # Infinite
+    WFOutpostFloodlightPack: 4294967295 # Infinite
+    WFOutpostMultiChargerPack: 4294967295 # Infinite
+    WFOutpostRecyclerPack: 4294967295 # Infinite
+    WFOutpostOrganicsPrinterPack: 4294967295 # Infinite
+    WFOutpostOreSiloPack: 4294967295 # Infinite
+    WFOutpostFabricationSiloPack: 4294967295 # Infinite
+    WFOutpostDepositTerminalPack: 4294967295 # Infinite
+    WFOutpostPartsPressPack: 4294967295 # Infinite
+    WFOutpostPowerExporterPack: 4294967295 # Infinite
+    WFOutpostMiningBotDockPack: 4294967295 # Infinite
+    WFOutpostSensorUplinkPack: 4294967295 # Infinite
+    WFOutpostFlakBatteryPack: 4294967295 # Infinite
+    WFOutpostDefenceBatteryPack: 4294967295 # Infinite
+    WFOutpostDescentJammerPack: 4294967295 # Infinite
+    WFOutpostLandingPadPack: 4294967295 # Infinite
+    WFOutpostBasementHatchKit: 4294967295 # Infinite
+    WFPoiSurveyScanner: 4294967295 # Infinite
+
+- type: entity
+  parent: WFVendingMachineWolfgate
+  id: WFVendingMachineOutpostOutfitter
+  name: outpost outfitter
+  description: Sells the Planet Outpost Kit and everything to add to it.
+  components:
+  - type: VendingMachine
+    pack: WFOutpostOutfitterInventory
+
+# The Trade tab's catalogue.
+
+- type: cargoProduct
+  abstract: true
+  id: WFBaseOutpostListing
+  group: WFOutpost
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingSteel
+  icon:
+    sprite: Objects/Materials/Sheets/metal.rsi
+    state: steel_3
+  product: CrateMaterialSteel
+  cost: 3000
+  category: wf-outpost-trade-category-materials
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingGlass
+  icon:
+    sprite: Objects/Materials/Sheets/glass.rsi
+    state: glass_3
+  product: CrateMaterialGlass
+  cost: 5000
+  category: wf-outpost-trade-category-materials
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingPlastic
+  icon:
+    sprite: Objects/Materials/Sheets/other.rsi
+    state: plastic_3
+  product: CrateMaterialPlastic
+  cost: 5000
+  category: wf-outpost-trade-category-materials
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingShell
+  icon:
+    sprite: Structures/Storage/Crates/generic.rsi
+    state: icon
+  product: WFCrateOutpostShell
+  cost: 550
+  category: wf-outpost-trade-category-building
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingFoundation
+  icon:
+    sprite: Objects/Materials/Sheets/metal.rsi
+    state: steel
+  product: WFCrateOutpostFoundation
+  cost: 650
+  category: wf-outpost-trade-category-building
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingFabricator
+  icon:
+    sprite: Objects/Devices/flatpack.rsi
+    state: icon-default
+  product: WFOutpostFabricatorPack
+  cost: 300
+  category: wf-outpost-trade-category-building
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingTradeHub
+  icon:
+    sprite: Structures/cargo_telepad.rsi
+    state: offline
+  product: WFOutpostTradeHubPack
+  cost: 450
+  category: wf-outpost-trade-category-building
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingPowerCrate
+  icon:
+    sprite: Structures/Power/Generation/solar_panel.rsi
+    state: solar_panel_glass
+  product: WFCrateOutpostPower
+  cost: 2500
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingWindTurbine
+  icon:
+    sprite: Structures/Piping/Atmospherics/directionalfan.rsi
+    state: icon
+  product: WFOutpostWindTurbinePack
+  cost: 700
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingSolarString
+  icon:
+    sprite: Structures/Power/Generation/solar_panel.rsi
+    state: solar_panel_glass
+  product: WFOutpostSolarStringPack
+  cost: 550
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingFuelGenerator
+  icon:
+    sprite: Structures/Power/Generation/portable_generator.rsi
+    state: portgen3
+  product: WFOutpostFuelGeneratorPack
+  cost: 350
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingCompactRTG
+  icon:
+    sprite: Structures/Power/Generation/rtg.rsi
+    state: rtg
+  product: WFOutpostCompactRTGPack
+  cost: 7000
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingBatterySmall
+  icon:
+    sprite: Structures/Power/smes.rsi
+    state: smes
+  product: WFOutpostBatterySmallPack
+  cost: 500
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingBatteryLarge
+  icon:
+    sprite: Structures/Power/smes.rsi
+    state: smes
+  product: WFOutpostBatteryLargePack
+  cost: 1050
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingCable
+  icon:
+    sprite: Objects/Tools/cable-coils.rsi
+    state: coillv-30
+  product: CrateEngineeringCableLV
+  cost: 500
+  category: wf-outpost-trade-category-power
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingFuel
+  icon:
+    sprite: Structures/Storage/tanks.rsi
+    state: fueltank
+  product: WeldingFuelTankFull
+  cost: 1500
+  category: wf-outpost-trade-category-supplies
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingFood
+  icon:
+    sprite: Objects/Consumable/Food/snacks.rsi
+    state: nutribrick
+  product: CrateFoodMRE
+  cost: 1000
+  category: wf-outpost-trade-category-supplies
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingMedical
+  icon:
+    sprite: Objects/Specific/Medical/firstaidkits.rsi
+    state: firstaid
+  product: CrateMedicalSupplies
+  cost: 3200
+  category: wf-outpost-trade-category-supplies
+
+- type: cargoProduct
+  parent: WFBaseOutpostListing
+  id: WFOutpostListingInternals
+  icon:
+    sprite: Clothing/Mask/gas.rsi
+    state: icon
+  product: CrateEmergencyInternals
+  cost: 600
+  category: wf-outpost-trade-category-supplies
+
+# A Tradepost's hub (F6.2): it takes the drops of every outpost on its world whose own hub can't.
+- type: entity
+  parent: WFBaseOutpostTradeHub
+  id: WFPoiPublicTradeHub
+  name: public trade hub
+  description: A drop beacon any outpost on this world may have its Trade orders sent to while its own hub can't take them.
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: WFUniversalTradeHub
+    public: true

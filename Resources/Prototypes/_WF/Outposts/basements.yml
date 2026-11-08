@@ -1,0 +1,23 @@
+# Basements: a hatch kit used on an outpost's floor digs a room into the cavern below, on the outpost's depth -1 grid,
+# and sets this ladder under the hole it opens. Foundation plates laid against the basement's rock dig it further.
+
+- type: entity
+  parent: BaseItem
+  id: WFOutpostBasementHatchKit
+  name: basement hatch kit
+  description: Shoring, a ladder and a charge to sink them. Use it on your outpost's floor, away from its edge, to dig a room into the cavern below with a ladder down to it.
+  components:
+  - type: Item
+    size: Large
+  - type: Sprite
+    sprite: _CE/Structures/Architecture/Ladders/wooden.rsi
+    state: straight
+  - type: WFOutpostHatchKit
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: CEZLevelLadderWooden
+  id: WFOutpostBasementLadder
+  name: basement ladder
+  description: Steep steps down from an outpost's hatch to its basement.

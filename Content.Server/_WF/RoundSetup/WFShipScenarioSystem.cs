@@ -236,19 +236,8 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
         if (!HasSectorServices() || host.AttachedEntity is not { } body || !scenario.Grids.Contains(Transform(body).GridUid ?? EntityUid.Invalid) ||
             TerminatingOrDeleted(scenario.Hull) || TerminatingOrDeleted(scenario.Station))
             return false;
-        EntityUid card;
-        if (_cards.TryFindIdCard(body, out var found))
-            card = found.Owner;
-        else
-        {
-            card = Spawn("IDCardStandard", Transform(body).Coordinates);
-            _cards.TryChangeFullName(card, Name(body));
-            _hands.TryPickupAnyHand(body, card);
-        }
         var vessel = _prototypes.Index<VesselPrototype>(scenario.Vessel);
-        // Crew purchases bypass the normal loader that initializes the sale service.
-        _shipyard.SetupShipyardIfNeeded();
-        if (!_shipyard.TryAssignDeed(scenario.Hull, card, host, vessel, string.IsNullOrWhiteSpace(shipName) ? Name(scenario.Station) : shipName, existingStation: scenario.Station))
+        if (!TryGiveDeed(scenario.Hull, host, vessel, string.IsNullOrWhiteSpace(shipName) ? Name(scenario.Station) : shipName, scenario.Station))
             return false;
         scenario.Used = true;
         EnsureComp<ShipActivityComponent>(scenario.Hull);
@@ -256,12 +245,37 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
         return true;
     }
 
+    /// <summary>
+    /// Registers a crew's hull to a spawned character the way a purchase would: a deed on their ID, or on a new one put
+    /// in their hand, and normal ship ownership.
+    /// </summary>
+    public bool TryGiveDeed(EntityUid hull, ICommonSession owner, VesselPrototype vessel, string shipName, EntityUid station)
+    {
+        if (!HasSectorServices() || owner.AttachedEntity is not { } body)
+            return false;
+        EntityUid card;
+        if (_cards.TryFindIdCard(body, out var found))
+            card = found.Owner;
+        else
+        {
+            card = Spawn("PassengerIDCard", Transform(body).Coordinates);
+            _cards.TryChangeFullName(card, Name(body));
+            _hands.TryPickupAnyHand(body, card);
+        }
+        // Crew ships bypass the normal loader that initializes the sale service.
+        _shipyard.SetupShipyardIfNeeded();
+        return _shipyard.TryAssignDeed(hull, card, owner, vessel, shipName, existingStation: station);
+    }
+
     /// <summary>Links the purchased ship to live crew membership without creating permanent guest entries.</summary>
-    public void NotifyArrival(int lobbyId, ICommonSession session)
+    public void NotifyArrival(int lobbyId, ICommonSession session) => LinkCrewAccess(GetActiveGrids(lobbyId), session);
+
+    /// <summary>Opens deeded crew hulls to the crew of an arriving member, the first arrival's crew linking them.</summary>
+    public void LinkCrewAccess(IEnumerable<EntityUid> grids, ICommonSession session)
     {
         if (session.AttachedEntity is not { } body)
             return;
-        foreach (var grid in GetActiveGrids(lobbyId))
+        foreach (var grid in grids)
         {
             if (TryComp<WFShipAccessComponent>(grid, out var access) && access.CrewId == null &&
                 _access.TryLinkCrew((grid, access), body))
@@ -360,13 +374,16 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
     }
 
     /// <summary>Revokes surviving cards before their networked deed can reference a deleted scenario hull.</summary>
-    private void OnHullTerminating(Entity<WFShipScenarioComponent> ent, ref EntityTerminatingEvent args)
+    private void OnHullTerminating(Entity<WFShipScenarioComponent> ent, ref EntityTerminatingEvent args) => RevokeDeeds(ent);
+
+    /// <summary>Takes every surviving card's deed to a hull that is going away.</summary>
+    public void RevokeDeeds(EntityUid hull)
     {
         var owners = new List<EntityUid>();
         var deeds = AllEntityQuery<ShuttleDeedComponent>();
         while (deeds.MoveNext(out var owner, out var deed))
         {
-            if (deed.ShuttleUid == ent.Owner && !TerminatingOrDeleted(owner))
+            if (deed.ShuttleUid == hull && !TerminatingOrDeleted(owner))
                 owners.Add(owner);
         }
         foreach (var owner in owners)
@@ -374,6 +391,7 @@ public sealed partial class WFShipScenarioSystem : EntitySystem
     }
     private void OnRestart(RoundRestartCleanupEvent args)
     {
+        RefundAllShares();
         foreach (var id in _scenarios.Keys.Concat(_assignedShips.Keys).Distinct().ToArray())
             RemoveScenario(id);
     }

@@ -40,7 +40,9 @@ the natural ground back instead of station plating and lattice (`WFPlanetTileBre
 the ground breaks the station way, down to the ground they built on. A blast never leaves plating or lattice on the
 ground: natural ground holds or opens into the caverns, and a player's floor never breaks through. Jetpacks only
 work in orbit and lattice goes straight onto natural ground. A room built on a planet holds its own air once it has a
-floor: bare ground counts as outdoors and keeps the planet's air. A world whose air its own life couldn't breathe lists
+floor: bare ground counts as outdoors and keeps the planet's air. A grid that is buildings on the ground rather than a vessel, such as an outpost,
+carries `WFPlanetTerrainGridComponent`: like the ground and a fixed city's levels it goes by its own roofs for weather,
+casts no ship's shadow and drops the planet's perspective only for someone under its roofs. A world whose air its own life couldn't breathe lists
 that life in `WFPlanetNatives` on its network (wildlife tables, entities, slime breeds), and `WFPlanetNativesSystem`
 gives each `BreathingImmunity` while it is there; Carcinoma's carbon dioxide (`_WF/PlanetVents`) is the one so far.
 Players use landing thruster kits, parachutes and the
@@ -87,7 +89,8 @@ almost none of it: untouched biome entities go with their chunk, and the ground 
 loaded by hand stays. Ground that is only unloaded still holds up whatever was left on it. `BiomeSystem.WFRoll`
 makes a planet's rock spawner rolls in the loader, seeded from the tile, so surface rock unloads too and the same
 rock comes back. `BiomeSystem.WFLoad` puts off the far part of a planet load area and loads it nearest first over
-the next passes, so an arrival or a flight does not load it all in one tick. Round a player's body only the 16-tile
+the next passes, so an arrival or a flight does not load it all in one tick. An entity with a `WFTerrainLoaderComponent` (`BiomeSystem.WFLoaders`) loads the ground round
+it as a player's body does, for NPCs walking where nobody is, such as raids. Round a player's body only the 16-tile
 block it stands in and the blocks within `wf.planet_terrain_load_now_pad` (2) tiles load at once; the six by six chunks
 round it, `wf.planet_terrain_load_now_ring` 2, was thirty-six chunks in a pass, over a tenth of a second in a cavern.
 Unloaded ground is still ground to z-physics (`WfUnloadedGround`), so a body that lands on it does not fall. A hull that sets down flattens what is
@@ -246,6 +249,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WF/Planets/Atmosphere/WFTerrainAtmosphereSystem.cs`](Atmosphere/WFTerrainAtmosphereSystem.cs)
 - [`Content.Server/_WF/Planets/Atmosphere/WFTerrainOpenTilesEvent.cs`](Atmosphere/WFTerrainOpenTilesEvent.cs)
 - [`Content.Server/_WF/Planets/BiomeSystem.WFLoad.cs`](BiomeSystem.WFLoad.cs)
+- [`Content.Server/_WF/Planets/BiomeSystem.WFLoaders.cs`](BiomeSystem.WFLoaders.cs)
 - [`Content.Server/_WF/Planets/BiomeSystem.WFRoll.cs`](BiomeSystem.WFRoll.cs)
 - [`Content.Server/_WF/Planets/BiomeSystem.WFStash.cs`](BiomeSystem.WFStash.cs)
 - [`Content.Server/_WF/Planets/BiomeSystem.WFUnload.cs`](BiomeSystem.WFUnload.cs)
@@ -264,6 +268,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFAdoptStanders.cs`](Flight/CEZLevelsSystem.WFAdoptStanders.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFFlight.cs`](Flight/CEZLevelsSystem.WFFlight.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFGravityCache.cs`](Flight/CEZLevelsSystem.WFGravityCache.cs)
+- [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFLandingClaims.cs`](Flight/CEZLevelsSystem.WFLandingClaims.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFLandingClearance.cs`](Flight/CEZLevelsSystem.WFLandingClearance.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFLandingRefusal.cs`](Flight/CEZLevelsSystem.WFLandingRefusal.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFLiftAdvice.cs`](Flight/CEZLevelsSystem.WFLiftAdvice.cs)
@@ -289,6 +294,8 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WF/Planets/Flight/WFFlightSystem.Scar.cs`](Flight/WFFlightSystem.Scar.cs)
 - [`Content.Server/_WF/Planets/Flight/WFFlightSystem.Skid.cs`](Flight/WFFlightSystem.Skid.cs)
 - [`Content.Server/_WF/Planets/Flight/WFGridLiftLoadEvent.cs`](Flight/WFGridLiftLoadEvent.cs)
+- [`Content.Server/_WF/Planets/Flight/WFGuidedFlightEvents.cs`](Flight/WFGuidedFlightEvents.cs)
+- [`Content.Server/_WF/Planets/Flight/WFLandingClaimEvent.cs`](Flight/WFLandingClaimEvent.cs)
 - [`Content.Server/_WF/Planets/Flight/WFLandingThrusterKitComponent.cs`](Flight/WFLandingThrusterKitComponent.cs)
 - [`Content.Server/_WF/Planets/Flight/WFLandingThrusterKitSystem.cs`](Flight/WFLandingThrusterKitSystem.cs)
 - [`Content.Server/_WF/Planets/Flight/WFLiftoffComponent.cs`](Flight/WFLiftoffComponent.cs)
@@ -346,16 +353,19 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WF/Planets/WFPlanetWeatherComponent.cs`](WFPlanetWeatherComponent.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.Admin.cs`](WFPlanetWeatherSystem.Admin.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.cs`](WFPlanetWeatherSystem.cs)
+- [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.DayCycle.cs`](WFPlanetWeatherSystem.DayCycle.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.Daylight.cs`](WFPlanetWeatherSystem.Daylight.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.Seasons.cs`](WFPlanetWeatherSystem.Seasons.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWeatherSystem.Storms.cs`](WFPlanetWeatherSystem.Storms.cs)
 - [`Content.Server/_WF/Planets/WFPlanetWildlifeComponent.cs`](WFPlanetWildlifeComponent.cs)
 - [`Content.Server/_WF/Planets/WFRoundStartHoldEvent.cs`](WFRoundStartHoldEvent.cs)
+- [`Content.Server/_WF/Planets/WFTerrainLoaderComponent.cs`](WFTerrainLoaderComponent.cs)
 - [`Content.Server/_WF/Planets/WFWorldFormingSystem.cs`](WFWorldFormingSystem.cs)
 
 ### Shared
 
 - [`Content.Shared/_WF/Planets/Administration/PlanetControlEvents.cs`](../../../Content.Shared/_WF/Planets/Administration/PlanetControlEvents.cs)
+- [`Content.Shared/_WF/Planets/CESharedZLevelsSystem.Drops.cs`](../../../Content.Shared/_WF/Planets/CESharedZLevelsSystem.Drops.cs)
 - [`Content.Shared/_WF/Planets/CESharedZLevelsSystem.Ghosts.cs`](../../../Content.Shared/_WF/Planets/CESharedZLevelsSystem.Ghosts.cs)
 - [`Content.Shared/_WF/Planets/CESharedZLevelsSystem.Roofs.cs`](../../../Content.Shared/_WF/Planets/CESharedZLevelsSystem.Roofs.cs)
 - [`Content.Shared/_WF/Planets/CESharedZLevelsSystem.Terrain.cs`](../../../Content.Shared/_WF/Planets/CESharedZLevelsSystem.Terrain.cs)
@@ -388,6 +398,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Shared/_WF/Planets/WFPlanetOrbitMessages.cs`](../../../Content.Shared/_WF/Planets/WFPlanetOrbitMessages.cs)
 - [`Content.Shared/_WF/Planets/WFPlanetRadarSystem.cs`](../../../Content.Shared/_WF/Planets/WFPlanetRadarSystem.cs)
 - [`Content.Shared/_WF/Planets/WFPlanetSurfacePrototype.cs`](../../../Content.Shared/_WF/Planets/WFPlanetSurfacePrototype.cs)
+- [`Content.Shared/_WF/Planets/WFPlanetTerrainGridComponent.cs`](../../../Content.Shared/_WF/Planets/WFPlanetTerrainGridComponent.cs)
 - [`Content.Shared/_WF/Planets/WFPlanetTimepieceComponent.cs`](../../../Content.Shared/_WF/Planets/WFPlanetTimepieceComponent.cs)
 - [`Content.Shared/_WF/Planets/WFPlanetView.cs`](../../../Content.Shared/_WF/Planets/WFPlanetView.cs)
 - [`Content.Shared/_WF/Planets/WFPlanetWeatherPrototype.cs`](../../../Content.Shared/_WF/Planets/WFPlanetWeatherPrototype.cs)
@@ -470,6 +481,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetAmbiencePrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetAmbiencePrototypeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetArrivalTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetArrivalTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetBoundsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetBoundsTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Planets/PlanetDayCycleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetDayCycleTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetDragTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetDragTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetDroneBeltTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetDroneBeltTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetEcologyLifecycleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetEcologyLifecycleTest.cs)
@@ -690,7 +702,9 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 
 ## Non-modular edits
 
-- [`Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs`](../../../Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs): orbit is above the atmosphere, not a storey up.
+- [`Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs`](../../../Content.Client/_CE/ZLevels/Core/Overlays/CEZLevelShadowOverlay.cs)
+  - orbit is above the atmosphere, not a storey up.
+  - terrain grids such as outposts are buildings on the ground too.
 - [`Content.Client/_CE/ZLevels/Core/ScalingViewport.CEZLevels.cs`](../../../Content.Client/_CE/ZLevels/Core/ScalingViewport.CEZLevels.cs)
   - an empty air layer under orbit is skipped, each pass being a whole render
   - a planet's layers keep the perspective Monolith turned off, aboard a ship
@@ -811,6 +825,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
   - a planet layer loads nearest its loaders first
   - less loads at once round an eye than round a body
   - an eye on a cavern loads a box sized to its view
+  - NPCs with a terrain loader load the ground round them, as raids walking in
   - an eye may load a smaller box
 - [`Content.Server/Physics/Controllers/MoverController.cs`](../../Physics/Controllers/MoverController.cs): planet lift and cargo load scale thrust
 - [`Content.Server/Pinpointer/PinpointerSystem.cs`](../../Pinpointer/PinpointerSystem.cs)

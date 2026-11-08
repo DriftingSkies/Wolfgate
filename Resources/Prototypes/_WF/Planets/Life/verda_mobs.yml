@@ -264,6 +264,9 @@
   id: WFFaunaVerdaMeadow
   table: !type:GroupSelector
     children:
+    # Native livestock (Husbandry), tamed by hand.
+    - id: WFMobLivestockVerda
+      weight: 3
     # A bird flock (_WF/Birds); the leader spawns the rest.
     - id: WFMobBirdVerdaSongbird
       weight: 3

@@ -165,7 +165,7 @@ public sealed partial class WFPlanetPoiSystem
                     else _biome.WfPinTiles((ground, biome), siteTiles);
                     var site = new WFPlanetPoiSite
                     {
-                        Dungeon = entry.Dungeon, MapPath = entry.MapPath, Name = entry.Name,
+                        Dungeon = entry.Dungeon, MapPath = entry.MapPath, Name = entry.Name, Type = entry.Type,
                         Origin = origin, Bounds = table.Roads != null || entry.MapPath != null ? reservation : actual,
                         TileCount = siteTiles.Count, Connection = entry.Connection,
                         Expeditions = entry.Expeditions, Difficulty = entry.Difficulty ?? table.Difficulty,
@@ -205,6 +205,7 @@ public sealed partial class WFPlanetPoiSystem
                     RollBackSite(ground, created, createdBefore, createdDecals, decalsStart, changed, changedBefore, originalTiles, originalRoof, initialPins);
                 }
             }
+            await PlaceOutpostLotsAsync((ground, biome, grid), centre, radius, table, record, reserved, approaches, changed);
             Report(ground, WFWorldFormingStage.Roads, 0.6f);
             await _preload.Breathe();
             if (table.Roads is { } roads && record.Sites.Any(site => site.Sockets.Count > 0))
@@ -305,6 +306,7 @@ public sealed partial class WFPlanetPoiSystem
             record.Tunnels.Clear();
             record.Centreline.Clear();
             record.Furniture.Clear();
+            record.OutpostLots.Clear();
             record.GenerationError = $"POI table {table.ID}: {error.Message}";
             Log.Error(record.GenerationError);
             throw;

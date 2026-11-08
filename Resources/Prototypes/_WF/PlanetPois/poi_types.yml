@@ -1,0 +1,69 @@
+# What kind of place a site is, and what it takes to claim it (Docs/_WF/Outposts/PLAN.md, F7).
+
+- type: wfPoiType
+  id: WFPoiTypeMine
+  name: wf-poi-type-mine
+  claim: Repair
+  surfaceOnly: true
+
+- type: wfPoiType
+  id: WFPoiTypeAbandonedOutpost
+  name: wf-poi-type-abandoned-outpost
+  claim: Repair
+
+- type: wfPoiType
+  id: WFPoiTypeSmallDerelict
+  name: wf-poi-type-small-derelict
+  claim: Hack
+
+# Its turrets stand down once its core is hacked; it is free to claim once nothing guards it.
+- type: wfPoiType
+  id: WFPoiTypeAutomatedOutpost
+  name: wf-poi-type-automated-outpost
+  claim: Free
+
+# Broadcasts from the start, so every radar knows it, and no one fights under its roof.
+- type: wfPoiType
+  id: WFPoiTypeTradepost
+  name: wf-poi-type-tradepost
+  beacon: Known
+  spawns:
+  - PacifiedZone20
+
+- type: wfPoiType
+  id: WFPoiTypeDerelictCapital
+  name: wf-poi-type-derelict-capital
+  claim: Repair
+
+- type: wfPoiType
+  id: WFPoiTypeFarm
+  name: wf-poi-type-farm
+  claim: Repair
+
+# A working business, so not claimed; it keeps a recipe disk for an outpost's fabricator, now and then a tier 2 or 3 one.
+- type: wfPoiType
+  id: WFPoiTypeWorkshop
+  name: wf-poi-type-workshop
+  spawns:
+  - WFOutpostRecipeDiskWorkshopSpawner
+
+# Old survey notes lie in it, each pointing to a site on the same world no one has found yet.
+- type: wfPoiType
+  id: WFPoiTypeRuins
+  name: wf-poi-type-ruins
+  spawns:
+  - WFPoiClueNotes
+  - WFPoiClueNotes
+
+# Faint: off every radar until someone walks up to it or sweeps it with a survey scanner.
+- type: wfPoiType
+  id: WFPoiTypeHeavenlyShrine
+  name: wf-poi-type-heavenly-shrine
+  beacon: Faint
+  revealRange: 12
+
+- type: wfPoiType
+  id: WFPoiTypeAlienArtifactSite
+  name: wf-poi-type-alien-artifact-site
+  beacon: Faint
+  revealRange: 12
