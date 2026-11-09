@@ -217,22 +217,32 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         var heading = new Label { Text = Loc.GetString(preset.Name), ClipText = true };
         heading.AddStyleClass("LabelKeyText");
         text.AddChild(heading);
-        foreach (var line in new[]
-                 {
-                     Loc.GetString(preset.Description),
-                     Loc.GetString("wf-outpost-console-slot-price", ("price", preset.Price)),
-                 })
-        {
-            var label = new Label { Text = line };
-            label.AddStyleClass("LabelSecondaryColor");
-            text.AddChild(label);
-        }
+        // The description wraps rather than running under the buttons.
+        var description = new FormattedMessage();
+        description.PushColor(Color.DarkGray);
+        description.AddText(Loc.GetString(preset.Description));
+        description.Pop();
+        var descriptionLabel = new RichTextLabel { HorizontalExpand = true };
+        descriptionLabel.SetMessage(description);
+        text.AddChild(descriptionLabel);
+        var price = new Label { Text = Loc.GetString("wf-outpost-console-slot-price", ("price", preset.Price)) };
+        price.AddStyleClass("LabelSecondaryColor");
+        text.AddChild(price);
 
-        var preview = new Button { Text = Loc.GetString("wf-outpost-console-preview") };
+        var preview = new Button
+        {
+            Text = Loc.GetString("wf-outpost-console-preview"),
+            VerticalAlignment = VAlignment.Center,
+        };
         preview.OnPressed += _ => PreviewBox.ShowPreset(preset);
         row.AddChild(preview);
 
-        var load = new Button { Text = Loc.GetString("wf-outpost-console-load"), Disabled = locked };
+        var load = new Button
+        {
+            Text = Loc.GetString("wf-outpost-console-load"),
+            Disabled = locked,
+            VerticalAlignment = VAlignment.Center,
+        };
         load.OnPressed += _ => OnLoadPreset?.Invoke(preset.ID);
         row.AddChild(load);
         return Card(row);
